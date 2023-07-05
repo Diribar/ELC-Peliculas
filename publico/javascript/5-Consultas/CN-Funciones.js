@@ -2,26 +2,31 @@
 // Variables de start-up
 const ruta = "/consultas/api/";
 const rutas = {
-	// Startup
-	layoutsOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
-	prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=", // opcionesFiltroPers
-	diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
+	// Obtiene
+	obtiene: {
+		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
+		prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=", // opcionesFiltroPers
+		diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
+	},
 
-	// Actualiza filtros personalizados
-	actualizaFP_id: ruta + "actualiza-fp_id/?filtro_id=", // guardaFiltroID
-	actualizaPrefsFP: ruta + "actualiza-prefs-fp/?datos=", // actualiza
+	// Actualiza
+	actualiza: {
+		filtroPers_id: ruta + "actualiza-fp_id/?filtro_id=", // guardaFiltroID
+		prefsFiltroPers: ruta + "actualiza-prefs-fp/?datos=", // actualiza
+	},
 
-	// Consultas
-	obtieneProds: ruta + "obtiene-los-productos/?datos=", // productos
-	obtieneRCLVs: ruta + "obtiene-los-rclvs/?datos=", // rclvs
+	// Resultados
+	resultados: {
+		prods: ruta + "obtiene-los-productos/?datos=", // productos
+		rclvs: ruta + "obtiene-los-rclvs/?datos=", // rclvs
+	},
 };
 
 // Funciones de start-up
 let statusInicialPrefs = async (producto) => {};
 
 // Ejecuta las funciones de start-up
-window.addEventListener("load", () => {
-});
+window.addEventListener("load", () => {});
 
 let botonPelicula = async (producto) => {
 	// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
