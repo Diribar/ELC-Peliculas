@@ -9,13 +9,13 @@ window.addEventListener("load", async () => {
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtro personalizado
-		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
-		nuevo: document.querySelector("#filtrosPers i#nuevo"),
-		reinicio: document.querySelector("#filtrosPers i#reinicio"),
-		actualiza: document.querySelector("#filtrosPers i#actualiza"),
-		modificaNombre: document.querySelector("#filtrosPers i#modificaNombre"),
-		elimina: document.querySelector("#filtrosPers i#elimina"),
-		iconos: document.querySelectorAll("#filtrosPers #iconos i"),
+		filtroPers: document.querySelector("#filtroPers select[name='filtroPers']"),
+		nuevo: document.querySelector("#filtroPers i#nuevo"),
+		reinicio: document.querySelector("#filtroPers i#reinicio"),
+		actualiza: document.querySelector("#filtroPers i#actualiza"),
+		modificaNombre: document.querySelector("#filtroPers i#modificaNombre"),
+		elimina: document.querySelector("#filtroPers i#elimina"),
+		iconos: document.querySelectorAll("#filtroPers #iconos i"),
 
 		// Encabezado
 		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
@@ -225,7 +225,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let filtrosPers = {
+	let filtroPers = {
 		impactosDeFiltroPers: async function () {
 			// Variables
 			const filtroPers_id = DOM.filtroPers.value;
@@ -371,11 +371,11 @@ window.addEventListener("load", async () => {
 	// Eventos
 	DOM.cuerpo.addEventListener("change", async (e) => {
 		// Variables
-		let clickEnFiltrosPers = e.target.name == "filtrosPers";
+		let clickEnFiltrosPers = e.target.name == "filtroPers";
 		elegibles = {};
 
 		// Novedades en el Filtro Personalizado
-		if (clickEnFiltrosPers) await filtrosPers.impactosDeFiltroPers();
+		if (clickEnFiltrosPers) await filtroPers.impactosDeFiltroPers();
 
 		// Impacto en Encabezado y Filtros
 		encabFiltros.impactosDeLayout();
@@ -384,8 +384,8 @@ window.addEventListener("load", async () => {
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {
-			if (!apoyo.condicionesMinimas()) filtrosPers.impactoEnBotonesPorCondicMins();
-			else filtrosPers.impactosEnBotonesPorElegibles();
+			if (!apoyo.condicionesMinimas()) filtroPers.impactoEnBotonesPorCondicMins();
+			else filtroPers.impactosEnBotonesPorElegibles();
 		}
 
 		// Obtiene los productos
@@ -415,7 +415,7 @@ window.addEventListener("load", async () => {
 		elegibles = {};
 
 		// Novedades en el Filtro Personalizado
-		await filtrosPers.impactosDeFiltroPers();
+		await filtroPers.impactosDeFiltroPers();
 
 		// Impacto en Encabezado y Filtros, y Palabras Clave
 		encabFiltros.impactosDeLayout();
@@ -433,7 +433,7 @@ window.addEventListener("load", async () => {
 	DOM.actualiza.addEventListener("click", async () => {
 		// Si está inactivo, interrumpe
 		if (DOM.actualiza.className.includes("inactivo")) return;
-		else filtrosPers.statusInicialBotonera();
+		else filtroPers.statusInicialBotonera();
 
 		// Variables
 		const filtroPers_id = DOM.filtroPers.value;
