@@ -72,9 +72,11 @@ module.exports = {
 
 			// Guarda cookie
 			res.cookie("configActual_id", configActual_id, {maxAge: unDia});
+
+			// Si está logueado, actualiza session y el usuario en la BD
 			if (userID) {
-				req.session.usuario.configActual_id = configActual_id; // actualiza session
-				BD_genericas.actualizaPorId("usuarios", userID, {configActual_id}); // actualiza el usuario
+				req.session.usuario.configActual_id = configActual_id;
+				BD_genericas.actualizaPorId("usuarios", userID, {configActual_id});
 			}
 
 			// Fin
