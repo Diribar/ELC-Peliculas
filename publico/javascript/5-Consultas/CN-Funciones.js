@@ -1,35 +1,15 @@
 "use strict";
-// Variables de start-up
 const ruta = "/consultas/api/";
-const rutas = {
-	// Obtiene
-	obtiene: {
-		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=",
-		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configCons_id=", // opcionesFiltroPers
-	},
 
-	guarda: {
-		configNueva: ruta + "guarda-nueva-configuracion/?configuracion=",
-	},
-
-	// Actualiza
-	actualiza: {
-		configCons_id: ruta + "actualiza-configCons_id/?configCons_id=", // guardaFiltroID
-		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?configuracion=", // actualiza
-	},
-
-	// Resultados
-	resultados: {
-		prods: ruta + "obtiene-los-productos/?datos=", // productos
-		rclvs: ruta + "obtiene-los-rclvs/?datos=", // rclvs
-	},
-};
-
-// Funciones
 let FN = {
 	obtiene: {
 		prefsDeCabecera: (configCons_id) => {
-			return fetch(rutas.obtiene.prefsDeCabecera + configCons_id).then((n) => n.json());
+			const rutaCompleta = ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=";
+			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		},
+		prefsDeCampos: (configCons_id) => {
+			const rutaCompleta = ruta + "obtiene-las-preferencias-de-campos/?configCons_id=";
+			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
 		},
 	},
 	actualiza: {
@@ -64,11 +44,7 @@ let FN = {
 			// Fin
 			return;
 		},
-		valorDePrefs: async (DOM) => {
-			// Variables
-			const configCons_id = DOM.configCons_id.value;
-			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configCons_id).then((n) => n.json());
-
+		prefsDeCamposEnVista: async ({DOM, prefsDeCampos}) => {
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
 				prefSimple.value = prefsDeCampos[prefSimple.name] ? prefsDeCampos[prefSimple.name] : "";
@@ -76,19 +52,34 @@ let FN = {
 			// Actualiza las preferencias 'AscDes'
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
-		},
-		sessionCookieUsuarioCon_configCons_id: (DOM) => {
-			// Variables
-			const configCons_id = DOM.configCons_id.value;
 
-			// Actualiza el configCons_id en la session, cookie y el usuario
-			if (configCons_id) fetch(rutas.actualiza.configCons_id + configCons_id);
-			else return;
+			// Fin
+			return;
+		},
+		contador: {},
+		nombreEnVista: {},
+	},
+	guardaEnBD: {
+		actualizaConfigCons_id: (configCons_id) => {
+			const rutaCompleta = ruta + "actualiza-configCons_id/?configCons_id=";
+			if (configCons_id) fetch(rutaCompleta + configCons_id);
+
+			// Fin
+			return;
+		},
+		creaUnaConfiguracion: (configuracion) => {
+			const rutaCompleta = ruta + "crea-una-configuracion/?configuracion=";
+			return fetch(rutaCompleta + configuracion).then((n) => n.json());
+		},
+		guardaUnaConfiguracion: (configuracion) => {
+			const rutaCompleta = ruta + "guarda-una-configuracion/?configuracion=";
+			fetch(rutaCompleta + configuracion).then((n) => n.json());
 
 			// Fin
 			return;
 		},
 	},
+	resultados: {},
 };
 // layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
