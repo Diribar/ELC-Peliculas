@@ -17,7 +17,7 @@ let impactos = {
 			// Obtiene el 'configCons.bhr', si esté implícito
 			const layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
 			v.entidad = layoutBD.entidad;
-			if (["personajes", "hechos"].includes(v.entidad)) configCons.bhr = "SI";
+			["personajes", "hechos"].includes(v.entidad) ? (configCons.bhr = "SI") : delete configCons.bhr;
 		}
 		// Elimina los 'configCons.layout_id' y 'configCons.bhr'
 		else delete configCons.layout_id, configCons.bhr;
