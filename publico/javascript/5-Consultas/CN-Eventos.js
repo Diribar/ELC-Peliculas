@@ -14,8 +14,8 @@ window.addEventListener("load", async () => {
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
 		// Filtro Cabecera - Nombre
-		configCons_id: document.querySelector("#configDeCabecera select[name='configCons_id']"),
 		configNuevaNombre: document.querySelector("#configDeCabecera #configNueva input[name='nombre']"),
+		configCons_id: document.querySelector("#configDeCabecera select[name='configCons_id']"),
 		// Filtro Cabecera - Íconos de la botonera
 		nuevo: document.querySelector("#configDeCabecera i#nuevo"),
 		deshacer: document.querySelector("#configDeCabecera i#deshacer"),
@@ -67,6 +67,11 @@ window.addEventListener("load", async () => {
 			return;
 		});
 	});
+
+	// Eventos - Cambio de Configuración
+	configCons_id.addEventListener("change",()=>{
+		
+	})
 
 	// Start-up
 	impactos.configDinamica({v, DOM});
