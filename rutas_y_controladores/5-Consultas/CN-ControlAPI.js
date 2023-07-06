@@ -24,7 +24,7 @@ module.exports = {
 			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configCons_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {configCons_id});
 
 			// Convierte el array en objeto literal
 			for (let registro of registros) preferencias[registro.campo] = registro.valor;
@@ -49,14 +49,14 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configuracion.nombre};
-			const {id: cabecera_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
 			// Guarda los registros de las preferencias
 			for (let campo in configuracion) {
 				if (campo == "nombre") continue; // Si el campo es 'nombre', saltea la rutina
 
 				// Crea el registro
-				const objeto = {cabecera_id, campo, valor: configuracion[campo]};
+				const objeto = {configCons_id, campo, valor: configuracion[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
 
@@ -85,17 +85,17 @@ module.exports = {
 		prefsDeCampos: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const cabecera_id = datos.configCons_id;
+			const {configCons_id} = datos;
 
 			// Elimina la información guardada
-			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {cabecera_id});
+			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
 
 			// Guarda la nueva información
 			for (let campo in datos) {
 				// Si el campo es 'configCons_id', saltea la rutina
 				if (campo == "configCons_id") continue;
 				// Crea el registro
-				let objeto = {cabecera_id, campo, valor: datos[campo]};
+				const objeto = {configCons_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
 

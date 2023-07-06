@@ -19,7 +19,7 @@ module.exports = {
 		const configCons_id = userID && usuario.configCons_id ? usuario.configCons_id : 1;
 
 		// Obtiene las preferencias personales
-		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configCons_id});
+		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {configCons_id});
 		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
 
 		// Va a la vista
