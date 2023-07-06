@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
-		
+
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
@@ -67,6 +67,15 @@ window.addEventListener("load", async () => {
 			estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
+	});
+
+	// Eventos - Cambio de Configuración
+	DOM.cuerpo.addEventListener("change", async (e) => {
+		// Variables
+		const campo = e.target;
+
+		// Fin
+		return;
 	});
 
 	// Start-up
