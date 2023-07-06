@@ -32,10 +32,8 @@ let impactos = {
 	enDeOrden: function (v, DOM) {
 		// Impacto en configCons: orden_id
 
-		// Variables
-		const checked = DOM.orden_id.querySelector("option:checked");
-
 		// Oculta/Muestra las opciones que corresponden
+		const checked = DOM.orden_id.querySelector("option:checked");
 		v.ordenesBD.forEach((ordenBD, i) => {
 			// Acciones si la opción no corresponde al layout
 			if (!v.layout_id || ordenBD.layout_id != v.layout_id) {
@@ -43,7 +41,7 @@ let impactos = {
 				DOM.orden_idOpciones[i].classList.add("ocultar");
 
 				// Si estaba seleccionada, cambia la selección por la de 'sin valor'
-				if (DOM.orden_idOpciones[i].value == checked.value) DOM.orden_id.value = "";
+				if (checked && DOM.orden_idOpciones[i].value == checked.value) DOM.orden_id.value = "";
 			}
 			// Si la opción está vinculada con el layout, la muestra
 			else DOM.orden_idOpciones[i].classList.remove("ocultar");
@@ -64,7 +62,7 @@ let impactos = {
 		// Variables
 		const ordenBD = v.orden_id ? v.ordenesBD.find((n) => n.id == v.orden_id) : null;
 
-		// IMPACTOS EN		
+		// IMPACTOS EN
 		if (v.orden_id && ordenBD.ascDes == "ascDes") {
 			// Muestra ascDes
 			DOM.ascDes.classList.remove("ocultar");
@@ -79,7 +77,7 @@ let impactos = {
 		}
 
 		// IMPACTOS DE - Sector 'OK'
-			elegibles.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+		elegibles.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
 		this.mostrarOcultar(v, DOM);
 		this.deCFC(v, DOM);
