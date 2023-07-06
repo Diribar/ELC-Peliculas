@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 		nombreOK: false,
 		configCons_id: DOM.configCons_id.value,
 	};
-	v.prefsDeCabecera = await FN.obtiene.prefsDeCabecera(v.configCons_id);
+	v.prefsDeCabecera = await estaticas.obtiene.prefsDeCabecera(v.configCons_id);
 	v = {
 		...v,
 		filtroPropio: !!v.prefsDeCabecera.usuario_id,
@@ -46,11 +46,12 @@ window.addEventListener("load", async () => {
 			}
 
 			// Fin
-			FN.actualiza.botoneraActivaInactiva({v, DOM});
+			estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
 	});
 
 	// Start-up
-	FN.actualiza.botoneraActivaInactiva({v, DOM});
+	// dinamicas.
+	estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 });

@@ -1,7 +1,7 @@
 "use strict";
 const ruta = "/consultas/api/";
 
-let dinamicas = {
+let impactos = {
 	deLayout: function () {
 		// Asigna valor a las variables
 		const SI = !!DOM.layout_idSelect.value;
@@ -157,6 +157,9 @@ let dinamicas = {
 		// Fin
 		return;
 	},
+};
+
+let dinamicas = {
 	condicionesMinimasOK: () => {
 		const SI_layout = !!DOM.layout_idSelect.value;
 		const SI_orden = !!DOM.orden_idSelect.value;

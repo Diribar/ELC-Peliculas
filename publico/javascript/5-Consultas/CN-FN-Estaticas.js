@@ -1,7 +1,7 @@
 "use strict";
 const ruta = "/consultas/api/";
 
-let FN = {
+let estaticas = {
 	obtiene: {
 		layoutsMasOrdenes:()=> {
 			const rutaCompleta = ruta + "obtiene-layouts-y-ordenes/";
