@@ -9,17 +9,17 @@ let impactos = {
 	},
 	deLayout: function (v, DOM) {
 		// Variables
-		const layout_id = DOM.layout_id.value;
+		v.layout_id = DOM.layout_id.value;
 
 		// Obtiene el 'configCons.layout_id' y eventualmente el 'configCons.bhr'
-		if (layout_id) {
+		if (v.layout_id) {
 			// Obtiene el 'configCons.layout_id'
-			configCons.layout_id = layout_id;
+			configCons.layout_id = v.layout_id;
 
 			// Obtiene el 'configCons.bhr', si esté implícito
-			v.layoutBD = v.layoutsBD.find((n) => n.id == layout_id);
-			v.entidadElegida = v.layoutBD.entidad;
-			if (["personajes", "hechos"].includes(v.entidadElegida)) configCons.bhr = "SI";
+			const layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
+			v.entidad = layoutBD.entidad;
+			if (["personajes", "hechos"].includes(v.entidad)) configCons.bhr = "SI";
 		}
 		// Elimina los 'configCons.layout_id' y 'configCons.bhr'
 		else delete configCons.layout_id, configCons.bhr;
@@ -37,7 +37,7 @@ let impactos = {
 		// Oculta/Muestra las opciones que corresponden
 		v.ordenesBD.forEach((ordenBD, i) => {
 			// Acciones si no existe 'layout' o la opción tiene un código distinto al de layout
-			if (!v.layoutBD || ordenBD.codigo != varias.layout.codigo) {
+			if (!v.layoutBD || ordenBD.layout_id != v.layout_id) {
 				// 1. Oculta la opción
 				DOM.opcionesOrdenVista[i].classList.add("ocultar");
 				// 2. La 'des-selecciona'
