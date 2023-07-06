@@ -11,13 +11,18 @@ let impactos = {
 		// Variables
 		const layout_id = DOM.layout_id.value;
 
-		// Obtiene el 'configCons.layout_id'
-		v.layoutBD = layout_id ? v.layoutsBD.find((n) => n.id == layout_id) : null;
-		layout_id ? (configCons.layout_id = v.layoutBD.id) : delete configCons.layout_id;
+		// Obtiene el 'configCons.layout_id' y eventualmente el 'configCons.bhr'
+		if (layout_id) {
+			// Obtiene el 'configCons.layout_id'
+			configCons.layout_id = layout_id;
 
-		// Obtiene el 'configCons.bhr', si esté implícito
-		v.entidadElegida = layout_id ? v.layoutBD.entidad : null;
-		layout_id && ["personajes", "hechos"].includes(v.entidadElegida) ? (configCons.bhr = "SI") : delete configCons.bhr;
+			// Obtiene el 'configCons.bhr', si esté implícito
+			v.layoutBD = v.layoutsBD.find((n) => n.id == layout_id);
+			v.entidadElegida = v.layoutBD.entidad;
+			if (["personajes", "hechos"].includes(v.entidadElegida)) configCons.bhr = "SI";
+		}
+		// Elimina los 'configCons.layout_id' y 'configCons.bhr'
+		else delete configCons.layout_id, configCons.bhr;
 
 		// Siguiente rutina
 		this.enDeOrden(v, DOM);
