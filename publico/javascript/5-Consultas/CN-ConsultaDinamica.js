@@ -30,7 +30,3 @@ window.addEventListener("load", async () => {
 	console.log(v);
 	FN.actualiza.botoneraActivaInactiva({v, DOM});
 });
-
-// Obtiene el configCons_id
-// Actualiza las preferencias
-// Actualiza la botonera
