@@ -2,16 +2,16 @@
 window.addEventListener("load", async () => {
 	// Variable DOM
 	let DOM = {
+		// Encabezado, Cabecera, Campos
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
+		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
 		orden_idOpciones: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDes: document.querySelector("#encabezado #ascDes"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
-
-		// Filtros
-		camposTitulo: document.querySelector("#configCons #campos div:has(h2)"),
-		camposNav: document.querySelector("#configCons #campos div nav"),
 
 		// Filtro Cabecera - Nombre
 		configCons_id: document.querySelector("#configCabecera select[name='configCons_id']"),
@@ -24,9 +24,12 @@ window.addEventListener("load", async () => {
 		eliminar: document.querySelector("#configCabecera i#eliminar"),
 		iconos: document.querySelectorAll("#configCabecera #iconos i"),
 
-		// Preferencias
-		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
-		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		// Campos
+		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
+
+		// Zona de productos
+		asegurate: document.querySelector("#zona_de_prods #comencemos button#rojo"),
+		comencemos: document.querySelector("#zona_de_prods #comencemos button#verde"),
 	};
 
 	// Variables varias
@@ -34,6 +37,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		hayCambios: false,
 		nombreOK: false,
+		comencemos: true,
 		configCons_id: DOM.configCons_id.value,
 		layoutsBD,
 		ordenesBD,

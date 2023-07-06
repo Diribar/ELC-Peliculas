@@ -88,15 +88,13 @@ let impactos = {
 		return;
 	},
 	muestraOculta: (v, DOM) => {
-		// Impacto en configCons: -
-		// Impactos en v: -
-
 		// Muestra/Oculta sectores
-		const SI = v.layout_id && v.orden_id && v.ascDes;
-		SI ? DOM.camposTitulo.classList.remove("ocultar") : DOM.camposTitulo.classList.add("ocultar");
-		SI ? DOM.camposNav.classList.remove("ocultar") : DOM.camposNav.classList.add("ocultar");
-		SI ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		SI && varias.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		const mostrar = v.layout_id && v.orden_id && v.ascDes;
+		for (let div of DOM.mostrarSiEncabOK) mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
+
+		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
+		mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
+		mostrar && v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 		// Fin
 		return;

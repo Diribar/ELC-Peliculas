@@ -18,18 +18,18 @@
 #configCabecera #iconos i {cursor: pointer; color: snow;}
 
 /* Filtros Campos - Filtros para enfocar tu búqueda */
-#configCons #campos div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
+#configCons #configsDeCampo div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
 
 /* Filtros - Campos - General */
-#configCons #campos {background: var(--gris-claro);}
-#configCons #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
-#configCons #campos nav > * {order: 2;}
-#configCons #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
-#configCons #campos .bhrSI {display: none;}
+#configCons #configsDeCampo {background: var(--gris-claro);}
+#configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
+#configCons #configsDeCampo nav > * {order: 2;}
+#configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed;}
+#configCons #configsDeCampo .bhrSI {display: none;}
 
 /* Filtros Campos - Select e Input */
-#configCons #campos .filtro {padding: 7.5px 20px;}
-#configCons #campos .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
+#configCons #configsDeCampo .filtro {padding: 7.5px 20px;}
+#configCons #configsDeCampo .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
 #configCons .filtro :is(select, input) {width: 100%;}
 
 /* Filtros - Campos - Select */
@@ -45,22 +45,22 @@
 #configCons .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
 
 /* Filtros - Búsqueda */
-#configCons #campos #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#configCons #campos #palabrasClave input {padding: 0px 4px; }
-#configCons #campos #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+#configCons #configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
+#configCons #configsDeCampo #palabrasClave input {padding: 0px 4px; }
+#configCons #configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
 /* Oculta sectores según corresponda */
-#configCons #campos :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
+#configCons #configsDeCampo :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#configCons #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
-#configCons #campos :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configCons #configsDeCampo .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
+#configCons #configsDeCampo :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
 
 /* Fondo verde a los elegibles elegidos */
-#configCons #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
+#configCons #configsDeCampo .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
 
 
 /* Sin uso actualmente */
-#configCons #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
-#configCons #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
+#configCons #configsDeCampo .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
+#configCons #configsDeCampo .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
 
