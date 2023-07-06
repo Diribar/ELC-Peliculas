@@ -57,7 +57,7 @@ let impactos = {
 		return;
 	},
 	enDeAscDes: function (v, DOM) {
-		// Impacto en configCons:	ascDes
+		// Impacto en configCons: ascDes
 		// Impactos en v: ascDes
 
 		// Variables
