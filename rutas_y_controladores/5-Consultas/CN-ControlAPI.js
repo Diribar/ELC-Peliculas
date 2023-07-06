@@ -32,39 +32,10 @@ module.exports = {
 			// Fin
 			return res.json(preferencias);
 		},
-		layoutsMasOrdenes: async (req, res) => {
-			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
-		},
-		diasDelAno: (req, res) => {
-			return res.json(diasDelAno);
-		},
 	},
 
 	// Filtros personalizados
 	guarda: {
-		configNueva: async (req, res) => {
-			// Variables
-			const configuracion = JSON.parse(req.query.configuracion);
-			const usuario_id = req.session.usuario.id;
-
-			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: configuracion.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
-
-			// Guarda los registros de las preferencias
-			for (let campo in configuracion) {
-				if (campo == "nombre") continue; // Si el campo es 'nombre', saltea la rutina
-
-				// Crea el registro
-				const objeto = {configCons_id, campo, valor: configuracion[campo]};
-				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
-			}
-
-			// Fin
-			return res.json();
-		},
-	},
-	actualiza: {
 		configCons_id: (req, res) => {
 			// Variables
 			const configCons_id = req.query.configCons_id;
@@ -82,23 +53,37 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
-		prefsDeCampos: async (req, res) => {
+		creaConfig: async (req, res) => {
+			// Variables
+			const configuracion = JSON.parse(req.query.configuracion);
+			const usuario_id = req.session.usuario.id;
+
+			// Guarda el registro de cabecera
+			const objeto = {usuario_id, nombre: configuracion.nombre};
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
+
+
+			// Fin
+			return res.json(configCons_id);
+		},
+		guardaConfig: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const {configCons_id} = datos;
-
+	
 			// Elimina la información guardada
 			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
-
+	
 			// Guarda la nueva información
 			for (let campo in datos) {
 				// Si el campo es 'configCons_id', saltea la rutina
 				if (campo == "configCons_id") continue;
+
 				// Crea el registro
 				const objeto = {configCons_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
-
+	
 			// Fin
 			return res.json();
 		},
@@ -182,16 +167,24 @@ module.exports = {
 	},
 };
 
-let momentoDelAno = async (req, res) => {
-	// Variables
-	const datos = JSON.parse(req.query.datos);
+let FN = {
+	momentoDelAno: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
 
-	// Obtiene los RCLVs (sin repeticiones)
-	const rclvs = await procesos.momento.obtieneRCLVs(datos);
+		// Obtiene los RCLVs (sin repeticiones)
+		const rclvs = await procesos.momento.obtieneRCLVs(datos);
 
-	// Obtiene los productos
-	const productos = procesos.momento.obtieneProds(rclvs);
+		// Obtiene los productos
+		const productos = procesos.momento.obtieneProds(rclvs);
 
-	// Fin
-	return res.json(productos);
+		// Fin
+		return res.json(productos);
+	},
+	layoutsMasOrdenes: async (req, res) => {
+		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
+	},
+	diasDelAno: (req, res) => {
+		return res.json(diasDelAno);
+	},
 };
