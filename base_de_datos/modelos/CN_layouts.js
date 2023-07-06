@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
-		codigo: {type: dt.STRING(20)},
+		entidad: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "cn_layouts",

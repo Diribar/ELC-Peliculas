@@ -1,11 +1,19 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
+	// Variable DOM
 	let DOM = {
-		// Filtro Personalizado - Nombre
+		// Encabezado
+		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
+		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
+		opcionesVisiblesOrden_id_: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
+		ascDesSector: document.querySelector("#encabezado #ascDes"),
+		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
+
+		// Filtro Cabecera - Nombre
 		configCons_id: document.querySelector("#filtroPers select[name='configCons_id']"),
 		configNuevaNombre: document.querySelector("#filtroPers #configNueva input[name='nombre']"),
-		// Filtro Personalizado - Íconos de la botonera
+		// Filtro Cabecera - Íconos de la botonera
 		nuevo: document.querySelector("#filtroPers i#nuevo"),
 		deshacer: document.querySelector("#filtroPers i#deshacer"),
 		guardar: document.querySelector("#filtroPers i#guardar"),
@@ -14,19 +22,24 @@ window.addEventListener("load", async () => {
 		iconos: document.querySelectorAll("#filtroPers #iconos i"),
 
 		// Preferencias
-		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 	};
+
+	// Variable donde se consolida la configuración de la consulta
+	let configCons = {};
+
+	// Variables varias
+	const {cn_layouts, cn_ordenes} = await estaticas.obtiene.layoutsMasOrdenes();
 	let v = {
 		hayCambios: false,
 		nombreOK: false,
 		configCons_id: DOM.configCons_id.value,
+		cn_layouts,
+		cn_ordenes,
 	};
-	v.prefsDeCabecera = await FN.obtiene.prefsDeCabecera(v.configCons_id);
-	v = {
-		...v,
-		filtroPropio: !!v.prefsDeCabecera.usuario_id,
-	};
+	v.prefsDeCabecera = await estaticas.obtiene.prefsDeCabecera(v.configCons_id);
+	v.filtroPropio = !!v.prefsDeCabecera.usuario_id;
 
 	// Eventos - Botonera
 	DOM.iconos.forEach((icono, i) => {
@@ -46,11 +59,14 @@ window.addEventListener("load", async () => {
 			}
 
 			// Fin
-			FN.actualiza.botoneraActivaInactiva({v, DOM});
+			estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
 	});
 
 	// Start-up
-	FN.actualiza.botoneraActivaInactiva({v, DOM});
+	impactos.configDinamica({v, DOM});
+	estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 });
+
+const ruta = "/consultas/api/";

@@ -58,11 +58,11 @@ module.exports = {
 		},
 		creaConfig: async (req, res) => {
 			// Variables
-			const configuracion = JSON.parse(req.query.configuracion);
+			const configCons = JSON.parse(req.query.configCons);
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: configuracion.nombre};
+			const objeto = {usuario_id, nombre: configCons.nombre};
 			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
 			// Fin
@@ -70,24 +70,24 @@ module.exports = {
 		},
 		guardaConfig: async (req, res) => {
 			// Variables
-			const configuracion = JSON.parse(req.query.configuracion);
-			const {configCons_id} = configuracion;
+			const configCons = JSON.parse(req.query.configCons);
+			const {configCons_id} = configCons;
 
 			// Acciones para edición
-			if (configuracion.edicion)
-				BD_genericas.actualizaPorId("filtrosCabecera", {id: configCons_id}, {nombre: configuracion.nombre});
+			if (configCons.edicion)
+				BD_genericas.actualizaPorId("filtrosCabecera", {id: configCons_id}, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada
-				if (!configuracion.nuevo) await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
+				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
 
 				// Guarda la nueva información
-				for (let campo in configuracion) {
+				for (let campo in configCons) {
 					// Si el campo es 'configCons_id', saltea la rutina
 					if (campo == "configCons_id") continue;
 
 					// Crea el registro
-					const objeto = {configCons_id, campo, valor: configuracion[campo]};
+					const objeto = {configCons_id, campo, valor: configCons[campo]};
 					BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 				}
 			}
