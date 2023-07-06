@@ -193,5 +193,3 @@ let dinamicas = {
 		return;
 	},
 };
-// layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
-// diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
