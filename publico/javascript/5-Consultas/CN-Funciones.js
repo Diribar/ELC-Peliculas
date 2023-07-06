@@ -2,7 +2,6 @@
 // Variables de start-up
 const ruta = "/consultas/api/";
 const rutas = {
-	// Obtiene
 	obtiene: {
 		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=",
 		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configCons_id=", // opcionesFiltroPers
@@ -12,13 +11,11 @@ const rutas = {
 		configNueva: ruta + "guarda-nueva-configuracion/?configuracion=",
 	},
 
-	// Actualiza
 	actualiza: {
 		configCons_id: ruta + "actualiza-configCons_id/?configCons_id=", // guardaFiltroID
 		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?configuracion=", // actualiza
 	},
 
-	// Resultados
 	resultados: {
 		prods: ruta + "obtiene-los-productos/?datos=", // productos
 		rclvs: ruta + "obtiene-los-rclvs/?datos=", // rclvs
@@ -30,6 +27,9 @@ let FN = {
 	obtiene: {
 		prefsDeCabecera: (configCons_id) => {
 			return fetch(rutas.obtiene.prefsDeCabecera + configCons_id).then((n) => n.json());
+		},
+		prefsDeCampos: (configCons_id) => {
+			return fetch(rutas.obtiene.prefsDeCampos + configCons_id).then((n) => n.json());
 		},
 	},
 	actualiza: {
@@ -64,10 +64,9 @@ let FN = {
 			// Fin
 			return;
 		},
-		valorDePrefs: async (DOM) => {
+		prefsDeCamposEnVista: async ({v, DOM}) => {
 			// Variables
-			const configCons_id = DOM.configCons_id.value;
-			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configCons_id).then((n) => n.json());
+			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + v.configCons_id).then((n) => n.json());
 
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
@@ -77,18 +76,15 @@ let FN = {
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
 		},
-		sessionCookieUsuarioCon_configCons_id: (DOM) => {
-			// Variables
-			const configCons_id = DOM.configCons_id.value;
-
+		sessionCookieUsuarioCon_configCons_id: (v) => {
 			// Actualiza el configCons_id en la session, cookie y el usuario
-			if (configCons_id) fetch(rutas.actualiza.configCons_id + configCons_id);
-			else return;
+			if (v.configCons_id) fetch(rutas.actualiza.configCons_id + v.configCons_id);
 
 			// Fin
 			return;
 		},
 	},
+	resultados: {},
 };
 // layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
