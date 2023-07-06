@@ -6,8 +6,8 @@ let impactos = {
 		return;
 	},
 	enDeLayout: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
+		// Impacto en configCons: layout_id y bhr
+		// Impactos en v: layout_id y entidad
 
 		// Variables
 		v.layout_id = DOM.layout_id.value;
@@ -31,7 +31,7 @@ let impactos = {
 
 	},
 	enDeOrden: function (v, DOM) {
-		// Impacto en configCons:	orden_id
+		// Impacto en configCons: orden_id
 		
 		// Variables
 		const checked = DOM.orden_id.querySelector("option:checked");
