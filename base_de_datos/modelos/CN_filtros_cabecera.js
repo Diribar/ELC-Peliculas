@@ -3,7 +3,6 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		filtroDeUsuario: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_filtros_cabecera",

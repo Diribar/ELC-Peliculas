@@ -8,20 +8,35 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// Startup
 	obtiene: {
-		layoutsMasOrdenes: async (req, res) => {
-			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
-		},
-		prefsFiltroPers: async (req, res) => {
-			// Obtiene las opciones
-			const {filtroPers_id} = req.query;
-			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
+		cabeceraFiltrosPers: async (req, res) => {
+			// Variables
+			const usuario_id = req.session && req.session.usuario ? req.session.usuario.id : null;
 
-			// Convierte el array en objeto literal
-			let opciones = {};
-			aux.map((m) => (opciones[m.campo] = m.valor));
+			// Condiciones - los predeterminados más los del usuario
+			let condiciones = {usuario_id: [usuario_id, null]};
+
+			// Obtiene las cabeceras
+			const cabeceras = await BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", condiciones);
 
 			// Fin
-			return res.json(opciones);
+			return res.json(cabeceras);
+		},
+		prefsFiltroPers: async (req, res) => {
+			// Variables
+			const {filtroPers_id} = req.query;
+			let preferencias = {};
+
+			// Obtiene las preferencias
+			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
+
+			// Convierte el array en objeto literal
+			for (let registro of registros) preferencias[registro.campo] = registro.valor;
+
+			// Fin
+			return res.json(preferencias);
+		},
+		layoutsMasOrdenes: async (req, res) => {
+			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 		},
 		diasDelAno: (req, res) => {
 			return res.json(diasDelAno);
@@ -30,20 +45,20 @@ module.exports = {
 
 	// Filtros personalizados
 	guarda: {
-		nuevoFiltroPers: async (req, res) => {
+		filtroPersNuevo: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: datos.nuevoFiltroPers};
+			const objeto = {usuario_id, nombre: datos.filtroPersNuevo};
 			const {id: cabecera_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
 			// Guarda los registros de las preferencias
 			for (let campo in datos) {
-				// Si el campo es 'nuevoFiltroPers', saltea la rutina
-				if (campo == "nuevoFiltroPers") continue;
-				
+				// Si el campo es 'filtroPersNuevo', saltea la rutina
+				if (campo == "filtroPersNuevo") continue;
+
 				// Crea el registro
 				const objeto = {cabecera_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosCampos", objeto);
