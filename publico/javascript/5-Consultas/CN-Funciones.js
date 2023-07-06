@@ -15,7 +15,7 @@ const rutas = {
 	// Actualiza
 	actualiza: {
 		configCons_id: ruta + "actualiza-configCons_id/?configCons_id=", // guardaFiltroID
-		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?datos=", // actualiza
+		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?configuracion=", // actualiza
 	},
 
 	// Resultados
@@ -28,11 +28,7 @@ const rutas = {
 // Funciones
 let FN = {
 	obtiene: {
-		prefsDeCabecera: (DOM) => {
-			// Variables
-			const configCons_id = DOM.configCons_id.value;
-
-			// Fin
+		prefsDeCabecera: (configCons_id) => {
 			return fetch(rutas.obtiene.prefsDeCabecera + configCons_id).then((n) => n.json());
 		},
 	},

@@ -20,11 +20,11 @@ window.addEventListener("load", async () => {
 	let v = {
 		hayCambios: false,
 		configCons_id: DOM.configCons_id.value,
-		prefsDeCabecera: FN.obtiene.prefsDeCabecera(DOM),
+		prefsDeCabecera: FN.obtiene.prefsDeCabecera(this.configCons_id),
 	};
 	v = {
 		...v,
-		filtroPropio: !!v.filtroPersCabecera.usuario_id,
+		filtroPropio: !!v.prefsDeCabecera.usuario_id,
 	};
 	// filtroPers:{
 	// 			cabecera=
