@@ -62,7 +62,6 @@ module.exports = {
 			const objeto = {usuario_id, nombre: configuracion.nombre};
 			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
-
 			// Fin
 			return res.json(configCons_id);
 		},
@@ -70,10 +69,10 @@ module.exports = {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const {configCons_id} = datos;
-	
+
 			// Elimina la información guardada
 			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
-	
+
 			// Guarda la nueva información
 			for (let campo in datos) {
 				// Si el campo es 'configCons_id', saltea la rutina
@@ -83,7 +82,7 @@ module.exports = {
 				const objeto = {configCons_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
-	
+
 			// Fin
 			return res.json();
 		},
