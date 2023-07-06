@@ -9,16 +9,15 @@ let impactos = {
 	},
 	deLayout: function (v, DOM) {
 		// Variables
-		const SI = !!DOM.layout_id.value;
 		const layout_id = DOM.layout_id.value;
 
 		// Obtiene el 'configCons.layout_id'
-		v.layoutBD = SI ? v.layoutsBD.find((n) => n.id == layout_id) : null;
-		SI ? (configCons.layout_id = v.layoutBD.id) : delete configCons.layout_id;
+		v.layoutBD = layout_id ? v.layoutsBD.find((n) => n.id == layout_id) : null;
+		layout_id ? (configCons.layout_id = v.layoutBD.id) : delete configCons.layout_id;
 
 		// Obtiene el 'configCons.bhr', si esté implícito
-		v.entidadElegida = SI ? v.layoutBD.entidad : null;
-		SI && ["personajes", "hechos"].includes(v.entidadElegida) ? (configCons.bhr = "SI") : delete configCons.bhr;
+		v.entidadElegida = layout_id ? v.layoutBD.entidad : null;
+		layout_id && ["personajes", "hechos"].includes(v.entidadElegida) ? (configCons.bhr = "SI") : delete configCons.bhr;
 
 		// Siguiente rutina
 		this.enDeOrden(v, DOM);
