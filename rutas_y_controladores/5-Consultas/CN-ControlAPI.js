@@ -108,7 +108,7 @@ module.exports = {
 			// Obtiene los filtros y el orden
 			const filtrosProd = procesos.API.filtrosProd(datos);
 			const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
-			const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
+			const ordenAscDes = datos.ascDes == "ASC" ? -1 : 1;
 
 			// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
 			for (let entidad of ["peliculas", "colecciones"])

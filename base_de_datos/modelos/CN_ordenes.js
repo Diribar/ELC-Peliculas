@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		layout_id: {type: dt.STRING(20)},
 		nombre: {type: dt.STRING(40)},
 		valor: {type: dt.STRING(20)},
-		asc_des: {type: dt.STRING(20)},
+		ascDes: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "cn_ordenes",

@@ -102,14 +102,14 @@ window.addEventListener("load", async () => {
 			const orden = DOM.orden_idSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_idSelect.value) : null;
 
 			// IMPACTOS EN
-			const SI = !DOM.orden_idSelect.value || orden.asc_des != "ascDes";
+			const SI = !DOM.orden_idSelect.value || orden.ascDes != "ascDes";
 			SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
 			SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
-			if (SI && DOM.orden_idSelect.value) elegibles.asc_des = orden.asc_des;
-			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = input.value;
+			if (SI && DOM.orden_idSelect.value) elegibles.ascDes = orden.ascDes;
+			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.ascDes = input.value;
 
 			// IMPACTOS DE - Sector 'OK'
-			elegibles.asc_des ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
+			elegibles.ascDes ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
 
 			this.mostrarOcultar();
 			this.impactosDeCFC();
@@ -292,7 +292,7 @@ window.addEventListener("load", async () => {
 		condicionesMinimas: () => {
 			const SI_layout = !!DOM.layout_idSelect.value;
 			const SI_orden = !!DOM.orden_idSelect.value;
-			const SI_ascDes = !!elegibles.asc_des;
+			const SI_ascDes = !!elegibles.ascDes;
 			const SI = SI_layout && SI_orden && SI_ascDes;
 
 			// Comencemos

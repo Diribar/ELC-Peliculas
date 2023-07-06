@@ -6,8 +6,7 @@ window.addEventListener("load", async () => {
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
 		orden_idOpciones: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
-		ascDesSector: document.querySelector("#encabezado #ascDes"),
-		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		ascDes: document.querySelector("#encabezado #ascDes"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
 		// Filtro Cabecera - Nombre
