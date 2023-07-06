@@ -2,10 +2,13 @@
 
 let impactos = {
 	configDinamica: function ({v, DOM}) {
-		this.deLayout(v, DOM);
+		this.enDeLayout(v, DOM);
 		return;
 	},
-	deLayout: function (v, DOM) {
+	enDeLayout: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// Variables
 		v.layout_id = DOM.layout_id.value;
 
@@ -25,9 +28,12 @@ let impactos = {
 		// Fin
 		this.enDeOrden(v, DOM);
 		return;
+
 	},
 	enDeOrden: function (v, DOM) {
-		// IMPACTOS EN - Variables
+		// Impacto en configCons:	orden_id
+		
+		// Variables
 		const checked = DOM.orden_id.querySelector("option:checked");
 
 		// Oculta/Muestra las opciones que corresponden
@@ -52,6 +58,9 @@ let impactos = {
 		return;
 	},
 	enDeAscDes: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// Variables
 		const orden = DOM.orden_id.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_id.value) : null;
 
@@ -72,6 +81,8 @@ let impactos = {
 		return;
 	},
 	mostrarOcultar: (v, DOM) => {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
 		const SI = apoyo.condicionesMinimas(v, DOM);
 
 		// Muestra/Oculta sectores
@@ -84,6 +95,9 @@ let impactos = {
 		return;
 	},
 	deCFC: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// IMPACTOS DE
 		varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
 		if (varias.cfc) elegibles.cfc = varias.cfc;
@@ -94,6 +108,9 @@ let impactos = {
 		return;
 	},
 	enDeOcurrio: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// IMPACTOS EN
 		varias.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
 
@@ -111,7 +128,10 @@ let impactos = {
 		// Fin
 		return;
 	},
-	nDeEpoca: function (v, DOM) {
+	enDeEpoca: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 		// IMPACTOS DE
@@ -124,6 +144,9 @@ let impactos = {
 		return;
 	},
 	enDeApMar: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// IMPACTOS EN
 		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 		// Sólo se muestra el sector si CFC='SI' y epocas='pst'
@@ -140,6 +163,9 @@ let impactos = {
 		return;
 	},
 	enDeCanonsMasRolesIglesia: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
+
 		// IMPACTOS EN
 		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 		// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
@@ -162,6 +188,8 @@ let impactos = {
 		return;
 	},
 	deDemasElegibles: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
+		// Impactos en v:			layout_id y entidad
 		for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
 
 		apoyo.limpiaLineasConsecutivas(v, DOM);
