@@ -9,7 +9,6 @@ window.addEventListener("load", async () => {
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtro personalizado
-		iconos: document.querySelectorAll("#filtroPers #iconos i"),
 
 		// Encabezado
 		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
