@@ -3,6 +3,10 @@ const ruta = "/consultas/api/";
 
 let FN = {
 	obtiene: {
+		layoutsMasOrdenes:()=> {
+			const rutaCompleta = ruta + "obtiene-layouts-y-ordenes/";
+			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		},
 		prefsDeCabecera: (configCons_id) => {
 			const rutaCompleta = ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
@@ -11,6 +15,9 @@ let FN = {
 			const rutaCompleta = ruta + "obtiene-las-preferencias-de-campos/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
 		},
+		prefsEnVista: (DOM) => {
+
+		},
 	},
 	actualiza: {
 		botoneraActivaInactiva: ({v, DOM}) => {
@@ -18,25 +25,25 @@ let FN = {
 			let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
 			let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
 
-			// Activa / Inactiva ícono Nuevo
+			// Ícono Nuevo
 			!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
-			// Activa / Inactiva ícono Deshacer
+			// Ícono Deshacer
 			!claseNuevo && !claseEdicion && v.hayCambios
 				? DOM.deshacer.classList.remove("inactivo")
 				: DOM.deshacer.classList.add("inactivo");
 
-			// Activa / Inactiva ícono Guardar
-			claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios))
+			// Ícono Guardar
+			v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
 				? DOM.guardar.classList.remove("inactivo")
 				: DOM.guardar.classList.add("inactivo");
 
-			// Activa / Inactiva ícono Edición
+			// Ícono Edición
 			!claseNuevo && v.filtroPropio && !v.hayCambios
 				? DOM.edicion.classList.remove("inactivo")
 				: DOM.edicion.classList.add("inactivo");
 
-			// Activa / Inactiva ícono Eliminar
+			// Ícono Eliminar
 			!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
 				? DOM.eliminar.classList.remove("inactivo")
 				: DOM.eliminar.classList.add("inactivo");
@@ -79,7 +86,7 @@ let FN = {
 			return;
 		},
 	},
+
 	resultados: {},
 };
-// layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
