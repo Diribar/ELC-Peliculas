@@ -8,16 +8,6 @@ window.addEventListener("load", async () => {
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
-		// Filtro personalizado
-
-		// Encabezado
-		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
-		orden_idSelect: document.querySelector("#encabezado select[name='orden_id']"),
-		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
-		ascDesSector: document.querySelector("#encabezado #ascDes"),
-		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
-		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
-
 		// Filtros
 		camposTitulo: document.querySelector("#filtros #campos div:has(h2)"),
 		camposNav: document.querySelector("#filtros #campos div nav"),
@@ -42,7 +32,6 @@ window.addEventListener("load", async () => {
 	};
 	let varias = {
 		comencemos: true,
-		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),
 		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
 	};
 	let elegibles = {};

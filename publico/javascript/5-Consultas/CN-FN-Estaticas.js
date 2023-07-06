@@ -1,11 +1,10 @@
 "use strict";
-const ruta = "/consultas/api/";
 
 let estaticas = {
 	obtiene: {
-		layoutsMasOrdenes:()=> {
+		layoutsMasOrdenes: () => {
 			const rutaCompleta = ruta + "obtiene-layouts-y-ordenes/";
-			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+			return fetch(rutaCompleta).then((n) => n.json());
 		},
 		prefsDeCabecera: (configCons_id) => {
 			const rutaCompleta = ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=";
@@ -14,9 +13,6 @@ let estaticas = {
 		prefsDeCampos: (configCons_id) => {
 			const rutaCompleta = ruta + "obtiene-las-preferencias-de-campos/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
-		},
-		prefsEnVista: (DOM) => {
-
 		},
 	},
 	actualiza: {
@@ -74,13 +70,13 @@ let estaticas = {
 			// Fin
 			return;
 		},
-		creaUnaConfiguracion: (configuracion) => {
-			const rutaCompleta = ruta + "crea-una-configuracion/?configuracion=";
-			return fetch(rutaCompleta + configuracion).then((n) => n.json());
+		creaUnaConfiguracion: (configCons) => {
+			const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
+			return fetch(rutaCompleta + configCons).then((n) => n.json());
 		},
-		guardaUnaConfiguracion: (configuracion) => {
-			const rutaCompleta = ruta + "guarda-una-configuracion/?configuracion=";
-			fetch(rutaCompleta + configuracion).then((n) => n.json());
+		guardaUnaConfiguracion: (configCons) => {
+			const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
+			fetch(rutaCompleta + configCons).then((n) => n.json());
 
 			// Fin
 			return;

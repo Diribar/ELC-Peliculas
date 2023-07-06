@@ -1,5 +1,5 @@
-<div id="<%= asunto.codigo %>" class="filtro select prefSimple <%= locals.class %>">
-	<select name="<%= asunto.codigo %>" class="input">
+<div id="<%= asunto.codigo %>" class="filtro select <%= locals.class %>">
+	<select name="<%= asunto.codigo %>" class="prefSimple">
 		<option value=""><%= asunto.titulo %></option>
 		<% for (let opcion of asunto.opciones) { %>
 			<option 
