@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "filtrosCabecera";
+	const alias = "configsCons";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.filtrosPorCampo, {as: "filtrosPorCampo", foreignKey: "configCons_id"});
+		entidad.hasMany(n.configsConsCampos, {as: "campos", foreignKey: "configCons_id"});
 	};
 	return entidad;
 };

@@ -16,7 +16,7 @@ module.exports = {
 			const {configCons_id} = req.query;
 
 			// Obtiene las cabeceras
-			const prefsDeCabecera = await BD_genericas.obtienePorId("filtrosCabecera", configCons_id);
+			const prefsDeCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
 
 			// Fin
 			return res.json(prefsDeCabecera);
@@ -27,7 +27,7 @@ module.exports = {
 			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {configCons_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
 
 			// Convierte el array en objeto literal
 			for (let registro of registros) preferencias[registro.campo] = registro.valor;
@@ -63,7 +63,7 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configCons.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsCons", objeto);
 
 			// Fin
 			return res.json(configCons_id);
@@ -75,11 +75,11 @@ module.exports = {
 
 			// Acciones para edición
 			if (configCons.edicion)
-				BD_genericas.actualizaPorId("filtrosCabecera", {id: configCons_id}, {nombre: configCons.nombre});
+				BD_genericas.actualizaPorId("configsCons", {id: configCons_id}, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
+				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id});
 
 				// Guarda la nueva información
 				for (let campo in configCons) {
@@ -88,7 +88,7 @@ module.exports = {
 
 					// Crea el registro
 					const objeto = {configCons_id, campo, valor: configCons[campo]};
-					BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
+					BD_genericas.agregaRegistro("configsConsCampos", objeto);
 				}
 			}
 

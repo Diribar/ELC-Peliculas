@@ -1,66 +1,78 @@
 "use strict";
-const ruta = "/consultas/api/";
 
 let impactos = {
-	deLayout: function () {
-		// Asigna valor a las variables
-		const SI = !!DOM.layout_idSelect.value;
-		varias.layout = SI ? varias.cn_layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
-		elegibles.codigo = SI ? varias.layout.codigo : null;
-		varias.bhr = SI ? varias.layout.bhr : null;
-		if (SI) elegibles.layout_id = DOM.layout_idSelect.value;
-
-		// Siguiente rutina
-		this.enDeOrden();
+	configDinamica: function ({v, DOM}) {
+		this.deLayout(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeOrden: function () {
-		// IMPACTOS EN - Oculta/Muestra las opciones que corresponden
-		const checked = document.querySelector("#encabezado select[name='orden_id'] option:checked");
-		varias.opcionesOrdenBD.forEach((opcion, i) => {
+	deLayout: function (v, DOM) {
+		// Variables
+		const SI = !!DOM.layout_id.value;
+		const layout_id = DOM.layout_id.value;
+
+		// Obtiene el 'configCons.layout_id'
+		v.layoutBD = SI ? v.layoutsBD.find((n) => n.id == layout_id) : null;
+		SI ? (configCons.layout_id = v.layoutBD.id) : delete configCons.layout_id;
+
+		// Obtiene el 'configCons.bhr', si esté implícito
+		v.entidadElegida = SI ? v.layoutBD.entidad : null;
+		SI && ["personajes", "hechos"].includes(v.entidadElegida) ? (configCons.bhr = "SI") : delete configCons.bhr;
+
+		// Siguiente rutina
+		this.enDeOrden(v, DOM);
+
+		// Fin
+		return;
+	},
+	enDeOrden: function (v, DOM) {
+		// IMPACTOS EN - Variables
+		const checked = DOM.orden_id.querySelector("option:checked");
+
+		// Oculta/Muestra las opciones que corresponden
+		v.ordenesBD.forEach((ordenBD, i) => {
 			// Acciones si no existe 'layout' o la opción tiene un código distinto al de layout
-			if (!varias.layout || opcion.codigo != varias.layout.codigo) {
+			if (!v.layoutBD || ordenBD.codigo != varias.layout.codigo) {
 				// 1. Oculta la opción
 				DOM.opcionesOrdenVista[i].classList.add("ocultar");
 				// 2. La 'des-selecciona'
-				if (DOM.opcionesOrdenVista[i] == checked) DOM.orden_idSelect.value = "";
+				if (DOM.opcionesOrdenVista[i] == checked) DOM.orden_id.value = "";
 			}
 			// En caso contrario, muestra la opción
 			else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
 		});
 
 		// IMPACTOS DE
-		if (DOM.orden_idSelect.value) elegibles.orden_id = DOM.orden_idSelect.value;
+		if (DOM.orden_id.value) elegibles.orden_id = DOM.orden_id.value;
 
-		this.enDeAscDes();
+		this.enDeAscDes(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeAscDes: function () {
+	enDeAscDes: function (v, DOM) {
 		// Variables
-		const orden = DOM.orden_idSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_idSelect.value) : null;
+		const orden = DOM.orden_id.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_id.value) : null;
 
 		// IMPACTOS EN
-		const SI = !DOM.orden_idSelect.value || orden.asc_des != "ascDes";
+		const SI = !DOM.orden_id.value || orden.asc_des != "ascDes";
 		SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
 		SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
-		if (SI && DOM.orden_idSelect.value) elegibles.asc_des = orden.asc_des;
+		if (SI && DOM.orden_id.value) elegibles.asc_des = orden.asc_des;
 		if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = input.value;
 
 		// IMPACTOS DE - Sector 'OK'
 		elegibles.asc_des ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
 
-		this.mostrarOcultar();
-		this.deCFC();
+		this.mostrarOcultar(v, DOM);
+		this.deCFC(v, DOM);
 
 		// Fin
 		return;
 	},
-	mostrarOcultar: () => {
-		const SI = apoyo.condicionesMinimas();
+	mostrarOcultar: (v, DOM) => {
+		const SI = apoyo.condicionesMinimas(v, DOM);
 
 		// Muestra/Oculta sectores
 		SI ? DOM.camposTitulo.classList.remove("ocultar") : DOM.camposTitulo.classList.add("ocultar");
@@ -71,17 +83,17 @@ let impactos = {
 		// Fin
 		return;
 	},
-	deCFC: function () {
+	deCFC: function (v, DOM) {
 		// IMPACTOS DE
 		varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
 		if (varias.cfc) elegibles.cfc = varias.cfc;
 
-		this.enDeOcurrio();
+		this.enDeOcurrio(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeOcurrio: function () {
+	enDeOcurrio: function (v, DOM) {
 		// IMPACTOS EN
 		varias.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
 
@@ -94,24 +106,24 @@ let impactos = {
 		// 3. Asigna el valor para 'bhr'
 		if (varias.bhr) elegibles.bhr = varias.bhr;
 
-		this.enDeEpoca();
+		this.enDeEpoca(v, DOM);
 
 		// Fin
 		return;
 	},
-	nDeEpoca: function () {
+	nDeEpoca: function (v, DOM) {
 		// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 		// IMPACTOS DE
 		const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
 		if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
 
-		this.enDeApMar();
+		this.enDeApMar(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeApMar: function () {
+	enDeApMar: function (v, DOM) {
 		// IMPACTOS EN
 		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 		// Sólo se muestra el sector si CFC='SI' y epocas='pst'
@@ -122,12 +134,12 @@ let impactos = {
 		const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
 		if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
 
-		this.enDeCanonsMasRolesIglesia();
+		this.enDeCanonsMasRolesIglesia(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeCanonsMasRolesIglesia: function () {
+	enDeCanonsMasRolesIglesia: function (v, DOM) {
 		// IMPACTOS EN
 		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 		// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
@@ -144,15 +156,15 @@ let impactos = {
 		sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
 		if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
 
-		this.deDemasElegibles();
+		this.deDemasElegibles(v, DOM);
 
 		// Fin
 		return;
 	},
-	deDemasElegibles: function () {
+	deDemasElegibles: function (v, DOM) {
 		for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
 
-		apoyo.limpiaLineasConsecutivas();
+		apoyo.limpiaLineasConsecutivas(v, DOM);
 
 		// Fin
 		return;
@@ -160,9 +172,9 @@ let impactos = {
 };
 
 let dinamicas = {
-	condicionesMinimasOK: () => {
-		const SI_layout = !!DOM.layout_idSelect.value;
-		const SI_orden = !!DOM.orden_idSelect.value;
+	condicionesMinimasOK: (v, DOM) => {
+		const SI_layout = !!DOM.layout_id.value;
+		const SI_orden = !!DOM.orden_id.value;
 		const SI_ascDes = !!elegibles.asc_des;
 		const SI = SI_layout && SI_orden && SI_ascDes;
 
@@ -172,7 +184,7 @@ let dinamicas = {
 		// Fin
 		return SI;
 	},
-	limpiaLineasConsecutivas: () => {
+	limpiaLineasConsecutivas: (v, DOM) => {
 		// Variables
 		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
 		let tags = [];

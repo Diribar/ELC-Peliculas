@@ -12,21 +12,21 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : null;
 		const filtrosDeCabecera = await procesos.filtrosDeCabecera(userID);
-		const filtrosPorCampo = procesos.filtrosPorCampo();
+		const configsConsCampos = procesos.configsConsCampos();
 		let prefsDeCampo = {};
 
 		// Obtiene el ID del filtro personal elegido
 		const configCons_id = userID && usuario.configCons_id ? usuario.configCons_id : 1;
 
 		// Obtiene las preferencias personales
-		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {configCons_id});
+		const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
 		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
 
 		// Va a la vista
-		// return res.send(filtrosPorCampo)
+		// return res.send(configsConsCampos)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configCons_id, prefsDeCampo, filtrosDeCabecera, filtrosPorCampo},
+			...{configCons_id, prefsDeCampo, filtrosDeCabecera, configsConsCampos},
 		});
 	},
 };
