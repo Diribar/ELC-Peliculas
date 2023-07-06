@@ -10,8 +10,8 @@ module.exports = {
 		let propios = [];
 
 		// Obtiene los filtros personalizados propios y de ELC
-		if (userID) propios = BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: userID});
-		let elc = BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: null});
+		if (userID) propios = BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id: userID});
+		let elc = BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id: null});
 		[propios, elc] = await Promise.all([propios, elc]);
 
 		// Los ordena alfabéticamente
@@ -21,30 +21,30 @@ module.exports = {
 		// Fin
 		return {propios, elc};
 	},
-	filtrosPorCampo: function () {
+	configsConsCampos: function () {
 		// Variable 'filtros'
-		let filtrosPorCampo = {...variables.filtrosConsultas};
+		let configsConsCampos = {...variables.filtrosConsultas};
 
 		// Agrega los campos de código y opciones
-		for (let campo in filtrosPorCampo) {
+		for (let campo in configsConsCampos) {
 			// Le agrega el nombre del campo a cada método
-			filtrosPorCampo[campo].codigo = campo;
+			configsConsCampos[campo].codigo = campo;
 
 			// Si no tiene opciones, le agrega las de la BD
-			if (!filtrosPorCampo[campo].opciones) {
+			if (!configsConsCampos[campo].opciones) {
 				if (campo == "epocasOcurrencia")
-					filtrosPorCampo.epocasOcurrencia.opciones = epocas
+					configsConsCampos.epocasOcurrencia.opciones = epocas
 						.filter((n) => !n.varias)
 						.map((n) => ({id: n.id, nombre: n.consulta}));
-				else filtrosPorCampo[campo].opciones = global[campo];
+				else configsConsCampos[campo].opciones = global[campo];
 			}
 		}
 
 		// Quita el método de "sin preferencia"
-		filtrosPorCampo.ppp_opciones.opciones = filtrosPorCampo.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
+		configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 		// Fin
-		return filtrosPorCampo;
+		return configsConsCampos;
 	},
 	momento: {
 		obtieneRCLVs: async (datos) => {

@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
-		opcionesVisiblesOrden_id_: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
+		orden_idOpciones: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDesSector: document.querySelector("#encabezado #ascDes"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
@@ -26,17 +26,14 @@ window.addEventListener("load", async () => {
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 	};
 
-	// Variable donde se consolida la configuración de la consulta
-	let configCons = {};
-
 	// Variables varias
-	const {cn_layouts, cn_ordenes} = await estaticas.obtiene.layoutsMasOrdenes();
+	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await estaticas.obtiene.layoutsMasOrdenes();
 	let v = {
 		hayCambios: false,
 		nombreOK: false,
 		configCons_id: DOM.configCons_id.value,
-		cn_layouts,
-		cn_ordenes,
+		layoutsBD,
+		ordenesBD,
 	};
 	v.prefsDeCabecera = await estaticas.obtiene.prefsDeCabecera(v.configCons_id);
 	v.filtroPropio = !!v.prefsDeCabecera.usuario_id;
@@ -69,4 +66,6 @@ window.addEventListener("load", async () => {
 	estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 });
 
+// Variables
 const ruta = "/consultas/api/";
+let configCons = {}; // donde se consolida la configuración de la consulta
