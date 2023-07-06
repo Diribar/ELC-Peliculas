@@ -10,5 +10,8 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
+	entidad.associate = (n) => {
+		entidad.hasMany(n.cn_ordenes, {as: "ordenes", foreignKey: "layout_id"});
+	};
 	return entidad;
 };
