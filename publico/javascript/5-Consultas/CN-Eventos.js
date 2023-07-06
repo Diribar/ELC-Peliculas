@@ -37,7 +37,6 @@ window.addEventListener("load", async () => {
 		configCons_id: DOM.configCons_id.value,
 		cn_layouts,
 		cn_ordenes,
-		ruta: "/consultas/api/"
 	};
 	v.prefsDeCabecera = await estaticas.obtiene.prefsDeCabecera(v.configCons_id);
 	v.filtroPropio = !!v.prefsDeCabecera.usuario_id;
@@ -69,3 +68,5 @@ window.addEventListener("load", async () => {
 	impactos.configDinamica({v, DOM});
 	estaticas.actualiza.botoneraActivaInactiva({v, DOM});
 });
+
+const ruta = "/consultas/api/";
