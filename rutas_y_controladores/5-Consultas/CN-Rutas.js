@@ -22,6 +22,6 @@ router.get("/api/obtiene-los-rclvs", API.resultados.rclvs);
 router.get("/", vista.consultas);
 
 // Fin
-router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
-router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
+// router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
+// router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 module.exports = router;
