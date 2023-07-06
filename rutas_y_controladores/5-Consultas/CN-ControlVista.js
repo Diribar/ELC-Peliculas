@@ -16,22 +16,17 @@ module.exports = {
 		let prefsDeCampo = {};
 
 		// Obtiene el ID del filtro personal elegido
-		const configActual_id =
-			userID && usuario.configActual_id
-				? usuario.configActual_id
-				: req.cookies && req.cookies.configActual_id
-				? req.cookies.configActual_id
-				: 1;
+		const configCons_id = userID && usuario.configCons_id ? usuario.configCons_id : 1;
 
 		// Obtiene las preferencias personales
-		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configActual_id});
+		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configCons_id});
 		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
 
 		// Va a la vista
 		// return res.send(filtrosPorCampo)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configActual_id, prefsDeCampo, filtrosDeCabecera, filtrosPorCampo},
+			...{configCons_id, prefsDeCampo, filtrosDeCabecera, filtrosPorCampo},
 		});
 	},
 };

@@ -4,8 +4,8 @@ const ruta = "/consultas/api/";
 const rutas = {
 	// Obtiene
 	obtiene: {
-		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configActual_id=",
-		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configActual_id=", // opcionesFiltroPers
+		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=",
+		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configCons_id=", // opcionesFiltroPers
 	},
 
 	guarda: {
@@ -14,7 +14,7 @@ const rutas = {
 
 	// Actualiza
 	actualiza: {
-		configActual_id: ruta + "actualiza-configActual_id/?configActual_id=", // guardaFiltroID
+		configCons_id: ruta + "actualiza-configCons_id/?configCons_id=", // guardaFiltroID
 		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?datos=", // actualiza
 	},
 
@@ -30,10 +30,10 @@ let FN = {
 	obtiene: {
 		prefsDeCabecera: (DOM) => {
 			// Variables
-			const configActual_id = DOM.configActual_id.value;
+			const configCons_id = DOM.configCons_id.value;
 
 			// Fin
-			return fetch(rutas.obtiene.prefsDeCabecera + configActual_id).then((n) => n.json());
+			return fetch(rutas.obtiene.prefsDeCabecera + configCons_id).then((n) => n.json());
 		},
 	},
 	actualiza: {
@@ -70,8 +70,8 @@ let FN = {
 		},
 		valorDePrefs: async (DOM) => {
 			// Variables
-			const configActual_id = DOM.configActual_id.value;
-			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configActual_id).then((n) => n.json());
+			const configCons_id = DOM.configCons_id.value;
+			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configCons_id).then((n) => n.json());
 
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
@@ -81,12 +81,12 @@ let FN = {
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
 		},
-		sessionCookieUsuarioCon_configActual_id: (DOM) => {
+		sessionCookieUsuarioCon_configCons_id: (DOM) => {
 			// Variables
-			const configActual_id = DOM.configActual_id.value;
+			const configCons_id = DOM.configCons_id.value;
 
-			// Actualiza el configActual_id en la session, cookie y el usuario
-			if (configActual_id) fetch(rutas.actualiza.configActual_id + configActual_id);
+			// Actualiza el configCons_id en la session, cookie y el usuario
+			if (configCons_id) fetch(rutas.actualiza.configCons_id + configCons_id);
 			else return;
 
 			// Fin

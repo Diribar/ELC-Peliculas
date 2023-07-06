@@ -20,11 +20,11 @@ module.exports = {
 		},
 		prefsDeCampos: async (req, res) => {
 			// Variables
-			const {configActual_id} = req.query;
+			const {configCons_id} = req.query;
 			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configActual_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: configCons_id});
 
 			// Convierte el array en objeto literal
 			for (let registro of registros) preferencias[registro.campo] = registro.valor;
@@ -65,18 +65,18 @@ module.exports = {
 		},
 	},
 	actualiza: {
-		configActual_id: (req, res) => {
+		configCons_id: (req, res) => {
 			// Variables
-			const configActual_id = req.query.configActual_id;
+			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Guarda cookie
-			res.cookie("configActual_id", configActual_id, {maxAge: unDia});
+			res.cookie("configCons_id", configCons_id, {maxAge: unDia});
 
 			// Si está logueado, actualiza session y el usuario en la BD
 			if (userID) {
-				req.session.usuario.configActual_id = configActual_id;
-				BD_genericas.actualizaPorId("usuarios", userID, {configActual_id});
+				req.session.usuario.configCons_id = configCons_id;
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 			}
 
 			// Fin
@@ -85,15 +85,15 @@ module.exports = {
 		prefsDeCampos: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const cabecera_id = datos.configActual_id;
+			const cabecera_id = datos.configCons_id;
 
 			// Elimina la información guardada
 			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {cabecera_id});
 
 			// Guarda la nueva información
 			for (let campo in datos) {
-				// Si el campo es 'configActual_id', saltea la rutina
-				if (campo == "configActual_id") continue;
+				// Si el campo es 'configCons_id', saltea la rutina
+				if (campo == "configCons_id") continue;
 				// Crea el registro
 				let objeto = {cabecera_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
