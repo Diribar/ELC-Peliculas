@@ -7,15 +7,15 @@
 #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 /* Filtros Personalizados */
-#configCons #configCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
-#configCons #configCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+#configCons #configDeCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
+#configCons #configDeCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 /* Filtros Personalizados - Input */
-#configCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
-#configCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
+#configDeCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
+#configDeCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
 /* Filtros Personalizados - Select */
-#configCabecera select {font-weight: bold;}
-#configCabecera #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
-#configCabecera #iconos i {cursor: pointer; color: snow;}
+#configDeCabecera select {font-weight: bold;}
+#configDeCabecera #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
+#configDeCabecera #iconos i {cursor: pointer; color: snow;}
 
 /* Filtros Campos - Filtros para enfocar tu búqueda */
 #configCons #configsDeCampo div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
