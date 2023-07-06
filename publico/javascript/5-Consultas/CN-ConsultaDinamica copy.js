@@ -4,34 +4,31 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
-		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
-		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtros
-		camposTitulo: document.querySelector("#configCons #campos div:has(h2)"),
-		camposNav: document.querySelector("#configCons #campos div nav"),
-		cfcSelect: document.querySelector("#configCons #campos div nav #cfc select"),
-		bhrSector: document.querySelector("#configCons #campos #bhr"),
-		bhrSelect: document.querySelector("#configCons #campos #bhr select"),
-		bhrSISectores: document.querySelectorAll("#configCons #campos .bhrSI"),
-		epocasSector: document.querySelector("#configCons #campos #epocas"),
-		epocasSelect: document.querySelector("#configCons #campos #epocas select"),
-		apMarSector: document.querySelector("#configCons #campos #apMar"),
-		apMarSelect: document.querySelector("#configCons #campos #apMar select"),
-		canonsSector: document.querySelector("#configCons #campos #canons"),
-		canonsSelect: document.querySelector("#configCons #campos #canons select"),
-		rolesIglSector: document.querySelector("#configCons #campos #rolesIglesia"),
-		rolesIglesiaSelect: document.querySelector("#configCons #campos #rolesIglesia select"),
-		mostrarSiempre: document.querySelectorAll("#configCons #campos .mostrarSiempre .input"),
-		palabrasClave: document.querySelector("#configCons #campos #palabrasClave"),
+		camposTitulo: document.querySelector("#configCons #configsDeCampo div:has(h2)"),
+		camposNav: document.querySelector("#configCons #configsDeCampo div nav"),
+		cfcSelect: document.querySelector("#configCons #configsDeCampo div nav #cfc select"),
+		bhrSector: document.querySelector("#configCons #configsDeCampo #bhr"),
+		bhrSelect: document.querySelector("#configCons #configsDeCampo #bhr select"),
+		bhrSISectores: document.querySelectorAll("#configCons #configsDeCampo .bhrSI"),
+		epocasSector: document.querySelector("#configCons #configsDeCampo #epocas"),
+		epocasSelect: document.querySelector("#configCons #configsDeCampo #epocas select"),
+		apMarSector: document.querySelector("#configCons #configsDeCampo #apMar"),
+		apMarSelect: document.querySelector("#configCons #configsDeCampo #apMar select"),
+		canonsSector: document.querySelector("#configCons #configsDeCampo #canons"),
+		canonsSelect: document.querySelector("#configCons #configsDeCampo #canons select"),
+		rolesIglSector: document.querySelector("#configCons #configsDeCampo #rolesIglesia"),
+		rolesIglesiaSelect: document.querySelector("#configCons #configsDeCampo #rolesIglesia select"),
+		mostrarSiempre: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiempre .input"),
+		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de Productos
 		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
 		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
 	};
 	let varias = {
-		comencemos: true,
 		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
 	};
 	let elegibles = {};
