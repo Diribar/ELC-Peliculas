@@ -78,11 +78,12 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambio la configuración
 		if (campoNombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const error = verifica.configCons_id(campoValor, DOM);
-			if (error) return;
+			const existe = await verifica.configCons_id({configCons_id: campoValor, v, DOM});
+			if (!existe) return;
 
 			// Más acciones
 			v.configCons_id = DOM.configCons_id.value;
+			guardaEnBD.actualizaConfigCons_id(v.configCons_id);
 		}
 
 		// Fin

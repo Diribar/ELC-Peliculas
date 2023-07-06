@@ -87,7 +87,7 @@ let guardaEnBD = {
 	},
 };
 let verifica = {
-	configCons_id: async (configCons_id, DOM) => {
+	configCons_id: async ({configCons_id, v, DOM}) => {
 		// Variables
 		configCons_id = Number(configCons_id);
 		const configsCons_id = await obtiene
@@ -98,10 +98,10 @@ let verifica = {
 		const existe = configsCons_id.includes(configCons_id);
 
 		// Si no existe, devuelve a su configuración anterior
-		DOM.configCons_id.value = v.configCons_id;
+		if (!existe) DOM.configCons_id.value = v.configCons_id;
 
 		// Fin
-		return !existe;
+		return existe;
 	},
 };
 
