@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "filtrosCampos";
+	const alias = "filtrosPorCampo";
 	const columns = {
 		cabecera_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},

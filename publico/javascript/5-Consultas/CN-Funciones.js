@@ -29,35 +29,41 @@ const rutas = {
 
 // Funciones
 let FN = {
-	actualiza:{
-		botoneraActivaInactiva: ({filtroDeUsuario, hayCambios,DOM}) => {
+	obtiene: {
+		cabeceraFiltroPers: (DOM) => {
+			const filtroPers_id = DOM.filtroPers.value;
+			return fetch(rutas.obtiene.cabeceraFiltroPers + filtroPers_id).then((n) => n.json());
+		},
+	},
+	actualiza: {
+		botoneraActivaInactiva: ({filtroDeUsuario, hayCambios, DOM}) => {
 			// Variables
 			let claseNuevo = DOM.filtroPersNuevo.className.includes("nuevo");
 			let claseEdicion = DOM.filtroPersNuevo.className.includes("edicion");
-	
+
 			// Activa / Inactiva ícono Nuevo
 			!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
-	
+
 			// Activa / Inactiva ícono Deshacer
 			!claseNuevo && !claseEdicion && hayCambios
 				? DOM.deshacer.classList.remove("inactivo")
 				: DOM.deshacer.classList.add("inactivo");
-	
+
 			// Activa / Inactiva ícono Guardar
 			claseNuevo || (filtroDeUsuario && (claseEdicion || hayCambios))
 				? DOM.guardar.classList.remove("inactivo")
 				: DOM.guardar.classList.add("inactivo");
-	
+
 			// Activa / Inactiva ícono Edición
 			!claseNuevo && filtroDeUsuario && !hayCambios
 				? DOM.edicion.classList.remove("inactivo")
 				: DOM.edicion.classList.add("inactivo");
-	
+
 			// Activa / Inactiva ícono Eliminar
 			!claseNuevo && !claseEdicion && filtroDeUsuario && !hayCambios
 				? DOM.elimina.classList.remove("inactivo")
 				: DOM.elimina.classList.add("inactivo");
-	
+
 			// Fin
 			return;
 		},
@@ -68,26 +74,26 @@ let FN = {
 				ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 			};
 			const prefsFiltroPers = await fetch(rutas.obtiene.prefsFiltroPers + filtroPers_id).then((n) => n.json());
-	
+
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
 				prefSimple.value = prefsFiltroPers[prefSimple.name] ? prefsFiltroPers[prefSimple.name] : "";
-	
+
 			// Actualiza las preferencias 'AscDes'
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsFiltroPers.ascDes && ascDesInput.value == prefsFiltroPers.ascDes;
 		},
 		sessionCookieUsuarioConFiltroPers_id_: (filtroPers_id) => {
 			// Variables
-			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers']")};
+			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers_id']")};
 			const filtroPers_id = DOM.filtroPers.value;
-	
+
 			// Actualiza el filtroPers_id en la session, cookie y el usuario
 			if (filtroPers_id) fetch(rutas.actualiza.filtroPers_id + filtroPers_id);
 			else return;
-	
+
 			// Fin
 			return;
 		},
-	}
+	},
 };

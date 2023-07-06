@@ -3,8 +3,8 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Filtro Personalizado - Nombre
-		filtroPers: document.querySelector("#filtroPers select[name='filtroPers']"),
-		filtroPersNuevo: document.querySelector("#filtroPers #filtroPersNuevo"), // div del input 'filtroPersNuevo'
+		filtroPers_id: document.querySelector("#filtroPers select[name='filtroPers_id']"),
+		filtroPersNuevo: document.querySelector("#filtroPers input[name='filtroPersNuevo']"),
 		// Filtro Personalizado - Íconos de la botonera
 		nuevo: document.querySelector("#filtroPers i#nuevo"),
 		deshacer: document.querySelector("#filtroPers i#deshacer"),
@@ -14,12 +14,15 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		hayCambios: false,
-		filtroPers_id:DOM.filtroPers.value
-		
+		filtroPersCabecera:FN.obtiene.cabeceraFiltroPers(DOM)
 	};
-// filtroPers:{
-// 			cabecera=
-// 		}
+	v={
+		...v,
+		filtroDeUsuario: !!v.filtroPersCabecera.usuario_id
+	}
+	// filtroPers:{
+	// 			cabecera=
+	// 		}
 	// Eventos
 
 	// Start-up

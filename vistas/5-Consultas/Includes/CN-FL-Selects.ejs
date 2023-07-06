@@ -4,7 +4,7 @@
 		<% for (let opcion of asunto.opciones) { %>
 			<option 
 				value="<%= opcion.id %>" class="<%= opcion.clase %>"
-				<% if (opcion.id == opcionesElegidas[asunto.codigo]) { %>selected<% } %>
+				<% if (opcion.id == prefsDeCampo[asunto.codigo]) { %>selected<% } %>
 			><%= opcion.nombre %></option>
 		<% } %>
 	</select>

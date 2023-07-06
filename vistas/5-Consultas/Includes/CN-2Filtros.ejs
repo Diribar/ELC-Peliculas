@@ -3,14 +3,24 @@
 	<div id="filtroPersNuevo" class="relative">
 		<input name="filtroPersNuevo" type="text" class="absolute">
 	</div>
-	<select name="filtroPers">
+	<select name="filtroPers_id">
 		<option value="">Filtros Guardados...</option>
-		<% for (filtroPers of filtrosPers) { %>
-			<option 
-				value="<%= filtroPers.id %>"
-				<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
-			><%= filtroPers.nombre %></option>
-		<% } %>
+		<optgroup label="Propios">
+			<% for (filtroPers of filtrosDeCabecera.propios) { %>
+				<option 
+					value="<%= filtroPers.id %>"
+					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
+				><%= filtroPers.nombre %></option>
+			<% } %>
+		</optgroup>
+		<optgroup label="Predeterminados">
+			<% for (filtroPers of filtrosDeCabecera.elc) { %>
+				<option 
+					value="<%= filtroPers.id %>"
+					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
+				><%= filtroPers.nombre %></option>
+			<% } %>
+		</optgroup>
 	</select>
 	<div id="iconos" class="flexRow">
 		<i id="nuevo" class="fa-solid fa-file scale inactivo" title="Crea un filtro nuevo"></i>
@@ -30,37 +40,37 @@
 		<nav class="ocultar flexCol">
 			<!-- PRIORITARIOS -->
 			<!-- Relación con la Iglesia Católica -->
-			<%- include('CN-FL-Selects', {asunto: filtros.cfc, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.cfc, mostrarSiempre: true}) %>
 			<!-- Epoca de Ocurrencia -->
-			<%- include('CN-FL-Selects', {asunto: filtros.epocasOcurrencia, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.epocasOcurrencia, mostrarSiempre: true}) %>
 			<hr>
 
 			<!-- EVENTUALES -->
 			<!-- Basado en Hechos Reales -->
-			<%- include('CN-FL-Selects', {asunto: filtros.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
 			<!-- Aparición Mariana -->
-			<%- include('CN-FL-Selects', {asunto: filtros.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
 			<!-- Roles Iglesia -->
-			<%- include('CN-FL-Selects', {asunto: filtros.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
 			<!-- Proceso de Canonización -->
-			<%- include('CN-FL-Selects', {asunto: filtros.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
 			<hr>
 
 			<!-- COLA DE PREFERENCIAS -->
 			<!-- Público Recomendado -->
-			<%- include('CN-FL-Selects', {asunto: filtros.publicos, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.publicos, mostrarSiempre: true}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-FL-Selects', {asunto: filtros.epocasEstreno, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.epocasEstreno, mostrarSiempre: true}) %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: filtros.ppp_opciones, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.ppp_opciones, mostrarSiempre: true}) %>
 			<!-- Tipos de Link -->
-			<%- include('CN-FL-Selects', {asunto: filtros.tiposLink, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.tiposLink, mostrarSiempre: true}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-FL-Selects', {asunto: filtros.castellano, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.castellano, mostrarSiempre: true}) %>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-FL-Selects', {asunto: filtros.tiposActuacion, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.tiposActuacion, mostrarSiempre: true}) %>
 			<!-- Musical -->
-			<%- include('CN-FL-Selects', {asunto: filtros.musical, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.musical, mostrarSiempre: true}) %>
 			<hr>
 
 			<!-- Búsqueda -->
