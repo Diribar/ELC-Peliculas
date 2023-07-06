@@ -8,23 +8,23 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// Startup
 	obtiene: {
-		cabeceraFiltrosPers: async (req, res) => {
-			// Condiciones - los predeterminados más los del usuario
-			let condiciones = {usuario_id: [usuario_id, null]};
+		prefsDeCabecera: async (req, res) => {
+			// Variables
+			const {configCons_id} = req.query;
 
 			// Obtiene las cabeceras
-			const cabeceras = await BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", condiciones);
+			const prefsDeCabecera = await BD_genericas.obtienePorId("filtrosCabecera", configCons_id);
 
 			// Fin
-			return res.json(cabeceras);
+			return res.json(prefsDeCabecera);
 		},
-		prefsFiltroPers: async (req, res) => {
+		prefsDeCampos: async (req, res) => {
 			// Variables
-			const {filtroPers_id} = req.query;
+			const {configCons_id} = req.query;
 			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: filtroPers_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {configCons_id});
 
 			// Convierte el array en objeto literal
 			for (let registro of registros) preferencias[registro.campo] = registro.valor;
@@ -42,22 +42,21 @@ module.exports = {
 
 	// Filtros personalizados
 	guarda: {
-		filtroPersNuevo: async (req, res) => {
+		configNueva: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
+			const configuracion = JSON.parse(req.query.configuracion);
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: datos.filtroPersNuevo};
-			const {id: cabecera_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
+			const objeto = {usuario_id, nombre: configuracion.nombre};
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
 			// Guarda los registros de las preferencias
-			for (let campo in datos) {
-				// Si el campo es 'filtroPersNuevo', saltea la rutina
-				if (campo == "filtroPersNuevo") continue;
+			for (let campo in configuracion) {
+				if (campo == "nombre") continue; // Si el campo es 'nombre', saltea la rutina
 
 				// Crea el registro
-				const objeto = {cabecera_id, campo, valor: datos[campo]};
+				const objeto = {configCons_id, campo, valor: configuracion[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
 
@@ -66,35 +65,37 @@ module.exports = {
 		},
 	},
 	actualiza: {
-		filtroPers_id: (req, res) => {
+		configCons_id: (req, res) => {
 			// Variables
-			const filtroPers_id = req.query.filtroPers_id;
+			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
-			// Guarda session y cookie
-			if (userID) req.session.usuario.filtroPers_id = filtroPers_id;
-			res.cookie("filtroPers_id", filtroPers_id, {maxAge: unDia});
+			// Guarda cookie
+			res.cookie("configCons_id", configCons_id, {maxAge: unDia});
 
-			// Actualiza el usuario
-			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {filtroPers_id});
+			// Si está logueado, actualiza session y el usuario en la BD
+			if (userID) {
+				req.session.usuario.configCons_id = configCons_id;
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+			}
 
 			// Fin
 			return res.json();
 		},
-		prefsFiltroPers: async (req, res) => {
+		prefsDeCampos: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const cabecera_id = datos.filtroPers_id;
+			const {configCons_id} = datos;
 
 			// Elimina la información guardada
-			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {cabecera_id});
+			await BD_genericas.eliminaTodosPorCondicion("filtrosPorCampo", {configCons_id});
 
 			// Guarda la nueva información
 			for (let campo in datos) {
-				// Si el campo es 'filtroPers_id', saltea la rutina
-				if (campo == "filtroPers_id") continue;
+				// Si el campo es 'configCons_id', saltea la rutina
+				if (campo == "configCons_id") continue;
 				// Crea el registro
-				let objeto = {cabecera_id, campo, valor: datos[campo]};
+				const objeto = {configCons_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosPorCampo", objeto);
 			}
 

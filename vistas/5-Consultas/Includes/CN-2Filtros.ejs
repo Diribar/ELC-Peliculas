@@ -1,15 +1,15 @@
 <!--Filtros Guardados-->
 <div id="filtroPers">
-	<div id="filtroPersNuevo" class="relative">
-		<input name="filtroPersNuevo" type="text" class="absolute">
+	<div id="configNueva" class="relative">
+		<input name="nombre" type="text" class="absolute">
 	</div>
-	<select name="filtroPers_id">
+	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
 		<optgroup label="Propios">
 			<% for (filtroPers of filtrosDeCabecera.propios) { %>
 				<option 
 					value="<%= filtroPers.id %>"
-					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
+					<% if (filtroPers.id == configCons_id) { %>selected<% } %>
 				><%= filtroPers.nombre %></option>
 			<% } %>
 		</optgroup>
@@ -17,7 +17,7 @@
 			<% for (filtroPers of filtrosDeCabecera.elc) { %>
 				<option 
 					value="<%= filtroPers.id %>"
-					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
+					<% if (filtroPers.id == configCons_id) { %>selected<% } %>
 				><%= filtroPers.nombre %></option>
 			<% } %>
 		</optgroup>

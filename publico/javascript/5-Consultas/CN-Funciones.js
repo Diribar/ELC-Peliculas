@@ -4,20 +4,18 @@ const ruta = "/consultas/api/";
 const rutas = {
 	// Obtiene
 	obtiene: {
-		cabeceraFiltrosPers: ruta + "obtiene-la-cabecera-de-filtrosPers/",
-		prefsFiltroPers: ruta + "obtiene-las-preferencias-del-filtroPers/?filtroPers_id=", // opcionesFiltroPers
-		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
-		diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
+		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=",
+		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configCons_id=", // opcionesFiltroPers
 	},
 
 	guarda: {
-		filtroPersNuevo: ruta + "guarda-nuevo-filtroPers/?datos=",
+		configNueva: ruta + "guarda-nueva-configuracion/?configuracion=",
 	},
 
 	// Actualiza
 	actualiza: {
-		filtroPers_id: ruta + "actualiza-filtroPers_id/?filtroPers_id=", // guardaFiltroID
-		prefsFiltroPers: ruta + "actualiza-prefs-filtroPers/?datos=", // actualiza
+		configCons_id: ruta + "actualiza-configCons_id/?configCons_id=", // guardaFiltroID
+		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?configuracion=", // actualiza
 	},
 
 	// Resultados
@@ -30,66 +28,61 @@ const rutas = {
 // Funciones
 let FN = {
 	obtiene: {
-		cabeceraFiltroPers: (DOM) => {
-			const filtroPers_id = DOM.filtroPers.value;
-			return fetch(rutas.obtiene.cabeceraFiltroPers + filtroPers_id).then((n) => n.json());
+		prefsDeCabecera: (configCons_id) => {
+			return fetch(rutas.obtiene.prefsDeCabecera + configCons_id).then((n) => n.json());
 		},
 	},
 	actualiza: {
-		botoneraActivaInactiva: ({filtroDeUsuario, hayCambios, DOM}) => {
+		botoneraActivaInactiva: ({v, DOM}) => {
 			// Variables
-			let claseNuevo = DOM.filtroPersNuevo.className.includes("nuevo");
-			let claseEdicion = DOM.filtroPersNuevo.className.includes("edicion");
+			let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
+			let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
 
 			// Activa / Inactiva ícono Nuevo
 			!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Deshacer
-			!claseNuevo && !claseEdicion && hayCambios
+			!claseNuevo && !claseEdicion && v.hayCambios
 				? DOM.deshacer.classList.remove("inactivo")
 				: DOM.deshacer.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Guardar
-			claseNuevo || (filtroDeUsuario && (claseEdicion || hayCambios))
+			claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios))
 				? DOM.guardar.classList.remove("inactivo")
 				: DOM.guardar.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Edición
-			!claseNuevo && filtroDeUsuario && !hayCambios
+			!claseNuevo && v.filtroPropio && !v.hayCambios
 				? DOM.edicion.classList.remove("inactivo")
 				: DOM.edicion.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Eliminar
-			!claseNuevo && !claseEdicion && filtroDeUsuario && !hayCambios
-				? DOM.elimina.classList.remove("inactivo")
-				: DOM.elimina.classList.add("inactivo");
+			!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
+				? DOM.eliminar.classList.remove("inactivo")
+				: DOM.eliminar.classList.add("inactivo");
 
 			// Fin
 			return;
 		},
-		valorDePrefs: async (filtroPers_id) => {
+		valorDePrefs: async (DOM) => {
 			// Variables
-			let DOM = {
-				prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
-				ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
-			};
-			const prefsFiltroPers = await fetch(rutas.obtiene.prefsFiltroPers + filtroPers_id).then((n) => n.json());
+			const configCons_id = DOM.configCons_id.value;
+			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configCons_id).then((n) => n.json());
 
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
-				prefSimple.value = prefsFiltroPers[prefSimple.name] ? prefsFiltroPers[prefSimple.name] : "";
+				prefSimple.value = prefsDeCampos[prefSimple.name] ? prefsDeCampos[prefSimple.name] : "";
 
 			// Actualiza las preferencias 'AscDes'
 			for (let ascDesInput of DOM.ascDesInputs)
-				ascDesInput.checked = prefsFiltroPers.ascDes && ascDesInput.value == prefsFiltroPers.ascDes;
+				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
 		},
-		sessionCookieUsuarioConFiltroPers_id_: (filtroPers_id) => {
+		sessionCookieUsuarioCon_configCons_id: (DOM) => {
 			// Variables
-			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers_id']")};
-			const filtroPers_id = DOM.filtroPers.value;
+			const configCons_id = DOM.configCons_id.value;
 
-			// Actualiza el filtroPers_id en la session, cookie y el usuario
-			if (filtroPers_id) fetch(rutas.actualiza.filtroPers_id + filtroPers_id);
+			// Actualiza el configCons_id en la session, cookie y el usuario
+			if (configCons_id) fetch(rutas.actualiza.configCons_id + configCons_id);
 			else return;
 
 			// Fin
@@ -97,3 +90,5 @@ let FN = {
 		},
 	},
 };
+// layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
+// diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno

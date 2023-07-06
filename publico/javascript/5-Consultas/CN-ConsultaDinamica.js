@@ -3,33 +3,30 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Filtro Personalizado - Nombre
-		filtroPers_id: document.querySelector("#filtroPers select[name='filtroPers_id']"),
-		filtroPersNuevo: document.querySelector("#filtroPers input[name='filtroPersNuevo']"),
+		configCons_id: document.querySelector("#filtroPers select[name='configCons_id']"),
+		configNuevaNombre: document.querySelector("#filtroPers #configNueva input[name='nombre']"),
 		// Filtro Personalizado - Íconos de la botonera
 		nuevo: document.querySelector("#filtroPers i#nuevo"),
 		deshacer: document.querySelector("#filtroPers i#deshacer"),
 		guardar: document.querySelector("#filtroPers i#guardar"),
 		edicion: document.querySelector("#filtroPers i#edicion"),
 		eliminar: document.querySelector("#filtroPers i#eliminar"),
+
+		// Preferencias
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
+		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 	};
 	let v = {
 		hayCambios: false,
-		filtroPersCabecera:FN.obtiene.cabeceraFiltroPers(DOM)
+		configCons_id: DOM.configCons_id.value,
 	};
-	v={
+	v.prefsDeCabecera = await FN.obtiene.prefsDeCabecera(v.configCons_id);
+	v = {
 		...v,
-		filtroDeUsuario: !!v.filtroPersCabecera.usuario_id
-	}
-	// filtroPers:{
-	// 			cabecera=
-	// 		}
-	// Eventos
+		filtroPropio: !!v.prefsDeCabecera.usuario_id,
+	};
 
 	// Start-up
-
-	botoneraActivaInactiva({filtroDeUsuario, hayCambios, DOM});
+	console.log(v);
+	FN.actualiza.botoneraActivaInactiva({v, DOM});
 });
-
-// Obtiene el filtroPers_id
-// Actualiza las preferencias
-// Actualiza la botonera
