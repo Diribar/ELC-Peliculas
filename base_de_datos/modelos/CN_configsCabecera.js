@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(20)},
 	};
 	const config = {
-		tableName: "cn_filtros_cabecera",
+		tableName: "cn_config_cabecera",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
