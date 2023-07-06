@@ -9,22 +9,22 @@ window.addEventListener("load", async () => {
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtros
-		camposTitulo: document.querySelector("#filtros #campos div:has(h2)"),
-		camposNav: document.querySelector("#filtros #campos div nav"),
-		cfcSelect: document.querySelector("#filtros #campos div nav #cfc select"),
-		bhrSector: document.querySelector("#filtros #campos #bhr"),
-		bhrSelect: document.querySelector("#filtros #campos #bhr select"),
-		bhrSISectores: document.querySelectorAll("#filtros #campos .bhrSI"),
-		epocasSector: document.querySelector("#filtros #campos #epocas"),
-		epocasSelect: document.querySelector("#filtros #campos #epocas select"),
-		apMarSector: document.querySelector("#filtros #campos #apMar"),
-		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
-		canonsSector: document.querySelector("#filtros #campos #canons"),
-		canonsSelect: document.querySelector("#filtros #campos #canons select"),
-		rolesIglSector: document.querySelector("#filtros #campos #rolesIglesia"),
-		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
-		mostrarSiempre: document.querySelectorAll("#filtros #campos .mostrarSiempre .input"),
-		palabrasClave: document.querySelector("#filtros #campos #palabrasClave"),
+		camposTitulo: document.querySelector("#configCons #campos div:has(h2)"),
+		camposNav: document.querySelector("#configCons #campos div nav"),
+		cfcSelect: document.querySelector("#configCons #campos div nav #cfc select"),
+		bhrSector: document.querySelector("#configCons #campos #bhr"),
+		bhrSelect: document.querySelector("#configCons #campos #bhr select"),
+		bhrSISectores: document.querySelectorAll("#configCons #campos .bhrSI"),
+		epocasSector: document.querySelector("#configCons #campos #epocas"),
+		epocasSelect: document.querySelector("#configCons #campos #epocas select"),
+		apMarSector: document.querySelector("#configCons #campos #apMar"),
+		apMarSelect: document.querySelector("#configCons #campos #apMar select"),
+		canonsSector: document.querySelector("#configCons #campos #canons"),
+		canonsSelect: document.querySelector("#configCons #campos #canons select"),
+		rolesIglSector: document.querySelector("#configCons #campos #rolesIglesia"),
+		rolesIglesiaSelect: document.querySelector("#configCons #campos #rolesIglesia select"),
+		mostrarSiempre: document.querySelectorAll("#configCons #campos .mostrarSiempre .input"),
+		palabrasClave: document.querySelector("#configCons #campos #palabrasClave"),
 
 		// Zona de Productos
 		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
@@ -39,10 +39,10 @@ window.addEventListener("load", async () => {
 	// Obtiene tabla de layouts y ordenes
 
 	// Funciones
-	let filtroPers = {
+	let configCabecera = {
 		impactosDeFiltroPers: async function () {
 			// Variables
-			const configCons_id = DOM.filtroPers.value;
+			const configCons_id = DOM.configCabecera.value;
 			if (!configCons_id) return;
 
 			// Actualiza el configCons_id en la cookie y el usuario (session y BD)
@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 			DOM.actualiza.classList.add("inactivo");
 
 			// 2. Activa los íconos 'modificaNombre' y 'elimina', salvo para el filtro Estándar
-			const filtroElegido = DOM.filtroPers.value;
+			const filtroElegido = DOM.configCabecera.value;
 			filtroElegido == 1 ? DOM.modificaNombre.classList.add("inactivo") : DOM.modificaNombre.classList.remove("inactivo");
 			filtroElegido == 1 ? DOM.elimina.classList.add("inactivo") : DOM.elimina.classList.remove("inactivo");
 
@@ -86,7 +86,7 @@ window.addEventListener("load", async () => {
 			// Activa las opciones de 'nuevo', 'reinicio' y 'actualiza'
 			DOM.nuevo.classList.remove("inactivo");
 			DOM.reinicio.classList.remove("inactivo");
-			if (DOM.filtroPers.value != 1) DOM.actualiza.classList.remove("inactivo");
+			if (DOM.configCabecera.value != 1) DOM.actualiza.classList.remove("inactivo");
 
 			// Fin
 			return;
@@ -148,11 +148,11 @@ window.addEventListener("load", async () => {
 	// Eventos
 	DOM.cuerpo.addEventListener("change", async (e) => {
 		// Variables
-		let clickEnFiltrosPers = e.target.name == "filtroPers";
+		let clickEnFiltrosPers = e.target.name == "configCabecera";
 		elegibles = {};
 
 		// Novedades en el Filtro Personalizado
-		if (clickEnFiltrosPers) await filtroPers.impactosDeFiltroPers();
+		if (clickEnFiltrosPers) await configCabecera.impactosDeFiltroPers();
 
 		// Impacto en Encabezado y Filtros
 		encabFiltros.impactosDeLayout();
@@ -161,8 +161,8 @@ window.addEventListener("load", async () => {
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {
-			if (!apoyo.condicionesMinimas()) filtroPers.impactoEnBotonesPorCondicMins();
-			else filtroPers.impactosEnBotonesPorElegibles();
+			if (!apoyo.condicionesMinimas()) configCabecera.impactoEnBotonesPorCondicMins();
+			else configCabecera.impactosEnBotonesPorElegibles();
 		}
 
 		// Obtiene los productos
@@ -192,7 +192,7 @@ window.addEventListener("load", async () => {
 		elegibles = {};
 
 		// Novedades en el Filtro Personalizado
-		await filtroPers.impactosDeFiltroPers();
+		await configCabecera.impactosDeFiltroPers();
 
 		// Impacto en Encabezado y Filtros, y Palabras Clave
 		encabFiltros.impactosDeLayout();
@@ -210,10 +210,10 @@ window.addEventListener("load", async () => {
 	DOM.actualiza.addEventListener("click", async () => {
 		// Si está inactivo, interrumpe
 		if (DOM.actualiza.className.includes("inactivo")) return;
-		else filtroPers.statusInicialBotonera();
+		else configCabecera.statusInicialBotonera();
 
 		// Variables
-		const configCons_id = DOM.filtroPers.value;
+		const configCons_id = DOM.configCabecera.value;
 		if (!configCons_id) return;
 		let objeto = {...elegibles, configCons_id};
 		delete objeto.codigo;

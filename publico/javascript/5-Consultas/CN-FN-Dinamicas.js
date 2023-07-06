@@ -31,6 +31,7 @@ let impactos = {
 	},
 	enDeOrden: function (v, DOM) {
 		// Impacto en configCons: orden_id
+		// Impactos en v: orden_id
 
 		// Oculta/Muestra las opciones que corresponden
 		const checked = DOM.orden_id.querySelector("option:checked");
@@ -56,8 +57,8 @@ let impactos = {
 		return;
 	},
 	enDeAscDes: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
+		// Impacto en configCons:	ascDes
+		// Impactos en v: ascDes
 
 		// Variables
 		const ordenBD = v.orden_id ? v.ordenesBD.find((n) => n.id == v.orden_id) : null;
@@ -76,21 +77,22 @@ let impactos = {
 			v.orden_id ? (configCons.ascDes = ordenBD.ascDes) : delete configCons.ascDes;
 		}
 
-		// IMPACTOS DE - Sector 'OK'
-		elegibles.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+		// IMPACTOS DE - 'OK' para que el fondo sea verde/rojo
+		v.ascDes = configCons.ascDes;
+		v.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
-		this.mostrarOcultar(v, DOM);
+		this.muestraOculta(v, DOM);
 		this.deCFC(v, DOM);
 
 		// Fin
 		return;
 	},
-	mostrarOcultar: (v, DOM) => {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-		const SI = apoyo.condicionesMinimas(v, DOM);
+	muestraOculta: (v, DOM) => {
+		// Impacto en configCons: -
+		// Impactos en v: -
 
 		// Muestra/Oculta sectores
+		const SI = v.layout_id && v.orden_id && v.ascDes;
 		SI ? DOM.camposTitulo.classList.remove("ocultar") : DOM.camposTitulo.classList.add("ocultar");
 		SI ? DOM.camposNav.classList.remove("ocultar") : DOM.camposNav.classList.add("ocultar");
 		SI ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
@@ -204,22 +206,10 @@ let impactos = {
 	},
 };
 
-let dinamicas = {
-	condicionesMinimasOK: (v, DOM) => {
-		const SI_layout = !!DOM.layout_id.value;
-		const SI_orden = !!DOM.orden_id.value;
-		const SI_ascDes = !!elegibles.ascDes;
-		const SI = SI_layout && SI_orden && SI_ascDes;
-
-		// Comencemos
-		if (!SI) varias.comencemos = true;
-
-		// Fin
-		return SI;
-	},
+let apoyo = {
 	limpiaLineasConsecutivas: (v, DOM) => {
 		// Variables
-		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
+		let hijos = document.querySelectorAll("#cuerpo #configCons .sectorConDesplV nav > *");
 		let tags = [];
 
 		hijos.forEach((hijo, num) => {

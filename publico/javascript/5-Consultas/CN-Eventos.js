@@ -9,16 +9,20 @@ window.addEventListener("load", async () => {
 		ascDes: document.querySelector("#encabezado #ascDes"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
+		// Filtros
+		camposTitulo: document.querySelector("#configCons #campos div:has(h2)"),
+		camposNav: document.querySelector("#configCons #campos div nav"),
+
 		// Filtro Cabecera - Nombre
-		configCons_id: document.querySelector("#filtroPers select[name='configCons_id']"),
-		configNuevaNombre: document.querySelector("#filtroPers #configNueva input[name='nombre']"),
+		configCons_id: document.querySelector("#configCabecera select[name='configCons_id']"),
+		configNuevaNombre: document.querySelector("#configCabecera #configNueva input[name='nombre']"),
 		// Filtro Cabecera - Íconos de la botonera
-		nuevo: document.querySelector("#filtroPers i#nuevo"),
-		deshacer: document.querySelector("#filtroPers i#deshacer"),
-		guardar: document.querySelector("#filtroPers i#guardar"),
-		edicion: document.querySelector("#filtroPers i#edicion"),
-		eliminar: document.querySelector("#filtroPers i#eliminar"),
-		iconos: document.querySelectorAll("#filtroPers #iconos i"),
+		nuevo: document.querySelector("#configCabecera i#nuevo"),
+		deshacer: document.querySelector("#configCabecera i#deshacer"),
+		guardar: document.querySelector("#configCabecera i#guardar"),
+		edicion: document.querySelector("#configCabecera i#edicion"),
+		eliminar: document.querySelector("#configCabecera i#eliminar"),
+		iconos: document.querySelectorAll("#configCabecera #iconos i"),
 
 		// Preferencias
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
