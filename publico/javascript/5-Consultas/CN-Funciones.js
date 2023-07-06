@@ -58,8 +58,8 @@ let FN = {
 
 			// Activa / Inactiva ícono Eliminar
 			!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
-				? DOM.elimina.classList.remove("inactivo")
-				: DOM.elimina.classList.add("inactivo");
+				? DOM.eliminar.classList.remove("inactivo")
+				: DOM.eliminar.classList.add("inactivo");
 
 			// Fin
 			return;

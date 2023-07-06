@@ -9,14 +9,14 @@ module.exports = {
 	// Startup
 	obtiene: {
 		prefsDeCabecera: async (req, res) => {
-			// Condiciones - los predeterminados más los del usuario
-			let condiciones = {usuario_id: [usuario_id, null]};
+			// Variables
+			const {configCons_id} = req.query;
 
 			// Obtiene las cabeceras
-			const cabeceras = await BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", condiciones);
+			const prefsDeCabecera = await BD_genericas.obtienePorId("filtrosCabecera", configCons_id);
 
 			// Fin
-			return res.json(cabeceras);
+			return res.json(prefsDeCabecera);
 		},
 		prefsDeCampos: async (req, res) => {
 			// Variables

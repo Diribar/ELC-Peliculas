@@ -15,25 +15,20 @@ window.addEventListener("load", async () => {
 		// Preferencias
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
-
 	};
 	let v = {
 		hayCambios: false,
 		configCons_id: DOM.configCons_id.value,
-		prefsDeCabecera: FN.obtiene.prefsDeCabecera(this.configCons_id),
 	};
+	v.prefsDeCabecera= await FN.obtiene.prefsDeCabecera(v.configCons_id),
 	v = {
 		...v,
 		filtroPropio: !!v.prefsDeCabecera.usuario_id,
 	};
-	// filtroPers:{
-	// 			cabecera=
-	// 		}
-	// Eventos
 
 	// Start-up
-
-	botoneraActivaInactiva({filtroPropio, hayCambios, DOM});
+	console.log(v);
+	FN.actualiza.botoneraActivaInactiva({v, DOM});
 });
 
 // Obtiene el configCons_id
