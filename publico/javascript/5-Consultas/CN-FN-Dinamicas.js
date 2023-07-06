@@ -28,11 +28,10 @@ let impactos = {
 		// Fin
 		this.enDeOrden(v, DOM);
 		return;
-
 	},
 	enDeOrden: function (v, DOM) {
 		// Impacto en configCons: orden_id
-		
+
 		// Variables
 		const checked = DOM.orden_id.querySelector("option:checked");
 
@@ -44,14 +43,15 @@ let impactos = {
 				DOM.orden_idOpciones[i].classList.add("ocultar");
 
 				// Si estaba seleccionada, cambia la selección por la de 'sin valor'
-				if (DOM.orden_idOpciones[i] == checked) DOM.orden_id.value = "";
+				if (DOM.orden_idOpciones[i].value == checked.value) DOM.orden_id.value = "";
 			}
 			// Si la opción está vinculada con el layout, la muestra
 			else DOM.orden_idOpciones[i].classList.remove("ocultar");
 		});
 
 		// IMPACTOS DE
-		DOM.orden_id.value ? (configCons.orden_id = DOM.orden_id.value) : delete configCons.orden_id;
+		v.orden_id = DOM.orden_id.value;
+		v.orden_id ? (configCons.orden_id = v.orden_id) : delete configCons.orden_id;
 
 		// Fin
 		this.enDeAscDes(v, DOM);
@@ -62,17 +62,24 @@ let impactos = {
 		// Impactos en v:			layout_id y entidad
 
 		// Variables
-		const orden = DOM.orden_id.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_id.value) : null;
+		const ordenBD = v.orden_id ? v.ordenesBD.find((n) => n.id == v.orden_id) : null;
 
-		// IMPACTOS EN
-		const SI = !DOM.orden_id.value || orden.asc_des != "ascDes";
-		SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
-		SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
-		if (SI && DOM.orden_id.value) elegibles.asc_des = orden.asc_des;
-		if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = input.value;
+		// IMPACTOS EN		
+		if (v.orden_id && ordenBD.ascDes == "ascDes") {
+			// Muestra ascDes
+			DOM.ascDes.classList.remove("ocultar");
+			DOM.ascDes.classList.add("flexCol");
+			const checked = DOM.ascDes.querySelector("input:checked");
+			v.orden_id && checked ? (configCons.ascDes = checked.value) : delete configCons.ascDes;
+		} else {
+			// Oculta ascDes
+			DOM.ascDes.classList.add("ocultar");
+			DOM.ascDes.classList.remove("flexCol");
+			v.orden_id ? (configCons.ascDes = ordenBD.ascDes) : delete configCons.ascDes;
+		}
 
 		// IMPACTOS DE - Sector 'OK'
-		elegibles.asc_des ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
+			elegibles.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
 		this.mostrarOcultar(v, DOM);
 		this.deCFC(v, DOM);
@@ -203,7 +210,7 @@ let dinamicas = {
 	condicionesMinimasOK: (v, DOM) => {
 		const SI_layout = !!DOM.layout_id.value;
 		const SI_orden = !!DOM.orden_id.value;
-		const SI_ascDes = !!elegibles.asc_des;
+		const SI_ascDes = !!elegibles.ascDes;
 		const SI = SI_layout && SI_orden && SI_ascDes;
 
 		// Comencemos
