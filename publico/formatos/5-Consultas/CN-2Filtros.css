@@ -1,66 +1,66 @@
 /* General */
-#cuerpo #filtros {width: 220px;}
-#cuerpo #filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#cuerpo #filtros {display: flex; flex-direction: column; }
+#cuerpo #configCons {width: 220px;}
+#cuerpo #configCons {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #configCons {display: flex; flex-direction: column; }
 
-#filtros * {font-size: 1rem;}
-#filtros :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
+#configCons * {font-size: 1rem;}
+#configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 /* Filtros Personalizados */
-#filtros #filtroPers {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
-#filtros #filtroPers :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+#configCons #configCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
+#configCons #configCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 /* Filtros Personalizados - Input */
-#filtroPers #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
-#filtroPers #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
+#configCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
+#configCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
 /* Filtros Personalizados - Select */
-#filtroPers select {font-weight: bold;}
-#filtroPers #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
-#filtroPers #iconos i {cursor: pointer; color: snow;}
+#configCabecera select {font-weight: bold;}
+#configCabecera #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
+#configCabecera #iconos i {cursor: pointer; color: snow;}
 
 /* Filtros Campos - Filtros para enfocar tu búqueda */
-#filtros #campos div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
+#configCons #campos div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
 
 /* Filtros - Campos - General */
-#filtros #campos {background: var(--gris-claro);}
-#filtros #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
-#filtros #campos nav > * {order: 2;}
-#filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
-#filtros #campos .bhrSI {display: none;}
+#configCons #campos {background: var(--gris-claro);}
+#configCons #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
+#configCons #campos nav > * {order: 2;}
+#configCons #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
+#configCons #campos .bhrSI {display: none;}
 
 /* Filtros Campos - Select e Input */
-#filtros #campos .filtro {padding: 7.5px 20px;}
-#filtros #campos .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
-#filtros .filtro :is(select, input) {width: 100%;}
+#configCons #campos .filtro {padding: 7.5px 20px;}
+#configCons #campos .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
+#configCons .filtro :is(select, input) {width: 100%;}
 
 /* Filtros - Campos - Select */
-#filtros .filtro select option {background: snow; color: var(--azul-oscuro);}
-#filtros .filtro select option[value=""] {display: block; font-style: italic;}
+#configCons .filtro select option {background: snow; color: var(--azul-oscuro);}
+#configCons .filtro select option[value=""] {display: block; font-style: italic;}
 
 /* Filtros - Campos - Checkbox */
-#filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
-#filtros .filtro.checkbox #labelInput * {line-height: 0;}
-#filtros .filtro.checkbox #label-inputs label {margin-left: 4px;}
-#filtros .filtro.checkbox #label-inputs input {margin: 0 2px;}
-#filtros .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
-#filtros .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
+#configCons .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
+#configCons .filtro.checkbox #labelInput * {line-height: 0;}
+#configCons .filtro.checkbox #label-inputs label {margin-left: 4px;}
+#configCons .filtro.checkbox #label-inputs input {margin: 0 2px;}
+#configCons .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
+#configCons .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
 
 /* Filtros - Búsqueda */
-#filtros #campos #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#filtros #campos #palabrasClave input {padding: 0px 4px; }
-#filtros #campos #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+#configCons #campos #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
+#configCons #campos #palabrasClave input {padding: 0px 4px; }
+#configCons #campos #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
 /* Oculta sectores según corresponda */
-#filtros #campos :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
+#configCons #campos :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
-#filtros #campos :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configCons #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
+#configCons #campos :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
 
 /* Fondo verde a los elegibles elegidos */
-#filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
+#configCons #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
 
 
 /* Sin uso actualmente */
-#filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
-#filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
+#configCons #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
+#configCons #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
 

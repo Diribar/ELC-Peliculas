@@ -11,7 +11,7 @@ module.exports = {
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : null;
-		const filtrosDeCabecera = await procesos.filtrosDeCabecera(userID);
+		const configsDeCabecera = await procesos.configsDeCabecera(userID);
 		const configsConsCampos = procesos.configsConsCampos();
 		let prefsDeCampo = {};
 
@@ -26,7 +26,7 @@ module.exports = {
 		// return res.send(configsConsCampos)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configCons_id, prefsDeCampo, filtrosDeCabecera, configsConsCampos},
+			...{configCons_id, prefsDeCampo, configsDeCabecera, configsConsCampos},
 		});
 	},
 };

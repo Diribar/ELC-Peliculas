@@ -5,7 +5,7 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
-	filtrosDeCabecera: async (userID) => {
+	configsDeCabecera: async (userID) => {
 		// Variables
 		let propios = [];
 
