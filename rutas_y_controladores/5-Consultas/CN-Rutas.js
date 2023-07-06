@@ -6,9 +6,9 @@ const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");
 
 // API - Obtiene
-router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
-router.get("/api/obtiene-las-preferencias-de-cabecera", API.obtiene.prefsDeCabecera);
-router.get("/api/obtiene-las-preferencias-de-campos", API.obtiene.prefsDeCampos);
+router.get("/api/obtiene-las-opciones-de-layout-y-orden", API.obtiene.opcionesDeLayoutMasOrden);
+router.get("/api/obtiene-la-configuracion-de-cabecera", API.obtiene.configDeCabecera);
+router.get("/api/obtiene-la-configuracion-de-campos", API.obtiene.configDeCampos);
 
 // API - Guarda
 router.get("/api/actualiza-configCons_id", API.guarda.configCons_id);
