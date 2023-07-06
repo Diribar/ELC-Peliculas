@@ -3,8 +3,6 @@
 let impactos = {
 	configDinamica: function ({v, DOM}) {
 		this.deLayout(v, DOM);
-
-		// Fin
 		return;
 	},
 	deLayout: function (v, DOM) {
@@ -24,10 +22,8 @@ let impactos = {
 		// Elimina los 'configCons.layout_id' y 'configCons.bhr'
 		else delete configCons.layout_id, configCons.bhr;
 
-		// Siguiente rutina
-		this.enDeOrden(v, DOM);
-
 		// Fin
+		this.enDeOrden(v, DOM);
 		return;
 	},
 	enDeOrden: function (v, DOM) {
@@ -36,23 +32,23 @@ let impactos = {
 
 		// Oculta/Muestra las opciones que corresponden
 		v.ordenesBD.forEach((ordenBD, i) => {
-			// Acciones si no existe 'layout' o la opción tiene un código distinto al de layout
-			if (!v.layoutBD || ordenBD.layout_id != v.layout_id) {
-				// 1. Oculta la opción
-				DOM.opcionesOrdenVista[i].classList.add("ocultar");
-				// 2. La 'des-selecciona'
-				if (DOM.opcionesOrdenVista[i] == checked) DOM.orden_id.value = "";
+			// Acciones si la opción no corresponde al layout
+			if (!v.layout_id || ordenBD.layout_id != v.layout_id) {
+				// La oculta
+				DOM.orden_idOpciones[i].classList.add("ocultar");
+
+				// Si estaba seleccionada, cambia la selección por la de 'sin valor'
+				if (DOM.orden_idOpciones[i] == checked) DOM.orden_id.value = "";
 			}
-			// En caso contrario, muestra la opción
-			else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
+			// Si la opción está vinculada con el layout, la muestra
+			else DOM.orden_idOpciones[i].classList.remove("ocultar");
 		});
 
 		// IMPACTOS DE
-		if (DOM.orden_id.value) elegibles.orden_id = DOM.orden_id.value;
-
-		this.enDeAscDes(v, DOM);
+		DOM.orden_id.value ? (configCons.orden_id = DOM.orden_id.value) : delete configCons.orden_id;
 
 		// Fin
+		this.enDeAscDes(v, DOM);
 		return;
 	},
 	enDeAscDes: function (v, DOM) {

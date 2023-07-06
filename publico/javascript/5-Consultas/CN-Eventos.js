@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
-		opcionesVisiblesOrden_id_: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
+		orden_idOpciones: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDesSector: document.querySelector("#encabezado #ascDes"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
