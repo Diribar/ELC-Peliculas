@@ -8,8 +8,6 @@ const vista = require("./CN-ControlVista");
 // API - Startup
 router.get("/api/obtiene-las-preferencias-de-cabecera", API.obtiene.prefsDeCabecera);
 router.get("/api/obtiene-las-preferencias-de-campos", API.obtiene.prefsDeCampos);
-router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
-router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 
 // API - Filtros personalizados
 router.get("/api/guarda-nueva-configuracion", API.guarda.configNueva);
@@ -24,4 +22,6 @@ router.get("/api/obtiene-los-rclvs", API.resultados.rclvs);
 router.get("/", vista.consultas);
 
 // Fin
+router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
+router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 module.exports = router;
