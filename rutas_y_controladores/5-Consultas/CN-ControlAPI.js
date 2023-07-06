@@ -8,6 +8,9 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// Startup
 	obtiene: {
+		layoutsMasOrdenes: async (req, res) => {
+			return res.json({cn_layouts, cn_ordenes});
+		},
 		prefsDeCabecera: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
@@ -185,9 +188,6 @@ let FN = {
 
 		// Fin
 		return res.json(productos);
-	},
-	layoutsMasOrdenes: async (req, res) => {
-		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 	},
 	diasDelAno: (req, res) => {
 		return res.json(diasDelAno);

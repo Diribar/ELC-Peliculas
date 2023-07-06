@@ -3,6 +3,10 @@ const ruta = "/consultas/api/";
 
 let FN = {
 	obtiene: {
+		layoutsMasOrdenes:()=> {
+			const rutaCompleta = ruta + "obtiene-layouts-y-ordenes/";
+			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		},
 		prefsDeCabecera: (configCons_id) => {
 			const rutaCompleta = ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
@@ -12,7 +16,7 @@ let FN = {
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
 		},
 		prefsEnVista: (DOM) => {
-			
+
 		},
 	},
 	actualiza: {
@@ -82,6 +86,7 @@ let FN = {
 			return;
 		},
 	},
+
 	resultados: {},
 };
 // layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
