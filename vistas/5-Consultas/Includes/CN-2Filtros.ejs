@@ -7,7 +7,7 @@
 		<option value="">Filtros Guardados...</option>
 		<optgroup label="Propios">
 			<% for (let configDeCabecera of configsDeCabecera.filter(n => n.usuario_id)) { %>
-			<option 
+				<option 
 					value="<%= configDeCabecera.id %>"
 					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
 				><%= configDeCabecera.nombre %></option>
