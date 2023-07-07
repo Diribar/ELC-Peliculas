@@ -81,19 +81,14 @@ window.addEventListener("load", async () => {
 			await actualiza.statusInicialCampos({v, DOM});
 			actualiza.cartelComencemosVisible(DOM);
 		}
-
-		// Actualiza la variable configCons y oculta/muestra campos
-		actualizaConfigCons.consolidado({v, DOM});
-
-		// Actualiza la botonera
-		actualiza.botoneraActivaInactiva({v, DOM});
-
 		// Palabras clave
-		if (campoNombre == "palabrasClave")
+		else if (campoNombre == "palabrasClave")
 			campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
 
-		// Obtiene los productos
-		await zonaDeProds.obtieneLosProductos();
+		// Funciones
+		actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
+		actualiza.botoneraActivaInactiva({v, DOM});
+		await zonaDeProds.obtieneLosProductos(); 
 		actualiza.contador();
 
 		// Fin
