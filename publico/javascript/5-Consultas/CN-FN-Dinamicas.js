@@ -87,14 +87,14 @@ let actualizaConfigCons = {
 	},
 	muestraOculta: (v, DOM) => {
 		// Variables
-		const mostrar = v.layout_id && v.orden_id && v.ascDes;
+		v.mostrar = v.layout_id && v.orden_id && v.ascDes;
 
 		// Muestra/Oculta sectores
-		for (let div of DOM.mostrarSiEncabOK) mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
+		for (let div of DOM.mostrarSiEncabOK) v.mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
-		mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		mostrar && v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
+		v.mostrar && v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 		// Fin
 		return;

@@ -136,16 +136,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		impactoEnBotonesPorCondicMins: () => {
-			// Variables
-			const SI = apoyo.condicionesMinimas();
-
-			// Si no están dadas las condiciones mínimas, se inactivan todos los botones
-			if (!SI) for (let icono of DOM.iconos) icono.classList.add("inactivo");
-
-			// Fin
-			return;
-		},
 	};
 	let zonaDeProds = {
 		obtieneLosProductos: async () => {
@@ -190,22 +180,6 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// Eventos
-	DOM.cuerpo.addEventListener("change", async (e) => {
-
-
-		// Botones en Filtros Personalizados
-		if (!clickEnFiltrosPers) {
-			if (!apoyo.condicionesMinimas()) configCabecera.impactoEnBotonesPorCondicMins();
-			else configCabecera.impactosEnBotonesPorElegibles();
-		}
-
-		// Obtiene los productos
-		await zonaDeProds.obtieneLosProductos();
-
-		// Fin
-		return;
-	});
 	// Comencemos
 	DOM.comencemos.addEventListener("click", async () => {
 		// Oculta el botón

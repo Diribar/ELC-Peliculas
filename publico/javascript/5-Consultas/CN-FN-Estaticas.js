@@ -38,6 +38,12 @@ let actualiza = {
 		let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
 		let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
 
+		// Si no se cumplen las condiciones mínimas, inactiva todos los botones e interrumpe la función
+		if (!v.mostrar) {
+			for (let icono of DOM.iconos) icono.classList.add("inactivo");
+			return;
+		}
+
 		// Ícono Nuevo
 		!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
@@ -133,8 +139,8 @@ let verifica = {
 		return existe;
 	},
 };
-let resultados = {
-	obtiene: () => {
+let zonaDeProds = {
+	obtieneLosProductos: () => {
 		// Fin
 		return;
 	},

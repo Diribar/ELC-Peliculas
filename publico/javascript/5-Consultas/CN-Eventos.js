@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 
 		// Campos
 		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
-		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
+		palClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de productos
 		asegurate: document.querySelector("#zona_de_prods #comencemos button#rojo"),
@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const campoNombre = e.target.name;
 		const campoValor = e.target.value;
-		configCons = {}
+		configCons = {};
 
 		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {
@@ -78,19 +78,18 @@ window.addEventListener("load", async () => {
 			// Más acciones
 			await actualiza.valoresIniciales({v, DOM});
 			guardaEnBD.configCons_id(v.configCons_id);
-			actualiza.botoneraActivaInactiva({v, DOM});
 			await actualiza.statusInicialCampos({v, DOM});
 			actualiza.cartelComencemosVisible(DOM);
-			resultados.obtiene();
-			actualiza.contador();
 		}
-
-		// Actualiza la variable configCons y oculta/muestra campos
-		actualizaConfigCons.consolidado({v, DOM});
-
 		// Palabras clave
-		if (e.target.name == "palabrasClave")
-			e.target.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
+		else if (campoNombre == "palabrasClave")
+			campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
+
+		// Funciones
+		actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
+		actualiza.botoneraActivaInactiva({v, DOM});
+		await zonaDeProds.obtieneLosProductos(); 
+		actualiza.contador();
 
 		// Fin
 		return;
