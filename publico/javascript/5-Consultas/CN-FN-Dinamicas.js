@@ -2,7 +2,13 @@
 
 let actualizaConfigCons = {
 	consolidado: function ({v, DOM}) {
+		// Obtiene configCons y muestra/oculta campos
 		this.layout(v, DOM);
+
+		// Muestra/Oculta líneas de separación
+		if (v.mostrar) apoyo.limpiaLineasConsecutivas(v, DOM);
+
+		// Fin
 		return;
 	},
 	// Encabezado
@@ -82,7 +88,7 @@ let actualizaConfigCons = {
 		this.muestraOculta(v, DOM);
 
 		// Fin
-		if (v.mostrar) this.bhr(v, DOM);
+		if (v.mostrar) this.presenciaSiempre(v, DOM);
 		return;
 	},
 	muestraOculta: (v, DOM) => {
@@ -99,6 +105,15 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+	// Presencia estable
+	presenciaEstable: function (v, DOM) {
+		// Impacto en configCons: todos los campos con presencia siempre
+		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
+
+		// Fin
+		this.bhr(v, DOM);
+		return;
+	},
 	// Presencia eventual
 	bhr: function (v, DOM) {
 		// Impacto en configCons: bhr
@@ -109,43 +124,7 @@ let actualizaConfigCons = {
 		// Actualiza el valor de 'bhr'
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhrSelect.value;
 
-		this.canonsRolesIglesia(v, DOM);
-
-		// Fin
-		return;
-	},
-	canonsRolesIglesia: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS EN
-		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-		// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
-		let sectorVisible;
-		const SI = elegibles.bhr == "pers" && elegibles.cfc == "CFC";
-
-		// Oculta/Muestra sectores
-		SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
-		SI ? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia") : DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
-
-		// IMPACTOS DE
-		sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
-		if (DOM.canonsSelect.value && sectorVisible) elegibles.canons = DOM.canonsSelect.value;
-		sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
-		if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
-
-		this.deDemasElegibles(v, DOM);
-
-		// Fin
-		return;
-	},
-	// Presencia simepre
-	presenciaSiempre: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-		for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
-
-		apoyo.limpiaLineasConsecutivas(v, DOM);
+		this.presenciaSiempre(v, DOM);
 
 		// Fin
 		return;
@@ -167,7 +146,31 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+	canonsRolesIglesia: function (v, DOM) {
+		// Impacto en configCons:	layout_id y bhr
 
+		// Si bhr="SI", se oculta
+
+		// IMPACTOS EN
+		// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
+		let sectorVisible;
+		const SI = elegibles.bhr == "pers" && elegibles.cfc == "CFC";
+
+		// Oculta/Muestra sectores
+		SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
+		SI ? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia") : DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
+
+		// IMPACTOS DE
+		sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
+		if (DOM.canonsSelect.value && sectorVisible) elegibles.canons = DOM.canonsSelect.value;
+		sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
+		if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
+
+		this.deDemasElegibles(v, DOM);
+
+		// Fin
+		return;
+	},
 };
 
 let apoyo = {

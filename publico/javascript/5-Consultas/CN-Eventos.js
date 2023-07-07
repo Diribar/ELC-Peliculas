@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
-		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
+		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
 
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
@@ -14,25 +14,21 @@ window.addEventListener("load", async () => {
 		ascDes: document.querySelector("#encabezado #ascDes"),
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
-		// Filtro Cabecera - Nombre
+		// Filtro Cabecera
 		configNuevaNombre: document.querySelector("#configDeCabecera #configNueva input[name='nombre']"),
 		configCons_id: document.querySelector("#configDeCabecera select[name='configCons_id']"),
-		// Filtro Cabecera - Íconos de la botonera
-		nuevo: document.querySelector("#configDeCabecera i#nuevo"),
-		deshacer: document.querySelector("#configDeCabecera i#deshacer"),
-		guardar: document.querySelector("#configDeCabecera i#guardar"),
-		edicion: document.querySelector("#configDeCabecera i#edicion"),
-		eliminar: document.querySelector("#configDeCabecera i#eliminar"),
 		iconos: document.querySelectorAll("#configDeCabecera #iconos i"),
 
 		// Campos
 		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
+		camposPresenciaEstable: document.querySelectorAll("#configCons #configsDeCampo .presenciaEstable"),
 		palClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de productos
 		asegurate: document.querySelector("#zona_de_prods #comencemos button#rojo"),
 		comencemos: document.querySelector("#zona_de_prods #comencemos button#verde"),
 	};
+	for (let icono of DOM.iconos) DOM[icono.id] = icono;
 
 	// Variables varias
 	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
@@ -88,7 +84,7 @@ window.addEventListener("load", async () => {
 		// Funciones
 		actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
 		actualiza.botoneraActivaInactiva({v, DOM});
-		await zonaDeProds.obtieneLosProductos(); 
+		await zonaDeProds.obtieneLosProductos();
 		actualiza.contador();
 
 		// Fin
