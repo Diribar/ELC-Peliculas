@@ -109,12 +109,12 @@ let actualizaConfigCons = {
 		// Actualiza el valor de 'bhr'
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhrSelect.value;
 
-		this.enDeEpoca(v, DOM);
+		this.canonsRolesIglesia(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeCanonsMasRolesIglesia: function (v, DOM) {
+	canonsRolesIglesia: function (v, DOM) {
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 
