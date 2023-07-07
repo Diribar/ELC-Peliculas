@@ -2,9 +2,10 @@
 window.addEventListener("load", async () => {
 	// Variable DOM
 	let DOM = {
+		// Formulario General
+		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple"),
-		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 
 		// Encabezado
 		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
@@ -33,7 +34,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Variables varias
-	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await estaticas.obtiene.layoutsMasOrdenes();
+	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await estaticas.obtiene.opcionesDeLayoutMasOrden();
 	let v = {
 		hayCambios: false,
 		nombreOK: false,
@@ -42,8 +43,8 @@ window.addEventListener("load", async () => {
 		layoutsBD,
 		ordenesBD,
 	};
-	v.prefsDeCabecera = await estaticas.obtiene.prefsDeCabecera(v.configCons_id);
-	v.filtroPropio = !!v.prefsDeCabecera.usuario_id;
+	v.configDeCabecera = await estaticas.obtiene.configDeCabecera(v.configCons_id);
+	v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
 	// Eventos - Botonera
 	DOM.iconos.forEach((icono, i) => {
@@ -69,9 +70,13 @@ window.addEventListener("load", async () => {
 	});
 
 	// Eventos - Cambio de Configuración
-	configCons_id.addEventListener("change",()=>{
-		
-	})
+	DOM.cuerpo.addEventListener("change", async (e) => {
+		// Variables
+		const campo = e.target;
+
+		// Fin
+		return;
+	});
 
 	// Start-up
 	impactos.configDinamica({v, DOM});
