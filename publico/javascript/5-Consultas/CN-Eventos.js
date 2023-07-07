@@ -6,28 +6,35 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
+		encabezado: document.querySelector("#encabezado"),
+		configCabecera: document.querySelector("#configDeCabecera"),
+		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
+		// Zona de productos
+		zonaProds: document.querySelector("#zona_de_prods"),
+	};
+	DOM = {
+		...DOM,
 
 		// Encabezado
-		layout_id: document.querySelector("#encabezado select[name='layout_id']"),
-		orden_id: document.querySelector("#encabezado select[name='orden_id']"),
-		orden_idOpciones: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
-		ascDes: document.querySelector("#encabezado #ascDes"),
-		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
+		layout_id: DOM.encabezado.querySelector("select[name='layout_id']"),
+		orden_id: DOM.encabezado.querySelector("select[name='orden_id']"),
+		orden_idOpciones: DOM.encabezado.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
+		ascDes: DOM.encabezado.querySelector("#ascDes"),
+		contador_de_prods: DOM.encabezado.querySelector("#derecha #contador_de_prods"),
 
-		// Filtro Cabecera
-		configNuevaNombre: document.querySelector("#configDeCabecera #configNueva input[name='nombre']"),
-		configCons_id: document.querySelector("#configDeCabecera select[name='configCons_id']"),
-		iconos: document.querySelectorAll("#configDeCabecera #iconos i"),
+		// Configuración de Cabecera
+		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombre']"),
+		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
+		iconos: DOM.configCabecera.querySelectorAll("#iconos i"),
 
-		// Campos
-		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
-		camposPresenciaEventual: document.querySelectorAll("#configCons #configsDeCampo select:not(.presenciaEstable)"),
-		camposPresenciaEstable: document.querySelectorAll("#configCons #configsDeCampo .presenciaEstable"),
-		palClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
+		// Configuración de Campos
+		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
+		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
+		palClave: DOM.configCampos.querySelector("#palabrasClave"),
 
 		// Zona de productos
-		asegurate: document.querySelector("#zona_de_prods #comencemos button#rojo"),
-		comencemos: document.querySelector("#zona_de_prods #comencemos button#verde"),
+		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
+		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
 	};
 	for (let icono of DOM.iconos) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
