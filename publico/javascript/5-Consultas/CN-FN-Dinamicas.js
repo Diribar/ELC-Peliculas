@@ -88,7 +88,7 @@ let actualizaConfigCons = {
 		this.muestraOculta(v, DOM);
 
 		// Fin
-		if (v.mostrar) this.presenciaSiempre(v, DOM);
+		if (v.mostrar) this.presenciaEstable(v, DOM);
 		return;
 	},
 	muestraOculta: (v, DOM) => {
