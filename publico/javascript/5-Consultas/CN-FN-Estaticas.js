@@ -128,11 +128,11 @@ let cambiosEnBD = {
 		opciones = DOM.configCons_id.querySelectorAll("option");
 		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
 
-		// Obtiene el id de la configCons más reciente
-		let configsDeCabecera = await obtiene
+		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
+		const configsDeCabecera = await obtiene
 			.configsDeCabecera()
 			.then((n) => n.sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1)));
-		let propios = configsDeCabecera.filter((n) => n.id);
+		const propios = configsDeCabecera.filter((n) => n.id);
 		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
 
 		// Actualiza el select con el id
