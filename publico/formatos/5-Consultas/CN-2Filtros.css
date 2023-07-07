@@ -6,21 +6,18 @@
 #configCons * {font-size: 1rem;}
 #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
-/* Filtros Personalizados */
+/* Filtros Cabecera */
 #configCons #configDeCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
 #configCons #configDeCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
-/* Filtros Personalizados - Input */
+/* Filtros Cabecera - Nuevo Nombre */
 #configDeCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
 #configDeCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
-/* Filtros Personalizados - Select */
+/* Filtros Cabecera - Nombre Actual */
 #configDeCabecera select {font-weight: bold;}
 #configDeCabecera #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 #configDeCabecera #iconos i {cursor: pointer; color: snow;}
 
-/* Filtros Campos - Filtros para enfocar tu búqueda */
-#configCons #configsDeCampo div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
-
-/* Filtros - Campos - General */
+/* Filtros Campos */
 #configCons #configsDeCampo {background: var(--gris-claro);}
 #configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
 #configCons #configsDeCampo nav > * {order: 2;}
@@ -28,9 +25,9 @@
 #configCons #configsDeCampo .bhrSI {display: none;}
 
 /* Filtros Campos - Select e Input */
-#configCons #configsDeCampo .filtro {padding: 7.5px 20px;}
-#configCons #configsDeCampo .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
-#configCons .filtro :is(select, input) {width: 100%;}
+#configsDeCampo .filtro {padding: 7.5px 20px;}
+#configsDeCampo .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
+#configsDeCampo :is(select, input) {width: 100%;}
 
 /* Filtros - Campos - Select */
 #configCons .filtro select option {background: snow; color: var(--azul-oscuro);}
