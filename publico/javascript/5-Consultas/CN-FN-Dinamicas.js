@@ -134,14 +134,14 @@ let actualizaConfigCons = {
 		// Impacto en configCons: apMar
 
 		// Variables
-		const seMuestraApmMar =
+		const seMuestra =
 			configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocas || configCons.epocas == "pst");
 
 		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocas || epocas='pst')
-		seMuestraApmMar ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
 
 		// IMPACTOS DE
-		if (DOM.apMar.value && seMuestraApmMar) configCons.apMar = DOM.apMar.value;
+		if (DOM.apMar.value && seMuestra) configCons.apMar = DOM.apMar.value;
 
 		this.enDeCanonsMasRolesIglesia(v, DOM);
 
