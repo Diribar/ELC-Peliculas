@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 	// Variables varias
 	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
 	let v = {layoutsBD, ordenesBD};
-	v = {...v, ...(await actualiza.valoresIniciales({v, DOM}))};
+	v = {...v, ...(await actualiza.valoresInicialesDeObjetoV({v, DOM}))};
 
 	// Eventos - Botonera
 	DOM.iconos.forEach((icono, i) => {
@@ -76,7 +76,7 @@ window.addEventListener("load", async () => {
 			if (!existe) return;
 
 			// Más acciones
-			await actualiza.valoresIniciales({v, DOM});
+			await actualiza.valoresInicialesDeObjetoV({v, DOM});
 			guardaEnBD.configCons_id(v.configCons_id);
 			await actualiza.statusInicialCampos({v, DOM});
 			actualiza.cartelComencemosVisible(DOM);
@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	impactos.configDinamica({v, DOM});
+	actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
 	actualiza.botoneraActivaInactiva({v, DOM});
 });
 

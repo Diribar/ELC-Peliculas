@@ -19,7 +19,7 @@ let obtiene = {
 	},
 };
 let actualiza = {
-	valoresIniciales: async ({v, DOM}) => {
+	valoresInicialesDeObjetoV: async ({v, DOM}) => {
 		// Variables autónomas
 		v.hayCambios = false;
 		v.nombreOK = false;

@@ -30,7 +30,7 @@
 		<i id="eliminar" class="fa-solid fa-trash-can scale inactivo" title="Elimina el filtro actual"></i>
 	</div>
 </div>
-<!-- Campos específicos -->
+<!-- Campos -->
 <div id="configsDeCampo" class="flexCol">
 	<div class="flexColAlign ocultar mostrarSiEncabOK">
 		<h2>Filtros para enfocar tu búqueda</h2>
@@ -40,37 +40,37 @@
 		<nav class="flexCol ocultar mostrarSiEncabOK">
 			<!-- PRIORITARIOS -->
 			<!-- Relación con la Iglesia Católica -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc}) %>
 			<!-- Epoca de Ocurrencia -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia}) %>
 			<hr>
 
 			<!-- EVENTUALES -->
 			<!-- Basado en Hechos Reales -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, clase: "bhr ocultar"}) %>
 			<!-- Aparición Mariana -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, clase: "apMar ocultar"}) %>
 			<!-- Roles Iglesia -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.rolesIglesia, clase: "rolesIglesia ocultar"}) %>
 			<!-- Proceso de Canonización -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.canons, clase: "canons ocultar"}) %>
 			<hr>
 
 			<!-- COLA DE PREFERENCIAS -->
 			<!-- Público Recomendado -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.publicos, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.publicos}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasEstreno, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasEstreno}) %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.ppp_opciones, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.ppp_opciones}) %>
 			<!-- Tipos de Link -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano}) %>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
 			<!-- Musical -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.musical, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.musical}) %>
 			<hr>
 
 			<!-- Búsqueda -->

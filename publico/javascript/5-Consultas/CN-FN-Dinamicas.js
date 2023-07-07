@@ -2,40 +2,37 @@
 
 let actualizaConfigCons = {
 	consolidado: function ({v, DOM}) {
-		this.enDeLayout(v, DOM);
+		this.layout(v, DOM);
 		return;
 	},
-	enDeLayout: function (v, DOM) {
-		// Impacto en configCons: layout_id y bhr
-		// Impactos en v: layout_id y entidad
-
-		// Variables
-		v.layout_id = DOM.layout_id.value;
+	// Encabezado
+	layout: function (v, DOM) {
+		// Impacto en configCons: layout_id, entidad, y eventualmente bhr
 
 		// Obtiene el 'configCons.layout_id' y eventualmente el 'configCons.bhr'
-		if (v.layout_id) {
+		const layout_id = DOM.layout_id.value;
+		if (layout_id) {
 			// Obtiene el 'configCons.layout_id'
-			configCons.layout_id = v.layout_id;
+			configCons.layout_id = layout_id;
 
 			// Obtiene el 'configCons.bhr', si esté implícito
-			const layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
-			v.entidad = layoutBD.entidad;
+			const layoutBD = v.layoutsBD.find((n) => n.id == layout_id);
+			configCons.entidad = layoutBD.entidad;
 			if (["personajes", "hechos"].includes(v.entidad)) configCons.bhr = "SI";
 		}
 
 		// Fin
-		this.enDeOrden(v, DOM);
+		this.orden(v, DOM);
 		return;
 	},
-	enDeOrden: function (v, DOM) {
+	orden: function (v, DOM) {
 		// Impacto en configCons: orden_id
-		// Impactos en v: orden_id
 
 		// Oculta/Muestra las opciones que corresponden
 		const checked = DOM.orden_id.querySelector("option:checked");
 		v.ordenesBD.forEach((ordenBD, i) => {
 			// Acciones si la opción no corresponde al layout
-			if (!v.layout_id || ordenBD.layout_id != v.layout_id) {
+			if (!configCons.layout_id || ordenBD.layout_id != configCons.layout_id) {
 				// La oculta
 				DOM.orden_idOpciones[i].classList.add("ocultar");
 
@@ -46,129 +43,78 @@ let actualizaConfigCons = {
 			else DOM.orden_idOpciones[i].classList.remove("ocultar");
 		});
 
-		// IMPACTOS DE
-		v.orden_id = DOM.orden_id.value;
-		if (v.orden_id) configCons.orden_id = v.orden_id;
+		// Actualiza la variable 'configCons'
+		const orden_id = DOM.orden_id.value;
+		if (orden_id) configCons.orden_id = orden_id;
 
 		// Fin
-		this.enDeAscDes(v, DOM);
+		this.ascDes(v, DOM);
 		return;
 	},
-	enDeAscDes: function (v, DOM) {
+	ascDes: function (v, DOM) {
 		// Impacto en configCons: ascDes
-		// Impactos en v: ascDes
 
 		// Variables
-		const ordenBD = v.orden_id ? v.ordenesBD.find((n) => n.id == v.orden_id) : null;
+		const ordenBD = configCons.orden_id ? v.ordenesBD.find((n) => n.id == configCons.orden_id) : null;
 
-		// IMPACTOS EN
-		if (v.orden_id && ordenBD.ascDes == "ascDes") {
+		// Actualiza la variable 'configCons' y muestra/oculta el sector
+		if (configCons.orden_id && ordenBD.ascDes == "ascDes") {
 			// Muestra ascDes
 			DOM.ascDes.classList.remove("ocultar");
 			DOM.ascDes.classList.add("flexCol");
+
+			// Actualiza la variable 'configCons'
 			const checked = DOM.ascDes.querySelector("input:checked");
-			if (v.orden_id && checked) configCons.ascDes = checked.value;
+			if (configCons.orden_id && checked) configCons.ascDes = checked.value;
 		} else {
 			// Oculta ascDes
 			DOM.ascDes.classList.add("ocultar");
 			DOM.ascDes.classList.remove("flexCol");
-			if (v.orden_id) configCons.ascDes = ordenBD.ascDes;
+
+			// Actualiza la variable 'configCons'
+			if (configCons.orden_id) configCons.ascDes = ordenBD.ascDes;
 		}
 
-		// IMPACTOS DE - 'OK' para que el fondo sea verde/rojo
-		v.ascDes = configCons.ascDes;
-		v.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+		// 'OK' para que el fondo sea verde/rojo
+		configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
+		// Muestra/Oculta sectores
 		this.muestraOculta(v, DOM);
-		this.deCFC(v, DOM);
 
 		// Fin
+		if (v.mostrar) this.bhr(v, DOM);
 		return;
 	},
 	muestraOculta: (v, DOM) => {
 		// Variables
-		v.mostrar = v.layout_id && v.orden_id && v.ascDes;
+		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!v.ascDes;
 
 		// Muestra/Oculta sectores
 		for (let div of DOM.mostrarSiEncabOK) v.mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		v.mostrar && v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		v.mostrar && !v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 		// Fin
 		return;
 	},
-	deCFC: function (v, DOM) {
-		return;
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
+	// Presencia eventual
+	bhr: function (v, DOM) {
+		// Impacto en configCons: bhr
 
-		// IMPACTOS DE
-		varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
-		if (varias.cfc) elegibles.cfc = varias.cfc;
+		// Si bhr="SI", se oculta
+		configCons.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
 
-		this.enDeOcurrio(v, DOM);
+		// Actualiza el valor de 'bhr'
+		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhrSelect.value;
 
-		// Fin
-		return;
-	},
-	enDeOcurrio: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS EN
-		varias.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
-
-		// IMPACTOS DE
-		// 1. Actualiza el valor de 'bhr'
-		if (!varias.bhr && DOM.bhrSelect.value) varias.bhr = DOM.bhrSelect.value;
-		// 2. Muestra/Oculta los sectores dependientes
-		for (let bhrSISector of DOM.bhrSISectores)
-			varias.bhr && varias.bhr != "NO" ? bhrSISector.classList.remove("bhrSI") : bhrSISector.classList.add("bhrSI");
-		// 3. Asigna el valor para 'bhr'
-		if (varias.bhr) elegibles.bhr = varias.bhr;
-
-		this.enDeEpoca(v, DOM);
+		this.canonsRolesIglesia(v, DOM);
 
 		// Fin
 		return;
 	},
-	enDeEpoca: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-
-		// IMPACTOS DE
-		const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
-		if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
-
-		this.enDeApMar(v, DOM);
-
-		// Fin
-		return;
-	},
-	enDeApMar: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS EN
-		// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-		// Sólo se muestra el sector si CFC='SI' y epocas='pst'
-		if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
-		else DOM.apMarSector.classList.add("ocultarApMar");
-
-		// IMPACTOS DE
-		const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
-		if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
-
-		this.enDeCanonsMasRolesIglesia(v, DOM);
-
-		// Fin
-		return;
-	},
-	enDeCanonsMasRolesIglesia: function (v, DOM) {
+	canonsRolesIglesia: function (v, DOM) {
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 
@@ -193,7 +139,8 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	deDemasElegibles: function (v, DOM) {
+	// Presencia simepre
+	presenciaSiempre: function (v, DOM) {
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 		for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
@@ -203,6 +150,24 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+	apMar: function (v, DOM) {
+		// Impacto en configCons: apMar
+
+		// Sólo se muestra el sector si ocurrió == 'SI'
+		// Sólo se muestra el sector si CFC='SI' y epocas='pst'
+		if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+		else DOM.apMarSector.classList.add("ocultarApMar");
+
+		// IMPACTOS DE
+		const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
+		if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
+
+		this.enDeCanonsMasRolesIglesia(v, DOM);
+
+		// Fin
+		return;
+	},
+
 };
 
 let apoyo = {
