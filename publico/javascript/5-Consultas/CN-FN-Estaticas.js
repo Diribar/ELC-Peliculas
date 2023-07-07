@@ -93,7 +93,7 @@ let actualiza = {
 	},
 };
 let guardaEnBD = {
-	actualizaConfigCons_id: (configCons_id) => {
+	configCons_id: (configCons_id) => {
 		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
 		if (configCons_id) fetch(rutaCompleta + configCons_id);
 

@@ -75,7 +75,7 @@ window.addEventListener("load", async () => {
 
 			// Más acciones
 			await actualiza.valoresIniciales({v, DOM});
-			guardaEnBD.actualizaConfigCons_id(v.configCons_id);
+			guardaEnBD.configCons_id(v.configCons_id);
 			actualiza.botoneraActivaInactiva({v, DOM});
 			await actualiza.statusInicialCampos({configCons_id: v.configCons_id, DOM});
 			actualiza.cartelComencemosVisible(DOM);
