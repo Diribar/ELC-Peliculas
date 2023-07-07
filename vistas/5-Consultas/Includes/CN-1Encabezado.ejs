@@ -1,7 +1,7 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout_id" required class="prefSimple">
+	<select name="layout_id" required>
 		<!-- Opciones en base de datos -->
 		<% for (let layout of cn_layouts) { %>
 			<option 
@@ -11,7 +11,7 @@
 		<% } %>
 	</select>
 	<!-- Orden -->
-	<select name="orden_id" required class="prefSimple">
+	<select name="orden_id" required>
 		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of cn_ordenes) { %>
