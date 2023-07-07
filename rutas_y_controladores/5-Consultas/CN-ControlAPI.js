@@ -102,7 +102,6 @@ module.exports = {
 		},
 		eliminaConfigCons: async (req, res) => {
 			const {configCons_id} = req.query;
-			console.log(105, configCons_id);
 
 			// Se eliminan los registros de campo de la configuración
 			await BD_genericas.eliminaTodosPorCondicion("configsConsCampos",{configCons_id})
