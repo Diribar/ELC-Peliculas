@@ -121,7 +121,7 @@ let cambiosEnBD = {
 	eliminaConfigCons: async (DOM) => {
 		// Elimina la configuración
 		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?configCons_id=";
-		configCons_id = DOM.configCons_id.value;
+		let configCons_id = DOM.configCons_id.value;
 		await fetch(rutaCompleta + configCons_id);
 
 		// Oculta la opción en la vista
