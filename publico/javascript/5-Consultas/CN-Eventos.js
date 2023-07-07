@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Variables varias
-	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await estaticas.obtiene.opcionesDeLayoutMasOrden();
+	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
 	let v = {
 		hayCambios: false,
 		nombreOK: false,
@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 		layoutsBD,
 		ordenesBD,
 	};
-	v.configDeCabecera = await estaticas.obtiene.configDeCabecera(v.configCons_id);
+	v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
 	v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
 	// Eventos - Botonera
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Fin
-			estaticas.actualiza.botoneraActivaInactiva({v, DOM});
+			actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
 	});
@@ -72,7 +72,18 @@ window.addEventListener("load", async () => {
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("change", async (e) => {
 		// Variables
-		const campo = e.target;
+		const campoNombre = e.target.name;
+		const campoValor = e.target.value;
+
+		// Acciones si se cambio la configuración
+		if (campoNombre == "configCons_id") {
+			// Averigua si hay un error y en caso afirmativo, interrumpe la función
+			const error = verifica.configCons_id(campoValor, DOM);
+			if (error) return;
+
+			// Más acciones
+			v.configCons_id = DOM.configCons_id.value;
+		}
 
 		// Fin
 		return;
@@ -80,7 +91,7 @@ window.addEventListener("load", async () => {
 
 	// Start-up
 	impactos.configDinamica({v, DOM});
-	estaticas.actualiza.botoneraActivaInactiva({v, DOM});
+	actualiza.botoneraActivaInactiva({v, DOM});
 });
 
 // Variables

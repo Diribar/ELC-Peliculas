@@ -2,20 +2,15 @@
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
-const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
-	// Startup
 	obtiene: {
-		opcionesDeLayoutMasOrden: async (req, res) => {
-			return res.json({cn_layouts, cn_ordenes});
-		},
 		configDeCabecera: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
 
-			// Obtiene las cabeceras
+			// Obtiene la cabecera
 			const configDeCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
 
 			// Fin
@@ -35,9 +30,20 @@ module.exports = {
 			// Fin
 			return res.json(preferencias);
 		},
-	},
+		opcionesDeConfigDeCabecera: async (req, res) => {
+			// Variables
+			const userID = req.session.usuario ? req.session.usuario.id : null;
 
-	// Filtros personalizados
+			// Obtiene las opciones de configuracion
+			const configsDeCabecera = await procesos.configsDeCabecera(userID);
+
+			// Fin
+			return res.json(configsDeCabecera);
+		},
+		opcionesDeLayoutMasOrden: async (req, res) => {
+			return res.json({cn_layouts, cn_ordenes});
+		},
+	},
 	guarda: {
 		configCons_id: (req, res) => {
 			// Variables
@@ -96,8 +102,6 @@ module.exports = {
 			return res.json();
 		},
 	},
-
-	// Consultas
 	resultados: {
 		prods: async (req, res) => {
 			// Variables
