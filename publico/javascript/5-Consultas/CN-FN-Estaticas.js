@@ -64,9 +64,9 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	statusInicialCampos: async ({configCons_id, DOM}) => {
+	statusInicialCampos: async ({v, DOM}) => {
 		// Variables
-		const configDeCampos = await obtiene.configDeCampos(configCons_id);
+		const configDeCampos = await obtiene.configDeCampos(v.configCons_id);
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
