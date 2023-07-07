@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
+		creadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "cn_config_cabecera",
