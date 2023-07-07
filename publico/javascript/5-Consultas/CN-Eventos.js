@@ -12,9 +12,9 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		zonaProds: document.querySelector("#zona_de_prods"),
 	};
-	DOM={
+	DOM = {
 		...DOM,
-		
+
 		// Encabezado
 		layout_id: DOM.encabezado.querySelector("select[name='layout_id']"),
 		orden_id: DOM.encabezado.querySelector("select[name='orden_id']"),
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
-	}
+	};
 	for (let icono of DOM.iconos) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 

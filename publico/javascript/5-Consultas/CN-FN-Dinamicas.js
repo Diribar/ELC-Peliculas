@@ -170,7 +170,7 @@ let actualizaConfigCons = {
 	// Apoyo
 	ocultaLineasConsecs: (v, DOM) => {
 		// Variables
-		let hijos = document.querySelectorAll("#cuerpo #configCons #configsDeCampo .sectorConDesplV nav > *");
+		let hijos = DOM.configCampos.parentNode.querySelectorAll("nav > *");
 		let tags = [];
 
 		hijos.forEach((hijo, orden) => {
