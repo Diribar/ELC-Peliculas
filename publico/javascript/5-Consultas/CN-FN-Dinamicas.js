@@ -141,7 +141,7 @@ let actualizaConfigCons = {
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
 
 		// IMPACTOS DE
-		if (DOM.apMar.value && seMuestra) configCons.apMar = DOM.apMar.value;
+		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
 		this.enDeCanonsMasRolesIglesia(v, DOM);
 
