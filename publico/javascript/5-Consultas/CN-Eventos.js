@@ -97,6 +97,7 @@ window.addEventListener("load", async () => {
 
 				// Clases
 			} else if (nombre == "guardar") {
+				
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id({v, DOM});
