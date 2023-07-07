@@ -27,7 +27,7 @@ let actualiza = {
 		v.configCons_id = DOM.configCons_id.value;
 
 		// Variables que dependen de otras variables 'v'
-		v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
+		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
 		v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
 		// Fin
@@ -46,6 +46,7 @@ let actualiza = {
 
 		// Ícono Nuevo
 		!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		console.log(!claseNuevo , !claseEdicion , v.hayCambios);
 
 		// Ícono Deshacer
 		!claseNuevo && !claseEdicion && v.hayCambios
@@ -144,6 +145,28 @@ let zonaDeProds = {
 		// Fin
 		return;
 	},
+};
+
+// Consolidadas
+let cambioDeConfig_id = async ({v, DOM}) => {
+	// Funciones
+	await actualiza.valoresInicialesDeObjetoV({v, DOM});
+	guardaEnBD.configCons_id(v.configCons_id);
+	await actualiza.statusInicialCampos({v, DOM});
+	actualiza.cartelComencemosVisible(DOM);
+
+	// Fin
+	return;
+};
+let cambioDeCampos = async ({v, DOM}) => {
+	// Funciones
+	actualizaConfigCons.consolidado({v, DOM});
+	actualiza.botoneraActivaInactiva({v, DOM});
+	await zonaDeProds.obtieneLosProductos(configCons);
+	actualiza.contador({v, DOM});
+
+	// Fin
+	return;
 };
 
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
