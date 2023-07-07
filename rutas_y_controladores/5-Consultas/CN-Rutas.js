@@ -8,7 +8,7 @@ const vista = require("./CN-ControlVista");
 // API - Obtiene
 router.get("/api/obtiene-la-configuracion-de-cabecera", API.obtiene.configDeCabecera);
 router.get("/api/obtiene-la-configuracion-de-campos", API.obtiene.configDeCampos);
-router.get("/api/obtiene-las-configs-posibles-de-cabecera", API.obtiene.configsDeCabecera);
+router.get("/api/obtiene-las-configs-posibles-para-el-usuario", API.obtiene.configsDeCabecera);
 router.get("/api/obtiene-las-opciones-de-layout-y-orden", API.obtiene.opcionesDeLayoutMasOrden);
 
 // API - Guarda

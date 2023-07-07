@@ -2,7 +2,7 @@
 
 let obtiene = {
 	configsDeCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-las-configs-posibles-de-cabecera";
+		const rutaCompleta = ruta + "obtiene-las-configs-posibles-para-el-usuario";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	opcionesDeLayoutMasOrden: () => {
