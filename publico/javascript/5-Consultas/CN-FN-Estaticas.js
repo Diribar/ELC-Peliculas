@@ -21,7 +21,7 @@ let obtiene = {
 let actualiza = {
 	valoresInicialesDeObjetoV: async ({v, DOM}) => {
 		// Variables autónomas
-		v.hayCambios = false;
+		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		v.comencemos = true;
 		v.configCons_id = DOM.configCons_id.value;
@@ -42,22 +42,22 @@ let actualiza = {
 		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
 		// Ícono Edición
-		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambios
+		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 
 		// Ícono Deshacer
-		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambios
+		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambiosDeCampo
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 
 		// Ícono Eliminar
-		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
+		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.eliminar.classList.remove("inactivo")
 			: DOM.eliminar.classList.add("inactivo");
 
 		// Ícono Guardar
-		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
+		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambiosDeCampo)))
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 

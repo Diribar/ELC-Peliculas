@@ -57,11 +57,21 @@ window.addEventListener("load", async () => {
 
 			// Función
 			await cambioDeConfig_id({v, DOM});
-		} else v.hayCambios = true;
+		}
+		// Nombre de configuración, Palabras clace, Campos
+		else {
+			if (campoNombre == "nombreConfigNueva") {
 
-		// Palabras clave
-		if (campoNombre == "palabrasClave")
-			campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
+			}
+			// Palabras clave
+			else if (campoNombre == "palabrasClave") {
+				campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
+				v.hayCambiosDeCampo = true;
+			}
+
+			// Cambios de campo
+			else v.hayCambiosDeCampo = true;
+		}
 
 		// Funciones
 		await cambioDeCampos({v, DOM});
@@ -97,7 +107,6 @@ window.addEventListener("load", async () => {
 
 				// Clases
 			} else if (nombre == "guardar") {
-				
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id({v, DOM});
