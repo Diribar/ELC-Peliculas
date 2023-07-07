@@ -6,25 +6,20 @@ let actualizaConfigCons = {
 		this.layout(v, DOM);
 
 		// Muestra/Oculta líneas de separación
-		if (v.mostrar) apoyo.limpiaLineasConsecutivas(v, DOM);
+		if (v.mostrar) this.ocultaLineasConsecs(v, DOM);
 
 		// Fin
 		return;
 	},
 	// Encabezado
 	layout: function (v, DOM) {
-		// Impacto en configCons: layout_id, entidad, y eventualmente bhr
+		// Impacto en configCons: layout_id, entidad
 
-		// Obtiene el 'configCons.layout_id' y eventualmente el 'configCons.bhr'
+		// Actualiza 'configCons.layout_id' y 'configCons.entidad'
 		const layout_id = DOM.layout_id.value;
 		if (layout_id) {
-			// Obtiene el 'configCons.layout_id'
 			configCons.layout_id = layout_id;
-
-			// Obtiene el 'configCons.bhr', si esté implícito
-			const layoutBD = v.layoutsBD.find((n) => n.id == layout_id);
-			configCons.entidad = layoutBD.entidad;
-			if (["personajes", "hechos"].includes(v.entidad)) configCons.bhr = "SI";
+			configCons.entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
 		}
 
 		// Fin
@@ -32,7 +27,7 @@ let actualizaConfigCons = {
 		return;
 	},
 	orden: function (v, DOM) {
-		// Impacto en configCons: orden_id
+		// Impacto en configCons: orden_id y eventualmente bhr
 
 		// Oculta/Muestra las opciones que corresponden
 		const checked = DOM.orden_id.querySelector("option:checked");
@@ -49,9 +44,13 @@ let actualizaConfigCons = {
 			else DOM.orden_idOpciones[i].classList.remove("ocultar");
 		});
 
-		// Actualiza la variable 'configCons'
+		// Actualiza 'orden_id' y eventualmente 'bhr'
 		const orden_id = DOM.orden_id.value;
-		if (orden_id) configCons.orden_id = orden_id;
+		if (orden_id) {
+			configCons.orden_id = orden_id;
+			const bhrSeguro = v.ordenesBD.find((n) => n.id == orden_id).bhrSeguro;
+			if (bhrSeguro) configCons.bhr = "SI";
+		}
 
 		// Fin
 		this.ascDes(v, DOM);
@@ -97,7 +96,7 @@ let actualizaConfigCons = {
 		// console.log(!!configCons.layout_id, !!configCons.orden_id, !!configCons.ascDes);
 
 		// Muestra/Oculta sectores
-		for (let sector of DOM.mostrarSiEncabOK) v.mostrar ? sector.classList.remove("ocultar") : sector.classList.add("ocultar");
+		v.mostrar ? DOM.configCampos.classList.remove("ocultar") : DOM.configCampos.classList.add("ocultar");
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
@@ -123,9 +122,9 @@ let actualizaConfigCons = {
 		configCons.bhr ? DOM.bhr.parentNode.classList.add("ocultar") : DOM.bhr.parentNode.classList.remove("ocultar");
 
 		// Actualiza el valor de 'bhr'
-		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhrSelect.value;
+		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
 
-		this.presenciaSiempre(v, DOM);
+		this.apMar(v, DOM);
 
 		// Fin
 		return;
@@ -133,68 +132,62 @@ let actualizaConfigCons = {
 	apMar: function (v, DOM) {
 		// Impacto en configCons: apMar
 
-		// Variables
-		const seMuestra =
-			configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocas || configCons.epocas == "pst");
-
 		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocas || epocas='pst')
+		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocas || configCons.epocas == "pst");
+
+		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
 
 		// IMPACTOS DE
 		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
-		this.enDeCanonsMasRolesIglesia(v, DOM);
+		this.canonsRolesIglesia(v, DOM);
 
 		// Fin
 		return;
 	},
 	canonsRolesIglesia: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
+		// Impacto en configCons: canons y rolesIgl
 
-		// Si bhr="SI", se oculta
-
-		// IMPACTOS EN
-		// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
-		let sectorVisible;
-		const SI = elegibles.bhr == "pers" && elegibles.cfc == "CFC";
+		// Sólo se muestra el sector si bhr='SI', cfc='CFC'
+		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC";
 
 		// Oculta/Muestra sectores
-		SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
-		SI ? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia") : DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
+		seMuestra
+			? DOM.canons.parentNode.classList.remove("ocultarCanons")
+			: DOM.canons.parentNode.classList.add("ocultarCanons");
+		seMuestra
+			? DOM.rolesIgl.parentNode.classList.remove("ocultarRolesIglesia")
+			: DOM.rolesIgl.parentNode.classList.add("ocultarRolesIglesia");
 
 		// IMPACTOS DE
-		sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
-		if (DOM.canonsSelect.value && sectorVisible) elegibles.canons = DOM.canonsSelect.value;
-		sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
-		if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
-
-		this.deDemasElegibles(v, DOM);
+		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
+		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
 
 		// Fin
 		return;
 	},
-};
-
-let apoyo = {
-	limpiaLineasConsecutivas: (v, DOM) => {
+	// Apoyo
+	ocultaLineasConsecs: (v, DOM) => {
 		// Variables
-		let hijos = document.querySelectorAll("#cuerpo #configCons .sectorConDesplV nav > *");
+		let hijos = document.querySelectorAll("#cuerpo #configCons #configsDeCampo .sectorConDesplV nav > *");
 		let tags = [];
 
-		hijos.forEach((hijo, num) => {
-			// Limpia el historial de 'ocultar' para los 'HR'
+		hijos.forEach((hijo, orden) => {
+			// Muestra todos los HR
 			if (hijo.tagName == "HR") hijo.classList.remove("ocultar");
-			// Detecta todos los hijos con orden dos y visibles
+
+			// Crea un array de todos los tags con orden 2 y visibles
 			if (
 				window.getComputedStyle(hijo).getPropertyValue("order") == 2 &&
 				window.getComputedStyle(hijo).getPropertyValue("display") != "none"
 			)
-				tags.push({tag: hijo.tagName, num});
+				tags.push({nombre: hijo.tagName, orden});
 		});
 
-		// Si hay 2 líneas consecutivas en orden dos, oculta la última
+		// Si hay dos líneas consecutivas en orden 2, oculta la última
 		for (let i = 1; i < tags.length; i++)
-			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
+			if (tags[i - 1].nombre == "HR" && tags[i].nombre == "HR") hijos[tags[i].orden].classList.add("ocultar");
 
 		// Fin
 		return;

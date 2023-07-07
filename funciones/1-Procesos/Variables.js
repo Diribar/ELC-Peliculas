@@ -97,7 +97,7 @@ module.exports = {
 				{id: "NO", nombre: "Sin Aparición Mariana"},
 			],
 		},
-		rolesIglesia: {
+		rolesIgl: {
 			titulo: "Rol en la Iglesia",
 			opciones: [
 				{id: "la", nombre: "Laicos/as"},
