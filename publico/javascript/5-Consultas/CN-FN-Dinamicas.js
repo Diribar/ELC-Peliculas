@@ -2,10 +2,10 @@
 
 let actualizaConfigCons = {
 	consolidado: function ({v, DOM}) {
-		this.enDeLayout(v, DOM);
+		this.layout(v, DOM);
 		return;
 	},
-	enDeLayout: function (v, DOM) {
+	layout: function (v, DOM) {
 		// Impacto en configCons: layout_id y bhr
 		// Impactos en v: layout_id y entidad
 
@@ -24,10 +24,10 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
-		this.enDeOrden(v, DOM);
+		this.orden(v, DOM);
 		return;
 	},
-	enDeOrden: function (v, DOM) {
+	orden: function (v, DOM) {
 		// Impacto en configCons: orden_id
 		// Impactos en v: orden_id
 
@@ -51,10 +51,10 @@ let actualizaConfigCons = {
 		if (v.orden_id) configCons.orden_id = v.orden_id;
 
 		// Fin
-		this.enDeAscDes(v, DOM);
+		this.ascDes(v, DOM);
 		return;
 	},
-	enDeAscDes: function (v, DOM) {
+	ascDes: function (v, DOM) {
 		// Impacto en configCons: ascDes
 		// Impactos en v: ascDes
 
@@ -80,7 +80,7 @@ let actualizaConfigCons = {
 		v.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
 		this.muestraOculta(v, DOM);
-		this.deCFC(v, DOM);
+		this.bhr(v, DOM);
 
 		// Fin
 		return;
@@ -99,21 +99,7 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	deCFC: function (v, DOM) {
-		return;
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS DE
-		varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
-		if (varias.cfc) elegibles.cfc = varias.cfc;
-
-		this.enDeOcurrio(v, DOM);
-
-		// Fin
-		return;
-	},
-	enDeOcurrio: function (v, DOM) {
+	bhr: function (v, DOM) {
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 
@@ -130,21 +116,6 @@ let actualizaConfigCons = {
 		if (varias.bhr) elegibles.bhr = varias.bhr;
 
 		this.enDeEpoca(v, DOM);
-
-		// Fin
-		return;
-	},
-	enDeEpoca: function (v, DOM) {
-		// Impacto en configCons:	layout_id y bhr
-		// Impactos en v:			layout_id y entidad
-
-		// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-
-		// IMPACTOS DE
-		const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
-		if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
-
-		this.enDeApMar(v, DOM);
 
 		// Fin
 		return;
