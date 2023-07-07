@@ -19,6 +19,20 @@ let obtiene = {
 	},
 };
 let actualiza = {
+	valoresIniciales: async ({v, DOM}) => {
+		// Variables autónomas
+		v.hayCambios = false;
+		v.nombreOK = false;
+		v.comencemos = true;
+		v.configCons_id = DOM.configCons_id.value;
+
+		// Variables que dependen de otras variables 'v'
+		v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
+		v.filtroPropio = !!v.configDeCabecera.usuario_id;
+
+		// Fin
+		return;
+	},
 	botoneraActivaInactiva: ({v, DOM}) => {
 		// Variables
 		let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
@@ -50,7 +64,10 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	configDeCamposEnVista: async ({DOM, configDeCampos}) => {
+	statusInicialCampos: async ({v, DOM}) => {
+		// Variables
+		const configDeCampos = await obtiene.configDeCampos(v.configCons_id);
+
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configDeCampos[prefSimple.name] ? configDeCampos[prefSimple.name] : "";
@@ -63,11 +80,21 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	contador: {},
-	nombreEnVista: {},
+	cartelComencemosVisible: (DOM) => {
+		DOM.comencemos.classList.remove("ocultar");
+		return;
+	},
+	contador: () => {
+		// Fin
+		return;
+	},
+	agregaOptionAlSelect: () => {
+		// Fin
+		return;
+	},
 };
 let guardaEnBD = {
-	actualizaConfigCons_id: (configCons_id) => {
+	configCons_id: (configCons_id) => {
 		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
 		if (configCons_id) fetch(rutaCompleta + configCons_id);
 
@@ -87,9 +114,11 @@ let guardaEnBD = {
 	},
 };
 let verifica = {
-	configCons_id: async (configCons_id, DOM) => {
+	configCons_id: async ({v, DOM}) => {
 		// Variables
-		configCons_id = Number(configCons_id);
+		const configCons_id = Number(DOM.configCons_id.value);
+
+		// Obtiene los registros posibles de configuración para el usuario
 		const configsCons_id = await obtiene
 			.opcionesDeConfigDeCabecera()
 			.then((n) => [...n.propios.map((m) => m.id), ...n.elc.map((m) => m.id)]);
@@ -98,13 +127,17 @@ let verifica = {
 		const existe = configsCons_id.includes(configCons_id);
 
 		// Si no existe, devuelve a su configuración anterior
-		DOM.configCons_id.value = v.configCons_id;
+		if (!existe) DOM.configCons_id.value = v.configCons_id;
 
 		// Fin
-		return !existe;
+		return existe;
 	},
 };
-
-let resultados = {};
+let resultados = {
+	obtiene: () => {
+		// Fin
+		return;
+	},
+};
 
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno

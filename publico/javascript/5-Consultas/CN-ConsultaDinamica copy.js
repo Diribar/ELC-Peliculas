@@ -34,30 +34,6 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let configCabecera = {
-		impactosDeFiltroPers: async function () {
-			// Variables
-			const configCons_id = DOM.configCabecera.value;
-			if (!configCons_id) return;
-
-			// Actualiza el configCons_id en la cookie y el usuario (session y BD)
-			fetch(rutas.guardaFiltroID + configCons_id);
-
-			// Obtiene las opciones de la BD
-			const opciones = await fetch(rutas.opcionesFiltroPers + configCons_id).then((n) => n.json());
-
-			// Actualiza los elegibles simples (Encabezado + Filtros)
-			for (let prefSimple of DOM.prefsSimples)
-				prefSimple.value = opciones[prefSimple.name] ? opciones[prefSimple.name] : "";
-
-			// Actualiza los elegibles 'AscDes'
-			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && input.value == opciones.ascDes;
-
-			// Actualiza los botones
-			this.statusInicialBotonera();
-
-			// Fin
-			return;
-		},
 		statusInicialBotonera: () => {
 			// 1. Inactiva las opciones 'nuevo', 'reinicio' y 'actualiza'
 			DOM.nuevo.classList.add("inactivo");

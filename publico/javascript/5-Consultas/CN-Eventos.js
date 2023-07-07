@@ -35,16 +35,8 @@ window.addEventListener("load", async () => {
 
 	// Variables varias
 	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
-	let v = {
-		hayCambios: false,
-		nombreOK: false,
-		comencemos: true,
-		configCons_id: DOM.configCons_id.value,
-		layoutsBD,
-		ordenesBD,
-	};
-	v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
-	v.filtroPropio = !!v.configDeCabecera.usuario_id;
+	let v = {layoutsBD, ordenesBD};
+	v = {...v, ...(await actualiza.valoresIniciales({v, DOM}))};
 
 	// Eventos - Botonera
 	DOM.iconos.forEach((icono, i) => {
@@ -78,11 +70,17 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambio la configuración
 		if (campoNombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const error = verifica.configCons_id(campoValor, DOM);
-			if (error) return;
+			const existe = await verifica.configCons_id({v, DOM});
+			if (!existe) return;
 
 			// Más acciones
-			v.configCons_id = DOM.configCons_id.value;
+			await actualiza.valoresIniciales({v, DOM});
+			guardaEnBD.configCons_id(v.configCons_id);
+			actualiza.botoneraActivaInactiva({v, DOM});
+			await actualiza.statusInicialCampos({v, DOM});
+			actualiza.cartelComencemosVisible(DOM);
+			resultados.obtiene()
+			actualiza.contador()
 		}
 
 		// Fin
