@@ -30,8 +30,7 @@ window.addEventListener("load", async () => {
 		comencemos: document.querySelector("#zona_de_prods #comencemos button#verde"),
 	};
 	for (let icono of DOM.iconos) DOM[icono.id] = icono;
-	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] =campo
-	// console.log(DOM);
+	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
 	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
