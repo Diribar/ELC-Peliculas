@@ -154,11 +154,11 @@ let actualizaConfigCons = {
 
 		// Oculta/Muestra sectores
 		seMuestra
-			? DOM.canons.parentNode.classList.remove("ocultarCanons")
-			: DOM.canons.parentNode.classList.add("ocultarCanons");
+			? DOM.canons.parentNode.classList.remove("ocultar")
+			: DOM.canons.parentNode.classList.add("ocultar");
 		seMuestra
-			? DOM.rolesIgl.parentNode.classList.remove("ocultarRolesIglesia")
-			: DOM.rolesIgl.parentNode.classList.add("ocultarRolesIglesia");
+			? DOM.rolesIgl.parentNode.classList.remove("ocultar")
+			: DOM.rolesIgl.parentNode.classList.add("ocultar");
 
 		// IMPACTOS DE
 		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
