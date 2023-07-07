@@ -2,10 +2,6 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
-
-		// Filtros
-		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
-
 		// Zona de Productos
 		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
 		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
@@ -13,11 +9,105 @@ window.addEventListener("load", async () => {
 	let varias = {
 		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
 	};
-	let elegibles = {};
-
-	// Obtiene tabla de layouts y ordenes
 
 	// Funciones
+	let encabFiltros = {
+		impactosDeCFC: function () {
+			// IMPACTOS DE
+			varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
+			if (varias.cfc) elegibles.cfc = varias.cfc;
+
+			this.impactosEnDeOcurrio();
+
+			// Fin
+			return;
+		},
+		// Impactos en/de bhr
+		impactosEnDeOcurrio: function () {
+			// IMPACTOS EN
+			varias.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
+
+			// IMPACTOS DE
+			// 1. Actualiza el valor de 'bhr'
+			if (!varias.bhr && DOM.bhrSelect.value) varias.bhr = DOM.bhrSelect.value;
+			// 2. Muestra/Oculta los sectores dependientes
+			for (let bhrSISector of DOM.bhrSISectores)
+				varias.bhr && varias.bhr != "NO"
+					? bhrSISector.classList.remove("bhrSI")
+					: bhrSISector.classList.add("bhrSI");
+			// 3. Asigna el valor para 'bhr'
+			if (varias.bhr) elegibles.bhr = varias.bhr;
+
+			this.impactosEnDeEpoca();
+
+			// Fin
+			return;
+		},
+		// Impactos en/de epocas
+		impactosEnDeEpoca: function () {
+			// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+
+			// IMPACTOS DE
+			const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
+			if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
+
+			this.impactosEnDeApMar();
+
+			// Fin
+			return;
+		},
+		// Impactos en/de apMar
+		impactosEnDeApMar: function () {
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+			// Sólo se muestra el sector si CFC='SI' y epocas='pst'
+			if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+			else DOM.apMarSector.classList.add("ocultarApMar");
+
+			// IMPACTOS DE
+			const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
+			if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
+
+			this.impactosEnDeCanonsMasRolesIglesia();
+
+			// Fin
+			return;
+		},
+		// Impactos en/de canons y rolesIglesia
+		impactosEnDeCanonsMasRolesIglesia: function () {
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+			// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
+			let sectorVisible;
+			const SI = elegibles.bhr == "pers" && elegibles.cfc == "CFC";
+
+			// Oculta/Muestra sectores
+			SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
+			SI
+				? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
+				: DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
+
+			// IMPACTOS DE
+			sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
+			if (DOM.canonsSelect.value && sectorVisible) elegibles.canons = DOM.canonsSelect.value;
+			sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
+			if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
+
+			this.impactosDeDemasElegibles();
+
+			// Fin
+			return;
+		},
+		// Impactos de Demás Elegibles
+		impactosDeDemasElegibles: function () {
+			for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
+
+			apoyo.limpiaLineasConsecutivas();
+
+			// Fin
+			return;
+		},
+	};
 	let configCabecera = {
 		statusInicialBotonera: () => {
 			// 1. Inactiva las opciones 'nuevo', 'reinicio' y 'actualiza'
