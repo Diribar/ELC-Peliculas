@@ -126,7 +126,7 @@ let cambiosEnBD = {
 
 		// Oculta la opción en la vista
 		opciones = DOM.configCons_id.querySelectorAll("option");
-		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add(ocultar);
+		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
 
 		// Obtiene el id de la configCons más reciente
 		let configsDeCabecera = await obtiene
