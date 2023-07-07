@@ -36,14 +36,6 @@
 #configCons .filtro select option {background: snow; color: var(--azul-oscuro);}
 #configCons .filtro select option[value=""] {display: block; font-style: italic;}
 
-/* Filtros - Campos - Checkbox */
-#configCons .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
-#configCons .filtro.checkbox #labelInput * {line-height: 0;}
-#configCons .filtro.checkbox #label-inputs label {margin-left: 4px;}
-#configCons .filtro.checkbox #label-inputs input {margin: 0 2px;}
-#configCons .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
-#configCons .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
-
 /* Filtros - Búsqueda */
 #configCons #configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
 #configCons #configsDeCampo #palabrasClave input {padding: 0px 4px; }
@@ -58,9 +50,3 @@
 
 /* Fondo verde a los elegibles elegidos */
 #configCons #configsDeCampo .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
-
-
-/* Sin uso actualmente */
-#configCons #configsDeCampo .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
-#configCons #configsDeCampo .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
-
