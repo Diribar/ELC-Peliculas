@@ -189,17 +189,10 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-pp
+
 	// Eventos
 	DOM.cuerpo.addEventListener("change", async (e) => {
-		// Variables
-		let clickEnFiltrosPers = e.target.name == "configCabecera";
-		elegibles = {};
 
-		// Impacto en Encabezado y Filtros
-		encabFiltros.impactosDeLayout();
-		if (e.target.name == "palabrasClave")
-			e.target.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {

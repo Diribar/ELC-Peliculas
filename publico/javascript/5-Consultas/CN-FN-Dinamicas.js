@@ -1,6 +1,6 @@
 "use strict";
 
-let actualizaConfigCons	 = {
+let actualizaConfigCons = {
 	consolidado: function ({v, DOM}) {
 		this.enDeLayout(v, DOM);
 		return;
@@ -20,10 +20,8 @@ let actualizaConfigCons	 = {
 			// Obtiene el 'configCons.bhr', si esté implícito
 			const layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
 			v.entidad = layoutBD.entidad;
-			["personajes", "hechos"].includes(v.entidad) ? (configCons.bhr = "SI") : delete configCons.bhr;
+			if (["personajes", "hechos"].includes(v.entidad)) configCons.bhr = "SI";
 		}
-		// Elimina los 'configCons.layout_id' y 'configCons.bhr'
-		else delete configCons.layout_id, configCons.bhr;
 
 		// Fin
 		this.enDeOrden(v, DOM);
@@ -50,7 +48,7 @@ let actualizaConfigCons	 = {
 
 		// IMPACTOS DE
 		v.orden_id = DOM.orden_id.value;
-		v.orden_id ? (configCons.orden_id = v.orden_id) : delete configCons.orden_id;
+		if (v.orden_id) configCons.orden_id = v.orden_id;
 
 		// Fin
 		this.enDeAscDes(v, DOM);
@@ -69,12 +67,12 @@ let actualizaConfigCons	 = {
 			DOM.ascDes.classList.remove("ocultar");
 			DOM.ascDes.classList.add("flexCol");
 			const checked = DOM.ascDes.querySelector("input:checked");
-			v.orden_id && checked ? (configCons.ascDes = checked.value) : delete configCons.ascDes;
+			if (v.orden_id && checked) configCons.ascDes = checked.value;
 		} else {
 			// Oculta ascDes
 			DOM.ascDes.classList.add("ocultar");
 			DOM.ascDes.classList.remove("flexCol");
-			v.orden_id ? (configCons.ascDes = ordenBD.ascDes) : delete configCons.ascDes;
+			if (v.orden_id) configCons.ascDes = ordenBD.ascDes;
 		}
 
 		// IMPACTOS DE - 'OK' para que el fondo sea verde/rojo
@@ -102,7 +100,7 @@ let actualizaConfigCons	 = {
 		return;
 	},
 	deCFC: function (v, DOM) {
-		return
+		return;
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 
