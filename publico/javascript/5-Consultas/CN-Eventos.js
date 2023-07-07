@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 				v.nombreOK = false;
 
 				// Agrega/Quita la clase 'nuevo' al input
-				DOM.configNuevaNombre.classList.toggle("nuevo"); // Acciones para 'off'
+				DOM.configNuevaNombre.classList.toggle("nuevo");
 			}
 			// Acciones para Deshacer
 			else if (e.target.id == "deshacer") {
