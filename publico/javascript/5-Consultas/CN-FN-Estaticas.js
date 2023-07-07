@@ -46,7 +46,6 @@ let actualiza = {
 
 		// Ícono Nuevo
 		!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
-		console.log(!claseNuevo , !claseEdicion , v.hayCambios);
 
 		// Ícono Deshacer
 		!claseNuevo && !claseEdicion && v.hayCambios
@@ -100,7 +99,7 @@ let actualiza = {
 		return;
 	},
 };
-let guardaEnBD = {
+let cambiosEnBD = {
 	configCons_id: (configCons_id) => {
 		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
 		if (configCons_id) fetch(rutaCompleta + configCons_id);
@@ -117,6 +116,16 @@ let guardaEnBD = {
 		fetch(rutaCompleta + configCons).then((n) => n.json());
 
 		// Fin
+		return;
+	},
+	eliminaConfigCons: (configCons_id) => {
+
+		// 1.	Tabla filtrosCampos: se eliminan los registros vinculados al filtro personalizado
+		// 2.	Tabla filtrosCabecera: se elimina el registro.
+		// const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
+		// v = {...v, layoutsBD, ordenesBD};
+		// actualiza el select con el id de la configCons más reciente
+// Fin
 		return;
 	},
 };
@@ -151,7 +160,7 @@ let zonaDeProds = {
 let cambioDeConfig_id = async ({v, DOM}) => {
 	// Funciones
 	await actualiza.valoresInicialesDeObjetoV({v, DOM});
-	guardaEnBD.configCons_id(v.configCons_id);
+	cambiosEnBD.configCons_id(v.configCons_id);
 	await actualiza.statusInicialCampos({v, DOM});
 	actualiza.cartelComencemosVisible(DOM);
 
