@@ -38,11 +38,8 @@
 #configCons #configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
-/* Oculta sectores según corresponda */
-#configCons #configsDeCampo :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#configCons #configsDeCampo .pref.contSelect:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
-#configCons #configsDeCampo :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configCons #configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
 
 /* Fondo verde a los elegibles elegidos */
 #configCons #configsDeCampo .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
