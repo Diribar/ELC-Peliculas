@@ -132,7 +132,7 @@ let cambiosEnBD = {
 		const configsDeCabecera = await obtiene
 			.configsDeCabecera()
 			.then((n) => n.sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1)));
-		const propios = configsDeCabecera.filter((n) => n.id);
+		const propios = configsDeCabecera.filter((n) => n.usuario_id);
 		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
 
 		// Actualiza el select con el id
