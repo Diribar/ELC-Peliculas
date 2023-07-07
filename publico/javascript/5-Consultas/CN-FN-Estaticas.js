@@ -19,6 +19,19 @@ let obtiene = {
 	},
 };
 let actualiza = {
+	valoresIniciales: async ({v, DOM}) => {
+		// Variables
+		v.hayCambios = false;
+		v.nombreOK = false;
+		v.comencemos = true;
+		v.configCons_id = DOM.configCons_id.value;
+
+		v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
+		v.filtroPropio = !!v.configDeCabecera.usuario_id;
+
+		// Fin
+		return
+	},
 	botoneraActivaInactiva: ({v, DOM}) => {
 		// Variables
 		let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
@@ -50,7 +63,10 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	configDeCamposEnVista: async ({DOM, configDeCampos}) => {
+	statusInicialCampos: async ({configCons_id, DOM}) => {
+		// Variables
+		const configDeCampos = await obtiene.configDeCampos(configCons_id);
+
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configDeCampos[prefSimple.name] ? configDeCampos[prefSimple.name] : "";
@@ -62,6 +78,10 @@ let actualiza = {
 
 		// Fin
 		return;
+	},
+	comencemosVisible:(DOM)=>{
+		DOM.comencemos.classList.remove("ocultar");
+		return
 	},
 	contador: {},
 	nombreEnVista: {},
