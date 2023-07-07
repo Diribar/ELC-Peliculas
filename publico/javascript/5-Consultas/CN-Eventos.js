@@ -27,6 +27,7 @@ window.addEventListener("load", async () => {
 
 		// Campos
 		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
+		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de productos
 		asegurate: document.querySelector("#zona_de_prods #comencemos button#rojo"),
@@ -67,7 +68,7 @@ window.addEventListener("load", async () => {
 		const campoNombre = e.target.name;
 		const campoValor = e.target.value;
 
-		// Acciones si se cambio la configuración
+		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
 			const existe = await verifica.configCons_id({v, DOM});
@@ -79,9 +80,16 @@ window.addEventListener("load", async () => {
 			actualiza.botoneraActivaInactiva({v, DOM});
 			await actualiza.statusInicialCampos({v, DOM});
 			actualiza.cartelComencemosVisible(DOM);
-			resultados.obtiene()
-			actualiza.contador()
+			resultados.obtiene();
+			actualiza.contador();
 		}
+
+		// Actualiza la variable configCons y oculta/muestra campos
+		actualizaConfigCons.consolidado({v, DOM});
+
+		// Palabras clave
+		if (e.target.name == "palabrasClave")
+			e.target.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
 
 		// Fin
 		return;

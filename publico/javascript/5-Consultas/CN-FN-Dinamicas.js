@@ -1,7 +1,7 @@
 "use strict";
 
-let impactos = {
-	configDinamica: function ({v, DOM}) {
+let actualizaConfigCons	 = {
+	consolidado: function ({v, DOM}) {
 		this.enDeLayout(v, DOM);
 		return;
 	},

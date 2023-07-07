@@ -4,21 +4,6 @@ window.addEventListener("load", async () => {
 	let DOM = {
 
 		// Filtros
-		camposTitulo: document.querySelector("#configCons #configsDeCampo div:has(h2)"),
-		camposNav: document.querySelector("#configCons #configsDeCampo div nav"),
-		cfcSelect: document.querySelector("#configCons #configsDeCampo div nav #cfc select"),
-		bhrSector: document.querySelector("#configCons #configsDeCampo #bhr"),
-		bhrSelect: document.querySelector("#configCons #configsDeCampo #bhr select"),
-		bhrSISectores: document.querySelectorAll("#configCons #configsDeCampo .bhrSI"),
-		epocasSector: document.querySelector("#configCons #configsDeCampo #epocas"),
-		epocasSelect: document.querySelector("#configCons #configsDeCampo #epocas select"),
-		apMarSector: document.querySelector("#configCons #configsDeCampo #apMar"),
-		apMarSelect: document.querySelector("#configCons #configsDeCampo #apMar select"),
-		canonsSector: document.querySelector("#configCons #configsDeCampo #canons"),
-		canonsSelect: document.querySelector("#configCons #configsDeCampo #canons select"),
-		rolesIglSector: document.querySelector("#configCons #configsDeCampo #rolesIglesia"),
-		rolesIglesiaSelect: document.querySelector("#configCons #configsDeCampo #rolesIglesia select"),
-		mostrarSiempre: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiempre .input"),
 		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de Productos
@@ -114,15 +99,12 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-
+pp
 	// Eventos
 	DOM.cuerpo.addEventListener("change", async (e) => {
 		// Variables
 		let clickEnFiltrosPers = e.target.name == "configCabecera";
 		elegibles = {};
-
-		// Novedades en el Filtro Personalizado
-		if (clickEnFiltrosPers) await configCabecera.impactosDeFiltroPers();
 
 		// Impacto en Encabezado y Filtros
 		encabFiltros.impactosDeLayout();
