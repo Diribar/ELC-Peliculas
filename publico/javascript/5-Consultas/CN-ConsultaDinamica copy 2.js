@@ -58,6 +58,77 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let encabFiltros = {
+		// Impactos de layout
+		impactosDeLayout: function () {
+			// Asigna valor a las variables
+			const SI = !!DOM.layout_idSelect.value;
+			varias.layout = SI ? varias.cn_layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
+			elegibles.codigo = SI ? varias.layout.codigo : null;
+			varias.bhr = SI ? varias.layout.bhr : null;
+			if (SI) elegibles.layout_id = DOM.layout_idSelect.value;
+
+			// Siguiente rutina
+			this.impactosEnDeOrden();
+
+			// Fin
+			return;
+		},
+		// Impactos en/de orden_id
+		impactosEnDeOrden: function () {
+			// IMPACTOS EN - Oculta/Muestra las opciones que corresponden
+			const checked = document.querySelector("#encabezado select[name='orden_id'] option:checked");
+			varias.opcionesOrdenBD.forEach((opcion, i) => {
+				// Acciones si no existe 'layout' o la opción tiene un código distinto al de layout
+				if (!varias.layout || opcion.codigo != varias.layout.codigo) {
+					// 1. Oculta la opción
+					DOM.opcionesOrdenVista[i].classList.add("ocultar");
+					// 2. La 'des-selecciona'
+					if (DOM.opcionesOrdenVista[i] == checked) DOM.orden_idSelect.value = "";
+				}
+				// En caso contrario, muestra la opción
+				else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
+			});
+
+			// IMPACTOS DE
+			if (DOM.orden_idSelect.value) elegibles.orden_id = DOM.orden_idSelect.value;
+
+			this.impactosEnDeAscDes();
+
+			// Fin
+			return;
+		},
+		impactosEnDeAscDes: function () {
+			// Variables
+			const orden = DOM.orden_idSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_idSelect.value) : null;
+
+			// IMPACTOS EN
+			const SI = !DOM.orden_idSelect.value || orden.ascDes != "ascDes";
+			SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
+			SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
+			if (SI && DOM.orden_idSelect.value) elegibles.ascDes = orden.ascDes;
+			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.ascDes = input.value;
+
+			// IMPACTOS DE - Sector 'OK'
+			elegibles.ascDes ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
+
+			this.mostrarOcultar();
+			this.impactosDeCFC();
+
+			// Fin
+			return;
+		},
+		mostrarOcultar: () => {
+			const SI = apoyo.condicionesMinimas();
+
+			// Muestra/Oculta sectores
+			SI ? DOM.camposTitulo.classList.remove("ocultar") : DOM.camposTitulo.classList.add("ocultar");
+			SI ? DOM.camposNav.classList.remove("ocultar") : DOM.camposNav.classList.add("ocultar");
+			SI ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
+			SI && varias.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+
+			// Fin
+			return;
+		},
 		impactosDeCFC: function () {
 			// IMPACTOS DE
 			varias.cfc = DOM.cfcSelect.value ? DOM.cfcSelect.value : "";
