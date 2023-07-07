@@ -54,8 +54,6 @@ window.addEventListener("load", async () => {
 	};
 	let elegibles = {};
 
-	// Obtiene tabla de layouts y ordenes
-
 	// Funciones
 	let encabFiltros = {
 		// Impactos de layout
