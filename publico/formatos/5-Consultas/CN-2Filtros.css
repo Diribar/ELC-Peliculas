@@ -26,20 +26,20 @@
 /* Filtros Campos - Select e Input */
 #configsDeCampo .pref {padding: 7.5px 20px;}
 #configsDeCampo .pref#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
-#configsDeCampo :is(select, input) {width: 100%;}
+#configsDeCampo .pref :is(select, input) {width: 100%;}
 
-/* Filtros - Campos - Select */
-#configCons .pref select option {background: snow; color: var(--azul-oscuro);}
-#configCons .pref select option[value=""] {display: block; font-style: italic;}
+/* Filtros Campos - Select */
+#configsDeCampo .pref select option {background: snow; color: var(--azul-oscuro);}
+#configsDeCampo .pref select option[value=""] {display: block; font-style: italic;}
 
 /* Filtros - Búsqueda */
-#configCons #configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#configCons #configsDeCampo #palabrasClave input {padding: 0px 4px; }
-#configCons #configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+#configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
+#configsDeCampo #palabrasClave input {padding: 0px 4px; }
+#configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#configCons #configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
 
 /* Fondo verde a los elegibles elegidos */
-#configCons #configsDeCampo .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
+#configsDeCampo .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
