@@ -44,29 +44,6 @@ window.addEventListener("load", async () => {
 	let v = {layoutsBD, ordenesBD};
 	v = {...v, ...(await actualiza.valoresInicialesDeObjetoV({v, DOM}))};
 
-	// Eventos - Botonera
-	DOM.iconos.forEach((icono, i) => {
-		icono.addEventListener("click", (e) => {
-			// Si el ícono está inactivo, interrumpe la función
-			if (e.target.className.includes("inactivo")) return;
-
-			// Acciones para cada caso
-			if (e.target.id == DOM.nuevo.id) {
-				// Variables
-				DOM.configNuevaNombre.value = "";
-				v.nombreOK = false;
-				// Clases
-				DOM.configNuevaNombre.className.includes("nuevo")
-					? DOM.configNuevaNombre.classList.remove("nuevo") // Acciones para 'off'
-					: DOM.configNuevaNombre.classList.add("nuevo"); // Acciones para 'on'
-			}
-
-			// Fin
-			actualiza.botoneraActivaInactiva({v, DOM});
-			return;
-		});
-	});
-
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("change", async (e) => {
 		// Variables
@@ -98,6 +75,29 @@ window.addEventListener("load", async () => {
 
 		// Fin
 		return;
+	});
+
+	// Eventos - Botonera
+	DOM.iconos.forEach((icono, i) => {
+		icono.addEventListener("click", (e) => {
+			// Si el ícono está inactivo, interrumpe la función
+			if (e.target.className.includes("inactivo")) return;
+
+			// Acciones para cada caso
+			if (e.target.id == DOM.nuevo.id) {
+				// Variables
+				DOM.configNuevaNombre.value = "";
+				v.nombreOK = false;
+				// Clases
+				DOM.configNuevaNombre.className.includes("nuevo")
+					? DOM.configNuevaNombre.classList.remove("nuevo") // Acciones para 'off'
+					: DOM.configNuevaNombre.classList.add("nuevo"); // Acciones para 'on'
+			}
+
+			// Fin
+			actualiza.botoneraActivaInactiva({v, DOM});
+			return;
+		});
 	});
 
 	// Start-up

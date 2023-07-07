@@ -6,61 +6,40 @@
 #configCons * {font-size: 1rem;}
 #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
-/* Filtros Personalizados */
+/* Filtros Cabecera */
 #configCons #configDeCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
 #configCons #configDeCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
-/* Filtros Personalizados - Input */
+/* Filtros Cabecera - Nuevo Nombre */
 #configDeCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
 #configDeCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
-/* Filtros Personalizados - Select */
+/* Filtros Cabecera - Nombre Actual */
 #configDeCabecera select {font-weight: bold;}
 #configDeCabecera #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 #configDeCabecera #iconos i {cursor: pointer; color: snow;}
 
-/* Filtros Campos - Filtros para enfocar tu búqueda */
-#configCons #configsDeCampo div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
-
-/* Filtros - Campos - General */
+/* Filtros Campos */
 #configCons #configsDeCampo {background: var(--gris-claro);}
 #configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
 #configCons #configsDeCampo nav > * {order: 2;}
 #configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed;}
-#configCons #configsDeCampo .bhrSI {display: none;}
 
 /* Filtros Campos - Select e Input */
-#configCons #configsDeCampo .filtro {padding: 7.5px 20px;}
-#configCons #configsDeCampo .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
-#configCons .filtro :is(select, input) {width: 100%;}
+#configsDeCampo .pref {padding: 7.5px 20px;}
+#configsDeCampo .pref#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
+#configsDeCampo .pref :is(select, input) {width: 100%;}
 
-/* Filtros - Campos - Select */
-#configCons .filtro select option {background: snow; color: var(--azul-oscuro);}
-#configCons .filtro select option[value=""] {display: block; font-style: italic;}
-
-/* Filtros - Campos - Checkbox */
-#configCons .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
-#configCons .filtro.checkbox #labelInput * {line-height: 0;}
-#configCons .filtro.checkbox #label-inputs label {margin-left: 4px;}
-#configCons .filtro.checkbox #label-inputs input {margin: 0 2px;}
-#configCons .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
-#configCons .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
+/* Filtros Campos - Select */
+#configsDeCampo .pref select option {background: snow; color: var(--azul-oscuro);}
+#configsDeCampo .pref select option[value=""] {display: block; font-style: italic;}
 
 /* Filtros - Búsqueda */
-#configCons #configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#configCons #configsDeCampo #palabrasClave input {padding: 0px 4px; }
-#configCons #configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+#configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
+#configsDeCampo #palabrasClave input {padding: 0px 4px; }
+#configsDeCampo #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
-/* Oculta sectores según corresponda */
-#configCons #configsDeCampo :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#configCons #configsDeCampo .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
-#configCons #configsDeCampo :is(#palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
 
 /* Fondo verde a los elegibles elegidos */
-#configCons #configsDeCampo .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
-
-
-/* Sin uso actualmente */
-#configCons #configsDeCampo .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
-#configCons #configsDeCampo .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
-
+#configsDeCampo .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
