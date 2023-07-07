@@ -70,7 +70,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambio la configuración
 		if (campoNombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const existe = await verifica.configCons_id({configCons_id: campoValor, v, DOM});
+			const existe = await verifica.configCons_id({v, DOM});
 			if (!existe) return;
 
 			// Más acciones
@@ -78,7 +78,9 @@ window.addEventListener("load", async () => {
 			guardaEnBD.actualizaConfigCons_id(v.configCons_id);
 			actualiza.botoneraActivaInactiva({v, DOM});
 			await actualiza.statusInicialCampos({configCons_id: v.configCons_id, DOM});
-			actualiza.comencemosVisible(DOM);
+			actualiza.cartelComencemosVisible(DOM);
+			resultados.obtiene()
+			actualiza.contador()
 		}
 
 		// Fin

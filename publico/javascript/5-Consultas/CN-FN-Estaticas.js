@@ -30,7 +30,7 @@ let actualiza = {
 		v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
 		// Fin
-		return
+		return;
 	},
 	botoneraActivaInactiva: ({v, DOM}) => {
 		// Variables
@@ -79,12 +79,18 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	comencemosVisible:(DOM)=>{
+	cartelComencemosVisible: (DOM) => {
 		DOM.comencemos.classList.remove("ocultar");
-		return
+		return;
 	},
-	contador: {},
-	nombreEnVista: {},
+	contador: () => {
+		// Fin
+		return;
+	},
+	agregaOptionAlSelect: () => {
+		// Fin
+		return;
+	},
 };
 let guardaEnBD = {
 	actualizaConfigCons_id: (configCons_id) => {
@@ -107,9 +113,11 @@ let guardaEnBD = {
 	},
 };
 let verifica = {
-	configCons_id: async ({configCons_id, v, DOM}) => {
+	configCons_id: async ({v, DOM}) => {
 		// Variables
-		configCons_id = Number(configCons_id);
+		const configCons_id = Number(DOM.configCons_id.value);
+
+		// Obtiene los registros posibles de configuración para el usuario
 		const configsCons_id = await obtiene
 			.opcionesDeConfigDeCabecera()
 			.then((n) => [...n.propios.map((m) => m.id), ...n.elc.map((m) => m.id)]);
@@ -124,7 +132,11 @@ let verifica = {
 		return existe;
 	},
 };
-
-let resultados = {};
+let resultados = {
+	obtiene: () => {
+		// Fin
+		return;
+	},
+};
 
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
