@@ -40,9 +40,7 @@ window.addEventListener("load", async () => {
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
-	const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
-	let v = {layoutsBD, ordenesBD};
-	v = {...v, ...(await actualiza.valoresInicialesDeObjetoV({v, DOM}))};
+	let v = await obtiene.opcionesDeLayoutMasOrden();
 
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("change", async (e) => {
@@ -117,6 +115,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
+	await actualiza.valoresInicialesDeObjetoV({v, DOM});
 	actualizaConfigCons.consolidado({v, DOM});
 	actualiza.botoneraActivaInactiva({v, DOM});
 });

@@ -41,10 +41,10 @@ module.exports = {
 			return res.json(configsDeCabecera);
 		},
 		opcionesDeLayoutMasOrden: async (req, res) => {
-			return res.json({cn_layouts, cn_ordenes});
+			return res.json({layoutsBD: cn_layouts, ordenesBD: cn_ordenes});
 		},
 	},
-	guarda: {
+	cambiosEnBD: {
 		configCons_id: (req, res) => {
 			// Variables
 			const configCons_id = req.query.configCons_id;
@@ -105,7 +105,7 @@ module.exports = {
 			// 2.	Tabla filtrosCabecera: se elimina el registro.
 
 			// Fin
-			return;
+			return res.json();
 		},
 	},
 	resultados: {
