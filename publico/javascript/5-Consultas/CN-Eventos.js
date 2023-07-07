@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 		}
 		// Nombre de configuración, Palabras clace, Campos
 		else {
-			if (campoNombre == "nombreConfigNueva") {
+			if (campoNombre == "nombreNuevo") {
 
 			}
 			// Palabras clave
