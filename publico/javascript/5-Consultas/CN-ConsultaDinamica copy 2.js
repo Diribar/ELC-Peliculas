@@ -9,13 +9,13 @@ window.addEventListener("load", async () => {
 		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtro personalizado
-		configCabecera: document.querySelector("#configCabecera select[name='configCabecera']"),
-		nuevo: document.querySelector("#configCabecera i#nuevo"),
-		reinicio: document.querySelector("#configCabecera i#reinicio"),
-		actualiza: document.querySelector("#configCabecera i#actualiza"),
-		modificaNombre: document.querySelector("#configCabecera i#modificaNombre"),
-		elimina: document.querySelector("#configCabecera i#elimina"),
-		iconos: document.querySelectorAll("#configCabecera #iconos i"),
+		configCabecera: document.querySelector("#configDeCabecera select[name='configCabecera']"),
+		nuevo: document.querySelector("#configDeCabecera i#nuevo"),
+		reinicio: document.querySelector("#configDeCabecera i#reinicio"),
+		actualiza: document.querySelector("#configDeCabecera i#actualiza"),
+		modificaNombre: document.querySelector("#configDeCabecera i#modificaNombre"),
+		elimina: document.querySelector("#configDeCabecera i#elimina"),
+		iconos: document.querySelectorAll("#configDeCabecera #iconos i"),
 
 		// Encabezado
 		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),

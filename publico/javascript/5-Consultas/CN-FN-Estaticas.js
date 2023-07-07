@@ -2,16 +2,16 @@
 
 let estaticas = {
 	obtiene: {
-		layoutsMasOrdenes: () => {
-			const rutaCompleta = ruta + "obtiene-layouts-y-ordenes/";
+		opcionesDeLayoutMasOrden: () => {
+			const rutaCompleta = ruta + "obtiene-las-opciones-de-layout-y-orden/";
 			return fetch(rutaCompleta).then((n) => n.json());
 		},
-		prefsDeCabecera: (configCons_id) => {
-			const rutaCompleta = ruta + "obtiene-las-preferencias-de-cabecera/?configCons_id=";
+		configDeCabecera: (configCons_id) => {
+			const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
 		},
-		prefsDeCampos: (configCons_id) => {
-			const rutaCompleta = ruta + "obtiene-las-preferencias-de-campos/?configCons_id=";
+		configDeCampos: (configCons_id) => {
+			const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
 			return fetch(rutaCompleta + configCons_id).then((n) => n.json());
 		},
 	},
@@ -47,14 +47,15 @@ let estaticas = {
 			// Fin
 			return;
 		},
-		prefsDeCamposEnVista: async ({DOM, prefsDeCampos}) => {
+		configDeCamposEnVista: async ({DOM, configDeCampos}) => {
 			// Actualiza las preferencias simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
-				prefSimple.value = prefsDeCampos[prefSimple.name] ? prefsDeCampos[prefSimple.name] : "";
+				prefSimple.value = configDeCampos[prefSimple.name] ? configDeCampos[prefSimple.name] : "";
 
 			// Actualiza las preferencias 'AscDes'
-			for (let ascDesInput of DOM.ascDesInputs)
-				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
+			const ascDesInputs = DOM.ascDes.querySelectorAll("input");
+			for (let ascDesInput of ascDesInputs)
+				ascDesInput.checked = configDeCampos.ascDes && ascDesInput.value == configDeCampos.ascDes;
 
 			// Fin
 			return;

@@ -14,15 +14,15 @@ window.addEventListener("load", async () => {
 		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
 		// Filtro Cabecera - Nombre
-		configCons_id: document.querySelector("#configCabecera select[name='configCons_id']"),
-		configNuevaNombre: document.querySelector("#configCabecera #configNueva input[name='nombre']"),
+		configNuevaNombre: document.querySelector("#configDeCabecera #configNueva input[name='nombre']"),
+		configCons_id: document.querySelector("#configDeCabecera select[name='configCons_id']"),
 		// Filtro Cabecera - Íconos de la botonera
-		nuevo: document.querySelector("#configCabecera i#nuevo"),
-		deshacer: document.querySelector("#configCabecera i#deshacer"),
-		guardar: document.querySelector("#configCabecera i#guardar"),
-		edicion: document.querySelector("#configCabecera i#edicion"),
-		eliminar: document.querySelector("#configCabecera i#eliminar"),
-		iconos: document.querySelectorAll("#configCabecera #iconos i"),
+		nuevo: document.querySelector("#configDeCabecera i#nuevo"),
+		deshacer: document.querySelector("#configDeCabecera i#deshacer"),
+		guardar: document.querySelector("#configDeCabecera i#guardar"),
+		edicion: document.querySelector("#configDeCabecera i#edicion"),
+		eliminar: document.querySelector("#configDeCabecera i#eliminar"),
+		iconos: document.querySelectorAll("#configDeCabecera #iconos i"),
 
 		// Campos
 		mostrarSiEncabOK: document.querySelectorAll("#configCons #configsDeCampo .mostrarSiEncabOK"),
@@ -67,6 +67,11 @@ window.addEventListener("load", async () => {
 			return;
 		});
 	});
+
+	// Eventos - Cambio de Configuración
+	configCons_id.addEventListener("change",()=>{
+		
+	})
 
 	// Start-up
 	impactos.configDinamica({v, DOM});

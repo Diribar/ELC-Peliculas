@@ -8,20 +8,20 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// Startup
 	obtiene: {
-		layoutsMasOrdenes: async (req, res) => {
+		opcionesDeLayoutMasOrden: async (req, res) => {
 			return res.json({cn_layouts, cn_ordenes});
 		},
-		prefsDeCabecera: async (req, res) => {
+		configDeCabecera: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
 
 			// Obtiene las cabeceras
-			const prefsDeCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
+			const configDeCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
 
 			// Fin
-			return res.json(prefsDeCabecera);
+			return res.json(configDeCabecera);
 		},
-		prefsDeCampos: async (req, res) => {
+		configDeCampos: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
 			let preferencias = {};

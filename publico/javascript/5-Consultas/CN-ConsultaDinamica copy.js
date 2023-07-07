@@ -2,9 +2,6 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
-		// Formulario General
-		cuerpo: document.querySelector("#cuerpo"),
-		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtros
 		camposTitulo: document.querySelector("#configCons #configsDeCampo div:has(h2)"),

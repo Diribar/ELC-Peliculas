@@ -88,8 +88,10 @@ let impactos = {
 		return;
 	},
 	muestraOculta: (v, DOM) => {
-		// Muestra/Oculta sectores
+		// Variables
 		const mostrar = v.layout_id && v.orden_id && v.ascDes;
+
+		// Muestra/Oculta sectores
 		for (let div of DOM.mostrarSiEncabOK) mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
@@ -100,6 +102,7 @@ let impactos = {
 		return;
 	},
 	deCFC: function (v, DOM) {
+		return
 		// Impacto en configCons:	layout_id y bhr
 		// Impactos en v:			layout_id y entidad
 
