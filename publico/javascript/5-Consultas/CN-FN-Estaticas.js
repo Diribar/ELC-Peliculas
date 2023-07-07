@@ -20,12 +20,13 @@ let obtiene = {
 };
 let actualiza = {
 	valoresIniciales: async ({v, DOM}) => {
-		// Variables
+		// Variables autónomas
 		v.hayCambios = false;
 		v.nombreOK = false;
 		v.comencemos = true;
 		v.configCons_id = DOM.configCons_id.value;
 
+		// Variables que dependen de otras variables 'v'
 		v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
 		v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
