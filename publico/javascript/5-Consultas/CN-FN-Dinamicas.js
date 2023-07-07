@@ -93,10 +93,11 @@ let actualizaConfigCons = {
 	},
 	muestraOculta: (v, DOM) => {
 		// Variables
-		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!v.ascDes;
+		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!configCons.ascDes;
+		// console.log(!!configCons.layout_id, !!configCons.orden_id, !!configCons.ascDes);
 
 		// Muestra/Oculta sectores
-		for (let div of DOM.mostrarSiEncabOK) v.mostrar ? div.classList.remove("ocultar") : div.classList.add("ocultar");
+		for (let sector of DOM.mostrarSiEncabOK) v.mostrar ? sector.classList.remove("ocultar") : sector.classList.add("ocultar");
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
@@ -118,8 +119,8 @@ let actualizaConfigCons = {
 	bhr: function (v, DOM) {
 		// Impacto en configCons: bhr
 
-		// Si bhr="SI", se oculta
-		configCons.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
+		// Si bhr ya está contestado, se oculta
+		configCons.bhr ? DOM.bhr.parentNode.classList.add("ocultar") : DOM.bhr.parentNode.classList.remove("ocultar");
 
 		// Actualiza el valor de 'bhr'
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhrSelect.value;
@@ -132,14 +133,15 @@ let actualizaConfigCons = {
 	apMar: function (v, DOM) {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si ocurrió == 'SI'
-		// Sólo se muestra el sector si CFC='SI' y epocas='pst'
-		if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
-		else DOM.apMarSector.classList.add("ocultarApMar");
+		// Variables
+		const seMuestra =
+			configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocas || configCons.epocas == "pst");
+
+		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocas || epocas='pst')
+		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
 
 		// IMPACTOS DE
-		const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
-		if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
+		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
 		this.enDeCanonsMasRolesIglesia(v, DOM);
 
