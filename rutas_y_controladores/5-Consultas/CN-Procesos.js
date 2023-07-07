@@ -6,20 +6,15 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
 	configsDeCabecera: async (userID) => {
-		// Variables
-		let propios = [];
-
 		// Obtiene los filtros personalizados propios y de ELC
-		if (userID) propios = BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id: userID});
-		let elc = BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id: null});
-		[propios, elc] = await Promise.all([propios, elc]);
+		const usuario_id = {[Op.or]: [null, userID]};
+		const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
 
 		// Los ordena alfabéticamente
-		if (propios.length > 1) propios.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
-		if (elc.length > 1) elc.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+		configsDeCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
 
 		// Fin
-		return {propios, elc};
+		return configsDeCabecera;
 	},
 	configsConsCampos: function () {
 		// Variable 'filtros'
@@ -41,7 +36,9 @@ module.exports = {
 		}
 
 		// Quita el método de "sin preferencia"
-		configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
+		configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter(
+			(n) => n.id != sinPreferencia.id
+		);
 
 		// Fin
 		return configsConsCampos;

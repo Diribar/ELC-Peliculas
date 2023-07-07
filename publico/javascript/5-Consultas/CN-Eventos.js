@@ -105,7 +105,7 @@ window.addEventListener("load", async () => {
 				if (!existe || !v.filtroPropio) return;
 
 				// Acciones si existe
-				cambiosEnBD.eliminaConfigCons(v.configCons_id);
+				await cambiosEnBD.eliminaConfigCons(DOM);
 				await cambioDeConfig_id({v, DOM});
 				await cambioDeCampos({v, DOM});
 			}

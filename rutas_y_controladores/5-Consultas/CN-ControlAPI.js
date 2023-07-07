@@ -30,7 +30,7 @@ module.exports = {
 			// Fin
 			return res.json(preferencias);
 		},
-		opcionesDeConfigDeCabecera: async (req, res) => {
+		configsDeCabecera: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
@@ -80,8 +80,7 @@ module.exports = {
 			const {configCons_id} = configCons;
 
 			// Acciones para edición
-			if (configCons.edicion)
-				BD_genericas.actualizaPorId("configsCons", {id: configCons_id}, {nombre: configCons.nombre});
+			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", {id: configCons_id}, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada
@@ -100,6 +99,13 @@ module.exports = {
 
 			// Fin
 			return res.json();
+		},
+		eliminaConfigCons: async (req, res) => {
+			// 1.	Tabla filtrosCampos: se eliminan los registros vinculados al filtro personalizado
+			// 2.	Tabla filtrosCabecera: se elimina el registro.
+
+			// Fin
+			return;
 		},
 	},
 	resultados: {

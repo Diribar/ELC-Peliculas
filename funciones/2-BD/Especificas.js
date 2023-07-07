@@ -213,7 +213,7 @@ module.exports = {
 	activaSolapam: (IDs_solapam) => {
 		// Variables
 		const datos = {solapamiento: true};
-		const condicion = {id: {[Op.or]: IDs_solapam}};
+		const condicion = {id: IDs_solapam};
 
 		// Fin
 		return db.epocasDelAno.update(datos, {where: condicion});

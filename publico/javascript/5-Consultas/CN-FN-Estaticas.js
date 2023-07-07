@@ -1,8 +1,8 @@
 "use strict";
 
 let obtiene = {
-	opcionesDeConfigDeCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-las-opciones-de-config-de-cabecera";
+	configsDeCabecera: () => {
+		const rutaCompleta = ruta + "obtiene-las-configs-posibles-de-cabecera";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	opcionesDeLayoutMasOrden: () => {
@@ -118,14 +118,27 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	eliminaConfigCons: (configCons_id) => {
+	eliminaConfigCons: async (DOM) => {
+		// Elimina la configuración
+		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?configCons_id=";
+		configCons_id = DOM.configCons_id.value;
+		await fetch(rutaCompleta + configCons_id);
 
-		// 1.	Tabla filtrosCampos: se eliminan los registros vinculados al filtro personalizado
-		// 2.	Tabla filtrosCabecera: se elimina el registro.
-		// const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
-		// v = {...v, layoutsBD, ordenesBD};
-		// actualiza el select con el id de la configCons más reciente
-// Fin
+		// Oculta la opción en la vista
+		opciones = DOM.configCons_id.querySelectorAll("option");
+		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add(ocultar);
+
+		// Obtiene el id de la configCons más reciente
+		let configsDeCabecera = await obtiene
+			.configsDeCabecera()
+			.then((n) => n.sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1)));
+		let propios = configsDeCabecera.filter((n) => n.id);
+		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
+
+		// Actualiza el select con el id
+		DOM.configCons_id.value = configCons_id;
+
+		// Fin
 		return;
 	},
 };
@@ -135,9 +148,7 @@ let verifica = {
 		const configCons_id = Number(DOM.configCons_id.value);
 
 		// Obtiene los registros posibles de configuración para el usuario
-		const configsCons_id = await obtiene
-			.opcionesDeConfigDeCabecera()
-			.then((n) => [...n.propios.map((m) => m.id), ...n.elc.map((m) => m.id)]);
+		const configsCons_id = await obtiene.configsDeCabecera().then((n) => n.map((m) => m.id));
 
 		// Averigua si el valor está entre los valores posibles
 		const existe = configsCons_id.includes(configCons_id);
