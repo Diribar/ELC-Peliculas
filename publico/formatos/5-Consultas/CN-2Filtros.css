@@ -22,7 +22,6 @@
 #configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
 #configCons #configsDeCampo nav > * {order: 2;}
 #configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed;}
-#configCons #configsDeCampo .bhrSI {display: none;}
 
 /* Filtros Campos - Select e Input */
 #configsDeCampo .filtro {padding: 7.5px 20px;}
