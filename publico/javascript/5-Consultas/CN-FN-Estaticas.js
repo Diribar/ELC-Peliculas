@@ -118,14 +118,15 @@ let cambiosEnBD = {
 		let configCons_id = DOM.configCons_id.value;
 		await fetch(rutaCompleta + configCons_id);
 
+		// Actualiza la variable
+		v.configsDeCabecera = await obtiene.configsDeCabecera();
+
 		// Oculta la opción en la vista
 		const opciones = DOM.configCons_id.querySelectorAll("option");
 		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
-		const configsDeCabecera = await obtiene
-			.configsDeCabecera()
-			.then((n) => n.sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1)));
+		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
 		const propios = configsDeCabecera.filter((n) => n.usuario_id);
 		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
 
@@ -142,7 +143,7 @@ let verifica = {
 		const configCons_id = Number(DOM.configCons_id.value);
 
 		// Obtiene los registros posibles de configuración para el usuario
-		const configsCons_id = await obtiene.configsDeCabecera().then((n) => n.map((m) => m.id));
+		const configsCons_id = [...v.configsDeCabecera].map((m) => m.id);
 
 		// Averigua si el valor está entre los valores posibles
 		const existe = configsCons_id.includes(configCons_id);

@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
-	let v = await obtiene.opcionesDeLayoutMasOrden();
+	let v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
 
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("input", async (e) => {
@@ -71,7 +71,8 @@ window.addEventListener("load", async () => {
 
 				// Valida los caracteres ingresados
 				const nombre = DOM.configNuevaNombre.value;
-				const errores = nombre.length ? basico.validaCaracteres(nombre) : true;
+				const errores =
+					!nombre.length || !!basico.validaCaracteres(nombre) || !!v.configsDeCabecera.find((n) => n.nombre == nombre);
 
 				// Muestra/Oculta el ícono de confirmación
 				v.nombreOK = !errores;
