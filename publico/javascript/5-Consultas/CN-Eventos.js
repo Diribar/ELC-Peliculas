@@ -94,6 +94,8 @@ window.addEventListener("load", async () => {
 
 			// Cambios de campo
 			v.hayCambiosDeCampo = true;
+			DOM.configNuevaNombre.classList.remove("nuevo");
+			DOM.configNuevaNombre.classList.remove("edicion");
 		}
 
 		// Funciones
@@ -120,11 +122,8 @@ window.addEventListener("load", async () => {
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
 
 				// Alterna la clase 'nuevo' o 'edicion' en el input
-				nombre == "nuevo"
-					? DOM.configNuevaNombre.classList.toggle("nuevo")
-					: nombre == "edicion"
-					? DOM.configNuevaNombre.classList.toggle("edicion")
-					: null;
+				DOM.configNuevaNombre.classList.toggle(nombre);
+
 			} else if (nombre == "deshacer") {
 				// Funciones
 				await actualiza.valoresInicialesDeObjetoV({v, DOM});
