@@ -135,7 +135,7 @@ window.addEventListener("load", async () => {
 					configCons.nombre = DOM.configNuevaNombre.value;
 
 					// Si es una configuración nueva, agrega la cabecera
-					if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion({v, configCons});
+					if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
 
 					// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
 					if (v.edicion) configCons.edicion = true;

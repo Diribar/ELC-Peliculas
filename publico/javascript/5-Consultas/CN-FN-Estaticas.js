@@ -104,7 +104,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	creaUnaConfiguracion: async ({v, configCons}) => {
+	creaUnaConfiguracion: async () => {
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
 		v.configCons_id = await fetch(rutaCompleta + configCons).then((n) => n.json());
@@ -117,7 +117,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	guardaUnaConfiguracion: ({v, configCons}) => {
+	guardaUnaConfiguracion: () => {
 		// Variables
 		configCons.id = v.configCons_id;
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
