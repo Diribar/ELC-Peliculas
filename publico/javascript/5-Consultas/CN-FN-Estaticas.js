@@ -125,7 +125,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + configCons_id);
 
 		// Oculta la opción en la vista
-		opciones = DOM.configCons_id.querySelectorAll("option");
+		const opciones = DOM.configCons_id.querySelectorAll("option");
 		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
