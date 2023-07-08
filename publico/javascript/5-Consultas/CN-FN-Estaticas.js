@@ -143,7 +143,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + JSON.stringify(configCons));
 
 		// Cambia el texto en el select
-		if (configCons.nombre) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
+		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
 
 		// Limpia
 		delete configCons.edicion, configCons.nombre, configCons.id;
