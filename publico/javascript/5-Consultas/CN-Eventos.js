@@ -29,6 +29,7 @@ window.addEventListener("load", async () => {
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
+		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
@@ -69,8 +70,8 @@ window.addEventListener("load", async () => {
 
 				// Muestra/Oculta el ícono de confirmación
 				const nombre = DOM.configNuevaNombre.value;
-				v.nombreOK =
-					nombre.length && !basico.validaCaracteres(nombre) && !v.configsDeCabecera.find((n) => n.nombre == nombre);
+				const nombres = v.configsDeCabecera.map((n) => n.nombre);
+				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
 				actualiza.botoneraActivaInactiva();
 
 				// Fin
@@ -114,6 +115,9 @@ window.addEventListener("load", async () => {
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false;
+
+				// Pone el cursor en el input
+				DOM.configNuevaNombre.focus();
 
 				// Valor en el input
 				DOM.configNuevaNombre.value =
