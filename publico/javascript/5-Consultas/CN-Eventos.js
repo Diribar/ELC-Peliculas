@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		configCons:document.querySelector("#configCons"),
+		configCons: document.querySelector("#configCons"),
 		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
 		// Zona de productos
@@ -23,10 +23,13 @@ window.addEventListener("load", async () => {
 		ascDes: DOM.encabezado.querySelector("#ascDes"),
 		contador_de_prods: DOM.encabezado.querySelector("#derecha #contador_de_prods"),
 
+		// Configuracion
+		iconos: DOM.configCons.querySelectorAll("i"),
+
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
-		iconos: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
+		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
 		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
@@ -38,7 +41,7 @@ window.addEventListener("load", async () => {
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
 	};
-	for (let icono of DOM.iconos) DOM[icono.id] = icono;
+	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
@@ -107,42 +110,44 @@ window.addEventListener("load", async () => {
 	});
 
 	// Eventos - Botonera
-	DOM.cuerpo.addEventListener("click", async (e) => {
+
+	DOM.iconos.forEach((icono, i) => {
+		icono.addEventListener("click", async (e) => {
+			console.log(e.target.id);
 			// Si el ícono está inactivo, interrumpe la función
 			if (e.target.className.includes("inactivo")) return;
 			const nombre = e.target.id;
-
+	
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false;
-
+	
 				// Valor en el input
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
-
+	
 				// Alterna la clase 'nuevo' o 'edicion' en el input
 				DOM.configNuevaNombre.classList.toggle(nombre);
-
 			} else if (nombre == "deshacer") {
 				// Funciones
 				await actualiza.valoresInicialesDeObjetoV({v, DOM});
 				await actualiza.statusInicialCampos({v, DOM});
 				await cambioDeCampos({v, DOM});
-
+	
 				// Clases
 			} else if (nombre == "guardar") {
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id({v, DOM});
 				if (!existe || !v.filtroPropio) return;
-
+	
 				// Acciones si existe
 				await cambiosEnBD.eliminaConfigCons(DOM);
 				await cambioDeConfig_id({v, DOM});
 				await cambioDeCampos({v, DOM});
 			}
-
+	
 			// Fin
 			actualiza.botoneraActivaInactiva({v, DOM});
 			return;
