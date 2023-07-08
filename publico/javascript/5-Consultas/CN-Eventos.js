@@ -29,6 +29,7 @@ window.addEventListener("load", async () => {
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
+		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
@@ -51,7 +52,6 @@ window.addEventListener("load", async () => {
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
-		const campoValor = e.target.value;
 
 		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {
@@ -70,8 +70,8 @@ window.addEventListener("load", async () => {
 
 				// Muestra/Oculta el ícono de confirmación
 				const nombre = DOM.configNuevaNombre.value;
-				v.nombreOK =
-					nombre.length && !basico.validaCaracteres(nombre) && !v.configsDeCabecera.find((n) => n.nombre == nombre);
+				const nombres = v.configsDeCabecera.map((n) => n.nombre);
+				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
 				actualiza.botoneraActivaInactiva();
 
 				// Fin
@@ -116,6 +116,9 @@ window.addEventListener("load", async () => {
 				// Variables
 				v.nombreOK = false;
 
+				// Pone el cursor en el input
+				DOM.configNuevaNombre.focus();
+
 				// Valor en el input
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
@@ -141,7 +144,11 @@ window.addEventListener("load", async () => {
 					if (v.edicion) configCons.edicion = true;
 
 					// Guarda la información en la base de datos
-					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion(configCons);
+					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
+
+					// Quita la clase
+					const clase = v.nuevo ? "nuevo" : "edicion";
+					DOM.configNuevaNombre.classList.remove(clase);
 				} else true;
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función

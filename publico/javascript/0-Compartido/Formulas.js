@@ -59,10 +59,13 @@ let amplio = {
 };
 
 let basico = {
-	restringeCaracteres: (e) => {
+	restringeCaracteres: (e, respetarMinusc) => {
+		// Primeras tareas
+		amplio.restringeCaracteres(e, respetarMinusc)
+
 		// Reemplaza en la variable
 		let valor = e.target.value;
-		valor = valor.replace(/[^a-záéíóúüñ ]+$/gi, "");
+		valor = valor.replace(/[^a-záéíóúüñ0-9 ]+$/gi, "");
 
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
@@ -71,7 +74,7 @@ let basico = {
 		return;
 	},
 	validaCaracteres: (dato) => {
-		let formato = /^[a-záéíóúüñ ]+$/i;
+		let formato = /^[a-záéíóúüñ0-9 ]+$/i;
 		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };

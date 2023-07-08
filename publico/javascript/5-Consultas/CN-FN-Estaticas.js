@@ -9,13 +9,13 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-las-opciones-de-layout-y-orden/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	configDeCabecera: (configCons_id) => {
+	configDeCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
-		return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configDeCampos: (configCons_id) => {
+	configDeCampos: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
-		return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
 let actualiza = {
@@ -39,7 +39,7 @@ let actualiza = {
 		const claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
 		v.nuevo = claseNuevo && v.nombreOK;
 		v.edicion = claseEdicion && v.nombreOK && v.filtroPropio;
-		v.propio = v.filtroPropio && v.hayCambiosDeCampo;
+		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
 		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
@@ -97,33 +97,51 @@ let actualiza = {
 	},
 };
 let cambiosEnBD = {
-	configCons_id: (configCons_id) => {
+	configCons_id: () => {
 		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
-		if (configCons_id) fetch(rutaCompleta + configCons_id);
+		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
 
 		// Fin
 		return;
 	},
-	creaUnaConfiguracion: async () => {
+	creaUnaConfiguracion: async function () {
+		// Variables
+		const nombre = configCons.nombre;
+		const opciones = DOM.configsConsPropios.children;
+
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		v.configCons_id = await fetch(rutaCompleta + configCons).then((n) => n.json());
+		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 		delete configCons.nombre;
 
-		// Des-selecciona la opción actual
+		// Cambios en la BD
+		v.configsDeCabecera = await obtiene.configsDeCabecera(); // Actualiza las configsDeCabecera posibles para el usuario
+		this.configCons_id()
 
-		// Agrega una opción y la pone como selected
+		// Crea una opción
+		const newOption = new Option(nombre, v.configCons_id);
+		// Obtiene el índice donde ubicarla
+		const nombres = [...Array.from(opciones).map((n) => n.text), nombre];
+		nombres.sort((a, b) => (a < b ? -1 : 1));
+		const indice = nombres.indexOf(nombre);
+		// Agrega la opción
+		indice < opciones.length
+			? DOM.configsConsPropios.insertBefore(newOption, opciones[indice])
+			: DOM.configsConsPropios.appendChild(newOption);
+
+		// La pone como 'selected'
+		DOM.configsConsPropios.children[indice].selected = true;
 
 		// Fin
 		return;
 	},
-	guardaUnaConfiguracion: () => {
+	guardaUnaConfiguracion: async () => {
 		// Variables
 		configCons.id = v.configCons_id;
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 
 		// Guarda los cambios
-		fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		await fetch(rutaCompleta + JSON.stringify(configCons));
 		delete configCons.id;
 
 		// Fin
@@ -138,9 +156,11 @@ let cambiosEnBD = {
 		// Actualiza la variable
 		v.configsDeCabecera = await obtiene.configsDeCabecera();
 
-		// Oculta la opción en la vista
+		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
-		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
+		opciones.forEach((opcion, i) => {
+			if (opcion.value == configCons_id) DOM.configCons_id.remove(i);
+		});
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
