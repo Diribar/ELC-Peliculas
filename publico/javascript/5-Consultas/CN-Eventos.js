@@ -69,13 +69,10 @@ window.addEventListener("load", async () => {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
-				// Valida los caracteres ingresados
-				const nombre = DOM.configNuevaNombre.value;
-				const errores =
-					!nombre.length || !!basico.validaCaracteres(nombre) || !!v.configsDeCabecera.find((n) => n.nombre == nombre);
-
 				// Muestra/Oculta el ícono de confirmación
-				v.nombreOK = !errores;
+				const nombre = DOM.configNuevaNombre.value;
+				v.nombreOK =
+					nombre.length && !basico.validaCaracteres(nombre) && !v.configsDeCabecera.find((n) => n.nombre == nombre);
 				actualiza.botoneraActivaInactiva({v, DOM});
 
 				// Fin
