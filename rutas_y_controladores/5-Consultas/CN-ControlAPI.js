@@ -101,8 +101,13 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfigCons: async (req, res) => {
-			// 1.	Tabla filtrosCampos: se eliminan los registros vinculados al filtro personalizado
-			// 2.	Tabla filtrosCabecera: se elimina el registro.
+			const {configCons_id} = req.query;
+
+			// Se eliminan los registros de campo de la configuración
+			await BD_genericas.eliminaTodosPorCondicion("configsConsCampos",{configCons_id})
+
+			// Se elimina el registro de cabecera de la configuración
+			await BD_genericas.eliminaPorId("configsCons",configCons_id)
 
 			// Fin
 			return res.json();

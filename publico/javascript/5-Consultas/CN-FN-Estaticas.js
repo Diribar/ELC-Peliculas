@@ -38,27 +38,21 @@ let actualiza = {
 		let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
 		let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
 
-		// Si no se cumplen las condiciones mínimas, inactiva todos los botones e interrumpe la función
-		if (!v.mostrar) {
-			for (let icono of DOM.iconos) icono.classList.add("inactivo");
-			return;
-		}
-
 		// Ícono Nuevo
-		!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
 		// Ícono Deshacer
-		!claseNuevo && !claseEdicion && v.hayCambios
+		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambios
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 
 		// Ícono Guardar
-		v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
+		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 
 		// Ícono Edición
-		!claseNuevo && v.filtroPropio && !v.hayCambios
+		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambios
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 
