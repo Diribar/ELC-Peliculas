@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 	});
 	DOM.comentario.addEventListener("input", (e) => {
 		// Validaciones estándar
-		input(e);
+		restringeCaracteres(e);
 
 		// Actualiza el contador
 		let largo = DOM.comentario.value.length;

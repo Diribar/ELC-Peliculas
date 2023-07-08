@@ -16,14 +16,14 @@ let keyPressed = (e) => {
 	// Fin
 	return;
 };
-let input = (e, respetarMinusc) => {
+let restringeCaracteres = (e, respetarMinusc) => {
 	if (e.target.value) {
 		// Variables
 		const localName = e.target.localName;
 		const type = e.target.type;
 		let valor = e.target.value;
 		let posicCursor = e.target.selectionStart;
-	
+
 		// Validaciones
 		if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
 			// Limita el uso del teclado solamente a los caracteres que nos interesan
@@ -31,17 +31,17 @@ let input = (e, respetarMinusc) => {
 				.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
 				.replace(/\t/g, " ") // previene el uso de 'tab'
 				.replace(/\n/g, " ") // previene el uso de 'return'
-				.replace(/ +/g, " ") // previene repetición de espacios
-	
+				.replace(/ +/g, " "); // previene repetición de espacios
+
 			// El primer caracter no puede ser un espacio
 			if (valor.slice(0, 1) == " ") {
 				valor = valor.slice(1);
 				posicCursor--;
 			}
-	
+
 			// Primera letra en mayúscula
 			if (!respetarMinusc) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-	
+
 			// Reemplaza el valor del DOM
 			e.target.value = valor;
 			e.target.selectionEnd = posicCursor;
@@ -51,6 +51,13 @@ let input = (e, respetarMinusc) => {
 	// Fin
 	return;
 };
+let validaCaracteres = {
+	basico: (dato) => {
+		let formato = /^[a-záéíóúüñ ,.'\-]+$/i;
+		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+	},
+};
+
 let desplazamHoriz = () => {
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");

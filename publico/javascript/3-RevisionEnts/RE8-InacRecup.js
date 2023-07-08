@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	});
 	comentario.addEventListener("input", (e) => {
 		// Validaciones estándar
-		input(e);
+		restringeCaracteres(e);
 
 		// Quita caracteres indeseados
 		if (comentario.value) comentario.value = comentario.value.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "").slice(0, 100);

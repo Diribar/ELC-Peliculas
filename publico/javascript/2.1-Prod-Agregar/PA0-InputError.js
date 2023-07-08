@@ -246,7 +246,7 @@ window.addEventListener("load", async () => {
 		const respetarMinus = v.PC;
 
 		// Validaciones estándar
-		input(e, respetarMinus);
+		restringeCaracteres(e, respetarMinus);
 
 		// Validaciones particulares
 		if (v.PC) await PC.particsInput(e);

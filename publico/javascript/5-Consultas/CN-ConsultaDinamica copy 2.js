@@ -44,8 +44,8 @@ window.addEventListener("load", async () => {
 		palabrasClave: document.querySelector("#configCons #configsDeCampo #palabrasClave"),
 
 		// Zona de Productos
-		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
-		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
+		vistaProds: document.querySelector("#zonaDeProds #vistaProds"),
+		listado: document.querySelector("#zonaDeProds #vistaProds #listado"),
 	};
 	let varias = {
 		comencemos: true,

@@ -1,9 +1,9 @@
 /* Zona de productos */
-#encabMasPelis #zona_de_prods {border: red 1px solid;}
+#encabMasPelis #zonaDeProds {border: red 1px solid;}
 
 /* Zona de vista */
-#zona_de_prods #vistaProds {border: green 1px solid; max-width: 700px; width: 100%; height: 500px;}
-#zona_de_prods #vistaProds {display: flex; flex-direction: row; overflow-y: auto;}
+#zonaDeProds #vistaProds {border: green 1px solid; max-width: 700px; width: 100%; height: 500px;}
+#zonaDeProds #vistaProds {display: flex; flex-direction: row; overflow-y: auto;}
 
 /* Cuadro de Resultados */
 #vistaProds #listado {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;}
