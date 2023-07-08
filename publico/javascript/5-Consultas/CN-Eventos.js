@@ -6,8 +6,9 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
-		encabezado: document.querySelector("#encabezado"),
-		configCabecera: document.querySelector("#configDeCabecera"),
+		encabezado: document.querySelector("#encabMasPelis #encabezado"),
+		configCons:document.querySelector("#configCons"),
+		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
 		// Zona de productos
 		zonaProds: document.querySelector("#zonaDeProds"),
@@ -25,7 +26,7 @@ window.addEventListener("load", async () => {
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
-		iconos: DOM.configCabecera.querySelectorAll("#iconos i"),
+		iconos: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
 		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
@@ -106,8 +107,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Eventos - Botonera
-	DOM.iconos.forEach((icono, i) => {
-		icono.addEventListener("click", async (e) => {
+	DOM.cuerpo.addEventListener("click", async (e) => {
 			// Si el ícono está inactivo, interrumpe la función
 			if (e.target.className.includes("inactivo")) return;
 			const nombre = e.target.id;
