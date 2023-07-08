@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variable DOM
-	let DOM = {
+	DOM = {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
@@ -45,14 +45,13 @@ window.addEventListener("load", async () => {
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
-	let v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
+	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
 
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
 		const campoValor = e.target.value;
-		configCons = {};
 
 		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {
@@ -132,6 +131,19 @@ window.addEventListener("load", async () => {
 				await actualiza.statusInicialCampos({v, DOM});
 				await cambioDeCampos({v, DOM});
 			} else if (nombre == "guardar") {
+				if (v.nuevo || v.edicion) {
+					// Obtiene el nuevo nombre
+					configCons.nombre = DOM.configNuevaNombre.value;
+
+					// Si es una configuración nueva, agrega la cabecera
+					if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion({v, configCons});
+
+					// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
+					if (v.edicion) configCons.edicion = true;
+
+					// Guarda la información en la base de datos
+					await cambiosEnBD.guardaUnaConfiguracion(configCons);
+				} else true;
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id({v, DOM});
@@ -158,4 +170,6 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let configCons = {}; // donde se consolida la configuración de la consulta
+let configCons; // donde se consolida la configuración de la consulta
+let DOM; // donde se guarda la info de las partes del documento
+let v; // variables generales

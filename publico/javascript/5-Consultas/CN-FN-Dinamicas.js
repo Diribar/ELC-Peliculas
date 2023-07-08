@@ -2,6 +2,9 @@
 
 let actualizaConfigCons = {
 	consolidado: function ({v, DOM}) {
+		// Borra la información anterior
+		configCons = {};
+
 		// Obtiene configCons y muestra/oculta campos
 		this.layout(v, DOM);
 
