@@ -325,7 +325,7 @@ window.addEventListener("load", async () => {
 		if (varias.versionActual != varias.versiones[0]) return;
 
 		// Validaciones estándar (función genérica)
-		input(e);
+		restringeCaracteres(e);
 
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {

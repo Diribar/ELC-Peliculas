@@ -3,8 +3,8 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Zona de Productos
-		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
-		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
+		vistaProds: document.querySelector("#zonaDeProds #vistaProds"),
+		listado: document.querySelector("#zonaDeProds #vistaProds #listado"),
 	};
 	let varias = {
 		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
