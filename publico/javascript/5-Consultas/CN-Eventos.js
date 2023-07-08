@@ -56,11 +56,11 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const existe = await verifica.configCons_id({v, DOM});
+			const existe = await verifica.configCons_id();
 			if (!existe) return;
 
 			// Función
-			await cambioDeConfig_id({v, DOM});
+			await cambioDeConfig_id();
 		}
 		// Nombre de configuración, Palabras clave, Campos
 		else {
@@ -72,7 +72,7 @@ window.addEventListener("load", async () => {
 				const nombre = DOM.configNuevaNombre.value;
 				v.nombreOK =
 					nombre.length && !basico.validaCaracteres(nombre) && !v.configsDeCabecera.find((n) => n.nombre == nombre);
-				actualiza.botoneraActivaInactiva({v, DOM});
+				actualiza.botoneraActivaInactiva();
 
 				// Fin
 				return;
@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Funciones
-		await cambioDeCampos({v, DOM});
+		await cambioDeCampos();
 
 		// Fin
 		return;
@@ -124,11 +124,11 @@ window.addEventListener("load", async () => {
 				DOM.configNuevaNombre.classList.toggle(nombre);
 
 				// Actualiza la botonera
-				actualiza.botoneraActivaInactiva({v, DOM});
+				actualiza.botoneraActivaInactiva();
 			} else if (nombre == "deshacer") {
-				await actualiza.valoresInicialesDeObjetoV({v, DOM});
-				await actualiza.statusInicialCampos({v, DOM});
-				await cambioDeCampos({v, DOM});
+				await actualiza.valoresInicialesDeObjetoV();
+				await actualiza.statusInicialCampos();
+				await cambioDeCampos();
 			} else if (nombre == "guardar") {
 				if (v.nuevo || v.edicion) {
 					// Obtiene el nuevo nombre
@@ -145,15 +145,15 @@ window.addEventListener("load", async () => {
 				} else true;
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
-				const existe = await verifica.configCons_id({v, DOM});
+				const existe = await verifica.configCons_id();
 				if (!existe || !v.filtroPropio) return;
 
 				// Acciones si existe
-				await cambiosEnBD.eliminaConfigCons(DOM);
-				await cambioDeConfig_id({v, DOM});
-				await cambioDeCampos({v, DOM});
+				await cambiosEnBD.eliminaConfigCons();
+				await cambioDeConfig_id();
+				await cambioDeCampos();
 			} else if (nombre == "palabrasClave") {
-				await cambioDeCampos({v, DOM});
+				await cambioDeCampos();
 			}
 
 			// Fin
@@ -162,9 +162,9 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	await actualiza.valoresInicialesDeObjetoV({v, DOM});
-	actualizaConfigCons.consolidado({v, DOM});
-	actualiza.botoneraActivaInactiva({v, DOM});
+	await actualiza.valoresInicialesDeObjetoV();
+	actualizaConfigCons.consolidado();
+	actualiza.botoneraActivaInactiva();
 });
 
 // Variables

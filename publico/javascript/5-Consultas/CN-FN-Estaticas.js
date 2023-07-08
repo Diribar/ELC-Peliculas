@@ -19,7 +19,7 @@ let obtiene = {
 	},
 };
 let actualiza = {
-	valoresInicialesDeObjetoV: async ({v, DOM}) => {
+	valoresInicialesDeObjetoV: async () => {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
@@ -33,7 +33,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	botoneraActivaInactiva: ({v, DOM}) => {
+	botoneraActivaInactiva: () => {
 		// Variables
 		const claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
 		const claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
@@ -67,7 +67,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	statusInicialCampos: async ({v, DOM}) => {
+	statusInicialCampos: async () => {
 		// Variables
 		const configDeCampos = await obtiene.configDeCampos(v.configCons_id);
 
@@ -83,7 +83,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	cartelComencemosVisible: (DOM) => {
+	cartelComencemosVisible: () => {
 		DOM.comencemos.classList.remove("ocultar");
 		return;
 	},
@@ -129,7 +129,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	eliminaConfigCons: async (DOM) => {
+	eliminaConfigCons: async () => {
 		// Elimina la configuración
 		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?configCons_id=";
 		let configCons_id = DOM.configCons_id.value;
@@ -155,7 +155,7 @@ let cambiosEnBD = {
 	},
 };
 let verifica = {
-	configCons_id: async ({v, DOM}) => {
+	configCons_id: async () => {
 		// Variables
 		const configCons_id = Number(DOM.configCons_id.value);
 
@@ -180,26 +180,26 @@ let zonaDeProds = {
 };
 
 // Consolidadas
-let cambioDeConfig_id = async ({v, DOM}) => {
+let cambioDeConfig_id = async () => {
 	// Funciones
-	await actualiza.valoresInicialesDeObjetoV({v, DOM});
+	await actualiza.valoresInicialesDeObjetoV();
 	cambiosEnBD.configCons_id(v.configCons_id);
-	await actualiza.statusInicialCampos({v, DOM});
-	actualiza.cartelComencemosVisible(DOM);
+	await actualiza.statusInicialCampos();
+	actualiza.cartelComencemosVisible();
 
 	// Fin
 	return;
 };
-let cambioDeCampos = async ({v, DOM}) => {
+let cambioDeCampos = async () => {
 	// Cambio de clases
 	DOM.configNuevaNombre.classList.remove("nuevo");
 	DOM.configNuevaNombre.classList.remove("edicion");
 
 	// Funciones
-	actualizaConfigCons.consolidado({v, DOM});
-	actualiza.botoneraActivaInactiva({v, DOM});
+	actualizaConfigCons.consolidado();
+	actualiza.botoneraActivaInactiva();
 	await zonaDeProds.obtieneLosProductos(configCons);
-	actualiza.contador({v, DOM});
+	actualiza.contador();
 
 	// Fin
 	return;

@@ -1,7 +1,7 @@
 "use strict";
 
 let actualizaConfigCons = {
-	consolidado: function ({v, DOM}) {
+	consolidado: function () {
 		// Borra la información anterior
 		configCons = {};
 
