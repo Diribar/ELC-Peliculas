@@ -57,21 +57,16 @@ window.addEventListener("load", async () => {
 			const existe = await verifica.configCons_id({v, DOM});
 			if (!existe) return;
 
-			// Más acciones
-			await actualiza.valoresInicialesDeObjetoV({v, DOM});
-			guardaEnBD.configCons_id(v.configCons_id);
-			await actualiza.statusInicialCampos({v, DOM});
-			actualiza.cartelComencemosVisible(DOM);
-		}
+			// Función
+			await cambioDeConfig_id({v, DOM});
+		} else v.hayCambios = true;
+
 		// Palabras clave
-		else if (campoNombre == "palabrasClave")
+		if (campoNombre == "palabrasClave")
 			campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
 
 		// Funciones
-		actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
-		actualiza.botoneraActivaInactiva({v, DOM});
-		await zonaDeProds.obtieneLosProductos();
-		actualiza.contador();
+		await cambioDeCampos({v, DOM});
 
 		// Fin
 		return;
@@ -79,19 +74,40 @@ window.addEventListener("load", async () => {
 
 	// Eventos - Botonera
 	DOM.iconos.forEach((icono, i) => {
-		icono.addEventListener("click", (e) => {
+		icono.addEventListener("click", async (e) => {
 			// Si el ícono está inactivo, interrumpe la función
 			if (e.target.className.includes("inactivo")) return;
+			const nombre = e.target.id;
 
-			// Acciones para cada caso
-			if (e.target.id == DOM.nuevo.id) {
+			// Acciones
+			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				DOM.configNuevaNombre.value = "";
 				v.nombreOK = false;
+
+				// Agrega/Quita la clase 'nuevo' al input
+				nombre == "nuevo"
+					? DOM.configNuevaNombre.classList.toggle("nuevo")
+					: nombre == "edicion"
+					? DOM.configNuevaNombre.classList.toggle("edicion")
+					: null;
+			} else if (nombre == "deshacer") {
+				// Funciones
+				await actualiza.valoresInicialesDeObjetoV({v, DOM});
+				await actualiza.statusInicialCampos({v, DOM});
+				await cambioDeCampos({v, DOM});
+
 				// Clases
-				DOM.configNuevaNombre.className.includes("nuevo")
-					? DOM.configNuevaNombre.classList.remove("nuevo") // Acciones para 'off'
-					: DOM.configNuevaNombre.classList.add("nuevo"); // Acciones para 'on'
+			} else if (nombre == "guardar") {
+			} else if (nombre == "eliminar") {
+				// Si hay un error, interrumpe la función
+				const existe = await verifica.configCons_id({v, DOM});
+				if (!existe || !v.filtroPropio) return;
+
+				// Acciones si existe
+				cambiosEnBD.eliminaConfigCons(v.configCons_id);
+				await cambioDeConfig_id({v, DOM});
+				await cambioDeCampos({v, DOM});
 			}
 
 			// Fin
@@ -101,7 +117,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	actualizaConfigCons.consolidado({v, DOM}); // Actualiza la variable configCons y oculta/muestra campos
+	actualizaConfigCons.consolidado({v, DOM});
 	actualiza.botoneraActivaInactiva({v, DOM});
 });
 

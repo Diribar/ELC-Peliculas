@@ -11,35 +11,6 @@ window.addEventListener("load", async () => {
 	};
 
 	// Funciones
-	let configCabecera = {
-		statusInicialBotonera: () => {
-			// 1. Inactiva las opciones 'nuevo', 'reinicio' y 'actualiza'
-			DOM.nuevo.classList.add("inactivo");
-			DOM.reinicio.classList.add("inactivo");
-			DOM.actualiza.classList.add("inactivo");
-
-			// 2. Activa los íconos 'modificaNombre' y 'elimina', salvo para el filtro Estándar
-			const filtroElegido = DOM.configCabecera.value;
-			filtroElegido == 1 ? DOM.modificaNombre.classList.add("inactivo") : DOM.modificaNombre.classList.remove("inactivo");
-			filtroElegido == 1 ? DOM.elimina.classList.add("inactivo") : DOM.elimina.classList.remove("inactivo");
-
-			// Fin
-			return;
-		},
-		impactosEnBotonesPorElegibles: () => {
-			// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
-			DOM.modificaNombre.classList.add("inactivo");
-			DOM.elimina.classList.add("inactivo");
-
-			// Activa las opciones de 'nuevo', 'reinicio' y 'actualiza'
-			DOM.nuevo.classList.remove("inactivo");
-			DOM.reinicio.classList.remove("inactivo");
-			if (DOM.configCabecera.value != 1) DOM.actualiza.classList.remove("inactivo");
-
-			// Fin
-			return;
-		},
-	};
 	let zonaDeProds = {
 		obtieneLosProductos: async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena

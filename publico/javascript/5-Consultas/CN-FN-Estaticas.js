@@ -27,7 +27,7 @@ let actualiza = {
 		v.configCons_id = DOM.configCons_id.value;
 
 		// Variables que dependen de otras variables 'v'
-		v.configDeCabecera = await obtiene.configDeCabecera(v.configCons_id);
+		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
 		v.filtroPropio = !!v.configDeCabecera.usuario_id;
 
 		// Fin
@@ -99,7 +99,7 @@ let actualiza = {
 		return;
 	},
 };
-let guardaEnBD = {
+let cambiosEnBD = {
 	configCons_id: (configCons_id) => {
 		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
 		if (configCons_id) fetch(rutaCompleta + configCons_id);
@@ -116,6 +116,16 @@ let guardaEnBD = {
 		fetch(rutaCompleta + configCons).then((n) => n.json());
 
 		// Fin
+		return;
+	},
+	eliminaConfigCons: (configCons_id) => {
+
+		// 1.	Tabla filtrosCampos: se eliminan los registros vinculados al filtro personalizado
+		// 2.	Tabla filtrosCabecera: se elimina el registro.
+		// const {cn_layouts: layoutsBD, cn_ordenes: ordenesBD} = await obtiene.opcionesDeLayoutMasOrden();
+		// v = {...v, layoutsBD, ordenesBD};
+		// actualiza el select con el id de la configCons más reciente
+// Fin
 		return;
 	},
 };
@@ -144,6 +154,28 @@ let zonaDeProds = {
 		// Fin
 		return;
 	},
+};
+
+// Consolidadas
+let cambioDeConfig_id = async ({v, DOM}) => {
+	// Funciones
+	await actualiza.valoresInicialesDeObjetoV({v, DOM});
+	cambiosEnBD.configCons_id(v.configCons_id);
+	await actualiza.statusInicialCampos({v, DOM});
+	actualiza.cartelComencemosVisible(DOM);
+
+	// Fin
+	return;
+};
+let cambioDeCampos = async ({v, DOM}) => {
+	// Funciones
+	actualizaConfigCons.consolidado({v, DOM});
+	actualiza.botoneraActivaInactiva({v, DOM});
+	await zonaDeProds.obtieneLosProductos(configCons);
+	actualiza.contador({v, DOM});
+
+	// Fin
+	return;
 };
 
 // diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
