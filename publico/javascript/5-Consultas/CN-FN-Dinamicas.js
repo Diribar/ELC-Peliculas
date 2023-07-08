@@ -169,7 +169,6 @@ let actualizaConfigCons = {
 		if (!DOM.palClaveAprob.className.includes("inactivo")) configCons.palabrasClave = DOM.palClave.value;
 
 		// Fin
-		console.log(configCons);
 		return;
 	},
 	// Apoyo
