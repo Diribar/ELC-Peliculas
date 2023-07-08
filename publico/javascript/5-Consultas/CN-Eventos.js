@@ -51,7 +51,6 @@ window.addEventListener("load", async () => {
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
-		const campoValor = e.target.value;
 
 		// Acciones si se cambia la configuración
 		if (campoNombre == "configCons_id") {

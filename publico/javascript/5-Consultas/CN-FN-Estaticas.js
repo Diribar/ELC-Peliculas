@@ -9,13 +9,14 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-las-opciones-de-layout-y-orden/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	configDeCabecera: (configCons_id) => {
+	configDeCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
-		return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configDeCampos: (configCons_id) => {
+	configDeCampos: () => {
+
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
-		return fetch(rutaCompleta + configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
 let actualiza = {
@@ -112,7 +113,7 @@ let cambiosEnBD = {
 
 		// Des-selecciona la opción actual
 
-		// Agrega una opción y la pone como selected
+		// Agrega una opción, la pone como 'selected' y la ordena dentro de propios
 
 		// Fin
 		return;
@@ -138,9 +139,11 @@ let cambiosEnBD = {
 		// Actualiza la variable
 		v.configsDeCabecera = await obtiene.configsDeCabecera();
 
-		// Oculta la opción en la vista
+		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
-		for (let opcion of opciones) if (opcion.value == configCons_id) opcion.classList.add("ocultar");
+		opciones.forEach((opcion, i) => {
+			if (opcion.value == configCons_id) DOM.configCons_id.remove(i);
+		});
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
