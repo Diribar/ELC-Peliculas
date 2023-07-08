@@ -117,8 +117,8 @@ window.addEventListener("load", async () => {
 
 				// Valor en el input
 				DOM.configNuevaNombre.value =
-				nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
-				
+					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
+
 				// Alterna la clase 'nuevo' o 'edicion' en el input
 				nombre == "nuevo"
 					? DOM.configNuevaNombre.classList.toggle("nuevo")
