@@ -6,8 +6,9 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
-		encabezado: document.querySelector("#encabezado"),
-		configCabecera: document.querySelector("#configDeCabecera"),
+		encabezado: document.querySelector("#encabMasPelis #encabezado"),
+		configCons: document.querySelector("#configCons"),
+		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
 		// Zona de productos
 		zonaProds: document.querySelector("#zonaDeProds"),
@@ -22,10 +23,13 @@ window.addEventListener("load", async () => {
 		ascDes: DOM.encabezado.querySelector("#ascDes"),
 		contador_de_prods: DOM.encabezado.querySelector("#derecha #contador_de_prods"),
 
+		// Configuracion
+		iconos: DOM.configCons.querySelectorAll("i"),
+
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
-		iconos: DOM.configCabecera.querySelectorAll("#iconos i"),
+		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
 		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
@@ -37,11 +41,11 @@ window.addEventListener("load", async () => {
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
 	};
-	for (let icono of DOM.iconos) DOM[icono.id] = icono;
+	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 
 	// Variables varias
-	let v = await obtiene.opcionesDeLayoutMasOrden();
+	let v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
 
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("input", async (e) => {
@@ -65,12 +69,10 @@ window.addEventListener("load", async () => {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
-				// Valida los caracteres ingresados
-				const nombre = DOM.configNuevaNombre.value;
-				const errores = nombre.length ? basico.validaCaracteres(nombre) : true;
-
 				// Muestra/Oculta el ícono de confirmación
-				v.nombreOK = !errores;
+				const nombre = DOM.configNuevaNombre.value;
+				v.nombreOK =
+					nombre.length && !basico.validaCaracteres(nombre) && !v.configsDeCabecera.find((n) => n.nombre == nombre);
 				actualiza.botoneraActivaInactiva({v, DOM});
 
 				// Fin
@@ -94,8 +96,6 @@ window.addEventListener("load", async () => {
 
 			// Cambios de campo
 			v.hayCambiosDeCampo = true;
-			DOM.configNuevaNombre.classList.remove("nuevo");
-			DOM.configNuevaNombre.classList.remove("edicion");
 		}
 
 		// Funciones
@@ -106,11 +106,12 @@ window.addEventListener("load", async () => {
 	});
 
 	// Eventos - Botonera
+
 	DOM.iconos.forEach((icono, i) => {
 		icono.addEventListener("click", async (e) => {
 			// Si el ícono está inactivo, interrumpe la función
 			if (e.target.className.includes("inactivo")) return;
-			const nombre = e.target.id;
+			const nombre = e.target.id ? e.target.id : e.target.parentNode.id;
 
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -124,13 +125,12 @@ window.addEventListener("load", async () => {
 				// Alterna la clase 'nuevo' o 'edicion' en el input
 				DOM.configNuevaNombre.classList.toggle(nombre);
 
+				// Actualiza la botonera
+				actualiza.botoneraActivaInactiva({v, DOM});
 			} else if (nombre == "deshacer") {
-				// Funciones
 				await actualiza.valoresInicialesDeObjetoV({v, DOM});
 				await actualiza.statusInicialCampos({v, DOM});
 				await cambioDeCampos({v, DOM});
-
-				// Clases
 			} else if (nombre == "guardar") {
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
@@ -141,10 +141,11 @@ window.addEventListener("load", async () => {
 				await cambiosEnBD.eliminaConfigCons(DOM);
 				await cambioDeConfig_id({v, DOM});
 				await cambioDeCampos({v, DOM});
+			} else if (nombre == "palabrasClave") {
+				await cambioDeCampos({v, DOM});
 			}
 
 			// Fin
-			actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
 	});

@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
 		actualiza: document.querySelector("#configDeCabecera i#actualiza"),
 		modificaNombre: document.querySelector("#configDeCabecera i#modificaNombre"),
 		elimina: document.querySelector("#configDeCabecera i#elimina"),
-		iconos: document.querySelectorAll("#configDeCabecera #iconos i"),
+		iconos: document.querySelectorAll("#configDeCabecera #iconosBotonera i"),
 
 		// Encabezado
 		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
