@@ -667,7 +667,7 @@ window.addEventListener("load", async () => {
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
 		// Validaciones estándar
-		restringeCaracteres(e);
+		amplio.restringeCaracteres(e);
 
 		// Variables
 		let campo = e.target.name;

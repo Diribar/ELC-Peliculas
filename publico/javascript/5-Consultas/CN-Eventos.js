@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 		configCabecera: document.querySelector("#configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
 		// Zona de productos
-		zonaProds: document.querySelector("#zona_de_prods"),
+		zonaProds: document.querySelector("#zonaDeProds"),
 	};
 	DOM = {
 		...DOM,
@@ -23,14 +23,15 @@ window.addEventListener("load", async () => {
 		contador_de_prods: DOM.encabezado.querySelector("#derecha #contador_de_prods"),
 
 		// Configuración de Cabecera
-		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombre']"),
+		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
 		iconos: DOM.configCabecera.querySelectorAll("#iconos i"),
 
 		// Configuración de Campos
 		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
 		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
-		palClave: DOM.configCampos.querySelector("#palabrasClave"),
+		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
+		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
@@ -43,7 +44,7 @@ window.addEventListener("load", async () => {
 	let v = await obtiene.opcionesDeLayoutMasOrden();
 
 	// Eventos - Cambio de Configuración
-	DOM.cuerpo.addEventListener("change", async (e) => {
+	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
 		const campoValor = e.target.value;
@@ -58,19 +59,41 @@ window.addEventListener("load", async () => {
 			// Función
 			await cambioDeConfig_id({v, DOM});
 		}
-		// Nombre de configuración, Palabras clace, Campos
+		// Nombre de configuración, Palabras clave, Campos
 		else {
 			if (campoNombre == "nombreNuevo") {
+				// Impide el uso de caracteres indeseados
+				basico.restringeCaracteres(e);
 
+				// Valida los caracteres ingresados
+				const nombre = DOM.configNuevaNombre.value;
+				const errores = nombre.length ? basico.validaCaracteres(nombre) : true;
+
+				// Muestra/Oculta el ícono de confirmación
+				v.nombreOK = !errores;
+				actualiza.botoneraActivaInactiva({v, DOM});
+
+				// Fin
+				return;
 			}
 			// Palabras clave
 			else if (campoNombre == "palabrasClave") {
-				campoValor ? DOM.palClave.classList.add("verde") : DOM.palClave.classList.remove("verde");
-				v.hayCambiosDeCampo = true;
+				// Impide el uso de caracteres indeseados
+				amplio.restringeCaracteres(e, true);
+
+				// Valida los caracteres ingresados
+				const nombre = DOM.palClave.value;
+				const errores = nombre.length ? amplio.validaCaracteres(nombre) : true;
+
+				// Muestra/Oculta el ícono de confirmación
+				errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
+
+				// Fin
+				return;
 			}
 
 			// Cambios de campo
-			else v.hayCambiosDeCampo = true;
+			v.hayCambiosDeCampo = true;
 		}
 
 		// Funciones
@@ -90,10 +113,13 @@ window.addEventListener("load", async () => {
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
-				DOM.configNuevaNombre.value = "";
 				v.nombreOK = false;
 
-				// Agrega/Quita la clase 'nuevo' al input
+				// Valor en el input
+				DOM.configNuevaNombre.value =
+				nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
+				
+				// Alterna la clase 'nuevo' o 'edicion' en el input
 				nombre == "nuevo"
 					? DOM.configNuevaNombre.classList.toggle("nuevo")
 					: nombre == "edicion"
