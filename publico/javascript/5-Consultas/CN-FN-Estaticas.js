@@ -41,25 +41,25 @@ let actualiza = {
 		// Ícono Nuevo
 		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
-		// Ícono Deshacer
-		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambios
-			? DOM.deshacer.classList.remove("inactivo")
-			: DOM.deshacer.classList.add("inactivo");
-
-		// Ícono Guardar
-		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
-			? DOM.guardar.classList.remove("inactivo")
-			: DOM.guardar.classList.add("inactivo");
-
 		// Ícono Edición
 		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambios
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 
+		// Ícono Deshacer
+		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambios
+			? DOM.deshacer.classList.remove("inactivo")
+			: DOM.deshacer.classList.add("inactivo");
+
 		// Ícono Eliminar
 		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
 			? DOM.eliminar.classList.remove("inactivo")
 			: DOM.eliminar.classList.add("inactivo");
+
+		// Ícono Guardar
+		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios)))
+			? DOM.guardar.classList.remove("inactivo")
+			: DOM.guardar.classList.add("inactivo");
 
 		// Fin
 		return;
