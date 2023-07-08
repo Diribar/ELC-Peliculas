@@ -144,7 +144,11 @@ window.addEventListener("load", async () => {
 					if (v.edicion) configCons.edicion = true;
 
 					// Guarda la información en la base de datos
-					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion(configCons);
+					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
+
+					// Quita la clase
+					const clase = v.nuevo ? "nuevo" : "edicion";
+					DOM.configNuevaNombre.classList.remove(clase);
 				} else true;
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
