@@ -105,7 +105,6 @@ window.addEventListener("load", async () => {
 	});
 
 	// Eventos - Botonera
-
 	DOM.iconos.forEach((icono, i) => {
 		icono.addEventListener("click", async (e) => {
 			// Si el ícono está inactivo, interrumpe la función

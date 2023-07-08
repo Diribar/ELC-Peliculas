@@ -35,27 +35,27 @@ let actualiza = {
 	},
 	botoneraActivaInactiva: ({v, DOM}) => {
 		// Variables
-		v.claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
-		v.claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
-		v.nuevo = v.claseNuevo && v.nombreOK;
-		v.edicion = v.claseEdicion && v.nombreOK && v.filtroPropio;
+		const claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
+		const claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
+		v.nuevo = claseNuevo && v.nombreOK;
+		v.edicion = claseEdicion && v.nombreOK && v.filtroPropio;
 		v.propio = v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
-		v.mostrar && !v.claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
 		// Ícono Edición
-		v.mostrar && !v.claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo
+		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 
 		// Ícono Deshacer
-		v.mostrar && !v.claseNuevo && !v.claseEdicion && v.hayCambiosDeCampo
+		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambiosDeCampo
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 
 		// Ícono Eliminar
-		!v.claseNuevo && !v.claseEdicion && v.filtroPropio && !v.hayCambiosDeCampo
+		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.eliminar.classList.remove("inactivo")
 			: DOM.eliminar.classList.add("inactivo");
 
