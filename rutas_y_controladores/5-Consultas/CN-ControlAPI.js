@@ -80,7 +80,8 @@ module.exports = {
 			const {id} = configCons;
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", {id}, {nombre: configCons.nombre});
+			console.log(83, configCons, id);
+			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada

@@ -112,11 +112,10 @@ let cambiosEnBD = {
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
 		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
-		delete configCons.nombre;
 
 		// Cambios en la BD
 		v.configsDeCabecera = await obtiene.configsDeCabecera(); // Actualiza las configsDeCabecera posibles para el usuario
-		this.configCons_id()
+		this.configCons_id();
 
 		// Crea una opción
 		const newOption = new Option(nombre, v.configCons_id);
@@ -138,11 +137,16 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		// Variables
 		configCons.id = v.configCons_id;
-		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 
 		// Guarda los cambios
+		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
-		delete configCons.id;
+
+		// Cambia el texto en el select
+		if (configCons.nombre) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
+
+		// Limpia
+		delete configCons.edicion, configCons.nombre, configCons.id;
 
 		// Fin
 		return;
