@@ -35,8 +35,11 @@ let actualiza = {
 	},
 	botoneraActivaInactiva: ({v, DOM}) => {
 		// Variables
-		let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
-		let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
+		const claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
+		const claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
+		v.nuevo = claseNuevo && v.nombreOK;
+		v.edicion = claseEdicion && v.nombreOK && v.filtroPropio;
+		v.propio = v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
 		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
@@ -57,7 +60,7 @@ let actualiza = {
 			: DOM.eliminar.classList.add("inactivo");
 
 		// Ícono Guardar
-		v.mostrar && v.nombreOK && (claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambiosDeCampo)))
+		v.mostrar && (v.nuevo || v.edicion || v.propio)
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 
@@ -101,11 +104,20 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	creaUnaConfiguracion: (configCons) => {
+	creaUnaConfiguracion: async ({v, configCons}) => {
+		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		return fetch(rutaCompleta + configCons).then((n) => n.json());
+		v.configCons_id = await fetch(rutaCompleta + configCons).then((n) => n.json());
+		delete configCons.nombre;
+
+		// Des-selecciona la opción actual
+
+		// Agrega una opción y la pone como selected
+
+		// Fin
+		return;
 	},
-	guardaUnaConfiguracion: (configCons) => {
+	guardaUnaConfiguracion: ({v, configCons}) => {
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		fetch(rutaCompleta + configCons).then((n) => n.json());
 
