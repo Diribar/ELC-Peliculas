@@ -107,7 +107,7 @@ let actualizaConfigCons = {
 	},
 	// Presencia estable
 	presenciaEstable: function (v, DOM) {
-		// Impacto en configCons: todos los campos con presencia siempre
+		// Impacto en configCons: todos los campos con presencia estable
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
@@ -124,9 +124,8 @@ let actualizaConfigCons = {
 		// Actualiza el valor de 'bhr'
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
 
-		this.apMar(v, DOM);
-
 		// Fin
+		this.apMar(v, DOM);
 		return;
 	},
 	apMar: function (v, DOM) {
@@ -138,12 +137,11 @@ let actualizaConfigCons = {
 		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
 
-		// IMPACTOS DE
+		// Actualiza el valor de 'apMar'
 		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
-		this.canonsRolesIglesia(v, DOM);
-
 		// Fin
+		this.canonsRolesIglesia(v, DOM);
 		return;
 	},
 	canonsRolesIglesia: function (v, DOM) {
@@ -153,18 +151,25 @@ let actualizaConfigCons = {
 		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC";
 
 		// Oculta/Muestra sectores
-		seMuestra
-			? DOM.canons.parentNode.classList.remove("ocultar")
-			: DOM.canons.parentNode.classList.add("ocultar");
-		seMuestra
-			? DOM.rolesIgl.parentNode.classList.remove("ocultar")
-			: DOM.rolesIgl.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
 
-		// IMPACTOS DE
+		// Actualiza el valor de 'canons' y 'rolesIgl'
 		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
 		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
 
 		// Fin
+		this.palabrasClave(v, DOM);
+		return;
+	},
+	palabrasClave: function (v, DOM) {
+		// Impacto en: palabrasClave
+
+		// Actualiza el valor de 'palabrasClave'
+		if (!DOM.palClaveAprob.className.includes("inactivo")) configCons.palabrasClave = DOM.palClave.value;
+
+		// Fin
+		console.log(configCons);
 		return;
 	},
 	// Apoyo

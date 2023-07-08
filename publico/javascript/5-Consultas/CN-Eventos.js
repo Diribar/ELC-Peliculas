@@ -98,8 +98,6 @@ window.addEventListener("load", async () => {
 
 			// Cambios de campo
 			v.hayCambiosDeCampo = true;
-			DOM.configNuevaNombre.classList.remove("nuevo");
-			DOM.configNuevaNombre.classList.remove("edicion");
 		}
 
 		// Funciones
@@ -113,43 +111,43 @@ window.addEventListener("load", async () => {
 
 	DOM.iconos.forEach((icono, i) => {
 		icono.addEventListener("click", async (e) => {
-			console.log(e.target.id);
 			// Si el ícono está inactivo, interrumpe la función
 			if (e.target.className.includes("inactivo")) return;
-			const nombre = e.target.id;
-	
+			const nombre = e.target.id ? e.target.id : e.target.parentNode.id;
+
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false;
-	
+
 				// Valor en el input
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
-	
+
 				// Alterna la clase 'nuevo' o 'edicion' en el input
 				DOM.configNuevaNombre.classList.toggle(nombre);
+
+				// Actualiza la botonera
+				actualiza.botoneraActivaInactiva({v, DOM});
 			} else if (nombre == "deshacer") {
-				// Funciones
 				await actualiza.valoresInicialesDeObjetoV({v, DOM});
 				await actualiza.statusInicialCampos({v, DOM});
 				await cambioDeCampos({v, DOM});
-	
-				// Clases
 			} else if (nombre == "guardar") {
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id({v, DOM});
 				if (!existe || !v.filtroPropio) return;
-	
+
 				// Acciones si existe
 				await cambiosEnBD.eliminaConfigCons(DOM);
 				await cambioDeConfig_id({v, DOM});
 				await cambioDeCampos({v, DOM});
+			} else if (nombre == "palabrasClave") {
+				await cambioDeCampos({v, DOM});
 			}
-	
+
 			// Fin
-			actualiza.botoneraActivaInactiva({v, DOM});
 			return;
 		});
 	});

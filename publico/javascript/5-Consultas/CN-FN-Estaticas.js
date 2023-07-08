@@ -173,6 +173,10 @@ let cambioDeConfig_id = async ({v, DOM}) => {
 	return;
 };
 let cambioDeCampos = async ({v, DOM}) => {
+	// Cambio de clases
+	DOM.configNuevaNombre.classList.remove("nuevo");
+	DOM.configNuevaNombre.classList.remove("edicion");
+
 	// Funciones
 	actualizaConfigCons.consolidado({v, DOM});
 	actualiza.botoneraActivaInactiva({v, DOM});
