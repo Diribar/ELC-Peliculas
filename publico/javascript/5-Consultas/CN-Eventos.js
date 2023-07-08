@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 		// Nombre de configuración, Palabras clave, Campos
 		else {
 			if (campoNombre == "nombreNuevo") {
-				// Impide el uso de caracteres indeseados
+				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
 				// Valida los caracteres ingresados
@@ -78,7 +78,7 @@ window.addEventListener("load", async () => {
 			}
 			// Palabras clave
 			else if (campoNombre == "palabrasClave") {
-				// Impide el uso de caracteres indeseados
+				// Restringe el uso de caracteres a los aceptados
 				amplio.restringeCaracteres(e, true);
 
 				// Valida los caracteres ingresados
