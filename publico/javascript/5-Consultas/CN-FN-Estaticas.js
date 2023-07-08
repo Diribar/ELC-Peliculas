@@ -69,7 +69,7 @@ let actualiza = {
 	},
 	statusInicialCampos: async () => {
 		// Variables
-		const configDeCampos = await obtiene.configDeCampos(v.configCons_id);
+		const configDeCampos = await obtiene.configDeCampos();
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
@@ -183,7 +183,7 @@ let zonaDeProds = {
 let cambioDeConfig_id = async () => {
 	// Funciones
 	await actualiza.valoresInicialesDeObjetoV();
-	cambiosEnBD.configCons_id(v.configCons_id);
+	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.cartelComencemosVisible();
 
