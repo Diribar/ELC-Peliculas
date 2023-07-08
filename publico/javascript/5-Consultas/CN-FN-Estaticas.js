@@ -118,8 +118,13 @@ let cambiosEnBD = {
 		return;
 	},
 	guardaUnaConfiguracion: ({v, configCons}) => {
+		// Variables
+		configCons.id = v.configCons_id;
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
-		fetch(rutaCompleta + configCons).then((n) => n.json());
+
+		// Guarda los cambios
+		fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		delete configCons.id;
 
 		// Fin
 		return;
