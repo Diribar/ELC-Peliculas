@@ -77,29 +77,23 @@ module.exports = {
 		guardaConfig: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			console.log(80, configCons);
 			const {id} = configCons;
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", {id}, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
-				console.log(87);
 				// Elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id: id});
-				console.log(90);
 
 				// Guarda la nueva información
 				for (let campo in configCons) {
 					const objeto = {configCons_id: id, campo, valor: configCons[campo]};
-					console.log(99,objeto);
 					BD_genericas.agregaRegistro("configsConsCampos", objeto);
 				}
-				console.log(98);
 			}
 
 			// Fin
-			console.log(102);
 			return res.json();
 		},
 		eliminaConfigCons: async (req, res) => {
