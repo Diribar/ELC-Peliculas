@@ -5,7 +5,7 @@
 	</div>
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
-		<optgroup label="Propios">
+		<optgroup id="propios" label="Propios">
 			<% for (let configDeCabecera of configsDeCabecera.filter(n => n.usuario_id)) { %>
 				<option 
 					value="<%= configDeCabecera.id %>"
