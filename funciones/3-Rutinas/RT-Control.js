@@ -29,6 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
+		obtieneLaEpocaDesdeElAno()
 		this.LinksVencidos();
 	},
 
@@ -454,4 +455,25 @@ module.exports = {
 		procesos.finRutinasDiariasSemanales("RCLVsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
+};
+
+let obtieneLaEpocaDesdeElAno = async () => {
+	// Variables
+	const epocas = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
+	const condicion = {anoEstreno: {[Op.ne]: null}};
+
+	// Rutina
+	for (let entidad of variables.entidades.prods) {
+		// Obtiene los productos
+		const productos = await BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+
+		// Actualiza el ID
+		for (let producto of productos) {
+			const epocaEstreno_id = epocas.find((n) => producto.anoEstreno > n.desde).id;
+			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+		}
+	}
+
+	// Fin
+	return;
 };
