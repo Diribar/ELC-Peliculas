@@ -306,11 +306,11 @@ module.exports = {
 		prodsPosibleAprob: async function (entidad, registro) {
 			// Variables
 			const publico = true;
-			const epoca = true;
+			const epocaOcurrencia = true;
 			let statusAprob = false;
 
 			// Acciones si no hay errores
-			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epoca}});
+			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epocaOcurrencia}});
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;
@@ -353,7 +353,7 @@ module.exports = {
 			// Variables
 			const ahora = comp.fechaHora.ahora();
 			const publico = true;
-			const epoca = true;
+			const epocaOcurrencia = true;
 			let esperar = [];
 
 			// Prepara los datos
@@ -371,7 +371,7 @@ module.exports = {
 					: {};
 
 				// Revisa si cada capítulo supera el test de errores
-				let validar = {entidad: "capitulos", ...capitulo, publico, epoca};
+				let validar = {entidad: "capitulos", ...capitulo, publico, epocaOcurrencia};
 				const errores = await validaPR.consolidado({datos: validar});
 
 				// Actualiza los datos
@@ -835,7 +835,7 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 			// Acciones por cada PRODUCTO
 			for (let original of prodsPorEnts[i]) {
 				// Si hay errores, le cambia el status
-				const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
+				const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epocaOcurrencia: true}});
 				if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
 			}
 	});

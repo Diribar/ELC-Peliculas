@@ -203,7 +203,7 @@ module.exports = {
 			let prodComb = {...original, ...edicion, ...req.body, id};
 
 			// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
-			prodComb.epoca = revisor;
+			prodComb.epocaOcurrencia = revisor;
 			prodComb.publico = revisor;
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 

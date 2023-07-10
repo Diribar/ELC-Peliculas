@@ -362,7 +362,7 @@ module.exports = {
 			const aprob = subcodigo != "rechazo" && !desaprueba;
 
 			// Obtiene el status final
-			const adicionales = {publico: true, epoca: true};
+			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
 				// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
@@ -392,7 +392,7 @@ module.exports = {
 			// Obtiene el/los rangos
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
 
-			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
+			// Se fija si en ese rango hay alguna epocaOcurrencia distinta a '1' y el ID actual
 			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("diasDelAno", condicion)
 				.then((n) => n.filter((m) => m.epocaDelAno_id != 1 && m.epocaDelAno_id != id))
 				.then((n) => n.map((n) => n.epocaDelAno_id))
@@ -435,7 +435,7 @@ module.exports = {
 				for (let prodVinculado of prodsVinculados) {
 					// Averigua si el producto tiene errores cuando se le actualiza el 'campo_id'
 					let objeto = {[campo_id]: 1};
-					prodVinculado = {...prodVinculado, ...objeto, publico: true, epoca: true};
+					prodVinculado = {...prodVinculado, ...objeto, publico: true, epocaOcurrencia: true};
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creadoAprob'

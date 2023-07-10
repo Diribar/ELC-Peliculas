@@ -317,7 +317,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Limpia el ícono de error/OK
-				const indice = varios.camposError.indexOf("epoca");
+				const indice = varios.camposError.indexOf("epocaOcurrencia");
 				DOM.mensajesError[indice].innerHTML = "";
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");

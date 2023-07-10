@@ -171,7 +171,7 @@ module.exports = {
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
 				"Menores solamente: apuntado a un público solamente infantil.",
 			],
-			epoca: ["Antes, durante o después de Cristo."],
+			epocaOcurrencia: ["Antes, durante o después de Cristo."],
 			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
 		};
@@ -182,7 +182,7 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epoca},
+			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epocaOcurrencia},
 			{
 				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
@@ -356,7 +356,7 @@ module.exports = {
 			{
 				titulo: "Época respecto a Cristo",
 				nombre: "epocaOcurrencia_id",
-				relacInclude: "epoca",
+				relacInclude: "epocaOcurrencia",
 				tabla: "epocasOcurrencia",
 				productos: true,
 			},
@@ -376,7 +376,7 @@ module.exports = {
 
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
-			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocasOcurrencia"},
+			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},

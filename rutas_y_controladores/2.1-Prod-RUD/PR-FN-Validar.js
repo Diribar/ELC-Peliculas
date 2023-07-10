@@ -21,7 +21,7 @@ module.exports = {
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares
-		if (datos.epoca) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
+		if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 		if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 
 		// Terminar
