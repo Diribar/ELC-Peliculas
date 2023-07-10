@@ -666,7 +666,7 @@ module.exports = {
 	obtieneLaEpocaDesdeElAno:  (anoEstreno) => {
 		// Variables
 		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
-		const epocaEstreno_id = epocasEstrenoDesde.find((n) => anoEstreno >= n.desde).id;
+		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
 
 		// Fin
 		return epocaEstreno_id
