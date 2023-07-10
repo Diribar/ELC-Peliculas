@@ -116,9 +116,6 @@ window.addEventListener("load", async () => {
 				// Variables
 				v.nombreOK = false;
 
-				// Pone el cursor en el input
-				DOM.configNuevaNombre.focus();
-
 				// Valor en el input
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
@@ -128,6 +125,9 @@ window.addEventListener("load", async () => {
 
 				// Actualiza la botonera
 				actualiza.botoneraActivaInactiva();
+
+				// Pone el cursor en el input
+				DOM.configNuevaNombre.focus();
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeObjetoV();
 				await actualiza.statusInicialCampos();
