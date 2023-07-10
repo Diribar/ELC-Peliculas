@@ -8,8 +8,8 @@
 .flechas {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
 .flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}
 .flechas :where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
+.flechas button :is(i) {margin: 0;}
 .flechas .pack :where(i, img, button) {margin: 0 5px;}
-.flechas button:has(i) {margin: 0;}
 .flechas .pack {margin: 0 5px; display: flex; flex-direction: row; align-items: center;}
 
 .flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
