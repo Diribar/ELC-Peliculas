@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		pst: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "rclv_epocasOcurrencia",
+		tableName: "rclv_epocas_ocurr",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
