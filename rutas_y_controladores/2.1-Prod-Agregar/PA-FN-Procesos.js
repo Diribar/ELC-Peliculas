@@ -53,7 +53,7 @@ module.exports = {
 			// Variables
 			const entidadesRCLV = variables.entidades.rclvs;
 			let existe = true;
-			let epoca_id = null;
+			let epocaOcurrencia_id = null;
 
 			// Revisa que exista el RCLV
 			for (let entidad of entidadesRCLV) {
@@ -67,12 +67,12 @@ module.exports = {
 					if (!registro) {
 						existe = false;
 						break;
-					} else if (registro.epoca_id && !confirma.epoca_id && !epoca_id) epoca_id = registro.epoca_id;
+					} else if (registro.epocaOcurrencia_id && !confirma.epocaOcurrencia_id && !epocaOcurrencia_id) epocaOcurrencia_id = registro.epocaOcurrencia_id;
 				}
 			}
 
 			// Fin
-			return {existe, epoca_id};
+			return {existe, epocaOcurrencia_id};
 		},
 		// Colecciones
 		agregaCaps_Colec: async function (datos) {

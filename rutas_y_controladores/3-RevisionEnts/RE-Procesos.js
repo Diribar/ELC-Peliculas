@@ -584,7 +584,7 @@ module.exports = {
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
-			const camposNoPermInput = ["epoca_id", "publico_id", "prioridad_id"]; // campos que en 'creadoAprob_id' no se completan con el rol 'permInput'
+			const camposNoPermInput = ["epocaOcurrencia_id", "publico_id", "prioridad_id"]; // campos que en 'creadoAprob_id' no se completan con el rol 'permInput'
 			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposNoPermInput.includes(campo);
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
@@ -796,7 +796,7 @@ let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
 		valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
 		valorDesc = original[campo] == 1 ? "SI" : "NO";
 	}
-	if (campo == "epoca_id") {
+	if (campo == "epocaOcurrencia_id") {
 		valorAprob = RCLV_actual[relacInclude].nombre_pers;
 		valorDesc = original[relacInclude].nombre_pers;
 	}

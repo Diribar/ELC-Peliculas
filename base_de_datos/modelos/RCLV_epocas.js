@@ -17,8 +17,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.personajes, {as: "personajes", foreignKey: "epoca_id"});
-		entidad.hasMany(n.hechos, {as: "hechos", foreignKey: "epoca_id"});
+		entidad.hasMany(n.personajes, {as: "personajes", foreignKey: "epocaOcurrencia_id"});
+		entidad.hasMany(n.hechos, {as: "hechos", foreignKey: "epocaOcurrencia_id"});
 	};
 	return entidad;
 };

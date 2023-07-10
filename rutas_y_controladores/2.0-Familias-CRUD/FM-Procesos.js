@@ -116,7 +116,7 @@ module.exports = {
 					id: n.id,
 					nombre: n.nombre,
 					categoria_id: n.categoria_id,
-					epoca_id: n.epoca_id,
+					epocaOcurrencia_id: n.epocaOcurrencia_id,
 					rolIglesia_id: n.rolIglesia_id,
 					apMar_id: n.apMar_id,
 				};
@@ -125,13 +125,13 @@ module.exports = {
 
 		// Grupos Estándar
 		let grupos = [
-			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento", clase: "CFC VPC"},
+			{orden: 2, codigo: "ant", campo: "epocaOcurrencia_id", label: "Antiguo Testamento", clase: "CFC VPC"},
 			{orden: 3, codigo: "SF", campo: "rolIglesia_id", label: "Sagrada Familia", clase: "CFC"},
 			{orden: 4, codigo: "AL", campo: "rolIglesia_id", label: "Apóstoles", clase: "CFC"},
-			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
+			{orden: 5, codigo: "cnt", campo: "epocaOcurrencia_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
 			{orden: 6, codigo: "PP", campo: "rolIglesia_id", label: "Papas", clase: "CFC"},
-			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
-			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
+			{orden: 7, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
+			{orden: 7, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
 		];
 		for (let grupo of grupos) grupo.valores = [];
 
@@ -170,8 +170,8 @@ module.exports = {
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
-			let {id, nombre, solo_cfc, epoca_id, ama} = n;
-			return {id, nombre, solo_cfc, epoca_id, ama};
+			let {id, nombre, solo_cfc, epocaOcurrencia_id, ama} = n;
+			return {id, nombre, solo_cfc, epocaOcurrencia_id, ama};
 		});
 		let apMar = [];
 		let casosPuntuales = [];
@@ -208,7 +208,7 @@ module.exports = {
 			// Si es alguno de los 'grupos'
 			if (!OK)
 				for (let grupo of grupos)
-					if (hecho.epoca_id == grupo.codigo) {
+					if (hecho.epocaOcurrencia_id == grupo.codigo) {
 						hecho.clase += grupo.codigo;
 						grupo.valores.push(hecho);
 						OK = true;
@@ -257,8 +257,8 @@ module.exports = {
 			const cond1 = campo == "tipoActuacion_id";
 			const cond21 = variables.entidades.rclvs_id.includes(campo);
 			const cond22 = cond21 && edicion[campo] != 2; // Particularidad para rclv_id
-			const cond31 = campo == "epoca_id";
-			const cond32 = cond31 && edicion.epoca_id != epocasVarias.id; // Particularidad para epoca_id
+			const cond31 = campo == "epocaOcurrencia_id";
+			const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
 			if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
 
 			// 3. Actualización condicional por valores

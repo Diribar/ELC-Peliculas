@@ -123,9 +123,9 @@ module.exports = {
 		let anoNecesario = false;
 
 		// Averigua si no fue respondido
-		if (!datos.epoca_id) respuesta = variables.radioVacio;
+		if (!datos.epocaOcurrencia_id) respuesta = variables.radioVacio;
 		// Averigua si hace falta el año
-		else if (datos.epoca_id == "pst") anoNecesario = true;
+		else if (datos.epocaOcurrencia_id == "pst") anoNecesario = true;
 
 		// Año
 		if (!respuesta && anoNecesario) {
@@ -137,7 +137,7 @@ module.exports = {
 					? "No es un número válido"
 					: parseInt(ano) > new Date().getFullYear()
 					? "El año no debe superar al actual"
-					: parseInt(ano) < 100 && datos.epoca_id == "pst"
+					: parseInt(ano) < 100 && datos.epocaOcurrencia_id == "pst"
 					? "Ese año no corresponde a la época 'posterior'"
 					: "";
 		}
@@ -160,7 +160,7 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.canon_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.apMar_id
+				: datos.epocaOcurrencia_id == "pst" && datos.ano && datos.ano > 1100 && !datos.apMar_id
 				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
 				: ""
 			: datos.categoria_id != "VPC"
@@ -176,7 +176,7 @@ module.exports = {
 		let respuesta = !datos.solo_cfc
 			? "Necesitamos saber sobre su relación con la historia de la Iglesia"
 			: datos.solo_cfc == "1"
-			? datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ama
+			? datos.epocaOcurrencia_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ama
 				? "Necesitamos saber si es una aparición mariana"
 				: ""
 			: datos.solo_cfc != "0"

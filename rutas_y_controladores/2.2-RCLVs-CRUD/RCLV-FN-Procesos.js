@@ -184,22 +184,22 @@ module.exports = {
 
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				const {apodo, sexo_id, epoca_id, ano, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
-				DE = {...DE, sexo_id, epoca_id, categoria_id};
+				const {apodo, sexo_id, epocaOcurrencia_id, ano, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
+				DE = {...DE, sexo_id, epocaOcurrencia_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
-				if (epoca_id == "pst") DE.ano = ano;
+				if (epocaOcurrencia_id == "pst") DE.ano = ano;
 				const CFC = categoria_id == "CFC";
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.apMar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
+				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(ano) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
-				const {epoca_id, ano, solo_cfc, ama} = datos;
-				DE.epoca_id = epoca_id;
-				if (epoca_id == "pst") DE.ano = ano;
+				const {epocaOcurrencia_id, ano, solo_cfc, ama} = datos;
+				DE.epocaOcurrencia_id = epocaOcurrencia_id;
+				if (epocaOcurrencia_id == "pst") DE.ano = ano;
 				DE.solo_cfc = solo_cfc;
 				DE.ama = solo_cfc == "1" ? ama : 0;
 			}

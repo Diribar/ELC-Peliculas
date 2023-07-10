@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 
 		// Común con personajes
 		ano: {type: dt.INTEGER},
-		epoca_id: {type: dt.STRING(3)},
+		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
 		solo_cfc: {type: dt.BOOLEAN},
@@ -48,7 +48,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.diasDelAno, {as: "diaDelAno", foreignKey: "diaDelAno_id"});
-		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
+		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epocaOcurrencia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "altaRevisadaPor_id"});

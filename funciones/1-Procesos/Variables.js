@@ -150,7 +150,7 @@ module.exports = {
 		{nombre: "musical"},
 		{nombre: "tipoActuacion_id"},
 		{nombre: "publico_id"},
-		{nombre: "epoca_id"},
+		{nombre: "epocaOcurrencia_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "tema_id", grupo: "RCLV"},
@@ -182,7 +182,7 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{titulo: "Época respecto a Cristo", nombre: "epoca_id", valores: epocas, mensajes: mensajes.epoca},
+			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocas, mensajes: mensajes.epoca},
 			{
 				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
@@ -240,7 +240,7 @@ module.exports = {
 			"fechaMovil",
 			"prioridad_id",
 			"sexo_id",
-			"epoca_id",
+			"epocaOcurrencia_id",
 			"ano",
 			"categoria_id",
 			"rolIglesia_id",
@@ -248,7 +248,7 @@ module.exports = {
 			"apMar_id",
 			"avatar",
 		],
-		hechos: ["nombre", "ano", "diaDelAno_id", "fechaMovil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
+		hechos: ["nombre", "ano", "diaDelAno_id", "fechaMovil", "prioridad_id", "epocaOcurrencia_id", "solo_cfc", "ama", "avatar"],
 		temas: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		eventos: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		epocasDelAno: [
@@ -355,7 +355,7 @@ module.exports = {
 			},
 			{
 				titulo: "Época respecto a Cristo",
-				nombre: "epoca_id",
+				nombre: "epocaOcurrencia_id",
 				relacInclude: "epoca",
 				tabla: "epocas",
 				productos: true,
@@ -376,7 +376,7 @@ module.exports = {
 
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
-			{nombre: "epoca_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocas"},
+			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocas"},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},

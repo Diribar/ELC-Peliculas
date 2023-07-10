@@ -223,7 +223,7 @@ module.exports = {
 			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
 			// Conversión de filtros de RCLV
-			if (filtros.epocas && datos.entidad != "temas") condics.epoca_id = filtros.epocas;
+			if (filtros.epocas && datos.entidad != "temas") condics.epocaOcurrencia_id = filtros.epocas;
 			if (filtros.apMar) {
 				if (datos.entidad == "personajes") condics.apMar_id = {[Op.ne]: 10};
 				if (datos.entidad == "hechos") condics.ama = true;
