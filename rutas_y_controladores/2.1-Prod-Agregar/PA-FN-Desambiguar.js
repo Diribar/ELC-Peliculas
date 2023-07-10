@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const APIsTMDB = require("../../funciones/1-Procesos/APIsTMDB");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
@@ -43,7 +44,10 @@ module.exports = {
 			if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
 
 			// año de estreno, duración, país de origen
-			if (datosAPI.release_date) datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
+			if (datosAPI.release_date) {
+				datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
+				datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDesdeElAno(datos.anoEstreno);
+			}
 			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
 				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
