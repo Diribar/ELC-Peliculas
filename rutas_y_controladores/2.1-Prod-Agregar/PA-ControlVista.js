@@ -274,9 +274,9 @@ module.exports = {
 
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 			if (!confirma.sinRCLV) {
-				const {existe, epoca_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
+				const {existe, epocaOcurrencia_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
 				if (!existe) return res.redirect("datos-adicionales");
-				else confirma.epoca_id = epoca_id;
+				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
 			// ORIGINAL ------------------------------------
 			// Guarda el registro original

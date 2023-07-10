@@ -440,7 +440,7 @@ module.exports = {
 		let verificador = [];
 
 		// Establece la condición
-		const condicion = {statusRegistro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
+		const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
 
 		// Busca
 		for (let entidad of entidades)

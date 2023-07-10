@@ -295,7 +295,7 @@
 				<% if (indice + 1 == epocas.length) return %>
 				<% let z_index = "z-index:" + (1 + epocas.length - indice) %>
 				<div class="flexRowAlign opciones" style=<%= z_index %>>
-					<input type="radio" name="epoca_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epoca_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
+					<input type="radio" name="epocaOcurrencia_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epocaOcurrencia_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
 					<label for="<%= epoca.id %>"><%= epoca.nombre %></label>
 					<!-- Ayuda -->
 					<% if (epoca["ayuda_" + ent]) { %> 
