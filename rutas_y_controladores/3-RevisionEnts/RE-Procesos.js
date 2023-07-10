@@ -127,10 +127,10 @@ module.exports = {
 
 			// Averigua el porcentaje de links aprobados en la semana
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
-			console.log(113, porcentaje + "%", linksAprobsEstaSem, linksAprobsTotal, linksRevisar.length);
+			console.log(113, porcentaje + "%", {linksAprobsEstaSem, linksAprobsTotal}, linksRevisar.length);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 30;
+			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 40;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
@@ -868,7 +868,7 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		}
 
 		// Ordena por la fecha más antigua
-		prods[metodo].sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+		prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 
 		// Deja solamente los prods aprobados
 		if (prods[metodo].length)
