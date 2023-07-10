@@ -116,9 +116,6 @@ window.addEventListener("load", async () => {
 				// Variables
 				v.nombreOK = false;
 
-				// Pone el cursor en el input
-				DOM.configNuevaNombre.focus();
-
 				// Valor en el input
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
@@ -128,6 +125,9 @@ window.addEventListener("load", async () => {
 
 				// Actualiza la botonera
 				actualiza.botoneraActivaInactiva();
+
+				// Pone el cursor en el input
+				DOM.configNuevaNombre.focus();
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeObjetoV();
 				await actualiza.statusInicialCampos();
@@ -143,13 +143,12 @@ window.addEventListener("load", async () => {
 					// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
 					if (v.edicion) configCons.edicion = true;
 
-					// Guarda la información en la base de datos
-					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
-
 					// Quita la clase
 					const clase = v.nuevo ? "nuevo" : "edicion";
 					DOM.configNuevaNombre.classList.remove(clase);
-				} else true;
+				}
+				// Guarda la información en la base de datos
+				if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verifica.configCons_id();

@@ -1,29 +1,29 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 8/jul",
-	"HoraUTC": "0:50",
+	"FechaUTC": "Lun. 10/jul",
+	"HoraUTC": "10:53",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Dom. 2/jul",
-	"HoraSemUTC": "12:04",
-	"semanaUTC": 26,
+	"FechaSemUTC": "Lun. 10/jul",
+	"HoraSemUTC": "10:53",
+	"semanaUTC": 27,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
 	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
-		"BorraImagenesSinRegistro": "SI",
-		"LinksVencidos": "SI",
-		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI"
+		"BorraImagenesSinRegistro": "NO",
+		"LinksVencidos": "NO",
+		"RCLV_idEnCapitulos": "NO",
+		"RCLVsSinEpocaPSTyConAno": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"06-jul-23": {"titulo": "María Goretti", "entidad": "personajes", "id": 92},
-		"07-jul-23": {"titulo": "ELC - Películas"},
 		"08-jul-23": {"titulo": "ELC - Películas"},
 		"09-jul-23": {"titulo": "ELC - Películas"},
-		"10-jul-23": {"titulo": "ELC - Películas"}
+		"10-jul-23": {"titulo": "ELC - Películas"},
+		"11-jul-23": {"titulo": "ELC - Películas"},
+		"12-jul-23": {"titulo": "Padres de Santa Teresita", "entidad": "personajes", "id": 150}
 	}
 }
