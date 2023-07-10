@@ -29,7 +29,8 @@ module.exports = {
 
 		// Fin
 		return;
-		actualizaLaEpocaDeEstreno()
+		rclvsNull();
+		actualizaLaEpocaDeEstreno();
 		this.LinksVencidos();
 	},
 
@@ -476,4 +477,16 @@ let actualizaLaEpocaDeEstreno = async () => {
 
 	// Fin
 	return;
+};
+let rclvsNull = () => {
+	// Rutinas
+	for (let entidadRCLV of variables.entidades.rclvs) {
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+		for (let entidadProd of variables.entidades.prods) {
+			BD_genericas.actualizaTodosPorCondicion(entidadProd, {[campo_id]: 1}, {[campo_id]: null});
+		}
+	}
+
+	// Fin
+	return
 };
