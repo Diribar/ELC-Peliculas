@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "epocas";
+	const alias = "epocasOcurrencia";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		consulta: {type: dt.STRING(35)},
@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		pst: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "rclv_epocas",
+		tableName: "rclv_epocas_ocurr",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

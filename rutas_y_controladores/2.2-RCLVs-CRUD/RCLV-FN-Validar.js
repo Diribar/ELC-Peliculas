@@ -19,7 +19,7 @@ module.exports = {
 		if (datos.entidad != "epocasDelAno") errores.repetidos = this.repetidos(datos);
 
 		// Campos de personajes y hechos
-		if (datos.entidad == "personajes" || datos.entidad == "hechos") errores.epoca = this.epoca(datos);
+		if (datos.entidad == "personajes" || datos.entidad == "hechos") errores.epocaOcurrencia = this.epocaOcurrencia(datos);
 
 		// Campos de personajes
 		if (datos.entidad == "personajes") {
@@ -117,7 +117,7 @@ module.exports = {
 	},
 
 	// Personajes y Hechos
-	epoca: (datos) => {
+	epocaOcurrencia: (datos) => {
 		// Variables
 		let respuesta = "";
 		let anoNecesario = false;

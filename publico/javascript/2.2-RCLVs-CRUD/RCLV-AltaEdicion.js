@@ -336,7 +336,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		epoca: {
+		epocaOcurrencia: {
 			personajes: async () => {
 				// Obtiene la opción elegida
 				let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
@@ -489,9 +489,9 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		epoca: async () => {
+		epocaOcurrencia: async () => {
 			// Variables
-			let params = "epoca&entidad=" + entidad;
+			let params = "epocaOcurrencia&entidad=" + entidad;
 
 			// Agrega los demás parámetros
 			let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
@@ -499,8 +499,8 @@ window.addEventListener("load", async () => {
 			if (epocaOcurrencia_id.value == "pst") params += "&ano=" + FN_ano(DOM.ano.value);
 
 			// OK y Errores
-			varios.errores.epoca = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.epoca = !varios.errores.epoca;
+			varios.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
+			varios.OK.epocaOcurrencia = !varios.errores.epocaOcurrencia;
 
 			// Fin
 			return;
@@ -647,8 +647,8 @@ window.addEventListener("load", async () => {
 
 		// Época
 		if (DOM.epocasOcurrencia_id.length) {
-			if (opcionElegida(DOM.epocasOcurrencia_id).value) await impactos.epoca[entidad]();
-			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && varios.errores.epoca == undefined)) await validacs.epoca();
+			if (opcionElegida(DOM.epocasOcurrencia_id).value) await impactos.epocaOcurrencia[entidad]();
+			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && varios.errores.epocaOcurrencia == undefined)) await validacs.epocaOcurrencia();
 		}
 
 		// RCLIC
@@ -717,7 +717,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Limpia el ícono de error/OK
-				const indice = varios.camposError.indexOf("epoca");
+				const indice = varios.camposError.indexOf("epocaOcurrencia");
 				DOM.mensajesError[indice].innerHTML = "";
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
@@ -788,12 +788,12 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
-			await impactos.epoca[entidad]();
-			await validacs.epoca();
+			await impactos.epocaOcurrencia[entidad]();
+			await validacs.epocaOcurrencia();
 			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
 			if (e.target.value == "pst") DOM.ano.focus();
 			// Si corresponde, valida RCLIC
-			if (varios.OK.epoca) {
+			if (varios.OK.epocaOcurrencia) {
 				if (varios.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 				if (varios.hechos && opcionElegida(DOM.solo_cfc).value == 1) await validacs.RCLIC.hechos();
 			}

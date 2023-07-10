@@ -28,7 +28,7 @@ module.exports = {
 		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
 		if (producto.musica) infoGral.push({titulo: "Música", valor: producto.musica});
 		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
-		if (producto.epocaOcurrencia_id) infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epoca.nombre});
+		if (producto.epocaOcurrencia_id) infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre});
 
 		// Actores
 		if (producto.actores) actores = producto.actores;

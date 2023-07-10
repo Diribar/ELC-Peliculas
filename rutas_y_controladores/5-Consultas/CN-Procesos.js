@@ -28,7 +28,7 @@ module.exports = {
 			// Si no tiene opciones, le agrega las de la BD
 			if (!configsConsCampos[campo].opciones) {
 				if (campo == "epocasOcurrencia")
-					configsConsCampos.epocasOcurrencia.opciones = epocas
+					configsConsCampos.epocasOcurrencia.opciones = epocasOcurrencia
 						.filter((n) => !n.varias)
 						.map((n) => ({id: n.id, nombre: n.consulta}));
 				else configsConsCampos[campo].opciones = global[campo];
@@ -219,11 +219,11 @@ module.exports = {
 			};
 
 			// Arma el filtro
-			let campos = ["epocas", "apMar", "canons", "rolesIglesia"];
+			let campos = ["epocasOcurrencia", "apMar", "canons", "rolesIglesia"];
 			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
 			// Conversión de filtros de RCLV
-			if (filtros.epocas && datos.entidad != "temas") condics.epocaOcurrencia_id = filtros.epocas;
+			if (filtros.epocasOcurrencia && datos.entidad != "temas") condics.epocaOcurrencia_id = filtros.epocasOcurrencia;
 			if (filtros.apMar) {
 				if (datos.entidad == "personajes") condics.apMar_id = {[Op.ne]: 10};
 				if (datos.entidad == "hechos") condics.ama = true;
