@@ -103,7 +103,7 @@ app.set("views", [
 		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "orden"),
 
 		// Variables de RCLVs
-		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
+		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
 
@@ -156,8 +156,8 @@ app.set("views", [
 	sinPreferencia = ppp_opciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
 
 	// Otros
-	global.epocasVarias = global.epocas.find((n) => n.varias);
-	global.epocasSinVarias = global.epocas.filter((n) => !n.varias);
+	global.epocasVarias = global.epocasOcurrencia.find((n) => n.varias);
+	global.epocasSinVarias = global.epocasOcurrencia.filter((n) => !n.varias);
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");

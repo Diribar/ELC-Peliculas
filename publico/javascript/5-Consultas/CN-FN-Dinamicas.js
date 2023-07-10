@@ -134,8 +134,8 @@ let actualizaConfigCons = {
 	apMar: function (v, DOM) {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocas || epocas='pst')
-		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocas || configCons.epocas == "pst");
+		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocasOcurrencia || epocasOcurrencia='pst')
+		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
 
 		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");

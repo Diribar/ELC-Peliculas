@@ -89,7 +89,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
 		entidad.belongsTo(n.epocasDelAno, {as: "epocaDelAno", foreignKey: "epocaDelAno_id"});
-		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epocaOcurrencia_id"});
+		entidad.belongsTo(n.epocasOcurrencia, {as: "epoca", foreignKey: "epocaOcurrencia_id"});
 		entidad.belongsTo(n.epocasEstreno, {as: "epocaEstreno", foreignKey: "epocaEstreno_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});

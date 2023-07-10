@@ -291,9 +291,9 @@
 		<!-- Valores -->
 		<div class="flexRowAlign grow spaceBetween">
 			<!-- Épocas -->
-			<% epocas.forEach((epoca, indice) => { %>
-				<% if (indice + 1 == epocas.length) return %>
-				<% let z_index = "z-index:" + (1 + epocas.length - indice) %>
+			<% epocasOcurrencia.forEach((epoca, indice) => { %>
+				<% if (indice + 1 == epocasOcurrencia.length) return %>
+				<% let z_index = "z-index:" + (1 + epocasOcurrencia.length - indice) %>
 				<div class="flexRowAlign opciones" style=<%= z_index %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epocaOcurrencia_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
 					<label for="<%= epoca.id %>"><%= epoca.nombre %></label>

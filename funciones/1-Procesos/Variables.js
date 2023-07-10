@@ -182,7 +182,7 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocas, mensajes: mensajes.epoca},
+			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epoca},
 			{
 				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
@@ -357,7 +357,7 @@ module.exports = {
 				titulo: "Época respecto a Cristo",
 				nombre: "epocaOcurrencia_id",
 				relacInclude: "epoca",
-				tabla: "epocas",
+				tabla: "epocasOcurrencia",
 				productos: true,
 			},
 			// Películas y Capítulos
@@ -376,7 +376,7 @@ module.exports = {
 
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
-			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocas"},
+			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocasOcurrencia"},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},

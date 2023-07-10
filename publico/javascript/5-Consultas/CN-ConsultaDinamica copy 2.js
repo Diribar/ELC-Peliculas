@@ -32,8 +32,8 @@ window.addEventListener("load", async () => {
 		bhrSector: document.querySelector("#configCons #configsDeCampo #bhr"),
 		bhrSelect: document.querySelector("#configCons #configsDeCampo #bhr select"),
 		bhrSISectores: document.querySelectorAll("#configCons #configsDeCampo .bhrSI"),
-		epocasSector: document.querySelector("#configCons #configsDeCampo #epocas"),
-		epocasSelect: document.querySelector("#configCons #configsDeCampo #epocas select"),
+		epocasSector: document.querySelector("#configCons #configsDeCampo #epocasOcurrencia"),
+		epocasSelect: document.querySelector("#configCons #configsDeCampo #epocasOcurrencia select"),
 		apMarSector: document.querySelector("#configCons #configsDeCampo #apMar"),
 		apMarSelect: document.querySelector("#configCons #configsDeCampo #apMar select"),
 		canonsSector: document.querySelector("#configCons #configsDeCampo #canons"),
@@ -158,13 +158,13 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		// Impactos en/de epocas
+		// Impactos en/de epocasOcurrencia
 		impactosEnDeEpoca: function () {
 			// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 			// IMPACTOS DE
 			const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
-			if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
+			if (DOM.epocasSelect.value && sectorVisible) elegibles.epocasOcurrencia = DOM.epocasSelect.value;
 
 			this.impactosEnDeApMar();
 
@@ -175,8 +175,8 @@ window.addEventListener("load", async () => {
 		impactosEnDeApMar: function () {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si CFC='SI' y epocas='pst'
-			if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+			// Sólo se muestra el sector si CFC='SI' y epocasOcurrencia='pst'
+			if (elegibles.cfc == "CFC" && elegibles.epocasOcurrencia == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
 			else DOM.apMarSector.classList.add("ocultarApMar");
 
 			// IMPACTOS DE
