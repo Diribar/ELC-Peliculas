@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 		// Funciones
 		await cambioDeCampos();
 		await obtieneResultados();
-		if (v.mostrarComencemos == false) muestraResultados();
+		if (!v.mostrarComencemos) muestraResultados();
 
 		// Fin
 		return;
