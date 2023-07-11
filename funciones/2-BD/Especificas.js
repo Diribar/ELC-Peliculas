@@ -123,6 +123,8 @@ module.exports = {
 			if (campoRevID) condiciones[campoRevID] = {[Op.ne]: revID};
 			// Que esté propuesto hace más de una hora
 			if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
+			// Excluye los registros RCLV cuyo ID es <= 10
+			if (variables.entidades.rclvs.includes(entidad)) condiciones.id = {[Op.gt]: 10};
 
 			// Resultado
 			return db[entidad]

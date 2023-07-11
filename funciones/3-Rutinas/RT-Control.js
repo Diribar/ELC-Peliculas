@@ -483,7 +483,7 @@ let rclvsNull = () => {
 	for (let entidadRCLV of variables.entidades.rclvs) {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 		for (let entidadProd of variables.entidades.prods) {
-			BD_genericas.actualizaTodosPorCondicion(entidadProd, {[campo_id]: 1}, {[campo_id]: null});
+			BD_genericas.actualizaTodosPorCondicion(entidadProd, {[campo_id]: null}, {[campo_id]: 1});
 		}
 	}
 

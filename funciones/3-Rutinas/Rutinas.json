@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 10/jul",
-	"HoraUTC": "10:53",
+	"FechaUTC": "Mar. 11/jul",
+	"HoraUTC": "13:27",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 10/jul",
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-jul-23": {"titulo": "ELC - Películas"},
 		"09-jul-23": {"titulo": "ELC - Películas"},
 		"10-jul-23": {"titulo": "ELC - Películas"},
-		"11-jul-23": {"titulo": "ELC - Películas"},
-		"12-jul-23": {"titulo": "Padres de Santa Teresita", "entidad": "personajes", "id": 150}
+		"11-jul-23": {"titulo": "Benito de Nursia", "entidad": "personajes", "id": 172},
+		"12-jul-23": {"titulo": "Padres de Santa Teresita", "entidad": "personajes", "id": 150},
+		"13-jul-23": {"titulo": "Juana Fernández Solar", "entidad": "personajes", "id": 108}
 	}
 }

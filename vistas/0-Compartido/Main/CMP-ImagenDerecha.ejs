@@ -2,7 +2,8 @@
 	<!-- Mostrar la Imagen -->
 	<section id="imgDerecha">
 		<% let ruta, titulo, destino %>
-		<% if (locals.tema == "institucional" || locals.institucional) { %>
+		<% if (locals.tema == "institucional" && locals.codigo != "inicio") { %>
+			<% console.log(5, tema,codigo) %>
 			<!-- 1. Imagen Institucional -->
 			<% ruta = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
 		<% } %>

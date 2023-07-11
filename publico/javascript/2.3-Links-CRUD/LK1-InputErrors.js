@@ -59,8 +59,9 @@ window.addEventListener("load", async () => {
 			// Si es YOUTUBE, quitarle el sufijo
 			if (url.startsWith("youtube.com") && url.includes("&")) url = url.slice(0, url.indexOf("&"));
 
-			// Si es FORMED-LAT, quitarle el nombre repetido del producto
-			if (url.startsWith("ver.formed.lat") && url.includes("?")) url = url.slice(0, url.indexOf("?"));
+			// Si es FORMED-LAT o Netflix, quitarle el sufijo
+			if ((url.startsWith("ver.formed.lat") || url.startsWith("netflix.com")) && url.includes("?"))
+				url = url.slice(0, url.indexOf("?"));
 
 			// Conclusiones
 			v.urlInputs[filaAlta].value = url;
