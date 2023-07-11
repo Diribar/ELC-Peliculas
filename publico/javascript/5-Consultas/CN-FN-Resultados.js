@@ -9,12 +9,12 @@ let resultados = {
 	muestra: () => {
 		// Cartel comencemos
 		v.mostrarComencemos = false;
-		DOM.comencemos.classList.remove("ocultar");
+		DOM.comencemos.classList.add("ocultar");
 
 		console.log("muestra");
 		
 		// Fin
-		DOM.vistaProds.classList.add("ocultar");
+		DOM.vistaProds.classList.remove("ocultar");
 		return;
 	},
 };
