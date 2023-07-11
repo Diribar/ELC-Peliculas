@@ -12,6 +12,10 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : null;
 		const configsDeCabecera = await procesos.configsDeCabecera(userID);
+		const configs = {
+			propios: configsDeCabecera.filter((n) => userID && n.usuario_id == userID),
+			predeterms: configsDeCabecera.filter((n) => n.usuario_id == 1),
+		};
 		const configsConsCampos = procesos.configsConsCampos();
 		let prefsDeCampo = {};
 
@@ -26,7 +30,7 @@ module.exports = {
 		// return res.send(configsConsCampos)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configCons_id, prefsDeCampo, configsDeCabecera, configsConsCampos},
+			...{configCons_id, prefsDeCampo, configs, configsConsCampos, userID},
 		});
 	},
 };
