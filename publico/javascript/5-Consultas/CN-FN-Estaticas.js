@@ -28,7 +28,7 @@ let actualiza = {
 
 		// Variables que dependen de otras variables 'v'
 		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
-		v.filtroPropio = !!v.configDeCabecera.usuario_id;
+		v.filtroPropio = v.configDeCabecera.usuario_id != 1;
 
 		// Fin
 		return;

@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 		comencemos: true,
 	};
 
-	// Eventos - Cambio de Configuración
+	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
@@ -106,12 +106,16 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	// Eventos - Botonera
-	DOM.iconos.forEach((icono, i) => {
-		icono.addEventListener("click", async (e) => {
+	// Eventos - 'click'
+	DOM.cuerpo.addEventListener("click", async (e) => {
+		// Variables
+		const elemento = e.target;
+
+		// Iconos
+		if (elemento.tagName == "I") {
 			// Si el ícono está inactivo, interrumpe la función
-			if (e.target.className.includes("inactivo")) return;
-			const nombre = e.target.id ? e.target.id : e.target.parentNode.id;
+			if (elemento.className.includes("inactivo")) return;
+			const nombre = elemento.id ? elemento.id : elemento.parentNode.id;
 
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -166,7 +170,7 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			return;
-		});
+		}
 	});
 
 	// Start-up
