@@ -9,13 +9,6 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let zonaDeProds = {
 		obtieneLosProductos: async () => {
-			// Si no se hizo 'click' sobre el botón 'comencemos', frena
-			if (varias.comencemos) return;
-
-			// Variables
-			let resultados;
-
-			// Obtiene los resultados
 
 			// Momento del ano
 			if (elegibles.layout_id == 1 && elegibles.orden_id == 1) {
@@ -49,63 +42,6 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-
-	// Botonera de Filtros Personalizados
-	DOM.reinicio.addEventListener("click", async () => {
-		// Si está inactivo, interrumpe
-		if (DOM.reinicio.classList.includes("inactivo")) return;
-
-		// Variables
-		elegibles = {};
-
-		// Novedades en el Filtro Personalizado
-		await configCabecera.impactosDeFiltroPers();
-
-		// Impacto en Encabezado y Filtros, y Palabras Clave
-		encabFiltros.impactosDeLayout();
-		DOM.palabrasClave.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
-
-		// Limpia líneas consecutivas
-		apoyo.limpiaLineasConsecutivas();
-
-		// Obtiene los productos
-		await zonaDeProds.obtieneLosProductos();
-
-		// Fin
-		return;
-	});
-	DOM.actualiza.addEventListener("click", async () => {
-		// Si está inactivo, interrumpe
-		if (DOM.actualiza.className.includes("inactivo")) return;
-		else configCabecera.statusInicialBotonera();
-
-		// Variables
-		const configCons_id = DOM.configCabecera.value;
-		if (!configCons_id) return;
-		let objeto = {...elegibles, configCons_id};
-		delete objeto.codigo;
-
-		// Guarda los cambios en el filtro personalizado
-		fetch(rutas.actualiza + JSON.stringify(objeto));
-
-		// Fin
-		return;
-	});
-	// Comencemos
-	DOM.comencemos.addEventListener("click", async () => {
-		// Oculta el botón
-		DOM.comencemos.classList.add("ocultar");
-		varias.comencemos = false;
-
-		// Siguientes pasos
-		await zonaDeProds.obtieneLosProductos();
-
-		// Fin
-		return;
-	});
-
-	// Start-up
-	encabFiltros.impactosDeLayout();
 });
 let botonPelicula = async (producto) => {
 	// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos

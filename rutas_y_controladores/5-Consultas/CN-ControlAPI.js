@@ -116,76 +116,19 @@ module.exports = {
 	resultados: {
 		prods: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
-			let productos = [];
-			let rclvs = [];
-
-			// Obtiene los filtros y el orden
-			const filtrosProd = procesos.API.filtrosProd(datos);
-			const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
-			const ordenAscDes = datos.ascDes == "ASC" ? -1 : 1;
-
-			// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
-			for (let entidad of ["peliculas", "colecciones"])
-				productos.push(
-					BD_genericas.obtieneTodosPorCondicion(entidad, filtrosProd).then((n) =>
-						n.map((m) => {
-							return {
-								id: m.id,
-								entidad,
-								entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
-								nombreOriginal: m.nombreOriginal,
-								direccion: m.direccion,
-								avatar: m.avatar,
-								personaje_id: m.personaje_id,
-								hecho_id: m.hecho_id,
-								tema_id: m.tema_id,
-								// Orden
-								diaDelAno_id: m.diaDelAno_id,
-								creadoEn: m.creadoEn,
-								anoEstreno: m.anoEstreno,
-								nombreCastellano: m.nombreCastellano,
-								calificacion: m.calificacion,
-							};
-						})
-					)
-				);
-			productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
-			if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
-
-			if (productos.length) {
-				// Ordena los productos
-				productos.sort((a, b) => {
-					return typeof a[ordenCampo] == "string"
-						? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
-							? ordenAscDes
-							: -ordenAscDes
-						: a[ordenCampo] < b[ordenCampo]
-						? ordenAscDes
-						: -ordenAscDes;
-				});
-
-				// Obtiene los RCLV
-				rclvs = await procesos.API.obtieneRCLVs(datos);
-				// Filtra los productos por RCLV
-				productos = productos.filter(
-					(n) =>
-						(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
-						(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
-						(rclvs.temas && rclvs.temas.includes(n.tema_id))
-				);
-			}
+			const configCons = JSON.parse(req.query.configCons);
+			console.log({prods: configCons});
 
 			// Fin
-			return res.json(productos);
+			return res.json("prods");
 		},
 		rclvs: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
-			console.log("Datos:", datos);
+			const configCons = JSON.parse(req.query.configCons);
+			console.log({rclvs: configCons});
 
 			// Fin
-			return res.json();
+			return res.json("rclvs");
 		},
 	},
 };
@@ -206,5 +149,78 @@ let FN = {
 	},
 	diasDelAno: (req, res) => {
 		return res.json(diasDelAno);
+	},
+	prods: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		let productos = [];
+		let rclvs = [];
+
+		// Obtiene los filtros y el orden
+		const filtrosProd = procesos.API.filtrosProd(datos);
+		const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
+		const ordenAscDes = datos.ascDes == "ASC" ? -1 : 1;
+
+		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
+		for (let entidad of ["peliculas", "colecciones"])
+			productos.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, filtrosProd).then((n) =>
+					n.map((m) => {
+						return {
+							id: m.id,
+							entidad,
+							entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
+							nombreOriginal: m.nombreOriginal,
+							direccion: m.direccion,
+							avatar: m.avatar,
+							personaje_id: m.personaje_id,
+							hecho_id: m.hecho_id,
+							tema_id: m.tema_id,
+							// Orden
+							diaDelAno_id: m.diaDelAno_id,
+							creadoEn: m.creadoEn,
+							anoEstreno: m.anoEstreno,
+							nombreCastellano: m.nombreCastellano,
+							calificacion: m.calificacion,
+						};
+					})
+				)
+			);
+		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
+
+		if (productos.length) {
+			// Ordena los productos
+			productos.sort((a, b) => {
+				return typeof a[ordenCampo] == "string"
+					? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
+						? ordenAscDes
+						: -ordenAscDes
+					: a[ordenCampo] < b[ordenCampo]
+					? ordenAscDes
+					: -ordenAscDes;
+			});
+
+			// Obtiene los RCLV
+			rclvs = await procesos.API.obtieneRCLVs(datos);
+			// Filtra los productos por RCLV
+			productos = productos.filter(
+				(n) =>
+					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
+					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
+					(rclvs.temas && rclvs.temas.includes(n.tema_id))
+			);
+		}
+
+		// Fin
+		return res.json(productos);
+	},
+	rclvs: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		console.log("Datos:", datos);
+
+		// Fin
+		return res.json();
 	},
 };
