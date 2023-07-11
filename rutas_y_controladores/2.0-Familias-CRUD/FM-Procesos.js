@@ -552,7 +552,6 @@ module.exports = {
 			return;
 		},
 	},
-
 	eliminar: {
 		eliminaAvatarMasEdics: async (entidad, id) => {
 			// Obtiene la edicion
@@ -663,6 +662,14 @@ module.exports = {
 
 		// Fin
 		return informacion;
+	},
+	obtieneLaEpocaDesdeElAno:  (anoEstreno) => {
+		// Variables
+		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
+		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
+
+		// Fin
+		return epocaEstreno_id
 	},
 
 	// Bloques a mostrar
