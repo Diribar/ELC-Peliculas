@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 	v = {
 		...(await obtiene.opcionesDeLayoutMasOrden()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
-		comencemos: true,
+		mostrarComencemos: true,
 	};
 
 	// Eventos - Cambio de Configuración o Preferencias
@@ -61,7 +61,8 @@ window.addEventListener("load", async () => {
 			const existe = await verifica.configCons_id();
 			if (!existe) return;
 
-			// Función
+			// Novedades
+			v.mostrarComencemos = true;
 			await cambioDeConfig_id();
 		}
 		// Nombre de configuración, Palabras clave, Campos
@@ -101,6 +102,8 @@ window.addEventListener("load", async () => {
 
 		// Funciones
 		await cambioDeCampos();
+		await obtieneResultados();
+		if (v.mostrarComencemos == false) muestraResultados();
 
 		// Fin
 		return;
@@ -110,9 +113,12 @@ window.addEventListener("load", async () => {
 	DOM.cuerpo.addEventListener("click", async (e) => {
 		// Variables
 		const elemento = e.target;
+		const padre = elemento.parentNode;
+		console.dir(elemento);
+		console.dir(padre);
 
 		// Iconos
-		if (elemento.tagName == "I") {
+		if (elemento.tagName == "I" && ["iconosBotonera", "palabrasClave"].includes(padre.id)) {
 			// Si el ícono está inactivo, interrumpe la función
 			if (elemento.className.includes("inactivo")) return;
 			const nombre = elemento.id ? elemento.id : elemento.parentNode.id;
@@ -170,6 +176,12 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			return;
+		}
+
+		// Comencemos
+		if (padre.id == "comencemos" && elemento.id == "verde") {
+			v.mostrarComencemos = false;
+			muestraResultados();
 		}
 	});
 
