@@ -114,14 +114,12 @@ window.addEventListener("load", async () => {
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
-		console.dir(elemento);
-		console.dir(padre);
 
 		// Iconos
 		if (elemento.tagName == "I" && ["iconosBotonera", "palabrasClave"].includes(padre.id)) {
 			// Si el ícono está inactivo, interrumpe la función
 			if (elemento.className.includes("inactivo")) return;
-			const nombre = elemento.id ? elemento.id : elemento.parentNode.id;
+			const nombre = elemento.id ? elemento.id : padre.id;
 
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
