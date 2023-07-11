@@ -41,6 +41,7 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
+		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
@@ -62,7 +63,6 @@ window.addEventListener("load", async () => {
 			if (!existe) return;
 
 			// Novedades
-			v.mostrarComencemos = true;
 			await cambioDeConfig_id();
 		}
 		// Nombre de configuración, Palabras clave, Campos

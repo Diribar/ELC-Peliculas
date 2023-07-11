@@ -28,7 +28,7 @@ let actualiza = {
 
 		// Variables que dependen de otras variables 'v'
 		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
-		v.filtroPropio = v.configDeCabecera.usuario_id != 1;
+		v.filtroPropio = v.configDeCabecera.usuario_id == v.userID;
 
 		// Fin
 		return;
@@ -84,7 +84,11 @@ let actualiza = {
 		return;
 	},
 	cartelComencemosVisible: () => {
+		v.mostrarComencemos = true;
 		DOM.comencemos.classList.remove("ocultar");
+		DOM.vistaProds.classList.add("ocultar");
+
+		// Fin
 		return;
 	},
 	contador: () => {

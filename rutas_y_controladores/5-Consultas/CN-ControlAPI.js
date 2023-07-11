@@ -41,7 +41,11 @@ module.exports = {
 			return res.json(configsDeCabecera);
 		},
 		opcionesDeLayoutMasOrden: async (req, res) => {
-			return res.json({layoutsBD: cn_layouts, ordenesBD: cn_ordenes});
+			// Variables
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+
+			// Fin
+			return res.json({layoutsBD: cn_layouts, ordenesBD: cn_ordenes, userID});
 		},
 	},
 	cambiosEnBD: {

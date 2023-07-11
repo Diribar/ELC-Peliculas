@@ -108,7 +108,7 @@ let actualizaConfigCons = {
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		v.mostrar && mostrarComencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		v.mostrar && v.mostrarComencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 		// Fin
 		return;
