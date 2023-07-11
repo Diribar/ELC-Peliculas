@@ -81,7 +81,7 @@ let actualiza = {
 			ascDesInput.checked = configDeCampos.ascDes && ascDesInput.value == configDeCampos.ascDes;
 
 		// Actualiza ícono Palabras Clave
-		DOM.palClaveAprob.classList.add("inactivo")
+		DOM.palClaveAprob.classList.add("inactivo");
 
 		// Fin
 		return;
@@ -120,7 +120,7 @@ let cambiosEnBD = {
 		v.configsDeCabecera = await obtiene.configsDeCabecera();
 
 		// Actualiza configCons_id en cookie, session y usuario
-		this.configCons_id(); 
+		this.configCons_id();
 
 		// Crea una opción
 		const newOption = new Option(nombre, v.configCons_id);
@@ -142,11 +142,10 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		// Variables
 		configCons.id = v.configCons_id;
-		console.log(v.configCons_id);
+
 		// Guarda los cambios
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
-		console.log(configCons);
 
 		// Cambia el texto en el select
 		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
