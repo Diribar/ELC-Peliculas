@@ -102,8 +102,8 @@ window.addEventListener("load", async () => {
 
 		// Funciones
 		await cambioDeCampos();
-		await obtieneResultados();
-		if (!v.mostrarComencemos) muestraResultados();
+		await resultados.obtiene();
+		if (!v.mostrarComencemos) resultados.muestra();
 
 		// Fin
 		return;
@@ -177,10 +177,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Comencemos
-		if (padre.id == "comencemos" && elemento.id == "verde") {
-			v.mostrarComencemos = false;
-			muestraResultados();
-		}
+		if (padre.id == "comencemos" && elemento.id == "verde") resultados.muestra();
 	});
 
 	// Start-up
