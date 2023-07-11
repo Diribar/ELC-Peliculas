@@ -80,6 +80,9 @@ let actualiza = {
 		for (let ascDesInput of ascDesInputs)
 			ascDesInput.checked = configDeCampos.ascDes && ascDesInput.value == configDeCampos.ascDes;
 
+		// Actualiza ícono Palabras Clave
+		DOM.palClaveAprob.classList.add("inactivo")
+
 		// Fin
 		return;
 	},
@@ -88,10 +91,6 @@ let actualiza = {
 		DOM.comencemos.classList.remove("ocultar");
 		DOM.vistaProds.classList.add("ocultar");
 
-		// Fin
-		return;
-	},
-	contador: () => {
 		// Fin
 		return;
 	},
@@ -117,9 +116,11 @@ let cambiosEnBD = {
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
 		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 
-		// Cambios en la BD
-		v.configsDeCabecera = await obtiene.configsDeCabecera(); // Actualiza las configsDeCabecera posibles para el usuario
-		this.configCons_id();
+		// Actualiza las configsDeCabecera posibles para el usuario
+		v.configsDeCabecera = await obtiene.configsDeCabecera();
+
+		// Actualiza configCons_id en cookie, session y usuario
+		this.configCons_id(); 
 
 		// Crea una opción
 		const newOption = new Option(nombre, v.configCons_id);
@@ -141,10 +142,11 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		// Variables
 		configCons.id = v.configCons_id;
-
+		console.log(v.configCons_id);
 		// Guarda los cambios
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
+		console.log(configCons);
 
 		// Cambia el texto en el select
 		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
@@ -227,7 +229,9 @@ let cambioDeCampos = async () => {
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
 	await zonaDeProds.obtieneLosProductos(configCons);
-	actualiza.contador();
+	await resultados.obtiene();
+	resultados.contador();
+	if (!v.mostrarComencemos) resultados.muestra();
 
 	// Fin
 	return;
