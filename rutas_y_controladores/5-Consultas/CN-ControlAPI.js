@@ -117,10 +117,28 @@ module.exports = {
 		prods: async (req, res) => {
 			// Variables
 			const {dia, mes, configCons} = JSON.parse(req.query.datos);
-			console.log(120, dia, mes, configCons);
+			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene los productos
-			let prods = await procesos.resultados.obtieneProds(configCons);
+			let prods = procesos.resultados.obtieneProds(configCons);
+
+			// Obtiene las preferencias del usuario
+			let ppp_opciones =
+				usuario_id && configCons.ppp_opciones
+					? BD_genericas.obtieneTodosPorCondicion("ppp_registros", {usuario_id, opcion_id: configCons.ppp_opciones})
+					: null; // Si el usuario no eligió 'ppp_opciones'
+
+			[prods, ppp_opciones] = await Promise.all([prods, ppp_opciones]);
+
+			// Cruza 'prods' con 'ppp'
+			if (ppp_opciones) {
+				if (!ppp_opciones.length) prods = [];
+				else
+					prods.forEach((prod, i) => {
+						const existe = ppp_opciones.find((n) => n.entidad == prod.entidad && n.entidad_id == prod.id);
+						if (!existe) prods.splice(i, 1);
+					});
+			}
 
 			// Deja sólo los campos necesarios
 

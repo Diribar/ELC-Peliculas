@@ -75,7 +75,6 @@ module.exports = {
 					).then((n) => n.map((m) => ({...m, entidad})))
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
-			// console.log(80,resultados);
 
 			// Filtrar por apMar, rolesIgl, canons
 			if (apMar && resultados.length) {
