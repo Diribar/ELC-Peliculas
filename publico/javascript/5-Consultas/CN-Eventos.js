@@ -33,8 +33,8 @@ window.addEventListener("load", async () => {
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
-		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
 		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
+		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
@@ -44,6 +44,7 @@ window.addEventListener("load", async () => {
 		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
+	for (let campo of DOM.camposPresenciaEstable) DOM[campo.name] = campo;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
 

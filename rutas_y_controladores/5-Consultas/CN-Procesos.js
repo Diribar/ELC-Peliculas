@@ -19,7 +19,7 @@ module.exports = {
 		},
 		campos: function () {
 			// Variable 'filtros'
-			let configsConsCampos = {...variables.filtrosConsultas};
+			let configsConsCampos = {...variables.prefsConsultas};
 
 			// Agrega los campos de código y opciones
 			for (let campo in configsConsCampos) {
@@ -50,7 +50,7 @@ module.exports = {
 			// Variables
 			const {orden_id, apMar, rolesIgl, canons} = configCons;
 			let productos = [];
-			let resultado = [];
+			let resultados = [];
 
 			// Obtiene las entidades
 			let entidades = ["peliculas", "colecciones"];
@@ -63,7 +63,6 @@ module.exports = {
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
-			console.log(66, condiciones);
 
 			// Obtiene el include
 			let include;
@@ -77,15 +76,44 @@ module.exports = {
 						: BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
 					).then((n) => n.map((m) => ({...m, entidad})))
 				);
-			await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
+			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
+			// console.log(80,resultados);
+
+			// Filtrar por apMar, rolesIgl, canons
+			if (apMar && resultados.length) {
+				if (apMar == "SI")
+					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id != 10) || n.hecho == 1);
+				if (apMar == "NO")
+					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id == 10) || n.hecho == 0);
+			}
+			if (rolesIgl && resultados.length) {
+				if (rolesIgl == "RS")
+					resultados = resultados.filter(
+						(n) =>
+							n.personaje &&
+							(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
+					);
+				else resultados = resultados.filter((n) => n.personaje && n.personaje.rolIglesia_id.startsWith(rolesIgl));
+			}
+			if (canons && resultados.length) {
+				if (canons == "SB")
+					resultados = resultados.filter(
+						(n) => n.personaje && (n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+					);
+				else if (canons == "VS")
+					resultados = resultados.filter(
+						(n) => n.personaje && (n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+					);
+				else resultados = resultados.filter((n) => n.personaje && n.personaje.canon_id.startsWith(canons));
+			}
 
 			// Fin
-			return resultado;
+			return resultados;
 		},
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = variables.filtrosConsultas;
+				const vars = variables.prefsConsultas;
 				const {tiposLink, castellano} = vars;
 				let prefs = {};
 
@@ -109,7 +137,7 @@ module.exports = {
 			},
 			pers: (configCons) => {
 				// Variables
-				const {apMar, rolesIgl, canons} = variables.filtrosConsultas;
+				const {apMar, rolesIgl, canons} = variables.prefsConsultas;
 				let prefs = {};
 
 				// Aparición mariana

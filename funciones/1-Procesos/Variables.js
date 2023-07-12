@@ -79,7 +79,7 @@ module.exports = {
 	},
 
 	// Consulta de Productos
-	filtrosConsultas: {
+	prefsConsultas: {
 		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
@@ -141,10 +141,9 @@ module.exports = {
 				{id: "L", nombre: "Laicos/as", condic: {[Op.startsWith]: "L"}},
 				{id: "LC", nombre: "Laicos/as casados/as", condic: {[Op.startsWith]: "LC"}},
 				{
-					id: "rs",
+					id: "RS",
 					nombre: "Religiosos/as y Sacerdotes",
 					condic: {[Op.or]: [{[Op.startsWith]: "RE"}, {[Op.startsWith]: "SC"}]},
-					filtro: ["RE", "SC"],
 				},
 				{id: "PP", nombre: "Papas", condic: {[Op.startsWith]: "PP"}},
 				{id: "AP", nombre: "Apóstoles", condic: {[Op.startsWith]: "AP"}},

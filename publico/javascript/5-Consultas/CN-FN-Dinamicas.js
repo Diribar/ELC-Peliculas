@@ -6,16 +6,16 @@ let actualizaConfigCons = {
 		configCons = {};
 
 		// Obtiene configCons y muestra/oculta campos
-		this.layout(v, DOM);
+		this.layout();
 
 		// Muestra/Oculta líneas de separación
-		if (v.mostrar) this.ocultaLineasConsecs(v, DOM);
+		if (v.mostrar) this.ocultaLineasConsecs();
 
 		// Fin
 		return;
 	},
 	// Encabezado
-	layout: function (v, DOM) {
+	layout: function () {
 		// Impacto en configCons: layout_id, entidad
 
 		// Actualiza 'configCons.layout_id' y 'entidad'
@@ -26,10 +26,10 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
-		this.orden(v, DOM);
+		this.orden();
 		return;
 	},
-	orden: function (v, DOM) {
+	orden: function () {
 		// Impacto en configCons: orden_id y eventualmente bhr
 
 		// Oculta/Muestra las opciones que corresponden
@@ -56,10 +56,10 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
-		this.ascDes(v, DOM);
+		this.ascDes();
 		return;
 	},
-	ascDes: function (v, DOM) {
+	ascDes: function () {
 		// Impacto en configCons: ascDes
 
 		// Variables
@@ -87,13 +87,13 @@ let actualizaConfigCons = {
 		configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
 		// Muestra/Oculta sectores
-		this.muestraOculta(v, DOM);
+		this.muestraOculta();
 
 		// Fin
-		if (v.mostrar) this.presenciaEstable(v, DOM);
+		if (v.mostrar) this.presenciaEstable();
 		return;
 	},
-	muestraOculta: (v, DOM) => {
+	muestraOculta: () => {
 		// Variables
 		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!configCons.ascDes;
 		// console.log(!!configCons.layout_id, !!configCons.orden_id, !!configCons.ascDes);
@@ -109,16 +109,16 @@ let actualizaConfigCons = {
 		return;
 	},
 	// Presencia estable
-	presenciaEstable: function (v, DOM) {
+	presenciaEstable: function () {
 		// Impacto en configCons: todos los campos con presencia estable
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
-		this.bhr(v, DOM);
+		this.bhr();
 		return;
 	},
 	// Presencia eventual
-	bhr: function (v, DOM) {
+	bhr: function () {
 		// Impacto en configCons: bhr
 
 		// Si bhr ya está contestado, se oculta
@@ -128,10 +128,10 @@ let actualizaConfigCons = {
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
 
 		// Fin
-		this.apMar(v, DOM);
+		this.apMar();
 		return;
 	},
-	apMar: function (v, DOM) {
+	apMar: function () {
 		// Impacto en configCons: apMar
 
 		// Sólo se muestra el sector si bhr='1', cfc='1' y (!epocasOcurrencia || epocasOcurrencia='pst')
@@ -146,11 +146,17 @@ let actualizaConfigCons = {
 		// Actualiza el valor de 'apMar'
 		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
+		// Si se elige una 'Aparición Mariana', ocultar el sector de 'Época de Ocurrencia'
+		if (configCons.apMar == "SI") {
+			delete configCons.epocasOcurrencia;
+			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
+		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
+
 		// Fin
-		this.canonsRolesIglesia(v, DOM);
+		this.canonsRolesIglesia();
 		return;
 	},
-	canonsRolesIglesia: function (v, DOM) {
+	canonsRolesIglesia: function () {
 		// Impacto en configCons: canons y rolesIgl
 
 		// Sólo se muestra el sector si bhr='SI', cfc='1'
@@ -165,10 +171,10 @@ let actualizaConfigCons = {
 		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
 
 		// Fin
-		this.palabrasClave(v, DOM);
+		this.palabrasClave();
 		return;
 	},
-	palabrasClave: function (v, DOM) {
+	palabrasClave: function () {
 		// Impacto en: palabrasClave
 
 		// Actualiza el valor de 'palabrasClave'
@@ -179,7 +185,7 @@ let actualizaConfigCons = {
 		return;
 	},
 	// Apoyo
-	ocultaLineasConsecs: (v, DOM) => {
+	ocultaLineasConsecs: () => {
 		// Variables
 		let hijos = DOM.configCampos.parentNode.querySelectorAll("nav > *");
 		let tags = [];
