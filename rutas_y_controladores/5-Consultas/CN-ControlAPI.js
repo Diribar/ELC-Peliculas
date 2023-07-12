@@ -120,7 +120,7 @@ module.exports = {
 			console.log(120, dia, mes, configCons);
 
 			// Obtiene los productos
-			let prods =await procesos.resultados.obtieneProds(configCons);
+			let prods = await procesos.resultados.obtieneProds(configCons);
 
 			// Deja sólo los campos necesarios
 
