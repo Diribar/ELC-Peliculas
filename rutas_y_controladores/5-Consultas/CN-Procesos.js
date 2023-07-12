@@ -61,30 +61,63 @@ module.exports = {
 			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}};
 
 			// Agrega las preferencias
-			const preferencias = this.prefsProds(configCons);
-			condiciones = {...condiciones, ...preferencias};
-			// console.log(66,condiciones);
+			const prefs = this.prefs.prods(configCons);
+			console.log(66, condiciones, prefs);
+			condiciones = {...condiciones, ...prefs};
 
 			// Obtiene los productos
-			// for (let entidad of entidades) productos.push(BD_genericas.obtieneTodosPorCondicion(entidad, condiciones));
+			// for (let entidad of entidades)
+			// 	productos.push(
+			// 		BD_genericas.obtieneTodosPorCondicion(entidad, condiciones).then((n) => n.map((m) => ({...m, entidad})))
+			// 	);
 			// await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
 
 			// Fin
 			return resultado;
 		},
-		prefsProds: (configCons) => {
-			// Variables
-			const vars = variables.filtrosConsultas;
-			let condiciones = {};
+		prefs: {
+			prods: (configCons) => {
+				// Variables
+				const vars = variables.filtrosConsultas;
+				const {tiposLink, castellano} = vars;
+				let prefs = {};
 
-			// Transfiere las preferencias simples a las condiciones
-			for (let campo in configCons) if (vars[campo] && vars[campo].campo) condiciones[campo] = configCons[campo];
+				// Transfiere las preferencias simples a las condiciones
+				for (let campo in configCons) if (vars[campo] && vars[campo].campo) prefs[campo] = configCons[campo];
 
-			// Traduce las preferencias complejas a las condiciones
+				// Conversión de 'tiposLink'
+				if (configCons.tiposLink) {
+					const aux = tiposLink.opciones.find((n) => n.id == configCons.tiposLink).condic;
+					prefs = {...prefs, ...aux};
+				}
 
-			// Fin
-			// console.log(86, condiciones);
-			return condiciones;
+				// Conversión de 'castellano'
+				if (configCons.castellano) {
+					const aux = castellano.opciones.find((n) => n.id == configCons.castellano).condic;
+					prefs = {...prefs, ...aux};
+				}
+
+				// Fin
+				return prefs;
+			},
+			pers: (configCons) => {
+				// Variables
+				const {apMar, rolesIgl, canons} = variables.filtrosConsultas;
+				let prefs = {};
+
+				// Aparición mariana
+				if (configCons.apMar) prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic.pers;
+
+				// Roles en la Iglesia
+				if (configCons.rolesIgl) prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
+
+				// Canonización
+				if (configCons.canons) prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
+
+				// Fin
+				console.log(86, prefs);
+				return prefs;
+			},
 		},
 	},
 	momento: {
@@ -204,55 +237,6 @@ module.exports = {
 		},
 	},
 	API: {
-		filtrosProd: (datos) => {
-			// Variables
-			let filtros = {};
-			let condics = {statusRegistro_id: aprobado_id};
-			let epocaEstreno;
-
-			// Arma el filtro
-			let campos = ["cfc", "bhr", "publicos", "epocasEstreno", "tiposLink"];
-			campos.push("castellano", "tiposActuacion", "musical", "palabrasClave");
-			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
-
-			// Proceso para épocas de estreno
-			if (filtros.epocasEstreno) {
-				const epocasEstreno = variables.filtrosConsultas.epocasEstreno;
-				epocaEstreno = epocasEstreno.opciones.find((n) => n.id == filtros.epocasEstreno);
-			}
-
-			// Ocurrió
-			if (filtros.bhr) condics.bhr = filtros.bhr != "NO";
-			if (filtros.bhr == "pers") condics.personaje_id = {[Op.ne]: 1};
-			if (filtros.bhr == "hecho") condics.hecho_id = {[Op.ne]: 1};
-
-			// Conversión de filtros de Producto
-			if (filtros.cfc) condics.cfc = filtros.cfc == "CFC";
-			if (filtros.publicos) condics.publico_id = filtros.publicos;
-			if (filtros.epocasEstreno) condics.anoEstreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
-			if (filtros.tiposLink) {
-				const tipo_id = filtros.tiposLink;
-				if (tipo_id == "gratis") condics.linksGratuitos = SI;
-				if (tipo_id == "todos") condics.linksGeneral = SI;
-				if (tipo_id == "sin") condics.linksGeneral = NO;
-				if (tipo_id == "soloPagos") {
-					condics.linksGratuitos = {[Op.ne]: SI};
-					condics.linksGeneral = SI;
-				}
-			}
-			if (filtros.castellano) {
-				const castellano = filtros.castellano;
-				if (castellano == "SI") condics.castellano = SI;
-				if (castellano == "subt") condics.subtitulos = SI;
-				if (castellano == "cast") condics[Op.or] = [{castellano: SI}, {subtitulos: SI}];
-				if (castellano == "NO") condics[Op.and] = [{castellano: {[Op.ne]: SI}}, {subtitulos: {[Op.ne]: SI}}];
-			}
-			if (filtros.tiposActuacion) condics.tipoActuacion_id = filtros.tiposActuacion;
-			if (filtros.musical) condics.musical = prod.musical == "SI";
-
-			// Fin
-			return condics;
-		},
 		filtrosRCLV: (datos) => {
 			// Variables
 			let filtros = {};

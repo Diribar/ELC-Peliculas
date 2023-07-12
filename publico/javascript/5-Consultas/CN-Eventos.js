@@ -186,6 +186,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let configCons; // donde se consolida la configuración de la consulta
-let DOM; // donde se guarda la info de las partes del documento
-let v; // variables generales
+let configCons, DOM, v,entidad

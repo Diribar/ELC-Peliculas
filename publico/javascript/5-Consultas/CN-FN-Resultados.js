@@ -2,15 +2,22 @@
 
 let resultados = {
 	obtiene: async function () {
-		console.log(5);
+		// Fecha actual
+		const ahora = new Date();
+		const dia = ahora.getDate();
+		const mes = ahora.getMonth() + 1;
+
+		// Arma los datos
+		const datos = {dia, mes, configCons};
+
 		// Busca la información en el BE
 		v.infoResultados =
-			configCons.entidad == "productos"
-				? await fetch(ruta + "obtiene-los-productos/?configCons=" + JSON.stringify(configCons)).then((n) => n.json())
-				: await fetch(ruta + "obtiene-los-rclvs/?configCons=" + JSON.stringify(configCons)).then((n) => n.json());
+			entidad == "productos"
+				? await fetch(ruta + "obtiene-los-productos/?datos=" + JSON.stringify(datos)).then((n) => n.json())
+				: await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 
 		// Fin
-		this.contador()
+		this.contador();
 		return;
 	},
 	contador: () => {
