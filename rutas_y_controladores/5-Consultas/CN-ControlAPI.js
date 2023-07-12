@@ -118,6 +118,7 @@ module.exports = {
 			// Variables
 			const {dia, mes, configCons} = JSON.parse(req.query.datos);
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 
 			// Obtiene los productos
 			let prods = procesos.resultados.obtieneProds(configCons);
@@ -145,34 +146,38 @@ module.exports = {
 
 			// Cruza 'prods' con 'rclvs'
 			if (prods.length && rclvs) {
+				// Si no hay RCLVs, reduce a cero los productos
 				if (!rclvs.length) prods = [];
-				else
-					for (let i = prods.length - 1; i >= 0; i--) {
-						// Averigua qué rclvs con momento tiene el producto, y toma el de menor momento y mayor prioridad
-						let rclvMomento={}
-						for (j=0;j<5;j++) {
-							rclvMomento[comp.asocs]
-						}
-						const personaje = rclvs.find((n) => n.entidad == "personajes" && n.id == prods[i].personaje_id);
-						// Se fija si tiene el hecho del producto
-						const hecho = rclvs.find((n) => n.entidad == "hechos" && n.id == prods[i].hecho_id);
-						// Se fija si tiene el hecho del producto
-						const tema = rclvs.find((n) => n.entidad == "temas" && n.id == prods[i].tema_id);
-						// Se fija si tiene el hecho del producto
-						const evento = rclvs.find((n) => n.entidad == "eventos" && n.id == prods[i].evento_id);
-						// Se fija si tiene el hecho del producto
-						const epocaDelAno = rclvs.find((n) => n.entidad == "epocasDelAno" && n.id == prods[i].epocaDelAno_id);
-						
-						if (!rclv) prods.splice(i, 1);
-						else prods[i] = {...prods[i], momento: rclv.momento, prioridad: rclv.prioridad_id};
+				else {
+					// Crea la variable consolidadora
+					let prodsCruzadosConRCLVs = [];
+					// Para cada RCLV, busca los productos
+					for (let rclv of rclvs) {
+						// Obtiene el campo a buscar
+						const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
+						// Detecta los hallazgos
+						const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
+						// Si hay hallazgos, los agrega al consolidador
+						if (hallazgos.length) prodsCruzadosConRCLVs.push(...hallazgos);
+						// Si hay hallazgos, los elimina de prods
+						if (hallazgos.length) prods = prods.filter((n) => n[campo_id] != rclv.id);
 					}
+					//
+					prods = [...prodsCruzadosConRCLVs];
+				}
 			}
 
+			// Ordena los productos
+			if (prods.length && configCons.orden_id != 1)
+				prods.sort((a, b) =>
+					configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
+				);
+
 			// Deja sólo los campos necesarios
-			prods = (await prods).map((n) => n.nombreCastellano);
+			if (prods.length) prods = prods.map((n) => n.nombreCastellano);
 
 			// Fin
-			return res.json(rclvs);
+			return res.json(prods);
 		},
 		rclvs: async (req, res) => {
 			// Variables

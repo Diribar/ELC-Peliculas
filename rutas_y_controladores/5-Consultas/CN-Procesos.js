@@ -207,6 +207,10 @@ module.exports = {
 					if (i != rclvs.findIndex((n) => n.id == rclv.id && n.entidad == rclv.entidad)) rclvs.splice(i, 1);
 				}
 
+			// Los ordena:
+			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad);// Prioridad descendente
+			if (rclvs.length) rclvs.sort((a, b) => a.momento - b.momento); // Momento ascendente
+
 			// Fin
 			return rclvs;
 		},

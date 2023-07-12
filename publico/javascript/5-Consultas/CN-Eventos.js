@@ -165,7 +165,6 @@ window.addEventListener("load", async () => {
 					DOM.configNuevaNombre.classList.remove(clase);
 				}
 				// Guarda la información en la base de datos
-				console.log(v.hayCambiosDeCampo);
 				if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
 				v.hayCambiosDeCampo = false;
 				actualiza.botoneraActivaInactiva();
