@@ -57,7 +57,7 @@ let actualizaConfigCons = {
 		if (orden_id) {
 			configCons.orden_id = orden_id;
 			const bhrSeguro = v.ordenesBD.find((n) => n.id == orden_id).bhrSeguro;
-			if (bhrSeguro) configCons.bhr = "SI";
+			if (bhrSeguro) configCons.bhr = "1";
 		}
 
 		// Fin
@@ -139,9 +139,9 @@ let actualizaConfigCons = {
 	apMar: function (v, DOM) {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocasOcurrencia || epocasOcurrencia='pst')
+		// Sólo se muestra el sector si bhr='1', cfc='CFC' y (!epocasOcurrencia || epocasOcurrencia='pst')
 		const seMuestra =
-			configCons.bhr == "SI" &&
+			configCons.bhr == "1" &&
 			configCons.cfc == "CFC" &&
 			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
 
@@ -159,7 +159,7 @@ let actualizaConfigCons = {
 		// Impacto en configCons: canons y rolesIgl
 
 		// Sólo se muestra el sector si bhr='SI', cfc='CFC'
-		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC";
+		const seMuestra = configCons.bhr == "1" && configCons.cfc == "CFC";
 
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");

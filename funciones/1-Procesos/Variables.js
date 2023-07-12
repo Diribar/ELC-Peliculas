@@ -88,15 +88,9 @@ module.exports = {
 				{id: "VPC", nombre: "Sin relac. c/Fe Católica"},
 			],
 		},
-		publicos: {
-			titulo: "Público Recomendado",
-		},
-		epocasEstreno: {
-			titulo: "Época de Estreno",
-		},
-		epocasOcurrencia: {
-			titulo: "Epoca de Ocurrencia",
-		},
+		publicos: {titulo: "Público Recomendado", campo: "publico_id"},
+		epocasEstreno: {titulo: "Época de Estreno", campo: "epocaEstreno_id"},
+		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campo: "epocaOcurrencia_id"},
 		ppp_opciones: {
 			titulo: "Preferencia por Película",
 		},
@@ -116,29 +110,30 @@ module.exports = {
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},
-		tiposActuacion: {
-			titulo: "Tipo de Actuación",
-		},
+		tiposActuacion: {titulo: "Tipo de Actuación", campo: "tipoActuacion_id"},
 		musical: {
 			titulo: "Musical",
+			campo: "musical",
 			opciones: [
-				{id: "SI", nombre: "Es un musical"},
-				{id: "NO", nombre: "No es un musical"},
+				{id: "1", nombre: "Es un musical"},
+				{id: "0", nombre: "No es un musical"},
 			],
 		},
 		// Se muestran ocasionalmente
 		bhr: {
 			titulo: "Basado en Hechos Reales",
+			campo: "bhr",
 			opciones: [
-				{id: "SI", nombre: "Hechos Reales"},
-				{id: "NO", nombre: "Ficción"},
+				{id: "1", nombre: "Hechos Reales"},
+				{id: "0", nombre: "Ficción"},
 			],
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
+			campo: "apMar",
 			opciones: [
-				{id: "SI", nombre: "Aparición Mariana"},
-				{id: "NO", nombre: "Sin Aparición Mariana"},
+				{id: "1", nombre: "Aparición Mariana"},
+				{id: "0", nombre: "Sin Aparición Mariana"},
 			],
 		},
 		rolesIgl: {

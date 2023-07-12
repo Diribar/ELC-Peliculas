@@ -201,12 +201,6 @@ let verifica = {
 		return existe;
 	},
 };
-let zonaDeProds = {
-	obtieneLosProductos: () => {
-		// Fin
-		return;
-	},
-};
 
 // Consolidadas
 let cambioDeConfig_id = async () => {
@@ -227,9 +221,7 @@ let cambioDeCampos = async () => {
 	// Funciones
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
-	await zonaDeProds.obtieneLosProductos(configCons);
 	await resultados.obtiene();
-	resultados.contador();
 	if (!v.mostrarComencemos) resultados.muestra();
 
 	// Fin

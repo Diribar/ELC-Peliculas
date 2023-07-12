@@ -11,12 +11,12 @@ module.exports = {
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : null;
-		const configsDeCabecera = await procesos.configsDeCabecera(userID);
+		const configsDeCabecera = await procesos.configs.cabecera(userID);
 		const configs = {
 			propios: configsDeCabecera.filter((n) => userID && n.usuario_id == userID),
 			predeterms: configsDeCabecera.filter((n) => n.usuario_id == 1),
 		};
-		const configsConsCampos = procesos.configsConsCampos();
+		const configsConsCampos = procesos.configs.campos();
 		let prefsDeCampo = {};
 
 		// Obtiene el ID del filtro personal elegido
