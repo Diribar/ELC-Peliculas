@@ -186,4 +186,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let configCons, DOM, v,entidad
+let configCons, DOM, v, entidad;
