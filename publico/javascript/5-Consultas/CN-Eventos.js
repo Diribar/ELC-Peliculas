@@ -189,6 +189,7 @@ window.addEventListener("load", async () => {
 	await actualiza.valoresInicialesDeObjetoV();
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
+	await resultados.obtiene()
 });
 
 // Variables
