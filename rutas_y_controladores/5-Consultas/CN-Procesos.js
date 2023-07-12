@@ -160,7 +160,7 @@ module.exports = {
 		},
 		momentoDelAno: async ({dia, mes}) => {
 			// Variables
-			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Sólo las primeras cuatro entidades
+			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
 			const diaInicial_id = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
 			let registros = [];
 			let condicion;
