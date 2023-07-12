@@ -55,7 +55,7 @@ module.exports = {
 			// Particularidades
 			if (orden_id == 1) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
 			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
-			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}};
+			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
 
 			// Obtiene las condiciones de base
 
