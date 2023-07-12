@@ -63,7 +63,7 @@ module.exports = {
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
-			console.log(66,condiciones);
+			console.log(66, condiciones);
 
 			// Obtiene el include
 			let include;
