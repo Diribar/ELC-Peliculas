@@ -5,43 +5,87 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
-	configsDeCabecera: async (userID) => {
-		// Obtiene los filtros personalizados propios y de ELC
-		const usuario_id = [1, userID];
-		const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
+	configs: {
+		cabecera: async (userID) => {
+			// Obtiene los filtros personalizados propios y de ELC
+			const usuario_id = [1, userID];
+			const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
 
-		// Los ordena alfabéticamente
-		configsDeCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+			// Los ordena alfabéticamente
+			configsDeCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
 
-		// Fin
-		return configsDeCabecera;
-	},
-	configsConsCampos: function () {
-		// Variable 'filtros'
-		let configsConsCampos = {...variables.filtrosConsultas};
+			// Fin
+			return configsDeCabecera;
+		},
+		campos: function () {
+			// Variable 'filtros'
+			let configsConsCampos = {...variables.filtrosConsultas};
 
-		// Agrega los campos de código y opciones
-		for (let campo in configsConsCampos) {
-			// Le agrega el nombre del campo a cada método
-			configsConsCampos[campo].codigo = campo;
+			// Agrega los campos de código y opciones
+			for (let campo in configsConsCampos) {
+				// Le agrega el nombre del campo a cada método
+				configsConsCampos[campo].codigo = campo;
 
-			// Si no tiene opciones, le agrega las de la BD
-			if (!configsConsCampos[campo].opciones) {
-				if (campo == "epocasOcurrencia")
-					configsConsCampos.epocasOcurrencia.opciones = epocasOcurrencia
-						.filter((n) => !n.varias)
-						.map((n) => ({id: n.id, nombre: n.consulta}));
-				else configsConsCampos[campo].opciones = global[campo];
+				// Si no tiene opciones, le agrega las de la BD
+				if (!configsConsCampos[campo].opciones) {
+					if (campo == "epocasOcurrencia")
+						configsConsCampos.epocasOcurrencia.opciones = epocasOcurrencia
+							.filter((n) => !n.varias)
+							.map((n) => ({id: n.id, nombre: n.consulta}));
+					else configsConsCampos[campo].opciones = global[campo];
+				}
 			}
-		}
 
-		// Quita el método de "sin preferencia"
-		configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter(
-			(n) => n.id != sinPreferencia.id
-		);
+			// Quita el método de "sin preferencia"
+			configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter(
+				(n) => n.id != sinPreferencia.id
+			);
 
-		// Fin
-		return configsConsCampos;
+			// Fin
+			return configsConsCampos;
+		},
+	},
+	resultados: {
+		obtieneProds: async function (configCons) {
+			// Variables
+			const {orden_id} = configCons;
+			let productos = [];
+			let resultado = [];
+
+			// Obtiene las entidades
+			let entidades = ["peliculas", "colecciones"];
+			if (orden_id == 1) entidades.push("capitulos"); // Para la consulta de 'Momento del año', agrega la entidad 'capitulos'
+
+			// Obtiene las condiciones de base
+			let condiciones = {statusRegistro_id: aprobado_id};
+			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}};
+
+			// Agrega las preferencias
+			const preferencias = this.prefsProds(configCons);
+			condiciones = {...condiciones, ...preferencias};
+			// console.log(66,condiciones);
+
+			// Obtiene los productos
+			// for (let entidad of entidades) productos.push(BD_genericas.obtieneTodosPorCondicion(entidad, condiciones));
+			// await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
+
+			// Fin
+			return resultado;
+		},
+		prefsProds: (configCons) => {
+			// Variables
+			const vars = variables.filtrosConsultas;
+			let condiciones = {};
+
+			// Transfiere las preferencias simples a las condiciones
+			for (let campo in configCons) if (vars[campo] && vars[campo].campo) condiciones[campo] = configCons[campo];
+
+			// Traduce las preferencias complejas a las condiciones
+
+			// Fin
+			// console.log(86, condiciones);
+			return condiciones;
+		},
 	},
 	momento: {
 		obtieneRCLVs: async (datos) => {

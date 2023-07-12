@@ -35,7 +35,7 @@ module.exports = {
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene las opciones de configuracion
-			const configsDeCabecera = await procesos.configsDeCabecera(userID);
+			const configsDeCabecera = await procesos.configs.cabecera(userID);
 
 			// Fin
 			return res.json(configsDeCabecera);
@@ -117,7 +117,11 @@ module.exports = {
 		prods: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			console.log({prods: configCons});
+
+			// Obtiene los productos
+			let prods= procesos.resultados.obtieneProds(configCons)
+
+			// Deja sólo los campos necesarios
 
 			// Fin
 			return res.json("prods");

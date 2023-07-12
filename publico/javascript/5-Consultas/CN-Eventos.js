@@ -45,11 +45,7 @@ window.addEventListener("load", async () => {
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
-	v = {
-		...(await obtiene.opcionesDeLayoutMasOrden()),
-		configsDeCabecera: await obtiene.configsDeCabecera(),
-		mostrarComencemos: true,
-	};
+	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
 
 	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
@@ -102,8 +98,6 @@ window.addEventListener("load", async () => {
 
 		// Funciones
 		await cambioDeCampos();
-		await resultados.obtiene();
-		if (!v.mostrarComencemos) resultados.muestra();
 
 		// Fin
 		return;
@@ -173,8 +167,8 @@ window.addEventListener("load", async () => {
 				console.log(v.hayCambiosDeCampo);
 				if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
 				v.hayCambiosDeCampo = false;
-				actualiza.botoneraActivaInactiva()
-				DOM.palClaveAprob.classList.add("inactivo")
+				actualiza.botoneraActivaInactiva();
+				DOM.palClaveAprob.classList.add("inactivo");
 			}
 
 			// Fin
@@ -186,10 +180,8 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	await actualiza.valoresInicialesDeObjetoV();
-	actualizaConfigCons.consolidado();
-	actualiza.botoneraActivaInactiva();
-	await resultados.obtiene()
+	await cambioDeConfig_id();
+	await cambioDeCampos();
 });
 
 // Variables
