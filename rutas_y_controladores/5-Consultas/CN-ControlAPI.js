@@ -190,22 +190,6 @@ module.exports = {
 };
 
 let FN = {
-	momentoDelAno: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-
-		// Obtiene los RCLVs (sin repeticiones)
-		const rclvs = await procesos.momento.obtieneRCLVs(datos);
-
-		// Obtiene los productos
-		const productos = procesos.momento.obtieneProds(rclvs);
-
-		// Fin
-		return res.json(productos);
-	},
-	diasDelAno: (req, res) => {
-		return res.json(diasDelAno);
-	},
 	prods: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);

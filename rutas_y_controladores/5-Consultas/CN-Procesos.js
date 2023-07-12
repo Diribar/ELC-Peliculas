@@ -166,9 +166,9 @@ module.exports = {
 			let condicion;
 
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
-			for (let momento = 0; momento < 3; momento++) {
+			for (let dia = 0; dia < 3; dia++) {
 				// Variables
-				let diaDelAno_id = diaInicial_id + momento;
+				let diaDelAno_id = diaInicial_id + dia;
 				if (diaDelAno_id > 366) diaDelAno_id -= 366;
 
 				// Obtiene los RCLV
@@ -179,8 +179,8 @@ module.exports = {
 					// Obtiene los registros
 					registros.push(
 						BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-							// Les agrega su entidad y el momento
-							.then((n) => n.map((m) => ({...m, entidad, momento})))
+							// Les agrega su entidad y el dia
+							.then((n) => n.map((m) => ({...m, entidad, dia})))
 					);
 				}
 
@@ -190,8 +190,8 @@ module.exports = {
 					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
 						BD_genericas.obtieneTodosPorCondicion("epocasDelAno", condicion)
-							// Les agrega su entidad y el momento
-							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", momento})))
+							// Les agrega su entidad y el dia
+							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", dia})))
 					);
 				}
 			}
@@ -209,7 +209,7 @@ module.exports = {
 
 			// Los ordena:
 			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad);// Prioridad descendente
-			if (rclvs.length) rclvs.sort((a, b) => a.momento - b.momento); // Momento ascendente
+			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Momento ascendente
 
 			// Fin
 			return rclvs;
