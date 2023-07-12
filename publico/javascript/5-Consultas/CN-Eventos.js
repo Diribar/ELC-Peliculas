@@ -108,7 +108,6 @@ window.addEventListener("load", async () => {
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
-		console.log(elemento);
 
 		// Iconos
 		if (elemento.tagName == "I" && ["iconosBotonera", "palabrasClave"].includes(padre.id)) {
