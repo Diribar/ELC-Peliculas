@@ -19,30 +19,28 @@ module.exports = {
 		},
 		campos: function () {
 			// Variable 'filtros'
-			let configsConsCampos = {...variables.filtrosConsultas};
+			let campos = {...variables.camposConsultas};
 
 			// Agrega los campos de código y opciones
-			for (let campo in configsConsCampos) {
+			for (let campo in campos) {
 				// Le agrega el nombre del campo a cada método
-				configsConsCampos[campo].codigo = campo;
+				campos[campo].codigo = campo;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!configsConsCampos[campo].opciones) {
+				if (!campos[campo].opciones) {
 					if (campo == "epocasOcurrencia")
-						configsConsCampos.epocasOcurrencia.opciones = epocasOcurrencia
+						campos.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => !n.varias)
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else configsConsCampos[campo].opciones = global[campo];
+					else campos[campo].opciones = global[campo];
 				}
 			}
 
 			// Quita el método de "sin preferencia"
-			configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter(
-				(n) => n.id != sinPreferencia.id
-			);
+			campos.ppp_opciones.opciones = campos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 			// Fin
-			return configsConsCampos;
+			return campos;
 		},
 	},
 	resultados: {
@@ -50,7 +48,7 @@ module.exports = {
 			// Variables
 			const {orden_id, apMar, rolesIgl, canons} = configCons;
 			let productos = [];
-			let resultado = [];
+			let resultados = [];
 
 			// Obtiene las entidades
 			let entidades = ["peliculas", "colecciones"];
@@ -63,7 +61,6 @@ module.exports = {
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
-			console.log(66, condiciones);
 
 			// Obtiene el include
 			let include;
@@ -77,15 +74,44 @@ module.exports = {
 						: BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
 					).then((n) => n.map((m) => ({...m, entidad})))
 				);
-			await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
+			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
+			// console.log(80,resultados);
+
+			// Filtrar por apMar, rolesIgl, canons
+			if (apMar && resultados.length) {
+				if (apMar == "SI")
+					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id != 10) || n.hecho == 1);
+				if (apMar == "NO")
+					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id == 10) || n.hecho == 0);
+			}
+			if (rolesIgl && resultados.length) {
+				if (rolesIgl == "RS")
+					resultados = resultados.filter(
+						(n) =>
+							n.personaje &&
+							(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
+					);
+				else resultados = resultados.filter((n) => n.personaje && n.personaje.rolIglesia_id.startsWith(rolesIgl));
+			}
+			if (canons && resultados.length) {
+				if (canons == "SB")
+					resultados = resultados.filter(
+						(n) => n.personaje && (n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+					);
+				else if (canons == "VS")
+					resultados = resultados.filter(
+						(n) => n.personaje && (n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+					);
+				else resultados = resultados.filter((n) => n.personaje && n.personaje.canon_id.startsWith(canons));
+			}
 
 			// Fin
-			return resultado;
+			return resultados;
 		},
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = variables.filtrosConsultas;
+				const vars = variables.camposConsultas;
 				const {tiposLink, castellano} = vars;
 				let prefs = {};
 
@@ -109,7 +135,7 @@ module.exports = {
 			},
 			pers: (configCons) => {
 				// Variables
-				const {apMar, rolesIgl, canons} = variables.filtrosConsultas;
+				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
 				// Aparición mariana
