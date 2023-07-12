@@ -22,7 +22,7 @@ let actualizaConfigCons = {
 		const layout_id = DOM.layout_id.value;
 		if (layout_id) {
 			configCons.layout_id = layout_id;
-			entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
+			v.entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
 		}
 
 		// Fin
@@ -134,10 +134,10 @@ let actualizaConfigCons = {
 	apMar: function (v, DOM) {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='1', cfc='CFC' y (!epocasOcurrencia || epocasOcurrencia='pst')
+		// Sólo se muestra el sector si bhr='1', cfc='1' y (!epocasOcurrencia || epocasOcurrencia='pst')
 		const seMuestra =
 			configCons.bhr == "1" &&
-			configCons.cfc == "CFC" &&
+			configCons.cfc == "1" &&
 			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
 
 		// Muestra/Oculta el sector
@@ -153,8 +153,8 @@ let actualizaConfigCons = {
 	canonsRolesIglesia: function (v, DOM) {
 		// Impacto en configCons: canons y rolesIgl
 
-		// Sólo se muestra el sector si bhr='SI', cfc='CFC'
-		const seMuestra = configCons.bhr == "1" && configCons.cfc == "CFC";
+		// Sólo se muestra el sector si bhr='SI', cfc='1'
+		const seMuestra = configCons.bhr == "1" && configCons.cfc == "1";
 
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
@@ -172,7 +172,8 @@ let actualizaConfigCons = {
 		// Impacto en: palabrasClave
 
 		// Actualiza el valor de 'palabrasClave'
-		if (!DOM.palClaveAprob.className.includes("inactivo")) configCons.palabrasClave = DOM.palClave.value;
+		if (!DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value)
+			configCons.palabrasClave = DOM.palClave.value;
 
 		// Fin
 		return;
