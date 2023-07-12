@@ -117,14 +117,15 @@ module.exports = {
 		prods: async (req, res) => {
 			// Variables
 			const {dia, mes, configCons} = JSON.parse(req.query.datos);
+			console.log(120, dia, mes, configCons);
 
 			// Obtiene los productos
-			let prods = procesos.resultados.obtieneProds(configCons);
+			let prods =await procesos.resultados.obtieneProds(configCons);
 
 			// Deja sólo los campos necesarios
 
 			// Fin
-			return res.json("prods");
+			return res.json(prods);
 		},
 		rclvs: async (req, res) => {
 			// Variables

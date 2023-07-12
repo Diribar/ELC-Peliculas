@@ -22,7 +22,7 @@ let actualizaConfigCons = {
 		const layout_id = DOM.layout_id.value;
 		if (layout_id) {
 			configCons.layout_id = layout_id;
-			v.entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
+			entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
 		}
 
 		// Fin

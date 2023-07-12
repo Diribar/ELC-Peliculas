@@ -48,7 +48,7 @@ module.exports = {
 	resultados: {
 		obtieneProds: async function (configCons) {
 			// Variables
-			const {orden_id} = configCons;
+			const {orden_id, apMar, rolesIgl, canons} = configCons;
 			let productos = [];
 			let resultado = [];
 
@@ -62,15 +62,22 @@ module.exports = {
 
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
-			console.log(66, condiciones, prefs);
 			condiciones = {...condiciones, ...prefs};
+			console.log(66,condiciones);
+
+			// Obtiene el include
+			let include;
+			apMar ? (include = ["personaje", "hecho"]) : rolesIgl || canons ? (include = "personaje") : null;
 
 			// Obtiene los productos
-			// for (let entidad of entidades)
-			// 	productos.push(
-			// 		BD_genericas.obtieneTodosPorCondicion(entidad, condiciones).then((n) => n.map((m) => ({...m, entidad})))
-			// 	);
-			// await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
+			for (let entidad of entidades)
+				productos.push(
+					(include
+						? BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+						: BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
+					).then((n) => n.map((m) => ({...m, entidad})))
+				);
+			await Promise.all(productos).then((n) => n.map((m) => resultado.push(...m)));
 
 			// Fin
 			return resultado;
@@ -83,7 +90,7 @@ module.exports = {
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let campo in configCons) if (vars[campo] && vars[campo].campo) prefs[campo] = configCons[campo];
+				for (let campo in configCons) if (vars[campo] && vars[campo].campo) prefs[vars[campo].campo] = configCons[campo];
 
 				// Conversión de 'tiposLink'
 				if (configCons.tiposLink) {
