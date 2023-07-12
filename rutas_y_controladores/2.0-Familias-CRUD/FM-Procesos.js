@@ -663,7 +663,7 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	obtieneLaEpocaDesdeElAno:  (anoEstreno) => {
+	obtieneLaEpocaDeEstreno:  (anoEstreno) => {
 		// Variables
 		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
 		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
@@ -771,7 +771,7 @@ let puleEdicion = async (entidad, original, edicion) => {
 
 	// Quita de edición los campos que correspondan
 	for (let campo in edicion) {
-		// Quita de edición los campos que no se comparan
+		// Quita de edición los campos que no se comparan o que sean 'null'
 		if (!camposRevisar.includes(campo) || edicion[campo] === null) {
 			delete edicion[campo];
 			continue;

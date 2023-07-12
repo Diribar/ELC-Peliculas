@@ -6,21 +6,65 @@ module.exports = {
 	// Inicio
 	opcionesInicio: [
 		{
-			href: "/consultas/listado",
-			src: "/imagenes/0-Base/Inicio/Recomendame.jpg",
+			href: "/consultas",
+			src: "/imagenes/0-Base/Inicio/VerUnaPeli.jpg",
 			p: "Quiero que me recomienden una película o colección",
 		},
 		{
-			href: "/consultas/listado/cfc",
-			src: "/imagenes/0-Base/Inicio/Cruz.jpg",
-			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
+			href: "/producto/agregar/confirma",
+			src: "/imagenes/0-Base/Inicio/Agregar.jpg",
+			p: "Quiero agregar una película a la base de datos",
 		},
 		{
-			href: "/consultas/listado/vpc",
-			src: "/imagenes/0-Base/Inicio/Valores.jpg",
-			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura",
+			href: "/institucional/quienes-somos",
+			src: "/imagenes/0-Base/Varios/Institucional-Imagen.jpg",
+			p: "Un paseo institucional por nuestro sitio",
 		},
 	],
+	opcsInstitucional: {
+		"quienes-somos": {
+			codigo: "quienesSomos",
+			titulo: "Quiénes somos",
+			anterior: "",
+			posterior: "mision-y-vision",
+		},
+		"mision-y-vision": {
+			codigo: "misionVision",
+			titulo: "Nuestra Misión y Visión",
+			anterior: "quienes-somos",
+			posterior: "valores",
+		},
+		valores: {
+			codigo: "nuestrosValores",
+			titulo: "Nuestros Valores",
+			anterior: "mision-y-vision",
+			posterior: "en-que-consiste-este-sitio",
+		},
+		"en-que-consiste-este-sitio": {
+			codigo: "enQueConsiste",
+			titulo: "En qué consiste este sitio",
+			anterior: "valores",
+			posterior: "nuestro-perfil-de-peliculas",
+		},
+		"nuestro-perfil-de-peliculas": {
+			codigo: "perfilPelis",
+			titulo: "Nuestro Perfil de Películas",
+			anterior: "en-que-consiste-este-sitio",
+			posterior: "derechos-de-autor",
+		},
+		"derechos-de-autor": {
+			codigo: "derechosAutor",
+			titulo: "Nuestra Política sobre Derechos de Autor",
+			anterior: "nuestro-perfil-de-peliculas",
+			posterior: "data-entry",
+		},
+		"data-entry": {
+			codigo: "dataEntry",
+			titulo: "Nuestra Política de Data-Entry",
+			anterior: "derechos-de-autor",
+			posterior: "",
+		},
+	},
 
 	// Productos y RCLVs
 	entidades: {
@@ -53,8 +97,8 @@ module.exports = {
 		epocasOcurrencia: {
 			titulo: "Epoca de Ocurrencia",
 		},
-		ppp_opciones:{
-			titulo:"Preferencia por Película"
+		ppp_opciones: {
+			titulo: "Preferencia por Película",
 		},
 		tiposLink: {
 			titulo: "Tipos de link",
@@ -182,7 +226,12 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epocaOcurrencia},
+			{
+				titulo: "Época respecto a Cristo",
+				nombre: "epocaOcurrencia_id",
+				valores: epocasOcurrencia,
+				mensajes: mensajes.epocaOcurrencia,
+			},
 			{
 				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
@@ -248,7 +297,17 @@ module.exports = {
 			"apMar_id",
 			"avatar",
 		],
-		hechos: ["nombre", "ano", "diaDelAno_id", "fechaMovil", "prioridad_id", "epocaOcurrencia_id", "solo_cfc", "ama", "avatar"],
+		hechos: [
+			"nombre",
+			"ano",
+			"diaDelAno_id",
+			"fechaMovil",
+			"prioridad_id",
+			"epocaOcurrencia_id",
+			"solo_cfc",
+			"ama",
+			"avatar",
+		],
 		temas: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		eventos: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		epocasDelAno: [
@@ -376,7 +435,14 @@ module.exports = {
 
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
-			{nombre: "epocaOcurrencia_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
+			{
+				nombre: "epocaOcurrencia_id",
+				titulo: "Epoca",
+				personajes: true,
+				hechos: true,
+				relacInclude: "epocaOcurrencia",
+				tabla: "epocasOcurrencia",
+			},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},

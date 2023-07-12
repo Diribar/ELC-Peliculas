@@ -46,7 +46,7 @@ module.exports = {
 			// año de estreno, duración, país de origen
 			if (datosAPI.release_date) {
 				datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
-				datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDesdeElAno(datos.anoEstreno);
+				datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDeEstreno(datos.anoEstreno);
 			}
 			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
@@ -119,7 +119,7 @@ module.exports = {
 				if (release_date.length) {
 					datos.anoEstreno = Math.min(...release_date);
 					datos.anoFin = Math.max(...release_date);
-					datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDesdeElAno(datos.anoEstreno);
+					datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDeEstreno(datos.anoEstreno);
 				}
 			}
 
@@ -219,7 +219,7 @@ module.exports = {
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) {
 				datos.anoEstreno = parseInt(datosAPI.first_air_date.slice(0, 4));
-				datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDesdeElAno(datos.anoEstreno);
+				datos.epocaEstreno_id = procsCRUD.obtieneLaEpocaDeEstreno(datos.anoEstreno);
 			}
 			if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
@@ -279,7 +279,7 @@ module.exports = {
 					...resultado,
 					yaEnBD_id: resultado.id,
 					anoEstreno: resultado.ano,
-					epocaEstreno_id: procsCRUD.obtieneLaEpocaDesdeElAno(resultado.ano),
+					epocaEstreno_id: procsCRUD.obtieneLaEpocaDeEstreno(resultado.ano),
 					nombreCastellano: resultado.nombre,
 					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
 				};

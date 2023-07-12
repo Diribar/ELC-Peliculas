@@ -11,53 +11,15 @@ module.exports = {
 			opciones: variables.opcionesInicio,
 		});
 	},
-	quienesSomos: (req, res) => {
+	institucional: (req, res) => {
+		// Variables
+		const url = req.path.slice(1)
+		const vars = variables.opcsInstitucional[url];
+
+		// Fin
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "quienesSomos",
-			titulo: "Quiénes somos",
-		});
-	},
-	misionVision: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "misionVision",
-			titulo: "Nuestra Misión y Visión",
-		});
-	},
-	valores: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "nuestrosValores",
-			titulo: "Nuestros Valores",
-		});
-	},
-	enQueConsiste: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "enQueConsiste",
-			titulo: "En qué consiste este sitio",
-		});
-	},
-	perfilPelis: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "perfilPelis",
-			titulo: "Nuestro Perfil de Películas",
-		});
-	},
-	derechosAutor: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "derechosAutor",
-			titulo: "Nuestra Política sobre Derechos de Autor",
-		});
-	},
-	dataEntry: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "dataEntry",
-			titulo: "Nuestra Política de Data-Entry",
+			...vars,
 		});
 	},
 };

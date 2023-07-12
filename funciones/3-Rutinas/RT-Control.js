@@ -29,7 +29,8 @@ module.exports = {
 
 		// Fin
 		return;
-		obtieneLaEpocaDesdeElAno()
+		rclvsNull();
+		actualizaLaEpocaDeEstreno();
 		this.LinksVencidos();
 	},
 
@@ -457,8 +458,8 @@ module.exports = {
 	},
 };
 
-let obtieneLaEpocaDesdeElAno = async () => {
-	// Variables
+// Variables
+let actualizaLaEpocaDeEstreno = async () => {
 	const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
 	const condicion = {anoEstreno: {[Op.ne]: null}};
 
@@ -469,11 +470,23 @@ let obtieneLaEpocaDesdeElAno = async () => {
 
 		// Actualiza el ID
 		for (let producto of productos) {
-			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno > n.desde).id;
+			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno >= n.desde).id;
 			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
 	}
 
 	// Fin
 	return;
+};
+let rclvsNull = () => {
+	// Rutinas
+	for (let entidadRCLV of variables.entidades.rclvs) {
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+		for (let entidadProd of variables.entidades.prods) {
+			BD_genericas.actualizaTodosPorCondicion(entidadProd, {[campo_id]: null}, {[campo_id]: 1});
+		}
+	}
+
+	// Fin
+	return
 };
