@@ -115,7 +115,6 @@ module.exports = {
 	},
 	resultados: {
 		prods: async (req, res) => {
-			console.log(118);
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
 
