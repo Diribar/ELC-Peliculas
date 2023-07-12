@@ -10,7 +10,7 @@
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
-	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "ProductosAlAzar": "SI"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
 		"BorraImagenesSinRegistro": "NO",
@@ -23,7 +23,7 @@
 		"09-jul-23": {"titulo": "ELC - Películas"},
 		"10-jul-23": {"titulo": "ELC - Películas"},
 		"11-jul-23": {"titulo": "Benito de Nursia", "entidad": "personajes", "id": 172},
-		"12-jul-23": {"titulo": "Padres de Santa Teresita", "entidad": "personajes", "id": 150},
+		"12-jul-23": {"titulo": "Luis y Celia Martin", "entidad": "personajes", "id": 150},
 		"13-jul-23": {"titulo": "Juana Fernández Solar", "entidad": "personajes", "id": 108}
 	}
 }

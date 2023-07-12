@@ -524,6 +524,7 @@ module.exports = {
 				const esEdicion = true;
 				campoRevisar.mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
 				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
+				if (!campoRevisar.mostrarEdic) campoRevisar.mostrarEdic = "(vacío)";
 
 				// Consolida los resultados
 				resultado.push(campoRevisar);

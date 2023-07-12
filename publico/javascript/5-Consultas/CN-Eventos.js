@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variable DOM
+	// Variables
 	DOM = {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
@@ -44,9 +44,11 @@ window.addEventListener("load", async () => {
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
-
-	// Variables varias
-	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
+	v = {
+		...(await obtiene.opcionesDeLayoutMasOrden()),
+		configsDeCabecera: await obtiene.configsDeCabecera(),
+		comencemos: true,
+	};
 
 	// Eventos - Cambio de Configuración
 	DOM.cuerpo.addEventListener("input", async (e) => {

@@ -5,22 +5,28 @@
 	</div>
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
-		<optgroup id="propios" label="Propios">
-			<% for (let configDeCabecera of configsDeCabecera.filter(n => n.usuario_id)) { %>
-				<option 
-					value="<%= configDeCabecera.id %>"
-					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
-				><%= configDeCabecera.nombre %></option>
-			<% } %>
-		</optgroup>
-		<optgroup label="Predeterminados">
-			<% for (let configDeCabecera of configsDeCabecera.filter(n => !n.usuario_id)) { %>
-				<option 
-					value="<%= configDeCabecera.id %>"
-					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
-				><%= configDeCabecera.nombre %></option>
-			<% } %>
-		</optgroup>
+		<!-- Configuraciones personales -->
+		<% if (configs.propios.length) { %>
+			<optgroup id="propios" label="Propios">
+				<% for (let config of configs.propios) { %>
+					<option 
+						value="<%= config.id %>"
+						<% if (config.id == configCons_id) { %>selected<% } %>
+					><%= config.nombre %></option>
+				<% } %>
+			</optgroup>
+		<% } %>
+		<!-- Configuraciones predeterminadas -->
+		<% if (userID != 1) { %>
+			<optgroup label="Predeterminados">
+				<% for (let config of configs.predeterms) { %>
+					<option 
+						value="<%= config.id %>"
+						<% if (config.id == configCons_id) { %>selected<% } %>
+					><%= config.nombre %></option>
+				<% } %>
+			</optgroup>
+		<% } %>
 	</select>
 	<div id="iconosBotonera" class="flexRow">
 		<i id="nuevo" class="fa-solid fa-file scale inactivo" title="Crea un filtro nuevo"></i>

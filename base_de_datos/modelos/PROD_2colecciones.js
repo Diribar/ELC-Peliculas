@@ -44,6 +44,7 @@ module.exports = (sequelize, dt) => {
 		entretiene: {type: dt.INTEGER},
 		calidadTecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
+		azar: {type: dt.INTEGER},
 
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},

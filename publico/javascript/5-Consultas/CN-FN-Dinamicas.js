@@ -2,8 +2,13 @@
 
 let actualizaConfigCons = {
 	consolidado: function () {
+		// Fecha actual
+		const ahora = new Date();
+		const dia = ahora.getDate();
+		const mes = ahora.getMonth() + 1;
+
 		// Borra la información anterior
-		configCons = {};
+		configCons = {dia, mes};
 
 		// Obtiene configCons y muestra/oculta campos
 		this.layout(v, DOM);
@@ -103,7 +108,7 @@ let actualizaConfigCons = {
 
 		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		v.mostrar && !v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		v.mostrar && v.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 		// Fin
 		return;
@@ -135,7 +140,10 @@ let actualizaConfigCons = {
 		// Impacto en configCons: apMar
 
 		// Sólo se muestra el sector si bhr='SI', cfc='CFC' y (!epocasOcurrencia || epocasOcurrencia='pst')
-		const seMuestra = configCons.bhr == "SI" && configCons.cfc == "CFC" && (!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
+		const seMuestra =
+			configCons.bhr == "SI" &&
+			configCons.cfc == "CFC" &&
+			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
 
 		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
