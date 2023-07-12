@@ -1,5 +1,5 @@
 <div id="<%= asunto.codigo %>" class="pref contSelect">
-	<select name="<%= asunto.codigo %>" class="<%= locals.eventual ? asunto.codigo : 'presenciaEstable' %>">
+	<select name="<%= asunto.codigo %>" class="<%= locals.eventual ? asunto.codigo : 'presenciaEstable' %> prefSimple">
 		<option value=""><%= asunto.titulo %></option>
 		<% for (let opcion of asunto.opciones) { %>
 			<option 

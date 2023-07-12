@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
-		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) select"),
+		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
 		configCons: document.querySelector("#configCons"),
 		configCabecera: document.querySelector("#configCons #configDeCabecera"),
@@ -83,13 +83,13 @@ window.addEventListener("load", async () => {
 			// Palabras clave
 			else if (campoNombre == "palabrasClave") {
 				// Restringe el uso de caracteres a los aceptados
-				amplio.restringeCaracteres(e, true);
+				basico.restringeCaracteres(e, true);
 
 				// Valida los caracteres ingresados
 				const nombre = DOM.palClave.value;
-				const errores = nombre.length ? amplio.validaCaracteres(nombre) : true;
+				const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
 
-				// Muestra/Oculta el ícono de confirmación
+				// Activa/Inactiva el ícono de confirmación
 				errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
 
 				// Fin
@@ -142,6 +142,18 @@ window.addEventListener("load", async () => {
 				await actualiza.valoresInicialesDeObjetoV();
 				await actualiza.statusInicialCampos();
 				await cambioDeCampos();
+			} else if (nombre == "eliminar") {
+				// Si hay un error, interrumpe la función
+				const existe = await verifica.configCons_id();
+				if (!existe || !v.filtroPropio) return;
+
+				// Acciones si existe
+				await cambiosEnBD.eliminaConfigCons();
+				await cambioDeConfig_id();
+				await cambioDeCampos();
+			} else if (nombre == "palabrasClave") {
+				v.hayCambiosDeCampo = true;
+				await cambioDeCampos();
 			} else if (nombre == "guardar") {
 				if (v.nuevo || v.edicion) {
 					// Obtiene el nuevo nombre
@@ -158,18 +170,11 @@ window.addEventListener("load", async () => {
 					DOM.configNuevaNombre.classList.remove(clase);
 				}
 				// Guarda la información en la base de datos
+				console.log(v.hayCambiosDeCampo);
 				if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
-			} else if (nombre == "eliminar") {
-				// Si hay un error, interrumpe la función
-				const existe = await verifica.configCons_id();
-				if (!existe || !v.filtroPropio) return;
-
-				// Acciones si existe
-				await cambiosEnBD.eliminaConfigCons();
-				await cambioDeConfig_id();
-				await cambioDeCampos();
-			} else if (nombre == "palabrasClave") {
-				await cambioDeCampos();
+				v.hayCambiosDeCampo = false;
+				actualiza.botoneraActivaInactiva()
+				DOM.palClaveAprob.classList.add("inactivo")
 			}
 
 			// Fin

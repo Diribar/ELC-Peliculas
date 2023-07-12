@@ -5,9 +5,6 @@ window.addEventListener("load", async () => {
 		// Zona de Productos
 		listado: document.querySelector("#zonaDeProds #vistaProds #listado"),
 	};
-	let varias = {
-		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
-	};
 
 	// Funciones
 	let zonaDeProds = {

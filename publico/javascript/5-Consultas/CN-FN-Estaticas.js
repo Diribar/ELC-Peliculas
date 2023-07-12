@@ -80,6 +80,9 @@ let actualiza = {
 		for (let ascDesInput of ascDesInputs)
 			ascDesInput.checked = configDeCampos.ascDes && ascDesInput.value == configDeCampos.ascDes;
 
+		// Actualiza ícono Palabras Clave
+		DOM.palClaveAprob.classList.add("inactivo");
+
 		// Fin
 		return;
 	},
@@ -88,10 +91,6 @@ let actualiza = {
 		DOM.comencemos.classList.remove("ocultar");
 		DOM.vistaProds.classList.add("ocultar");
 
-		// Fin
-		return;
-	},
-	contador: () => {
 		// Fin
 		return;
 	},
@@ -117,8 +116,10 @@ let cambiosEnBD = {
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
 		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 
-		// Cambios en la BD
-		v.configsDeCabecera = await obtiene.configsDeCabecera(); // Actualiza las configsDeCabecera posibles para el usuario
+		// Actualiza las configsDeCabecera posibles para el usuario
+		v.configsDeCabecera = await obtiene.configsDeCabecera();
+
+		// Actualiza configCons_id en cookie, session y usuario
 		this.configCons_id();
 
 		// Crea una opción
@@ -227,7 +228,9 @@ let cambioDeCampos = async () => {
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
 	await zonaDeProds.obtieneLosProductos(configCons);
-	actualiza.contador();
+	await resultados.obtiene();
+	resultados.contador();
+	if (!v.mostrarComencemos) resultados.muestra();
 
 	// Fin
 	return;
