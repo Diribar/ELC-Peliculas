@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 		orden_id: DOM.encabezado.querySelector("select[name='orden_id']"),
 		orden_idOpciones: DOM.encabezado.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
 		ascDes: DOM.encabezado.querySelector("#ascDes"),
-		contador_de_prods: DOM.encabezado.querySelector("#derecha #contador_de_prods"),
+		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
 		// Configuracion
 		iconos: DOM.configCons.querySelectorAll("i"),

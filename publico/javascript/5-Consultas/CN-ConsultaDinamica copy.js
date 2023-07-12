@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Actualiza el contador
-			contador_de_prods.innerHTML = resultados.length + " resultados";
+			contadorDeProds.innerHTML = resultados.length + " resultados";
 
 			// Actualiza los resultados
 			DOM.listado.innerHTML = "";

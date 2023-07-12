@@ -7,5 +7,5 @@
 #encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Contador */
-#cuerpo #contador_de_prods {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
-#cuerpo #contador_de_prods {font-size: 1.1rem; font-weight: bold; width: max-content;}
+#cuerpo #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
+#cuerpo #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}

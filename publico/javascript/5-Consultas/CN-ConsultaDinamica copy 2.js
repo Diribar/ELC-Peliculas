@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDesSector: document.querySelector("#encabezado #ascDes"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
-		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
+		contadorDeProds: document.querySelector("#encabezado #derecha #contadorDeProds"),
 
 		// Filtros
 		camposTitulo: document.querySelector("#configCons #configsDeCampo div:has(h2)"),
@@ -346,7 +346,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Actualiza el contador
-			contador_de_prods.innerHTML = resultados.length + " resultados";
+			contadorDeProds.innerHTML = resultados.length + " resultados";
 
 			// Actualiza los resultados
 			DOM.listado.innerHTML = "";
