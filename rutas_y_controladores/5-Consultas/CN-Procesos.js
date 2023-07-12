@@ -57,12 +57,9 @@ module.exports = {
 			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
 			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
 
-			// Obtiene las condiciones de base
-
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
-			console.log(64, condiciones);
 
 			// Obtiene el include
 			let include;
