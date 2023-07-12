@@ -3,7 +3,6 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Zona de Productos
-		vistaProds: document.querySelector("#zonaDeProds #vistaProds"),
 		listado: document.querySelector("#zonaDeProds #vistaProds #listado"),
 	};
 	let varias = {

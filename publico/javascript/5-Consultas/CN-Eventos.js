@@ -41,16 +41,17 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
+		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
 	v = {
 		...(await obtiene.opcionesDeLayoutMasOrden()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
-		comencemos: true,
+		mostrarComencemos: true,
 	};
 
-	// Eventos - Cambio de Configuración
+	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const campoNombre = e.target.name;
@@ -61,7 +62,7 @@ window.addEventListener("load", async () => {
 			const existe = await verifica.configCons_id();
 			if (!existe) return;
 
-			// Función
+			// Novedades
 			await cambioDeConfig_id();
 		}
 		// Nombre de configuración, Palabras clave, Campos
@@ -101,17 +102,24 @@ window.addEventListener("load", async () => {
 
 		// Funciones
 		await cambioDeCampos();
+		await resultados.obtiene();
+		if (!v.mostrarComencemos) resultados.muestra();
 
 		// Fin
 		return;
 	});
 
-	// Eventos - Botonera
-	DOM.iconos.forEach((icono, i) => {
-		icono.addEventListener("click", async (e) => {
+	// Eventos - 'click'
+	DOM.cuerpo.addEventListener("click", async (e) => {
+		// Variables
+		const elemento = e.target;
+		const padre = elemento.parentNode;
+
+		// Iconos
+		if (elemento.tagName == "I" && ["iconosBotonera", "palabrasClave"].includes(padre.id)) {
 			// Si el ícono está inactivo, interrumpe la función
-			if (e.target.className.includes("inactivo")) return;
-			const nombre = e.target.id ? e.target.id : e.target.parentNode.id;
+			if (elemento.className.includes("inactivo")) return;
+			const nombre = elemento.id ? elemento.id : padre.id;
 
 			// Acciones
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -166,7 +174,10 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			return;
-		});
+		}
+
+		// Comencemos
+		if (padre.id == "comencemos" && elemento.id == "verde") resultados.muestra();
 	});
 
 	// Start-up
