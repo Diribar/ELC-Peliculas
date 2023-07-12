@@ -132,7 +132,6 @@ module.exports = {
 
 			// Espera hasta completar las lecturas
 			[prods, rclvs, ppp_opciones] = await Promise.all([prods, rclvs, ppp_opciones]);
-			// console.log(135,rclvs);
 
 			// Cruza 'prods' con 'ppp'
 			if (prods.length && ppp_opciones) {
