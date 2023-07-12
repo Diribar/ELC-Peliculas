@@ -83,9 +83,10 @@ module.exports = {
 		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
+			campo: "cfc",
 			opciones: [
-				{id: "CFC", nombre: "Con relac. c/Fe Católica"},
-				{id: "VPC", nombre: "Sin relac. c/Fe Católica"},
+				{id: "1", nombre: "Con relac. c/Fe Católica"},
+				{id: "0", nombre: "Sin relac. c/Fe Católica"},
 			],
 		},
 		publicos: {titulo: "Público Recomendado", campo: "publico_id"},
@@ -97,17 +98,16 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
-				{id: "gratis", nombre: "Links gratuitos"},
-				{id: "soloPagos", nombre: "Solamente links con pago"},
+				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: 2}},
+				{id: "soloPagos", nombre: "Solamente links con pago", condic: {linksGratuitos: 0, linksGeneral: 2}},
 			],
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
 			opciones: [
-				{id: "SI", nombre: "Hablada en castellano"},
-				{id: "subt", nombre: "Subtítulos en castellano"},
-				{id: "cast", nombre: "En castellano (habl./subt.)"},
-				{id: "NO", nombre: "En otro idioma"},
+				{id: "SI", nombre: "Hablada en castellano", condic: {castellano: 2}},
+				{id: "subt", nombre: "Subtítulos en castellano", condic: {subtitulos: 2}},
+				{id: "cast", nombre: "En castellano (habl./subt.)", condic: {[Op.or]: [{castellano: 2}, {subtitulos: 2}]}},
 			],
 		},
 		tiposActuacion: {titulo: "Tipo de Actuación", campo: "tipoActuacion_id"},
@@ -130,29 +130,37 @@ module.exports = {
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
-			campo: "apMar",
 			opciones: [
-				{id: "1", nombre: "Aparición Mariana"},
-				{id: "0", nombre: "Sin Aparición Mariana"},
+				{id: "SI", nombre: "Aparición Mariana", condic: {pers: {[Op.ne]: 10}, hec: 1}},
+				{id: "NO", nombre: "Sin Aparición Mariana", condic: {pers: 10, hec: 0}},
 			],
 		},
 		rolesIgl: {
 			titulo: "Rol en la Iglesia",
 			opciones: [
-				{id: "la", nombre: "Laicos/as"},
-				{id: "lc", nombre: "Laicos/as casados/as"},
-				{id: "rs", nombre: "Religiosos/as y Sacerdotes"},
-				{id: "pp", nombre: "Papas"},
-				{id: "ap", nombre: "Apóstoles"},
-				{id: "sf", nombre: "Sagrada Familia"},
+				{id: "L", nombre: "Laicos/as", condic: {[Op.startsWith]: "L"}},
+				{id: "LC", nombre: "Laicos/as casados/as", condic: {[Op.startsWith]: "LC"}},
+				{
+					id: "rs",
+					nombre: "Religiosos/as y Sacerdotes",
+					condic: {[Op.or]: [{[Op.startsWith]: "RE"}, {[Op.startsWith]: "SC"}]},
+					filtro: ["RE", "SC"],
+				},
+				{id: "PP", nombre: "Papas", condic: {[Op.startsWith]: "PP"}},
+				{id: "AP", nombre: "Apóstoles", condic: {[Op.startsWith]: "AP"}},
+				{id: "SF", nombre: "Sagrada Familia", condic: {[Op.startsWith]: "SF"}},
 			],
 		},
 		canons: {
 			titulo: "Proceso de Canonización",
 			opciones: [
-				{id: "sb", nombre: "Santos y Beatos"},
-				{id: "vs", nombre: "Vener. y Siervos de Dios"},
-				{id: "nn", nombre: "Sin proceso de canonizac."},
+				{id: "SB", nombre: "Santos y Beatos", condic: {[Op.or]: [{[Op.startsWith]: "ST"}, {[Op.startsWith]: "BT"}]}},
+				{
+					id: "VS",
+					nombre: "Vener. y Siervos de Dios",
+					condic: {[Op.or]: [{[Op.startsWith]: "VN"}, {[Op.startsWith]: "SD"}]},
+				},
+				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
 	},

@@ -16,11 +16,11 @@ global.localhost = process.env.localhost;
 global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
 global.path = require("path");
-const procesos = require("./funciones/3-Rutinas/RT-Procesos");
-global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
+const procesos = require("./funciones/3-Rutinas/RT-Procesos");
+global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 
 // Para usar propiedades de express
 const express = require("express");

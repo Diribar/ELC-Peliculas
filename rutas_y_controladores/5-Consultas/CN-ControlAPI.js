@@ -116,10 +116,10 @@ module.exports = {
 	resultados: {
 		prods: async (req, res) => {
 			// Variables
-			const configCons = JSON.parse(req.query.configCons);
+			const {dia, mes, configCons} = JSON.parse(req.query.datos);
 
 			// Obtiene los productos
-			let prods= procesos.resultados.obtieneProds(configCons)
+			let prods = procesos.resultados.obtieneProds(configCons);
 
 			// Deja sólo los campos necesarios
 

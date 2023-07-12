@@ -2,13 +2,8 @@
 
 let actualizaConfigCons = {
 	consolidado: function () {
-		// Fecha actual
-		const ahora = new Date();
-		const dia = ahora.getDate();
-		const mes = ahora.getMonth() + 1;
-
 		// Borra la información anterior
-		configCons = {dia, mes};
+		configCons = {};
 
 		// Obtiene configCons y muestra/oculta campos
 		this.layout(v, DOM);
@@ -23,11 +18,11 @@ let actualizaConfigCons = {
 	layout: function (v, DOM) {
 		// Impacto en configCons: layout_id, entidad
 
-		// Actualiza 'configCons.layout_id' y 'configCons.entidad'
+		// Actualiza 'configCons.layout_id' y 'entidad'
 		const layout_id = DOM.layout_id.value;
 		if (layout_id) {
 			configCons.layout_id = layout_id;
-			configCons.entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
+			entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
 		}
 
 		// Fin
