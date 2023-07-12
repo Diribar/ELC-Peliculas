@@ -134,10 +134,10 @@ module.exports = {
 			if (ppp_opciones) {
 				if (!ppp_opciones.length) prods = [];
 				else
-					prods.forEach((prod, i) => {
-						const existe = ppp_opciones.find((n) => n.entidad == prod.entidad && n.entidad_id == prod.id);
+					for (let i = prods.length - 1; i >= 0; i--) {
+						const existe = ppp_opciones.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
 						if (!existe) prods.splice(i, 1);
-					});
+					}
 			}
 
 			// Deja sólo los campos necesarios

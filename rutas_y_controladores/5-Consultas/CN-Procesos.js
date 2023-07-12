@@ -47,20 +47,22 @@ module.exports = {
 		obtieneProds: async function (configCons) {
 			// Variables
 			const {orden_id, apMar, rolesIgl, canons} = configCons;
+			let entidades = ["peliculas", "colecciones"];
+			let condiciones = {statusRegistro_id: aprobado_id};
 			let productos = [];
 			let resultados = [];
 
-			// Obtiene las entidades
-			let entidades = ["peliculas", "colecciones"];
-			if (orden_id == 1) entidades.push("capitulos"); // Para la consulta de 'Momento del año', agrega la entidad 'capitulos'
+			// Particularidades
+			if (orden_id == 1) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
+			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
+			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}};
 
 			// Obtiene las condiciones de base
-			let condiciones = {statusRegistro_id: aprobado_id};
-			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}};
 
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
+			console.log(64, condiciones);
 
 			// Obtiene el include
 			let include;
@@ -79,29 +81,37 @@ module.exports = {
 			// Filtrar por apMar, rolesIgl, canons
 			if (apMar && resultados.length) {
 				if (apMar == "SI")
-					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id != 10) || n.hecho == 1);
+					resultados = resultados.filter(
+						(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
+					);
 				if (apMar == "NO")
-					resultados = resultados.filter((n) => (n.personaje && n.personaje.apMar_id == 10) || n.hecho == 0);
+					resultados = resultados.filter(
+						(n) => (n.personaje_id > 10 && n.personaje.apMar_id == 10) || (n.hecho_id > 10 && n.hecho.ama == 0)
+					);
 			}
 			if (rolesIgl && resultados.length) {
 				if (rolesIgl == "RS")
 					resultados = resultados.filter(
 						(n) =>
-							n.personaje &&
+							n.personaje_id > 10 &&
 							(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
 					);
-				else resultados = resultados.filter((n) => n.personaje && n.personaje.rolIglesia_id.startsWith(rolesIgl));
+				else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl));
 			}
 			if (canons && resultados.length) {
 				if (canons == "SB")
 					resultados = resultados.filter(
-						(n) => n.personaje && (n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+						(n) =>
+							n.personaje_id > 10 &&
+							(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
 					);
 				else if (canons == "VS")
 					resultados = resultados.filter(
-						(n) => n.personaje && (n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+						(n) =>
+							n.personaje_id > 10 &&
+							(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
 					);
-				else resultados = resultados.filter((n) => n.personaje && n.personaje.canon_id.startsWith(canons));
+				else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith(canons));
 			}
 
 			// Fin
