@@ -151,7 +151,7 @@ module.exports = {
 						// Averigua qué rclvs con momento tiene el producto, y toma el de menor momento y mayor prioridad
 						let rclvMomento={}
 						for (j=0;j<5;j++) {
-							rclvMomento[comp.asociaciones]
+							rclvMomento[comp.asocs]
 						}
 						const personaje = rclvs.find((n) => n.entidad == "personajes" && n.id == prods[i].personaje_id);
 						// Se fija si tiene el hecho del producto

@@ -14,7 +14,7 @@ module.exports = {
 		obtieneProds_AL_ED: async (revID) => {
 			// Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-			let include = [...variables.asociaciones.prods, ...variables.asociaciones.rclvs];
+			let include = [...variables.asocs.prods, ...variables.asocs.rclvs];
 			let productos = [];
 
 			// Obtiene todas las ediciones ajenas
@@ -23,7 +23,7 @@ module.exports = {
 			// Elimina las ediciones con RCLV no aprobado
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
-					for (let rclv of variables.asociaciones.rclvs)
+					for (let rclv of variables.asocs.rclvs)
 						if (ediciones[i][rclv] && ediciones[i][rclv].statusRegistro_id != aprobado_id) {
 							ediciones.splice(i, 1);
 							break;
@@ -162,7 +162,7 @@ module.exports = {
 		obtieneRCLVsConEdicAjena: async function (revID) {
 			// 1. Variables
 			const campoFecha = "editadoEn";
-			let include = variables.asociaciones.rclvs;
+			let include = variables.asocs.rclvs;
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas

@@ -151,7 +151,7 @@ module.exports = {
 		},
 		obtieneLinksAjenos: async (revID) => {
 			// Variables
-			const include = variables.asociaciones.prods;
+			const include = variables.asocs.prods;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
