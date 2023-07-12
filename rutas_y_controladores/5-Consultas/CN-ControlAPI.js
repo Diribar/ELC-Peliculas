@@ -121,6 +121,7 @@ module.exports = {
 
 			// Obtiene los productos
 			let prods = procesos.resultados.obtieneProds(configCons);
+			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
 
 			// Obtiene las preferencias del usuario
 			let ppp_opciones =
@@ -128,10 +129,12 @@ module.exports = {
 					? BD_genericas.obtieneTodosPorCondicion("ppp_registros", {usuario_id, opcion_id: configCons.ppp_opciones})
 					: null; // Si el usuario no eligió 'ppp_opciones'
 
-			[prods, ppp_opciones] = await Promise.all([prods, ppp_opciones]);
+			// Espera hasta completar las lecturas
+			[prods, rclvs, ppp_opciones] = await Promise.all([prods, rclvs, ppp_opciones]);
+			// console.log(135,rclvs);
 
 			// Cruza 'prods' con 'ppp'
-			if (ppp_opciones) {
+			if (prods.length && ppp_opciones) {
 				if (!ppp_opciones.length) prods = [];
 				else
 					for (let i = prods.length - 1; i >= 0; i--) {
@@ -140,10 +143,36 @@ module.exports = {
 					}
 			}
 
+			// Cruza 'prods' con 'rclvs'
+			if (prods.length && rclvs) {
+				if (!rclvs.length) prods = [];
+				else
+					for (let i = prods.length - 1; i >= 0; i--) {
+						// Averigua qué rclvs con momento tiene el producto, y toma el de menor momento y mayor prioridad
+						let rclvMomento={}
+						for (j=0;j<5;j++) {
+							rclvMomento[comp.asociaciones]
+						}
+						const personaje = rclvs.find((n) => n.entidad == "personajes" && n.id == prods[i].personaje_id);
+						// Se fija si tiene el hecho del producto
+						const hecho = rclvs.find((n) => n.entidad == "hechos" && n.id == prods[i].hecho_id);
+						// Se fija si tiene el hecho del producto
+						const tema = rclvs.find((n) => n.entidad == "temas" && n.id == prods[i].tema_id);
+						// Se fija si tiene el hecho del producto
+						const evento = rclvs.find((n) => n.entidad == "eventos" && n.id == prods[i].evento_id);
+						// Se fija si tiene el hecho del producto
+						const epocaDelAno = rclvs.find((n) => n.entidad == "epocasDelAno" && n.id == prods[i].epocaDelAno_id);
+						
+						if (!rclv) prods.splice(i, 1);
+						else prods[i] = {...prods[i], momento: rclv.momento, prioridad: rclv.prioridad_id};
+					}
+			}
+
 			// Deja sólo los campos necesarios
+			prods = (await prods).map((n) => n.nombreCastellano);
 
 			// Fin
-			return res.json(prods);
+			return res.json(rclvs);
 		},
 		rclvs: async (req, res) => {
 			// Variables

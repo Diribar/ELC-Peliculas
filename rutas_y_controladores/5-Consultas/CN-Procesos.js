@@ -158,38 +158,29 @@ module.exports = {
 				return prefs;
 			},
 		},
-	},
-	momento: {
-		obtieneRCLVs: async (datos) => {
+		momentoDelAno: async ({dia, mes}) => {
 			// Variables
-			const entidadesRCLV = variables.entidades.rclvs;
-			const include = variables.entidades.prods;
-			let rclvs = [];
+			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Sólo las primeras cuatro entidades
+			const diaInicial_id = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+			let registros = [];
 			let condicion;
 
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
-			for (let i = 0; i < 3; i++) {
+			for (let momento = 0; momento < 3; momento++) {
 				// Variables
-				let diaDelAno_id = datos.diaDelAno_id + i;
-				let dia = diaDelAno_id;
+				let diaDelAno_id = diaInicial_id + momento;
 				if (diaDelAno_id > 366) diaDelAno_id -= 366;
-				let registros = [];
 
-				// Obtiene los RCLV de las primeras cuatro entidades
+				// Obtiene los RCLV
 				for (let entidad of entidadesRCLV) {
-					// Salteo de la rutina para 'epocasDelAno'
-					if (entidad == "epocasDelAno") continue;
-
 					// Condicion estandar: RCLVs del dia y en status aprobado
 					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
 
-					// Obtiene los RCLVs
+					// Obtiene los registros
 					registros.push(
-						await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
-							// Deja solo los que tienen productos
-							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
-							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad, ...m, diaDelAno_id: dia})))
+						BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+							// Les agrega su entidad y el momento
+							.then((n) => n.map((m) => ({...m, entidad, momento})))
 					);
 				}
 
@@ -198,17 +189,16 @@ module.exports = {
 				if (epocaDelAno_id != 1) {
 					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, include)
-							// Deja solo los que tienen productos
-							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
-							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad: "epocasDelAno", ...m, diaDelAno_id: dia})))
+						BD_genericas.obtieneTodosPorCondicion("epocasDelAno", condicion)
+							// Les agrega su entidad y el momento
+							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", momento})))
 					);
 				}
-
-				// Espera y consolida la informacion
-				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 			}
+
+			// Espera y consolida la informacion
+			let rclvs = [];
+			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 
 			// Elimina los repetidos
 			if (rclvs.length)
@@ -219,60 +209,6 @@ module.exports = {
 
 			// Fin
 			return rclvs;
-		},
-		obtieneProds: (rclvs) => {
-			// Variables
-			let productos = [];
-
-			// Obtiene los productos y los procesa
-			// Obtiene sus productos
-			for (let rclv of rclvs)
-				for (let entidad of variables.entidades.prods) {
-					// Variables
-					let registros;
-
-					// Obtiene los productos y los procesa
-					if (rclv[entidad].length) {
-						// Obtiene los productos
-						registros = rclv[entidad];
-
-						// Los procesa
-						registros = registros
-							// Filtra por los que estan aprobados
-							.filter((n) => n.statusRegistro_id == aprobado_id)
-							// Les agrega su entidad, diaDelAno_id y prioridad_id
-							.map((n) => ({...n, entidad, diaDelAno_id: rclv.diaDelAno_id, prioridad_id: rclv.prioridad_id}));
-
-						// Los pasa a la variable que los acumula
-						if (registros.length) productos.push(...registros);
-					}
-				}
-
-			// Elimina los repetidos
-			if (productos.length)
-				for (let i = productos.length - 1; i >= 0; i--) {
-					let producto = productos[i];
-					if (i != productos.findIndex((n) => n.id == producto.id && n.entidad == producto.entidad))
-						productos.splice(i, 1);
-				}
-
-			// Ordenamiento por fecha, prioridad, calificación y altaTermEn
-			productos.sort((a, b) => {
-				return false
-					? false
-					: a.diaDelAno_id != b.diaDelAno_id
-					? a.diaDelAno_id - b.diaDelAno_id
-					: a.prioridad_id != b.prioridad_id
-					? b.prioridad_id - a.prioridad_id
-					: a.calificacion != b.calificacion
-					? b.calificacion - a.calificacion
-					: a.altaTermEn != b.altaTermEn
-					? b.altaTermEn - a.altaTermEn
-					: 0;
-			});
-
-			// Fin
-			return productos;
 		},
 	},
 	API: {
@@ -338,12 +274,4 @@ module.exports = {
 			return rclvs;
 		},
 	},
-};
-let preparaCampos = (campos, clase) => {
-	// Obtiene los campos necesarios
-	campos = campos.map((n) => {
-		return {id: n.id, nombre: n.plural ? n.plural : n.nombre, clase};
-	});
-	// Fin
-	return campos;
 };
