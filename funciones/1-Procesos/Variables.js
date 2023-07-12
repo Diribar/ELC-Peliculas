@@ -79,7 +79,7 @@ module.exports = {
 	},
 
 	// Consulta de Productos
-	prefsConsultas: {
+	camposConsultas: {
 		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",

@@ -19,30 +19,28 @@ module.exports = {
 		},
 		campos: function () {
 			// Variable 'filtros'
-			let configsConsCampos = {...variables.prefsConsultas};
+			let campos = {...variables.camposConsultas};
 
 			// Agrega los campos de código y opciones
-			for (let campo in configsConsCampos) {
+			for (let campo in campos) {
 				// Le agrega el nombre del campo a cada método
-				configsConsCampos[campo].codigo = campo;
+				campos[campo].codigo = campo;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!configsConsCampos[campo].opciones) {
+				if (!campos[campo].opciones) {
 					if (campo == "epocasOcurrencia")
-						configsConsCampos.epocasOcurrencia.opciones = epocasOcurrencia
+						campos.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => !n.varias)
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else configsConsCampos[campo].opciones = global[campo];
+					else campos[campo].opciones = global[campo];
 				}
 			}
 
 			// Quita el método de "sin preferencia"
-			configsConsCampos.ppp_opciones.opciones = configsConsCampos.ppp_opciones.opciones.filter(
-				(n) => n.id != sinPreferencia.id
-			);
+			campos.ppp_opciones.opciones = campos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 			// Fin
-			return configsConsCampos;
+			return campos;
 		},
 	},
 	resultados: {
@@ -113,7 +111,7 @@ module.exports = {
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = variables.prefsConsultas;
+				const vars = variables.camposConsultas;
 				const {tiposLink, castellano} = vars;
 				let prefs = {};
 
@@ -137,7 +135,7 @@ module.exports = {
 			},
 			pers: (configCons) => {
 				// Variables
-				const {apMar, rolesIgl, canons} = variables.prefsConsultas;
+				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
 				// Aparición mariana
