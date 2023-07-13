@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		tituloPrincipal:document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
+		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		configCons: document.querySelector("#configCons"),
 		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
 		orden_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
 		ascDes: DOM.tituloPrincipal.querySelector("#ascDes"),
-		iconosAyuda:DOM.tituloPrincipal.querySelectorAll(".ayuda ul li"),
+		iconosAyuda: DOM.tituloPrincipal.querySelectorAll(".ayuda ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
 		// Configuracion
@@ -43,7 +43,10 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
+		// Productos
 		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
+		productos: DOM.zonaProds.querySelector("#vistaProds #productos"),
+		producto: DOM.zonaProds.querySelector("#vistaProds #productos .producto"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEstable) DOM[campo.name] = campo;
@@ -178,7 +181,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Comencemos
-		if (padre.id == "comencemos" && elemento.id == "verde") resultados.muestra();
+		if (padre.id == "comencemos" && elemento.id == "verde") await resultados.muestra.generico();
 	});
 
 	// Start-up
