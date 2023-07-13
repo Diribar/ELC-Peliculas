@@ -173,7 +173,19 @@ module.exports = {
 				);
 
 			// Deja sólo los campos necesarios
-			if (prods.length) prods = prods.map((n) => n.nombreCastellano);
+			if (prods.length)
+				prods = prods.map((n) => {
+					// Datos
+					let datos = {
+						...{entidad: n.entidad, id: n.id, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(n.entidad)},
+						...{nombreCastellano: n.nombreCastellano, calificacion: n.calificacion, direccion: n.direccion},
+						...{anoEstreno: n.anoEstreno, avatar: n.avatar},
+					};
+					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+
+					// Fin 
+					return datos
+				});
 
 			// Fin
 			return res.json(prods);

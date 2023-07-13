@@ -771,6 +771,14 @@ module.exports = {
 		// Fin
 		return {baseUrl, ruta, url};
 	},
+	obtieneLaEpocaDeEstreno: (anoEstreno) => {
+		// Variables
+		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
+		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
+
+		// Fin
+		return epocaEstreno_id;
+	},
 };
 
 // Funciones
