@@ -18,11 +18,18 @@ let actualizaConfigCons = {
 	layout: function () {
 		// Impacto en configCons: layout_id, entidad
 
-		// Actualiza 'configCons.layout_id' y 'entidad'
+		// Acciones si existe un valor de layout
 		const layout_id = DOM.layout_id.value;
 		if (layout_id) {
+			// Actualiza 'configCons.layout_id' y 'entidad'
 			configCons.layout_id = layout_id;
 			entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
+
+			// Muestra/Oculta los mensajes de ayuda
+			for (let icono of DOM.iconosAyuda)
+				icono.className.includes("layout" + layout_id)
+					? icono.classList.remove("ocultar")
+					: icono.classList.add("ocultar");
 		}
 
 		// Fin
