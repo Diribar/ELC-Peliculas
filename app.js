@@ -168,11 +168,10 @@ app.set("views", [
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
-	// Middlewares que dependen de procesos anteriores
-	// Para estar siempre logueado, si existe el cookie
+	// Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
 	const loginConCookie = require("./middlewares/transversales/loginConCookie");
 	app.use(loginConCookie);
-	// Para tener el rastro de los últimos url
+	// Para tener el rastro de los últimos url - depende de procesos anteriores
 	const urlsUsadas = require("./middlewares/transversales/urlsUsadas");
 	app.use(urlsUsadas);
 

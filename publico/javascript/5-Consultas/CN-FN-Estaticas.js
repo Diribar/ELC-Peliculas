@@ -221,8 +221,10 @@ let cambioDeCampos = async () => {
 	// Funciones
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
-	await resultados.obtiene();
-	if (!v.mostrarComencemos) await resultados.muestra.generico();
+	if (v.mostrar) {
+		await resultados.obtiene();
+		if (!v.mostrarComencemos) await resultados.muestra.generico();
+	}
 
 	// Fin
 	return;

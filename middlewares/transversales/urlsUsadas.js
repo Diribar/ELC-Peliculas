@@ -9,9 +9,9 @@ module.exports = (req, res, next) => {
 	});
 
 	// Variables
-	const anterior =
+	const urlActual = req.originalUrl;
+	const urlAnterior =
 		req.session && req.session.urlActual ? req.session.urlActual : req.cookies.urlActual ? req.cookies.urlActual : "/";
-	const actual = req.originalUrl;
 
 	// Condición
 	const rutasAceptadas = [
@@ -25,65 +25,60 @@ module.exports = (req, res, next) => {
 		"/institucional",
 	];
 	const rutaAceptada =
-		// Es diferente a la ruta anterior
-		anterior != actual &&
+		// Es diferente a la ruta urlAnterior
+		urlAnterior != urlActual &&
 		// Pertenece a las rutas aceptadas
-		rutasAceptadas.some((n) => actual.startsWith(n)) &&
+		rutasAceptadas.some((n) => urlActual.startsWith(n)) &&
 		// No contiene ciertas palabras
-		!actual.startsWith("/usuarios/garantiza-login-y-completo") &&
-		!actual.startsWith("/usuarios/logout") &&
-		!actual.includes("/api/");
+		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
+		!urlActual.startsWith("/usuarios/logout") &&
+		!urlActual.includes("/api/");
+
+	// Si no es una ruta aceptada, interrumpe la función
+	if (!rutaAceptada) return next();
 
 	// Función
-	let activaSessionCookie = (url) => {
-		req.session[url] = anterior;
-		res.cookie(url, anterior, {maxAge: unDia});
+	let activaSessionCookie = (url, anterior) => {
+		req.session[url] = !anterior ? urlActual : urlAnterior;
+		res.cookie(url, req.session[url], {maxAge: unDia});
 	};
 
-	// Asignar urls
-	if (rutaAceptada) {
-		// 1. urlSinLogin
-		// Cualquier ruta que no requiera login
-		if (
-			!anterior.startsWith("/usuarios/") &&
-			!anterior.startsWith("/links/") &&
-			!anterior.startsWith("/revision/") &&
-			!anterior.includes("/agregar/") &&
-			!anterior.includes("/edicion/")
-		)
-			activaSessionCookie("urlSinLogin");
+	// 1. urlSinLogin - cualquier ruta que no requiera login
+	if (
+		!urlActual.startsWith("/usuarios/") &&
+		!urlActual.startsWith("/links/") &&
+		!urlActual.startsWith("/revision/") &&
+		!urlActual.includes("/agregar/") &&
+		!urlActual.includes("/edicion/")
+	)
+		activaSessionCookie("urlSinLogin");
 
-		// 2. urlFueraDeUsuarios
-		// Cualquier ruta fuera del circuito de usuarios
-		if (!anterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
+	// 2. urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
+	if (!urlActual.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
 
-		// 3. urlSinCaptura
-		// Cualquier ruta fuera del circuito de usuarios y que no genere una captura
-		if (
-			!anterior.startsWith("/usuarios/") &&
-			!anterior.startsWith("/links/") &&
-			(!anterior.startsWith("/revision/") || anterior.includes("/tablero-de-control")) &&
-			!anterior.includes("/edicion/")
-		)
-			activaSessionCookie("urlSinCaptura");
+	// 3. urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	if (
+		!urlActual.startsWith("/usuarios/") &&
+		!urlActual.startsWith("/links/") &&
+		(!urlActual.startsWith("/revision/") || urlActual.includes("/tablero-de-control")) &&
+		!urlActual.includes("/edicion/")
+	)
+		activaSessionCookie("urlSinCaptura");
 
-		// 4. urlSinPermInput
-		// Cualquier ruta fuera del circuito de usuarios y que no genere una captura
-		if (
-			((!anterior.startsWith("/producto/") && !anterior.startsWith("/rclv/")) || anterior.includes("/detalle/")) &&
-			!anterior.startsWith("/links/") &&
-			!anterior.startsWith("/revision/")
-		)
-			activaSessionCookie("urlSinPermInput");
+	// 4. urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	if (
+		((!urlActual.startsWith("/producto/") && !urlActual.startsWith("/rclv/")) || urlActual.includes("/detalle/")) &&
+		!urlActual.startsWith("/links/") &&
+		!urlActual.startsWith("/revision/")
+	)
+		activaSessionCookie("urlSinPermInput");
 
-		// Actualiza la url 'anterior'
-		activaSessionCookie("urlAnterior");
+	// Actualiza la url 'urlAnterior'
+	activaSessionCookie("urlAnterior", true);
 
-		// Actualiza la url 'actual'
-		req.session.urlActual = actual;
-		res.cookie("urlActual", actual, {maxAge: unDia});
-		res.locals.urlActual = actual;
-	}
+	// Actualiza la url 'urlActual'
+	activaSessionCookie("urlActual");
+	res.locals.urlActual = urlActual;
 
 	next();
 };

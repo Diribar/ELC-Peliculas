@@ -2,6 +2,9 @@
 
 let resultados = {
 	obtiene: async function () {
+		// Si no se cumplen las condiciones mínimas, termina la función
+		if (!v.mostrar) return
+
 		// Fecha actual
 		const ahora = new Date();
 		const dia = ahora.getDate();
@@ -15,10 +18,12 @@ let resultados = {
 		v.infoResultados =
 			entidad == "productos"
 				? await fetch(ruta + "obtiene-los-productos/?datos=" + JSON.stringify(datos)).then((n) => n.json())
-				: await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify({configCons, entidad})).then((n) => n.json());
+				: entidad
+				? await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify({configCons, entidad})).then((n) => n.json())
+				: null;
 
 		// Fin
-		this.contador();
+		if (v.infoResultados) this.contador();
 		return;
 	},
 	contador: () => {

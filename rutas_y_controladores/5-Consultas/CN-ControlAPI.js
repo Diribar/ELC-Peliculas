@@ -136,7 +136,7 @@ module.exports = {
 			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros});
+			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros, configCons});
 
 			// Cruza 'prods' con 'rclvs'
 			if (prods.length && rclvs) {

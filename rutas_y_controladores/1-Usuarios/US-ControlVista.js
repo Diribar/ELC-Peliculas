@@ -25,16 +25,16 @@ module.exports = {
 	altaMail: {
 		form: async (req, res) => {
 			// Sirve también para olvido de contraseña
-	
+
 			// Tema y código
 			const tema = "usuario";
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1);
 			let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
-	
+
 			// Obtiene el e-mail de session
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
-	
+
 			// Errores
 			let errores =
 				codigo == "alta-mail"
@@ -42,7 +42,7 @@ module.exports = {
 					: codigo == "olvido-contrasena"
 					? {...req.session.erroresOC}
 					: false;
-	
+
 			// Vista
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -59,30 +59,30 @@ module.exports = {
 			// Variables
 			const email = req.body.email;
 			let errores, ELC_id;
-	
+
 			// Averigua si hay errores de validación
 			errores = await valida.altaMail(email);
-	
+
 			// Si no hay errores, verifica si ya existe en la BD
 			if (!errores.hay) {
 				ELC_id = await BD_especificas.obtieneELC_id("usuarios", {email});
 				if (ELC_id) errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
 			}
-	
+
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
 				req.session.dataEntry = req.body;
 				req.session.erroresAM = errores;
 				return res.redirect(req.originalUrl);
 			}
-	
+
 			// Si no hubieron errores de validación...
 			// Envía un mail con la contraseña
 			let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
-	
+
 			// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
 			if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
-	
+
 			// Agrega el usuario
 			await BD_genericas.agregaRegistro("usuarios", {
 				contrasena,
@@ -98,7 +98,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-	editables:{
+	editables: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "usuario";
@@ -173,7 +173,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-	identidad:{
+	identidad: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "usuario";
@@ -263,7 +263,7 @@ module.exports = {
 		},
 	},
 	// Edición
-	edicion:{
+	edicion: {
 		form: async (req, res) => {
 			const tema = "usuario";
 			const codigo = "edicion";
@@ -280,26 +280,26 @@ module.exports = {
 	},
 
 	// Login
-	login:{
+	login: {
 		form: async (req, res) => {
 			// 1. Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
 			let dataEntry;
-	
+
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			if (req.session.email || req.session.contrasena) {
 				dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
 				delete req.session.email, req.session.contrasena;
 			}
-	
+
 			// 3. Variables para la vista
 			let errores = dataEntry ? await valida.login(dataEntry) : "";
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
-	
+
 			// 4. Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -323,7 +323,8 @@ module.exports = {
 			// Obtiene el usuario con los include
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 			// Si corresponde, le cambia el status a 'mail_validado'
-			if (usuario.statusRegistro.mail_a_validar) usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
+			if (usuario.statusRegistro.mail_a_validar)
+				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 			// Inicia la sesión del usuario
 			req.session.usuario = usuario;
 			// 7. Guarda el mail en cookies
@@ -375,16 +376,9 @@ module.exports = {
 		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
-		// Guarda el url de la última vista fuera de 'usuarios'
-		// let url = req.session.urlFueraDeUsuarios ? req.session.urlFueraDeUsuarios : "/";
-		// Deja una marca en cookie sobre quien fue el ultimo usuario (mail)
-		// En login, cuando ingresa, si fija si el login coincide.
-		// En caso que si, actualiza session y cookies para las urls
-		// En caso que no, las borra
-
-		// Borra el session y un cookie
-		req.session.destroy();
-		for (let metodo in req.cookies) res.clearCookie(metodo);
+		// Borra los datos del usuario, de session y cookie
+		delete req.session.usuario;
+		res.clearCookie("email")
 
 		// Fin
 		return res.redirect("/usuarios/login");
