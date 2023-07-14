@@ -124,26 +124,19 @@ module.exports = {
 			let prods = procesos.resultados.obtieneProds(configCons);
 			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
 
-			// Obtiene las preferencias del usuario
-			let condicion = {usuario_id}; // Si no se eligió una preferencia, obtiene todas las del usuario
-			if (configCons.ppp_opciones) condicion.opcion_id = configCons.ppp_opciones;
-			let ppp = usuario_id ? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle") : null; // Si la persona no está logueada
+			// Obtiene los registros de preferencia del usuario
+			let condicion = {usuario_id};
+			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
+				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
+			let pppRegistros = usuario_id
+				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
+				: null; // Si la persona no está logueada
 
 			// Espera hasta completar las lecturas
-			[prods, rclvs, ppp] = await Promise.all([prods, rclvs, ppp]);
+			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
-			// Cruza 'prods' con 'ppp'
-			if (prods.length && ppp) {
-				// Si se eligió una preferencia y no existen registros ppp, elimina todos los productos
-				if (configCons.ppp_opciones && !ppp.length) prods = [];
-				// Acciones si existen registros ppp
-				else
-					for (let i = prods.length - 1; i >= 0; i--) {
-						const existe = ppp.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
-						if (existe) prods[i] = {...prods[i], pppIcono: existe.detalle.icono, pppNombre: existe.detalle.nombre};
-						if (!existe && configCons.ppp_opciones) prods.splice(i, 1);
-					}
-			}
+			// Cruza 'prods' con 'pppRegistros'
+			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros});
 
 			// Cruza 'prods' con 'rclvs'
 			if (prods.length && rclvs) {
@@ -179,7 +172,7 @@ module.exports = {
 				prods = prods.map((n) => {
 					// Datos
 					let {entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
-					if (direccion && direccion.indexOf(",")>0) direccion = direccion.slice(0, direccion.indexOf(","));
+					if (direccion && direccion.indexOf(",") > 0) direccion = direccion.slice(0, direccion.indexOf(","));
 					let datos = {
 						...{entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar},
 						...{entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)},
