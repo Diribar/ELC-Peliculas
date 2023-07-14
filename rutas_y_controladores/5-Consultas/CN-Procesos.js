@@ -222,10 +222,13 @@ module.exports = {
 
 				// Acciones si se eligió un tipo de preferencia
 				if (configCons.pppOpciones) {
+					// Acciones si se eligió 'sinPreferencia'
 					if (configCons.pppOpciones == sinPreferencia.id) {
 						if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
 						else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
-					} else {
+					}
+					// Acciones si se eligió una opción distinta a 'sinPreferencia'
+					else {
 						if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
 						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
 					}
@@ -236,38 +239,6 @@ module.exports = {
 					prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
 				}
 			}
-
-			// Fin
-			return prods;
-		},
-		cruceProdsConPPP_backup: ({prods, pppRegistros}) => {
-			// Acciones si se eligió un tipo de preferencia
-			if (configCons.pppOpciones) {
-				// Acciones si se eligió 'sinPreferencia'
-				if (configCons.pppOpciones == sinPreferencia.id)
-					for (let i = prods.length - 1; i >= 0; i--) {
-						const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id); // Averigua si el producto tiene una preferencia
-						if (existe) prods.splice(i, 1); // Elimina los registros que tienen una preferencia
-						else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
-					}
-				// Acciones si se eligió cualquier otra preferencia
-				else if (!pppRegistros.length) prods = [];
-				else {
-					const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
-					for (let i = prods.length - 1; i >= 0; i--) {
-						const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
-						if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
-						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
-					}
-				}
-			}
-			// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
-			else
-				for (let i = prods.length - 1; i >= 0; i--) {
-					const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
-					prods[i].pppIcono = existe ? existe.detalle.icono : sinPreferencia.icono;
-					prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
-				}
 
 			// Fin
 			return prods;
