@@ -87,9 +87,9 @@ let actualiza = {
 		return;
 	},
 	cartelComencemosVisible: () => {
-		v.mostrarComencemos = true;
-		DOM.comencemos.classList.remove("ocultar");
 		DOM.vistaProds.classList.add("ocultar");
+		DOM.comencemos.classList.remove("ocultar");
+		v.mostrarComencemos = true;
 
 		// Fin
 		return;
@@ -222,7 +222,7 @@ let cambioDeCampos = async () => {
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
 	await resultados.obtiene();
-	if (!v.mostrarComencemos) resultados.muestra();
+	if (!v.mostrarComencemos) await resultados.muestra.generico();
 
 	// Fin
 	return;
