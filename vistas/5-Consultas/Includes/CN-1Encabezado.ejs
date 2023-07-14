@@ -1,5 +1,5 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
-<div id="izquierda">
+<div id="tituloPrincipal" class="relative">
 	<!-- Layout -->
 	<select name="layout_id" class="prefSimple" required>
 		<option value="" class="ocultar" selected>Elegí un layout...</option>
@@ -32,6 +32,25 @@
 			<input type="radio" name="ascDes" value="DESC" id="descendente" <% if (prefsDeCampo.ascDes=="DESC") { %>checked<% } %>>
 			<label for="descendente">Descendente</label>
 		</div>
+	</div>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+				<li class="layout1 ocultar"><span>Por Día del Año</span>: películas que acompañan la efemérides durante el año.</li>
+				<li class="layout1 ocultar"><span>Soprendeme</span>: películas con una calificación ≥ 70%, elegidas al azar.</li>
+				<li class="layout1 ocultar"><span>Por Año de Estreno</span>: de la película.</li>
+				<li class="layout1 ocultar"><span>Por Fecha en Nuestro Sistema</span>: según la fecha en que la aprobamos.</li>
+				<li class="layout1 ocultar"><span>Por Calificación Interna</span>: películas con calificación, orden decreciente.</li>
+				<li class="layout2 ocultar"><span>Por Año de Nacimiento</span>: según el año en que nació el personaje.</li>
+				<li class="layout2 ocultar"><span>Por Nombre</span>: según el nombre del personaje, orden ascendente.</li>
+				<li class="layout2 ocultar"><span>Por Rol en la Iglesia</span>: según el rol del personaje en la Iglesia Católica.</li>
+				<li class="layout2 ocultar"><span>Por Fecha en que se lo recuerda</span>: según la fecha del año en que se recuerda al personaje.</li>
+				<li class="layout3 ocultar"><span>Por Época de Ocurrencia</span>: según el año en que ocurrió el hecho.</li>
+				<li class="layout3 ocultar"><span>Por Nombre</span>: según el nombre del hecho.</li>
+				<li class="layout4 ocultar"><span>Por Nombre</span>: según el nombre del tema.</li>
+			</ul>
+		</i>
 	</div>
 </div>
 <!-- Contador -->

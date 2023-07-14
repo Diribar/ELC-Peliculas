@@ -7,6 +7,7 @@ window.addEventListener("load", async () => {
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
+		tituloPrincipal:document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		configCons: document.querySelector("#configCons"),
 		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
@@ -17,10 +18,11 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		layout_id: DOM.encabezado.querySelector("select[name='layout_id']"),
-		orden_id: DOM.encabezado.querySelector("select[name='orden_id']"),
-		orden_idOpciones: DOM.encabezado.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
-		ascDes: DOM.encabezado.querySelector("#ascDes"),
+		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
+		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
+		orden_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
+		ascDes: DOM.tituloPrincipal.querySelector("#ascDes"),
+		iconosAyuda:DOM.tituloPrincipal.querySelectorAll(".ayuda ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
 		// Configuracion

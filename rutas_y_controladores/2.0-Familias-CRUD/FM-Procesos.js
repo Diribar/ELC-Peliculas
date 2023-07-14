@@ -663,14 +663,6 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	obtieneLaEpocaDeEstreno:  (anoEstreno) => {
-		// Variables
-		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
-		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
-
-		// Fin
-		return epocaEstreno_id
-	},
 
 	// Bloques a mostrar
 	bloqueRegistro: function ({registro, revisor}) {
