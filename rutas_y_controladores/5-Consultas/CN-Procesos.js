@@ -211,7 +211,36 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		cruceProdsConPPP: ({prods, pppRegistros}) => {
+		cruceProdsConPPP: ({prods, pppRegistros, configCons}) => {
+			// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
+			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
+
+			// Rutina por producto
+			for (let i = prods.length - 1; i >= 0; i--) {
+				// Averigua si el producto tiene un registro de preferencia
+				const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+
+				// Acciones si se eligió un tipo de preferencia
+				if (configCons.pppOpciones) {
+					if (configCons.pppOpciones == sinPreferencia.id) {
+						if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
+						else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
+					} else {
+						if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
+						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
+					}
+				}
+				// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
+				else {
+					prods[i].pppIcono = existe ? existe.detalle.icono : sinPreferencia.icono;
+					prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
+				}
+			}
+
+			// Fin
+			return prods;
+		},
+		cruceProdsConPPP_backup: ({prods, pppRegistros}) => {
 			// Acciones si se eligió un tipo de preferencia
 			if (configCons.pppOpciones) {
 				// Acciones si se eligió 'sinPreferencia'
