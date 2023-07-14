@@ -120,26 +120,28 @@ module.exports = {
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 
-			// Obtiene los productos
+			// Obtiene los productos y rlcvs
 			let prods = procesos.resultados.obtieneProds(configCons);
 			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
 
 			// Obtiene las preferencias del usuario
-			let ppp_opciones =
-				usuario_id && configCons.ppp_opciones
-					? BD_genericas.obtieneTodosPorCondicion("ppp_registros", {usuario_id, opcion_id: configCons.ppp_opciones})
-					: null; // Si el usuario no eligió 'ppp_opciones'
+			let condicion = {usuario_id}; // Si no se eligió una preferencia, obtiene todas las del usuario
+			if (configCons.ppp_opciones) condicion.opcion_id = configCons.ppp_opciones;
+			let ppp = usuario_id ? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle") : null; // Si la persona no está logueada
 
 			// Espera hasta completar las lecturas
-			[prods, rclvs, ppp_opciones] = await Promise.all([prods, rclvs, ppp_opciones]);
+			[prods, rclvs, ppp] = await Promise.all([prods, rclvs, ppp]);
 
 			// Cruza 'prods' con 'ppp'
-			if (prods.length && ppp_opciones) {
-				if (!ppp_opciones.length) prods = [];
+			if (prods.length && ppp) {
+				// Si se eligió una preferencia y no existen registros ppp, elimina todos los productos
+				if (configCons.ppp_opciones && !ppp.length) prods = [];
+				// Acciones si existen registros ppp
 				else
 					for (let i = prods.length - 1; i >= 0; i--) {
-						const existe = ppp_opciones.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
-						if (!existe) prods.splice(i, 1);
+						const existe = ppp.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+						if (existe) prods[i] = {...prods[i], pppIcono: existe.detalle.icono, pppNombre: existe.detalle.nombre};
+						if (!existe && configCons.ppp_opciones) prods.splice(i, 1);
 					}
 			}
 
@@ -176,15 +178,16 @@ module.exports = {
 			if (prods.length)
 				prods = prods.map((n) => {
 					// Datos
+					let {entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
+					if (direccion && direccion.indexOf(",")>0) direccion = direccion.slice(0, direccion.indexOf(","));
 					let datos = {
-						...{entidad: n.entidad, id: n.id, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(n.entidad)},
-						...{nombreCastellano: n.nombreCastellano, calificacion: n.calificacion, direccion: n.direccion},
-						...{anoEstreno: n.anoEstreno, avatar: n.avatar},
+						...{entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar},
+						...{entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)},
 					};
 					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
 
-					// Fin 
-					return datos
+					// Fin
+					return datos;
 				});
 
 			// Fin

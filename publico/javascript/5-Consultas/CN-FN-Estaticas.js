@@ -87,9 +87,9 @@ let actualiza = {
 		return;
 	},
 	cartelComencemosVisible: () => {
-		v.mostrarComencemos = true;
-		DOM.comencemos.classList.remove("ocultar");
 		DOM.vistaProds.classList.add("ocultar");
+		DOM.comencemos.classList.remove("ocultar");
+		v.mostrarComencemos = true;
 
 		// Fin
 		return;
