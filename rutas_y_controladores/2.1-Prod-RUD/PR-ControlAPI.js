@@ -127,7 +127,7 @@ module.exports = {
 
 	prefsDeCampo: {
 		obtieneOpciones: (req, res) => {
-			return res.json(ppp_opciones);
+			return res.json(pppOpciones);
 		},
 		guardaLaPreferencia: async (req, res) => {
 			// Variables

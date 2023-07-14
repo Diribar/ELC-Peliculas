@@ -92,7 +92,7 @@ module.exports = {
 		publicos: {titulo: "Público Recomendado", campo: "publico_id"},
 		epocasEstreno: {titulo: "Época de Estreno", campo: "epocaEstreno_id"},
 		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campo: "epocaOcurrencia_id"},
-		ppp_opciones: {
+		pppOpciones: {
 			titulo: "Preferencia por Película",
 		},
 		tiposLink: {
