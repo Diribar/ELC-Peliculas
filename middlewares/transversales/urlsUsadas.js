@@ -43,8 +43,7 @@ module.exports = (req, res, next) => {
 		res.cookie(url, req.session[url], {maxAge: unDia});
 	};
 
-	// 1. urlSinLogin
-	// Cualquier ruta que no requiera login
+	// 1. urlSinLogin - cualquier ruta que no requiera login
 	if (
 		!urlActual.startsWith("/usuarios/") &&
 		!urlActual.startsWith("/links/") &&
@@ -54,12 +53,10 @@ module.exports = (req, res, next) => {
 	)
 		activaSessionCookie("urlSinLogin");
 
-	// 2. urlFueraDeUsuarios
-	// Cualquier ruta fuera del circuito de usuarios
+	// 2. urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
 	if (!urlActual.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
 
-	// 3. urlSinCaptura
-	// Cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	// 3. urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
 		!urlActual.startsWith("/usuarios/") &&
 		!urlActual.startsWith("/links/") &&
@@ -68,8 +65,7 @@ module.exports = (req, res, next) => {
 	)
 		activaSessionCookie("urlSinCaptura");
 
-	// 4. urlSinPermInput
-	// Cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	// 4. urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
 		((!urlActual.startsWith("/producto/") && !urlActual.startsWith("/rclv/")) || urlActual.includes("/detalle/")) &&
 		!urlActual.startsWith("/links/") &&
