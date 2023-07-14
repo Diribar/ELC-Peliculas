@@ -87,7 +87,7 @@ module.exports = {
 	},
 	obtieneProds_Links: async (userID) => {
 		// Variables
-		let include = variables.asociaciones.prods;
+		let include = variables.asocs.prods;
 		let ahora = comp.fechaHora.ahora();
 		let condicion = {statusRegistro_id: inactivo_id};
 

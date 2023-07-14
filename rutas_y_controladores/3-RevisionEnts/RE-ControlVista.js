@@ -101,7 +101,7 @@ module.exports = {
 			const statusLink_id = [creado_id, aprobado_id, recuperar_id];
 			const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id});
 			const status_id = statusRegistro_id;
-			const asocs = variables.asociaciones.rclvs;
+			const asocs = variables.asocs.rclvs;
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {

@@ -73,7 +73,7 @@ module.exports = {
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
 		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Epoca del Año"],
 	},
-	asociaciones: {
+	asocs: {
 		prods: ["pelicula", "coleccion", "capitulo"],
 		rclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
 	},

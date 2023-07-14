@@ -8,13 +8,17 @@ let resultados = {
 		const mes = ahora.getMonth() + 1;
 
 		// Arma los datos
-		const datos = {dia, mes, configCons};
+		let datos = {configCons};
+		if (configCons.orden_id == 1) datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados =
 			entidad == "productos"
 				? await fetch(ruta + "obtiene-los-productos/?datos=" + JSON.stringify(datos)).then((n) => n.json())
-				: await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify({...datos, entidad})).then((n) => n.json());
+				: await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify({configCons, entidad})).then((n) => n.json());
+
+		// Output
+		console.log(v.infoResultados && v.infoResultados.length > 10 ? v.infoResultados.length : v.infoResultados);
 
 		// Fin
 		this.contador();
@@ -22,7 +26,7 @@ let resultados = {
 	},
 	contador: () => {
 		// Variables
-		v.total = v.infoResultados.length;
+		v.total = v.infoResultados ? v.infoResultados.length : 0;
 		v.parcial = Math.min(4, v.total);
 
 		// Actualiza el contador
