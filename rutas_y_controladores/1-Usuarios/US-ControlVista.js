@@ -376,16 +376,9 @@ module.exports = {
 		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
-		// Guarda el url de la última vista fuera de 'usuarios'
-		// let url = req.session.urlFueraDeUsuarios ? req.session.urlFueraDeUsuarios : "/";
-		// Deja una marca en cookie sobre quien fue el ultimo usuario (mail)
-		// En login, cuando ingresa, si fija si el login coincide.
-		// En caso que si, actualiza session y cookies para las urls
-		// En caso que no, las borra
-
-		// Borra el session y un cookie
-		req.session.destroy();
-		for (let metodo in req.cookies) res.clearCookie(metodo);
+		// Borra los datos del usuario, de session y cookie
+		delete req.session.usuario;
+		res.clearCookie("email")
 
 		// Fin
 		return res.redirect("/usuarios/login");
