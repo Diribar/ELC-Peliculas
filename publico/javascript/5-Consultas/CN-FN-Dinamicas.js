@@ -103,7 +103,6 @@ let actualizaConfigCons = {
 	muestraOculta: () => {
 		// Variables
 		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!configCons.ascDes;
-		// console.log(!!configCons.layout_id, !!configCons.orden_id, !!configCons.ascDes);
 
 		// Muestra/Oculta sectores
 		v.mostrar ? DOM.configCampos.classList.remove("ocultar") : DOM.configCampos.classList.add("ocultar");
