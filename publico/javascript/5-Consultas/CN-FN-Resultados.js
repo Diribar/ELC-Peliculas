@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.mostrar) return
+		if (!v.mostrar) return;
 
 		// Fecha actual
 		const ahora = new Date();
@@ -60,6 +60,7 @@ let resultados = {
 					const bloqueProducto = await this.bloqueProducto(v.infoResultados[i]);
 					DOM.productos.append(bloqueProducto);
 				}
+				v.ppp =Array.from(DOM.productos.querySelectorAll(".producto #ppp"));
 			}
 
 			// Fin
@@ -80,7 +81,6 @@ let resultados = {
 			// Datos
 			elemento.anchor.href += producto.entidad + "&id=" + producto.id;
 			elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
-			// if (producto.nombreCastellano != producto.nombreOriginal) elemento.nombreOriginal.innerHTML = producto.nombreOriginal;
 			elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
 			elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
 			producto.pppIcono
