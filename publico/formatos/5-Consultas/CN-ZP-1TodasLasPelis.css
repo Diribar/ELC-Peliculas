@@ -16,5 +16,5 @@
 #productos button .imagenChica, #productos button #texto {height: 100%;}
 #productos button #texto {display: flex; flex-direction: column; justify-content: space-between;}
 #productos button #texto, #productos button #texto * {color: inherit;}
-#productos button #infoPeli {margin: 10px 15px;}
+#productos button #infoPeli {margin: 10px 15px; align-items: flex-start;}
 #productos button .interlineadoChico {margin-top: 5px;}
