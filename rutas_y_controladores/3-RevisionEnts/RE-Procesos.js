@@ -134,7 +134,7 @@ module.exports = {
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
-			return {productos, porcentajeLinksAprobsEstaSem: porcentaje};
+			return {productos, linksAprobsEstaSem, linksAprobsTotal};
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
