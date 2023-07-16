@@ -72,7 +72,7 @@ let resultados = {
 			let elemento = {
 				anchor: bloque.querySelector("a"),
 				avatar: bloque.querySelector("img"),
-				nombreCastellano: bloque.querySelector("#nombreCastellano"),
+				nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
 				anoEstreno: bloque.querySelector("#anoEstreno"),
 				direccion: bloque.querySelector("#direccion"),
 				ppp: bloque.querySelector("#ppp"),
