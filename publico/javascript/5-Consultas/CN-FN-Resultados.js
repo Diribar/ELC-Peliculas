@@ -43,6 +43,13 @@ let resultados = {
 			v.mostrarComencemos = false;
 			DOM.comencemos.classList.add("ocultar");
 
+			// Acciones si no hay resultados
+			if (!v.infoResultados || !v.infoResultados.length) {
+				DOM.noTenemos.classList.remove("ocultar");
+				return;
+			} else DOM.noTenemos.classList.add("ocultar");
+
+			// Deriva a productos
 			if (configCons.layout_id == 1) await this.productos();
 
 			// Fin

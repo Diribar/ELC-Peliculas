@@ -40,15 +40,19 @@
 <div id="configsDeCampo" class="flexCol sectorConDesplV">
 	<nav class="flexCol ocultar">
 		<!-- PRIORITARIOS -->
+		<% if (locals.usuario) { %>
+			<!-- Preferencia por Película -->
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones}) %>
+		<% } %>
 		<!-- Relación con la Iglesia Católica -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc}) %>
-		<!-- Epoca de Ocurrencia -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia}) %>
 		<hr>
 
 		<!-- EVENTUALES -->
 		<!-- Basado en Hechos Reales -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, eventual: true}) %>
+		<!-- Epoca de Ocurrencia -->
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia}) %>
 		<!-- Aparición Mariana -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, eventual: true}) %>
 		<!-- Roles Iglesia -->
@@ -62,10 +66,6 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.publicos}) %>
 		<!-- Época de Estreno -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasEstreno}) %>
-		<% if (locals.usuario) { %>
-			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones}) %>
-		<% } %>
 		<!-- Tipos de Link -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink}) %>
 		<!-- Idioma Castellano -->

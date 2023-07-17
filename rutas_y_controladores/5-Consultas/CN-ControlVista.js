@@ -31,6 +31,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
 			...{configCons_id, prefsDeCampo, configs, configsConsCampos, userID},
+			omitirFooter: true,
 		});
 	},
 };

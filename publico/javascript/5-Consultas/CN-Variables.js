@@ -25,9 +25,6 @@ window.addEventListener("load", async () => {
 		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
-		// Configuracion
-		iconos: DOM.configCons.querySelectorAll("i"),
-
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
@@ -43,6 +40,7 @@ window.addEventListener("load", async () => {
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
+		noTenemos: DOM.zonaProds.querySelector("#comencemos button#azul"),
 		// Productos
 		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
 		productos: DOM.zonaProds.querySelector("#vistaProds #productos"),
