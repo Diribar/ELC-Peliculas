@@ -60,7 +60,8 @@ let resultados = {
 					const bloqueProducto = await this.bloqueProducto(v.infoResultados[i]);
 					DOM.productos.append(bloqueProducto);
 				}
-				v.ppp = Array.from(DOM.productos.querySelectorAll(".producto #ppp"));
+				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
+				v.ppp = Array.from(DOM.ppp);
 			}
 
 			// Fin

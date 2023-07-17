@@ -13,8 +13,7 @@
 #productos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */
-#productos button .imagenChica, #productos button #texto {height: 100%;}
-#productos button #texto {display: flex; flex-direction: column; justify-content: space-between;}
-#productos button #texto, #productos button #texto * {color: inherit;}
-#productos button #infoPeli {margin: 10px 15px; align-items: flex-start;}
-#productos button .interlineadoChico {margin-top: 5px;}
+#productos li button .imagenChica {height: 100%;}
+#productos li button #infoPeli {margin: 10px 15px; align-items: flex-start;}
+#productos li button #infoPeli .interlineadoChico {margin-top: 5px;}
+#productos li button #infoPeli #ppp {font-size: 1.25rem;}
