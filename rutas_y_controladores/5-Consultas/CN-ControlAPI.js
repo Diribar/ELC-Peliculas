@@ -130,7 +130,7 @@ module.exports = {
 				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
 			let pppRegistros = usuario_id
 				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
-				: null; // Si la persona no está logueada
+				: null;
 
 			// Espera hasta completar las lecturas
 			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);

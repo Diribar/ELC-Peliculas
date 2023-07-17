@@ -51,7 +51,7 @@ module.exports = {
 
 			// Particularidades
 			if (orden_id == 1) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
-			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}, azar: {[Op.ne]: null}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
+			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
 			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
 
 			// Agrega las preferencias
@@ -222,8 +222,11 @@ module.exports = {
 
 				// Acciones si se eligió un tipo de preferencia
 				if (configCons.pppOpciones) {
+					// Variable
+					const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
+
 					// Acciones si se eligió 'sinPreferencia'
-					if (configCons.pppOpciones == sinPreferencia.id) {
+					if (pppOpcionElegida.id == sinPreferencia.id) {
 						if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
 						else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
 					}
