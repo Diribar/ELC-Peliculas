@@ -188,8 +188,8 @@ module.exports = {
 		},
 		rclvs: async (req, res) => {
 			// Variables
-			const configCons = JSON.parse(req.query.configCons);
-			console.log({rclvs: configCons});
+			const datos = JSON.parse(req.query.datos);
+			console.log(192, datos);
 
 			// Fin
 			return res.json("rclvs");
