@@ -1,6 +1,7 @@
 /* Zona de vista */
-#zonaDeProds #vistaProds {border: green 1px solid; max-width: 700px; width: 100%; height: 500px;}
 #zonaDeProds #vistaProds {display: flex; flex-direction: row; overflow-y: auto;}
+#zonaDeProds #vistaProds {max-width: 700px; width: 100%; height: 70vh; border-radius: 15px;}
+#zonaDeProds #vistaProds {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Cuadro de Resultados */
 #vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;}
@@ -9,7 +10,7 @@
 /* Botones para productos */
 #productos li {padding: 20px; list-style-type: none}
 #productos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
-#productos li button {border: none; text-align: left; background: var(--celeste-oscuro);}
+#productos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #productos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */

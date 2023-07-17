@@ -5,11 +5,11 @@
 <!-- Encabezado + Productos -->
 <section id="encabMasPelis" class="flexCol grow">
 	<!-- Encabezado -->
-	<section id="encabezado" class="flexRow">
+	<div id="encabezado" class="flexRow">
 		<%- include('CN-1Encabezado') %>
-	</section>
+	</div>
 	<!-- Zona de Productos -->
-	<section id="zonaDeProds">
+	<div id="zonaDeProds">
 		<div id="comencemos">
 			<button id="rojo" class="ocultar">
 				Asegurate de contestar<br>los sectores en rojo
@@ -17,10 +17,14 @@
 			<button id="verde" class="scale pointer ocultar">
 				Quiero ver los resultados
 			</button>
+			<button id="azul" class="scale pointer ocultar">
+				No tenemos resultados que respondan a esos criterios
+			</button>
 		</div>
 		<div id="vistaProds" class="ocultar">
 			<%- include("CN-ZP-1TodasLasPelis") %>
 			<%- include("CN-ZP-3PelisPor") %>
 		</div>
-	</section>
+	</div>
+	<%- include("CMP-3Footer", {mostrar: true}) %>
 </section>

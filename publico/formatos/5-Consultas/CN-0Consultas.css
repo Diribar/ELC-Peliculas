@@ -20,3 +20,6 @@
 #zonaDeProds #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
 #zonaDeProds #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #zonaDeProds #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+
+/* Footer */
+#encabMasPelis footer {align-self: stretch;}
