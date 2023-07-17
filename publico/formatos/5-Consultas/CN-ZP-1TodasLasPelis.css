@@ -4,7 +4,7 @@
 
 /* Cuadro de Resultados */
 #vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;}
-#vistaProds #productos {max-width: 100%;}
+#vistaProds #productos {width: 100%;}
 
 /* Botones para productos */
 #productos li {padding: 20px; list-style-type: none}

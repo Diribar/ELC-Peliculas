@@ -253,5 +253,3 @@ let cambioDeCampos = async () => {
 	// Fin
 	return;
 };
-
-// diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
