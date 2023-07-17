@@ -1,29 +1,29 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 14/jul",
-	"HoraUTC": "12:21",
+	"FechaUTC": "Lun. 17/jul",
+	"HoraUTC": "10:22",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 10/jul",
-	"HoraSemUTC": "10:53",
-	"semanaUTC": 27,
+	"FechaSemUTC": "Dom. 16/jul",
+	"HoraSemUTC": "11:40",
+	"semanaUTC": 28,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
 	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "ProductosAlAzar": "NO"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
-		"BorraImagenesSinRegistro": "NO",
-		"LinksVencidos": "NO",
-		"RCLV_idEnCapitulos": "NO",
-		"RCLVsSinEpocaPSTyConAno": "NO"
+		"BorraImagenesSinRegistro": "SI",
+		"LinksVencidos": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-jul-23": {"titulo": "Luis y Celia Martin", "entidad": "personajes", "id": 150},
-		"13-jul-23": {"titulo": "Teresa de los Andes", "entidad": "personajes", "id": 108},
-		"14-jul-23": {"titulo": "ELC - Películas"},
 		"15-jul-23": {"titulo": "ELC - Películas"},
-		"16-jul-23": {"titulo": "ELC - Películas"}
+		"16-jul-23": {"titulo": "ELC - Películas"},
+		"17-jul-23": {"titulo": "ELC - Películas"},
+		"18-jul-23": {"titulo": "ELC - Películas"},
+		"19-jul-23": {"titulo": "ELC - Películas"}
 	}
 }
