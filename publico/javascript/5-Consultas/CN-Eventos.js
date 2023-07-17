@@ -50,7 +50,6 @@ window.addEventListener("load", async () => {
 		}
 
 		// Funciones
-		console.log(campoNombre);
 		await cambioDeCampos();
 
 		// Fin
