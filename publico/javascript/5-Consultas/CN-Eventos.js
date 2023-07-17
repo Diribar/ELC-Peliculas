@@ -1,58 +1,5 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	DOM = {
-		// Formulario General
-		cuerpo: document.querySelector("#cuerpo"),
-		// Encabezado, Cabecera, Campos
-		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
-		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
-		configCons: document.querySelector("#configCons"),
-		configCabecera: document.querySelector("#configCons #configDeCabecera"),
-		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
-		// Zona de productos
-		zonaProds: document.querySelector("#zonaDeProds"),
-	};
-	DOM = {
-		...DOM,
-
-		// Encabezado
-		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
-		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
-		orden_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
-		ascDes: DOM.tituloPrincipal.querySelector("#ascDes"),
-		iconosAyuda: DOM.tituloPrincipal.querySelectorAll(".ayuda ul li"),
-		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
-
-		// Configuracion
-		iconos: DOM.configCons.querySelectorAll("i"),
-
-		// Configuración de Cabecera
-		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
-		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
-		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
-		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
-
-		// Configuración de Campos
-		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
-		camposPresenciaEventual: DOM.configCampos.querySelectorAll("select:not(.presenciaEstable)"),
-		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
-		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
-
-		// Zona de productos
-		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
-		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
-		// Productos
-		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
-		productos: DOM.zonaProds.querySelector("#vistaProds #productos"),
-		producto: DOM.zonaProds.querySelector("#vistaProds .producto"),
-	};
-	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
-	for (let campo of DOM.camposPresenciaEstable) DOM[campo.name] = campo;
-	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
-	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
-
 	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
@@ -115,80 +62,83 @@ window.addEventListener("load", async () => {
 		const elemento = e.target;
 		const padre = elemento.parentNode;
 
-		// Iconos
-		if (elemento.tagName == "I" && ["iconosBotonera", "palabrasClave"].includes(padre.id)) {
+		// Iconos de botonera y 'palabrasClave'
+		if (elemento.tagName == "I") {
 			// Si el ícono está inactivo, interrumpe la función
 			if (elemento.className.includes("inactivo")) return;
+
+			// Variable
 			const nombre = elemento.id ? elemento.id : padre.id;
 
-			// Acciones
-			if (["nuevo", "edicion"].includes(nombre)) {
-				// Variables
-				v.nombreOK = false;
+			// Iconos de botonera
+			if (padre.id == "iconosBotonera") {
+				if (["nuevo", "edicion"].includes(nombre)) {
+					// Variables
+					v.nombreOK = false;
 
-				// Valor en el input
-				DOM.configNuevaNombre.value =
-					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
+					// Valor en el input
+					DOM.configNuevaNombre.value =
+						nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
 
-				// Alterna la clase 'nuevo' o 'edicion' en el input
-				DOM.configNuevaNombre.classList.toggle(nombre);
+					// Alterna la clase 'nuevo' o 'edicion' en el input
+					DOM.configNuevaNombre.classList.toggle(nombre);
 
-				// Actualiza la botonera
-				actualiza.botoneraActivaInactiva();
+					// Actualiza la botonera
+					actualiza.botoneraActivaInactiva();
 
-				// Pone el cursor en el input
-				DOM.configNuevaNombre.focus();
-			} else if (nombre == "deshacer") {
-				await actualiza.valoresInicialesDeObjetoV();
-				await actualiza.statusInicialCampos();
-				await cambioDeCampos();
-			} else if (nombre == "eliminar") {
-				// Si hay un error, interrumpe la función
-				const existe = await verifica.configCons_id();
-				if (!existe || !v.filtroPropio) return;
+					// Pone el cursor en el input
+					DOM.configNuevaNombre.focus();
+				} else if (nombre == "deshacer") {
+					await actualiza.valoresInicialesDeObjetoV();
+					await actualiza.statusInicialCampos();
+					await cambioDeCampos();
+				} else if (nombre == "eliminar") {
+					// Si hay un error, interrumpe la función
+					const existe = await verifica.configCons_id();
+					if (!existe || !v.filtroPropio) return;
 
-				// Acciones si existe
-				await cambiosEnBD.eliminaConfigCons();
-				await cambioDeConfig_id();
-				await cambioDeCampos();
-			} else if (nombre == "palabrasClave") {
+					// Acciones si existe
+					await cambiosEnBD.eliminaConfigCons();
+					await cambioDeConfig_id();
+					await cambioDeCampos();
+				} else if (nombre == "guardar") {
+					if (v.nuevo || v.edicion) {
+						// Obtiene el nuevo nombre
+						configCons.nombre = DOM.configNuevaNombre.value;
+
+						// Si es una configuración nueva, agrega la cabecera
+						if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
+
+						// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
+						if (v.edicion) configCons.edicion = true;
+
+						// Quita la clase
+						const clase = v.nuevo ? "nuevo" : "edicion";
+						DOM.configNuevaNombre.classList.remove(clase);
+					}
+					// Guarda la información en la base de datos
+					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
+					v.hayCambiosDeCampo = false;
+					actualiza.botoneraActivaInactiva();
+					DOM.palClaveAprob.classList.add("inactivo");
+				}
+			}
+			// Icono de 'palabrasClave'
+			else if (nombre == "palabrasClave") {
 				v.hayCambiosDeCampo = true;
 				await cambioDeCampos();
-			} else if (nombre == "guardar") {
-				if (v.nuevo || v.edicion) {
-					// Obtiene el nuevo nombre
-					configCons.nombre = DOM.configNuevaNombre.value;
-
-					// Si es una configuración nueva, agrega la cabecera
-					if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
-
-					// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
-					if (v.edicion) configCons.edicion = true;
-
-					// Quita la clase
-					const clase = v.nuevo ? "nuevo" : "edicion";
-					DOM.configNuevaNombre.classList.remove(clase);
-				}
-				// Guarda la información en la base de datos
-				if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
-				v.hayCambiosDeCampo = false;
-				actualiza.botoneraActivaInactiva();
-				DOM.palClaveAprob.classList.add("inactivo");
 			}
-
-			// Fin
-			return;
+			// Preferencia por producto
+			else if (nombre == "ppp" && padre.id == "infoPeli") {
+				e.preventDefault()
+				console.log(v.ppp.findIndex(n=>n==elemento));
+			}
 		}
 
-		// Comencemos
-		if (padre.id == "comencemos" && elemento.id == "verde") await resultados.muestra.generico();
+		// Botón 'comencemos'
+		else if (padre.id == "comencemos" && elemento.id == "verde" && v.mostrar) await resultados.muestra.generico();
+
+		// Fin
+		return;
 	});
-
-	// Start-up
-	await cambioDeConfig_id();
-	await cambioDeCampos();
 });
-
-// Variables
-const ruta = "/consultas/api/";
-let configCons, DOM, v, entidad;

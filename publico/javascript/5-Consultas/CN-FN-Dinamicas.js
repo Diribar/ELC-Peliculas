@@ -75,16 +75,14 @@ let actualizaConfigCons = {
 		// Actualiza la variable 'configCons' y muestra/oculta el sector
 		if (configCons.orden_id && ordenBD.ascDes == "ascDes") {
 			// Muestra ascDes
-			DOM.ascDes.classList.remove("ocultar");
-			DOM.ascDes.classList.add("flexCol");
+			DOM.ascDes.classList.replace("ocultar", "flexCol");
 
 			// Actualiza la variable 'configCons'
 			const checked = DOM.ascDes.querySelector("input:checked");
 			if (configCons.orden_id && checked) configCons.ascDes = checked.value;
 		} else {
 			// Oculta ascDes
-			DOM.ascDes.classList.add("ocultar");
-			DOM.ascDes.classList.remove("flexCol");
+			DOM.ascDes.classList.replace("flexCol", "ocultar");
 
 			// Actualiza la variable 'configCons'
 			if (configCons.orden_id) configCons.ascDes = ordenBD.ascDes;
