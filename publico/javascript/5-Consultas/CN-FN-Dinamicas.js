@@ -109,6 +109,7 @@ let actualizaConfigCons = {
 		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
 		v.mostrar && v.mostrarComencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
+		// Si hay algún error que impide mostrar, borra los resultados anteriores
 		if (!v.mostrar) {
 			for (let resultado of DOM.resultados) resultado.innerHTML = "";
 			v.mostrarComencemos = true;
