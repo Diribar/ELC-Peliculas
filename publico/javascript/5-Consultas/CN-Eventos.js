@@ -134,7 +134,12 @@ window.addEventListener("load", async () => {
 				e.preventDefault();
 
 				// Actualiza la 'ppp'
-				await cambiosEnBD.ppp(elemento)
+				await cambiosEnBD.ppp(elemento);
+			} else if (nombre == "actualizar") {
+				if (v.mostrar) {
+					await resultados.obtiene();
+					if (!v.mostrarComencemos) await resultados.muestra.generico();
+				}
 			}
 		}
 

@@ -1,5 +1,5 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
-<div id="tituloPrincipal" class="relative">
+<div id="tituloPrincipal">
 	<!-- Layout -->
 	<select name="layout_id" class="prefSimple" required>
 		<option value="" class="ocultar" selected>Elegí un layout...</option>
@@ -34,7 +34,7 @@
 		</div>
 	</div>
 	<!-- Ayuda -->
-	<div class="ayuda">
+	<div id="ayudaOrden">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 				<li class="layout1 ocultar"><span>Por Día del Año</span>: películas que acompañan la efemérides durante el año.</li>
@@ -51,6 +51,10 @@
 				<li class="layout4 ocultar"><span>Por Nombre</span>: según el nombre del tema.</li>
 			</ul>
 		</i>
+	</div>
+	<!-- Actualizar -->
+	<div id="actualizar">
+		<i class="fa-solid fa-rotate-right"></i>
 	</div>
 </div>
 <!-- Contador -->
