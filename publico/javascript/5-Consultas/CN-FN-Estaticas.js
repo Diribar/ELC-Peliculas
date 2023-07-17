@@ -182,6 +182,30 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
+	ppp: async (elemento) => {
+		// Opción actual
+		const indice = v.ppp.findIndex((n) => n == elemento);
+		const opcionActual = v.pppOpciones.find((n) => v.ppp[indice].className.endsWith(n.icono));
+		const idActual = opcionActual.id;
+
+		// Opción propuesta
+		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpciones.length;
+		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
+
+		// Actualiza el ícono y el título
+		DOM.ppp[indice].classList.remove(...opcionActual.icono.split(" "));
+		DOM.ppp[indice].classList.add(...opcionPropuesta.icono.split(" "));
+		DOM.ppp[indice].title = opcionPropuesta.nombre;
+
+		// Actualiza la preferencia
+		const producto = v.infoResultados[indice];
+		DOM.ppp[indice].classList.add("inactivo");
+		await fetch(v.pppRrutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
+		DOM.ppp[indice].classList.remove("inactivo");
+
+		// Fin
+		return;
+	},
 };
 let verifica = {
 	configCons_id: async () => {

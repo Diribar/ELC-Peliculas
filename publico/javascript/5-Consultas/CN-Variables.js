@@ -51,7 +51,12 @@ window.addEventListener("load", async () => {
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.camposPresenciaEstable) DOM[campo.name] = campo;
 	for (let campo of DOM.camposPresenciaEventual) DOM[campo.name] = campo;
-	v = {...(await obtiene.opcionesDeLayoutMasOrden()), configsDeCabecera: await obtiene.configsDeCabecera()};
+	v = {
+		...(await obtiene.opcionesDeLayoutMasOrden()),
+		configsDeCabecera: await obtiene.configsDeCabecera(),
+		pppOpciones: await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json()),
+		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
+	};
 
 	// Start-up
 	await cambioDeConfig_id();

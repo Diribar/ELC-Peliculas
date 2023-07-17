@@ -130,8 +130,11 @@ window.addEventListener("load", async () => {
 			}
 			// Preferencia por producto
 			else if (nombre == "ppp" && padre.id == "infoPeli") {
-				e.preventDefault()
-				console.log(v.ppp.findIndex(n=>n==elemento));
+				// Previene el efecto del anchor
+				e.preventDefault();
+
+				// Actualiza la 'ppp'
+				await cambiosEnBD.ppp(elemento)
 			}
 		}
 
