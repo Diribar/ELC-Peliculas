@@ -27,6 +27,7 @@ let resultados = {
 		return;
 	},
 	contador: () => {
+		if (entidad != "productos") return;
 		// Variables
 		v.total = v.infoResultados ? v.infoResultados.length : 0;
 		v.parcial = Math.min(4, v.total);
@@ -49,7 +50,8 @@ let resultados = {
 				: DOM.noTenemos.classList.add("ocultar");
 
 			// Deriva a productos
-			if (configCons.layout_id == 1) await this.productos();
+			if (entidad == "productos") await this.productos();
+			else console.log(v.infoResultados);
 
 			// Fin
 			DOM.vistaProds.classList.remove("ocultar");

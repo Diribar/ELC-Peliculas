@@ -2,6 +2,7 @@
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
+const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -120,17 +121,10 @@ module.exports = {
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 
-			// Obtiene los productos y rlcvs
-			let prods = procesos.resultados.obtieneProds(configCons);
+			// Obtiene los registros de productos, rclvs y ppp
+			let prods = procesos.resultados.prods({configCons});
 			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
-
-			// Obtiene los registros de preferencia del usuario
-			let condicion = {usuario_id};
-			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
-				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
-			let pppRegistros = usuario_id
-				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
-				: null;
+			let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
 
 			// Espera hasta completar las lecturas
 			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
@@ -188,87 +182,61 @@ module.exports = {
 		},
 		rclvs: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
-			console.log(192, datos);
+			const {entidad, configCons} = JSON.parse(req.query.datos);
+			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
+
+			// Obtiene los productos y rlcvs
+			let configProd = {...configCons};
+			delete configProd.apMar, configProd.rolesIgl, configProd.canons;
+			let prods = procesos.resultados.prods({entidad, configCons: configProd});
+			let rclvs = procesos.resultados.rclvs({entidad, configCons: configProd});
+			let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
+
+			// Espera hasta completar las lecturas
+			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
+
+			// Cruza 'prods' con 'pppRegistros'
+			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros, configCons});
+
+			// Cruza 'rclvs' con 'prods' - Elimina los 'prods include' de RCLV que no están en 'prods'
+			if (prods.length && rclvs.length) {
+				// Rutina por RCLV
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					let rclv = rclvs[i];
+					rclvs[i].consolidado = [];
+					// Rutina por entProd de cada RCLV
+					for (let entProd of variables.entidades.prods) {
+						let prodsRCLV_entProd = rclv[entProd];
+						// Rutina por productos de cada entProd
+						for (let j = prodsRCLV_entProd.length - 1; j >= 0; j--) {
+							// Rutina por producto
+							const prodRCLV = prodsRCLV_entProd[j];
+							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
+							if (!existe) rclvs[i][entProd].splice(j, 1);
+						}
+						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
+						rclvs[i].consolidado.push(...rclvs[i][entProd]);
+						delete rclvs[i][entProd];
+					}
+					// Si el rclv no tiene productos, lo elimina
+					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
+					else rclvs[i].consolidado.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+				}
+			} else rclvs = [];
+
+			// Ordena los RCLV
+			console.log(229, orden.valor, configCons.ascDes);
+			if (rclvs.length && configCons.orden_id != 8) {
+				configCons.ascDes == "ASC"
+					? rclvs.sort((a, b) => (a[orden.valor] < b[orden.valor] ? -1 : 1))
+					: rclvs.sort((a, b) => (a[orden.valor] > b[orden.valor] ? -1 : 1));
+			} else {
+			}
+			rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
 
 			// Fin
-			return res.json("rclvs");
+			return res.json(rclvs);
 		},
-	},
-};
-
-let FN = {
-	prods: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-		let productos = [];
-		let rclvs = [];
-
-		// Obtiene los filtros y el orden
-		const filtrosProd = procesos.API.filtrosProd(datos);
-		const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
-		const ordenAscDes = datos.ascDes == "ASC" ? -1 : 1;
-
-		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
-		for (let entidad of ["peliculas", "colecciones"])
-			productos.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, filtrosProd).then((n) =>
-					n.map((m) => {
-						return {
-							id: m.id,
-							entidad,
-							entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
-							nombreOriginal: m.nombreOriginal,
-							direccion: m.direccion,
-							avatar: m.avatar,
-							personaje_id: m.personaje_id,
-							hecho_id: m.hecho_id,
-							tema_id: m.tema_id,
-							// Orden
-							diaDelAno_id: m.diaDelAno_id,
-							creadoEn: m.creadoEn,
-							anoEstreno: m.anoEstreno,
-							nombreCastellano: m.nombreCastellano,
-							calificacion: m.calificacion,
-						};
-					})
-				)
-			);
-		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
-		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
-
-		if (productos.length) {
-			// Ordena los productos
-			productos.sort((a, b) => {
-				return typeof a[ordenCampo] == "string"
-					? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
-						? ordenAscDes
-						: -ordenAscDes
-					: a[ordenCampo] < b[ordenCampo]
-					? ordenAscDes
-					: -ordenAscDes;
-			});
-
-			// Obtiene los RCLV
-			rclvs = await procesos.API.obtieneRCLVs(datos);
-			// Filtra los productos por RCLV
-			productos = productos.filter(
-				(n) =>
-					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
-					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
-					(rclvs.temas && rclvs.temas.includes(n.tema_id))
-			);
-		}
-
-		// Fin
-		return res.json(productos);
-	},
-	rclvs: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-		console.log("Datos:", datos);
-
-		// Fin
-		return res.json();
 	},
 };

@@ -41,18 +41,20 @@ module.exports = {
 		},
 	},
 	resultados: {
-		obtieneProds: async function (configCons) {
+		prods: async function ({configCons, entidad}) {
 			// Variables
 			const {orden_id, apMar, rolesIgl, canons} = configCons;
+			const campo_id = entidad ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			let entidades = ["peliculas", "colecciones"];
 			let condiciones = {statusRegistro_id: aprobado_id};
 			let productos = [];
 			let resultados = [];
 
 			// Particularidades
-			if (orden_id == 1) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
+			if (orden_id == 1 || entidad) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
 			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
 			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
+			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Agrega las preferencias
 			const prefs = this.prefs.prods(configCons);
@@ -111,6 +113,26 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
+		rclvs: async function ({configCons, entidad}) {
+			// Obtiene los include
+			let include = [...variables.entidades.prods];
+			if (entidad == "personajes") include.push("rolIglesia","epocaOcurrencia");
+
+			// Obtiene las condiciones
+			let condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}}; // Status aprobado e ID mayor a 10
+			if (["personajes", "hechos"].includes(entidad)) {
+				const prefs = this.prefs.rclvs({configCons, entidad});
+				condiciones = {...condiciones, ...prefs};
+			}
+
+			// Obtiene los RCLVs
+			const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
+				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
+			);
+
+			// Fin
+			return rclvs;
+		},
 		prefs: {
 			prods: (configCons) => {
 				// Variables
@@ -136,13 +158,16 @@ module.exports = {
 				// Fin
 				return prefs;
 			},
-			pers: (configCons) => {
+			rclvs: ({configCons, entidad}) => {
 				// Variables
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
 				// Aparición mariana
-				if (configCons.apMar) prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic.pers;
+				if (configCons.apMar) {
+					prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
+					prefs.apMar_id = entidad == "personajes" ? prefs.apMar_id.pers : prefs.apMar_id.hec;
+				}
 
 				// Roles en la Iglesia
 				if (configCons.rolesIgl) prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
@@ -151,9 +176,22 @@ module.exports = {
 				if (configCons.canons) prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
 
 				// Fin
-				console.log(86, prefs);
 				return prefs;
 			},
+		},
+		pppRegistros: async ({usuario_id, configCons}) => {
+			// Obtiene la condición
+			let condicion = {usuario_id};
+			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
+				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
+
+			// Obtiene los registros
+			let pppRegistros = usuario_id
+				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
+				: null;
+
+			// Fin
+			return pppRegistros;
 		},
 		momentoDelAno: async ({dia, mes}) => {
 			// Variables
@@ -245,69 +283,6 @@ module.exports = {
 
 			// Fin
 			return prods;
-		},
-	},
-	API: {
-		filtrosRCLV: (datos) => {
-			// Variables
-			let filtros = {};
-			let condics = {
-				statusRegistro_id: aprobado_id,
-				id: {[Op.gt]: 10},
-				[Op.and]: [],
-			};
-
-			// Arma el filtro
-			let campos = ["epocasOcurrencia", "apMar", "canons", "rolesIglesia"];
-			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
-
-			// Conversión de filtros de RCLV
-			if (filtros.epocasOcurrencia && datos.entidad != "temas") condics.epocaOcurrencia_id = filtros.epocasOcurrencia;
-			if (filtros.apMar) {
-				if (datos.entidad == "personajes") condics.apMar_id = {[Op.ne]: 10};
-				if (datos.entidad == "hechos") condics.ama = true;
-			}
-			if (filtros.canons) {
-				if (filtros.canons == "sb")
-					condics[Op.and].push({[Op.or]: [{canon_id: {[Op.like]: "ST%"}}, {canon_id: {[Op.like]: "BT%"}}]});
-				if (filtros.canons == "vs")
-					condics[Op.and].push({[Op.or]: [{canon_id: {[Op.like]: "VN%"}}, {canon_id: {[Op.like]: "SD%"}}]});
-				if (filtros.canons == "nn") condics.canon_id = {[Op.like]: "NN%"};
-			}
-			if (filtros.rolesIglesia) {
-				if (filtros.rolesIglesia == "la") condics.rolIglesia_id = {[Op.like]: "L%"};
-				if (filtros.rolesIglesia == "lc") condics.rolIglesia_id = {[Op.like]: "LC%"};
-				if (filtros.rolesIglesia == "rs")
-					condics[Op.and].push({[Op.or]: [{rolIglesia_id: {[Op.like]: "RE%"}}, {rolIglesia_id: "SCV"}]});
-				if (filtros.rolesIglesia == "pp") condics.rolIglesia_id = "PPV";
-				if (filtros.rolesIglesia == "ap") condics.rolIglesia_id = "ALV";
-				if (filtros.rolesIglesia == "sf") condics.rolIglesia_id = {[Op.like]: "SF%"};
-			}
-			if (!condics[Op.and].length) delete condics[Op.and];
-
-			// Fin
-			return condics;
-		},
-		obtieneRCLVs: async function (datos) {
-			// Variables
-			let auxs = [];
-			let rclvs = {};
-
-			// Obtiene las entidades
-			const entidades =
-				datos.bhr == "pers" ? ["personajes"] : datos.bhr == "hecho" ? ["hechos"] : ["personajes", "hechos", "temas"];
-			// Obtiene los registros de RCLV
-			for (let entidad of entidades) {
-				// Obtiene los filtros
-				let filtros = this.filtrosRCLV({...datos, entidad});
-				// Obtiene los registros
-				auxs.push(BD_genericas.obtieneTodosPorCondicion(entidad, filtros).then((n) => n.map((m) => m.id)));
-			}
-			auxs = await Promise.all(auxs);
-			entidades.forEach((entidad, i) => (rclvs[entidad] = auxs[i]));
-
-			// Fin
-			return rclvs;
 		},
 	},
 };
