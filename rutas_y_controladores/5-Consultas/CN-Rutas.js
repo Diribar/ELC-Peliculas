@@ -18,12 +18,10 @@ router.get("/api/guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
 router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfigCons);
 
 // API - Resultados
-router.get("/api/obtiene-los-productos", API.resultados.prods);
-router.get("/api/obtiene-los-rclvs", API.resultados.rclvs);
+router.get("/api/obtiene-los-resultados", API.resultados);
 
 // Vistas
 router.get("/", vista.consultas);
 
 // Fin
-// router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 module.exports = router;
