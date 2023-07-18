@@ -390,7 +390,7 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length && orden.valor != "momento")
+				if (prods.length > 1 && orden.valor != "momento")
 					prods.sort((a, b) =>
 						configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
 					);
