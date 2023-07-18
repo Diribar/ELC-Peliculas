@@ -350,9 +350,9 @@ module.exports = {
 							else rclvs[i][entProd][j].entidad = entProd;
 						}
 
-						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
-						rclvs[i].consolidado.push(...rclvs[i][entProd]);
-						delete rclvs[i][entProd];
+						// Acciones finales
+						rclvs[i].consolidado.push(...rclvs[i][entProd]); // Agrupa los productos en el array 'consolidado'
+						delete rclvs[i][entProd]; // Elimina la familia
 					}
 
 					// Si el rclv no tiene productos, lo elimina
