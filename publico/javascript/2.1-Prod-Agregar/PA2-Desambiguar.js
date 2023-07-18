@@ -78,8 +78,8 @@ window.addEventListener("load", async () => {
 			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombreCastellano;
 			// Completa los años
 			if (prod.entidad == "colecciones") {
-				let ano = prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
-				li.children[0][4].children[1].children[3].innerHTML = ano;
+				const anos = prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
+				li.children[0][4].children[1].children[3].innerHTML = anos;
 				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
 			} else li.children[0][4].children[1].children[3].innerHTML = prod.anoEstreno;
 			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
