@@ -51,7 +51,7 @@ module.exports = {
 			let resultados = [];
 
 			// Particularidades
-			if (orden_id == 1 || entidad) entidades.push("capitulos"); // Para el orden 'Momento del año', agrega la entidad 'capitulos'
+			if (orden_id == 1 || entidad) entidades.push("capitulos"); // Para el orden 'Momento del año' o layout 'Películas por', agrega la entidad 'capitulos'
 			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
 			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
@@ -60,7 +60,7 @@ module.exports = {
 			const prefs = this.prefs.prods(configCons);
 			condiciones = {...condiciones, ...prefs};
 
-			// Obtiene el include
+			// Obtiene el include (sólo el layout 'Todas las Películas' lo puede generar)
 			let include;
 			apMar ? (include = ["personaje", "hecho"]) : rolesIgl || canons ? (include = "personaje") : null;
 
@@ -74,7 +74,7 @@ module.exports = {
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
-			// Filtrar por apMar, rolesIgl, canons
+			// Filtra por apMar, rolesIgl, canons (sólo el layout 'Todas las Películas' lo puede generar)
 			if (apMar && resultados.length) {
 				if (apMar == "SI")
 					resultados = resultados.filter(
@@ -116,7 +116,7 @@ module.exports = {
 		rclvs: async function ({configCons, entidad}) {
 			// Obtiene los include
 			let include = [...variables.entidades.prods];
-			if (entidad == "personajes") include.push("rolIglesia","epocaOcurrencia");
+			if (entidad == "personajes") include.push("rolIglesia", "epocaOcurrencia");
 
 			// Obtiene las condiciones
 			let condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}}; // Status aprobado e ID mayor a 10
@@ -163,32 +163,43 @@ module.exports = {
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
+				// Época de ocurrencia
+				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
+
 				// Aparición mariana
 				if (configCons.apMar) {
 					prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
 					prefs.apMar_id = entidad == "personajes" ? prefs.apMar_id.pers : prefs.apMar_id.hec;
 				}
 
-				// Roles en la Iglesia
-				if (configCons.rolesIgl) prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
+				// Roles en la Iglesia o Relación con la Iglesia Católica (sólo personajes)
+				if (entidad == "personajes" && (configCons.rolesIgl || configCons.cfc))
+					prefs.rolIglesia_id = configCons.rolesIgl
+						? rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic
+						: {[Op.notLike]: "NN%"};
 
 				// Canonización
-				if (configCons.canons) prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
+				if (entidad == "personajes" && configCons.canons)
+					prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
+
+				// Relación con la Iglesia Católica (sólo hechos)
+				if (entidad == "hechos" && configCons.cfc) prefs.soloCfc = configCons.cfc;
 
 				// Fin
 				return prefs;
 			},
 		},
 		pppRegistros: async ({usuario_id, configCons}) => {
+			// Si el usuario no está logueado, interrumpe la función
+			if (!usuario_id) return null;
+
 			// Obtiene la condición
 			let condicion = {usuario_id};
 			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
 				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
 
 			// Obtiene los registros
-			let pppRegistros = usuario_id
-				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
-				: null;
+			let pppRegistros = BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle");
 
 			// Fin
 			return pppRegistros;
@@ -249,40 +260,219 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		cruceProdsConPPP: ({prods, pppRegistros, configCons}) => {
-			// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
-			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
+		cruce: {
+			prodsConPPP: ({prods, pppRegistros, configCons}) => {
+				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
+				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
 
-			// Rutina por producto
-			for (let i = prods.length - 1; i >= 0; i--) {
-				// Averigua si el producto tiene un registro de preferencia
-				const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+				// Rutina por producto
+				for (let i = prods.length - 1; i >= 0; i--) {
+					// Averigua si el producto tiene un registro de preferencia
+					const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
 
-				// Acciones si se eligió un tipo de preferencia
-				if (configCons.pppOpciones) {
-					// Variable
-					const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
+					// Acciones si se eligió un tipo de preferencia
+					if (configCons.pppOpciones) {
+						// Variable
+						const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
 
-					// Acciones si se eligió 'sinPreferencia'
-					if (pppOpcionElegida.id == sinPreferencia.id) {
-						if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
-						else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
+						// Acciones si se eligió 'sinPreferencia'
+						if (pppOpcionElegida.id == sinPreferencia.id) {
+							if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
+							else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
+						}
+						// Acciones si se eligió una opción distinta a 'sinPreferencia'
+						else {
+							if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
+							else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
+						}
 					}
-					// Acciones si se eligió una opción distinta a 'sinPreferencia'
+					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
 					else {
-						if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
-						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
+						prods[i].pppIcono = existe ? existe.detalle.icono : sinPreferencia.icono;
+						prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
 					}
 				}
-				// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
-				else {
-					prods[i].pppIcono = existe ? existe.detalle.icono : sinPreferencia.icono;
-					prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
-				}
-			}
 
-			// Fin
-			return prods;
+				// Fin
+				return prods;
+			},
+			prodsConRCLVs: ({prods, rclvs}) => {
+				if (!prods.length) return [];
+
+				// Si no hay RCLVs, reduce a cero los productos
+				if (!rclvs || !rclvs.length) return [];
+
+				// Crea la variable consolidadora
+				let prodsCruzadosConRCLVs = [];
+
+				// Para cada RCLV, busca los productos
+				for (let rclv of rclvs) {
+					// Obtiene el campo a buscar
+					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
+
+					// Detecta los hallazgos
+					const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
+
+					if (hallazgos.length) {
+						// Los agrega al consolidador
+						prodsCruzadosConRCLVs.push(...hallazgos);
+						// Los elimina de prods
+						if (hallazgos.length) prods = prods.filter((n) => n[campo_id] != rclv.id);
+					}
+				}
+
+				// Fin
+				return prodsCruzadosConRCLVs;
+			},
+			rclvsConProds: ({rclvs, prods}) => {
+				// Cruza 'rclvs' con 'prods'
+				if (!prods.length || !rclvs.length) return [];
+
+				// Rutina por RCLV
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					let rclv = rclvs[i];
+					rclvs[i].consolidado = [];
+					// Rutina por entProd de cada RCLV
+					for (let entProd of variables.entidades.prods) {
+						let prodsRCLV = rclv[entProd];
+						// Rutina por productos de cada entProd
+						for (let j = prodsRCLV.length - 1; j >= 0; j--) {
+							// Rutina por producto
+							const prodRCLV = prodsRCLV[j];
+							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
+							if (!existe) rclvs[i][entProd].splice(j, 1);
+						}
+						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
+						rclvs[i].consolidado.push(...rclvs[i][entProd]);
+						delete rclvs[i][entProd];
+					}
+					// Si el rclv no tiene productos, lo elimina
+					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
+					// Acciones en caso contrario
+					else {
+						// Ordena los productos por su año de estreno
+						rclvs[i].consolidado.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+
+						// Deja solamente los campos necesarios
+						rclvs[i].consolidado = rclvs[i].consolidado.map((n) => {
+							// Obtiene campos simples
+							let {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno} = n;
+							let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno};
+
+							// Achica el campo dirección
+							if (direccion && direccion.indexOf(",") > 0)
+								datos.direccion = direccion.slice(0, direccion.indexOf(","));
+
+							// Obtiene el nombre de la entidad
+							datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
+							// Si es una colección, agrega el campo 'anoFin'
+							if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+
+							// Fin
+							return datos;
+						});
+					}
+				}
+
+				// Fin
+				return rclvs;
+			},
+		},
+		orden: {
+			prods: ({prods, orden, configCons}) => {
+				if (prods.length && orden.valor != "momento")
+					prods.sort((a, b) =>
+						configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
+					);
+
+				// Fin
+				return prods;
+			},
+			rclvs: ({rclvs, orden, configCons, entidad}) => {
+				if (rclvs.length > 1) {
+					// Si el orden es por su Rol en la Iglesia, los ordena por su include
+					if (orden.valor == "rolIglesia") rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
+					// Ordenamiento en los demás casos
+					else if (orden.valor == "ano") {
+						// Ordena por su campo
+						const campo = entidad == "personajes" ? "anoNacim" : "anoComienzo";
+						configCons.ascDes == "ASC"
+							? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
+							: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
+
+						// En particular para el criterio 'año', ordena por su época porque algunos registros tienen su año en 'null'
+						configCons.ascDes == "ASC"
+							? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
+							: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
+					}
+					// Ordena por su campo
+					else
+						configCons.ascDes == "ASC"
+							? rclvs.sort((a, b) => (a[orden.valor] < b[orden.valor] ? -1 : 1))
+							: rclvs.sort((a, b) => (a[orden.valor] > b[orden.valor] ? -1 : 1));
+				}
+
+				// Fin
+				return rclvs;
+			},
+		},
+		camposNecesarios: {
+			prods: (prods) => {
+				// Si no hay registros a achicar, interrumpe la función
+				if (!prods.length) return [];
+
+				// Deja solamente los campos necesarios
+				prods = prods.map((n) => {
+					// Obtiene campos simples
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
+					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar};
+
+					// Achica el campo dirección
+					if (direccion && direccion.indexOf(",") > 0) datos.direccion = direccion.slice(0, direccion.indexOf(","));
+
+					// Obtiene el nombre de la entidad
+					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
+					// Si es una colección, agrega el campo 'anoFin'
+					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+
+					// Fin
+					return datos;
+				});
+
+				// Fin
+				return prods;
+			},
+			rclvs: ({rclvs, entidad}) => {
+				// Si no hay registros a achicar, interrumpe la función
+				if (!rclvs.length) return [];
+
+				// Deja solamente los campos necesarios
+				rclvs = rclvs.map((n) => {
+					// Arma el resultado
+					const {id, nombre, diaDelAno_id} = n;
+					let datos = {entidad, id, nombre, diaDelAno_id};
+
+					// Obtiene campos en función de la entidad
+					if (entidad == "personajes") {
+						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
+						datos.anoNacim = n.anoNacim;
+						datos.rolIglesia = n.rolIglesia.nombre;
+						datos.canon = n.canon.nombre;
+					}
+					if ((entidad = "hechos")) {
+						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
+						datos.anoComienzo = n.anoComienzo;
+					}
+
+					// Fin
+					return datos;
+				});
+
+				// Fin
+				return rclvs;
+			},
 		},
 	},
 };
