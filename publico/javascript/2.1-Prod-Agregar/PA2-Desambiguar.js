@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
 
 			// Si es una colección, agrega la cantidad de capítulos
 			if (prod.entidad == "colecciones") infoPeli.querySelector("#capitulos").innerHTML = "Capítulos: " + prod.capitulos;
-			else infoPeli.querySelector("#capitulos").remove()
+			else infoPeli.querySelector("#capitulos").remove();
 
 			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
@@ -114,12 +114,12 @@ window.addEventListener("load", async () => {
 				: prod.avatar.includes("/")
 				? prod.avatar
 				: localhost + "/imagenes/2-Productos/Final/" + prod.avatar;
-			let imagen=boton.querySelector("img")
+			let imagen = boton.querySelector("img");
 			imagen.src = avatar;
 			imagen.alt = prod.nombreOriginal;
 			imagen.title = prod.nombreOriginal;
 			// Información a mostrar
-			let infoPeli=boton.querySelector("#infoPeli")
+			let infoPeli = boton.querySelector("#infoPeli");
 			infoPeli.querySelector("#nombreOriginal").children[0].innerHTML = prod.nombreOriginal;
 			infoPeli.querySelector("#nombreCastellano").children[0].innerHTML = prod.nombreCastellano;
 			infoPeli.querySelector("#anoEstreno").innerHTML = prod.anoEstreno + " - " + prod.entidadNombre;
