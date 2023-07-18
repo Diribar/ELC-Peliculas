@@ -5,25 +5,23 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
-		// Fecha actual
+		// Variables
 		const ahora = new Date();
 		const dia = ahora.getDate();
 		const mes = ahora.getMonth() + 1;
+		let datos = {configCons};
 
 		// Arma los datos
-		let datos = {configCons};
-		if (configCons.orden_id == 1) datos = {...datos, dia, mes};
+		if (entidad == "productos" && v.orden.valor == "momento") datos = {...datos, dia, mes};
+		else if (entidad != "productos") datos.entidad = entidad;
 
 		// Busca la información en el BE
-		v.infoResultados =
-			entidad == "productos"
-				? await fetch(ruta + "obtiene-los-productos/?datos=" + JSON.stringify(datos)).then((n) => n.json())
-				: entidad
-				? await fetch(ruta + "obtiene-los-rclvs/?datos=" + JSON.stringify({configCons, entidad})).then((n) => n.json())
-				: null;
+		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
+
+		// Contador
+		if (v.infoResultados) this.contador();
 
 		// Fin
-		if (v.infoResultados) this.contador();
 		return;
 	},
 	contador: () => {
