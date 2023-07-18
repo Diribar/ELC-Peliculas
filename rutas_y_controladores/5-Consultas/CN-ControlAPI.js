@@ -152,7 +152,7 @@ module.exports = {
 			let configProd = {...configCons};
 			delete configProd.apMar, configProd.rolesIgl, configProd.canons;
 			let prods = procesos.resultados.prods({entidad, configCons: configProd});
-			let rclvs = procesos.resultados.rclvs({entidad, configCons: configProd});
+			let rclvs = procesos.resultados.rclvs({entidad, configCons});
 			let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
 
 			// Espera hasta completar las lecturas
