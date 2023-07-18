@@ -262,6 +262,8 @@ module.exports = {
 		},
 		cruce: {
 			prodsConPPP: ({prods, pppRegistros, configCons}) => {
+				if (!prods.length) return [];
+
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
 
@@ -299,7 +301,7 @@ module.exports = {
 				if (!rclvs) return prods;
 
 				// Si no hay RCLVs, reduce a cero los productos
-				if (!prods.length || rclvs || !rclvs.length) return [];
+				if (!prods.length || !rclvs.length) return [];
 
 				// Crea la variable consolidadora
 				let prodsCruzadosConRCLVs = [];
@@ -312,11 +314,13 @@ module.exports = {
 					// Detecta los hallazgos
 					const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
 
+					// Acciones si hay hallazgos
 					if (hallazgos.length) {
 						// Los agrega al consolidador
 						prodsCruzadosConRCLVs.push(...hallazgos);
+
 						// Los elimina de prods
-						if (hallazgos.length) prods = prods.filter((n) => n[campo_id] != rclv.id);
+						prods = prods.filter((n) => n[campo_id] != rclv.id);
 					}
 				}
 
@@ -329,11 +333,14 @@ module.exports = {
 
 				// Rutina por RCLV
 				for (let i = rclvs.length - 1; i >= 0; i--) {
-					let rclv = rclvs[i];
+					// Variables
 					rclvs[i].consolidado = [];
+					let rclv = rclvs[i];
+
 					// Rutina por entProd de cada RCLV
 					for (let entProd of variables.entidades.prods) {
 						let prodsRCLV = rclv[entProd];
+
 						// Rutina por productos de cada entProd
 						for (let j = prodsRCLV.length - 1; j >= 0; j--) {
 							// Rutina por producto
@@ -341,10 +348,12 @@ module.exports = {
 							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
 							if (!existe) rclvs[i][entProd].splice(j, 1);
 						}
+
 						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
 						rclvs[i].consolidado.push(...rclvs[i][entProd]);
 						delete rclvs[i][entProd];
 					}
+					
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
 					// Acciones en caso contrario
