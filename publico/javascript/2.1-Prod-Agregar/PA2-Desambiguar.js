@@ -80,8 +80,8 @@ window.addEventListener("load", async () => {
 
 			// Información a mostrar
 			let infoPeli = boton.querySelector("#infoPeli");
-			infoPeli.querySelector("#nombreOriginal").children[0].innerHTML = prod.nombreOriginal;
-			infoPeli.querySelector("#nombreCastellano").children[0].innerHTML = prod.nombreCastellano;
+			infoPeli.querySelector("#nombreOriginal").innerHTML = prod.nombreOriginal;
+			infoPeli.querySelector("#nombreCastellano").innerHTML = prod.nombreCastellano;
 
 			// Completa los años y entidad nombre
 			const anos = prod.anoFin && prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
@@ -120,8 +120,8 @@ window.addEventListener("load", async () => {
 			imagen.title = prod.nombreOriginal;
 			// Información a mostrar
 			let infoPeli = boton.querySelector("#infoPeli");
-			infoPeli.querySelector("#nombreOriginal").children[0].innerHTML = prod.nombreOriginal;
-			infoPeli.querySelector("#nombreCastellano").children[0].innerHTML = prod.nombreCastellano;
+			infoPeli.querySelector("#nombreOriginal").innerHTML = prod.nombreOriginal;
+			infoPeli.querySelector("#nombreCastellano").innerHTML = prod.nombreCastellano;
 			infoPeli.querySelector("#anoEstreno").innerHTML = prod.anoEstreno + " - " + prod.entidadNombre;
 			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
