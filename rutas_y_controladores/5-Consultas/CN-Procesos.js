@@ -347,13 +347,14 @@ module.exports = {
 							const prodRCLV = prodsRCLV[j];
 							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
 							if (!existe) rclvs[i][entProd].splice(j, 1);
+							else rclvs[i][entProd][j].entidad = entProd;
 						}
 
 						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
 						rclvs[i].consolidado.push(...rclvs[i][entProd]);
 						delete rclvs[i][entProd];
 					}
-					
+
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
 					// Acciones en caso contrario
