@@ -164,7 +164,7 @@ let actualizaConfigCons = {
 	apMar: function () {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='1', cfc='1' y epocasOcurrencia='pst'
+		// Sólo se muestra el sector si bhr='1', cfc='1' y epocasOcurrencia='pst', o no están respondidas
 		const seMuestra =
 			(!configCons.bhr || configCons.bhr == "1") &&
 			(!configCons.cfc || configCons.cfc == "1") &&
