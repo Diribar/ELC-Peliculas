@@ -167,24 +167,23 @@ module.exports = {
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
 
+				// Relación con la Iglesia Católica
+				if (configCons.cfc)
+					entidad == "personajes" ? (prefs.rolIglesia_id = {[Op.notLike]: "NN%"}) : (prefs.soloCfc = configCons.cfc);
+
 				// Aparición mariana
 				if (configCons.apMar) {
 					prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
 					prefs.apMar_id = entidad == "personajes" ? prefs.apMar_id.pers : prefs.apMar_id.hec;
 				}
 
-				// Roles en la Iglesia o Relación con la Iglesia Católica (sólo personajes)
-				if (entidad == "personajes" && (configCons.rolesIgl || configCons.cfc))
-					prefs.rolIglesia_id = configCons.rolesIgl
-						? rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic
-						: {[Op.notLike]: "NN%"};
+				// Roles en la Iglesia
+				if (entidad == "personajes" && configCons.rolesIgl)
+					prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
 
 				// Canonización
 				if (entidad == "personajes" && configCons.canons)
 					prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
-
-				// Relación con la Iglesia Católica (sólo hechos)
-				if (entidad == "hechos" && configCons.cfc) prefs.soloCfc = configCons.cfc;
 
 				// Fin
 				return prefs;
