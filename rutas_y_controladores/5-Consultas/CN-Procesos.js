@@ -295,10 +295,8 @@ module.exports = {
 				return prods;
 			},
 			prodsConRCLVs: ({prods, rclvs}) => {
-				if (!prods.length) return [];
-
 				// Si no hay RCLVs, reduce a cero los productos
-				if (!rclvs || !rclvs.length) return [];
+				if (!prods.length || !rclvs || !rclvs.length) return [];
 
 				// Crea la variable consolidadora
 				let prodsCruzadosConRCLVs = [];
