@@ -57,16 +57,15 @@ let actualizaConfigCons = {
 		// Acciones si se eligió un orden
 		const orden_id = DOM.orden_id.value;
 		if (orden_id) {
-			// Actualiza 'orden_id'
-			configCons.orden_id = orden_id;
+			// Variables
+			configCons.orden_id = orden_id; // Actualiza 'orden_id'
+			v.orden = v.ordenesBD.find((n) => n.id == orden_id);
 
 			// Si corresponde, actualiza 'bhr'
-			const bhrSeguro = v.ordenesBD.find((n) => n.id == orden_id).bhrSeguro;
-			if (bhrSeguro) configCons.bhr = "1";
+			if (v.orden.bhrSeguro) configCons.bhr = "1";
 
 			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
-			const orden = v.ordenesBD.find((n) => n.id == orden_id);
-			if (orden.valor == "rolIglesia") configCons.cfc = 1;
+			if (v.orden.valor == "rolIglesia") configCons.cfc = 1;
 		}
 
 		// Fin
@@ -76,11 +75,8 @@ let actualizaConfigCons = {
 	ascDes: function () {
 		// Impacto en configCons: ascDes
 
-		// Variables
-		const ordenBD = configCons.orden_id ? v.ordenesBD.find((n) => n.id == configCons.orden_id) : null;
-
 		// Actualiza la variable 'configCons' y muestra/oculta el sector
-		if (configCons.orden_id && ordenBD.ascDes == "ascDes") {
+		if (configCons.orden_id && v.orden.ascDes == "ascDes") {
 			// Muestra ascDes
 			DOM.ascDes.classList.replace("ocultar", "flexCol");
 
@@ -92,7 +88,7 @@ let actualizaConfigCons = {
 			DOM.ascDes.classList.replace("flexCol", "ocultar");
 
 			// Actualiza la variable 'configCons'
-			if (configCons.orden_id) configCons.ascDes = ordenBD.ascDes;
+			if (configCons.orden_id) configCons.ascDes = v.orden.ascDes;
 		}
 
 		// 'OK' para que el fondo sea verde/rojo
