@@ -11,11 +11,11 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con personajes
-		ano: {type: dt.INTEGER},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
-		solo_cfc: {type: dt.BOOLEAN},
+		anoComienzo: {type: dt.INTEGER},
+		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
 		// Fechas y Usuarios

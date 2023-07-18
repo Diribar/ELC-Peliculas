@@ -17,10 +17,10 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común entre 'personajes' y 'hechos'
-		ano: {type: dt.INTEGER},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específico de 'personajes'
+		anoNacim: {type: dt.INTEGER},
 		apodo: {type: dt.STRING(35)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
@@ -29,7 +29,8 @@ module.exports = (sequelize, dt) => {
 		rolIglesia_id: {type: dt.STRING(3)},
 
 		// Específico de 'hechos'
-		solo_cfc: {type: dt.BOOLEAN},
+		anoComienzo: {type: dt.INTEGER},
+		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
 		// Específico de 'epocasDelAno'
