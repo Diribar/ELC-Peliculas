@@ -75,7 +75,7 @@ module.exports = {
 			.then((n) =>
 				n.map((m) => ({
 					id: m.id,
-					ano: m.anoEstreno,
+					anoEstreno: m.anoEstreno,
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
