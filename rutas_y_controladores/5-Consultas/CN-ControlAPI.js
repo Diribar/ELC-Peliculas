@@ -130,52 +130,16 @@ module.exports = {
 			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros, configCons});
+			if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
 
 			// Cruza 'prods' con 'rclvs'
-			if (prods.length && rclvs) {
-				// Si no hay RCLVs, reduce a cero los productos
-				if (!rclvs.length) prods = [];
-				else {
-					// Crea la variable consolidadora
-					let prodsCruzadosConRCLVs = [];
-					// Para cada RCLV, busca los productos
-					for (let rclv of rclvs) {
-						// Obtiene el campo a buscar
-						const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
-						// Detecta los hallazgos
-						const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
-						// Si hay hallazgos, los agrega al consolidador
-						if (hallazgos.length) prodsCruzadosConRCLVs.push(...hallazgos);
-						// Si hay hallazgos, los elimina de prods
-						if (hallazgos.length) prods = prods.filter((n) => n[campo_id] != rclv.id);
-					}
-					//
-					prods = [...prodsCruzadosConRCLVs];
-				}
-			}
+			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs});
 
 			// Ordena los productos
-			if (prods.length && configCons.orden_id != 1)
-				prods.sort((a, b) =>
-					configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
-				);
+			prods = procesos.orden.prods({prods, orden, configCons});
 
 			// Deja sólo los campos necesarios
-			if (prods.length)
-				prods = prods.map((n) => {
-					// Datos
-					let {entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
-					if (direccion && direccion.indexOf(",") > 0) direccion = direccion.slice(0, direccion.indexOf(","));
-					let datos = {
-						...{entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar},
-						...{entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)},
-					};
-					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
-
-					// Fin
-					return datos;
-				});
+			prods = procesos.resultados.camposNecesarios.prods(prods);
 
 			// Fin
 			return res.json(prods);
@@ -197,43 +161,16 @@ module.exports = {
 			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros, configCons});
+			if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
 
-			// Cruza 'rclvs' con 'prods' - Elimina los 'prods include' de RCLV que no están en 'prods'
-			if (prods.length && rclvs.length) {
-				// Rutina por RCLV
-				for (let i = rclvs.length - 1; i >= 0; i--) {
-					let rclv = rclvs[i];
-					rclvs[i].consolidado = [];
-					// Rutina por entProd de cada RCLV
-					for (let entProd of variables.entidades.prods) {
-						let prodsRCLV_entProd = rclv[entProd];
-						// Rutina por productos de cada entProd
-						for (let j = prodsRCLV_entProd.length - 1; j >= 0; j--) {
-							// Rutina por producto
-							const prodRCLV = prodsRCLV_entProd[j];
-							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
-							if (!existe) rclvs[i][entProd].splice(j, 1);
-						}
-						// Agrupa los productos en el array 'consolidado' y elimina el 'campo_id'
-						rclvs[i].consolidado.push(...rclvs[i][entProd]);
-						delete rclvs[i][entProd];
-					}
-					// Si el rclv no tiene productos, lo elimina
-					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
-					else rclvs[i].consolidado.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
-				}
-			} else rclvs = [];
+			// Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods});
 
-			// Ordena los RCLV
-			console.log(229, orden.valor, configCons.ascDes);
-			if (rclvs.length && configCons.orden_id != 8) {
-				configCons.ascDes == "ASC"
-					? rclvs.sort((a, b) => (a[orden.valor] < b[orden.valor] ? -1 : 1))
-					: rclvs.sort((a, b) => (a[orden.valor] > b[orden.valor] ? -1 : 1));
-			} else {
-			}
-			rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
+			// Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.orden.rclvs({rclvs, orden, configCons, entidad});
+
+			// Deja sólo los campos necesarios
+			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad});
 
 			// Fin
 			return res.json(rclvs);
