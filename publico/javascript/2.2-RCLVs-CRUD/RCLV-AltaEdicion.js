@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
 		sectorApMar: document.querySelector("form #sectorApMar"),
 		apMar_id: document.querySelector("form select[name='apMar_id']"),
 		// Hechos
-		solo_cfc: document.querySelectorAll("form input[name='solo_cfc']"),
+		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
 		ama: document.querySelectorAll("form input[name='ama']"),
 	};
 	let rutas = {
@@ -405,11 +405,11 @@ window.addEventListener("load", async () => {
 
 				// Lo agrega lo referido a la aparición mariana
 				if (varios.hechos) {
-					let solo_cfc = opcionElegida(DOM.solo_cfc);
+					let soloCfc = opcionElegida(DOM.soloCfc);
 					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 					let ano = FN_ano(DOM.ano.value);
 					let ama = opcionElegida(DOM.ama).value;
-					if (solo_cfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
+					if (soloCfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
 				}
 
 				// Averigua los errores
@@ -548,11 +548,11 @@ window.addEventListener("load", async () => {
 				// Variables
 				let params = "RCLIC_hechos";
 
-				// Obtiene el 'solo_cfc'
-				let solo_cfc = opcionElegida(DOM.solo_cfc);
-				params += "&solo_cfc=" + solo_cfc.value;
+				// Obtiene el 'soloCfc'
+				let soloCfc = opcionElegida(DOM.soloCfc);
+				params += "&soloCfc=" + soloCfc.value;
 
-				if (solo_cfc.value == 1) {
+				if (soloCfc.value == 1) {
 					// Agrega los datos de epocaOcurrencia_id y año
 					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 					params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
@@ -654,7 +654,7 @@ window.addEventListener("load", async () => {
 		// RCLIC
 		if (
 			(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-			(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
+			(varios.hechos && opcionElegida(DOM.soloCfc).value) ||
 			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
 		)
 			await validacs.RCLIC[entidad]();
@@ -795,7 +795,7 @@ window.addEventListener("load", async () => {
 			// Si corresponde, valida RCLIC
 			if (varios.OK.epocaOcurrencia) {
 				if (varios.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
-				if (varios.hechos && opcionElegida(DOM.solo_cfc).value == 1) await validacs.RCLIC.hechos();
+				if (varios.hechos && opcionElegida(DOM.soloCfc).value == 1) await validacs.RCLIC.hechos();
 			}
 		}
 

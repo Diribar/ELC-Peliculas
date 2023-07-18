@@ -170,8 +170,8 @@ module.exports = {
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
-			let {id, nombre, solo_cfc, epocaOcurrencia_id, ama} = n;
-			return {id, nombre, solo_cfc, epocaOcurrencia_id, ama};
+			let {id, nombre, soloCfc, epocaOcurrencia_id, ama} = n;
+			return {id, nombre, soloCfc, epocaOcurrencia_id, ama};
 		});
 		let apMar = [];
 		let casosPuntuales = [];
@@ -196,7 +196,7 @@ module.exports = {
 			// Variables
 			let OK = false;
 			hecho.clase = "CFC ";
-			if (!hecho.solo_cfc) hecho.clase += "VPC ";
+			if (!hecho.soloCfc) hecho.clase += "VPC ";
 
 			// Apariciones Marianas
 			if (hecho.ama) {
