@@ -54,12 +54,19 @@ let actualizaConfigCons = {
 			else DOM.orden_idOpciones[i].classList.remove("ocultar");
 		});
 
-		// Actualiza 'orden_id' y eventualmente 'bhr'
+		// Acciones si se eligió un orden
 		const orden_id = DOM.orden_id.value;
 		if (orden_id) {
+			// Actualiza 'orden_id'
 			configCons.orden_id = orden_id;
+
+			// Si corresponde, actualiza 'bhr'
 			const bhrSeguro = v.ordenesBD.find((n) => n.id == orden_id).bhrSeguro;
 			if (bhrSeguro) configCons.bhr = "1";
+
+			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
+			const orden = v.ordenesBD.find((n) => n.id == orden_id);
+			if (orden.valor == "rolIglesia") configCons.cfc = 1;
 		}
 
 		// Fin
@@ -124,10 +131,23 @@ let actualizaConfigCons = {
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
-		this.bhr();
+		this.cfc();
 		return;
 	},
 	// Presencia eventual
+	cfc: function () {
+		// Impacto en configCons: cfc
+
+		// Si cfc ya está contestado, se oculta
+		configCons.cfc ? DOM.cfc.parentNode.classList.add("ocultar") : DOM.cfc.parentNode.classList.remove("ocultar");
+
+		// Actualiza el valor de 'bhr'
+		if (!configCons.cfc && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
+
+		// Fin
+		this.bhr();
+		return;
+	},
 	bhr: function () {
 		// Impacto en configCons: bhr
 
@@ -144,10 +164,10 @@ let actualizaConfigCons = {
 	apMar: function () {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='1', cfc='1' y (!epocasOcurrencia || epocasOcurrencia='pst')
+		// Sólo se muestra el sector si bhr='1', cfc='1' y epocasOcurrencia='pst'
 		const seMuestra =
-			configCons.bhr == "1" &&
-			configCons.cfc == "1" &&
+			(!configCons.bhr || configCons.bhr == "1") &&
+			(!configCons.cfc || configCons.cfc == "1") &&
 			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
 
 		// Muestra/Oculta el sector
