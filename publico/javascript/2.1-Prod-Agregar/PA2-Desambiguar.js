@@ -62,34 +62,39 @@ window.addEventListener("load", async () => {
 		for (let prod of prodsNuevos) {
 			// Crea el elemento 'li'
 			let li = DOM.prodsNuevos.cloneNode(true);
+			let boton = li.querySelector("button");
+
 			// Información a enviar al BE
-			li.children[0][0].value = prod.TMDB_entidad;
-			li.children[0][1].value = prod.TMDB_id;
-			li.children[0][2].value = prod.nombreOriginal;
-			li.children[0][3].value = prod.idiomaOriginal_id;
+			li.querySelector("input[name='TMDB_entidad").value = prod.TMDB_entidad;
+			li.querySelector("input[name='TMDB_id").value = prod.TMDB_id;
+			li.querySelector("input[name='nombreOriginal").value = prod.nombreOriginal;
+			li.querySelector("input[name='idiomaOriginal_id").value = prod.idiomaOriginal_id;
+
 			// Imagen
-			li.children[0][4].children[0].src = prod.avatar
+			let imagen = boton.querySelector("img");
+			imagen.src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
 				: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-			li.children[0][4].children[0].alt = prod.nombreOriginal;
-			li.children[0][4].children[0].title = prod.nombreOriginal;
+			imagen.alt = prod.nombreOriginal;
+			imagen.title = prod.nombreOriginal;
+
 			// Información a mostrar
-			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombreOriginal;
-			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombreCastellano;
-			// Completa los años
-			if (prod.entidad == "colecciones") {
-				const anos = prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
-				li.children[0][4].children[1].children[3].innerHTML = anos;
-				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
-			} else li.children[0][4].children[1].children[3].innerHTML = prod.anoEstreno;
-			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
+			let infoPeli = boton.querySelector("#infoPeli");
+			infoPeli.querySelector("#nombreOriginal").children[0].innerHTML = prod.nombreOriginal;
+			infoPeli.querySelector("#nombreCastellano").children[0].innerHTML = prod.nombreCastellano;
+
+			// Completa los años y entidad nombre
+			const anos = prod.anoFin && prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
+			infoPeli.querySelector("#anoEstreno").innerHTML = anos + " - " + prod.entidadNombre;
+
+			// Si es una colección, agrega la cantidad de capítulos
+			if (prod.entidad == "colecciones") infoPeli.querySelector("#capitulos").innerHTML = "Capítulos: " + prod.capitulos;
 
 			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
+
 			// Agrega el form
 			DOM.listado.insertBefore(li, DOM.ingrManual);
-			// Elimina el form modelo, que ya no se necesita
-			DOM.prodsNuevos.remove();
 		}
 
 	// Productos ya en BD
@@ -97,9 +102,10 @@ window.addEventListener("load", async () => {
 		for (let prod of prodsYaEnBD) {
 			// Crea el elemento 'li'
 			let li = DOM.prodsYaEnBD.cloneNode(true);
+			let boton = li.querySelector("a button");
 
 			// Información a enviar al BE
-			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
+			li.querySelector("a").href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
 			// Imagen
 			let avatar = !prod.avatar
@@ -107,21 +113,25 @@ window.addEventListener("load", async () => {
 				: prod.avatar.includes("/")
 				? prod.avatar
 				: localhost + "/imagenes/2-Productos/Final/" + prod.avatar;
-			li.children[0].children[0].children[0].src = avatar;
-			li.children[0].children[0].children[0].alt = prod.nombreOriginal;
-			li.children[0].children[0].children[0].title = prod.nombreOriginal;
+			let imagen=boton.querySelector("img")
+			imagen.src = avatar;
+			imagen.alt = prod.nombreOriginal;
+			imagen.title = prod.nombreOriginal;
 			// Información a mostrar
-			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombreOriginal;
-			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombreCastellano;
-			li.children[0].children[0].children[1].children[3].innerHTML = prod.anoEstreno + " - " + prod.entidadNombre;
-			// Quitar la clase 'ocultar'
+			let infoPeli=boton.querySelector("#infoPeli")
+			infoPeli.querySelector("#nombreOriginal").children[0].innerHTML = prod.nombreOriginal;
+			infoPeli.querySelector("#nombreCastellano").children[0].innerHTML = prod.nombreCastellano;
+			infoPeli.querySelector("#anoEstreno").innerHTML = prod.anoEstreno + " - " + prod.entidadNombre;
+			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
 
 			// Agrega el form
 			DOM.listado.append(li);
-			// Elimina el form modelo, que ya no se necesita
-			DOM.prodsYaEnBD.remove();
 		}
+
+	// Elimina los forms modelo, que ya no se necesitan más
+	DOM.prodsNuevos.remove();
+	DOM.prodsYaEnBD.remove();
 
 	// Hace foco en el primer producto
 	document.querySelector("#listado li button").focus();
