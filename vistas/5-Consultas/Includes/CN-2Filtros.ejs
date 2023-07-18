@@ -45,12 +45,12 @@
 			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones}) %>
 		<% } %>
 		<!-- Relación con la Iglesia Católica -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc, eventual: true}) %>
 		<hr>
 
 		<!-- EVENTUALES -->
 		<!-- Basado en Hechos Reales -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, eventual: true}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr}) %>
 		<!-- Epoca de Ocurrencia -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia}) %>
 		<!-- Aparición Mariana -->
