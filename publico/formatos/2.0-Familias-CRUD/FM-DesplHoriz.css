@@ -17,15 +17,12 @@
 #listado #prodsYaEnBD button {background: var(--celeste-oscuro);}
 #listado #prodsYaEnBD button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
-/* Partes del resultado */
-#listado button .imagenChica, #listado button #texto {height: 100%;}
-#listado button #texto {display: flex; flex-direction: column; justify-content: space-between;}
-#listado button #texto, #listado button #texto * {color: inherit;}
+/* Partes del botón */
+#listado button .imagenChica {height: 100%;}
 #listado button #infoPeli {margin: 10px 15px;}
-#listado button #coleccion {font-weight: normal; margin-top: 0; background: var(--rojo-claro); padding: 2px 15px;}
-#listado button #prodNuevo:hover #coleccion {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#listado button #coleccion #colec_nombre {font-weight: bold; font-style: italic}
-#listado button .interlineadoChico {margin-top: 5px;}
+button #infoPeli #nombreOriginal {font-weight: bold;}
+button #infoPeli #nombreCastellano {font-style: italic;}
+button #infoPeli .interlineadoChico {margin-top: 5px;}
 
 /* Barra de desplazamiento */
 ::-webkit-scrollbar {outline: transparent;}
