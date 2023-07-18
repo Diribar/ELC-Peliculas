@@ -129,9 +129,9 @@ module.exports = {
 
 		// Año
 		if (!respuesta && anoNecesario) {
-			let ano = datos.ano;
+			let ano = datos.anoNacim ? datos.anoNacim : datos.anoComienzo ? datos.anoComienzo : null;
 			respuesta =
-				ano == 0
+				ano == 0 || !ano
 					? "Necesitamos saber el año"
 					: /[^\d]/.test(ano)
 					? "No es un número válido"
@@ -150,7 +150,7 @@ module.exports = {
 		return !datos.sexo_id ? variables.radioVacio : "";
 	},
 	RCLIC_personajes: (datos) => {
-		if (datos.ano) datos.ano = parseInt(datos.ano);
+		if (datos.anoNacim) datos.anoNacim = parseInt(datos.anoNacim);
 		let respuesta = !datos.categoria_id
 			? "Necesitamos saber sobre su relación con la Iglesia"
 			: datos.categoria_id == "CFC"
@@ -160,7 +160,7 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.canon_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epocaOcurrencia_id == "pst" && datos.ano && datos.ano > 1100 && !datos.apMar_id
+				: datos.epocaOcurrencia_id == "pst" && datos.anoNacim && datos.anoNacim > 1100 && !datos.apMar_id
 				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
 				: ""
 			: datos.categoria_id != "VPC"
@@ -172,14 +172,14 @@ module.exports = {
 
 	// Hechos
 	RCLIC_hechos: (datos) => {
-		if (datos.ano) datos.ano = parseInt(datos.ano);
-		let respuesta = !datos.solo_cfc
+		if (datos.anoComienzo) datos.anoComienzo = parseInt(datos.anoComienzo);
+		let respuesta = !datos.soloCfc
 			? "Necesitamos saber sobre su relación con la historia de la Iglesia"
-			: datos.solo_cfc == "1"
-			? datos.epocaOcurrencia_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ama
+			: datos.soloCfc == "1"
+			? datos.epocaOcurrencia_id == "pst" && datos.anoComienzo && datos.anoComienzo > 1100 && !datos.ama
 				? "Necesitamos saber si es una aparición mariana"
 				: ""
-			: datos.solo_cfc != "0"
+			: datos.soloCfc != "0"
 			? "No reconocemos la opción elegida"
 			: "";
 		// Fin

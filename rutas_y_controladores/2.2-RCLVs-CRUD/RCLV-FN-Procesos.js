@@ -84,7 +84,7 @@ module.exports = {
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
 				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
-				if (registro.ano) bloque.push({titulo: "Año de nacimiento", valor: registro.ano});
+				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
 				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon)
 					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
@@ -95,7 +95,7 @@ module.exports = {
 
 			// Particularidades para hechos
 			if (registro.entidad == "hechos") {
-				if (registro.ano) bloque.push({titulo: "Año", valor: registro.ano});
+				if (registro.anoComienzo) bloque.push({titulo: "Año", valor: registro.anoComienzo});
 				if (registro.ama) bloque.push({titulo: "Es una aparición mariana", valor: "sí"});
 			}
 
@@ -151,13 +151,13 @@ module.exports = {
 				: entidad == "personajes"
 				? prioridades.estandar
 				: entidad == "hechos"
-				? dataEntry.solo_cfc
+				? dataEntry.soloCfc
 					? prioridades.estandar
 					: prioridades.menor
 				: entidad == "temas"
 				? prioridades.menor
 				: entidad == "eventos"
-				? dataEntry.solo_cfc
+				? dataEntry.soloCfc
 					? prioridades.mayor
 					: prioridades.menor
 				: entidad == "epocasDelAno"
@@ -184,24 +184,24 @@ module.exports = {
 
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				const {apodo, sexo_id, epocaOcurrencia_id, ano, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
+				const {apodo, sexo_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
 				DE = {...DE, sexo_id, epocaOcurrencia_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
-				if (epocaOcurrencia_id == "pst") DE.ano = ano;
+				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
 				const CFC = categoria_id == "CFC";
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(ano) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
+				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
-				const {epocaOcurrencia_id, ano, solo_cfc, ama} = datos;
+				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
 				DE.epocaOcurrencia_id = epocaOcurrencia_id;
-				if (epocaOcurrencia_id == "pst") DE.ano = ano;
-				DE.solo_cfc = solo_cfc;
-				DE.ama = solo_cfc == "1" ? ama : 0;
+				if (epocaOcurrencia_id == "pst") DE.anoComienzo = anoComienzo;
+				DE.soloCfc = soloCfc;
+				DE.ama = soloCfc == "1" ? ama : 0;
 			}
 
 			// Datos para epocasDelAno
