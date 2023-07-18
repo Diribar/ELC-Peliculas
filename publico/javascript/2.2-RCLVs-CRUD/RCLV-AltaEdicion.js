@@ -1,8 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const id = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
@@ -53,7 +51,7 @@ window.addEventListener("load", async () => {
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
-		ano: document.querySelector("form input[name='ano']"),
+		ano: document.querySelector("form input[name='" + ano + "']"),
 		// Personajes
 		camposRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
 		preguntasRCLIC: document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input"),
@@ -403,7 +401,7 @@ window.addEventListener("load", async () => {
 				params += "&entidad=" + entidad;
 				if (id) params += "&id=" + id;
 
-				// Lo agrega lo referido a la aparición mariana
+				// Le agrega lo referido a la aparición mariana
 				if (varios.hechos) {
 					let soloCfc = opcionElegida(DOM.soloCfc);
 					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
@@ -496,7 +494,7 @@ window.addEventListener("load", async () => {
 			// Agrega los demás parámetros
 			let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 			params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
-			if (epocaOcurrencia_id.value == "pst") params += "&ano=" + FN_ano(DOM.ano.value);
+			if (epocaOcurrencia_id.value == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
 
 			// OK y Errores
 			varios.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -530,7 +528,7 @@ window.addEventListener("load", async () => {
 						let ano = FN_ano(DOM.ano.value);
 						if (epocaOcurrencia_id.value == "pst") {
 							// Agrega el año
-							params += "&ano=" + ano;
+							params += "&anoNacim=" + ano;
 							// Agrega lo referido a la aparición mariana
 							if (ano > 1100) params += "&apMar_id=" + opcionElegida(DOM.apMar_id).value;
 						}
@@ -560,7 +558,7 @@ window.addEventListener("load", async () => {
 					if (epocaOcurrencia_id.value == "pst") {
 						let ano = FN_ano(DOM.ano.value);
 						// Agrega el año
-						params += "&ano=" + ano;
+						params += "&anoComienzo=" + ano;
 						// Agrega lo referido a la aparición mariana
 						if (ano > 1100) params += "&ama=" + opcionElegida(DOM.ama).value;
 					}
@@ -613,14 +611,18 @@ window.addEventListener("load", async () => {
 		if (forzar) DOM.iconosOK[0].classList.remove("ocultaAvatar");
 
 		// Nombre
-		if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
+		if (DOM.nombre.value || (forzar && varios.errores.nombre === undefined))
 			varios.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
 		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logos();
 
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
 		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && varios.errores.fecha == undefined)) {
+		if (
+			DOM.tipoFecha.value == "SF" ||
+			(DOM.mes_id.value && DOM.dia.value) ||
+			(forzar && varios.errores.fecha === undefined)
+		) {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
@@ -634,28 +636,29 @@ window.addEventListener("load", async () => {
 		// Sexo
 		if (DOM.sexos_id.length) {
 			if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await validacs.sexo();
+			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id === undefined)) await validacs.sexo();
 		}
 
 		// Carpeta Avatars
-		if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && varios.errores.carpetaAvatars == undefined)))
+		if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && varios.errores.carpetaAvatars === undefined)))
 			await validacs.carpetaAvatars();
 
 		// Prioridad
-		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
+		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id === undefined)))
 			await validacs.prioridad();
 
 		// Época
 		if (DOM.epocasOcurrencia_id.length) {
 			if (opcionElegida(DOM.epocasOcurrencia_id).value) await impactos.epocaOcurrencia[entidad]();
-			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && varios.errores.epocaOcurrencia == undefined)) await validacs.epocaOcurrencia();
+			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && varios.errores.epocaOcurrencia === undefined))
+				await validacs.epocaOcurrencia();
 		}
 
 		// RCLIC
 		if (
 			(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
 			(varios.hechos && opcionElegida(DOM.soloCfc).value) ||
-			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
+			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC === undefined)
 		)
 			await validacs.RCLIC[entidad]();
 
@@ -705,7 +708,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Acciones si se cambia el año
-			if (campo == "ano") {
+			if (campo == ano) {
 				// Sólo números en el año
 				valor = valor.replace(/[^\d]/g, "");
 
@@ -823,6 +826,10 @@ window.addEventListener("load", async () => {
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await startUp();
 });
+// Variables
+const entidad = new URL(location.href).searchParams.get("entidad");
+const id = new URL(location.href).searchParams.get("id");
+const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 
 // Funciones
 let opcionElegida = (opciones) => {
