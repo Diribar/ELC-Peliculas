@@ -112,66 +112,45 @@ module.exports = {
 			return res.json();
 		},
 	},
-	resultados: {
-		prods: async (req, res) => {
-			// Variables
-			const {dia, mes, configCons} = JSON.parse(req.query.datos);
-			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
+	resultados: async (req, res) => {
+		// Variables
+		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
+		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+		const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 
-			// Obtiene los registros de productos, rclvs y ppp
-			let prods = procesos.resultados.prods({configCons});
-			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
-			let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
+		// Obtiene los registros de productos
+		let configProd = {...configCons};
+		delete configProd.apMar, configProd.rolesIgl, configProd.canons;
+		let prods = !entidad // Si es "Todas las Películas"
+			? procesos.resultados.prods({configCons})
+			: procesos.resultados.prods({entidad, configCons: configProd});
 
-			// Espera hasta completar las lecturas
-			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
+		// Obtiene los registros de rclvs
+		let rclvs = !entidad
+			? orden.valor == "momento"
+				? procesos.resultados.momentoDelAno({dia, mes})
+				: null // Si el usuario no eligió 'Momento del Año'
+			: procesos.resultados.rclvs({entidad, configCons});
 
-			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
+		// Obtiene los registros de ppp
+		let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
 
-			// Cruza 'prods' con 'rclvs'
-			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs});
+		// Espera hasta completar las lecturas
+		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
-			// Ordena los productos
-			prods = procesos.orden.prods({prods, orden, configCons});
+		// Cruza 'prods' con 'pppRegistros'
+		if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
 
-			// Deja sólo los campos necesarios
-			prods = procesos.resultados.camposNecesarios.prods(prods);
-
-			// Fin
+		if (!entidad) {
+			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
+			prods = procesos.orden.prods({prods, orden, configCons}); // Ordena los productos
+			prods = procesos.resultados.camposNecesarios.prods(prods); // Deja sólo los campos necesarios
 			return res.json(prods);
-		},
-		rclvs: async (req, res) => {
-			// Variables
-			const {entidad, configCons} = JSON.parse(req.query.datos);
-			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
-
-			// Obtiene los productos y rlcvs
-			let configProd = {...configCons};
-			delete configProd.apMar, configProd.rolesIgl, configProd.canons;
-			let prods = procesos.resultados.prods({entidad, configCons: configProd});
-			let rclvs = procesos.resultados.rclvs({entidad, configCons});
-			let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
-
-			// Espera hasta completar las lecturas
-			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
-
-			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
-
-			// Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
-			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods});
-
-			// Si quedaron vigentes algunos RCLV, los ordena
-			rclvs = procesos.orden.rclvs({rclvs, orden, configCons, entidad});
-
-			// Deja sólo los campos necesarios
-			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad});
-
-			// Fin
+		} else {
+			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad}); // Deja sólo los campos necesarios
 			return res.json(rclvs);
-		},
+		}
 	},
 };
