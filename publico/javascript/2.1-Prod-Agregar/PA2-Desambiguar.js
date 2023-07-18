@@ -89,6 +89,7 @@ window.addEventListener("load", async () => {
 
 			// Si es una colección, agrega la cantidad de capítulos
 			if (prod.entidad == "colecciones") infoPeli.querySelector("#capitulos").innerHTML = "Capítulos: " + prod.capitulos;
+			else infoPeli.querySelector("#capitulos").remove()
 
 			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
