@@ -275,16 +275,14 @@ module.exports = {
 						// Variable
 						const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
 
-						// Acciones si se eligió 'sinPreferencia'
-						if (pppOpcionElegida.id == sinPreferencia.id) {
-							if (existe) prods.splice(i, 1); // Elimina los registros que tienen alguna preferencia
-							else prods[i] = {...prods[i], pppIcono: sinPreferencia.icono, pppNombre: sinPreferencia.nombre}; // Le agrega a los productos la ppp del usuario
-						}
-						// Acciones si se eligió una opción distinta a 'sinPreferencia'
-						else {
-							if (!existe) prods.splice(i, 1); // Elimina los registros que no coinciden con él
-							else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre}; // Le agrega a los productos la ppp del usuario
-						}
+						// Elimina los registros que correspondan
+						if (
+							(pppOpcionElegida.id == sinPreferencia.id && existe) || // Si tienen alguna preferencia
+							(pppOpcionElegida.id != sinPreferencia.id && !existe) // Si no tienen la preferencia elegida
+						)
+							prods.splice(i, 1);
+						// Si no se eliminó, le agrega a los productos la ppp del usuario
+						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre};
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
 					else {
