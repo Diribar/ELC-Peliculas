@@ -66,7 +66,7 @@ let actualizaConfigCons = {
 
 			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
 			if (v.orden.valor == "rolIglesia") configCons.cfc = 1;
-		}
+		} else v.orden = null;
 
 		// Fin
 		this.ascDes();
