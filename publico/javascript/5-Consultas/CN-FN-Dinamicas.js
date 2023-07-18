@@ -141,7 +141,7 @@ let actualizaConfigCons = {
 		// Si cfc ya está contestado, se oculta
 		configCons.cfc ? DOM.cfc.parentNode.classList.add("ocultar") : DOM.cfc.parentNode.classList.remove("ocultar");
 
-		// Actualiza el valor de 'bhr'
+		// Actualiza el valor de 'cfc'
 		if (!configCons.cfc && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
 
 		// Fin
