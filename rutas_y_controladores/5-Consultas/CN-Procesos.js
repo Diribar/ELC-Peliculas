@@ -217,7 +217,7 @@ module.exports = {
 				let diaDelAno_id = diaInicial_id + dia;
 				if (diaDelAno_id > 366) diaDelAno_id -= 366;
 
-				// Obtiene los RCLV
+				// Obtiene los RCLV sin 'epocaDelAno'
 				for (let entidad of entidadesRCLV) {
 					// Condicion estandar: RCLVs del dia y en status aprobado
 					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
@@ -295,8 +295,11 @@ module.exports = {
 				return prods;
 			},
 			prodsConRCLVs: ({prods, rclvs}) => {
+				// Si no hay RCLVs porque no se pidió cruzar contra ellos, devuelve la variable intacta
+				if (!rclvs) return prods;
+
 				// Si no hay RCLVs, reduce a cero los productos
-				if (!prods.length || !rclvs || !rclvs.length) return [];
+				if (!prods.length || rclvs || !rclvs.length) return [];
 
 				// Crea la variable consolidadora
 				let prodsCruzadosConRCLVs = [];
