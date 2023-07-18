@@ -116,7 +116,8 @@ module.exports = {
 		rclvs: async function ({configCons, entidad}) {
 			// Obtiene los include
 			let include = [...variables.entidades.prods];
-			if (entidad == "personajes") include.push("rolIglesia", "epocaOcurrencia");
+			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
+			if (entidad == "personajes") include.push("rolIglesia");
 
 			// Obtiene las condiciones
 			let condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}}; // Status aprobado e ID mayor a 10
