@@ -463,13 +463,13 @@ module.exports = {
 		let verificador = [];
 
 		// Establece la condición
-		const condicion1 = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
+		const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
 
 		// Busca
 		for (let entidad of entidades) {
 			const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 			verificador.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, {...condicion1, [ano]: {[Op.ne]: null}})
+				BD_genericas.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
 					.then((n) => n.map((m) => BD_genericas.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null})))
 					.then(() => true)
 			);
