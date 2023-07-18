@@ -794,7 +794,7 @@ let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
 	let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
 
 	// Casos especiales
-	if (["solo_cfc", "ama"].includes(campo)) {
+	if (["soloCfc", "ama"].includes(campo)) {
 		valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
 		valorDesc = original[campo] == 1 ? "SI" : "NO";
 	}
@@ -818,7 +818,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
-	if (["cfc", "bhr", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
+	if (["cfc", "bhr", "musical", "color", "fechaMovil", "soloCfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 

@@ -309,10 +309,11 @@
 					<% } %>
 				</div>
 			<% }) %>
-			<!-- Año -->
+			<!-- Año de Nacimiento/Comienzo -->
 			<div class="flexRowAlign inputError invisible">
-				<label for="ano">Año</label>
-				<input id="ano" type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autocomplete="off">
+				<% let ano = personajes ? "anoNacim" : "anoComienzo" %>
+				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
+				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -397,12 +398,12 @@
 				<div id="soloCFC" class="flexRowAlign">
 					<div class="flexRowAlign siNo">
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %> class="input">
+							<input type="radio" name="soloCfc" value="1" id="SI" <% if (dataEntry.soloCfc=="1") { %>checked<% } %> class="input">
 							<label for="SI">SI</label>
 						</div>
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="solo_cfc" value="0" id="solo_cfc_NO" <% if (dataEntry.solo_cfc=="0") { %>checked<% } %> class="input">
-							<label for="solo_cfc_NO">NO</label>
+							<input type="radio" name="soloCfc" value="0" id="soloCfc_NO" <% if (dataEntry.soloCfc=="0") { %>checked<% } %> class="input">
+							<label for="soloCfc_NO">NO</label>
 						</div>
 					</div>
 					<div class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</div>
