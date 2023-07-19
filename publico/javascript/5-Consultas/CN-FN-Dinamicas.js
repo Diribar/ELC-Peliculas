@@ -34,6 +34,7 @@ let actualizaConfigCons = {
 
 		// Redirige a la siguiente instancia
 		if (v.layout_id) this.orden.asignaUno();
+		else this.muestraOcultaPrefs()
 
 		// Fin
 		return;
@@ -80,7 +81,7 @@ let actualizaConfigCons = {
 			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
 
 			// Redirige a la siguiente instancia
-			if (v.orden_id) this.muestraOcultaOpciones();
+			this.muestraOcultaOpciones();
 
 			// Fin
 			return;
@@ -132,7 +133,7 @@ let actualizaConfigCons = {
 			configCons.ascDes = v.ascDes;
 
 			// Redirige a la siguiente instancia
-			if (v.ascDes) this.muestraOcultaOpciones();
+			this.muestraOcultaOpciones();
 
 			// Fin
 			return;
