@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 			// Novedades
 			await cambioDeConfig_id();
 		} else if (nombre == "layout_id") {
-			// Oculta los resultados
+			// Oculta los resultados anteriores
 			actualiza.cartelComencemosVisible()
 		}
 		// Nombre de configuración, Palabras clave, Campos
