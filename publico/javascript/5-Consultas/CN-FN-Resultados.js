@@ -12,7 +12,7 @@ let resultados = {
 		let datos = {configCons};
 
 		// Arma los datos
-		if (entidad == "productos" && v.orden.valor == "momento") datos = {...datos, dia, mes};
+		if (entidad == "productos" && v.ordenBD.valor == "momento") datos = {...datos, dia, mes};
 		else if (entidad != "productos") datos.entidad = entidad;
 
 		// Busca la información en el BE
