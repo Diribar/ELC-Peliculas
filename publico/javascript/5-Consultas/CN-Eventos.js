@@ -3,20 +3,23 @@ window.addEventListener("load", async () => {
 	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
-		const campoNombre = e.target.name;
+		const nombre = e.target.name;
 
 		// Acciones si se cambia la configuración
-		if (campoNombre == "configCons_id") {
+		if (nombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
 			const existe = await verifica.configCons_id();
 			if (!existe) return;
 
 			// Novedades
 			await cambioDeConfig_id();
+		} else if (nombre == "layout_id") {
+			// Oculta los resultados
+			actualiza.cartelComencemosVisible()
 		}
 		// Nombre de configuración, Palabras clave, Campos
 		else {
-			if (campoNombre == "nombreNuevo") {
+			if (nombre == "nombreNuevo") {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
@@ -30,7 +33,7 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			// Palabras clave
-			else if (campoNombre == "palabrasClave") {
+			else if (nombre == "palabrasClave") {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e, true);
 
