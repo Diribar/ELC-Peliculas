@@ -19,76 +19,108 @@ let actualizaConfigCons = {
 		// Impacto en configCons: layout_id, entidad
 
 		// Acciones si existe un valor de layout
-		const layout_id = DOM.layout_id.value;
-		if (layout_id) {
+		v.layout_id = DOM.layout_id.value;
+		if (v.layout_id) {
 			// Actualiza 'configCons.layout_id' y 'entidad'
-			configCons.layout_id = layout_id;
-			entidad = v.layoutsBD.find((n) => n.id == layout_id).entidad;
+			configCons.layout_id = v.layout_id;
+			entidad = v.layoutsBD.find((n) => n.id == v.layout_id).entidad;
 
 			// Muestra/Oculta los mensajes de ayuda
 			for (let icono of DOM.iconosAyuda)
-				icono.className.includes("layout" + layout_id)
+				icono.className.includes("layout" + v.layout_id)
 					? icono.classList.remove("ocultar")
 					: icono.classList.add("ocultar");
 		}
 
+		// Redirige a la siguiente instancia
+		if (v.layout_id) this.orden.asignaUno();
+
 		// Fin
-		this.orden();
 		return;
 	},
-	orden: function () {
-		// Impacto en configCons: orden_id y eventualmente bhr
+	orden: {
+		asignaUno: function () {
+			// Averigua si hay un orden elegido
+			v.orden_id = DOM.orden_id.value;
+			let ordenEnDOM_OK;
 
-		// Oculta/Muestra las opciones que corresponden
-		const checked = DOM.orden_id.querySelector("option:checked");
-		v.ordenesBD.forEach((ordenBD, i) => {
-			// Acciones si la opción no corresponde al layout
-			if (!configCons.layout_id || ordenBD.layout_id != configCons.layout_id) {
-				// La oculta
-				DOM.orden_idOpciones[i].classList.add("ocultar");
+			// Acciones si hay un orden elegido
+			if (v.orden_id) {
+				// Se fija si el orden pertenece al layout elegido
+				v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+				ordenEnDOM_OK = v.ordenBD.layout_id == v.layout_id;
 
-				// Si estaba seleccionada, cambia la selección por la de 'sin valor'
-				if (checked && DOM.orden_idOpciones[i].value == checked.value) DOM.orden_id.value = "";
+				// Acciones si no pertenece al layout elegido
+				if (!ordenEnDOM_OK) {
+					// Se fija si el valor del orden actual existe para el layout elegido
+					const valor = v.ordenBD.valor;
+					const ordenConMismoValor = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.valor == valor);
+
+					// Actualiza el valor de 'orden_id', en función del resultado anterior
+					v.orden_id = ordenConMismoValor
+						? ordenConMismoValor.id // La configuración adopta el orden del layout que tenga ese valor
+						: null;
+				}
 			}
-			// Si la opción está vinculada con el layout, la muestra
-			else DOM.orden_idOpciones[i].classList.remove("ocultar");
-		});
 
-		// Acciones si se eligió un orden
-		const orden_id = DOM.orden_id.value;
-		if (orden_id) {
-			// Variables
-			configCons.orden_id = orden_id; // Actualiza 'orden_id'
-			v.orden = v.ordenesBD.find((n) => n.id == orden_id);
+			// Acciones si no hay un orden 'aceptable' elegido
+			if (!ordenEnDOM_OK && !v.orden_id) {
+				// Obtiene el orden 'default' a partir del layout
+				let ordenDefault = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.ordenDefault);
+
+				// Actualiza el valor de 'orden_id', con el del default
+				v.orden_id = ordenDefault.id;
+			}
+
+			// Asigna el id al valor del select
+			if (!ordenEnDOM_OK) DOM.orden_id.value = v.orden_id;
+
+			// Redirige a la siguiente instancia
+			if (v.orden_id) this.muestraOcultaOpciones();
+
+			// Fin
+			return;
+		},
+		muestraOcultaOpciones: () => {
+			// Actualiza variables
+			configCons.orden_id = v.orden_id; // Actualiza 'orden_id'
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+
+			// Oculta/Muestra las opciones según el layout elegido
+			v.ordenesBD.forEach((ordenBD, i) => {
+				ordenBD.layout_id != configCons.layout_id
+					? DOM.orden_idOpciones[i].classList.add("ocultar") // Oculta las opciones que no corresponden al layout
+					: DOM.orden_idOpciones[i].classList.remove("ocultar"); // Muestra las opciones que corresponden al layout
+			});
 
 			// Si corresponde, actualiza 'bhr'
-			if (v.orden.bhrSeguro) configCons.bhr = "1";
+			if (v.ordenBD.bhrSeguro) configCons.bhr = "1";
 
 			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
-			if (v.orden.valor == "rolIglesia") configCons.cfc = 1;
-		} else v.orden = null;
+			if (v.ordenBD.valor == "rolIglesia") configCons.cfc = 1;
 
-		// Fin
-		this.ascDes();
-		return;
+			// Fin
+			actualizaConfigCons.ascDes();
+			return;
+		},
 	},
 	ascDes: function () {
 		// Impacto en configCons: ascDes
 
 		// Actualiza la variable 'configCons' y muestra/oculta el sector
-		if (configCons.orden_id && v.orden.ascDes == "ascDes") {
+		if (v.orden_id && v.ordenBD.ascDes == "ascDes") {
 			// Muestra ascDes
 			DOM.ascDes.classList.replace("ocultar", "flexCol");
 
 			// Actualiza la variable 'configCons'
 			const checked = DOM.ascDes.querySelector("input:checked");
-			if (configCons.orden_id && checked) configCons.ascDes = checked.value;
+			if (v.orden_id && checked) configCons.ascDes = checked.value;
 		} else {
 			// Oculta ascDes
 			DOM.ascDes.classList.replace("flexCol", "ocultar");
 
 			// Actualiza la variable 'configCons'
-			if (configCons.orden_id) configCons.ascDes = v.orden.ascDes;
+			if (v.orden_id) configCons.ascDes = v.ordenBD.ascDes;
 		}
 
 		// 'OK' para que el fondo sea verde/rojo
