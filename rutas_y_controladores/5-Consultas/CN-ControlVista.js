@@ -17,20 +17,14 @@ module.exports = {
 			predeterms: configsDeCabecera.filter((n) => n.usuario_id == 1),
 		};
 		const configsConsCampos = procesos.configs.campos();
-		let prefsDeCampo = {};
 
 		// Obtiene el ID del filtro personal elegido
 		const configCons_id = userID && usuario.configCons_id ? usuario.configCons_id : 1;
 
-		// Obtiene las preferencias personales
-		const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
-		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
-
 		// Va a la vista
-		// return res.send(configsConsCampos)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configCons_id, prefsDeCampo, configs, configsConsCampos, userID},
+			...{configCons_id, configs, configsConsCampos, userID},
 			omitirFooter: true,
 		});
 	},
