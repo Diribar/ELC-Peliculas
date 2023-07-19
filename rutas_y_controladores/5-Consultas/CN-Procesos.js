@@ -174,7 +174,9 @@ module.exports = {
 
 				// Relación con la Iglesia Católica
 				if (configCons.cfc)
-					entidad == "personajes" ? (prefs.rolIglesia_id = {[Op.notLike]: "NN%"}) : (prefs.soloCfc = configCons.cfc);
+					entidad == "personajes"
+						? (prefs.rolIglesia_id = configCons.cfc = 1 ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
+						: (prefs.soloCfc = configCons.cfc);
 
 				// Aparición mariana
 				if (configCons.apMar) {
@@ -404,28 +406,21 @@ module.exports = {
 				return prods;
 			},
 			rclvs: ({rclvs, orden, configCons, entidad}) => {
-				if (rclvs.length > 1) {
-					// Si el orden es por su Rol en la Iglesia, los ordena por su include
-					if (orden.valor == "rolIglesia") rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
-					// Si el orden es por año, los ordena por su anoNacim/anoComienzo
-					else if (orden.valor == "ano") {
-						// Ordena por su campo
-						const campo = entidad == "personajes" ? "anoNacim" : "anoComienzo";
-						configCons.ascDes == "ASC"
-							? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
-							: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
+				if (rclvs.length < 2) return rclvs;
 
-						// Ordena por su época, porque algunos registros tienen su año en 'null'
-						configCons.ascDes == "ASC"
-							? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
-							: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
-					}
-					// En los demás casos, ordena por su campo
-					else
-						configCons.ascDes == "ASC"
-							? rclvs.sort((a, b) => (a[orden.valor] < b[orden.valor] ? -1 : 1))
-							: rclvs.sort((a, b) => (a[orden.valor] > b[orden.valor] ? -1 : 1));
-				}
+				// Si el orden es por su Rol en la Iglesia, los ordena por su include
+				if (orden.valor == "rolIglesia") rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
+				// En los demás casos, ordena por su campo
+				else
+					configCons.ascDes == "ASC"
+						? rclvs.sort((a, b) => (a[orden.valor] < b[orden.valor] ? -1 : 1))
+						: rclvs.sort((a, b) => (a[orden.valor] > b[orden.valor] ? -1 : 1));
+
+				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
+				if (orden.valor.startsWith("ano"))
+					configCons.ascDes == "ASC"
+						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
+						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
 
 				// Fin
 				return rclvs;
