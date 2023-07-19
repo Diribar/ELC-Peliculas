@@ -70,15 +70,10 @@ let actualiza = {
 	statusInicialCampos: async () => {
 		// Variables
 		const configDeCampos = await obtiene.configDeCampos();
-		// console.log(DOM.prefsSimples);
-		console.log(configDeCampos);
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
-		for (let prefSimple of DOM.prefsSimples){
+		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configDeCampos[prefSimple.name] ? configDeCampos[prefSimple.name] : "";
-			if (prefSimple.value) console.log(prefSimple.value);
-
-		}
 
 		// Actualiza las preferencias 'AscDes'
 		const ascDesInputs = DOM.ascDes.querySelectorAll("input");
