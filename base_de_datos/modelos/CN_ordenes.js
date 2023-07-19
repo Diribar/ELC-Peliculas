@@ -6,8 +6,8 @@ module.exports = (sequelize, dt) => {
 		ordenDefault: {type: dt.BOOLEAN},
 		nombre: {type: dt.STRING(40)},
 		valor: {type: dt.STRING(20)},
-		ascDes: {type: dt.STRING(20)},
-		ascDesMostrar: {type: dt.BOOLEAN},
+		ascDesDefault: {type: dt.STRING(20)},
+		ascDesElegible: {type: dt.BOOLEAN},
 		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
