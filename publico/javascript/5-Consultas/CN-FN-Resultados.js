@@ -64,7 +64,7 @@ let resultados = {
 			DOM.vistaProds.classList.remove("ocultar");
 			return;
 		},
-		productos: async function () {
+		productos: async () => {
 			// Limpia los resultados anteriores
 			DOM.productos.innerHTML = "";
 
@@ -72,7 +72,7 @@ let resultados = {
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
-					const bloqueProducto = await this.bloqueProducto(v.infoResultados[i]);
+					const bloqueProducto = await auxiliares.bloqueProducto(v.infoResultados[i]);
 					DOM.productos.append(bloqueProducto);
 				}
 				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
@@ -82,40 +82,43 @@ let resultados = {
 			// Fin
 			return;
 		},
-		bloqueProducto: async (producto) => {
-			// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
-			let bloque = DOM.producto.cloneNode(true);
-			let elemento = {
-				anchor: bloque.querySelector("a"),
-				avatar: bloque.querySelector("img"),
-				nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
-				anoEstreno: bloque.querySelector("#anoEstreno"),
-				direccion: bloque.querySelector("#direccion"),
-				ppp: bloque.querySelector("#ppp"),
-			};
+	},
+};
 
-			// Datos
-			elemento.anchor.href += producto.entidad + "&id=" + producto.id;
-			elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
-			elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-			elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
-			producto.pppIcono
-				? elemento.ppp.classList.add(...producto.pppIcono.split(" "))
-				: elemento.ppp.classList.add("fa-regular", "fa-heart");
-			elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
+let auxiliares = {
+	bloqueProducto: async (producto) => {
+		// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
+		let bloque = DOM.producto.cloneNode(true);
+		let elemento = {
+			anchor: bloque.querySelector("a"),
+			avatar: bloque.querySelector("img"),
+			nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
+			anoEstreno: bloque.querySelector("#anoEstreno"),
+			direccion: bloque.querySelector("#direccion"),
+			ppp: bloque.querySelector("#ppp"),
+		};
 
-			// Imagen
-			const localhost = await fetch("/api/localhost").then((n) => n.json());
-			let avatar = localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
-			elemento.avatar.src = avatar;
-			elemento.avatar.alt = producto.nombreOriginal;
-			elemento.avatar.title = producto.nombreOriginal;
+		// Datos
+		elemento.anchor.href += producto.entidad + "&id=" + producto.id;
+		elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
+		elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
+		elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
+		producto.pppIcono
+			? elemento.ppp.classList.add(...producto.pppIcono.split(" "))
+			: elemento.ppp.classList.add("fa-regular", "fa-heart");
+		elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
 
-			// Quitar la clase 'ocultar'
-			bloque.classList.remove("ocultar");
+		// Imagen
+		const localhost = await fetch("/api/localhost").then((n) => n.json());
+		let avatar = localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
+		elemento.avatar.src = avatar;
+		elemento.avatar.alt = producto.nombreOriginal;
+		elemento.avatar.title = producto.nombreOriginal;
 
-			// Fin
-			return bloque;
-		},
+		// Quitar la clase 'ocultar'
+		bloque.classList.remove("ocultar");
+
+		// Fin
+		return bloque;
 	},
 };
