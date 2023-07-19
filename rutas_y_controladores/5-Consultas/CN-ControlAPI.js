@@ -130,7 +130,7 @@ module.exports = {
 			? orden.valor == "momento"
 				? procesos.resultados.momentoDelAno({dia, mes})
 				: null // Si el usuario no eligió 'Momento del Año'
-			: procesos.resultados.rclvs({entidad, configCons});
+			: procesos.resultados.rclvs({entidad, configCons, orden});
 
 		// Obtiene los registros de ppp
 		let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
@@ -143,12 +143,12 @@ module.exports = {
 
 		if (!entidad) {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
-			prods = procesos.orden.prods({prods, orden, configCons}); // Ordena los productos
+			prods = procesos.resultados.orden.prods({prods, orden, configCons}); // Ordena los productos
 			prods = procesos.resultados.camposNecesarios.prods(prods); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
-			rclvs = procesos.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad}); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}

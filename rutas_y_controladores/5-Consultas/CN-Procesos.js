@@ -113,16 +113,18 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		rclvs: async function ({configCons, entidad}) {
+		rclvs: async function ({configCons, entidad, orden}) {
 			// Obtiene los include
 			let include = [...variables.entidades.prods];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
-			if (entidad == "personajes") include.push("rolIglesia");
+			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
-			// Obtiene las condiciones
+			// Obtiene las condiciones básicas
 			let condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}}; // Status aprobado e ID mayor a 10
+
+			// Agrega condiciones particuylares de 'personajes' y 'hechos'
 			if (["personajes", "hechos"].includes(entidad)) {
-				const prefs = this.prefs.rclvs({configCons, entidad});
+				const prefs = this.prefs.rclvs({configCons, entidad, orden});
 				condiciones = {...condiciones, ...prefs};
 			}
 
@@ -159,10 +161,13 @@ module.exports = {
 				// Fin
 				return prefs;
 			},
-			rclvs: ({configCons, entidad}) => {
+			rclvs: ({configCons, entidad, orden}) => {
 				// Variables
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
+
+				// Si el orden es 'Por fecha en que se lo recuerda'
+				if (orden.valor == "diaDelAno_id") prefs.diaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
@@ -334,7 +339,7 @@ module.exports = {
 				// Rutina por RCLV
 				for (let i = rclvs.length - 1; i >= 0; i--) {
 					// Variables
-					rclvs[i].consolidado = [];
+					rclvs[i].productos = [];
 					let rclv = rclvs[i];
 
 					// Rutina por entProd de cada RCLV
@@ -351,19 +356,19 @@ module.exports = {
 						}
 
 						// Acciones finales
-						rclvs[i].consolidado.push(...rclvs[i][entProd]); // Agrupa los productos en el array 'consolidado'
+						rclvs[i].productos.push(...rclvs[i][entProd]); // Agrupa los productos en el array 'productos'
 						delete rclvs[i][entProd]; // Elimina la familia
 					}
 
 					// Si el rclv no tiene productos, lo elimina
-					if (!rclvs[i].consolidado.length) rclvs.splice(i, 1);
+					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
 						// Ordena los productos por su año de estreno
-						rclvs[i].consolidado.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+						rclvs[i].productos.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
 
 						// Deja solamente los campos necesarios
-						rclvs[i].consolidado = rclvs[i].consolidado.map((n) => {
+						rclvs[i].productos = rclvs[i].productos.map((n) => {
 							// Obtiene campos simples
 							let {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno} = n;
 							let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno};
@@ -460,8 +465,8 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {id, nombre, diaDelAno_id} = n;
-					let datos = {entidad, id, nombre, diaDelAno_id};
+					const {id, nombre, diaDelAno_id, productos} = n;
+					let datos = {id, nombre, diaDelAno_id, productos};
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {
@@ -470,7 +475,7 @@ module.exports = {
 						datos.rolIglesia = n.rolIglesia.nombre;
 						datos.canon = n.canon.nombre;
 					}
-					if ((entidad = "hechos")) {
+					if (entidad == "hechos") {
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoComienzo = n.anoComienzo;
 					}
