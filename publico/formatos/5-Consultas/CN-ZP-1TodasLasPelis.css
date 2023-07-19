@@ -4,11 +4,11 @@
 #zonaDeProds #vistaProds {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Cuadro de Resultados */
-#vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;}
-#vistaProds #productos {width: 100%;}
+#vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly; align-items: center;}
+#vistaProds #productos {width: 100%; padding: 15px 0;}
 
 /* Botones para productos */
-#productos li {padding: 20px 0; list-style-type: none}
+#productos li {margin: 10px 0; list-style-type: none}
 #productos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #productos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #productos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}

@@ -251,7 +251,7 @@ let cambioDeCampos = async () => {
 	actualiza.botoneraActivaInactiva();
 	if (v.mostrar) {
 		await resultados.obtiene();
-		if (!v.mostrarComencemos) await resultados.muestra.generico();
+		if (!v.mostrarComencemos) resultados.muestra.generico();
 	}
 
 	// Fin

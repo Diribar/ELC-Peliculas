@@ -140,13 +140,13 @@ window.addEventListener("load", async () => {
 			else if (nombre == "actualizar") {
 				if (v.mostrar) {
 					await resultados.obtiene();
-					if (!v.mostrarComencemos) await resultados.muestra.generico();
+					if (!v.mostrarComencemos) resultados.muestra.generico();
 				}
 			}
 		}
 
 		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && elemento.id == "verde" && v.mostrar) await resultados.muestra.generico();
+		else if (padre.id == "comencemos" && elemento.id == "verde" && v.mostrar) resultados.muestra.generico();
 
 		// Fin
 		return;
