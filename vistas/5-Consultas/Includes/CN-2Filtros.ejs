@@ -9,10 +9,7 @@
 		<% if (configs.propios.length) { %>
 			<optgroup id="propios" label="Propios">
 				<% for (let config of configs.propios) { %>
-					<option 
-						value="<%= config.id %>"
-						<% if (config.id == configCons_id) { %>selected<% } %>
-					><%= config.nombre %></option>
+					<option value="<%= config.id %>"><%= config.nombre %></option>
 				<% } %>
 			</optgroup>
 		<% } %>
@@ -20,10 +17,7 @@
 		<% if (userID != 1) { %>
 			<optgroup label="Predeterminados">
 				<% for (let config of configs.predeterms) { %>
-					<option 
-						value="<%= config.id %>"
-						<% if (config.id == configCons_id) { %>selected<% } %>
-					><%= config.nombre %></option>
+					<option value="<%= config.id %>"><%= config.nombre %></option>
 				<% } %>
 			</optgroup>
 		<% } %>
@@ -77,8 +71,8 @@
 		<hr>
 
 		<!-- Búsqueda -->
-		<div id="palabrasClave" class="pref"> 
-			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave" value="<%- prefsDeCampo.palabrasClave ? prefsDeCampo.palabrasClave : '' %>">
+		<div id="palabrasClave" class="pref">
+			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
 			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
 		</div>
 	</nav>
