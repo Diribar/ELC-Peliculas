@@ -96,7 +96,7 @@ module.exports = {
 			// Variables específicas para personajes
 			if (personajes) {
 				roles_igl = roles_iglesia.filter((m) => m.personaje);
-				ap_mars = await BD_genericas.obtieneTodos("hechos", "ano").then((n) => n.filter((m) => m.ama));
+				ap_mars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 			}
 	
 			// Pasos exclusivos para edición y revisión

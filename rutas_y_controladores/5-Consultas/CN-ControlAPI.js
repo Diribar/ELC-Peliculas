@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const comp = require("../../funciones/1-Procesos/Compartidas");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -113,162 +112,45 @@ module.exports = {
 			return res.json();
 		},
 	},
-	resultados: {
-		prods: async (req, res) => {
-			// Variables
-			const {dia, mes, configCons} = JSON.parse(req.query.datos);
-			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-			const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
+	resultados: async (req, res) => {
+		// Variables
+		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
+		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+		const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 
-			// Obtiene los productos y rlcvs
-			let prods = procesos.resultados.obtieneProds(configCons);
-			let rclvs = configCons.orden_id == 1 ? procesos.resultados.momentoDelAno({dia, mes}) : null; // Si el usuario no eligió 'Momento del Año'
+		// Obtiene los registros de productos
+		let configProd = {...configCons};
+		delete configProd.apMar, configProd.rolesIgl, configProd.canons;
+		let prods = !entidad // Si es "Todas las Películas"
+			? procesos.resultados.prods({configCons})
+			: procesos.resultados.prods({entidad, configCons: configProd});
 
-			// Obtiene los registros de preferencia del usuario
-			let condicion = {usuario_id};
-			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
-				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
-			let pppRegistros = usuario_id
-				? BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle")
-				: null;
+		// Obtiene los registros de rclvs
+		let rclvs = !entidad
+			? orden.valor == "momento"
+				? procesos.resultados.momentoDelAno({dia, mes})
+				: null // Si el usuario no eligió 'Momento del Año'
+			: procesos.resultados.rclvs({entidad, configCons});
 
-			// Espera hasta completar las lecturas
-			[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
+		// Obtiene los registros de ppp
+		let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
 
-			// Cruza 'prods' con 'pppRegistros'
-			if (prods.length && usuario_id) prods = procesos.resultados.cruceProdsConPPP({prods, pppRegistros, configCons});
+		// Espera hasta completar las lecturas
+		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
-			// Cruza 'prods' con 'rclvs'
-			if (prods.length && rclvs) {
-				// Si no hay RCLVs, reduce a cero los productos
-				if (!rclvs.length) prods = [];
-				else {
-					// Crea la variable consolidadora
-					let prodsCruzadosConRCLVs = [];
-					// Para cada RCLV, busca los productos
-					for (let rclv of rclvs) {
-						// Obtiene el campo a buscar
-						const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
-						// Detecta los hallazgos
-						const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
-						// Si hay hallazgos, los agrega al consolidador
-						if (hallazgos.length) prodsCruzadosConRCLVs.push(...hallazgos);
-						// Si hay hallazgos, los elimina de prods
-						if (hallazgos.length) prods = prods.filter((n) => n[campo_id] != rclv.id);
-					}
-					//
-					prods = [...prodsCruzadosConRCLVs];
-				}
-			}
+		// Cruza 'prods' con 'pppRegistros'
+		if (prods.length && usuario_id) prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons});
 
-			// Ordena los productos
-			if (prods.length && configCons.orden_id != 1)
-				prods.sort((a, b) =>
-					configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
-				);
-
-			// Deja sólo los campos necesarios
-			if (prods.length)
-				prods = prods.map((n) => {
-					// Datos
-					let {entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
-					if (direccion && direccion.indexOf(",") > 0) direccion = direccion.slice(0, direccion.indexOf(","));
-					let datos = {
-						...{entidad, id, nombreCastellano, calificacion, pppIcono, pppNombre, direccion, anoEstreno, avatar},
-						...{entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)},
-					};
-					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
-
-					// Fin
-					return datos;
-				});
-
-			// Fin
+		if (!entidad) {
+			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
+			prods = procesos.orden.prods({prods, orden, configCons}); // Ordena los productos
+			prods = procesos.resultados.camposNecesarios.prods(prods); // Deja sólo los campos necesarios
 			return res.json(prods);
-		},
-		rclvs: async (req, res) => {
-			// Variables
-			const datos = JSON.parse(req.query.datos);
-			console.log(192, datos);
-
-			// Fin
-			return res.json("rclvs");
-		},
-	},
-};
-
-let FN = {
-	prods: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-		let productos = [];
-		let rclvs = [];
-
-		// Obtiene los filtros y el orden
-		const filtrosProd = procesos.API.filtrosProd(datos);
-		const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
-		const ordenAscDes = datos.ascDes == "ASC" ? -1 : 1;
-
-		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
-		for (let entidad of ["peliculas", "colecciones"])
-			productos.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, filtrosProd).then((n) =>
-					n.map((m) => {
-						return {
-							id: m.id,
-							entidad,
-							entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
-							nombreOriginal: m.nombreOriginal,
-							direccion: m.direccion,
-							avatar: m.avatar,
-							personaje_id: m.personaje_id,
-							hecho_id: m.hecho_id,
-							tema_id: m.tema_id,
-							// Orden
-							diaDelAno_id: m.diaDelAno_id,
-							creadoEn: m.creadoEn,
-							anoEstreno: m.anoEstreno,
-							nombreCastellano: m.nombreCastellano,
-							calificacion: m.calificacion,
-						};
-					})
-				)
-			);
-		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
-		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
-
-		if (productos.length) {
-			// Ordena los productos
-			productos.sort((a, b) => {
-				return typeof a[ordenCampo] == "string"
-					? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
-						? ordenAscDes
-						: -ordenAscDes
-					: a[ordenCampo] < b[ordenCampo]
-					? ordenAscDes
-					: -ordenAscDes;
-			});
-
-			// Obtiene los RCLV
-			rclvs = await procesos.API.obtieneRCLVs(datos);
-			// Filtra los productos por RCLV
-			productos = productos.filter(
-				(n) =>
-					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
-					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
-					(rclvs.temas && rclvs.temas.includes(n.tema_id))
-			);
+		} else {
+			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad}); // Deja sólo los campos necesarios
+			return res.json(rclvs);
 		}
-
-		// Fin
-		return res.json(productos);
-	},
-	rclvs: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-		console.log("Datos:", datos);
-
-		// Fin
-		return res.json();
 	},
 };

@@ -277,8 +277,8 @@ module.exports = {
 				resultados[i] = {
 					...resultado,
 					yaEnBD_id: resultado.id,
-					anoEstreno: resultado.ano,
-					epocaEstreno_id: comp.obtieneLaEpocaDeEstreno(resultado.ano),
+					anoEstreno: resultado.anoEstreno,
+					epocaEstreno_id: comp.obtieneLaEpocaDeEstreno(resultado.anoEstreno),
 					nombreCastellano: resultado.nombre,
 					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
 				};

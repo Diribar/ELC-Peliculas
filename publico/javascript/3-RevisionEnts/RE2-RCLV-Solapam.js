@@ -304,25 +304,6 @@ window.addEventListener("load", async () => {
 				DOM.iconosOK[0].classList.add("ocultar");
 			}
 
-			// Acciones si se cambia el año
-			if (campo == "ano") {
-				// Sólo números en el año
-				valor = valor.replace(/[^\d]/g, "");
-
-				// Menor o igual que el año actual
-				if (valor) {
-					let anoIngresado = parseInt(valor);
-					let anoActual = new Date().getFullYear();
-					valor = Math.min(anoIngresado, anoActual);
-				}
-
-				// Limpia el ícono de error/OK
-				const indice = varios.camposError.indexOf("epocaOcurrencia");
-				DOM.mensajesError[indice].innerHTML = "";
-				DOM.iconosError[indice].classList.add("ocultar");
-				DOM.iconosOK[indice].classList.add("ocultar");
-			}
-
 			// Reemplaza el valor del DOM
 			const posicCursor = e.target.selectionStart;
 			e.target.value = valor;

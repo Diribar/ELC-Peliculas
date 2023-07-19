@@ -170,8 +170,8 @@ module.exports = {
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
-			let {id, nombre, solo_cfc, epocaOcurrencia_id, ama} = n;
-			return {id, nombre, solo_cfc, epocaOcurrencia_id, ama};
+			let {id, nombre, soloCfc, epocaOcurrencia_id, ama} = n;
+			return {id, nombre, soloCfc, epocaOcurrencia_id, ama};
 		});
 		let apMar = [];
 		let casosPuntuales = [];
@@ -196,7 +196,7 @@ module.exports = {
 			// Variables
 			let OK = false;
 			hecho.clase = "CFC ";
-			if (!hecho.solo_cfc) hecho.clase += "VPC ";
+			if (!hecho.soloCfc) hecho.clase += "VPC ";
 
 			// Apariciones Marianas
 			if (hecho.ama) {
@@ -233,7 +233,7 @@ module.exports = {
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	revisiones: {
 		transfiereDatos: async (original, edicion, campo) => {
-			// Variables
+			// 1. Si el campo no recibe datos, termina
 			const camposQueNoRecibenDatos = [
 				"nombreOriginal",
 				"nombreCastellano",
@@ -243,15 +243,12 @@ module.exports = {
 				"avatar_url",
 				...variables.entidades.rclvs_id,
 			];
-			const novedad = {[campo]: edicion[campo]};
+			if (camposQueNoRecibenDatos.includes(campo)) return;
 
 			// Condiciones
 			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
 			const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
 			if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
-
-			// 1. Si el campo no recibe datos, termina
-			if (camposQueNoRecibenDatos.includes(campo)) return;
 
 			// 2. Actualización condicional por campo
 			const cond1 = campo == "tipoActuacion_id";
@@ -259,6 +256,7 @@ module.exports = {
 			const cond22 = cond21 && edicion[campo] != 2; // Particularidad para rclv_id
 			const cond31 = campo == "epocaOcurrencia_id";
 			const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
+			const novedad = {[campo]: edicion[campo]};
 			if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
 
 			// 3. Actualización condicional por valores

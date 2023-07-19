@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
 			// Crea las filas y celdas
 			for (let registro of registros) {
 				// Variables
-				let {familia, entidad, id, ano, nombre} = registro;
+				let {familia, entidad, id, anoEstreno, nombre} = registro;
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				fila.classList.add(familia.slice(0, 4));
@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 				// 1. Procesa el nombre
 				let anchoMax = 40;
 				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
-				if (familia == "producto") nombre += " (" + ano + ")";
+				if (familia == "producto") nombre += " (" + anoEstreno + ")";
 				// 2. Procesa la entidad
 				let ent = entidad.slice(0, 5);
 				if (ent == "perso") ent = "pers.";

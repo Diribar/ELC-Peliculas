@@ -292,7 +292,7 @@ module.exports = {
 			"prioridad_id",
 			"sexo_id",
 			"epocaOcurrencia_id",
-			"ano",
+			"anoNacim",
 			"categoria_id",
 			"rolIglesia_id",
 			"canon_id",
@@ -301,12 +301,12 @@ module.exports = {
 		],
 		hechos: [
 			"nombre",
-			"ano",
+			"anoComienzo",
 			"diaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
 			"epocaOcurrencia_id",
-			"solo_cfc",
+			"soloCfc",
 			"ama",
 			"avatar",
 		],
@@ -436,7 +436,6 @@ module.exports = {
 			{nombre: "avatar", titulo: "Avatar", rclvs: true},
 
 			// Personajes y Hechos
-			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			{
 				nombre: "epocaOcurrencia_id",
 				titulo: "Epoca",
@@ -448,6 +447,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
+			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true,},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
 				nombre: "rolIglesia_id",
@@ -465,7 +465,8 @@ module.exports = {
 			},
 			{nombre: "apMar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
 			// Hechos
-			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
+			{nombre: "anoComienzo", titulo: "Año de Comienzo", hechos: true},
+			{nombre: "soloCfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 			// Epocas del año
 			{nombre: "diasDeDuracion", titulo: "Días de Duración", epocasDelAno: true},
