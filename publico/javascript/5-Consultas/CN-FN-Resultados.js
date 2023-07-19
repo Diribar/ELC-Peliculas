@@ -46,7 +46,7 @@ let resultados = {
 		return;
 	},
 	muestra: {
-		generico: async function () {
+		generico: function () {
 			// Cartel comencemos
 			v.mostrarComencemos = false;
 			DOM.comencemos.classList.add("ocultar");
@@ -57,14 +57,14 @@ let resultados = {
 				: DOM.noTenemos.classList.add("ocultar");
 
 			// Deriva a productos
-			if (entidad == "productos") await this.productos();
+			if (entidad == "productos") this.productos();
 			else console.log(v.infoResultados);
 
 			// Fin
 			DOM.vistaProds.classList.remove("ocultar");
 			return;
 		},
-		productos: async () => {
+		productos: () => {
 			// Limpia los resultados anteriores
 			DOM.productos.innerHTML = "";
 
@@ -72,7 +72,7 @@ let resultados = {
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
-					const bloqueProducto = await auxiliares.bloqueProducto(v.infoResultados[i]);
+					const bloqueProducto = auxiliares.bloqueProducto(v.infoResultados[i]);
 					DOM.productos.append(bloqueProducto);
 				}
 				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
@@ -82,11 +82,12 @@ let resultados = {
 			// Fin
 			return;
 		},
+		rclvs: () => {},
 	},
 };
 
 let auxiliares = {
-	bloqueProducto: async (producto) => {
+	bloqueProducto: (producto) => {
 		// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
 		let bloque = DOM.producto.cloneNode(true);
 		let elemento = {
@@ -109,8 +110,7 @@ let auxiliares = {
 		elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
 
 		// Imagen
-		const localhost = await fetch("/api/localhost").then((n) => n.json());
-		let avatar = localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
+		let avatar = v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
 		elemento.avatar.src = avatar;
 		elemento.avatar.alt = producto.nombreOriginal;
 		elemento.avatar.title = producto.nombreOriginal;

@@ -54,6 +54,7 @@ window.addEventListener("load", async () => {
 		configsDeCabecera: await obtiene.configsDeCabecera(),
 		pppOpciones: await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json()),
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
+		localhost: await fetch("/api/localhost").then((n) => n.json()),
 	};
 
 	// Start-up
