@@ -82,16 +82,16 @@ let actualizaConfigCons = {
 			return;
 		},
 		muestraOcultaOpciones: () => {
+			// Actualiza variables
+			configCons.orden_id = v.orden_id; // Actualiza 'orden_id'
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+
 			// Oculta/Muestra las opciones según el layout elegido
 			v.ordenesBD.forEach((ordenBD, i) => {
-				!configCons.layout_id || ordenBD.layout_id != configCons.layout_id
+				ordenBD.layout_id != configCons.layout_id
 					? DOM.orden_idOpciones[i].classList.add("ocultar") // Oculta las opciones que no corresponden al layout
 					: DOM.orden_idOpciones[i].classList.remove("ocultar"); // Muestra las opciones que corresponden al layout
 			});
-
-			// Variables
-			configCons.orden_id = v.orden_id; // Actualiza 'orden_id'
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
 
 			// Si corresponde, actualiza 'bhr'
 			if (v.ordenBD.bhrSeguro) configCons.bhr = "1";
