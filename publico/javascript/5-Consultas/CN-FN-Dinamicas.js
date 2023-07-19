@@ -99,41 +99,87 @@ let actualizaConfigCons = {
 			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
 			if (v.ordenBD.valor == "rolIglesia") configCons.cfc = 1;
 
+			// Redirige a la siguiente instancia
+			actualizaConfigCons.ascDes.asignaUno();
+
 			// Fin
-			actualizaConfigCons.ascDes();
 			return;
 		},
 	},
-	ascDes: function () {
-		// Impacto en configCons: ascDes
+	ascDes: {
+		asignaUno: function () {
+			// Averigua si hay un orden elegido
+			v.orden_id = DOM.orden_id.value;
+			let ordenEnDOM_OK;
 
-		// Actualiza la variable 'configCons' y muestra/oculta el sector
-		if (v.orden_id && v.ordenBD.ascDes == "ascDes") {
-			// Muestra ascDes
-			DOM.ascDes.classList.replace("ocultar", "flexCol");
+			// Acciones si hay un orden elegido
+			if (v.orden_id) {
+				// Se fija si el orden pertenece al layout elegido
+				v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+				ordenEnDOM_OK = v.ordenBD.layout_id == v.layout_id;
 
-			// Actualiza la variable 'configCons'
-			const checked = DOM.ascDes.querySelector("input:checked");
-			if (v.orden_id && checked) configCons.ascDes = checked.value;
-		} else {
-			// Oculta ascDes
-			DOM.ascDes.classList.replace("flexCol", "ocultar");
+				// Acciones si no pertenece al layout elegido
+				if (!ordenEnDOM_OK) {
+					// Se fija si el valor del orden actual existe para el layout elegido
+					const valor = v.ordenBD.valor;
+					const ordenConMismoValor = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.valor == valor);
 
-			// Actualiza la variable 'configCons'
-			if (v.orden_id) configCons.ascDes = v.ordenBD.ascDes;
-		}
+					// Actualiza el valor de 'orden_id', en función del resultado anterior
+					v.orden_id = ordenConMismoValor
+						? ordenConMismoValor.id // La configuración adopta el orden del layout que tenga ese valor
+						: null;
+				}
+			}
 
-		// 'OK' para que el fondo sea verde/rojo
-		configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+			// Acciones si no hay un orden 'aceptable' elegido
+			if (!ordenEnDOM_OK && !v.orden_id) {
+				// Obtiene el orden 'default' a partir del layout
+				let ordenDefault = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.ordenDefault);
 
-		// Muestra/Oculta sectores
-		this.muestraOculta();
+				// Actualiza el valor de 'orden_id', con el del default
+				v.orden_id = ordenDefault.id;
+			}
 
-		// Fin
-		if (v.mostrar) this.presenciaEstable();
-		return;
+			// Asigna el id al valor del select
+			if (!ordenEnDOM_OK) DOM.orden_id.value = v.orden_id;
+
+			// Redirige a la siguiente instancia
+			if (v.orden_id) this.muestraOcultaOpciones();
+
+			// Fin
+			return;
+		},
+		muestraOcultaOpciones: () => {
+			// Actualiza la variable 'configCons' y muestra/oculta el sector
+			if (v.orden_id && v.ordenBD.ascDes == "ascDes") {
+				// Muestra ascDes
+				DOM.ascDes.classList.replace("ocultar", "flexCol");
+
+				// Actualiza la variable 'configCons'
+				const checked = DOM.ascDes.querySelector("input:checked");
+				if (v.orden_id && checked) configCons.ascDes = checked.value;
+			} else {
+				// Oculta ascDes
+				DOM.ascDes.classList.replace("flexCol", "ocultar");
+
+				// Actualiza la variable 'configCons'
+				if (v.orden_id) configCons.ascDes = v.ordenBD.ascDes;
+			}
+
+			// 'OK' para que el fondo sea verde/rojo
+			configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+
+			// Muestra/Oculta sectores
+			actualizaConfigCons.muestraOculta();
+
+			// Redirige a la siguiente instancia
+			if (v.mostrar) actualizaConfigCons.presenciaEstable();
+
+			// Fin
+			return;
+		},
 	},
-	muestraOculta: () => {
+	muestraOcultaPrefs: () => {
 		// Variables
 		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!configCons.ascDes;
 
