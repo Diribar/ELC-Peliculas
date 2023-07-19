@@ -50,7 +50,7 @@ let actualiza = {
 			: DOM.edicion.classList.add("inactivo");
 
 		// Ícono Deshacer
-		v.mostrar && !claseNuevo && !claseEdicion && v.hayCambiosDeCampo
+		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 
@@ -87,7 +87,11 @@ let actualiza = {
 		return;
 	},
 	cartelComencemosVisible: () => {
+		// Partes a ocultar
 		DOM.vistaProds.classList.add("ocultar");
+		DOM.noTenemos.classList.add("ocultar");
+
+		// Partes a mostrar
 		DOM.comencemos.classList.remove("ocultar");
 		v.mostrarComencemos = true;
 

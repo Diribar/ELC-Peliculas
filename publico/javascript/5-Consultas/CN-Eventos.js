@@ -135,7 +135,9 @@ window.addEventListener("load", async () => {
 
 				// Actualiza la 'ppp'
 				await cambiosEnBD.ppp(elemento);
-			} else if (nombre == "actualizar") {
+			}
+			// Actualizar resultados
+			else if (nombre == "actualizar") {
 				if (v.mostrar) {
 					await resultados.obtiene();
 					if (!v.mostrarComencemos) await resultados.muestra.generico();
