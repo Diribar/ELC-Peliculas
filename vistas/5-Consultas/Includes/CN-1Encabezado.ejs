@@ -2,19 +2,21 @@
 <div id="tituloPrincipal">
 	<!-- Layout -->
 	<select name="layout_id" class="prefSimple" required>
-		<option value="" class="ocultar" selected>Elegí un layout...</option>
+		<option value="" class="ocultar">Elegí un layout...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let layout of cn_layouts) { %>
 			<option value="<%= layout.id %>"><%= layout.nombre %></option>
 		<% } %>
+		<option value="qqq" selected></option>
 	</select>
 	<!-- Orden -->
 	<select name="orden_id" class="prefSimple" required>
-		<option value="" class="ocultar" selected>Ordenar por...</option>
+		<option value="" class="ocultar">Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of cn_ordenes) { %>
 			<option value="<%= orden.id %>" class="ocultar"><%= orden.nombre %></option>
 		<% } %>
+		<option value="qqq" selected></option>
 	</select>
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="ocultar">
