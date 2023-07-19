@@ -25,13 +25,22 @@ let resultados = {
 		return;
 	},
 	contador: () => {
-		if (entidad != "productos") return;
-		// Variables
-		v.total = v.infoResultados ? v.infoResultados.length : 0;
-		v.parcial = Math.min(4, v.total);
+		if (entidad == "productos") {
+			// Variables
+			const total = v.infoResultados ? v.infoResultados.length : 0;
+			const parcial = Math.min(4, total);
 
-		// Actualiza el contador
-		DOM.contadorDeProds.innerHTML = v.parcial + " / " + v.total;
+			// Actualiza el contador
+			DOM.contadorDeProds.innerHTML = parcial + " de " + total;
+		} else {
+			// Variables
+			const cantRCLVs = v.infoResultados ? v.infoResultados.length : 0;
+			let cantProds = 0;
+			if (v.infoResultados) for (let rclv of v.infoResultados) cantProds += rclv.productos.length;
+
+			// Actualiza el contador
+			DOM.contadorDeProds.innerHTML = cantRCLVs + " x " + cantProds;
+		}
 
 		// Fin
 		return;
