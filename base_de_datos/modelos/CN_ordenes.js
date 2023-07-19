@@ -3,9 +3,11 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		layout_id: {type: dt.STRING(20)},
+		ordenDefault: {type: dt.BOOLEAN},
 		nombre: {type: dt.STRING(40)},
 		valor: {type: dt.STRING(20)},
 		ascDes: {type: dt.STRING(20)},
+		ascDesMostrar: {type: dt.BOOLEAN},
 		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
