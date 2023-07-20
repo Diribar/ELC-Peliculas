@@ -61,13 +61,16 @@ let resultados = {
 			else console.log(v.infoResultados);
 
 			// Pone visibles los resultados
-			entidad == "productos" ? DOM.resultados[0].classList.remove("ocultar") : DOM.resultados[1].classList.remove("ocultar");
+			entidad == "productos"
+				? DOM.productos.classList.remove("ocultar")
+				: DOM.pelisPor.classList.remove("ocultar");
 
 			// Fin
 			return;
 		},
 		productos: () => {
 			// Limpia los resultados anteriores
+			DOM.pelisPor.classList.add("ocultar");
 			DOM.productos.innerHTML = "";
 
 			// Output
@@ -84,7 +87,16 @@ let resultados = {
 			// Fin
 			return;
 		},
-		rclvs: () => {},
+		pelisPor: () => {
+			// Limpia los resultados anteriores
+			DOM.productos.classList.add("ocultar");
+			DOM.pelisPor.innerHTML = "";
+
+			// Output
+
+			// Fin
+			return
+		},
 	},
 };
 

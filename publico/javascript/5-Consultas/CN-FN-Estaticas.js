@@ -88,8 +88,8 @@ let actualiza = {
 	},
 	cartelComencemosVisible: () => {
 		// Partes a ocultar
-		DOM.resultados[0].classList.add("ocultar");
-		DOM.resultados[1].classList.add("ocultar");
+		DOM.productos.classList.add("ocultar");
+		DOM.pelisPor.classList.add("ocultar");
 		DOM.noTenemos.classList.add("ocultar");
 
 		// Partes a mostrar

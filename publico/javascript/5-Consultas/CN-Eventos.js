@@ -13,13 +13,14 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
-		} else if (nombre == "layout_id") {
-			// Oculta los resultados anteriores
-			actualiza.cartelComencemosVisible()
-		}
-		// Nombre de configuración, Palabras clave, Campos
-		else {
-			if (nombre == "nombreNuevo") {
+		} else {
+			// Layout
+			if (nombre == "layout_id") {
+				// Oculta los resultados anteriores
+				actualiza.cartelComencemosVisible();
+			}
+			// Nombre de configuración
+			else if (nombre == "nombreNuevo") {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
