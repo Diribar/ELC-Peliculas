@@ -48,6 +48,8 @@ window.addEventListener("load", async () => {
 		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
 		productos: DOM.zonaProds.querySelector("#vistaProds #productos"),
 		producto: DOM.zonaProds.querySelector("#vistaProds .producto"),
+		// Pelis por
+		pelisPor: DOM.zonaProds.querySelector("#vistaProds #pelisPor"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
