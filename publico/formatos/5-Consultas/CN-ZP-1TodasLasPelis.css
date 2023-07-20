@@ -1,7 +1,5 @@
 /* Zona de vista */
-#zonaDeProds #vistaProds {display: flex; flex-direction: row; overflow-y: auto;}
-#zonaDeProds #vistaProds {max-width: 700px; width: 100%; height: 70vh; border-radius: 15px;}
-#zonaDeProds #vistaProds {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#zonaDeProds #vistaProds {flex-direction: row;}
 
 /* Cuadro de Resultados */
 #vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly; align-items: center;}
