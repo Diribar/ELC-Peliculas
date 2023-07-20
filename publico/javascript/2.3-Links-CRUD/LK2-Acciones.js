@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		prodEntidad: new URL(location.href).searchParams.get("entidad"),
 		prodID: new URL(location.href).searchParams.get("id"),
-		columnas: DOM.inputs.length / DOM.filasEditar.length,
+		columnas: DOM.inputs.length / (DOM.filasEditar.length + 1),
 	};
 
 	// Formulas
