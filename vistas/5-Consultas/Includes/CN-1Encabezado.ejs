@@ -1,5 +1,5 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
-<div id="tituloPrincipal">
+<div id="layoutOrden">
 	<!-- Layout -->
 	<select name="layout_id" class="prefSimple" required>
 		<option value="" class="ocultar">Elegí un layout...</option>
@@ -7,7 +7,6 @@
 		<% for (let layout of cn_layouts) { %>
 			<option value="<%= layout.id %>"><%= layout.nombre %></option>
 		<% } %>
-		<option value="qqq" selected></option>
 	</select>
 	<!-- Orden -->
 	<select name="orden_id" class="prefSimple" required>
@@ -16,7 +15,6 @@
 		<% for (let orden of cn_ordenes) { %>
 			<option value="<%= orden.id %>" class="ocultar"><%= orden.nombre %></option>
 		<% } %>
-		<option value="qqq" selected></option>
 	</select>
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="ocultar">
