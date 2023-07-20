@@ -1,30 +1,30 @@
 /* General */
 #vistaProds #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
 #vistaProds #pelisPor.ocultar {display: none}
-#vistaProds #pelisPor {padding: 20px; width: 100%;}
+#vistaProds #pelisPor {padding: 30px; width: 100%;}
 #vistaProds #pelisPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro)
 }
 
 /* Tabla */
-#pelisPor table {border-collapse: collapse;}
+#pelisPor table {border-collapse: collapse; width: 100%;}
 #pelisPor table {line-height: 0.9; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
 #pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
 
-/* Tabla - Título */
+/* Título */
 table caption {padding: 10px;}
 table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
 table caption {font-size: 1.25rem; font-weight: bold;}
 
-/* Tabla - Cuerpo */
-/* #pelisPor table colgroup col:first-of-type {border-left: solid green 5px;}
-#pelisPor table colgroup col:last-of-type {border-right: solid green 5px;} */
-
-/* Tabla - Filas del cuerpo */
+/* Bordes */
 table tbody tr td {border: var(--bordeInterno);}
 table tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
 table tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
 
-/* Tabla - Celdas */
+/* Celdas */
 table tbody tr td {padding: 10px 10px;}
+table tbody tr td:last-of-type i {font-size: 0.8rem; margin-left: 5px;}
+table tbody tr.imparRCLV td {background: snow;}
+table tbody tr.parRCLV td {background: var(--amarillo-claro);}
+table tbody tr.parProd td:last-of-type {background: var(--gris-claro);}
