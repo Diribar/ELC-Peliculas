@@ -19,7 +19,7 @@ let obtiene = {
 	},
 };
 let actualiza = {
-	valoresInicialesDeObjetoV: async () => {
+	valoresInicialesDeVariables: async () => {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
@@ -233,7 +233,7 @@ let verifica = {
 // Consolidadas
 let cambioDeConfig_id = async () => {
 	// Funciones
-	await actualiza.valoresInicialesDeObjetoV();
+	await actualiza.valoresInicialesDeVariables();
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.cartelComencemosVisible();

@@ -34,6 +34,7 @@ let actualizaConfigCons = {
 
 		// Redirige a la siguiente instancia
 		if (v.layout_id) this.orden.asignaUno();
+		else this.muestraOcultaPrefs()
 
 		// Fin
 		return;
@@ -75,17 +76,17 @@ let actualizaConfigCons = {
 			// Asigna el id al valor del select
 			if (!ordenEnDOM_OK) DOM.orden_id.value = v.orden_id;
 
+			// Actualiza variables
+			configCons.orden_id = v.orden_id;
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+
 			// Redirige a la siguiente instancia
-			if (v.orden_id) this.muestraOcultaOpciones();
+			this.muestraOcultaOpciones();
 
 			// Fin
 			return;
 		},
 		muestraOcultaOpciones: () => {
-			// Actualiza variables
-			configCons.orden_id = v.orden_id; // Actualiza 'orden_id'
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
-
 			// Oculta/Muestra las opciones según el layout elegido
 			v.ordenesBD.forEach((ordenBD, i) => {
 				ordenBD.layout_id != configCons.layout_id
@@ -109,68 +110,45 @@ let actualizaConfigCons = {
 	ascDes: {
 		asignaUno: function () {
 			// Averigua si hay un orden elegido
-			v.orden_id = DOM.orden_id.value;
-			let ordenEnDOM_OK;
+			const checked = DOM.ascDes.querySelector("input:checked");
+			v.ascDes = checked ? checked.value : null;
 
-			// Acciones si hay un orden elegido
-			if (v.orden_id) {
-				// Se fija si el orden pertenece al layout elegido
-				v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
-				ordenEnDOM_OK = v.ordenBD.layout_id == v.layout_id;
+			// Se fija si el valor es aceptable
+			let ascDesEnDOM_OK =
+				v.ascDes && // Tiene un valor
+				["ASC", "DESC"].includes(v.ascDes) && // Está entre los aceptables
+				(v.ascDes == v.ordenBD.ascDesDefault || v.ordenBD.ascDesElegible); // Coincide con el default o es elegible
 
-				// Acciones si no pertenece al layout elegido
-				if (!ordenEnDOM_OK) {
-					// Se fija si el valor del orden actual existe para el layout elegido
-					const valor = v.ordenBD.valor;
-					const ordenConMismoValor = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.valor == valor);
+			// Si el valor no es 'aceptable', actualiza el valor con el default
+			if (!ascDesEnDOM_OK) {
+				// Actualiza el valor con el default
+				v.ascDes = v.ordenBD.ascDesDefault;
 
-					// Actualiza el valor de 'orden_id', en función del resultado anterior
-					v.orden_id = ordenConMismoValor
-						? ordenConMismoValor.id // La configuración adopta el orden del layout que tenga ese valor
-						: null;
-				}
+				// Si el sector es elegible, actualiza el input
+				if (v.ordenBD.ascDesElegible)
+					for (let inputAscDes of DOM.inputsAscDes) if (inputAscDes.value == v.ascDes) inputAscDes.checked = true;
 			}
 
-			// Acciones si no hay un orden 'aceptable' elegido
-			if (!ordenEnDOM_OK && !v.orden_id) {
-				// Obtiene el orden 'default' a partir del layout
-				let ordenDefault = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.ordenDefault);
-
-				// Actualiza el valor de 'orden_id', con el del default
-				v.orden_id = ordenDefault.id;
-			}
-
-			// Asigna el id al valor del select
-			if (!ordenEnDOM_OK) DOM.orden_id.value = v.orden_id;
+			// Actualiza la variable 'configCons'
+			configCons.ascDes = v.ascDes;
 
 			// Redirige a la siguiente instancia
-			if (v.orden_id) this.muestraOcultaOpciones();
+			this.muestraOcultaOpciones();
 
 			// Fin
 			return;
 		},
 		muestraOcultaOpciones: () => {
-			// Actualiza la variable 'configCons' y muestra/oculta el sector
-			if (v.orden_id && v.ordenBD.ascDes == "ascDes") {
-				// Muestra ascDes
-				DOM.ascDes.classList.replace("ocultar", "flexCol");
-
-				// Actualiza la variable 'configCons'
-				const checked = DOM.ascDes.querySelector("input:checked");
-				if (v.orden_id && checked) configCons.ascDes = checked.value;
-			} else {
-				// Oculta ascDes
-				DOM.ascDes.classList.replace("flexCol", "ocultar");
-
-				// Actualiza la variable 'configCons'
-				if (v.orden_id) configCons.ascDes = v.ordenBD.ascDes;
-			}
+			// Muestra/Oculta el sector
+			v.ordenBD.ascDesElegible
+				? DOM.ascDes.classList.replace("ocultar", "flexCol") // Muestra ascDes
+				: DOM.ascDes.classList.replace("flexCol", "ocultar"); // Oculta ascDes
 
 			// 'OK' para que el fondo sea verde/rojo
-			configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
+			if (v.ordenBD.ascDesElegible) configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
 
 			// Muestra/Oculta sectores
-			actualizaConfigCons.muestraOculta();
+			actualizaConfigCons.muestraOcultaPrefs();
 
 			// Redirige a la siguiente instancia
 			if (v.mostrar) actualizaConfigCons.presenciaEstable();
