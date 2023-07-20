@@ -5,10 +5,10 @@
 			<button type="text" class="flexRow pointer <% if (prod.statusRegistro_id==inactivo_id) { %>rojo<% } %>" id= "prod" autofocus>
 				<img class="imagenChica" src="<%= prod.avatar %>" alt="<%= prod.nombreOriginal %>" title="<%= prod.nombreOriginal %>">
 				<div id="infoPeli" class="flexCol">
-					<p><b><%= prod.nombreOriginal %></b></p>
-					<p class="interlineadoChico"><em><%= prod.nombreCastellano %></em></p>	
+					<p id="nombreOriginal"><%= prod.nombreOriginal %></p>
+					<p id="nombreCastellano" class="interlineadoChico"><%= prod.nombreCastellano %></p>	
 					<br>
-					<p class="interlineadoChico"><%= prod.anoEstreno + " - " + prod.entidadNombre %></p>
+					<p id="anoEstreno" class="interlineadoChico"><%= prod.anoEstreno + " - " + prod.entidadNombre %></p>
 					<% if (prod.direccion) { %>
 						<p class="interlineadoChico">Dirección: <%= prod.direccion %></p>
 					<% } %>
