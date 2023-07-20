@@ -6,11 +6,12 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
-		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		configCons: document.querySelector("#configCons"),
 		configCabecera: document.querySelector("#configCons #configDeCabecera"),
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
+		encabMasPelis: document.querySelector("#encabMasPelis"),
+		encabezado: document.querySelector("#encabMasPelis #encabezado"),
+		layoutOrden: document.querySelector("#encabMasPelis #encabezado #layoutOrden"),
 		// Zona de productos
 		zonaProds: document.querySelector("#zonaDeProds"),
 	};
@@ -18,12 +19,12 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
-		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
-		orden_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
-		ascDes: DOM.tituloPrincipal.querySelector("#ascDes"),
-		inputsAscDes:DOM.tituloPrincipal.querySelectorAll("#ascDes input"),
-		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
+		layout_id: DOM.layoutOrden.querySelector("select[name='layout_id']"),
+		orden_id: DOM.layoutOrden.querySelector("select[name='orden_id']"),
+		orden_idOpciones: DOM.layoutOrden.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
+		ascDes: DOM.layoutOrden.querySelector("#ascDes"),
+		inputsAscDes:DOM.layoutOrden.querySelectorAll("#ascDes input"),
+		iconosAyuda: DOM.layoutOrden.querySelectorAll("#ayudaOrden ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
 		// Configuración de Cabecera
@@ -61,6 +62,7 @@ window.addEventListener("load", async () => {
 	// Start-up
 	await cambioDeConfig_id();
 	await cambioDeCampos();
+	DOM.encabMasPelis.classList.replace("ocultar", "aparece")
 });
 
 // Variables

@@ -1,10 +1,6 @@
 /* General */
-#cuerpo #configCons {width: 220px;}
-#cuerpo #configCons {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#cuerpo #configCons {display: flex; flex-direction: column; }
-
-#configCons * {font-size: 1rem;}
-#configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
+#cuerpo #configCons * {font-size: 1rem;}
+#cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 /* Filtros Cabecera */
 #configCons #configDeCabecera {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
