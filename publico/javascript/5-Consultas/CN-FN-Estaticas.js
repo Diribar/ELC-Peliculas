@@ -88,7 +88,8 @@ let actualiza = {
 	},
 	cartelComencemosVisible: () => {
 		// Partes a ocultar
-		DOM.vistaProds.classList.add("ocultar");
+		DOM.resultados[0].classList.add("ocultar");
+		DOM.resultados[1].classList.add("ocultar");
 		DOM.noTenemos.classList.add("ocultar");
 
 		// Partes a mostrar

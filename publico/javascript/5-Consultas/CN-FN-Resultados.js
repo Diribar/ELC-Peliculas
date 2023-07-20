@@ -60,8 +60,10 @@ let resultados = {
 			if (entidad == "productos") this.productos();
 			else console.log(v.infoResultados);
 
+			// Pone visibles los resultados
+			entidad == "productos" ? DOM.resultados[0].classList.remove("ocultar") : DOM.resultados[1].classList.remove("ocultar");
+
 			// Fin
-			DOM.vistaProds.classList.remove("ocultar");
 			return;
 		},
 		productos: () => {
