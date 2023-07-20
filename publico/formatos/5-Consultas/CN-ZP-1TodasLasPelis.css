@@ -1,6 +1,3 @@
-/* Zona de vista */
-#zonaDeProds #vistaProds {flex-direction: row;}
-
 /* Cuadro de Resultados */
 #vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly; align-items: center;}
 #vistaProds #productos.ocultar {display: none}
