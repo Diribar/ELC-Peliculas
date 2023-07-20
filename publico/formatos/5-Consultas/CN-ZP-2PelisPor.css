@@ -1,16 +1,23 @@
 /* General */
-table {	margin: 0 auto;}
+#vistaProds #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#vistaProds #pelisPor.ocultar {display: none}
+#vistaProds #pelisPor {padding: 15px 20px; width: 100%;}
 
+/* Tabla */
+#pelisPor table {margin: 0; border-collapse: collapse;}
+#pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
 
-table {
-	border-collapse: collapse;
+table {	
 	font-size: 0.9rem;
 	line-height: 0.9;
 	border-radius: 15px;
 	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-	text-align: left;
 }
+
+/* Cuerpo de la Tabla */
+table tbody {border-radius: 10px; overflow: hidden;}
+
+
 
 /* Otra opción:
     border-collapse: collapse;
