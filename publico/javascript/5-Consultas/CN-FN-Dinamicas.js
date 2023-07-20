@@ -34,7 +34,7 @@ let actualizaConfigCons = {
 
 		// Redirige a la siguiente instancia
 		if (v.layout_id) this.orden.asignaUno();
-		else this.muestraOcultaPrefs()
+		else this.muestraOcultaPrefs();
 
 		// Fin
 		return;
@@ -164,14 +164,26 @@ let actualizaConfigCons = {
 		// Muestra/Oculta sectores
 		v.mostrar ? DOM.configCampos.classList.remove("ocultar") : DOM.configCampos.classList.add("ocultar");
 
-		// Muestra/Oculta botones 'Asegurate' y 'Comencemos'
-		v.mostrar ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-		v.mostrar && v.mostrarComencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+		// Acciones si no hay errores
+		if (v.mostrar) {
+			// Oculta sectores
+			DOM.asegurate.classList.add("ocultar");
 
-		// Si hay algún error que impide mostrar, borra los resultados anteriores
-		if (!v.mostrar) {
-			for (let resultado of DOM.resultados) resultado.innerHTML = "";
+			// Si corrersponde, muestra el cartel de comencemos
+			if (v.mostrarComencemos) DOM.comencemos.classList.remove("ocultar");
+		}
+		// Acciones si hay algún error que se necesita resolver
+		else {
+			// Variables
 			v.mostrarComencemos = true;
+
+			// Oculta sectores
+			DOM.productos.classList.add("ocultar");
+			DOM.pelisPor.classList.add("ocultar");
+			DOM.comencemos.classList.add("ocultar");
+
+			// Muestra un mensaje de error
+			DOM.asegurate.classList.remove("ocultar");
 		}
 
 		// Fin
