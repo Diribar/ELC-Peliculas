@@ -65,6 +65,7 @@ window.addEventListener("load", async () => {
 	await cambioDeConfig_id();
 	await cambioDeCampos();
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece")
+	resultados.muestra.generico() // Quitarlo...
 });
 
 // Variables
