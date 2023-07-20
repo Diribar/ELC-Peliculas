@@ -67,7 +67,7 @@ module.exports = {
 		// Variables
 		let respuesta = "";
 
-		// Validaciones para Fecha Definida y Fecha Móvil
+		// Validaciones para Fecha Fija y Fecha Móvil
 		if (datos.tipoFecha != "SF") {
 			// Valida que el mes y el día estén respondidos
 			if (!datos.mes_id || !datos.dia) respuesta = cartelFaltaElDatoSobre + "el mes y/o el día";

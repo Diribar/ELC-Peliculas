@@ -61,7 +61,7 @@
 				<h3>Fecha representativa</h3>
 				<!-- Select -->
 				<select name="tipoFecha" class="input">
-					<option value="FD" <% if (dataEntry.tipoFecha_id == "FD") { %>selected<% } %>>Fecha definida</option>
+					<option value="FD" <% if (dataEntry.tipoFecha_id == "FD") { %>selected<% } %>>Fecha fija</option>
 					<option value="FM" <% if (dataEntry.tipoFecha_id == "FM") { %>selected<% } %>>Fecha móvil</option>
 					<% if (entidad != "epocasDelAno") { %>
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
