@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
 		plural: {type: dt.STRING(20)},
+		grupo: {type: dt.BOOLEAN},
 		usuario: {type: dt.BOOLEAN},
 		personaje: {type: dt.BOOLEAN},
 		varon: {type: dt.BOOLEAN},

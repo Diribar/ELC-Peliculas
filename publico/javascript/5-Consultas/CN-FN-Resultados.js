@@ -87,7 +87,8 @@ let resultados = {
 		},
 		pelisPor: function () {
 			// Variables
-			let epocaOcurrencia_id, tabla, rclvAnt;
+			let rclvAnt = {};
+			let tabla;
 
 			// Limpia los resultados anteriores
 			DOM.productos.classList.add("ocultar");
@@ -96,12 +97,11 @@ let resultados = {
 			// Rutina por registro RCLV
 			v.infoResultados.forEach((rclv, indice) => {
 				// Averigua si hay un cambio de agrupamiento
-				const cambioAgrupam = this.auxiliares.cambioAgrupam({rclv, rclvAnt});
+				const titulo = this.auxiliares.titulo({rclv, rclvAnt});
 				rclvAnt = rclv;
 
 				// Si corresponde, crea una nueva tabla
-				if (cambioAgrupam) {
-					const titulo = this.auxiliares.titulo(rclv);
+				if (titulo) {
 					tabla = this.auxiliares.creaUnaTabla(titulo);
 					DOM.pelisPor.appendChild(tabla);
 				}
@@ -152,40 +152,85 @@ let resultados = {
 				// Fin
 				return bloque;
 			},
-			cambioAgrupam: ({rclv, rclvAnt}) => {
-				// Variables
-				const orden = v.ordenBD.valor;
-				let resultado = false;
-
-				// Revisa si es el primer Agrupamiento
-				if (!rclvAnt) resultado = true;
-
-				// Acciones por "nombre"
-				if (!resultado && orden == "nombre") {
-					// Variables
-					const nombreAnt = rclvAnt.nombre.toLowerCase();
-					const nombreActual = rclv.nombre.toLowerCase();
-
-					// Pruebas
-					resultado =
-						(nombreAnt < "g" && nombreActual >= "g") ||
-						(nombreAnt < "n" && nombreActual >= "n") ||
-						(nombreAnt < "t" && nombreActual >= "t");
-				}
-
-				// Fin
-				return resultado;
-			},
-			titulo: (rclv) => {
+			titulo: ({rclv, rclvAnt}) => {
 				// Variables
 				const orden = v.ordenBD.valor;
 				let titulo;
 
-				// Nombre
+				// nombre
 				if (!titulo && orden == "nombre") {
-					const nombre = rclv.nombre.toLowerCase();
-					titulo = "Abecedario ";
-					titulo += nombre < "g" ? "A - F" : nombre < "n" ? "G - M" : nombre < "t" ? "N - S" : "T - Z";
+					// Variables
+					const nombreAnt = rclvAnt.nombre;
+					const nombreActual = rclv.nombre;
+					let prefijo = "Abecedario ";
+
+					// Pruebas
+					titulo = !nombreAnt
+						? "A - F"
+						: nombreAnt < "g" && nombreActual >= "g"
+						? "G - M"
+						: nombreAnt < "n" && nombreActual >= "n"
+						? "N - S"
+						: nombreAnt < "t" && nombreActual >= "t"
+						? "T - Z"
+						: "";
+
+					// Fin
+					if (titulo) titulo = prefijo + titulo;
+				}
+
+				// diaDelAno_id
+				if (!titulo && orden == "diaDelAno_id") {
+					// Variables
+					const diaAnt = rclvAnt.diaDelAno_id;
+					const diaActual = rclv.diaDelAno_id;
+
+					// Pruebas
+					titulo = !diaAnt
+						? "Primer"
+						: diaAnt < 92 && diaActual >= 92
+						? "Segundo"
+						: diaAnt < 183 && diaActual >= 183
+						? "Tercer"
+						: diaAnt < 275 && diaActual >= 275
+						? "Cuarto"
+						: "";
+
+					// Fin
+					if (titulo) titulo += " Trimestre";
+				}
+
+				// rolIglesia
+				if (!titulo && orden == "rolIglesia") {
+					// Variables
+					const grupoAnt = rclvAnt.rolIglesiaGrupo;
+					const grupoActual = rclv.rolIglesiaGrupo;
+
+					// Pruebas
+					if (grupoAnt != grupoActual) titulo = rclv.rolIglesiaGrupo;
+				}
+
+				// anoNacim y anoComienzo
+				if (!titulo && ["anoNacim", "anoComienzo"].includes(orden)) {
+					// Variables
+					const epocaAnt = rclvAnt.epocaOcurrencia_id;
+					const epocaActual = rclv.epocaOcurrencia_id;
+					const anoAnt = orden == "anoNacim" ? rclvAnt.anoNacim : rclvAnt.anoComienzo;
+					const anoActual = orden == "anoNacim" ? rclv.anoNacim : rclv.anoComienzo;
+
+					// Pruebas
+					if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = rclv.epocaOcurrenciaNombre;
+					if (epocaActual == "pst") {
+						titulo =
+							anoAnt <= 1800 && anoActual > 1800
+								? "(año 1.801 en adelante)"
+								: anoAnt <= 1000 && anoActual > 1000
+								? "(años 1.001 al 1.800)"
+								: !anoAnt
+								? "(años 1 al 1.000)"
+								: "";
+						if (titulo) titulo = rclv.epocaOcurrenciaNombre + " " + titulo;
+					}
 				}
 
 				// Fin
@@ -258,18 +303,21 @@ let resultados = {
 					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : " (") + rclv.diaDelAno.nombre + ")"; // Día del Año
 
 					// Genera la información - 2a línea
+					console.log(rclv.epocaOcurrenciaNombre);
 					let segundaLinea = "";
 					if (VF_epoca) segundaLinea += rclv.epocaOcurrenciaNombre;
 					segundaLinea += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
 					if (VF_canon) segundaLinea += (segundaLinea ? " - " : "") + rclv.canonNombre; // Proceso de canonización
-					if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+					// if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
 
 					// Le agrega el contenido
 					const DOM_linea1 = document.createTextNode(primeraLinea);
-					const DOM_linea2 = document.createTextNode(segundaLinea);
 					celda.appendChild(DOM_linea1);
-					celda.appendChild(document.createElement("br"));
-					celda.appendChild(DOM_linea2);
+					if (segundaLinea) {
+						const DOM_linea2 = document.createTextNode(segundaLinea);
+						celda.appendChild(document.createElement("br"));
+						celda.appendChild(DOM_linea2);
+					}
 
 					// Fin
 					return celda;
