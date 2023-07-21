@@ -216,7 +216,7 @@ let resultados = {
 					// Genera la información - 1a línea
 					let primeraLinea = rclv.nombre; // Nombre
 					if (VF_apodo) primeraLinea += " (" + rclv.apodo + (!VF_diaDelAno ? ")" : ""); // Apodo
-					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : "(") + rclv.diaDelAno.nombre + ")"; // Día del Año
+					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : " (") + rclv.diaDelAno.nombre + ")"; // Día del Año
 
 					// Genera la información - 2a línea
 					let segundaLinea = "";
