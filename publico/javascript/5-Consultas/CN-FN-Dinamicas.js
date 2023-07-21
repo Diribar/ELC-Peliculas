@@ -272,7 +272,7 @@ let actualizaConfigCons = {
 		// Impacto en: palabrasClave
 
 		// Actualiza el valor de 'palabrasClave'
-		if (!DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value)
+		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value)
 			configCons.palabrasClave = DOM.palClave.value;
 
 		// Fin
