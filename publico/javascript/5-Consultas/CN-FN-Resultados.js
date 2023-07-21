@@ -58,7 +58,7 @@ let resultados = {
 
 			// Deriva a productos
 			if (entidad == "productos") this.productos();
-			else console.log(v.infoResultados);
+			else this.pelisPor();
 
 			// Pone visibles los resultados
 			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.pelisPor.classList.remove("ocultar");
@@ -86,12 +86,33 @@ let resultados = {
 			return;
 		},
 		pelisPor: function () {
+			// Variables
+			let epocaOcurrencia_id, tabla;
+
 			// Limpia los resultados anteriores
 			DOM.productos.classList.add("ocultar");
 			DOM.pelisPor.innerHTML = "";
 
-			// Output
-			this.creaUnaTabla();
+			// Rutina por registro RCLV
+			v.infoResultados.forEach((rclv, indice) => {
+				// Si corresponde, crea una nueva tabla
+				if (epocaOcurrencia_id != rclv.epocaOcurrencia_id) {
+					// Variables
+					epocaOcurrencia_id = rclv.epocaOcurrencia_id;
+
+					// Le agrega una tabla al DOM
+					const titulo = "Posterior a Cristo";
+					tabla = this.auxiliares.creaUnaTabla(titulo);
+					DOM.pelisPor.appendChild(tabla);
+				}
+
+				// Agrega las filas de un rclv
+				const DOM_tablas = DOM.pelisPor.querySelectorAll("table");
+				const DOM_tabla = [...DOM_tablas].pop();
+				const DOM_tbody = DOM_tabla.querySelector("tbody");
+				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
+				for (let fila of filas) DOM_tbody.appendChild(fila);
+			});
 
 			// Fin
 			return;
@@ -131,8 +152,112 @@ let resultados = {
 				// Fin
 				return bloque;
 			},
-			creaUnaTabla: () => {
-				let tabla = document.createElement(table);
+			creaUnaTabla: (titulo) => {
+				// Crea una tabla
+				let tabla = document.createElement("table");
+
+				// Le agrega un título
+				let caption = document.createElement("caption");
+				caption.innerHTML = titulo;
+				tabla.appendChild(caption);
+
+				// Le agrega un body
+				let tbody = document.createElement("tbody");
+				tabla.appendChild(tbody);
+
+				// Fin
+				return tabla;
+			},
+			creaLasFilasDeUnRCLV: function ({rclv, indice}) {
+				// Variables
+				let filas = [];
+
+				// Crea la celdaRCLV
+				const celdaRCLV = this.creaUnaCelda.rclv(rclv);
+
+				// Crea las filas de los productos
+				rclv.productos.forEach((producto, i) => {
+					// Crea una fila y le asigna su clase
+					const fila = document.createElement("tr");
+					const parImparRCLV = (indice % 2 ? "par" : "impar") + "RCLV";
+					const parImparProd = (i % 2 ? "par" : "impar") + "Prod";
+					fila.classList.add(parImparRCLV, parImparProd);
+
+					// Agrega la celdaRCLV a la primera fila
+					if (!i) fila.appendChild(celdaRCLV);
+
+					// Crea la celda del producto
+					const celdaProd = this.creaUnaCelda.prod(producto);
+
+					// Agrega la celda a la fila
+					fila.appendChild(celdaProd);
+
+					// Envía la fila al acumulador
+					filas.push(fila);
+				});
+
+				// Fin
+				return filas;
+			},
+			creaUnaCelda: {
+				rclv: (rclv) => {
+					// Variables
+					const cantProds = rclv.productos.length;
+					const VF_apodo = !!rclv.apodo;
+					const VF_diaDelAno = rclv.diaDelAno_id < 400;
+					const VF_epoca = !v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo;
+					const VF_canon = rclv.canon_id && !rclv.canon_id.startsWith("NN");
+					const VF_rolIglesia = v.ordenBD.valor != "rolIglesia";
+					const celda = document.createElement("td");
+
+					// Si tiene más de 1 producto
+					if (cantProds > 1) celda.rowSpan = cantProds;
+
+					// Genera la información - 1a línea
+					let primeraLinea = rclv.nombre; // Nombre
+					if (VF_apodo) primeraLinea += " (" + rclv.apodo + (!VF_diaDelAno ? ")" : ""); // Apodo
+					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : "(") + rclv.diaDelAno.nombre + ")"; // Día del Año
+
+					// Genera la información - 2a línea
+					let segundaLinea = "";
+					if (VF_epoca) segundaLinea += rclv.epocaOcurrenciaNombre;
+					segundaLinea += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
+					if (VF_canon) segundaLinea += (segundaLinea ? " - " : "") + rclv.canonNombre; // Proceso de canonización
+					if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+
+					// Le agrega el contenido
+					const DOM_linea1 = document.createTextNode(primeraLinea);
+					const DOM_linea2 = document.createTextNode(segundaLinea);
+					celda.appendChild(DOM_linea1);
+					celda.appendChild(document.createElement("br"));
+					celda.appendChild(DOM_linea2);
+
+					// Fin
+					return celda;
+				},
+				prod: (producto) => {
+					// Variables
+					const celda = document.createElement("td");
+
+					// Genera el contenido
+					const nombreCastellano = document.createTextNode(producto.nombreCastellano);
+					const pppIcono = document.createElement("i");
+					pppIcono.classList.add(...producto.pppIcono.split(" "));
+					pppIcono.title = producto.pppNombre;
+					const br = document.createElement("br");
+					const segundaLinea = document.createTextNode(
+						producto.anoEstreno + " - " + producto.entidadNombre + " - Dirección: " + producto.direccion
+					);
+
+					// Le agrega el contenido
+					celda.appendChild(nombreCastellano);
+					celda.appendChild(pppIcono);
+					celda.appendChild(br);
+					celda.appendChild(segundaLinea);
+
+					// Fin
+					return celda;
+				},
 			},
 		},
 	},
