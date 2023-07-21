@@ -181,15 +181,15 @@ let resultados = {
 				const orden = v.ordenBD.valor;
 				let titulo;
 
-				if (orden == "nombre") {
+				// Nombre
+				if (!titulo && orden == "nombre") {
 					const nombre = rclv.nombre.toLowerCase();
 					titulo = "Abecedario ";
 					titulo += nombre < "g" ? "A - F" : nombre < "n" ? "G - M" : nombre < "t" ? "N - S" : "T - Z";
-					return titulo;
 				}
 
 				// Fin
-				return;
+				return titulo;
 			},
 			creaUnaTabla: (titulo) => {
 				// Crea una tabla
