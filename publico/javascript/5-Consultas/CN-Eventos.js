@@ -2,7 +2,6 @@
 window.addEventListener("load", async () => {
 	// Eventos - Cambio de Configuración o Preferencias
 	DOM.cuerpo.addEventListener("input", async (e) => {
-		console.log(configCons.palabrasClave);
 		// Variables
 		const nombre = e.target.name;
 
@@ -63,8 +62,6 @@ window.addEventListener("load", async () => {
 
 	// Eventos - 'click'
 	DOM.cuerpo.addEventListener("click", async (e) => {
-		console.log(configCons.palabrasClave);
-
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
