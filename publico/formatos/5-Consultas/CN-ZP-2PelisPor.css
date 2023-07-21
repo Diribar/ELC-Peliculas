@@ -18,15 +18,25 @@ table caption {padding: 10px;}
 table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
 table caption {font-size: 1.25rem; font-weight: bold;}
 
-/* Celdas */
-table tbody tr td {padding: 5px 10px;}
-table tbody tr td:first-of-type {vertical-align: top;}
-table tbody tr td:last-of-type i {font-size: 0.8rem; margin-left: 5px;}
-table tbody tr.imparRCLV td {background: snow;}
-table tbody tr.parRCLV td {background: var(--amarillo-claro);}
-table tbody tr.parProd td:last-of-type {background: var(--gris-claro);}
+/* Columnas */
+tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
+
+/* Celdas - Color de fondo */
+tbody tr.imparRCLV td {background: snow;}
+tbody tr.parRCLV td {background: var(--amarillo-claro);}
+tbody tr.parProd td:last-of-type {background: var(--gris-claro);}
+
+/* Celdas - anchor y ppp */
+tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
+tbody tr td:has(i) {width: min-content;}
+tbody tr td i {margin-left: 5px; margin-right: 5px;}
 
 /* Bordes */
-table tbody tr td {border: var(--bordeInterno);}
-table tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
-table tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
+tbody tr td {border: var(--bordeInterno);}
+tbody tr td:nth-last-child(2) {border-right: none;}
+tbody tr td:nth-last-child(1) {border-left: none;}
+tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
+tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
+
+/* Miscelaneas */
+#pelisPor tbody tr td a:has(i):hover {scale: 1;}

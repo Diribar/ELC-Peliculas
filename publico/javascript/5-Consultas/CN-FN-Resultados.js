@@ -67,6 +67,9 @@ let resultados = {
 			return;
 		},
 		productos: function () {
+			// Variables
+			v.productos = [...v.infoResultados];
+
 			// Limpia los resultados anteriores
 			DOM.pelisPor.classList.add("ocultar");
 			DOM.productos.innerHTML = "";
@@ -87,6 +90,7 @@ let resultados = {
 		},
 		pelisPor: function () {
 			// Variables
+			v.productos = [];
 			let rclvAnt = {};
 			let tabla;
 
@@ -96,6 +100,9 @@ let resultados = {
 
 			// Rutina por registro RCLV
 			v.infoResultados.forEach((rclv, indice) => {
+				// Genera la variable de productos
+				v.productos.push(...rclv.productos);
+
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo({rclv, rclvAnt});
 				rclvAnt = rclv;
@@ -113,6 +120,10 @@ let resultados = {
 				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
 				for (let fila of filas) DOM_tbody.appendChild(fila);
 			});
+
+			// Crea las variables para los 'ppp'
+			DOM.ppp = DOM.pelisPor.querySelectorAll("#ppp");
+			v.ppp = Array.from(DOM.ppp);
 
 			// Fin
 			return;
@@ -163,7 +174,6 @@ let resultados = {
 					const nombreAnt = rclvAnt.nombre;
 					const nombreActual = rclv.nombre;
 					let prefijo = "Abecedario ";
-					if (!nombreAnt) console.log(nombreAnt < "G");
 
 					// Pruebas
 					titulo =
@@ -257,6 +267,7 @@ let resultados = {
 			creaLasFilasDeUnRCLV: function ({rclv, indice}) {
 				// Variables
 				let filas = [];
+				let celda;
 
 				// Crea la celdaRCLV
 				const celdaRCLV = this.creaUnaCelda.rclv(rclv);
@@ -272,11 +283,13 @@ let resultados = {
 					// Agrega la celdaRCLV a la primera fila
 					if (!i) fila.appendChild(celdaRCLV);
 
-					// Crea la celda del producto
-					const celdaProd = this.creaUnaCelda.prod(producto);
+					// Crea la celda del producto y se la agrega a la fila
+					celda = this.creaUnaCelda.prod(producto);
+					fila.appendChild(celda);
 
-					// Agrega la celda a la fila
-					fila.appendChild(celdaProd);
+					// Crea la celda del ppp y se la agrega a la fila
+					celda = this.creaUnaCelda.ppp(producto);
+					fila.appendChild(celda);
 
 					// Envía la fila al acumulador
 					filas.push(fila);
@@ -293,9 +306,11 @@ let resultados = {
 					const VF_diaDelAno = rclv.diaDelAno_id < 400;
 					const VF_epoca =
 						!v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
-					const VF_canon = rclv.canonNombre
+					const VF_canon = rclv.canonNombre;
 					const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
 					const celda = document.createElement("td");
+					const anchor = document.createElement("a");
+					anchor.href = "/rclv/detalle/?entidad=" + entidad + "&id=" + rclv.id + "&origen=CN";
 
 					// Si tiene más de 1 producto
 					if (cantProds > 1) celda.rowSpan = cantProds;
@@ -314,12 +329,13 @@ let resultados = {
 
 					// Le agrega el contenido
 					const DOM_linea1 = document.createTextNode(primeraLinea);
-					celda.appendChild(DOM_linea1);
+					anchor.appendChild(DOM_linea1);
 					if (segundaLinea) {
 						const DOM_linea2 = document.createTextNode(segundaLinea);
-						celda.appendChild(document.createElement("br"));
-						celda.appendChild(DOM_linea2);
+						anchor.appendChild(document.createElement("br"));
+						anchor.appendChild(DOM_linea2);
 					}
+					celda.appendChild(anchor);
 
 					// Fin
 					return celda;
@@ -327,22 +343,37 @@ let resultados = {
 				prod: (producto) => {
 					// Variables
 					const celda = document.createElement("td");
+					const anchor = document.createElement("a");
+					anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id + "&origen=CN";
 
 					// Genera el contenido
 					const nombreCastellano = document.createTextNode(producto.nombreCastellano);
-					const pppIcono = document.createElement("i");
-					pppIcono.classList.add(...producto.pppIcono.split(" "));
-					pppIcono.title = producto.pppNombre;
 					const br = document.createElement("br");
 					const segundaLinea = document.createTextNode(
 						producto.anoEstreno + " - " + producto.entidadNombre + " - Dirección: " + producto.direccion
 					);
 
 					// Le agrega el contenido
-					celda.appendChild(nombreCastellano);
-					celda.appendChild(pppIcono);
-					celda.appendChild(br);
-					celda.appendChild(segundaLinea);
+					anchor.appendChild(nombreCastellano);
+					anchor.appendChild(br);
+					anchor.appendChild(segundaLinea);
+					celda.appendChild(anchor);
+
+					// Fin
+					return celda;
+				},
+				ppp: (producto) => {
+					// Variables
+					const celda = document.createElement("td");
+
+					// Crea el ppp
+					const ppp = document.createElement("i");
+					ppp.id = "ppp";
+					ppp.classList.add(...producto.pppIcono.split(" "));
+					ppp.title = producto.pppNombre;
+
+					// Lo agrega a la celda
+					celda.appendChild(ppp);
 
 					// Fin
 					return celda;
