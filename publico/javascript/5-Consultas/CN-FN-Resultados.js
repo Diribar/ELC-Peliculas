@@ -163,17 +163,19 @@ let resultados = {
 					const nombreAnt = rclvAnt.nombre;
 					const nombreActual = rclv.nombre;
 					let prefijo = "Abecedario ";
+					if (!nombreAnt) console.log(nombreAnt < "G");
 
 					// Pruebas
-					titulo = !nombreAnt
-						? "(A - F)"
-						: nombreAnt < "G" && nombreActual >= "G"
-						? "(G - M)"
-						: nombreAnt < "N" && nombreActual >= "N"
-						? "(N - S)"
-						: nombreAnt < "T" && nombreActual >= "T"
-						? "(T - Z)"
-						: "";
+					titulo =
+						!nombreAnt && nombreActual < "G"
+							? "(A - F)"
+							: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G"
+							? "(G - M)"
+							: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N"
+							? "(N - S)"
+							: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
+							? "(T - Z)"
+							: "";
 
 					// Fin
 					if (titulo) titulo = prefijo + titulo;
@@ -291,7 +293,7 @@ let resultados = {
 					const VF_diaDelAno = rclv.diaDelAno_id < 400;
 					const VF_epoca =
 						!v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
-					const VF_canon = rclv.canon_id && !rclv.canon_id.startsWith("NN");
+					const VF_canon = rclv.canonNombre
 					const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
 					const celda = document.createElement("td");
 
