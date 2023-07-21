@@ -175,7 +175,7 @@ module.exports = {
 				// Relación con la Iglesia Católica
 				if (configCons.cfc)
 					entidad == "personajes"
-						? (prefs.rolIglesia_id = configCons.cfc = 1 ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
+						? (prefs.rolIglesia_id = configCons.cfc == 1 ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
 						: (prefs.soloCfc = configCons.cfc);
 
 				// Aparición mariana
@@ -477,10 +477,11 @@ module.exports = {
 						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoNacim = n.anoNacim;
-						datos.rolIglesiaNombre = n.rolIglesia.nombre;
-						datos.rolIglesiaGrupo = n.rolIglesia.plural;
-						datos.canonNombre = n.canon.nombre;
-						datos.canon_id = n.canon_id;
+						if (!n.rolIglesia_id.startsWith("NN")) {
+							datos.rolIglesiaNombre = n.rolIglesia.nombre;
+							datos.rolIglesiaGrupo = n.rolIglesia.plural;
+							if (!n.canon_id.startsWith("NN")) datos.canonNombre = n.canon.nombre;
+						}
 					}
 					if (entidad == "hechos") {
 						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
