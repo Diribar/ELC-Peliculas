@@ -303,18 +303,21 @@ let resultados = {
 					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : " (") + rclv.diaDelAno.nombre + ")"; // Día del Año
 
 					// Genera la información - 2a línea
+					console.log(rclv.epocaOcurrenciaNombre);
 					let segundaLinea = "";
 					if (VF_epoca) segundaLinea += rclv.epocaOcurrenciaNombre;
 					segundaLinea += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
 					if (VF_canon) segundaLinea += (segundaLinea ? " - " : "") + rclv.canonNombre; // Proceso de canonización
-					if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+					// if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
 
 					// Le agrega el contenido
 					const DOM_linea1 = document.createTextNode(primeraLinea);
-					const DOM_linea2 = document.createTextNode(segundaLinea);
 					celda.appendChild(DOM_linea1);
-					celda.appendChild(document.createElement("br"));
-					celda.appendChild(DOM_linea2);
+					if (segundaLinea) {
+						const DOM_linea2 = document.createTextNode(segundaLinea);
+						celda.appendChild(document.createElement("br"));
+						celda.appendChild(DOM_linea2);
+					}
 
 					// Fin
 					return celda;
