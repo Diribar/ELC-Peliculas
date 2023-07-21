@@ -483,7 +483,7 @@ module.exports = {
 						datos.canon_id = n.canon_id;
 					}
 					if (entidad == "hechos") {
-						datos.epocaOcurrencia = n.epocaOcurrencia;
+						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoComienzo = n.anoComienzo;
 					}
