@@ -11,6 +11,7 @@
 #pelisPor table {border-collapse: collapse; width: 100%;}
 #pelisPor table {line-height: 0.9; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
 #pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
+#pelisPor table {margin-bottom: 30px;}
 
 /* Título */
 table caption {padding: 10px;}
