@@ -87,7 +87,7 @@ let resultados = {
 		},
 		pelisPor: function () {
 			// Variables
-			let epocaOcurrencia_id, tabla;
+			let epocaOcurrencia_id, tabla, rclvAnt;
 
 			// Limpia los resultados anteriores
 			DOM.productos.classList.add("ocultar");
@@ -95,13 +95,13 @@ let resultados = {
 
 			// Rutina por registro RCLV
 			v.infoResultados.forEach((rclv, indice) => {
-				// Si corresponde, crea una nueva tabla
-				if (epocaOcurrencia_id != rclv.epocaOcurrencia_id) {
-					// Variables
-					epocaOcurrencia_id = rclv.epocaOcurrencia_id;
+				// Averigua si hay un cambio de agrupamiento
+				const cambioAgrupam = this.auxiliares.cambioAgrupam({rclv, rclvAnt});
+				rclvAnt = rclv;
 
-					// Le agrega una tabla al DOM
-					const titulo = "Posterior a Cristo";
+				// Si corresponde, crea una nueva tabla
+				if (cambioAgrupam) {
+					const titulo = this.auxiliares.titulo(rclv);
 					tabla = this.auxiliares.creaUnaTabla(titulo);
 					DOM.pelisPor.appendChild(tabla);
 				}
@@ -151,6 +151,45 @@ let resultados = {
 
 				// Fin
 				return bloque;
+			},
+			cambioAgrupam: ({rclv, rclvAnt}) => {
+				// Variables
+				const orden = v.ordenBD.valor;
+				let resultado = false;
+
+				// Revisa si es el primer Agrupamiento
+				if (!rclvAnt) resultado = true;
+
+				// Acciones por "nombre"
+				if (!resultado && orden == "nombre") {
+					// Variables
+					const nombreAnt = rclvAnt.nombre.toLowerCase();
+					const nombreActual = rclv.nombre.toLowerCase();
+
+					// Pruebas
+					resultado =
+						(nombreAnt < "g" && nombreActual >= "g") ||
+						(nombreAnt < "n" && nombreActual >= "n") ||
+						(nombreAnt < "t" && nombreActual >= "t");
+				}
+
+				// Fin
+				return resultado;
+			},
+			titulo: (rclv) => {
+				// Variables
+				const orden = v.ordenBD.valor;
+				let titulo;
+
+				// Nombre
+				if (!titulo && orden == "nombre") {
+					const nombre = rclv.nombre.toLowerCase();
+					titulo = "Abecedario ";
+					titulo += nombre < "g" ? "A - F" : nombre < "n" ? "G - M" : nombre < "t" ? "N - S" : "T - Z";
+				}
+
+				// Fin
+				return titulo;
 			},
 			creaUnaTabla: (titulo) => {
 				// Crea una tabla
