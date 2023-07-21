@@ -137,7 +137,7 @@ module.exports = {
 					? "No es un número válido"
 					: parseInt(ano) > new Date().getFullYear()
 					? "El año no debe superar al actual"
-					: parseInt(ano) < 100 && datos.epocaOcurrencia_id == "pst"
+					: parseInt(ano) <= 33 && datos.epocaOcurrencia_id == "pst"
 					? "Ese año no corresponde a la época 'posterior'"
 					: "";
 		}
