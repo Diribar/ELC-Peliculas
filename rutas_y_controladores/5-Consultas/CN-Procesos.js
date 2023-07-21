@@ -115,7 +115,7 @@ module.exports = {
 		},
 		rclvs: async function ({configCons, entidad, orden}) {
 			// Obtiene los include
-			let include = [...variables.entidades.prods];
+			let include = [...variables.entidades.prods, "diaDelAno"];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
@@ -352,9 +352,11 @@ module.exports = {
 						for (let j = prodsRCLV.length - 1; j >= 0; j--) {
 							// Rutina por producto
 							const prodRCLV = prodsRCLV[j];
+
+							// Averigua si existe la intersección
 							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
-							if (!existe) rclvs[i][entProd].splice(j, 1);
-							else rclvs[i][entProd][j].entidad = entProd;
+							if (!existe) rclvs[i][entProd].splice(j, 1); // Si no existe, lo elimina
+							else rclvs[i][entProd][j] = existe; // Completa la información del producto
 						}
 
 						// Acciones finales
@@ -460,17 +462,20 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {id, nombre, diaDelAno_id, productos} = n;
-					let datos = {id, nombre, diaDelAno_id, productos};
+					const {id, nombre, diaDelAno_id, productos, diaDelAno} = n;
+					let datos = {id, nombre, diaDelAno_id, productos, diaDelAno};
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {
+						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoNacim = n.anoNacim;
-						datos.rolIglesia = n.rolIglesia.nombre;
-						datos.canon = n.canon.nombre;
+						datos.rolIglesiaNombre = n.rolIglesia.nombre;
+						datos.canonNombre = n.canon.nombre;
+						datos.canon_id = n.canon_id;
 					}
 					if (entidad == "hechos") {
+						datos.epocaOcurrencia = n.epocaOcurrencia;
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoComienzo = n.anoComienzo;
 					}
