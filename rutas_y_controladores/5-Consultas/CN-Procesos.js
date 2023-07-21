@@ -408,10 +408,17 @@ module.exports = {
 				return prods;
 			},
 			rclvs: ({rclvs, orden, configCons, entidad}) => {
+				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
-				// Si el orden es por su Rol en la Iglesia, los ordena por su include
-				if (orden.valor == "rolIglesia") rclvs.sort((a, b) => (a.rolIglesia.orden < b.rolIglesia.orden ? -1 : 1));
+				// Acciones si el orden es por su Rol en la Iglesia
+				if (orden.valor == "rolIglesia") {
+					// Los orden por su nombre
+					rclvs.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+
+					// Los ordena por su include
+					rclvs.sort((a, b) => (a.rolIglesia.grupo < b.rolIglesia.grupo ? -1 : 1));
+				}
 				// En los demás casos, ordena por su campo
 				else
 					configCons.ascDes == "ASC"
@@ -471,6 +478,7 @@ module.exports = {
 						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
 						datos.anoNacim = n.anoNacim;
 						datos.rolIglesiaNombre = n.rolIglesia.nombre;
+						datos.rolIglesiaGrupo = n.rolIglesia.plural;
 						datos.canonNombre = n.canon.nombre;
 						datos.canon_id = n.canon_id;
 					}
