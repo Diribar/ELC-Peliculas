@@ -166,13 +166,13 @@ let resultados = {
 
 					// Pruebas
 					titulo = !nombreAnt
-						? "A - F"
-						: nombreAnt < "g" && nombreActual >= "g"
-						? "G - M"
-						: nombreAnt < "n" && nombreActual >= "n"
-						? "N - S"
-						: nombreAnt < "t" && nombreActual >= "t"
-						? "T - Z"
+						? "(A - F)"
+						: nombreAnt < "G" && nombreActual >= "G"
+						? "(G - M)"
+						: nombreAnt < "N" && nombreActual >= "N"
+						? "(N - S)"
+						: nombreAnt < "T" && nombreActual >= "T"
+						? "(T - Z)"
 						: "";
 
 					// Fin
@@ -289,9 +289,10 @@ let resultados = {
 					const cantProds = rclv.productos.length;
 					const VF_apodo = !!rclv.apodo;
 					const VF_diaDelAno = rclv.diaDelAno_id < 400;
-					const VF_epoca = !v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo;
+					const VF_epoca =
+						!v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 					const VF_canon = rclv.canon_id && !rclv.canon_id.startsWith("NN");
-					const VF_rolIglesia = v.ordenBD.valor != "rolIglesia";
+					const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
 					const celda = document.createElement("td");
 
 					// Si tiene más de 1 producto
@@ -303,12 +304,11 @@ let resultados = {
 					if (VF_diaDelAno) primeraLinea += (VF_apodo ? " - " : " (") + rclv.diaDelAno.nombre + ")"; // Día del Año
 
 					// Genera la información - 2a línea
-					console.log(rclv.epocaOcurrenciaNombre);
 					let segundaLinea = "";
 					if (VF_epoca) segundaLinea += rclv.epocaOcurrenciaNombre;
 					segundaLinea += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
 					if (VF_canon) segundaLinea += (segundaLinea ? " - " : "") + rclv.canonNombre; // Proceso de canonización
-					// if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+					if (VF_rolIglesia) segundaLinea += (segundaLinea ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
 
 					// Le agrega el contenido
 					const DOM_linea1 = document.createTextNode(primeraLinea);
