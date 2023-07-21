@@ -61,14 +61,12 @@ let resultados = {
 			else console.log(v.infoResultados);
 
 			// Pone visibles los resultados
-			entidad == "productos"
-				? DOM.productos.classList.remove("ocultar")
-				: DOM.pelisPor.classList.remove("ocultar");
+			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.pelisPor.classList.remove("ocultar");
 
 			// Fin
 			return;
 		},
-		productos: () => {
+		productos: function () {
 			// Limpia los resultados anteriores
 			DOM.pelisPor.classList.add("ocultar");
 			DOM.productos.innerHTML = "";
@@ -77,7 +75,7 @@ let resultados = {
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
-					const bloqueProducto = auxiliares.bloqueProducto(v.infoResultados[i]);
+					const bloqueProducto = this.auxiliares.bloqueProducto(v.infoResultados[i]);
 					DOM.productos.append(bloqueProducto);
 				}
 				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
@@ -87,52 +85,55 @@ let resultados = {
 			// Fin
 			return;
 		},
-		pelisPor: () => {
+		pelisPor: function () {
 			// Limpia los resultados anteriores
 			DOM.productos.classList.add("ocultar");
 			DOM.pelisPor.innerHTML = "";
 
 			// Output
+			this.creaUnaTabla();
 
 			// Fin
-			return
+			return;
 		},
-	},
-};
+		auxiliares: {
+			bloqueProducto: (producto) => {
+				// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
+				let bloque = DOM.producto.cloneNode(true);
+				let elemento = {
+					anchor: bloque.querySelector("a"),
+					avatar: bloque.querySelector("img"),
+					nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
+					anoEstreno: bloque.querySelector("#anoEstreno"),
+					direccion: bloque.querySelector("#direccion"),
+					ppp: bloque.querySelector("#ppp"),
+				};
 
-let auxiliares = {
-	bloqueProducto: (producto) => {
-		// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
-		let bloque = DOM.producto.cloneNode(true);
-		let elemento = {
-			anchor: bloque.querySelector("a"),
-			avatar: bloque.querySelector("img"),
-			nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
-			anoEstreno: bloque.querySelector("#anoEstreno"),
-			direccion: bloque.querySelector("#direccion"),
-			ppp: bloque.querySelector("#ppp"),
-		};
+				// Datos
+				elemento.anchor.href += producto.entidad + "&id=" + producto.id;
+				elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
+				elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
+				elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
+				producto.pppIcono
+					? elemento.ppp.classList.add(...producto.pppIcono.split(" "))
+					: elemento.ppp.classList.add("fa-regular", "fa-heart");
+				elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
 
-		// Datos
-		elemento.anchor.href += producto.entidad + "&id=" + producto.id;
-		elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
-		elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-		elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
-		producto.pppIcono
-			? elemento.ppp.classList.add(...producto.pppIcono.split(" "))
-			: elemento.ppp.classList.add("fa-regular", "fa-heart");
-		elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
+				// Imagen
+				let avatar = v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
+				elemento.avatar.src = avatar;
+				elemento.avatar.alt = producto.nombreOriginal;
+				elemento.avatar.title = producto.nombreOriginal;
 
-		// Imagen
-		let avatar = v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
-		elemento.avatar.src = avatar;
-		elemento.avatar.alt = producto.nombreOriginal;
-		elemento.avatar.title = producto.nombreOriginal;
+				// Quitar la clase 'ocultar'
+				bloque.classList.remove("ocultar");
 
-		// Quitar la clase 'ocultar'
-		bloque.classList.remove("ocultar");
-
-		// Fin
-		return bloque;
+				// Fin
+				return bloque;
+			},
+			creaUnaTabla: () => {
+				let tabla = document.createElement(table);
+			},
+		},
 	},
 };

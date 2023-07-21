@@ -1,56 +1,30 @@
 /* General */
-table {	margin: 0 auto;}
-
-
-table {
-	border-collapse: collapse;
-	font-size: 0.9rem;
-	line-height: 0.9;
-	border-radius: 15px;
-	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-	text-align: left;
+#vistaProds #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#vistaProds #pelisPor.ocultar {display: none}
+#vistaProds #pelisPor {padding: 30px; width: 100%;}
+#vistaProds #pelisPor {
+    --bordeInterno: 1px dotted var(--gris-oscuro);
+    --bordeExterno: 2px solid var(--gris-oscuro)
 }
 
-/* Otra opción:
-    border-collapse: collapse;
-    border-spacing: 10px 5px; */
+/* Tabla */
+#pelisPor table {border-collapse: collapse; width: 100%;}
+#pelisPor table {line-height: 0.9; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
+#pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
 
-table {width: 100%;}
+/* Título */
+table caption {padding: 10px;}
+table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
+table caption {font-size: 1.25rem; font-weight: bold;}
 
-table th:nth-of-type(3) { width: 10%; }
+/* Bordes */
+table tbody tr td {border: var(--bordeInterno);}
+table tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
+table tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
 
-table caption {
-	margin-top: 10px;
-	margin-bottom: 20px;
-	font-weight: bold;
-	font-size: 1.5rem;
-	color: midnightblue;
-}
-
-table thead tr {
-	background-color: #009879;
-	color: #ffffff;
-	font-weight: bold;
-	line-height: 1.25;
-}
-
-table thead tr th {
-	padding: 8px 10px;
-}
-
-table tbody tr {
-	border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) {
-	background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-	border-bottom: 2px solid #009879;
-}
-
-table tbody tr td {
-	padding: 10px 10px;
-}
+/* Celdas */
+table tbody tr td {padding: 10px 10px;}
+table tbody tr td:last-of-type i {font-size: 0.8rem; margin-left: 5px;}
+table tbody tr.imparRCLV td {background: snow;}
+table tbody tr.parRCLV td {background: var(--amarillo-claro);}
+table tbody tr.parProd td:last-of-type {background: var(--gris-claro);}

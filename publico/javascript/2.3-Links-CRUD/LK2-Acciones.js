@@ -2,8 +2,8 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
-		filasDatos: document.querySelectorAll("tbody .yaExistentes"),
-		filasEditar: document.querySelectorAll("tbody .edicion"),
+		filasDatos: document.querySelectorAll("tbody tr.yaExistentes"),
+		filasEdicion: document.querySelectorAll("tbody tr.edicion"),
 		inputs: document.querySelectorAll("tbody .input"),
 		urlInputs: document.querySelectorAll("tbody .inputError input[name='url'"),
 
@@ -12,15 +12,15 @@ window.addEventListener("load", async () => {
 		pasivos: document.querySelector("#tabla #tags #inactivo"),
 
 		// Botones
-		botonesEditar: document.querySelectorAll("tbody .yaExistentes .edicion"),
-		botonesRecuperar: document.querySelectorAll("tbody .yaExistentes .in"),
-		botonesDeshacer: document.querySelectorAll("tbody .yaExistentes .deshacer"),
-		botonesGuardar: document.querySelectorAll("tbody tr button"),
+		botonesEditar: document.querySelectorAll("tbody .yaExistentes i.edicion"),
+		botonesRecuperar: document.querySelectorAll("tbody .yaExistentes i.in"),
+		botonesDeshacer: document.querySelectorAll("tbody .yaExistentes i.deshacer"),
+		botonesGuardar: document.querySelectorAll("tbody tr td button"),
 	};
 	let v = {
 		prodEntidad: new URL(location.href).searchParams.get("entidad"),
 		prodID: new URL(location.href).searchParams.get("id"),
-		columnas: DOM.inputs.length / DOM.filasEditar.length,
+		columnas: DOM.inputs.length / (DOM.filasDatos.length + 1),
 	};
 
 	// Formulas
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 		botonEditar.addEventListener("click", () => {
 			// Ocultar la fila de Datos y mostrar la fila de Edición
 			DOM.filasDatos[fila].classList.add("ocultar");
-			DOM.filasEditar[fila].classList.remove("ocultar");
+			DOM.filasEdicion[fila].classList.remove("ocultar");
 		});
 	});
 	// Guardar - Hecho
