@@ -133,9 +133,9 @@ window.addEventListener("load", async () => {
 				await cambioDeCampos();
 			}
 			// Preferencia por producto
-			else if (nombre == "ppp") {
+			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "A")) {
 				// Previene el efecto del anchor
-				if (padre.id == "infoPeli" || padre.tagName == "A") e.preventDefault();
+				e.preventDefault();
 
 				// Actualiza la 'ppp'
 				await cambiosEnBD.ppp(elemento);
