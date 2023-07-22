@@ -133,7 +133,7 @@ window.addEventListener("load", async () => {
 				await cambioDeCampos();
 			}
 			// Preferencia por producto
-			else if (nombre == "ppp" && padre.id == "infoPeli") {
+			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "A")) {
 				// Previene el efecto del anchor
 				e.preventDefault();
 

@@ -203,7 +203,7 @@ let cambiosEnBD = {
 		DOM.ppp[indice].title = opcionPropuesta.nombre;
 
 		// Actualiza la preferencia
-		const producto = v.infoResultados[indice];
+		const producto = v.productos[indice];
 		DOM.ppp[indice].classList.add("inactivo");
 		await fetch(v.pppRrutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
 		DOM.ppp[indice].classList.remove("inactivo");

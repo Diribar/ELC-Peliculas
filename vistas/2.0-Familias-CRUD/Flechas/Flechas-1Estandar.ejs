@@ -6,7 +6,7 @@
 <% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <div class="flechas">
-	<% if (IRE || locals.origen) { %><!-- Cuando es IRE o tiene origen -->
+	<% if (IRE || locals.origen && !locals.origen.startsWith("DT")) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
 		<!-- Salir -->
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>

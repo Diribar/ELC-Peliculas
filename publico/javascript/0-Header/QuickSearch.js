@@ -26,7 +26,7 @@ window.addEventListener("load", () => {
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				fila.classList.add(familia.slice(0, 4));
-				let anchor = document.createElement("a");
+				const anchor = document.createElement("a");
 				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 				// Prepara las variables de la fila
 				// 1. Procesa el nombre
@@ -40,8 +40,8 @@ window.addEventListener("load", () => {
 				let datos = [nombre, ent];
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
-					let celda = document.createElement("td");
-					let textoCelda = document.createTextNode(datos[i]);
+					const celda = document.createElement("td");
+					const textoCelda = document.createTextNode(datos[i]);
 					if (i == 0) {
 						// Agrega el texto al 'anchor' (celda nombre)
 						anchor.appendChild(textoCelda);
