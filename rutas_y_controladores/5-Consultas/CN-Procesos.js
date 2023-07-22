@@ -44,16 +44,17 @@ module.exports = {
 		prods: async function ({configCons, entidad}) {
 			// Variables
 			const {orden_id, apMar, rolesIgl, canons} = configCons;
-			const campo_id = entidad ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			let entidades = ["peliculas", "colecciones"];
+			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
+			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+			let entsProd = ["peliculas", "colecciones"];
 			let condiciones = {statusRegistro_id: aprobado_id};
 			let productos = [];
 			let resultados = [];
 
 			// Particularidades
-			if (orden_id == 1 || entidad) entidades.push("capitulos"); // Para el orden 'Momento del año' o layout 'Películas por', agrega la entidad 'capitulos'
-			if (orden_id == 2) condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'Sorprendeme', agrega pautas en las condiciones
-			if (orden_id == 5) condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'Por calificación', agrega pautas en las condiciones
+			if (ordenBD.valor == "santoral" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'santoral' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (ordenBD.valor == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
+			if (ordenBD.valor == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Agrega las preferencias
@@ -61,16 +62,14 @@ module.exports = {
 			condiciones = {...condiciones, ...prefs};
 
 			// Obtiene el include (sólo el layout 'Todas las Películas' lo puede generar)
-			let include;
-			apMar ? (include = ["personaje", "hecho"]) : rolesIgl || canons ? (include = "personaje") : null;
+			const include = variables.asocs.rclvs;
 
 			// Obtiene los productos
-			for (let entidad of entidades)
+			for (let entProd of entsProd)
 				productos.push(
-					(include
-						? BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
-						: BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
-					).then((n) => n.map((m) => ({...m, entidad})))
+					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+						n.map((m) => ({...m, entidad: entProd}))
+					)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
@@ -211,7 +210,7 @@ module.exports = {
 			// Fin
 			return pppRegistros;
 		},
-		momentoDelAno: async ({dia, mes}) => {
+		santoral: async ({dia, mes}) => {
 			// Variables
 			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
 			const diaInicial_id = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
@@ -303,10 +302,33 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConPalClave: ({prods, configCons}) => {
-				// Obtiene las palabras clave
+			prodsConPalClave: ({prods, palabrasClave, entidad}) => {
+				// Variables
+				let campos = ["nombreOriginal", "nombreCastellano", "sinopsis"];
+				campos.push("direccion", "guion", "musica", "actores", "produccion");
+				const camposInclude = variables.asocs.rclvs;
 
-				// Rutina
+				// Rutina por producto
+				for (let i = prods.length - 1; i >= 0; i--) {
+					// Variables
+					const prod = prods[i];
+
+					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palClave = true
+					for (let campo of campos)
+						if (prod[campo]&&prod[campo].toLowerCase().includes(palabrasClave.toLowerCase())) prods[i].palClave = true;
+
+					if (!prods[i].palClave)
+						for (let campo of camposInclude) {
+							console.log({[campo + ".nombre"]: prod[campo].nombre});
+							if (prod[campo].nombre&&prod[campo].nombre.toLowerCase().includes(palabrasClave.toLowerCase())) prods[i].palClave = true;
+						}
+
+					// Si la entidad es 'productos' y el producto no tiene las palsClave, lo elimina
+					if (entidad == "productos" && !prods[i].palClave) prods.splice(i, 1);
+				}
+
+				// Fin
+				return prods;
 			},
 			prodsConRCLVs: ({prods, rclvs}) => {
 				// Si no hay RCLVs porque no se pidió cruzar contra ellos, devuelve la variable intacta
