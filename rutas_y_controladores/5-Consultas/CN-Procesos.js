@@ -307,6 +307,7 @@ module.exports = {
 				let campos = ["nombreOriginal", "nombreCastellano", "sinopsis"];
 				campos.push("direccion", "guion", "musica", "actores", "produccion");
 				const camposInclude = variables.asocs.rclvs;
+				palabrasClave = palabrasClave.toLowerCase();
 
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
@@ -315,13 +316,11 @@ module.exports = {
 
 					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palClave = true
 					for (let campo of campos)
-						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave.toLowerCase()))
-							prods[i].palClave = true;
+						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) prods[i].palClave = true;
 
 					if (!prods[i].palClave)
 						for (let campo of camposInclude) {
-							console.log({[campo + ".nombre"]: prod[campo].nombre});
-							if (prod[campo].nombre && prod[campo].nombre.toLowerCase().includes(palabrasClave.toLowerCase()))
+							if (prod[campo].nombre && prod[campo].nombre.toLowerCase().includes(palabrasClave))
 								prods[i].palClave = true;
 						}
 
