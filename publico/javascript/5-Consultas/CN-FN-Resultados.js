@@ -9,11 +9,10 @@ let resultados = {
 		const ahora = new Date();
 		const dia = ahora.getDate();
 		const mes = ahora.getMonth() + 1;
-		let datos = {configCons};
+		let datos = {configCons, entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "momento") datos = {...datos, dia, mes};
-		else if (entidad != "productos") datos.entidad = entidad;
+		if (entidad == "productos" && v.ordenBD.valor == "santoral") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
