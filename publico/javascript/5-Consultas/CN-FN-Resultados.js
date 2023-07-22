@@ -152,7 +152,9 @@ let resultados = {
 				elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
 
 				// Imagen
-				let avatar = v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
+				let avatar = producto.avatar.includes("/")
+					? producto.avatar
+					: v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
 				elemento.avatar.src = avatar;
 				elemento.avatar.alt = producto.nombreOriginal;
 				elemento.avatar.title = producto.nombreOriginal;
@@ -233,14 +235,28 @@ let resultados = {
 					// Pruebas
 					if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = rclv.epocaOcurrenciaNombre;
 					if (epocaActual == "pst") {
+						// Variables
+						const mayor1800 = "(año 1.801 en adelante)";
+						const mayor1000 = "(años 1.001 al 1.800)";
+						const menorIgual1000 = "(años 34 al 1.000)";
+
 						titulo =
-							anoAnt <= 1800 && anoActual > 1800
-								? "(año 1.801 en adelante)"
-								: anoAnt <= 1000 && anoActual > 1000
-								? "(años 1.001 al 1.800)"
-								: !anoAnt
-								? "(años 1 al 1.000)"
+							!anoAnt || anoAnt < anoActual //Ascendente
+								? (!anoAnt || anoAnt <= 1800) && anoActual > 1800
+									? mayor1800
+									: (!anoAnt || anoAnt <= 1000) && anoActual > 1000
+									? mayor1000
+									: !anoAnt
+									? menorIgual1000
+									: ""
+								: //Descendente
+								anoActual <= 1000 && anoAnt > 1000
+								? menorIgual1000
+								: anoActual <= 1800 && anoAnt > 1800
+								? mayor1000
 								: "";
+
+						// Título para la vista
 						if (titulo) titulo = rclv.epocaOcurrenciaNombre + " " + titulo;
 					}
 				}

@@ -28,8 +28,8 @@ tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 
 /* Celdas - anchor y ppp */
 tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
-tbody tr td:has(i) {width: min-content;}
-tbody tr td i {margin-left: 5px; margin-right: 5px;}
+tbody tr td:has(i) {width: min-content; text-align: right;}
+tbody tr td i {margin-left: 5px; margin-right: 10px;}
 
 /* Bordes */
 tbody tr td {border: var(--bordeInterno);}
