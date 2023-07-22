@@ -1,8 +1,9 @@
 /* General */
-#vistaProds #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
-#vistaProds #pelisPor.ocultar {display: none}
-#vistaProds #pelisPor {padding: 30px; width: 100%;}
-#vistaProds #pelisPor {
+#vistaProds #scroll {overflow-y: auto;}
+#scroll #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#scroll #pelisPor.ocultar {display: none}
+#scroll #pelisPor {padding: 0 30px; width: 100%;}
+#scroll #pelisPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro)
 }
@@ -29,7 +30,7 @@ tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 /* Celdas - anchor y ppp */
 tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
 tbody tr td:has(i) {width: min-content; text-align: right;}
-tbody tr td i {margin-left: 5px; margin-right: 10px;}
+tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
 
 /* Bordes */
 tbody tr td {border: var(--bordeInterno);}
@@ -37,6 +38,3 @@ tbody tr td:nth-last-child(2) {border-right: none;}
 tbody tr td:nth-last-child(1) {border-left: none;}
 tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
 tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
-
-/* Miscelaneas */
-#pelisPor tbody tr td a:has(i):hover {scale: 1;}
