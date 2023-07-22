@@ -381,15 +381,18 @@ let resultados = {
 				ppp: (producto) => {
 					// Variables
 					const celda = document.createElement("td");
-
-					// Crea el ppp
-					const ppp = document.createElement("i");
-					ppp.id = "ppp";
-					ppp.classList.add(...producto.pppIcono.split(" "));
-					ppp.title = producto.pppNombre;
-
-					// Lo agrega a la celda
-					celda.appendChild(ppp);
+					
+					// Se necesita crear la celda, porque el CSS considera siempre 3 celdas de ancho
+					if (producto.pppNombre) {
+						// Crea el ppp
+						const ppp = document.createElement("i");
+						ppp.id = "ppp";
+						ppp.classList.add(...producto.pppIcono.split(" "));
+						ppp.title = producto.pppNombre;
+						
+						// Lo agrega a la celda
+						celda.appendChild(ppp);
+					}
 
 					// Fin
 					return celda;
