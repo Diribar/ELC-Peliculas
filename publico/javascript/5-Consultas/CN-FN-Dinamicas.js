@@ -228,11 +228,12 @@ let actualizaConfigCons = {
 	apMar: function () {
 		// Impacto en configCons: apMar
 
-		// Sólo se muestra el sector si bhr='1', cfc='1' y epocasOcurrencia='pst', o no están respondidas
+		// Sólo se muestra el sector si se cumplen ciertas condiciones
 		const seMuestra =
-			(!configCons.bhr || configCons.bhr == "1") &&
-			(!configCons.cfc || configCons.cfc == "1") &&
-			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst");
+			configCons.bhr !== "0" && // No es ficticio
+			configCons.cfc !== "0" && // No es ajeno a la Iglesia
+			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
+			entidad != "temas"; // La entidad es distinta de 'temas'
 
 		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
@@ -253,8 +254,8 @@ let actualizaConfigCons = {
 	canonsRolesIglesia: function () {
 		// Impacto en configCons: canons y rolesIgl
 
-		// Sólo se muestra el sector si bhr='SI', cfc='1'
-		const seMuestra = configCons.bhr == "1" && configCons.cfc == "1";
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra = ["productos", "personajes"].includes(entidad) && configCons.bhr !== "0" && configCons.cfc !== "0";
 
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
@@ -272,8 +273,7 @@ let actualizaConfigCons = {
 		// Impacto en: palabrasClave
 
 		// Actualiza el valor de 'palabrasClave'
-		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value)
-			configCons.palabrasClave = DOM.palClave.value;
+		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) configCons.palabrasClave = DOM.palClave.value;
 
 		// Fin
 		return;

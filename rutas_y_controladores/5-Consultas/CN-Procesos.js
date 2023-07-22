@@ -267,8 +267,10 @@ module.exports = {
 			return rclvs;
 		},
 		cruce: {
-			prodsConPPP: ({prods, pppRegistros, configCons}) => {
+			// Productos
+			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id}) => {
 				if (!prods.length) return [];
+				if (!usuario_id) return prods;
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
@@ -302,7 +304,10 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConPalClave: ({prods, palabrasClave, entidad}) => {
+			prodsConPalsClave: ({prods, palabrasClave, entidad}) => {
+				if (!prods.length) return [];
+				if (!palabrasClave) return prods;
+
 				// Variables
 				let campos = ["nombreOriginal", "nombreCastellano", "sinopsis"];
 				campos.push("direccion", "guion", "musica", "actores", "produccion");
@@ -314,18 +319,18 @@ module.exports = {
 					// Variables
 					const prod = prods[i];
 
-					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palClave = true
+					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palsClave = true
 					for (let campo of campos)
-						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) prods[i].palClave = true;
+						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) prods[i].palsClave = true;
 
-					if (!prods[i].palClave)
+					if (!prods[i].palsClave)
 						for (let campo of camposInclude) {
 							if (prod[campo].nombre && prod[campo].nombre.toLowerCase().includes(palabrasClave))
-								prods[i].palClave = true;
+								prods[i].palsClave = true;
 						}
 
 					// Si la entidad es 'productos' y el producto no tiene las palsClave, lo elimina
-					if (entidad == "productos" && !prods[i].palClave) prods.splice(i, 1);
+					if (entidad == "productos" && !prods[i].palsClave) prods.splice(i, 1);
 				}
 
 				// Fin
@@ -362,7 +367,29 @@ module.exports = {
 				// Fin
 				return prodsCruzadosConRCLVs;
 			},
-			rclvsConProds: ({rclvs, prods}) => {
+			// RCLVs
+			rclvsConPalsClave: ({rclvs, palabrasClave}) => {
+				if (!rclvs.length) return [];
+				if (!palabrasClave) return rclvs;
+
+				// Variables
+				let campos = ["nombre", "apodo"];
+				palabrasClave = palabrasClave.toLowerCase();
+
+				// Rutina por rclv
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					// Variables
+					const rclv = rclvs[i];
+
+					// Rutina por campo: si encuentra las palsClave => le agrega al rclv el campo palsClave = true
+					for (let campo of campos)
+						if (rclv[campo] && rclv[campo].toLowerCase().includes(palabrasClave)) rclvs[i].palsClave = true;
+				}
+
+				// Fin
+				return rclvs;
+			},
+			rclvsConProds: ({rclvs, prods, palabrasClave}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
@@ -384,7 +411,7 @@ module.exports = {
 							// Averigua si existe la intersección
 							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
 							if (!existe) rclvs[i][entProd].splice(j, 1); // Si no existe, lo elimina
-							else rclvs[i][entProd][j] = existe; // Completa la información del producto
+							else rclvs[i][entProd][j] = existe; // Reemplaza la información del producto por otra más completa
 						}
 
 						// Acciones finales
@@ -394,8 +421,13 @@ module.exports = {
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
+					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos las tienen, elimina el rclv
+					else if (palabrasClave && !rclv.palsClave && !rclvs[i].productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
+						// Si el usuario busca por 'palabrasClave' y el rclv no las tiene, deja solamente los productos que las tienen
+						if (palabrasClave && !rclv.palsClave) rclvs[i].productos = rclvs[i].productos.filter((n) => n.palsClave);
+
 						// Ordena los productos por su año de estreno
 						rclvs[i].productos.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
 
