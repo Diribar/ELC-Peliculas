@@ -17,14 +17,8 @@ module.exports = {
 				// Obtiene las ediciones
 				let ediciones = RCLV.prods_ediciones ? RCLV.prods_ediciones : [];
 
-				let edicionesPropias =
-					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
-					!RCLV.statusRegistro.aprobado && usuario.rolUsuario.revisorEnts
-						? ediciones
-						: // Obtiene las ediciones propias
-						ediciones
-						? ediciones.filter((n) => n.editadoPor_id == userID)
-						: [];
+				// Obtiene las ediciones propias
+				let edicionesPropias = ediciones ? ediciones.filter((n) => n.editadoPor_id == userID) : [];
 
 				// Acciones si hay ediciones propias
 				if (edicionesPropias.length) {
@@ -55,20 +49,23 @@ module.exports = {
 				});
 				prodsDelRCLV.push(...aux);
 			}
+
 			// Separa entre capitulos y resto
 			let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
 			let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
+
 			// Elimina capitulos si las colecciones están presentes
 			let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 			let coleccionesId = colecciones.map((n) => n.id);
 			for (let i = capitulos.length - 1; i >= 0; i--)
 				if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
+
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
 			prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno);
+
 			// Quita los inactivos
 			let resultado = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id);
-			// resultado.push(...prodsDelRCLV.filter((n) => n.statusRegistro_id == inactivo_id));
 
 			// Fin
 			return resultado;
