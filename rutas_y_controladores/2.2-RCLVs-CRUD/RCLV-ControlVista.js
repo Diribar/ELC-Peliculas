@@ -29,10 +29,11 @@ module.exports = {
 		const edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editadoPor_id: usuario.id})
 			: {};
-		const registro = {...original, ...edicion, id};
+		let rclv = {...original, ...edicion, id};
 
-		// Productos
-		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
+		// Productos del RCLV
+		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, usuario);
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, usuario);
 		const cantProds = prodsDelRCLV.length;
 
 		// Ayuda para el titulo
@@ -41,20 +42,22 @@ module.exports = {
 			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
+
 		// Bloque de la derecha
 		const bloqueDer = {
-			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
-			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
+			rclv: procesos.detalle.bloqueRCLV({...rclv, entidad}),
+			registro: procsCRUD.bloqueRegistro({registro: rclv, revisor, cantProds}),
 		};
-		// Imagen Derecha
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
 		const statusEstable =
 			codigo == "detalle" && ([creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
+
 		// Datos para la vista
-		const procCanoniz = procesos.detalle.procCanoniz(registro);
-		const RCLVnombre = registro.nombre;
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		const procCanoniz = procesos.detalle.procCanoniz(rclv);
+		const RCLVnombre = rclv.nombre;
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 
 		// Ir a la vista
