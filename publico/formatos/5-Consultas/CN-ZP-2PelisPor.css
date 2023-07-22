@@ -9,7 +9,7 @@
 
 /* Tabla */
 #pelisPor table {border-collapse: collapse; width: 100%;}
-#pelisPor table {line-height: 0.9; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
+#pelisPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
 #pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
 #pelisPor table {margin-bottom: 30px;}
 
@@ -19,7 +19,7 @@ table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
 table caption {font-size: 1.25rem; font-weight: bold;}
 
 /* Celdas */
-table tbody tr td {padding: 10px 10px;}
+table tbody tr td {padding: 5px 10px;}
 table tbody tr td:first-of-type {vertical-align: top;}
 table tbody tr td:last-of-type i {font-size: 0.8rem; margin-left: 5px;}
 table tbody tr.imparRCLV td {background: snow;}
