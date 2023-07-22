@@ -13,7 +13,9 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
-		} else {
+		} 
+		// Acciones en los demás casos
+		else {
 			// Layout
 			if (nombre == "layout_id") {
 				// Oculta los resultados anteriores
@@ -129,6 +131,7 @@ window.addEventListener("load", async () => {
 			}
 			// Icono de 'palabrasClave'
 			else if (nombre == "palabrasClave") {
+				DOM.palClaveAprob.classList.add("inactivo")
 				v.hayCambiosDeCampo = true;
 				await cambioDeCampos();
 			}
