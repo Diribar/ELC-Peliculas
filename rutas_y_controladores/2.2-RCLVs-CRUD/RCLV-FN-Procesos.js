@@ -7,27 +7,45 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
 	detalle: {
+		actualizaProdsRCLV_conEdicionPropia: async (RCLV, usuario) => {
+			// Si el usuario no está logueado, devuelve el RCLV intacto
+			if (!usuario) return RCLV;
+
+			// Actualiza los registros de productos
+			const userID = usuario.id;
+			for (let entProd of variables.entidades.prods) {
+				// Si el RCLV no tiene productos de esa familia, saltea la rutina
+				const prodsEnRCLV = RCLV[entProd];
+				if (!prodsEnRCLV) continue;
+
+				// Rutina por producto
+				for (let i = 0; i < prodsEnRCLV.length; i++) {
+					let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entProd, prodsEnRCLV[i].id, userID);
+					if (edicion) {
+						const avatar = procsCRUD.obtieneAvatar(original, edicion).edic;
+						RCLV[entProd][i] = {...original, ...edicion, avatar, id: original.id};
+					}
+				}
+			}
+
+			// Fin
+			return RCLV;
+		},
 		prodsDelRCLV: async function (RCLV, usuario) {
 			// Variables
-			let userID = usuario ? usuario.id : "";
+			const userID = usuario ? usuario.id : "";
 			for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
-			// Convierte las ediciones propias de productos en productos
+			// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
 			if (usuario) {
 				// Obtiene las ediciones
 				let ediciones = RCLV.prods_ediciones ? RCLV.prods_ediciones : [];
 
-				let edicionesPropias =
-					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
-					!RCLV.statusRegistro.aprobado && usuario.rolUsuario.revisorEnts
-						? ediciones
-						: // Obtiene las ediciones propias
-						ediciones
-						? ediciones.filter((n) => n.editadoPor_id == userID)
-						: [];
+				// Obtiene las ediciones propias
+				let edicionesPropias = ediciones ? ediciones.filter((n) => n.editadoPor_id == userID) : [];
 
 				// Acciones si hay ediciones propias
-				if (edicionesPropias.length) {
+				if (edicionesPropias.length)
 					// Obtiene los productos de esas ediciones
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
@@ -41,34 +59,39 @@ module.exports = {
 						// Fin
 						RCLV[entProd].push(producto);
 					}
-				}
 			}
+
 			// Completa la información de cada tipo de producto y une los productos en una sola array
 			let prodsDelRCLV = [];
 			for (let entidad of variables.entidades.prods) {
 				// Completa la información de cada producto dentro del tipo de producto
-				let aux = RCLV[entidad].map((registro) => {
-					// Averigua la ruta y el nombre del avatar
-					let avatar = procsCRUD.obtieneAvatar(registro).edic;
+				const aux = RCLV[entidad].map((registro) => {
+					// Variables
+					const avatar = procsCRUD.obtieneAvatar(registro).edic;
+					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
 					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)};
+					return {...registro, entidad, avatar, entidadNombre};
 				});
 				prodsDelRCLV.push(...aux);
 			}
+
 			// Separa entre capitulos y resto
 			let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
 			let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
+
 			// Elimina capitulos si las colecciones están presentes
 			let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 			let coleccionesId = colecciones.map((n) => n.id);
 			for (let i = capitulos.length - 1; i >= 0; i--)
 				if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
+
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
 			prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno);
+
 			// Quita los inactivos
 			let resultado = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id);
-			// resultado.push(...prodsDelRCLV.filter((n) => n.statusRegistro_id == inactivo_id));
 
 			// Fin
 			return resultado;

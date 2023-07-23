@@ -9,11 +9,10 @@ let resultados = {
 		const ahora = new Date();
 		const dia = ahora.getDate();
 		const mes = ahora.getMonth() + 1;
-		let datos = {configCons};
+		let datos = {configCons, entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "momento") datos = {...datos, dia, mes};
-		else if (entidad != "productos") datos.entidad = entidad;
+		if (entidad == "productos" && v.ordenBD.valor == "santoral") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -56,6 +55,10 @@ let resultados = {
 				? DOM.noTenemos.classList.remove("ocultar")
 				: DOM.noTenemos.classList.add("ocultar");
 
+			// Limpia los resultados anteriores
+			DOM.productos.innerHTML = "";
+			DOM.pelisPor.innerHTML = "";
+
 			// Deriva a productos
 			if (entidad == "productos") this.productos();
 			else this.pelisPor();
@@ -70,11 +73,8 @@ let resultados = {
 			// Variables
 			v.productos = [...v.infoResultados];
 
-			// Limpia los resultados anteriores
-			DOM.pelisPor.classList.add("ocultar");
-			DOM.productos.innerHTML = "";
-
 			// Output
+			DOM.pelisPor.classList.add("ocultar");
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
@@ -96,7 +96,6 @@ let resultados = {
 
 			// Limpia los resultados anteriores
 			DOM.productos.classList.add("ocultar");
-			DOM.pelisPor.innerHTML = "";
 
 			// Rutina por registro RCLV
 			v.infoResultados.forEach((rclv, indice) => {
