@@ -7,12 +7,11 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
 	detalle: {
-		actualizaProdsRCLV_conEdicionPropia: async (RCLV, usuario) => {
+		actualizaProdsRCLV_conEdicionPropia: async (RCLV, userID) => {
 			// Si el usuario no está logueado, devuelve el RCLV intacto
-			if (!usuario) return RCLV;
+			if (!userID) return RCLV;
 
 			// Actualiza los registros de productos
-			const userID = usuario.id;
 			for (let entProd of variables.entidades.prods) {
 				// Si el RCLV no tiene productos de esa familia, saltea la rutina
 				const prodsEnRCLV = RCLV[entProd];
@@ -31,13 +30,12 @@ module.exports = {
 			// Fin
 			return RCLV;
 		},
-		prodsDelRCLV: async function (RCLV, usuario) {
+		prodsDelRCLV: async function (RCLV, userID) {
 			// Variables
-			const userID = usuario ? usuario.id : "";
 			for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 			// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
-			if (usuario) {
+			if (userID) {
 				// Obtiene las ediciones
 				let ediciones = RCLV.prods_ediciones ? RCLV.prods_ediciones : [];
 
