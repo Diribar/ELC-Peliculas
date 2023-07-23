@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
 		encabMasPelis: document.querySelector("#encabMasPelis"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		layoutOrden: document.querySelector("#encabMasPelis #encabezado #layoutOrden"),
+		layoutOrden: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		// Zona de productos
 		zonaProds: document.querySelector("#zonaDeProds"),
 	};

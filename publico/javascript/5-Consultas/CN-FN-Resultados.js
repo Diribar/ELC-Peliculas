@@ -146,10 +146,10 @@ let resultados = {
 				elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
 				elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
 				elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
-				producto.pppIcono
-					? elemento.ppp.classList.add(...producto.pppIcono.split(" "))
-					: elemento.ppp.classList.add("fa-regular", "fa-heart");
-				elemento.ppp.title = producto.pppNombre ? producto.pppNombre : "Sin preferencia personal";
+				if (producto.pppIcono) {
+					elemento.ppp.classList.add(...producto.pppIcono.split(" "));
+					elemento.ppp.title = producto.pppNombre;
+				}
 
 				// Imagen
 				let avatar = producto.avatar.includes("/")
@@ -381,15 +381,15 @@ let resultados = {
 				ppp: (producto) => {
 					// Variables
 					const celda = document.createElement("td");
-					
+
 					// Se necesita crear la celda, porque el CSS considera siempre 3 celdas de ancho
 					if (producto.pppNombre) {
 						// Crea el ppp
 						const ppp = document.createElement("i");
 						ppp.id = "ppp";
-						ppp.classList.add(...producto.pppIcono.split(" "));
+						ppp.classList.add("scale", ...producto.pppIcono.split(" "));
 						ppp.title = producto.pppNombre;
-						
+
 						// Lo agrega a la celda
 						celda.appendChild(ppp);
 					}

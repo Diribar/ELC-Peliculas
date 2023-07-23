@@ -1,17 +1,17 @@
 /* Layout y Orden */
-#encabezado #layoutOrden {display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch;}
-#encabezado #layoutOrden select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
-#encabezado #layoutOrden #ascDes {padding: 1px 5px;}
-#encabezado #layoutOrden :where(select, #ascDes) {background: var(--rojo-oscuro); color: snow;}
-#encabezado #layoutOrden :is(select:valid, #ascDes.OK) {background: var(--verde-oscuro);}
-#encabezado #layoutOrden select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
+#encabezado #tituloPrincipal {display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch;}
+#encabezado #tituloPrincipal select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
+#encabezado #tituloPrincipal #ascDes {padding: 1px 5px;}
+#encabezado #tituloPrincipal :where(select, #ascDes) {background: var(--rojo-oscuro); color: snow;}
+#encabezado #tituloPrincipal :is(select:valid, #ascDes.OK) {background: var(--verde-oscuro);}
+#encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */
-#encabezado #layoutOrden :is(#ayudaOrden, #actualizar) {align-self: center; margin-left: 10px; line-height: 0.1px;}
-#encabezado #layoutOrden #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
-#encabezado #layoutOrden #actualizar i {background: var(--backAyuda); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
-#encabezado #layoutOrden #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
-#encabezado #layoutOrden #actualizar i {font-size: 0.8rem; padding: 3.5px;}
+#encabezado #tituloPrincipal :is(#ayudaOrden, #actualizar) {align-self: center; margin-left: 10px; line-height: 0.1px;}
+#encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
+#encabezado #tituloPrincipal #actualizar i {background: var(--backAyuda); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
+#encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
+#encabezado #tituloPrincipal #actualizar i {font-size: 0.8rem; padding: 3.5px;}
 
 /* Contador */
 #encabezado #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
