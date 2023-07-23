@@ -18,12 +18,14 @@ module.exports = {
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condicionEdic = {[campo_id]: entID, editadoPor_id: userID};
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 		// Obtiene los campos include
 		let includesEdic = comp.obtieneTodosLosCamposInclude(entidad);
 		let includesOrig = [...includesEdic, "creado_por", "alta_revisada_por", "sugerido_por", "statusRegistro", "motivo"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
+		if (familia == "rclv") includesOrig.push("prods_ediciones");
 
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
