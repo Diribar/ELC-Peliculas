@@ -14,26 +14,21 @@ module.exports = {
 		const codigo = "detalle";
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
-		const usuario = req.session.usuario ? req.session.usuario : "";
+		const usuario = req.session.usuario ? req.session.usuario : {};
+		const userID = usuario.id;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+		const revisor = usuario && usuario.rolUsuario.revisorEnts;
 		const articulo = entidad == "epocasDelAno" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 
 		// Obtiene RCLV con productos
-		let include = [...variables.entidades.prods, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("prods_ediciones", "statusRegistro", "creado_por", "sugerido_por", "alta_revisada_por");
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const edicion = usuario
-			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editadoPor_id: usuario.id})
-			: {};
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let rclv = {...original, ...edicion, id};
 
 		// Productos del RCLV
-		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, usuario);
-		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, usuario);
+		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
 		const cantProds = prodsDelRCLV.length;
 
 		// Ayuda para el titulo
@@ -58,9 +53,10 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const procCanoniz = procesos.detalle.procCanoniz(rclv);
 		const RCLVnombre = rclv.nombre;
-		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
+		const userIdentVal = usuario && usuario.statusRegistro.ident_validada;
 
 		// Ir a la vista
+		console.log({RCLVnombre, rclv});
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
