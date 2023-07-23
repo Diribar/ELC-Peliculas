@@ -56,7 +56,6 @@ module.exports = {
 		const userIdentVal = usuario && usuario.statusRegistro.ident_validada;
 
 		// Ir a la vista
-		console.log({RCLVnombre, rclv});
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
