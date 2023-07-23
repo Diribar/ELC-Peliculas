@@ -5,7 +5,7 @@
 #scroll #pelisPor {padding: 0 30px; width: 100%;}
 #scroll #pelisPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
-    --bordeExterno: 2px solid var(--gris-oscuro)
+    --bordeExterno: 2px solid var(--gris-oscuro);
 }
 
 /* Tabla */

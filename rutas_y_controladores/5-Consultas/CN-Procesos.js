@@ -303,6 +303,11 @@ module.exports = {
 				// Fin
 				return prods;
 			},
+			prodsConPalClave: ({prods, configCons}) => {
+				// Obtiene las palabras clave
+
+				// Rutina
+			},
 			prodsConRCLVs: ({prods, rclvs}) => {
 				// Si no hay RCLVs porque no se pidió cruzar contra ellos, devuelve la variable intacta
 				if (!rclvs) return prods;
