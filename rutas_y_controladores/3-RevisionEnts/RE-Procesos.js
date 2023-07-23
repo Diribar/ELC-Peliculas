@@ -127,7 +127,6 @@ module.exports = {
 
 			// Averigua el porcentaje de links aprobados en la semana
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
-			console.log(113, porcentaje + "%", {linksAprobsEstaSem, linksAprobsTotal}, linksRevisar.length);
 
 			// Obtiene los productos
 			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 40;
