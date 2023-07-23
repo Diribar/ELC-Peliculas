@@ -72,7 +72,7 @@ window.addEventListener("load", () => {
 	// Add Event Listener
 	input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
-		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
+		input.value = input.value.replace(/[^a-záéíóúüñ'\d\s]/gi, "").replace(/ +/g, " ");
 		let dataEntry = input.value;
 
 		// Elimina palabras
