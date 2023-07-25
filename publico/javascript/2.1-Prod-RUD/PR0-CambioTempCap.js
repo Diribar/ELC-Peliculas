@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 	// CAMBIOS EN LA TEMPORADA --> se deben actualizar los capítulos
 	tempSelect.addEventListener("change", async () => {
 		// Obtiene la temporada
-		let tempNum = temporada.value.slice(10);
+		let tempNum = temporada.value
 		// Obtiene los capítulos de la temporada
 		let ruta = "/crud/api/obtiene-capitulos/";
 		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
@@ -40,8 +40,8 @@ window.addEventListener("load", async () => {
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
 	capSelect.addEventListener("change", async () => {
 		// Obtiene los datos para conseguir el capID
-		let tempNum = temporada.value.slice(10);
-		let capNum = capitulo.value.slice(9);
+		let tempNum = temporada.value
+		let capNum = capitulo.value
 		// Obtiene el capID
 		let ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
 		let capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
