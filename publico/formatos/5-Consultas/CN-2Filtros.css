@@ -17,11 +17,16 @@
 #configCons #configsDeCampo {background: var(--gris-claro);}
 #configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
 #configCons #configsDeCampo nav > * {order: 2;}
-#configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed;}
+#configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed; margin: 0;}
+
+/* Filtros Campos - Contenedor de Select e Input */
+#configsDeCampo .pref {padding: 7.5px 20px;}
+#configsDeCampo .pref.celeste {background: var(--celeste-oscuro);}
+#configsDeCampo .pref.amarillo {background: var(--amarillo-oscuro);}
+#configsDeCampo .pref.gris {background: var(--verde-intermedio);}
+#configsDeCampo .pref#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
 
 /* Filtros Campos - Select e Input */
-#configsDeCampo .pref {padding: 7.5px 20px;}
-#configsDeCampo .pref#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
 #configsDeCampo .pref :is(select, input) {width: 100%;}
 
 /* Filtros Campos - Select */
