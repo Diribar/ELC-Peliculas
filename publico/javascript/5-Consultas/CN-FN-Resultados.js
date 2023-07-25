@@ -75,6 +75,8 @@ let resultados = {
 		productos: function () {
 			// Variables
 			v.productos = [...v.infoResultados];
+
+			// Oculta los resultados anteriores
 			DOM.pelisPor.classList.add("ocultar");
 
 			// Output
@@ -99,7 +101,7 @@ let resultados = {
 			let rclvAnt = {};
 			let tabla;
 
-			// Limpia los resultados anteriores
+			// Oculta los resultados anteriores
 			DOM.productos.classList.add("ocultar");
 
 			// Rutina por registro RCLV
