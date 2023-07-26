@@ -98,6 +98,7 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
+				{id: "conLinks", nombre: "Con links", condic: {linksGeneral: 2}},
 				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: 2}},
 				{id: "soloPagos", nombre: "Solamente links con pago", condic: {linksGratuitos: 0, linksGeneral: 2}},
 			],

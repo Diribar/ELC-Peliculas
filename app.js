@@ -7,7 +7,7 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
-global.NO = null;
+global.NO = 0;
 global.usAutom_id = 2;
 global.fechaPrimerDomingoDelAno = null;
 // Con 'require'
@@ -148,8 +148,6 @@ app.set("views", [
 	global.st_editables_id = statusRegistrosUs.find((n) => n.editables).id;
 	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
-
-	// Preferencia por producto
 
 	// Otros
 	global.sinPreferencia = pppOpciones.find((n) => n.sinPreferencia);
