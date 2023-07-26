@@ -159,6 +159,7 @@ module.exports = {
 					nombre: "Vener. y Siervos de Dios",
 					condic: {[Op.or]: [{[Op.startsWith]: "VN"}, {[Op.startsWith]: "SD"}]},
 				},
+				{id: "TD", nombre: "Todos (Santos - Siervos)", condic: {[Op.notLike]: "NN%"}},
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
