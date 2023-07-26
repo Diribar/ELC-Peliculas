@@ -124,7 +124,7 @@ module.exports = {
 		delete configProd.apMar, configProd.rolesIgl, configProd.canons;
 		let prods =
 			entidad == "productos"
-				? procesos.resultados.prods({configCons})
+				? procesos.resultados.prods({entidad, configCons})
 				: procesos.resultados.prods({entidad, configCons: configProd});
 
 		// Obtiene los registros de rclvs
