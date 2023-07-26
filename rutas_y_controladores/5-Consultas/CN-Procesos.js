@@ -50,7 +50,7 @@ module.exports = {
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
-			
+
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
@@ -58,13 +58,18 @@ module.exports = {
 			if (ordenBD.valor == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (ordenBD.valor == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
-			
+
 			// Obtiene los productos
 			for (let entProd of entsProd)
 				productos.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
-						n.map((m) => ({...m, entidad: entProd}))
-					)
+					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include)
+						.then((n) => n.map((m) => ({...m, entidad: entProd})))
+						.then((n) =>
+							n.map((m) => {
+								if (m.anoFin) m.anoEstreno = m.anoFin;
+								return m;
+							})
+						)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 			resultados = this.prefs.prodsConInclude({resultados, configCons});
@@ -174,7 +179,7 @@ module.exports = {
 				}
 
 				// Fin
-				return resultados
+				return resultados;
 			},
 			rclvs: ({configCons, entidad, orden}) => {
 				// Variables
