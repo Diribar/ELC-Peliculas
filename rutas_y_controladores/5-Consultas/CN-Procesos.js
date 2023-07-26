@@ -43,27 +43,22 @@ module.exports = {
 	resultados: {
 		prods: async function ({configCons, entidad}) {
 			// Variables
-			const {orden_id, apMar, rolesIgl, canons} = configCons;
+			const {orden_id} = configCons;
 			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+			const include = variables.asocs.rclvs;
 			let entsProd = ["peliculas", "colecciones"];
-			let condiciones = {statusRegistro_id: aprobado_id};
 			let productos = [];
 			let resultados = [];
-
-			// Particularidades
+			
+			// Condiciones
+			const prefs = this.prefs.prods(configCons);
+			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
 			if (ordenBD.valor == "santoral" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'santoral' o layout 'Listados por', agrega la entidad 'capitulos'
 			if (ordenBD.valor == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (ordenBD.valor == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
-
-			// Agrega las preferencias
-			const prefs = this.prefs.prods(configCons);
-			condiciones = {...condiciones, ...prefs};
-
-			// Obtiene el include (sólo el layout 'Todas las Películas' lo puede generar)
-			const include = variables.asocs.rclvs;
-
+			
 			// Obtiene los productos
 			for (let entProd of entsProd)
 				productos.push(
@@ -72,42 +67,7 @@ module.exports = {
 					)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
-
-			// Filtra por apMar, rolesIgl, canons (sólo el layout 'Todas las Películas' lo puede generar)
-			if (apMar && resultados.length) {
-				if (apMar == "SI")
-					resultados = resultados.filter(
-						(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
-					);
-				if (apMar == "NO")
-					resultados = resultados.filter(
-						(n) => (n.personaje_id > 10 && n.personaje.apMar_id == 10) || (n.hecho_id > 10 && n.hecho.ama == 0)
-					);
-			}
-			if (rolesIgl && resultados.length) {
-				if (rolesIgl == "RS")
-					resultados = resultados.filter(
-						(n) =>
-							n.personaje_id > 10 &&
-							(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
-					);
-				else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl));
-			}
-			if (canons && resultados.length) {
-				if (canons == "SB")
-					resultados = resultados.filter(
-						(n) =>
-							n.personaje_id > 10 &&
-							(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
-					);
-				else if (canons == "VS")
-					resultados = resultados.filter(
-						(n) =>
-							n.personaje_id > 10 &&
-							(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
-					);
-				else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith(canons));
-			}
+			resultados = this.prefs.prodsConInclude({resultados, configCons});
 
 			// Fin
 			return resultados;
@@ -159,6 +119,62 @@ module.exports = {
 
 				// Fin
 				return prefs;
+			},
+			prodsConInclude: ({resultados, configCons}) => {
+				// Variables
+				const {apMar, rolesIgl, canons} = configCons;
+
+				// Filtra por apMar
+				if (apMar && resultados.length) {
+					if (apMar == "SI")
+						resultados = resultados.filter(
+							(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
+						);
+					if (apMar == "NO")
+						resultados = resultados.filter(
+							(n) => (n.personaje_id > 10 && n.personaje.apMar_id == 10) || (n.hecho_id > 10 && n.hecho.ama == 0)
+						);
+				}
+
+				// Filtra por rolesIgl
+				if (rolesIgl && resultados.length) {
+					if (rolesIgl == "RS")
+						resultados = resultados.filter(
+							(n) =>
+								n.personaje_id > 10 &&
+								(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
+						);
+					else
+						resultados = resultados.filter(
+							(n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl)
+						);
+				}
+
+				// Filtra por canons
+				if (canons && resultados.length) {
+					// Santos y Beatos
+					if (canons == "SB")
+						resultados = resultados.filter(
+							(n) =>
+								n.personaje_id > 10 &&
+								(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+						);
+					// Venerables y Siervos de Dios
+					else if (canons == "VS")
+						resultados = resultados.filter(
+							(n) =>
+								n.personaje_id > 10 &&
+								(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+						);
+					// Todos (Santos a Siervos)
+					else if (canons == "TD")
+						resultados = resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN"));
+					// Sin proceso de canonización
+					else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN"));
+				}
+
+				// Fin
+				return resultados
 			},
 			rclvs: ({configCons, entidad, orden}) => {
 				// Variables
