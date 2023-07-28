@@ -168,10 +168,7 @@ module.exports = {
 							n.anoEstreno == registro.anoEstreno
 					).length;
 				// Procesa duplicados
-				if (coincidencias && coincidencias > 1) {
-					resultados.productos[indice].duplicado = true;
-					resultados.productos.splice(indice, 1);
-				}
+				if (coincidencias && coincidencias > 1) resultados.productos.splice(indice, 1);
 			}
 		})();
 		// Agrega el método de palabrasClave
@@ -356,7 +353,7 @@ module.exports = {
 				}
 			});
 		})();
-		
+
 		// Fin
 		return resultados;
 	},
