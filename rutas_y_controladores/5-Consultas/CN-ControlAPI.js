@@ -130,8 +130,8 @@ module.exports = {
 		// Obtiene los registros de rclvs
 		let rclvs =
 			entidad == "productos"
-				? orden.valor == "santoral"
-					? procesos.resultados.santoral({dia, mes})
+				? orden.valor == "feqslr"
+					? procesos.resultados.feqslr({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.rclvs({entidad, configCons, orden});
 
