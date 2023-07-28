@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
-		} 
+		}
 		// Acciones en los demás casos
 		else {
 			// Layout
@@ -131,9 +131,7 @@ window.addEventListener("load", async () => {
 			}
 			// Icono de 'palabrasClave'
 			else if (nombre == "palabrasClave") {
-				DOM.palClaveAprob.classList.add("inactivo")
-				v.hayCambiosDeCampo = true;
-				await cambioDeCampos();
+				palabrasClave();
 			}
 			// Preferencia por producto
 			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
@@ -158,4 +156,18 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
+
+	DOM.palClave.addEventListener("keypress", (e) => {
+		if (e.key == "Enter") palabrasClave();
+	});
+
+	// Funciones
+	let palabrasClave = async () => {
+		DOM.palClaveAprob.classList.add("inactivo");
+		v.hayCambiosDeCampo = true;
+		await cambioDeCampos();
+
+		// Fin
+		return;
+	};
 });

@@ -23,7 +23,7 @@
 #configsDeCampo .pref {padding: 7.5px 20px;}
 #configsDeCampo .pref.celeste {background: var(--celeste-oscuro);}
 #configsDeCampo .pref.amarillo {background: var(--amarillo-oscuro);}
-#configsDeCampo .pref.gris {background: var(--verde-intermedio);}
+#configsDeCampo .pref.verde {background: var(--verde-intermedio);}
 #configsDeCampo .pref#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
 
 /* Filtros Campos - Select e Input */

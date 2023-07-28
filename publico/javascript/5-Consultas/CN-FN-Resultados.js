@@ -66,6 +66,9 @@ let resultados = {
 			// Pone visibles los resultados
 			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.pelisPor.classList.remove("ocultar");
 
+			// Foco
+			if (entidad == "productos") DOM.productos.querySelector("button").focus();
+
 			// Fin
 			return;
 		},
@@ -73,14 +76,18 @@ let resultados = {
 			// Variables
 			v.productos = [...v.infoResultados];
 
-			// Output
+			// Oculta los resultados anteriores
 			DOM.pelisPor.classList.add("ocultar");
+
+			// Output
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
 					const producto = this.auxiliares.producto(v.infoResultados[i]);
 					DOM.productos.append(producto);
 				}
+
+				// Genera las variables 'ppp'
 				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
 				v.ppp = Array.from(DOM.ppp);
 			}
@@ -94,7 +101,7 @@ let resultados = {
 			let rclvAnt = {};
 			let tabla;
 
-			// Limpia los resultados anteriores
+			// Oculta los resultados anteriores
 			DOM.productos.classList.add("ocultar");
 
 			// Rutina por registro RCLV
@@ -130,14 +137,14 @@ let resultados = {
 		auxiliares: {
 			producto: (producto) => {
 				// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
-				let bloque = DOM.producto.cloneNode(true);
+				let li = DOM.producto.cloneNode(true);
 				let elemento = {
-					anchor: bloque.querySelector("a"),
-					avatar: bloque.querySelector("img"),
-					nombreCastellano: bloque.querySelector("#nombreCastellano em b"),
-					anoEstreno: bloque.querySelector("#anoEstreno"),
-					direccion: bloque.querySelector("#direccion"),
-					ppp: bloque.querySelector("#ppp"),
+					anchor: li.querySelector("a"),
+					avatar: li.querySelector("img"),
+					nombreCastellano: li.querySelector("#nombreCastellano em b"),
+					anoEstreno: li.querySelector("#anoEstreno"),
+					direccion: li.querySelector("#direccion"),
+					ppp: li.querySelector("#ppp"),
 				};
 
 				// Datos
@@ -159,10 +166,10 @@ let resultados = {
 				elemento.avatar.title = producto.nombreOriginal;
 
 				// Quitar la clase 'ocultar'
-				bloque.classList.remove("ocultar");
+				li.classList.remove("ocultar");
 
 				// Fin
-				return bloque;
+				return li;
 			},
 			titulo: ({rclv, rclvAnt}) => {
 				// Variables

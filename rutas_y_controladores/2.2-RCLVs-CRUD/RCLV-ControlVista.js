@@ -33,9 +33,9 @@ module.exports = {
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
-			"El grupo de películas con fondo azul, son las que ya tenemos en nuestra BD.",
-			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
-			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
+			"Las películas son las que ya tenemos en nuestra BD.",
+			"Primero figuran las colecciones y luego las películas.",
+			"Están ordenadas desde la más reciente a las más antigua.",
 		];
 
 		// Bloque de la derecha

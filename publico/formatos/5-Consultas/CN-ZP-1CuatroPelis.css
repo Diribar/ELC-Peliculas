@@ -9,6 +9,7 @@
 #productos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #productos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #productos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+#productos li button:focus {box-shadow: 0 0 10px blue}
 
 /* Partes del resultado */
 #productos li button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
