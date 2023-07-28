@@ -290,7 +290,7 @@ module.exports = {
 				if (confirma.TMDB_entidad == "collection")
 					procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
 				if (confirma.TMDB_entidad == "tv")
-					procesos.confirma.agregaTemps_TV({...registro, cant_temps: confirma.cant_temps});
+					procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
 			}
 
 			// AVATAR -------------------------------------

@@ -117,7 +117,7 @@ module.exports = {
 		// TV
 		agregaTemps_TV: async function (datosCol) {
 			// Loop de TEMPORADAS
-			for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++)
+			for (let temporada = 1; temporada <= datosCol.cantTemps; temporada++)
 				await this.agregaUnaTemp_TV(datosCol, temporada);
 
 			// Fin

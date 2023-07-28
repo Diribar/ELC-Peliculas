@@ -81,7 +81,7 @@ module.exports = {
 				entidad: "colecciones",
 				fuente: "TMDB",
 				TMDB_entidad: "collection",
-				cant_temps: 1,
+				cantTemps: 1,
 			};
 			const datosColec = await APIsTMDB.details("collection", datos.TMDB_id);
 
@@ -243,7 +243,7 @@ module.exports = {
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
-			datos.cant_temps = datosAPI.seasons.length;
+			datos.cantTemps = datosAPI.seasons.length;
 
 			// Fin
 			return datos;
