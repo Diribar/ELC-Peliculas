@@ -143,7 +143,7 @@ let resultados = {
 
 				// Crea el anchor
 				const anchor = document.createElement("a");
-				anchor.href += producto.entidad + "&id=" + producto.id;
+				anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
 				anchor.target = "_blank";
 				anchor.tabIndex = "-1";
 				li.appendChild(anchor);
