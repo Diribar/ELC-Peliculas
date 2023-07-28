@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 					// Pone el cursor en el input
 					DOM.configNuevaNombre.focus();
 				} else if (nombre == "deshacer") {
-					await actualiza.valoresInicialesDeObjetoV();
+					await actualiza.valoresInicialesDeVariables();
 					await actualiza.statusInicialCampos();
 					await cambioDeCampos();
 				} else if (nombre == "eliminar") {
