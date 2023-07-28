@@ -65,7 +65,7 @@ let basico = {
 
 		// Reemplaza en la variable
 		let valor = e.target.value;
-		valor = valor.replace(/[^a-záéíóúüñ0-9 ]+$/gi, "");
+		valor = valor.replace(/[^a-záéíóúüñ0-9. \-]+$/gi, "");
 
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
@@ -74,7 +74,7 @@ let basico = {
 		return;
 	},
 	validaCaracteres: (dato) => {
-		let formato = /^[a-záéíóúüñ0-9 ]+$/i;
+		let formato = /^[a-záéíóúüñ0-9. \-]+$/i;
 		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };
