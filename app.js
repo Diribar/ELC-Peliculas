@@ -150,6 +150,7 @@ app.set("views", [
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
 	// Otros
+	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);
 	global.sinPreferencia = pppOpciones.find((n) => n.sinPreferencia);
 	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
