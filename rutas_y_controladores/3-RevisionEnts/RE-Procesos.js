@@ -21,13 +21,10 @@ module.exports = {
 			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
 
 			// Elimina las ediciones con RCLV no aprobado
-			if (ediciones.length)
-				for (let i = ediciones.length - 1; i >= 0; i--)
-					for (let rclv of variables.asocs.rclvs)
-						if (ediciones[i][rclv] && ediciones[i][rclv].statusRegistro_id != aprobado_id) {
-							ediciones.splice(i, 1);
-							break;
-						}
+			ediciones = ediciones.filter(
+				(edicion) =>
+					!variables.asocs.rclvs.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
+			);
 
 			// Obtiene los productos
 			if (ediciones.length)
@@ -851,21 +848,16 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 
 	// Pule los resultados
 	const metodos = Object.keys(prods);
-	for (let i = 0; i < metodos.length; i++) {
-		// Variables
-		const metodo = metodos[i];
-
-		// Elimina repetidos dentro del grupo
+	metodos.forEach((metodo, i) => {
+		// Elimina los repetidos dentro del grupo
 		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
 
-		// Elimina repetidos entre grupos - si está en el método actual, elimina de los siguientes
+		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
 			const metodoEliminar = metodos[j];
-			for (let k = prods[metodoEliminar].length - 1; k >= 0; k--) {
-				const prodRevisar = prods[metodoEliminar][k];
-				const eliminar = prods[metodo].find((n) => n.id == prodRevisar.id && n.entidad == prodRevisar.entidad);
-				if (eliminar) prods[metodoEliminar].splice(k, 1);
-			}
+			prods[metodoEliminar] = prods[metodoEliminar].filter((n) =>
+				prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
+			);
 		}
 
 		// Ordena por la fecha más antigua
@@ -877,7 +869,7 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 
 		// Deja solamente los sin problemas de captura
 		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
-	}
+	});
 
 	// Fin
 	return prods;
