@@ -136,37 +136,58 @@ let resultados = {
 		},
 		auxiliares: {
 			producto: (producto) => {
-				// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
-				let li = DOM.producto.cloneNode(true);
-				let elemento = {
-					anchor: li.querySelector("a"),
-					avatar: li.querySelector("img"),
-					nombreCastellano: li.querySelector("#nombreCastellano em b"),
-					anoEstreno: li.querySelector("#anoEstreno"),
-					direccion: li.querySelector("#direccion"),
-					ppp: li.querySelector("#ppp"),
-				};
+				// Crea el elemento 'li' que engloba todo el producto
+				const li = document.createElement("li");
+				li.className = "producto";
+				li.tabIndex = "-1";
 
-				// Datos
-				elemento.anchor.href += producto.entidad + "&id=" + producto.id;
-				elemento.nombreCastellano.innerHTML = producto.nombreCastellano;
-				elemento.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-				elemento.direccion.innerHTML = "Dirección: " + producto.direccion;
-				if (producto.pppIcono) {
-					elemento.ppp.classList.add(...producto.pppIcono.split(" "));
-					elemento.ppp.title = producto.pppNombre;
-				}
+				// Crea el anchor
+				const anchor = document.createElement("a");
+				anchor.href += producto.entidad + "&id=" + producto.id;
+				anchor.target = "_blank";
+				anchor.tabIndex = "-1";
+				li.appendChild(anchor);
 
-				// Imagen
-				let avatar = producto.avatar.includes("/")
+				// Crea el botón
+				const button = document.createElement("button");
+				button.type = "text";
+				button.className = "flexRow pointer";
+				anchor.appendChild(button);
+
+				// Crea la imagen
+				const avatar = document.createElement("img");
+				avatar.className = "imagenChica";
+				avatar.src = producto.avatar.includes("/")
 					? producto.avatar
 					: v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
-				elemento.avatar.src = avatar;
-				elemento.avatar.alt = producto.nombreCastellano;
-				elemento.avatar.title = producto.nombreCastellano;
+				avatar.alt = producto.nombreCastellano;
+				avatar.title = producto.nombreCastellano;
+				button.appendChild(avatar);
 
-				// Quitar la clase 'ocultar'
-				li.classList.remove("ocultar");
+				// Crea infoPeli
+				const infoPeli = document.createElement("div");
+				infoPeli.id = "infoPeli";
+				infoPeli.className = "flexCol";
+				button.appendChild(infoPeli);
+
+				// Crea nombreCastellano, anoEstreno, direccion
+				let elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
+				let aux = {};
+				for (let elemento of elementos) {
+					aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
+					aux[elemento].id = elemento;
+					aux[elemento].className = "interlineadoChico";
+					infoPeli.appendChild(aux[elemento]);
+					if (["nombreCastellano", "direccion"].includes(elemento)) infoPeli.appendChild(br);
+				}
+
+				// Particularidades
+				aux.nombreCastellano.innerHTML = producto.nombreCastellano;
+				aux.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
+				aux.direccion.innerHTML = "Dirección: " + producto.direccion;
+				aux.ppp.className += " scale " + producto.pppIcono;
+				aux.ppp.tabIndex = "-1";
+				aux.ppp.title = producto.pppNombre;
 
 				// Fin
 				return li;
