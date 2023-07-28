@@ -29,7 +29,7 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
-		let edicion = BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic);
+		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic) : "";
 		[original, edicion] = await Promise.all([original, edicion]);
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
