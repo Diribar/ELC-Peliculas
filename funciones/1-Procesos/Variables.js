@@ -98,6 +98,7 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
+				{id: "conLinks", nombre: "Con links", condic: {linksGeneral: 2}},
 				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: 2}},
 				{id: "soloPagos", nombre: "Solamente links con pago", condic: {linksGratuitos: 0, linksGeneral: 2}},
 			],
@@ -159,6 +160,7 @@ module.exports = {
 					nombre: "Vener. y Siervos de Dios",
 					condic: {[Op.or]: [{[Op.startsWith]: "VN"}, {[Op.startsWith]: "SD"}]},
 				},
+				{id: "TD", nombre: "Todos (Santos - Siervos)", condic: {[Op.notLike]: "NN%"}},
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},

@@ -7,7 +7,7 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
-global.NO = null;
+global.NO = 0;
 global.usAutom_id = 2;
 global.fechaPrimerDomingoDelAno = null;
 // Con 'require'
@@ -127,12 +127,12 @@ app.set("views", [
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
-	global.creado_id = global.statusRegistros.find((n) => n.creado).id;
+	global.creado_id = statusRegistros.find((n) => n.creado).id;
 	global.creadoAprob_id = statusRegistros.find((n) => n.creadoAprob).id;
-	global.aprobado_id = global.statusRegistros.find((n) => n.aprobado).id;
-	global.inactivar_id = global.statusRegistros.find((n) => n.inactivar).id;
-	global.recuperar_id = global.statusRegistros.find((n) => n.recuperar).id;
-	global.inactivo_id = global.statusRegistros.find((n) => n.inactivo).id;
+	global.aprobado_id = statusRegistros.find((n) => n.aprobado).id;
+	global.inactivar_id = statusRegistros.find((n) => n.inactivar).id;
+	global.recuperar_id = statusRegistros.find((n) => n.recuperar).id;
+	global.inactivo_id = statusRegistros.find((n) => n.inactivo).id;
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 
 	// 2. Tipos de actuación
@@ -149,16 +149,11 @@ app.set("views", [
 	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
-	// Preferencia por producto
-	laQuieroVer = pppOpciones.find((n) => n.laQuieroVer);
-	yaLaVi = pppOpciones.find((n) => n.yaLaVi);
-	noMeInteresa = pppOpciones.find((n) => n.noMeInteresa);
-	sinPreferencia = pppOpciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
-
 	// Otros
-	global.epocasVarias = global.epocasOcurrencia.find((n) => n.varias);
-	global.epocasSinVarias = global.epocasOcurrencia.filter((n) => !n.varias);
-	global.mesesAbrev = global.meses.map((n) => n.abrev);
+	global.sinPreferencia = pppOpciones.find((n) => n.sinPreferencia);
+	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
+	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
+	global.mesesAbrev = meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");

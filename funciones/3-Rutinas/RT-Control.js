@@ -299,6 +299,7 @@ module.exports = {
 		}
 
 		// Fin
+		procesos.finRutinasDiariasSemanales("ProductosAlAzar", "RutinasDiarias");
 		return;
 	},
 

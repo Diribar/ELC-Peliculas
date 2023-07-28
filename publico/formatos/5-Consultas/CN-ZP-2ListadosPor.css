@@ -1,5 +1,4 @@
 /* General */
-#vistaProds #scroll:has(table) {overflow-y: auto; width: 100%;}
 #scroll #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
 #scroll #pelisPor.ocultar {display: none}
 #scroll #pelisPor {padding: 0 30px; width: 100%;}

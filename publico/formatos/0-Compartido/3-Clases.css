@@ -13,8 +13,8 @@
 .fa-solid {line-height: normal;}
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left, 
 .fa-circle-right {background: var(--backIcono); border-color: var(--backIcono);}
-.fa-circle-check {color: var(--verde-oscuro);}
-.fa-circle-xmark, .fa-trash-can {color: var(--rojo-oscuro);}
+.fa-circle-check, .fa-heart-circle-check {color: var(--verde-oscuro);}
+.fa-circle-xmark, .fa-trash-can, .fa-heart-circle-xmark {color: var(--rojo-oscuro);}
 
 /* Inactivo */
 .inactivo, .inactivoVersion {opacity: .65 !important;}

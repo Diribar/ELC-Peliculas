@@ -162,8 +162,8 @@ let resultados = {
 					? producto.avatar
 					: v.localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
 				elemento.avatar.src = avatar;
-				elemento.avatar.alt = producto.nombreOriginal;
-				elemento.avatar.title = producto.nombreOriginal;
+				elemento.avatar.alt = producto.nombreCastellano;
+				elemento.avatar.title = producto.nombreCastellano;
 
 				// Quitar la clase 'ocultar'
 				li.classList.remove("ocultar");

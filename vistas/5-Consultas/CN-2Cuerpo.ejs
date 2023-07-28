@@ -10,6 +10,13 @@
 	</div>
 	<!-- Zona de Productos -->
 	<div id="zonaDeProds">
+		<div id="vistaProds">
+			<div id="scroll">
+				<ul id="productos"></ul>
+				<div id="pelisPor"></div>
+				<%- include("CN-ZP-12Producto") %>
+			</div>
+		</div>
 		<div id="comencemos">
 			<button id="rojo" class="ocultar">
 				Asegurate de contestar<br>los sectores en rojo
@@ -20,10 +27,6 @@
 			<button id="azul" class="scale pointer ocultar">
 				No tenemos resultados que<br>respondan a esos criterios
 			</button>
-		</div>
-		<div id="vistaProds">
-			<%- include("CN-ZP-11CuatroPelis") %>
-			<%- include("CN-ZP-20ListadosPor") %>
 		</div>
 	</div>
 	<%- include("CMP-3Footer", {mostrar: true}) %>
