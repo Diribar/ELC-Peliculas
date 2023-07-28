@@ -11,22 +11,33 @@ module.exports = {
 		const petitFamilias = "prods";
 		let objeto = {petitFamilias, userID};
 
-		// PRODUCTOS
-		// Inactivos
+		// Productos Inactivos
 		objeto = {...objeto, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
 		let inactivos = obtienePorEntidad(objeto);
 
-		// Aprobados
+		// Productos Aprobados
 		objeto = {...objeto, campoFecha: "altaTermEn", status_id: aprobado_id};
 		let aprobados = obtienePorEntidad(objeto);
 
-		// Sin Edición (en status creadoAprob)
+		// Productos Sin Edición (en status creadoAprob)
 		let SE_pel = obtieneSinEdicion("peliculas");
 		let SE_col = obtieneSinEdicion("colecciones");
 		let SE_cap = obtieneSinEdicion("capitulos");
 
+		// Calificaciones de productos y Preferencia por productos
+		let cal = BD_genericas.obtieneTodosPorCondicion("cal_registros", {usuario_id: userID});
+		let ppp = BD_genericas.obtieneTodosPorCondicion("ppp_registros", {usuario_id: userID, opcion_id: yaLaVi.id});
+
 		// Espera las lecturas
-		[inactivos, aprobados, SE_pel, SE_col, SE_cap] = await Promise.all([inactivos, aprobados, SE_pel, SE_col, SE_cap]);
+		[inactivos, aprobados, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
+			inactivos,
+			aprobados,
+			SE_pel,
+			SE_col,
+			SE_cap,
+			cal,
+			ppp,
+		]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
 		const SE = [...SE_pel, ...SE_col, ...SE_cap];
 
@@ -34,7 +45,8 @@ module.exports = {
 		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id_id);
 
 		// Aprobados - Sin calificar
-		const SC = pelisColes.filter((m) => !m.calificacion);
+		ppp = ppp.filter((n) => cal.find((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
+		const SC = pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id));
 
 		// Aprobados - Sin tema
 		const ST = pelisColes.filter((n) => n.tema_id == 1);

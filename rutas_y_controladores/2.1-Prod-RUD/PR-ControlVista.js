@@ -68,20 +68,29 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Obtiene datos para la vista
-		if (entidad == "capitulos")
-			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
 		const status_id = original.statusRegistro_id;
 		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
-		const interesDelUsuario = userID ? await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
+		prodComb.capitulos =
+			entidad == "capitulos" ? BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada) : "";
+		let links = procesos.obtieneLinksDelProducto({entidad, id, userID});
+		let interesDelUsuario = userID ? procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
+		let yaCalificada = userID
+			? BD_genericas.obtienePorCondicion("cal_registros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
+			: "";
+		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
+			prodComb.capitulos,
+			links,
+			interesDelUsuario,
+			yaCalificada,
+		]);
 
 		// Va a la vista
 		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
-			...{entidadNombre, registro: prodComb, links, interesDelUsuario},
+			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
 		});
