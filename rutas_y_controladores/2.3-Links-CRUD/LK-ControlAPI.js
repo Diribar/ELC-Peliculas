@@ -110,7 +110,8 @@ module.exports = {
 	recupera: async (req, res) => {
 		// Variables
 		let datos = req.query;
-		let userID = req.session.usuario.id;
+		const userID = req.session.usuario.id;
+		const ahora = comp.fechaHora.ahora();
 		let respuesta = {};
 
 		// Obtiene el link

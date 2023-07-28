@@ -218,12 +218,12 @@ module.exports = {
 			let condicion;
 
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
-			for (let dia = 0; dia < 3; dia++) {
+			for (let dia = 0; dia < 5; dia++) {
 				// Variables
 				let diaDelAno_id = diaInicial_id + dia;
 				if (diaDelAno_id > 366) diaDelAno_id -= 366;
 
-				// Obtiene los RCLV sin 'epocaDelAno'
+				// Obtiene los RCLV, a excepción de la familia 'epocaDelAno'
 				for (let entidad of entidadesRCLV) {
 					// Condicion estandar: RCLVs del dia y en status aprobado
 					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
@@ -261,7 +261,7 @@ module.exports = {
 
 			// Los ordena:
 			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad); // Prioridad descendente
-			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Momento ascendente
+			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Día ascendente
 
 			// Fin
 			return rclvs;

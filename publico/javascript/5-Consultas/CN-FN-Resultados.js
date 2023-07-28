@@ -78,8 +78,8 @@ let resultados = {
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
-					const bloqueProducto = this.auxiliares.bloqueProducto(v.infoResultados[i]);
-					DOM.productos.append(bloqueProducto);
+					const producto = this.auxiliares.producto(v.infoResultados[i]);
+					DOM.productos.append(producto);
 				}
 				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
 				v.ppp = Array.from(DOM.ppp);
@@ -128,7 +128,7 @@ let resultados = {
 			return;
 		},
 		auxiliares: {
-			bloqueProducto: (producto) => {
+			producto: (producto) => {
 				// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
 				let bloque = DOM.producto.cloneNode(true);
 				let elemento = {
