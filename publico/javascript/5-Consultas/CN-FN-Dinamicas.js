@@ -204,7 +204,7 @@ let actualizaConfigCons = {
 		const seMuestra =
 			!configCons.cfc && // 'cfc' no está contestado
 			!DOM.apMar.value && // 'apMar' no está contestado
-			(!DOM.canons.value|| DOM.canons.value == "NN") && // 'canon' no está contestado
+			(!DOM.canons.value || DOM.canons.value == "NN") && // 'canon' no está contestado
 			!DOM.rolesIgl.value; // 'rolesIgl' no está contestado
 
 		seMuestra ? DOM.cfc.parentNode.classList.remove("ocultar") : DOM.cfc.parentNode.classList.add("ocultar");
