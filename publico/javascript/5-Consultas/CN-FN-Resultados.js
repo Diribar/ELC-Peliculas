@@ -12,7 +12,7 @@ let resultados = {
 		let datos = {configCons, entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "santoral") datos = {...datos, dia, mes};
+		if (entidad == "productos" && v.ordenBD.valor == "feqslr") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -354,7 +354,9 @@ let resultados = {
 					const celda = document.createElement("td");
 					const anchor = document.createElement("a");
 					anchor.href = "/rclv/detalle/?entidad=" + entidad + "&id=" + rclv.id + "&origen=CN";
-
+					anchor.target = "_blank";
+					anchor.tabIndex = "-1";
+	
 					// Si tiene más de 1 producto
 					if (cantProds > 1) celda.rowSpan = cantProds;
 

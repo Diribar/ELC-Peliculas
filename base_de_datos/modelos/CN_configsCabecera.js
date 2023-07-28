@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "configsCons";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(20)},
+		nombre: {type: dt.STRING(30)},
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {

@@ -26,8 +26,11 @@ window.addEventListener("load", async () => {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 
+				// Restringe el largo del nombre
+				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
+				DOM.configNuevaNombre.value = nombre;
+				
 				// Muestra/Oculta el ícono de confirmación
-				const nombre = DOM.configNuevaNombre.value;
 				const nombres = v.configsDeCabecera.map((n) => n.nombre);
 				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
 				actualiza.botoneraActivaInactiva();
@@ -95,7 +98,7 @@ window.addEventListener("load", async () => {
 					// Pone el cursor en el input
 					DOM.configNuevaNombre.focus();
 				} else if (nombre == "deshacer") {
-					await actualiza.valoresInicialesDeObjetoV();
+					await actualiza.valoresInicialesDeVariables();
 					await actualiza.statusInicialCampos();
 					await cambioDeCampos();
 				} else if (nombre == "eliminar") {
