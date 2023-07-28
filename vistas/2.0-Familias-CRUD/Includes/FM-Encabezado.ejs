@@ -27,7 +27,7 @@
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
-			<script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script>
+			<script src="/javascript/2.1-Prod-RUD/PR0-CambioTempCap.js"></script>
 			<script src="/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
@@ -46,12 +46,12 @@
 					</div>
 					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
 						<% for (let temp = 1; temp <= registro.coleccion.cant_temps; temp++) { %>
-							<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 						<% } %>
 					</select>
 					<select id="capitulo">
 						<% for (let capitulo of registro.capitulos) { %>
-							<option <% if (registro.capitulo == capitulo) { %>selected<% } %> >Capítulo <%= capitulo %></option>
+							<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>
 						<% } %>
 					</select>
 				<% } else { %>

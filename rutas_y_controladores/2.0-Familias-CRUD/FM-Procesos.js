@@ -25,7 +25,7 @@ module.exports = {
 		let includesOrig = [...includesEdic, "creado_por", "alta_revisada_por", "sugerido_por", "statusRegistro", "motivo"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-		if (familia == "rclv") includesOrig.push("prods_ediciones");
+		if (familia == "rclv") includesOrig.push("prods_ediciones", ...variables.entidades.prods);
 
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
