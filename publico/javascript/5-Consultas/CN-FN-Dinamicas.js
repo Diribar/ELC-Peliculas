@@ -200,13 +200,18 @@ let actualizaConfigCons = {
 	},
 	// Presencia eventual
 	cfc: function () {
-		// Impacto en configCons: cfc
+		// Averigua si el campo se debe mostrar
+		const seMuestra =
+			!configCons.cfc && // 'cfc' no está contestado
+			!DOM.apMar.value && // 'apMar' no está contestado
+			!DOM.canons.value && // 'canon' no está contestado
+			!DOM.rolesIgl.value && // 'rolesIgl' no está contestado
+			v.ordenBD.valor != "santoral"; // el orden elegido es distinto a 'santoral'
 
-		// Si cfc ya está contestado, se oculta
-		configCons.cfc ? DOM.cfc.parentNode.classList.add("ocultar") : DOM.cfc.parentNode.classList.remove("ocultar");
+		seMuestra ? DOM.cfc.parentNode.classList.remove("ocultar") : DOM.cfc.parentNode.classList.add("ocultar");
 
 		// Actualiza el valor de 'cfc'
-		if (!configCons.cfc && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
+		if (seMuestra && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
 
 		// Fin
 		this.bhr();
@@ -248,21 +253,38 @@ let actualizaConfigCons = {
 		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
 
 		// Fin
-		this.canonsRolesIglesia();
+		this.canons();
 		return;
 	},
-	canonsRolesIglesia: function () {
-		// Impacto en configCons: canons y rolesIgl
-
+	canons: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
-		const seMuestra = ["productos", "personajes"].includes(entidad) && configCons.bhr !== "0" && configCons.cfc !== "0";
+		const seMuestra =
+			["productos", "personajes"].includes(entidad) && // la entidad es 'productos' o 'personajes'
+			configCons.bhr !== "0" && // no se eligió 'sin bhr'
+			configCons.cfc !== "0" && // no se eligió 'sin cfc'
+			v.ordenBD.valor != "santoral"; // el orden es distinto de 'santoral'
 
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
-		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
 
 		// Actualiza el valor de 'canons' y 'rolesIgl'
 		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
+
+		// Fin
+		this.rolesIglesia();
+		return;
+	},
+	rolesIglesia: function () {
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra =
+			["productos", "personajes"].includes(entidad) && // la entidad es 'productos' o 'personajes'
+			configCons.bhr !== "0" && // no se eligió 'sin bhr'
+			configCons.cfc !== "0"; // no se eligió 'sin cfc'
+
+		// Oculta/Muestra sectores
+		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
+
+		// Actualiza el valor de 'canons' y 'rolesIgl'
 		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
 
 		// Fin
