@@ -204,9 +204,8 @@ let actualizaConfigCons = {
 		const seMuestra =
 			!configCons.cfc && // 'cfc' no está contestado
 			!DOM.apMar.value && // 'apMar' no está contestado
-			!DOM.canons.value && // 'canon' no está contestado
-			!DOM.rolesIgl.value && // 'rolesIgl' no está contestado
-			v.ordenBD.valor != "santoral"; // el orden elegido es distinto a 'santoral'
+			(!DOM.canons.value|| DOM.canons.value == "NN") && // 'canon' no está contestado
+			!DOM.rolesIgl.value; // 'rolesIgl' no está contestado
 
 		seMuestra ? DOM.cfc.parentNode.classList.remove("ocultar") : DOM.cfc.parentNode.classList.add("ocultar");
 
@@ -261,8 +260,7 @@ let actualizaConfigCons = {
 		const seMuestra =
 			["productos", "personajes"].includes(entidad) && // la entidad es 'productos' o 'personajes'
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
-			configCons.cfc !== "0" && // no se eligió 'sin cfc'
-			v.ordenBD.valor != "santoral"; // el orden es distinto de 'santoral'
+			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
