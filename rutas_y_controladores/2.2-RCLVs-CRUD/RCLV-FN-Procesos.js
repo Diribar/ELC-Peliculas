@@ -81,8 +81,7 @@ module.exports = {
 			// Elimina capitulos si las colecciones están presentes
 			let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 			let coleccionesId = colecciones.map((n) => n.id);
-			for (let i = capitulos.length - 1; i >= 0; i--)
-				if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
+			capitulos = capitulos.filter((n) => !coleccionesId.find((m) => m == n.coleccion_id));
 
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
