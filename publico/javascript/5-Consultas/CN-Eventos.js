@@ -179,11 +179,17 @@ window.addEventListener("load", async () => {
 			const clase = v.nuevo ? "nuevo" : "edicion";
 			DOM.configNuevaNombre.classList.remove(clase);
 		}
+		
 		// Guarda la información en la base de datos
-		if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
-		v.hayCambiosDeCampo = false;
+		await cambiosEnBD.guardaUnaConfiguracion();
+
+		// Acciones particulares
+		if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
+		if (v.nuevo) await actualiza.valoresInicialesDeVariables()
+		if (v.propio) v.hayCambiosDeCampo = false;
+		
+		// Actualiza la botonera
 		actualiza.botoneraActivaInactiva();
-		DOM.palClaveAprob.classList.add("inactivo");
 
 		// Fin
 		return;
