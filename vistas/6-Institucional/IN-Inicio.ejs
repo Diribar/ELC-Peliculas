@@ -14,11 +14,11 @@
 		</ul>
 	</button>
 	<div id="botones" class="flexRow">
-		<% for (let i = 0; i < opciones.length; i++) { %>
-			<a href="<%= opciones[i].href %>">
+		<% for (let opcion of opciones) { %>
+			<a href="<%= opcion.href %>">
 				<button class="scale">
-					<img src="<%= localhost %><%= opciones[i].src %> ">
-					<p><%= opciones[i].p %> </p>
+					<img src="<%= localhost %><%= opcion.src %> ">
+					<p><%= opcion.p %> </p>
 				</button>
 			</a>
 		<% } %>
