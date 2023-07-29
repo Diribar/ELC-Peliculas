@@ -54,7 +54,7 @@ module.exports = {
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
-			if (ordenBD.valor == "feqslr" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'feqslr' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (ordenBD.valor == "diaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'diaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			if (ordenBD.valor == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (ordenBD.valor == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
@@ -83,14 +83,9 @@ module.exports = {
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
-			// Obtiene las condiciones básicas
-			let condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}}; // Status aprobado e ID mayor a 10
-
-			// Agrega condiciones particuylares de 'personajes' y 'hechos'
-			if (["personajes", "hechos"].includes(entidad)) {
-				const prefs = this.prefs.rclvs({configCons, entidad, orden});
-				condiciones = {...condiciones, ...prefs};
-			}
+			// Obtiene las condiciones
+			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs({configCons, entidad, orden}) : null;
+			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
 			// Obtiene los RCLVs
 			const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
@@ -231,7 +226,7 @@ module.exports = {
 			// Fin
 			return pppRegistros;
 		},
-		feqslr: async ({dia, mes}) => {
+		prodsDiaDelAno_id: async ({dia, mes}) => {
 			// Variables
 			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
 			const diaInicial_id = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
