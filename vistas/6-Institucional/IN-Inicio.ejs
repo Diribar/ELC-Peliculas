@@ -5,8 +5,13 @@
 
 <!-- Zona de Bienvenida -->
 <div id="zona-de-bienvenida" class="flexCol">
-	<button>
-		<p>Bienvenidos a nuestro sitio de <span>Recomendación de Películas</span>.</p>
+	<button id="cartel">
+		<h1>Bienvenidos a nuestro sitio de <span>Recomendación de Películas</span></h1>
+		<p>Nuestro sitio está orientado a ayudar a:</p>
+		<ul type="dots">
+			<li>El usuario, a disfrutar viendo una película que le deje algo bueno en su interior.</li>
+			<li>Los productores y distribuidores, a difundir sus películas con ese perfil.</li>
+		</ul>
 	</button>
 	<div id="botones" class="flexRow">
 		<% for (let i = 0; i < opciones.length; i++) { %>
