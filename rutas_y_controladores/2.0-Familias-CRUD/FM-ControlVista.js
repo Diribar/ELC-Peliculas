@@ -242,11 +242,27 @@ module.exports = {
 		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
 		const articulo2 = articulo1 == "La " ? "a" : "o";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";
+		const plural1 = entidad == "colecciones" ? "ron" : "";
+		const plural2 = entidad == "colecciones" ? "s" : "";
 		const link = origen == "TM" ? "/mantenimiento" : "/";
 
 		// Cartel de registro eliminado
 		const informacion = {
-			mensajes: [articulo1 + entidadNombre + ' "' + nombre + '" fue eliminad' + articulo2 + " de nuestra base de datos."],
+			mensajes: [
+				articulo1 +
+					entidadNombre +
+					' "' +
+					nombre +
+					'" ' +
+					capitulos +
+					"fue" +
+					plural1 +
+					" eliminad" +
+					articulo2 +
+					plural2 +
+					" de nuestra base de datos.",
+			],
 			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
 			check: true,
 		};
