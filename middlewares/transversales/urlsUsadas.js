@@ -9,9 +9,8 @@ module.exports = (req, res, next) => {
 	});
 
 	// Variables
+	const urlAnterior = req.session.urlActual;
 	const urlActual = req.originalUrl;
-	const urlAnterior =
-		req.session && req.session.urlActual ? req.session.urlActual : req.cookies.urlActual ? req.cookies.urlActual : "/";
 
 	// Condición
 	const rutasAceptadas = [
@@ -23,18 +22,17 @@ module.exports = (req, res, next) => {
 		"/consultas",
 		"/mantenimiento",
 		"/institucional",
+		"/graficos",
 	];
-	const rutaAceptada =
-		// Es diferente a la ruta urlAnterior
-		urlAnterior != urlActual &&
-		// Pertenece a las rutas aceptadas
-		rutasAceptadas.some((n) => urlActual.startsWith(n)) &&
-		// No contiene ciertas palabras
+
+	// Si no es una ruta aceptada, interrumpe la función
+	const diferenteRutaAnterior = urlActual != urlAnterior; // Es diferente a la ruta urlAnterior
+	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)); // Pertenece a las rutas aceptadas
+	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
 		!urlActual.includes("/api/");
-
-	// Si no es una ruta aceptada, interrumpe la función
+	const rutaAceptada = diferenteRutaAnterior && perteneceRutasAceptadas && noContieneCiertasPalabras;
 	if (!rutaAceptada) return next();
 
 	// Función
