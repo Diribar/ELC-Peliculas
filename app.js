@@ -74,6 +74,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/6-Institucional"),
 	path.resolve(__dirname, "./vistas/6-Institucional/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
+	path.resolve(__dirname, "./vistas/9-Miscelaneas/Includes"),
 ]);
 
 // Procesos que requieren de 'async' y 'await'
@@ -164,12 +165,9 @@ app.set("views", [
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
-	// Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
-	const loginConCookie = require("./middlewares/transversales/loginConCookie");
-	app.use(loginConCookie);
-	// Para tener el rastro de los últimos url - depende de procesos anteriores
-	const urlsUsadas = require("./middlewares/transversales/urlsUsadas");
-	app.use(urlsUsadas);
+	// Middlewares transversales
+	app.use(require("./middlewares/transversales/loginConCookie")); // Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
+	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Rutas que dependen de la variable 'global'
 	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/US-Rutas");
