@@ -1,5 +1,8 @@
 /* General */
 #cuerpo {flex-direction: row;}
+#cuerpo #zona-de-vitreaux {padding: 0 15px; width: 220px;}
+#cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center;}
 
 /* Cartel de Bienvenida */
 #zona-de-bienvenida #cartel {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
