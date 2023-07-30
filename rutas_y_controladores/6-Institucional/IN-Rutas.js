@@ -9,7 +9,7 @@ const institucional = require("../../middlewares/varios/urlInstitDescon");
 // Vistas *******************************************
 // Vistas de vistas - Institucional
 router.get("/inicio", vista.inicio);
-router.get("/:id",institucional, vista.institucional);
+router.get("/:id", institucional, vista.institucional);
 
 // Exportarlo **********************************************
 module.exports = router;
