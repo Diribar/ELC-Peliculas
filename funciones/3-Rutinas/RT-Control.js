@@ -341,7 +341,7 @@ module.exports = {
 		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
 		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
 
-		// Obtiene el dia de semana del primer día del año
+		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado:6)
 		const primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria); // Suma la diferencia horaria para tener el día correcto
 		const diaSem_primerDiaDelAno = primerDiaDelAno.getDay();
 
