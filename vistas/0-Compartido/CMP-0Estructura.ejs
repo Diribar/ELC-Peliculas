@@ -16,6 +16,7 @@
 	<% if (tema == "mantenimiento") { %><%- include("MT-1Head") %><% } %>
 	<% if (tema == "consultas") { %><%- include("CN-1Head") %><% } %>
 	<% if (tema == "institucional") { %><%- include("IN-1Head") %><% } %>
+	<% if (tema == "gráficos") { %><%- include("GR-1Head") %><% } %>
 </head>
 <body>
 	<!-- Header genérico -->
@@ -39,6 +40,7 @@
 				<% } else if (tema == "consultas") { %><%- include("CN-2Cuerpo") %>
 				<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
 				<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
+				<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
 				<% } %>
 			</section>
 		</section>
