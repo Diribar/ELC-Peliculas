@@ -71,8 +71,8 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
-		prodComb.capitulos =
-			entidad == "capitulos" ? BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada) : "";
+		if (entidad == "capitulos")
+			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID});
 		let interesDelUsuario = userID ? procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
@@ -106,7 +106,7 @@ module.exports = {
 			const origen = req.query.origen;
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-			let imgDerPers, avatarsExternos, gruposPers, gruposHechos;
+			let imgDerPers, gruposPers, gruposHechos;
 			let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
 			// Configura el título de la vista

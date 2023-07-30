@@ -195,7 +195,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguaCantTemps: async (req, res) => {
-		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then((n) => n.cant_temps);
+		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then((n) => n.cantTemps);
 		return res.json(datos);
 	},
 

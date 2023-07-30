@@ -13,13 +13,13 @@
 				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
 					<a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + capID + '&origen=' + rutaCRUD %>">
 						<div>
-							<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
+							<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 						</div>
 					</a>
 				<% } else { %>
 					<div>
-						<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
+						<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 					</div>
 				<% } %>
@@ -45,7 +45,7 @@
 						<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
 					</div>
 					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
-						<% for (let temp = 1; temp <= registro.coleccion.cant_temps; temp++) { %>
+						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
 							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 						<% } %>
 					</select>

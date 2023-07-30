@@ -45,7 +45,7 @@ module.exports = {
 		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id_id);
 
 		// Aprobados - Sin calificar
-		ppp = ppp.filter((n) => cal.find((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
+		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
 		const SC = pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id));
 
 		// Aprobados - Sin tema

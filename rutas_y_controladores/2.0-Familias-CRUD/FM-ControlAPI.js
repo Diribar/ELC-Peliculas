@@ -38,7 +38,7 @@ module.exports = {
 			// Obtiene el último número de capítulo de la temporada actual
 			BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo"),
 			// Obtiene el último número de temporada de la colección
-			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cant_temps),
+			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps),
 		]);
 		// Obtiene los datos del capítulo posterior (temporada y capítulo)
 		let tempPost = temporada;

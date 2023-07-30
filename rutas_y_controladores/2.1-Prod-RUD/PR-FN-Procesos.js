@@ -18,7 +18,7 @@ module.exports = {
 			infoGral.push({titulo: "Tenemos links en castellano", valor: producto.castellano ? "SI" : "NO"});
 		if (producto.tipoActuacion) infoGral.push({titulo: "Tipo de actuación", valor: producto.tipoActuacion.nombre});
 		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
-		if (producto.cant_temps) {
+		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		} else if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		if (producto.color !== null) infoGral.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
