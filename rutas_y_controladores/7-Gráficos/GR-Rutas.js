@@ -1,14 +1,12 @@
 "use strict";
 // Requires ************************************************
 const router = express.Router();
-// const vista = require("./IN-ControlVista");
+const vista = require("./GR-ControlVista");
 
 // Middlewares ***********************************************
-const urlInstitDescon = require("../../middlewares/varios/urlInstitDescon");
 
 // Vistas *******************************************
-// Vistas de vistas - Institucional
-// router.get("/vencimiento-de-links-por-semana", vista.inicio);
+router.get("/vencimiento-de-links-por-semana", vista.vencimLinks);
 
 // Exportarlo **********************************************
 module.exports = router;
