@@ -12,7 +12,7 @@ let resultados = {
 		let datos = {configCons, entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "feqslr") datos = {...datos, dia, mes};
+		if (entidad == "productos" && v.ordenBD.valor == "diaDelAno_id") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());

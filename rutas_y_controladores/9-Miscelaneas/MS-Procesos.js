@@ -42,7 +42,7 @@ module.exports = {
 		const SE = [...SE_pel, ...SE_col, ...SE_cap];
 
 		// Inactivos (los tres productos)
-		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id_id);
+		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id);
 
 		// Aprobados - Sin calificar
 		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
