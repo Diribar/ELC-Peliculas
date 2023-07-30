@@ -1,10 +1,8 @@
 "use strict";
 // Requires ************************************************
-const express = require("express");
 const router = express.Router();
 const API = require("./RCLV-ControlAPI");
 const vista = require("./RCLV-ControlVista");
-const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios

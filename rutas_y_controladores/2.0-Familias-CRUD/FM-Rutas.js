@@ -1,6 +1,5 @@
 "use strict";
 //************************* Requires *******************************
-const express = require("express");
 const router = express.Router();
 const vista = require("./FM-ControlVista");
 const API = require("./FM-ControlAPI");

@@ -23,7 +23,7 @@ const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 
 // Para usar propiedades de express
-const express = require("express");
+global.express = require("express");
 const app = express();
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
@@ -182,6 +182,7 @@ app.set("views", [
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
+	app.use("/graficos", require("./rutas_y_controladores/7-Gráficos/GR-Rutas"));
 	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales

@@ -1,6 +1,5 @@
 "use strict";
 //************************* Requires *******************************
-const express = require("express");
 const router = express.Router();
 const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
