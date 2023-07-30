@@ -29,7 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
-		actualizaLaEpocaDeEstreno();
+		this.LinksVencidos();
 	},
 
 	// 1. Rutinas horarias
@@ -315,8 +315,8 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Obtiene la semanaUTC actual
-		this.FechaPrimerDomingoDelAno();
-		const semanaUTC = parseInt((Date.now() - fechaPrimerDomingoDelAno) / unDia / 7);
+		this.FechaPrimerLunesDelAno();
+		const semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
@@ -335,21 +335,20 @@ module.exports = {
 		// Fin
 		return;
 	},
-	FechaPrimerDomingoDelAno: () => {
+	FechaPrimerLunesDelAno: () => {
 		// Obtiene el primer día del año
 		const fecha = new Date();
 		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
 		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
 
 		// Obtiene el dia de semana del primer día del año
-		let diaSem_primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria).getDay(); // Suma la diferencia horaria para tener el día de la semana correcto
+		const primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria); // Suma la diferencia horaria para tener el día correcto
+		const diaSem_primerDiaDelAno = primerDiaDelAno.getDay();
 
-		// Lleva el día al formato lun: 1 - dom: 7
-		if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
-
-		// Obtiene el primer domingo del año (0 - 6)
-		const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
-		fechaPrimerDomingoDelAno = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
+		// Obtiene el primer lunes del año
+		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
+		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
+		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
 
 		// Fin
 		return;
@@ -408,8 +407,8 @@ module.exports = {
 	LinksVencidos: async function () {
 		// Variables
 		const ahora = Date.now();
-		const fechaPrimeraRevision = new Date(ahora - unMes);
 		const vidaUtil = 7 * unDia * 26; // 26 semanas
+		const fechaPrimeraRevision = new Date(ahora - cuatroSems);
 		const fechaCorte = new Date(ahora - vidaUtil);
 
 		// Condiciones
