@@ -48,8 +48,7 @@ module.exports = {
 		let mensaje = "";
 
 		// Obtiene los campos a validar
-		let campos = Object.keys(datos);
-		for (let i = campos.length - 1; i >= 0; i--) if (!["nombre", "apodo"].includes(campos[i])) campos.splice(i, 1);
+		let campos = Object.keys(datos).filter((n) => ["nombre", "apodo"].includes(n));
 
 		// Validaciones individuales
 		for (let campo of campos) {
