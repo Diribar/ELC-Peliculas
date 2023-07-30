@@ -5,15 +5,20 @@
 
 <!-- Zona de Bienvenida -->
 <div id="zona-de-bienvenida" class="flexCol">
-	<button>
-		<p>Bienvenidos a nuestro sitio de <span>Recomendación de Películas</span>.</p>
+	<button id="cartel">
+		<h1>Bienvenidos a nuestro sitio de <u>Recomendación de Películas</u></h1>
+		<p>Nuestro sitio está orientado a ayudar:</p>
+		<ul type="dots">
+			<li>Al usuario, a disfrutar viendo una película que le deje algo bueno en su interior.</li>
+			<li>A los productores y distribuidores, a difundir sus películas con ese perfil.</li>
+		</ul>
 	</button>
 	<div id="botones" class="flexRow">
-		<% for (let i = 0; i < opciones.length; i++) { %>
-			<a href="<%= opciones[i].href %>">
+		<% for (let opcion of opciones) { %>
+			<a href="<%= opcion.href %>">
 				<button class="scale">
-					<img src="<%= localhost %><%= opciones[i].src %> ">
-					<p><%= opciones[i].p %> </p>
+					<img src="<%= localhost %><%= opcion.src %> ">
+					<p><%= opcion.p %> </p>
 				</button>
 			</a>
 		<% } %>

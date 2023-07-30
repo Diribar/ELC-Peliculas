@@ -23,11 +23,10 @@ let actualiza = {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
-		v.comencemos = true;
 		v.configCons_id = DOM.configCons_id.value;
+		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
 
 		// Variables que dependen de otras variables 'v'
-		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
 		v.filtroPropio = v.configDeCabecera.usuario_id == v.userID;
 
 		// Fin

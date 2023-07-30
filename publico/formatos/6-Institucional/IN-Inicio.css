@@ -1,10 +1,18 @@
+/* General */
 #cuerpo {flex-direction: row;}
-
 #cuerpo #zona-de-vitreaux {padding-left: 30px; width: 220px; justify-content: center;}
+#cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center;}
 
-/* Zona de Bienvenida */
-#cuerpo #zona-de-bienvenida {flex-grow: 1; align-self: center; justify-content: center;}
-#cuerpo #zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
-#cuerpo #zona-de-bienvenida #botones button {width: 190px; margin: 20px 0; padding: 15px; border-radius: 15px; height: 208px;}
-#cuerpo #zona-de-bienvenida #botones button:hover {scale: 1.1;}
-#cuerpo #zona-de-bienvenida #botones button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+/* Cartel de Bienvenida */
+#zona-de-bienvenida #cartel {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#zona-de-bienvenida #cartel {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
+#zona-de-bienvenida #cartel {max-width: 80%; margin-bottom: 70px;}
+#zona-de-bienvenida #cartel h1 {margin-top: 0;}
+#zona-de-bienvenida #cartel :where(p, li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+
+/* Zona de Botones */
+#zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
+#zona-de-bienvenida #botones button {width: 190px; padding: 15px; border-radius: 15px; height: 208px;}
+#zona-de-bienvenida #botones button:hover {scale: 1.1;}
+#zona-de-bienvenida #botones button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+#zona-de-bienvenida #botones button p {font-size: 1.1rem;}

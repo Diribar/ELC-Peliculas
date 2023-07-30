@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 				// Restringe el largo del nombre
 				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
 				DOM.configNuevaNombre.value = nombre;
-				
+
 				// Muestra/Oculta el ícono de confirmación
 				const nombres = v.configsDeCabecera.map((n) => n.nombre);
 				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
@@ -111,25 +111,7 @@ window.addEventListener("load", async () => {
 					await cambioDeConfig_id();
 					await cambioDeCampos();
 				} else if (nombre == "guardar") {
-					if (v.nuevo || v.edicion) {
-						// Obtiene el nuevo nombre
-						configCons.nombre = DOM.configNuevaNombre.value;
-
-						// Si es una configuración nueva, agrega la cabecera
-						if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
-
-						// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
-						if (v.edicion) configCons.edicion = true;
-
-						// Quita la clase
-						const clase = v.nuevo ? "nuevo" : "edicion";
-						DOM.configNuevaNombre.classList.remove(clase);
-					}
-					// Guarda la información en la base de datos
-					if (v.nuevo || v.edicion || v.propio) await cambiosEnBD.guardaUnaConfiguracion();
-					v.hayCambiosDeCampo = false;
-					actualiza.botoneraActivaInactiva();
-					DOM.palClaveAprob.classList.add("inactivo");
+					guardarBotonera();
 				}
 			}
 			// Icono de 'palabrasClave'
@@ -144,7 +126,7 @@ window.addEventListener("load", async () => {
 				// Actualiza la 'ppp'
 				await cambiosEnBD.ppp(elemento);
 			}
-			// Actualizar resultados
+			// Actualizar resultados (encabezado)
 			else if (nombre == "actualizar") {
 				if (v.mostrar) {
 					await resultados.obtiene();
@@ -160,8 +142,17 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	DOM.palClave.addEventListener("keypress", (e) => {
-		if (e.key == "Enter") palabrasClave();
+	DOM.cuerpo.addEventListener("keypress", (e) => {
+		if (e.key == "Enter") {
+			// Variables
+			const elemento = e.target;
+			const padre = elemento.parentNode;
+			const nombre = elemento.id ? elemento.id : padre.id;
+
+			// Acciones
+			if (nombre == "palabrasClave") palabrasClave();
+			else if (nombre == "configNueva") guardarBotonera();
+		}
 	});
 
 	// Funciones
@@ -169,6 +160,36 @@ window.addEventListener("load", async () => {
 		DOM.palClaveAprob.classList.add("inactivo");
 		v.hayCambiosDeCampo = true;
 		await cambioDeCampos();
+
+		// Fin
+		return;
+	};
+	let guardarBotonera = async () => {
+		if (v.nuevo || v.edicion) {
+			// Obtiene el nuevo nombre
+			configCons.nombre = DOM.configNuevaNombre.value;
+
+			// Si es una configuración nueva, agrega la cabecera
+			if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
+
+			// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
+			if (v.edicion) configCons.edicion = true;
+
+			// Quita la clase
+			const clase = v.nuevo ? "nuevo" : "edicion";
+			DOM.configNuevaNombre.classList.remove(clase);
+		}
+		
+		// Guarda la información en la base de datos
+		await cambiosEnBD.guardaUnaConfiguracion();
+
+		// Acciones particulares
+		if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
+		if (v.nuevo) await actualiza.valoresInicialesDeVariables()
+		if (v.propio) v.hayCambiosDeCampo = false;
+		
+		// Actualiza la botonera
+		actualiza.botoneraActivaInactiva();
 
 		// Fin
 		return;
