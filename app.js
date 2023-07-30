@@ -74,6 +74,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/6-Institucional"),
 	path.resolve(__dirname, "./vistas/6-Institucional/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
+	path.resolve(__dirname, "./vistas/9-Miscelaneas/Includes"),
 ]);
 
 // Procesos que requieren de 'async' y 'await'
@@ -164,41 +165,25 @@ app.set("views", [
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
-	// Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
-	const loginConCookie = require("./middlewares/transversales/loginConCookie");
-	app.use(loginConCookie);
-	// Para tener el rastro de los últimos url - depende de procesos anteriores
-	const urlsUsadas = require("./middlewares/transversales/urlsUsadas");
-	app.use(urlsUsadas);
-
-	// Rutas que dependen de la variable 'global'
-	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/US-Rutas");
-	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
-	const rutaProd_Agregar = require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas");
-	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas");
-	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas");
-	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas");
-	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas");
-	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/RU-Rutas");
-	const rutaConsultas = require("./rutas_y_controladores/5-Consultas/CN-Rutas");
-	const rutaInstitucional = require("./rutas_y_controladores/6-Institucional/IN-Rutas");
-	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas");
+	// Middlewares transversales
+	app.use(require("./middlewares/transversales/loginConCookie")); // Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
+	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Urls que dependen de la variable 'global'
+	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
 	app.use("/crud", rutaCRUD);
-	app.use("/producto/agregar", rutaProd_Agregar);
-	app.use("/producto", rutaProd_RUD);
-	app.use("/rclv", rutaRCLV_CRUD);
-	app.use("/links", rutaLinks_CRUD);
-	app.use("/usuarios", rutaUsuarios);
-	app.use("/revision/usuarios", rutaRevisarUs);
-	app.use("/revision", rutaRevisarEnts);
-	app.use("/", rutaCRUD);
-	app.use("/consultas", rutaConsultas);
-	app.use("/institucional", rutaInstitucional);
-	app.use("/", rutaMiscelaneas);
+	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas"));
+	app.use("/producto", require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas"));
+	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas"));
+	app.use("/links", require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas"));
+	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_controladores/4-RevisionUs/RU-Rutas"));
+	app.use("/revision", require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas"));
+	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
+	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
+	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
+	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
-	// Middleware si un usuario usa un url desconocido - se debe informar después de los urls anteriores
-	const urlDesconocida = require("./middlewares/transversales/urlDesconocida");
-	app.use(urlDesconocida);
+	// Middlewares transversales
+	app.use(require("./middlewares/transversales/urlDesconocida")); // Si no se reconoce el url - se debe informar después de los urls anteriores
 })();

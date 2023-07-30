@@ -38,7 +38,7 @@ router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/api/motivos-status", API.motivosRechAltas);
 router.get("/api/actualiza-visibles", API.actualizarVisibles);
 
-// Inactivar, Recuperar, Eliminar
+// CRUD-Inactivar, Recuperar, Eliminar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecup.form);
 router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup.guardar);
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
@@ -46,8 +46,10 @@ router.post("/:familia/recuperar", aptoCRUD, capturaInactivar, vista.inacRecup.g
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecup.form);
 router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.eliminar);
 router.get("/:familia/eliminado", vista.eliminado);
-router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
-router.get("/revision/:familia/rechazo", aptoCRUD, capturaActivar, vista.inacRecup.form);
+
+// Revisión
+router.get("/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
+router.get("/:familia/rechazo", aptoCRUD, capturaActivar, vista.inacRecup.form);
 
 // Fin
 module.exports = router;

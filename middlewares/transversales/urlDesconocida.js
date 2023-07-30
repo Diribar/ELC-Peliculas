@@ -8,8 +8,7 @@ module.exports = async (req, res, next) => {
 		mensajes: [variables.urlDesconocida],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 	};
-	res.status(404).render("CMP-0Estructura", {informacion});
 
-	// Continuar
-	next();
+	// Fin
+	return res.status(404).render("CMP-0Estructura", {informacion});
 };

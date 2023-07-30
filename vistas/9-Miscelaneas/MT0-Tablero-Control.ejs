@@ -108,6 +108,7 @@
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
+					<%- include("MT0-Títulos", {DE, titulo: "Vencimiento de links por semana", url: "graficos/vencimiento-de-links-por-semana"}) %>
 				<% } %>
 			</div>
 		</div>
