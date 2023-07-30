@@ -1,15 +1,15 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
 // Simples
-global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
-global.unDia = unaHora * 24; // Para usar la variable en todo el proyecto
-global.unMes = unDia * 30; // Para usar la variable en todo el proyecto
+global.unaHora = 60 * 60 * 1000;
+global.unDia = unaHora * 24;
+global.cuatroSems = unDia * 28;
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = 0;
 global.usAutom_id = 2;
-global.fechaPrimerDomingoDelAno = null;
+global.fechaPrimerLunesDelAno = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
