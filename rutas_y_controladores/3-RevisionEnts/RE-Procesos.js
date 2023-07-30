@@ -99,7 +99,7 @@ module.exports = {
 		},
 		obtieneProds_Links: async (revID) => {
 			// Variables
-			if (!fechaPrimerDomingoDelAno) procsRutinas.FechaPrimerDomingoDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
+			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
 
 			// Obtiene los links ajenos 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinksAjenos(revID);
@@ -107,7 +107,7 @@ module.exports = {
 			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
 				yaTuvoPrimRev: true,
-				statusSugeridoEn: {[Op.gt]: comienzoDelDomingo()},
+				statusSugeridoEn: {[Op.gt]: comienzoDeLaSemana()},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
@@ -126,7 +126,7 @@ module.exports = {
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 40;
+			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
@@ -874,12 +874,12 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Fin
 	return prods;
 };
-let comienzoDelDomingo = () => {
+let comienzoDeLaSemana = () => {
 	// Obtiene la semana del año
-	const semana = parseInt((Date.now() - fechaPrimerDomingoDelAno) / unDia / 7);
+	const semana = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
 
 	// Obtiene el instante cero de la semana actual
-	const instanteCeroDeLaSemanaActual = fechaPrimerDomingoDelAno + semana * unDia * 7;
+	const instanteCeroDeLaSemanaActual = fechaPrimerLunesDelAno + semana * unDia * 7;
 
 	// Fin
 	return new Date(instanteCeroDeLaSemanaActual);
