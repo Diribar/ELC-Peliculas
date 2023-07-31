@@ -1,0 +1,15 @@
+<section id="tituloPrincipal">
+	<h1 id="titulo"><%= titulo %></h1>
+</section>
+
+<section id="centro">
+	<!-- Zona de Vitreaux -->
+	<%- include("CMP-Vitreaux") %>
+	
+	<!-- Zona de Gráficos -->
+	<div id="zonaDeGraficos">
+		<div id="cuadro">
+			<% if (codigo == "vencimLinks") { %><%- include("GR1-VencimLinks") %><% } %>
+		</div>
+	</div>
+</section>

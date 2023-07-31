@@ -1,6 +1,7 @@
 /* General */
 #cuerpo {flex-direction: row;}
-#cuerpo #zona-de-vitreaux {padding-left: 30px; width: 220px; justify-content: center;}
+#cuerpo #zona-de-vitreaux {padding: 0 15px; width: 220px;}
+#cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
 #cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center;}
 
 /* Cartel de Bienvenida */
