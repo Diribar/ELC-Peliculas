@@ -1,6 +1,5 @@
 "use strict";
 //************************* Requires *******************************
-const express = require("express");
 const router = express.Router();
 const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");

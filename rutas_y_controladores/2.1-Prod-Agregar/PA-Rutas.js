@@ -1,6 +1,5 @@
 "use strict";
 //************************* Requires *******************************
-const express = require("express");
 const router = express.Router();
 const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");

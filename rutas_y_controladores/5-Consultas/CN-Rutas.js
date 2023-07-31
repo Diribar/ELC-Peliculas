@@ -1,6 +1,5 @@
 "use strict";
 // Variables
-const express = require("express");
 const router = express.Router();
 const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");

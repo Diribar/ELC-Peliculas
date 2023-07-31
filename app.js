@@ -1,15 +1,15 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
 // Simples
-global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
-global.unDia = unaHora * 24; // Para usar la variable en todo el proyecto
-global.unMes = unDia * 30; // Para usar la variable en todo el proyecto
+global.unaHora = 60 * 60 * 1000;
+global.unDia = unaHora * 24;
+global.cuatroSems = unDia * 28;
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = 0;
 global.usAutom_id = 2;
-global.fechaPrimerDomingoDelAno = null;
+global.fechaPrimerLunesDelAno = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
@@ -23,7 +23,7 @@ const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 
 // Para usar propiedades de express
-const express = require("express");
+global.express = require("express");
 const app = express();
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
@@ -182,6 +182,7 @@ app.set("views", [
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
+	app.use("/graficos", require("./rutas_y_controladores/7-Gráficos/GR-Rutas"));
 	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
