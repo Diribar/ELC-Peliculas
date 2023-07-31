@@ -41,8 +41,8 @@
 				<% if (tema == "prod_rud" || tema == "links_crud") { %>
 					<!-- Cambiar de capítulo -->
 					<div class="pack">
-						<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>
-						<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
+						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
+						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
 					</div>
 					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
 						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>

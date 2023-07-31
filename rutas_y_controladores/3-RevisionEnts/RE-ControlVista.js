@@ -33,8 +33,8 @@ module.exports = {
 		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Procesa los campos de las 2 familias de entidades
-		prods = procesos.TC.prod_ProcesaCampos(prods);
-		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
+		prods = procesos.TC.procesaCampos.prods(prods);
+		rclvs = procesos.TC.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};

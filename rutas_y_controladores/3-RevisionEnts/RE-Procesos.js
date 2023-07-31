@@ -111,8 +111,7 @@ module.exports = {
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
-				yaTuvoPrimRev: true,
-				statusRegistro_id: aprobado_id,
+				statusRegistro_id: [creadoAprob_id, aprobado_id],
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
@@ -126,7 +125,7 @@ module.exports = {
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 30;
+			const aprobsPerms = porcentaje < 5 || linksAprobsEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
@@ -195,58 +194,60 @@ module.exports = {
 			// Fin
 			return {ED: rclvs};
 		},
-		prod_ProcesaCampos: (productos) => {
-			// Procesar los registros
-			// Variables
-			const anchoMax = 35;
-			const rubros = Object.keys(productos);
-
-			// Reconvierte los elementos
-			for (let rubro of rubros)
-				productos[rubro] = productos[rubro].map((n) => {
-					let nombre =
-						(n.nombreCastellano.length > anchoMax
-							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
-							: n.nombreCastellano) +
-						" (" +
-						n.anoEstreno +
-						")";
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
-					if (rubro == "ED") datos.edicID = n.edicID;
-					return datos;
-				});
-
-			// Fin
-			return productos;
-		},
-		RCLV_ProcesaCampos: (rclvs) => {
-			// Procesar los registros
-			let anchoMax = 35;
-			const rubros = Object.keys(rclvs);
-
-			// Reconvierte los elementos
-			for (let rubro of rubros)
-				rclvs[rubro] = rclvs[rubro].map((n) => {
-					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
-					if (rubro == "ED") datos.edicID = n.edicID;
-					return datos;
-				});
-
-			// Fin
-			return rclvs;
+		procesaCampos:{
+			prods: (productos) => {
+				// Procesar los registros
+				// Variables
+				const anchoMax = 35;
+				const rubros = Object.keys(productos);
+	
+				// Reconvierte los elementos
+				for (let rubro of rubros)
+					productos[rubro] = productos[rubro].map((n) => {
+						let nombre =
+							(n.nombreCastellano.length > anchoMax
+								? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+								: n.nombreCastellano) +
+							" (" +
+							n.anoEstreno +
+							")";
+						let datos = {
+							id: n.id,
+							entidad: n.entidad,
+							nombre,
+							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRefTexto: n.fechaRefTexto,
+						};
+						if (rubro == "ED") datos.edicID = n.edicID;
+						return datos;
+					});
+	
+				// Fin
+				return productos;
+			},
+			rclvs: (rclvs) => {
+				// Procesar los registros
+				let anchoMax = 35;
+				const rubros = Object.keys(rclvs);
+	
+				// Reconvierte los elementos
+				for (let rubro of rubros)
+					rclvs[rubro] = rclvs[rubro].map((n) => {
+						let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+						let datos = {
+							id: n.id,
+							entidad: n.entidad,
+							nombre,
+							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRefTexto: n.fechaRefTexto,
+						};
+						if (rubro == "ED") datos.edicID = n.edicID;
+						return datos;
+					});
+	
+				// Fin
+				return rclvs;
+			},
 		},
 	},
 
@@ -693,7 +694,7 @@ module.exports = {
 		// Variables
 		const productos = await this.TC.obtieneProds_Links(revID)
 			.then((n) => n.productos) // Obtiene solamente la parte de productos
-			.then((n) => this.TC.prod_ProcesaCampos(n)); // Los ordena según corresponda
+			.then((n) => this.TC.procesaCampos.prods(n)); // Los ordena según corresponda
 
 		// Obtiene el siguiente producto
 		let siguienteProducto;
@@ -828,8 +829,8 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Variables
 	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
-	// 2. Separa entre PR, VN y OT
-	links.map((link) => {
+	// Separa entre PR, VN y OT
+	for (let link of links) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
@@ -837,14 +838,16 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
-		// Separa en PR, VN y OT
+		// Separa en PR y VN
 		if (link.statusRegistro && link.statusRegistro.creadoAprob) {
 			if (aprobsPerms)
 				link.yaTuvoPrimRev
 					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
 					: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-		} else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-	});
+		}
+		// Grupo OT
+		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+	}
 
 	// Pule los resultados
 	const metodos = Object.keys(prods);
@@ -855,13 +858,13 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
 			const metodoEliminar = metodos[j];
-			prods[metodoEliminar] = prods[metodoEliminar].filter((n) =>
-				prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
+			prods[metodoEliminar] = prods[metodoEliminar].filter(
+				(n) => !prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
 			);
 		}
 
 		// Ordena por la fecha más antigua
-		prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+		if (prods[metodo].length > 1) prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 
 		// Deja solamente los prods aprobados
 		if (prods[metodo].length)
