@@ -74,7 +74,6 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/6-Institucional"),
 	path.resolve(__dirname, "./vistas/6-Institucional/Includes"),
 	path.resolve(__dirname, "./vistas/7-Graficos"),
-	path.resolve(__dirname, "./vistas/7-Graficos/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas/Includes"),
 ]);
