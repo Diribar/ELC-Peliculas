@@ -158,7 +158,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 	let LI = []; // Inactivos
 
 	// 2. Obtiene los prods
-	links.map((link) => {
+	for (let link of links) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
@@ -166,11 +166,12 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
+		// Agrega los registros
 		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-	});
+	}
 
-	// 3. Ordena por la fecha más antigua
-	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	// 3. Ordena
+	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)); // Fecha más reciente
 
 	// 4. Elimina repetidos
 	LI = comp.eliminaRepetidos(LI);
