@@ -12,11 +12,11 @@ window.addEventListener("load", async () => {
 	google.charts.load("current", {packages: ["corechart", "bar"]});
 	google.charts.setOnLoadCallback(drawGraphic);
 
-	// https://developers.google.com/chart/interactive/docs/gallery/barchart
+	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Consolida el resultado
-		let resultado = [["Semana", "Cant. de Links"]];
-		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
+		let resultado = [["Semana", "Cant. de Links", {role: "annotation"}]];
+		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i], ejeY[i]]);
 
 		// Especifica la información
 		let data = google.visualization.arrayToDataTable(resultado);
@@ -24,30 +24,30 @@ window.addEventListener("load", async () => {
 		// Opciones del gráfico
 		let options = {
 			backgroundColor: "rgb(255,242,204)",
-			width: "100%",
-			fontSize: 8,
+			fontSize: 10,
 			animation: {
 				duration: 100,
 				easing: "out",
 				startup: true,
 			},
-			numberStyle: "percent",
-			chartArea: {top: "10%"},
+			chartArea: {width: "80%", height: "70%"},
 			colors: ["rgb(31,73,125)"],
-			legend: {
-				position: "bottom",
-				alignment: "start",
-				textStyle: {italic: true},
-			},
+			legend: {position: "none"},
 			hAxis: {
 				// minValue: 0,
 				format: "decimal",
 				scaleType: "number",
+				title: "Semana",
+			},
+			vAxis: {
+				viewWindow: {max: 40},
+				title: "Cant. de Links",
+				fontSize: 20,
 			},
 		};
 
 		// Hace visible el gráfico
-		let grafico = new google.visualization.ColumnChart(document.getElementById("grafico"));
+		let grafico = new google.visualization.ColumnChart(document.querySelector("#grafico"));
 		grafico.draw(data, options);
 	}
 });

@@ -37,13 +37,6 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Ya Vistas y Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
-				<% if (omnipotente) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
-				<% } %>
 			</div>
 		</div>
 	</div>
@@ -69,16 +62,6 @@
 			</div>
 			<!-- Registros -->
 			<div class="temas">
-				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Películas", regs: rclvs.SP, url: "rclv/detalle", mostrarOrigen: true}) %>
-				<% if (revisor || omnipotente) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<% } %>
-				<% if (omnipotente) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
-				<% } %>
 			</div>
 		</div>
 		<!-- Links -->
@@ -102,12 +85,7 @@
 				</div>
 			</div>
 			<div class="temas">
-				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links", regs: prods.SL, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 					<%- include("MT0-Títulos", {DE, titulo: "Vencimiento de links por semana", url: "graficos/vencimiento-de-links-por-semana"}) %>
 				<% } %>
 			</div>

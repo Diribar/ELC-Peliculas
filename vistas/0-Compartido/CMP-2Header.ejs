@@ -39,21 +39,22 @@
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
 		<% } %>
+	</section>
+	<!-- Título del Encabezado -->
+	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
+	<section>
+		<!-- Tablero de Gráficos -->
+		<% if (locals.usuario && usuario.rolUsuario.permInputs) { %>
+			<a href="/graficos/vencimiento-de-links-por-semana/?origen=TM" tabindex="-1" class="grupos">
+				<i class="fa-solid fa-chart-line scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
+			</a>
+		<% } %>
 		<!-- Tablero de Usuarios -->
 		<% if (locals.usuario && locals.usuario.rolUsuario.revisorUs) { %>
 			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Tablero de Usuarios"></i>
 			</a>
 		<% } %>
-	</section>
-	<!-- Título del Encabezado -->
-	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
-	<section>
-		<!-- Música de fondo -->
-		<div class="grupos">
-			<i id="icono_musica" class="fa-solid fa-music scale iconoHeader"></i>
-			<audio src="/audio/Música-de-fondo.mp3"></audio>
-		</div>
 		<!-- Usuario -->
 		<div class="grupos">
 			<%- include("CMP-4IconoUsuario") %>

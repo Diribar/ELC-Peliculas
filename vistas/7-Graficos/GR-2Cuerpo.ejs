@@ -1,15 +1,5 @@
-<section id="tituloPrincipal">
-	<h1 id="titulo"><%= titulo %></h1>
-</section>
+<!-- Tablero de Control -->
+<% if (codigo == "tableroControl") { %><%- include("GR1-TableroControl") %>
 
-<section id="centro">
-	<!-- Zona de Vitreaux -->
-	<%- include("CMP-Vitreaux") %>
-	
-	<!-- Zona de Gráficos -->
-	<div id="zonaDeGraficos">
-		<div id="cuadro">
-			<div id="grafico"></div>
-		</div>
-	</div>
-</section>
+<!-- Gráficos -->
+<% } else { %><%- include("GR2-Gráficos") %><% } %>
