@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 				title: "Semana",
 			},
 			vAxis: {
-				viewWindow: {max: 40},
+				viewWindow: {max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				title: "Cant. de Links",
 				fontSize: 20,
 			},
