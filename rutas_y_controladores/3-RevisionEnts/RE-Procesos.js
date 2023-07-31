@@ -828,8 +828,8 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Variables
 	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
-	// 2. Separa entre PR, VN y OT
-	links.map((link) => {
+	// Separa entre PR, VN y OT
+	for (let link of links) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
@@ -837,14 +837,16 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
-		// Separa en PR, VN y OT
+		// Separa en PR y VN
 		if (link.statusRegistro && link.statusRegistro.creadoAprob) {
 			if (aprobsPerms)
 				link.yaTuvoPrimRev
 					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
 					: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-		} else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-	});
+		}
+		// Grupo OT
+		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+	}
 
 	// Pule los resultados
 	const metodos = Object.keys(prods);
@@ -855,13 +857,13 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
 			const metodoEliminar = metodos[j];
-			prods[metodoEliminar] = prods[metodoEliminar].filter((n) =>
-				prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
+			prods[metodoEliminar] = prods[metodoEliminar].filter(
+				(n) => !prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
 			);
 		}
 
 		// Ordena por la fecha más antigua
-		prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+		if (prods[metodo].length > 1) prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 
 		// Deja solamente los prods aprobados
 		if (prods[metodo].length)
