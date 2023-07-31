@@ -196,7 +196,6 @@ module.exports = {
 		},
 		procesaCampos:{
 			prods: (productos) => {
-				// Procesar los registros
 				// Variables
 				const anchoMax = 35;
 				const rubros = Object.keys(productos);
