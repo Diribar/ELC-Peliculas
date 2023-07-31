@@ -61,15 +61,15 @@ module.exports = {
 		// Productos
 		let prods = await procesos.obtieneProds(userID);
 		// return res.send(prods)
-		prods = procesosRE.TC.prod_ProcesaCampos(prods);
+		prods = procesosRE.TC.procesaCampos.prods(prods);
 
 		// RCLVs
 		let rclvs = await procesos.obtieneRCLVs(userID);
-		rclvs = procesosRE.TC.RCLV_ProcesaCampos(rclvs);
+		rclvs = procesosRE.TC.procesaCampos.rclvs(rclvs);
 
 		// Links
 		let prodLinks = await procesos.obtieneProds_Links(userID);
-		prodLinks = procesosRE.TC.prod_ProcesaCampos(prodLinks);
+		prodLinks = procesosRE.TC.procesaCampos.prods(prodLinks);
 
 		// Une Productos y Links
 		prods = {...prods, ...prodLinks};

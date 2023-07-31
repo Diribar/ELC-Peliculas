@@ -194,58 +194,60 @@ module.exports = {
 			// Fin
 			return {ED: rclvs};
 		},
-		prod_ProcesaCampos: (productos) => {
-			// Procesar los registros
-			// Variables
-			const anchoMax = 35;
-			const rubros = Object.keys(productos);
-
-			// Reconvierte los elementos
-			for (let rubro of rubros)
-				productos[rubro] = productos[rubro].map((n) => {
-					let nombre =
-						(n.nombreCastellano.length > anchoMax
-							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
-							: n.nombreCastellano) +
-						" (" +
-						n.anoEstreno +
-						")";
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
-					if (rubro == "ED") datos.edicID = n.edicID;
-					return datos;
-				});
-
-			// Fin
-			return productos;
-		},
-		RCLV_ProcesaCampos: (rclvs) => {
-			// Procesar los registros
-			let anchoMax = 35;
-			const rubros = Object.keys(rclvs);
-
-			// Reconvierte los elementos
-			for (let rubro of rubros)
-				rclvs[rubro] = rclvs[rubro].map((n) => {
-					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
-					if (rubro == "ED") datos.edicID = n.edicID;
-					return datos;
-				});
-
-			// Fin
-			return rclvs;
+		procesaCampos:{
+			prods: (productos) => {
+				// Procesar los registros
+				// Variables
+				const anchoMax = 35;
+				const rubros = Object.keys(productos);
+	
+				// Reconvierte los elementos
+				for (let rubro of rubros)
+					productos[rubro] = productos[rubro].map((n) => {
+						let nombre =
+							(n.nombreCastellano.length > anchoMax
+								? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+								: n.nombreCastellano) +
+							" (" +
+							n.anoEstreno +
+							")";
+						let datos = {
+							id: n.id,
+							entidad: n.entidad,
+							nombre,
+							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRefTexto: n.fechaRefTexto,
+						};
+						if (rubro == "ED") datos.edicID = n.edicID;
+						return datos;
+					});
+	
+				// Fin
+				return productos;
+			},
+			rclvs: (rclvs) => {
+				// Procesar los registros
+				let anchoMax = 35;
+				const rubros = Object.keys(rclvs);
+	
+				// Reconvierte los elementos
+				for (let rubro of rubros)
+					rclvs[rubro] = rclvs[rubro].map((n) => {
+						let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+						let datos = {
+							id: n.id,
+							entidad: n.entidad,
+							nombre,
+							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRefTexto: n.fechaRefTexto,
+						};
+						if (rubro == "ED") datos.edicID = n.edicID;
+						return datos;
+					});
+	
+				// Fin
+				return rclvs;
+			},
 		},
 	},
 
@@ -692,7 +694,7 @@ module.exports = {
 		// Variables
 		const productos = await this.TC.obtieneProds_Links(revID)
 			.then((n) => n.productos) // Obtiene solamente la parte de productos
-			.then((n) => this.TC.prod_ProcesaCampos(n)); // Los ordena según corresponda
+			.then((n) => this.TC.procesaCampos.prods(n)); // Los ordena según corresponda
 
 		// Obtiene el siguiente producto
 		let siguienteProducto;
