@@ -111,8 +111,7 @@ module.exports = {
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
-				yaTuvoPrimRev: true,
-				statusRegistro_id: aprobado_id,
+				statusRegistro_id: [creadoAprob_id, aprobado_id],
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
@@ -126,7 +125,7 @@ module.exports = {
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 30;
+			const aprobsPerms = porcentaje < 5 || linksAprobsEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
