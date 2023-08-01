@@ -42,26 +42,75 @@ let actualiza = {
 
 		// Ícono Nuevo
 		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
+			? titulo.nuevo
+			: !v.mostrar
+			? "No está permitido crear una configuración cuando hay un error en los filtros"
+			: claseEdicion
+			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
+			: "";
 
 		// Ícono Edición
-		v.mostrar && !claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo
+		!claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo && v.mostrar
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
+		DOM.edicion.title = !DOM.edicion.className.includes("inactivo")
+			? titulo.edicion
+			: claseNuevo
+			? "No se puede editar el nombre de una configuración que todavía no está creada"
+			: !v.filtroPropio
+			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
+			: v.hayCambiosDeCampo
+			? "No está permitido editar el nombre de una configuración cuando se le hicieron cambios"
+			: !v.mostrar
+			? "No está permitido editar una configuración cuando hay un error en los filtros"
+			: "";
 
 		// Ícono Deshacer
 		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
+		DOM.deshacer.title = !DOM.deshacer.className.includes("inactivo")
+			? titulo.deshacer
+			: claseNuevo || claseEdicion
+			? "No está permitido deshacer cuando se está cambiando el nombre"
+			: !v.hayCambiosDeCampo
+			? "No hay nada que deshacer cuando no se hicieron cambios en la configuración"
+			: "";
 
 		// Ícono Eliminar
 		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.eliminar.classList.remove("inactivo")
 			: DOM.eliminar.classList.add("inactivo");
+		DOM.eliminar.title = !DOM.eliminar.className.includes("inactivo")
+			? titulo.eliminar
+			: claseNuevo || claseEdicion
+			? "No está permitido eliminar cuando se está cambiando el nombre"
+			: !v.filtroPropio
+			? "No está permitido eliminar las configuraciones provistas por nuestro sitio"
+			: v.hayCambiosDeCampo
+			? "No está permitido eliminar cuando se hicieron cambios en la configuración"
+			: "";
 
 		// Ícono Guardar
 		v.mostrar && (v.nuevo || v.edicion || v.propio)
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
+		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
+			? titulo.guardar
+			: !v.mostrar
+			? "No está permitido guardar una configuración cuando hay un error en los filtros"
+			: (claseNuevo || claseEdicion) && !v.nombreOK
+			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
+			: claseEdicion && !v.filtroPropio
+			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
+			: !claseNuevo && !claseEdicion
+			? !v.hayCambiosDeCampo
+				? "No hay cambios que guardar"
+				: !v.filtroPropio
+				? "No está permitido guardar cambios en las configuraciones provistas por nuestro sitio"
+				: ""
+			: "";
 
 		// Fin
 		return;
