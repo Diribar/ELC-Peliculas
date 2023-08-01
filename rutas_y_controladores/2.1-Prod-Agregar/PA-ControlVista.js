@@ -179,8 +179,8 @@ module.exports = {
 			const camposDE = Object.keys(datosAdics);
 
 			// Grupos RCLV
-			const gruposPers = procsCRUD.gruposPers(camposDA);
-			const gruposHechos = procsCRUD.gruposHechos(camposDA);
+			const gruposPers = procsCRUD.grupos.pers(camposDA);
+			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
 			const imgDerPers = datosAdics.avatar
