@@ -46,7 +46,8 @@ module.exports = {
 			const {orden_id} = configCons;
 			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = [...variables.asocs.rclvs, ordenBD.valor == "anoEstreno" ? "epocaEstreno" : ""];
+			let include = [...variables.asocs.rclvs];
+			if (ordenBD.valor == "anoEstreno") include.push("epocaEstreno")
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
