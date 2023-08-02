@@ -31,7 +31,7 @@
 #zonaDeProds #vistaProds {border-radius: 15px; overflow: hidden;}
 #zonaDeProds #vistaProds {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #vistaProds #ppp {font-size: 1.25rem;}
-#vistaProds #scroll {overflow-y: auto; width: 100%; scrollbar-gutter: stable;}
+#vistaProds #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 /* Condicionales */
 #zonaDeProds:has(#comencemos button#verde.ocultar) #vistaProds {height: 70vh; padding: 30px 0;}
 #zonaDeProds #vistaProds:has(#pelisPor table) {justify-content: flex-start;}
