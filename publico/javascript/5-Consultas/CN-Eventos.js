@@ -138,8 +138,7 @@ window.addEventListener("load", async () => {
 			// Muestra / Oculta los 'tbody'
 			else if (elemento.className && elemento.className.includes("expandeContrae")) {
 				const indice = v.expandeContrae.findIndex((n) => n == elemento);
-				if (elemento.className.includes("fa-square-plus")) DOM.tbody[indice].classList.remove("ocultar");
-				if (elemento.className.includes("fa-square-minus")) DOM.tbody[indice].classList.add("ocultar");
+				DOM.tbody[indice].classList.toggle("ocultar");
 				["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
 			}
 		}
