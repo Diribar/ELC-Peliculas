@@ -52,6 +52,8 @@ window.addEventListener("load", async () => {
 
 				// Fin
 				return;
+			} else if (e.target.tagName == "SELECT") {
+				if (!e.target.value) e.target.value = "";
 			}
 
 			// Cambios de campo
