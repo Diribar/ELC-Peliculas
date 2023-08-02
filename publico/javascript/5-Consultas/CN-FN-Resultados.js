@@ -67,7 +67,8 @@ let resultados = {
 			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.pelisPor.classList.remove("ocultar");
 
 			// Foco
-			if (entidad == "productos") DOM.productos.querySelector("button").focus();
+			const button = DOM.productos.querySelector("button");
+			if (entidad == "productos" && button) button.focus();
 
 			// Fin
 			return;
