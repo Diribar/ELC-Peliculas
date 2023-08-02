@@ -46,9 +46,9 @@ let resultados = {
 	},
 	muestra: {
 		generico: function () {
-			// Cartel comencemos
+			// Cartel quieroVer
 			v.mostrarComencemos = false;
-			DOM.comencemos.classList.add("ocultar");
+			DOM.quieroVer.classList.add("ocultar");
 
 			// Acciones si no hay resultados
 			!v.infoResultados || !v.infoResultados.length
