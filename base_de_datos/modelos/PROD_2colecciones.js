@@ -39,6 +39,7 @@ module.exports = (sequelize, dt) => {
 		subtitulos: {type: dt.INTEGER},
 		linksGeneral: {type: dt.INTEGER},
 		linksGratuitos: {type: dt.INTEGER},
+		linksTrailer: {type: dt.INTEGER},
 
 		feValores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
