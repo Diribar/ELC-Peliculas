@@ -265,7 +265,7 @@ module.exports = {
 				.replace(/[“”«»]/g, '"')
 				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
-				.replace(/ /g, "")
+				.replace(/ ­/g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")

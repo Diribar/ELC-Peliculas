@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
-		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ",
+		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : "l ",
 		horarioFinalCreado: comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn)),
 		vistaAnteriorTablero: [v.vistaAnterior],
 		vistaAnteriorInactivar: [v.vistaAnterior, v.vistaInactivar],
