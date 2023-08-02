@@ -1,7 +1,7 @@
 /* General */
 #scroll #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#scroll #pelisPor {padding: 0 25px; width: 100%;}
 #scroll #pelisPor.ocultar {display: none}
-#scroll #pelisPor {padding-left: 40px; padding-right: 25px ; width: 100%;}
 #scroll #pelisPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);
