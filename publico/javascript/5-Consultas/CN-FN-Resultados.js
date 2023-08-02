@@ -115,7 +115,8 @@ let resultados = {
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					tabla = this.auxiliares.creaUnaTabla(titulo);
+					// Crea y agrega la tabla
+					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
 					DOM.pelisPor.appendChild(tabla);
 				}
 
@@ -127,9 +128,14 @@ let resultados = {
 				for (let fila of filas) DOM_tbody.appendChild(fila);
 			});
 
-			// Crea las variables para los 'ppp'
+			// Crea variables DOM
 			DOM.ppp = DOM.pelisPor.querySelectorAll("#ppp");
+			DOM.expandeContrae = DOM.pelisPor.querySelectorAll(".expandeContrae");
+			DOM.tbody = DOM.pelisPor.querySelectorAll("tbody");
+
+			// Crea variables 'v'
 			v.ppp = Array.from(DOM.ppp);
+			v.expandeContrae = Array.from(DOM.expandeContrae);
 
 			// Fin
 			return;
@@ -291,17 +297,22 @@ let resultados = {
 				// Fin
 				return titulo;
 			},
-			creaUnaTabla: (titulo) => {
+			creaUnaTabla: ({titulo, indice}) => {
 				// Crea una tabla
-				let tabla = document.createElement("table");
+				const tabla = document.createElement("table");
 
 				// Le agrega un título
-				let caption = document.createElement("caption");
+				const i = document.createElement("i");
+				i.className = "expandeContrae pointer fa-solid fa-square-" + (indice ? "plus" : "minus");
+				const caption = document.createElement("caption");
 				caption.innerHTML = titulo;
+				caption.className = "relative";
+				caption.appendChild(i);
 				tabla.appendChild(caption);
 
 				// Le agrega un body
-				let tbody = document.createElement("tbody");
+				const tbody = document.createElement("tbody");
+				if (indice) tbody.className = "ocultar";
 				tabla.appendChild(tbody);
 
 				// Fin
@@ -356,7 +367,7 @@ let resultados = {
 					anchor.href = "/rclv/detalle/?entidad=" + entidad + "&id=" + rclv.id + "&origen=CN";
 					anchor.target = "_blank";
 					anchor.tabIndex = "-1";
-	
+
 					// Si tiene más de 1 producto
 					if (cantProds > 1) celda.rowSpan = cantProds;
 
