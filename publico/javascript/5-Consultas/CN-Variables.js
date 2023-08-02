@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
 		layoutOrden: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		// Zona de productos
-		zonaProds: document.querySelector("#zonaDeProds"),
+		zonaProds: document.querySelector("#zonaDisponible"),
 	};
 	DOM = {
 		...DOM,
@@ -43,10 +43,10 @@ window.addEventListener("load", async () => {
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		quieroVer: DOM.zonaProds.querySelector("#comencemos button#verde"),
 		noTenemos: DOM.zonaProds.querySelector("#comencemos button#azul"),
-		resultados: DOM.zonaProds.querySelectorAll("#vistaProds .resultados"),
-		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
-		botones: DOM.zonaProds.querySelector("#vistaProds #botones"),
-		listados: DOM.zonaProds.querySelector("#vistaProds #listados"),
+		resultados: DOM.zonaProds.querySelectorAll("#vistaDeResults .resultados"),
+		vistaDeResults: DOM.zonaProds.querySelector("#vistaDeResults"),
+		botones: DOM.zonaProds.querySelector("#vistaDeResults #botones"),
+		listados: DOM.zonaProds.querySelector("#vistaDeResults #listados"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;

@@ -1,7 +1,7 @@
 /* Resultados */
-#vistaProds #botones {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
-#vistaProds #botones.ocultar {display: none}
-#vistaProds #botones {width: 100%;}
+#vistaDeResults #botones {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
+#vistaDeResults #botones.ocultar {display: none}
+#vistaDeResults #botones {width: 100%;}
 
 /* Botones para productos */
 #botones li {list-style-type: none}
