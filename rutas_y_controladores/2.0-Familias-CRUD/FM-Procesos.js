@@ -479,8 +479,8 @@ module.exports = {
 			}).then((n) => (n ? conLinks : sinLinks));
 
 			// Consolida
-			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos]);
-			[linksGeneral, linksGratuitos, castellano, subtitulos] = respuesta;
+			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos, trailers]);
+			[linksGeneral, linksGratuitos, castellano, subtitulos, trailers] = respuesta;
 
 			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
@@ -514,6 +514,7 @@ module.exports = {
 			// Fin
 			return;
 		},
+
 		// Actualiza los campos de 'producto' en el RCLV
 		prodsEnRCLV: async ({entidad, id}) => {
 			// Variables
