@@ -1,41 +1,41 @@
 /* General */
-#scroll #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
-#scroll #pelisPor {padding: 0 25px; width: 100%;}
-#scroll #pelisPor.ocultar {display: none}
-#scroll #pelisPor {
+#scroll #listadosPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#scroll #listadosPor {padding: 0 25px; width: 100%;}
+#scroll #listadosPor.ocultar {display: none}
+#scroll #listadosPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);
 }
 
 /* Tabla */
-#pelisPor table {border-collapse: collapse; width: 100%;}
-#pelisPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
-#pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
-#pelisPor table {margin-bottom: 30px;}
-#pelisPor table:has(tbody.ocultar) caption {border-radius: 15px;}
+#listadosPor table {border-collapse: collapse; width: 100%;}
+#listadosPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
+#listadosPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
+#listadosPor table {margin-bottom: 30px;}
+#listadosPor table:has(tbody.ocultar) caption {border-radius: 15px;}
 
 /* Título */
-#pelisPor table caption {padding: 10px;}
-#pelisPor table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
-#pelisPor table caption {font-size: 1.25rem; font-weight: bold;}
-#pelisPor table caption .expandeContrae {position: absolute; right: 13px;}
+#listadosPor table caption {padding: 10px;}
+#listadosPor table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
+#listadosPor table caption {font-size: 1.25rem; font-weight: bold;}
+#listadosPor table caption .expandeContrae {position: absolute; right: 13px;}
 
 /* Columnas */
-#pelisPor tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
+#listadosPor tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
 
 /* Celdas - Color de fondo */
-#pelisPor tbody tr.imparRCLV td {background: snow;}
-#pelisPor tbody tr.parRCLV td {background: var(--amarillo-claro);}
-#pelisPor tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
+#listadosPor tbody tr.imparRCLV td {background: snow;}
+#listadosPor tbody tr.parRCLV td {background: var(--amarillo-claro);}
+#listadosPor tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 
 /* Celdas - anchor y ppp */
-#pelisPor tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
-#pelisPor tbody tr td:has(i) {width: min-content; text-align: right;}
-#pelisPor tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
+#listadosPor tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
+#listadosPor tbody tr td:has(i) {width: min-content; text-align: right;}
+#listadosPor tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
 
 /* Bordes */
-#pelisPor tbody tr td {border: var(--bordeInterno);}
-#pelisPor tbody tr td:nth-last-child(2) {border-right: none;}
-#pelisPor tbody tr td:nth-last-child(1) {border-left: none;}
-#pelisPor tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
-#pelisPor tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
+#listadosPor tbody tr td {border: var(--bordeInterno);}
+#listadosPor tbody tr td:nth-last-child(2) {border-right: none;}
+#listadosPor tbody tr td:nth-last-child(1) {border-left: none;}
+#listadosPor tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
+#listadosPor tbody tr:last-of-type {border-bottom: var(--bordeExterno);}

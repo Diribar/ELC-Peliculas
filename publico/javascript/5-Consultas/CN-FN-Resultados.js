@@ -25,7 +25,7 @@ let resultados = {
 			DOM.quieroVer.classList.add("ocultar");
 			DOM.noTenemos.classList.remove("ocultar");
 			DOM.productos.innerHTML = "";
-			DOM.pelisPor.innerHTML = "";
+			DOM.listadosPor.innerHTML = "";
 		}
 		// Acciones si hay resultados
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
@@ -65,14 +65,16 @@ let resultados = {
 
 			// Limpia los resultados anteriores
 			DOM.productos.innerHTML = "";
-			DOM.pelisPor.innerHTML = "";
+			DOM.listadosPor.innerHTML = "";
 
 			// Deriva a productos
-			if (entidad == "productos") this.productos();
-			else this.pelisPor();
+			if (entidad == "productos") {
+				v.layoutBD.boton ?				this.productos():this.listadoGral()
+			}
+			else this.listadosPor();
 
 			// Pone visibles los resultados
-			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.pelisPor.classList.remove("ocultar");
+			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.listadosPor.classList.remove("ocultar");
 
 			// Foco
 			const button = DOM.productos.querySelector("button");
@@ -86,7 +88,7 @@ let resultados = {
 			v.productos = [...v.infoResultados];
 
 			// Oculta los resultados anteriores
-			DOM.pelisPor.classList.add("ocultar");
+			DOM.listadosPor.classList.add("ocultar");
 
 			// Output
 			if (v.infoResultados.length) {
@@ -104,7 +106,7 @@ let resultados = {
 			// Fin
 			return;
 		},
-		pelisPor: function () {
+		listadosPor: function () {
 			// Variables
 			v.productos = [];
 			let rclvAnt = {};
@@ -125,11 +127,11 @@ let resultados = {
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
 					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
-					DOM.pelisPor.appendChild(tabla);
+					DOM.listadosPor.appendChild(tabla);
 				}
 
 				// Agrega las filas de un rclv
-				const DOM_tablas = DOM.pelisPor.querySelectorAll("table");
+				const DOM_tablas = DOM.listadosPor.querySelectorAll("table");
 				const DOM_tabla = [...DOM_tablas].pop();
 				const DOM_tbody = DOM_tabla.querySelector("tbody");
 				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
@@ -137,9 +139,9 @@ let resultados = {
 			});
 
 			// Crea variables DOM
-			DOM.ppp = DOM.pelisPor.querySelectorAll("#ppp");
-			DOM.expandeContrae = DOM.pelisPor.querySelectorAll(".expandeContrae");
-			DOM.tbody = DOM.pelisPor.querySelectorAll("tbody");
+			DOM.ppp = DOM.listadosPor.querySelectorAll("#ppp");
+			DOM.expandeContrae = DOM.listadosPor.querySelectorAll(".expandeContrae");
+			DOM.tbody = DOM.listadosPor.querySelectorAll("tbody");
 
 			// Crea variables 'v'
 			v.ppp = Array.from(DOM.ppp);

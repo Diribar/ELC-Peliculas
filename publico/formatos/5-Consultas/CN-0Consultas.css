@@ -34,7 +34,7 @@
 #vistaProds #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 /* Condicionales */
 #zonaDeProds:has(#comencemos button#verde.ocultar) #vistaProds {height: 70vh; padding: 30px 0;}
-#zonaDeProds #vistaProds:has(#pelisPor table) {justify-content: flex-start;}
+#zonaDeProds #vistaProds:has(#listadosPor table) {justify-content: flex-start;}
 
 /* Footer */
 #encabMasPelis footer {align-self: stretch;}
