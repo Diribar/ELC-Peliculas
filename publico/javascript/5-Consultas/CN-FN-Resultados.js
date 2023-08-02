@@ -59,6 +59,9 @@ let resultados = {
 	},
 	muestra: {
 		generico: function () {
+			// Si no hubieron resultados, interrumpe la función
+			if (!v.infoResultados || !v.infoResultados.length) return;
+
 			// Cartel quieroVer
 			v.mostrarCartelQuieroVer = false;
 			DOM.quieroVer.classList.add("ocultar");
@@ -86,17 +89,16 @@ let resultados = {
 			v.productos = [...v.infoResultados];
 
 			// Output
-			if (v.infoResultados.length) {
-				const tope = Math.min(4, v.infoResultados.length);
-				for (let i = 0; i < tope; i++) {
-					const producto = this.auxiliares.boton(v.infoResultados[i]);
-					DOM.productos.append(producto);
-				}
 
-				// Genera las variables 'ppp'
-				DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
-				v.ppp = Array.from(DOM.ppp);
+			const tope = Math.min(4, v.infoResultados.length);
+			for (let i = 0; i < tope; i++) {
+				const producto = this.auxiliares.boton(v.infoResultados[i]);
+				DOM.productos.append(producto);
 			}
+
+			// Genera las variables 'ppp'
+			DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
+			v.ppp = Array.from(DOM.ppp);
 
 			// Fin
 			return;
@@ -106,7 +108,7 @@ let resultados = {
 			v.productos = [];
 			let tabla;
 
-			// Rutina por registro RCLV
+			// Rutina por registro de producto
 			v.infoResultados.forEach((rclv, indice) => {
 				// Genera la variable de productos
 				v.productos.push(...rclv.productos);
