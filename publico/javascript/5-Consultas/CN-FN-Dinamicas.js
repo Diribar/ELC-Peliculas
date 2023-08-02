@@ -20,7 +20,8 @@ let actualizaConfigCons = {
 		if (v.layout_id) {
 			// Actualiza 'configCons.layout_id' y 'entidad'
 			configCons.layout_id = v.layout_id;
-			entidad = v.layoutsBD.find((n) => n.id == v.layout_id).entidad;
+			v.layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
+			entidad = v.layoutBD.entidad;
 
 			// Muestra/Oculta los mensajes de ayuda
 			for (let icono of DOM.iconosAyuda)
@@ -176,7 +177,7 @@ let actualizaConfigCons = {
 
 			// Oculta sectores
 			DOM.productos.classList.add("ocultar");
-			DOM.pelisPor.classList.add("ocultar");
+			DOM.listadosPor.classList.add("ocultar");
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
