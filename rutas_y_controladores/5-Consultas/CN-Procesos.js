@@ -475,10 +475,15 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length > 1 && orden.valor != "momento")
+				if (prods.length > 1 && orden.valor != "momento") {
+					// Variables
+					const campo = orden.valor == "nombre" ? "nombreCastellano" : orden.valor;
+
+					// Ordena
 					prods.sort((a, b) =>
-						configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
+						configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
 					);
+				}
 
 				// Fin
 				return prods;
