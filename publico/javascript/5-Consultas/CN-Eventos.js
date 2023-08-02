@@ -133,6 +133,13 @@ window.addEventListener("load", async () => {
 					if (!v.mostrarComencemos) resultados.muestra.generico();
 				}
 			}
+			// Muestra / Oculta los 'tbody'
+			else if (elemento.className && elemento.className.includes("expandeContrae")) {
+				const indice = v.expandeContrae.findIndex((n) => n == elemento);
+				if (elemento.className.includes("fa-square-plus")) DOM.tbody[indice].classList.remove("ocultar");
+				if (elemento.className.includes("fa-square-minus")) DOM.tbody[indice].classList.add("ocultar");
+				["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
+			}
 		}
 
 		// Botón 'comencemos'
@@ -179,15 +186,15 @@ window.addEventListener("load", async () => {
 			const clase = v.nuevo ? "nuevo" : "edicion";
 			DOM.configNuevaNombre.classList.remove(clase);
 		}
-		
+
 		// Guarda la información en la base de datos
 		await cambiosEnBD.guardaUnaConfiguracion();
 
 		// Acciones particulares
 		if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
-		if (v.nuevo) await actualiza.valoresInicialesDeVariables()
+		if (v.nuevo) await actualiza.valoresInicialesDeVariables();
 		if (v.propio) v.hayCambiosDeCampo = false;
-		
+
 		// Actualiza la botonera
 		actualiza.botoneraActivaInactiva();
 
