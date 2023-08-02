@@ -70,16 +70,8 @@ let resultados = {
 			DOM.productos.innerHTML = "";
 			DOM.listadosPor.innerHTML = "";
 
-			// Deriva a productos
-			if (entidad == "productos") v.layoutBD.boton ? this.botones() : this.listadoGral();
-			else this.listadosPor();
-
-			// Pone visibles los resultados
-			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.listadosPor.classList.remove("ocultar");
-
-			// Foco
-			const button = DOM.productos.querySelector("button");
-			if (entidad == "productos" && button) button.focus();
+			// Deriva a botones o listados
+			v.layoutBD.boton ? this.botones() : this.listados();
 
 			// Fin
 			return;
@@ -89,7 +81,6 @@ let resultados = {
 			v.productos = [...v.infoResultados];
 
 			// Output
-
 			const tope = Math.min(4, v.infoResultados.length);
 			for (let i = 0; i < tope; i++) {
 				const producto = this.auxiliares.boton(v.infoResultados[i]);
@@ -100,76 +91,41 @@ let resultados = {
 			DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
 			v.ppp = Array.from(DOM.ppp);
 
-			// Fin
-			return;
-		},
-		listadoGral: function () {
-			// Variables
-			v.productos = [];
-			let tabla;
-
-			// Rutina por registro de producto
-			v.infoResultados.forEach((rclv, indice) => {
-				// Genera la variable de productos
-				v.productos.push(...rclv.productos);
-
-				// Averigua si hay un cambio de agrupamiento
-				const titulo = this.auxiliares.titulo({rclv, rclvAnt});
-				rclvAnt = rclv;
-
-				// Si corresponde, crea una nueva tabla
-				if (titulo) {
-					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
-					DOM.listadosPor.appendChild(tabla);
-				}
-
-				// Agrega las filas de un rclv
-				const DOM_tablas = DOM.listadosPor.querySelectorAll("table");
-				const DOM_tabla = [...DOM_tablas].pop();
-				const DOM_tbody = DOM_tabla.querySelector("tbody");
-				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
-				for (let fila of filas) DOM_tbody.appendChild(fila);
-			});
-
-			// Crea variables DOM
-			DOM.ppp = DOM.listadosPor.querySelectorAll("#ppp");
-			DOM.expandeContrae = DOM.listadosPor.querySelectorAll(".expandeContrae");
-			DOM.tbody = DOM.listadosPor.querySelectorAll("tbody");
-
-			// Crea variables 'v'
-			v.ppp = Array.from(DOM.ppp);
-			v.expandeContrae = Array.from(DOM.expandeContrae);
+			// Foco
+			DOM.productos.querySelector("button").focus();
 
 			// Fin
 			return;
 		},
-		listadosPor: function () {
+		listados: function () {
 			// Variables
 			v.productos = [];
-			let rclvAnt = {};
-			let tabla;
+			let registroAnt = {};
 
-			// Rutina por registro RCLV
-			v.infoResultados.forEach((rclv, indice) => {
-				// Genera la variable de productos
-				v.productos.push(...rclv.productos);
+			// Rutina por registro
+			v.infoResultados.forEach((registro, indice) => {
+				// Si es un RCLV, genera la variable de productos
+				if (entidad != "productos") v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
-				const titulo = this.auxiliares.titulo({rclv, rclvAnt});
-				rclvAnt = rclv;
+				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
+				registroAnt = registro;
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
-					DOM.listadosPor.appendChild(tabla);
+					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice});
+					DOM.listadosPor.appendChild(DOM.tabla);
+					DOM.tbody = DOM_tabla.querySelector("tbody");
 				}
 
-				// Agrega las filas de un rclv
-				const DOM_tablas = DOM.listadosPor.querySelectorAll("table");
-				const DOM_tabla = [...DOM_tablas].pop();
-				const DOM_tbody = DOM_tabla.querySelector("tbody");
-				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
-				for (let fila of filas) DOM_tbody.appendChild(fila);
+				// Agrega un registro
+				if (entidad == "producto") {
+					const fila = this.auxiliares.creaUnaFilaDeProd({producto, indice});
+					DOM.tbody.appendChild(fila);
+				} else {
+					const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
+					for (let fila of filas) DOM.tbody.appendChild(fila);
+				}
 			});
 
 			// Crea variables DOM
@@ -242,7 +198,7 @@ let resultados = {
 				// Fin
 				return li;
 			},
-			titulo: ({rclv, rclvAnt}) => {
+			titulo: (registro, registroAnt, indice) => {
 				// Variables
 				const orden = v.ordenBD.valor;
 				let titulo;
@@ -250,21 +206,19 @@ let resultados = {
 				// nombre
 				if (!titulo && orden == "nombre") {
 					// Variables
-					const nombreAnt = rclvAnt.nombre;
-					const nombreActual = rclv.nombre;
+					const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
+					const nombreActual = registro.nombre ? registro.nombre : registro.nombreCastellano;
 					let prefijo = "Abecedario ";
 
 					// Pruebas
 					titulo =
 						!nombreAnt && nombreActual < "G"
 							? "(A - F)"
-							: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G"
+							: (!nombreAnt || nombreAnt < "G") && nombreActual < "N"
 							? "(G - M)"
-							: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N"
+							: (!nombreAnt || nombreAnt < "N") && nombreActual < "T"
 							? "(N - S)"
-							: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
-							? "(T - Z)"
-							: "";
+							: "(T - Z)";
 
 					// Fin
 					if (titulo) titulo = prefijo + titulo;
@@ -273,19 +227,20 @@ let resultados = {
 				// diaDelAno_id
 				if (!titulo && orden == "diaDelAno_id") {
 					// Variables
-					const diaAnt = rclvAnt.diaDelAno_id;
-					const diaActual = rclv.diaDelAno_id;
+					const diaAnt = registroAnt.diaDelAno_id;
+					const diaActual = registro.diaDelAno_id;
 
 					// Pruebas
-					titulo = !diaAnt
-						? "Primer"
-						: diaAnt < 92 && diaActual >= 92
-						? "Segundo"
-						: diaAnt < 183 && diaActual >= 183
-						? "Tercer"
-						: diaAnt < 275 && diaActual >= 275
-						? "Cuarto"
-						: "";
+					titulo =
+						!diaAnt && diaActual < 92
+							? "Primer"
+							: (!diaAnt || diaAnt < 92) && diaActual < 183
+							? "Segundo"
+							: (!diaAnt || diaAnt < 183) && diaActual < 275
+							? "Tercer"
+							: (!diaAnt || diaAnt < 275) && diaActual >= 275
+							? "Cuarto"
+							: "";
 
 					// Fin
 					if (titulo) titulo += " Trimestre";
@@ -294,23 +249,23 @@ let resultados = {
 				// rolIglesia
 				if (!titulo && orden == "rolIglesia") {
 					// Variables
-					const grupoAnt = rclvAnt.rolIglesiaGrupo;
-					const grupoActual = rclv.rolIglesiaGrupo;
+					const grupoAnt = registroAnt.rolIglesiaGrupo;
+					const grupoActual = registro.rolIglesiaGrupo;
 
 					// Pruebas
-					if (grupoAnt != grupoActual) titulo = rclv.rolIglesiaGrupo;
+					if (grupoAnt != grupoActual) titulo = registro.rolIglesiaGrupo;
 				}
 
 				// anoNacim y anoComienzo
 				if (!titulo && ["anoNacim", "anoComienzo"].includes(orden)) {
 					// Variables
-					const epocaAnt = rclvAnt.epocaOcurrencia_id;
-					const epocaActual = rclv.epocaOcurrencia_id;
-					const anoAnt = orden == "anoNacim" ? rclvAnt.anoNacim : rclvAnt.anoComienzo;
-					const anoActual = orden == "anoNacim" ? rclv.anoNacim : rclv.anoComienzo;
+					const epocaAnt = registroAnt.epocaOcurrencia_id;
+					const epocaActual = registro.epocaOcurrencia_id;
+					const anoAnt = orden == "anoNacim" ? registroAnt.anoNacim : registroAnt.anoComienzo;
+					const anoActual = orden == "anoNacim" ? registro.anoNacim : registro.anoComienzo;
 
 					// Pruebas
-					if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = rclv.epocaOcurrenciaNombre;
+					if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registro.epocaOcurrenciaNombre;
 					if (epocaActual == "pst") {
 						// Variables
 						const mayor1800 = "(año 1.801 en adelante)";
@@ -334,8 +289,23 @@ let resultados = {
 								: "";
 
 						// Título para la vista
-						if (titulo) titulo = rclv.epocaOcurrenciaNombre + " " + titulo;
+						if (titulo) titulo = registro.epocaOcurrenciaNombre + " " + titulo;
 					}
+				}
+
+				// altaRevisadaEn
+				if (!titulo && orden == "altaRevisadaEn") {
+					titulo = !indice ? "Las treinta más recientes" : indice == 30 ? "Anteriores" : "";
+				}
+
+				// anoEstreno
+				if (!titulo && orden == "anoEstreno") {
+					// Variables
+					const grupoAnt = registroAnt.epocaEstrenoGrupo;
+					const grupoActual = registro.epocaEstrenoGrupo;
+
+					// Pruebas
+					if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoGrupo;
 				}
 
 				// Fin
