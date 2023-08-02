@@ -430,7 +430,7 @@ module.exports = {
 
 			// Más variables
 			const tipo_id = linkPelicula_id; // El tipo de link 'película'
-			const statusAprobado = {statusRegistro_id: aprobado_id};
+			const statusAprobado = {statusRegistro_id: [creadoAprob_id, aprobado_id]};
 			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 			const objeto = {[campo_id]: id, tipo_id};
 
