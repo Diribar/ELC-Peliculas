@@ -107,7 +107,7 @@ module.exports = {
 	},
 
 	// Listados de RCLV
-	grupos:{
+	grupos: {
 		pers: (camposDA) => {
 			// Variables
 			const personajes = camposDA
@@ -125,7 +125,7 @@ module.exports = {
 					};
 				});
 			let casosPuntuales = [];
-	
+
 			// Grupos Estándar
 			let grupos = [
 				{orden: 2, codigo: "ant", campo: "epocaOcurrencia_id", label: "Antiguo Testamento", clase: "CFC VPC"},
@@ -137,13 +137,13 @@ module.exports = {
 				{orden: 7, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
 			];
 			for (let grupo of grupos) grupo.valores = [];
-	
+
 			// Valores para los grupos
 			for (let personaje of personajes) {
 				// Clase
 				personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
 				if (personaje.apMar_id != 10) personaje.clase += " AMA AM" + personaje.apMar_id;
-	
+
 				// Si tiene 'rolIglesia_id'
 				if (personaje.rolIglesia_id) {
 					let OK = false;
@@ -160,17 +160,17 @@ module.exports = {
 			}
 			// Grupo 'Casos Puntuales'
 			grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
-	
+
 			// Ordena los grupos
 			grupos.sort((a, b) => a.orden - b.orden);
-	
+
 			// Fin
 			return grupos;
 		},
 		hechos: (camposDA) => {
 			// Variables
 			let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
-	
+
 			// Deja los datos necesarios
 			hechos = hechos.map((n) => {
 				let {id, nombre, soloCfc, epocaOcurrencia_id, ama} = n;
@@ -178,7 +178,7 @@ module.exports = {
 			});
 			let apMar = [];
 			let casosPuntuales = [];
-	
+
 			// Grupos estándar
 			let grupos = [
 				// 1 - Casos especiales
@@ -191,7 +191,7 @@ module.exports = {
 				grupo.valores = [];
 				grupo.clase = "CFC VPC";
 			}
-	
+
 			// Valores para los grupos
 			for (let hecho of hechos) {
 				// Si es un caso que no se debe mostrar, lo saltea
@@ -200,14 +200,14 @@ module.exports = {
 				let OK = false;
 				hecho.clase = "CFC ";
 				if (!hecho.soloCfc) hecho.clase += "VPC ";
-	
+
 				// Apariciones Marianas
 				if (hecho.ama) {
 					hecho.clase += "ama";
 					apMar.push(hecho);
 					OK = true;
 				}
-	
+
 				// Si es alguno de los 'grupos'
 				if (!OK)
 					for (let grupo of grupos)
@@ -226,7 +226,7 @@ module.exports = {
 			grupos.push({codigo: "ama", orden: 5, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
 			// Ordena los grupos
 			grupos.sort((a, b) => a.orden - b.orden);
-	
+
 			// Fin
 			return grupos;
 		},
@@ -404,7 +404,7 @@ module.exports = {
 					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					if (registro[campo_id])
 						stAprob
-							? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: SI})
+							? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: conLinks})
 							: this.prodsEnRCLV({entidad, id: registro[campo_id]});
 				}
 			}
@@ -429,25 +429,25 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Más variables
-			const tipo_id = link_pelicula_id; // El tipo de link 'película'
+			const tipo_id = linkPelicula_id; // El tipo de link 'película'
 			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
-			let objeto = {[campo_id]: id, tipo_id};
+			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
+			const objeto = {[campo_id]: id, tipo_id};
 
 			// 1. Averigua si existe algún link, para ese producto
 			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
 				n
-					? SI
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio}).then((n) => (n ? talVez : NO))
+					? conLinks
+					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido}).then((n) => (n ? talVez : sinLinks))
 			);
 
 			// 2. Averigua si existe algún link gratuito, para ese producto
 			let linksGratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
 				(n) =>
 					n
-						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, gratuito: true}).then((n) =>
-								n ? talVez : NO
+						? conLinks
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, gratuito: true}).then((n) =>
+								n ? talVez : sinLinks
 						  )
 			);
 
@@ -455,9 +455,9 @@ module.exports = {
 			let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then(
 				(n) =>
 					n
-						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, castellano: true}).then(
-								(n) => (n ? talVez : NO)
+						? conLinks
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, castellano: true}).then((n) =>
+								n ? talVez : sinLinks
 						  )
 			);
 
@@ -465,11 +465,18 @@ module.exports = {
 			let subtitulos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, subtitulos: true}).then(
 				(n) =>
 					n
-						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, subtitulos: true}).then(
-								(n) => (n ? talVez : NO)
+						? conLinks
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, subtitulos: true}).then((n) =>
+								n ? talVez : sinLinks
 						  )
 			);
+
+			// 5. Averigua si existe algún link de trailer, para ese producto
+			let trailers = BD_genericas.obtienePorCondicion("links", {
+				[campo_id]: id,
+				tipo_id: linkTrailer_id,
+				...statusValido,
+			}).then((n) => (n ? conLinks : sinLinks));
 
 			// Consolida
 			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos]);
@@ -489,16 +496,16 @@ module.exports = {
 			// Rutinas
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: conLinks});
 				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: sinLinks});
 				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
 
 				// Averigua los porcentajes de OK y Potencial
 				const total = OK + potencial + no;
 				const resultadoOK = OK / total;
 				const resultadoPot = (OK + potencial) / total;
-				const valor = resultadoOK >= 0.5 ? SI : resultadoPot >= 0.5 ? talVez : NO;
+				const valor = resultadoOK >= 0.5 ? conLinks : resultadoPot >= 0.5 ? talVez : sinLinks;
 
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
@@ -512,7 +519,7 @@ module.exports = {
 			// Variables
 			const entidadesProds = variables.entidades.prods;
 			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
+			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 			let prodsAprob;
 
 			// Si el ID es menor o igual a 10, termina la función
@@ -526,7 +533,7 @@ module.exports = {
 			for (let entidadProd of entidadesProds) {
 				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
 				if (prodsAprob) {
-					prodsAprob = SI;
+					prodsAprob = conLinks;
 					break;
 				}
 			}
@@ -534,7 +541,7 @@ module.exports = {
 			// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
 			if (!prodsAprob)
 				for (let entidadProd of entidadesProds) {
-					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusProvisorio});
+					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
 					if (prodsAprob) {
 						prodsAprob = talVez;
 						break;
