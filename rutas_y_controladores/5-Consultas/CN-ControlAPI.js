@@ -145,6 +145,7 @@ module.exports = {
 		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id});
 		prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave, entidad});
 
+		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = procesos.resultados.orden.prods({prods, orden, configCons}); // Ordena los productos
