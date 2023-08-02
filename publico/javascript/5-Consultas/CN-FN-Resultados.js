@@ -303,11 +303,11 @@ let resultados = {
 				// anoEstreno
 				if (!titulo && orden == "anoEstreno") {
 					// Variables
-					const grupoAnt = registroAnt.epocaEstrenoGrupo;
-					const grupoActual = registro.epocaEstrenoGrupo;
+					const grupoAnt = registroAnt.epocaEstrenoNombre;
+					const grupoActual = registro.epocaEstrenoNombre;
 
 					// Pruebas
-					if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoGrupo;
+					if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoNombre;
 				}
 
 				// Fin

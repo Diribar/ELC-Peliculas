@@ -46,7 +46,7 @@ module.exports = {
 			const {orden_id} = configCons;
 			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = variables.asocs.rclvs;
+			const include = [...variables.asocs.rclvs, ordenBD.valor == "anoEstreno" ? "epocaEstreno" : ""];
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
@@ -522,9 +522,9 @@ module.exports = {
 				if (!prods.length) return [];
 
 				// Deja solamente los campos necesarios
-				prods = prods.map((n) => {
+				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = prod;
 					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar};
 
 					// Achica el campo dirección
@@ -533,8 +533,11 @@ module.exports = {
 					// Obtiene el nombre de la entidad
 					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
+					// Obtiene la época del año
+					datos.epocaEstrenoNombre = prod.epocaEstreno ? prod.epocaEstreno.nombre : "";
+
 					// Si es una colección, agrega el campo 'anoFin'
-					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+					if (prod.entidad == "colecciones") datos.anoFin = prod.anoFin;
 
 					// Fin
 					return datos;
