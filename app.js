@@ -5,9 +5,9 @@ global.unDia = unaHora * 24;
 global.cuatroSems = unDia * 28;
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-global.SI = 2;
+global.conLinks = 2;
 global.talVez = 1;
-global.NO = 0;
+global.sinLinks = 0;
 global.usAutom_id = 2;
 global.fechaPrimerLunesDelAno = null;
 // Con 'require'
@@ -111,7 +111,7 @@ app.set("views", [
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
-		links_tipos: BD_genericas.obtieneTodos("links_tipos"),
+		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
 		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
@@ -157,7 +157,8 @@ app.set("views", [
 	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
 	global.mesesAbrev = meses.map((n) => n.abrev);
-	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
+	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
+	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 
