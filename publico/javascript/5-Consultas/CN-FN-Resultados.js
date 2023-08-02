@@ -83,16 +83,16 @@ let resultados = {
 			// Output
 			const tope = Math.min(4, v.infoResultados.length);
 			for (let i = 0; i < tope; i++) {
-				const producto = this.auxiliares.boton(v.infoResultados[i]);
-				DOM.productos.append(producto);
+				const boton = this.auxiliares.boton(v.infoResultados[i]);
+				DOM.botones.append(boton);
 			}
 
 			// Genera las variables 'ppp'
-			DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
+			DOM.ppp = DOM.botones.querySelectorAll(".producto #ppp");
 			v.ppp = Array.from(DOM.ppp);
 
 			// Foco
-			DOM.productos.querySelector("button").focus();
+			DOM.botones.querySelector("button").focus();
 
 			// Fin
 			return;
