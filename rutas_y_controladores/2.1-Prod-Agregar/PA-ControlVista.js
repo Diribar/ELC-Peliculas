@@ -154,11 +154,16 @@ module.exports = {
 
 			// Guarda session y cookie de Datos Originales
 			if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
+				// Variables
 				const {nombreOriginal, nombreCastellano, anoEstreno, sinopsis} = datosDuros;
+				const epocaEstreno_id = comp.obtieneLaEpocaDeEstreno(anoEstreno); // Se debe agregar en el original
 				let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
-				datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, sinopsis};
+
+				// Se consolida la información
+				datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, epocaEstreno_id, sinopsis}; // No se guarda el link en el avatar, para revisarlo en Revisión
+
+				// Se guarda la cookie
 				res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
-				// No se guarda el link en el avatar, para revisarlo en Revisión
 			}
 
 			// Redirecciona a la siguiente instancia
@@ -289,8 +294,7 @@ module.exports = {
 			if (confirma.fuente == "TMDB") {
 				if (confirma.TMDB_entidad == "collection")
 					procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
-				if (confirma.TMDB_entidad == "tv")
-					procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
+				if (confirma.TMDB_entidad == "tv") procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
 			}
 
 			// AVATAR -------------------------------------
