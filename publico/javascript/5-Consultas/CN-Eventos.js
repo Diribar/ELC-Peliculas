@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 			// Layout
 			if (nombre == "layout_id") {
 				// Oculta los resultados anteriores
-				actualiza.cartelComencemosVisible();
+				actualiza.cartelQuieroVerVisible();
 			}
 			// Nombre de configuración
 			else if (nombre == "nombreNuevo") {
@@ -132,7 +132,7 @@ window.addEventListener("load", async () => {
 			else if (nombre == "actualizar") {
 				if (v.mostrar) {
 					await resultados.obtiene();
-					if (!v.mostrarComencemos) resultados.muestra.generico();
+					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 				}
 			}
 			// Muestra / Oculta los 'tbody'
