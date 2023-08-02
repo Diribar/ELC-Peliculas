@@ -41,6 +41,7 @@ let resultados = {
 		// Variables
 		const total = v.infoResultados ? v.infoResultados.length : 0;
 
+		// Contador para Productos
 		if (entidad == "productos") {
 			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
 			if (v.layoutBD.boton || v.ordenBD.valor == "altaRevisadaEn") {
