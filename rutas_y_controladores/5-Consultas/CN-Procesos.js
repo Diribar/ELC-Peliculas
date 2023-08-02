@@ -62,14 +62,9 @@ module.exports = {
 			// Obtiene los productos
 			for (let entProd of entsProd)
 				productos.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include)
-						.then((n) => n.map((m) => ({...m, entidad: entProd})))
-						.then((n) =>
-							n.map((m) => {
-								if (m.anoFin) m.anoEstreno = m.anoFin;
-								return m;
-							})
-						)
+					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+						n.map((m) => ({...m, entidad: entProd}))
+					)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 			resultados = this.prefs.prodsConInclude({resultados, configCons});
@@ -488,7 +483,7 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, orden, configCons, entidad}) => {
+			rclvs: ({rclvs, orden, configCons}) => {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
