@@ -99,6 +99,7 @@ let resultados = {
 		},
 		listados: function () {
 			// Variables
+			v.productos = [];
 			let registroAnt = {};
 
 			// Rutina por registro
