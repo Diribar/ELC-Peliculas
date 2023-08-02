@@ -141,7 +141,7 @@ let actualiza = {
 		DOM.noTenemos.classList.add("ocultar");
 
 		// Partes a mostrar
-		DOM.comencemos.classList.remove("ocultar");
+		DOM.quieroVer.classList.remove("ocultar");
 		v.mostrarComencemos = true;
 
 		// Fin

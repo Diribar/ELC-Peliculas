@@ -216,7 +216,7 @@ module.exports = {
 							nombre,
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
 							fechaRefTexto: n.fechaRefTexto,
-							links: n.linksGeneral,
+							links: n.linksGeneral || n.linksTrailer,
 						};
 						if (rubro == "ED") datos.edicID = n.edicID;
 						return datos;

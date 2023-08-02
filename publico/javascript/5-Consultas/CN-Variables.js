@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 
 		// Zona de productos
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
-		comencemos: DOM.zonaProds.querySelector("#comencemos button#verde"),
+		quieroVer: DOM.zonaProds.querySelector("#comencemos button#verde"),
 		noTenemos: DOM.zonaProds.querySelector("#comencemos button#azul"),
 		resultados: DOM.zonaProds.querySelectorAll("#vistaProds .resultados"),
 		// Productos

@@ -472,25 +472,25 @@ module.exports = {
 			);
 
 			// 5. Averigua si existe algún link de trailer, para ese producto
-			let trailers = BD_genericas.obtienePorCondicion("links", {
+			let linksTrailer = BD_genericas.obtienePorCondicion("links", {
 				[campo_id]: id,
 				tipo_id: linkTrailer_id,
 				...statusValido,
 			}).then((n) => (n ? conLinks : sinLinks));
 
 			// Consolida
-			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos, trailers]);
-			[linksGeneral, linksGratuitos, castellano, subtitulos, trailers] = respuesta;
+			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer]);
+			[linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer] = respuesta;
 
 			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
-			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
+			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer});
 
 			// Fin
 			return;
 		},
 		linksEnColec: async (colID) => {
 			// Variables
-			const campos = ["linksGeneral", "linksGratuitos", "castellano", "subtitulos"];
+			const campos = ["linksGeneral", "linksGratuitos", "castellano", "subtitulos", "linksTrailer"];
 			const objeto = {coleccion_id: colID};
 
 			// Rutinas

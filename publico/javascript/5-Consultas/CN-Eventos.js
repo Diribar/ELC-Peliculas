@@ -52,6 +52,8 @@ window.addEventListener("load", async () => {
 
 				// Fin
 				return;
+			} else if (e.target.tagName == "SELECT") {
+				if (!e.target.value) e.target.value = "";
 			}
 
 			// Cambios de campo
@@ -133,6 +135,12 @@ window.addEventListener("load", async () => {
 					if (!v.mostrarComencemos) resultados.muestra.generico();
 				}
 			}
+			// Muestra / Oculta los 'tbody'
+			else if (elemento.className && elemento.className.includes("expandeContrae")) {
+				const indice = v.expandeContrae.findIndex((n) => n == elemento);
+				DOM.tbody[indice].classList.toggle("ocultar");
+				["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
+			}
 		}
 
 		// Botón 'comencemos'
@@ -179,15 +187,15 @@ window.addEventListener("load", async () => {
 			const clase = v.nuevo ? "nuevo" : "edicion";
 			DOM.configNuevaNombre.classList.remove(clase);
 		}
-		
+
 		// Guarda la información en la base de datos
 		await cambiosEnBD.guardaUnaConfiguracion();
 
 		// Acciones particulares
 		if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
-		if (v.nuevo) await actualiza.valoresInicialesDeVariables()
+		if (v.nuevo) await actualiza.valoresInicialesDeVariables();
 		if (v.propio) v.hayCambiosDeCampo = false;
-		
+
 		// Actualiza la botonera
 		actualiza.botoneraActivaInactiva();
 

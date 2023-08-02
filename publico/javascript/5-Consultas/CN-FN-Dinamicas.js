@@ -9,7 +9,7 @@ let actualizaConfigCons = {
 		this.layout();
 
 		// Muestra/Oculta líneas de separación
-		if (v.mostrar) this.ocultaLineasConsecs();
+		// if (v.mostrar) this.ocultaLineasConsecs();
 
 		// Fin
 		return;
@@ -169,8 +169,8 @@ let actualizaConfigCons = {
 			// Oculta sectores
 			DOM.asegurate.classList.add("ocultar");
 
-			// Si corrersponde, muestra el cartel de comencemos
-			if (v.mostrarComencemos) DOM.comencemos.classList.remove("ocultar");
+			// Si corrersponde, muestra el cartel de quieroVer
+			if (v.mostrarComencemos) DOM.quieroVer.classList.remove("ocultar");
 		}
 		// Acciones si hay algún error que se necesita resolver
 		else {
@@ -180,7 +180,7 @@ let actualizaConfigCons = {
 			// Oculta sectores
 			DOM.productos.classList.add("ocultar");
 			DOM.pelisPor.classList.add("ocultar");
-			DOM.comencemos.classList.add("ocultar");
+			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
 			DOM.asegurate.classList.remove("ocultar");
@@ -245,7 +245,7 @@ let actualizaConfigCons = {
 		// Actualiza el valor de 'apMar'
 		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
-		// Si se elige una 'Aparición Mariana', ocultar el sector de 'Época de Ocurrencia'
+		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
 		if (configCons.apMar == "SI") {
 			delete configCons.epocasOcurrencia;
 			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
