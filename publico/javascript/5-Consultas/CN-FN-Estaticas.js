@@ -134,7 +134,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	cartelComencemosVisible: () => {
+	cartelQuieroVerVisible: () => {
 		// Partes a ocultar
 		DOM.productos.classList.add("ocultar");
 		DOM.pelisPor.classList.add("ocultar");
@@ -142,7 +142,7 @@ let actualiza = {
 
 		// Partes a mostrar
 		DOM.quieroVer.classList.remove("ocultar");
-		v.mostrarComencemos = true;
+		v.mostrarCartelQuieroVer = true;
 
 		// Fin
 		return;
@@ -285,7 +285,7 @@ let cambioDeConfig_id = async () => {
 	await actualiza.valoresInicialesDeVariables();
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
-	actualiza.cartelComencemosVisible();
+	actualiza.cartelQuieroVerVisible();
 
 	// Fin
 	return;
@@ -300,7 +300,7 @@ let cambioDeCampos = async () => {
 	actualiza.botoneraActivaInactiva();
 	if (v.mostrar) {
 		await resultados.obtiene();
-		if (!v.mostrarComencemos) resultados.muestra.generico();
+		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 	}
 
 	// Fin
