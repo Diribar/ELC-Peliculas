@@ -16,7 +16,7 @@
 /* Filtros Campos */
 #configCons #configsDeCampo {background: var(--gris-claro);}
 #configCons #configsDeCampo {flex-grow: 1; height: 0; justify-content: flex-start;}
-#configCons #configsDeCampo nav > * {order: 2;}
+/* #configCons #configsDeCampo nav > * {order: 2;} */
 #configCons #configsDeCampo hr {border-top: var(--gris-oscuro) 1px dashed; margin: 0;}
 
 /* Filtros Campos - Contenedor de Select e Input */
@@ -31,7 +31,8 @@
 
 /* Filtros Campos - Select */
 #configsDeCampo .pref select option {background: snow; color: var(--azul-oscuro);}
-#configsDeCampo .pref select option[value=""] {display: block; font-style: italic;}
+option#sinFiltro {display: block; font-style: italic}
+#configsDeCampo .pref select:has(option[value=""]:checked) option[value=""] {display: none;}
 
 /* Filtros - Búsqueda */
 #configsDeCampo #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
@@ -40,7 +41,8 @@
 
 /* Condicionales */
 /* Fondo verde y orden 1 a los sectores con elegibles elegidos */
-#configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); order: 1;}
+#configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro);}
+/* #configsDeCampo :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {order: 1;} */
 
 /* Fondo verde a los elegibles elegidos */
 #configsDeCampo .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
