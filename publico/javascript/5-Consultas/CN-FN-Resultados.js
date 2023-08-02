@@ -69,9 +69,8 @@ let resultados = {
 
 			// Deriva a productos
 			if (entidad == "productos") {
-				v.layoutBD.boton ?				this.productos():this.listadoGral()
-			}
-			else this.listadosPor();
+				v.layoutBD.boton ? this.productos() : this.listadoGral();
+			} else this.listadosPor();
 
 			// Pone visibles los resultados
 			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.listadosPor.classList.remove("ocultar");
