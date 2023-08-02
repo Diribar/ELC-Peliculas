@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 		capSelect.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
 		for (let capitulo of capitulos) {
-			capSelect.innerHTML += "<option>Capítulo " + capitulo + "</option>";
+			capSelect.innerHTML += "<option>" + capitulo.numero + ". " + capitulo.nombre + "</option>";
 		}
 	});
 
