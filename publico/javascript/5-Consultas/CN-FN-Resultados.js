@@ -115,15 +115,15 @@ let resultados = {
 				if (titulo) {
 					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice});
 					DOM.listadosPor.appendChild(DOM.tabla);
-					DOM.tbody = DOM_tabla.querySelector("tbody");
+					DOM.tbody = DOM.tabla.querySelector("tbody");
 				}
 
 				// Agrega un registro
 				if (entidad == "producto") {
-					const fila = this.auxiliares.creaUnaFilaDeProd({producto, indice});
+					const fila = this.auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				} else {
-					const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
+					const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv: registro, indice});
 					for (let fila of filas) DOM.tbody.appendChild(fila);
 				}
 			});
