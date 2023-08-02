@@ -155,8 +155,8 @@ module.exports = {
 
 				// Datos Personalizados
 				camposDA = await variables.camposDA_conValores(userID);
-				gruposPers = procsCRUD.gruposPers(camposDA);
-				gruposHechos = procsCRUD.gruposHechos(camposDA);
+				gruposPers = procsCRUD.grupos.pers(camposDA);
+				gruposHechos = procsCRUD.grupos.hechos(camposDA);
 			}
 
 			// Obtiene datos para la vista

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "links_tipos";
+	const alias = "linksTipos";
 	const columns = {
 		nombre: {type: dt.STRING(10)},
 		pelicula: {type: dt.BOOLEAN},

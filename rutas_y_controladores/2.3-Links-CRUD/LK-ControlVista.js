@@ -51,7 +51,7 @@ module.exports = {
 			...{tema, codigo, titulo, title: producto.nombreCastellano},
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
-			...{linksProvs, links_tipos, calidades: variables.calidades, motivos},
+			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
 			...{userID, revisor, imgDerPers, cartelGenerico: true},
 			vista: req.baseUrl + req.path,
 		});

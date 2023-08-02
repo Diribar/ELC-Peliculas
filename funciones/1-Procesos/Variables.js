@@ -580,7 +580,7 @@ let regsRCLV = async (entidades, userID) => {
 	// Pule la información
 	entidades.forEach((entidad, i) => {
 		// Ordena los registros por nombre
-		valores[i].sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+		valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
 		// Fin
 		registrosRCLV[entidad] = valores[i];
 	});
