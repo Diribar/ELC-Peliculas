@@ -8,9 +8,6 @@ let actualizaConfigCons = {
 		// Obtiene configCons y muestra/oculta campos
 		this.layout();
 
-		// Muestra/Oculta líneas de separación
-		// if (v.mostrar) this.ocultaLineasConsecs();
-
 		// Fin
 		return;
 	},
