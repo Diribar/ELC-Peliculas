@@ -105,7 +105,7 @@ let resultados = {
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
 				// Si es un RCLV, genera la variable de productos
-				entidad != "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
+				entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
@@ -119,7 +119,7 @@ let resultados = {
 				}
 
 				// Agrega fila/s al 'tbody'
-				if (entidad == "producto") {
+				if (entidad == "productos") {
 					const fila = this.auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				} else {
@@ -214,11 +214,13 @@ let resultados = {
 					titulo =
 						!nombreAnt && nombreActual < "G"
 							? "(A - F)"
-							: (!nombreAnt || nombreAnt < "G") && nombreActual < "N"
+							: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G" && nombreActual < "N"
 							? "(G - M)"
-							: (!nombreAnt || nombreAnt < "N") && nombreActual < "T"
+							: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N" && nombreActual < "T"
 							? "(N - S)"
-							: "(T - Z)";
+							: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
+							? "(T - Z)"
+							: "";
 
 					// Fin
 					if (titulo) titulo = prefijo + titulo;
