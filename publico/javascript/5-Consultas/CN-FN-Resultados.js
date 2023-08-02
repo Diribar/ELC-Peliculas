@@ -105,7 +105,7 @@ let resultados = {
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
 				// Si es un RCLV, genera la variable de productos
-				if (entidad != "productos") v.productos.push(...registro.productos);
+				entidad != "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
@@ -331,6 +331,26 @@ let resultados = {
 
 				// Fin
 				return tabla;
+			},
+			creaUnaFilaDeProd: function ({producto, indice}) {
+				// Variables
+				let celda;
+
+				// Crea una fila y le asigna su clase
+				const fila = document.createElement("tr");
+				const parImparProd = (indice % 2 ? "par" : "impar") + "Prod";
+				fila.className = parImparProd;
+
+				// Crea la celda del producto y se la agrega a la fila
+				celda = this.creaUnaCelda.prod(producto);
+				fila.appendChild(celda);
+
+				// Crea la celda del ppp y se la agrega a la fila
+				celda = this.creaUnaCelda.ppp(producto);
+				fila.appendChild(celda);
+
+				// Fin
+				return fila;
 			},
 			creaLasFilasDeUnRCLV: function ({rclv, indice}) {
 				// Variables
