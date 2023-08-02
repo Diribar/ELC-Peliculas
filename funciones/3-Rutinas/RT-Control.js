@@ -28,8 +28,8 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
-		return;
 		this.LinksEnProd();
+		return;
 		this.LinksVencidos();
 	},
 
