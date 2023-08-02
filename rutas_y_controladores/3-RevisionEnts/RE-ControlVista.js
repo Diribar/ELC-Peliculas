@@ -41,7 +41,7 @@ module.exports = {
 		const {linksAprobsEstaSem, linksAprobsTotal} = links;
 
 		// Va a la vista
-		// return res.send(prods)
+		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, origen: "TE"},

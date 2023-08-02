@@ -194,12 +194,12 @@ module.exports = {
 			// Fin
 			return {ED: rclvs};
 		},
-		procesaCampos:{
+		procesaCampos: {
 			prods: (productos) => {
 				// Variables
 				const anchoMax = 35;
 				const rubros = Object.keys(productos);
-	
+
 				// Reconvierte los elementos
 				for (let rubro of rubros)
 					productos[rubro] = productos[rubro].map((n) => {
@@ -216,11 +216,12 @@ module.exports = {
 							nombre,
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
 							fechaRefTexto: n.fechaRefTexto,
+							links: n.linksGeneral,
 						};
 						if (rubro == "ED") datos.edicID = n.edicID;
 						return datos;
 					});
-	
+
 				// Fin
 				return productos;
 			},
@@ -228,7 +229,7 @@ module.exports = {
 				// Procesar los registros
 				let anchoMax = 35;
 				const rubros = Object.keys(rclvs);
-	
+
 				// Reconvierte los elementos
 				for (let rubro of rubros)
 					rclvs[rubro] = rclvs[rubro].map((n) => {
@@ -243,7 +244,7 @@ module.exports = {
 						if (rubro == "ED") datos.edicID = n.edicID;
 						return datos;
 					});
-	
+
 				// Fin
 				return rclvs;
 			},

@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
+	// Variables - DOM
 	DOM = {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		orden_id: DOM.layoutOrden.querySelector("select[name='orden_id']"),
 		orden_idOpciones: DOM.layoutOrden.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
 		ascDes: DOM.layoutOrden.querySelector("#ascDes"),
-		inputsAscDes:DOM.layoutOrden.querySelectorAll("#ascDes input"),
+		inputsAscDes: DOM.layoutOrden.querySelectorAll("#ascDes input"),
 		iconosAyuda: DOM.layoutOrden.querySelectorAll("#ayudaOrden ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
@@ -53,6 +53,17 @@ window.addEventListener("load", async () => {
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
+
+	// Variables - Títulos botonera
+	titulo = {
+		nuevo: DOM.nuevo.title,
+		deshacer: DOM.deshacer.title,
+		guardar: DOM.guardar.title,
+		edicion: DOM.edicion.title,
+		eliminar: DOM.eliminar.title,
+	};
+
+	// Variables - General
 	v = {
 		...(await obtiene.opcionesDeLayoutMasOrden()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
@@ -64,10 +75,10 @@ window.addEventListener("load", async () => {
 	// Start-up
 	await cambioDeConfig_id();
 	await cambioDeCampos();
-	DOM.encabMasPelis.classList.replace("ocultar", "aparece")
+	DOM.encabMasPelis.classList.replace("ocultar", "aparece");
 });
 
 // Variables
 const br = document.createElement("br");
 const ruta = "/consultas/api/";
-let configCons, DOM, v, entidad;
+let configCons, DOM, titulo, v, entidad;

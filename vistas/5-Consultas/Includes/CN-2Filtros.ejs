@@ -7,7 +7,7 @@
 		<option value="">Filtros Guardados...</option>
 		<!-- Configuraciones personales -->
 		<% if (configs.propios.length) { %>
-			<optgroup id="propios" label="Propios">
+			<optgroup id="propios" label="Configuraciones Propias">
 				<% for (let config of configs.propios) { %>
 					<option 
 						value="<%= config.id %>"
@@ -18,7 +18,7 @@
 		<% } %>
 		<!-- Configuraciones predeterminadas -->
 		<% if (userID != 1) { %>
-			<optgroup label="Predeterminados">
+			<optgroup label="Provistas por Nuestro Sitio">
 				<% for (let config of configs.predeterms) { %>
 					<option 
 						value="<%= config.id %>"

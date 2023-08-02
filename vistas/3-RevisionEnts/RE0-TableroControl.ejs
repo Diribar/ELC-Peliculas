@@ -42,7 +42,8 @@
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Altas sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas", regs: prods.AL, url: rp + "alta"}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta"}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta"}) %>
 			</div>
 		</div>
 	</div>
