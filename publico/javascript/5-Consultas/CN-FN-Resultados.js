@@ -5,6 +5,9 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
+		// Oculta el cartel de 'No tenemos'
+		DOM.noTenemos.classList.add("ocultar");
+
 		// Variables
 		const ahora = new Date();
 		const dia = ahora.getDate();
@@ -16,6 +19,16 @@ let resultados = {
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
+
+		// Acciones si no hay resultados
+		if (!v.infoResultados || !v.infoResultados.length) {
+			DOM.quieroVer.classList.add("ocultar");
+			DOM.noTenemos.classList.remove("ocultar");
+			DOM.productos.innerHTML = "";
+			DOM.pelisPor.innerHTML = "";
+		}
+		// Acciones si hay resultados
+		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
 
 		// Contador
 		if (v.infoResultados) this.contador();
@@ -47,13 +60,8 @@ let resultados = {
 	muestra: {
 		generico: function () {
 			// Cartel quieroVer
-			v.mostrarComencemos = false;
+			v.mostrarCartelQuieroVer = false;
 			DOM.quieroVer.classList.add("ocultar");
-
-			// Acciones si no hay resultados
-			!v.infoResultados || !v.infoResultados.length
-				? DOM.noTenemos.classList.remove("ocultar")
-				: DOM.noTenemos.classList.add("ocultar");
 
 			// Limpia los resultados anteriores
 			DOM.productos.innerHTML = "";

@@ -8,9 +8,6 @@ let actualizaConfigCons = {
 		// Obtiene configCons y muestra/oculta campos
 		this.layout();
 
-		// Muestra/Oculta líneas de separación
-		// if (v.mostrar) this.ocultaLineasConsecs();
-
 		// Fin
 		return;
 	},
@@ -169,13 +166,13 @@ let actualizaConfigCons = {
 			// Oculta sectores
 			DOM.asegurate.classList.add("ocultar");
 
-			// Si corrersponde, muestra el cartel de quieroVer
-			if (v.mostrarComencemos) DOM.quieroVer.classList.remove("ocultar");
+			// Si corresponde, muestra el cartel de quieroVer
+			if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
 		}
 		// Acciones si hay algún error que se necesita resolver
 		else {
 			// Variables
-			v.mostrarComencemos = true;
+			v.mostrarCartelQuieroVer = true;
 
 			// Oculta sectores
 			DOM.productos.classList.add("ocultar");
