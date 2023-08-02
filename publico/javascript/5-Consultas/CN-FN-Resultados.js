@@ -115,7 +115,6 @@ let resultados = {
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					// Crea y agrega la tabla
 					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
 					DOM.pelisPor.appendChild(tabla);
 				}
