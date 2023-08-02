@@ -1,12 +1,12 @@
 /* General */
 #scroll #pelisPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
 #scroll #pelisPor.ocultar {display: none}
-#scroll #pelisPor {padding: 0 30px; width: 100%;}
+#scroll #pelisPor {padding-left: 40px; padding-right: 25px ; width: 100%;}
 #scroll #pelisPor {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);
 }
-
+    
 /* Tabla */
 #pelisPor table {border-collapse: collapse; width: 100%;}
 #pelisPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
