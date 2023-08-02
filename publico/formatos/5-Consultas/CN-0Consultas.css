@@ -18,11 +18,12 @@
 
 /* Productos - Comencemos */
 #zonaDeProds #comencemos {display: flex; flex-direction: column; position: relative;}
-#zonaDeProds #comencemos:has(button#verde.ocultar) img {display: none;}
 #zonaDeProds #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
 #zonaDeProds #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
 #zonaDeProds #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #zonaDeProds #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+/* Condicionales */
+#zonaDeProds #comencemos:has(button#verde.ocultar) img {display: none;}
 
 /* Zona de vista */
 #zonaDeProds #vistaProds {display: flex; flex-direction: column; justify-content: center;}
