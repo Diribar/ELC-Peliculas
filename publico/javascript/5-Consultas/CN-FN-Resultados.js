@@ -24,7 +24,7 @@ let resultados = {
 		if (!v.infoResultados || !v.infoResultados.length) {
 			DOM.quieroVer.classList.add("ocultar");
 			DOM.noTenemos.classList.remove("ocultar");
-			DOM.productos.innerHTML = "";
+			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
 		}
 		// Acciones si hay resultados
@@ -67,7 +67,7 @@ let resultados = {
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Limpia los resultados anteriores
-			DOM.productos.innerHTML = "";
+			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
@@ -99,11 +99,13 @@ let resultados = {
 		},
 		listados: function () {
 			// Variables
-			v.productos = [];
 			let registroAnt = {};
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
+				// Si es un RCLV, genera la variable de productos
+				if (entidad != "productos") v.productos.push(...registro.productos);
+
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
 				registroAnt = registro;
