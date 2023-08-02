@@ -25,7 +25,7 @@ let resultados = {
 			DOM.quieroVer.classList.add("ocultar");
 			DOM.noTenemos.classList.remove("ocultar");
 			DOM.productos.innerHTML = "";
-			DOM.listadosPor.innerHTML = "";
+			DOM.listados.innerHTML = "";
 		}
 		// Acciones si hay resultados
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
@@ -68,7 +68,7 @@ let resultados = {
 
 			// Limpia los resultados anteriores
 			DOM.productos.innerHTML = "";
-			DOM.listadosPor.innerHTML = "";
+			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
 			v.layoutBD.boton ? this.botones() : this.listados();
@@ -104,21 +104,18 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
-				// Si es un RCLV, genera la variable de productos
-				if (entidad != "productos") v.productos.push(...registro.productos);
-
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
 				registroAnt = registro;
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice});
-					DOM.listadosPor.appendChild(DOM.tabla);
-					DOM.tbody = DOM.tabla.querySelector("tbody");
+					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice}); // Obtiene la tabla con los datos
+					DOM.listados.appendChild(DOM.tabla); // La agrega a la vista
+					DOM.tbody = DOM.tabla.querySelector("tbody"); // Selecciona el body para luego agregarle filas
 				}
 
-				// Agrega un registro
+				// Agrega fila/s al 'tbody'
 				if (entidad == "producto") {
 					const fila = this.auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
@@ -129,9 +126,9 @@ let resultados = {
 			});
 
 			// Crea variables DOM
-			DOM.ppp = DOM.listadosPor.querySelectorAll("#ppp");
-			DOM.expandeContrae = DOM.listadosPor.querySelectorAll(".expandeContrae");
-			DOM.tbody = DOM.listadosPor.querySelectorAll("tbody");
+			DOM.ppp = DOM.listados.querySelectorAll("#ppp");
+			DOM.expandeContrae = DOM.listados.querySelectorAll(".expandeContrae");
+			DOM.tbody = DOM.listados.querySelectorAll("tbody");
 
 			// Crea variables 'v'
 			v.ppp = Array.from(DOM.ppp);

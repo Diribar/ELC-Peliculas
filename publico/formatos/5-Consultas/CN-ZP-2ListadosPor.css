@@ -1,41 +1,41 @@
 /* General */
-#scroll #listadosPor {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
-#scroll #listadosPor {padding: 0 25px; width: 100%;}
-#scroll #listadosPor.ocultar {display: none}
-#scroll #listadosPor {
+#scroll #listados {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
+#scroll #listados {padding: 0 25px; width: 100%;}
+#scroll #listados.ocultar {display: none}
+#scroll #listados {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);
 }
 
 /* Tabla */
-#listadosPor table {border-collapse: collapse; width: 100%;}
-#listadosPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
-#listadosPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
-#listadosPor table {margin-bottom: 30px;}
-#listadosPor table:has(tbody.ocultar) caption {border-radius: 15px;}
+#listados table {border-collapse: collapse; width: 100%;}
+#listados table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
+#listados table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
+#listados table {margin-bottom: 30px;}
+#listados table:has(tbody.ocultar) caption {border-radius: 15px;}
 
 /* Título */
-#listadosPor table caption {padding: 10px;}
-#listadosPor table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
-#listadosPor table caption {font-size: 1.25rem; font-weight: bold;}
-#listadosPor table caption .expandeContrae {position: absolute; right: 13px;}
+#listados table caption {padding: 10px;}
+#listados table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
+#listados table caption {font-size: 1.25rem; font-weight: bold;}
+#listados table caption .expandeContrae {position: absolute; right: 13px;}
 
 /* Columnas */
-#listadosPor tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
+#listados tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
 
 /* Celdas - Color de fondo */
-#listadosPor tbody tr.imparRCLV td {background: snow;}
-#listadosPor tbody tr.parRCLV td {background: var(--amarillo-claro);}
-#listadosPor tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
+#listados tbody tr.imparRCLV td {background: snow;}
+#listados tbody tr.parRCLV td {background: var(--amarillo-claro);}
+#listados tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 
 /* Celdas - anchor y ppp */
-#listadosPor tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
-#listadosPor tbody tr td:has(i) {width: min-content; text-align: right;}
-#listadosPor tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
+#listados tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
+#listados tbody tr td:has(i) {width: min-content; text-align: right;}
+#listados tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
 
 /* Bordes */
-#listadosPor tbody tr td {border: var(--bordeInterno);}
-#listadosPor tbody tr td:nth-last-child(2) {border-right: none;}
-#listadosPor tbody tr td:nth-last-child(1) {border-left: none;}
-#listadosPor tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
-#listadosPor tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
+#listados tbody tr td {border: var(--bordeInterno);}
+#listados tbody tr td:nth-last-child(2) {border-right: none;}
+#listados tbody tr td:nth-last-child(1) {border-left: none;}
+#listados tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
+#listados tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
