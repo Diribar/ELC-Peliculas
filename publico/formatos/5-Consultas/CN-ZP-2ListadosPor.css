@@ -12,11 +12,13 @@
 #pelisPor table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
 #pelisPor table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
 #pelisPor table {margin-bottom: 30px;}
+#pelisPor table:has(tbody.ocultar) caption {border-radius: 15px;}
 
 /* Título */
 #pelisPor table caption {padding: 10px;}
 #pelisPor table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
 #pelisPor table caption {font-size: 1.25rem; font-weight: bold;}
+#pelisPor table caption .expandeContrae {position: absolute; right: 13px;}
 
 /* Columnas */
 #pelisPor tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
