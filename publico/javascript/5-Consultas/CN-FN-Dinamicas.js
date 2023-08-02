@@ -176,7 +176,7 @@ let actualizaConfigCons = {
 			v.mostrarCartelQuieroVer = true;
 
 			// Oculta sectores
-			DOM.productos.innerHTML = "";
+			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
 			DOM.quieroVer.classList.add("ocultar");
 
