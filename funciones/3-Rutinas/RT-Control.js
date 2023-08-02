@@ -29,6 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
+		this.LinksEnProd();
 		this.LinksVencidos();
 	},
 
