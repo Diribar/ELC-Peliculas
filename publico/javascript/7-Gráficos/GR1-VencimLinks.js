@@ -16,13 +16,19 @@ window.addEventListener("load", async () => {
 	function drawGraphic() {
 		// Consolida el resultado
 		let resultado = [["Semana", "Cant. de Links", {role: "annotation"}]];
-		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i], ejeY[i]]);
+		let ticks = [];
+		for (let i = 0; i < ejeX.length; i++) {
+			const valorX = ejeX[i];
+			resultado.push([valorX, ejeY[i], ejeY[i]]);
+			ticks.push({v: valorX, f: String(valorX < 53 ? valorX : valorX - 52)});
+		}
 
 		// Especifica la información
 		let data = google.visualization.arrayToDataTable(resultado);
 
 		// Opciones del gráfico
 		let options = {
+			title: "Cantidad de links que vencen por semana",
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
 			animation: {
@@ -34,14 +40,13 @@ window.addEventListener("load", async () => {
 			colors: ["rgb(31,73,125)"],
 			legend: {position: "none"},
 			hAxis: {
-				// minValue: 0,
 				format: "decimal",
 				scaleType: "number",
 				title: "Semana",
+				ticks,
 			},
 			vAxis: {
 				viewWindow: {max: Math.ceil(Math.max(...ejeY) / 10) * 10},
-				title: "Cant. de Links",
 				fontSize: 20,
 			},
 		};
