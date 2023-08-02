@@ -64,9 +64,9 @@
 		<div class="inputError">
 			<select name="tipo_id" class="input ocultar">
 				<option value="">Elejí</option>
-				<option value="<%= links_tipos[0].id %>" <%- entidad == "colecciones" ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
+				<option value="<%= linksTipos[0].id %>" <%- entidad == "colecciones" ? "selected" : "" %>><%= linksTipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
-					<option value="<%= links_tipos[1].id %>"><%= links_tipos[1].nombre %></option>
+					<option value="<%= linksTipos[1].id %>"><%= linksTipos[1].nombre %></option>
 				<% } %>
 			</select>
 			<%- include("CMP-Errores", {z_index: 3, display: true}) %>
