@@ -9,7 +9,7 @@ let actualizaConfigCons = {
 		this.layout();
 
 		// Muestra/Oculta líneas de separación
-		if (v.mostrar) this.ocultaLineasConsecs();
+		// if (v.mostrar) this.ocultaLineasConsecs();
 
 		// Fin
 		return;
@@ -207,7 +207,7 @@ let actualizaConfigCons = {
 			(!DOM.canons.value || DOM.canons.value == "NN") && // 'canon' no está contestado
 			!DOM.rolesIgl.value; // 'rolesIgl' no está contestado
 
-		seMuestra ? DOM.cfc.parentNode.classList.remove("ocultar") : DOM.cfc.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.cfc.parentNode.classList.remove("invisible") : DOM.cfc.parentNode.classList.add("invisible");
 
 		// Actualiza el valor de 'cfc'
 		if (seMuestra && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
@@ -220,7 +220,7 @@ let actualizaConfigCons = {
 		// Impacto en configCons: bhr
 
 		// Si bhr ya está contestado, se oculta
-		configCons.bhr ? DOM.bhr.parentNode.classList.add("ocultar") : DOM.bhr.parentNode.classList.remove("ocultar");
+		configCons.bhr ? DOM.bhr.parentNode.classList.add("invisible") : DOM.bhr.parentNode.classList.remove("invisible");
 
 		// Actualiza el valor de 'bhr'
 		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
@@ -240,16 +240,16 @@ let actualizaConfigCons = {
 			entidad != "temas"; // La entidad es distinta de 'temas'
 
 		// Muestra/Oculta el sector
-		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.apMar.parentNode.classList.remove("invisible") : DOM.apMar.parentNode.classList.add("invisible");
 
 		// Actualiza el valor de 'apMar'
 		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
 
-		// Si se elige una 'Aparición Mariana', ocultar el sector de 'Época de Ocurrencia'
+		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
 		if (configCons.apMar == "SI") {
 			delete configCons.epocasOcurrencia;
-			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
-		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
+			DOM.epocasOcurrencia.parentNode.classList.add("invisible");
+		} else DOM.epocasOcurrencia.parentNode.classList.remove("invisible");
 
 		// Fin
 		this.canons();
@@ -263,7 +263,7 @@ let actualizaConfigCons = {
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
 		// Oculta/Muestra sectores
-		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.canons.parentNode.classList.remove("invisible") : DOM.canons.parentNode.classList.add("invisible");
 
 		// Actualiza el valor de 'canons' y 'rolesIgl'
 		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
@@ -280,7 +280,7 @@ let actualizaConfigCons = {
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
 		// Oculta/Muestra sectores
-		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
+		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("invisible") : DOM.rolesIgl.parentNode.classList.add("invisible");
 
 		// Actualiza el valor de 'canons' y 'rolesIgl'
 		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
