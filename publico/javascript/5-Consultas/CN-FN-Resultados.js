@@ -185,11 +185,16 @@ let resultados = {
 				avatar.title = producto.nombreCastellano;
 				button.appendChild(avatar);
 
+				// Crea el sector de informacion
+				const informacion = document.createElement("div");
+				informacion.id = "informacion";
+				informacion.className = "flexCol";
+				button.appendChild(informacion);
+
 				// Crea infoPeli
 				const infoPeli = document.createElement("div");
 				infoPeli.id = "infoPeli";
-				infoPeli.className = "flexCol";
-				button.appendChild(infoPeli);
+				informacion.appendChild(infoPeli);
 
 				// Crea nombreCastellano, anoEstreno, direccion
 				let elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
@@ -209,6 +214,26 @@ let resultados = {
 				aux.ppp.className += " scale " + producto.pppIcono;
 				aux.ppp.tabIndex = "-1";
 				aux.ppp.title = producto.pppNombre;
+
+				// Crea infoRCLV
+				const infoRCLV = document.createElement("div");
+				infoRCLV.id = "infoRCLV";
+				informacion.appendChild(infoRCLV);
+
+				// Crea un rclv para infoRCLV
+				for (let rclvNombre of v.rclvNombres)
+					if (producto[rclvNombre]) {
+						// Crea el rclv con sus características
+						const rclv = document.createElement("p");
+						rclv.className = "interlineadoChico rclv";
+						rclv.innerHTML = rclvNombre + ": " + producto[rclvNombre];
+
+						// Agrega el rclv
+						infoRCLV.appendChild(rclv);
+
+						// Fin
+						break
+					}
 
 				// Fin
 				return li;
