@@ -28,6 +28,7 @@ module.exports = {
 
 				// Si no tiene opciones, le agrega las de la BD
 				if (!campos[campo].opciones) {
+					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
 					if (campo == "epocasOcurrencia")
 						campos.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => !n.varias)
