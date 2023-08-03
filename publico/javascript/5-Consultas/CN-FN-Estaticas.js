@@ -300,7 +300,7 @@ let cambioDeConfig_id = async () => {
 	await actualiza.valoresInicialesDeVariables();
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
-	actualiza.cartelQuieroVerVisible();
+	// actualiza.cartelQuieroVerVisible();
 	actualiza.muestraOcultaFiltros();
 
 	// Fin
