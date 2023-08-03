@@ -34,4 +34,4 @@ option#sinFiltro {display: block; font-style: italic}
 #configCampos #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center;}
 #configCampos #mostrarOcultarFiltros #mostrarFiltros {background: var(--azul-oscuro); color: snow;}
 #configCampos #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
-#configCampos #mostrarOcultarFiltros span {font-weight: bold; text-decoration: underline;}
+#configCampos #mostrarOcultarFiltros span {font-weight: bold;}
