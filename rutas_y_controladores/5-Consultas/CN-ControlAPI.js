@@ -5,17 +5,17 @@ const procesos = require("./CN-Procesos");
 
 module.exports = {
 	obtiene: {
-		configDeCabecera: async (req, res) => {
+		configCabecera: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
 
 			// Obtiene la cabecera
-			const configDeCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
+			const configCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
 
 			// Fin
-			return res.json(configDeCabecera);
+			return res.json(configCabecera);
 		},
-		configDeCampos: async (req, res) => {
+		configCampos: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
 			let preferencias = {};
