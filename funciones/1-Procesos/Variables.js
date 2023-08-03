@@ -3,25 +3,12 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
-	// Inicio
-	opcionesInicio: [
-		{
-			href: "/consultas",
-			src: "/imagenes/0-Base/Inicio/VerUnaPeli.jpg",
-			p: "Quiero que me recomienden una película o colección",
-		},
-		{
-			href: "/producto/agregar/confirma",
-			src: "/imagenes/0-Base/Inicio/Agregar.jpg",
-			p: "Quiero agregar una película a la base de datos",
-		},
-		{
-			href: "/institucional/quienes-somos",
-			src: "/imagenes/0-Base/Varios/Institucional-Imagen.jpg",
-			p: "Un paseo institucional por nuestro sitio",
-		},
-	],
+	// Institucional
 	opcsInstitucional: {
+		"inicio":{
+			codigo: "inicio",
+			titulo: "Inicio",
+		},
 		"quienes-somos": {
 			codigo: "quienesSomos",
 			titulo: "Quiénes somos",
@@ -449,7 +436,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
-			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true,},
+			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
 				nombre: "rolIglesia_id",
