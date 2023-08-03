@@ -156,7 +156,7 @@ let resultados = {
 			return;
 		},
 		auxiliares: {
-			boton: (producto) => {
+			boton: function (producto) {
 				// Crea el elemento 'li' que engloba todo el producto
 				const li = document.createElement("li");
 				li.className = "producto";
@@ -220,20 +220,9 @@ let resultados = {
 				infoRCLV.id = "infoRCLV";
 				informacion.appendChild(infoRCLV);
 
-				// Crea un rclv para infoRCLV
-				for (let rclvNombre of v.rclvNombres)
-					if (producto[rclvNombre]) {
-						// Crea el rclv con sus características
-						const rclv = document.createElement("p");
-						rclv.className = "interlineadoChico rclv";
-						rclv.innerHTML = rclvNombre + ": " + producto[rclvNombre];
-
-						// Agrega el rclv
-						infoRCLV.appendChild(rclv);
-
-						// Fin
-						break;
-					}
+				// Agrega el rclv en infoRCLV
+				const rclv = this.obtieneElRCLV(producto);
+				if (rclv) infoRCLV.appendChild(rclv);
 
 				// Fin
 				return li;
@@ -427,6 +416,21 @@ let resultados = {
 
 				// Fin
 				return filas;
+			},
+			obtieneElRCLV: (producto) => {
+				for (let rclvNombre of v.rclvNombres)
+					if (producto[rclvNombre]) {
+						// Crea el rclv con sus características
+						const rclv = document.createElement("p");
+						rclv.className = "interlineadoChico rclv";
+						rclv.innerHTML = rclvNombre + ": " + producto[rclvNombre];
+
+						// Fin
+						return rclv;
+					}
+
+				// Fin
+				return false;
 			},
 			creaUnaCelda: {
 				rclv: (rclv) => {
