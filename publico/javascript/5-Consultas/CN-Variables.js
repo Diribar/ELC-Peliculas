@@ -5,15 +5,15 @@ window.addEventListener("load", async () => {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
 		// Encabezado, Cabecera, Campos
-		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configsDeCampo) .prefSimple"),
+		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configCampos) .prefSimple"),
 		configCons: document.querySelector("#configCons"),
-		configCabecera: document.querySelector("#configCons #configDeCabecera"),
-		configCampos: document.querySelector("#configCons #configsDeCampo nav"),
+		configCabecera: document.querySelector("#configCons #configCabecera"),
+		configCampos: document.querySelector("#configCons #configCampos"),
 		encabMasPelis: document.querySelector("#encabMasPelis"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
 		layoutOrden: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		// Zona de productos
-		zonaProds: document.querySelector("#zonaDisponible"),
+		zonaDisponible: document.querySelector("#zonaDisponible"),
 	};
 	DOM = {
 		...DOM,
@@ -38,15 +38,17 @@ window.addEventListener("load", async () => {
 		selects: DOM.configCampos.querySelectorAll("select"),
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
+		mostrarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
+		ocultarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
-		// Zona de resultados
-		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
-		quieroVer: DOM.zonaProds.querySelector("#comencemos button#verde"),
-		noTenemos: DOM.zonaProds.querySelector("#comencemos button#azul"),
-		resultados: DOM.zonaProds.querySelectorAll("#vistaDeResults .resultados"),
-		vistaDeResults: DOM.zonaProds.querySelector("#vistaDeResults"),
-		botones: DOM.zonaProds.querySelector("#vistaDeResults #botones"),
-		listados: DOM.zonaProds.querySelector("#vistaDeResults #listados"),
+		// Zona Disponible
+		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#rojo"),
+		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#verde"),
+		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#azul"),
+		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
+		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
+		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
+		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
@@ -67,6 +69,7 @@ window.addEventListener("load", async () => {
 		pppOpciones: await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json()),
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
+		mostrarFiltros: false,
 	};
 
 	// Start-up
