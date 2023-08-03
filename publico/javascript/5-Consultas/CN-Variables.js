@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 
 	// Variables - General
 	v = {
-		...(await obtiene.opcionesDeLayoutMasOrden()),
+		...(await obtiene.obtieneVariablesDelBE()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
 		pppOpciones: await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json()),
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",

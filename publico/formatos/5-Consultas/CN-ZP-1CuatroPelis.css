@@ -12,8 +12,9 @@
 #botones li button:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
 
 /* Partes del resultado */
-#botones li button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
-#botones li button #infoPeli {margin: 10px 15px; align-items: flex-start;}
-#botones li button #infoPeli .interlineadoChico {margin-top: 5px;}
-#botones li button #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
-#botones li button:hover #infoPeli i#ppp {color: inherit;}
+button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
+button #informacion {justify-content: space-between; height: 100%;}
+button #informacion :is(#infoPeli, #infoRCLV) {padding: 10px 15px;}
+button #informacion :is(#infoPeli, #infoRCLV) .interlineadoChico {margin-top: 5px;}
+button #informacion #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
+button:hover #informacion #infoPeli i#ppp {color: inherit;}
