@@ -36,17 +36,29 @@ let resultados = {
 		// Fin
 		return;
 	},
+	// Contador para productos
 	contador: () => {
-		if (entidad == "productos") {
-			// Variables
-			const total = v.infoResultados ? v.infoResultados.length : 0;
-			const parcial = Math.min(4, total);
+		// Variables
+		const total = v.infoResultados ? v.infoResultados.length : 0;
 
-			// Actualiza el contador
-			DOM.contadorDeProds.innerHTML = parcial + " de " + total;
-		} else {
+		// Contador para Productos
+		if (entidad == "productos") {
+			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
+			if (v.layoutBD.boton || v.ordenBD.valor == "altaRevisadaEn") {
+				// Variables
+				const minimo = v.layoutBD.boton ? 4 : v.ordenBD.valor == "altaRevisadaEn" ? 30 : 0;
+				const parcial = Math.min(minimo, total);
+
+				// Actualiza el contador
+				DOM.contadorDeProds.innerHTML = parcial + " de " + total;
+			}
+			// Contador para 'Todos los productos'
+			else DOM.contadorDeProds.innerHTML = total;
+		}
+		// Contador para RCLVs
+		else {
 			// Variables
-			const cantRCLVs = v.infoResultados ? v.infoResultados.length : 0;
+			const cantRCLVs = total;
 			let cantProds = 0;
 			if (v.infoResultados) for (let rclv of v.infoResultados) cantProds += rclv.productos.length;
 
@@ -104,8 +116,11 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
+				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las 30 primeras
+				if (v.ordenBD.valor == "altaRevisadaEn" && indice == 30) return;
+
 				// Si es un RCLV, genera la variable de productos
-				if (entidad != "productos") v.productos.push(...registro.productos);
+				entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = this.auxiliares.titulo(registro, registroAnt, indice);
@@ -119,7 +134,7 @@ let resultados = {
 				}
 
 				// Agrega fila/s al 'tbody'
-				if (entidad == "producto") {
+				if (entidad == "productos") {
 					const fila = this.auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				} else {
@@ -214,11 +229,13 @@ let resultados = {
 					titulo =
 						!nombreAnt && nombreActual < "G"
 							? "(A - F)"
-							: (!nombreAnt || nombreAnt < "G") && nombreActual < "N"
+							: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G" && nombreActual < "N"
 							? "(G - M)"
-							: (!nombreAnt || nombreAnt < "N") && nombreActual < "T"
+							: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N" && nombreActual < "T"
 							? "(N - S)"
-							: "(T - Z)";
+							: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
+							? "(T - Z)"
+							: "";
 
 					// Fin
 					if (titulo) titulo = prefijo + titulo;
@@ -301,11 +318,11 @@ let resultados = {
 				// anoEstreno
 				if (!titulo && orden == "anoEstreno") {
 					// Variables
-					const grupoAnt = registroAnt.epocaEstrenoGrupo;
-					const grupoActual = registro.epocaEstrenoGrupo;
+					const grupoAnt = registroAnt.epocaEstrenoNombre;
+					const grupoActual = registro.epocaEstrenoNombre;
 
 					// Pruebas
-					if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoGrupo;
+					if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoNombre;
 				}
 
 				// Fin
@@ -331,6 +348,26 @@ let resultados = {
 
 				// Fin
 				return tabla;
+			},
+			creaUnaFilaDeProd: function ({producto, indice}) {
+				// Variables
+				let celda;
+
+				// Crea una fila y le asigna su clase
+				const fila = document.createElement("tr");
+				const parImparProd = (indice % 2 ? "par" : "impar") + "Prod";
+				fila.className = parImparProd;
+
+				// Crea la celda del producto y se la agrega a la fila
+				celda = this.creaUnaCelda.prod(producto);
+				fila.appendChild(celda);
+
+				// Crea la celda del ppp y se la agrega a la fila
+				celda = this.creaUnaCelda.ppp(producto);
+				fila.appendChild(celda);
+
+				// Fin
+				return fila;
 			},
 			creaLasFilasDeUnRCLV: function ({rclv, indice}) {
 				// Variables

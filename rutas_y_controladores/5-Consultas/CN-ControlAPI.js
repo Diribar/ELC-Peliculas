@@ -145,6 +145,7 @@ module.exports = {
 		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id});
 		prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave, entidad});
 
+		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = procesos.resultados.orden.prods({prods, orden, configCons}); // Ordena los productos
@@ -153,7 +154,7 @@ module.exports = {
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
-			rclvs = procesos.resultados.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.orden.rclvs({rclvs, orden, configCons}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad}); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}

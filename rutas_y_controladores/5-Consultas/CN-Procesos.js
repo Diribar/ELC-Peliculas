@@ -46,7 +46,8 @@ module.exports = {
 			const {orden_id} = configCons;
 			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = variables.asocs.rclvs;
+			let include = [...variables.asocs.rclvs];
+			if (ordenBD.valor == "anoEstreno") include.push("epocaEstreno")
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
@@ -62,14 +63,9 @@ module.exports = {
 			// Obtiene los productos
 			for (let entProd of entsProd)
 				productos.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include)
-						.then((n) => n.map((m) => ({...m, entidad: entProd})))
-						.then((n) =>
-							n.map((m) => {
-								if (m.anoFin) m.anoEstreno = m.anoFin;
-								return m;
-							})
-						)
+					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+						n.map((m) => ({...m, entidad: entProd}))
+					)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 			resultados = this.prefs.prodsConInclude({resultados, configCons});
@@ -475,15 +471,20 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length > 1 && orden.valor != "momento")
+				if (prods.length > 1 && orden.valor != "momento") {
+					// Variables
+					const campo = orden.valor == "nombre" ? "nombreCastellano" : orden.valor;
+
+					// Ordena
 					prods.sort((a, b) =>
-						configCons.ascDes == "ASC" ? a[orden.valor] - b[orden.valor] : b[orden.valor] - a[orden.valor]
+						configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
 					);
+				}
 
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, orden, configCons, entidad}) => {
+			rclvs: ({rclvs, orden, configCons}) => {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
@@ -517,9 +518,9 @@ module.exports = {
 				if (!prods.length) return [];
 
 				// Deja solamente los campos necesarios
-				prods = prods.map((n) => {
+				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = n;
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = prod;
 					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar};
 
 					// Achica el campo dirección
@@ -528,8 +529,11 @@ module.exports = {
 					// Obtiene el nombre de la entidad
 					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
+					// Obtiene la época del año
+					datos.epocaEstrenoNombre = prod.epocaEstreno ? prod.epocaEstreno.nombre : "";
+
 					// Si es una colección, agrega el campo 'anoFin'
-					if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+					if (prod.entidad == "colecciones") datos.anoFin = prod.anoFin;
 
 					// Fin
 					return datos;
