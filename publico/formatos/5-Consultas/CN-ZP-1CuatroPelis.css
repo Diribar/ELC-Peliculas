@@ -17,4 +17,5 @@ button #informacion {justify-content: space-between; height: 100%;}
 button #informacion :is(#infoPeli, #infoRCLV) {padding: 10px 15px;}
 button #informacion :is(#infoPeli, #infoRCLV) .interlineadoChico {margin-top: 5px;}
 button #informacion #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
+button #informacion #infoRCLV .rclv {font-style: italic;}
 button:hover #informacion #infoPeli i#ppp {color: inherit;}
