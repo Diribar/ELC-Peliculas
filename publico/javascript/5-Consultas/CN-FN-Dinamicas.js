@@ -8,6 +8,9 @@ let actualizaConfigCons = {
 		// Obtiene configCons y muestra/oculta campos
 		this.layout();
 
+		// Muestra / Oculta filtros
+		actualiza.muestraOcultaFiltros()
+
 		// Oculta las líneas consecutivas
 		this.ocultaLineasConsecs()
 
