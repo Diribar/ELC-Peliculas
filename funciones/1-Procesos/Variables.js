@@ -4,53 +4,18 @@ const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
 	// Institucional
-	opcsInstitucional: {
-		"inicio":{
-			codigo: "inicio",
-			titulo: "Inicio",
-		},
-		"quienes-somos": {
-			codigo: "quienesSomos",
-			titulo: "Quiénes somos",
-			anterior: "",
-			posterior: "mision-y-vision",
-		},
-		"mision-y-vision": {
-			codigo: "misionVision",
-			titulo: "Nuestra Misión y Visión",
-			anterior: "quienes-somos",
-			posterior: "valores",
-		},
-		valores: {
-			codigo: "nuestrosValores",
-			titulo: "Nuestros Valores",
-			anterior: "mision-y-vision",
-			posterior: "en-que-consiste-este-sitio",
-		},
+	vistasInstitucs: {
+		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true},
+		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
+		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart"},
 		"en-que-consiste-este-sitio": {
-			codigo: "enQueConsiste",
 			titulo: "En qué consiste este sitio",
-			anterior: "valores",
-			posterior: "nuestro-perfil-de-peliculas",
+			codigo: "enQueConsiste",
+			icono: "fa-question",
+			hr: true,
 		},
-		"nuestro-perfil-de-peliculas": {
-			codigo: "perfilPelis",
-			titulo: "Nuestro Perfil de Películas",
-			anterior: "en-que-consiste-este-sitio",
-			posterior: "derechos-de-autor",
-		},
-		"derechos-de-autor": {
-			codigo: "derechosAutor",
-			titulo: "Nuestra Política sobre Derechos de Autor",
-			anterior: "nuestro-perfil-de-peliculas",
-			posterior: "data-entry",
-		},
-		"data-entry": {
-			codigo: "dataEntry",
-			titulo: "Nuestra Política de Data-Entry",
-			anterior: "derechos-de-autor",
-			posterior: "",
-		},
+		"nuestro-perfil-de-peliculas": {titulo: "Nuestro Perfil de Películas", codigo: "perfilPelis", icono: "fa-trophy"},
+		"derechos-de-autor": {titulo: "Política sobre Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
 	// Productos y RCLVs
