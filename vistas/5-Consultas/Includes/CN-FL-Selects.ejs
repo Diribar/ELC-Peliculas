@@ -3,7 +3,7 @@
 		<option value="" class="ocultar"><%= asunto.titulo %></option>
 		<option value="" id="sinFiltro">Quitar la opción elegida</option>
 		<% for (let opcion of asunto.opciones) { %>
-			<option value="<%= opcion.id %>" class="<%= opcion.clase %>"><%= opcion.nombre %></option>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 		<% } %>
 	</select>
 </div>
