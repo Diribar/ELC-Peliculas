@@ -21,6 +21,8 @@ global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
+const variables = require("./funciones/1-Procesos/Variables");
+global.vistasInstitucs = variables.vistasInstitucs;
 
 // Para usar propiedades de express
 global.express = require("express");
