@@ -306,7 +306,7 @@ let actualizaConfigCons = {
 	ocultaLineasConsecs: () => {
 		return
 		// Variables
-		let hijos = DOM.configCampos.parentNode.querySelectorAll("nav > *"); // los hijos directos de 'nav'
+		let hijos = DOM.configCampos.querySelectorAll("nav > *"); // los hijos directos de 'nav'
 		let tags = [];
 
 		hijos.forEach((hijo, orden) => {
