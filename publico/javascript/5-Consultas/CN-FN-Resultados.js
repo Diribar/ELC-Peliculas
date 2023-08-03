@@ -46,7 +46,7 @@ let resultados = {
 			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
 			if (v.layoutBD.boton || v.ordenBD.valor == "altaRevisadaEn") {
 				// Variables
-				const minimo = v.layoutBD.boton ? 4 : v.ordenBD.valor == "altaRevisadaEn" ? 30 : 0;
+				const minimo = v.layoutBD.boton ? 4 : v.ordenBD.valor == "altaRevisadaEn" ? v.topeParaMasRecientes : 0;
 				const parcial = Math.min(minimo, total);
 
 				// Actualiza el contador
@@ -116,8 +116,8 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
-				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las 30 primeras
-				if (v.ordenBD.valor == "altaRevisadaEn" && indice == 30) return;
+				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las primeras
+				if (v.ordenBD.valor == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
 
 				// Si es un RCLV, genera la variable de productos
 				entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
@@ -232,7 +232,7 @@ let resultados = {
 						infoRCLV.appendChild(rclv);
 
 						// Fin
-						break
+						break;
 					}
 
 				// Fin
@@ -276,9 +276,9 @@ let resultados = {
 					titulo =
 						!diaAnt && diaActual < 92
 							? "Primer"
-							: (!diaAnt || diaAnt < 92) && diaActual < 183
+							: (!diaAnt || diaAnt < 92) && diaActual >= 92 && diaActual < 183
 							? "Segundo"
-							: (!diaAnt || diaAnt < 183) && diaActual < 275
+							: (!diaAnt || diaAnt < 183) && diaActual >= 183 && diaActual < 275
 							? "Tercer"
 							: (!diaAnt || diaAnt < 275) && diaActual >= 275
 							? "Cuarto"
@@ -337,7 +337,7 @@ let resultados = {
 
 				// altaRevisadaEn
 				if (!titulo && orden == "altaRevisadaEn") {
-					titulo = !indice ? "Las treinta más recientes" : indice == 30 ? "Anteriores" : "";
+					titulo = !indice ? "Las más recientes" : "";
 				}
 
 				// anoEstreno
