@@ -154,13 +154,9 @@ window.addEventListener("load", async () => {
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-			console.log(v.mostrarFiltros);
 
 			// Muestra u oculta los filtros vacíos
-			for (let campo of DOM.selects)
-				v.mostrarFiltros || DOM[campo.name].value
-					? DOM[campo.name].parentNode.classList.remove("ocultaFiltros")
-					: DOM[campo.name].parentNode.classList.add("ocultaFiltros");
+			actualiza.muestraOcultaFiltros();
 		}
 
 		// Fin
