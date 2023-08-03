@@ -48,11 +48,11 @@ module.exports = {
 				tema,
 				codigo,
 				titulo,
-				dataEntry,
+				dataEntry: {}, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
 				errores,
 				hablaHispana,
 				hablaNoHispana,
-				urlSalir: req.session.urlSinLogin,
+				urlSalir: "/usuarios/login",
 			});
 		},
 		guardar: async (req, res) => {
