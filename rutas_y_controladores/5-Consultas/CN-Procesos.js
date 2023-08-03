@@ -230,7 +230,7 @@ module.exports = {
 			let condicion;
 
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
-			for (let dia = 0; dia < 15; dia++) {
+			for (let dia = 0; dia < 366; dia++) {
 				// Variables
 				let diaDelAno_id = diaInicial_id + dia;
 				if (diaDelAno_id > 366) diaDelAno_id -= 366;
