@@ -70,10 +70,12 @@ window.addEventListener("load", async () => {
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
 		mostrarFiltros: false,
+		topeParaMasRecientes: 20,
 	};
 
 	// Start-up
 	await cambioDeConfig_id();
+	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece");
 });
