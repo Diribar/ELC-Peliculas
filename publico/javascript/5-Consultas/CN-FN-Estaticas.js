@@ -158,6 +158,11 @@ let actualiza = {
 				? DOM[campo.name].parentNode.classList.remove("ocultaFiltros")
 				: DOM[campo.name].parentNode.classList.add("ocultaFiltros");
 
+		// Palabras clave
+		v.mostrarFiltros || DOM.palClave.value
+			? DOM.palClave.parentNode.classList.remove("ocultaFiltros")
+			: DOM.palClave.parentNode.classList.add("ocultaFiltros");
+
 		// Fin
 		return;
 	},
