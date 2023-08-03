@@ -47,7 +47,7 @@ module.exports = {
 			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			let include = [...variables.asocs.rclvs];
-			if (ordenBD.valor == "anoEstreno") include.push("epocaEstreno")
+			if (ordenBD.valor == "anoEstreno") include.push("epocaEstreno");
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
@@ -528,6 +528,17 @@ module.exports = {
 
 					// Obtiene el nombre de la entidad
 					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
+					// Obtiene los RCLV
+					for (let rclv of variables.entidades.rclvs) {
+						// Variables
+						const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv);
+						const asociacion = comp.obtieneDesdeEntidad.asociacion(rclv);
+						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(rclv);
+
+						// RCLV nombre
+						if (prod[campo_id] > 10) datos[entidadNombre] = prod[asociacion].nombre;
+					}
 
 					// Obtiene la época del año
 					datos.epocaEstrenoNombre = prod.epocaEstreno ? prod.epocaEstreno.nombre : "";
