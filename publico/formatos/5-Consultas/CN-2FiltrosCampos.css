@@ -32,5 +32,6 @@ option#sinFiltro {display: block; font-style: italic}
 /* Carteles para mostrar/ocultar filtros */
 #configCampos #mostrarOcultarFiltros {flex-grow: 1; justify-content: center; align-items: center;}
 #configCampos #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center;}
-#configCampos #mostrarOcultarFiltros #mostrarFiltros {background: var(--verde-claro);}
-#configCampos #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-claro);}
+#configCampos #mostrarOcultarFiltros #mostrarFiltros {background: var(--azul-oscuro); color: snow;}
+#configCampos #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
+#configCampos #mostrarOcultarFiltros span {font-weight: bold; text-decoration: underline;}
