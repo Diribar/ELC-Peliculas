@@ -8,6 +8,9 @@ let actualizaConfigCons = {
 		// Obtiene configCons y muestra/oculta campos
 		this.layout();
 
+		// Oculta las líneas consecutivas
+		this.ocultaLineasConsecs()
+
 		// Fin
 		return;
 	},
@@ -298,8 +301,9 @@ let actualizaConfigCons = {
 	},
 	// Apoyo
 	ocultaLineasConsecs: () => {
+		return
 		// Variables
-		let hijos = DOM.configCampos.parentNode.querySelectorAll("nav > *");
+		let hijos = DOM.configCampos.parentNode.querySelectorAll("nav > *"); // los hijos directos de 'nav'
 		let tags = [];
 
 		hijos.forEach((hijo, orden) => {
