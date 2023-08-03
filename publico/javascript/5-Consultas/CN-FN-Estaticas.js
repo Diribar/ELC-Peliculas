@@ -151,6 +151,16 @@ let actualiza = {
 		// Fin
 		return;
 	},
+	muestraOcultaFiltros: () => {
+		// Muestroa / Oculta los filtros
+		for (let campo of DOM.selects)
+			v.mostrarFiltros || DOM[campo.name].value
+				? DOM[campo.name].parentNode.classList.remove("ocultaFiltros")
+				: DOM[campo.name].parentNode.classList.add("ocultaFiltros");
+
+		// Fin
+		return;
+	},
 };
 let cambiosEnBD = {
 	configCons_id: () => {
@@ -286,6 +296,7 @@ let cambioDeConfig_id = async () => {
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.cartelQuieroVerVisible();
+	actualiza.muestraOcultaFiltros();
 
 	// Fin
 	return;
