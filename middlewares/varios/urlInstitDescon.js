@@ -5,7 +5,7 @@ const variables = require("../../funciones/1-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables
 	const url = req.path.slice(1)
-	const vars = variables.opcsInstitucional[url];
+	const vars = vistasInstitucs[url];
 	let informacion
 
 	// Acciones si no se reconoce la url
