@@ -5,8 +5,8 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-las-configs-posibles-para-el-usuario";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	opcionesDeLayoutMasOrden: () => {
-		const rutaCompleta = ruta + "obtiene-las-opciones-de-layout-y-orden/";
+	obtieneVariablesDelBE: () => {
+		const rutaCompleta = ruta + "obtiene-variables-del-back-end/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	configCabecera: () => {
