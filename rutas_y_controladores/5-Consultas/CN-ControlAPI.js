@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const Variables = require("../../funciones/1-Procesos/Variables");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const procesos = require("./CN-Procesos");
 
@@ -39,12 +40,15 @@ module.exports = {
 			// Fin
 			return res.json(configsDeCabecera);
 		},
-		opcionesDeLayoutMasOrden: async (req, res) => {
+		variables: async (req, res) => {
 			// Variables
+			const layoutsBD = cn_layouts;
+			const ordenesBD = cn_ordenes;
 			const userID = req.session.usuario ? req.session.usuario.id : null;
+			const rclvNombres = Variables.entidades.rclvsNombre;
 
 			// Fin
-			return res.json({layoutsBD: cn_layouts, ordenesBD: cn_ordenes, userID});
+			return res.json({layoutsBD, ordenesBD, userID, rclvNombres});
 		},
 	},
 	cambiosEnBD: {
