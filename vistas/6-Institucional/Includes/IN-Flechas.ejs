@@ -1,12 +1,8 @@
 <div class="flechas">
-	<% if (anterior) { %>
-		<a href="/institucional/<%= anterior %>">
-			<i class="fa-solid fa-circle-left" tabindex="-1" title="Anterior"></i>
-		</a>
-	<% } %>
-	<% if (posterior) { %>
-		<a href="/institucional/<%= posterior %>">
-			<i class="fa-solid fa-circle-right" tabindex="-1" title="Posterior"></i>
-		</a>
-	<% } %>
+	<a href="/institucional/<%= urlAnt %>">
+		<i class="fa-solid fa-<%= urlAnt=="inicio" ? 'house' : 'circle-left' %>" tabindex="-1" title="Anterior"></i>
+	</a>
+	<a href="/institucional/<%= urlPost %>">
+		<i class="fa-solid fa-<%= urlPost=="inicio" ? 'house' : 'circle-right' %>" tabindex="-1" title="Posterior"></i>
+	</a>
 </div>
