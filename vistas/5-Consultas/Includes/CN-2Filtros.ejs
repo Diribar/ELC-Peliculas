@@ -1,5 +1,5 @@
 <!--Filtros Guardados-->
-<div id="configDeCabecera">
+<div id="configCabecera">
 	<div id="configNueva" class="relative">
 		<input name="nombreNuevo" type="text" class="absolute">
 	</div>
@@ -37,32 +37,32 @@
 	</div>
 </div>
 <!-- Campos -->
-<div id="configsDeCampo" class="flexCol sectorConDesplV">
-	<nav class="flexCol ocultar">
+<div id="configCampos" class="flexCol sectorConDesplV">
+	<nav class="flexCol">
 		<!-- PRIORITARIOS -->
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, color: 'celeste'}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, color: 'ppp'}) %>
 		<% } %>
-		<hr>
+		<!-- <hr> -->
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc, eventual: true, color: 'amarillo'}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.cfc, eventual: true, color: 'cfc'}) %>
 		<!-- Proceso de Canonización -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.canons, eventual: true, color: 'amarillo'}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.canons, eventual: true, color: 'cfc'}) %>
 		<!-- Roles Iglesia -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.rolesIgl, eventual: true, color: 'amarillo'}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.rolesIgl, eventual: true, color: 'cfc'}) %>
 		<!-- Aparición Mariana -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, eventual: true, color: 'amarillo'}) %>
-		<hr>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, eventual: true, color: 'cfc'}) %>
+		<!-- <hr> -->
 
 		<!-- HECHOS REALES -->
 		<!-- Basado en Hechos Reales -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, eventual: true, color: 'verde'}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, eventual: true, color: 'bhr'}) %>
 		<!-- Epoca de Ocurrencia -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia, color: 'verde'}) %>
-		<hr>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia, color: 'bhr'}) %>
+		<!-- <hr> -->
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
 		<!-- Público Recomendado -->
@@ -77,12 +77,20 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
 		<!-- Musical -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.musical}) %>
-		<hr>
+		<!-- <hr> -->
 
 		<!-- Búsqueda -->
-		<div id="palabrasClave" class="pref">
+		<div id="palabrasClave" class="pref ocultaFiltros">
 			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
 			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
 		</div>
 	</nav>
+	<div id="mostrarOcultarFiltros" class="flexCol">
+		<div id="mostrarFiltros" class="pointer scale">
+			<em>Click</em> para <span>ver</span><br>más filtros
+		</div>
+		<div id="ocultarFiltros" class="pointer scale ocultaFiltros">
+			<em>Click</em> para <span>ocultar</span><br>los filtros sin usar
+		</div>
+	</div>
 </div>

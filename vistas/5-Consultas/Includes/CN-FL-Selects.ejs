@@ -1,4 +1,4 @@
-<div id="<%= asunto.codigo %>" class="pref contSelect <%- locals.color ? color : '' %>">
+<div id="<%= asunto.codigo %>" class="pref contSelect <%- locals.color ? color : '' %> ocultaFiltros">
 	<select name="<%= asunto.codigo %>" class="<%= locals.eventual ? asunto.codigo : 'presenciaEstable' %> prefSimple">
 		<option value="" class="ocultar"><%= asunto.titulo %></option>
 		<option value="" id="sinFiltro">Quitar la opción elegida</option>

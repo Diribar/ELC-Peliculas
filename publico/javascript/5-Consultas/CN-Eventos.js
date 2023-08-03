@@ -72,6 +72,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
+		const nombre = elemento.id ? elemento.id : padre.id;
 
 		// Iconos de botonera y 'palabrasClave'
 		if (elemento.tagName == "I") {
@@ -79,7 +80,6 @@ window.addEventListener("load", async () => {
 			if (elemento.className.includes("inactivo")) return;
 
 			// Variable
-			const nombre = elemento.id ? elemento.id : padre.id;
 
 			// Iconos de botonera
 			if (padre.id == "iconosBotonera") {
@@ -144,7 +144,20 @@ window.addEventListener("load", async () => {
 		}
 
 		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && elemento.id == "verde" && v.mostrar) resultados.muestra.generico();
+		else if (padre.id == "comencemos" && nombre == "verde" && v.mostrar) {
+			resultados.muestra.generico();
+		}
+
+		// Cartel 'mostrarFiltros'
+		else if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
+			// Cambia el status de los botones
+			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
+			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
+			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
+
+			// Muestra u oculta los filtros vacíos
+			actualiza.muestraOcultaFiltros();
+		}
 
 		// Fin
 		return;

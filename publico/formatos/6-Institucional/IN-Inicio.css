@@ -9,11 +9,18 @@
 #zona-de-bienvenida #cartel {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
 #zona-de-bienvenida #cartel {max-width: 80%; margin-bottom: 70px;}
 #zona-de-bienvenida #cartel h1 {margin-top: 0;}
+#zona-de-bienvenida #cartel h1 span {font-style: italic;}
 #zona-de-bienvenida #cartel :where(p, li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 
 /* Zona de Botones */
 #zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
 #zona-de-bienvenida #botones button {width: 190px; padding: 15px; border-radius: 15px; height: 208px;}
-#zona-de-bienvenida #botones button:hover {scale: 1.1;}
+#zona-de-bienvenida #botones a:hover {scale: 1.25;}
 #zona-de-bienvenida #botones button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
 #zona-de-bienvenida #botones button p {font-size: 1.1rem;}
+#zona-de-bienvenida #botones button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
+
+#zona-de-bienvenida #botones button .iconoComb {position: relative; padding: 20px 0;}
+#zona-de-bienvenida #botones button .iconoComb i {font-size: 5rem;}
+#zona-de-bienvenida #botones button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
+#zona-de-bienvenida #botones button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro); z-index: 1;}

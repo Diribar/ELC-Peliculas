@@ -12,10 +12,12 @@ module.exports = async (req, res, next) => {
 		if (usuario && !usuario.statusRegistro.mail_a_validar) {
 			// Pasa los datos del usuario a session
 			req.session.usuario = usuario;
+
 			// Actualiza la vigencia de la cookie
 			res.cookie("email", usuario.email, {maxAge: unDia});
+
 			// Notifica al contador de logins
-			procesos.actualizaElContadorDeLogins(usuario);
+			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
 		}
 	}
 	// Graba los datos del usuario a 'locals', para que estén en la vista

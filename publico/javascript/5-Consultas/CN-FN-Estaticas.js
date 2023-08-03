@@ -9,11 +9,11 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-las-opciones-de-layout-y-orden/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	configDeCabecera: () => {
+	configCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configDeCampos: () => {
+	configCampos: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
@@ -24,10 +24,10 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		v.configCons_id = DOM.configCons_id.value;
-		v.configDeCabecera = await obtiene.configDeCabecera(DOM.configCons_id.value);
+		v.configCabecera = await obtiene.configCabecera(DOM.configCons_id.value);
 
 		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = v.configDeCabecera.usuario_id == v.userID;
+		v.filtroPropio = v.configCabecera.usuario_id == v.userID;
 
 		// Fin
 		return;
@@ -117,16 +117,16 @@ let actualiza = {
 	},
 	statusInicialCampos: async () => {
 		// Variables
-		const configDeCampos = await obtiene.configDeCampos();
+		const configCampos = await obtiene.configCampos();
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configDeCampos[prefSimple.name] ? configDeCampos[prefSimple.name] : "";
+			prefSimple.value = configCampos[prefSimple.name] ? configCampos[prefSimple.name] : "";
 
 		// Actualiza las preferencias 'AscDes'
 		const ascDesInputs = DOM.ascDes.querySelectorAll("input");
 		for (let ascDesInput of ascDesInputs)
-			ascDesInput.checked = configDeCampos.ascDes && ascDesInput.value == configDeCampos.ascDes;
+			ascDesInput.checked = configCampos.ascDes && ascDesInput.value == configCampos.ascDes;
 
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
@@ -148,6 +148,21 @@ let actualiza = {
 		return;
 	},
 	agregaOptionAlSelect: () => {
+		// Fin
+		return;
+	},
+	muestraOcultaFiltros: () => {
+		// Muestroa / Oculta los filtros
+		for (let campo of DOM.selects)
+			v.mostrarFiltros || DOM[campo.name].value
+				? DOM[campo.name].parentNode.classList.remove("ocultaFiltros")
+				: DOM[campo.name].parentNode.classList.add("ocultaFiltros");
+
+		// Palabras clave
+		v.mostrarFiltros || DOM.palClave.value
+			? DOM.palClave.parentNode.classList.remove("ocultaFiltros")
+			: DOM.palClave.parentNode.classList.add("ocultaFiltros");
+
 		// Fin
 		return;
 	},
@@ -286,6 +301,7 @@ let cambioDeConfig_id = async () => {
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.cartelQuieroVerVisible();
+	actualiza.muestraOcultaFiltros();
 
 	// Fin
 	return;

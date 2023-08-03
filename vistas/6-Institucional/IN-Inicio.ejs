@@ -4,7 +4,7 @@
 <!-- Zona de Bienvenida -->
 <div id="zona-de-bienvenida" class="flexCol">
 	<button id="cartel">
-		<h1>Bienvenidos a nuestro sitio de <u>Recomendación de Películas</u></h1>
+		<h1>Bienvenidos a nuestro sitio de <span>Recomendación de Películas</span></h1>
 		<p>Nuestro sitio está orientado a ayudar:</p>
 		<ul type="dots">
 			<li>Al usuario, a disfrutar viendo una película que le deje algo bueno en su interior.</li>
@@ -12,13 +12,26 @@
 		</ul>
 	</button>
 	<div id="botones" class="flexRow">
-		<% for (let opcion of opciones) { %>
-			<a href="<%= opcion.href %>">
-				<button class="scale">
-					<img src="<%= localhost %><%= opcion.src %> ">
-					<p><%= opcion.p %> </p>
-				</button>
-			</a>
-		<% } %>
+		<a href="/consultas">
+			<button>
+				<img src="/imagenes/0-Base/Varios/Movie.jpg">
+				<p>Quiero <span>ver</span> una<br>película</p>
+			</button>
+		</a>
+		<a href="/producto/agregar/confirma">
+			<button>
+				<div class="iconoComb" title="Agregar un Producto">
+					<i class="fa-solid fa-video"></i>
+					<i class="fa-solid fa-plus adentro"></i>
+				</div>	
+				<p>Quiero <span>agregar</span> una<br>película</p>
+			</button>
+		</a>
+		<a href="/institucional/quienes-somos">
+			<button>
+				<img src="/imagenes/0-Base/Varios/Institucional-Imagen.jpg">
+				<p>Un paseo <span>institucional</span> por nuestro sitio</p>
+			</button>
+		</a>
 	</div>
 </div>

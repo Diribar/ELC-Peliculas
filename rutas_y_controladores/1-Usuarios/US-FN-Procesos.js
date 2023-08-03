@@ -104,7 +104,7 @@ module.exports = {
 				mensajes: [
 					"El ingreso de información para otras personas, requiere responsabilidad.",
 					"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
-					"Por eso, necesitamos validar tu identidad con tu documento.",
+					"Si querés avanzar, necesitamos validar tu identidad con tu documento.",
 					"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
 				],
 				iconos: [

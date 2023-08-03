@@ -7,7 +7,7 @@
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */
-#encabezado #tituloPrincipal :is(#ayudaOrden, #actualizar) {align-self: center; margin-left: 10px; line-height: 0.1px;}
+#encabezado #tituloPrincipal :is(#ayudaOrden, #actualizar) {align-self: center; margin-left: 10px;}
 #encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 #encabezado #tituloPrincipal #actualizar i {background: var(--backAyuda); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}

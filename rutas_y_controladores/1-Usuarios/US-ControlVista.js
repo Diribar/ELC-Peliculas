@@ -314,23 +314,30 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Averigua si hay errores de data-entry
 			let errores = await valida.login(req.body);
+
 			// Si hay errores de validación, redirecciona
 			if (errores.hay) {
 				req.session.email = req.body.email;
 				req.session.contrasena = req.body.contrasena;
 				return res.redirect("/usuarios/login");
 			}
+
 			// Obtiene el usuario con los include
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
+
 			// Si corresponde, le cambia el status a 'mail_validado'
 			if (usuario.statusRegistro.mail_a_validar)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
+
 			// Inicia la sesión del usuario
 			req.session.usuario = usuario;
+
 			// 7. Guarda el mail en cookies
 			res.cookie("email", req.body.email, {maxAge: unDia});
+
 			// 8. Notifica al contador de logins
-			procesos.actualizaElContadorDeLogins(usuario);
+			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
+
 			// 9. Redireccionar
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
@@ -378,7 +385,7 @@ module.exports = {
 	logout: (req, res) => {
 		// Borra los datos del usuario, de session y cookie
 		delete req.session.usuario;
-		res.clearCookie("email")
+		res.clearCookie("email");
 
 		// Fin
 		return res.redirect("/usuarios/login");

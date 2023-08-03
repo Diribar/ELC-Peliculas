@@ -13,28 +13,28 @@
 #encabMasPelis #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
 
 /* Encabezado más películas - Zona de productos */
-#encabMasPelis #zonaDeProds {display: flex; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1;}
-#encabMasPelis #zonaDeProds {width: 100%; padding: 0 10px;}
+#encabMasPelis #zonaDisponible {display: flex; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1;}
+#encabMasPelis #zonaDisponible {width: 100%; padding: 0 10px;}
 
 /* Productos - Comencemos */
-#zonaDeProds #comencemos {display: flex; flex-direction: column; position: relative;}
-#zonaDeProds #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#zonaDeProds #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
-#zonaDeProds #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-#zonaDeProds #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#zonaDisponible #comencemos {display: flex; flex-direction: column; position: relative;}
+#zonaDisponible #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
+#zonaDisponible #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
+#zonaDisponible #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#zonaDisponible #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 /* Condicionales */
-#zonaDeProds #comencemos:has(button#verde.ocultar) img {display: none;}
+#zonaDisponible #comencemos:has(button#verde.ocultar) img {display: none;}
 
 /* Zona de vista */
-#zonaDeProds #vistaProds {display: flex; flex-direction: column; justify-content: center;}
-#zonaDeProds #vistaProds {max-width: 700px; width: 100%;}
-#zonaDeProds #vistaProds {border-radius: 15px; overflow: hidden;}
-#zonaDeProds #vistaProds {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#vistaProds #ppp {font-size: 1.25rem;}
-#vistaProds #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
+#zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
+#zonaDisponible #vistaDeResults {max-width: 700px; width: 100%;}
+#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden;}
+#zonaDisponible #vistaDeResults {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#vistaDeResults #ppp {font-size: 1.25rem;}
+#vistaDeResults #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 /* Condicionales */
-#zonaDeProds:has(#comencemos button#verde.ocultar) #vistaProds {height: 70vh; padding: 30px 0;}
-#zonaDeProds #vistaProds:has(#listados table) {justify-content: flex-start;}
+#zonaDisponible:has(#comencemos button#verde.ocultar) #vistaDeResults {height: 70vh; padding: 30px 0;}
+#zonaDisponible #vistaDeResults:has(#listados table) {justify-content: flex-start;}
 
 /* Footer */
 #encabMasPelis footer {align-self: stretch;}
