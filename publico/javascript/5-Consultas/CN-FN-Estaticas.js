@@ -136,8 +136,8 @@ let actualiza = {
 	},
 	cartelQuieroVerVisible: () => {
 		// Partes a ocultar
-		DOM.productos.classList.add("ocultar");
-		DOM.listadosPor.classList.add("ocultar");
+		DOM.botones.innerHTML = "";
+		DOM.listados.innerHTML = "";
 		DOM.noTenemos.classList.add("ocultar");
 
 		// Partes a mostrar

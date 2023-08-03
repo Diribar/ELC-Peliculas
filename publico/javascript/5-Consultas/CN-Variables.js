@@ -39,17 +39,14 @@ window.addEventListener("load", async () => {
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
-		// Zona de productos
+		// Zona de resultados
 		asegurate: DOM.zonaProds.querySelector("#comencemos button#rojo"),
 		quieroVer: DOM.zonaProds.querySelector("#comencemos button#verde"),
 		noTenemos: DOM.zonaProds.querySelector("#comencemos button#azul"),
 		resultados: DOM.zonaProds.querySelectorAll("#vistaProds .resultados"),
-		// Productos
 		vistaProds: DOM.zonaProds.querySelector("#vistaProds"),
-		productos: DOM.zonaProds.querySelector("#vistaProds #productos"),
-		producto: DOM.zonaProds.querySelector("#vistaProds .producto"),
-		// Pelis por
-		listadosPor: DOM.zonaProds.querySelector("#vistaProds #listadosPor"),
+		botones: DOM.zonaProds.querySelector("#vistaProds #botones"),
+		listados: DOM.zonaProds.querySelector("#vistaProds #listados"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;

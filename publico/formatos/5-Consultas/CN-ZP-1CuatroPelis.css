@@ -1,19 +1,19 @@
 /* Resultados */
-#vistaProds #productos {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
-#vistaProds #productos.ocultar {display: none}
-#vistaProds #productos {width: 100%;}
+#vistaProds #botones {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
+#vistaProds #botones.ocultar {display: none}
+#vistaProds #botones {width: 100%;}
 
 /* Botones para productos */
-#productos li {list-style-type: none}
-#productos :is(li:nth-child(3), li:nth-child(4)) {margin-top: 30px;}
-#productos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
-#productos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
-#productos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
-#productos li button:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
+#botones li {list-style-type: none}
+#botones :is(li:nth-child(3), li:nth-child(4)) {margin-top: 30px;}
+#botones li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
+#botones li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
+#botones li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+#botones li button:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
 
 /* Partes del resultado */
-#productos li button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
-#productos li button #infoPeli {margin: 10px 15px; align-items: flex-start;}
-#productos li button #infoPeli .interlineadoChico {margin-top: 5px;}
-#productos li button #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
-#productos li button:hover #infoPeli i#ppp {color: inherit;}
+#botones li button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
+#botones li button #infoPeli {margin: 10px 15px; align-items: flex-start;}
+#botones li button #infoPeli .interlineadoChico {margin-top: 5px;}
+#botones li button #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
+#botones li button:hover #infoPeli i#ppp {color: inherit;}

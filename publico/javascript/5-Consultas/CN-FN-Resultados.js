@@ -24,8 +24,8 @@ let resultados = {
 		if (!v.infoResultados || !v.infoResultados.length) {
 			DOM.quieroVer.classList.add("ocultar");
 			DOM.noTenemos.classList.remove("ocultar");
-			DOM.productos.innerHTML = "";
-			DOM.listadosPor.innerHTML = "";
+			DOM.botones.innerHTML = "";
+			DOM.listados.innerHTML = "";
 		}
 		// Acciones si hay resultados
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
@@ -67,8 +67,8 @@ let resultados = {
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Limpia los resultados anteriores
-			DOM.productos.innerHTML = "";
-			DOM.listadosPor.innerHTML = "";
+			DOM.botones.innerHTML = "";
+			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
 			v.layoutBD.boton ? this.botones() : this.listados();
@@ -83,16 +83,16 @@ let resultados = {
 			// Output
 			const tope = Math.min(4, v.infoResultados.length);
 			for (let i = 0; i < tope; i++) {
-				const producto = this.auxiliares.boton(v.infoResultados[i]);
-				DOM.productos.append(producto);
+				const boton = this.auxiliares.boton(v.infoResultados[i]);
+				DOM.botones.append(boton);
 			}
 
 			// Genera las variables 'ppp'
-			DOM.ppp = DOM.productos.querySelectorAll(".producto #ppp");
+			DOM.ppp = DOM.botones.querySelectorAll(".producto #ppp");
 			v.ppp = Array.from(DOM.ppp);
 
 			// Foco
-			DOM.productos.querySelector("button").focus();
+			DOM.botones.querySelector("button").focus();
 
 			// Fin
 			return;
@@ -113,25 +113,25 @@ let resultados = {
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice});
-					DOM.listadosPor.appendChild(DOM.tabla);
-					DOM.tbody = DOM_tabla.querySelector("tbody");
+					DOM.tabla = this.auxiliares.creaUnaTabla({titulo, indice}); // Obtiene la tabla con los datos
+					DOM.listados.appendChild(DOM.tabla); // La agrega a la vista
+					DOM.tbody = DOM.tabla.querySelector("tbody"); // Selecciona el body para luego agregarle filas
 				}
 
-				// Agrega un registro
+				// Agrega fila/s al 'tbody'
 				if (entidad == "producto") {
-					const fila = this.auxiliares.creaUnaFilaDeProd({producto, indice});
+					const fila = this.auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				} else {
-					const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
+					const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv: registro, indice});
 					for (let fila of filas) DOM.tbody.appendChild(fila);
 				}
 			});
 
 			// Crea variables DOM
-			DOM.ppp = DOM.listadosPor.querySelectorAll("#ppp");
-			DOM.expandeContrae = DOM.listadosPor.querySelectorAll(".expandeContrae");
-			DOM.tbody = DOM.listadosPor.querySelectorAll("tbody");
+			DOM.ppp = DOM.listados.querySelectorAll("#ppp");
+			DOM.expandeContrae = DOM.listados.querySelectorAll(".expandeContrae");
+			DOM.tbody = DOM.listados.querySelectorAll("tbody");
 
 			// Crea variables 'v'
 			v.ppp = Array.from(DOM.ppp);
