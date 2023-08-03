@@ -441,7 +441,6 @@ let resultados = {
 					const celda = document.createElement("td");
 					const anchor = document.createElement("a");
 					anchor.href = "/rclv/detalle/?entidad=" + entidad + "&id=" + rclv.id + "&origen=CN";
-					anchor.target = "_blank";
 					anchor.tabIndex = "-1";
 
 					// Si tiene más de 1 producto
