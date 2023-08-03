@@ -22,6 +22,7 @@
 #zonaDisponible #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
 #zonaDisponible #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #zonaDisponible #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#zonaDisponible #comencemos button#verde {font-size: 2rem; font-style: italic;}
 /* Condicionales */
 #zonaDisponible #comencemos:has(button#verde.ocultar) img {display: none;}
 
