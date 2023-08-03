@@ -1,5 +1,5 @@
 /* General */
-#cuerpo #configCons * {font-size: 1rem;}
+#configCons * {font-size: 1rem;}
 #cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 /* Filtros Cabecera */
