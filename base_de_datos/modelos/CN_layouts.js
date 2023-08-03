@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
 		entidad: {type: dt.STRING(20)},
+		boton: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "cn_layouts",

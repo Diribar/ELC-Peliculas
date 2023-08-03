@@ -68,9 +68,8 @@ let resultados = {
 			DOM.listadosPor.innerHTML = "";
 
 			// Deriva a productos
-			if (entidad == "productos") {
-				v.layoutBD.boton ? this.productos() : this.listadoGral();
-			} else this.listadosPor();
+			if (entidad == "productos") v.layoutBD.boton ? this.botones() : this.listadoGral();
+			else this.listadosPor();
 
 			// Pone visibles los resultados
 			entidad == "productos" ? DOM.productos.classList.remove("ocultar") : DOM.listadosPor.classList.remove("ocultar");
@@ -82,18 +81,15 @@ let resultados = {
 			// Fin
 			return;
 		},
-		productos: function () {
+		botones: function () {
 			// Variables
 			v.productos = [...v.infoResultados];
-
-			// Oculta los resultados anteriores
-			DOM.listadosPor.classList.add("ocultar");
 
 			// Output
 			if (v.infoResultados.length) {
 				const tope = Math.min(4, v.infoResultados.length);
 				for (let i = 0; i < tope; i++) {
-					const producto = this.auxiliares.producto(v.infoResultados[i]);
+					const producto = this.auxiliares.boton(v.infoResultados[i]);
 					DOM.productos.append(producto);
 				}
 
@@ -105,14 +101,51 @@ let resultados = {
 			// Fin
 			return;
 		},
+		listadoGral: function () {
+			// Variables
+			v.productos = [];
+			let tabla;
+
+			// Rutina por registro RCLV
+			v.infoResultados.forEach((rclv, indice) => {
+				// Genera la variable de productos
+				v.productos.push(...rclv.productos);
+
+				// Averigua si hay un cambio de agrupamiento
+				const titulo = this.auxiliares.titulo({rclv, rclvAnt});
+				rclvAnt = rclv;
+
+				// Si corresponde, crea una nueva tabla
+				if (titulo) {
+					tabla = this.auxiliares.creaUnaTabla({titulo, indice});
+					DOM.listadosPor.appendChild(tabla);
+				}
+
+				// Agrega las filas de un rclv
+				const DOM_tablas = DOM.listadosPor.querySelectorAll("table");
+				const DOM_tabla = [...DOM_tablas].pop();
+				const DOM_tbody = DOM_tabla.querySelector("tbody");
+				const filas = this.auxiliares.creaLasFilasDeUnRCLV({rclv, indice});
+				for (let fila of filas) DOM_tbody.appendChild(fila);
+			});
+
+			// Crea variables DOM
+			DOM.ppp = DOM.listadosPor.querySelectorAll("#ppp");
+			DOM.expandeContrae = DOM.listadosPor.querySelectorAll(".expandeContrae");
+			DOM.tbody = DOM.listadosPor.querySelectorAll("tbody");
+
+			// Crea variables 'v'
+			v.ppp = Array.from(DOM.ppp);
+			v.expandeContrae = Array.from(DOM.expandeContrae);
+
+			// Fin
+			return;
+		},
 		listadosPor: function () {
 			// Variables
 			v.productos = [];
 			let rclvAnt = {};
 			let tabla;
-
-			// Oculta los resultados anteriores
-			DOM.productos.classList.add("ocultar");
 
 			// Rutina por registro RCLV
 			v.infoResultados.forEach((rclv, indice) => {
@@ -150,7 +183,7 @@ let resultados = {
 			return;
 		},
 		auxiliares: {
-			producto: (producto) => {
+			boton: (producto) => {
 				// Crea el elemento 'li' que engloba todo el producto
 				const li = document.createElement("li");
 				li.className = "producto";
