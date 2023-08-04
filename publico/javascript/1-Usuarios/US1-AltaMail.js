@@ -62,7 +62,7 @@ window.addEventListener("load", () => {
 	DOM.email.addEventListener("input", async () => {
 		let campo = DOM.email.name;
 		let valor = DOM.email.value;
-		let errores = await fetch("/usuarios/api/valida-mail/?" + campo + "=" + valor).then((n) => n.json());
+		let errores = await fetch("/usuarios/api/valida-formato-mail/?" + campo + "=" + valor).then((n) => n.json());
 		let mensaje = errores[campo];
 		mostrarIconos(mensaje, 0);
 	});

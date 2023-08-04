@@ -7,7 +7,7 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
-	altaMail: async (email) => {
+	formatoMail: async (email) => {
 		// Variables
 		let errores = {};
 
@@ -30,6 +30,28 @@ module.exports = {
 			: "";
 		
 		return error
+	},
+	login: async (datos) => {
+		// Variables
+		const {email, contrasena} = datos;
+		const largoContr = contrasena ? largoContrasena(contrasena) : null;
+		let errores = {};
+
+		// Verifica errores
+		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
+		errores.hay = Object.values(errores).some((n) => !!n);
+
+		// Verifica credenciales
+		if (!errores.hay) {
+			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
+			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
+			errores.hay = !!errores.credenciales;
+		}
+
+		// Fin
+		return errores;
 	},
 	editables: (datos) => {
 		// Variables
@@ -135,28 +157,6 @@ module.exports = {
 			// 3. Resumen
 			if (errores.credenciales || errores.documAvatar) errores.hay = true;
 		}
-		// Fin
-		return errores;
-	},
-	login: async (datos) => {
-		// Variables
-		const {email, contrasena} = datos;
-		const largoContr = contrasena ? largoContrasena(contrasena) : null;
-		let errores = {};
-
-		// Verifica errores
-		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
-		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
-		errores.hay = Object.values(errores).some((n) => !!n);
-
-		// Verifica credenciales
-		if (!errores.hay) {
-			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
-			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
-			errores.hay = !!errores.credenciales;
-		}
-
 		// Fin
 		return errores;
 	},

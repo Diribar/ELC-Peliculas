@@ -5,25 +5,27 @@ const procesos = require("./US-FN-Procesos");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = {
-	validaMail: async (req, res) => {
-		let errores = await valida.altaMail(req.query.email);
-		return res.json(errores);
-	},
-	validaMailRepetido: async (req, res) => {
-		let errores = {email: await valida.mailRepetido(req.query.email)};
-		return res.json(errores);
-	},
-	validaLogin: async (req, res) => {
-		let errores = valida.login(req.query);
-		return res.json(errores);
-	},
-	validaEditables: async (req, res) => {
-		let errores = await valida.editables(req.query);
-		return res.json(errores);
-	},
-	validaIdentidad: async (req, res) => {
-		let errores = await valida.identidadFE(req.query);
-		return res.json(errores);
+	valida:{
+		formatoMail: async (req, res) => {
+			let errores = await valida.formatoMail(req.query.email);
+			return res.json(errores);
+		},
+		mailRepetido: async (req, res) => {
+			let errores = {email: await valida.mailRepetido(req.query.email)};
+			return res.json(errores);
+		},
+		login: async (req, res) => {
+			let errores = valida.login(req.query);
+			return res.json(errores);
+		},
+		editables: async (req, res) => {
+			let errores = await valida.editables(req.query);
+			return res.json(errores);
+		},
+		identidad: async (req, res) => {
+			let errores = await valida.identidadFE(req.query);
+			return res.json(errores);
+		},
 	},
 	envioDeMail: async (req, res) => {
 		// Variables
