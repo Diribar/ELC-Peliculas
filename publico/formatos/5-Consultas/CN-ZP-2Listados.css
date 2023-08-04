@@ -21,7 +21,9 @@
 #listados table caption .expandeContrae {position: absolute; right: 13px;}
 
 /* Columnas */
-#listados tbody tr td:first-of-type {vertical-align: top;} /* Primera columna */
+#listados tbody tr td.primeraCol {vertical-align: top;}
+#listados tbody tr td.primeraCol a p:first-of-type {font-weight: bold;}
+#listados tbody tr td.primeraCol a p:first-of-type span {font-style: italic; font-weight: normal;}
 
 /* Celdas - Color de fondo */
 #listados tbody tr.imparRCLV td {background: snow;}
