@@ -132,6 +132,3 @@ module.exports = {
 		return informacion;
 	},
 };
-let espera = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
