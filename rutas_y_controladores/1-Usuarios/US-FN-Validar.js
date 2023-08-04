@@ -10,17 +10,26 @@ module.exports = {
 	formatoMail: (email) => {
 		// Variables
 		let errores = {email: !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : ""};
-		errores.hay = !!errores.email;
-
+		
 		// Fin
+		errores.hay = !!errores.email;
 		return errores;
 	},
-	mailRepetido: async (email) => {
-		error = (await BD_especificas.obtieneELC_id("usuarios", {email}))
+	mailRepetido: async function (email) {
+		// Variables
+		const mensaje = this.formatoMail(email).email;
+		let errores = {};
+
+		// Validaciones
+		errores.email = mensaje
+			? mensaje
+			: (await BD_especificas.obtieneELC_id("usuarios", {email}))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 
-		return error;
+		// Fin
+		errores.hay = !!errores.email;
+		return errores;
 	},
 	documento: (datos) => {
 		let formatoDocumNumero = /^[a-z\d]+$/i;
@@ -45,7 +54,7 @@ module.exports = {
 		let errores = {};
 
 		// Verifica errores
-		errores.email = this.formatoMail(email).email
+		errores.email = this.formatoMail(email).email;
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
