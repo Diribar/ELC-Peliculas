@@ -19,6 +19,7 @@ window.addEventListener("load", async () => {
 	};
 	const localhost = await fetch("/api/localhost").then((n) => (n ? n.json() : ""));
 	let productos = desambiguar.productos;
+	let pausa = 200; // milisegundos
 	let ocultarCartel;
 
 	// Acciones si no hay productos en 'session'
@@ -26,10 +27,10 @@ window.addEventListener("load", async () => {
 		// Variables
 		ocultarCartel = true;
 		const APIs = [
-			{ruta: "busca-los-productos", duracion: 1100},
-			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 700},
-			{ruta: "pule-la-informacion", duracion: 800},
-			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 0},
+			{ruta: "busca-los-productos", duracion: 1200},
+			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 1000},
+			{ruta: "pule-la-informacion", duracion: 1000},
+			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 100},
 		];
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
@@ -42,10 +43,23 @@ window.addEventListener("load", async () => {
 		// Ejecuta las APIs 'form'
 		let duracionAcum = 0;
 		for (let API of APIs) {
-			await fetch("api/desambiguar-" + API.ruta + "/");
-			duracionAcum += API.duracion;
-			DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+			let ahora = Date.now();
+			// Busca la información
+			let aux = fetch("api/desambiguar-" + API.ruta + "/");
+
+			// Evoluciona el progreso mientras espera la información
+			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
+				await espera(pausa);
+				duracionAcum += pausa;
+				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+			}
+
+			// Se asegura de haber recibido la información
+			let delta=Date.now() - ahora
+			console.log(delta, API.duracion,parseInt((delta/API.duracion-1)*100)+"%");
+			aux = await aux;
 		}
+		DOM.progreso.style.width = "100%";
 
 		// Combina los hallazgos 'yaEnBD'
 		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
@@ -196,4 +210,7 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			else location.href = "datos-adicionales";
 		});
 	}
+};
+let espera = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 };
