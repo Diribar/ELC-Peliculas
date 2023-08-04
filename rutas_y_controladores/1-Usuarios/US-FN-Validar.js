@@ -74,13 +74,13 @@ module.exports = {
 		return errores;
 	},
 	documento: (datos) => {
-		let formatoDocumNumero = /^[a-z\d]+$/i;
+		let formatoDocumNumero = /^[\d]+$/;
 
 		let errores = {
 			documNumero: !datos.documNumero
 				? variables.inputVacio
 				: !formatoDocumNumero.test(datos.documNumero)
-				? "Sólo se admiten letras del abecedario inglés"
+				? "Sólo se admiten números"
 				: "",
 			documPais_id: !datos.documPais_id ? "Necesitamos que elijas un país" : "",
 		};
