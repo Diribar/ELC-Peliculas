@@ -22,6 +22,9 @@ module.exports = {
 
 		// Guarda el mail en 'session'
 		req.session.usuario = {email};
+
+		// Fin
+		return res.json(feedbackEnvioMail);
 	},
 	validaEditables: async (req, res) => {
 		let errores = await validaUsuarios.editables(req.query);
