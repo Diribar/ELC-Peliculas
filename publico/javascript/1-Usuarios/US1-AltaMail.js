@@ -112,7 +112,6 @@ window.addEventListener("load", () => {
 
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
-		DOM.cartel.classList.remove("disminuye");
 		DOM.cartel.classList.add("aumenta");
 
 		// Progreso
