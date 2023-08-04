@@ -25,7 +25,8 @@ router.get("/api/envio-de-mail", API.envioDeMail);
 // 1. Sólo visitas
 router.get("/garantiza-login-y-completo", vista.login_y_completo);
 router.get("/alta-mail", visitas, vista.altaMail.form);
-router.post("/alta-mail", visitas, vista.altaMail.guardar);
+router.get("/alta-mail-cartelExito", visitas, vista.altaMail.cartelExito);
+router.get("/alta-mail-cartelFalla", visitas, vista.altaMail.cartelFalla);
 // 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);

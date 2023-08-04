@@ -44,16 +44,13 @@ module.exports = {
 				urlSalir: "/usuarios/login",
 			});
 		},
-		guardar: async (req, res) => {
-			// Variables
-			// : feedbackEnvioMail.informacion
-
-			// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-			return res.render("CMP-0Estructura", {informacion});
-		},
 		cartelExito: (req, res) => {
 			// Vista
 			return res.render("CMP-0Estructura", {informacion: procesos.cartelAltaExitosa});
+		},
+		cartelFalla: (req, res) => {
+			// Vista
+			return res.render("CMP-0Estructura", {informacion: procesos.cartelAltaFallida});
 		},
 	},
 	editables: {
@@ -299,46 +296,6 @@ module.exports = {
 			// 9. Redireccionar
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
-	},
-	olvidoContr: async (req, res) => {
-		// Variables
-		let dataEntry = req.body;
-		let usuario, informacion;
-
-		// Averigua si hay errores 'superficiales' de validación
-		let errores = await valida.altaMail(dataEntry.email);
-
-		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, informacion, usuario] = await valida.olvidoContrBE(dataEntry, req);
-
-		// Redirecciona si hubo algún error de validación
-		if (errores.hay) {
-			req.session.dataEntry = req.body;
-			req.session.erroresOC = errores;
-			return res.redirect(req.originalUrl);
-		}
-
-		// Interrumpe si hay un mensaje con información
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Si todo anduvo bien...
-		// Envía la contraseña por mail
-		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
-		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-		if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
-		// Actualiza la contraseña en la BD
-		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
-			contrasena,
-			fechaContrasena: ahora,
-		});
-		// Guarda el mail en 'session'
-		req.session.email = req.body.email;
-		// Borra los errores
-		req.session.errores = "";
-		// Datos para la vista
-		informacion = procesos.cartelNuevaContrasena;
-		// Redireccionar
-		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
 		// Borra los datos del usuario, de session y cookie

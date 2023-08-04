@@ -24,26 +24,34 @@ window.addEventListener("load", () => {
 	let codigo = location.pathname;
 	const indice = codigo.lastIndexOf("/");
 	let v = {
+		// Inputs
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
+		errores: {},
+
+		// Envío de mail
 		codigo: codigo.slice(indice + 1), // código de la vista
 		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
-		errores: {},
-		campo: "",
-		mensaje: "",
 	};
 
 	// Funciones -----------------------------
 	let mostrarIconos = () => {
-		const indice = v.inputs.indexOf(v.campo);
-		DOM.mensajesError[indice].innerHTML = v.mensaje;
-		if (v.mensaje) {
-			DOM.iconosError[indice].classList.remove("ocultar");
-			DOM.iconosOK[indice].classList.add("ocultar");
-		} else {
-			DOM.iconosError[indice].classList.add("ocultar");
-			DOM.iconosOK[indice].classList.remove("ocultar");
+		for (let campo in v.errores) {
+			// Obtiene el índice
+			const indice = v.inputs.indexOf(campo);
+
+			// Actualiza el mensaje de error
+			DOM.mensajesError[indice].innerHTML = v.errores[campo];
+
+			// Muestra / Oculta los íconos de OK y Error
+			if (v.errores[campo]) {
+				DOM.iconosError[indice].classList.remove("ocultar");
+				DOM.iconosOK[indice].classList.add("ocultar");
+			} else {
+				DOM.iconosError[indice].classList.add("ocultar");
+				DOM.iconosOK[indice].classList.remove("ocultar");
+			}
 		}
 
 		// Botón Submit
@@ -67,17 +75,17 @@ window.addEventListener("load", () => {
 	// Acciones 'input'
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
-		v.campo = e.target.name;
+		const campo = e.target.name;
 		let valor = e.target.value;
 
 		if (campo == "email") errores = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
 
-		if (v.campo == "documNumero") {
+		if (campo == "documNumero") {
 			e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
-			v.mensaje = !e.target.value ? "Necesitamos que completes este campo" : "";
+			errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
 		}
 
-		if (v.campo == "documPais_id") v.mensaje = !valor ? "Necesitamos que elijas un país" : "";
+		if (campo == "documPais_id") errores.documPais_id = !valor ? "Necesitamos que elijas un país" : "";
 
 		// Actualiza los errores
 		mostrarIconos();
@@ -85,13 +93,11 @@ window.addEventListener("load", () => {
 
 	// Submit
 	DOM.form.addEventListener("submit", async (e) => {
-		// Previene el envío del formulario
-		e.preventDefault();
-
 		// Variables
 		let feedbackEnvioMail;
 
 		// Si el botón está inactivo interrumpe la función
+		e.preventDefault();
 		if (DOM.button.className.includes("inactivo")) return;
 		// De lo contrario lo inactiva
 		else DOM.button.classList.add("inactivo");
@@ -99,11 +105,11 @@ window.addEventListener("load", () => {
 		// Acciones si es un 'alta-mail'
 		if (v.codigo == "alta-mail") {
 			// Averigua si el mail está repetido
-			// errores = await fetch().then((n) => n.json());
-			// if (errores.email) {
-			// 	mostrarIconos(errores.email, 0);
-			// 	return;
-			// }
+			errores = await fetch().then((n) => n.json());
+			if (errores.email) {
+				mostrarIconos(errores.email, 0);
+				return;
+			}
 
 			// Envía la información al BE
 			feedbackEnvioMail = fetch("/usuarios/api/envio-de-mail/?email=" + DOM.email.value)

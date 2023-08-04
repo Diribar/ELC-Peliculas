@@ -57,7 +57,7 @@ module.exports = {
 		// Fin
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
-	// Genera el cartel de información
+	// Carteles de información
 	cartelNuevaContrasena: {
 		mensajes: [
 			"Te hemos enviado una contraseña por mail.",
@@ -71,12 +71,22 @@ module.exports = {
 	cartelAltaExitosa: {
 		mensajes: [
 			"Hemos generado tu usuario con éxito, con esa dirección de mail.",
-			"También hemos generado un contraseña, te la hemos enviado por mail.",
-			"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
+			"También hemos generado un contraseña para tu uso, que te hemos enviado por mail.",
+			"Con el ícono de abajo accedes al Login.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 		titulo: "Alta exitosa de Usuario",
 		check: true,
+	},
+	cartelAltaFallida: {
+		mensajes: [
+			"No pudimos enviarte un mail con la contraseña generada por nuestro sistema.",
+			"Probablemente se deba a una falla de tu conexión a internet",
+			"Por esa razón optamos por no dar de alta tu usuario hasta que tengas conexión de nuevo.",
+			"Con el ícono de abajo regresas a la vista anterior.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
+		titulo: "Alta de Usuario fallida",
 	},
 	feedbackSobreIdentidadValidada: (req) => {
 		// Variables
