@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Si no existe la información a desambiguar, redirige al paso anterior
-	const desambiguar = await fetch("api/desambiguar-busca-session-desambiguar").then((n) => (n ? n.json() : ""));
+	const desambiguar = await fetch("api/desambiguar-busca-info-en-session").then((n) => (n ? n.json() : ""));
 	if (!desambiguar) location.href = "palabras-clave";
 
 	// Variables
@@ -210,7 +210,4 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			else location.href = "datos-adicionales";
 		});
 	}
-};
-let espera = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
 };

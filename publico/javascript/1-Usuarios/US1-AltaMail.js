@@ -137,6 +137,3 @@ window.addEventListener("load", () => {
 	// Start-up: anula 'submit' si hay algún error
 	botonSubmit();
 });
-let espera = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
