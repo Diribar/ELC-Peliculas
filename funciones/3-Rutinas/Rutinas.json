@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 3/ago",
-	"HoraUTC": "1:11",
+	"FechaUTC": "Vie. 4/ago",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Dom. 30/jul",
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-ago-23": {"titulo": "ELC - Películas"},
 		"02-ago-23": {"titulo": "ELC - Películas"},
 		"03-ago-23": {"titulo": "ELC - Películas"},
 		"04-ago-23": {"titulo": "Cura de Ars", "entidad": "personajes", "id": 162},
-		"05-ago-23": {"titulo": "Juan María Lustiger", "entidad": "personajes", "id": 106}
+		"05-ago-23": {"titulo": "Juan María Lustiger", "entidad": "personajes", "id": 106},
+		"06-ago-23": {"titulo": "ELC - Películas"}
 	}
 }
