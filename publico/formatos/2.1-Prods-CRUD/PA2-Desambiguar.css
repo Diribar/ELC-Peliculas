@@ -13,8 +13,3 @@
 
 /* Flechas */
 #dataEntry .flechas {margin-top: 20px;}
-
-/* Barra de progreso */
-#cartel #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
-#cartel #contorno {border-radius: 10px; overflow: hidden;}
-#cartel #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}

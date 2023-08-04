@@ -598,7 +598,7 @@ module.exports = {
 					OK: false,
 					informacion: {
 						mensajes: ["No hay conexión a internet"],
-						iconos: [{nombre: "fa-rotate-right", link, titulo: "Volver a intentarlo"}],
+						iconos: [{nombre: "fa-rotate-right", link, titulo: "Volvé a intentarlo"}],
 					},
 				};
 			});

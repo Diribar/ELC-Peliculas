@@ -18,6 +18,7 @@ router.get("/api/valida-login", API.validaLogin);
 router.get("/api/valida-mail", API.validaMail);
 router.get("/api/valida-editables", API.validaEditables);
 router.get("/api/valida-identidad", API.validaIdentidad);
+router.get("/api/envio-de-mail", API.envioDeMail);
 
 // Rutas de Altas
 // 1. Sólo visitas

@@ -2,15 +2,29 @@
 window.addEventListener("load", () => {
 	// Variables
 	let DOM = {
+		// General
 		form: document.querySelector("form"),
 		button: document.querySelector("form button[type='submit']"),
+
+		// Campos del formulario
 		email: document.querySelector(".inputError .input[name='email']"),
+		documNumero: document.querySelector(".inputError .input#documNumero"),
+		documPais_id: document.querySelector(".inputError .input#documPais_id"),
+
+		// Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-		documNumero: document.querySelector(".inputError .input#documNumero"),
-		documPais_id: document.querySelector(".inputError .input#documPais_id"),
+
+		// Cartel
+		cartel: document.querySelector("#cartel"),
+		progreso: document.querySelector("#cartel #progreso"),
 	};
+
+	// Obtiene el código de la vista
+	let codigo = location.pathname;
+	const indice = codigo.lastIndexOf("/");
+	codigo = codigo.slice(indice + 1);
 
 	// Funciones -----------------------------
 	let mostrarIconos = (mensaje, i) => {
@@ -65,25 +79,65 @@ window.addEventListener("load", () => {
 	}
 
 	// Submit
-	DOM.form.addEventListener("submit", (e) => {
+	DOM.form.addEventListener("submit", async (e) => {
 		// Previene el envío del formulario
 		e.preventDefault();
 
+		// Variables
+		let feedbackEnvioMail;
+
 		// Si el botón está inactivo interrumpe la función
-		if (DOM.button.className.includes("inactivo")) return
+		if (DOM.button.className.includes("inactivo")) return;
 		// De lo contrario lo inactiva
 		else DOM.button.classList.add("inactivo");
 
-		// Envía la información al BE
+		// Acciones si es un 'alta-mail'
+		if (codigo == "alta-mail") {
+			// Averigua si el mail está repetido
+			// errores = await fetch().then((n) => n.json());
+			// if (errores.email) {
+			// 	mostrarIconos(errores.email, 0);
+			// 	return;
+			// }
+
+			// Envía la información al BE
+			feedbackEnvioMail = fetch("/usuarios/api/envio-de-mail/?email=" + DOM.email.value).then((n) => n.json());
+		}
+
+		// Acciones si es un 'olvido-contraseña'
+		if (codigo == "olvido-contrasena") {
+			// Genera la información
+			const datos = {email: DOM.email.value, documNumero: DOM.documNumero.value, documPais_id: DOM.documPais_id, codigo};
+		}
+
+		// Muestra el cartel
+		DOM.cartel.classList.remove("ocultar");
+		DOM.cartel.classList.remove("disminuye");
+		DOM.cartel.classList.add("aumenta");
 
 		// Progreso
+		const pausa = 200;
+		const tiempoEstimado = 10 * 1000;
+		const inicio = Date.now();
+		let duracionAcum = 0;
+
+		// Evoluciona el progreso
+		for (let repeticion = 0; repeticion < parseInt(tiempoEstimado / pausa); repeticion++) {
+			duracionAcum += pausa;
+			DOM.progreso.style.width = parseInt((duracionAcum / tiempoEstimado) * 100) + "%";
+			await espera(200);
+		}
 
 		// Verifica que se haya enviado
+		feedbackEnvioMail = await feedbackEnvioMail;
 
 		// Redirige a la siguiente vista
-
+		console.log(feedbackEnvioMail);
 	});
 
 	// Start-up: anula 'submit' si hay algún error
 	botonSubmit();
 });
+let espera = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};

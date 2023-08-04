@@ -2,6 +2,7 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
@@ -15,8 +16,6 @@ module.exports = {
 			? cartelMailVacio
 			: formatoMail(email)
 			? cartelMailFormato
-			: (await BD_especificas.obtieneELC_id("usuarios", {email}))
-			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 
 		// Consolida
@@ -24,6 +23,13 @@ module.exports = {
 
 		// Fin
 		return errores;
+	},
+	mailRepetido: async (email) => {
+		error = (await BD_especificas.obtieneELC_id("usuarios", {email}))
+			? "Esta dirección de email ya figura en nuestra base de datos"
+			: "";
+		
+		return error
 	},
 	editables: (datos) => {
 		// Variables
