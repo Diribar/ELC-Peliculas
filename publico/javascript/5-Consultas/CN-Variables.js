@@ -81,6 +81,5 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const br = document.createElement("br");
 const ruta = "/consultas/api/";
 let configCons, DOM, titulo, v, entidad;

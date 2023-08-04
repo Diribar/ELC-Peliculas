@@ -17,14 +17,14 @@
 #zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
 #zona-de-bienvenida #botones a {border-radius: 50%; overflow: hidden; scale: 1.2;}
 #zona-de-bienvenida #botones a:hover {scale: 1.4;}
-#zona-de-bienvenida #botones button {width: 200px; height: 210px; padding: 15px; border-radius: 50%;}
-#zona-de-bienvenida #botones button {background: var(--gris-claro); border: solid 1px var(--gris-oscuro);}
+#zona-de-bienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
+#zona-de-bienvenida #botones a button {width: 200px; height: 210px; padding: 15px; border-radius: 50%; background: var(--gris-claro);}
 
-#zona-de-bienvenida #botones button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
-#zona-de-bienvenida #botones button p {font-size: 1.1rem;}
-#zona-de-bienvenida #botones button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
+#zona-de-bienvenida #botones a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+#zona-de-bienvenida #botones a button p {font-size: 1.1rem;}
+#zona-de-bienvenida #botones a button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
 
-#zona-de-bienvenida #botones button .iconoComb {position: relative; padding: 20px 0;}
-#zona-de-bienvenida #botones button .iconoComb i {font-size: 5rem;}
-#zona-de-bienvenida #botones button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
-#zona-de-bienvenida #botones button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro); z-index: 1;}
+#zona-de-bienvenida #botones a button .iconoComb {position: relative; padding: 20px 0;}
+#zona-de-bienvenida #botones a button .iconoComb i {font-size: 5rem;}
+#zona-de-bienvenida #botones a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
+#zona-de-bienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro); z-index: 1;}

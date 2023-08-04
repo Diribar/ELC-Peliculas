@@ -207,16 +207,20 @@ let auxiliares = {
 			aux[elemento].id = elemento;
 			aux[elemento].className = "interlineadoChico";
 			infoPeli.appendChild(aux[elemento]);
-			if (["nombreCastellano", "direccion"].includes(elemento)) infoPeli.appendChild(br);
 		}
 
 		// Particularidades
 		aux.nombreCastellano.innerHTML = producto.nombreCastellano;
 		aux.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-		aux.direccion.innerHTML = "Dirección: " + producto.direccion;
 		aux.ppp.className += " scale " + producto.pppIcono;
 		aux.ppp.tabIndex = "-1";
 		aux.ppp.title = producto.pppNombre;
+
+		// Particularidades de Dirección
+		const em = document.createElement("em");
+		em.innerHTML = producto.direccion;
+		aux.direccion.innerHTML = "Dirección: ";
+		aux.direccion.appendChild(em);
 
 		// Crea infoRCLV
 		const infoRCLV = document.createElement("div");
@@ -428,7 +432,12 @@ let auxiliares = {
 				// Crea el rclv con sus características
 				const rclv = document.createElement("p");
 				rclv.className = "interlineadoChico rclv";
-				rclv.innerHTML = rclvNombre + ": " + producto[rclvNombre];
+				rclv.innerHTML = rclvNombre + ": ";
+
+				// Crea el em
+				const em = document.createElement("em");
+				em.innerHTML = producto[rclvNombre];
+				rclv.appendChild(em);
 
 				// Fin
 				return rclv;
