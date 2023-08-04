@@ -41,7 +41,7 @@ window.addEventListener("load", () => {
 		OK && error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
 
-	// Acciones si se realizan cambios
+	// Acciones si se realizan cambios en el mail
 	DOM.email.addEventListener("input", async () => {
 		let campo = DOM.email.name;
 		let valor = DOM.email.value;
@@ -50,6 +50,7 @@ window.addEventListener("load", () => {
 		mostrarIconos(mensaje, 0);
 	});
 
+	// Acciones si se realizan cambios en el n° de codumento o país
 	if (DOM.documNumero && DOM.documPais_id) {
 		DOM.documNumero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos
@@ -65,10 +66,10 @@ window.addEventListener("load", () => {
 
 	// Submit
 	DOM.form.addEventListener("submit", (e) => {
-		if (DOM.button.classList.contains("inactivo")) e.preventDefault();
+		if (DOM.button.className.includes("inactivo")) e.preventDefault();
 		DOM.button.classList.add("inactivo");
 	});
 
-	// Start-up: anular 'submit' si hay algún error
+	// Start-up: anula 'submit' si hay algún error
 	botonSubmit();
 });
