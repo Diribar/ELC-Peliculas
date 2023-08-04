@@ -22,7 +22,7 @@ module.exports = {
 		// Validaciones
 		errores.email = mensaje
 			? mensaje
-			: procesos.usuarioDelMail(email)
+			: await procesos.usuarioDelMail(email)
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 

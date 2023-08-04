@@ -43,13 +43,13 @@ module.exports = {
 				urlSalir: "/usuarios/login",
 			});
 		},
-		cartelExito: (req, res) => {
+		envioExitoso: (req, res) => {
 			// Vista
-			return res.render("CMP-0Estructura", {informacion: procesos.cartelAltaExitosa});
+			return res.render("CMP-0Estructura", {informacion: procesos.envioExitoso});
 		},
-		cartelFalla: (req, res) => {
+		envioFallido: (req, res) => {
 			// Vista
-			return res.render("CMP-0Estructura", {informacion: procesos.cartelAltaFallida});
+			return res.render("CMP-0Estructura", {informacion: procesos.envioFallido});
 		},
 	},
 	editables: {

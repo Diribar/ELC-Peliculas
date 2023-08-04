@@ -35,7 +35,7 @@ module.exports = {
 			if (errores.hay) return res.json({errores});
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
-			const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(email);
+			const {ahora, contrasena, feedbackEnvioMail} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
 			if (feedbackEnvioMail.OK)

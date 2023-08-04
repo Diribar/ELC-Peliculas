@@ -70,7 +70,7 @@ module.exports = {
 		titulo: "La generación de una nueva contraseña fue exitosa",
 		check: true,
 	},
-	cartelAltaExitosa: {
+	envioExitoso: {
 		mensajes: [
 			"Hemos generado un contraseña para tu uso, que te hemos enviado por mail.",
 			"Con ella y tu dirección de mail, hemos generado tu usuario.",
@@ -80,7 +80,7 @@ module.exports = {
 		titulo: "Alta exitosa de Usuario",
 		check: true,
 	},
-	cartelAltaFallida: {
+	envioFallido: {
 		mensajes: [
 			"No pudimos enviarte un mail con la contraseña generada por nuestro sistema.",
 			"Probablemente se deba a una falla de tu conexión a internet",

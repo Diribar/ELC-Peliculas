@@ -130,7 +130,7 @@ window.addEventListener("load", () => {
 			else mostrarErrores();
 		}
 		// Acciones si no hubo errores en el data-entry
-		else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
+		// else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
