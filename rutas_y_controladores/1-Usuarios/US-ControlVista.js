@@ -30,6 +30,7 @@ module.exports = {
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
 			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
+			const errores = dataEntry.errores ? dataEntry.errores : false;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -37,7 +38,7 @@ module.exports = {
 				codigo,
 				titulo,
 				dataEntry, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
-				errores: false,
+				errores,
 				hablaHispana,
 				hablaNoHispana,
 				urlSalir: "/usuarios/login",
