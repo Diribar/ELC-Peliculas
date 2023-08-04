@@ -24,20 +24,19 @@ module.exports = {
 	// Circuito de alta de usuario
 	altaMail: {
 		form: async (req, res) => {
-			// Sirve también para olvido de contraseña
-
-			// Tema y código
+			// Variables
 			const tema = "usuario";
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1);
-			let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
+			const titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
+			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
 
 			// Vista
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo,
-				dataEntry: {}, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
+				dataEntry, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
 				errores: false,
 				hablaHispana,
 				hablaNoHispana,

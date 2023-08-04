@@ -7,8 +7,8 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 module.exports = {
 	valida: {
 		formatoMail: (req, res) => {
-			let errores = valida.formatoMail(req.query.email);
-			return res.json(errores);
+			let error = valida.formatoMail(req.query.email);
+			return res.json(error);
 		},
 		login: async (req, res) => {
 			let errores = valida.login(req.query);
@@ -57,10 +57,9 @@ module.exports = {
 			const datos = req.query;
 			const email = datos.email;
 			const usuario = datos.email ? await procesos.usuarioDelMail(email) : "";
-			datos.usuario = usuario;
 
 			// Validaciones
-			const errores = await valida.olvidoContrasena(datos);
+			const errores = await valida.olvidoContrasena({...datos, usuario});
 
 			// Acciones si hay error
 			if (errores.hay) {
@@ -83,8 +82,8 @@ module.exports = {
 			req.session.email = email;
 
 			// Borra los errores
-			delete req.session["olvido-contrasena"] 
-			
+			delete req.session["olvido-contrasena"];
+
 			// Devuelve la info
 			return res.json({feedbackEnvioMail});
 		},

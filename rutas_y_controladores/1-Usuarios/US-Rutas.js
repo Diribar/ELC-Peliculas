@@ -25,9 +25,9 @@ router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
 // 1. Sólo visitas
 router.get("/garantiza-login-y-completo", vista.login_y_completo);
 router.get("/alta-mail", visitas, vista.altaMail.form);
+router.get("/olvido-contrasena", visitas, vista.altaMail.form);
 router.get("/alta-mail-cartelExito", visitas, vista.altaMail.cartelExito);
 router.get("/alta-mail-cartelFalla", visitas, vista.altaMail.cartelFalla);
-router.get("/olvido-contrasena", visitas, vista.altaMail.form);
 
 // 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);

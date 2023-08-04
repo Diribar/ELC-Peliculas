@@ -9,15 +9,14 @@ const procesos = require("./US-FN-Procesos");
 module.exports = {
 	formatoMail: (email) => {
 		// Variables
-		let errores = {email: !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : ""};
+		const errores = {email: !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : ""};
 
 		// Fin
-		errores.hay = !!errores.email;
-		return errores;
+		return errores.email;
 	},
 	altaMail: async function (email) {
 		// Variables
-		const mensaje = this.formatoMail(email).email;
+		const mensaje = this.formatoMail(email);
 		let errores = {};
 
 		// Validaciones
@@ -108,7 +107,7 @@ module.exports = {
 		let errores = {};
 
 		// Verifica errores
-		errores.email = this.formatoMail(email).email;
+		errores.email = this.formatoMail(email);
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 

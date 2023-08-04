@@ -33,14 +33,12 @@ window.addEventListener("load", () => {
 		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
+		feedbackEnvioMail: null,
 	};
 
 	// Funciones -----------------------------
-	let mostrarIconos = () => {
-		for (let campo in v.errores) {
-			// Obtiene el índice
-			const indice = v.inputs.indexOf(campo);
-
+	let mostrarErrores = () => {
+		v.inputs.forEach((campo, indice) => {
 			// Actualiza el mensaje de error
 			DOM.mensajesError[indice].innerHTML = v.errores[campo];
 
@@ -52,7 +50,7 @@ window.addEventListener("load", () => {
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.remove("ocultar");
 			}
-		}
+		});
 
 		// Botón Submit
 		botonSubmit();
@@ -71,61 +69,31 @@ window.addEventListener("load", () => {
 
 		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
+	let enviaInfoAlBE = () => {
+		// Prepara la info para el BE
+		const email = DOM.email.value;
+		const documNumero = DOM.documNumero ? DOM.documNumero.value : "";
+		const documPais_id = DOM.documPais_id ? DOM.documPais_id.value : "";
+		const datos = {email, documNumero, documPais_id};
+		const ruta =
+			v.codigo == "alta-mail"
+				? "alta-mail/?email=" + email
+				: v.codigo == "olvido-contrasena"
+				? "olvido-contrasena/?datos=" + JSON.stringify(datos)
+				: "";
 
-	// Acciones 'input'
-	DOM.form.addEventListener("input", async (e) => {
-		// Variables
-		const campo = e.target.name;
-		let valor = e.target.value;
+		// Envía la información al BE
+		const resultado = fetch("/usuarios/api/" + ruta)
+			.then((n) => n.json())
+			.then((n) => {
+				v.pendiente = false;
+				return n;
+			});
 
-		if (campo == "email") errores = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
-
-		if (campo == "documNumero") {
-			e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
-			errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
-		}
-
-		if (campo == "documPais_id") errores.documPais_id = !valor ? "Necesitamos que elijas un país" : "";
-
-		// Actualiza los errores
-		mostrarIconos();
-	});
-
-	// Submit
-	DOM.form.addEventListener("submit", async (e) => {
-		// Variables
-		let feedbackEnvioMail;
-
-		// Si el botón está inactivo interrumpe la función
-		e.preventDefault();
-		if (DOM.button.className.includes("inactivo")) return;
-		// De lo contrario lo inactiva
-		else DOM.button.classList.add("inactivo");
-
-		// Acciones si es un 'alta-mail'
-		if (v.codigo == "alta-mail") {
-			// Averigua si el mail está repetido
-			errores = await fetch().then((n) => n.json());
-			if (errores.email) {
-				mostrarIconos(errores.email, 0);
-				return;
-			}
-
-			// Envía la información al BE
-			feedbackEnvioMail = fetch("/usuarios/api/envio-de-mail/?email=" + DOM.email.value)
-				.then((n) => n.json())
-				.then((n) => {
-					v.pendiente = false;
-					return n;
-				});
-		}
-
-		// Acciones si es un 'olvido-contraseña'
-		if (v.codigo == "olvido-contrasena") {
-			// Genera la información
-			const datos = {email: DOM.email.value, documNumero: DOM.documNumero.value, documPais_id: DOM.documPais_id, codigo};
-		}
-
+		// Fin
+		return resultado;
+	};
+	let cartelProgreso = async () => {
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
 		DOM.cartel.classList.add("aumenta");
@@ -141,15 +109,74 @@ window.addEventListener("load", () => {
 			DOM.progreso.style.width = parseInt((duracionAcum / tiempoEstimado) * 100) + "%";
 			if (v.pendiente) await espera(pausa);
 		}
+		DOM.progreso.style.width = "100%";
 
-		// Hace una nueva pausa para que se vea el progreso terminado
+		// Oculta el cartel
 		await espera(pausa);
+		DOM.cartel.classList.remove("aumenta");
+		DOM.cartel.classList.add("disminuye");
 
-		// Verifica que se haya enviado
-		feedbackEnvioMail = await feedbackEnvioMail;
+		// Fin
+		return;
+	};
+	let consecuencias = () => {
+		// Acciones si hubo errores en el data-entry
+		console.log(v.errores);
+		console.log(v.feedbackEnvioMail);
+		if (v.errores) {
+			// Si el error es de documento y no exiten esos campos, se recarga la página
+			if (v.errores.documento) location.reload();
+			// De lo contrario, se muestran los errores
+			else mostrarErrores();
+		}
+		// Acciones si no hubo errores en el data-entry
+		else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
 
-		// Redirige a la siguiente vista
-		location.href = feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
+		// Fin
+		return;
+	};
+
+	// Acciones 'input'
+	DOM.form.addEventListener("input", async (e) => {
+		// Variables
+		const campo = e.target.name;
+		let valor = e.target.value;
+
+		if (campo == "email")
+			v.errores.email = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
+
+		if (campo == "documNumero") {
+			e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
+			v.errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
+		}
+
+		if (campo == "documPais_id") v.errores.documPais_id = !valor ? "Necesitamos que elijas un país" : "";
+
+		// Actualiza los errores
+		mostrarErrores();
+	});
+
+	// Submit
+	DOM.form.addEventListener("submit", async (e) => {
+		// Si el botón está inactivo interrumpe la función
+		e.preventDefault();
+		if (DOM.button.className.includes("inactivo")) return;
+		// De lo contrario lo inactiva
+		else DOM.button.classList.add("inactivo");
+
+		// Envía la información al BE
+		let resultado = enviaInfoAlBE();
+
+		// Cartel mientras se recibe la respuesta
+		await cartelProgreso();
+
+		// Obtiene los valores recibidos
+		const {errores, feedbackEnvioMail} = await resultado;
+		v.errores = errores;
+		v.feedbackEnvioMail = feedbackEnvioMail;
+
+		// Consecuencias
+		consecuencias();
 	});
 
 	// Start-up: anula 'submit' si hay algún error
