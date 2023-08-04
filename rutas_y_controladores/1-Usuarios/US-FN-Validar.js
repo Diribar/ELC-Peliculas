@@ -22,7 +22,7 @@ module.exports = {
 		// Validaciones
 		errores.email = mensaje
 			? mensaje
-			: await procesos.usuarioDelMail(email)
+			: (await procesos.usuarioDelMail(email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 
@@ -51,19 +51,8 @@ module.exports = {
 				};
 			// Si el usuario debe ingresar un n° de documento, lo valida
 			else if (usuario.statusRegistro_id == identPendValidar_id || usuario.statusRegistro_id == identValidada_id) {
-				// Verifica 'documNumero'
-				errores.documNumero = !datos.documNumero
-					? variables.inputVacio
-					: datos.documNumero != usuario.documNumero
-					? "El número de documento no coincide con el de nuestra Base de Datos"
-					: "";
-
-				// Verifica 'documPais_id'
-				errores.documPais_id = !datos.documPais_id
-					? variables.selectVacio
-					: datos.documPais_id != usuario.documPais_id
-					? "El país no coincide con el de nuestra Base de Datos"
-					: "";
+				let {documNumero, documPais_id} = this.documento(datos);
+				errores = {documNumero, documPais_id};
 
 				// Si ninguno está vacío, valida si alguno tiene un desvío
 				if (
@@ -89,7 +78,7 @@ module.exports = {
 
 		let errores = {
 			documNumero: !datos.documNumero
-				? "Necesitamos que completes este campo"
+				? variables.inputVacio
 				: !formatoDocumNumero.test(datos.documNumero)
 				? "Sólo se admiten letras del abecedario inglés"
 				: "",
