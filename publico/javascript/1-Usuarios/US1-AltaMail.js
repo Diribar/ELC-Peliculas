@@ -77,9 +77,7 @@ window.addEventListener("load", () => {
 			v.mensaje = !e.target.value ? "Necesitamos que completes este campo" : "";
 		}
 
-		if (v.campo == "documPais_id") {
-			v.mensaje = !valor ? "Necesitamos que elijas un país" : "";
-		}
+		if (v.campo == "documPais_id") v.mensaje = !valor ? "Necesitamos que elijas un país" : "";
 
 		// Actualiza los errores
 		mostrarIconos();

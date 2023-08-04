@@ -7,18 +7,9 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
-	formatoMail: async (email) => {
+	formatoMail: (email) => {
 		// Variables
-		let errores = {};
-
-		// Valida errores en el mail
-		errores.email = !email
-			? cartelMailVacio
-			: formatoMail(email)
-			? cartelMailFormato
-			: "";
-
-		// Consolida
+		let errores = {email: !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : ""};
 		errores.hay = !!errores.email;
 
 		// Fin
@@ -28,8 +19,24 @@ module.exports = {
 		error = (await BD_especificas.obtieneELC_id("usuarios", {email}))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
-		
-		return error
+
+		return error;
+	},
+	documento: (datos) => {
+		let formatoDocumNumero = /^[a-z\d]+$/i;
+
+		let errores = {
+			documNumero: !datos.documNumero
+				? "Necesitamos que completes este campo"
+				: !formatoDocumNumero.test(datos.documNumero)
+				? "Sólo se admiten letras del abecedario inglés"
+				: "",
+			documPais_id: !datos.documPais_id ? "Necesitamos que elijas un país" : "",
+		};
+
+		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores
 	},
 	login: async (datos) => {
 		// Variables
@@ -57,6 +64,7 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
+
 		// Validaciones
 		if (campos.includes("apodo")) {
 			let dato = datos.apodo;
@@ -66,14 +74,16 @@ module.exports = {
 				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
 			} else respuesta = variables.inputVacio;
+
 			// Fin
 			errores.apodo = respuesta;
 		}
 		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? variables.selectVacio : "";
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
-		errores.hay = Object.values(errores).some((n) => !!n);
+		
 		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 	identidadFE: (datos) => {
