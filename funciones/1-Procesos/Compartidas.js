@@ -602,7 +602,7 @@ module.exports = {
 				};
 			});
 	},
-	enviarMail: async function ({asunto, mail, comentario}) {
+	enviarMail: async function ({asunto, email, comentario}) {
 		// Verifica la conexión a internet
 		let hayConexionInternet = this.conectividadInternet();
 
@@ -618,7 +618,7 @@ module.exports = {
 		});
 		let datos = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
-			to: mail,
+			to: email,
 			subject: asunto, // Subject line
 			//text: comentario, // plain text body
 			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
