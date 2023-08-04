@@ -32,7 +32,7 @@ module.exports = {
 			const errores = await valida.altaMail(email);
 
 			// Si error => return errores
-			if (errores.hay) return res.json({errores});
+			if (errores.hay) return res.json({errores, feedbackEnvioMail: {}});
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
 			const {ahora, contrasena, feedbackEnvioMail} = await procesos.envioDeMailConContrasena(email);
@@ -50,7 +50,7 @@ module.exports = {
 			req.session.email = email;
 
 			// Devuelve la info
-			return res.json({feedbackEnvioMail});
+			return res.json({errores, feedbackEnvioMail});
 		},
 		olvidoContrasena: async (req, res) => {
 			// Variables
@@ -65,7 +65,7 @@ module.exports = {
 			if (errores.hay) {
 				datos.errores = errores;
 				req.session["olvido-contrasena"] = datos;
-				return res.json({errores});
+				return res.json({errores, feedbackEnvioMail: {}});
 			}
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
@@ -85,7 +85,7 @@ module.exports = {
 			delete req.session["olvido-contrasena"];
 
 			// Devuelve la info
-			return res.json({feedbackEnvioMail});
+			return res.json({errores, feedbackEnvioMail});
 		},
 	},
 };

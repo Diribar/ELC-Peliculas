@@ -123,7 +123,7 @@ window.addEventListener("load", () => {
 		// Acciones si hubo errores en el data-entry
 		console.log(v.errores);
 		console.log(v.feedbackEnvioMail);
-		if (v.errores) {
+		if (v.errores.hay) {
 			// Si el error es de documento y no exiten esos campos, se recarga la página
 			if (v.errores.documento) location.reload();
 			// De lo contrario, se muestran los errores
@@ -172,7 +172,7 @@ window.addEventListener("load", () => {
 
 		// Obtiene los valores recibidos
 		const {errores, feedbackEnvioMail} = await resultado;
-		v.errores = errores;
+		v.errores = errores
 		v.feedbackEnvioMail = feedbackEnvioMail;
 
 		// Consecuencias
