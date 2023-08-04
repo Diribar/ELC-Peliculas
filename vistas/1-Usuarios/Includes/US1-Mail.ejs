@@ -1,0 +1,14 @@
+<!--E-Mail-->
+<section class="labelInput flexRow">
+	<div class="inputError">
+		<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= dataEntry.email %>" autofocus>
+		<%- include("CMP-Errores", {nombre: "email", display: true}) %>
+	</div>
+</section>
+<% if (codigo == "alta-mail") { %>
+	<!-- Política para el uso de la información privada -->
+	<ul id="politicaInfo" type="disc">
+		<li>No compartimos los mails con otras entidades.</li>
+		<li>No enviamos mensajes comerciales a nuestros usuarios.</li>
+	</ul>
+<% } %>

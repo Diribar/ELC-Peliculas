@@ -27,6 +27,8 @@ router.get("/garantiza-login-y-completo", vista.login_y_completo);
 router.get("/alta-mail", visitas, vista.altaMail.form);
 router.get("/alta-mail-cartelExito", visitas, vista.altaMail.cartelExito);
 router.get("/alta-mail-cartelFalla", visitas, vista.altaMail.cartelFalla);
+router.get("/olvido-contrasena", visitas, vista.altaMail.form);
+
 // 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);
@@ -45,8 +47,6 @@ router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guarda
 // Login
 router.get("/login", visitas, vista.login.form);
 router.post("/login", visitas, vista.login.guardar);
-router.get("/olvido-contrasena", visitas, vista.altaMail.form);
-router.post("/olvido-contrasena", visitas, vista.olvidoContr);
 router.get("/logout", statusCorrecto, vista.logout);
 
 module.exports = router;
