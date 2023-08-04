@@ -589,18 +589,8 @@ module.exports = {
 	// Internet
 	conectividadInternet: async () => {
 		return await internetAvailable()
-			.then(async () => {
-				return {OK: true};
-			})
-			.catch(async () => {
-				return {
-					OK: false,
-					informacion: {
-						mensajes: ["No hay conexión a internet"],
-						iconos: [{nombre: "fa-rotate-right", titulo: "Volvé a intentarlo"}],
-					},
-				};
-			});
+			.then(async () => ({OK: true}))
+			.catch(async () => ({OK: false}));
 	},
 	enviarMail: async function ({asunto, email, comentario}) {
 		// Verifica la conexión a internet
