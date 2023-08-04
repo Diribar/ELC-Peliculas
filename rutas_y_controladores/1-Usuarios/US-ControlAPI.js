@@ -5,9 +5,9 @@ const procesos = require("./US-FN-Procesos");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = {
-	valida:{
-		formatoMail: async (req, res) => {
-			let errores = await valida.formatoMail(req.query.email);
+	valida: {
+		formatoMail: (req, res) => {
+			let errores = valida.formatoMail(req.query.email);
 			return res.json(errores);
 		},
 		mailRepetido: async (req, res) => {

@@ -36,16 +36,16 @@ module.exports = {
 
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores
+		return errores;
 	},
-	login: async (datos) => {
+	login: async function (datos) {
 		// Variables
 		const {email, contrasena} = datos;
 		const largoContr = contrasena ? largoContrasena(contrasena) : null;
 		let errores = {};
 
 		// Verifica errores
-		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+		errores.email = this.formatoMail(email).email
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
@@ -81,7 +81,7 @@ module.exports = {
 		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? variables.selectVacio : "";
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
-		
+
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
