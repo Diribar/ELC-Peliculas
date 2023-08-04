@@ -66,8 +66,22 @@ window.addEventListener("load", () => {
 
 	// Submit
 	DOM.form.addEventListener("submit", (e) => {
-		if (DOM.button.className.includes("inactivo")) e.preventDefault();
-		DOM.button.classList.add("inactivo");
+		// Previene el envío del formulario
+		e.preventDefault();
+
+		// Si el botón está inactivo interrumpe la función
+		if (DOM.button.className.includes("inactivo")) return
+		// De lo contrario lo inactiva
+		else DOM.button.classList.add("inactivo");
+
+		// Envía la información al BE
+
+		// Progreso
+
+		// Verifica que se haya enviado
+
+		// Redirige a la siguiente vista
+
 	});
 
 	// Start-up: anula 'submit' si hay algún error

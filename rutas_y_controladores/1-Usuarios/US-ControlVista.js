@@ -13,9 +13,9 @@ module.exports = {
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
 		let status_usuario = req.session.usuario.statusRegistro;
-		status_usuario.mail_a_validar
+		status_usuario.mailPendValidar
 			? res.redirect("/usuarios/login")
-			: status_usuario.mail_validado
+			: status_usuario.mailValidado
 			? res.redirect("/usuarios/editables")
 			: req.session.urlFueraDeUsuarios
 			? res.redirect(req.session.urlFueraDeUsuarios)
@@ -32,24 +32,13 @@ module.exports = {
 			const codigo = ruta.slice(1);
 			let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
 
-			// Obtiene el e-mail de session
-			let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
-
-			// Errores
-			let errores =
-				codigo == "alta-mail"
-					? {...req.session.erroresAM}
-					: codigo == "olvido-contrasena"
-					? {...req.session.erroresOC}
-					: false;
-
 			// Vista
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo,
 				dataEntry: {}, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
-				errores,
+				errores: false,
 				hablaHispana,
 				hablaNoHispana,
 				urlSalir: "/usuarios/login",
@@ -57,45 +46,14 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const email = req.body.email;
-			let errores, ELC_id;
-
-			// Averigua si hay errores de validación
-			errores = await valida.altaMail(email);
-
-			// Si no hay errores, verifica si ya existe en la BD
-			if (!errores.hay) {
-				ELC_id = await BD_especificas.obtieneELC_id("usuarios", {email});
-				if (ELC_id) errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
-			}
-
-			// Redirecciona si hubo algún error de validación
-			if (errores.hay) {
-				req.session.dataEntry = req.body;
-				req.session.erroresAM = errores;
-				return res.redirect(req.originalUrl);
-			}
-
-			// Si no hubieron errores de validación...
-			// Envía un mail con la contraseña
-			let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+			// : feedbackEnvioMail.informacion
 
 			// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-			if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
-
-			// Agrega el usuario
-			await BD_genericas.agregaRegistro("usuarios", {
-				contrasena,
-				fechaContrasena: ahora,
-				email,
-				statusRegistro_id: statusRegistrosUs.find((n) => n.mail_a_validar).id,
-			});
-			// Guarda el mail en 'session'
-			req.session.usuario = {email};
-			// Datos para la vista
-			let informacion = procesos.cartelAltaExitosa;
-			// Redireccionar
 			return res.render("CMP-0Estructura", {informacion});
+		},
+		cartelExito: (req, res) => {
+			// Vista
+			return res.render("CMP-0Estructura", {informacion: procesos.cartelAltaExitosa});
 		},
 	},
 	editables: {
@@ -237,7 +195,7 @@ module.exports = {
 			// Prepara la información a actualizar
 			req.body.fechaRevisores = comp.fechaHora.ahora();
 			// Actualiza el usuario
-			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "ident_a_validar", req.body);
+			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "identPendValidar", req.body);
 			// Mueve el archivo a la carpeta definitiva
 			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/DNI-Revisar");
 			// Redirecciona
@@ -325,9 +283,9 @@ module.exports = {
 			// Obtiene el usuario con los include
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
-			// Si corresponde, le cambia el status a 'mail_validado'
-			if (usuario.statusRegistro.mail_a_validar)
-				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
+			// Si corresponde, le cambia el status a 'mailValidado'
+			if (usuario.statusRegistro.mailPendValidar)
+				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Inicia la sesión del usuario
 			req.session.usuario = usuario;

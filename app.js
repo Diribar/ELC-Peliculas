@@ -149,9 +149,10 @@ app.set("views", [
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
 
 	// 4. Status de usuario
-	global.st_editables_id = statusRegistrosUs.find((n) => n.editables).id;
-	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
-	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
+	global.mailPendValidar_id=statusRegistrosUs.find((n) => n.mailPendValidar).id
+	global.editables_id = statusRegistrosUs.find((n) => n.editables).id;
+	global.identPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
+	global.identValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
 
 	// Otros
 	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);

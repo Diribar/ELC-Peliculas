@@ -53,7 +53,7 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const procCanoniz = procesos.detalle.procCanoniz(rclv);
 		const RCLVnombre = rclv.nombre;
-		const userIdentVal = usuario && usuario.statusRegistro.ident_validada;
+		const userIdentVal = usuario && usuario.statusRegistro.identValidada;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {

@@ -79,7 +79,7 @@ module.exports = {
 			// Más variables
 			const revID = req.session.usuario.id;
 			let penalizac = 0;
-			let statusRegistro_id = st_ident_validada_id;
+			let statusRegistro_id = identValidada_id;
 			let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 	
 			// Obtiene el usuario
@@ -92,7 +92,7 @@ module.exports = {
 					if (datos[campo] == "NO") {
 						// Agrega un registro por la edición rechazada
 						procesos.VI.histEdics(campo, usuario, revID, motivo);
-						statusRegistro_id = st_editables_id;
+						statusRegistro_id = editables_id;
 						penalizac += Number(motivo.penalizac);
 					}
 			}
@@ -101,12 +101,12 @@ module.exports = {
 				// Rutinas para el campo
 				const motivo = motivosEdics.find((n) => n.id == datos.motivo_docum_id);
 				procesos.VI.histEdics("documAvatar", usuario, revID, motivo);
-				statusRegistro_id = st_editables_id;
+				statusRegistro_id = editables_id;
 				penalizac += Number(motivo.penalizac);
 			}
 	
 			// Acciones si se aprueba la validación
-			if (statusRegistro_id == st_ident_validada_id) {
+			if (statusRegistro_id == identValidada_id) {
 				// Asigna el rol 'permInputs'
 				objeto.rolUsuario_id = rolPermInputs_id;
 	

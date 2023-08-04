@@ -8,11 +8,11 @@ module.exports = async (req, res, next) => {
 	const {ruta} = comp.reqBasePathUrl(req);
 	const statusEsperado =
 		ruta == "/editables"
-			? usuario.statusRegistro.mail_validado
+			? usuario.statusRegistro.mailValidado
 			: ruta == "/bienvenido" || ruta == "/identidad"
 			? usuario.statusRegistro.editables
 			: ruta == "/validacion-en-proceso"
-			? usuario.statusRegistro.ident_a_validar
+			? usuario.statusRegistro.identPendValidar
 			: ruta == "/logout"
 			? true
 			: false;

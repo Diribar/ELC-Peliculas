@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 		// Obtiene los datos del usuario
 		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.cookies.email);
 		// Acciones si existe el usuario y ya confirmó el mail
-		if (usuario && !usuario.statusRegistro.mail_a_validar) {
+		if (usuario && !usuario.statusRegistro.mailPendValidar) {
 			// Pasa los datos del usuario a session
 			req.session.usuario = usuario;
 
