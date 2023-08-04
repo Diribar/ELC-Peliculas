@@ -6,7 +6,8 @@ window.addEventListener("load", () => {
 		form: document.querySelector("form"),
 		button: document.querySelector("form button[type='submit']"),
 
-		// Campos del formulario
+		// Inputs del formulario
+		inputs: document.querySelectorAll(".inputError .input"),
 		email: document.querySelector(".inputError .input[name='email']"),
 		documNumero: document.querySelector(".inputError .input#documNumero"),
 		documPais_id: document.querySelector(".inputError .input#documPais_id"),
@@ -23,6 +24,7 @@ window.addEventListener("load", () => {
 	let codigo = location.pathname;
 	const indice = codigo.lastIndexOf("/");
 	let v = {
+		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		codigo: codigo.slice(indice + 1), // código de la vista
 		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
@@ -33,14 +35,15 @@ window.addEventListener("load", () => {
 	};
 
 	// Funciones -----------------------------
-	let mostrarIconos = (mensaje, i) => {
-		DOM.mensajesError[i].innerHTML = mensaje;
-		if (mensaje) {
-			DOM.iconosError[i].classList.remove("ocultar");
-			DOM.iconosOK[i].classList.add("ocultar");
+	let mostrarIconos = () => {
+		const indice = v.inputs.indexOf(v.campo);
+		DOM.mensajesError[indice].innerHTML = v.mensaje;
+		if (v.mensaje) {
+			DOM.iconosError[indice].classList.remove("ocultar");
+			DOM.iconosOK[indice].classList.add("ocultar");
 		} else {
-			DOM.iconosError[i].classList.add("ocultar");
-			DOM.iconosOK[i].classList.remove("ocultar");
+			DOM.iconosError[indice].classList.add("ocultar");
+			DOM.iconosOK[indice].classList.remove("ocultar");
 		}
 
 		// Botón Submit
@@ -56,13 +59,13 @@ window.addEventListener("load", () => {
 
 		let error = Array.from(DOM.iconosError)
 			.map((n) => n.className)
-			.every((n) => n.includes("ocultar"));
+			.some((n) => !n.includes("ocultar"));
 
-		OK && error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
+		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
 
 	// Acciones 'input'
-	DOM.form.addEventListener("input",async (e) => {
+	DOM.form.addEventListener("input", async (e) => {
 		// Variables
 		v.campo = e.target.name;
 		let valor = e.target.value;
