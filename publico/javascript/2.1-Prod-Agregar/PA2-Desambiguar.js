@@ -56,13 +56,10 @@ window.addEventListener("load", async () => {
 				duracionAcum += pausa;
 				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
 
-				// Si el 'await' terminó, no pierde más tiempo
+				// Si el 'await' terminó, actualiza el progreso y no pierde más tiempo
 				if (!pendiente) {
-					// Actualiza el progreso
 					duracionAcum = API.acumulado;
 					DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
-
-					// Fin
 					break;
 				}
 
