@@ -15,11 +15,11 @@ const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 //************************ Rutas ****************************
 // Rutas de APIs
 router.get("/api/valida-formato-mail", API.valida.formatoMail); // alta-de-mail, olvido-de-contraseña
-router.get("/api/valida-mail-repetido", API.valida.mailRepetido); // alta-de-mail
 router.get("/api/valida-login", API.valida.login);
 router.get("/api/valida-editables", API.valida.editables);
 router.get("/api/valida-identidad", API.valida.identidad);
-router.get("/api/envio-de-mail", API.envioDeMail);
+router.get("/api/alta-mail", API.fin.altaMail);
+router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
 
 // Rutas de Altas
 // 1. Sólo visitas

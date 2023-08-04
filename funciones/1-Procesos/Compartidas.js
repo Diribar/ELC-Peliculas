@@ -587,25 +587,24 @@ module.exports = {
 	},
 
 	// Internet
-	conectividadInternet: async (req) => {
+	conectividadInternet: async () => {
 		return await internetAvailable()
 			.then(async () => {
 				return {OK: true};
 			})
 			.catch(async () => {
-				const link = req ? req.originalUrl : "/";
 				return {
 					OK: false,
 					informacion: {
 						mensajes: ["No hay conexión a internet"],
-						iconos: [{nombre: "fa-rotate-right", link, titulo: "Volvé a intentarlo"}],
+						iconos: [{nombre: "fa-rotate-right", titulo: "Volvé a intentarlo"}],
 					},
 				};
 			});
 	},
-	enviarMail: async function (asunto, mail, comentario, req) {
+	enviarMail: async function ({asunto, mail, comentario}) {
 		// Verifica la conexión a internet
-		let hayConexionInternet = this.conectividadInternet(req);
+		let hayConexionInternet = this.conectividadInternet();
 
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -635,7 +634,6 @@ module.exports = {
 					OK: false,
 					informacion: {
 						mensajes: ["No se envió el e-mail"],
-						iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 					},
 				};
 			});

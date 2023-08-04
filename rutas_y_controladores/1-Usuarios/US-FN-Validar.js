@@ -2,20 +2,20 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
+const procesos = require("./US-FN-Procesos");
 
 module.exports = {
 	formatoMail: (email) => {
 		// Variables
 		let errores = {email: !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : ""};
-		
+
 		// Fin
 		errores.hay = !!errores.email;
 		return errores;
 	},
-	mailRepetido: async function (email) {
+	altaMail: async function (email) {
 		// Variables
 		const mensaje = this.formatoMail(email).email;
 		let errores = {};
@@ -23,7 +23,7 @@ module.exports = {
 		// Validaciones
 		errores.email = mensaje
 			? mensaje
-			: (await BD_especificas.obtieneELC_id("usuarios", {email}))
+			: procesos.usuarioDelMail(email)
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 
@@ -31,88 +31,59 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-	olvidoContr: async (datos) => {
-		// Averigua si hay errores 'superficiales' de validación
-		let errores = await valida.altaMail(dataEntry.email);
-
-		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, informacion, usuario] = await valida.olvidoContrBE(dataEntry, req);
-
-		// Redirecciona si hubo algún error de validación
-		if (errores.hay) {
-			req.session.dataEntry = req.body;
-			req.session.erroresOC = errores;
-			return res.redirect(req.originalUrl);
-		}
-
-		// Interrumpe si hay un mensaje con información
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Si todo anduvo bien...
-		// Envía la contraseña por mail
-		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
-		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-		if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
-		// Actualiza la contraseña en la BD
-		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
-			contrasena,
-			fechaContrasena: ahora,
-		});
-		// Guarda el mail en 'session'
-		req.session.email = req.body.email;
-		// Borra los errores
-		req.session.errores = "";
-		// Datos para la vista
-		informacion = procesos.cartelNuevaContrasena;
-		// Redireccionar
-		return res.render("CMP-0Estructura", {informacion});
-	},
-	olvidoContrBE: async (datos, req) => {
+	olvidoContrasena: async (datos) => {
 		// Variables
+		const usuario = datos.usuario;
 		let errores = {}; // Necesitamos que sea un objeto
-		let informacion;
-
-		// Obtiene el usuario
-		const usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "statusRegistro");
 
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
 			// Detecta si ya se envió un mail en las últimas 24hs
-			let ahora = comp.fechaHora.ahora();
-			let fechaContr = usuario.fechaContrasena;
-			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
-			if (diferencia < 24) {
-				let fechaContrHorario = comp.fechaHora.fechaHorario(usuario.fechaContrasena);
-				informacion = {
-					mensajes: [
-						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",
-						"Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
-					],
-					iconos: [variables.vistaEntendido(req.session.urlSinLogin)],
+			const ahora = comp.fechaHora.ahora();
+			const fechaContrasena = usuario.fechaContrasena;
+			const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
+			if (diferencia < 24)
+				errores = {
+					email:
+						"Ya enviamos un mail con la contraseña el día " +
+						comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
+						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
-			}
-
-			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
-			else if (usuario.statusRegistro.identPendValidar || usuario.statusRegistro.identValidada) {
-				// Verifica los posibles errores
+			// Si el usuario debe ingresar un n° de documento, lo valida
+			else if (usuario.statusRegistro_id == identPendValidar_id || usuario.statusRegistro_id == identValidada_id) {
+				// Verifica 'documNumero'
 				errores.documNumero = !datos.documNumero
 					? variables.inputVacio
 					: datos.documNumero != usuario.documNumero
 					? "El número de documento no coincide con el de nuestra Base de Datos"
 					: "";
+
+				// Verifica 'documPais_id'
 				errores.documPais_id = !datos.documPais_id
 					? variables.selectVacio
 					: datos.documPais_id != usuario.documPais_id
 					? "El país no coincide con el de nuestra Base de Datos"
 					: "";
+
+				// Si ninguno está vacío, valida si alguno tiene un desvío
+				if (
+					!errores.documNumero &&
+					!errores.documPais_id &&
+					(datos.documNumero != usuario.documNumero || datos.documPais_id != usuario.documPais_id)
+				) {
+					errores.documNumero = "El número de documento y/o el país, no coinciden con el de nuestra Base de Datos";
+					errores.documPais_id = errores.documNumero;
+				}
+
+				// Obtiene el consolidado
 				errores.documento = !!errores.documNumero || !!errores.documPais_id;
 			}
 		}
 
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
-		return [errores, informacion, usuario];
+		return errores;
 	},
 	documento: (datos) => {
 		let formatoDocumNumero = /^[a-z\d]+$/i;

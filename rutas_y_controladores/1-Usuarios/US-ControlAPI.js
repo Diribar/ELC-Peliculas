@@ -10,10 +10,6 @@ module.exports = {
 			let errores = valida.formatoMail(req.query.email);
 			return res.json(errores);
 		},
-		mailRepetido: async (req, res) => {
-			let errores = await valida.mailRepetido(req.query.email)
-			return res.json(errores);
-		},
 		login: async (req, res) => {
 			let errores = valida.login(req.query);
 			return res.json(errores);
@@ -27,27 +23,70 @@ module.exports = {
 			return res.json(errores);
 		},
 	},
-	envioDeMail: async (req, res) => {
-		// Variables
-		const email = req.query.email;
-		req.body = {email};
+	fin: {
+		altaMail: async (req, res) => {
+			// Variables
+			const email = req.query.email;
 
-		// Envía un mail con la contraseña
-		const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+			// Validaciones
+			const errores = await valida.altaMail(email);
 
-		// Si no hubieron errores, agrega el usuario
-		if (feedbackEnvioMail.OK)
-			await BD_genericas.agregaRegistro("usuarios", {
-				contrasena,
-				fechaContrasena: ahora,
-				email,
-				statusRegistro_id: mailPendValidar_id,
-			});
+			// Si error => return errores
+			if (errores.hay) return res.json({errores});
 
-		// Guarda el mail en 'session'
-		req.session.usuario = {email};
+			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
+			const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(email);
 
-		// Fin
-		return res.json(feedbackEnvioMail);
+			// Si no hubo errores con el envío del mensaje, crea el usuario
+			if (feedbackEnvioMail.OK)
+				await BD_genericas.agregaRegistro("usuarios", {
+					email,
+					contrasena,
+					fechaContrasena: ahora,
+					statusRegistro_id: mailPendValidar_id,
+				});
+
+			// Guarda el mail en 'session'
+			req.session.email = email;
+
+			// Devuelve la info
+			return res.json({feedbackEnvioMail});
+		},
+		olvidoContrasena: async (req, res) => {
+			// Variables
+			const datos = req.query;
+			const email = datos.email;
+			const usuario = datos.email ? await procesos.usuarioDelMail(email) : "";
+			datos.usuario = usuario;
+
+			// Validaciones
+			const errores = await valida.olvidoContrasena(datos);
+
+			// Acciones si hay error
+			if (errores.hay) {
+				datos.errores = errores;
+				req.session["olvido-contrasena"] = datos;
+				return res.json({errores});
+			}
+
+			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
+			const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(email);
+
+			// Si no hubo errores con el envío del mensaje, actualiza la contraseña del usuario
+			if (feedbackEnvioMail.OK)
+				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
+					contrasena,
+					fechaContrasena: ahora,
+				});
+
+			// Guarda el mail en 'session'
+			req.session.email = email;
+
+			// Borra los errores
+			delete req.session["olvido-contrasena"] 
+			
+			// Devuelve la info
+			return res.json({feedbackEnvioMail});
+		},
 	},
 };

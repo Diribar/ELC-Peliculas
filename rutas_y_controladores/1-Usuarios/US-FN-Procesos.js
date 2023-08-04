@@ -37,26 +37,28 @@ module.exports = {
 		return;
 	},
 	// ControlVista: altaMail y olvidoContr
-	enviaMailConContrasena: async (req) => {
+	usuarioDelMail: async (email) => {
+		const usuario=await BD_genericas.obtienePorCondicion("usuarios", {email});
+		return usuario
+	},
+	envioDeMailConContrasena: async (email) => {
 		// Variables
 		const asunto = "Contraseña para ELC";
-		const email = req.body.email;
 
 		// Contraseña
 		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString(); // más adelante cambia por la codificada
-		const comentario = "La contraseña del mail " + email + " es: " + contrasena;
+		const comentario = "La contraseña para el mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 
 		// Envía el mail al usuario con la contraseña
-		const feedbackEnvioMail =await comp.enviarMail(asunto, email, comentario, req);
-
-		// Obtiene el horario de envío de mail
-		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
+		const feedbackEnvioMail = await comp.enviarMail({asunto, email, comentario});
+		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin
-		return {ahora, contrasena, feedbackEnvioMail};
+		return {ahora, contrasena, feedbackEnvioMail}
 	},
+
 	// Carteles de información
 	cartelNuevaContrasena: {
 		mensajes: [
