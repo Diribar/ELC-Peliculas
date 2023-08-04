@@ -83,8 +83,7 @@ module.exports = {
 	envioFallido: {
 		mensajes: [
 			"No pudimos enviarte un mail con la contraseña generada por nuestro sistema.",
-			"Probablemente se deba a una falla de tu conexión a internet",
-			"Por esa razón no podemos avanzar hasta que tengas conexión de nuevo.",
+			"Por esa razón no podemos avanzar.",
 			"Con el ícono de abajo regresas a la vista anterior.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
