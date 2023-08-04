@@ -38,8 +38,8 @@ module.exports = {
 	},
 	// ControlVista: altaMail y olvidoContr
 	usuarioDelMail: async (email) => {
-		const usuario=await BD_genericas.obtienePorCondicion("usuarios", {email});
-		return usuario
+		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+		return usuario;
 	},
 	envioDeMailConContrasena: async (email) => {
 		// Variables
@@ -56,7 +56,7 @@ module.exports = {
 		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin
-		return {ahora, contrasena, feedbackEnvioMail}
+		return {ahora, contrasena, feedbackEnvioMail};
 	},
 
 	// Carteles de información
