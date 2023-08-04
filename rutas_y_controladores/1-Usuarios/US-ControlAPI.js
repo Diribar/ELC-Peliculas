@@ -11,7 +11,7 @@ module.exports = {
 			return res.json(errores);
 		},
 		mailRepetido: async (req, res) => {
-			let errores = {email: await valida.mailRepetido(req.query.email)};
+			let errores = await valida.mailRepetido(req.query.email)
 			return res.json(errores);
 		},
 		login: async (req, res) => {
