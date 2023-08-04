@@ -33,7 +33,10 @@ window.addEventListener("load", async () => {
 			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 100},
 		];
 		let duracionTotal = 0;
-		for (let API of APIs) duracionTotal += API.duracion;
+		APIs.forEach((API, i) => {
+			duracionTotal += API.duracion;
+			APIs[i].acumulado = duracionTotal;
+		});
 
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
@@ -44,13 +47,24 @@ window.addEventListener("load", async () => {
 		let duracionAcum = 0;
 		for (let API of APIs) {
 			// Busca la información
-			let aux = fetch("api/desambiguar-" + API.ruta + "/");
+			let pendiente = true;
+			let aux = fetch("api/desambiguar-" + API.ruta + "/").then(() => (pendiente = false));
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
 				// Evoluciona el progreso
 				duracionAcum += pausa;
 				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+
+				// Si el 'await' terminó, no pierde más tiempo
+				if (!pendiente) {
+					// Actualiza el progreso
+					duracionAcum = API.acumulado;
+					DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+
+					// Fin
+					break;
+				}
 
 				// Pierde tiempo
 				await espera(pausa);
