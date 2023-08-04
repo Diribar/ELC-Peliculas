@@ -54,7 +54,7 @@ module.exports = {
 		},
 		olvidoContrasena: async (req, res) => {
 			// Variables
-			const datos = req.query;
+			const datos = JSON.parse(req.query.datos);
 			const email = datos.email;
 			const usuario = datos.email ? await procesos.usuarioDelMail(email) : "";
 

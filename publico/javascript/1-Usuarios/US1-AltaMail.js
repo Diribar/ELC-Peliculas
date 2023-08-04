@@ -96,6 +96,7 @@ window.addEventListener("load", () => {
 	let cartelProgreso = async () => {
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
+		DOM.cartel.classList.remove("disminuye");
 		DOM.cartel.classList.add("aumenta");
 
 		// Progreso
@@ -130,7 +131,7 @@ window.addEventListener("load", () => {
 			else mostrarErrores();
 		}
 		// Acciones si no hubo errores en el data-entry
-		// else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
+		else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
