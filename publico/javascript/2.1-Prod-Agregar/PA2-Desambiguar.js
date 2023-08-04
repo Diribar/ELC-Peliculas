@@ -43,20 +43,20 @@ window.addEventListener("load", async () => {
 		// Ejecuta las APIs 'form'
 		let duracionAcum = 0;
 		for (let API of APIs) {
-			let ahora = Date.now();
 			// Busca la información
 			let aux = fetch("api/desambiguar-" + API.ruta + "/");
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
-				await espera(pausa);
+				// Evoluciona el progreso
 				duracionAcum += pausa;
 				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+
+				// Pierde tiempo
+				await espera(pausa);
 			}
 
 			// Se asegura de haber recibido la información
-			let delta=Date.now() - ahora
-			console.log(delta, API.duracion,parseInt((delta/API.duracion-1)*100)+"%");
 			aux = await aux;
 		}
 		DOM.progreso.style.width = "100%";
