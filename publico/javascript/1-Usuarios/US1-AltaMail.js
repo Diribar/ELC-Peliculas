@@ -27,6 +27,9 @@ window.addEventListener("load", () => {
 		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
+		errores: {},
+		campo: "",
+		mensaje: "",
 	};
 
 	// Funciones -----------------------------
@@ -58,28 +61,26 @@ window.addEventListener("load", () => {
 		OK && error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
 
-	// Acciones si se realizan cambios en el mail
-	DOM.email.addEventListener("input", async () => {
-		let campo = DOM.email.name;
-		let valor = DOM.email.value;
-		let errores = await fetch("/usuarios/api/valida-formato-mail/?" + campo + "=" + valor).then((n) => n.json());
-		let mensaje = errores[campo];
-		mostrarIconos(mensaje, 0);
-	});
+	// Acciones 'input'
+	DOM.form.addEventListener("input",async (e) => {
+		// Variables
+		v.campo = e.target.name;
+		let valor = e.target.value;
 
-	// Acciones si se realizan cambios en el n° de codumento o país
-	if (DOM.documNumero && DOM.documPais_id) {
-		DOM.documNumero.addEventListener("input", () => {
-			// Impide los caracteres que no son válidos
-			DOM.documNumero.value = DOM.documNumero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
-			let mensaje = !DOM.documNumero.value ? "Necesitamos que completes este campo" : "";
-			mostrarIconos(mensaje, 1);
-		});
-		DOM.documPais_id.addEventListener("input", () => {
-			let mensaje = !DOM.documPais_id.value ? "Necesitamos que elijas un país" : "";
-			mostrarIconos(mensaje, 2);
-		});
-	}
+		if (campo == "email") errores = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
+
+		if (v.campo == "documNumero") {
+			e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
+			v.mensaje = !e.target.value ? "Necesitamos que completes este campo" : "";
+		}
+
+		if (v.campo == "documPais_id") {
+			v.mensaje = !valor ? "Necesitamos que elijas un país" : "";
+		}
+
+		// Actualiza los errores
+		mostrarIconos();
+	});
 
 	// Submit
 	DOM.form.addEventListener("submit", async (e) => {
