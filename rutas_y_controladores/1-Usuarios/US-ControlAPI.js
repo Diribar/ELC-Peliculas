@@ -13,6 +13,18 @@ module.exports = {
 		let errores = {email: await valida.mailRepetido(req.query.email)};
 		return res.json(errores);
 	},
+	validaEditables: async (req, res) => {
+		let errores = await valida.editables(req.query);
+		return res.json(errores);
+	},
+	validaIdentidad: async (req, res) => {
+		let errores = await valida.identidadFE(req.query);
+		return res.json(errores);
+	},
+	validaLogin: async (req, res) => {
+		let errores = valida.login(req.query);
+		return res.json(errores);
+	},
 	envioDeMail: async (req, res) => {
 		// Variables
 		const email = req.query.email;
@@ -35,17 +47,5 @@ module.exports = {
 
 		// Fin
 		return res.json(feedbackEnvioMail);
-	},
-	validaEditables: async (req, res) => {
-		let errores = await valida.editables(req.query);
-		return res.json(errores);
-	},
-	validaIdentidad: async (req, res) => {
-		let errores = await valida.identidadFE(req.query);
-		return res.json(errores);
-	},
-	validaLogin: async (req, res) => {
-		let errores = valida.login(req.query);
-		return res.json(errores);
 	},
 };
