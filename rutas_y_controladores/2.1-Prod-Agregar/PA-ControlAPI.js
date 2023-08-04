@@ -34,116 +34,128 @@ module.exports = {
 	},
 
 	// Vista (desambiguar)
-	desambForm0: async (req, res) => {
-		// Busca valores 'session' - Variables
-		const desambiguar = req.session.desambiguar;
-
-		// Fin
-		return res.json(desambiguar);
+	desambForm:{
+		// Busca valores 'session' 
+		buscaInfoEnSession: async (req, res) => {
+			// Variables
+			const desambiguar = req.session.desambiguar;
+	
+			// Fin
+			return res.json(desambiguar);
+		},
+		// Busca los productos
+		buscaProds: async (req, res) => {
+			// Variables
+			const palabrasClave = req.session.desambiguar.palabrasClave;
+	
+			// Obtiene los productos y los conserva en session
+			req.session.desambiguar.productos = await buscar_x_PC.search(palabrasClave);
+	
+			// Fin
+			return res.json();
+		},
+		// Reemplaza las películas por su colección 
+		reemplPeliPorColec: async (req, res) => {
+			// Variables
+			let productos = req.session.desambiguar.productos;
+	
+			// Revisa si debe reemplazar una película por su colección
+			productos = await buscar_x_PC.reemplazoDePeliPorColeccion(productos);
+	
+			// Conserva la información en session
+			req.session.desambiguar.productos = productos;
+	
+			// Fin
+			return res.json();
+		},
+		// Pule la información 
+		puleLaInfo: async (req, res) => {
+			// Variables
+			let productos = req.session.desambiguar.productos;
+	
+			// Organiza la información
+			productos = await buscar_x_PC.organizaLaInformacion(productos);
+	
+			// Conserva la información en session para no tener que procesarla de nuevo
+			req.session.desambiguar.productos = productos;
+	
+			// Fin
+			return res.json();
+		},
+		// Obtiene los hallazgos de origen IM y FA 
+		obtieneHallazgosDeIMFA: async (req, res) => {
+			// Variables
+			const userID = req.session.usuario ? req.session.usuario.id : 0;
+			const palabrasClave = req.session.desambiguar.palabrasClave;
+	
+			// Obtiene los productos afines, ingresados por fuera de TMDB
+			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
+	
+			// Conserva la información en session para no tener que procesarla de nuevo
+			req.session.desambiguar.prodsIMFA = prodsIMFA;
+	
+			// Fin
+			return res.json();
+		},
+		// Combina los hallazgos 'yaEnBD' 
+		combinaHallazgosYaEnBD: async (req, res) => {
+			// Variables
+			const yaEnBD = req.session.desambiguar.productos.prodsYaEnBD;
+			const prodsIMFA = req.session.desambiguar.prodsIMFA;
+	
+			// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
+			let prodsYaEnBD = [...yaEnBD, ...prodsIMFA];
+			prodsYaEnBD.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+	
+			// Conserva la información en session para no tener que procesarla de nuevo
+			req.session.desambiguar.productos.prodsYaEnBD = prodsYaEnBD;
+	
+			// Fin
+			return res.json(req.session.desambiguar.productos);
+		},
 	},
-	desambForm1: async (req, res) => {
-		// Busca los productos - Variables
-		const palabrasClave = req.session.desambiguar.palabrasClave;
-
-		// Obtiene los productos y los conserva en session
-		req.session.desambiguar.productos = await buscar_x_PC.search(palabrasClave);
-
-		// Fin
-		return res.json();
-	},
-	desambForm2: async (req, res) => {
-		// Reemplaza las películas por su colección - Variables
-		let productos = req.session.desambiguar.productos;
-
-		// Revisa si debe reemplazar una película por su colección
-		productos = await buscar_x_PC.reemplazoDePeliPorColeccion(productos);
-
-		// Conserva la información en session
-		req.session.desambiguar.productos = productos;
-
-		// Fin
-		return res.json();
-	},
-	desambForm3: async (req, res) => {
-		// Pule la información - Variables
-		let productos = req.session.desambiguar.productos;
-
-		// Organiza la información
-		productos = await buscar_x_PC.organizaLaInformacion(productos);
-
-		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar.productos = productos;
-
-		// Fin
-		return res.json();
-	},
-	desambForm4: async (req, res) => {
-		// Obtiene los hallazgos de origen IM y FA - Variables
-		const userID = req.session.usuario ? req.session.usuario.id : 0;
-		const palabrasClave = req.session.desambiguar.palabrasClave;
-
-		// Obtiene los productos afines, ingresados por fuera de TMDB
-		const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
-
-		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar.prodsIMFA = prodsIMFA;
-
-		// Fin
-		return res.json();
-	},
-	desambForm5: async (req, res) => {
-		// Combina los hallazgos 'yaEnBD' - Variables
-		const yaEnBD = req.session.desambiguar.productos.prodsYaEnBD;
-		const prodsIMFA = req.session.desambiguar.prodsIMFA;
-
-		// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
-		let prodsYaEnBD = [...yaEnBD, ...prodsIMFA];
-		prodsYaEnBD.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
-
-		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar.productos.prodsYaEnBD = prodsYaEnBD;
-
-		// Fin
-		return res.json(req.session.desambiguar.productos);
-	},
-	desambGuardar1: async (req, res) => {
-		// Actualiza Datos Originales - Variables
-		const datos = JSON.parse(req.query.datos);
-
-		// Obtiene más información del producto
-		const TMDB_entidad = datos.TMDB_entidad;
-		const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
-
-		// Guarda los datos originales en una cookie
-		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
-		// Fin
-		return res.json();
-	},
-	desambGuardar2: async (req, res) => {
-		// Averigua si la info tiene errores - Variables
-		let datosDuros = req.cookies.datosOriginales;
-
-		// Para datosDuros, da de alta el avatarUrl y de baja el avatar
-		datosDuros.avatarUrl = datosDuros.avatar;
-		delete datosDuros.avatar;
-
-		// Averigua si falta completar algún campo de Datos Duros
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-		let camposNombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposNombre, datosDuros);
-
-		// Genera la session y cookie para DatosDuros
-		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-
-		// Genera la session y cookie para datosAdics
-		if (!errores.hay) {
-			req.session.datosAdics = datosDuros;
-			res.cookie("datosAdics", datosDuros, {maxAge: unDia});
-		}
-
-		// Fin
-		return res.json(errores);
+	desambGuardar:{
+		// Actualiza Datos Originales 
+		actualizaDatosOrig: async (req, res) => {
+			// Variables
+			const datos = JSON.parse(req.query.datos);
+	
+			// Obtiene más información del producto
+			const TMDB_entidad = datos.TMDB_entidad;
+			const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
+	
+			// Guarda los datos originales en una cookie
+			res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
+			// Fin
+			return res.json();
+		},
+		// Averigua si la info tiene errores 
+		averiguaSiHayErrores: async (req, res) => {
+			// Variables
+			let datosDuros = req.cookies.datosOriginales;
+	
+			// Para datosDuros, da de alta el avatarUrl y de baja el avatar
+			datosDuros.avatarUrl = datosDuros.avatar;
+			delete datosDuros.avatar;
+	
+			// Averigua si falta completar algún campo de Datos Duros
+			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
+			let camposNombre = camposDD.map((n) => n.nombre);
+			let errores = await valida.datosDuros(camposNombre, datosDuros);
+	
+			// Genera la session y cookie para DatosDuros
+			req.session.datosDuros = datosDuros;
+			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+	
+			// Genera la session y cookie para datosAdics
+			if (!errores.hay) {
+				req.session.datosAdics = datosDuros;
+				res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+			}
+	
+			// Fin
+			return res.json(errores);
+		},
 	},
 
 	// Vista (datosDuros)
