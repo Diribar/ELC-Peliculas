@@ -41,11 +41,14 @@ module.exports = {
 		// Prepara los datos
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
-		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
+		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString();
 		console.log("Contraseña: " + contrasena);
 		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		let feedbackEnvioMail = await comp.enviarMail(asunto, email, comentario, req);
+		let feedbackEnvioMail = comp.enviarMail(asunto, email, comentario, req);
+		console.log(49, feedbackEnvioMail);
+		[feedbackEnvioMail] = await Promise.all([feedbackEnvioMail]);
+		console.log(51, feedbackEnvioMail);
 		// Obtiene el horario de envío de mail
 		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 		// Genera el registro
