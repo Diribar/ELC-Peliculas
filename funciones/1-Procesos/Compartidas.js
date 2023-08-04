@@ -616,17 +616,8 @@ module.exports = {
 		// Envío del mail
 		let mailEnviado = transporter
 			.sendMail(datos)
-			.then(() => {
-				return {OK: true};
-			})
-			.catch(() => {
-				return {
-					OK: false,
-					informacion: {
-						mensajes: ["No se envió el e-mail"],
-					},
-				};
-			});
+			.then(() => ({OK: true}))
+			.catch(() => ({OK: false}));
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
