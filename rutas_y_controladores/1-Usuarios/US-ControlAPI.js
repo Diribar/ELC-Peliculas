@@ -22,7 +22,7 @@ module.exports = {
 		const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
 
 		// Si no hubieron errores, agrega el usuario
-		if (!feedbackEnvioMail.OK)
+		if (feedbackEnvioMail.OK)
 			await BD_genericas.agregaRegistro("usuarios", {
 				contrasena,
 				fechaContrasena: ahora,
