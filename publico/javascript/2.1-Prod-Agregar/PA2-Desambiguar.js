@@ -33,10 +33,7 @@ window.addEventListener("load", async () => {
 			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 100},
 		];
 		let duracionTotal = 0;
-		APIs.forEach((API, i) => {
-			duracionTotal += API.duracion;
-			APIs[i].acumulado = duracionTotal;
-		});
+		for (let API of APIs) duracionTotal += API.duracion;
 
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
