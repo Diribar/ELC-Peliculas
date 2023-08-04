@@ -33,7 +33,6 @@ window.addEventListener("load", () => {
 		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
-		feedbackEnvioMail: null,
 	};
 
 	// Funciones -----------------------------
@@ -122,8 +121,6 @@ window.addEventListener("load", () => {
 	};
 	let consecuencias = () => {
 		// Acciones si hubo errores en el data-entry
-		console.log(v.errores);
-		console.log(v.feedbackEnvioMail);
 		if (v.errores.hay) {
 			// Si el error es de documento y no exiten esos campos, se recarga la página
 			if (v.errores.documento) location.reload();
