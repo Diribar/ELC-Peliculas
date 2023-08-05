@@ -28,15 +28,15 @@ router.get("/api/valida/datos-duros", API.validaDatosDuros);
 router.get("/api/valida/datos-adicionales", API.validaDatosAdics);
 router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
 // Desambiguar - Form
-router.get("/api/desambiguar-busca-session-desambiguar", API.desambForm0);
-router.get("/api/desambiguar-busca-los-productos", API.desambForm1);
-router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm2);
-router.get("/api/desambiguar-pule-la-informacion", API.desambForm3);
-router.get("/api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA", API.desambForm4);
-router.get("/api/desambiguar-combina-los-hallazgos-yaEnBD", API.desambForm5);
+router.get("/api/desambiguar-busca-info-en-session", API.desambForm.buscaInfoEnSession);
+router.get("/api/desambiguar-busca-los-productos", API.desambForm.buscaProds);
+router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
+router.get("/api/desambiguar-pule-la-informacion", API.desambForm.puleLaInfo);
+router.get("/api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA", API.desambForm.obtieneHallazgosDeIMFA);
+router.get("/api/desambiguar-combina-los-hallazgos-yaEnBD", API.desambForm.combinaHallazgosYaEnBD);
 // Desambiguar - Guardar
-router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar1);
-router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar2);
+router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
+router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
 
 // Varias
 router.get("/api/PC-cant-prods", API.cantProductos);

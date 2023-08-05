@@ -1,8 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Si no existe la información a desambiguar, redirige al paso anterior
-	const desambiguar = await fetch("api/desambiguar-busca-session-desambiguar").then((n) => (n ? n.json() : ""));
-	if (!desambiguar) location.href = "palabras-clave";
+	const desambiguar = await fetch("api/desambiguar-busca-info-en-session").then((n) => n.json());
 
 	// Variables
 	let DOM = {
@@ -17,7 +16,7 @@ window.addEventListener("load", async () => {
 		tituloCartel: document.querySelector("#cartel #titulo"),
 		progreso: document.querySelector("#cartel #progreso"),
 	};
-	const localhost = await fetch("/api/localhost").then((n) => (n ? n.json() : ""));
+	const localhost = await fetch("/api/localhost").then((n) => n.json());
 	let productos = desambiguar.productos;
 	let pausa = 200; // milisegundos
 	let ocultarCartel;
@@ -44,7 +43,8 @@ window.addEventListener("load", async () => {
 		let duracionAcum = 0;
 		for (let API of APIs) {
 			// Busca la información
-			let aux = fetch("api/desambiguar-" + API.ruta + "/");
+			let pendiente = true;
+			let aux = fetch("api/desambiguar-" + API.ruta + "/").then(() => (pendiente = false));
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
@@ -52,8 +52,8 @@ window.addEventListener("load", async () => {
 				duracionAcum += pausa;
 				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
 
-				// Pierde tiempo
-				await espera(pausa);
+				// Si el 'await' sigue pendiente, pierde tiempo
+				if (pendiente) await espera(pausa);
 			}
 
 			// Se asegura de haber recibido la información
@@ -210,7 +210,4 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			else location.href = "datos-adicionales";
 		});
 	}
-};
-let espera = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
 };

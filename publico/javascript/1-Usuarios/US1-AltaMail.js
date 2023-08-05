@@ -20,11 +20,14 @@ window.addEventListener("load", () => {
 		cartel: document.querySelector("#cartel"),
 		progreso: document.querySelector("#cartel #progreso"),
 	};
-
-	// Obtiene el código de la vista
 	let codigo = location.pathname;
 	const indice = codigo.lastIndexOf("/");
-	codigo = codigo.slice(indice + 1);
+	let v = {
+		codigo: codigo.slice(indice + 1), // código de la vista
+		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
+		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
+		pendiente: true,
+	};
 
 	// Funciones -----------------------------
 	let mostrarIconos = (mensaje, i) => {
@@ -92,7 +95,7 @@ window.addEventListener("load", () => {
 		else DOM.button.classList.add("inactivo");
 
 		// Acciones si es un 'alta-mail'
-		if (codigo == "alta-mail") {
+		if (v.codigo == "alta-mail") {
 			// Averigua si el mail está repetido
 			// errores = await fetch().then((n) => n.json());
 			// if (errores.email) {
@@ -101,11 +104,16 @@ window.addEventListener("load", () => {
 			// }
 
 			// Envía la información al BE
-			feedbackEnvioMail = fetch("/usuarios/api/envio-de-mail/?email=" + DOM.email.value).then((n) => n.json());
+			feedbackEnvioMail = fetch("/usuarios/api/envio-de-mail/?email=" + DOM.email.value)
+				.then((n) => n.json())
+				.then((n) => {
+					v.pendiente = false;
+					return n;
+				});
 		}
 
 		// Acciones si es un 'olvido-contraseña'
-		if (codigo == "olvido-contrasena") {
+		if (v.codigo == "olvido-contrasena") {
 			// Genera la información
 			const datos = {email: DOM.email.value, documNumero: DOM.documNumero.value, documPais_id: DOM.documPais_id, codigo};
 		}
@@ -116,27 +124,26 @@ window.addEventListener("load", () => {
 
 		// Progreso
 		const pausa = 200;
-		const tiempoEstimado = 10 * 1000;
-		const inicio = Date.now();
+		const tiempoEstimado = 9 * 1000;
 		let duracionAcum = 0;
 
 		// Evoluciona el progreso
 		for (let repeticion = 0; repeticion < parseInt(tiempoEstimado / pausa); repeticion++) {
 			duracionAcum += pausa;
 			DOM.progreso.style.width = parseInt((duracionAcum / tiempoEstimado) * 100) + "%";
-			await espera(200);
+			if (v.pendiente) await espera(pausa);
 		}
+
+		// Hace una nueva pausa para que se vea el progreso terminado
+		await espera(pausa);
 
 		// Verifica que se haya enviado
 		feedbackEnvioMail = await feedbackEnvioMail;
 
 		// Redirige a la siguiente vista
-		console.log(feedbackEnvioMail);
+		location.href = feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
 	});
 
 	// Start-up: anula 'submit' si hay algún error
 	botonSubmit();
 });
-let espera = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
