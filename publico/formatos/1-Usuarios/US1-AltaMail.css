@@ -1,3 +1,5 @@
 #cuerpo form .labelInput {justify-content: center;}
 #cuerpo form .input {width: 260px;}
 #cuerpo form .input[name="documNumero"], #cuerpo form .input[name="documPais_id"] {width: 160px;}
+#cuerpo form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
+#cuerpo form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}

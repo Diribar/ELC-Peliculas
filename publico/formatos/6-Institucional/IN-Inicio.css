@@ -1,21 +1,25 @@
 /* General */
 #cuerpo {flex-direction: row;}
-#cuerpo #zona-de-vitreaux {padding: 0 15px; width: 220px;}
+/* #cuerpo #zona-de-vitreaux {width: 240px;} */
 #cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo #zona-de-vitreaux img {height: 100%;}
 #cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center;}
 
 /* Cartel de Bienvenida */
-#zona-de-bienvenida #cartel {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#zona-de-bienvenida #cartel {border: 2px solid var(--azul-frances); background: var(--amarillo-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 #zona-de-bienvenida #cartel {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
-#zona-de-bienvenida #cartel {max-width: 80%; margin-bottom: 70px;}
+#zona-de-bienvenida #cartel {max-width: 80%; margin-bottom: 70px;scale: 1.25;}
 #zona-de-bienvenida #cartel h1 {margin-top: 0;}
 #zona-de-bienvenida #cartel h1 span {font-style: italic;}
 #zona-de-bienvenida #cartel :where(p, li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 
 /* Zona de Botones */
 #zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
-#zona-de-bienvenida #botones button {width: 190px; padding: 15px; border-radius: 15px; height: 208px;}
-#zona-de-bienvenida #botones a:hover {scale: 1.25;}
+#zona-de-bienvenida #botones a {border-radius: 50%; overflow: hidden; scale: 1.2;}
+#zona-de-bienvenida #botones a:hover {scale: 1.4;}
+#zona-de-bienvenida #botones button {width: 200px; height: 210px; padding: 15px; border-radius: 50%;}
+#zona-de-bienvenida #botones button {background: var(--gris-claro); border: solid 1px var(--gris-oscuro);}
+
 #zona-de-bienvenida #botones button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
 #zona-de-bienvenida #botones button p {font-size: 1.1rem;}
 #zona-de-bienvenida #botones button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}

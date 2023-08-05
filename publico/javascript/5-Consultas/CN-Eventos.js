@@ -16,13 +16,8 @@ window.addEventListener("load", async () => {
 		}
 		// Acciones en los demás casos
 		else {
-			// Layout
-			if (nombre == "layout_id") {
-				// Oculta los resultados anteriores
-				actualiza.cartelQuieroVerVisible();
-			}
 			// Nombre de configuración
-			else if (nombre == "nombreNuevo") {
+			if (nombre == "nombreNuevo") {
 				// Restringe el uso de caracteres a los aceptados
 				basico.restringeCaracteres(e);
 

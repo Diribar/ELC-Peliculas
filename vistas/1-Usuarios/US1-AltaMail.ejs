@@ -8,10 +8,17 @@
 			<%- include("CMP-Errores", {nombre: "email", display: true}) %>
 		</div>
 	</section>
+	<% if (codigo == "alta-mail") { %>
+		<!-- Política para el uso de la información privada -->
+		<ul id="politicaInfo" type="disc">
+			<li>No compartimos los mails con otras entidades.</li>
+			<li>No enviamos mensajes comerciales a nuestros usuarios.</li>
+		</ul>
+	<% } %>
 	<!--Número de Documento y País-->
 	<% if (errores.documento) { %>
 		<!--Número de Documento-->
-		<div class="labelInput flexRow">
+		<section class="labelInput flexRow">
 			<label for="documNumero">
 				Número de<br>
 				Documento
@@ -20,9 +27,9 @@
 				<input type="text" id="documNumero" class="input" name="documNumero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.documNumero : "" %>">
 				<%- include("CMP-Errores", {nombre: "documNumero", display: true}) %> 
 			</div>
-		</div>
+		</section>
 		<!--Expedido en qué país-->
-		<div class="labelInput flexRow">
+		<section class="labelInput flexRow">
 			<label for="documPais_id">
 				Expedido<br>
 				en qué país
@@ -54,7 +61,7 @@
 				</select>
 				<%- include("CMP-Errores", {nombre: "documPais_id", display: true}) %> 
 			</div>
-		</div>
+		</section>
 	<% } %>
 	<!--Flechas-->
 	<section class="flechas">

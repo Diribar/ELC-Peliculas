@@ -1,39 +1,12 @@
 <div class="desplMostrar menu_mostrar menuFondo ocultar">
-	<a href="/institucional/inicio" class="menu_opcion">
-		<i class="fa-solid fa-house icono"></i>
-		<span>Inicio</span>
-	</a>
-	<hr>
-	<a href="/institucional/quienes-somos" class="menu_opcion">
-		<i class="fa-solid fa-people-group icono"></i>
-		<span>Quiénes somos</span>
-	</a>
-	<a href="/institucional/mision-y-vision" class="menu_opcion">
-		<i class="fa-solid fa-heart icono"></i>
-		<span>Nuestra Misión y Visión</span>
-	</a>
-	<a href="/institucional/valores" class="menu_opcion">
-		<i class="fa-solid fa-person-walking icono"></i>
-		<span>Nuestros Valores</span>
-	</a>
-	<hr>
-	<a href="/institucional/en-que-consiste-este-sitio" class="menu_opcion">
-		<i class="fa-solid fa-question icono"></i>
-		<span>En qué consiste este sitio</span>
-	</a>
-	<a href="/institucional/nuestro-perfil-de-peliculas" class="menu_opcion">
-		<i class="fa-solid fa-trophy icono"></i>
-		<span>Nuestro Perfil de Películas</span>
-	</a>
-	<hr>
-	<a href="/institucional/derechos-de-autor" class="menu_opcion">
-		<i class="fa-solid fa-copyright icono"></i>
-		<span>Política sobre Derechos de Autor</span>
-	</a>
-	<a href="/institucional/data-entry" class="menu_opcion">
-		<i class="fa-regular fa-keyboard icono"></i>
-		<span>Política de Data-Entry</span>
-	</a>
+	<% for (let campo in vistasInstitucs) { %>
+		<a href="/institucional/<%= campo %>" class="menu_opcion">
+			<i class="fa-solid icono <%= vistasInstitucs[campo].icono %>"></i>
+			<span><%= vistasInstitucs[campo].titulo %></span>
+		</a>
+		<% if (vistasInstitucs[campo].hr) { %><hr><% } %>
+	<% } %>
+
 	<!-- <hr>
 	<a href="#" class="menu_opcion">
 		<span class="icono" id="ELC">ELC</span>

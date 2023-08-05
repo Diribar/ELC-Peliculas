@@ -1,5 +1,6 @@
 /* General */
 #cuerpo {flex-direction: column;}
+#cuerpo #zona-de-vitreaux img {width: 100%;}
 #cuerpo #centro {display: flex; flex-direction: row; justify-content: flex-start; align-items: center; flex-grow: 1;}
 
 /* Zona de Vitreaux */
