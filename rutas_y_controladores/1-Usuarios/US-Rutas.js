@@ -24,7 +24,7 @@ router.get("/api/valida-identidad", API.validaIdentidad);
 router.get("/garantiza-login-y-completo", vista.login_y_completo);
 router.get("/alta-mail", visitas, vista.altaMail.form);
 router.post("/alta-mail", visitas, vista.altaMail.guardar);
-// 2. Solo usuarios con status 'mail_validado'
+// 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);
 // 3. Solo usuarios con status 'editables'
@@ -32,7 +32,7 @@ router.get("/bienvenido", statusCorrecto, vista.editables.bienvenido);
 // 4. Solo usuarios con status 'editables' y no penalizadas
 router.get("/identidad", validarIdentidad, vista.identidad.form);
 router.post("identidad", validarIdentidad, multer.single("avatar"), vista.identidad.guardar);
-// 5. Solo usuarios con status 'ident_a_validar'
+// 5. Solo usuarios con status 'identPendValidar'
 router.get("/validacion-en-proceso", statusCorrecto, vista.identidad.enProceso);
 
 // Rutas RUD

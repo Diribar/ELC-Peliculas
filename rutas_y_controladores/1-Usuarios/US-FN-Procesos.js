@@ -38,18 +38,35 @@ module.exports = {
 	},
 	// ControlVista: altaMail y olvidoContr
 	enviaMailConContrasena: async (req) => {
-		// Prepara los datos
-		let asunto = "Contraseña para ELC";
-		let email = req.body.email;
-		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
+		// Variables
+		const asunto = "Contraseña para ELC";
+		const email = req.body.email;
+		const pausa = 200;
+		const tiempoEstimado = 10 * 1000;
+
+		// Contraseña
+		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString(); // más adelante cambia por la codificada
+		const comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
+		contrasena = bcryptjs.hashSync(contrasena, 10);
+
 		// Envía el mail al usuario con la contraseña
-		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		let feedbackEnvioMail = await comp.enviarMail(asunto, email, comentario, req);
+		let feedbackEnvioMail = comp.enviarMail(asunto, email, comentario, req);
+		const inicio = Date.now();
+
+		for (let repeticion = 0; repeticion < parseInt(tiempoEstimado / pausa); repeticion++) {
+			await espera(200);
+		}
+		const fin1 = Date.now();
+		const dif1 = fin1 - inicio;
+		console.log(59, dif1, parseInt((dif1 / tiempoEstimado - 1) * 100) + "%");
+		feedbackEnvioMail = await feedbackEnvioMail;
+		const fin2 = Date.now();
+		console.log(62, fin2 - fin1);
+
 		// Obtiene el horario de envío de mail
 		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
-		// Genera el registro
-		contrasena = bcryptjs.hashSync(contrasena, 10);
+
 		// Fin
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
@@ -85,7 +102,7 @@ module.exports = {
 		let informacion;
 
 		// Mensaje si el usuario está en status "identidad a validar"
-		if (usuario.statusRegistro.ident_a_validar)
+		if (usuario.statusRegistro.identPendValidar)
 			informacion = {
 				mensajes: [
 					"Para ingresar información, se requiere tener tus datos validados.",
@@ -127,4 +144,7 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
+};
+let espera = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 };

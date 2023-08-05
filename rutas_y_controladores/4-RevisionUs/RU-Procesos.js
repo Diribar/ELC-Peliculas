@@ -8,7 +8,7 @@ module.exports = {
 	TC: {
 		validaIdentidades: async (userID) => {
 			// Variables
-			const condicion = {rolUsuario_id: rol_consultas_id, statusRegistro_id: st_ident_a_validar_id, id: {[Op.ne]: userID}};
+			const condicion = {rolUsuario_id: rol_consultas_id, statusRegistro_id: identPendValidar_id, id: {[Op.ne]: userID}};
 
 			// Obtiene los usuarios
 			let usuarios = await db.usuarios.findAll({where: condicion}).then((n) => n.map((m) => m.toJSON()));

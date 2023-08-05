@@ -7,9 +7,22 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
 	altaMail: async (email) => {
+		// Variables
 		let errores = {};
-		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+
+		// Valida errores en el mail
+		errores.email = !email
+			? cartelMailVacio
+			: formatoMail(email)
+			? cartelMailFormato
+			: (await BD_especificas.obtieneELC_id("usuarios", {email}))
+			? "Esta dirección de email ya figura en nuestra base de datos"
+			: "";
+
+		// Consolida
 		errores.hay = !!errores.email;
+
+		// Fin
 		return errores;
 	},
 	editables: (datos) => {
@@ -143,7 +156,7 @@ module.exports = {
 	},
 	olvidoContrBE: async (datos, req) => {
 		// Variables
-		let errores={} // Necesitamos que sea un objeto 
+		let errores = {}; // Necesitamos que sea un objeto
 		let informacion;
 
 		// Obtiene el usuario
@@ -168,7 +181,7 @@ module.exports = {
 			}
 
 			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
-			else if (usuario.statusRegistro.ident_a_validar || usuario.statusRegistro.ident_validada) {
+			else if (usuario.statusRegistro.identPendValidar || usuario.statusRegistro.identValidada) {
 				// Verifica los posibles errores
 				errores.documNumero = !datos.documNumero
 					? variables.inputVacio

@@ -618,7 +618,7 @@ module.exports = {
 			},
 		});
 		let datos = {
-			from: '"DADI" <' + process.env.direccMail + ">",
+			from: '"ELC - Películas" <' + process.env.direccMail + ">",
 			to: mail,
 			subject: asunto, // Subject line
 			//text: comentario, // plain text body
