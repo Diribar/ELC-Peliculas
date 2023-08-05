@@ -1,1 +1,29 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Sáb. 5/ago","HoraUTC":"11:15","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Dom. 30/jul","HoraSemUTC":"10:51","semanaUTC":30,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["LinksEnProd","MailDeFeedback","ProdsEnRCLV"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","ProductosAlAzar":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","BorraImagenesSinRegistro":"SI","LinksVencidos":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"03-ago-23":{"titulo":"ELC - Películas"},"04-ago-23":{"titulo":"Cura de Ars","entidad":"personajes","id":162},"05-ago-23":{"titulo":"Juan María Lustiger","entidad":"personajes","id":106},"06-ago-23":{"titulo":"ELC - Películas"},"07-ago-23":{"titulo":"ELC - Películas"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Sáb. 5/ago",
+	"HoraUTC": "11:15",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Dom. 30/jul",
+	"HoraSemUTC": "10:51",
+	"semanaUTC": 30,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "ProductosAlAzar": "SI"},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"BorraImagenesSinRegistro": "SI",
+		"LinksVencidos": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"03-ago-23": {"titulo": "ELC - Películas"},
+		"04-ago-23": {"titulo": "Cura de Ars", "entidad": "personajes", "id": 162},
+		"05-ago-23": {"titulo": "Juan María Lustiger", "entidad": "personajes", "id": 106},
+		"06-ago-23": {"titulo": "ELC - Películas"},
+		"07-ago-23": {"titulo": "ELC - Películas"}
+	}
+}
