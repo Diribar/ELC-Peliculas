@@ -138,11 +138,6 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && nombre == "verde" && v.mostrar) {
-			resultados.muestra.generico();
-		}
-
 		// Cartel 'mostrarFiltros'
 		else if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
 			// Cambia el status de los botones
@@ -152,6 +147,11 @@ window.addEventListener("load", async () => {
 
 			// Muestra u oculta los filtros vacíos
 			actualiza.muestraOcultaFiltros();
+		}
+
+		// Botón 'comencemos'
+		else if (padre.id == "comencemos" && nombre == "verde" && v.mostrar) {
+			resultados.muestra.generico();
 		}
 
 		// Fin
