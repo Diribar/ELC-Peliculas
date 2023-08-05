@@ -140,6 +140,7 @@ window.addEventListener("load", async () => {
 			
 			// Muestra u oculta los filtros vacíos
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
+			if (v.mostrarFiltros) DOM.nav.classList.remove("ocultar")
 			actualiza.muestraOcultaFiltros();
 		}
 
