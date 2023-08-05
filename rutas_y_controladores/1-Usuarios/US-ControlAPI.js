@@ -2,13 +2,22 @@
 // Definir variables
 const valida = require("./US-FN-Validar");
 const procesos = require("./US-FN-Procesos");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = {
 	validaMail: async (req, res) => {
 		let errores = await valida.altaMail(req.query.email);
 		return res.json(errores);
 	},
-	enviaMail: async (req, res) => {
+	mailRepetido: async (req, res) => {
+		let errores = {email: await valida.mailRepetido(req.query.email)};
+		return res.json(errores);
+	},
+	envioDeMail: async (req, res) => {
+		// Variables
+		const email = req.query.email;
+		req.body = {email};
+
 		// Envía un mail con la contraseña
 		const {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
 
