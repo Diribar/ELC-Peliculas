@@ -207,9 +207,14 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let expandeContrae = (elemento) => {
+		// Obtiene el índice
 		let indice = v.expandeContrae.findIndex((n) => n == elemento);
 		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
+
+		// Muestra / Oculta el 'tbody'
 		DOM.tbody[indice].classList.toggle("ocultar");
+
+		// Alterna el signo 'plus' o 'minus'
 		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
 	};
 });
