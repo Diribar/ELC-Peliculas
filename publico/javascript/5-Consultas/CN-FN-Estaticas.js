@@ -152,7 +152,7 @@ let actualiza = {
 		return;
 	},
 	muestraOcultaFiltros: () => {
-		// Muestroa / Oculta los filtros
+		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects)
 			v.mostrarFiltros || DOM[campo.name].value
 				? DOM[campo.name].parentNode.classList.remove("ocultaFiltros")
