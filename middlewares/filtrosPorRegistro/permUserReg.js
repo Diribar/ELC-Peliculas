@@ -99,11 +99,12 @@ module.exports = async (req, res, next) => {
 
 	// El registro fue creado hace más de una hora
 	// 2. El registro está en status 'creado' y la vista no es de revisión
+	console.log(102, baseUrl);
 	if (!informacion) {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 			v.registro.statusRegistro.creado && // en status creado
-			baseUrl != "/revision" // la ruta no es de revisión
+			!["/revision", "/links"].includes(baseUrl) // la ruta no es de revisión
 		) {
 			let nombre = comp.nombresPosibles(v.registro);
 			if (nombre) nombre = "'" + nombre + "'";
