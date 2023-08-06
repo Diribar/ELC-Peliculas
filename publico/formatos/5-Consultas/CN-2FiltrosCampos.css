@@ -10,7 +10,7 @@
 #configCampos .pref.cfc {background: var(--amarillo-oscuro);}
 #configCampos .pref.bhr {background: var(--verde-intermedio);}
 
-#configCampos nav.ocultar .pref.disminuyeY {display: none;}
+#configCampos nav.startUp .pref.disminuyeY_prefs {display: none;}
 
 /* Filtros Campos - Select e Input */
 #configCampos .pref :is(select, input) {width: 100%;}
