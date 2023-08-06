@@ -99,7 +99,6 @@ module.exports = async (req, res, next) => {
 
 	// El registro fue creado hace más de una hora
 	// 2. El registro está en status 'creado' y la vista no es de revisión
-	console.log(102, baseUrl);
 	if (!informacion) {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
