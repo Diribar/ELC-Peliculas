@@ -145,12 +145,10 @@ app.set("views", [
 	global.documental_id = tiposActuacion.find((n) => n.documental).id;
 	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
 
-	// 3. Roles de usuario
+	// 3. Roles y Status de usuario
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
-
-	// 4. Status de usuario
-	global.mailPendValidar_id=statusRegistrosUs.find((n) => n.mailPendValidar).id
+	global.mailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
 	global.editables_id = statusRegistrosUs.find((n) => n.editables).id;
 	global.identPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
 	global.identValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
