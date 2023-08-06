@@ -25,7 +25,6 @@
 #zonaDisponible #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #zonaDisponible #comencemos button#verde {font-size: 2rem; font-style: italic;}
 /* Condicionales */
-#zonaDisponible #comencemos:has(button#verde.ocultar) img {display: none;}
 
 /* Zona de vista */
 #zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
@@ -35,7 +34,10 @@
 #vistaDeResults #ppp {font-size: 1.25rem;}
 #vistaDeResults #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 /* Condicionales */
-#zonaDisponible:has(#comencemos button#verde.ocultar) #vistaDeResults {height: 70vh; padding: 30px 0;}
+#zonaDisponible:has(#comencemos button#verde.ocultar) #vistaDeResults {height: 70vh;}
+#zonaDisponible #comencemos:has(button#verde.ocultar) img {display: none;}
+#zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding-bottom: 30px;}
+#zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding-top: 30px; padding-bottom: 30px;}
 #zonaDisponible #vistaDeResults:has(#listados table) {justify-content: flex-start;}
 
 /* Footer */
