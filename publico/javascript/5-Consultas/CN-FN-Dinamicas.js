@@ -9,10 +9,10 @@ let actualizaConfigCons = {
 		this.layout();
 
 		// Muestra / Oculta filtros
-		actualiza.muestraOcultaFiltros()
+		actualiza.muestraOcultaFiltros();
 
 		// Oculta las líneas consecutivas
-		this.ocultaLineasConsecs()
+		this.ocultaLineasConsecs();
 
 		// Fin
 		return;
@@ -221,13 +221,17 @@ let actualizaConfigCons = {
 		return;
 	},
 	bhr: function () {
-		// Impacto en configCons: bhr
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra =
+			!configCons.bhr && // si no está contestado
+			!DOM.canons.value && // el procCanon no está contestado
+			!DOM.rolesIgl.value; // el rolIglesia no está contestado
 
-		// Si bhr ya está contestado, se oculta
-		configCons.bhr ? DOM.bhr.parentNode.classList.add("ocultar") : DOM.bhr.parentNode.classList.remove("ocultar");
+		// Muestra / Oculta 'bhr'
+		seMuestra ? DOM.bhr.parentNode.classList.remove("ocultar") : DOM.bhr.parentNode.classList.add("ocultar");
 
 		// Actualiza el valor de 'bhr'
-		if (!configCons.bhr && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
+		if (seMuestra && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
 
 		// Fin
 		this.apMar();
@@ -269,7 +273,7 @@ let actualizaConfigCons = {
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
 
-		// Actualiza el valor de 'canons' y 'rolesIgl'
+		// Actualiza el valor de 'canons'
 		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
 
 		// Fin
@@ -286,7 +290,7 @@ let actualizaConfigCons = {
 		// Oculta/Muestra sectores
 		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
 
-		// Actualiza el valor de 'canons' y 'rolesIgl'
+		// Actualiza el valor de 'rolesIgl'
 		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
 
 		// Fin
@@ -304,7 +308,7 @@ let actualizaConfigCons = {
 	},
 	// Apoyo
 	ocultaLineasConsecs: () => {
-		return
+		return;
 		// Variables
 		let hijos = DOM.configCampos.querySelectorAll("nav > *"); // los hijos directos de 'nav'
 		let tags = [];
