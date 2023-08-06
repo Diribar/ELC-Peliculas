@@ -137,10 +137,10 @@ window.addEventListener("load", async () => {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
-
+			
 			// Muestra u oculta los filtros vacíos
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
+			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp")
 			actualiza.muestraOcultaFiltros();
 		}
 
