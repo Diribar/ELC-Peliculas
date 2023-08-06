@@ -137,10 +137,10 @@ window.addEventListener("load", async () => {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
-			
+
 			// Muestra u oculta los filtros vacíos
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp")
+			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
 			actualiza.muestraOcultaFiltros();
 		}
 
@@ -213,7 +213,12 @@ window.addEventListener("load", async () => {
 		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
 
 		// Muestra / Oculta el 'tbody'
-		DOM.tbody[indice].classList.toggle("ocultar");
+		DOM.expandeContrae[indice].className.includes("ocultaFiltros");
+
+		v.mostrarTBody = DOM.expandeContrae[indice].className.includes("fa-square-plus");
+		v.mostrarTBody
+			? DOM.tbody[indice].classList.replace("ocultar", "aumentaY")
+			: DOM.tbody[indice].classList.replace("aumentaY", "ocultar");
 
 		// Alterna el signo 'plus' o 'minus'
 		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
