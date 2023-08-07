@@ -34,6 +34,7 @@ window.addEventListener("load", async () => {
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos
+		nav: DOM.configCampos.querySelector("nav"),
 		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configCampos.querySelectorAll("select"),
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),

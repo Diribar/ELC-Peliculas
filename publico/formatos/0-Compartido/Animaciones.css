@@ -9,15 +9,19 @@
 @keyframes desaparece {0% {opacity: 1} 100% {opacity: 0}}
 @keyframes aumenta    {0% {scale: 0}   100% {scale: 1}}
 @keyframes disminuye  {0% {scale: 1}   100% {scale: 0}}
+@keyframes aumentaY   {0% {transform: scaleY(0); height: 0;} 100% {transform: scaleY(1); height: 35px;}}
+@keyframes disminuyeY {0% {transform: scaleY(1); height: 35px;} 100% {transform: scaleY(0); height: 0;}}
 
 /* Animación - Duración */
 .aparece {animation-name: aparece;       animation-duration: .5s;}
 .desaparece {animation-name: desaparece; animation-duration: .5s;}
 .aumenta {animation-name: aumenta;       animation-duration: .3s;}
 .disminuye {animation-name: disminuye;   animation-duration: .5s;}
+.aumentaY {animation-name: aumentaY;     animation-duration: .4s; transform-origin: top;}
+.disminuyeY {animation-name: disminuyeY; animation-duration: .3s; transform-origin: top;}
 
 /* Animación - Estilos */
-.aparece, .desaparece, .aumenta, .disminuye 
+.aparece, .desaparece, .aumenta, .disminuye, .aumentaY, .disminuyeY
     {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */

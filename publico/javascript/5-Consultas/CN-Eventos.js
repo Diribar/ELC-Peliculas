@@ -112,9 +112,7 @@ window.addEventListener("load", async () => {
 				}
 			}
 			// Icono de 'palabrasClave'
-			else if (nombre == "palabrasClave") {
-				palabrasClave();
-			}
+			else if (nombre == "palabrasClave") palabrasClave();
 			// Preferencia por producto
 			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
 				// Previene el efecto del anchor
@@ -131,11 +129,7 @@ window.addEventListener("load", async () => {
 				}
 			}
 			// Muestra / Oculta los 'tbody'
-			else if (elemento.className && elemento.className.includes("expandeContrae")) {
-				const indice = v.expandeContrae.findIndex((n) => n == elemento);
-				DOM.tbody[indice].classList.toggle("ocultar");
-				["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
-			}
+			else if (elemento.className && elemento.className.includes("expandeContrae")) expandeContrae(elemento);
 		}
 
 		// Cartel 'mostrarFiltros'
@@ -143,12 +137,15 @@ window.addEventListener("load", async () => {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
-			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-
+			
 			// Muestra u oculta los filtros vacíos
+			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
+			if (v.mostrarFiltros) DOM.nav.classList.remove("ocultar")
 			actualiza.muestraOcultaFiltros();
 		}
 
+		// Caption
+		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
 		// Botón 'comencemos'
 		else if (padre.id == "comencemos" && nombre == "verde" && v.mostrar) {
 			resultados.muestra.generico();
@@ -209,5 +206,16 @@ window.addEventListener("load", async () => {
 
 		// Fin
 		return;
+	};
+	let expandeContrae = (elemento) => {
+		// Obtiene el índice
+		let indice = v.expandeContrae.findIndex((n) => n == elemento);
+		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
+
+		// Muestra / Oculta el 'tbody'
+		DOM.tbody[indice].classList.toggle("ocultar");
+
+		// Alterna el signo 'plus' o 'minus'
+		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
 	};
 });

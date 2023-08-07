@@ -18,6 +18,7 @@
 
 /* Productos - Comencemos */
 #zonaDisponible #comencemos {display: flex; flex-direction: column; position: relative;}
+#zonaDisponible #comencemos img {width: 100%}
 #zonaDisponible #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
 #zonaDisponible #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
 #zonaDisponible #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}

@@ -146,11 +146,13 @@ let resultados = {
 			// Crea variables DOM
 			DOM.ppp = DOM.listados.querySelectorAll("#ppp");
 			DOM.expandeContrae = DOM.listados.querySelectorAll(".expandeContrae");
+			DOM.caption = DOM.listados.querySelectorAll("caption");
 			DOM.tbody = DOM.listados.querySelectorAll("tbody");
 
 			// Crea variables 'v'
 			v.ppp = Array.from(DOM.ppp);
 			v.expandeContrae = Array.from(DOM.expandeContrae);
+			v.caption = Array.from(DOM.caption);
 
 			// Fin
 			return;
@@ -358,7 +360,7 @@ let auxiliares = {
 		i.className = "expandeContrae pointer fa-solid fa-square-" + (indice ? "plus" : "minus");
 		const caption = document.createElement("caption");
 		caption.innerHTML = titulo;
-		caption.className = "relative";
+		caption.className = "relative pointer";
 		caption.appendChild(i);
 		tabla.appendChild(caption);
 
