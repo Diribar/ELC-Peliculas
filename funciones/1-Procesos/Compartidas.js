@@ -314,12 +314,12 @@ module.exports = {
 				"hs"
 			);
 		},
-		diaDelAno: (dataEntry) => {
+		fechaDelAno: (dataEntry) => {
 			let datos = {};
-			if (dataEntry.diaDelAno_id && dataEntry.diaDelAno_id <= 366) {
-				let diaDelAno = diasDelAno.find((n) => n.id == dataEntry.diaDelAno_id);
-				datos.dia = diaDelAno.dia;
-				datos.mes_id = diaDelAno.mes_id;
+			if (dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id <= 366) {
+				let fechaDelAno = fechasDelAno.find((n) => n.id == dataEntry.fechaDelAno_id);
+				datos.dia = fechaDelAno.dia;
+				datos.mes_id = fechaDelAno.mes_id;
 			}
 			// Fin
 			return datos;

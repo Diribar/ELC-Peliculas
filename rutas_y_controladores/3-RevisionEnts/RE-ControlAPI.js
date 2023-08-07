@@ -17,7 +17,7 @@ module.exports = {
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
-		const camposDDA = ["diaDelAno_id", "diasDeDuracion"];
+		const camposDDA = ["fechaDelAno_id", "diasDeDuracion"];
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		let statusAprob;
 
@@ -48,7 +48,7 @@ module.exports = {
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
-		// Solapamiento y diasDelAno
+		// Solapamiento y fechasDelAno
 		if (entidad == "epocasDelAno" && camposDDA.includes(campo)) {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
@@ -57,14 +57,14 @@ module.exports = {
 			let quedan = false;
 			if (edicion) for (let campoDDA of camposDDA) if (edicion[campoDDA]) quedan = true;
 
-			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'diasDelAno'
+			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'fechasDelAno'
 			if (!quedan && camposDDA.includes(campo)) {
 				// Variables
 				const orig = await BD_genericas.obtienePorId(entidad, entID);
-				const desde = orig.diaDelAno_id;
+				const desde = orig.fechaDelAno_id;
 				const duracion = orig.diasDeDuracion - 1;
 
-				// Actualiza los diasDelAno
+				// Actualiza los fechasDelAno
 				await procesos.guardar.actualizaDiasDelAno({id: entID, desde, duracion});
 			}
 		}

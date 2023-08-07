@@ -114,7 +114,7 @@ module.exports = {
 				}
 
 				// Obtiene el día y el mes
-				dataEntry = {...comp.fechaHora.diaDelAno(dataEntry), ...dataEntry};
+				dataEntry = {...comp.fechaHora.fechaDelAno(dataEntry), ...dataEntry};
 
 				// Datos Breves
 				if (tema == "revisionEnts")

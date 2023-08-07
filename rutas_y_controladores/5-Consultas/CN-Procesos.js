@@ -56,7 +56,7 @@ module.exports = {
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
-			if (ordenBD.valor == "diaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'diaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (ordenBD.valor == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			if (ordenBD.valor == "sorprendeme") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'sorprendeme', agrega pautas en las condiciones
 			if (ordenBD.valor == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
@@ -76,7 +76,7 @@ module.exports = {
 		},
 		rclvs: async function ({configCons, entidad, orden}) {
 			// Obtiene los include
-			let include = [...variables.entidades.prods, "diaDelAno"];
+			let include = [...variables.entidades.prods, "fechaDelAno"];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
@@ -179,7 +179,7 @@ module.exports = {
 				let prefs = {};
 
 				// Si el orden es 'Por fecha en que se lo recuerda'
-				if (orden.valor == "diaDelAno_id") prefs.diaDelAno_id = {[Op.lt]: 400};
+				if (orden.valor == "fechaDelAno_id") prefs.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
@@ -226,35 +226,35 @@ module.exports = {
 		prodsDiaDelAno_id: async ({dia, mes}) => {
 			// Variables
 			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
-			const diaInicial_id = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+			const diaInicial_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
 			let registros = [];
 			let condicion;
 
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
 			for (let dia = 0; dia < 366; dia++) {
 				// Variables
-				let diaDelAno_id = diaInicial_id + dia;
-				if (diaDelAno_id > 366) diaDelAno_id -= 366;
+				let fechaDelAno_id = diaInicial_id + dia;
+				if (fechaDelAno_id > 366) fechaDelAno_id -= 366;
 
 				// Obtiene los RCLV, a excepción de la familia 'epocaDelAno'
 				for (let entidad of entidadesRCLV) {
 					// Condicion estandar: RCLVs del dia y en status aprobado
-					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
+					condicion = {id: {[Op.gt]: 10}, fechaDelAno_id, statusRegistro_id: aprobado_id};
 
 					// Obtiene los registros
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "diaDelAno")
+						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "fechaDelAno")
 							// Les agrega su entidad y el dia
 							.then((n) => n.map((m) => ({...m, entidad, dia})))
 					);
 				}
 
 				// Busca el registro de 'epocaDelAno'
-				const epocaDelAno_id = diasDelAno.find((n) => n.id == diaDelAno_id).epocaDelAno_id;
+				const epocaDelAno_id = fechasDelAno.find((n) => n.id == fechaDelAno_id).epocaDelAno_id;
 				if (epocaDelAno_id != 1) {
 					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, "diaDelAno")
+						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, "fechaDelAno")
 							// Les agrega su entidad y el dia
 							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", dia})))
 					);
@@ -368,7 +368,7 @@ module.exports = {
 					// Detecta los hallazgos
 					const hallazgos = prods
 						.filter((n) => n[campo_id] == rclv.id)
-						.map((n) => ({...n, [asociacion]: {...n[asociacion], fechaDelAno: rclv.diaDelAno.nombre}}));
+						.map((n) => ({...n, [asociacion]: {...n[asociacion], fechaDelAno: rclv.fechaDelAno.nombre}}));
 
 					// Acciones si hay hallazgos
 					if (hallazgos.length) {
@@ -475,7 +475,7 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length > 1 && orden.valor != "diaDelAno_id") {
+				if (prods.length > 1 && orden.valor != "fechaDelAno_id") {
 					// Variables
 					const campo = orden.valor == "nombre" ? "nombreCastellano" : orden.valor;
 
@@ -543,7 +543,7 @@ module.exports = {
 						// RCLV nombre
 						if (prod[campo_id] > 10) {
 							datos[entidadNombre] = prod[asociacion].nombre;
-							datos.diaDelAno = prod[asociacion].fechaDelAno;
+							datos.fechaDelAno = prod[asociacion].fechaDelAno;
 						}
 					}
 
@@ -567,8 +567,8 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {id, nombre, diaDelAno_id, productos, diaDelAno} = n;
-					let datos = {id, nombre, diaDelAno_id, productos, diaDelAno};
+					const {id, nombre, fechaDelAno_id, productos, fechaDelAno} = n;
+					let datos = {id, nombre, fechaDelAno_id, productos, fechaDelAno};
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {

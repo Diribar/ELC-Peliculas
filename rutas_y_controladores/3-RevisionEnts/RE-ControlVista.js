@@ -179,8 +179,8 @@ module.exports = {
 							comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivoAvatar);
 						}
 
-						// Actualiza los diasDelAno
-						const desde = datos.diaDelAno_id;
+						// Actualiza los fechasDelAno
+						const desde = datos.fechaDelAno_id;
 						const duracion = parseInt(datos.diasDeDuracion) - 1;
 						await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 					}
@@ -438,8 +438,8 @@ module.exports = {
 			datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 			for (let campo in datos) if (datos[campo] === null) delete datos[campo];
 
-			// Actualiza los diasDelAno
-			const desde = datos.diaDelAno_id;
+			// Actualiza los fechasDelAno
+			const desde = datos.fechaDelAno_id;
 			const duracion = parseInt(datos.diasDeDuracion) - 1;
 			await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 

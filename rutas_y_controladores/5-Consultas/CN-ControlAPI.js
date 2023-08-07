@@ -134,7 +134,7 @@ module.exports = {
 		// Obtiene los registros de rclvs
 		let rclvs =
 			entidad == "productos"
-				? orden.valor == "diaDelAno_id"
+				? orden.valor == "fechaDelAno_id"
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.rclvs({entidad, configCons, orden});

@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 
 		// Temas de fecha
 		meses: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
-		diasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
+		fechasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
 
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
@@ -173,7 +173,7 @@ window.addEventListener("load", async () => {
 				const fechaInicio = dia + "/" + mes;
 
 				// Obtiene los ID de inicio y de fin
-				const idInicio = varios.diasDelAno.indexOf(fechaInicio);
+				const idInicio = varios.fechasDelAno.indexOf(fechaInicio);
 				if (idInicio < 0) return;
 				let idFin = idInicio + diasDeDuracion - 1;
 				if (idFin > 365) idFin -= 366;
