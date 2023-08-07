@@ -75,10 +75,10 @@ window.addEventListener("load", async () => {
 	};
 
 	// Start-up
+	DOM.encabMasPelis.classList.replace("ocultar", "aparece");
 	await cambioDeConfig_id();
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
-	DOM.encabMasPelis.classList.replace("ocultar", "aparece");
 });
 
 // Variables
