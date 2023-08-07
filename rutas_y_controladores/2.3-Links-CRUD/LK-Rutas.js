@@ -21,7 +21,7 @@ const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar, rutaCRUD_ID];
+const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
 
 //************************ Rutas ****************************
 // Rutas de APIs

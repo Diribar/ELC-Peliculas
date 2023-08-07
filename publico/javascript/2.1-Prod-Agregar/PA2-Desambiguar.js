@@ -2,6 +2,7 @@
 window.addEventListener("load", async () => {
 	// Si no existe la información a desambiguar, redirige al paso anterior
 	const desambiguar = await fetch("api/desambiguar-busca-info-en-session").then((n) => n.json());
+	if (!desambiguar) location.reload()
 
 	// Variables
 	let DOM = {

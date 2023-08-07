@@ -103,7 +103,7 @@ module.exports = async (req, res, next) => {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 			v.registro.statusRegistro.creado && // en status creado
-			baseUrl != "/revision" // la ruta no es de revisión
+			!["/revision", "/links"].includes(baseUrl) // la ruta no es de revisión
 		) {
 			let nombre = comp.nombresPosibles(v.registro);
 			if (nombre) nombre = "'" + nombre + "'";
