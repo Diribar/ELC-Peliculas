@@ -517,7 +517,7 @@ module.exports = {
 			},
 		},
 		camposNecesarios: {
-			prods: (prods) => {
+			prods: (prods, orden) => {
 				// Si no hay registros a achicar, interrumpe la función
 				if (!prods.length) return [];
 
@@ -543,7 +543,8 @@ module.exports = {
 						// RCLV nombre
 						if (prod[campo_id] > 10) {
 							datos[entidadNombre] = prod[asociacion].nombre;
-							datos.fechaDelAno = prod[asociacion].fechaDelAno;
+							if (orden.valor == "fechaDelAno_id") datos.fechaDelAno = prod[asociacion].fechaDelAno;
+							break;
 						}
 					}
 
