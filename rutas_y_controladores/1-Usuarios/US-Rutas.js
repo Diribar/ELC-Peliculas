@@ -14,17 +14,21 @@ const multer = require("../../middlewares/varios/multer");
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 //************************ Rutas ****************************
 // Rutas de APIs
-router.get("/api/valida-login", API.validaLogin);
-router.get("/api/valida-mail", API.validaMail);
-router.get("/api/valida-editables", API.validaEditables);
-router.get("/api/valida-identidad", API.validaIdentidad);
-router.get("/api/envio-de-mail", API.envioDeMail);
+router.get("/api/valida-formato-mail", API.valida.formatoMail); // alta-de-mail, olvido-de-contraseña
+router.get("/api/valida-login", API.valida.login);
+router.get("/api/valida-editables", API.valida.editables);
+router.get("/api/valida-identidad", API.valida.identidad);
+router.get("/api/alta-mail", API.fin.altaMail);
+router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
 
 // Rutas de Altas
 // 1. Sólo visitas
 router.get("/garantiza-login-y-completo", vista.login_y_completo);
 router.get("/alta-mail", visitas, vista.altaMail.form);
-router.post("/alta-mail", visitas, vista.altaMail.guardar);
+router.get("/olvido-contrasena", visitas, vista.altaMail.form);
+router.get("/envio-exitoso-de-mail", visitas, vista.altaMail.envioExitoso);
+router.get("/envio-fallido-de-mail", visitas, vista.altaMail.envioFallido);
+
 // 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);
@@ -43,8 +47,6 @@ router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guarda
 // Login
 router.get("/login", visitas, vista.login.form);
 router.post("/login", visitas, vista.login.guardar);
-router.get("/olvido-contrasena", visitas, vista.altaMail.form);
-router.post("/olvido-contrasena", visitas, vista.olvidoContr);
 router.get("/logout", statusCorrecto, vista.logout);
 
 module.exports = router;

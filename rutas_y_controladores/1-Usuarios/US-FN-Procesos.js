@@ -37,27 +37,29 @@ module.exports = {
 		return;
 	},
 	// ControlVista: altaMail y olvidoContr
-	enviaMailConContrasena: async (req) => {
+	usuarioDelMail: async (email) => {
+		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+		return usuario;
+	},
+	envioDeMailConContrasena: async (email) => {
 		// Variables
 		const asunto = "Contraseña para ELC";
-		const email = req.body.email;
 
 		// Contraseña
 		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString(); // más adelante cambia por la codificada
-		const comentario = "La contraseña del mail " + email + " es: " + contrasena;
+		const comentario = "La contraseña para el mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 
 		// Envía el mail al usuario con la contraseña
-		const feedbackEnvioMail =await comp.enviarMail(asunto, email, comentario, req);
-
-		// Obtiene el horario de envío de mail
-		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
+		const feedbackEnvioMail = await comp.enviarMail({asunto, email, comentario});
+		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
-	// Genera el cartel de información
+
+	// Carteles de información
 	cartelNuevaContrasena: {
 		mensajes: [
 			"Te hemos enviado una contraseña por mail.",
@@ -68,15 +70,24 @@ module.exports = {
 		titulo: "La generación de una nueva contraseña fue exitosa",
 		check: true,
 	},
-	cartelAltaExitosa: {
+	envioExitoso: {
 		mensajes: [
-			"Hemos generado tu usuario con éxito, con esa dirección de mail.",
-			"También hemos generado un contraseña, te la hemos enviado por mail.",
-			"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
+			"Hemos generado un contraseña para tu uso, que te hemos enviado por mail.",
+			"Con ella y tu dirección de mail, hemos generado tu usuario.",
+			"Con el ícono de abajo accedes al Login.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 		titulo: "Alta exitosa de Usuario",
 		check: true,
+	},
+	envioFallido: {
+		mensajes: [
+			"No pudimos enviarte un mail con la contraseña generada por nuestro sistema.",
+			"Por esa razón no podemos avanzar.",
+			"Con el ícono de abajo regresas a la vista anterior.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
+		titulo: "Alta de Usuario fallida",
 	},
 	feedbackSobreIdentidadValidada: (req) => {
 		// Variables

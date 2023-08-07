@@ -56,6 +56,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/0-Compartido/Header"),
 	path.resolve(__dirname, "./vistas/0-Compartido/Main"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
+	path.resolve(__dirname, "./vistas/1-Usuarios/Includes"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Flechas"),

@@ -587,25 +587,14 @@ module.exports = {
 	},
 
 	// Internet
-	conectividadInternet: async (req) => {
+	conectividadInternet: async () => {
 		return await internetAvailable()
-			.then(async () => {
-				return {OK: true};
-			})
-			.catch(async () => {
-				const link = req ? req.originalUrl : "/";
-				return {
-					OK: false,
-					informacion: {
-						mensajes: ["No hay conexión a internet"],
-						iconos: [{nombre: "fa-rotate-right", link, titulo: "Volvé a intentarlo"}],
-					},
-				};
-			});
+			.then(async () => ({OK: true}))
+			.catch(async () => ({OK: false}));
 	},
-	enviarMail: async function (asunto, mail, comentario, req) {
+	enviarMail: async function ({asunto, email, comentario}) {
 		// Verifica la conexión a internet
-		let hayConexionInternet = this.conectividadInternet(req);
+		let hayConexionInternet = this.conectividadInternet();
 
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -619,7 +608,7 @@ module.exports = {
 		});
 		let datos = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
-			to: mail,
+			to: email,
 			subject: asunto, // Subject line
 			//text: comentario, // plain text body
 			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
@@ -627,18 +616,8 @@ module.exports = {
 		// Envío del mail
 		let mailEnviado = transporter
 			.sendMail(datos)
-			.then(() => {
-				return {OK: true};
-			})
-			.catch(() => {
-				return {
-					OK: false,
-					informacion: {
-						mensajes: ["No se envió el e-mail"],
-						iconos: [variables.vistaAnterior(req.session.urlAnterior)],
-					},
-				};
-			});
+			.then(() => ({OK: true}))
+			.catch(() => ({OK: false}));
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
