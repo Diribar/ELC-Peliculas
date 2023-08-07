@@ -22,7 +22,7 @@ module.exports = {
 
 		// Obtiene los campos include
 		let includesEdic = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = [...includesEdic, "creado_por", "alta_revisada_por", "sugerido_por", "statusRegistro", "motivo"];
+		let includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		if (familia == "rclv") includesOrig.push("prods_ediciones", ...variables.entidades.prods);
@@ -681,11 +681,11 @@ module.exports = {
 
 		// Datos CRUD
 		if (!registro.altaRevisadaEn) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
-		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
+		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creadoPor)});
 
 		if (registro.altaRevisadaEn) {
 			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)});
-			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
+			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.altaRevisadaPor)});
 		}
 		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.statusSugeridoEn) {
 			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.statusSugeridoEn)});

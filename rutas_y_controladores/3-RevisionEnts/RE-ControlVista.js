@@ -62,7 +62,7 @@ module.exports = {
 
 			// Obtiene el registro original
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-			include.push("statusRegistro", "creado_por", "sugerido_por");
+			include.push("statusRegistro", "creadoPor", "sugerido_por");
 			if (entidad == "colecciones") include.push("capitulos");
 			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			// Obtiene avatar original
@@ -306,9 +306,9 @@ module.exports = {
 			let include = [
 				...comp.obtieneTodosLosCamposInclude(entidad),
 				"statusRegistro",
-				"creado_por",
+				"creadoPor",
 				"sugerido_por",
-				"alta_revisada_por",
+				"altaRevisadaPor",
 			];
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");

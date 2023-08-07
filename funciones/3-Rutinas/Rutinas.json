@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 6/ago",
-	"HoraUTC": "4:29",
+	"FechaUTC": "Lun. 7/ago",
+	"HoraUTC": "1:40",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Dom. 30/jul",
-	"HoraSemUTC": "10:51",
-	"semanaUTC": 30,
+	"FechaSemUTC": "Lun. 7/ago",
+	"HoraSemUTC": "1:40",
+	"semanaUTC": 31,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-ago-23": {"titulo": "Cura de Ars", "entidad": "personajes", "id": 162},
 		"05-ago-23": {"titulo": "Juan María Lustiger", "entidad": "personajes", "id": 106},
 		"06-ago-23": {"titulo": "ELC - Películas"},
 		"07-ago-23": {"titulo": "ELC - Películas"},
-		"08-ago-23": {"titulo": "ELC - Películas"}
+		"08-ago-23": {"titulo": "ELC - Películas"},
+		"09-ago-23": {"titulo": "Edith Stein", "entidad": "personajes", "id": 107}
 	}
 }

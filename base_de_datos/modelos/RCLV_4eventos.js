@@ -41,10 +41,10 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.diasDelAno, {as: "diaDelAno", foreignKey: "diaDelAno_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "altaRevisadaPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "creadoPor", foreignKey: "creadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "altaRevisadaPor", foreignKey: "altaRevisadaPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edicRevisadaPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "edicRevisadaPor", foreignKey: "edicRevisadaPor_id"});
 
 		entidad.belongsTo(n.statusRegistros, {as: "statusRegistro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
