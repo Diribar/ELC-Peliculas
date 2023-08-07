@@ -243,7 +243,7 @@ module.exports = {
 
 					// Obtiene los registros
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "diaDelAno")
 							// Les agrega su entidad y el dia
 							.then((n) => n.map((m) => ({...m, entidad, dia})))
 					);
@@ -254,7 +254,7 @@ module.exports = {
 				if (epocaDelAno_id != 1) {
 					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicion("epocasDelAno", condicion)
+						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, "diaDelAno")
 							// Les agrega su entidad y el dia
 							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", dia})))
 					);
@@ -361,11 +361,14 @@ module.exports = {
 
 				// Para cada RCLV, busca los productos
 				for (let rclv of rclvs) {
-					// Obtiene el campo a buscar
+					// Variables
 					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
+					const asociacion = comp.obtieneDesdeEntidad.asociacion(rclv.entidad);
 
 					// Detecta los hallazgos
-					const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
+					const hallazgos = prods
+						.filter((n) => n[campo_id] == rclv.id)
+						.map((n) => ({...n, [asociacion]: {...n[asociacion], fechaDelAno: rclv.diaDelAno.nombre}}));
 
 					// Acciones si hay hallazgos
 					if (hallazgos.length) {
@@ -472,7 +475,7 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length > 1 && orden.valor != "momento") {
+				if (prods.length > 1 && orden.valor != "diaDelAno_id") {
 					// Variables
 					const campo = orden.valor == "nombre" ? "nombreCastellano" : orden.valor;
 
@@ -538,7 +541,10 @@ module.exports = {
 						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(rclv);
 
 						// RCLV nombre
-						if (prod[campo_id] > 10) datos[entidadNombre] = prod[asociacion].nombre;
+						if (prod[campo_id] > 10) {
+							datos[entidadNombre] = prod[asociacion].nombre;
+							datos.diaDelAno = prod[asociacion].fechaDelAno;
+						}
 					}
 
 					// Obtiene la época del año
