@@ -30,12 +30,12 @@ const aptoEliminar = [...aptoCRUD, usRolRevEnts];
 //************************ Rutas ****************************
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links
-router.get("/api/obtiene-col-cap", API.obtieneColCap);
-router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
-router.get("/api/obtiene-cap-id", API.obtieneCapID);
-router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
-router.get("/api/motivos-status", API.motivosRechAltas);
-router.get("/api/actualiza-visibles", API.actualizarVisibles);
+router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
+router.get("/crud/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/crud/api/obtiene-cap-id", API.obtieneCapID);
+router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
+router.get("/crud/api/motivos-status", API.motivosRechAltas);
+router.get("/crud/api/actualiza-visibles", API.actualizarVisibles);
 
 // CRUD-Inactivar, Recuperar, Eliminar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecup.form);
