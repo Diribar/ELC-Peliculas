@@ -175,7 +175,7 @@ app.set("views", [
 
 	// Urls que dependen de la variable 'global'
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
-	app.use("/crud", rutaCRUD);
+	app.use("/", rutaCRUD);
 	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas"));
