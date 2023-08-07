@@ -12,10 +12,10 @@
 			<div id="colecciones">
 				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
 					<a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + capID + '&origen=' + rutaCRUD %>">
-						<button class="pointer">
+						<div class="pointer scale">
 							<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
-						</button>
+						</div>
 					</a>
 				<% } else { %>
 					<div>
