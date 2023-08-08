@@ -42,7 +42,7 @@
 		<!-- PRIORITARIOS -->
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, color: 'ppp'}) %>
+			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, eventual: true, color: 'ppp'}) %>
 		<% } %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
@@ -67,9 +67,9 @@
 		<!-- Época de Estreno -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasEstreno}) %>
 		<!-- Tipos de Link -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink, eventual: true}) %>
 		<!-- Idioma Castellano -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano}) %>
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano, eventual: true}) %>
 		<!-- Tipo de Actuación -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
 
