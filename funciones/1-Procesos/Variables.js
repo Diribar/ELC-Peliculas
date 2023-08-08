@@ -59,7 +59,7 @@ module.exports = {
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano", condic: {castellano: 2}},
 				{id: "subt", nombre: "Subtítulos en castellano", condic: {subtitulos: 2}},
-				{id: "cast", nombre: "En castellano (habl./subt.)", condic: {[Op.or]: [{castellano: 2}, {subtitulos: 2}]}},
+				{id: "enCast", nombre: "En castellano (habl./subt.)", condic: {[Op.or]: [{castellano: 2}, {subtitulos: 2}]}},
 			],
 		},
 		tiposActuacion: {titulo: "Tipo de Actuación", campo: "tipoActuacion_id"},
