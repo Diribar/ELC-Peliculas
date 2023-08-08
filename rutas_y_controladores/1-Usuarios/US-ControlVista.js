@@ -245,7 +245,8 @@ module.exports = {
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			if (req.session.email || req.session.contrasena) {
 				dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
-				delete req.session.email, req.session.contrasena;
+				delete req.session.email
+				delete req.session.contrasena;
 			}
 
 			// 3. Variables para la vista
