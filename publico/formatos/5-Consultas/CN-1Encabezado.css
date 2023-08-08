@@ -1,5 +1,15 @@
-/* Layout y Orden */
-#encabezado #tituloPrincipal {display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch;}
+/* General */
+#encabezado #izquierda {align-items: flex-start;}
+#encabezado #izquierda :is(#checkBoxes, #tituloPrincipal select[name=entidad]) {border-bottom-right-radius: 7px;}
+
+/* Checkboxes */
+#encabezado #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro);}
+#encabezado #checkBoxes {padding: 3px 0}
+#encabezado #checkBoxes input {margin-left: 10px;}
+#encabezado #checkBoxes label {margin-left: 3px; margin-right: 10px;}
+
+/* Orden y Entidad */
+#encabezado #tituloPrincipal {flex-wrap: wrap; align-items: left;}
 #encabezado #tituloPrincipal select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
 #encabezado #tituloPrincipal #ascDes {padding: 1px 5px;}
 #encabezado #tituloPrincipal :where(select, #ascDes) {background: var(--rojo-oscuro); color: snow;}

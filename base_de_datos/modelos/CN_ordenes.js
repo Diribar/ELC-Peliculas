@@ -4,9 +4,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(40)},
 		orden: {type: dt.INTEGER},
 		codigo: {type: dt.STRING(20)},
-
-		ascDesDefault: {type: dt.STRING(6)},
-		ascDesElegible: {type: dt.BOOLEAN},
+		ascDes: {type: dt.STRING(6)},
 	};
 	const config = {
 		tableName: "cn_ordenes",
