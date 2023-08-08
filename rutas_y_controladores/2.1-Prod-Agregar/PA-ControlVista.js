@@ -80,7 +80,8 @@ module.exports = {
 			// Si existe un valor para el campo 'avatar' elimina el archivo descargado
 			if (datosDuros.avatar) {
 				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
-				delete datosDuros.avatar, datosDuros.tamano;
+				delete datosDuros.avatar;
+				delete datosDuros.tamano;
 				req.session.datosDuros = datosDuros;
 				res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 			}
