@@ -2,6 +2,7 @@
 
 let resultados = {
 	obtiene: async function () {
+		return
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
@@ -12,10 +13,10 @@ let resultados = {
 		const ahora = new Date();
 		const dia = ahora.getDate();
 		const mes = ahora.getMonth() + 1;
-		let datos = {configCons, entidad};
+		let datos = {configCons, entidad: v.entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "fechaDelAno_id") datos = {...datos, dia, mes};
+		if (v.entidad == "productos" && v.ordenBD.valor == "fechaDelAno_id") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -42,7 +43,7 @@ let resultados = {
 		const total = v.infoResultados ? v.infoResultados.length : 0;
 
 		// Contador para Productos
-		if (entidad == "productos") {
+		if (v.entidad == "productos") {
 			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
 			if (v.layoutBD.boton || v.ordenBD.valor == "altaRevisadaEn") {
 				// Variables
@@ -120,7 +121,7 @@ let resultados = {
 				if (v.ordenBD.valor == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
 
 				// Si es un RCLV, genera la variable de productos
-				entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
+				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = auxiliares.titulo(registro, registroAnt, indice);
@@ -134,7 +135,7 @@ let resultados = {
 				}
 
 				// Agrega fila/s al 'tbody'
-				if (entidad == "productos") {
+				if (v.entidad == "productos") {
 					const fila = auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				} else {
@@ -463,7 +464,7 @@ let creaUnaCelda = {
 		const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/rclv/detalle/?entidad=" + entidad + "&id=" + rclv.id + "&origen=CN";
+		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id + "&origen=CN";
 		anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 
