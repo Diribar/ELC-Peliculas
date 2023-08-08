@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const Variables = require("../../funciones/1-Procesos/Variables");
+const variables = require("../../funciones/1-Procesos/Variables");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const procesos = require("./CN-Procesos");
 
@@ -42,14 +42,24 @@ module.exports = {
 		},
 		variables: async (req, res) => {
 			// Variables
-			const ordenesBD = cn_ordenes;
-			const entsPorOrdenesBD = cn_entsPorOrdenes;
-			const entidadesBD = cn_entidades;
-			const userID = req.session.usuario ? req.session.usuario.id : null;
-			const rclvNombres = Variables.entidades.rclvsNombre;
+			const datos = {
+				// Órdenes y Entidades
+				ordenesBD: cn_ordenes,
+				entsPorOrdenesBD: cn_entsPorOrdenes,
+				entidadesBD: cn_entidades,
+
+				// Check-Boxes
+				noLaVi: sinPreferencia.id,
+				conLinks:"conLinks",
+				enCast:"enCast",
+
+				// Otros
+				userID: req.session.usuario ? req.session.usuario.id : null,
+				rclvNombres: variables.entidades.rclvsNombre,
+			};
 
 			// Fin
-			return res.json({ordenesBD, entsPorOrdenesBD, entidadesBD, userID, rclvNombres});
+			return res.json(datos);
 		},
 	},
 	cambiosEnBD: {
