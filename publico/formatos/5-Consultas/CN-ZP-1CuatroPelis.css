@@ -5,7 +5,7 @@
 
 /* Botones para productos */
 #botones li {list-style-type: none}
-#botones li {margin-top: 30px;}
+#botones li {margin: 15px 0;}
 #botones li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #botones li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #botones li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
