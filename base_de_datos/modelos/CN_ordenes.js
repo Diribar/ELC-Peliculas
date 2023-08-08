@@ -1,14 +1,12 @@
 module.exports = (sequelize, dt) => {
 	const alias = "cn_ordenes";
 	const columns = {
-		orden: {type: dt.INTEGER},
-		layout_id: {type: dt.STRING(20)},
-		ordenDefault: {type: dt.BOOLEAN},
 		nombre: {type: dt.STRING(40)},
-		valor: {type: dt.STRING(20)},
-		ascDesDefault: {type: dt.STRING(20)},
+		orden: {type: dt.INTEGER},
+		codigo: {type: dt.STRING(20)},
+
+		ascDesDefault: {type: dt.STRING(6)},
 		ascDesElegible: {type: dt.BOOLEAN},
-		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_ordenes",
@@ -16,7 +14,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.cn_layouts, {as: "layout", foreignKey: "layout_id"});
+		entidad.hasMany(n.cn_ordenesPorEnt, {as: "entidades", foreignKey: "orden_id"});
 	};
 	return entidad;
 };
