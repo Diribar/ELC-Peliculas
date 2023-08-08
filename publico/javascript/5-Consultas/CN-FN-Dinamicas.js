@@ -6,83 +6,58 @@ let actualizaConfigCons = {
 		configCons = {};
 
 		// Obtiene configCons y muestra/oculta campos
-		this.layout();
+		this.orden();
 
 		// Muestra / Oculta filtros
 		actualiza.muestraOcultaFiltros();
-
-		// Oculta las líneas consecutivas
-		this.ocultaLineasConsecs();
 
 		// Fin
 		return;
 	},
 	// Encabezado
-	layout: function () {
-		// Impacto en configCons: layout_id, entidad
-
-		// Acciones si existe un valor de layout
-		v.layout_id = DOM.layout_id.value;
-		if (v.layout_id) {
-			// Actualiza 'configCons.layout_id' y 'entidad'
-			configCons.layout_id = v.layout_id;
-			v.layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
-			entidad = v.layoutBD.entidad;
-
-			// Muestra/Oculta los mensajes de ayuda
-			for (let icono of DOM.iconosAyuda)
-				icono.className.includes("layout" + v.layout_id)
-					? icono.classList.remove("ocultar")
-					: icono.classList.add("ocultar");
+	orden: function () {
+		// Acciones si existe un valor de orden
+		v.orden_id = DOM.orden_id.value;
+		if (v.orden_id) {
+			// Actualiza 'configCons.orden_id' y 'entidad'
+			configCons.orden_id = v.orden_id;
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
+			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
 		}
 
 		// Redirige a la siguiente instancia
-		if (v.layout_id) this.orden.asignaUno();
+		if (v.orden_id) this.entidad.asignaUna();
 		else this.muestraOcultaPrefs();
 
 		// Fin
 		return;
 	},
-	orden: {
-		asignaUno: function () {
-			// Averigua si hay un orden elegido
-			v.orden_id = DOM.orden_id.value;
-			let ordenEnDOM_OK;
+	entidad: {
+		asignaUna: function () {
+			// Averigua si hay una entidad elegida
+			v.entidad_id = DOM.entidad_id.value;
+			v.entidadEnDOM_OK = false;
 
-			// Acciones si hay un orden elegido
-			if (v.orden_id) {
-				// Se fija si el orden pertenece al layout elegido
-				v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
-				ordenEnDOM_OK = v.ordenBD.layout_id == v.layout_id;
-
-				// Acciones si no pertenece al layout elegido
-				if (!ordenEnDOM_OK) {
-					// Se fija si el valor del orden actual existe para el layout elegido
-					const valor = v.ordenBD.valor;
-					const ordenConMismoValor = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.valor == valor);
-
-					// Actualiza el valor de 'orden_id', en función del resultado anterior
-					v.orden_id = ordenConMismoValor
-						? ordenConMismoValor.id // La configuración adopta el orden del layout que tenga ese valor
-						: null;
-				}
+			// Si hay una entidad elegida, se fija si la entidad pertenece al orden elegido
+			if (v.entidad_id) {
+				v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
+				v.entidadEnDOM_OK = v.entidades_id.includes(v.entidadBD.id);
 			}
 
-			// Acciones si no hay un orden 'aceptable' elegido
-			if (!ordenEnDOM_OK && !v.orden_id) {
+			// Acciones si la entidad no pertenece al orden
+			if (!v.entidadEnDOM_OK) {
 				// Obtiene el orden 'default' a partir del layout
-				let ordenDefault = v.ordenesBD.find((n) => n.layout_id == v.layout_id && n.ordenDefault);
+				let entidadDefault = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entidadDefault);
 
-				// Actualiza el valor de 'orden_id', con el del default
-				v.orden_id = ordenDefault.id;
+				// Asigna el valor default
+				v.entidad_id = entidadDefault.entidad_id;
+				DOM.entidad_id.value = entidadDefault.entidad_id;
 			}
-
-			// Asigna el id al valor del select
-			if (!ordenEnDOM_OK) DOM.orden_id.value = v.orden_id;
 
 			// Actualiza variables
-			configCons.orden_id = v.orden_id;
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			configCons.entidad_id = v.entidad_id;
+			v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -92,67 +67,14 @@ let actualizaConfigCons = {
 		},
 		muestraOcultaOpciones: () => {
 			// Oculta/Muestra las opciones según el layout elegido
-			v.ordenesBD.forEach((ordenBD, i) => {
-				ordenBD.layout_id != configCons.layout_id
-					? DOM.orden_idOpciones[i].classList.add("ocultar") // Oculta las opciones que no corresponden al layout
-					: DOM.orden_idOpciones[i].classList.remove("ocultar"); // Muestra las opciones que corresponden al layout
-			});
-
-			// Si corresponde, actualiza 'bhr'
-			if (v.ordenBD.bhrSeguro) configCons.bhr = "1";
-
-			// Si el orden es 'rolIglesia', entonces 'cfc' es 1
-			if (v.ordenBD.valor == "rolIglesia") configCons.cfc = 1;
-
-			// Redirige a la siguiente instancia
-			actualizaConfigCons.ascDes.asignaUno();
-
-			// Fin
-			return;
-		},
-	},
-	ascDes: {
-		asignaUno: function () {
-			// Averigua si hay un orden elegido
-			const checked = DOM.ascDes.querySelector("input:checked");
-			v.ascDes = checked ? checked.value : null;
-
-			// Se fija si el valor es aceptable
-			let ascDesEnDOM_OK =
-				v.ascDes && // Tiene un valor
-				["ASC", "DESC"].includes(v.ascDes) && // Está entre los aceptables
-				(v.ascDes == v.ordenBD.ascDesDefault || v.ordenBD.ascDesElegible); // Coincide con el default o es elegible
-
-			// Si el valor no es 'aceptable', actualiza el valor con el default
-			if (!ascDesEnDOM_OK) {
-				// Actualiza el valor con el default
-				v.ascDes = v.ordenBD.ascDesDefault;
-
-				// Si el sector es elegible, actualiza el input
-				if (v.ordenBD.ascDesElegible)
-					for (let inputAscDes of DOM.inputsAscDes) if (inputAscDes.value == v.ascDes) inputAscDes.checked = true;
+			for (let opcion of DOM.entidad_idOpciones) {
+				v.entidades_id.includes(Number(opcion.value))
+					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
+					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden al orden
 			}
 
-			// Actualiza la variable 'configCons'
-			configCons.ascDes = v.ascDes;
-
-			// Redirige a la siguiente instancia
-			this.muestraOcultaOpciones();
-
-			// Fin
-			return;
-		},
-		muestraOcultaOpciones: () => {
-			// Muestra/Oculta el sector
-			v.ordenBD.ascDesElegible
-				? DOM.ascDes.classList.replace("ocultar", "flexCol") // Muestra ascDes
-				: DOM.ascDes.classList.replace("flexCol", "ocultar"); // Oculta ascDes
-
-			// 'OK' para que el fondo sea verde/rojo
-			if (v.ordenBD.ascDesElegible) configCons.ascDes ? DOM.ascDes.classList.add("OK") : DOM.ascDes.classList.remove("OK");
-
-			// Muestra/Oculta sectores
-			actualizaConfigCons.muestraOcultaPrefs();
+			// Si corresponde, actualiza 'bhr'
+			if (v.entidadBD.bhrSeguro) configCons.bhr = "1";
 
 			// Redirige a la siguiente instancia
 			if (v.mostrar) actualizaConfigCons.presenciaEstable();
@@ -163,7 +85,7 @@ let actualizaConfigCons = {
 	},
 	muestraOcultaPrefs: () => {
 		// Variables
-		v.mostrar = !!configCons.layout_id && !!configCons.orden_id && !!configCons.ascDes;
+		v.mostrar = !!configCons.orden_id && !!configCons.entidad_id;
 
 		// Muestra/Oculta sectores
 		v.mostrar ? DOM.configCampos.classList.remove("ocultar") : DOM.configCampos.classList.add("ocultar");
@@ -302,32 +224,6 @@ let actualizaConfigCons = {
 
 		// Actualiza el valor de 'palabrasClave'
 		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) configCons.palabrasClave = DOM.palClave.value;
-
-		// Fin
-		return;
-	},
-	// Apoyo
-	ocultaLineasConsecs: () => {
-		return;
-		// Variables
-		let hijos = DOM.configCampos.querySelectorAll("nav > *"); // los hijos directos de 'nav'
-		let tags = [];
-
-		hijos.forEach((hijo, orden) => {
-			// Muestra todos los HR
-			if (hijo.tagName == "HR") hijo.classList.remove("ocultar");
-
-			// Crea un array de todos los tags con orden 2 y visibles
-			if (
-				window.getComputedStyle(hijo).getPropertyValue("order") == 2 &&
-				window.getComputedStyle(hijo).getPropertyValue("display") != "none"
-			)
-				tags.push({nombre: hijo.tagName, orden});
-		});
-
-		// Si hay dos líneas consecutivas en orden 2, oculta la última
-		for (let i = 1; i < tags.length; i++)
-			if (tags[i - 1].nombre == "HR" && tags[i].nombre == "HR") hijos[tags[i].orden].classList.add("ocultar");
 
 		// Fin
 		return;
