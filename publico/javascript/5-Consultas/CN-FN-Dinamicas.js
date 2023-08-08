@@ -133,48 +133,54 @@ let actualizaConfigCons = {
 
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.noLaVi.checked && DOM.pppOpciones.value != v.noLaVi;
+		// Start-up
+		if (DOM.pppOpciones.value == v.noLaVi) {
+			DOM.noLaVi.checked = true;
+			DOM.pppOpciones.value = "";
+		}
+
+		// Variables
+		const seMuestra = !DOM.noLaVi.checked;
+		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
-
-		if (!seMuestra) {
-			configCons.pppOpciones = v.noLaVi;
-			if (!DOM.noLaVi.checked) DOM.noLaVi.checked = true;
-		}
 
 		// Fin
 		this.tiposLink();
 		return;
 	},
 	tiposLink: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.conLinks.checked && DOM.tiposLink.value != v.conLinks;
+		// Start-up
+		if (DOM.tiposLink.value == v.conLinks) {
+			DOM.noLaVi.checked = true;
+			DOM.tiposLink.value = "";
+		}
+
+		// Variables
+		const seMuestra = !DOM.conLinks.checked
+		if (!seMuestra) configCons.tiposLink = v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "tiposLink");
-
-		if (!seMuestra) {
-			configCons.tiposLink = v.conLinks;
-			if (!DOM.conLinks.checked) DOM.conLinks.checked = true;
-		}
 
 		// Fin
 		this.castellano();
 		return;
 	},
 	castellano: function () {
+		// Start-up
+		if (DOM.castellano.value == v.enCast) {
+			DOM.enCast.checked = true;
+			DOM.castellano.value = "";
+		}
+
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked && DOM.castellano.value != v.enCast;
+		const seMuestra = !DOM.enCast.checked
+		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "castellano");
-
-		if (!seMuestra) {
-			configCons.castellano = v.enCast;
-			if (!DOM.enCast.checked) DOM.enCast.checked = true;
-		}
 
 		// Fin
 		this.cfc();
@@ -273,7 +279,11 @@ let actualizaConfigCons = {
 
 let muestraOcultaActualizaPref = (seMuestra, elemento) => {
 	// Muestra
-	seMuestra ? DOM[elemento].parentNode.classList.remove("ocultar") : DOM[elemento].parentNode.classList.add("ocultar");
+	seMuestra
+		? v.mostrarFiltros
+			? DOM[elemento].parentNode.classList.remove("ocultar")
+			: DOM[elemento].parentNode.classList.replace("ocultar", "invisible")
+		: DOM[elemento].parentNode.classList.add("ocultar");
 
 	// Actualiza el valor de 'configCons'
 	if (seMuestra && DOM[elemento].value) configCons[elemento] = DOM[elemento].value;
