@@ -42,6 +42,7 @@ let actualizaConfigCons = {
 			// Si hay una entidad elegida, se fija si la entidad pertenece al orden elegido
 			if (v.entidad_id) {
 				v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
+				v.entidad = v.entidadBD.codigo;
 				v.entidadEnDOM_OK = v.entidades_id.includes(v.entidadBD.id);
 			}
 
@@ -76,6 +77,9 @@ let actualizaConfigCons = {
 			// Si corresponde, actualiza 'bhr'
 			if (v.entidadBD.bhrSeguro) configCons.bhr = "1";
 
+			// Muestra/Oculta sectores
+			actualizaConfigCons.muestraOcultaPrefs();
+
 			// Redirige a la siguiente instancia
 			if (v.mostrar) actualizaConfigCons.presenciaEstable();
 
@@ -87,12 +91,13 @@ let actualizaConfigCons = {
 		// Variables
 		v.mostrar = !!configCons.orden_id && !!configCons.entidad_id;
 
-		// Muestra/Oculta sectores
-		v.mostrar ? DOM.configCampos.classList.remove("ocultar") : DOM.configCampos.classList.add("ocultar");
-
 		// Acciones si no hay errores
 		if (v.mostrar) {
-			// Oculta sectores
+			// Muestra sectores
+			DOM.nav.classList.remove("ocultar");
+			DOM.mostrarOcultarFiltros.classList.remove("ocultar");
+
+			// Oculta el mensaje de error
 			DOM.asegurate.classList.add("ocultar");
 
 			// Si corresponde, muestra el cartel de quieroVer
@@ -102,10 +107,12 @@ let actualizaConfigCons = {
 		else {
 			// Variables
 			v.mostrarCartelQuieroVer = true;
-
-			// Oculta sectores
 			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
+
+			// Oculta sectores
+			DOM.nav.classList.add("ocultar");
+			DOM.mostrarOcultarFiltros.classList.add("ocultar");
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
@@ -167,7 +174,7 @@ let actualizaConfigCons = {
 			configCons.bhr !== "0" && // No es ficticio
 			configCons.cfc !== "0" && // No es ajeno a la Iglesia
 			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
-			entidad != "temas"; // La entidad es distinta de 'temas'
+			v.entidad != "temas"; // La entidad es distinta de 'temas'
 
 		// Muestra/Oculta el sector
 		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
@@ -188,7 +195,7 @@ let actualizaConfigCons = {
 	canons: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			["productos", "personajes"].includes(entidad) && // la entidad es 'productos' o 'personajes'
+			["productos", "personajes"].includes(v.entidad) && // la entidad es 'productos' o 'personajes'
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
@@ -205,7 +212,7 @@ let actualizaConfigCons = {
 	rolesIglesia: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			["productos", "personajes"].includes(entidad) && // la entidad es 'productos' o 'personajes'
+			["productos", "personajes"].includes(v.entidad) && // la entidad es 'productos' o 'personajes'
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 

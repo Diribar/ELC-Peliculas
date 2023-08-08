@@ -37,6 +37,7 @@ window.addEventListener("load", async () => {
 		selects: DOM.configCampos.querySelectorAll("select"),
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
+		mostrarOcultarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros"),
 		mostrarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
 		ocultarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 

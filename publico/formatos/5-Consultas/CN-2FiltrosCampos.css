@@ -2,7 +2,7 @@
 #configCons #configCampos {background: var(--gris-claro);}
 #configCons #configCampos {flex-grow: 1;}
 /* #configCons #configCampos hr {border-top: var(--gris-oscuro) 1px dashed; margin: 0;} */
-#configCons #configCampos nav {display: flex; flex-direction: column;}
+#configCons #configCampos .flexCol.ocultar {display: none;}
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}
