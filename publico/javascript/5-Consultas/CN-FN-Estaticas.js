@@ -148,12 +148,15 @@ let actualiza = {
 	},
 	muestraOcultaFiltros: () => {
 		// Muestra / Oculta los filtros
-		for (let campo of DOM.selects)
+		for (let campo of DOM.selects) {
+			if (v.mostrarFiltros || DOM[campo.name].value) DOM[campo.name].parentNode.classList.replace("invisible", "aparece");
 			v.mostrarFiltros || DOM[campo.name].value
 				? DOM[campo.name].parentNode.classList.replace("desaparece", "aparece") // Se muestra
 				: DOM[campo.name].parentNode.classList.replace("aparece", "desaparece"); // Se oculta
+		}
 
 		// Palabras clave
+		if (v.mostrarFiltros || DOM.palClave.value) DOM.palClave.parentNode.classList.replace("invisible", "aparece");
 		v.mostrarFiltros || DOM.palClave.value
 			? DOM.palClave.parentNode.classList.replace("desaparece", "aparece") // Se muestra
 			: DOM.palClave.parentNode.classList.replace("aparece", "desaparece"); // Se oculta
