@@ -137,12 +137,15 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.noLaVi.checked;
+		const seMuestra = !DOM.noLaVi.checked && DOM.pppOpciones.value != v.noLaVi;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
-		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
+		if (!seMuestra) {
+			configCons.pppOpciones = v.noLaVi;
+			if (!DOM.noLaVi.checked) DOM.noLaVi.checked = true;
+		}
 
 		// Fin
 		this.tiposLink();
@@ -150,12 +153,15 @@ let actualizaConfigCons = {
 	},
 	tiposLink: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.conLinks.checked;
+		const seMuestra = !DOM.conLinks.checked&& DOM.tiposLink.value != v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "tiposLink");
 
-		if (!seMuestra) configCons.tiposLink = v.conLinks;
+		if (!seMuestra) {
+			configCons.tiposLink = v.conLinks;
+			if (!DOM.conLinks.checked) DOM.conLinks.checked = true;
+		}
 
 		// Fin
 		this.castellano();
@@ -163,12 +169,15 @@ let actualizaConfigCons = {
 	},
 	castellano: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked;
+		const seMuestra = !DOM.enCast.checked&& DOM.castellano.value != v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "castellano");
 
-		if (!seMuestra) configCons.castellano = v.enCast;
+		if (!seMuestra){
+			configCons.castellano = v.enCast;
+			if (!DOM.enCast.checked) DOM.enCast.checked = true;
+		}
 
 		// Fin
 		this.cfc();

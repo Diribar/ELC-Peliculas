@@ -4,10 +4,10 @@
 #configCons #configCampos .flexCol.ocultar {display: none;}
 
 /* Checkboxes */
-#configCampos #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro);}
-#configCampos #checkBoxes {padding: 3px 0}
-#configCampos #checkBoxes input {margin-left: 10px;}
-#configCampos #checkBoxes label {margin-left: 3px; margin-right: 10px;}
+#configCampos #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro); }
+#configCampos #checkBoxes {padding: 10px 0; justify-content: center; flex-wrap: wrap; }
+#configCampos #checkBoxes div {padding: 3px 10px; flex-wrap: nowrap;}
+#configCampos #checkBoxes label {margin-left: 3px;}
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}
