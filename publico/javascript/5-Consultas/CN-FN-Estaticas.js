@@ -123,11 +123,6 @@ let actualiza = {
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configCampos[prefSimple.name] ? configCampos[prefSimple.name] : "";
 
-		// Actualiza las preferencias 'AscDes'
-		const ascDesInputs = DOM.ascDes.querySelectorAll("input");
-		for (let ascDesInput of ascDesInputs)
-			ascDesInput.checked = configCampos.ascDes && ascDesInput.value == configCampos.ascDes;
-
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
 
