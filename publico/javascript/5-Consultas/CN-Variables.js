@@ -28,16 +28,16 @@ window.addEventListener("load", async () => {
 		entidad_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='entidad_id'] option"),
 		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
 
-		// Configuración de Cabecera
+		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
 		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
-		// Configuración de Campos - Check-Boxes
-		noLaVi: DOM.configCampos.querySelector("#checkBoxes #noLaVi"),
-		conLinks: DOM.configCampos.querySelector("#checkBoxes #conLinks"),
-		enCast: DOM.configCampos.querySelector("#checkBoxes #enCast"),
+		// Configuración de de Cabecera - Check-Boxes
+		noLaVi: DOM.configCons.querySelector("#checkBoxes #noLaVi"),
+		conLinks: DOM.configCons.querySelector("#checkBoxes #conLinks"),
+		enCast: DOM.configCons.querySelector("#checkBoxes #enCast"),
 
 		// Configuración de Campos - Preferencias
 		nav: DOM.configCampos.querySelector("nav"),
@@ -45,9 +45,11 @@ window.addEventListener("load", async () => {
 		selects: DOM.configCampos.querySelectorAll("select"),
 		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
-		mostrarOcultarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros"),
-		mostrarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
-		ocultarFiltros: DOM.configCampos.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
+
+		// Muestra / Oculta filtros
+		mostrarOcultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros"),
+		mostrarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
+		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
 		// Zona Disponible
 		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#rojo"),
