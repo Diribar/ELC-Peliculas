@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 
 		// Comunes
 		nombre: {type: dt.STRING(35)},
-		diaDelAno_id: {type: dt.INTEGER},
+		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
@@ -54,7 +54,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
 		entidad.belongsTo(n.epocasDelAno, {as: "epocaDelAno", foreignKey: "epocaDelAno_id"});
 
-		entidad.belongsTo(n.diasDelAno, {as: "diaDelAno", foreignKey: "diaDelAno_id"});
+		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 
 		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});

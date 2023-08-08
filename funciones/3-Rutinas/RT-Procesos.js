@@ -96,14 +96,14 @@ module.exports = {
 		const fecha = new Date(fechaNum);
 		let resultado;
 
-		// Obtiene el 'diaDelAno_id'
+		// Obtiene el 'fechaDelAno_id'
 		const dia = fecha.getDate();
 		const mes_id = fecha.getMonth() + 1;
-		const diaDelAno = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
-		delete diaDelAno.epocaDelAno;
+		const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
+		delete fechaDelAno.epocaDelAno;
 
 		// Obtiene los RCLV
-		let rclvs = await obtieneLosRCLV(diaDelAno);
+		let rclvs = await obtieneLosRCLV(fechaDelAno);
 
 		// Acciones si se encontraron rclvs
 		if (rclvs.length > 1) {
@@ -581,7 +581,7 @@ let nombres = async (reg, familia) => {
 	// Fin
 	return {nombreOrden, nombreVisual};
 };
-let obtieneLosRCLV = async (diaDelAno) => {
+let obtieneLosRCLV = async (fechaDelAno) => {
 	// Variables
 	let rclvs = [];
 	let resultados = [];
@@ -592,7 +592,7 @@ let obtieneLosRCLV = async (diaDelAno) => {
 		if (entidad == "epocasDelAno") continue;
 
 		// Condicion estandar: RCLVs del dia y en status aprobado
-		const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
+		const condicion = {fechaDelAno_id: fechaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 
 		// Obtiene los RCLVs
 		rclvs.push(
@@ -605,8 +605,8 @@ let obtieneLosRCLV = async (diaDelAno) => {
 	}
 
 	// Busca el registro de 'epocaDelAno'
-	if (diaDelAno.epocaDelAno_id != 1) {
-		const condicion = {id: diaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
+	if (fechaDelAno.epocaDelAno_id != 1) {
+		const condicion = {id: fechaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
 		const entidad = "epocasDelAno";
 		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
 		rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));

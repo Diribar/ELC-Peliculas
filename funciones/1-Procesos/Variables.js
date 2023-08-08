@@ -241,7 +241,7 @@ module.exports = {
 		personajes: [
 			"nombre",
 			"apodo",
-			"diaDelAno_id",
+			"fechaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
 			"sexo_id",
@@ -256,7 +256,7 @@ module.exports = {
 		hechos: [
 			"nombre",
 			"anoComienzo",
-			"diaDelAno_id",
+			"fechaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
 			"epocaOcurrencia_id",
@@ -264,11 +264,11 @@ module.exports = {
 			"ama",
 			"avatar",
 		],
-		temas: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		eventos: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
+		temas: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
+		eventos: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		epocasDelAno: [
 			"nombre",
-			"diaDelAno_id",
+			"fechaDelAno_id",
 			"fechaMovil",
 			"comentarioMovil",
 			"diasDeDuracion",
@@ -383,7 +383,7 @@ module.exports = {
 		rclvs: [
 			// Todos
 			{nombre: "nombre", titulo: "Nombre", rclvs: true},
-			{nombre: "diaDelAno_id", titulo: "Día del Año", rclvs: true, relacInclude: "diaDelAno", tabla: "diasDelAno"},
+			{nombre: "fechaDelAno_id", titulo: "Día del Año", rclvs: true, relacInclude: "fechaDelAno", tabla: "fechasDelAno"},
 			{nombre: "fechaMovil", titulo: "Fecha Móvil", rclvs: true},
 			{nombre: "comentarioMovil", titulo: "Comentario Móvil", rclvs: true},
 			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},

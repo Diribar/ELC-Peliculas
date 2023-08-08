@@ -15,7 +15,7 @@ let resultados = {
 		let datos = {configCons, entidad};
 
 		// Arma los datos
-		if (entidad == "productos" && v.ordenBD.valor == "diaDelAno_id") datos = {...datos, dia, mes};
+		if (entidad == "productos" && v.ordenBD.valor == "fechaDelAno_id") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -264,11 +264,11 @@ let auxiliares = {
 			if (titulo) titulo = prefijo + titulo;
 		}
 
-		// diaDelAno_id
-		if (!titulo && orden == "diaDelAno_id") {
+		// fechaDelAno_id
+		if (!titulo && orden == "fechaDelAno_id") {
 			// Variables
-			const diaAnt = registroAnt.diaDelAno_id;
-			const diaActual = registro.diaDelAno_id;
+			const diaAnt = registroAnt.fechaDelAno_id;
+			const diaActual = registro.fechaDelAno_id;
 
 			// Pruebas
 			titulo =
@@ -456,7 +456,7 @@ let creaUnaCelda = {
 		// Variables
 		const cantProds = rclv.productos.length;
 		const VF_apodo = !!rclv.apodo;
-		const VF_diaDelAno = rclv.diaDelAno_id < 400;
+		const VF_diaDelAno = rclv.fechaDelAno_id < 400;
 		const VF_epoca = !v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
 		const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
@@ -475,7 +475,7 @@ let creaUnaCelda = {
 		const span = document.createElement("span");
 
 		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + (!VF_diaDelAno ? ")" : ""); // Apodo
-		if (VF_diaDelAno) span.innerHTML += (VF_apodo ? " - " : " (") + rclv.diaDelAno.nombre + ")"; // Día del Año
+		if (VF_diaDelAno) span.innerHTML += (VF_apodo ? " - " : " (") + rclv.fechaDelAno.nombre + ")"; // Día del Año
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 

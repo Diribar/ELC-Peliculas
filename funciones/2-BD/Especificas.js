@@ -202,7 +202,7 @@ module.exports = {
 		// Fin
 		return db[entidad].update(objeto, {where: condicion});
 	},
-	// Revisar diasDelAno
+	// Revisar fechasDelAno
 	condicsDDA: ({desde, duracion}) => {
 		// Primera Condicion
 		let condicion = {id: {[Op.between]: [desde, Math.min(desde + duracion, 366)]}};

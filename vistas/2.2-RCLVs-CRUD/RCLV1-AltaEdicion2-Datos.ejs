@@ -152,11 +152,11 @@
 				<div id="calendario" class="relative">
 					<table class="absolute">
 						<tbody>
-							<% for (let diaDelAno of diasDelAno) { %>
-								<% if (diaDelAno.id > 366) {break} %>
+							<% for (let fechaDelAno of fechasDelAno) { %>
+								<% if (fechaDelAno.id > 366) {break} %>
 								<tr>
-									<td style="width: 50px;"><%= diaDelAno.nombre %></td>
-									<td><%= diaDelAno.epocaDelAno.nombre %></td>
+									<td style="width: 50px;"><%= fechaDelAno.nombre %></td>
+									<td><%= fechaDelAno.epocaDelAno.nombre %></td>
 								</tr>
 							<% } %>
 						</tbody>

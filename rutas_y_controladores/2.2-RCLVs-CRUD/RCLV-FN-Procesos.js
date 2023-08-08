@@ -99,7 +99,7 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.diaDelAno) bloque.push({titulo: "Día del año", valor: registro.diaDelAno.nombre});
+			if (registro.fechaDelAno) bloque.push({titulo: "Día del año", valor: registro.fechaDelAno.nombre});
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
@@ -152,9 +152,9 @@ module.exports = {
 				? false
 				: dataEntry.fechaMovil
 				? "FM"
-				: dataEntry.diaDelAno_id == 400
+				: dataEntry.fechaDelAno_id == 400
 				? "SF"
-				: dataEntry.diaDelAno_id && dataEntry.diaDelAno_id < 400
+				: dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id < 400
 				? "FD"
 				: entidad == "personajes" || entidad == "hechos"
 				? "FD"
@@ -195,8 +195,8 @@ module.exports = {
 
 			// Datos comunes
 			if (datos.nombre) DE.nombre = datos.nombre;
-			DE.diaDelAno_id =
-				datos.tipoFecha == "SF" ? 400 : diasDelAno.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+			DE.fechaDelAno_id =
+				datos.tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
 			DE.fechaMovil = datos.tipoFecha == "FM";
 			if (datos.tipoFecha == "FM") DE.comentarioMovil = datos.comentarioMovil;
 			if (datos.prioridad_id) DE.prioridad_id = datos.prioridad_id;

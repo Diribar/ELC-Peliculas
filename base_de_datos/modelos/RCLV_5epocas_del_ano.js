@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(35)},
 		prodsAprob: {type: dt.INTEGER},
-		diaDelAno_id: {type: dt.INTEGER},
+		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
@@ -45,7 +45,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.diasDelAno, {as: "diaDelAno", foreignKey: "diaDelAno_id"});
+		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creadoPor", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "altaRevisadaPor", foreignKey: "altaRevisadaPor_id"});
@@ -64,7 +64,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "epocaDelAno_id"});
 
-		entidad.hasMany(n.diasDelAno, {as: "diasDelAno", foreignKey: "epocaDelAno_id"});
+		entidad.hasMany(n.fechasDelAno, {as: "fechasDelAno", foreignKey: "epocaDelAno_id"});
 	};
 	return entidad;
 };

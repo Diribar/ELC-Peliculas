@@ -203,9 +203,9 @@ module.exports = {
 		// 5. Borra el vínculo en los productos y les baja de status si corresponde
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
-		// 6. Borra el vínculo en los diasDelAno
+		// 6. Borra el vínculo en los fechasDelAno
 		if (entidad == "epocasDelAno")
-			esperar.push(BD_genericas.actualizaTodosPorCondicion("diasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+			esperar.push(BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
 
 		// Elimina el registro
 		await Promise.all(esperar);
