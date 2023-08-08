@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		configCampos: document.querySelector("#configCons #configCampos"),
 		encabMasPelis: document.querySelector("#encabMasPelis"),
 		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		layoutOrden: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
+		ordenEntidad: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		// Zona de productos
 		zonaDisponible: document.querySelector("#zonaDisponible"),
 	};
@@ -19,12 +19,10 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		layout_id: DOM.layoutOrden.querySelector("select[name='layout_id']"),
-		orden_id: DOM.layoutOrden.querySelector("select[name='orden_id']"),
-		orden_idOpciones: DOM.layoutOrden.querySelectorAll("select[name='orden_id'] option:not(option[value=''])"),
-		ascDes: DOM.layoutOrden.querySelector("#ascDes"),
-		inputsAscDes: DOM.layoutOrden.querySelectorAll("#ascDes input"),
-		iconosAyuda: DOM.layoutOrden.querySelectorAll("#ayudaOrden ul li"),
+		orden_id: DOM.ordenEntidad.querySelector("select[name='orden_id']"),
+		entidad_id: DOM.ordenEntidad.querySelector("select[name='entidad_id']"),
+		entidad_idOpciones: DOM.ordenEntidad.querySelectorAll("select[name='entidad_id'] option"),
+		iconosAyuda: DOM.ordenEntidad.querySelectorAll("#ayudaOrden ul li"),
 		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
 
 		// Configuración de Cabecera
@@ -83,4 +81,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let configCons, DOM, titulo, v, entidad;
+let DOM, v, configCons, titulo;
