@@ -6,6 +6,7 @@
 
 /* Carteles para mostrar/ocultar filtros */
 #configCons #mostrarOcultarFiltros {justify-content: center; align-items: center; height: 100px;}
+#configCons #mostrarOcultarFiltros {background: var(--celeste-claro);}
 #configCons #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
 #configCons #mostrarOcultarFiltros #mostrarFiltros {background: var(--azul-oscuro); color: snow;}
 #configCons #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
