@@ -38,28 +38,20 @@ let actualizaConfigCons = {
 		asignaUna: function () {
 			// Averigua si hay una entidad elegida
 			v.entidad_id = DOM.entidad_id.value;
-			v.entidadEnDOM_OK = false;
+			v.entidadEnOrden = false;
 
-			// Si hay una entidad elegida, se fija si la entidad pertenece al orden elegido
-			if (v.entidad_id) {
-				v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
-				v.entidad = v.entidadBD.codigo;
-				v.entidadEnDOM_OK = v.entidades_id.includes(v.entidadBD.id);
-			}
+			// Si hay una entidad elegida, se fija si pertenece al orden elegido
+			if (v.entidad_id) v.entidadEnOrden = v.entidades_id.includes(v.entidad_id);
 
-			// Acciones si la entidad no pertenece al orden
-			if (!v.entidadEnDOM_OK) {
-				// Obtiene el orden 'default' a partir del layout
-				let entidadDefault = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entidadDefault);
-
-				// Asigna el valor default
-				v.entidad_id = entidadDefault.entidad_id;
-				DOM.entidad_id.value = entidadDefault.entidad_id;
-			}
+			// Si la entidad no pertenece al orden, asigna el valor default
+			if (!v.entidadEnOrden)
+				DOM.entidad_id.value = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entDefault).entidad_id;
 
 			// Actualiza variables
+			v.entidad_id = DOM.entidad_id.value;
 			configCons.entidad_id = v.entidad_id;
-			v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
+			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
+			v.entPorOrdenBD = v.entsPorOrdenesBD.find((n) => n.orden_id == v.orden_id && n.entidad_id == v.entidad_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -68,7 +60,7 @@ let actualizaConfigCons = {
 			return;
 		},
 		muestraOcultaOpciones: () => {
-			// Oculta/Muestra las opciones según el layout elegido
+			// Oculta/Muestra las opciones según el orden elegido
 			for (let opcion of DOM.entidad_idOpciones) {
 				v.entidades_id.includes(Number(opcion.value))
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
@@ -76,7 +68,7 @@ let actualizaConfigCons = {
 			}
 
 			// Si corresponde, actualiza 'bhr'
-			if (v.entidadBD.bhrSeguro) configCons.bhr = "1";
+			if (v.entPorOrdenBD.bhrSeguro) configCons.bhr = "1";
 
 			// Muestra/Oculta sectores
 			actualizaConfigCons.muestraOcultaPrefs();
@@ -153,7 +145,7 @@ let actualizaConfigCons = {
 	},
 	tiposLink: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.conLinks.checked&& DOM.tiposLink.value != v.conLinks;
+		const seMuestra = !DOM.conLinks.checked && DOM.tiposLink.value != v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "tiposLink");
@@ -169,12 +161,12 @@ let actualizaConfigCons = {
 	},
 	castellano: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked&& DOM.castellano.value != v.enCast;
+		const seMuestra = !DOM.enCast.checked && DOM.castellano.value != v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "castellano");
 
-		if (!seMuestra){
+		if (!seMuestra) {
 			configCons.castellano = v.enCast;
 			if (!DOM.enCast.checked) DOM.enCast.checked = true;
 		}
