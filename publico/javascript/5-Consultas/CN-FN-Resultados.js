@@ -460,7 +460,7 @@ let creaUnaCelda = {
 		const VF_diaDelAno = rclv.fechaDelAno_id < 400;
 		const VF_epoca = !v.ordenBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
-		const VF_rolIglesia = rclv.rolIglesiaNombre; //&&v.ordenBD.codigo != "rolIglesia"
+		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id + "&origen=CN";
