@@ -10,20 +10,25 @@ window.addEventListener("load", async () => {
 		configCabecera: document.querySelector("#configCons #configCabecera"),
 		configCampos: document.querySelector("#configCons #configCampos"),
 		encabMasPelis: document.querySelector("#encabMasPelis"),
-		encabezado: document.querySelector("#encabMasPelis #encabezado"),
-		ordenEntidad: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
+		checkBoxes: document.querySelector("#encabMasPelis #encabezado #izquierda #checkBoxes"),
+		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #izquierda #tituloPrincipal"),
+		contadorDeProds: document.querySelector("#encabMasPelis #encabezado #derecha #contadorDeProds"),
 		// Zona de productos
 		zonaDisponible: document.querySelector("#zonaDisponible"),
 	};
 	DOM = {
 		...DOM,
 
-		// Encabezado
-		orden_id: DOM.ordenEntidad.querySelector("select[name='orden_id']"),
-		entidad_id: DOM.ordenEntidad.querySelector("select[name='entidad_id']"),
-		entidad_idOpciones: DOM.ordenEntidad.querySelectorAll("select[name='entidad_id'] option"),
-		iconosAyuda: DOM.ordenEntidad.querySelectorAll("#ayudaOrden ul li"),
-		contadorDeProds: DOM.encabezado.querySelector("#derecha #contadorDeProds"),
+		// Encabezado - Check-Boxes
+		noLaVi: DOM.checkBoxes.querySelector("#noLaVi"),
+		conLinks: DOM.checkBoxes.querySelector("#conLinks"),
+		enCast: DOM.checkBoxes.querySelector("#enCast"),
+
+		// Encabezado - Orden y Entidad
+		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
+		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
+		entidad_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='entidad_id'] option"),
+		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
 
 		// Configuración de Cabecera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
