@@ -140,10 +140,8 @@ let actualizaConfigCons = {
 			(!DOM.canons.value || DOM.canons.value == "NN") && // 'canon' no está contestado
 			!DOM.rolesIgl.value; // 'rolesIgl' no está contestado
 
-		seMuestra ? DOM.cfc.parentNode.classList.remove("ocultar") : DOM.cfc.parentNode.classList.add("ocultar");
-
-		// Actualiza el valor de 'cfc'
-		if (seMuestra && DOM.cfc.value) configCons.cfc = DOM.cfc.value;
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "cfc");
 
 		// Fin
 		this.bhr();
@@ -156,11 +154,8 @@ let actualizaConfigCons = {
 			!DOM.canons.value && // el procCanon no está contestado
 			!DOM.rolesIgl.value; // el rolIglesia no está contestado
 
-		// Muestra / Oculta 'bhr'
-		seMuestra ? DOM.bhr.parentNode.classList.remove("ocultar") : DOM.bhr.parentNode.classList.add("ocultar");
-
-		// Actualiza el valor de 'bhr'
-		if (seMuestra && DOM.bhr.value) configCons.bhr = DOM.bhr.value;
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "bhr");
 
 		// Fin
 		this.apMar();
@@ -176,11 +171,8 @@ let actualizaConfigCons = {
 			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
 			v.entidad != "temas"; // La entidad es distinta de 'temas'
 
-		// Muestra/Oculta el sector
-		seMuestra ? DOM.apMar.parentNode.classList.remove("ocultar") : DOM.apMar.parentNode.classList.add("ocultar");
-
-		// Actualiza el valor de 'apMar'
-		if (seMuestra && DOM.apMar.value) configCons.apMar = DOM.apMar.value;
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "apMar");
 
 		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
 		if (configCons.apMar == "SI") {
@@ -199,11 +191,8 @@ let actualizaConfigCons = {
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
-		// Oculta/Muestra sectores
-		seMuestra ? DOM.canons.parentNode.classList.remove("ocultar") : DOM.canons.parentNode.classList.add("ocultar");
-
-		// Actualiza el valor de 'canons'
-		if (seMuestra && DOM.canons.value) configCons.canons = DOM.canons.value;
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "canons");
 
 		// Fin
 		this.rolesIglesia();
@@ -216,23 +205,29 @@ let actualizaConfigCons = {
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
-		// Oculta/Muestra sectores
-		seMuestra ? DOM.rolesIgl.parentNode.classList.remove("ocultar") : DOM.rolesIgl.parentNode.classList.add("ocultar");
-
-		// Actualiza el valor de 'rolesIgl'
-		if (seMuestra && DOM.rolesIgl.value) configCons.rolesIgl = DOM.rolesIgl.value;
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
 
 		// Fin
 		this.palabrasClave();
 		return;
 	},
 	palabrasClave: function () {
-		// Impacto en: palabrasClave
-
 		// Actualiza el valor de 'palabrasClave'
 		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) configCons.palabrasClave = DOM.palClave.value;
 
 		// Fin
 		return;
 	},
+};
+
+let muestraOcultaActualizaPref = (seMuestra, elemento) => {
+	// Muestra
+	seMuestra ? DOM[elemento].parentNode.classList.remove("ocultar") : DOM[elemento].parentNode.classList.add("ocultar");
+
+	// Actualiza el valor de 'configCons'
+	if (seMuestra && DOM[elemento].value) configCons[elemento] = DOM[elemento].value;
+
+	// Fin
+	return;
 };
