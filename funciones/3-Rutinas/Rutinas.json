@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 7/ago",
-	"HoraUTC": "1:40",
+	"FechaUTC": "Mar. 8/ago",
+	"HoraUTC": "1:23",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 7/ago",
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"05-ago-23": {"titulo": "Juan María Lustiger", "entidad": "personajes", "id": 106},
 		"06-ago-23": {"titulo": "ELC - Películas"},
 		"07-ago-23": {"titulo": "ELC - Películas"},
 		"08-ago-23": {"titulo": "ELC - Películas"},
-		"09-ago-23": {"titulo": "Edith Stein", "entidad": "personajes", "id": 107}
+		"09-ago-23": {"titulo": "Edith Stein", "entidad": "personajes", "id": 107},
+		"10-ago-23": {"titulo": "ELC - Películas"}
 	}
 }
