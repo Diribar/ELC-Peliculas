@@ -35,6 +35,7 @@ window.addEventListener("load", async () => {
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de de Cabecera - Check-Boxes
+		checkBoxesInputs:DOM.configCons.querySelectorAll("#checkBoxes input"),
 		noLaVi: DOM.configCons.querySelector("#checkBoxes #noLaVi"),
 		conLinks: DOM.configCons.querySelector("#checkBoxes #conLinks"),
 		enCast: DOM.configCons.querySelector("#checkBoxes #enCast"),
