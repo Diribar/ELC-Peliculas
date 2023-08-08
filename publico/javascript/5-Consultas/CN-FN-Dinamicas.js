@@ -20,9 +20,14 @@ let actualizaConfigCons = {
 		// Acciones si existe un valor de orden
 		v.orden_id = DOM.orden_id.value;
 		if (v.orden_id) {
-			// Actualiza 'configCons.orden_id' y 'entidad'
+			// Actualiza 'configCons.orden_id'
 			configCons.orden_id = v.orden_id;
+
+			// Obtiene 'configCons.ascDes'
 			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			configCons.ascDes = v.ordenBD.ascDes;
+
+			// Obtiene las entidades posibles
 			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
 			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
 		}
@@ -41,7 +46,7 @@ let actualizaConfigCons = {
 			v.entidadEnOrden = false;
 
 			// Si hay una entidad elegida, se fija si pertenece al orden elegido
-			if (v.entidad_id) v.entidadEnOrden = v.entidades_id.includes(v.entidad_id);
+			if (v.entidad_id) v.entidadEnOrden = v.entidades_id.includes(Number(v.entidad_id));
 
 			// Si la entidad no pertenece al orden, asigna el valor default
 			if (!v.entidadEnOrden)
