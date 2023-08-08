@@ -1,8 +1,13 @@
 /* Filtros Campos */
 #configCons #configCampos {background: var(--gris-claro);}
 #configCons #configCampos {flex-grow: 1;}
-/* #configCons #configCampos hr {border-top: var(--gris-oscuro) 1px dashed; margin: 0;} */
 #configCons #configCampos .flexCol.ocultar {display: none;}
+
+/* Checkboxes */
+#configCampos #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro);}
+#configCampos #checkBoxes {padding: 3px 0}
+#configCampos #checkBoxes input {margin-left: 10px;}
+#configCampos #checkBoxes label {margin-left: 3px; margin-right: 10px;}
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}

@@ -4,27 +4,25 @@ window.addEventListener("load", async () => {
 	DOM = {
 		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
-		// Encabezado, Cabecera, Campos
+		configCons: document.querySelector("#cuerpo #configCons"),
+		encabMasPelis: document.querySelector("#cuerpo #encabMasPelis"),
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configCampos) .prefSimple"),
-		configCons: document.querySelector("#configCons"),
-		configCabecera: document.querySelector("#configCons #configCabecera"),
-		configCampos: document.querySelector("#configCons #configCampos"),
-		encabMasPelis: document.querySelector("#encabMasPelis"),
-		checkBoxes: document.querySelector("#encabMasPelis #encabezado #izquierda #checkBoxes"),
-		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #izquierda #tituloPrincipal"),
+
+		// Zona de Preferencias
+		configCabecera: document.querySelector("#cuerpo #configCons #configCabecera"),
+		configCampos: document.querySelector("#cuerpo #configCons #configCampos"),
+		
+		// Encabezado
+		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		contadorDeProds: document.querySelector("#encabMasPelis #encabezado #derecha #contadorDeProds"),
-		// Zona de productos
-		zonaDisponible: document.querySelector("#zonaDisponible"),
+
+		// Zona de Productos
+		zonaDisponible: document.querySelector("#encabMasPelis #zonaDisponible"),
 	};
 	DOM = {
 		...DOM,
 
-		// Encabezado - Check-Boxes
-		noLaVi: DOM.checkBoxes.querySelector("#noLaVi"),
-		conLinks: DOM.checkBoxes.querySelector("#conLinks"),
-		enCast: DOM.checkBoxes.querySelector("#enCast"),
-
-		// Encabezado - Orden y Entidad
+		// Encabezado
 		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
 		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
 		entidad_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='entidad_id'] option"),
@@ -36,7 +34,12 @@ window.addEventListener("load", async () => {
 		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
-		// Configuración de Campos
+		// Configuración de Campos - Check-Boxes
+		noLaVi: DOM.configCampos.querySelector("#checkBoxes #noLaVi"),
+		conLinks: DOM.configCampos.querySelector("#checkBoxes #conLinks"),
+		enCast: DOM.configCampos.querySelector("#checkBoxes #enCast"),
+
+		// Configuración de Campos - Preferencias
 		nav: DOM.configCampos.querySelector("nav"),
 		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configCampos.querySelectorAll("select"),

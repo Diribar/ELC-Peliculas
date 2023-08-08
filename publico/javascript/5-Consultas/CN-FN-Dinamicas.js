@@ -14,6 +14,7 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+
 	// Encabezado
 	orden: function () {
 		// Acciones si existe un valor de orden
@@ -122,16 +123,59 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+
 	// Presencia estable
 	presenciaEstable: function () {
 		// Impacto en configCons: todos los campos con presencia estable
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
+		this.pppOpciones();
+		return;
+	},
+
+	// Presencia eventual - Checkboxes
+	pppOpciones: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !DOM.noLaVi.checked;
+
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
+
+		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
+
+		// Fin
+		this.tiposLink();
+		return;
+	},
+	tiposLink: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !DOM.conLinks.checked;
+
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "tiposLink");
+
+		if (!seMuestra) configCons.tiposLink = v.conLinks;
+
+		// Fin
+		this.castellano();
+		return;
+	},
+	castellano: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !DOM.enCast.checked;
+
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "castellano");
+
+		if (!seMuestra) configCons.castellano = v.enCast;
+
+		// Fin
 		this.cfc();
 		return;
 	},
-	// Presencia eventual
+
+	// Presencia eventual - Resto
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
