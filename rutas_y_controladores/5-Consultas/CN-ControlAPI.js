@@ -42,13 +42,14 @@ module.exports = {
 		},
 		variables: async (req, res) => {
 			// Variables
-			const layoutsBD = cn_layouts;
 			const ordenesBD = cn_ordenes;
+			const entsPorOrdenesBD = cn_entsPorOrdenes;
+			const entidadesBD = cn_entidades;
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 			const rclvNombres = Variables.entidades.rclvsNombre;
 
 			// Fin
-			return res.json({layoutsBD, ordenesBD, userID, rclvNombres});
+			return res.json({ordenesBD, entsPorOrdenesBD, entidadesBD, userID, rclvNombres});
 		},
 	},
 	cambiosEnBD: {

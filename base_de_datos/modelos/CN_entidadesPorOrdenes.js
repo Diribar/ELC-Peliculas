@@ -1,16 +1,16 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_ordenesPorEnt";
+	const alias = "cn_entsPorOrdenes";
 	const columns = {
 		nombre: {type: dt.STRING(40)},
 		entidad_id: {type: dt.INTEGER},
 		orden_id: {type: dt.INTEGER},
 
 		boton: {type: dt.INTEGER},
-		ordenDefault: {type: dt.BOOLEAN},
+		entidadDefault: {type: dt.BOOLEAN},
 		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "cn_ordenes_por_ent",
+		tableName: "cn_entidades_por_ords",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

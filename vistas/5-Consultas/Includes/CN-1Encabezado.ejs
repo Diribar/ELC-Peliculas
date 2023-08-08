@@ -13,7 +13,7 @@
 			<% } %>
 		</select>
 		<!-- Entidad -->
-		<select name="entidad" class="prefSimple" required>
+		<select name="entidad_id" class="prefSimple" required>
 			<% for (let entidad of cn_entidades) { %>
 				<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
 			<% } %>
@@ -22,19 +22,12 @@
 		<div id="ayudaOrden">
 			<i class="fa-solid fa-circle-question ayudaClick desplClick">
 				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-					<li class="layout1 ocultar"><span>Soprendeme</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
-					<li class="layout1 ocultar"><span>Por Fecha en que se lo Recuerda</span>: películas que acompañan la efemérides durante el año.</li>
-					<li class="layout1 ocultar"><span>Por Calificación Interna</span>: películas con calificación, orden descendente.</li>
-					<li class="layout5 ocultar"><span>Por Nombre</span>: según el nombre de la película, orden ascendente.</li>
-					<li class="layout5 ocultar"><span>Por Año de Estreno</span>: de la película.</li>
-					<li class="layout5 ocultar"><span>Por Fecha en Nuestro Sistema</span>: según la fecha en que la aprobamos.</li>
-					<li class="layout2 ocultar"><span>Por Año de Nacimiento</span>: según el año en que nació el personaje.</li>
-					<li class="layout2 ocultar"><span>Por Nombre</span>: según el nombre del personaje, orden ascendente.</li>
-					<li class="layout2 ocultar"><span>Por Rol en la Iglesia</span>: según el rol del personaje en la Iglesia Católica.</li>
-					<li class="layout2 ocultar"><span>Por Fecha en que se lo recuerda</span>: según la fecha del año en que se recuerda al personaje.</li>
-					<li class="layout3 ocultar"><span>Por Época de Ocurrencia</span>: según el año en que ocurrió el hecho.</li>
-					<li class="layout3 ocultar"><span>Por Nombre</span>: según el nombre del hecho.</li>
-					<li class="layout4 ocultar"><span>Por Nombre</span>: según el nombre del tema.</li>
+					<li><span>Orden por Fecha del Año</span>: películas que acompañan la efemérides durante el año.</li>
+					<li><span>Orden al Azar</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
+					<li><span>Orden por Nombre</span>: según el nombre de la entidad, orden ascendente.</li>
+					<li><span>Orden por Año Histórico</span>: según el año en que nació el personaje u ocurrió el hecho.</li>
+					<li><span>Orden por Fecha de Alta</span>: según la fecha en que la aprobamos.</li>
+					<li><span>Orden por Calificación</span>: películas calificadas por los usuarios, orden descendente.</li>
 				</ul>
 			</i>
 		</div>

@@ -38,13 +38,12 @@
 </div>
 <!-- Campos -->
 <div id="configCampos" class="flexCol sectorConDesplV">
-	<nav class="startUp">
+	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
 			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, color: 'ppp'}) %>
 		<% } %>
-		<!-- <hr> -->
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
@@ -55,14 +54,12 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.rolesIgl, eventual: true, color: 'cfc'}) %>
 		<!-- Aparición Mariana -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.apMar, eventual: true, color: 'cfc'}) %>
-		<!-- <hr> -->
 
 		<!-- HECHOS REALES -->
 		<!-- Basado en Hechos Reales -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.bhr, eventual: true, color: 'bhr'}) %>
 		<!-- Epoca de Ocurrencia -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasOcurrencia, color: 'bhr'}) %>
-		<!-- <hr> -->
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
 		<!-- Público Recomendado -->
@@ -75,17 +72,14 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano}) %>
 		<!-- Tipo de Actuación -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
-		<!-- Musical -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.musical}) %>
-		<!-- <hr> -->
 
 		<!-- Búsqueda -->
-		<div id="palabrasClave" class="pref desaparece">
+		<div id="palabrasClave" class="pref invisible">
 			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
 			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
 		</div>
 	</nav>
-	<div id="mostrarOcultarFiltros" class="flexCol">
+	<div id="mostrarOcultarFiltros" class="flexCol ocultar">
 		<div id="mostrarFiltros" class="pointer scale">
 			<em>Click</em> para <span>ver</span><br>más filtros
 		</div>

@@ -63,14 +63,6 @@ module.exports = {
 			],
 		},
 		tiposActuacion: {titulo: "Tipo de Actuación", campo: "tipoActuacion_id"},
-		musical: {
-			titulo: "Musical",
-			campo: "musical",
-			opciones: [
-				{id: "1", nombre: "Es un musical"},
-				{id: "0", nombre: "No es un musical"},
-			],
-		},
 		// Se muestran ocasionalmente
 		bhr: {
 			titulo: "Basado en Hechos Reales",
