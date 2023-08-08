@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		orden_id: {type: dt.INTEGER},
 
 		boton: {type: dt.INTEGER},
-		ordenDefault: {type: dt.BOOLEAN},
+		entidadDefault: {type: dt.BOOLEAN},
 		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
