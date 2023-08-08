@@ -57,7 +57,7 @@ module.exports = {
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
 			if (ordenBD.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
-			if (ordenBD.codigo == "sorprendeme") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'sorprendeme', agrega pautas en las condiciones
+			if (ordenBD.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (ordenBD.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
@@ -475,20 +475,21 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, orden, configCons}) => {
-				if (prods.length > 1 && orden.codigo != "fechaDelAno_id") {
-					// Variables
-					const campo = orden.codigo == "nombre" ? "nombreCastellano" : orden.codigo;
+				// Si no corresponde ordenar, interrumpe la función
+				if (prods.length <= 1 || orden.codigo == "fechaDelAno_id") return prods;
 
-					// Ordena
-					prods.sort((a, b) =>
-						configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
-					);
-				}
+				// Variables
+				const campo = orden.codigo == "nombre" ? "nombreCastellano" : orden.codigo;
+
+				// Ordena
+				prods.sort((a, b) =>
+					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
+				);
 
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, orden, configCons}) => {
+			rclvs: ({rclvs, orden, configCons, entidad}) => {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
@@ -500,19 +501,23 @@ module.exports = {
 				// 	// Los ordena por su include
 				// 	rclvs.sort((a, b) => (a.rolIglesia.grupo < b.rolIglesia.grupo ? -1 : 1));
 				// }
-				// // En los demás casos, ordena por su campo
-				// else
-
-				// Ordena por su campo
-				configCons.ascDes == "ASC"
-					? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
-					: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
 
 				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
-				if (orden.codigo.startsWith("ano"))
+				if (orden.codigo == "anoHistorico") {
+					let campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
+					configCons.ascDes == "ASC"
+						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
+						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
+
 					configCons.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
 						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
+				}
+				// En los demás casos, ordena por su campo
+				else
+					configCons.ascDes == "ASC"
+						? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
+						: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
 
 				// Fin
 				return rclvs;
