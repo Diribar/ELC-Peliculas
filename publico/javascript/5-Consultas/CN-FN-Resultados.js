@@ -367,7 +367,7 @@ let auxiliares = {
 		// Le agrega un body
 		const tbody = document.createElement("tbody");
 		if (indice) tbody.className = "ocultar";
-		else tbody.className = "aumentaY"
+		else tbody.className = "aumentaY";
 		tabla.appendChild(tbody);
 
 		// Fin
@@ -439,7 +439,8 @@ let auxiliares = {
 
 				// Crea el em
 				const em = document.createElement("em");
-				em.innerHTML = producto[rclvNombre];
+				const fechaDelAno = producto.fechaDelAno;
+				em.innerHTML = producto[rclvNombre] + (fechaDelAno ? " (" + fechaDelAno + ")" : "");
 				rclv.appendChild(em);
 
 				// Fin

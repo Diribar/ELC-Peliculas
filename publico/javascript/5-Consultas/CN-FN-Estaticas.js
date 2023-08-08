@@ -155,13 +155,13 @@ let actualiza = {
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects)
 			v.mostrarFiltros || DOM[campo.name].value
-				? DOM[campo.name].parentNode.classList.replace("disminuyeY_prefs", "aumentaY_prefs") // Se muestra
-				: DOM[campo.name].parentNode.classList.replace("aumentaY_prefs", "disminuyeY_prefs"); // Se oculta
+				? DOM[campo.name].parentNode.classList.replace("desaparece", "aparece") // Se muestra
+				: DOM[campo.name].parentNode.classList.replace("aparece", "desaparece"); // Se oculta
 
 		// Palabras clave
 		v.mostrarFiltros || DOM.palClave.value
-			? DOM.palClave.parentNode.classList.replace("disminuyeY_prefs", "aumentaY_prefs") // Se muestra
-			: DOM.palClave.parentNode.classList.replace("aumentaY_prefs", "disminuyeY_prefs"); // Se oculta
+			? DOM.palClave.parentNode.classList.replace("desaparece", "aparece") // Se muestra
+			: DOM.palClave.parentNode.classList.replace("aparece", "desaparece"); // Se oculta
 
 		// Fin
 		return;

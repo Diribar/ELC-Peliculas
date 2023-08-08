@@ -153,7 +153,7 @@ module.exports = {
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = procesos.resultados.orden.prods({prods, orden, configCons}); // Ordena los productos
-			prods = procesos.resultados.camposNecesarios.prods(prods); // Deja sólo los campos necesarios
+			prods = procesos.resultados.camposNecesarios.prods(prods, orden); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
