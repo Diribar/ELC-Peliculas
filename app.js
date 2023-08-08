@@ -117,8 +117,9 @@ app.set("views", [
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
-		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
+		cn_entidades: BD_genericas.obtieneTodos("cn_entidades", "orden"),
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
+		cn_ordenesPorEnt: BD_genericas.obtieneTodosConInclude("cn_ordenesPorEnt", ["entidad", "orden"]),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Otros

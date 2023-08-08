@@ -1,54 +1,46 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
-<div id="tituloPrincipal">
-	<!-- Layout -->
-	<select name="layout_id" class="prefSimple" required>
-		<option value="" class="ocultar">Elegí un layout...</option>
-		<!-- Opciones en base de datos -->
-		<% for (let layout of cn_layouts) { %>
-			<option value="<%= layout.id %>"><%= layout.nombre %></option>
-		<% } %>
-	</select>
-	<!-- Orden -->
-	<select name="orden_id" class="prefSimple" required>
-		<option value="" class="ocultar">Ordenar por...</option>
-		<!-- Opciones en base de datos -->
-		<% for (let orden of cn_ordenes) { %>
-			<option value="<%= orden.id %>" class="ocultar"><%= orden.nombre %></option>
-		<% } %>
-	</select>
-	<!-- Ascendente / Descendente -->
-	<div id="ascDes" class="ocultar">
-		<div class="flexRow">
-			<input type="radio" name="ascDes" value="ASC" id="ascendente" >
-			<label for="ascendente">Ascendente</label>
-		</div>
-		<div class="flexRow">
-			<input type="radio" name="ascDes" value="DESC" id="descendente" >
-			<label for="descendente">Descendente</label>
+<section id="izquierda" class="flexCol">
+	<div id="checkBoxes" class="flexRow">
+		<input id="noLaConozco" type="checkbox"><label for="noLaConozco">No la conozco</label>
+		<input id="conLinks" type="checkbox"><label for="conLinks">Con links</label>
+		<input id="enCastellano" type="checkbox"><label for="enCastellano">En castellano (habl./subt.)</label>
+	</div>
+	<div id="tituloPrincipal" class="flexRow">
+		<!-- Orden -->
+		<select name="orden_id" class="prefSimple" required>
+			<% for (let orden of cn_ordenes) { %>
+				<option value="<%= orden.id %>"><%= orden.nombre %></option>
+			<% } %>
+		</select>
+		<!-- Entidad -->
+		<select name="entidad" class="prefSimple" required>
+			<% for (let entidad of cn_entidades) { %>
+				<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
+			<% } %>
+		</select>
+		<!-- Ayuda -->
+		<div id="ayudaOrden">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+					<li class="layout1 ocultar"><span>Soprendeme</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
+					<li class="layout1 ocultar"><span>Por Fecha en que se lo Recuerda</span>: películas que acompañan la efemérides durante el año.</li>
+					<li class="layout1 ocultar"><span>Por Calificación Interna</span>: películas con calificación, orden descendente.</li>
+					<li class="layout5 ocultar"><span>Por Nombre</span>: según el nombre de la película, orden ascendente.</li>
+					<li class="layout5 ocultar"><span>Por Año de Estreno</span>: de la película.</li>
+					<li class="layout5 ocultar"><span>Por Fecha en Nuestro Sistema</span>: según la fecha en que la aprobamos.</li>
+					<li class="layout2 ocultar"><span>Por Año de Nacimiento</span>: según el año en que nació el personaje.</li>
+					<li class="layout2 ocultar"><span>Por Nombre</span>: según el nombre del personaje, orden ascendente.</li>
+					<li class="layout2 ocultar"><span>Por Rol en la Iglesia</span>: según el rol del personaje en la Iglesia Católica.</li>
+					<li class="layout2 ocultar"><span>Por Fecha en que se lo recuerda</span>: según la fecha del año en que se recuerda al personaje.</li>
+					<li class="layout3 ocultar"><span>Por Época de Ocurrencia</span>: según el año en que ocurrió el hecho.</li>
+					<li class="layout3 ocultar"><span>Por Nombre</span>: según el nombre del hecho.</li>
+					<li class="layout4 ocultar"><span>Por Nombre</span>: según el nombre del tema.</li>
+				</ul>
+			</i>
 		</div>
 	</div>
-	<!-- Ayuda -->
-	<div id="ayudaOrden">
-		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<li class="layout1 ocultar"><span>Soprendeme</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
-				<li class="layout1 ocultar"><span>Por Fecha en que se lo Recuerda</span>: películas que acompañan la efemérides durante el año.</li>
-				<li class="layout1 ocultar"><span>Por Calificación Interna</span>: películas con calificación, orden descendente.</li>
-				<li class="layout5 ocultar"><span>Por Nombre</span>: según el nombre de la película, orden ascendente.</li>
-				<li class="layout5 ocultar"><span>Por Año de Estreno</span>: de la película.</li>
-				<li class="layout5 ocultar"><span>Por Fecha en Nuestro Sistema</span>: según la fecha en que la aprobamos.</li>
-				<li class="layout2 ocultar"><span>Por Año de Nacimiento</span>: según el año en que nació el personaje.</li>
-				<li class="layout2 ocultar"><span>Por Nombre</span>: según el nombre del personaje, orden ascendente.</li>
-				<li class="layout2 ocultar"><span>Por Rol en la Iglesia</span>: según el rol del personaje en la Iglesia Católica.</li>
-				<li class="layout2 ocultar"><span>Por Fecha en que se lo recuerda</span>: según la fecha del año en que se recuerda al personaje.</li>
-				<li class="layout3 ocultar"><span>Por Época de Ocurrencia</span>: según el año en que ocurrió el hecho.</li>
-				<li class="layout3 ocultar"><span>Por Nombre</span>: según el nombre del hecho.</li>
-				<li class="layout4 ocultar"><span>Por Nombre</span>: según el nombre del tema.</li>
-			</ul>
-		</i>
-	</div>
-</div>
+</section>
 <!-- Contador -->
-<div id="derecha">
+<section id="derecha">
 	<button type="text" id="contadorDeProds">...</button>
-</div>
+</section>
