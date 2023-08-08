@@ -2,7 +2,6 @@
 
 let resultados = {
 	obtiene: async function () {
-		return
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
@@ -16,7 +15,7 @@ let resultados = {
 		let datos = {configCons, entidad: v.entidad};
 
 		// Arma los datos
-		if (v.entidad == "productos" && v.ordenBD.valor == "fechaDelAno_id") datos = {...datos, dia, mes};
+		if (v.entidad == "productos" && v.ordenBD.codigo == "fechaDelAno_id") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
