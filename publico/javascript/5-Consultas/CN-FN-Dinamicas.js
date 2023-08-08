@@ -152,8 +152,9 @@ let actualizaConfigCons = {
 	},
 	tiposLink: function () {
 		// Start-up
+		console.log(DOM.tiposLink.value ,v.conLinks);
 		if (DOM.tiposLink.value == v.conLinks) {
-			DOM.noLaVi.checked = true;
+			DOM.conLinks.checked = true;
 			DOM.tiposLink.value = "";
 		}
 
