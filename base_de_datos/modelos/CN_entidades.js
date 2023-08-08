@@ -1,18 +1,17 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_layouts";
+	const alias = "cn_entidades";
 	const columns = {
-		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
-		entidad: {type: dt.STRING(20)},
-		boton: {type: dt.INTEGER},
+		orden: {type: dt.INTEGER},
+		codigo: {type: dt.STRING(20)},
 	};
 	const config = {
-		tableName: "cn_layouts",
+		tableName: "cn_entidades",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_ordenes, {as: "ordenes", foreignKey: "layout_id"});
+		entidad.hasMany(n.cn_ordenesPorEnt, {as: "ordenes", foreignKey: "entidad_id"});
 	};
 	return entidad;
 };
