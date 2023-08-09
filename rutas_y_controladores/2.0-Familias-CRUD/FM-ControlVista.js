@@ -24,7 +24,7 @@ module.exports = {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-			let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
+			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
 
 			// Obtiene el registro
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -56,7 +56,7 @@ module.exports = {
 			if (familia == "rclv") {
 				prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
 				cantProds = prodsDelRCLV.length;
-				procCanoniz = procsRCLV.detalle.procCanoniz(original);
+				canonNombre = procsRCLV.altaEdicGuardar.canonNombre(original);
 				RCLVnombre = original.nombre;
 			}
 
@@ -107,7 +107,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
 				...{entidad, id, entidadNombre, familia, comentarios, urlActual, registro: original},
-				...{imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id, cantProds},
+				...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 				cartelGenerico: true,
 			});
 		},

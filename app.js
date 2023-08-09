@@ -171,6 +171,7 @@ app.set("views", [
 	global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 	const variables = require("./funciones/1-Procesos/Variables");
 	global.vistasInstitucs = variables.vistasInstitucs;
+	global.prefijoSanto = variables.prefijoSanto;
 
 	// Procesos que dependen de la variable 'global'
 	// Rutinas

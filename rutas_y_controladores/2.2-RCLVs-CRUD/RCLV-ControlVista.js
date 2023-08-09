@@ -51,7 +51,7 @@ module.exports = {
 
 		// Datos para la vista
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
-		const procCanoniz = procesos.detalle.procCanoniz(rclv);
+		const canonNombre = procesos.altaEdicGuardar.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
 		const userIdentVal = usuario && usuario.statusRegistro.identValidada;
 
@@ -60,7 +60,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
 			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, procCanoniz, RCLVnombre},
+			...{prodsDelRCLV, canonNombre, RCLVnombre},
 			userIdentVal,
 		});
 	},

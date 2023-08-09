@@ -105,7 +105,7 @@ module.exports = {
 			if (registro.entidad == "personajes") {
 				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
-				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon)
+				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon.nombre)
 					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
@@ -121,29 +121,6 @@ module.exports = {
 
 			// Fin
 			return bloque;
-		},
-		procCanoniz: (RCLV) => {
-			// Variables
-			let procCanoniz = "";
-			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
-				// Obtiene los procesos de canonización
-				let proceso = canons.find((m) => m.id == RCLV.canon_id);
-				// Asigna el nombre del proceso
-				procCanoniz = proceso.nombre + " ";
-				// Verificación si el nombre del proceso es "Santo" (varón)
-				if (RCLV.canon_id == "STV") {
-					// Nombres que llevan el prefijo "Santo"
-					let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
-					// Obtiene el primer nombre del RCLV
-					let nombre = RCLV.nombre;
-					nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
-					// Si el primer nombre no es "especial", cambia el prefijo por "San"
-					if (!nombresEspeciales.includes(nombre)) procCanoniz = "San ";
-				}
-			}
-			// Fin
-			return procCanoniz;
 		},
 	},
 	altaEdicForm: {
@@ -186,36 +163,40 @@ module.exports = {
 		},
 	},
 	altaEdicGuardar: {
-		procesaLosDatos: (datos) => {
+		procesaLosDatos: function (datos) {
 			// Variables
 			let DE = {};
+			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad} = datos;
 
 			// Asigna el valor 'null' a todos los campos
 			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
 
-			// Datos comunes
-			if (datos.nombre) DE.nombre = datos.nombre;
-			DE.fechaDelAno_id =
-				datos.tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-			DE.fechaMovil = datos.tipoFecha == "FM";
-			if (datos.tipoFecha == "FM") DE.comentarioMovil = datos.comentarioMovil;
-			if (datos.prioridad_id) DE.prioridad_id = datos.prioridad_id;
-			if (datos.avatar) DE.avatar = datos.avatar;
+			// Datos comunes a todos los RCLV
+			if (nombre) DE.nombre = nombre;
+			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
+			DE.fechaMovil = tipoFecha == "FM";
+			if (tipoFecha == "FM") DE.comentarioMovil = comentarioMovil;
+			if (prioridad_id) DE.prioridad_id = prioridad_id;
+			if (avatar) DE.avatar = avatar;
 
-			// Datos para personajes
-			if (datos.entidad == "personajes") {
+			// Datos exclusivos de personajes
+			if (entidad == "personajes") {
+				// Variables
 				const {apodo, sexo_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
 				DE = {...DE, sexo_id, epocaOcurrencia_id, categoria_id};
+				const CFC = categoria_id == "CFC";
+
+				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
+				DE.canonNombre = this.canonNombre({nombre, canon_id});
+
 				DE.apodo = apodo ? apodo : "";
 				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
-				const CFC = categoria_id == "CFC";
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
-				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
 				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 
 			// Datos para hechos
-			if (datos.entidad == "hechos") {
+			if (entidad == "hechos") {
 				// Variables
 				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
 				DE.epocaOcurrencia_id = epocaOcurrencia_id;
@@ -225,7 +206,7 @@ module.exports = {
 			}
 
 			// Datos para epocasDelAno
-			if (datos.entidad == "epocasDelAno") {
+			if (entidad == "epocasDelAno") {
 				DE.diasDeDuracion = datos.diasDeDuracion;
 				DE.comentarioDuracion = datos.comentarioDuracion;
 				if (datos.carpetaAvatars) DE.carpetaAvatars = datos.carpetaAvatars;
@@ -233,6 +214,32 @@ module.exports = {
 
 			// Fin
 			return DE;
+		},
+		canonNombre: (RCLV) => {
+			// Variables
+			let canonNombre = "";
+
+			// Averigua si el RCLV tiene algún "proceso de canonización"
+			if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
+				// Obtiene los procesos de canonización
+				let proceso = canons.find((m) => m.id == RCLV.canon_id);
+
+				// Asigna el nombre del proceso
+				canonNombre = proceso.nombre + " ";
+
+				// Verificación si el nombre del proceso es "Santo" (varón)
+				if (RCLV.canon_id == "STV") {
+					// Obtiene el primer nombre del RCLV
+					let nombre = RCLV.nombre;
+					nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+
+					// Si el primer nombre no es "especial", cambia el prefijo por "San"
+					if (!prefijoSanto.includes(nombre)) canonNombre = "San ";
+				}
+			}
+
+			// Fin
+			return canonNombre;
 		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables

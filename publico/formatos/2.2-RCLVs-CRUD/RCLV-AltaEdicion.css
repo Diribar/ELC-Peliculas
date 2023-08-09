@@ -107,7 +107,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}
-#dataEntry ul#ayudaNombrePers ul {padding-left: 20px;}
+#dataEntry ul#ayudaNombrePers li span {font-variant: small-caps; text-decoration: underline;}
 
 /* Submit button */
 #dataEntry .flechas {margin: 20px 0 0;}

@@ -5,7 +5,7 @@ const BD_genericas = require("../2-BD/Genericas");
 module.exports = {
 	// Institucional
 	vistasInstitucs: {
-		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true},
+		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
 		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart"},
 		"en-que-consiste-este-sitio": {
@@ -292,6 +292,8 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	// Nombres que llevan el prefijo "Santo"
+	prefijoSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -397,7 +399,7 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 			},
 			// Personajes
-			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
+			{nombre: "apodo", titulo: "Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
 			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
