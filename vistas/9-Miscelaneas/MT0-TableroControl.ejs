@@ -103,7 +103,8 @@
 			</div>
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links", regs: prods.SL, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Peliculas y Colecciones", regs: prods.SL_PC, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Capítulos", regs: prods.SL_Caps, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
