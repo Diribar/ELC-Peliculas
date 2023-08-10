@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 				datosUrl += "&" + camposComb[i] + "=" + DOM.inputs[indice].value;
 			}
 			// Obtiene el mensaje para el campo
-			await FN.muestraLosErrores(datosUrl, true);
+			await FN.muestraLosErrores(datosUrl);
 			FN.actualizaBotonSubmit();
 			return;
 		},
@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		statusInicial: async function (mostrarIconoError) {
+		statusInicial: async function () {
 			//Busca todos los valores
 			let datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
 			DOM.inputs.forEach((input, i) => {
@@ -112,27 +112,27 @@ window.addEventListener("load", async () => {
 				// Agrega el campo y el valor
 				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
+
 			// Consecuencias de las validaciones de errores
-			await this.muestraLosErrores(datosUrl, mostrarIconoError);
+			await this.muestraLosErrores(datosUrl);
 			this.actualizaBotonSubmit();
+
 			// Fin
 			return;
 		},
-		muestraLosErrores: async (datos, mostrarIconoError) => {
+		muestraLosErrores: async (datos) => {
 			let errores = await fetch(rutas.validarDatos + datos).then((n) => n.json());
 			v.campos.forEach((campo, indice) => {
-				if (errores[campo] !== undefined) {
-					DOM.mensajesError[indice].innerHTML = errores[campo];
-					// Acciones en función de si hay o no mensajes de error
-					errores[campo]
-						? DOM.iconosError[indice].classList.add("error")
-						: DOM.iconosError[indice].classList.remove("error");
-					errores[campo] && mostrarIconoError
-						? DOM.iconosError[indice].classList.remove("ocultar")
-						: DOM.iconosError[indice].classList.add("ocultar");
-					errores[campo]
-						? DOM.iconosOK[indice].classList.add("ocultar")
-						: DOM.iconosOK[indice].classList.remove("ocultar");
+				// Actualiza los mensajes de error
+				DOM.mensajesError[indice].innerHTML = errores[campo];
+
+				// Acciones si hay mensajes de error
+				if (errores[campo]) {
+					DOM.iconosOK[indice].classList.add("ocultar");
+					DOM.iconosError[indice].classList.remove("ocultar");
+				} else {
+					DOM.iconosOK[indice].classList.remove("ocultar");
+					DOM.iconosError[indice].classList.add("ocultar");
 				}
 			});
 			// Fin
@@ -140,9 +140,9 @@ window.addEventListener("load", async () => {
 		},
 		actualizaBotonSubmit: () => {
 			// Detecta la cantidad de 'errores' ocultos
-			let hayErrores = Array.from(DOM.iconosError)
+			let hayErrores = Array.from(DOM.iconosOK)
 				.map((n) => n.className)
-				.some((n) => n.includes("error"));
+				.some((n) => n.includes("ocultar"));
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
