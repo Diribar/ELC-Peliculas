@@ -49,7 +49,7 @@ module.exports = {
 				entidadesBD: cn_entidades,
 
 				// Check-Boxes
-				noLaVi: String(sinPreferencia.id),
+				noLaVi: String(sinPreferencia.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinks: "conLinks",
 				enCast: "enCast",
 
