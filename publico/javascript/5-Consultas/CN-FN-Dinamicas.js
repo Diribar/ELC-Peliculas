@@ -142,9 +142,19 @@ let actualizaConfigCons = {
 			DOM.pppOpciones.value = "";
 		}
 
-		// Variables
-		const seMuestra = !DOM.noLaVi.checked;
-		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
+		// Activa / Inactiva el checkbox 'noLaVi'
+		v.ordenBD.codigo == "pppFecha"
+			? DOM.noLaVi.parentNode.classList.add("inactivo")
+			: DOM.noLaVi.parentNode.classList.remove("inactivo");
+
+		// Acciones si no se muestra
+		const seMuestra = !DOM.noLaVi.checked && v.ordenBD.codigo != "pppFecha";
+		if (!seMuestra) {
+			if (v.ordenBD.codigo == "pppFecha") {
+				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id);
+				DOM.noLaVi.checked = false;
+			} else configCons.pppOpciones = v.noLaVi;
+		}
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
@@ -161,7 +171,7 @@ let actualizaConfigCons = {
 		}
 
 		// Variables
-		const seMuestra = !DOM.conLinks.checked
+		const seMuestra = !DOM.conLinks.checked;
 		if (!seMuestra) configCons.tiposLink = v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
@@ -179,7 +189,7 @@ let actualizaConfigCons = {
 		}
 
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked
+		const seMuestra = !DOM.enCast.checked;
 		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'

@@ -54,6 +54,7 @@ module.exports = {
 				enCast: "enCast",
 
 				// Otros
+				pppOpciones,
 				userID: req.session.usuario ? req.session.usuario.id : null,
 				rclvNombres: variables.entidades.rclvsNombre,
 			};
@@ -164,7 +165,7 @@ module.exports = {
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Cruza 'prods' con 'pppRegistros' y con 'palabrasClave'
-		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id});
+		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, orden});
 		prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave, entidad});
 
 		// Acciones varias

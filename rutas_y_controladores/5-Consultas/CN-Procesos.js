@@ -225,7 +225,7 @@ module.exports = {
 				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
 
 			// Obtiene los registros
-			let pppRegistros = BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle");
+			let pppRegistros = await BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle");
 
 			// Fin
 			return pppRegistros;
@@ -288,7 +288,7 @@ module.exports = {
 		},
 		cruce: {
 			// Productos
-			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id}) => {
+			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
 				if (!prods.length) return [];
 				if (!usuario_id) return prods;
 
@@ -297,31 +297,42 @@ module.exports = {
 
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
-					// Averigua si el producto tiene un registro de preferencia
-					const existe = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					// Averigua si el producto tiene un registro de preferencia del usuario
+					const pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
 
 					// Acciones si se eligió un tipo de preferencia
 					if (configCons.pppOpciones) {
-						// Variable
-						const pppOpcionElegida = pppOpciones.find((n) => n.id == configCons.pppOpciones);
-
 						// Elimina los registros que correspondan
 						if (
-							(pppOpcionElegida.id == sinPreferencia.id && existe) || // Si tienen alguna preferencia
-							(pppOpcionElegida.id != sinPreferencia.id && !existe) // Si no tienen la preferencia elegida
+							(configCons.pppOpciones.includes(sinPreferencia.id) && pppRegistro) || // Si tiene alguna preferencia y se había elegido "sin preferencia"
+							(!configCons.pppOpciones.includes(sinPreferencia.id) && !pppRegistro) // Si se había elegido alguna preferencia y no la tiene
 						)
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la ppp del usuario
-						else prods[i] = {...prods[i], pppIcono: pppOpcionElegida.icono, pppNombre: pppOpcionElegida.nombre};
+						else {
+							// Variable
+							const pppOpcionElegida = configCons.pppOpciones.includes(sinPreferencia.id)
+								? sinPreferencia
+								: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
+
+							prods[i] = {
+								...prods[i],
+								ppp_id: pppOpcionElegida.id,
+								pppIcono: pppOpcionElegida.icono,
+								pppNombre: pppOpcionElegida.nombre,
+							};
+							if (orden.codigo == "pppFecha") prods[i].pppFecha = pppRegistro.creadoEn;
+						}
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
 					else {
-						prods[i].pppIcono = existe ? existe.detalle.icono : sinPreferencia.icono;
-						prods[i].pppNombre = existe ? existe.detalle.nombre : sinPreferencia.nombre;
+						prods[i].pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPreferencia.icono;
+						prods[i].pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPreferencia.nombre;
 					}
 				}
 
 				// Fin
+				console.log(335, prods[0]);
 				return prods;
 			},
 			prodsConPalsClave: ({prods, palabrasClave, entidad}) => {
@@ -493,6 +504,8 @@ module.exports = {
 					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
 				);
 
+				if (orden.codigo == "pppFecha") prods.sort((a, b) => (a.ppp_id < b.ppp_id ? -1 : 1));
+
 				// Fin
 				return prods;
 			},
@@ -538,8 +551,20 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar} = prod;
-					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar};
+					const {entidad, id, nombreCastellano, ppp_id, pppFecha, pppIcono, pppNombre, direccion, anoEstreno, avatar} =
+						prod;
+					let datos = {
+						entidad,
+						id,
+						nombreCastellano,
+						pppIcono,
+						ppp_id,
+						pppFecha,
+						pppNombre,
+						direccion,
+						anoEstreno,
+						avatar,
+					};
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datos.direccion = direccion.slice(0, direccion.indexOf(","));
