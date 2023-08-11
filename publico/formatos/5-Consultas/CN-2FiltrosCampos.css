@@ -14,8 +14,8 @@
 
 /* Filtros Campos */
 #configCons #configCampos {background: var(--gris-claro); flex-grow: 1;}
-#configCons #configCampos {position: relative;}
-#configCons #configCampos nav {position: absolute;}
+#configCons #configCampos {position: relative; overflow-x: hidden;}
+#configCons #configCampos nav {position: absolute; width: 220px;}
 #configCons #configCampos .flexCol.ocultar {display: none;}
 
 /* Filtros Campos - Contenedor de Select e Input */

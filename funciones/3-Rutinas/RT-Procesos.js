@@ -628,7 +628,8 @@ let datosImgDerecha = (resultado) => {
 		imgDerecha = {entidad: resultado.entidad, id: resultado.id};
 
 		// Nombre de la imagen
-		imgDerecha.titulo = resultado.canonNombre ? resultado.canonNombre + " " : "";
+		const canonNombre = comp.canonNombre(resultado);
+		imgDerecha.titulo = canonNombre ? canonNombre : "";
 		imgDerecha.titulo += resultado.nombre;
 
 		// Datos del archivo, dependiendo de la entidad

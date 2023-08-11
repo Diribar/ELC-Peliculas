@@ -171,7 +171,7 @@ module.exports = {
 		},
 	},
 	altaEdicGuardar: {
-		procesaLosDatos: function (datos) {
+		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};
 			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad} = datos;
@@ -195,7 +195,7 @@ module.exports = {
 				const CFC = categoria_id == "CFC";
 
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.canonNombre = this.canonNombre({nombre, canon_id});
+				DE.canonNombre = comp.canonNombre({nombre, canon_id});
 
 				DE.apodo = apodo ? apodo : "";
 				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;

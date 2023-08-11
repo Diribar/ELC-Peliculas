@@ -2,7 +2,7 @@
 #cuerpo {flex-direction: row;}
 
 /* Configuración de la consulta */
-#cuerpo #configCons {display: flex; flex-direction: column; width: 220px;}
+#cuerpo #configCons {display: flex; flex-direction: column; width: 220px; min-width: 220px;}
 #cuerpo #configCons {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Encabezado más películas */
