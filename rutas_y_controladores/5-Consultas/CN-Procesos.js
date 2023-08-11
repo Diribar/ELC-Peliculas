@@ -332,7 +332,6 @@ module.exports = {
 				}
 
 				// Fin
-				console.log(335, prods[0]);
 				return prods;
 			},
 			prodsConPalsClave: ({prods, palabrasClave, entidad}) => {
