@@ -217,7 +217,7 @@ module.exports = {
 		},
 		pppRegistros: async ({usuario_id, configCons}) => {
 			// Si el usuario no está logueado, interrumpe la función
-			if (!usuario_id) return null;
+			if (!usuario_id) return [];
 
 			// Obtiene la condición
 			let condicion = {usuario_id};
@@ -290,10 +290,13 @@ module.exports = {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
 				if (!prods.length) return [];
-				if (!usuario_id) return prods;
+				console.log(293,pppRegistros.length);
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
+				console.log(295,configCons);
+				console.log(296,configCons.pppOpciones , configCons.pppOpciones != sinPreferencia.id , !pppRegistros.length);
 				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
+				console.log(298);
 
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
