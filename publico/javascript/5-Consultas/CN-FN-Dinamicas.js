@@ -134,7 +134,14 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, interumpe la función
-		if (!v.userID) return this.tiposLink();
+		if (!v.userID) {
+			// Si corresponde, actualiza 'configCons'
+			if (v.ordenBD.codigo == "pppFecha")
+				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id);
+
+			// Fin
+			return this.tiposLink();
+		}
 
 		// Start-up
 		if (DOM.pppOpciones.value == v.noLaVi) {
