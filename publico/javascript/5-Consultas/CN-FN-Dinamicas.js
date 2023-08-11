@@ -133,6 +133,9 @@ let actualizaConfigCons = {
 
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
+		// Si el usuario no está logueado, interumpe la función
+		if (!v.userID) return this.tiposLink();
+
 		// Start-up
 		if (DOM.pppOpciones.value == v.noLaVi) {
 			DOM.noLaVi.checked = true;
