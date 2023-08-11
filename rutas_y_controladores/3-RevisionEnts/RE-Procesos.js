@@ -11,7 +11,7 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Tablero
 	TC: {
-		obtieneProds_AL_ED: async (revID) => {
+		obtieneProds_ED: async (revID) => {
 			// Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			let include = [...variables.asocs.prods, ...variables.asocs.rclvs];
@@ -46,7 +46,6 @@ module.exports = {
 
 			// Distribuye entre Altas y Ediciones
 			let ED = [];
-			let AL = [];
 			if (productos.length) {
 				// Elimina los productos repetidos
 				productos = comp.eliminaRepetidos(productos);
@@ -57,23 +56,23 @@ module.exports = {
 				// Ordena por fecha descendente
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 
-				// Altas
-				AL = productos.filter(
-					(n) => n.statusRegistro_id == creado_id && n.creadoEn < haceUnaHora && n.entidad != "capitulos"
-				);
-				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
-
 				// Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
 				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
 			}
 
 			// Fin
-			return {AL, ED};
+			return {ED};
 		},
-		obtieneProds_SE_IR: async (revID) => {
+		obtieneProds_AL_SE_IR: async (revID) => {
 			// Variables
 			const entidades = ["peliculas", "colecciones", "capitulos"];
 			let campos;
+
+			// AL: En staus 'creado'
+			campos = {entidades, status_id: creado_id, campoRevID: "statusSugeridoPor_id", revID};
+			let AL = obtieneRegs(campos)
+				// Deja solamente las películas y colecciones
+				.then((n) => n.filter((m) => m.entidad != "capitulos"));
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
@@ -92,10 +91,10 @@ module.exports = {
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
-			[SE, IN, RC] = await Promise.all([SE, IN, RC]);
+			[AL, SE, IN, RC] = await Promise.all([AL, SE, IN, RC]);
 
 			// Fin
-			return {SE, IR: [...IN, ...RC]};
+			return {AL, SE, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (revID) => {
 			// Variables
@@ -752,7 +751,7 @@ let obtieneRegs = async (campos) => {
 		});
 
 		// Ordena los resultados
-		resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+		resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 	}
 
 	// Fin
