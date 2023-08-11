@@ -69,12 +69,6 @@ window.addEventListener("load", async () => {
 		const padre = elemento.parentNode;
 		const nombre = elemento.id ? elemento.id : padre.id;
 
-		// Si la zona está inactiva, interrumpe la función
-		if ((elemento.className + " " + padre.className).includes("inactivo")) {
-			e.preventDefault();
-			return;
-		}
-
 		// Iconos de botonera y 'palabrasClave'
 		if (elemento.tagName == "I") {
 			// Si el ícono está inactivo, interrumpe la función

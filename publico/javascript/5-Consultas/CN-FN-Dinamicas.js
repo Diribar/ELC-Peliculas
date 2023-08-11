@@ -149,19 +149,16 @@ let actualizaConfigCons = {
 			DOM.pppOpciones.value = "";
 		}
 
-		// Activa / Inactiva el checkbox 'noLaVi'
+		// Muestra / Oculta el checkbox 'noLaVi'
 		v.ordenBD.codigo == "pppFecha"
-			? DOM.noLaVi.parentNode.classList.add("inactivo")
-			: DOM.noLaVi.parentNode.classList.remove("inactivo");
+			? DOM.noLaVi.parentNode.classList.add("ocultar")
+			: DOM.noLaVi.parentNode.classList.remove("ocultar");
 
 		// Acciones si no se muestra
 		const seMuestra = !DOM.noLaVi.checked && v.ordenBD.codigo != "pppFecha";
-		if (!seMuestra) {
-			if (v.ordenBD.codigo == "pppFecha") {
-				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id);
-				DOM.noLaVi.checked = false;
-			} else configCons.pppOpciones = v.noLaVi;
-		}
+		if (!seMuestra)
+			configCons.pppOpciones =
+				v.ordenBD.codigo == "pppFecha" ? v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id) : v.noLaVi;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
