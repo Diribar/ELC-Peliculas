@@ -49,7 +49,7 @@ module.exports = {
 				entidadesBD: cn_entidades,
 
 				// Check-Boxes
-				noLaVi: sinPreferencia.id,
+				noLaVi: String(sinPreferencia.id),
 				conLinks: "conLinks",
 				enCast: "enCast",
 
@@ -68,9 +68,6 @@ module.exports = {
 			// Variables
 			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
-
-			// Guarda cookie
-			res.cookie("configCons_id", configCons_id, {maxAge: unDia});
 
 			// Si está logueado, actualiza session y el usuario en la BD
 			if (userID) {
@@ -135,6 +132,7 @@ module.exports = {
 	resultados: async (req, res) => {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
+		console.log(135,configCons);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 		const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 		const {palabrasClave} = configCons;
