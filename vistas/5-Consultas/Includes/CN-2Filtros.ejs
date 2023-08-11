@@ -37,9 +37,11 @@
 	</div>
 </div>
 <div id="checkBoxes" class="flexRow">
-	<div class="flexRow">
-		<input id="noLaVi" type="checkbox"><label for="noLaVi">Sin preferencia</label>
-	</div>
+	<% if (locals.usuario) { %>
+		<div class="flexRow">
+			<input id="noLaVi" type="checkbox"><label for="noLaVi">Sin preferencia</label>
+		</div>
+	<% } %>
 	<div class="flexRow">
 		<input id="conLinks" type="checkbox"><label for="conLinks">Con links</label>
 	</div>
