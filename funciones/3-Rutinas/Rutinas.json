@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-ago-23": {"titulo": "Teresa Benedicta de la Cruz", "entidad": "personajes", "id": 107},
+		"09-ago-23": {"titulo": "santa Teresa Benedicta de la Cruz", "entidad": "personajes", "id": 107},
 		"10-ago-23": {"titulo": "ELC - Películas"},
-		"11-ago-23": {"titulo": "Clara de Asís", "entidad": "personajes", "id": 111},
-		"12-ago-23": {"titulo": "Juana de Chantal", "entidad": "personajes", "id": 170},
+		"11-ago-23": {"titulo": "santa Clara de Asís", "entidad": "personajes", "id": 111},
+		"12-ago-23": {"titulo": "santa Juana de Chantal", "entidad": "personajes", "id": 170},
 		"13-ago-23": {"titulo": "ELC - Películas"}
 	}
 }
