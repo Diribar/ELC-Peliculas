@@ -318,11 +318,13 @@ module.exports = {
 
 							prods[i] = {
 								...prods[i],
-								ppp_id: pppOpcionElegida.id,
 								pppIcono: pppOpcionElegida.icono,
 								pppNombre: pppOpcionElegida.nombre,
 							};
-							if (orden.codigo == "pppFecha") prods[i].pppFecha = pppRegistro.creadoEn;
+							if (orden.codigo == "pppFecha") {
+								prods[i].ppp_id = pppOpcionElegida.id;
+								prods[i].pppFecha = pppRegistro.creadoEn;
+							}
 						}
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
