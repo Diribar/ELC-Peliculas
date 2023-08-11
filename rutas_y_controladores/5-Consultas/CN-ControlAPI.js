@@ -50,8 +50,8 @@ module.exports = {
 
 				// Check-Boxes
 				noLaVi: sinPreferencia.id,
-				conLinks:"conLinks",
-				enCast:"enCast",
+				conLinks: "conLinks",
+				enCast: "enCast",
 
 				// Otros
 				userID: req.session.usuario ? req.session.usuario.id : null,
@@ -143,9 +143,10 @@ module.exports = {
 				: procesos.resultados.prods({entidad, configCons: configProd});
 
 		// Obtiene los registros de rclvs
+
 		let rclvs =
 			entidad == "productos"
-				? orden.valor == "fechaDelAno_id"
+				? orden.codigo == "fechaDelAno_id"
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.rclvs({entidad, configCons, orden});
@@ -169,7 +170,7 @@ module.exports = {
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
-			rclvs = procesos.resultados.orden.rclvs({rclvs, orden, configCons}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.orden.rclvs({rclvs, orden, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, entidad}); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}

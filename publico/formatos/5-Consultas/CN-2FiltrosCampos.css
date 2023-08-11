@@ -1,13 +1,21 @@
-/* Filtros Campos */
-#configCons #configCampos {background: var(--gris-claro);}
-#configCons #configCampos {flex-grow: 1;}
-#configCons #configCampos .flexCol.ocultar {display: none;}
-
 /* Checkboxes */
-#configCampos #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro); }
-#configCampos #checkBoxes {padding: 10px 0; justify-content: center; flex-wrap: wrap; }
-#configCampos #checkBoxes div {padding: 3px 10px; flex-wrap: nowrap;}
-#configCampos #checkBoxes label {margin-left: 3px;}
+#configCons #checkBoxes {background: var(--gris-oscuro); color: var(--amarillo-claro); border-top: solid 1px snow;}
+#configCons #checkBoxes {padding: 7px 0 10px; justify-content: center; flex-wrap: wrap; }
+#configCons #checkBoxes div {padding: 3px 10px; flex-wrap: nowrap;}
+#configCons #checkBoxes label {margin-left: 3px;}
+
+/* Carteles para mostrar/ocultar filtros */
+#configCons #mostrarOcultarFiltros {justify-content: center; align-items: center; height: 100px;}
+#configCons #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
+#configCons #mostrarOcultarFiltros #mostrarFiltros {background: var(--azul-oscuro); color: snow;}
+#configCons #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
+#configCons #mostrarOcultarFiltros span {font-weight: bold;}
+
+/* Filtros Campos */
+#configCons #configCampos {background: var(--gris-claro); flex-grow: 1;}
+#configCons #configCampos {position: relative;}
+#configCons #configCampos nav {position: absolute;}
+#configCons #configCampos .flexCol.ocultar {display: none;}
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}
@@ -37,10 +45,3 @@ option#sinFiltro {display: block; font-style: italic}
 #configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro);}
 /* Fondo verde a los elegibles elegidos */
 #configCampos .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
-
-/* Carteles para mostrar/ocultar filtros */
-#configCampos #mostrarOcultarFiltros {flex-grow: 1; justify-content: center; align-items: center;}
-#configCampos #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCampos #mostrarOcultarFiltros #mostrarFiltros {background: var(--azul-oscuro); color: snow;}
-#configCampos #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
-#configCampos #mostrarOcultarFiltros span {font-weight: bold;}

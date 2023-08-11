@@ -2,7 +2,6 @@
 
 let resultados = {
 	obtiene: async function () {
-		return
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
@@ -16,7 +15,7 @@ let resultados = {
 		let datos = {configCons, entidad: v.entidad};
 
 		// Arma los datos
-		if (v.entidad == "productos" && v.ordenBD.valor == "fechaDelAno_id") datos = {...datos, dia, mes};
+		if (v.entidad == "productos" && v.ordenBD.codigo == "fechaDelAno_id") datos = {...datos, dia, mes};
 
 		// Busca la información en el BE
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -45,9 +44,9 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
-			if (v.layoutBD.boton || v.ordenBD.valor == "altaRevisadaEn") {
+			if (v.entPorOrdenBD.boton || v.ordenBD.codigo == "altaRevisadaEn") {
 				// Variables
-				const minimo = v.layoutBD.boton ? 4 : v.ordenBD.valor == "altaRevisadaEn" ? v.topeParaMasRecientes : 0;
+				const minimo = v.entPorOrdenBD.boton ? 4 : v.ordenBD.codigo == "altaRevisadaEn" ? v.topeParaMasRecientes : 0;
 				const parcial = Math.min(minimo, total);
 
 				// Actualiza el contador
@@ -84,7 +83,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.layoutBD.boton ? this.botones() : this.listados();
+			v.entPorOrdenBD.boton ? this.botones() : this.listados();
 
 			// Fin
 			return;
@@ -118,7 +117,7 @@ let resultados = {
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
 				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las primeras
-				if (v.ordenBD.valor == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
+				if (v.ordenBD.codigo == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
 
 				// Si es un RCLV, genera la variable de productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
@@ -239,7 +238,7 @@ let auxiliares = {
 	},
 	titulo: (registro, registroAnt, indice) => {
 		// Variables
-		const orden = v.ordenBD.valor;
+		const orden = v.ordenBD.codigo;
 		let titulo;
 
 		// nombre
@@ -459,9 +458,9 @@ let creaUnaCelda = {
 		const cantProds = rclv.productos.length;
 		const VF_apodo = !!rclv.apodo;
 		const VF_diaDelAno = rclv.fechaDelAno_id < 400;
-		const VF_epoca = !v.ordenBD.valor.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
+		const VF_epoca = !v.ordenBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
-		const VF_rolIglesia = v.ordenBD.valor != "rolIglesia" && rclv.rolIglesiaNombre;
+		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id + "&origen=CN";
@@ -502,7 +501,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.layoutBD.entidad == "productos" && !v.layoutBD.boton;
+		const agregarRCLV = v.entidad == "productos" && !v.entPorOrdenBD.boton;
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {

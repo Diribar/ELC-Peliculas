@@ -20,9 +20,14 @@ let actualizaConfigCons = {
 		// Acciones si existe un valor de orden
 		v.orden_id = DOM.orden_id.value;
 		if (v.orden_id) {
-			// Actualiza 'configCons.orden_id' y 'entidad'
+			// Actualiza 'configCons.orden_id'
 			configCons.orden_id = v.orden_id;
+
+			// Obtiene 'configCons.ascDes'
 			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			configCons.ascDes = v.ordenBD.ascDes;
+
+			// Obtiene las entidades posibles
 			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
 			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
 		}
@@ -38,28 +43,20 @@ let actualizaConfigCons = {
 		asignaUna: function () {
 			// Averigua si hay una entidad elegida
 			v.entidad_id = DOM.entidad_id.value;
-			v.entidadEnDOM_OK = false;
+			v.entidadEnOrden = false;
 
-			// Si hay una entidad elegida, se fija si la entidad pertenece al orden elegido
-			if (v.entidad_id) {
-				v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
-				v.entidad = v.entidadBD.codigo;
-				v.entidadEnDOM_OK = v.entidades_id.includes(v.entidadBD.id);
-			}
+			// Si hay una entidad elegida, se fija si pertenece al orden elegido
+			if (v.entidad_id) v.entidadEnOrden = v.entidades_id.includes(Number(v.entidad_id));
 
-			// Acciones si la entidad no pertenece al orden
-			if (!v.entidadEnDOM_OK) {
-				// Obtiene el orden 'default' a partir del layout
-				let entidadDefault = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entidadDefault);
-
-				// Asigna el valor default
-				v.entidad_id = entidadDefault.entidad_id;
-				DOM.entidad_id.value = entidadDefault.entidad_id;
-			}
+			// Si la entidad no pertenece al orden, asigna el valor default
+			if (!v.entidadEnOrden)
+				DOM.entidad_id.value = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entDefault).entidad_id;
 
 			// Actualiza variables
+			v.entidad_id = DOM.entidad_id.value;
 			configCons.entidad_id = v.entidad_id;
-			v.entidadBD = v.entidadesBD.find((n) => n.id == v.entidad_id);
+			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
+			v.entPorOrdenBD = v.entsPorOrdenesBD.find((n) => n.orden_id == v.orden_id && n.entidad_id == v.entidad_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -68,7 +65,7 @@ let actualizaConfigCons = {
 			return;
 		},
 		muestraOcultaOpciones: () => {
-			// Oculta/Muestra las opciones según el layout elegido
+			// Oculta/Muestra las opciones según el orden elegido
 			for (let opcion of DOM.entidad_idOpciones) {
 				v.entidades_id.includes(Number(opcion.value))
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
@@ -76,7 +73,7 @@ let actualizaConfigCons = {
 			}
 
 			// Si corresponde, actualiza 'bhr'
-			if (v.entidadBD.bhrSeguro) configCons.bhr = "1";
+			if (v.entPorOrdenBD.bhrSeguro) configCons.bhr = "1";
 
 			// Muestra/Oculta sectores
 			actualizaConfigCons.muestraOcultaPrefs();
@@ -136,48 +133,54 @@ let actualizaConfigCons = {
 
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.noLaVi.checked && DOM.pppOpciones.value != v.noLaVi;
+		// Start-up
+		if (DOM.pppOpciones.value == v.noLaVi) {
+			DOM.noLaVi.checked = true;
+			DOM.pppOpciones.value = "";
+		}
+
+		// Variables
+		const seMuestra = !DOM.noLaVi.checked;
+		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
-
-		if (!seMuestra) {
-			configCons.pppOpciones = v.noLaVi;
-			if (!DOM.noLaVi.checked) DOM.noLaVi.checked = true;
-		}
 
 		// Fin
 		this.tiposLink();
 		return;
 	},
 	tiposLink: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.conLinks.checked&& DOM.tiposLink.value != v.conLinks;
+		// Start-up
+		if (DOM.tiposLink.value == v.conLinks) {
+			DOM.noLaVi.checked = true;
+			DOM.tiposLink.value = "";
+		}
+
+		// Variables
+		const seMuestra = !DOM.conLinks.checked
+		if (!seMuestra) configCons.tiposLink = v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "tiposLink");
-
-		if (!seMuestra) {
-			configCons.tiposLink = v.conLinks;
-			if (!DOM.conLinks.checked) DOM.conLinks.checked = true;
-		}
 
 		// Fin
 		this.castellano();
 		return;
 	},
 	castellano: function () {
+		// Start-up
+		if (DOM.castellano.value == v.enCast) {
+			DOM.enCast.checked = true;
+			DOM.castellano.value = "";
+		}
+
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked&& DOM.castellano.value != v.enCast;
+		const seMuestra = !DOM.enCast.checked
+		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "castellano");
-
-		if (!seMuestra){
-			configCons.castellano = v.enCast;
-			if (!DOM.enCast.checked) DOM.enCast.checked = true;
-		}
 
 		// Fin
 		this.cfc();
@@ -276,7 +279,11 @@ let actualizaConfigCons = {
 
 let muestraOcultaActualizaPref = (seMuestra, elemento) => {
 	// Muestra
-	seMuestra ? DOM[elemento].parentNode.classList.remove("ocultar") : DOM[elemento].parentNode.classList.add("ocultar");
+	seMuestra
+		? v.mostrarFiltros
+			? DOM[elemento].parentNode.classList.remove("ocultar")
+			: DOM[elemento].parentNode.classList.replace("ocultar", "invisible")
+		: DOM[elemento].parentNode.classList.add("ocultar");
 
 	// Actualiza el valor de 'configCons'
 	if (seMuestra && DOM[elemento].value) configCons[elemento] = DOM[elemento].value;
