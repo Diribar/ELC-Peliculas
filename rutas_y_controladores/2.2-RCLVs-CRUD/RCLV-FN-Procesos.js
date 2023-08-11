@@ -99,14 +99,22 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.fechaDelAno) bloque.push({titulo: "Día del año", valor: registro.fechaDelAno.nombre});
+			if (registro.apodo) {
+				// Necesariamente es un 'personaje'
+				const articulo = registro.sexo_id == "V" ? "o" : "a";
+				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
+			}
+			if (registro.fechaDelAno.id < 400) {
+				// Puede ser cualquier familia RCLV
+				const articulo = registro.sexo_id == "M" ? "la" : "lo";
+				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
+			}
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
-				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
 				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon.nombre)
-					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
+					bloque.push({titulo: "Status Canonizac.", valor: registro.canon.nombre});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.ap_mar)

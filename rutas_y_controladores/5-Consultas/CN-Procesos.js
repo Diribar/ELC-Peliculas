@@ -575,15 +575,18 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, entidad}) => {
+			rclvs: ({rclvs, orden, entidad}) => {
 				// Si no hay registros a achicar, interrumpe la función
 				if (!rclvs.length) return [];
 
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {id, nombre, fechaDelAno_id, productos, fechaDelAno} = n;
-					let datos = {id, nombre, fechaDelAno_id, productos, fechaDelAno};
+					const {id, nombre, productos, fechaDelAno_id, fechaDelAno} = n;
+					let datos = {id, nombre, productos};
+					if (orden.codigo == "fechaDelAno_id")
+						datos = {...datos, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
+					else if (n.apodo) datos.apodo = n.apodo;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {
@@ -592,7 +595,7 @@ module.exports = {
 						datos.anoNacim = n.anoNacim;
 						if (!n.rolIglesia_id.startsWith("NN")) {
 							datos.rolIglesiaNombre = n.rolIglesia.nombre;
-							datos.rolIglesiaGrupo = n.rolIglesia.plural;
+							// datos.rolIglesiaGrupo = n.rolIglesia.plural;
 							if (!n.canon_id.startsWith("NN")) datos.canonNombre = n.canon.nombre;
 						}
 					}

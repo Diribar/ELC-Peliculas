@@ -5,9 +5,9 @@
 #encabezado #tituloPrincipal {flex-wrap: wrap; align-items: left;}
 #encabezado #tituloPrincipal select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
 #encabezado #tituloPrincipal select[name=entidad_id] {border-bottom-right-radius: 7px;}
-#encabezado #tituloPrincipal #ascDes {padding: 1px 5px;}
-#encabezado #tituloPrincipal :where(select, #ascDes) {background: var(--rojo-oscuro); color: snow;}
-#encabezado #tituloPrincipal :is(select:valid, #ascDes.OK) {background: var(--verde-oscuro);}
+#encabezado #tituloPrincipal select {background: var(--rojo-oscuro); color: snow;}
+#encabezado #tituloPrincipal select:valid {background: var(--verde-oscuro);}
+#encabezado #tituloPrincipal select optgroup {background: var(--azul-frances) ;}
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */

@@ -2,9 +2,16 @@
 <section id="tituloPrincipal" class="flexRow">
 	<!-- Orden -->
 	<select name="orden_id" class="prefSimple" required>
-		<% for (let orden of cn_ordenes) { %>
-			<option value="<%= orden.id %>"><%= orden.nombre %></option>
-		<% } %>
+		<optgroup label="Cuatro Películas">
+			<% for (let orden of cn_ordenes.filter(n => n.cuatroPelis)) { %>
+				<option value="<%= orden.id %>"><%= orden.nombre %></option>
+			<% } %>
+		</optgroup>
+		<optgroup label="Listado">
+			<% for (let orden of cn_ordenes.filter(n => !n.cuatroPelis)) { %>
+				<option value="<%= orden.id %>"><%= orden.nombre %></option>
+			<% } %>
+		</optgroup>
 	</select>
 	<!-- Entidad -->
 	<select name="entidad_id" class="prefSimple" required>
