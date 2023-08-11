@@ -311,9 +311,10 @@ module.exports = {
 						// Si no se eliminó, le agrega a los productos la ppp del usuario
 						else {
 							// Variable
-							const pppOpcionElegida = configCons.pppOpciones.includes(sinPreferencia.id)
-								? sinPreferencia
-								: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
+							const pppOpcionElegida =
+								configCons.pppOpciones == sinPreferencia.id
+									? sinPreferencia
+									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
 
 							prods[i] = {
 								...prods[i],
