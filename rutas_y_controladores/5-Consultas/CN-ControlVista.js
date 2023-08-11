@@ -10,7 +10,7 @@ module.exports = {
 		const tema = "consultas";
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
-		const userID = req.session.usuario ? usuario.id : null;
+		const userID = usuario ? usuario.id : null;
 		const configs = await procesos.configs.cabecera(userID); // Se necesita esa función también para la API
 		const configsDeCabecera = {
 			propios: configs.filter((n) => userID && n.usuario_id == userID),
@@ -20,13 +20,26 @@ module.exports = {
 
 		// Obtiene el ID de la configCons del usuario
 		const configConsUrl_id = Number(req.query.configCons_id);
-		const configConsUrl = configConsUrl_id ? await BD_genericas.obtienePorId("configsCons", configConsUrl_id) : "";
+		const existe = configConsUrl_id ? configs.find((n) => n.id == configConsUrl_id) : null;
+		if (existe) {
+			// Actualiza el usuario
+			if (usuario) {
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id: configConsUrl_id});
+				req.session.usuario = {...usuario, configCons_id: configConsUrl_id};
+			}
+			req.session.configCons_id = configConsUrl_id;
 
-		const configCons_id = configConsUrl
-			? configConsUrl.id
-			: userID && usuario.configCons_id
-			? usuario.configCons_id // El guardado en el usuario
-			: 2; // El 'default' es "Por fecha del año"
+			// Redirecciona quitando los parámetros del 'url'
+			const ruta = req.baseUrl + req.path;
+			res.redirect(ruta);
+		}
+
+		const configCons_id =
+			usuario && usuario.configCons_id
+				? usuario.configCons_id // El guardado en el usuario
+				: req.session.configCons_id
+				? req.session.configCons_id // El guardado en la session
+				: 2; // El 'default' es "Por fecha del año"
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
