@@ -6,24 +6,22 @@
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
 		<!-- Configuraciones personales -->
-		<% if (configs.propios.length) { %>
-			<optgroup id="propios" label="Configuraciones Propias">
-				<% for (let config of configs.propios) { %>
-					<option 
-						value="<%= config.id %>"
-						<% if (config.id == configCons_id) { %>selected<% } %>
-					><%= config.nombre %></option>
-				<% } %>
-			</optgroup>
-		<% } %>
+		<optgroup id="propios" label="Configuraciones Propias">
+			<% for (let configDeCabecera of configsDeCabecera.propios) { %>
+				<option 
+					value="<%= configDeCabecera.id %>"
+					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
+				><%= configDeCabecera.nombre %></option>
+			<% } %>
+		</optgroup>
 		<!-- Configuraciones predeterminadas -->
 		<% if (userID != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
-				<% for (let config of configs.predeterms) { %>
+				<% for (let configDeCabecera of configsDeCabecera.predeterms) { %>
 					<option 
-						value="<%= config.id %>"
-						<% if (config.id == configCons_id) { %>selected<% } %>
-					><%= config.nombre %></option>
+						value="<%= configDeCabecera.id %>"
+						<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
+					><%= configDeCabecera.nombre %></option>
 				<% } %>
 			</optgroup>
 		<% } %>
