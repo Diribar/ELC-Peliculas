@@ -290,13 +290,10 @@ module.exports = {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
 				if (!prods.length) return [];
-				console.log(293,pppRegistros.length);
+				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
-				console.log(295,configCons);
-				console.log(296,configCons.pppOpciones , configCons.pppOpciones != sinPreferencia.id , !pppRegistros.length);
 				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
-				console.log(298);
 
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {

@@ -132,7 +132,6 @@ module.exports = {
 	resultados: async (req, res) => {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
-		console.log(135,configCons);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 		const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
 		const {palabrasClave} = configCons;
