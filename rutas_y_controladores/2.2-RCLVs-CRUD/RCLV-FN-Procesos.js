@@ -223,32 +223,6 @@ module.exports = {
 			// Fin
 			return DE;
 		},
-		canonNombre: (RCLV) => {
-			// Variables
-			let canonNombre = "";
-
-			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
-				// Obtiene los procesos de canonización
-				let proceso = canons.find((m) => m.id == RCLV.canon_id);
-
-				// Asigna el nombre del proceso
-				canonNombre = proceso.nombre + " ";
-
-				// Verificación si el nombre del proceso es "Santo" (varón)
-				if (RCLV.canon_id == "STV") {
-					// Obtiene el primer nombre del RCLV
-					let nombre = RCLV.nombre;
-					nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
-
-					// Si el primer nombre no es "especial", cambia el prefijo por "San"
-					if (!prefijoSanto.includes(nombre)) canonNombre = "San ";
-				}
-			}
-
-			// Fin
-			return canonNombre;
-		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
 			const {entidad, origen} = req.query;

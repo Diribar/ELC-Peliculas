@@ -8,6 +8,7 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	// Entidades
 	obtieneDesdeFamilias: {
 		familia: (familias) => {
 			return familias == "productos"
@@ -190,6 +191,7 @@ module.exports = {
 				: "";
 		},
 	},
+
 	convierteLetras: {
 		alIngles: (resultado) => {
 			return resultado
@@ -421,6 +423,8 @@ module.exports = {
 			return imagenAlAzar;
 		},
 	},
+
+	// Productos y RCLVs
 	validacs: {
 		longitud: (dato, corto, largo) => {
 			return dato.length < corto
@@ -513,8 +517,89 @@ module.exports = {
 			return inicio + anchor + final;
 		},
 	},
+	obtieneLeadTime: (desdeOrig, hastaOrig) => {
+		// Variables
+		let desdeFinal = desdeOrig;
+		let hastaFinal = hastaOrig;
 
-	// Producto agregar
+		// Pasa el 'desde' del sábado/domingo al lunes siguiente
+		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
+
+		// Pasa el 'hasta' del sábado/domingo al viernes anterior
+		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
+
+		// Calcula la cantidad de horas
+		let diferencia = hastaFinal - desdeFinal;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+
+		// Averigua la cantidad de fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		horasDif -= semanas * 2 * 24;
+
+		// Resultado
+		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
+		leadTime = Math.min(96, leadTime);
+		
+		// Fin
+		return leadTime;
+	},
+	obtieneTodosLosCamposInclude: function (entidad) {
+		// Obtiene la familia
+		let familias = this.obtieneDesdeEntidad.familias(entidad);
+
+		// Obtiene todos los campos de la familia
+		let campos = [...variables.camposRevisar[familias]];
+
+		// Deja solamente los que tienen que ver con la entidad
+		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
+
+		// Deja solamente los campos con vínculo
+		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
+
+		// Obtiene una matriz con los vínculos
+		let include = camposConVinculo.map((n) => n.relacInclude);
+
+		// Fin
+		return include;
+	},
+	valorNombre: (valor, alternativa) => {
+		return valor ? valor.nombre : alternativa;
+	},
+	nombresPosibles: (registro) => {
+		return registro.nombreCastellano
+			? registro.nombreCastellano
+			: registro.nombreOriginal
+			? registro.nombreOriginal
+			: registro.nombre
+			? registro.nombre
+			: "";
+	},
+	sinProblemasDeCaptura: function (familia, revID) {
+		// Variables
+		const ahora = this.fechaHora.ahora();
+		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
+		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
+
+		// Fin
+		return familia.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturadoEn ||
+				// Que esté capturado hace más de dos horas
+				n.capturadoEn < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturadoPor_id != revID && n.capturadoEn < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturadoPor_id != revID && !n.capturaActiva) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
+		);
+	},
+
+	// Productos
 	prodAgregar: {
 		limpiaValores: (datos) => {
 			// Variables
@@ -557,6 +642,66 @@ module.exports = {
 			// Fin
 			return actores;
 		},
+	},
+	eliminaRepetidos: (prods) => {
+		// Variables
+		let resultado = [];
+
+		// Agrega los nuevos
+		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
+
+		// Fin
+		return resultado;
+	},
+	paises_idToNombre: (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = paises.find((n) => n.id == pais_id);
+				if (paisNombre) paisesNombre.push(paisNombre.nombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
+	},
+	obtieneLaEpocaDeEstreno: (anoEstreno) => {
+		// Variables
+		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
+		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
+
+		// Fin
+		return epocaEstreno_id;
+	},
+
+	// RCLVs
+	canonNombre: (RCLV) => {
+		// Variables
+		let canonNombre = "";
+
+		// Averigua si el RCLV tiene algún "proceso de canonización"
+		if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
+			// Obtiene los procesos de canonización
+			let proceso = canons.find((m) => m.id == RCLV.canon_id);
+
+			// Asigna el nombre del proceso
+			canonNombre = proceso.nombre + " ";
+
+			// Verificación si el nombre del proceso es "Santo" (varón)
+			if (RCLV.canon_id == "STV") {
+				// Obtiene el primer nombre del RCLV
+				let nombre = RCLV.nombre;
+				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+
+				// Si el primer nombre no es "especial", cambia el prefijo por "San"
+				if (!prefijoSanto.includes(nombre)) canonNombre = "San ";
+			}
+		}
+
+		// Fin
+		return canonNombre;
 	},
 
 	// Usuarios
@@ -631,107 +776,8 @@ module.exports = {
 	},
 
 	// Varias
-	obtieneLeadTime: (desdeOrig, hastaOrig) => {
-		// Variables
-		let desdeFinal = desdeOrig;
-		let hastaFinal = hastaOrig;
-		// Pasa el 'desde' del sábado/domingo al lunes siguiente
-		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
-		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
-		// Pasa el 'hasta' del sábado/domingo al viernes anterior
-		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
-		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
-		// Calcula la cantidad de horas
-		let diferencia = hastaFinal - desdeFinal;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / unaHora;
-		// Averigua la cantidad de fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		horasDif -= semanas * 2 * 24;
-		// Resultado
-		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
-		leadTime = Math.min(96, leadTime);
-		// Fin
-		return leadTime;
-	},
-	obtieneTodosLosCamposInclude: function (entidad) {
-		// Obtiene la familia
-		let familias = this.obtieneDesdeEntidad.familias(entidad);
-
-		// Obtiene todos los campos de la familia
-		let campos = [...variables.camposRevisar[familias]];
-
-		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
-
-		// Deja solamente los campos con vínculo
-		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
-
-		// Obtiene una matriz con los vínculos
-		let include = camposConVinculo.map((n) => n.relacInclude);
-
-		// Fin
-		return include;
-	},
-	valorNombre: (valor, alternativa) => {
-		return valor ? valor.nombre : alternativa;
-	},
-	nombresPosibles: (registro) => {
-		return registro.nombreCastellano
-			? registro.nombreCastellano
-			: registro.nombreOriginal
-			? registro.nombreOriginal
-			: registro.nombre
-			? registro.nombre
-			: "";
-	},
-	eliminaRepetidos: (prods) => {
-		// Variables
-		let resultado = [];
-
-		// Agrega los nuevos
-		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
-
-		// Fin
-		return resultado;
-	},
 	inicialMayus: (texto) => {
 		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
-	},
-	paises_idToNombre: (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = paises.find((n) => n.id == pais_id);
-				if (paisNombre) paisesNombre.push(paisNombre.nombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
-	},
-	sinProblemasDeCaptura: function (familia, revID) {
-		// Variables
-		const ahora = this.fechaHora.ahora();
-		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
-		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
-
-		// Fin
-		return familia.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturadoEn ||
-				// Que esté capturado hace más de dos horas
-				n.capturadoEn < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturadoPor_id != revID && n.capturadoEn < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturadoPor_id != revID && !n.capturaActiva) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
-		);
 	},
 	reqBasePathUrl: (req) => {
 		// Obtiene los resultados
@@ -749,14 +795,6 @@ module.exports = {
 
 		// Fin
 		return {baseUrl, ruta, url};
-	},
-	obtieneLaEpocaDeEstreno: (anoEstreno) => {
-		// Variables
-		const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
-		const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id;
-
-		// Fin
-		return epocaEstreno_id;
 	},
 };
 
