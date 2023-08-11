@@ -96,11 +96,18 @@ module.exports = {
 			prods: (configCons) => {
 				// Variables
 				const vars = variables.camposConsultas;
-				const {tiposLink, castellano} = vars;
+				const {publicos, tiposLink, castellano} = vars;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let campo in configCons) if (vars[campo] && vars[campo].campo) prefs[vars[campo].campo] = configCons[campo];
+				for (let campo in configCons)
+					if (vars[campo] && vars[campo].campoFiltro) prefs[vars[campo].campoFiltro] = configCons[campo];
+
+				// Conversión de 'publicos'
+				if (configCons.publicos) {
+					const aux = publicos.opciones.find((n) => n.id == configCons.publicos).condic;
+					prefs = {...prefs, ...aux};
+				}
 
 				// Conversión de 'tiposLink'
 				if (configCons.tiposLink) {

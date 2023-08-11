@@ -8,6 +8,9 @@ let resultados = {
 		// Oculta el cartel de 'No tenemos'
 		DOM.noTenemos.classList.add("ocultar");
 
+		// Si es un resultado a mostrar en botones, oculta el contador
+		v.entPorOrdenBD.boton ? DOM.contadorDeProds.classList.add("ocultar") : DOM.contadorDeProds.classList.remove("ocultar");
+
 		// Variables
 		const ahora = new Date();
 		const dia = ahora.getDate();
@@ -43,11 +46,12 @@ let resultados = {
 
 		// Contador para Productos
 		if (v.entidad == "productos") {
-			// Contador para vista 'botones' o 'listado-altaRevisadaEn'
-			if (v.entPorOrdenBD.boton || v.ordenBD.codigo == "altaRevisadaEn") {
+			// Contador para vista 'botones'
+			if (v.entPorOrdenBD.boton) return;
+			// Contador para 'listado-altaRevisadaEn'
+			else if (v.ordenBD.codigo == "altaRevisadaEn") {
 				// Variables
-				const minimo = v.entPorOrdenBD.boton ? 4 : v.ordenBD.codigo == "altaRevisadaEn" ? v.topeParaMasRecientes : 0;
-				const parcial = Math.min(minimo, total);
+				const parcial = Math.min(v.topeParaMasRecientes, total);
 
 				// Actualiza el contador
 				DOM.contadorDeProds.innerHTML = parcial + " de " + total;

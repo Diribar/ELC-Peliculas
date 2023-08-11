@@ -225,7 +225,9 @@ let cambiosEnBD = {
 		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
 
 		// Limpia
-		delete configCons.edicion, configCons.nombre, configCons.id;
+		delete configCons.edicion
+		delete configCons.nombre
+		delete configCons.id;
 
 		// Fin
 		return;

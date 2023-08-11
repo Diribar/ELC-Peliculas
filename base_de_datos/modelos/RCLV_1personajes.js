@@ -14,12 +14,13 @@ module.exports = (sequelize, dt) => {
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
-		anoNacim: {type: dt.INTEGER},
 		apodo: {type: dt.STRING(35)},
+		canon_id: {type: dt.STRING(3)},
+		canonNombre: {type: dt.STRING(15)},
+		anoNacim: {type: dt.INTEGER},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		rolIglesia_id: {type: dt.STRING(3)},
-		canon_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 
 		creadoPor_id: {type: dt.INTEGER},

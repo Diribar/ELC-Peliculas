@@ -5,7 +5,7 @@ const BD_genericas = require("../2-BD/Genericas");
 module.exports = {
 	// Institucional
 	vistasInstitucs: {
-		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true},
+		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
 		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart"},
 		"en-que-consiste-este-sitio": {
@@ -35,15 +35,22 @@ module.exports = {
 		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
-			campo: "cfc",
+			campoFiltro: "cfc",
 			opciones: [
 				{id: "1", nombre: "Con relac. c/Fe Católica"},
 				{id: "0", nombre: "Sin relac. c/Fe Católica"},
 			],
 		},
-		publicos: {titulo: "Público Recomendado", campo: "publico_id"},
-		epocasEstreno: {titulo: "Época de Estreno", campo: "epocaEstreno_id"},
-		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campo: "epocaOcurrencia_id"},
+		publicos: {
+			titulo: "Público Recomendado",
+			opciones: [
+				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
+				{id: "FM", nombre: "Familia", condic: {publico_id: familia_id}},
+				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
+			],
+		},
+		epocasEstreno: {titulo: "Época de Estreno", campoFiltro: "epocaEstreno_id"},
+		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campoFiltro: "epocaOcurrencia_id"},
 		pppOpciones: {
 			titulo: "Preferencia por Película",
 		},
@@ -62,11 +69,11 @@ module.exports = {
 				{id: "enCast", nombre: "En castellano (habl./subt.)", condic: {[Op.or]: [{castellano: 2}, {subtitulos: 2}]}},
 			],
 		},
-		tiposActuacion: {titulo: "Tipo de Actuación", campo: "tipoActuacion_id"},
+		tiposActuacion: {titulo: "Tipo de Actuación", campoFiltro: "tipoActuacion_id"},
 		// Se muestran ocasionalmente
 		bhr: {
 			titulo: "Basado en Hechos Reales",
-			campo: "bhr",
+			campoFiltro: "bhr",
 			opciones: [
 				{id: "1", nombre: "Hechos Reales"},
 				{id: "0", nombre: "Ficción"},
@@ -103,7 +110,7 @@ module.exports = {
 					nombre: "Vener. y Siervos de Dios",
 					condic: {[Op.or]: [{[Op.startsWith]: "VN"}, {[Op.startsWith]: "SD"}]},
 				},
-				{id: "TD", nombre: "Todos (Santos - Siervos)", condic: {[Op.notLike]: "NN%"}},
+				{id: "TD", nombre: "Santos a Siervos de Dios", condic: {[Op.notLike]: "NN%"}},
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
@@ -285,6 +292,8 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	// Nombres que llevan el prefijo "Santo"
+	prefijoSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -390,7 +399,7 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 			},
 			// Personajes
-			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
+			{nombre: "apodo", titulo: "Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
 			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},

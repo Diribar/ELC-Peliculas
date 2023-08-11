@@ -15,17 +15,11 @@
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<% if (personajes) { %>
-										<li>El <b>Nombre Formal</b> es <u>necesario</u>, el Alternativo es opcional.</li>
-										<li><u><em>Formal</em></u>: para las personas que,</li>
-										<ul type="dots" class="subgrupo">
-											<li>Cambiaron su nombre usamos el nuevo.</li>
-											<li>No lo  cambiaron, usamos su nombre de civil.</li>
-										</ul>
-										<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
-										<li>También es necesario que nos informes el sexo.</li>
+										<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
+										<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si la persona es conocida también por otro nombre o apodo.</li>
 									<% } else { %>
 										<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
-										<% } %>
+									<% } %>
 								</ul>	
 							</i>
 						</div>
@@ -36,13 +30,13 @@
 			<% if (codigo != "rclv/solapamiento") { %>
 				<!-- Campos -->
 				<div class="flexCol spaceBetween">
-					<!-- Nombre Formal o Nombre-->
+					<!-- Nombre Formal -->
 					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
 						<% if (personajes) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
 					<% if (personajes) { %>
-						<!-- Nombre Alternativo -->
+						<!-- Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">

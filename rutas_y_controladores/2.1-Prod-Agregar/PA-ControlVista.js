@@ -77,10 +77,12 @@ module.exports = {
 			// Obtiene el Data Entry de session y cookies
 			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 
-			// Si existe un valor para el campo 'avatar' elimina el archivo descargado
+			// Acciones si existe un valor para el campo 'avatar'
 			if (datosDuros.avatar) {
-				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
-				delete datosDuros.avatar, datosDuros.tamano;
+				// Elimina 'avatarUrl' para que la vista permita ingresar otra imagen
+				delete datosDuros.avatarUrl; 
+
+				// Actualiza session y cookie
 				req.session.datosDuros = datosDuros;
 				res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 			}
@@ -122,6 +124,14 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
 			let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+			
+			// Acciones si existe un archivo avatar ingresado anteriormente
+			if (datosDuros.avatar) {
+				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
+				delete datosDuros.avatar;
+			}
+
+			// Actualiza la variable 'datosDuros'
 			datosDuros = {...datosDuros, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios

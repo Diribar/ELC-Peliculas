@@ -97,6 +97,10 @@ module.exports = {
 			const configCons = JSON.parse(req.query.configCons);
 			const {id} = configCons;
 
+			// Quita los campos irrelevantes
+			delete configCons.id;
+			delete configCons.ascDes;
+
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
@@ -136,7 +140,9 @@ module.exports = {
 
 		// Obtiene los registros de productos
 		let configProd = {...configCons};
-		delete configProd.apMar, configProd.rolesIgl, configProd.canons;
+		delete configProd.apMar;
+		delete configProd.rolesIgl;
+		delete configProd.canons;
 		let prods =
 			entidad == "productos"
 				? procesos.resultados.prods({entidad, configCons})

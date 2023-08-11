@@ -19,10 +19,6 @@ global.path = require("path");
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
-const procesos = require("./funciones/3-Rutinas/RT-Procesos");
-global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
-const variables = require("./funciones/1-Procesos/Variables");
-global.vistasInstitucs = variables.vistasInstitucs;
 
 // Para usar propiedades de express
 global.express = require("express");
@@ -154,6 +150,11 @@ app.set("views", [
 	global.identPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
 	global.identValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
 
+	// 4. Públicos
+	global.mayores_ids = publicos.filter((n) => n.mayores).map((n) => n.id);
+	global.familia_id = publicos.find((n) => n.familia).id;
+	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
+
 	// Otros
 	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);
 	global.sinPreferencia = pppOpciones.find((n) => n.sinPreferencia);
@@ -164,6 +165,13 @@ app.set("views", [
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+
+	// Variables que reqiueren 'require'
+	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
+	global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
+	const variables = require("./funciones/1-Procesos/Variables");
+	global.vistasInstitucs = variables.vistasInstitucs;
+	global.prefijoSanto = variables.prefijoSanto;
 
 	// Procesos que dependen de la variable 'global'
 	// Rutinas

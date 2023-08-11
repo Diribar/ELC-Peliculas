@@ -59,26 +59,21 @@ module.exports = {
 		const omnipotente = req.session.usuario.rolUsuario.omnipotente;
 
 		// Productos
-		let prods = await procesos.obtieneProds(userID);
-		// return res.send(prods)
-		prods = procesosRE.TC.procesaCampos.prods(prods);
+		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
+		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.TC.procesaCampos.rclvs(n));
+		let prodLinks = procesos.obtieneProds_Links(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
 
 		// RCLVs
-		let rclvs = await procesos.obtieneRCLVs(userID);
-		rclvs = procesosRE.TC.procesaCampos.rclvs(rclvs);
-
-		// Links
-		let prodLinks = await procesos.obtieneProds_Links(userID);
-		prodLinks = procesosRE.TC.procesaCampos.prods(prodLinks);
+		[prods, rclvs, prodLinks] = await Promise.all([prods, rclvs, prodLinks]);
 
 		// Une Productos y Links
 		prods = {...prods, ...prodLinks};
-
+		
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-
+		
 		// Va a la vista
-		// return res.send(productos)
+		// return res.send(prods);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
 			...{prods, rclvs, revisor, omnipotente},
