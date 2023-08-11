@@ -241,6 +241,28 @@ let auxiliares = {
 		const orden = v.ordenBD.codigo;
 		let titulo;
 
+		// fechaDelAno_id
+		if (!titulo && orden == "fechaDelAno_id") {
+			// Variables
+			const diaAnt = registroAnt.fechaDelAno_id;
+			const diaActual = registro.fechaDelAno_id;
+
+			// Pruebas
+			titulo =
+				!diaAnt && diaActual < 92
+					? "Primer"
+					: (!diaAnt || diaAnt < 92) && diaActual >= 92 && diaActual < 183
+					? "Segundo"
+					: (!diaAnt || diaAnt < 183) && diaActual >= 183 && diaActual < 275
+					? "Tercer"
+					: (!diaAnt || diaAnt < 275) && diaActual >= 275
+					? "Cuarto"
+					: "";
+
+			// Fin
+			if (titulo) titulo += " Trimestre";
+		}
+
 		// nombre
 		if (!titulo && orden == "nombre") {
 			// Variables
@@ -264,45 +286,13 @@ let auxiliares = {
 			if (titulo) titulo = prefijo + titulo;
 		}
 
-		// fechaDelAno_id
-		if (!titulo && orden == "fechaDelAno_id") {
-			// Variables
-			const diaAnt = registroAnt.fechaDelAno_id;
-			const diaActual = registro.fechaDelAno_id;
-
-			// Pruebas
-			titulo =
-				!diaAnt && diaActual < 92
-					? "Primer"
-					: (!diaAnt || diaAnt < 92) && diaActual >= 92 && diaActual < 183
-					? "Segundo"
-					: (!diaAnt || diaAnt < 183) && diaActual >= 183 && diaActual < 275
-					? "Tercer"
-					: (!diaAnt || diaAnt < 275) && diaActual >= 275
-					? "Cuarto"
-					: "";
-
-			// Fin
-			if (titulo) titulo += " Trimestre";
-		}
-
-		// rolIglesia
-		if (!titulo && orden == "rolIglesia") {
-			// Variables
-			const grupoAnt = registroAnt.rolIglesiaGrupo;
-			const grupoActual = registro.rolIglesiaGrupo;
-
-			// Pruebas
-			if (grupoAnt != grupoActual) titulo = registro.rolIglesiaGrupo;
-		}
-
-		// anoNacim y anoComienzo
-		if (!titulo && ["anoNacim", "anoComienzo"].includes(orden)) {
+		// anoHistorico
+		if (!titulo && orden == "anoHistorico") {
 			// Variables
 			const epocaAnt = registroAnt.epocaOcurrencia_id;
 			const epocaActual = registro.epocaOcurrencia_id;
-			const anoAnt = orden == "anoNacim" ? registroAnt.anoNacim : registroAnt.anoComienzo;
-			const anoActual = orden == "anoNacim" ? registro.anoNacim : registro.anoComienzo;
+			const anoAnt = registroAnt.anoNacim ? registroAnt.anoNacim : registroAnt.anoComienzo;
+			const anoActual = registro.anoNacim ? registro.anoNacim : registro.anoComienzo;
 
 			// Pruebas
 			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registro.epocaOcurrenciaNombre;
@@ -336,16 +326,6 @@ let auxiliares = {
 		// altaRevisadaEn
 		if (!titulo && orden == "altaRevisadaEn") {
 			titulo = !indice ? "Las más recientes" : "";
-		}
-
-		// anoEstreno
-		if (!titulo && orden == "anoEstreno") {
-			// Variables
-			const grupoAnt = registroAnt.epocaEstrenoNombre;
-			const grupoActual = registro.epocaEstrenoNombre;
-
-			// Pruebas
-			if (grupoAnt != grupoActual) titulo = registro.epocaEstrenoNombre;
 		}
 
 		// Fin

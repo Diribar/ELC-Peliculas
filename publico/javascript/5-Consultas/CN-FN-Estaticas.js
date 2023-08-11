@@ -126,6 +126,9 @@ let actualiza = {
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
 
+		// Limpia los check-boxes
+		for (let input of DOM.checkBoxesInputs) input.checked = false;
+
 		// Fin
 		return;
 	},

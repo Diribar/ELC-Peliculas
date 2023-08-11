@@ -11,11 +11,9 @@
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */
-#encabezado #tituloPrincipal :is(#ayudaOrden, #actualizar) {align-self: center; margin-left: 10px;}
-#encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
-#encabezado #tituloPrincipal #actualizar i {background: var(--backAyuda); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
+#encabezado #tituloPrincipal #ayudaOrden {align-self: center; margin-left: 10px;}
 #encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
-#encabezado #tituloPrincipal #actualizar i {font-size: 0.8rem; padding: 3.5px;}
+#encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 
 /* Contador */
 #encabezado #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
