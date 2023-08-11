@@ -628,7 +628,8 @@ let datosImgDerecha = (resultado) => {
 		imgDerecha = {entidad: resultado.entidad, id: resultado.id};
 
 		// Nombre de la imagen
-		imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
+		imgDerecha.titulo = resultado.canonNombre ? resultado.canonNombre + " " : "";
+		imgDerecha.titulo += resultado.nombre;
 
 		// Datos del archivo, dependiendo de la entidad
 		if (!resultado.carpetaAvatars) {
