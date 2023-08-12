@@ -68,7 +68,7 @@
 			<div class="flechas img">
 				<% for (let prov of linksProvs.filter(n => n.mostrarSiempre)) { %>
 					<a 
-						href="//<%= prov.url_distintivo + prov.url_buscarPre + registro.nombreCastellano %><% if (prov.url_buscarPost) { %>&<%= prov.url_buscarPost %><% } %>"
+						href="//<%= prov.url_distintivo + prov.url_buscarPre + (prov.url_buscarPre ? registro.nombreCastellano : '') + prov.url_buscarPost %>"
 						target="_blank"
 						tabindex="-1"
 					>
