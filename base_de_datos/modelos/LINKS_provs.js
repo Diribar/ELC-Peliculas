@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		calidad: {type: dt.INTEGER},
 		generico: {type: dt.BOOLEAN},
 		url_distintivo: {type: dt.STRING(20)},
-		buscadorAutom: {type: dt.BOOLEAN},
+		mostrarSiempre: {type: dt.BOOLEAN},
 		url_buscarPre: {type: dt.STRING(25)},
 		trailer: {type: dt.BOOLEAN},
 		pelicula: {type: dt.BOOLEAN},
