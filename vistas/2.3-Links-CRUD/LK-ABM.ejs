@@ -66,7 +66,7 @@
 		<!-- Específicos de links -->
 		<% if (tema!="revisionEnts") { %>
 			<div class="flechas img">
-				<% for (let prov of linksProvs.filter(n => n.buscadorAutom)) { %>
+				<% for (let prov of linksProvs.filter(n => n.mostrarSiempre)) { %>
 					<a 
 						href="//<%= prov.url_distintivo + prov.url_buscarPre + registro.nombreCastellano %><% if (prov.url_buscarPost) { %>&<%= prov.url_buscarPost %><% } %>"
 						target="_blank"
