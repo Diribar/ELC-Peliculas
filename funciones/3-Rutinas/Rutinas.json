@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 11/ago",
-	"HoraUTC": "14:04",
+	"FechaUTC": "Sáb. 12/ago",
+	"HoraUTC": "16:51",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 7/ago",
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-ago-23": {"titulo": "santa Teresa Benedicta de la Cruz", "entidad": "personajes", "id": 107},
 		"10-ago-23": {"titulo": "ELC - Películas"},
 		"11-ago-23": {"titulo": "Santa Clara de Asís", "entidad": "personajes", "id": 111},
 		"12-ago-23": {"titulo": "Santa Juana de Chantal", "entidad": "personajes", "id": 170},
-		"13-ago-23": {"titulo": "ELC - Películas"}
+		"13-ago-23": {"titulo": "ELC - Películas"},
+		"14-ago-23": {"titulo": "Beato Michael Mc Givney", "entidad": "personajes", "id": 171}
 	}
 }
