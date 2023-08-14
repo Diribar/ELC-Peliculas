@@ -94,7 +94,6 @@ module.exports = {
 	obtieneImgDerecha: async (fechaNum) => {
 		// Variables
 		const fecha = new Date(fechaNum);
-		let resultado;
 
 		// Obtiene el 'fechaDelAno_id'
 		const dia = fecha.getDate();
@@ -103,23 +102,10 @@ module.exports = {
 		delete fechaDelAno.epocaDelAno;
 
 		// Obtiene los RCLV
-		let rclvs = await obtieneLosRCLV(fechaDelAno);
+		const rclvs = await obtieneLosRCLV(fechaDelAno);
 
-		// Acciones si se encontraron rclvs
-		if (rclvs.length > 1) {
-			// Ordena por prioridad_id decreciente
-			rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
-
-			// Filtra por los que tienen la máxima prioridad_id
-			const prioridad_id = rclvs[0].prioridad_id;
-			rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
-
-			// Elige al azar de entre los que tienen la máxima prioridad
-			const indice = parseInt(Math.random() * rclvs.length);
-			resultado = rclvs[indice];
-		}
-		// Si se encontró un solo resultado, lo asigna
-		else if (rclvs.length == 1) resultado = rclvs[0];
+		// Acciones si se encontraron varios rclvs
+		const resultado = reduceRCLVs(rclvs);
 
 		// Obtiene los datos de la imgDerecha
 		const imgDerecha = datosImgDerecha(resultado);
@@ -600,7 +586,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 				// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
 				// .then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
 				// Le agrega la entidad
-				.then((n) => n.map((m) => (m = {...m, entidad})))
+				.then((n) => n.map((m) => ({...m, entidad})))
 		);
 	}
 
@@ -617,6 +603,40 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 
 	// Fin
 	return resultados;
+};
+let reduceRCLVs = (rclvs) => {
+	// Variables
+	let resultado;
+
+	if (rclvs.length > 1) {
+		// Ordena por prioridad_id decreciente
+		rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
+
+		// Filtra por los que tienen la máxima prioridad_id
+		const prioridad_id = rclvs[0].prioridad_id;
+		rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
+
+		// Prioriza por los de mayor avance de proceso de canonización
+		if (rclvs.length > 1)
+			rclvs = rclvs.find((n) => n.canon_id && n.canon_id.startsWith("ST"))
+				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("ST"))
+				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("BT"))
+				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("BT"))
+				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("VN"))
+				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("VN"))
+				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("SD"))
+				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("SD"))
+				: rclvs;
+
+		// Elige al azar de entre los que tienen la máxima prioridad
+		const indice = rclvs.length > 1 ? parseInt(Math.random() * rclvs.length) : 0;
+		resultado = rclvs[indice];
+	}
+	// Si se encontró un solo resultado, lo asigna
+	else if (rclvs.length == 1) resultado = rclvs[0];
+
+	// Fin
+	return resultado;
 };
 let datosImgDerecha = (resultado) => {
 	// Variables
