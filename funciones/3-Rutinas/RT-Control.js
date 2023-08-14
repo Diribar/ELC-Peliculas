@@ -14,6 +14,7 @@ module.exports = {
 		// Variables
 		this.FechaPrimerLunesDelAno();
 		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Rutinas programadas
 		const info = procesos.lecturaRutinasJSON();
@@ -322,6 +323,7 @@ module.exports = {
 		// Obtiene la semanaUTC actual
 		this.FechaPrimerLunesDelAno();
 		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
@@ -411,7 +413,6 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - cuatroSems);
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
 
