@@ -4,18 +4,18 @@ window.addEventListener("load", () => {
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
 	let DOM = {
-		filas_yaExistentes: document.querySelectorAll(".yaExistentes"),
-		botonesOut: document.querySelectorAll(".yaExistentes .out"),
+		filasYaExistentes: document.querySelectorAll(".yaExistentes"),
 		botonesEditar: document.querySelectorAll(".edicion"), // No lleva 'yaExistentes'
+		links_url: document.querySelectorAll(".yaExistentes input[name='url'"),
 		taparMotivo: document.querySelectorAll(".yaExistentes .taparMotivo"),
 		motivosFila: document.querySelectorAll(".yaExistentes .motivo"),
 		motivosSelect: document.querySelectorAll(".yaExistentes .motivo select"),
-		links_url: document.querySelectorAll(".yaExistentes input[name='url'"),
-		pasivos: document.querySelector("#tabla #tags #inactivo"),
+		botonesOut: document.querySelectorAll(".yaExistentes .out"),
+		// pasivos: document.querySelector("#tabla #tags #inactivo"),
 	};
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
-		columnas: DOM.taparMotivo.length / DOM.filas_yaExistentes.length,
+		columnas: DOM.taparMotivo.length / DOM.filasYaExistentes.length,
 	};
 	let rutas = {
 		eliminar: location.pathname.startsWith("/links/")
@@ -37,9 +37,9 @@ window.addEventListener("load", () => {
 				url += "&IN=NO";
 				url += "&aprob=NO";
 				let respuesta = await fetch(rutas.eliminar + url).then((n) => n.json());
-				if (respuesta.ocultar) DOM.filas_yaExistentes[fila].classList.add("ocultar");
+				if (respuesta.ocultar) DOM.filasYaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) location.reload();
-				if (respuesta.pasivos) DOM.pasivos.innerHTML = "* Pasivos";
+				// if (respuesta.pasivos) DOM.pasivos.innerHTML = "* Pasivos";
 			}
 			// Inactivar
 			else {
