@@ -86,7 +86,8 @@ module.exports = {
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
-		else if (!link.statusRegistro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
+		else if (![creadoAprob_id, aprobado_id].includes(link.statusRegistro_id))
+			respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
 		// No existe el motivo
 		else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 		// El link existe, tiene status 'aprobado' y motivo
