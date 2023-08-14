@@ -37,7 +37,7 @@
 		</div>
 	</td>
 	<!-- Sub-Títulos -->
-	<td class="ancho_subtitulo subtitulos campo">
+	<td class="ancho_subtitulos subtitulos campo">
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.subtitulos!==null&&n.editadoPor_id!=userID) %> 
 			<select name="subtitulos" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
