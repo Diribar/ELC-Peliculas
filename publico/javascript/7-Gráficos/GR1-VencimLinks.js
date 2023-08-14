@@ -1,7 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const dondeUbicarLosResultados = document.querySelector("#zonaDeGraficos #cuadro");
 	const linksSemanales = await fetch("/graficos/api/vencimiento-de-links-por-semana").then((n) => n.json());
 	const ejeY = Object.values(linksSemanales);
 	let ejeX = Object.keys(linksSemanales);
