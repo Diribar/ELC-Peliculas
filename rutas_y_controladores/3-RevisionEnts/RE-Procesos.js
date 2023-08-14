@@ -106,7 +106,7 @@ module.exports = {
 			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
 				yaTuvoPrimRev: true,
-				statusSugeridoEn: {[Op.gt]: comienzoDeLaSemana()},
+				statusSugeridoEn: {[Op.gt]: lunesDeEstaSemana},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
@@ -873,14 +873,4 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 
 	// Fin
 	return prods;
-};
-let comienzoDeLaSemana = () => {
-	// Obtiene la semana del año
-	const semana = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-
-	// Obtiene el instante cero de la semana actual
-	const instanteCeroDeLaSemanaActual = fechaPrimerLunesDelAno + semana * unDia * 7;
-
-	// Fin
-	return new Date(instanteCeroDeLaSemanaActual);
 };
