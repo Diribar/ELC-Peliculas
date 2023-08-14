@@ -44,7 +44,7 @@
 	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
 	<section>
 		<!-- Tablero de Gráficos -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 			<a href="/graficos/vencimiento-de-links-por-semana/?origen=TM" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-chart-line scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
