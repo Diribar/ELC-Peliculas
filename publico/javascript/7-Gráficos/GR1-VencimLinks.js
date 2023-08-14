@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 				ticks,
 			},
 			vAxis: {
-				viewWindow: {max: Math.ceil(Math.max(...ejeY) / 10) * 10},
+				viewWindow: {min: 0, max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				fontSize: 20,
 			},
 		};
