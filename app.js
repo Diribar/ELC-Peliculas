@@ -3,7 +3,7 @@
 global.unaHora = 60 * 60 * 1000;
 global.unDia = unaHora * 24;
 global.unaSemana = unDia * 7;
-global.cuatroSems = unaSemana * 4;
+global.vidaPrimRevision = unaSemana * 4;
 global.vidaUtilLinks = unaSemana * 26; // 26 semanas
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];

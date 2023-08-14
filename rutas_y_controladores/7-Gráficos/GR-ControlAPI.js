@@ -6,7 +6,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 module.exports = {
 	vencimLinks: async (req, res) => {
 		// Variables
-		const vidaPrimRevision = cuatroSems;
+		const vidaPrimRevision = vidaPrimRevision;
 		if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno'
 		const semanaActual = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
 		const linksSemanales = {};

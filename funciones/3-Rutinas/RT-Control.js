@@ -413,7 +413,7 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - cuatroSems);
+		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - vidaPrimRevision);
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
 
 		// Condiciones
