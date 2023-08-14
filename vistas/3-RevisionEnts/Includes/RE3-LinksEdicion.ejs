@@ -7,7 +7,7 @@
 		<td class="<%= campo %>">
 			<% if (edicion[campo]!==null) { %>
 				<div class="inputError ancho_<%= campo %>">
-					<% let valor = campo == "tipo_id" ? (edicion[campo] == 1 ? "Trailer" : "Película") : (campo=="castellano" || campo=="gratuito" || campo=="completo") ? (edicion[campo] ? "SI" : "NO") : edicion[campo] %> 
+					<% let valor = campo == "tipo_id" ? (edicion[campo] == 1 ? "Trailer" : "Película") : ["castellano", "subtitulos", "gratuito", "completo"].includes(campo) ? (edicion[campo] ? "SI" : "NO") : edicion[campo] %> 
 					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
 					<div class="errores">
