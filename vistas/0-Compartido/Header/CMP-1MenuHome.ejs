@@ -1,6 +1,6 @@
-<div class="desplMostrar menu_mostrar menuFondo ocultar">
+<div class="desplMostrar menuMostrar menuFondo ocultar">
 	<% for (let campo in vistasInstitucs) { %>
-		<a href="/institucional/<%= campo %>" class="menu_opcion">
+		<a href="/institucional/<%= campo %>" class="menuOpcion">
 			<i class="fa-solid icono <%= vistasInstitucs[campo].icono %>"></i>
 			<span><%= vistasInstitucs[campo].titulo %></span>
 		</a>
@@ -8,11 +8,11 @@
 	<% } %>
 
 	<!-- <hr>
-	<a href="#" class="menu_opcion">
+	<a href="#" class="menuOpcion">
 		<span class="icono" id="ELC">ELC</span>
 		<span>Grupo ELC</span>
 	</a> -->
-	<!-- <a href="#" class="menu_opcion inactivo">
+	<!-- <a href="#" class="menuOpcion inactivo">
 		<i class="fa-solid fa-person-walking icono"></i>
 		<span>Nuestra Historia</span>
 	</a> -->
