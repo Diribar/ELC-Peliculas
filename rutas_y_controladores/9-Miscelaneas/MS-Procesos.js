@@ -52,8 +52,8 @@ module.exports = {
 		const ST = pelisColes.filter((n) => n.tema_id == 1);
 
 		// Aprobados - Sin links
-		const SL_PC = pelisColes.filter((n) => !n.linksGeneral);
-		const SL_Caps = aprobados.filter((n) => !n.linksGeneral && n.entidad == "capitulos");
+		const SL_Pelis = pelisColes.filter((n) => !n.linksGeneral&&n.entidad == "peliculas");
+		const SL_CC = aprobados.filter((n) => !n.linksGeneral && n.entidad != "peliculas");
 
 		// Aprobados - Sin links gratuitos
 		const SLG = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.linksGratuitos);
@@ -62,7 +62,7 @@ module.exports = {
 		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
 
 		// Fin
-		return {IN, SE, SC, ST, SL_PC, SL_Caps, SLG, SLC};
+		return {IN, SE, SC, ST, SL_Pelis, SL_CC, SLG, SLC};
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables

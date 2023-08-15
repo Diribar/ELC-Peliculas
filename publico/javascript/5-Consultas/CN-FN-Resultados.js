@@ -441,7 +441,7 @@ let creaUnaCelda = {
 		// Variables
 		const cantProds = rclv.productos.length;
 		const VF_apodo = !!rclv.apodo;
-		const VF_diaDelAno = rclv.fechaDelAno_id < 400;
+		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
 		const VF_epoca = !v.ordenBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
 		const VF_rolIglesia = rclv.rolIglesiaNombre;
@@ -459,8 +459,8 @@ let creaUnaCelda = {
 		primeraLinea.innerHTML = rclv.nombre; // Nombre
 		const span = document.createElement("span");
 
-		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + (!VF_diaDelAno ? ")" : ""); // Apodo
-		if (VF_diaDelAno) span.innerHTML += (VF_apodo ? " - " : " (") + rclv.fechaDelAno.nombre + ")"; // Día del Año
+		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
+		else if (VF_diaDelAno) span.innerHTML += " (" + rclv.fechaDelAno.nombre + ")"; // Día del Año
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 

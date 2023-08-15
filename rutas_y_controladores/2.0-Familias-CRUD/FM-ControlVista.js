@@ -56,7 +56,7 @@ module.exports = {
 			if (familia == "rclv") {
 				prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
 				cantProds = prodsDelRCLV.length;
-				canonNombre = procsRCLV.altaEdicGuardar.canonNombre(original);
+				canonNombre = comp.canonNombre(original);
 				RCLVnombre = original.nombre;
 			}
 

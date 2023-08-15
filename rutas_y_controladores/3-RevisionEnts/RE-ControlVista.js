@@ -19,8 +19,8 @@ module.exports = {
 		const revID = req.session.usuario.id;
 
 		// Productos, Ediciones y Links
-		let prods1 = procesos.TC.obtieneProds_AL_ED(revID); // Altas y Ediciones
-		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // Sin Edición, Inactivar y Recuperar
+		let prods1 = procesos.TC.obtieneProds_ED(revID); // Altas y Ediciones
+		let prods2 = procesos.TC.obtieneProds_AL_SE_IR(revID); // Sin Edición, Inactivar y Recuperar
 		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// RCLV

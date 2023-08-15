@@ -51,7 +51,7 @@ module.exports = {
 
 		// Datos para la vista
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
-		const canonNombre = procesos.altaEdicGuardar.canonNombre(rclv);
+		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
 		const userIdentVal = usuario && usuario.statusRegistro.identValidada;
 

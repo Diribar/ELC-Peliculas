@@ -37,9 +37,11 @@
 	</div>
 </div>
 <div id="checkBoxes" class="flexRow">
-	<div class="flexRow">
-		<input id="noLaVi" type="checkbox"><label for="noLaVi">Sin preferencia</label>
-	</div>
+	<% if (locals.usuario) { %>
+		<div class="flexRow">
+			<input id="noLaVi" type="checkbox"><label for="noLaVi">Sin preferencia</label>
+		</div>
+	<% } %>
 	<div class="flexRow">
 		<input id="conLinks" type="checkbox"><label for="conLinks">Con links</label>
 	</div>
@@ -51,6 +53,12 @@
 <!-- Campos -->
 <div id="configCampos" class="flexCol sectorConDesplV">
 	<nav class="startUp flexCol ocultar">
+		<!-- Búsqueda -->
+		<div id="palabrasClave" class="pref invisible">
+			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
+			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
+		</div>
+
 		<!-- PRIORITARIOS -->
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
@@ -84,12 +92,6 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano, eventual: true}) %>
 		<!-- Tipo de Actuación -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
-
-		<!-- Búsqueda -->
-		<div id="palabrasClave" class="pref invisible">
-			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
-			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
-		</div>
 	</nav>
 </div>
 

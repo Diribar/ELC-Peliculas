@@ -99,14 +99,22 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.fechaDelAno) bloque.push({titulo: "Día del año", valor: registro.fechaDelAno.nombre});
+			if (registro.apodo) {
+				// Necesariamente es un 'personaje'
+				const articulo = registro.sexo_id == "V" ? "o" : "a";
+				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
+			}
+			if (registro.fechaDelAno.id < 400) {
+				// Puede ser cualquier familia RCLV
+				const articulo = registro.sexo_id == "M" ? "la" : "lo";
+				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
+			}
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
-				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
 				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon.nombre)
-					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
+					bloque.push({titulo: "Status Canonizac.", valor: registro.canon.nombre});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.ap_mar)
@@ -163,7 +171,7 @@ module.exports = {
 		},
 	},
 	altaEdicGuardar: {
-		procesaLosDatos: function (datos) {
+		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};
 			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad} = datos;
@@ -187,7 +195,7 @@ module.exports = {
 				const CFC = categoria_id == "CFC";
 
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.canonNombre = this.canonNombre({nombre, canon_id});
+				DE.canonNombre = comp.canonNombre({nombre, canon_id});
 
 				DE.apodo = apodo ? apodo : "";
 				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
@@ -214,32 +222,6 @@ module.exports = {
 
 			// Fin
 			return DE;
-		},
-		canonNombre: (RCLV) => {
-			// Variables
-			let canonNombre = "";
-
-			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
-				// Obtiene los procesos de canonización
-				let proceso = canons.find((m) => m.id == RCLV.canon_id);
-
-				// Asigna el nombre del proceso
-				canonNombre = proceso.nombre + " ";
-
-				// Verificación si el nombre del proceso es "Santo" (varón)
-				if (RCLV.canon_id == "STV") {
-					// Obtiene el primer nombre del RCLV
-					let nombre = RCLV.nombre;
-					nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
-
-					// Si el primer nombre no es "especial", cambia el prefijo por "San"
-					if (!prefijoSanto.includes(nombre)) canonNombre = "San ";
-				}
-			}
-
-			// Fin
-			return canonNombre;
 		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
