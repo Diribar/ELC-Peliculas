@@ -1,8 +1,13 @@
 <!-- General -->
-<link rel="stylesheet" href="/formatos/7-Graficos/GR-VencimLinks.css">
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="/formatos/7-Graficos/GR-Graficos.css">
 
 <!-- Vencimiento de Links -->
 <% if (codigo == "vencimLinks") { %>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/javascript/7-Gráficos/GR1-VencimLinks.js"></script>
+<% } %>
+
+<!-- Cantidad de Links por Proveedor -->
+<% if (codigo == "cantLinksPorProv") { %>
+    <script src="/javascript/7-Gráficos/GR2-cantLinksPorProv.js"></script>
 <% } %>

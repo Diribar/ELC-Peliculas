@@ -14,7 +14,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "linksPorProv",
+			codigo: "cantLinksPorProv",
 			titulo: "Cantidad de Links por Proveedor",
 		});
 	},
