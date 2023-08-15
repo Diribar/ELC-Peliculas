@@ -43,17 +43,18 @@
 	<!-- Título del Encabezado -->
 	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
 	<section>
-		<!-- Tablero de Gráficos -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-			<a href="/graficos/vencimiento-de-links-por-semana/?origen=TM" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-chart-line scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
-			</a>
-		<% } %>
 		<!-- Tablero de Usuarios -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorUs) { %>
 			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Tablero de Usuarios"></i>
 			</a>
+		<% } %>
+		<!-- Gráficos -->
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
+			<div class="grupos">
+				<i class="fa-solid fa-chart-line scale desplClick iconoHeader revision" title="Menú de Gráficos"></i>
+				<%- include("CMP-3MenuGraficos") %>
+			</div>
 		<% } %>
 		<!-- Usuario -->
 		<div class="grupos">
