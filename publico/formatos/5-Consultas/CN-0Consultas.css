@@ -32,7 +32,7 @@
 #vistaDeResults #comencemos button#verde {font-size: 2rem; font-style: italic;}
 
 /* Vista de Resultados - Ícono Actualizar */
-#vistaDeResults #actualizar {position: absolute; top: 10px; right: 10px}
+#vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
 #vistaDeResults #actualizar i {background: var(--backAyuda); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #vistaDeResults #actualizar i {font-size: 0.8rem; padding: 3.5px;}
 
