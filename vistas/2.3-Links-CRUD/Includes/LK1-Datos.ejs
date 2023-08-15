@@ -35,7 +35,7 @@
 		<%- link.castellano ? "SI" : "NO" %>
 	</td>
 	<!-- 4. Subtitulos -->
-	<td class="ancho_subtitulo taparMotivo <%- link.ediciones.find(n=>n.subtitulos!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_subtitulos taparMotivo <%- link.ediciones.find(n=>n.subtitulos!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.subtitulos===null ? "-" : link.subtitulos ? "SI" : "NO" %>
 	</td>
 	<!-- 5. Gratuito -->

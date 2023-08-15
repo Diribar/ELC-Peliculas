@@ -11,6 +11,11 @@ const procesos = require("./RT-Procesos");
 module.exports = {
 	// 0. Start-up y Configuracion de Rutinas
 	startupMasConfiguracion: async function () {
+		// Variables
+		this.FechaPrimerLunesDelAno();
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
+
 		// Rutinas programadas
 		const info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -29,8 +34,8 @@ module.exports = {
 
 		// Fin
 		return;
-		this.LinksEnProd();
 		this.LinksVencidos();
+		this.LinksEnProd();
 	},
 
 	// 1. Rutinas horarias
@@ -317,7 +322,8 @@ module.exports = {
 
 		// Obtiene la semanaUTC actual
 		this.FechaPrimerLunesDelAno();
-		const semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
@@ -407,18 +413,16 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const ahora = Date.now();
-		const vidaUtil = 7 * unDia * 26; // 26 semanas
-		const fechaPrimeraRevision = new Date(ahora - cuatroSems);
-		const fechaCorte = new Date(ahora - vidaUtil);
+		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - vidaPrimRevision);
+		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
 
 		// Condiciones
 		const condiciones = [
 			{statusRegistro_id: aprobado_id},
 			{
 				[Op.or]: [
-					{altaRevisadaEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
-					{statusSugeridoEn: {[Op.lt]: fechaCorte}, yaTuvoPrimRev: true}, // Concluyó su vida útil
+					{statusSugeridoEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
+					{statusSugeridoEn: {[Op.lt]: fechaVidaUtil}, yaTuvoPrimRev: true}, // Concluyó su vida útil
 				],
 			},
 		];

@@ -2,7 +2,9 @@
 // Simples
 global.unaHora = 60 * 60 * 1000;
 global.unDia = unaHora * 24;
-global.cuatroSems = unDia * 28;
+global.unaSemana = unDia * 7;
+global.vidaPrimRevision = unaSemana * 4;
+global.vidaUtilLinks = unaSemana * 26; // 26 semanas
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.conLinks = 2;
@@ -10,6 +12,8 @@ global.talVez = 1;
 global.sinLinks = 0;
 global.usAutom_id = 2;
 global.fechaPrimerLunesDelAno = null;
+global.semanaUTC = null;
+global.lunesDeEstaSemana = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;

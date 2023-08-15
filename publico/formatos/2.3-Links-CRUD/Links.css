@@ -42,7 +42,7 @@ main #cuerpo {flex-direction: column;}
 
 /* Tablas - Anchos */
 #datos table .ancho_url {width: 140px;}
-#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulo {width: 70px;}
+#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulos {width: 70px;}
 #datos table .ancho_gratuito {width: 64px;}
 #datos table .ancho_tipo_id {width: 90px;}
 #datos table .ancho_completo {width: 73px;}
