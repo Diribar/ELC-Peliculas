@@ -123,7 +123,7 @@ let resultados = {
 				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las primeras
 				if (v.ordenBD.codigo == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
 
-				// Si es un RCLV, genera la variable de productos
+				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
@@ -240,7 +240,7 @@ let auxiliares = {
 		// Fin
 		return li;
 	},
-	titulo: (registro, registroAnt, indice) => {
+	titulo: (registroAct, registroAnt, indice) => {
 		// Variables
 		const orden = v.ordenBD.codigo;
 		let titulo;
@@ -249,7 +249,7 @@ let auxiliares = {
 		if (!titulo && orden == "fechaDelAno_id") {
 			// Variables
 			const diaAnt = registroAnt.fechaDelAno_id;
-			const diaActual = registro.fechaDelAno_id;
+			const diaActual = registroAct.fechaDelAno_id;
 
 			// Pruebas
 			titulo =
@@ -271,8 +271,8 @@ let auxiliares = {
 		if (!titulo && orden == "nombre") {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
-			const nombreActual = registro.nombre ? registro.nombre : registro.nombreCastellano;
-			let prefijo = "Abecedario ";
+			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
+			const prefijo = "Abecedario ";
 
 			// Pruebas
 			titulo =
@@ -294,12 +294,12 @@ let auxiliares = {
 		if (!titulo && orden == "anoHistorico") {
 			// Variables
 			const epocaAnt = registroAnt.epocaOcurrencia_id;
-			const epocaActual = registro.epocaOcurrencia_id;
+			const epocaActual = registroAct.epocaOcurrencia_id;
 			const anoAnt = registroAnt.anoNacim ? registroAnt.anoNacim : registroAnt.anoComienzo;
-			const anoActual = registro.anoNacim ? registro.anoNacim : registro.anoComienzo;
+			const anoActual = registroAct.anoNacim ? registroAct.anoNacim : registroAct.anoComienzo;
 
 			// Pruebas
-			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registro.epocaOcurrenciaNombre;
+			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registroAct.epocaOcurrenciaNombre;
 			if (epocaActual == "pst") {
 				// Variables
 				const mayor1800 = "(año 1.801 en adelante)";
@@ -323,13 +323,23 @@ let auxiliares = {
 						: "";
 
 				// Título para la vista
-				if (titulo) titulo = registro.epocaOcurrenciaNombre + " " + titulo;
+				if (titulo) titulo = registroAct.epocaOcurrenciaNombre + " " + titulo;
 			}
 		}
 
 		// altaRevisadaEn
 		if (!titulo && orden == "altaRevisadaEn") {
 			titulo = !indice ? "Las más recientes" : "";
+		}
+
+		// pppFecha
+		if (!titulo && orden == "pppFecha") {
+			// Variables
+			const nombreAnt = registroAnt.pppNombre;
+			const nombreActual = registroAct.pppNombre;
+
+			// Pruebas
+			titulo = nombreAnt != nombreActual ? nombreActual : "";
 		}
 
 		// Fin

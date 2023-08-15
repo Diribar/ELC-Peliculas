@@ -104,7 +104,7 @@ module.exports = {
 				const articulo = registro.sexo_id == "V" ? "o" : "a";
 				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
 			}
-			if (registro.fechaDelAno.id < 400) {
+			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
 				const articulo = registro.sexo_id == "M" ? "la" : "lo";
 				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});

@@ -134,7 +134,14 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, interumpe la función
-		if (!v.userID) return this.tiposLink();
+		if (!v.userID) {
+			// Si corresponde, actualiza 'configCons'
+			if (v.ordenBD.codigo == "pppFecha")
+				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id);
+
+			// Fin
+			return this.tiposLink();
+		}
 
 		// Start-up
 		if (DOM.pppOpciones.value == v.noLaVi) {
@@ -142,9 +149,16 @@ let actualizaConfigCons = {
 			DOM.pppOpciones.value = "";
 		}
 
-		// Variables
-		const seMuestra = !DOM.noLaVi.checked;
-		if (!seMuestra) configCons.pppOpciones = v.noLaVi;
+		// Muestra / Oculta el checkbox 'noLaVi'
+		v.ordenBD.codigo == "pppFecha"
+			? DOM.noLaVi.parentNode.classList.add("ocultar")
+			: DOM.noLaVi.parentNode.classList.remove("ocultar");
+
+		// Acciones si no se muestra
+		const seMuestra = !DOM.noLaVi.checked && v.ordenBD.codigo != "pppFecha";
+		if (!seMuestra)
+			configCons.pppOpciones =
+				v.ordenBD.codigo == "pppFecha" ? v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id) : v.noLaVi;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
@@ -161,7 +175,7 @@ let actualizaConfigCons = {
 		}
 
 		// Variables
-		const seMuestra = !DOM.conLinks.checked
+		const seMuestra = !DOM.conLinks.checked;
 		if (!seMuestra) configCons.tiposLink = v.conLinks;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
@@ -179,7 +193,7 @@ let actualizaConfigCons = {
 		}
 
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked
+		const seMuestra = !DOM.enCast.checked;
 		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'

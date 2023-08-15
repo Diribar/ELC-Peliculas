@@ -18,7 +18,7 @@
 
 /* Inactivo */
 .inactivo, .inactivoVersion {opacity: .65 !important;}
-.inactivo, .inactivoVersion, button:has(.inactivo, .inactivoVersion) {cursor: not-allowed !important;}
+.inactivo, .inactivo *, .inactivoVersion, button:has(.inactivo, .inactivoVersion) {cursor: not-allowed !important;}
 /* .inactivo, .inactivoVersion, button:has(.inactivo, .inactivoVersion) {border-color: transparent !important;} */
 
 /* Maneras de Ocultar */

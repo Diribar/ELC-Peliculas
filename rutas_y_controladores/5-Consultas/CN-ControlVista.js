@@ -10,21 +10,41 @@ module.exports = {
 		const tema = "consultas";
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
-		const userID = req.session.usuario ? usuario.id : null;
-		const configsDeCabecera = await procesos.configs.cabecera(userID);
-		const configs = {
-			propios: configsDeCabecera.filter((n) => userID && n.usuario_id == userID),
-			predeterms: configsDeCabecera.filter((n) => n.usuario_id == 1),
+		const userID = usuario ? usuario.id : null;
+		const configs = await procesos.configs.cabecera(userID); // Se necesita esa función también para la API
+		const configsDeCabecera = {
+			propios: configs.filter((n) => userID && n.usuario_id == userID),
+			predeterms: configs.filter((n) => n.usuario_id == 1),
 		};
 		const configsConsCampos = procesos.configs.campos();
 
-		// Obtiene el ID del filtro personal elegido
-		const configCons_id = userID && usuario.configCons_id ? usuario.configCons_id : 1;
+		// Obtiene el ID de la configCons del usuario
+		const configConsUrl_id = Number(req.query.configCons_id);
+		const existe = configConsUrl_id ? configs.find((n) => n.id == configConsUrl_id) : null;
+		if (existe) {
+			// Actualiza el usuario
+			if (usuario) {
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id: configConsUrl_id});
+				req.session.usuario = {...usuario, configCons_id: configConsUrl_id};
+			}
+			req.session.configCons_id = configConsUrl_id;
+
+			// Redirecciona quitando los parámetros del 'url'
+			const ruta = req.baseUrl + req.path;
+			res.redirect(ruta);
+		}
+
+		const configCons_id =
+			usuario && usuario.configCons_id
+				? usuario.configCons_id // El guardado en el usuario
+				: req.session.configCons_id
+				? req.session.configCons_id // El guardado en la session
+				: 2; // El 'default' es "Por fecha del año"
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{configCons_id, configs, configsConsCampos, userID},
+			...{configCons_id, configsDeCabecera, configsConsCampos, userID},
 			omitirFooter: true,
 		});
 	},
