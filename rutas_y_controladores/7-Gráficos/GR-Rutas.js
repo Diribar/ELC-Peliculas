@@ -8,9 +8,11 @@ const vista = require("./GR-ControlVista");
 
 // API
 router.get("/api/vencimiento-de-links-por-semana", API.vencimLinks);
+router.get("/api/cantidad-de-links-por-proveedor", API.cantLinksPorProv);
 
 // Vistas *******************************************
 router.get("/vencimiento-de-links-por-semana", vista.vencimLinks);
+router.get("/cantidad-de-links-por-proveedor", vista.cantLinksPorProv);
 
 // Exportarlo **********************************************
 module.exports = router;
