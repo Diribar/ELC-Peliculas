@@ -79,7 +79,7 @@
 			<% if (link.cond.creadoPropio || revisor&&link.cond.inactivo) { %>
 				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
-			<% } else if (link.cond.aprobado) { %>
+			<% } else if (link.cond.creadoAprob || link.cond.aprobado) { %>
 				<!-- Status aprobado -> INACTIVAR -->
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>
 			<% } else { %>

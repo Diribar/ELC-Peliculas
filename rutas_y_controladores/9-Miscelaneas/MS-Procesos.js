@@ -52,7 +52,8 @@ module.exports = {
 		const ST = pelisColes.filter((n) => n.tema_id == 1);
 
 		// Aprobados - Sin links
-		const SL_Pelis = pelisColes.filter((n) => !n.linksGeneral&&n.entidad == "peliculas");
+		const SL_Pelis = pelisColes.filter((n) => !n.linksGeneral && n.entidad == "peliculas");
+
 		const SL_CC = aprobados.filter((n) => !n.linksGeneral && n.entidad != "peliculas");
 
 		// Aprobados - Sin links gratuitos

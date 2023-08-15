@@ -54,7 +54,7 @@ let resultados = {
 				const parcial = Math.min(v.topeParaMasRecientes, total);
 
 				// Actualiza el contador
-				DOM.contadorDeProds.innerHTML = parcial + " de " + total;
+				DOM.contadorDeProds.innerHTML = parcial;
 			}
 			// Contador para 'Todos los productos'
 			else DOM.contadorDeProds.innerHTML = total;
@@ -329,7 +329,7 @@ let auxiliares = {
 
 		// altaRevisadaEn
 		if (!titulo && orden == "altaRevisadaEn") {
-			titulo = !indice ? "Las más recientes" : "";
+			titulo = !indice ? "Últimas ingresadas" : "";
 		}
 
 		// pppFecha
