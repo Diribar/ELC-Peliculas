@@ -82,7 +82,10 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else version.edicN.avatar = DOM.inputAvatarEdicN.files[0] ? DOM.inputAvatarEdicN.files[0].name : version.edicG.avatar;
+				else
+					version.edicN.avatar = DOM.inputAvatarEdicN.files[0]
+						? DOM.inputAvatarEdicN.files[0].name
+						: version.edicG.avatar;
 			}
 
 			// Fin
@@ -292,14 +295,10 @@ window.addEventListener("load", async () => {
 				image.onload = async () => {
 					// Actualiza la imagen del avatar en la vista
 					DOM.imgsAvatar[0].src = reader.result;
-					
-					
-					
-					
-					
+
 					// Actualiza la variable 'avatar' en la versión 'edicN'
 					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
-					
+
 					// Actualiza los errores
 					v.esImagen = true;
 					FN.actualizaVarios();
@@ -329,6 +328,9 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS --------------------------------------------------
 	// Revisa los campos
 	DOM.form.addEventListener("input", async (e) => {
+		// Si la versión actual no es la esperada para 'inputs', interrumpe
+		if (v.versionActual != v.versiones[0]) return;
+
 		// Validaciones estándar (función genérica)
 		amplio.restringeCaracteres(e);
 
@@ -339,8 +341,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target != DOM.inputAvatarEdicN) FN.actualizaVarios();
-		else if (v.versionActual == v.versiones[0]) await revisaAvatar({DOM, v, version, FN});
+		if (e.target == DOM.inputAvatarEdicN) await revisaAvatar({DOM, v, version, FN});
+		else FN.actualizaVarios();
 
 		// Fin
 		return;
