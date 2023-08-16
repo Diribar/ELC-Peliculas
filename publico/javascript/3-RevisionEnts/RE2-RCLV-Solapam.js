@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
-		esImagen: "",
+		// esImagen: "",
 		tamano: "",
 	};
 

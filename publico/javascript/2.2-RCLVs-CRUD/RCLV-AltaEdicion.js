@@ -66,12 +66,7 @@ window.addEventListener("load", async () => {
 		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
 		ama: document.querySelectorAll("form input[name='ama']"),
 	};
-	let rutas = {
-		// Rutas
-		validacion: "/rclv/api/valida-sector/?funcion=",
-		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
-	};
-	let varios = {
+	let v = {
 		// Variables de entidad
 		personajes: entidad == "personajes",
 		hechos: entidad == "hechos",
@@ -99,7 +94,12 @@ window.addEventListener("load", async () => {
 		esImagen: "",
 		tamano: "",
 	};
-	if (varios.personajes) varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
+	let rutas = {
+		// Rutas
+		validacion: "/rclv/api/valida-sector/?funcion=",
+		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
+	};
+	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 
 	// -------------------------------------------------------
 	// Funciones
@@ -111,11 +111,11 @@ window.addEventListener("load", async () => {
 			// 1. Acciones si se omitió ingresar un archivo
 			if (!DOM.avatarInput.value) {
 				// Vuelve a la imagen original
-				DOM.avatarImg.src = varios.avatarInicial;
+				DOM.avatarImg.src = v.avatarInicial;
 
 				// Actualiza los errores
-				varios.esImagen = "";
-				varios.tamano = 0;
+				v.esImagen = "";
+				v.tamano = 0;
 				await validacs.avatar();
 
 				// Fin
@@ -136,8 +136,8 @@ window.addEventListener("load", async () => {
 					DOM.avatarImg.src = reader.result;
 
 					// Actualiza los errores
-					varios.esImagen = "SI";
-					varios.tamano = DOM.avatarInput.files[0].size;
+					v.esImagen = "SI";
+					v.tamano = DOM.avatarInput.files[0].size;
 					await validacs.avatar();
 
 					// Fin
@@ -152,8 +152,8 @@ window.addEventListener("load", async () => {
 					DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
 					// Actualiza los errores
-					varios.esImagen = "NO";
-					varios.tamano = 0;
+					v.esImagen = "NO";
+					v.tamano = 0;
 					await validacs.avatar();
 
 					// Limpia el input - debe estar después de la validación de errores debido al valor del input
@@ -169,9 +169,9 @@ window.addEventListener("load", async () => {
 		nombre: {
 			logos: () => {
 				// Les asigna el url a los 'href'
-				if (varios.OK.nombre) {
-					DOM.linksClick.forEach((link, i) => (link.href = varios.linksUrl[i] + DOM.nombre.value));
-					DOM.googleIMG.href = varios.googleIMG.pre + DOM.nombre.value + varios.googleIMG.post;
+				if (v.OK.nombre) {
+					DOM.linksClick.forEach((link, i) => (link.href = v.linksUrl[i] + DOM.nombre.value));
+					DOM.googleIMG.href = v.googleIMG.pre + DOM.nombre.value + v.googleIMG.post;
 				}
 				// Les quita el url a los 'href'
 				else {
@@ -283,11 +283,11 @@ window.addEventListener("load", async () => {
 				if (!diasDeDuracion || diasDeDuracion < 2 || diasDeDuracion > 366) return;
 
 				// Obtiene la fecha de inicio
-				const mes = varios.meses[mes_id - 1];
+				const mes = v.meses[mes_id - 1];
 				const fechaInicio = dia + "/" + mes;
 
 				// Obtiene los ID de inicio y de fin
-				const idInicio = varios.fechasDelAno.indexOf(fechaInicio);
+				const idInicio = v.fechasDelAno.indexOf(fechaInicio);
 				if (idInicio < 0) return;
 				let idFin = idInicio + diasDeDuracion - 1;
 				if (idFin > 365) idFin -= 366;
@@ -371,12 +371,12 @@ window.addEventListener("load", async () => {
 			// Variables
 			let params = "&avatar=" + encodeURIComponent(DOM.avatarInput.value);
 			params += "&opcional=SI";
-			params += "&esImagen=" + varios.esImagen;
-			params += "&tamano=" + varios.tamano;
+			params += "&esImagen=" + v.esImagen;
+			params += "&tamano=" + v.tamano;
 
 			// Averigua los errores
-			varios.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
-			varios.OK.avatar = !varios.errores.avatar;
+			v.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
+			v.OK.avatar = !v.errores.avatar;
 
 			// Fin
 			return;
@@ -390,8 +390,8 @@ window.addEventListener("load", async () => {
 				if (id) params += "&id=" + id;
 
 				// Averigua los errores
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				varios.OK.nombre = !varios.errores.nombre;
+				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+				v.OK.nombre = !v.errores.nombre;
 				// Fin
 				return;
 			},
@@ -402,7 +402,7 @@ window.addEventListener("load", async () => {
 				if (id) params += "&id=" + id;
 
 				// Le agrega lo referido a la aparición mariana
-				if (varios.hechos) {
+				if (v.hechos) {
 					let soloCfc = opcionElegida(DOM.soloCfc);
 					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 					let ano = FN_ano(DOM.ano.value);
@@ -411,8 +411,8 @@ window.addEventListener("load", async () => {
 				}
 
 				// Averigua los errores
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				varios.OK.nombre = !varios.errores.nombre;
+				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+				v.OK.nombre = !v.errores.nombre;
 
 				// Fin
 				return;
@@ -426,11 +426,11 @@ window.addEventListener("load", async () => {
 				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 				// Averigua si hay un error con la fecha
-				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
-			} else varios.errores.fecha = "";
+				v.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
+			} else v.errores.fecha = "";
 
 			// OK vigencia
-			varios.OK.fecha = !varios.errores.fecha;
+			v.OK.fecha = !v.errores.fecha;
 
 			// Fin
 			return;
@@ -441,8 +441,8 @@ window.addEventListener("load", async () => {
 			let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 			// Errores y OK
-			varios.errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-			varios.OK.repetidos = !varios.errores.repetidos;
+			v.errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+			v.OK.repetidos = !v.errores.repetidos;
 
 			// Fin
 			return;
@@ -455,8 +455,8 @@ window.addEventListener("load", async () => {
 			let params = "sexo&sexo_id=" + sexo_id.value;
 
 			// OK y Errores
-			varios.errores.sexo_id = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.sexo_id = !varios.errores.sexo_id;
+			v.errores.sexo_id = await fetch(rutas.validacion + params).then((n) => n.json());
+			v.OK.sexo_id = !v.errores.sexo_id;
 
 			// Fin
 			return;
@@ -469,8 +469,8 @@ window.addEventListener("load", async () => {
 			params += "&carpetaAvatars=" + DOM.carpetaAvatars.value;
 
 			// OK y Errores
-			varios.errores.carpetaAvatars = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.carpetaAvatars = !varios.errores.carpetaAvatars;
+			v.errores.carpetaAvatars = await fetch(rutas.validacion + params).then((n) => n.json());
+			v.OK.carpetaAvatars = !v.errores.carpetaAvatars;
 
 			// Fin
 			return;
@@ -481,8 +481,8 @@ window.addEventListener("load", async () => {
 			params += "&prioridad_id=" + DOM.prioridad_id.value;
 
 			// OK y Errores
-			varios.errores.prioridad_id = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.prioridad_id = !varios.errores.prioridad_id;
+			v.errores.prioridad_id = await fetch(rutas.validacion + params).then((n) => n.json());
+			v.OK.prioridad_id = !v.errores.prioridad_id;
 
 			// Fin
 			return;
@@ -497,8 +497,8 @@ window.addEventListener("load", async () => {
 			if (epocaOcurrencia_id.value == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
 
 			// OK y Errores
-			varios.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.epocaOcurrencia = !varios.errores.epocaOcurrencia;
+			v.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
+			v.OK.epocaOcurrencia = !v.errores.epocaOcurrencia;
 
 			// Fin
 			return;
@@ -536,8 +536,8 @@ window.addEventListener("load", async () => {
 				}
 
 				// OK y Errores
-				varios.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
-				varios.OK.RCLIC = !varios.errores.RCLIC;
+				v.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.RCLIC = !v.errores.RCLIC;
 
 				// Fin
 				return;
@@ -565,38 +565,38 @@ window.addEventListener("load", async () => {
 				}
 
 				// OK y Errores
-				varios.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
-				varios.OK.RCLIC = !varios.errores.RCLIC;
+				v.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.RCLIC = !v.errores.RCLIC;
 
 				// Fin
 				return;
 			},
 		},
 		muestraErroresOK: () => {
-			for (let i = 0; i < varios.camposError.length; i++) {
+			for (let i = 0; i < v.camposError.length; i++) {
 				// Íconos de OK
-				varios.OK[varios.camposError[i]]
+				v.OK[v.camposError[i]]
 					? DOM.iconosOK[i].classList.remove("ocultar")
 					: DOM.iconosOK[i].classList.add("ocultar");
 
 				// Íconos de error
-				varios.errores[varios.camposError[i]]
+				v.errores[v.camposError[i]]
 					? DOM.iconosError[i].classList.remove("ocultar")
 					: DOM.iconosError[i].classList.add("ocultar");
 
 				// Mensaje de error
-				DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]]
-					? varios.errores[varios.camposError[i]]
+				DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]]
+					? v.errores[v.camposError[i]]
 					: "";
 			}
 		},
 		botonSubmit: () => {
 			// Variables
-			let resultado = Object.values(varios.OK);
+			let resultado = Object.values(v.OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
 
 			// Activa/Inactiva
-			resultadosTrue && resultado.length == varios.camposError.length
+			resultadosTrue && resultado.length == v.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
 
@@ -606,14 +606,14 @@ window.addEventListener("load", async () => {
 	};
 	let startUp = async (forzar) => {
 		// Avatar
-		varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
-		varios.OK.avatar = !varios.errores.avatar;
+		v.errores.avatar = v.errores.avatar ? v.errores.avatar : false;
+		v.OK.avatar = !v.errores.avatar;
 		if (forzar) DOM.iconosOK[0].classList.remove("ocultaAvatar");
 
 		// Nombre
-		if (DOM.nombre.value || (forzar && varios.errores.nombre === undefined))
-			varios.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
-		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logos();
+		if (DOM.nombre.value || (forzar && v.errores.nombre === undefined))
+			v.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
+		if (DOM.nombre.value && v.OK.nombre) impactos.nombre.logos();
 
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
@@ -621,12 +621,12 @@ window.addEventListener("load", async () => {
 		if (
 			DOM.tipoFecha.value == "SF" ||
 			(DOM.mes_id.value && DOM.dia.value) ||
-			(forzar && varios.errores.fecha === undefined)
+			(forzar && v.errores.fecha === undefined)
 		) {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
-			if (varios.OK.fecha)
+			if (v.OK.fecha)
 				if (entidad != "epocasDelAno") {
 					await impactos.fecha.muestraPosiblesRepetidos();
 					validacs.repetido();
@@ -636,29 +636,29 @@ window.addEventListener("load", async () => {
 		// Sexo
 		if (DOM.sexos_id.length) {
 			if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id === undefined)) await validacs.sexo();
+			if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.sexo_id === undefined)) await validacs.sexo();
 		}
 
 		// Carpeta Avatars
-		if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && varios.errores.carpetaAvatars === undefined)))
+		if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && v.errores.carpetaAvatars === undefined)))
 			await validacs.carpetaAvatars();
 
 		// Prioridad
-		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id === undefined)))
+		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && v.errores.prioridad_id === undefined)))
 			await validacs.prioridad();
 
 		// Época
 		if (DOM.epocasOcurrencia_id.length) {
 			if (opcionElegida(DOM.epocasOcurrencia_id).value) await impactos.epocaOcurrencia[entidad]();
-			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && varios.errores.epocaOcurrencia === undefined))
+			if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && v.errores.epocaOcurrencia === undefined))
 				await validacs.epocaOcurrencia();
 		}
 
 		// RCLIC
 		if (
-			(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-			(varios.hechos && opcionElegida(DOM.soloCfc).value) ||
-			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC === undefined)
+			(v.personajes && opcionElegida(DOM.categorias_id).value) ||
+			(v.hechos && opcionElegida(DOM.soloCfc).value) ||
+			(forzar && (v.personajes || v.hechos) && v.errores.RCLIC === undefined)
 		)
 			await validacs.RCLIC[entidad]();
 
@@ -686,8 +686,8 @@ window.addEventListener("load", async () => {
 				const largoMaximo = campo == "nombre" || campo == "apodo" ? 35 : campo.startsWith("comentario") ? 70 : false;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
-				if (campo == "nombre" && varios.personajes)
-					for (let prefijo of varios.prefijos)
+				if (campo == "nombre" && v.personajes)
+					for (let prefijo of v.prefijos)
 						if (valor.startsWith(prefijo + " ")) {
 							valor = valor.slice(prefijo.length + 1);
 							break;
@@ -720,7 +720,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Limpia el ícono de error/OK
-				const indice = varios.camposError.indexOf("epocaOcurrencia");
+				const indice = v.camposError.indexOf("epocaOcurrencia");
 				DOM.mensajesError[indice].innerHTML = "";
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
@@ -747,25 +747,25 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambia el sector Nombre
-		if (varios.camposNombre.includes(campo)) {
-			await validacs.nombre[varios.personajes ? "personajes" : "demas"]();
+		if (v.camposNombre.includes(campo)) {
+			await validacs.nombre[v.personajes ? "personajes" : "demas"]();
 			impactos.nombre.logos();
 		}
 
 		// Acciones si se cambia el sector Fecha
-		if (varios.camposFecha.includes(campo)) {
+		if (v.camposFecha.includes(campo)) {
 			// Impactos
 			if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-			if (varios.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
+			if (v.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
 				impactos.fecha.epocasDelAno(campo);
 
 			// Valida las fechas
 			await validacs.fecha();
 
 			// Impactos en repetidos
-			if (varios.OK.fecha) {
+			if (v.OK.fecha) {
 				await impactos.fecha.muestraPosiblesRepetidos();
 				validacs.repetido();
 			}
@@ -779,7 +779,7 @@ window.addEventListener("load", async () => {
 			await impactos.sexo();
 			await validacs.sexo();
 			// Si corresponde, valida RCLIC
-			if (varios.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
+			if (v.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 		}
 
 		// Acciones si se cambia el sector Carpeta Avatars
@@ -789,24 +789,24 @@ window.addEventListener("load", async () => {
 		if (campo == "prioridad_id") await validacs.prioridad();
 
 		// Acciones si se cambia el sector Época
-		if (varios.camposEpoca.includes(campo)) {
+		if (v.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
 			await impactos.epocaOcurrencia[entidad]();
 			await validacs.epocaOcurrencia();
 			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
 			if (e.target.value == "pst") DOM.ano.focus();
 			// Si corresponde, valida RCLIC
-			if (varios.OK.epocaOcurrencia) {
-				if (varios.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
-				if (varios.hechos && opcionElegida(DOM.soloCfc).value == 1) await validacs.RCLIC.hechos();
+			if (v.OK.epocaOcurrencia) {
+				if (v.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
+				if (v.hechos && opcionElegida(DOM.soloCfc).value == 1) await validacs.RCLIC.hechos();
 			}
 		}
 
 		// Acciones si se cambia el sector RCLIC
-		if (varios.camposRCLIC.includes(campo)) {
+		if (v.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[entidad]();
-			if (varios.hechos) await validacs.nombre.demas();
+			if (v.hechos) await validacs.nombre.demas();
 		}
 
 		// Final de la rutina

@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
-	let varias = {
+	let v = {
 		// Pointer del producto
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		prodID: new URL(location.href).searchParams.get("id"),
@@ -57,11 +57,11 @@ window.addEventListener("load", async () => {
 		avatarInicial: DOM.imgAvatarInicial.src,
 	};
 	let rutas = {
-		rutaValidar: "/producto/api/valida/?",
-		rutaVersiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + varias.entidad + "&id=" + varias.prodID,
+		validar: "/producto/api/valida/?",
+		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodID,
 	};
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
-	let version = await versiones(rutas.rutaVersiones);
+	let version = await versiones(rutas.versiones);
 
 	// Funciones Data-Entry
 	let FN = {
@@ -92,13 +92,13 @@ window.addEventListener("load", async () => {
 		},
 		senalaLasDiferencias: () => {
 			// Variables
-			const referencia = varias.versionActual == "edicN" ? "edicG" : "orig";
+			const referencia = v.versionActual == "edicN" ? "edicG" : "orig";
 
 			// Marca dónde están las diferencias con la versión original
-			varias.camposTodos.forEach((campo, i) => {
-				varias.versionActual != "orig" &&
-				version[varias.versionActual][campo] != version[referencia][campo] &&
-				(version[varias.versionActual][campo] || version[referencia][campo])
+			v.camposTodos.forEach((campo, i) => {
+				v.versionActual != "orig" &&
+				version[v.versionActual][campo] != version[referencia][campo] &&
+				(version[v.versionActual][campo] || version[referencia][campo])
 					? DOM.flechasDiferencia[i].classList.remove("ocultar")
 					: DOM.flechasDiferencia[i].classList.add("ocultar");
 			});
@@ -110,23 +110,23 @@ window.addEventListener("load", async () => {
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
-			let objeto = "entidad=" + varias.entidad + "&id=" + varias.prodID;
-			for (let campo of varias.camposTodos) {
+			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
+			for (let campo of v.camposTodos) {
 				let indice = camposResp.indexOf(campo);
 				let valor = indice > -1 ? inputsResp[indice].value : "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
-			if (varias.versionActual == "edicN" && (DOM.inputAvatarEdicN.value || !varias.esImagen)) {
+			if (v.versionActual == "edicN" && (DOM.inputAvatarEdicN.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatarEdicN.value;
-				objeto += "&esImagen=" + (varias.esImagen ? "SI" : "NO");
+				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
 				if (DOM.inputAvatarEdicN.value) objeto += "&tamano=" + DOM.inputAvatarEdicN.files[0].size;
 			}
 
 			// Averigua los errores
-			errores = await fetch(rutas.rutaValidar + encodeURI(objeto)).then((n) => n.json());
+			errores = await fetch(rutas.validar + encodeURI(objeto)).then((n) => n.json());
 
 			// Actualiza los errores
-			varias.camposError.forEach((campo, indice) => {
+			v.camposError.forEach((campo, indice) => {
 				// Variables
 				let mensaje = errores[campo];
 				DOM.mensajesError[indice].innerHTML = mensaje;
@@ -153,12 +153,12 @@ window.addEventListener("load", async () => {
 			// Averigua si los campos input son iguales entre la edicN y su referente anterior
 			const comparativa = version.edicG_existe ? version.edicG : version.orig;
 			let sonIguales = true;
-			for (let campo of varias.camposTodos)
+			for (let campo of v.camposTodos)
 				if (version.edicN[campo] != comparativa[campo] && (version.edicN[campo] || comparativa[campo]))
 					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
-			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
+			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == v.avatarInicial;
 
 			// Si los campos 'input' y la imagen avatar son iguales --> inactiva Guardar y Eliminar
 			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
@@ -183,31 +183,31 @@ window.addEventListener("load", async () => {
 			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
 			(() => {
 				// Variables
-				varias.estamosEnEdicNueva = varias.versionActual == "edicN";
+				v.estamosEnEdicNueva = v.versionActual == "edicN";
 				// Rutina para cada campo
 				for (let input of DOM.inputsTodos) {
 					// Reemplaza los valores que no sean el avatar
 					if (input.name != "avatar") {
 						if (input.type != "radio")
 							input.value =
-								version[varias.versionActual][input.name] !== undefined &&
-								version[varias.versionActual][input.name] !== null
-									? version[varias.versionActual][input.name]
+								version[v.versionActual][input.name] !== undefined &&
+								version[v.versionActual][input.name] !== null
+									? version[v.versionActual][input.name]
 									: "";
-						else if (input.type == "radio") input.checked = input.value == version[varias.versionActual][input.name];
+						else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
 					}
 					// Oculta y muestra los avatar que correspondan
 					else
 						DOM.imgsAvatar.forEach((imgAvatar, indice) => {
-							varias.versiones[indice] == varias.versionActual
+							v.versiones[indice] == v.versionActual
 								? imgAvatar.classList.remove("ocultar")
 								: imgAvatar.classList.add("ocultar");
 						});
 					// Impide/permite que el usuario haga cambios según la versión
-					input.disabled = !varias.estamosEnEdicNueva && !input.checked;
+					input.disabled = !v.estamosEnEdicNueva && !input.checked;
 					if (input.name == "paises_id") {
-						DOM.paisesMostrar.disabled = !varias.estamosEnEdicNueva;
-						DOM.paisesSelect.disabled = !varias.estamosEnEdicNueva;
+						DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
+						DOM.paisesSelect.disabled = !v.estamosEnEdicNueva;
 					}
 				}
 				// Fin
@@ -219,13 +219,13 @@ window.addEventListener("load", async () => {
 			(() => {
 				// Muestra/oculta los íconos de RCLV
 				for (let link of DOM.linksRCLV)
-					varias.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
 				// Muestra/oculta los íconos de ayuda
 				for (let iconoAyuda of DOM.iconosAyuda)
-					varias.estamosEnEdicNueva ? iconoAyuda.classList.remove("inactivo") : iconoAyuda.classList.add("inactivo");
+					v.estamosEnEdicNueva ? iconoAyuda.classList.remove("inactivo") : iconoAyuda.classList.add("inactivo");
 				// Muestra/oculta los íconos de error
 				for (let iconoError of DOM.iconosError)
-					varias.estamosEnEdicNueva ? iconoError.classList.remove("inactivo") : iconoError.classList.add("inactivo");
+					v.estamosEnEdicNueva ? iconoError.classList.remove("inactivo") : iconoError.classList.add("inactivo");
 				// Fin
 				return;
 			})();
@@ -262,7 +262,7 @@ window.addEventListener("load", async () => {
 			if (DOM.paisesID.value) {
 				let paises_idArray = DOM.paisesID.value.split(" ");
 				paises_idArray.forEach((pais_id) => {
-					let paisNombre = varias.paisesListado.find((n) => n.id == pais_id).nombre;
+					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
 					if (paisNombre) paisesNombre.push(paisNombre);
 				});
 			}
@@ -277,7 +277,7 @@ window.addEventListener("load", async () => {
 				// Actualiza el avatar
 				DOM.imgsAvatar[0].src = varios.avatarInicial;
 				// Actualiza los errores
-				varias.esImagen = true;
+				v.esImagen = true;
 				this.actualizaVarios();
 				// Fin
 				return;
@@ -295,7 +295,7 @@ window.addEventListener("load", async () => {
 					// Actualiza la variable 'avatar' en la versión 'edicN'
 					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
 					// Actualiza los errores
-					varias.esImagen = true;
+					v.esImagen = true;
 					FN.actualizaVarios();
 					// Fin
 					return;
@@ -309,7 +309,7 @@ window.addEventListener("load", async () => {
 					// Actualiza la variable 'avatar' en la versión 'edicN'
 					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
 					// Actualiza los errores
-					varias.esImagen = false;
+					v.esImagen = false;
 					FN.actualizaVarios();
 					// Fin
 					return;
@@ -322,7 +322,7 @@ window.addEventListener("load", async () => {
 	// Revisa los campos
 	DOM.form.addEventListener("input", async (e) => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
-		if (varias.versionActual != varias.versiones[0]) return;
+		if (v.versionActual != v.versiones[0]) return;
 
 		// Validaciones estándar (función genérica)
 		amplio.restringeCaracteres(e);
@@ -345,12 +345,12 @@ window.addEventListener("load", async () => {
 	DOM.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Interrumpe si las versiones son iguales
-			if (varias.versionActual == varias.versiones[indice]) return;
+			if (v.versionActual == v.versiones[indice]) return;
 			// Interrumpe si el botón está inactivo
 			if (boton.className.includes("inactivoVersion")) return;
 			// Cambia la versión
-			let aux = varias.versionActual;
-			varias.versionActual = varias.versiones[indice];
+			let aux = v.versionActual;
+			v.versionActual = v.versiones[indice];
 			// Cambia los valores
 			FN.accionesPorCambioDeVersion();
 			// Cambia el boton activo
@@ -359,7 +359,7 @@ window.addEventListener("load", async () => {
 				else revisar.classList.add("activo");
 			});
 			// Cambiar la versión anterior
-			varias.versionAnt = aux;
+			v.versionAnt = aux;
 		});
 	});
 	// Botones - 2. Guarda los cambios
@@ -376,7 +376,7 @@ window.addEventListener("load", async () => {
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {
 				// Vuelve al status original la condición del avatar
-				varias.esImagen = true;
+				v.esImagen = true;
 
 				// Elimina Session y Cookies
 				fetch("/producto/api/edicion-nueva/eliminar");
@@ -387,11 +387,11 @@ window.addEventListener("load", async () => {
 				version.edicG_existe = false;
 
 				// Elimina los datos de edicG en la BD
-				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + varias.entidad + "&id=" + varias.prodID);
+				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
 
 				// Recarga la vista para actualizar el url sin el ID de la edición
-				const origen = varias.origen ? "&origen=" + varias.origen : "";
-				location.href = location.pathname + "?entidad=" + varias.entidad + "&id=" + varias.prodID + origen;
+				const origen = v.origen ? "&origen=" + v.origen : "";
+				location.href = location.pathname + "?entidad=" + v.entidad + "&id=" + v.prodID + origen;
 			}
 
 			// Vuelve al status de la versión anterior
