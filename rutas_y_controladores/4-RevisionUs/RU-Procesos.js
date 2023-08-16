@@ -11,7 +11,7 @@ module.exports = {
 			const condicion = {rolUsuario_id: rol_consultas_id, statusRegistro_id: identPendValidar_id, id: {[Op.ne]: userID}};
 
 			// Obtiene los usuarios
-			let usuarios = await db.usuarios.findAll({where: condicion}).then((n) => n.map((m) => m.toJSON()));
+			let usuarios = await BD_genericas.obtieneTodosPorCondicion("usuarios", condicion);
 
 			// Procesa la información
 			usuarios = usuarios.map((n) => {
@@ -32,17 +32,17 @@ module.exports = {
 				campo,
 				titulo: campo,
 				valor_rech: usuario[campo],
-	
+
 				motivo_id: motivo.id,
 				penalizac: motivo.penalizac,
-	
+
 				editadoPor_id: usuario.id,
 				editadoEn: usuario.fechaRevisores,
 				edicRevisadaPor_id: revID,
 				edicRevisadaEn: comp.fechaHora.ahora(),
 			};
 			BD_genericas.agregaRegistro("histEdics", datos);
-	
+
 			// Fin
 			return;
 		},
