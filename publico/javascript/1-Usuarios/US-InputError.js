@@ -3,8 +3,6 @@ window.addEventListener("load", () => {
 	// Tareas
 	let tarea = location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
-	let tareas = {login: "login", editables: "editables", documento: "documento"};
-	if (!tareas[tarea]) return;
 
 	// Variables
 	const form = document.querySelector("form");
@@ -26,8 +24,9 @@ window.addEventListener("load", () => {
 	};
 	let v = {
 		imgInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
-		esImagen: true,
-		rutaApi: "/usuarios/api/valida-" + tareas[tarea] + "/?",
+		esImagen: false,
+		imgOpcional: tarea == "editables",
+		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
 	};
 
 	// Funciones
@@ -38,8 +37,11 @@ window.addEventListener("load", () => {
 			let valor = encodeURIComponent(DOM.inputs[indice].value);
 			// Particularidad para 'avatar'
 			if (campo.includes("avatar")) {
-				valor += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatar.value) valor += "&tamano=" + DOM.inputAvatar.files[0].size;
+				valor += "&imgOpcional=" + (v.imgOpcional ? "SI" : "NO");
+				if (DOM.inputAvatar.value) {
+					valor += "&esImagen=" + (v.esImagen ? "SI" : "NO");
+					valor += "&tamano=" + DOM.inputAvatar.files[0].size;
+				}
 			}
 			// Averigua los errores
 			let errores =

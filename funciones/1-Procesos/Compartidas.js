@@ -459,7 +459,7 @@ module.exports = {
 		},
 		avatar: (datos) => {
 			// Variables
-			const {avatarUrl, documAvatar, tamano, esImagen, opcional} = datos;
+			const {avatarUrl, documAvatar, tamano, esImagen, imgOpcional} = datos;
 			const avatar = datos.avatar ? datos.avatar : avatarUrl ? avatarUrl : documAvatar ? documAvatar : "";
 			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 
@@ -483,7 +483,7 @@ module.exports = {
 					? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 					: ""
 				: // Mensajes si no existe un avatar
-				!opcional
+				imgOpcional == "NO" || imgOpcional === false
 				? "Necesitamos que agregues una imagen"
 				: "";
 
@@ -542,7 +542,7 @@ module.exports = {
 		// Resultado
 		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
 		leadTime = Math.min(96, leadTime);
-		
+
 		// Fin
 		return leadTime;
 	},

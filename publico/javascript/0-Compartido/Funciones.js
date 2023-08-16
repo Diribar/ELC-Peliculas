@@ -226,15 +226,15 @@ let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 			// Limpia el avatar
 			DOM.imgAvatar.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
-			// Limpia el input
-			DOM.inputAvatar.value = "";
-
 			// Actualiza la variable 'avatar' en la versión 'edicN'
-			if (DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
+			if (DOM.inputAvatarEdicN && DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
 
 			// Actualiza los errores
 			v.esImagen = false;
 			await FN.actualizaVarios(indice);
+
+			// Limpia el input
+			DOM.inputAvatar.value = ""; // va después de 'actualiza los errores' para poner en evidencia que el error es el tipo de archivo
 
 			// Fin
 			return;

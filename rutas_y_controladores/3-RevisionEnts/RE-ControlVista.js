@@ -137,7 +137,7 @@ module.exports = {
 				// Acciones para alta
 				if (subcodigo == "alta") {
 					// Obtiene los datos
-					datos = {...datos, ...req.body, ...req.query, revisor, opcional: true};
+					datos = {...datos, ...req.body, ...req.query, revisor, imgOpcionalnal: true};
 
 					// Si recibimos un avatar, se completa la información
 					if (req.file) datos.tamano = req.file.size;

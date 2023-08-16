@@ -40,7 +40,7 @@
 				<label for="rolIglesia_id">Rol en la Iglesia<br>Católica</label>
 				<div class="inputError">
 					<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
-					<select name="rolIglesia_id" class="input" required>
+					<select name="rolIglesia_id" class="input">
 						<option value="" <% if (!rolIglesia_id) { %>selected<% } %>>Elejí una opción</option>
 						<% for (let rolIglesia of roles_iglesia) { %>
 							<option value="<%= rolIglesia.id %>" <% if (rolIglesia_id == rolIglesia.id) { %>selected<% } %>><%= rolIglesia.nombre %></option>
@@ -73,7 +73,7 @@
 			<div class="labelInput flexCol">
 				<label for="documPais_id">Expedido en qué país</label>
 				<div class="inputError">
-					<select id="documPais_id" name="documPais_id" class="input" required>
+					<select id="documPais_id" name="documPais_id" class="input">
 						<option value="" <% if (dataEntry.documPais_id=="") {%>selected <%}%>>Elejí un país</option>
 						<optgroup label="América (habla hispana)">
 							<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>

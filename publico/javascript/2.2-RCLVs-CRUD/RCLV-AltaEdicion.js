@@ -91,8 +91,8 @@ window.addEventListener("load", async () => {
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
 		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
-		esImagen: "",
-		tamano: "",
+		esImagen: false,
+		tamano: false,
 	};
 	let rutas = {
 		// Rutas
@@ -370,9 +370,9 @@ window.addEventListener("load", async () => {
 		avatar: async () => {
 			// Variables
 			let params = "&avatar=" + encodeURIComponent(DOM.avatarInput.value);
-			params += "&opcional=SI";
-			params += "&esImagen=" + v.esImagen;
-			params += "&tamano=" + v.tamano;
+			params += "&imgOpcional=SI";
+			params += "&esImagen=" + v.esImagen ? "SI" : "NO";
+			params += "&tamano=" + v.tamano ? "SI" : "NO";
 
 			// Averigua los errores
 			v.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
@@ -575,9 +575,7 @@ window.addEventListener("load", async () => {
 		muestraErroresOK: () => {
 			for (let i = 0; i < v.camposError.length; i++) {
 				// Íconos de OK
-				v.OK[v.camposError[i]]
-					? DOM.iconosOK[i].classList.remove("ocultar")
-					: DOM.iconosOK[i].classList.add("ocultar");
+				v.OK[v.camposError[i]] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
 
 				// Íconos de error
 				v.errores[v.camposError[i]]
@@ -585,9 +583,7 @@ window.addEventListener("load", async () => {
 					: DOM.iconosError[i].classList.add("ocultar");
 
 				// Mensaje de error
-				DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]]
-					? v.errores[v.camposError[i]]
-					: "";
+				DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
 			}
 		},
 		botonSubmit: () => {
@@ -618,11 +614,7 @@ window.addEventListener("load", async () => {
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
 		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-		if (
-			DOM.tipoFecha.value == "SF" ||
-			(DOM.mes_id.value && DOM.dia.value) ||
-			(forzar && v.errores.fecha === undefined)
-		) {
+		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && v.errores.fecha === undefined)) {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos

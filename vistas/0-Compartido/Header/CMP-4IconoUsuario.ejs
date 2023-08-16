@@ -1,16 +1,9 @@
 <div id="icono_usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
-		<% if (usuario.avatar) { %>
-			<div id="imagenUsuario">
-				<img src="<%= localhost %>/imagenes/1-Usuarios/Avatar/<%= usuario.avatar %>" class="desplClick">
-			</div>
-		<% } else if (usuario.nombre != null) { %>
-			<i id="letraInicial" class="desplClick iconoHeader">
-				<%= usuario.nombre.slice(0,1).toUpperCase() %>
-			</i>
-		<% } else { %>
-			<i class="fa-solid fa-circle-user desplClick iconoHeader"></i>
-		<% } %>
+		<div id="imagenUsuario">
+			<% const avatarUsuario = usuario.avatar ? ("1-Usuarios/Avatar/"+ usuario.avatar) : "0-Base/Avatar/Sin-Avatar.jpg" %>
+			<img src="<%= localhost %>/imagenes/<%= avatarUsuario %>" class="desplClick">
+		</div>
 	<% } else { %>
 		<a href="/usuarios/login">
 			<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>

@@ -9,7 +9,6 @@ header section .grupos {margin: 0 15px; position: relative;}
 header section .grupos.margenDerecho {margin-right: 40px;}
 header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
-header #icono_usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold; font-style: normal;}
 
 /* Ícono de agregar producto */
 header section .grupos .iconoComb {position: relative;}
@@ -26,7 +25,6 @@ header #imagenMovie {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radi
 /* Íconos de usuario */
 header #icono_usuario {border-radius: 50%; overflow: hidden; }
 header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
-header #icono_usuario #letraInicial {background: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
 
 /* Imágenes */
 header :is(#imagenMovie img, #imagenUsuario img) {height: 100%; width: 100%; object-fit: cover;}
