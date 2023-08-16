@@ -26,7 +26,6 @@ window.addEventListener("load", async () => {
 		anoFin: document.querySelector("#dataEntry input[name='anoFin']"),
 		paisesSelect: document.querySelector("#paises_id select"),
 	};
-	console.log(DOM.imgAvatar);
 	let v = {
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
