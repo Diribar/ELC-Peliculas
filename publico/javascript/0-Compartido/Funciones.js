@@ -234,7 +234,7 @@ let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 			await FN.actualizaVarios(indice);
 
 			// Limpia el input
-			DOM.inputAvatar.value = "";
+			DOM.inputAvatar.value = ""; // va después de 'actualiza los errores' para poner en evidencia que el error es el tipo de archivo
 
 			// Fin
 			return;
