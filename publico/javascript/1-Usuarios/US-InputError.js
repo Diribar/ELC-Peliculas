@@ -3,8 +3,6 @@ window.addEventListener("load", () => {
 	// Tareas
 	let tarea = location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
-	let tareas = {login: "login", editables: "editables", documento: "documento"};
-	if (!tareas[tarea]) return;
 
 	// Variables
 	const form = document.querySelector("form");
@@ -27,7 +25,7 @@ window.addEventListener("load", () => {
 	let v = {
 		imgInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
 		esImagen: true,
-		rutaApi: "/usuarios/api/valida-" + tareas[tarea] + "/?",
+		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
 	};
 
 	// Funciones
@@ -78,6 +76,7 @@ window.addEventListener("load", () => {
 		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
 			let errores = await this.averiguaLosErrores(indice);
+			console.log(errores);
 
 			// Comunica los aciertos y errores
 			this.muestraLosErrores(errores, indice);
@@ -101,6 +100,7 @@ window.addEventListener("load", () => {
 		input.addEventListener("input", async () => {
 			// Variables
 			let campo = input.name;
+			console.log(campo);
 
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (
