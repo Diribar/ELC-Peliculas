@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 15/ago",
-	"HoraUTC": "18:37",
+	"FechaUTC": "Mié. 16/ago",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 14/ago",
@@ -20,9 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-ago-23": {"titulo": "ELC - Películas"},
 		"14-ago-23": {"titulo": "San Maximiliano Kolbe", "entidad": "personajes", "id": 112},
 		"15-ago-23": {"titulo": "Asunción de María", "entidad": "hechos", "id": 68},
-		"17-ago-23": {"titulo": "ELC - Películas"}
+		"16-ago-23": {"titulo": "San Roque", "entidad": "personajes", "id": 193},
+		"17-ago-23": {"titulo": "ELC - Películas"},
+		"18-ago-23": {"titulo": "San Alberto Hurtado", "entidad": "personajes", "id": 69}
 	}
 }

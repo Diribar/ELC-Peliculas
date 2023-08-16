@@ -324,6 +324,8 @@ module.exports = {
 							if (orden.codigo == "pppFecha") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].pppFecha = pppRegistro.creadoEn;
+								prods[i].yaLaVi = pppOpcionElegida.yaLaVi;
+								prods[i].laQuieroVer = pppOpcionElegida.laQuieroVer;
 							}
 						}
 					}
@@ -503,10 +505,13 @@ module.exports = {
 
 				// Ordena
 				prods.sort((a, b) =>
-					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : b[campo] < a[campo] ? -1 : 1
+					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
 				);
 
-				if (orden.codigo == "pppFecha") prods.sort((a, b) => (a.ppp_id < b.ppp_id ? -1 : 1));
+				if (orden.codigo == "pppFecha") {
+					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
+					prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
+				}
 
 				// Fin
 				return prods;

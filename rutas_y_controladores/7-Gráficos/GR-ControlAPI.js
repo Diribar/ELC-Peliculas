@@ -30,14 +30,18 @@ module.exports = {
 	},
 	cantLinksPorProv: async (req, res) => {
 		// Obtiene los provs
-		const provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links").then((n) =>
-			n.map((m) => {
-				m.links = m.links.filter((p) => [creadoAprob_id, aprobado_id].includes(p.statusRegistro_id)).length;
-				return m;
-			})
-		);
+		let provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links");
+
+		// Cuenta la cantidad de links
+		provs = provs.map((m) => {
+			m.links = m.links.filter((p) => [creadoAprob_id, aprobado_id].includes(p.statusRegistro_id)).length;
+			return m;
+		});
+
+		// Ordena de mayor a menor, por cantidad de links
+		provs.sort((a, b) => (a.links > b.links ? -1 : 1));
 
 		// Fin
-		return res.json(provs)
+		return res.json(provs);
 	},
 };
