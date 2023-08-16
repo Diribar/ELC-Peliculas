@@ -93,10 +93,7 @@ module.exports = {
 		// Variables
 		const usuario = req.session.usuario;
 		const {entidad, id, origen} = req.query;
-		const linkVolver =
-			entidad && id && origen
-				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen
-				: req.session.urlSinPermInput;
+		const linkVolver = "/inactivar-captura/?entidad=" + entidad + "&id=" + id;
 		let informacion;
 
 		// Mensaje si el usuario está en status "identidad a validar"
