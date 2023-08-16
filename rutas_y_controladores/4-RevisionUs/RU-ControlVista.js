@@ -26,65 +26,61 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	validaIdent:{
+	validaIdent: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "revisionUs";
 			const codigo = "validaIdentidad";
 			const userID = req.query.id;
-			const campos = variables.camposRevisar.usuarios
-	
-			// Obtiene el usuario y variables dependientes
-			const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "statusRegistro"]);
-			const documPais_id = paises.find((n) => n.id == usuario.documPais_id).nombre;
-			const fechaNacim = comp.fechaHora.fechaDiaMesAno(usuario.fechaNacim);
+			const campos = variables.camposRevisar.usuarios;
+
+			// Obtiene datos para la vista
+			const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, "sexo");
 			const valores = {
-				documPais_id,
+				documPais_id: paises.find((n) => n.id == usuario.documPais_id).nombre,
 				apellido: usuario.apellido,
 				nombre: usuario.nombre,
 				sexo_id: usuario.sexo.nombre,
-				fechaNacim,
+				fechaNacim: comp.fechaHora.fechaDiaMesAno(usuario.fechaNacim),
 				documNumero: usuario.documNumero,
 			};
 			for (let campo of campos) campo.valor = valores[campo.nombre];
+			const documAvatar = "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar;
 			const motivos_docum = motivosEdics.filter((n) => n.avatar_us);
-	
+
 			// 4. Va a la vista
 			// return res.send(campos)
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo: "Validación de Identidad",
-				avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
-				documAvatar,
-				title: usuario.apodo,
-				campos,
-				userID,
 				motivos_docum,
-				cartelGenerico: true,
+				campos,
+				documAvatar,
+				userID,
 			});
 		},
 		guardar: async (req, res) => {
 			// Variables
 			const datos = {...req.query, ...req.body};
 			const campos = ["apellido", "documPais_id", "documNumero", "fechaNacim", "nombre", "sexo_id"];
-	
+
 			// Si hubo algún error en el data-entry reenvía el formulario
 			let redireccionar;
 			if (datos.motivo_docum_id == "0") {
 				for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
 			} else if (!datos.motivo_docum_id) redireccionar = true;
 			if (redireccionar) return res.redirect(req.originalUrl);
-	
+
 			// Más variables
 			const revID = req.session.usuario.id;
 			let penalizac = 0;
 			let statusRegistro_id = identValidada_id;
 			let objeto = {fechaRevisores: comp.fechaHora.ahora()};
-	
+
 			// Obtiene el usuario
 			const usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
-	
+
 			// Acciones si la imagen del documento fue aprobada
 			if (datos.motivo_docum_id == "0") {
 				const motivo = motivosEdics.find((n) => n.info_erronea);
@@ -104,23 +100,23 @@ module.exports = {
 				statusRegistro_id = editables_id;
 				penalizac += Number(motivo.penalizac);
 			}
-	
+
 			// Acciones si se aprueba la validación
 			if (statusRegistro_id == identValidada_id) {
 				// Asigna el rol 'permInputs'
 				objeto.rolUsuario_id = rolPermInputs_id;
-	
+
 				// Mueve la imagen del documento a su carpeta definitiva
 				comp.gestionArchivos.mueveImagen(usuario.documAvatar, "1-Usuarios/DNI-Revisar", "1-Usuarios/DNI-Final");
 			}
-	
+
 			// Actualiza el usuario
 			objeto.statusRegistro_id = statusRegistro_id;
 			BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
-	
+
 			// Aplica la penalizac
 			if (penalizac) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizacAcum", penalizac);
-	
+
 			// Vuelve al tablero
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		},
