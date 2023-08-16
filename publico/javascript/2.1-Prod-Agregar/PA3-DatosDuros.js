@@ -8,7 +8,8 @@ window.addEventListener("load", async () => {
 
 		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
-		inputImagen: document.querySelector("form .input#inputImagen"),
+		inputAvatar: document.querySelector("form .input#inputImagen"),
+		imgAvatar: document.querySelector("#imgDerecha #preview img"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
