@@ -1,10 +1,14 @@
 "use strict";
 // Requires
 const variables = require("../../funciones/1-Procesos/Variables");
+const comp = require("../../funciones/1-Procesos/Compartidas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 	// Variables
-	const link = "/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=TU";
+	const userID = req.query.id;
+	const usuario = await BD_genericas.obtienePorId("usuarios", userID);
+	const link = "/inactivar-captura/?entidad=usuarios&id=" + userID + "&origen=TU";
 	const vistaEntendido = variables.vistaEntendido(link);
 	const camposRevisar = [
 		...variables.camposRevisar.usuarios,
