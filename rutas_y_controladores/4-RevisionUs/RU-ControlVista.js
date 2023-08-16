@@ -63,31 +63,34 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const datos = {...req.query, ...req.body};
-			const campos = ["apellido", "documPais_id", "documNumero", "fechaNacim", "nombre", "sexo_id"];
-
-			// Si hubo algún error en el data-entry reenvía el formulario
+			const campos = variables.camposRevisar.usuarios;
+			const motivo =
+				datos.motivo_docum_id == "0"
+					? motivosEdics.find((n) => n.info_erronea)
+					: datos.motivo_docum_id
+					? motivosEdics.find((n) => n.id == datos.motivo_docum_id)
+					: "";
 			let redireccionar;
+
+			// Si hubo algún error en el data-entry, recarga la vista
 			if (datos.motivo_docum_id == "0") {
-				for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
-			} else if (!datos.motivo_docum_id) redireccionar = true;
+				for (let campo of campos) if (!Object.keys(req.body).includes(campo.nombre)) redireccionar = true; // Si el documento está bien, revisa que no falten datos
+			} else if (!motivo) redireccionar = true; // Revisa que haya un motivo válido
 			if (redireccionar) return res.redirect(req.originalUrl);
 
 			// Más variables
+			const usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 			const revID = req.session.usuario.id;
 			let penalizac = 0;
 			let statusRegistro_id = identValidada_id;
 			let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 
-			// Obtiene el usuario
-			const usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
-
 			// Acciones si la imagen del documento fue aprobada
 			if (datos.motivo_docum_id == "0") {
-				const motivo = motivosEdics.find((n) => n.info_erronea);
 				for (let campo of campos)
 					if (datos[campo] == "NO") {
 						// Agrega un registro por la edición rechazada
-						procesos.VI.histEdics(campo, usuario, revID, motivo);
+						procesos.VI.histEdics({campo, usuario, revID, motivo});
 						statusRegistro_id = editables_id;
 						penalizac += Number(motivo.penalizac);
 					}
@@ -95,8 +98,7 @@ module.exports = {
 			// Acciones si la imagen del documento NO fue aprobada
 			else {
 				// Rutinas para el campo
-				const motivo = motivosEdics.find((n) => n.id == datos.motivo_docum_id);
-				procesos.VI.histEdics("documAvatar", usuario, revID, motivo);
+				procesos.VI.histEdics({campo: {titulo: "Imagen del documento", nombre: "documAvatar"}, usuario, revID, motivo});
 				statusRegistro_id = editables_id;
 				penalizac += Number(motivo.penalizac);
 			}
