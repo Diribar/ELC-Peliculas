@@ -119,6 +119,8 @@ module.exports = {
 				mensajes: [
 					"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
 					"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
+					"Con tu alta de usuario, ya podés guardar tus consultas.",
+					"Si querés influir en nuestra base de datos, podés iniciar el trámite con el ícono 'Agregar una película' que está en el 'Header'.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
 				titulo: "Bienvenido/a a la familia ELC",
