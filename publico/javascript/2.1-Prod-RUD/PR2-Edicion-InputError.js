@@ -18,9 +18,10 @@ window.addEventListener("load", async () => {
 		paisesSelect: document.querySelector("#paises_id select"),
 
 		// Temas de avatar
+		imgAvatar: document.querySelector("#imgDerecha.inputError #avatarEdicN.imgAvatar"),
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
-		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
+		inputAvatar: document.querySelector("#imgDerecha.inputError .input"),
 
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
@@ -81,10 +82,7 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else
-					version.edicN.avatar = DOM.inputAvatarEdicN.files[0]
-						? DOM.inputAvatarEdicN.files[0].name
-						: version.edicG.avatar;
+				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
 			}
 
 			// Fin
@@ -116,10 +114,10 @@ window.addEventListener("load", async () => {
 				let valor = indice > -1 ? inputsResp[indice].value : "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
-			if (v.versionActual == "edicN" && (DOM.inputAvatarEdicN.value || !v.esImagen)) {
-				objeto += "&avatar=" + DOM.inputAvatarEdicN.value;
+			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
+				objeto += "&avatar=" + DOM.inputAvatar.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatarEdicN.value) objeto += "&tamano=" + DOM.inputAvatarEdicN.files[0].size;
+				if (DOM.inputAvatar.value) objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
 			}
 
 			// Averigua los errores
@@ -273,9 +271,9 @@ window.addEventListener("load", async () => {
 		},
 		revisaAvatarNuevo: function () {
 			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
-			if (!DOM.inputAvatarEdicN.value) {
+			if (!DOM.inputAvatar.value) {
 				// Actualiza el avatar
-				DOM.imgsAvatar[0].src = varios.avatarInicial;
+				DOM.imgsAvatar[0].src = v.avatarInicial;
 				// Actualiza los errores
 				v.esImagen = true;
 				this.actualizaVarios();
@@ -284,7 +282,7 @@ window.addEventListener("load", async () => {
 			}
 			// 2. De lo contrario, actualiza los errores y el avatar
 			let reader = new FileReader();
-			reader.readAsDataURL(DOM.inputAvatarEdicN.files[0]);
+			reader.readAsDataURL(DOM.inputAvatar.files[0]);
 			reader.onload = () => {
 				let image = new Image();
 				image.src = reader.result;
@@ -293,7 +291,7 @@ window.addEventListener("load", async () => {
 					// Actualiza la imagen del avatar en la vista
 					DOM.imgsAvatar[0].src = reader.result;
 					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
+					if (DOM.inputAvatar.value) version.edicN.avatar = DOM.inputAvatar.files[0].name;
 					// Actualiza los errores
 					v.esImagen = true;
 					FN.actualizaVarios();
@@ -305,9 +303,9 @@ window.addEventListener("load", async () => {
 					// Limpia el avatar
 					DOM.imgsAvatar[0].src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 					// Limpia el input
-					DOM.inputAvatarEdicN.value = "";
+					DOM.inputAvatar.value = "";
 					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
+					if (DOM.inputAvatar.value) version.edicN.avatar = "";
 					// Actualiza los errores
 					v.esImagen = false;
 					FN.actualizaVarios();
@@ -321,9 +319,6 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS --------------------------------------------------
 	// Revisa los campos
 	DOM.form.addEventListener("input", async (e) => {
-		// Si la versión actual no es la esperada para 'inputs', interrumpe
-		if (v.versionActual != v.versiones[0]) return;
-
 		// Validaciones estándar (función genérica)
 		amplio.restringeCaracteres(e);
 
@@ -334,8 +329,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatarEdicN) revisaAvatar({DOM, v, version, FN});
-		else FN.actualizaVarios();
+		if (e.target != DOM.inputAvatar) FN.actualizaVarios();
+		else if (v.versionActual == v.versiones[0]) await revisaAvatar({DOM, v, version, FN});
 
 		// Fin
 		return;
