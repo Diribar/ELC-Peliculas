@@ -80,7 +80,6 @@ window.addEventListener("load", () => {
 		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
 			let errores = await this.averiguaLosErrores(indice);
-			console.log(errores);
 
 			// Comunica los aciertos y errores
 			this.muestraLosErrores(errores, indice);
@@ -104,7 +103,6 @@ window.addEventListener("load", () => {
 		input.addEventListener("input", async () => {
 			// Variables
 			let campo = input.name;
-			console.log(campo);
 
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (
