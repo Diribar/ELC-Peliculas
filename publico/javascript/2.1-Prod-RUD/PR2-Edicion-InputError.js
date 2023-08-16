@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 		imgAvatar: document.querySelector("#imgDerecha.inputError #avatarEdicN.imgAvatar"),
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
-		inputAvatar: document.querySelector("#imgDerecha.inputError .input"),
+		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
@@ -82,7 +82,7 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
+				else version.edicN.avatar = DOM.inputAvatarEdicN.files[0] ? DOM.inputAvatarEdicN.files[0].name : version.edicG.avatar;
 			}
 
 			// Fin
@@ -114,10 +114,10 @@ window.addEventListener("load", async () => {
 				let valor = indice > -1 ? inputsResp[indice].value : "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
-			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
-				objeto += "&avatar=" + DOM.inputAvatar.value;
+			if (v.versionActual == "edicN" && (DOM.inputAvatarEdicN.value || !v.esImagen)) {
+				objeto += "&avatar=" + DOM.inputAvatarEdicN.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatar.value) objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
+				if (DOM.inputAvatarEdicN.value) objeto += "&tamano=" + DOM.inputAvatarEdicN.files[0].size;
 			}
 
 			// Averigua los errores
@@ -271,9 +271,10 @@ window.addEventListener("load", async () => {
 		},
 		revisaAvatarNuevo: function () {
 			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
-			if (!DOM.inputAvatar.value) {
+			if (!DOM.inputAvatarEdicN.value) {
 				// Actualiza el avatar
 				DOM.imgsAvatar[0].src = v.avatarInicial;
+
 				// Actualiza los errores
 				v.esImagen = true;
 				this.actualizaVarios();
@@ -282,30 +283,39 @@ window.addEventListener("load", async () => {
 			}
 			// 2. De lo contrario, actualiza los errores y el avatar
 			let reader = new FileReader();
-			reader.readAsDataURL(DOM.inputAvatar.files[0]);
+			reader.readAsDataURL(DOM.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
 				let image = new Image();
 				image.src = reader.result;
+
 				// Acciones si es realmente una imagen
 				image.onload = async () => {
 					// Actualiza la imagen del avatar en la vista
 					DOM.imgsAvatar[0].src = reader.result;
+					
+					
+					
+					
+					
 					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatar.value) version.edicN.avatar = DOM.inputAvatar.files[0].name;
+					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
+					
 					// Actualiza los errores
 					v.esImagen = true;
 					FN.actualizaVarios();
+
 					// Fin
 					return;
 				};
+
 				// Acciones si no es una imagen
 				image.onerror = () => {
 					// Limpia el avatar
 					DOM.imgsAvatar[0].src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 					// Limpia el input
-					DOM.inputAvatar.value = "";
+					DOM.inputAvatarEdicN.value = "";
 					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatar.value) version.edicN.avatar = "";
+					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
 					// Actualiza los errores
 					v.esImagen = false;
 					FN.actualizaVarios();
@@ -329,7 +339,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target != DOM.inputAvatar) FN.actualizaVarios();
+		if (e.target != DOM.inputAvatarEdicN) FN.actualizaVarios();
 		else if (v.versionActual == v.versiones[0]) await revisaAvatar({DOM, v, version, FN});
 
 		// Fin
