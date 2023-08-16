@@ -78,55 +78,12 @@ window.addEventListener("load", () => {
 		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
 			let errores = await this.averiguaLosErrores(indice);
+
 			// Comunica los aciertos y errores
 			this.muestraLosErrores(errores, indice);
+
 			// Activa/Desactiva el botón 'Guardar'
 			this.actualizaBotonGuardar();
-		},
-		revisaAvatarNuevo: function (indice) {
-			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
-			if (!DOM.inputAvatar.value) {
-				// Actualiza el avatar
-				DOM.imgAvatar.src = v.imgInicial;
-				// Oculta el iconoOK
-				if (DOM.ocultaOK_imagen) DOM.ocultaOK_imagen.classList.add("ocultaOK_imagen");
-				// Actualiza los errores
-				v.esImagen = true;
-				this.actualizaVarios(indice);
-				// Fin
-				return;
-			}
-			// 2. De lo contrario, actualiza los errores y el avatar
-			let reader = new FileReader();
-			reader.readAsDataURL(DOM.inputAvatar.files[0]);
-			reader.onload = () => {
-				let image = new Image();
-				image.src = reader.result;
-				// Acciones si es realmente una imagen
-				image.onload = () => {
-					// Actualiza la imagen del avatar en la vista
-					DOM.imgAvatar.src = reader.result;
-					// Muestra el iconoOK
-					if (DOM.ocultaOK_imagen) DOM.ocultaOK_imagen.classList.remove("ocultaOK_imagen");
-					// Actualiza los errores
-					v.esImagen = true;
-					FN.actualizaVarios(indice);
-					// Fin
-					return;
-				};
-				// Acciones si no es una imagen
-				image.onerror = () => {
-					// Limpia el avatar
-					DOM.imgAvatar.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-					// Limpia el input
-					DOM.inputAvatar.value = "";
-					// Actualiza los errores
-					v.esImagen = false;
-					FN.actualizaVarios(indice);
-					// Fin
-					return;
-				};
-			};
 		},
 		startUp: async function () {
 			// Averigua y muestra los errores
@@ -144,6 +101,7 @@ window.addEventListener("load", () => {
 		input.addEventListener("input", async () => {
 			// Variables
 			let campo = input.name;
+
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (
 				tarea == "login" ||
@@ -160,7 +118,7 @@ window.addEventListener("load", () => {
 			}
 
 			// Acciones si se cambió el avatar
-			if (campo == "avatar") FN.revisaAvatarNuevo(indice);
+			if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
 			// Acciones para los demás campos
 			else await FN.actualizaVarios(indice);
 		});

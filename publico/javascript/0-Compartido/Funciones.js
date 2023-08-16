@@ -178,7 +178,7 @@ let espera = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-let revisaAvatar = ({DOM, v, indice, version}) => {
+let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 	// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
 	if (!DOM.inputAvatar.value) {
 		// Actualiza el avatar
@@ -189,7 +189,7 @@ let revisaAvatar = ({DOM, v, indice, version}) => {
 
 		// Actualiza los errores
 		v.esImagen = true;
-		FN.actualizaVarios(indice);
+		await FN.actualizaVarios(indice);
 
 		// Fin
 		return;
@@ -203,7 +203,7 @@ let revisaAvatar = ({DOM, v, indice, version}) => {
 		image.src = reader.result;
 
 		// Acciones si es realmente una imagen
-		image.onload = () => {
+		image.onload = async () => {
 			// Actualiza la imagen del avatar en la vista
 			DOM.imgAvatar.src = reader.result;
 
@@ -211,18 +211,18 @@ let revisaAvatar = ({DOM, v, indice, version}) => {
 			if (DOM.ocultaOK_imagen) DOM.ocultaOK_imagen.classList.remove("ocultaOK_imagen");
 
 			// Actualiza la variable 'avatar' en la versión 'edicN'
-			if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
+			if (DOM.inputAvatarEdicN && DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
 
 			// Actualiza los errores
 			v.esImagen = true;
-			FN.actualizaVarios(indice);
+			await FN.actualizaVarios(indice);
 
 			// Fin
 			return;
 		};
 
 		// Acciones si no es una imagen
-		image.onerror = () => {
+		image.onerror = async () => {
 			// Limpia el avatar
 			DOM.imgAvatar.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
@@ -234,7 +234,7 @@ let revisaAvatar = ({DOM, v, indice, version}) => {
 
 			// Actualiza los errores
 			v.esImagen = false;
-			FN.actualizaVarios(indice);
+			await FN.actualizaVarios(indice);
 
 			// Fin
 			return;
