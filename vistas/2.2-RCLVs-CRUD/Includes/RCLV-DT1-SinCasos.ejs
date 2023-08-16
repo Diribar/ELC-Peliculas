@@ -1,8 +1,12 @@
-<li>
-	<button type="text" class="flexRow pointer" id= "ingrManual" autofocus>
-		<img class="imagenChica" src="<%= localhost %>/imagenes/0-Base/Avatar/Prod-Generico.jpg" alt="Ingresaré los datos a mano" title="Ingresaré los datos a mano">
-		<div id="infoPeli" class="flexCol">
-			<p>No tenemos películas sobre ese <%= entidadNombre %> en nuestra Base de Datos.</p>
-		</div>
-	</button>
+<li id="ingrManual">
+	<a href="/producto/agregar/palabras-clave">
+		<button type="text" class="flexRow pointer" autofocus>
+			<img class="imagenChica" src="<%= localhost %>/imagenes/0-Base/Avatar/Prod-Generico.jpg" alt="Ingresaré los datos a mano" title="Ingresaré los datos a mano">
+			<div id="infoPeli" class="flexCol">
+				<p>No tenemos películas sobre ese <%= entidadNombre %> en nuestra Base de Datos.</p>
+				<br>
+				<p>¿Tenés una para agregarnos?</p>
+			</div>
+		</button>
+	</a>
 </li>

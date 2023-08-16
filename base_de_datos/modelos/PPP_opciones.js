@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		nombre: {type: dt.STRING(25)},
 		yaLaVi: {type: dt.BOOLEAN},
+		laQuieroVer: {type: dt.BOOLEAN},
 		sinPreferencia: {type: dt.BOOLEAN},
 		icono: {type: dt.STRING(30)},
 	};
