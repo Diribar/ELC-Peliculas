@@ -167,6 +167,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
+
 			// Obtiene los datos
 			let datos = {
 				...req.body,
@@ -175,8 +176,10 @@ module.exports = {
 			};
 			if (req.file) datos.tamano = req.file.size;
 			datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/1-Usuarios/DNI-Revisar/";
+
 			// Averigua si hay errores de validación
 			let errores = await valida.identidadBE(datos);
+
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
 				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
@@ -184,6 +187,7 @@ module.exports = {
 				req.session.errores = errores;
 				return res.redirect("/usuarios/identidad");
 			}
+
 			if (req.file) {
 				// Elimina el archivo 'documAvatar' anterior
 				if (usuario.documAvatar)
@@ -191,12 +195,16 @@ module.exports = {
 				// Agrega el campo 'documAvatar' a los datos
 				req.body.documAvatar = req.file.filename;
 			}
+
 			// Prepara la información a actualizar
 			req.body.fechaRevisores = comp.fechaHora.ahora();
+
 			// Actualiza el usuario
 			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "identPendValidar", req.body);
-			// Mueve el archivo a la carpeta definitiva
+
+			// Mueve el archivo a la carpeta 'Revisar''
 			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/DNI-Revisar");
+
 			// Redirecciona
 			return res.redirect("/usuarios/validacion-en-proceso");
 		},
@@ -209,7 +217,7 @@ module.exports = {
 					"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
 					"Ahora, queda a cargo del equipo de Revisores la tarea de revisarlos.",
 					"Luego de la revisión, recibirás un mail de feedback.",
-					"En caso de estar aprobado, podrás ingresar información.",
+					"En caso de estar aprobado, ya podrás ingresar información.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 				titulo: "Validación en Proceso",
