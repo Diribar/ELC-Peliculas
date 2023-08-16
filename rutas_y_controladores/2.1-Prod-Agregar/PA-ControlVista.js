@@ -80,7 +80,7 @@ module.exports = {
 			// Acciones si existe un valor para el campo 'avatar'
 			if (datosDuros.avatar) {
 				// Elimina 'avatarUrl' para que la vista permita ingresar otra imagen
-				delete datosDuros.avatarUrl; 
+				delete datosDuros.avatarUrl;
 
 				// Actualiza session y cookie
 				req.session.datosDuros = datosDuros;
@@ -124,9 +124,9 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
 			let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-			
-			// Acciones si existe un archivo avatar ingresado anteriormente
-			if (datosDuros.avatar) {
+
+			// Acciones si existe un archivo avatar ingresado anteriormente y ahora se ingresó otro
+			if (datosDuros.avatar && req.file) {
 				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
 				delete datosDuros.avatar;
 			}
