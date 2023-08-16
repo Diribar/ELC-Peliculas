@@ -24,22 +24,25 @@ module.exports = {
 		},
 	},
 	VI: {
-		histEdics: (campo, usuario, revID, motivo) => {
+		histEdics: ({campo, usuario, revID, motivo}) => {
 			// Alimenta la tabla 'histEdics'
 			let datos = {
+				// Datos generales
 				entidad: "usuarios",
 				entidad_id: usuario.id,
-				campo,
-				titulo: campo,
-				valor_rech: usuario[campo],
+				campo: campo.nombre,
+				titulo: campo.titulo,
+				valorDesc: usuario[campo],
 
-				motivo_id: motivo.id,
+				// Motivo
 				penalizac: motivo.penalizac,
+				motivo_id: motivo.id,
 
-				editadoPor_id: usuario.id,
-				editadoEn: usuario.fechaRevisores,
-				edicRevisadaPor_id: revID,
-				edicRevisadaEn: comp.fechaHora.ahora(),
+				// Fechas y Usuarios
+				sugeridoPor_id: usuario.id,
+				sugeridoEn: usuario.fechaRevisores,
+				revisadoPor_id: revID,
+				revisadoEn: comp.fechaHora.ahora(),
 			};
 			BD_genericas.agregaRegistro("histEdics", datos);
 
