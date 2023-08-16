@@ -18,10 +18,9 @@ window.addEventListener("load", async () => {
 		paisesSelect: document.querySelector("#paises_id select"),
 
 		// Temas de avatar
-		imgAvatar: document.querySelector("#imgDerecha.inputError #avatarEdicN.imgAvatar"),
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
-		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
-		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
+		imgAvatar: document.querySelector("#imgDerecha.inputError #imgEdicN.imgAvatar"),
+		inputAvatar: document.querySelector("#imgDerecha.inputError #inputImagen.input"),
 
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
@@ -55,7 +54,7 @@ window.addEventListener("load", async () => {
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
 		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
-		avatarInicial: DOM.imgAvatarInicial.src,
+		avatarInicial: DOM.imgAvatar.src,
 	};
 	let rutas = {
 		validar: "/producto/api/valida/?",
@@ -83,8 +82,8 @@ window.addEventListener("load", async () => {
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
 				else
-					version.edicN.avatar = DOM.inputAvatarEdicN.files[0]
-						? DOM.inputAvatarEdicN.files[0].name
+					version.edicN.avatar = DOM.inputAvatar.files[0]
+						? DOM.inputAvatar.files[0].name
 						: version.edicG.avatar;
 			}
 
@@ -117,10 +116,10 @@ window.addEventListener("load", async () => {
 				let valor = indice > -1 ? inputsResp[indice].value : "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
-			if (v.versionActual == "edicN" && (DOM.inputAvatarEdicN.value || !v.esImagen)) {
-				objeto += "&avatar=" + DOM.inputAvatarEdicN.value;
+			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
+				objeto += "&avatar=" + DOM.inputAvatar.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatarEdicN.value) objeto += "&tamano=" + DOM.inputAvatarEdicN.files[0].size;
+				if (DOM.inputAvatar.value) objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
 			}
 
 			// Averigua los errores
@@ -159,7 +158,7 @@ window.addEventListener("load", async () => {
 					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
-			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == v.avatarInicial;
+			if (sonIguales) sonIguales = DOM.imgAvatar.src == v.avatarInicial;
 
 			// Si los campos 'input' y la imagen avatar son iguales --> inactiva Guardar y Eliminar
 			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
@@ -290,7 +289,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatarEdicN) await revisaAvatar({DOM, v, version, FN});
+		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
 		else FN.actualizaVarios();
 
 		// Fin
