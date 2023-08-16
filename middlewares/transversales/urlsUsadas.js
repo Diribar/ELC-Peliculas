@@ -43,33 +43,33 @@ module.exports = (req, res, next) => {
 
 	// 1. urlSinLogin - cualquier ruta que no requiera login
 	if (
-		!urlActual.startsWith("/usuarios/") &&
-		!urlActual.startsWith("/links/") &&
-		!urlActual.startsWith("/revision/") &&
-		!urlActual.includes("/agregar/") &&
-		!urlActual.includes("/edicion/")
+		!urlAnterior.startsWith("/usuarios/") &&
+		!urlAnterior.startsWith("/links/") &&
+		!urlAnterior.startsWith("/revision/") &&
+		!urlAnterior.includes("/agregar/") &&
+		!urlAnterior.includes("/edicion/")
 	)
-		activaSessionCookie("urlSinLogin");
+		activaSessionCookie("urlSinLogin", true);
 
 	// 2. urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
-	if (!urlActual.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
+	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios", true);
 
 	// 3. urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
-		!urlActual.startsWith("/usuarios/") &&
-		!urlActual.startsWith("/links/") &&
-		(!urlActual.startsWith("/revision/") || urlActual.includes("/tablero-de-control")) &&
-		!urlActual.includes("/edicion/")
+		!urlAnterior.startsWith("/usuarios/") &&
+		!urlAnterior.startsWith("/links/") &&
+		(!urlAnterior.startsWith("/revision/") || urlAnterior.includes("/tablero-de-control")) &&
+		!urlAnterior.includes("/edicion/")
 	)
-		activaSessionCookie("urlSinCaptura");
+		activaSessionCookie("urlSinCaptura", true);
 
 	// 4. urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
-		((!urlActual.startsWith("/producto/") && !urlActual.startsWith("/rclv/")) || urlActual.includes("/detalle/")) &&
-		!urlActual.startsWith("/links/") &&
-		!urlActual.startsWith("/revision/")
+		((!urlAnterior.startsWith("/producto/") && !urlAnterior.startsWith("/rclv/")) || urlAnterior.includes("/detalle/")) &&
+		!urlAnterior.startsWith("/links/") &&
+		!urlAnterior.startsWith("/revision/")
 	)
-		activaSessionCookie("urlSinPermInput");
+		activaSessionCookie("urlSinPermInput", true);
 
 	// Actualiza la url 'urlAnterior'
 	activaSessionCookie("urlAnterior", true);
