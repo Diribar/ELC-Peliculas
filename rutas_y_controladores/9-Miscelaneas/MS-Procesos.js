@@ -67,16 +67,16 @@ module.exports = {
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
-		const petitFamilias = "rclvs";
 		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
-		let objeto = {petitFamilias, userID};
+		const objetoFijo = {petitFamilias: "rclvs", userID};
+		let objeto
 
 		// Inactivos
-		objeto = {...objeto, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+		objeto = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
 		let IN = obtienePorEntidad(objeto);
 
 		// Aprobados
-		objeto = {...objeto, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
+		objeto = {...objetoFijo, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
 		let aprobados = obtienePorEntidad({...objeto, include: includeProds});
 
 		// Await
