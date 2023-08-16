@@ -162,7 +162,7 @@ module.exports = {
 			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 			// Obtiene los datos
-			let datos = {...req.body, ...req.query, opcional: true};
+			let datos = {...req.body, ...req.query, imgOpcional: true};
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
