@@ -24,7 +24,8 @@ window.addEventListener("load", () => {
 	};
 	let v = {
 		imgInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
-		esImagen: true,
+		esImagen: false,
+		imgOpcional: tarea == "editables",
 		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
 	};
 
@@ -36,8 +37,11 @@ window.addEventListener("load", () => {
 			let valor = encodeURIComponent(DOM.inputs[indice].value);
 			// Particularidad para 'avatar'
 			if (campo.includes("avatar")) {
-				valor += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatar.value) valor += "&tamano=" + DOM.inputAvatar.files[0].size;
+				valor += "&imgOpcional=" + (v.imgOpcional ? "SI" : "NO");
+				if (DOM.inputAvatar.value) {
+					valor += "&esImagen=" + (v.esImagen ? "SI" : "NO");
+					valor += "&tamano=" + DOM.inputAvatar.files[0].size;
+				}
 			}
 			// Averigua los errores
 			let errores =
