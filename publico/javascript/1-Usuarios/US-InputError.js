@@ -78,8 +78,10 @@ window.addEventListener("load", () => {
 		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
 			let errores = await this.averiguaLosErrores(indice);
+
 			// Comunica los aciertos y errores
 			this.muestraLosErrores(errores, indice);
+
 			// Activa/Desactiva el botón 'Guardar'
 			this.actualizaBotonGuardar();
 		},
@@ -99,6 +101,7 @@ window.addEventListener("load", () => {
 		input.addEventListener("input", async () => {
 			// Variables
 			let campo = input.name;
+
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (
 				tarea == "login" ||
@@ -115,7 +118,7 @@ window.addEventListener("load", () => {
 			}
 
 			// Acciones si se cambió el avatar
-			if (campo == "avatar") revisaAvatar({DOM,v,indice});
+			if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
 			// Acciones para los demás campos
 			else await FN.actualizaVarios(indice);
 		});
