@@ -18,6 +18,7 @@ window.addEventListener("load", async () => {
 		paisesSelect: document.querySelector("#paises_id select"),
 
 		// Temas de avatar
+		imgAvatar: document.querySelector("#imgDerecha.inputError #avatarEdicN.imgAvatar"),
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
@@ -271,51 +272,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		revisaAvatarNuevo: function () {
-			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
-			if (!DOM.inputAvatarEdicN.value) {
-				// Actualiza el avatar
-				DOM.imgsAvatar[0].src = varios.avatarInicial;
-				// Actualiza los errores
-				v.esImagen = true;
-				this.actualizaVarios();
-				// Fin
-				return;
-			}
-			// 2. De lo contrario, actualiza los errores y el avatar
-			let reader = new FileReader();
-			reader.readAsDataURL(DOM.inputAvatarEdicN.files[0]);
-			reader.onload = () => {
-				let image = new Image();
-				image.src = reader.result;
-				// Acciones si es realmente una imagen
-				image.onload = async () => {
-					// Actualiza la imagen del avatar en la vista
-					DOM.imgsAvatar[0].src = reader.result;
-					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = DOM.inputAvatarEdicN.files[0].name;
-					// Actualiza los errores
-					v.esImagen = true;
-					FN.actualizaVarios();
-					// Fin
-					return;
-				};
-				// Acciones si no es una imagen
-				image.onerror = () => {
-					// Limpia el avatar
-					DOM.imgsAvatar[0].src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-					// Limpia el input
-					DOM.inputAvatarEdicN.value = "";
-					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (DOM.inputAvatarEdicN.value) version.edicN.avatar = "";
-					// Actualiza los errores
-					v.esImagen = false;
-					FN.actualizaVarios();
-					// Fin
-					return;
-				};
-			};
-		},
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -334,7 +290,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatarEdicN) revisaAvatar({DOM, v, version, FN});
+		if (e.target == DOM.inputAvatarEdicN) await revisaAvatar({DOM, v, version, FN});
 		else FN.actualizaVarios();
 
 		// Fin

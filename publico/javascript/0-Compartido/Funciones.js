@@ -182,7 +182,7 @@ let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 	// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
 	if (!DOM.inputAvatar.value) {
 		// Actualiza el avatar
-		DOM.imgAvatar.src = v.imgInicial;
+		DOM.imgAvatar.src = v.avatarInicial;
 
 		// Oculta el iconoOK
 		if (DOM.ocultaOK_imagen) DOM.ocultaOK_imagen.classList.add("ocultaOK_imagen");

@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 		inputs: form.querySelectorAll(".inputError .input"),
 	};
 	let v = {
-		imgInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
+		avatarInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
 		esImagen: false,
 		imgOpcional: tarea == "editables",
 		rutaApi: "/usuarios/api/valida-" + tarea + "/?",

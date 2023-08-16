@@ -21,8 +21,9 @@
 #subCuerpo #datos .iconos {position: absolute; top: 50%; transform: translateY(-57%);}
 #subCuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #subCuerpo #datos .iconos {border-radius: 10px; left: -55px; width: 45px;}
+#subCuerpo #datos .iconos label:has(.sinDecision) {border-radius: 50%; border: 1px solid black;}
 #subCuerpo #datos .iconos .fa-solid {font-weight: bold; font-size: 1.15rem;}
-#subCuerpo #datos .iconos .fa-solid.sinDecision {font-size: 1rem; color: white; background: var(--gris-oscuro); border: 1.5px solid var(--gris-oscuro);}
+#subCuerpo #datos .iconos .fa-solid.sinDecision {font-size: 1rem; color: white; background: var(--gris-oscuro);}
 /* #subCuerpo #datos #motivo_rech_docum {} */
 
 /* Flechas */
