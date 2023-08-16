@@ -1,0 +1,13 @@
+<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
+	<div class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
+		<a href="/graficos/vencimiento-de-links-por-semana" class="menuOpcion">
+			<i class="fa-solid fa-link-slash icono"></i>
+			<span>Links - Vencimiento Semanal</span>
+		</a>
+		<a href="/graficos/cantidad-de-links-por-proveedor" class="menuOpcion">
+			<i class="fa-solid fa-chart-pie icono"></i>
+			<span>Links - Cantidad por proveedor</span>
+		</a>
+		<hr />
+	</div>
+<% } %>

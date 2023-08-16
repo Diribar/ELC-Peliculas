@@ -28,4 +28,16 @@ module.exports = {
 		// Fin
 		return res.json(linksSemanales);
 	},
+	cantLinksPorProv: async (req, res) => {
+		// Obtiene los provs
+		const provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links").then((n) =>
+			n.map((m) => {
+				m.links = m.links.filter((p) => [creadoAprob_id, aprobado_id].includes(p.statusRegistro_id)).length;
+				return m;
+			})
+		);
+
+		// Fin
+		return res.json(provs)
+	},
 };

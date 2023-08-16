@@ -10,4 +10,12 @@ module.exports = {
 			titulo: "Vencimiento Semanal de Links",
 		});
 	},
+	cantLinksPorProv: async (req, res) => {
+		// Fin
+		return res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "linksPorProv",
+			titulo: "Cantidad de Links por Proveedor",
+		});
+	},
 };

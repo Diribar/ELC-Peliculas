@@ -16,23 +16,21 @@
 	<!-- Película -->
 	<% if (entidad != "colecciones") { %>
 		<div class="flexRowAlign">
-			<h4>Película</h4>
+			<% if (links.TR.length) { %><h4>Película</h4><% } %>
 			<% if (links.PL.length) { %>
 				<%- include("PR1-DetalleLinks", {linksProd: links.PL}) %>
 			<% } else { %>
-				<p><em>- No disponemos de links aprobados -</em></p>
+				<p><em>- No disponemos de links. ¿Podés aportarnos alguno? -</em></p>
 			<% } %>
 		</div>
 	<% } %>
-	<!-- Trailer -->
-	<div class="flexRowAlign">
-		<h4>Trailer</h4>
-		<% if (links.TR.length) { %>
+	<% if (links.TR.length) { %>
+		<!-- Trailer -->
+		<div class="flexRowAlign">
+			<h4>Trailer</h4>
 			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
-		<% } else { %>
-			<p><em>- No disponemos de links aprobados -</em></p>
-		<% } %>
-	</div>
+		</div>
+	<% } %>
 </div>
 <div id="marcoDetalle">
 	<div id="etiquetas" class="flexRow">

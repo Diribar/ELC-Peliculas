@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 14/ago",
-	"HoraUTC": "12:39",
+	"FechaUTC": "Mar. 15/ago",
+	"HoraUTC": "18:37",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 14/ago",
@@ -20,10 +20,9 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-ago-23": {"titulo": "Santa Juana de Chantal", "entidad": "personajes", "id": 170},
 		"13-ago-23": {"titulo": "ELC - Películas"},
 		"14-ago-23": {"titulo": "San Maximiliano Kolbe", "entidad": "personajes", "id": 112},
 		"15-ago-23": {"titulo": "Asunción de María", "entidad": "hechos", "id": 68},
-		"16-ago-23": {"titulo": "ELC - Películas"}
+		"17-ago-23": {"titulo": "ELC - Películas"}
 	}
 }
