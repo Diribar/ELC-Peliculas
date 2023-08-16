@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
+		anoFM: {type: dt.INTEGER},
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
