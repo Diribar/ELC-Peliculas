@@ -36,7 +36,7 @@ router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editabl
 router.get("/bienvenido", statusCorrecto, vista.editables.bienvenido);
 // 4. Solo usuarios con status 'editables' y no penalizadas
 router.get("/identidad", validarIdentidad, vista.identidad.form);
-router.post("identidad", validarIdentidad, multer.single("avatar"), vista.identidad.guardar);
+router.post("/identidad", validarIdentidad, multer.single("avatar"), vista.identidad.guardar);
 // 5. Solo usuarios con status 'identPendValidar'
 router.get("/validacion-en-proceso", statusCorrecto, vista.identidad.enProceso);
 
