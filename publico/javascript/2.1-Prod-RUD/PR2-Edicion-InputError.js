@@ -334,7 +334,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatarEdicN) FN.revisaAvatarNuevo();
+		if (e.target == DOM.inputAvatarEdicN) revisaAvatar({DOM, v, version, FN});
 		else FN.actualizaVarios();
 
 		// Fin
