@@ -126,6 +126,7 @@ module.exports = {
 				titulo: "Bienvenido/a a la familia ELC",
 				check: true,
 			};
+
 			// Fin
 			return res.render("CMP-0Estructura", {informacion});
 		},
