@@ -275,14 +275,13 @@ module.exports = {
 				.replace(/[“”«»]/g, '"')
 				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
-				.replace(/ ­/g, "")
+				.replace(/[  #]/g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
-				.replace(/#/g, "")
 				.replace(/\t/g, " ") // previene el uso de 'tab'
 				.replace(/\n/g, " ") // previene el uso de 'return'
-				.replace(/ +/g, " ");
+				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 	},
 	fechaHora: {
