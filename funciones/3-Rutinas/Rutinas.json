@@ -17,10 +17,10 @@
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
-		"BorraImagenesSinRegistro": "SI",
 		"LinksVencidos": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsNoLongerAvailable": "SI"
 	},

@@ -470,8 +470,8 @@ module.exports = {
 	},
 	EliminaImagenesSinRegistro: async () => {
 		// Funciones
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("2-","productos");
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("3-","rclvs");
 		procesos.borraImagenesProvisorio();
 
 		// Fin
