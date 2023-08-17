@@ -76,40 +76,46 @@
 				<%- include("CMP-Errores", {nombre: "fecha", display: true}) %>
 			</div>
 			<!-- Mes y Día -->
-			<div id="mesDia" class="flexRow spaceBetween">
-				<div class="flexRowAlign margenDebajo">
-					<!-- Meses -->
-					<select name="mes_id" class="input">
-						<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
-						<% for (let mes of meses) { %>
-							<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
-								<%= mes.nombre %>
-							</option>
-						<% } %>
-					</select>
-					<!-- Días -->
-					<select name="dia" class="input">
-						<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
-						<% for (let dia = 1; dia < 32; dia++) { %>
-							<option value="<%= dia %>" 
-								<% if (dia > 29) { %>class="ocultar"<% } %>
-								<% if (dataEntry.dia == dia) { %>selected<% } %>
-							>
-								<%= dia %>
-							</option>
-						<% } %>
-					</select>
-					<nav id="logos" class="flexRow spaceBetween">
-						<a id="wiki" href="" target="blank" class="links" tabindex="-1">
-							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
-						</a>
-						<a id="google" href="" target="blank" class="links" tabindex="-1">
-							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Consultar en Google">
-						</a>
-					</nav>
-				</div>
-				<p class="caracteres ocultar"><span><%- dataEntry.comentarioMovil ? 70 - dataEntry.comentarioMovil.length : 70 %></span>/70</p>
+			<div id="mesDia" class="flexRowAlign margenDebajo">
+				<!-- Meses -->
+				<select name="mes_id" class="input">
+					<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
+					<% for (let mes of meses) { %>
+						<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+							<%= mes.nombre %>
+						</option>
+					<% } %>
+				</select>
+				<!-- Días -->
+				<select name="dia" class="input">
+					<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
+					<% for (let dia = 1; dia < 32; dia++) { %>
+						<option value="<%= dia %>" 
+							<% if (dia > 29) { %>class="ocultar"<% } %>
+							<% if (dataEntry.dia == dia) { %>selected<% } %>
+						>
+							<%= dia %>
+						</option>
+					<% } %>
+				</select>
+				<!-- Años -->
+				<select name="ano" class="input">
+					<option value="" <% if (!dataEntry.ano) { %>selected<% } %>>Año</option>
+					<% for (let ano = anoHoy; ano < (anoHoy + 2); ano++) { %>
+						<option value="<%= ano %>" <% if (dataEntry.ano == ano) { %>selected<% } %>><%= ano %></option>
+					<% } %>
+				</select>
+
+				<nav id="logos" class="flexRow spaceBetween">
+					<a id="wiki" href="" target="blank" class="links" tabindex="-1">
+						<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
+					</a>
+					<a id="google" href="" target="blank" class="links" tabindex="-1">
+						<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Consultar en Google">
+					</a>
+				</nav>
 			</div>
+			<p class="caracteres ocultar"><span><%- dataEntry.comentarioMovil ? 70 - dataEntry.comentarioMovil.length : 70 %></span>/70</p>
 			<textarea name="comentarioMovil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentarioMovil %></textarea>
 			<% if (epocasDelAno) { %>
 				<div id="diasDeDuracion" class="flexRow spaceBetween altoFila">
