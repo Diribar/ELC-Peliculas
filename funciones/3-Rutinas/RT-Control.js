@@ -295,7 +295,7 @@ module.exports = {
 			// Rastrilla los productos
 			for (let producto of productos) {
 				let azar =
-					producto.statusRegistro_id == aprobado_id && producto.calificacion >= 70 // Averigua si el producto está aprobado y su calificación es superior o igual al 70%
+					producto.statusRegistro_id == aprobado_id // Averigua si el producto está aprobado y su calificación es superior o igual al 70%
 						? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
 						: null; // Para los demás, les limpia el campo azar
 
@@ -306,6 +306,22 @@ module.exports = {
 
 		// Fin
 		procesos.finRutinasDiariasSemanales("ProductosAlAzar", "RutinasDiarias");
+		return;
+	},
+	EliminaRegistrosAntiguos: async () => {
+		// Variables
+		const antiguedad = unDia * 365;
+		const fechaDeCorte = new Date(Date.now() - antiguedad);
+		const tablas = [
+			{nombre: "histEdics", campo: "revisadoEn"},
+			{nombre: "histStatus", campo: "revisadoEn"},
+			{nombre: "historialPelis", campo: "visitadaEn"},
+		];
+
+		// Elimina registros antiguos
+		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+
+		// Fin
 		return;
 	},
 
