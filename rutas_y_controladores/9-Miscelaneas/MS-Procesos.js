@@ -96,11 +96,10 @@ module.exports = {
 		// Con fecha móvil
 		const dia = new Date().getDate();
 		const mes = new Date().getMonth() + 1;
-		const ano = new Date().getFullYear();
 		const fechaDelAno_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
 		const FM = aprobados
 			.filter((n) => n.fechaMovil) // con fecha móvil
-			.filter((n) => !n.anoFM || n.anoFM < ano || (n.anoFM == ano && n.fechaDelAno_id < fechaDelAno_id)) // sin año, año menor al actual, de este año con fecha menor
+			.filter((n) => !n.anoFM || n.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAno_id)) // sin año, año menor al actual, de este año con fecha menor
 			.map((n) => ({...n, fechaRef: n.fechaDelAno_id, fechaRefTexto: n.fechaDelAno.nombre}))
 			.sort((a, b) => a.fechaRef - b.fechaRef);
 
