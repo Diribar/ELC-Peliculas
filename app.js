@@ -150,7 +150,7 @@ app.set("views", [
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
 	global.mailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
-	global.editables_id = statusRegistrosUs.find((n) => n.editables).id;
+	global.registrado_id = statusRegistrosUs.find((n) => n.registrado).id;
 	global.identPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
 	global.identValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
 
