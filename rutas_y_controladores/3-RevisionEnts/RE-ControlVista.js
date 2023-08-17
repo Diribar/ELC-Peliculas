@@ -162,21 +162,21 @@ module.exports = {
 					// Acciones si recibimos un avatar
 					if (req.file) {
 						// Lo mueve de 'Provisorio' a 'Final'
-						comp.gestionArchivos.mueveImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+						comp.gestionArchivos.mueveImagen(datos.avatar, "9-Provisorio", "3-RCLVs/Final");
 
 						// Elimina el eventual anterior
-						if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+						if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/3-RCLVs/Revisar/", original.avatar);
 					}
 					// Si no recibimos un avatar y hay avatar en original, lo mueve de 'Revisar' a 'Final'
 					else if (original.avatar)
-						comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+						comp.gestionArchivos.mueveImagen(original.avatar, "3-RCLVs/Revisar", "3-RCLVs/Final");
 
 					// Acciones si es un registro de 'epocasDelAno'
 					if (entidad == "epocasDelAno") {
 						// Si tiene imagen, la copia en su carpeta
 						if (datos.avatar) {
-							const archivoAvatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
-							comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivoAvatar);
+							const archivoAvatar = "4-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
+							comp.gestionArchivos.copiaImagen("3-RCLVs/Final" + datos.avatar, archivoAvatar);
 						}
 
 						// Actualiza los fechasDelAno
@@ -192,7 +192,7 @@ module.exports = {
 					if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 					// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-					if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+					if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "3-RCLVs/Revisar", "3-RCLVs/Final");
 				}
 
 				// Acciones si es un RCLV inactivo

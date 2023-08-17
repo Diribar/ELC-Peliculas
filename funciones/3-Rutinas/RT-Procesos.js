@@ -77,7 +77,7 @@ module.exports = {
 	// Imagen Derecha
 	borraLosArchivosDeImgDerechaObsoletos: (fechas) => {
 		// Variables
-		const carpetaImagen = "./publico/imagenes/4-ImagenDerecha/";
+		const carpetaImagen = "./publico/imagenes/5-ImagenDerecha/";
 		const archivosDeImagen = fs.readdirSync(carpetaImagen);
 
 		// Revisa si corresponde borrar los archivos
@@ -123,14 +123,14 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesDeFamiliasSinRegistro: async (familias) => {
+	eliminaImagenesDeFamiliasSinRegistro: async (numero, familias) => {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
 		let carpeta, avatars, consolidado, statusFinal;
 
 		// Borra los avatar de Revisar - incluye: EDICIONES y Prods/RCLVs creados
-		carpeta = "2-" + familias + "/Revisar";
+		carpeta = numero + familias + "/Revisar";
 		avatars = [];
 
 		// Revisa los avatars que están en las ediciones
@@ -138,7 +138,7 @@ module.exports = {
 		eliminaLasImagenes(avatars, carpeta);
 
 		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
-		carpeta = "2-" + familias + "/Final";
+		carpeta = numero + familias + "/Final";
 		avatars = [];
 		consolidado = [];
 
@@ -654,10 +654,10 @@ let datosImgDerecha = (resultado) => {
 
 		// Datos del archivo, dependiendo de la entidad
 		if (!resultado.carpetaAvatars) {
-			imgDerecha.carpeta = "2-RCLVs/Final/";
+			imgDerecha.carpeta = "3-RCLVs/Final/";
 			imgDerecha.nombreArchivo = resultado.avatar;
 		} else {
-			imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpetaAvatars + "/";
+			imgDerecha.carpeta = "4-EpocasDelAno/" + resultado.carpetaAvatars + "/";
 			imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
 		}
 	}
