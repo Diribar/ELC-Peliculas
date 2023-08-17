@@ -141,7 +141,7 @@ module.exports = {
 		// Espera y consolida los resultados
 		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
 
-		// Borra los avatar de Revisar
+		// Elimina los avatars
 		eliminaLasImagenes(consolidado, carpeta);
 
 		// Fin
