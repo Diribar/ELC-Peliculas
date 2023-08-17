@@ -28,7 +28,7 @@ module.exports = {
 				? "rclvs"
 				: familias == "productos"
 				? "prods"
-				: familias == "usuarios" // Hace falta para el borrador de avatars
+				: familias == "usuarios" // Hace falta para la eliminación de avatars
 				? "usuarios"
 				: "";
 		},
