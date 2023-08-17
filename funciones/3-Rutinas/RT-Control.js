@@ -33,10 +33,8 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
-		this.EliminaHistorialDeRegsNoLongerAvailable();
 		return;
 		this.LinksVencidos();
-		this.LinksEnProd();
 	},
 
 	// 1. Rutinas horarias
@@ -236,7 +234,7 @@ module.exports = {
 				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "5-ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 
@@ -385,27 +383,16 @@ module.exports = {
 
 			// Descarga el avatar y actualiza el valor en el campo del registro original
 			espera.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) =>
-						n.map((m) => {
-							const nombre = Date.now() + path.extname(m.avatar);
-							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
-							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
-						})
-					)
-					.then(() => true)
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+					n.map((m) => {
+						const nombre = Date.now() + path.extname(m.avatar);
+						comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
+						BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+					})
+				)
 			);
 		}
 		await Promise.all(espera);
-
-		// Fin
-		return;
-	},
-	BorraImagenesSinRegistro: async () => {
-		// Funciones
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
-		procesos.borraImagenesProvisorio();
 
 		// Fin
 		return;
@@ -477,6 +464,15 @@ module.exports = {
 			);
 		}
 		await Promise.all(verificador);
+
+		// Fin
+		return;
+	},
+	EliminaImagenesSinRegistro: async () => {
+		// Funciones
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
+		procesos.borraImagenesProvisorio();
 
 		// Fin
 		return;
