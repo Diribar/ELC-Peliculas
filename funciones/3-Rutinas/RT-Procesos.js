@@ -147,7 +147,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	borraImagenesProvisorio: () => {
+	eliminaImagenesProvisorio: () => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 		let archivos = fs.readdirSync("./publico/imagenes/9-Provisorio");
 
