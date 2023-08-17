@@ -34,7 +34,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.LinksVencidos();
+		this.EliminaImagenesSinRegistro();
 	},
 
 	// 1. Rutinas horarias
@@ -471,20 +471,29 @@ module.exports = {
 	EliminaImagenesSinRegistro: async () => {
 		// Variables
 		const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+		const statusCualquiera_id = {[Op.ne]: null};
+		const statusDNIrevisar_id = [registrado_id, identPendValidar_id];
 
 		const objetos = [
 			// Carpetas REVISAR
 			{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-			{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", statusRegistro_id: creado_id},
+			{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
 
 			// Carpetas FINAL
-			{carpeta: "2-Productos/Final", familia: "productos", statusRegistro_id: statusDistintoCreado_id},
-			{carpeta: "3-RCLVs/Final", familia: "rclvs", statusRegistro_id: statusDistintoCreado_id},
-		];
-		await procesos.eliminaImagenesSinRegistro(objeto);
+			{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
+			{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
 
-		await procesos.eliminaImagenesSinRegistro({numero: "3-", familias: "rclvs"});
-		procesos.borraImagenesProvisorio();
+			// Carpetas USUARIOS
+			{carpeta: "1-Usuarios/Avatar", familia: "usuarios", status_id: statusCualquiera_id},
+			{carpeta: "1-Usuarios/DNI-Revisar", familia: "usuarios", status_id: statusDNIrevisar_id, campoAvatar: "documAvatar"},
+			{carpeta: "1-Usuarios/DNI-Final", familia: "usuarios", status_id: identValidada_id, campoAvatar: "documAvatar"},
+		];
+
+		// Elimina las imágenes de las carpetas "Revisar" y "Final"
+		for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+		// Elimina las imágenes de "Provisorio"
+		procesos.eliminaImagenesProvisorio();
 
 		// Fin
 		return;

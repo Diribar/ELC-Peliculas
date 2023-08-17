@@ -32,9 +32,9 @@ router.get("/envio-fallido-de-mail", visitas, vista.altaMail.envioFallido);
 // 2. Solo usuarios con status 'mailValidado'
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);
-// 3. Solo usuarios con status 'editables'
-router.get("/bienvenido", statusCorrecto, vista.editables.bienvenido);
-// 4. Solo usuarios con status 'editables' y no penalizadas
+// 3. Solo usuarios con status 'registrado'
+router.get("/bienvenido", statusCorrecto, vista.registradoBienvenido);
+// 4. Solo usuarios con status 'registrado' y no penalizadas
 router.get("/identidad", validarIdentidad, vista.identidad.form);
 router.post("/identidad", validarIdentidad, multer.single("avatar"), vista.identidad.guardar);
 // 5. Solo usuarios con status 'identPendValidar'
@@ -42,7 +42,7 @@ router.get("/validacion-en-proceso", statusCorrecto, vista.identidad.enProceso);
 
 // Rutas RUD
 router.get("/edicion", usAltaTerm, vista.edicion.form);
-router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar); //Validar mail y editables
+router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar); //Validar mail y registrado
 
 // Login
 router.get("/login", visitas, vista.login.form);

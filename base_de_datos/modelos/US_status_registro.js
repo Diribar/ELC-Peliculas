@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(50)},
 		mailPendValidar: {type: dt.BOOLEAN},
 		mailValidado: {type: dt.BOOLEAN},
-		editables: {type: dt.BOOLEAN},
+		registrado: {type: dt.BOOLEAN},
 		identPendValidar: {type: dt.BOOLEAN},
 		identValidada: {type: dt.BOOLEAN},
 	};

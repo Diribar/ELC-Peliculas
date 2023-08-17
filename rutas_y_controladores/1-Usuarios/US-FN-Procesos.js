@@ -110,8 +110,8 @@ module.exports = {
 				titulo: "Aviso",
 				trabajando: true,
 			};
-		// Mensaje si el usuario está en status "editable"
-		else if (usuario.statusRegistro.editables)
+		// Mensaje si el usuario está en status "registrado"
+		else if (usuario.statusRegistro.registrado)
 			informacion = {
 				mensajes: [
 					"El ingreso de información para otras personas, requiere responsabilidad.",

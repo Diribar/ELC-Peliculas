@@ -82,13 +82,13 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
-			// Averigua si hay errores de validación
+
+			// Acciones si hay errores de validación
 			let datos = {...req.body};
 			if (req.file) {
 				datos.tamano = req.file.size;
 				datos.avatar = req.file.filename;
 			}
-			// Averigua si hay errores de validación
 			let errores = await valida.editables(datos);
 			if (errores.hay) {
 				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
@@ -96,40 +96,45 @@ module.exports = {
 				req.session.errores = errores;
 				return res.redirect("/usuarios/garantiza-login-y-completo");
 			}
+
+			// Acciones con el archivo avatar
 			if (req.file) {
-				// Elimina el archivo 'avatar' anterior
+				// Elimina el archivo 'avatar' anterior, si lo hubiera
 				if (usuario.avatar) comp.gestionArchivos.elimina(req.file.destination, usuario.avatar);
+
 				// Agrega el campo 'avatar' a los datos
 				req.body.avatar = req.file.filename;
+
+				// Mueve el archivo a la carpeta definitiva
+				comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/Avatar");
 			}
-			// Agrega la fecha en la que se completa el alta del usuario
-			req.body.completadoEn = comp.fechaHora.ahora();
+
 			// Actualiza el usuario
-			await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
+			req.body.completadoEn = comp.fechaHora.ahora();
+			await procesos.actualizaElStatusDelUsuario(usuario, "registrado", req.body);
 			req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
-			// Mueve el archivo a la carpeta definitiva
-			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/Avatar");
+
 			// Redirecciona
 			return res.redirect("/usuarios/bienvenido");
 		},
-		bienvenido: (req, res) => {
-			// Variables
-			let usuario = req.session.usuario;
-			let informacion = {
-				mensajes: [
-					"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-					"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
-					"Con tu alta de usuario, ya podés guardar tus consultas.",
-					"Si querés influir en nuestra base de datos, podés iniciar el trámite con el ícono 'Agregar una película' que está en el 'Header'.",
-				],
-				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
-				titulo: "Bienvenido/a a la familia ELC",
-				check: true,
-			};
+	},
+	registradoBienvenido: (req, res) => {
+		// Variables
+		let usuario = req.session.usuario;
+		let informacion = {
+			mensajes: [
+				"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+				"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
+				"Con tu alta de usuario, ya podés guardar tus consultas.",
+				"Si querés influir en nuestra base de datos, podés iniciar el trámite con el ícono 'Agregar una película' que está en el 'Header'.",
+			],
+			iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
+			titulo: "Bienvenido/a a la familia ELC",
+			check: true,
+		};
 
-			// Fin
-			return res.render("CMP-0Estructura", {informacion});
-		},
+		// Fin
+		return res.render("CMP-0Estructura", {informacion});
 	},
 	identidad: {
 		form: async (req, res) => {
@@ -256,7 +261,7 @@ module.exports = {
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			if (req.session.email || req.session.contrasena) {
 				dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
-				delete req.session.email
+				delete req.session.email;
 				delete req.session.contrasena;
 			}
 
