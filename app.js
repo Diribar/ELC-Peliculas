@@ -14,6 +14,7 @@ global.usAutom_id = 2;
 global.fechaPrimerLunesDelAno = null;
 global.semanaUTC = null;
 global.lunesDeEstaSemana = null;
+global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
