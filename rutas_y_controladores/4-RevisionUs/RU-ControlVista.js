@@ -91,7 +91,7 @@ module.exports = {
 					if (datos[campo] == "NO") {
 						// Agrega un registro por la edición rechazada
 						procesos.VI.histEdics({campo, usuario, revID, motivo});
-						statusRegistro_id = editables_id;
+						statusRegistro_id = registrado_id;
 						penalizac += Number(motivo.penalizac);
 					}
 			}
@@ -99,7 +99,7 @@ module.exports = {
 			else {
 				// Rutinas para el campo
 				procesos.VI.histEdics({campo: {titulo: "Imagen del documento", nombre: "documAvatar"}, usuario, revID, motivo});
-				statusRegistro_id = editables_id;
+				statusRegistro_id = registrado_id;
 				penalizac += Number(motivo.penalizac);
 			}
 
