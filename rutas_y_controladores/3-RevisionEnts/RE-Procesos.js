@@ -722,7 +722,8 @@ module.exports = {
 	descargaAvatarOriginal: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const ruta = "./publico/imagenes/2-" + familias + "/Final/";
+		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
+		const ruta = "./publico/imagenes/" + carpeta + "/Final/";
 		const avatar = Date.now() + path.extname(original.avatar);
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
@@ -767,16 +768,17 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
+		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
+		const rutaFinal = "./publico/imagenes/" + carpeta + "/Final/";
 		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
 			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.gestionArchivos.mueveImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
+		comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
 	}
 
 	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
+	else if (!aprob) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;
