@@ -8,6 +8,8 @@ window.addEventListener("load", async () => {
 
 		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
+		inputAvatar: document.querySelector("form .input#inputImagen"),
+		imgAvatar: document.querySelector("#imgDerecha #preview img"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -24,14 +26,15 @@ window.addEventListener("load", async () => {
 		anoFin: document.querySelector("#dataEntry input[name='anoFin']"),
 		paisesSelect: document.querySelector("#paises_id select"),
 	};
-	let rutas = {
-		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
-		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
-	};
 	let v = {
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
 		sinAvatar: document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base"),
+		datosUrl: null,
+	};
+	let rutas = {
+		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
+		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
 	};
 	if (DOM.paisesSelect) {
 		DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
@@ -42,34 +45,62 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	let FN = {
-		dosCampos: async function (datos, campo) {
-			let campo1 = datos.campo1;
-			let campo2 = datos.campo2;
-			let indice1 = campos.indexOf(campo1);
-			let indice2 = campos.indexOf(campo2);
-			let camposComb = [campo1, campo2];
-			if (
-				(campo == campo1 || campo == campo2) &&
-				DOM.inputs[indice1].value &&
-				!DOM.mensajesError[indice1].innerHTML &&
-				DOM.inputs[indice2].value &&
-				!DOM.mensajesError[indice2].innerHTML
-			)
-				this.camposCombinados(camposComb);
+		actualizaVarios: async function () {
+			this.obtieneLosValores();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotonSubmit();
+
+			// Fin
 			return;
 		},
-		camposCombinados: async (camposComb) => {
-			// Armado de la ruta
-			let datosUrl = "entidad=" + DOM.entidad;
-			for (let i = 0; i < camposComb.length; i++) {
-				let indice = campos.indexOf(camposComb[i]);
-				datosUrl += "&" + camposComb[i] + "=" + DOM.inputs[indice].value;
-			}
-			// Obtiene el mensaje para el campo
-			await FN.muestraLosErrores(datosUrl);
-			FN.actualizaBotonSubmit();
+		obtieneLosValores: () => {
+			// Busca todos los valores
+			v.datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
+			DOM.inputs.forEach((input, i) => {
+				// Particularidad para avatar
+				if (input.name == "avatar" && !v.sinAvatar) return;
+
+				// Agrega el campo y el valor
+				v.datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
+			});
+
+			// Fin
 			return;
 		},
+		averiguaMuestraLosErrores: async () => {
+			// Obtiene los errores
+			let errores = await fetch(rutas.validarDatos + v.datosUrl).then((n) => n.json());
+
+			// Acciones en función de si hay errores o no
+			v.campos.forEach((campo, indice) => {
+				// Actualiza los mensajes de error
+				DOM.mensajesError[indice].innerHTML = errores[campo];
+
+				// Acciones si hay mensaje de error
+				if (errores[campo]) {
+					DOM.iconosOK[indice].classList.add("ocultar");
+					DOM.iconosError[indice].classList.remove("ocultar");
+				}
+				// Acciones si no hay mensaje de error
+				else {
+					DOM.iconosOK[indice].classList.remove("ocultar");
+					DOM.iconosError[indice].classList.add("ocultar");
+				}
+			});
+
+			// Fin
+			return;
+		},
+		actualizaBotonSubmit: () => {
+			// Detecta la cantidad de 'errores' ocultos
+			let hayErrores = Array.from(DOM.iconosOK)
+				.map((n) => n.className)
+				.some((n) => n.includes("ocultar"));
+			// Consecuencias
+			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
+		},
+
+		// Varias
 		actualizaPaises: () => {
 			// Actualiza los ID del input
 			// Variables
@@ -103,53 +134,11 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		statusInicial: async function () {
-			//Busca todos los valores
-			let datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
-			DOM.inputs.forEach((input, i) => {
-				// Particularidad para avatar
-				if (input.name == "avatar" && !v.sinAvatar) return;
-				// Agrega el campo y el valor
-				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
-			});
-
-			// Consecuencias de las validaciones de errores
-			await this.muestraLosErrores(datosUrl);
-			this.actualizaBotonSubmit();
-
-			// Fin
-			return;
-		},
-		muestraLosErrores: async (datos) => {
-			let errores = await fetch(rutas.validarDatos + datos).then((n) => n.json());
-			v.campos.forEach((campo, indice) => {
-				// Actualiza los mensajes de error
-				DOM.mensajesError[indice].innerHTML = errores[campo];
-
-				// Acciones si hay mensajes de error
-				if (errores[campo]) {
-					DOM.iconosOK[indice].classList.add("ocultar");
-					DOM.iconosError[indice].classList.remove("ocultar");
-				} else {
-					DOM.iconosOK[indice].classList.remove("ocultar");
-					DOM.iconosError[indice].classList.add("ocultar");
-				}
-			});
-			// Fin
-			return;
-		},
-		actualizaBotonSubmit: () => {
-			// Detecta la cantidad de 'errores' ocultos
-			let hayErrores = Array.from(DOM.iconosOK)
-				.map((n) => n.className)
-				.some((n) => n.includes("ocultar"));
-			// Consecuencias
-			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
-		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (DOM.submit.classList.contains("inactivo")) this.statusInicial(true);
+			if (DOM.submit.classList.contains("inactivo")) await this.actualizaVarios();
 			else DOM.form.submit();
+			return
 		},
 	};
 
@@ -174,8 +163,8 @@ window.addEventListener("load", async () => {
 
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
-		let campo = e.target.name;
-		let valor = e.target.value;
+		let campo = e.target.name; // su valor puede llegar a cambiar
+		let valor = e.target.value; // su valor puede llegar a cambiar
 		let adicionales = "";
 
 		// Convierte los ID de los países elegidos, en un texto
@@ -185,6 +174,8 @@ window.addEventListener("load", async () => {
 			campo = DOM.paisesID.name;
 			valor = DOM.paisesID.value;
 		}
+		if (campo == "avatar") await revisaAvatar({DOM, v, FN});
+
 		// Campos combinados
 		if (campo == "anoEstreno") {
 			if (DOM.anoFin) adicionales += "&anoFin=" + encodeURIComponent(DOM.anoFin.value);
@@ -202,7 +193,7 @@ window.addEventListener("load", async () => {
 		let datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
 
 		// Validar errores
-		await FN.muestraLosErrores(datosUrl, true);
+		await FN.averiguaMuestraLosErrores(datosUrl, true);
 
 		// Actualiza botón Submit
 		FN.actualizaBotonSubmit();
@@ -220,7 +211,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	FN.statusInicial(true);
+	await FN.actualizaVarios();
 });
 
 // Variables
