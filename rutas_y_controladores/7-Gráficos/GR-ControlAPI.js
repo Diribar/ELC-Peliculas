@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const procsRutinas = require("../../funciones/3-Rutinas/RT-Control");
-const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_genericas = require("../../funciones/1-BD/Genericas");
 
 module.exports = {
 	vencimLinks: async (req, res) => {

@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/1-BD/Genericas");
+const BD_especificas = require("../../funciones/1-BD/Especificas");
 
 // *********** Controlador ***********
 module.exports = {

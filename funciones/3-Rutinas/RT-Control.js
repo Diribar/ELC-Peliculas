@@ -2,9 +2,9 @@
 // Variables
 const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
-const comp = require("../1-Procesos/Compartidas");
-const BD_genericas = require("../2-BD/Genericas");
-const variables = require("../1-Procesos/Variables");
+const comp = require("../2-Procesos/Compartidas");
+const BD_genericas = require("../1-BD/Genericas");
+const variables = require("../2-Procesos/Variables");
 const procesos = require("./RT-Procesos");
 
 // Exportar ------------------------------------
