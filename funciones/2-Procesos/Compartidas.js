@@ -22,7 +22,15 @@ module.exports = {
 				: "";
 		},
 		petitFamilias: (familias) => {
-			return familias == "links" ? "links" : familias == "rclvs" ? "rclvs" : familias == "productos" ? "prods" : "";
+			return familias == "links"
+				? "links"
+				: familias == "rclvs"
+				? "rclvs"
+				: familias == "productos"
+				? "prods"
+				: familias == "usuarios" // Hace falta para el borrador de avatars
+				? "usuarios"
+				: "";
 		},
 		entidadEdic: (familias) => {
 			return familias == "productos"

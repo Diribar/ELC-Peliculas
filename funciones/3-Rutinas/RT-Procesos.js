@@ -136,7 +136,7 @@ module.exports = {
 		// Revisa los avatars que están en los originales
 		if (statusRegistro_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusRegistro_id)); // original c/status 'creado'
+				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusRegistro_id));
 
 		// Espera y consolida los resultados
 		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
