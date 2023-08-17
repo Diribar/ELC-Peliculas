@@ -34,7 +34,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.LinksVencidos();
+		this.EliminaImagenesSinRegistro();
 	},
 
 	// 1. Rutinas horarias
@@ -471,7 +471,6 @@ module.exports = {
 	EliminaImagenesSinRegistro: async () => {
 		// Variables
 		const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-
 		const objetos = [
 			// Carpetas REVISAR
 			{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
@@ -481,10 +480,12 @@ module.exports = {
 			{carpeta: "2-Productos/Final", familia: "productos", statusRegistro_id: statusDistintoCreado_id},
 			{carpeta: "3-RCLVs/Final", familia: "rclvs", statusRegistro_id: statusDistintoCreado_id},
 		];
-		await procesos.eliminaImagenesSinRegistro(objeto);
 
-		await procesos.eliminaImagenesSinRegistro({numero: "3-", familias: "rclvs"});
-		procesos.borraImagenesProvisorio();
+		// Elimina las imágenes de las carpetas "Revisar" y "Final"
+		for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+		// Elimina las imágenes de "Provisorio"
+		procesos.eliminaImagenesProvisorio();
 
 		// Fin
 		return;
