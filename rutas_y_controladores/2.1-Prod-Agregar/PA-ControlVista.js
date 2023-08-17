@@ -170,7 +170,7 @@ module.exports = {
 				let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 
 				// Se consolida la información
-				datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, epocaEstreno_id, sinopsis}; // No se guarda el link en el avatar, para revisarlo en Revisión
+				datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, epocaEstreno_id, sinopsis}; // No se guarda nada en el avatar, para revisarlo en Revisión
 
 				// Se guarda la cookie
 				res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});

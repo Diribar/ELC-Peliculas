@@ -311,7 +311,7 @@ module.exports = {
 	},
 	usuario_regsConEdicion: async (userID) => {
 		// Variables
-		const entidades = ["prods_edicion", "rclvs_edicion", "links_edicion"];
+		const entidades = ["prodsEdicion", "rclvsEdicion", "links_edicion"];
 		let contarRegistros = 0;
 		// Rutina para contar
 		let condicion = {editadoPor_id: userID};

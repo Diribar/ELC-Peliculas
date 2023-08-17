@@ -112,7 +112,7 @@ module.exports = {
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", prodEdic.avatar);
-				BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
+				BD_genericas.eliminaPorId("prodsEdicion", prodEdic.id);
 			}
 			// Terminar
 			return res.json();
