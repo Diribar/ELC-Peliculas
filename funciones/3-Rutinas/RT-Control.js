@@ -33,6 +33,7 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
+		this.EliminaHistorialDeRegsNoLongerAvailable();
 		return;
 		this.LinksVencidos();
 		this.LinksEnProd();
@@ -45,7 +46,10 @@ module.exports = {
 		const rutinasHorarias = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
-		for (let rutinaHoraria of rutinasHorarias) await this[rutinaHoraria]();
+		for (let rutinaHoraria of rutinasHorarias) {
+			await this[rutinaHoraria]();
+			procesos.finRutinasHorarias(rutinaHoraria);
+		}
 
 		// Fin
 		return;
@@ -69,7 +73,6 @@ module.exports = {
 		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
-		procesos.finRutinasHorarias("LinksEnProd");
 		return;
 	},
 	MailDeFeedback: async () => {
@@ -138,7 +141,6 @@ module.exports = {
 		await Promise.all(mailsEnviados);
 
 		// Fin
-		procesos.finRutinasHorarias("MailDeFeedback");
 		return;
 	},
 	ProdsEnRCLV: async function () {
@@ -155,7 +157,6 @@ module.exports = {
 		}
 
 		// Fin
-		procesos.finRutinasHorarias("ProdsEnRCLV");
 		return;
 	},
 
@@ -250,7 +251,6 @@ module.exports = {
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("ImagenDerecha", "RutinasDiarias");
 		return;
 	},
 	PaisesConMasProductos: async () => {
@@ -280,7 +280,6 @@ module.exports = {
 		await Promise.all(espera);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("PaisesConMasProductos", "RutinasDiarias");
 		return;
 	},
 	ProductosAlAzar: async () => {
@@ -305,7 +304,6 @@ module.exports = {
 		}
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("ProductosAlAzar", "RutinasDiarias");
 		return;
 	},
 
@@ -366,7 +364,10 @@ module.exports = {
 		const rutinasSemanales = info.RutinasSemanales;
 
 		// Si la 'semanaUTC' es distinta o la rutinaSemanal está pendiente, actualiza las rutinasSemanales
-		for (let rutinaSemanal in rutinasSemanales) await this[rutinaSemanal]();
+		for (let rutinaSemanal in rutinasSemanales) {
+			await this[rutinaSemanal]();
+			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales");
+		}
 
 		// Fin
 		return;
@@ -398,7 +399,6 @@ module.exports = {
 		await Promise.all(espera);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("AprobadoConAvatarLink", "RutinasSemanales");
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
@@ -408,7 +408,6 @@ module.exports = {
 		procesos.borraImagenesProvisorio();
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("BorraImagenesSinRegistro", "RutinasSemanales");
 		return;
 	},
 	LinksVencidos: async function () {
@@ -436,7 +435,6 @@ module.exports = {
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
 		return;
 	},
 	RCLV_idEnCapitulos: async () => {
@@ -459,7 +457,6 @@ module.exports = {
 				}
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("RCLV_idEnCapitulos", "RutinasSemanales");
 		return;
 	},
 	RCLVsSinEpocaPSTyConAno: async () => {
@@ -482,7 +479,6 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("RCLVsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
 	EliminaHistorialAntiguo: () => {
@@ -510,29 +506,30 @@ module.exports = {
 			{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
 			{nombre: "histDetsPeli", campoUsuario: "usuario_id"},
 		];
-		const entidades = variables.entidades.prods;
-		let datos = [BD_genericas.obtieneTodos("usuarios")];
+		const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
+		let available = {};
+		let datos = [];
 
 		// Agrega los registros de las entidades
-		for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad));
+		for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
 
 		// Consolida la información
-		const [usuarios, peliculas, colecciones, capitulos] = await Promise.all(datos);
-		const available = {usuarios, peliculas, colecciones, capitulos};
+		datos = await Promise.all(datos);
+		entidades.forEach((entidad, i) => (available[entidad] = datos[i]));
 
 		// Elimina historial
 		for (let tabla of tablas) {
 			// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
 			const registros = await BD_genericas.obtieneTodos(tabla.nombre);
 
-			// Loop para revisar un registro
+			// Revisa que esté presente la entidad y el ususario del registro
 			for (let registro of registros)
 				if (
-					!available[registro.entidad].find((n) => n.id == registro.entidad_id) || // Lo busca en su entidad vinculada
-					!available.usuarios.find((n) => n.id == registro[tabla.campoUsuario]) // Busca su usuario
+					!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
+					!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
 				)
 					// Si no lo encuentra en alguna de las tablas, elimina el registro
-					BD_genericas.eliminaPorId(registro.id);
+					BD_genericas.eliminaPorId(tabla.nombre, registro.id);
 		}
 
 		// Fin
