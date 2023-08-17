@@ -179,9 +179,9 @@ let espera = (ms) => {
 };
 
 let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
-	// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
+	// 1. Acciones si se omitió ingresar un archivo
 	if (!DOM.inputAvatar.value) {
-		// Actualiza el avatar
+		// Vuelve a la imagen original
 		DOM.imgAvatar.src = v.avatarInicial;
 
 		// Oculta el iconoOK
