@@ -483,7 +483,7 @@ module.exports = {
 			{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
 			{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
 
-			// Usuarios
+			// Carpetas USUARIOS
 			{carpeta: "1-Usuarios/Avatar", familia: "usuarios", status_id: statusCualquiera_id},
 			{carpeta: "1-Usuarios/DNI-Revisar", familia: "usuarios", status_id: statusDNIrevisar_id, campoAvatar: "documAvatar"},
 			{carpeta: "1-Usuarios/DNI-Final", familia: "usuarios", status_id: identValidada_id, campoAvatar: "documAvatar"},
