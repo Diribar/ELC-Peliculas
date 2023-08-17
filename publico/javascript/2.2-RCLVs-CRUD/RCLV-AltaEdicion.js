@@ -66,6 +66,7 @@ window.addEventListener("load", async () => {
 		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
 		ama: document.querySelectorAll("form input[name='ama']"),
 	};
+	console.log(DOM.posiblesRepetidos);
 	let v = {
 		// Variables de entidad
 		personajes: entidad == "personajes",
@@ -145,6 +146,9 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				muestraPosiblesRepetidos: async () => {
+					// Si no existe el sector, interrumpe la función
+					if (!DOM.posiblesRepetidos) return;
+
 					// Variables
 					let casos = [];
 
@@ -768,7 +772,7 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
-	await startUp();
+	await FN.startUp();
 });
 // Variables
 const entidad = new URL(location.href).searchParams.get("entidad");
