@@ -123,7 +123,7 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesSinRegistro: async ({carpeta, familia, entidadEdic, statusRegistro_id}) => {
+	eliminaImagenesSinRegistro: async ({carpeta, familia, entidadEdic, status_id, campoAvatar}) => {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familia);
 		let avatarsEdic = [];
@@ -131,12 +131,12 @@ module.exports = {
 		let consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatarsEdic = BD_especificas.nombresDeAvatarEnBD(entidadEdic);
+		if (entidadEdic) avatarsEdic = BD_especificas.nombresDeAvatarEnBD({entidad: entidadEdic});
 
 		// Revisa los avatars que están en los originales
-		if (statusRegistro_id)
+		if (status_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusRegistro_id));
+				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
 
 		// Espera y consolida los resultados
 		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
