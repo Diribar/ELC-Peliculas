@@ -14,7 +14,7 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 #cuerpo:has(.revisionUs) .bloques .tituloSecundario h2 {background: var(--gris-oscuro); color: var(--gris-claro);}
 
 /* Bloques - Registros */
-.bloques .temas {padding: 0 10px; width: 385px; max-width: 385px}
+.bloques .temas {padding: 0 10px; width: 385px; max-width: 100%}
 .bloques .temas h3 {margin: 10px 0 2px;}
 .bloques .temas .bloqueRegistros {overflow-y: hidden;}
 

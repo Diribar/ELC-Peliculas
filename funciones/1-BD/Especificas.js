@@ -257,8 +257,9 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
 				n.map((m) => {
-					const fechaRefTexto = comp.fechaHora.fechaDiaMes(m[campoFecha]);
-					return {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto};
+					const fechaRef = m[campoFecha];
+					const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+					return {...m, entidad, fechaRef, fechaRefTexto};
 				})
 			);
 	},
