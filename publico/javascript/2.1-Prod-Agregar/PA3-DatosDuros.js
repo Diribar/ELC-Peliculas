@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
-		sinAvatar: document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base"),
+		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/0-Base"),
 		datosUrl: null,
 	};
 	let rutas = {
@@ -58,7 +58,13 @@ window.addEventListener("load", async () => {
 			v.datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
 			DOM.inputs.forEach((input, i) => {
 				// Particularidad para avatar
-				if (input.name == "avatar" && !v.sinAvatar) return;
+				if (input.name == "avatar") {
+					if (!v.agregarAvatar) return
+					if (DOM.inputAvatar.value) {
+						v.datosUrl += "&esImagen=" + (v.esImagen ? "SI" : "NO");
+						v.datosUrl += "&tamano=" + DOM.inputAvatar.files[0].size;
+					}	
+				}
 
 				// Agrega el campo y el valor
 				v.datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);

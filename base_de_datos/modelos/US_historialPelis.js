@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		usuario_id: {type: dt.INTEGER},
 		entidad: {type: dt.STRING(14)},
 		entidad_id: {type: dt.INTEGER},
-		ocurridoEn: {type: dt.DATE},
+		visitadaEn: {type: dt.DATE},
 		};
 	const config = {
 		tableName: "us_historial_pelis",

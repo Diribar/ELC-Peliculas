@@ -118,8 +118,10 @@ window.addEventListener("load", async () => {
 			}
 			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatar.value;
-				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				if (DOM.inputAvatar.value) objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
+				if (DOM.inputAvatar.value) {
+					objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
+					objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
+				}
 			}
 
 			// Averigua los errores
