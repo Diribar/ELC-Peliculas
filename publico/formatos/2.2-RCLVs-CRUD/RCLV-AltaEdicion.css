@@ -41,7 +41,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Fecha */
 #inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
-#inicio #sectorFecha :is(select[name=tipoFecha], select[name=dia], select[name=ano], #inputDias)
+#inicio #sectorFecha :is(select[name=tipoFecha], select[name=dia], select[name=anoFM], #inputDias)
 	{margin-left: 15px;}
 #inicio #sectorFecha nav {margin-left: 10px; width: 50px;}
 #inicio #sectorFecha nav a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
