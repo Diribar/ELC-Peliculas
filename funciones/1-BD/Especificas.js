@@ -275,7 +275,7 @@ module.exports = {
 			.then((n) =>
 				n.map((m) => {
 					return {
-						imagen: m.avatar,
+						imagen: m[campoAvatar],
 						nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
 						entidad,
 					};
