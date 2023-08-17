@@ -471,6 +471,7 @@ module.exports = {
 	EliminaImagenesSinRegistro: async () => {
 		// Variables
 		const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+		const cualquierStatus_id = {[Op.ne]: null};
 		const objetos = [
 			// Carpetas REVISAR
 			{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
@@ -479,6 +480,9 @@ module.exports = {
 			// Carpetas FINAL
 			{carpeta: "2-Productos/Final", familia: "productos", statusRegistro_id: statusDistintoCreado_id},
 			{carpeta: "3-RCLVs/Final", familia: "rclvs", statusRegistro_id: statusDistintoCreado_id},
+
+			// Usuarios
+			{carpeta: "1-Usuarios/Avatar", familia: "usuarios", statusRegistro_id: cualquierStatus_id},
 		];
 
 		// Elimina las imágenes de las carpetas "Revisar" y "Final"
