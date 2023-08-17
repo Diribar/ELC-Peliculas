@@ -29,8 +29,8 @@ window.addEventListener("load", async () => {
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
 		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
 		// Primera columna - Fecha comentarios móvil
-		sectorContadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres"),
-		contadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres span"),
+		sectorContadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres"),
+		contadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres span"),
 		comentarioMovil: document.querySelector("form .input[name='comentarioMovil']"),
 		// Primera columna - Fecha comentarios duración
 		contadorDuracion: document.querySelector("form #dataEntry #diasDeDuracion .caracteres span"),
