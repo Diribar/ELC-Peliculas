@@ -67,8 +67,7 @@ window.addEventListener("load", async () => {
 		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
 		ama: document.querySelectorAll("form input[name='ama']"),
 	};
-	console.log(DOM.camposFecha);
-	let v = {
+		let v = {
 		// Variables de entidad
 		personajes: entidad == "personajes",
 		hechos: entidad == "hechos",
