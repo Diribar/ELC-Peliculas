@@ -18,7 +18,7 @@ module.exports = {
 			let productos = [];
 
 			// Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prodsEdicion", revID, include);
 
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
@@ -160,7 +160,7 @@ module.exports = {
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("rclvs_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("rclvsEdicion", revID, include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -478,7 +478,7 @@ module.exports = {
 				}
 
 				// 2. Borra el campo 'avatarUrl' en el registro de edicion
-				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatarUrl: null});
+				await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatarUrl: null});
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)

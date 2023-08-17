@@ -332,7 +332,7 @@ module.exports = {
 					// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 					await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 					// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-					await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar: null, avatarUrl: null});
+					await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatar: null, avatarUrl: null});
 					// Recarga la ruta
 					return res.redirect(req.originalUrl);
 				}
@@ -403,13 +403,13 @@ module.exports = {
 
 			// 1. PROCESOS PARTICULARES PARA AVATAR
 			await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
-			if (entidadEdic == "prods_edicion") delete edicion.avatarUrl;
+			if (entidadEdic == "prodsEdicion") delete edicion.avatarUrl;
 
 			// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
 			edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prods_edicion")
+			if (!edicion && entidadEdic == "prodsEdicion")
 				await procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
 
 			// Fin

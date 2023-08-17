@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "prods_edicion";
+	const alias = "prodsEdicion";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},

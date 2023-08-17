@@ -123,30 +123,25 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesDeFamiliasSinRegistro: async (numero, familias) => {
+	eliminaImagenesSinRegistro: async ({carpeta, familia, entidadEdic, statusRegistro_id}) => {
 		// Variables
-		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
-		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
-		let carpeta, avatars, consolidado, statusFinal;
-
-		// Borra los avatar de Revisar - incluye: EDICIONES y Prods/RCLVs creados
-		carpeta = numero + familias + "/Revisar";
-		avatars = [];
+		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familia);
+		let avatarsEdic = [];
+		let avatarsOrig = [];
+		let consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
-		eliminaLasImagenes(avatars, carpeta);
+		if (entidadEdic) avatarsEdic = BD_especificas.nombresDeAvatarEnBD(entidadEdic);
 
-		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
-		carpeta = numero + familias + "/Final";
-		avatars = [];
-		consolidado = [];
+		// Revisa los avatars que están en los originales
+		if (statusRegistro_id)
+			for (let entidad of variables.entidades[petitFamilias])
+				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusRegistro_id)); // original c/status 'creado'
 
-		// Revisa los avatars que están en los productos
-		statusFinal = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-		for (let entidad of variables.entidades[petitFamilias])
-			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
-		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
+		// Espera y consolida los resultados
+		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
+
+		// Borra los avatar de Revisar
 		eliminaLasImagenes(consolidado, carpeta);
 
 		// Fin

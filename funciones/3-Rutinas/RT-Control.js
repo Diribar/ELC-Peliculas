@@ -469,9 +469,21 @@ module.exports = {
 		return;
 	},
 	EliminaImagenesSinRegistro: async () => {
-		// Funciones
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("2-","productos");
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("3-","rclvs");
+		// Variables
+		const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+
+		const objetos = [
+			// Carpetas REVISAR
+			{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+			{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", statusRegistro_id: creado_id},
+
+			// Carpetas FINAL
+			{carpeta: "2-Productos/Final", familia: "productos", statusRegistro_id: statusDistintoCreado_id},
+			{carpeta: "3-RCLVs/Final", familia: "rclvs", statusRegistro_id: statusDistintoCreado_id},
+		];
+		await procesos.eliminaImagenesSinRegistro(objeto);
+
+		await procesos.eliminaImagenesSinRegistro({numero: "3-", familias: "rclvs"});
 		procesos.borraImagenesProvisorio();
 
 		// Fin

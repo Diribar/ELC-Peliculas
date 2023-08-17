@@ -550,7 +550,7 @@ module.exports = {
 				}
 
 			// 3. Averigua si existe alguna edición con ese rclv_id
-			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", condicion))) prodsAprob = talVez;
+			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = talVez;
 
 			// 4. No encontró ningún caso
 			if (!prodsAprob) prodsAprob = NO;
@@ -609,10 +609,10 @@ module.exports = {
 			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 
 			// Averigua si existen ediciones
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[rclv_id]: rclvID});
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID});
 			if (ediciones.length) {
 				// Les borra el vínculo
-				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
+				await BD_genericas.actualizaTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
 
 				// Revisa si tiene que eliminar alguna edición - la rutina no necesita este resultado
 				eliminaEdicionesVacias(ediciones, rclv_id);
