@@ -69,7 +69,7 @@ module.exports = {
 		// Variables
 		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
 		const objetoFijo = {petitFamilias: "rclvs", userID};
-		let objeto
+		let objeto;
 
 		// Inactivos
 		objeto = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
@@ -94,7 +94,13 @@ module.exports = {
 		);
 
 		// Con fecha móvil
-		const FM = aprobados.filter((m) => m.fechaMovil);
+		const dia = new Date().getDate();
+		const mes = new Date().getMonth() + 1;
+		const ano = new Date().getFullYear();
+		const fechaDelAno_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+		const FM = aprobados.filter(
+			(n) => n.fechaMovil && (!n.anoFM || n.anoFM < ano || (n.anoFM == ano && n.fechaDelAno_id < fechaDelAno_id))
+		);
 
 		// Fin
 		return {IN, SA, SF, SP, FM};
