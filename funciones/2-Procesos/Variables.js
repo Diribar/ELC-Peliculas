@@ -24,7 +24,7 @@ module.exports = {
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
 		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Epoca del Año"],
-		usuarios: ["usuarios"], // Hace falta para el borrado de avatars
+		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 	asocs: {
 		prods: ["pelicula", "coleccion", "capitulo"],
