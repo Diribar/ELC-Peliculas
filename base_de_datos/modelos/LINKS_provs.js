@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
+		copyrightOK: {type: dt.BOOLEAN},
 		avatar: {type: dt.STRING(20)},
 		siemprePago: {type: dt.BOOLEAN},
 		siempreGratuito: {type: dt.BOOLEAN},
