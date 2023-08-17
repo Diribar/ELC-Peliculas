@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../../funciones/2-BD/Genericas");
-const comp = require("../../funciones/1-Procesos/Compartidas");
+const BD_genericas = require("../../funciones/1-BD/Genericas");
+const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = {
 	// Tablero

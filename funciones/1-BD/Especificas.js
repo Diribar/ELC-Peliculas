@@ -1,7 +1,7 @@
 "use strict";
 // Variables
-const comp = require("../1-Procesos/Compartidas");
-const variables = require("../1-Procesos/Variables");
+const comp = require("../2-Procesos/Compartidas");
+const variables = require("../2-Procesos/Variables");
 
 module.exports = {
 	// Varios

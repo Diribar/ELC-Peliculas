@@ -1,5 +1,5 @@
 "use strict";
-const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_genericas = require("../../funciones/1-BD/Genericas");
 
 module.exports = async (req, res, next) => {
 	// Variable

@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const multer = require("multer");
-const comp = require("../../funciones/1-Procesos/Compartidas");
+const comp = require("../../funciones/2-Procesos/Compartidas");
 
 // Variables
 const storage = multer.diskStorage({

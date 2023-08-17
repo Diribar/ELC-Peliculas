@@ -84,7 +84,7 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	const BD_genericas = require("./funciones/2-BD/Genericas");
+	const BD_genericas = require("./funciones/1-BD/Genericas");
 	let campos = {
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
@@ -173,7 +173,7 @@ app.set("views", [
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 	global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
-	const variables = require("./funciones/1-Procesos/Variables");
+	const variables = require("./funciones/2-Procesos/Variables");
 	global.vistasInstitucs = variables.vistasInstitucs;
 	global.prefijoSanto = variables.prefijoSanto;
 

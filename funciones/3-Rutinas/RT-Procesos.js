@@ -1,9 +1,9 @@
 "use strict";
 // Variables
-const comp = require("../1-Procesos/Compartidas");
-const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
-const variables = require("../1-Procesos/Variables");
+const comp = require("../2-Procesos/Compartidas");
+const BD_genericas = require("../1-BD/Genericas");
+const BD_especificas = require("../1-BD/Especificas");
+const variables = require("../2-Procesos/Variables");
 
 // Exportar ------------------------------------
 module.exports = {
