@@ -18,7 +18,7 @@ global.lunesDeEstaSemana = null;
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
 global.fs = require("fs");
-global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
+global.carpsImagsEpocaDelAno = fs.readdirSync("./publico/imagenes/4-EpocasDelAno");
 global.path = require("path");
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
