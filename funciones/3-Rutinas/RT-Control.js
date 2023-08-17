@@ -310,16 +310,18 @@ module.exports = {
 	},
 	EliminaRegistrosAntiguos: async () => {
 		// Variables
-		const antiguedad = unDia * 365;
-		const fechaDeCorte = new Date(Date.now() - antiguedad);
+		const ahora = Date.now();
 		const tablas = [
-			{nombre: "histEdics", campo: "revisadoEn"},
-			{nombre: "histStatus", campo: "revisadoEn"},
-			{nombre: "historialPelis", campo: "visitadaEn"},
+			{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
+			{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
+			{nombre: "historialPelis", campo: "visitadaEn", antiguedad: unDia * 183},
 		];
 
 		// Elimina registros antiguos
-		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+		for (let tabla of tablas) {
+			const fechaDeCorte = new Date(ahora - tabla.antiguedad);
+			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+		}
 
 		// Fin
 		return;
