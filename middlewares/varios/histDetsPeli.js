@@ -13,11 +13,10 @@ module.exports = async (req, res, next) => {
 	if (!usuario_id) return next();
 
 	// Elimina el registro que tenga el usuario para el producto
-	BD_genericas.eliminaTodosPorCondicion("historialPelis", condicion).then(() =>
-		BD_genericas.agregaRegistro("historialPelis", condicion)
+	BD_genericas.eliminaTodosPorCondicion("histDetsPeli", condicion).then(() =>
+		// Agrega un registro del usuario para el producto
+		BD_genericas.agregaRegistro("histDetsPeli", condicion)
 	);
-
-	// Agrega un registro del usuario para el producto
 
 	// Fin
 	next();

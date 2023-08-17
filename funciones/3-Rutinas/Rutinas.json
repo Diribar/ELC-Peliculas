@@ -13,15 +13,16 @@
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
 		"PaisesConMasProductos": "SI",
-		"ProductosAlAzar": "SI",
-		"EliminaRegistrosAntiguos": "SI"
+		"ProductosAlAzar": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
 		"BorraImagenesSinRegistro": "SI",
 		"LinksVencidos": "SI",
 		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI"
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsNoLongerAvailable": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {

@@ -13,7 +13,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const historialPelis = require("../../middlewares/varios/historialPelis");
+const histDetsPeli = require("../../middlewares/varios/histDetsPeli");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 // Temas de captura
@@ -25,7 +25,7 @@ const multer = require("../../middlewares/varios/multer");
 
 // Consolida
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID, historialPelis];
+const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID, histDetsPeli];
 const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
 const aptoCRUD = [...aptoCalificar, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion];

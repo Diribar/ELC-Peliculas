@@ -308,24 +308,6 @@ module.exports = {
 		procesos.finRutinasDiariasSemanales("ProductosAlAzar", "RutinasDiarias");
 		return;
 	},
-	EliminaRegistrosAntiguos: async () => {
-		// Variables
-		const ahora = Date.now();
-		const tablas = [
-			{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
-			{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
-			{nombre: "historialPelis", campo: "visitadaEn", antiguedad: unDia * 183},
-		];
-
-		// Elimina registros antiguos
-		for (let tabla of tablas) {
-			const fechaDeCorte = new Date(ahora - tabla.antiguedad);
-			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
-		}
-
-		// Fin
-		return;
-	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
@@ -501,6 +483,59 @@ module.exports = {
 
 		// Fin
 		procesos.finRutinasDiariasSemanales("RCLVsSinEpocaPSTyConAno", "RutinasSemanales");
+		return;
+	},
+	EliminaHistorialAntiguo: () => {
+		// Variables
+		const ahora = Date.now();
+		const tablas = [
+			{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
+			{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
+			{nombre: "histDetsPeli", campo: "visitadaEn", antiguedad: unDia * 183},
+		];
+
+		// Elimina historial antiguo
+		for (let tabla of tablas) {
+			const fechaDeCorte = new Date(ahora - tabla.antiguedad);
+			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+		}
+
+		// Fin
+		return;
+	},
+	EliminaHistorialDeRegsNoLongerAvailable: async () => {
+		// Variables
+		const tablas = [
+			{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
+			{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
+			{nombre: "histDetsPeli", campoUsuario: "usuario_id"},
+		];
+		const entidades = variables.entidades.prods;
+		let datos = [BD_genericas.obtieneTodos("usuarios")];
+
+		// Agrega los registros de las entidades
+		for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad));
+
+		// Consolida la información
+		const [usuarios, peliculas, colecciones, capitulos] = await Promise.all(datos);
+		const available = {usuarios, peliculas, colecciones, capitulos};
+
+		// Elimina historial
+		for (let tabla of tablas) {
+			// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
+			const registros = await BD_genericas.obtieneTodos(tabla.nombre);
+
+			// Loop para revisar un registro
+			for (let registro of registros)
+				if (
+					!available[registro.entidad].find((n) => n.id == registro.entidad_id) || // Lo busca en su entidad vinculada
+					!available.usuarios.find((n) => n.id == registro[tabla.campoUsuario]) // Busca su usuario
+				)
+					// Si no lo encuentra en alguna de las tablas, elimina el registro
+					BD_genericas.eliminaPorId(registro.id);
+		}
+
+		// Fin
 		return;
 	},
 };
