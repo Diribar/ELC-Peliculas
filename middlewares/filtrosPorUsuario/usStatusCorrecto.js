@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 		ruta == "/editables"
 			? usuario.statusRegistro.mailValidado
 			: ruta == "/bienvenido" || ruta == "/identidad"
-			? usuario.statusRegistro.editables
+			? usuario.statusRegistro.registrado
 			: ruta == "/validacion-en-proceso"
 			? usuario.statusRegistro.identPendValidar
 			: ruta == "/logout"
