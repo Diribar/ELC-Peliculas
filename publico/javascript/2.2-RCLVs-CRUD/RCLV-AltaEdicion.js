@@ -387,7 +387,7 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			repetido: () => {
-				if (!DOM.posiblesRepetidos) return
+				if (!DOM.posiblesRepetidos) return;
 
 				// Variables
 				let casos = document.querySelectorAll("#posiblesRepetidos li input");
@@ -681,9 +681,11 @@ window.addEventListener("load", async () => {
 			}
 
 			// Reemplaza el valor del DOM
-			const posicCursor = e.target.selectionStart;
-			e.target.value = valor;
-			e.target.selectionEnd = posicCursor;
+			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario") || campo == ano) {
+				const posicCursor = e.target.selectionStart;
+				e.target.value = valor;
+				e.target.selectionEnd = posicCursor;
+			}
 		}
 
 		// Fin
