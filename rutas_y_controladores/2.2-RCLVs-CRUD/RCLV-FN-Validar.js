@@ -72,18 +72,37 @@ module.exports = {
 			if (!datos.mes_id || !datos.dia) respuesta = cartelFaltaElDatoSobre + "el mes y/o el día";
 			// Valida si el día supera lo permitido para el mes
 			else {
-				let mes = datos.mes_id;
-				let dia = datos.dia;
-				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
+				// Variables
+				const mes = datos.mes_id;
+				const dia = datos.dia;
+
+				// Validaciones
+				if (!Number(mes) || Number(mes) < 1) respuesta = cartelMesDiaIncompatibles;
+				else if (!Number(dia) || Number(dia) < 1) respuesta = cartelMesDiaIncompatibles;
+				else if ((mes == 2 && dia > 29) || ([4, 6, 9, 11].includes(mes) && dia > 30))
 					respuesta = cartelMesDiaIncompatibles;
 			}
 
 			// Validaciones para Fecha Movil
 			if (!respuesta && datos.tipoFecha == "FM") {
+				// Valida el añoFM
+				const anoFM = datos.anoFM;
+				const fechaDelAno_id = fechasDelAno.find((n) => n.dia == datos.dia && n.mes_id == datos.mes_id).id;
+				respuesta =
+					!anoFM || !Number(anoFM) || Number(anoFM) < anoHoy || Number(anoFM) > anoHoy + 1
+						? cartelAnoIncorrecto
+						: anoFM == anoHoy && fechaDelAno_id < fechaDelAnoHoy_id
+						? cartelAnoProximo
+						: anoFM > anoHoy && fechaDelAno_id >= fechaDelAnoHoy_id
+						? cartelAnoActual
+						: "";
+
 				// Valida si existe un comentario adecuado para la fecha móvil
-				if (!datos.comentarioMovil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
-				const aux = !respuesta ? comp.validacs.longitud(datos.comentarioMovil, 4, 70) : "";
-				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
+				if (!respuesta && !datos.comentarioMovil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
+				if (!respuesta) {
+					const aux = comp.validacs.longitud(datos.comentarioMovil, 4, 70);
+					if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
+				}
 			}
 
 			// Validaciones para 'epocasDelAno'
@@ -194,6 +213,9 @@ module.exports = {
 // Carteles
 const cartelFaltaElDatoSobre = "Falta el dato sobre ";
 const cartelMesDiaIncompatibles = "El número de día y el mes elegidos son incompatibles";
+const cartelAnoIncorrecto = "El año debe ser el actual o el próximo";
+const cartelAnoActual = "El año debe ser el actual";
+const cartelAnoProximo = "El año debe ser el próximo";
 const cartelCriterioSobre = "Necesitamos saber el criterio sobre ";
 const cartelRegistroDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 

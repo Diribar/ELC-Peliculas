@@ -12,10 +12,8 @@ module.exports = {
 	// 0. Start-up y Configuracion de Rutinas
 	startupMasConfiguracion: async function () {
 		// Variables
-		this.FechaPrimerLunesDelAno();
-		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
-		anoHoy = new Date().getUTCFullYear();
+		this.variablesDiarias();
+		this.variablesSemanales();
 
 		// Rutinas programadas
 		const info = procesos.lecturaRutinasJSON();
@@ -191,16 +189,23 @@ module.exports = {
 		return;
 	},
 	RutinasDiarias: async function () {
+		this.variablesDiarias();
 		// Obtiene la información del archivo JSON
 		const info = procesos.lecturaRutinasJSON();
 		const rutinasDiarias = info.RutinasDiarias;
-		anoHoy = new Date().getUTCFullYear();
 
 		// Actualiza todas las rutinas diarias
 		for (let rutinaDiaria in rutinasDiarias) await this[rutinaDiaria]();
 
 		// Fin
 		return;
+	},
+	variablesDiarias: () => {
+		// Startup
+		anoHoy = new Date().getUTCFullYear();
+		const dia = new Date().getUTCDate();
+		const mes = new Date().getUTCMonth() + 1;
+		fechaDelAnoHoy_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
 	},
 	ImagenDerecha: async function () {
 		// Variables
@@ -309,6 +314,8 @@ module.exports = {
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
+		this.variablesSemanales();
+
 		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -317,11 +324,6 @@ module.exports = {
 
 		// Obtiene la fecha y hora UTC actual
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-
-		// Obtiene la semanaUTC actual
-		this.FechaPrimerLunesDelAno();
-		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
@@ -340,7 +342,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	FechaPrimerLunesDelAno: () => {
+	variablesSemanales: () => {
 		// Obtiene el primer día del año
 		const fecha = new Date();
 		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
@@ -354,6 +356,10 @@ module.exports = {
 		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
 		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
 		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
+
+		// Otras variables
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Fin
 		return;

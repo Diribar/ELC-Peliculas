@@ -12,6 +12,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(35)},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
+		anoFM: {type: dt.INTEGER},
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},

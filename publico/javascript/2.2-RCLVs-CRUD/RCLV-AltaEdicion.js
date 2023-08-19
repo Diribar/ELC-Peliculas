@@ -26,6 +26,7 @@ window.addEventListener("load", async () => {
 		mesDia: document.querySelector("form #sectorFecha #mesDia"),
 		mes_id: document.querySelector("form .input[name='mes_id']"),
 		dia: document.querySelector("form .input[name='dia']"),
+		anoFM: document.querySelector("form .input[name='anoFM']"),
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
 		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
 		// Primera columna - Fecha comentarios móvil
@@ -201,9 +202,11 @@ window.addEventListener("load", async () => {
 
 					// Fecha móvil
 					if (tipoFecha == "FM") {
+						DOM.anoFM.classList.remove("ocultar");
 						DOM.sectorContadorMovil.classList.remove("ocultar");
 						DOM.comentarioMovil.classList.remove("ocultar");
 					} else {
+						DOM.anoFM.classList.add("ocultar");
 						DOM.sectorContadorMovil.classList.add("ocultar");
 						DOM.comentarioMovil.classList.add("ocultar");
 					}

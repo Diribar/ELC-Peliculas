@@ -174,7 +174,7 @@ module.exports = {
 		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};
-			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad} = datos;
+			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad, anoFM} = datos;
 
 			// Asigna el valor 'null' a todos los campos
 			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
@@ -183,7 +183,10 @@ module.exports = {
 			if (nombre) DE.nombre = nombre;
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
 			DE.fechaMovil = tipoFecha == "FM";
-			if (tipoFecha == "FM") DE.comentarioMovil = comentarioMovil;
+			if (tipoFecha == "FM") {
+				DE.comentarioMovil = comentarioMovil;
+				DE.anoFM = anoFM;
+			}
 			if (prioridad_id) DE.prioridad_id = prioridad_id;
 			if (avatar) DE.avatar = avatar;
 

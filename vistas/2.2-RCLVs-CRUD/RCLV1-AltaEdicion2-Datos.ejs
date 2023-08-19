@@ -99,10 +99,10 @@
 					<% } %>
 				</select>
 				<!-- Años -->
-				<select name="ano" class="input">
-					<option value="" <% if (!dataEntry.ano) { %>selected<% } %>>Año</option>
-					<% for (let ano = anoHoy; ano < (anoHoy + 2); ano++) { %>
-						<option value="<%= ano %>" <% if (dataEntry.ano == ano) { %>selected<% } %>><%= ano %></option>
+				<select name="anoFM" class="input">
+					<option value="" <% if (!dataEntry.anoFM) { %>selected<% } %>>Año</option>
+					<% for (let anoFM = anoHoy; anoFM < (anoHoy + 2); anoFM++) { %>
+						<option value="<%= anoFM %>" <% if (dataEntry.anoFM == anoFM) { %>selected<% } %>><%= anoFM %></option>
 					<% } %>
 				</select>
 				<nav id="logos" class="flexRow spaceBetween">
