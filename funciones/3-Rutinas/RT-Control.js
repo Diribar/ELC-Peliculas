@@ -15,6 +15,7 @@ module.exports = {
 		this.FechaPrimerLunesDelAno();
 		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
 		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
+		anoHoy = new Date().getUTCFullYear();
 
 		// Rutinas programadas
 		const info = procesos.lecturaRutinasJSON();
@@ -27,7 +28,7 @@ module.exports = {
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
-		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"});
+		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
 		await this.FechaHoraUTC();
@@ -193,6 +194,7 @@ module.exports = {
 		// Obtiene la información del archivo JSON
 		const info = procesos.lecturaRutinasJSON();
 		const rutinasDiarias = info.RutinasDiarias;
+		anoHoy = new Date().getUTCFullYear();
 
 		// Actualiza todas las rutinas diarias
 		for (let rutinaDiaria in rutinasDiarias) await this[rutinaDiaria]();

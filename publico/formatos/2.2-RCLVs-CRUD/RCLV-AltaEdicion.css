@@ -9,14 +9,16 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #formCuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
 #formCuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
 /* #formCuerpo #dataEntry {z-index: 8;} */
-#formCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#formCuerpo #dataEntry 
+	{background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
 #dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry :is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+#dataEntry :is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario) 
+	{border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 
 /* Temas de filas */
@@ -39,7 +41,8 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Fecha */
 #inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
-#inicio #sectorFecha :is(select[name="tipoFecha"], select[name="dia"], #inputDias) {margin-left: 15px;}
+#inicio #sectorFecha :is(select[name=tipoFecha], select[name=dia], select[name=ano], #inputDias)
+	{margin-left: 15px;}
 #inicio #sectorFecha nav {margin-left: 10px; width: 50px;}
 #inicio #sectorFecha nav a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
 #inicio #sectorFecha .caracteres {align-self: flex-end;}

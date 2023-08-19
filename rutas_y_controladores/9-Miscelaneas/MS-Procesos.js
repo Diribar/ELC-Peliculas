@@ -67,9 +67,9 @@ module.exports = {
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
-		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
 		const objetoFijo = {petitFamilias: "rclvs", userID};
-		let objeto
+		const include = [...variables.entidades.prods, "prods_ediciones", "fechaDelAno"];
+		let objeto;
 
 		// Inactivos
 		objeto = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
@@ -77,7 +77,7 @@ module.exports = {
 
 		// Aprobados
 		objeto = {...objetoFijo, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
-		let aprobados = obtienePorEntidad({...objeto, include: includeProds});
+		let aprobados = obtienePorEntidad({...objeto, include});
 
 		// Await
 		[IN, aprobados] = await Promise.all([IN, aprobados]);
@@ -94,7 +94,14 @@ module.exports = {
 		);
 
 		// Con fecha móvil
-		const FM = aprobados.filter((m) => m.fechaMovil);
+		const dia = new Date().getDate();
+		const mes = new Date().getMonth() + 1;
+		const fechaDelAno_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+		const FM = aprobados
+			.filter((n) => n.fechaMovil) // con fecha móvil
+			.filter((n) => !n.anoFM || n.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAno_id)) // sin año, año menor al actual, de este año con fecha menor
+			.map((n) => ({...n, fechaRef: n.fechaDelAno_id, fechaRefTexto: n.fechaDelAno.nombre}))
+			.sort((a, b) => a.fechaRef - b.fechaRef);
 
 		// Fin
 		return {IN, SA, SF, SP, FM};
