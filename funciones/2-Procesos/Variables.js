@@ -386,6 +386,7 @@ module.exports = {
 			{nombre: "nombre", titulo: "Nombre", rclvs: true},
 			{nombre: "fechaDelAno_id", titulo: "Día del Año", rclvs: true, relacInclude: "fechaDelAno", tabla: "fechasDelAno"},
 			{nombre: "fechaMovil", titulo: "Fecha Móvil", rclvs: true},
+			{nombre: "anoFM", titulo: "Año Fecha Móvil", rclvs: true},
 			{nombre: "comentarioMovil", titulo: "Comentario Móvil", rclvs: true},
 			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},
 			{nombre: "avatar", titulo: "Avatar", rclvs: true},
