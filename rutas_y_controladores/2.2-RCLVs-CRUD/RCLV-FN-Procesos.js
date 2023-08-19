@@ -233,7 +233,6 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
-			console.log(232,codigo,req.query);
 			let original, edicion, edicN;
 
 			// Tareas para un nuevo registro
