@@ -1,7 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
 	const id = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Variables generales
@@ -38,14 +37,7 @@ window.addEventListener("load", async () => {
 		marcoCalendario: document.querySelector("form #calendario"),
 		tablaCalendario: document.querySelector("form #calendario table"),
 	};
-	let rutas = {
-		// Rutas
-		validacion: "/rclv/api/valida-sector/?funcion=",
-	};
 	let varios = {
-		// Variables de entidad
-		epocasDelAno: entidad == "epocasDelAno",
-
 		// Campos por sector
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 
@@ -62,6 +54,7 @@ window.addEventListener("load", async () => {
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 	};
+	let rutas = {validacion: "/rclv/api/valida-sector/?funcion="};
 
 	// -------------------------------------------------------
 	// Funciones
@@ -98,7 +91,7 @@ window.addEventListener("load", async () => {
 				if (DOM.tipoFecha.value != "SF") {
 					// Obtiene los casos con esa fecha
 					// 1. Obtiene los parámetros
-					let params = "?entidad=" + entidad;
+					let params = "?entidad=epocasDelAno";
 					if (id) params += "&id=" + id;
 					params += "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 					// 2. Busca otros casos con esa fecha
@@ -206,7 +199,7 @@ window.addEventListener("load", async () => {
 			// Si se conoce la fecha...
 			if (DOM.tipoFecha.value != "SF") {
 				// Obtiene los datos de los campos
-				let params = "&entidad=" + entidad;
+				let params = "&entidad=epocasDelAno";
 				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 				// Averigua si hay un error con la fecha
@@ -259,11 +252,7 @@ window.addEventListener("load", async () => {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
-			if (varios.OK.fecha)
-				if (entidad != "epocasDelAno") {
-					await impactos.fecha.muestraPosiblesRepetidos();
-					validacs.repetido();
-				} else impactos.fecha.epocasDelAno();
+			if (varios.OK.fecha) impactos.fecha.epocasDelAno();
 		}
 
 		// Fin
@@ -274,7 +263,7 @@ window.addEventListener("load", async () => {
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
 		// Validaciones estándar
-		amplio.restringeCaracteres(e)
+		amplio.restringeCaracteres(e);
 
 		// Variables
 		let campo = e.target.name;
@@ -300,12 +289,12 @@ window.addEventListener("load", async () => {
 				DOM.mensajesError[0].innerHTML = "";
 				DOM.iconosError[0].classList.add("ocultar");
 				DOM.iconosOK[0].classList.add("ocultar");
-			}
 
-			// Reemplaza el valor del DOM
-			const posicCursor = e.target.selectionStart;
-			e.target.value = valor;
-			e.target.selectionEnd = posicCursor;
+				// Reemplaza el valor del DOM
+				const posicCursor = e.target.selectionStart;
+				e.target.value = valor;
+				e.target.selectionEnd = posicCursor;
+			}
 		}
 
 		// Fin
@@ -320,8 +309,7 @@ window.addEventListener("load", async () => {
 		if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 		if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 		if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-		if (varios.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
-			impactos.fecha.epocasDelAno(campo);
+		if (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion") impactos.fecha.epocasDelAno(campo);
 
 		// Valida las fechas
 		await validacs.fecha();
