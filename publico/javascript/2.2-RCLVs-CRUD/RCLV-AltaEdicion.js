@@ -100,12 +100,12 @@ window.addEventListener("load", async () => {
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: false,
 	};
+	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 	let rutas = {
 		// Rutas
 		validacion: "/rclv/api/valida-sector/?funcion=",
 		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 	};
-	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 
 	// Funciones
 	let FN = {
