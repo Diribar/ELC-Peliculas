@@ -69,7 +69,6 @@ window.addEventListener("load", async () => {
 				// Agrega el campo y el valor
 				v.datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
-			console.log(v);
 
 			// Fin
 			return;
