@@ -69,6 +69,7 @@ window.addEventListener("load", async () => {
 				// Agrega el campo y el valor
 				v.datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
+			console.log(v);
 
 			// Fin
 			return;
@@ -196,10 +197,10 @@ window.addEventListener("load", async () => {
 		}
 
 		// Prepara los datosUrl con los datos a validar
-		let datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
+		v.datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
 
 		// Validar errores
-		await FN.averiguaMuestraLosErrores(datosUrl, true);
+		await FN.averiguaMuestraLosErrores();
 
 		// Actualiza botón Submit
 		FN.actualizaBotonSubmit();
