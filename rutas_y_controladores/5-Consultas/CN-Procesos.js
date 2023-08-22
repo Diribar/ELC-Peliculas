@@ -505,7 +505,7 @@ module.exports = {
 
 				// Ordena
 				prods.sort((a, b) =>
-					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
+					orden.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
 				);
 
 				if (orden.codigo == "pppFecha") {
@@ -532,17 +532,17 @@ module.exports = {
 				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
 				if (orden.codigo == "anoHistorico") {
 					let campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
 						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
 
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
 						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
 				}
 				// En los demás casos, ordena por su campo
 				else
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
 						: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
 
