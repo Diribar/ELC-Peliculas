@@ -1,5 +1,11 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
 <section id="tituloPrincipal" class="flexRow">
+	<!-- Entidad -->
+	<select name="entidad_id" class="prefSimple" required>
+		<% for (let entidad of cn_entidades) { %>
+			<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
+		<% } %>
+	</select>
 	<!-- Orden -->
 	<select name="orden_id" class="prefSimple" required>
 		<optgroup label="Cuatro Películas">
@@ -12,12 +18,6 @@
 				<option value="<%= orden.id %>"><%= orden.nombre %></option>
 			<% } %>
 		</optgroup>
-	</select>
-	<!-- Entidad -->
-	<select name="entidad_id" class="prefSimple" required>
-		<% for (let entidad of cn_entidades) { %>
-			<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
-		<% } %>
 	</select>
 	<!-- Ayuda -->
 	<div id="ayudaOrden">
