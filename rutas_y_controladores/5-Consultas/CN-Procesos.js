@@ -520,15 +520,6 @@ module.exports = {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
-				// Acciones si el orden es por su Rol en la Iglesia
-				// if (orden.codigo == "rolIglesia") {
-				// 	// Los orden por su nombre
-				// 	rclvs.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
-
-				// 	// Los ordena por su include
-				// 	rclvs.sort((a, b) => (a.rolIglesia.grupo < b.rolIglesia.grupo ? -1 : 1));
-				// }
-
 				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
 				if (orden.codigo == "anoHistorico") {
 					let campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
