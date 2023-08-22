@@ -22,7 +22,7 @@ let actualizaConfigCons = {
 
 		// Acciones si existe un valor de entidad
 		if (v.entidad_id) {
-			// Actualiza 'configCons.orden_id'
+			// Actualiza 'configCons.entidad_id'
 			configCons.entidad_id = v.entidad_id;
 			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
 
@@ -56,10 +56,9 @@ let actualizaConfigCons = {
 
 			// Actualiza variables
 			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
+			configCons.ordenPorEnt_id = v.ordenPorEnt_id;
 			v.ordenPorEntBD = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id);
-			v.orden_id = v.ordenPorEntBD.orden_id;
-			configCons.orden_id = v.orden_id;
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.ordenPorEntBD.orden_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -95,7 +94,7 @@ let actualizaConfigCons = {
 	},
 	muestraOcultaPrefs: () => {
 		// Variables
-		v.mostrar = !!configCons.entidad_id && !!configCons.orden_id;
+		v.mostrar = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
 
 		// Acciones si no hay errores
 		if (v.mostrar) {
