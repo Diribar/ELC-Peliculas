@@ -80,7 +80,7 @@ let actualizaConfigCons = {
 				: DOM.optgroupCuatroPelis.classList.add("ocultar");
 
 			// Si corresponde, actualiza 'bhr'
-			if (v.ordenPorEntBD.bhrSeguro) configCons.bhr = "1";
+			if (v.entidad.bhrSeguro) configCons.bhr = "1";
 
 			// Muestra/Oculta sectores
 			actualizaConfigCons.muestraOcultaPrefs();

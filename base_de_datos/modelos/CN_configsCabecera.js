@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
 		creadoEn: {type: dt.DATE},
+		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_config_cabecera",

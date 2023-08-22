@@ -119,9 +119,12 @@ app.set("views", [
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
+		cn_entidades: BD_genericas.obtieneTodosPorCondicion("cn_entidades", {activo: true}),
+		cn_ordenesPorEnts: BD_genericas.obtieneTodosPorCondicionConInclude("cn_ordenesPorEnts", {activo: true}, [
+			"entidad",
+			"orden",
+		]),
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
-		cn_ordenesPorEnts: BD_genericas.obtieneTodosConInclude("cn_ordenesPorEnts", ["entidad", "orden"]),
-		cn_entidades: BD_genericas.obtieneTodos("cn_entidades", "orden"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Otros

@@ -4,6 +4,8 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(40)},
 		orden: {type: dt.INTEGER},
 		codigo: {type: dt.STRING(20)},
+		bhrSeguro: {type: dt.BOOLEAN},
+		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_entidades",
