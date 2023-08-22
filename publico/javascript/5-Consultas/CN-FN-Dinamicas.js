@@ -74,7 +74,7 @@ let actualizaConfigCons = {
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
 					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden al orden
 			}
-			
+
 			// Muestra / Oculta el título "Cuatro Pelis" en las opciones
 			v.ordenesPorEntBD.filter((n) => n.entidad_id == v.entidad_id && n.boton).length
 				? DOM.optgroupCuatroPelis.classList.remove("ocultar")
