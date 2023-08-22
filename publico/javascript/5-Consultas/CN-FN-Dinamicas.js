@@ -16,6 +16,25 @@ let actualizaConfigCons = {
 	},
 
 	// Encabezado
+	entidad: function () {
+		// Acciones si existe un valor de orden
+		v.entidad_id = DOM.entidad_id.value;
+		if (v.entidad_id) {
+			// Actualiza 'configCons.orden_id'
+			configCons.entidad_id = v.entidad_id;
+
+			// Obtiene los órdenes posibles
+			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
+			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
+		}
+
+		// Redirige a la siguiente instancia
+		if (v.orden_id) this.entidad.asignaUna();
+		else this.muestraOcultaPrefs();
+
+		// Fin
+		return;
+	},
 	entidad: {
 		asignaUna: function () {
 			// Averigua si hay una entidad elegida
