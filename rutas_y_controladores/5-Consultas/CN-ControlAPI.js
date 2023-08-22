@@ -44,9 +44,9 @@ module.exports = {
 			// Variables
 			const datos = {
 				// Órdenes y Entidades
-				ordenesBD: cn_ordenes,
-				entsPorOrdenesBD: cn_entsPorOrdenes,
 				entidadesBD: cn_entidades,
+				ordenesPorEntsBD: cn_ordenesPorEnts,
+				ordenesBD: cn_ordenes,
 
 				// Check-Boxes
 				noLaVi: String(sinPreferencia.id), // Es crítico que sea 'string' para estandarizar con otros inputs
