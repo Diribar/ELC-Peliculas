@@ -90,7 +90,7 @@ app.set("views", [
 	let campos = {
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
-		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+		rolesUs: BD_genericas.obtieneTodos("rolesUsuarios", "orden"),
 
 		// Variable de entidades
 		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
@@ -112,7 +112,7 @@ app.set("views", [
 		// Variables de RCLVs
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
-		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
@@ -152,8 +152,8 @@ app.set("views", [
 	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
 
 	// 3.A. Roles de usuario
-	global.rolConsultas_id = roles_us.find((n) => !n.permInputs).id;
-	global.rolPermInputs_id = roles_us.find((n) => n.soloPermInputs).id;
+	global.rolConsultas_id = rolesUs.find((n) => !n.permInputs).id;
+	global.rolPermInputs_id = rolesUs.find((n) => n.soloPermInputs).id;
 
 	// 3.B. Status de usuario
 	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
