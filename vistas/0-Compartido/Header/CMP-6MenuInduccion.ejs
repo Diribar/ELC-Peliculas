@@ -1,0 +1,9 @@
+<div class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
+	<% for (let campo in videosInduccion) { %>
+		<p class="menuOpcion">
+			<i class="fa-solid icono <%= videosInduccion[campo].icono %>"></i>
+			<span><%= videosInduccion[campo].titulo %></span>
+		</p>
+		<% if (videosInduccion[campo].hr) { %><hr><% } %>
+	<% } %>
+</div>
