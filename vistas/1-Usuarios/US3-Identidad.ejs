@@ -42,7 +42,7 @@
 					<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
 					<select name="rolIglesia_id" class="input">
 						<option value="" <% if (!rolIglesia_id) { %>selected<% } %>>Elejí una opción</option>
-						<% for (let rolIglesia of rolesIglesia) { %>
+						<% for (let rolIglesia of rolesIgl) { %>
 							<option value="<%= rolIglesia.id %>" <% if (rolIglesia_id == rolIglesia.id) { %>selected<% } %>><%= rolIglesia.nombre %></option>
 						<% } %> 
 					</select>

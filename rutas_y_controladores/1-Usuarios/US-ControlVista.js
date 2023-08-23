@@ -146,9 +146,7 @@ module.exports = {
 			let errores = req.session.errores ? req.session.errores : false;
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 			// Roles de Iglesia
-			let rolesIglesia = await BD_genericas.obtieneTodosPorCondicion("rolesIglesia", {usuario: true});
-			rolesIglesia = rolesIglesia.filter((n) => n.id.length == 3 && n.id.slice(-1) == usuario.sexo_id);
-			rolesIglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
+			let rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
 			// Avatar
 			let avatar = usuario.documAvatar
 				? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
@@ -165,7 +163,7 @@ module.exports = {
 				errores,
 				hablaHispana,
 				hablaNoHispana,
-				rolesIglesia,
+				rolesIgl,
 				avatar,
 				urlSalir: req.session.urlSinLogin,
 			});
