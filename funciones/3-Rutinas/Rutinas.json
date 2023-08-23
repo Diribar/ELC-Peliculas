@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 21/ago",
-	"HoraUTC": "0:56",
+	"FechaUTC": "Mar. 22/ago",
+	"HoraUTC": "11:52",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 21/ago",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-ago-23": {"titulo": "ELC - Películas"},
 		"20-ago-23": {"titulo": "San Bernardo de Claraval", "entidad": "personajes", "id": 195},
 		"21-ago-23": {"titulo": "San Pío X", "entidad": "personajes", "id": 176},
 		"22-ago-23": {"titulo": "San Felipe Benicio", "entidad": "personajes", "id": 164},
-		"23-ago-23": {"titulo": "Santa Rosa de Lima", "entidad": "personajes", "id": 98}
+		"23-ago-23": {"titulo": "Santa Rosa de Lima", "entidad": "personajes", "id": 98},
+		"24-ago-23": {"titulo": "ELC - Películas"}
 	}
 }

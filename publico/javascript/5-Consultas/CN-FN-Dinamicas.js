@@ -16,29 +16,6 @@ let actualizaConfigCons = {
 	},
 
 	// Encabezado
-	orden: function () {
-		// Acciones si existe un valor de orden
-		v.orden_id = DOM.orden_id.value;
-		if (v.orden_id) {
-			// Actualiza 'configCons.orden_id'
-			configCons.orden_id = v.orden_id;
-
-			// Obtiene 'configCons.ascDes'
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
-			configCons.ascDes = v.ordenBD.ascDes;
-
-			// Obtiene las entidades posibles
-			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
-			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
-		}
-
-		// Redirige a la siguiente instancia
-		if (v.orden_id) this.entidad.asignaUna();
-		else this.muestraOcultaPrefs();
-
-		// Fin
-		return;
-	},
 	entidad: {
 		asignaUna: function () {
 			// Averigua si hay una entidad elegida
@@ -84,6 +61,29 @@ let actualizaConfigCons = {
 			// Fin
 			return;
 		},
+	},
+	orden: function () {
+		// Acciones si existe un valor de orden
+		v.orden_id = DOM.orden_id.value;
+		if (v.orden_id) {
+			// Actualiza 'configCons.orden_id'
+			configCons.orden_id = v.orden_id;
+
+			// Obtiene 'configCons.ascDes'
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
+			configCons.ascDes = v.ordenBD.ascDes;
+
+			// Obtiene las entidades posibles
+			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
+			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
+		}
+
+		// Redirige a la siguiente instancia
+		if (v.orden_id) this.entidad.asignaUna();
+		else this.muestraOcultaPrefs();
+
+		// Fin
+		return;
 	},
 	muestraOcultaPrefs: () => {
 		// Variables

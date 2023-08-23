@@ -254,7 +254,7 @@ module.exports = {
 				.replace(/[ŃŅŇ]/g, "N")
 				.replace(/[ńņňŉ]/g, "n")
 				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-				.replace(/[òôõōðōŏőö]/g, "o")
+				.replace(/[òôõōðōŏőöø]/g, "o")
 				.replace(/ó/g, "ó")
 				.replace(/[ÖŒ]/g, "Oe")
 				.replace(/[œ]/g, "oe")
