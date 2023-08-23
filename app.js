@@ -151,13 +151,15 @@ app.set("views", [
 	global.documental_id = tiposActuacion.find((n) => n.documental).id;
 	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
 
-	// 3. Roles y Status de usuario
-	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
-	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
-	global.mailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
-	global.registrado_id = statusRegistrosUs.find((n) => n.registrado).id;
-	global.identPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
-	global.identValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
+	// 3.A. Roles de usuario
+	global.rolConsultas_id = roles_us.find((n) => !n.permInputs).id;
+	global.rolPermInputs_id = roles_us.find((n) => n.soloPermInputs).id;
+
+	// 3.B. Status de usuario
+	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
+	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.registrado).id;
+	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
+	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
 
 	// 4. Públicos
 	global.mayores_ids = publicos.filter((n) => n.mayores).map((n) => n.id);

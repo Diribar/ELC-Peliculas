@@ -726,7 +726,7 @@ module.exports = {
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'
-		if (motivo.bloqueoInput) objeto.rolUsuario_id = roles_us.find((n) => !n.permInputs).id;
+		if (motivo.bloqueoInput) objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
 		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
