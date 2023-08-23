@@ -787,7 +787,11 @@ let puleEdicion = async (entidad, original, edicion) => {
 		// CONDICION 1: Los valores de original y edición son significativos e idénticos
 		// 1. Son estrictamente iguales
 		// 1. El campo de la edición tiene algún valor
-		const condic1 = edicion[campo] === original[campo] || parseInt(edicion[campo]) === original[campo];
+		const condic1 =
+			edicion[campo] === original[campo] ||
+			edicion[campo] === original[campo] ||
+			(edicion[campo] === 1 && original[campo] === true) ||
+			(edicion[campo] === 0 && original[campo] === false);
 		if (condic1) camposNull[campo] = null;
 
 		// CONDICION 2: El objeto vinculado tiene el mismo ID
@@ -801,7 +805,7 @@ let puleEdicion = async (entidad, original, edicion) => {
 	let quedanCampos = !!Object.keys(edicion).length;
 	if (quedanCampos) {
 		// Devuelve el id a la variable de edicion
-		edicion.id = edicID;
+		if (edicID) edicion.id = edicID;
 
 		// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
 		if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);

@@ -185,9 +185,9 @@ module.exports = {
 			DE.fechaMovil = tipoFecha == "FM";
 			if (tipoFecha == "FM") {
 				DE.comentarioMovil = comentarioMovil;
-				DE.anoFM = anoFM;
+				DE.anoFM = Number(anoFM);
 			}
-			if (prioridad_id) DE.prioridad_id = prioridad_id;
+			if (prioridad_id) DE.prioridad_id = Number(prioridad_id);
 			if (avatar) DE.avatar = avatar;
 
 			// Datos exclusivos de personajes
@@ -212,8 +212,8 @@ module.exports = {
 				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
 				DE.epocaOcurrencia_id = epocaOcurrencia_id;
 				if (epocaOcurrencia_id == "pst") DE.anoComienzo = anoComienzo;
-				DE.soloCfc = soloCfc;
-				DE.ama = soloCfc == "1" ? ama : 0;
+				DE.soloCfc = Number(soloCfc);
+				DE.ama = soloCfc == "1" ? Number(ama) : 0;
 			}
 
 			// Datos para epocasDelAno

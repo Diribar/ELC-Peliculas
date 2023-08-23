@@ -20,6 +20,7 @@ window.addEventListener("load", async () => {
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
 		apodo: document.querySelector("form input[name='apodo']"),
+
 		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
 		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
@@ -29,10 +30,12 @@ window.addEventListener("load", async () => {
 		anoFM: document.querySelector("form .input[name='anoFM']"),
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
 		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
+
 		// Primera columna - Fecha comentarios móvil
 		sectorContadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres"),
 		contadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres span"),
 		comentarioMovil: document.querySelector("form .input[name='comentarioMovil']"),
+
 		// Primera columna - Fecha comentarios duración
 		contadorDuracion: document.querySelector("form #dataEntry #diasDeDuracion .caracteres span"),
 		comentarioDuracion: document.querySelector("form .input[name='comentarioDuracion']"),
@@ -42,6 +45,7 @@ window.addEventListener("load", async () => {
 		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
 		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
+
 		// Días del año
 		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
 		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
@@ -53,6 +57,7 @@ window.addEventListener("load", async () => {
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
 		ano: document.querySelector("form input[name='" + ano + "']"),
+
 		// Personajes
 		camposRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
 		preguntasRCLIC: document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input"),
@@ -63,6 +68,7 @@ window.addEventListener("load", async () => {
 		opcionesProceso: document.querySelectorAll("form select[name='canon_id'] option"),
 		sectorApMar: document.querySelector("form #sectorApMar"),
 		apMar_id: document.querySelector("form select[name='apMar_id']"),
+
 		// Hechos
 		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
 		ama: document.querySelectorAll("form input[name='ama']"),
@@ -94,12 +100,12 @@ window.addEventListener("load", async () => {
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: false,
 	};
+	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 	let rutas = {
 		// Rutas
 		validacion: "/rclv/api/valida-sector/?funcion=",
 		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 	};
-	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 
 	// Funciones
 	let FN = {
@@ -381,6 +387,8 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			repetido: () => {
+				if (!DOM.posiblesRepetidos) return;
+
 				// Variables
 				let casos = document.querySelectorAll("#posiblesRepetidos li input");
 				let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
@@ -535,8 +543,8 @@ window.addEventListener("load", async () => {
 			},
 			botonSubmit: () => {
 				// Variables
-				let resultado = Object.values(v.OK);
-				let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
+				const resultado = Object.values(v.OK);
+				const resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
 
 				// Activa/Inactiva
 				resultadosTrue && resultado.length == v.camposError.length
@@ -673,9 +681,11 @@ window.addEventListener("load", async () => {
 			}
 
 			// Reemplaza el valor del DOM
-			const posicCursor = e.target.selectionStart;
-			e.target.value = valor;
-			e.target.selectionEnd = posicCursor;
+			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario") || campo == ano) {
+				const posicCursor = e.target.selectionStart;
+				e.target.value = valor;
+				e.target.selectionEnd = posicCursor;
+			}
 		}
 
 		// Fin
@@ -768,7 +778,7 @@ window.addEventListener("load", async () => {
 		// Acciones si el botón está inactivo
 		if (DOM.botonSubmit.classList.contains("inactivo")) {
 			e.preventDefault();
-			await startUp(true);
+			await FN.startUp(true);
 		}
 	});
 
