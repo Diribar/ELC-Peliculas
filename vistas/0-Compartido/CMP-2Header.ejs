@@ -36,18 +36,6 @@
 				<i class="fa-solid fa-landmark scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
 				<%- include("CMP-5MenuRevisores") %>
 			</div>
-			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
-				<div class="scale iconoComb" title="Tablero de Entidades">
-					<i class="fa-solid fa-video iconoHeader revision"></i>
-					<i class="fa-solid fa-check iconoHeader adentro"></i>
-				</div>
-			</a>
-		<% } %>
-		<!-- Tablero de Usuarios -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorUs) { %>
-			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Tablero de Usuarios"></i>
-			</a>
 		<% } %>
 		<!-- Gráficos -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
@@ -60,6 +48,11 @@
 	<!-- Título del Encabezado -->
 	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
 	<section>
+		<!-- Inducción a nuestro sitio  -->
+		<div class="grupos">
+			<i class="fa-brands fa-youtube scale desplClick iconoHeader" title="Menú de Inicio"></i>
+			<%- include("CMP-4MenuUsuario") %>
+		</div>
 		<!-- Usuario -->
 		<div class="grupos">
 			<%- include("CMP-4IconoUsuario") %>
