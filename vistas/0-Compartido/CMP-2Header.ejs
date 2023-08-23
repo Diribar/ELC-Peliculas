@@ -34,7 +34,7 @@
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisor) { %>
 			<div class="grupos">
 				<i class="fa-solid fa-landmark scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
-				<%- include("CMP-1MenuHome") %>
+				<%- include("CMP-5MenuRevisores") %>
 			</div>
 			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
 				<div class="scale iconoComb" title="Tablero de Entidades">
@@ -43,10 +43,6 @@
 				</div>
 			</a>
 		<% } %>
-	</section>
-	<!-- Título del Encabezado -->
-	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
-	<section>
 		<!-- Tablero de Usuarios -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorUs) { %>
 			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
@@ -60,6 +56,10 @@
 				<%- include("CMP-3MenuGraficos") %>
 			</div>
 		<% } %>
+	</section>
+	<!-- Título del Encabezado -->
+	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
+	<section>
 		<!-- Usuario -->
 		<div class="grupos">
 			<%- include("CMP-4IconoUsuario") %>
