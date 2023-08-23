@@ -98,7 +98,7 @@ module.exports = {
 
 	// Revisar - Tablero
 	TC: {
-		obtieneRegs: ({entidad, status_id, revID, campoFecha, campoRevID, include}) => {
+		obtieneRegs: ({entidad, status_id, campoFecha, campoRevID, include, revID}) => {
 			// Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
