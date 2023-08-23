@@ -69,7 +69,7 @@ module.exports = {
 			let campos;
 
 			// AL: En staus 'creado'
-			campos = {entidades, status_id: creado_id, campoRevID: "statusSugeridoPor_id", revID};
+			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "statusSugeridoPor_id", revID};
 			let AL = obtieneRegs(campos)
 				// Deja solamente las películas y colecciones
 				.then((n) => n.filter((m) => m.entidad != "capitulos"));
