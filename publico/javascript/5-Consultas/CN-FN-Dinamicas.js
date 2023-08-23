@@ -6,7 +6,7 @@ let actualizaConfigCons = {
 		configCons = {};
 
 		// Obtiene configCons y muestra/oculta campos
-		this.orden();
+		this.entidad();
 
 		// Muestra / Oculta filtros
 		actualiza.muestraOcultaFiltros();
@@ -16,24 +16,50 @@ let actualizaConfigCons = {
 	},
 
 	// Encabezado
-	entidad: {
-		asignaUna: function () {
-			// Averigua si hay una entidad elegida
-			v.entidad_id = DOM.entidad_id.value;
-			v.entidadEnOrden = false;
+	entidad: function () {
+		// Variables
+		v.entidad_id = DOM.entidad_id.value;
 
-			// Si hay una entidad elegida, se fija si pertenece al orden elegido
-			if (v.entidad_id) v.entidadEnOrden = v.entidades_id.includes(Number(v.entidad_id));
-
-			// Si la entidad no pertenece al orden, asigna el valor default
-			if (!v.entidadEnOrden)
-				DOM.entidad_id.value = v.entsPorOrdenBD.find((n) => n.orden_id == v.orden_id && n.entDefault).entidad_id;
-
-			// Actualiza variables
-			v.entidad_id = DOM.entidad_id.value;
+		// Acciones si existe un valor de entidad
+		if (v.entidad_id) {
+			// Actualiza 'configCons.orden_id'
 			configCons.entidad_id = v.entidad_id;
 			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
-			v.entPorOrdenBD = v.entsPorOrdenesBD.find((n) => n.orden_id == v.orden_id && n.entidad_id == v.entidad_id);
+
+			// Obtiene los órdenes posibles
+			v.ordenesPorEntBD = v.ordenesPorEntsBD.filter((n) => n.entidad_id == v.entidad_id);
+			v.ordenesPorEnt_id = v.ordenesPorEntBD.map((n) => n.id);
+			v.ordenes_id = v.ordenesPorEntBD.map((n) => n.orden.id);
+
+			// Continúa la rutina
+			this.orden.asignaUno();
+		}
+
+		// Redirige a la siguiente instancia
+		else this.muestraOcultaPrefs();
+
+		// Fin
+		return;
+	},
+	orden: {
+		asignaUno: function () {
+			// Averigua si hay un orden elegido
+			v.ordenPorEnt_id = DOM.ordenPorEnt_id.value;
+			v.ordenEnEntidad = false;
+
+			// Si hay una entidad elegida, se fija si pertenece al orden elegido
+			if (v.ordenPorEnt_id) v.ordenEnEntidad = v.ordenesPorEnt_id.includes(Number(v.ordenPorEnt_id));
+
+			// Si la entidad no pertenece al orden, asigna el valor default
+			if (!v.ordenEnEntidad)
+				v.ordenPorEnt_id = v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.ordenDefault).id;
+
+			// Actualiza variables
+			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
+			v.ordenPorEntBD = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id);
+			v.orden_id = v.ordenPorEntBD.orden_id;
+			configCons.orden_id = v.orden_id;
+			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -42,15 +68,20 @@ let actualizaConfigCons = {
 			return;
 		},
 		muestraOcultaOpciones: () => {
-			// Oculta/Muestra las opciones según el orden elegido
-			for (let opcion of DOM.entidad_idOpciones) {
-				v.entidades_id.includes(Number(opcion.value))
+			// Oculta/Muestra las opciones según la entidad elegida
+			for (let opcion of DOM.ordenPorEntOpciones) {
+				v.ordenesPorEnt_id.includes(Number(opcion.value))
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
 					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden al orden
 			}
 
+			// Muestra / Oculta el título "Cuatro Pelis" en las opciones
+			v.ordenesPorEntBD.filter((n) => n.entidad_id == v.entidad_id && n.boton).length
+				? DOM.optgroupCuatroPelis.classList.remove("ocultar")
+				: DOM.optgroupCuatroPelis.classList.add("ocultar");
+
 			// Si corresponde, actualiza 'bhr'
-			if (v.entPorOrdenBD.bhrSeguro) configCons.bhr = "1";
+			if (v.ordenPorEntBD.bhrSeguro) configCons.bhr = "1";
 
 			// Muestra/Oculta sectores
 			actualizaConfigCons.muestraOcultaPrefs();
@@ -62,32 +93,9 @@ let actualizaConfigCons = {
 			return;
 		},
 	},
-	orden: function () {
-		// Acciones si existe un valor de orden
-		v.orden_id = DOM.orden_id.value;
-		if (v.orden_id) {
-			// Actualiza 'configCons.orden_id'
-			configCons.orden_id = v.orden_id;
-
-			// Obtiene 'configCons.ascDes'
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.orden_id);
-			configCons.ascDes = v.ordenBD.ascDes;
-
-			// Obtiene las entidades posibles
-			v.entsPorOrdenBD = v.entsPorOrdenesBD.filter((n) => n.orden_id == v.orden_id);
-			v.entidades_id = v.entsPorOrdenBD.map((n) => n.entidad.id);
-		}
-
-		// Redirige a la siguiente instancia
-		if (v.orden_id) this.entidad.asignaUna();
-		else this.muestraOcultaPrefs();
-
-		// Fin
-		return;
-	},
 	muestraOcultaPrefs: () => {
 		// Variables
-		v.mostrar = !!configCons.orden_id && !!configCons.entidad_id;
+		v.mostrar = !!configCons.entidad_id && !!configCons.orden_id;
 
 		// Acciones si no hay errores
 		if (v.mostrar) {

@@ -23,9 +23,10 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		orden_id: DOM.tituloPrincipal.querySelector("select[name='orden_id']"),
 		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
-		entidad_idOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='entidad_id'] option"),
+		ordenPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='ordenPorEnt_id']"),
+		ordenPorEntOpciones: DOM.tituloPrincipal.querySelectorAll("select[name='ordenPorEnt_id'] option"),
+		optgroupCuatroPelis: DOM.tituloPrincipal.querySelector("select[name='ordenPorEnt_id'] optgroup#cuatroPelis"),
 		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
 
 		// Configuración de Cabecera - Botonera

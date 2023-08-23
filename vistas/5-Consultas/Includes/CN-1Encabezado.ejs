@@ -6,19 +6,21 @@
 			<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
 		<% } %>
 	</select>
+
 	<!-- Orden -->
-	<select name="orden_id" class="prefSimple" required>
-		<optgroup label="Cuatro Películas">
-			<% for (let orden of cn_ordenes.filter(n => n.cuatroPelis)) { %>
-				<option value="<%= orden.id %>"><%= orden.nombre %></option>
+	<select name="ordenPorEnt_id" class="prefSimple" required>
+		<optgroup id="cuatroPelis" label="Cuatro Películas">
+			<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => n.boton)) { %>
+				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
 			<% } %>
 		</optgroup>
 		<optgroup label="Listado">
-			<% for (let orden of cn_ordenes.filter(n => !n.cuatroPelis)) { %>
-				<option value="<%= orden.id %>"><%= orden.nombre %></option>
+			<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => !n.boton)) { %>
+				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
 			<% } %>
 		</optgroup>
 	</select>
+	
 	<!-- Ayuda -->
 	<div id="ayudaOrden">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">

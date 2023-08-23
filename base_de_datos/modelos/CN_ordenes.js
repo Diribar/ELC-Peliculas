@@ -5,7 +5,6 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		codigo: {type: dt.STRING(20)},
 		ascDes: {type: dt.STRING(6)},
-		cuatroPelis: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "cn_ordenes",
@@ -13,7 +12,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_entsPorOrdenes, {as: "entidades", foreignKey: "orden_id"});
+		entidad.hasMany(n.cn_ordenesPorEnts, {as: "entidades", foreignKey: "orden_id"});
 	};
 	return entidad;
 };

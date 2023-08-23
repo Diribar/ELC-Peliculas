@@ -505,7 +505,7 @@ module.exports = {
 
 				// Ordena
 				prods.sort((a, b) =>
-					configCons.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
+					orden.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
 				);
 
 				if (orden.codigo == "pppFecha") {
@@ -520,29 +520,20 @@ module.exports = {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
-				// Acciones si el orden es por su Rol en la Iglesia
-				// if (orden.codigo == "rolIglesia") {
-				// 	// Los orden por su nombre
-				// 	rclvs.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
-
-				// 	// Los ordena por su include
-				// 	rclvs.sort((a, b) => (a.rolIglesia.grupo < b.rolIglesia.grupo ? -1 : 1));
-				// }
-
 				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
 				if (orden.codigo == "anoHistorico") {
 					let campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
 						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
 
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
 						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
 				}
 				// En los demás casos, ordena por su campo
 				else
-					configCons.ascDes == "ASC"
+					orden.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
 						: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
 

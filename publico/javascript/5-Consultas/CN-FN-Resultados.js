@@ -9,7 +9,7 @@ let resultados = {
 		DOM.noTenemos.classList.add("ocultar");
 
 		// Si es un resultado a mostrar en botones, oculta el contador
-		v.entPorOrdenBD.boton ? DOM.contadorDeProds.classList.add("ocultar") : DOM.contadorDeProds.classList.remove("ocultar");
+		v.ordenPorEntBD.boton ? DOM.contadorDeProds.classList.add("ocultar") : DOM.contadorDeProds.classList.remove("ocultar");
 
 		// Variables
 		const ahora = new Date();
@@ -47,7 +47,7 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.entPorOrdenBD.boton) return;
+			if (v.ordenPorEntBD.boton) return;
 			// Contador para 'listado-altaRevisadaEn'
 			else if (v.ordenBD.codigo == "altaRevisadaEn") {
 				// Variables
@@ -87,7 +87,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.entPorOrdenBD.boton ? this.botones() : this.listados();
+			v.ordenPorEntBD.boton ? this.botones() : this.listados();
 
 			// Fin
 			return;
@@ -495,7 +495,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.entPorOrdenBD.boton;
+		const agregarRCLV = v.entidad == "productos" && !v.ordenPorEntBD.boton;
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
