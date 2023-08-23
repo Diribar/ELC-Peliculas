@@ -18,6 +18,26 @@ module.exports = {
 		"derechos-de-autor": {titulo: "Política sobre Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
+	// Videos de inducción
+	videosInduccion: {
+		// Todos los usuarios
+		introduccion: {titulo: "Introducción al sitio", icono: ""},
+		usuario: {titulo: "Temas de usuario", icono: ""},
+		detalleProds: {titulo: "Detalle de una película", icono: ""},
+		detalleRCLVs: {titulo: "Detalle de otras entidades", icono: ""},
+		consultas: {titulo: "Quiero elegir una película", icono: "", hr: true},
+
+		// Sólo usuarios con rol de Data Entry
+		dataEntry: {titulo: "Data Entry", icono: ""},
+		abmLinks: {titulo: "Links a portales de streaming", icono: ""},
+		mantenimiento: {titulo: "Mantenimiento", icono: "", hr: true},
+
+		// Sólo usuarios con rol de Revisores
+		revisionEnts: {titulo: "Revisión de Entidades", icono: ""},
+		revisionUs: {titulo: "Revisión de Usuarios", icono: ""},
+		graficos: {titulo: "Gráficos de control", icono: ""},
+	},
+
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
