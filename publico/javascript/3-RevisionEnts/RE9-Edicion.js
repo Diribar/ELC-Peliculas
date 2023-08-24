@@ -75,15 +75,15 @@ window.addEventListener("load", async () => {
 					link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE",
 				};
 				// Partes del cartel
-				let cartel = document.querySelector("#cartel");
-				let alerta = document.querySelector("#cartel #alerta");
-				let check = document.querySelector("#cartel #check");
-				let mensajes = document.querySelector("#cartel ul#mensajes");
+				let cartelGenerico = document.querySelector("#cartelGenerico");
+				let alerta = document.querySelector("#cartelGenerico #alerta");
+				let check = document.querySelector("#cartelGenerico #check");
+				let mensajes = document.querySelector("#cartelGenerico ul#mensajes");
 				mensajes.style.listStyle = "none";
-				let flechas = document.querySelector("#cartel #flechasCartel");
+				let flechas = document.querySelector("#cartelGenerico #flechasCartel");
 
 				// Formatos
-				cartel.style.backgroundColor = "var(--verde-oscuro)";
+				cartelGenerico.style.backgroundColor = "var(--verde-oscuro)";
 				alerta.classList.add("ocultar");
 				check.classList.remove("ocultar");
 
@@ -95,7 +95,7 @@ window.addEventListener("load", async () => {
 
 				// Muestra el cartel
 				DOM.tapaElFondo.classList.remove("ocultar");
-				cartel.classList.remove("ocultar");
+				cartelGenerico.classList.remove("ocultar");
 			}
 			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
 			else location.href = "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";

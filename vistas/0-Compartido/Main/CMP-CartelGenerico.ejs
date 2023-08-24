@@ -2,7 +2,7 @@
 <section id="tapaElFondo" class="<%- !locals.informacion ? 'ocultar' : '' %>"></section>
 
 <!-- Cartel -->
-<section id="cartel" class="<%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
+<section id="cartelGenerico" class="cartelCentro absoluteCentro <%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
 
 	<!-- Íconos -->
 	<i id="alerta" class="fa-solid fa-triangle-exclamation inicio <%- locals.informacion && (locals.informacion.check || locals.informacion.trabajando) ? 'ocultar' : '' %>"></i>
