@@ -1,4 +1,6 @@
 /* Videos */
-header :where(video, #closeVideo) {position: absolute; top: 50%; left: 50%;}
-header video {translate: -50% -50%; max-width: 80vw; max-height: 80vh; }
-header #closeVideo {font-size: 2rem; translate: -50% -100%;}
+header video {max-width: 80vw; max-height: 80vh; }
+header video {border: var(--gris-oscuro) 10px solid; box-shadow: 0px 0px 15px rgb(100, 100, 100);}
+
+/* Íconos */
+header #cierraVideo {font-size: 2rem;}
