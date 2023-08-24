@@ -26,5 +26,6 @@ button, span, em, b, u, a, i {font-size: inherit; color: inherit; line-height: i
 /* button:has(i) {border: none; outline: none;} */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 a {text-decoration: none;}
+a:has(img) {font-size: 1px;}
 p, li {line-height: 1.2rem;}
 .bordeRojo {border: 1px solid red;}

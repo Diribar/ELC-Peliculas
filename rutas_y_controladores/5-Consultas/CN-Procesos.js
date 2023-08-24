@@ -42,13 +42,10 @@ module.exports = {
 		},
 	},
 	resultados: {
-		prods: async function ({configCons, entidad}) {
+		prods: async function ({configCons, entidad, orden}) {
 			// Variables
-			const {orden_id} = configCons;
-			const ordenBD = cn_ordenes.find((n) => n.id == orden_id);
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			let include = [...variables.asocs.rclvs];
-			// if (ordenBD.codigo == "anoEstreno") include.push("epocaEstreno");
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
@@ -56,9 +53,9 @@ module.exports = {
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
-			if (ordenBD.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
-			// if (ordenBD.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
-			if (ordenBD.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
+			if (orden.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			// if (orden.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
+			if (orden.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Obtiene los productos
@@ -504,9 +501,7 @@ module.exports = {
 				const campo = orden.codigo == "nombre" ? "nombreCastellano" : orden.codigo;
 
 				// Ordena
-				prods.sort((a, b) =>
-					orden.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1
-				);
+				prods.sort((a, b) => (orden.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1));
 
 				if (orden.codigo == "pppFecha") {
 					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));

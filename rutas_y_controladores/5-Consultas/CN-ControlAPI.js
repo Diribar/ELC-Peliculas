@@ -93,11 +93,11 @@ module.exports = {
 		guardaConfig: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			const {id} = configCons;
+			const {id, ordenPorEnt_id} = configCons;
 
 			// Quita los campos irrelevantes
 			delete configCons.id;
-			delete configCons.ascDes;
+			if (cn_ordenesPorEnts.find((n) => n.id == ordenPorEnt_id).orden.codigo == "pppFecha") delete configCons.pppOpciones;
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
@@ -133,7 +133,8 @@ module.exports = {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const orden = cn_ordenes.find((n) => n.id == configCons.orden_id);
+		const ordenPorEnt = cn_ordenesPorEnts.find((n) => n.id == configCons.ordenPorEnt_id);
+		const orden = cn_ordenes.find((n) => n.id == ordenPorEnt.orden_id);
 		const {palabrasClave} = configCons;
 
 		// Obtiene los registros de productos
@@ -143,8 +144,8 @@ module.exports = {
 		delete configProd.canons;
 		let prods =
 			entidad == "productos"
-				? procesos.resultados.prods({entidad, configCons})
-				: procesos.resultados.prods({entidad, configCons: configProd});
+				? procesos.resultados.prods({entidad, configCons, orden})
+				: procesos.resultados.prods({entidad, configCons: configProd, orden});
 
 		// Obtiene los registros de rclvs
 

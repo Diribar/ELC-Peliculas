@@ -4,10 +4,9 @@ module.exports = (sequelize, dt) => {
 		entidad_id: {type: dt.INTEGER},
 		orden_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
-
 		boton: {type: dt.INTEGER},
 		ordenDefault: {type: dt.BOOLEAN},
-		bhrSeguro: {type: dt.BOOLEAN},
+		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_ordenes_por_ent",
