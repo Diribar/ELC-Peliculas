@@ -1,6 +1,7 @@
 /* Videos */
-header video {max-width: 80vw; max-height: 80vh; }
-header video {border: var(--gris-oscuro) 10px solid; box-shadow: 0px 0px 15px rgb(100, 100, 100);}
+main #todoElMain #videoCapacitac {max-width: 80vw; max-height: 80vh;}
+main #todoElMain #videoCapacitac {border: var(--gris-oscuro) 10px solid; border-radius: 20px;}
+main #todoElMain #videoCapacitac {box-shadow: 0px 0px 15px rgb(100, 100, 100);}
 
 /* Íconos */
-header #cierraVideo {font-size: 2rem;}
+main #todoElMain #cierraVideo {font-size: 2rem;}
