@@ -28,7 +28,6 @@ module.exports = async (req, res, next) => {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
 		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : "l ",
-		horarioFinalCreado: comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn)),
 		vistaAnteriorTablero: [v.vistaAnterior],
 		vistaAnteriorInactivar: [v.vistaAnterior, v.vistaInactivar],
 	};
@@ -36,12 +35,13 @@ module.exports = async (req, res, next) => {
 	// Más variables
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	if (v.creadoEn) v.creadoEn.setSeconds(0);
 	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
+	v.creadoEn = v.registro.creadoEn;
+	v.creadoEn.setSeconds(0);
+	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
 	v.capturadoEn = v.registro.capturadoEn;
 	v.horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.registro.capturadoEn));
-	v.creadoEn = v.registro.creadoEn;
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userID;
 	const creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userID;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
