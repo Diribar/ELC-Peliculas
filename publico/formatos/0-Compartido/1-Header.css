@@ -1,6 +1,5 @@
 /* Configuración general */
-header {height: 9vh; z-index: 10;}
-header {background: var(--azul-oscuro); justify-content: space-between; z-index: 1;}
+header {height: 9vh; background: var(--azul-oscuro); justify-content: space-between;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
@@ -13,7 +12,7 @@ header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
 /* Ícono de agregar producto */
 header section .grupos .iconoComb {position: relative;}
 header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 3px; transform: translateY(-50%);}
-header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro); z-index: 1;}
+header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro);}
 
 /* Formato del Título */
 header #tituloHeader {position: absolute; left: 50%; transform: translateX(-50%);}
@@ -28,3 +27,8 @@ header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer
 
 /* Imágenes */
 header :is(#imagenMovie img, #imagenUsuario img) {height: 100%; width: 100%; object-fit: cover;}
+
+/* Videos */
+header :where(video, #closeVideo) {position: absolute; top: 50%; left: 50%;}
+header video {translate: -50% -50%; max-width: 80vw; max-height: 80vh; }
+header #closeVideo {font-size: 2rem; translate: -50% -100%;}
