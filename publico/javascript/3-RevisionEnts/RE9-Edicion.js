@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
 		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
-		tapaElFondo: document.querySelector("#tapar-el-fondo"),
+		tapaElFondo: document.querySelector("#tapaElFondo"),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
 		filasIngrs: document.querySelectorAll("#contenido #ingrs .fila"),

@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 	};
 	let funcionCartel = () => {
 		// Partes del cartel
-		let taparElFondo = document.querySelector("#tapar-el-fondo");
+		let tapaElFondo = document.querySelector("#tapaElFondo");
 		let cartel = document.querySelector("#cartel");
 		let cartelMensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
@@ -118,7 +118,7 @@ window.addEventListener("load", async () => {
 		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
-		taparElFondo.classList.remove("ocultar");
+		tapaElFondo.classList.remove("ocultar");
 		cartel.classList.remove("ocultar");
 	};
 	let formatoTimer = (minutosDispon) => {
