@@ -1,0 +1,4 @@
+/* Videos */
+header :where(video, #closeVideo) {position: absolute; top: 50%; left: 50%;}
+header video {translate: -50% -50%; max-width: 80vw; max-height: 80vh; }
+header #closeVideo {font-size: 2rem; translate: -50% -100%;}
