@@ -16,4 +16,4 @@
 /* Submit button */
 #dataEntry .flechas {margin: 20px auto 0;}
 #dataEntry .flechas i {font-size: 1.75rem; color: var(--amarillo-oscuro);}
-#dataEntry .flechas i {border: solid 2px var(--amarillo-claro); border-radius: 50%; padding: 5px;}
+#dataEntry .flechas i {border-radius: 50%; padding: 5px;}
