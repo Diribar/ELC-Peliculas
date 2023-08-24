@@ -9,7 +9,7 @@ const comp = require("../../funciones/2-Procesos/Compartidas");
 module.exports = async (req, res, next) => {
 	// Variables
 	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
-	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
+	const vistaAnterior = variables.vistaAnterior(req.session.urlSinPermInput);
 	let informacion;
 	let usuario = req.session.usuario;
 
@@ -113,7 +113,7 @@ module.exports = async (req, res, next) => {
 					? [
 							"Gracias por los ediciones sugeridas anteriormente.",
 							"Queremos analizarlas, antes de que sigas editando otros registros.",
-							"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
+							"En cuanto las hayamos analizado, te habilitaremos para que edites más.",
 							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
 					  ]
 					: [
@@ -129,7 +129,7 @@ module.exports = async (req, res, next) => {
 	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
 	if (!informacion) {
 		// Variables
-		const {baseUrl} = comp.reqBasePathUrl(req)
+		const {baseUrl} = comp.reqBasePathUrl(req);
 		const familia = baseUrl.startsWith("/producto")
 			? {campo: "prods", vista: "PA"}
 			: // : baseUrl.startsWith("/rclv")
@@ -138,6 +138,7 @@ module.exports = async (req, res, next) => {
 			  // ? {campo: "links", vista: "LK"}
 			  "";
 		let cartel = "cartel_resp_" + familia.campo;
+
 		// Revisa si requiere el cartel de "responsabilidad" de la familia
 		if (familia && usuario[cartel]) {
 			// Variable
@@ -147,8 +148,10 @@ module.exports = async (req, res, next) => {
 				vista: familia.vista + "9-Responsab",
 				urlActual: req.session.urlActual,
 			};
+
 			// Quita la necesidad del cartel
 			BD_genericas.actualizaPorId("usuarios", usuario.id, {[cartel]: false});
+
 			// Vista
 			return res.render("CMP-0Estructura", objeto);
 		}
