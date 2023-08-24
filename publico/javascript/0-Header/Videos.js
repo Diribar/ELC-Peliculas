@@ -5,18 +5,20 @@ window.addEventListener("load", () => {
 		header: document.querySelector("header"),
 		menuCapacitac: document.querySelector("header #menuCapacitac"),
 		menus: document.querySelectorAll("header #menuCapacitac .menuOpcion"),
+		tapaElFondo: document.querySelector("#tapaElFondo"),
 	};
+	const clasesHabituales = " ocultar pointer scale absoluteCentro";
 
 	// Crea los elementos video
 	const video = document.createElement("video");
-	video.className = "aparece";
+	video.className = "aparece absoluteCentro";
 	video.preload = "none";
-	video.controls = true;
+	// video.controls = true;
 
-	// Crea el botón de "cerrar"
-	const cerrar = document.createElement("i");
-	cerrar.className = "fa-solid fa-circle-xmark ocultar pointer scale";
-	cerrar.id = "closeVideo";
+	// Crea el botón de "cierraVideo"
+	const cierraVideo = document.createElement("i");
+	cierraVideo.className = "fa-solid fa-circle-xmark" + clasesHabituales;
+	cierraVideo.id = "cierraVideo";
 
 	// Acciones si se elige un video
 	for (let menu of DOM.menus) {
@@ -25,22 +27,28 @@ window.addEventListener("load", () => {
 			if (DOM.header.querySelector("video")) DOM.header.removeChild(video);
 
 			// Acciones finales
+			DOM.tapaElFondo.classList.remove("ocultar")
 			video.src = "/videos/" + menu.id + ".mp4"; // Actualiza el video a mostrar
 			DOM.header.appendChild(video); // Agrega el video a la vista
 			video.play(); // Ejecuta el video
 
-			if (!DOM.header.querySelector("#closeVideo")) DOM.header.appendChild(cerrar); // Agrega el botón cerrar a la vista
+			// Agrega íconos a la vista
+			if (!DOM.header.querySelector("#cierraVideo")) DOM.header.appendChild(cierraVideo); // Cerrar el video
 		});
 	}
 
-	// Botón cerrar
-	cerrar.addEventListener("click", () => {
+	// Botón cierraVideo
+	cierraVideo.addEventListener("click", () => {
 		DOM.header.removeChild(video);
-		DOM.header.removeChild(cerrar);
+		DOM.header.removeChild(cierraVideo);
+		DOM.tapaElFondo.classList.add("ocultar")
 	});
 
-	// Muestra / Oculta el botón de "cerrar"
-	video.addEventListener("pause", () => cerrar.classList.remove("ocultar"));
-	video.addEventListener("ended", () => cerrar.classList.remove("ocultar"));
-	video.addEventListener("play", () => cerrar.classList.add("ocultar"));
+	// Avanza / Pausa el video
+	video.addEventListener("click", () => (video.paused ? video.play() : video.pause()));
+
+	// Muestra / Oculta el botón de "cierraVideo"
+	video.addEventListener("pause", () => cierraVideo.classList.remove("ocultar"));
+	video.addEventListener("ended", () => cierraVideo.classList.remove("ocultar"));
+	video.addEventListener("play", () => cierraVideo.classList.add("ocultar"));
 });
