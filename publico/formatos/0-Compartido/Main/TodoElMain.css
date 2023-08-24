@@ -1,5 +1,5 @@
 /* Tapar el fondo */
-main #tapaElFondo {position: absolute; left: 0px; top: 0px;}
+main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
 main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
 /* Formato general del cartel */
