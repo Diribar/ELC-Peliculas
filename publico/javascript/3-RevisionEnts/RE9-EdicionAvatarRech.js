@@ -4,7 +4,8 @@ window.addEventListener("load", () => {
 		// Flechas
 		accesoAlCartelRechazo: document.querySelector("#mostrarMotivos"),
 
-		// Motivos para borrar
+		// Borrar
+		todoElMain: document.querySelector("#todoElMain"),
 		tapaElFondo: document.querySelector("#tapaElFondo"),
 		cartelRechazo: document.querySelector("#cartelRechazo"),
 		motivoRechazo: document.querySelector("#cartelRechazo select"),
@@ -14,12 +15,14 @@ window.addEventListener("load", () => {
 
 	// Muestra el menú "motivos para borrar"
 	DOM.accesoAlCartelRechazo.addEventListener("click", () => {
+		DOM.todoElMain.classList.remove("ocultar");
 		DOM.tapaElFondo.classList.remove("ocultar");
 		DOM.cartelRechazo.classList.remove("ocultar");
 	});
 
 	// Oculta el menú "motivos para borrar"
 	DOM.cancelar.addEventListener("click", () => {
+		DOM.todoElMain.classList.add("ocultar");
 		DOM.tapaElFondo.classList.add("ocultar");
 		DOM.cartelRechazo.classList.add("ocultar");
 	});

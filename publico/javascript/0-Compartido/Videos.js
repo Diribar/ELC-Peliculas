@@ -34,6 +34,7 @@ window.addEventListener("load", () => {
 			DOM.tapaElFondo.classList.remove("ocultar");
 			video.src = "/videos/" + menu.id + ".mp4"; // Actualiza el video a mostrar
 			DOM.todoElMain.appendChild(video); // Agrega el video a la vista
+			DOM.todoElMain.classList.remove("ocultar");
 			video.play(); // Ejecuta el video
 
 			// Agrega íconos a la vista
@@ -46,6 +47,7 @@ window.addEventListener("load", () => {
 		DOM.todoElMain.removeChild(video);
 		DOM.todoElMain.removeChild(cierraVideo);
 		DOM.tapaElFondo.classList.add("ocultar");
+		DOM.todoElMain.classList.add("ocultar");
 	});
 
 	// Avanza / Pausa el video
