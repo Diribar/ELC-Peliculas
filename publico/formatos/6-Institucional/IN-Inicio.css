@@ -27,4 +27,4 @@
 #zona-de-bienvenida #botones a button .iconoComb {position: relative; padding: 20px 0;}
 #zona-de-bienvenida #botones a button .iconoComb i {font-size: 5rem;}
 #zona-de-bienvenida #botones a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
-#zona-de-bienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro); z-index: 1;}
+#zona-de-bienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro);}

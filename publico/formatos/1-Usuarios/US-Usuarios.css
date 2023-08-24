@@ -4,7 +4,7 @@
 
 /* General del formulario */
 #cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
-#cuerpo form {padding: 20px; z-index: 11; min-width: 360px;}
+#cuerpo form {padding: 20px; min-width: 360px;}
 #cuerpo form {display: flex; flex-direction: column;}
 #cuerpo form #tituloPrincipal {align-self: center;}
 

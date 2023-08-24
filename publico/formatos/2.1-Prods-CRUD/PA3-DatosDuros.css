@@ -39,7 +39,7 @@
 #dataEntry #paises_id .inputError {width: 200px;}
 #dataEntry #paises_id .inputError input,
 #dataEntry #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
-#dataEntry #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
+#dataEntry #paises_id .inputError #mostrarPaises {width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
 #dataEntry #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* Imagen de la película */

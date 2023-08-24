@@ -1,6 +1,6 @@
 #cartelRechazo {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
 #cartelRechazo {background: var(--rojo-oscuro); border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
-#cartelRechazo {padding: 30px 40px; text-align: center; z-index: 11; border-radius: 20px;}
+#cartelRechazo {padding: 30px 40px; text-align: center; border-radius: 20px;}
 #cartelRechazo h2 {color: snow; margin-bottom: 10px;}
 #cartelRechazo p {color: var(--amarillo-claro); font-size: 1.2rem;}
 #cartelRechazo select {margin: 20px 0; border-radius: 10px; padding: 0 5px;}
