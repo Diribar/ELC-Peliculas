@@ -14,7 +14,7 @@ header {z-index: 10;}
 header .menuMostrar {z-index: 16;}
 header #cierraVideo {z-index: 15;}
 header video {z-index: 14;}
-main :is(#cartel, .encimaDelFondo) {z-index: 13;}
+main :is(#cartelGenerico, #cartelProgreso, .encimaDelFondo) {z-index: 13;}
 main #tapaElFondo {z-index: 12;}
 
 /* Cuerpo */
