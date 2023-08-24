@@ -11,10 +11,11 @@ body :is(
 header {z-index: 10;}
 
 /* Máxima prioridad */
-header .menuMostrar {z-index: 15;}
-header :where(video, #closeVideo) {z-index: 14;}
-main #cartel {z-index: 13;}
-main #tapar-el-fondo {z-index: 12;}
+header .menuMostrar {z-index: 16;}
+header #cierraVideo {z-index: 15;}
+header video {z-index: 14;}
+main :is(#cartel, .encimaDelFondo) {z-index: 13;}
+main #tapaElFondo {z-index: 12;}
 
 /* Cuerpo */
 main #cuerpo :is(#tituloPrincipal, #tituloSecundario) {z-index: 8;}
