@@ -1,6 +1,6 @@
 /* Tapar el fondo */
-main #tapar-el-fondo {position: absolute; left: 0px; top: 0px;}
-main #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+main #tapaElFondo {position: absolute; left: 0px; top: 0px;}
+main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
 /* Formato general del cartel */
 main #cartel {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
