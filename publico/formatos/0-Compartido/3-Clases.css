@@ -28,6 +28,7 @@
 
 /* Otras */
 .absolute {position: absolute}
+.absoluteCentro {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}

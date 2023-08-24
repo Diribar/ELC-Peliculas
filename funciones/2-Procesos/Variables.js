@@ -27,8 +27,8 @@ module.exports = {
 		detalleRCLVs: {titulo: "Detalle de otras entidades", icono: "fa-user-tie"},
 		consultas: {titulo: "Quiero elegir una película", icono: "fa-clapperboard"},
 
-		// Sólo usuarios con rol de Data Entry
-		dataEntry: {titulo: "Data Entry", icono: "fa-keyboard", permInputs: true, hr: true},
+		// Sólo usuarios con rol permInputs
+		permInputs: {titulo: "Data Entry", icono: "fa-keyboard", permInputs: true, hr: true},
 		abmLinks: {titulo: "Links a portales de streaming", icono: "fa-link", permInputs: true},
 		mantenimiento: {titulo: "Mantenimiento", icono: "fa-screwdriver-wrench", permInputs: true},
 

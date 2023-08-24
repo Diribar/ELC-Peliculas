@@ -71,10 +71,11 @@ window.addEventListener("load", async () => {
 	};
 	let funcionCartel = () => {
 		// Partes del cartel
-		let taparElFondo = document.querySelector("#tapar-el-fondo");
-		let cartel = document.querySelector("#cartel");
-		let cartelMensajes = document.querySelector("#cartel #mensajes");
-		let flechas = document.querySelector("#cartel #flechasCartel");
+		let tapaElFondo = document.querySelector("#tapaElFondo");
+		let cartelGenerico = document.querySelector("#cartelGenerico");
+		let cartelMensajes = document.querySelector("#cartelGenerico #mensajes");
+		let flechas = document.querySelector("#cartelGenerico #flechasCartel");
+
 		// Mensajes
 		let horarioFinalTexto = fechaHorario(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
@@ -118,8 +119,8 @@ window.addEventListener("load", async () => {
 		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
-		taparElFondo.classList.remove("ocultar");
-		cartel.classList.remove("ocultar");
+		tapaElFondo.classList.remove("ocultar");
+		cartelGenerico.classList.remove("ocultar");
 	};
 	let formatoTimer = (minutosDispon) => {
 		if (minutosDispon <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";

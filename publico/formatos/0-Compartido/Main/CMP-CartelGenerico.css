@@ -1,43 +1,42 @@
 /* Tapar el fondo */
-main #tapar-el-fondo {position: absolute; left: 0px; top: 0px;}
-main #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+main #tapaElFondo {position: absolute; left: 0px; top: 0px;}
+main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
 /* Formato general del cartel */
-#cartel {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
-#cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
-#cartel {width: max-content; min-width: 250px; max-width: 600px;}
-#cartel {color: var(--gris-claro)}
-#cartel {display: flex; flex-direction: column; align-items: center;}
-#cartel.ocultar {display: none;}
-#cartel {background: var(--rojo-oscuro);}
-#cartel.check {background: var(--verde-oscuro);}
-#cartel.trabajando {background: var(--azul-oscuro);}
+main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white;}
+main .cartelCentro {width: max-content; min-width: 250px; max-width: 600px;}
+main .cartelCentro {color: var(--gris-claro)}
+main .cartelCentro {display: flex; flex-direction: column; align-items: center;}
+main .cartelCentro.ocultar {display: none;}
+main .cartelCentro {background: var(--rojo-oscuro);}
+main .cartelCentro.check {background: var(--verde-oscuro);}
+main .cartelCentro.trabajando {background: var(--azul-oscuro);}
 
 /* Partes internas */
-#cartel .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
-#cartel #titulo {margin-bottom: 15px; font-size: 1.5rem;}
-#cartel #titulo:empty {margin: 0;}
-#cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
-#cartel #mensajes {margin: 0 20px 40px; text-align: center;}
-#cartel #mensajes li {text-align: left;}
-#cartel #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
-#cartel #mensajes li i.fa-circle {border: solid 1px transparent;}
-#cartel #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscuro);}
-#cartel #mensajes span {font-weight: bold; font-style: italic;}
+main .cartelCentro .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
+main .cartelCentro #titulo {margin-bottom: 15px; font-size: 1.5rem;}
+main .cartelCentro #titulo:empty {margin: 0;}
+main .cartelCentro :is(#mensajes, #mensajes *) {font-size: 1.2rem; line-height: 1.5;}
+main .cartelCentro #mensajes {margin: 0 20px 40px; text-align: center;}
+main .cartelCentro #mensajes li {text-align: left;}
+main .cartelCentro #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
+main .cartelCentro #mensajes li i.fa-circle {border: solid 1px transparent;}
+main .cartelCentro #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscuro);}
+main .cartelCentro #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
-#cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
-#cartel #flechasCartel * {border-radius: 50%;}
-#cartel #flechasCartel *:focus {outline: none;}
-#cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
+main .cartelCentro #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
+main .cartelCentro #flechasCartel * {border-radius: 50%;}
+main .cartelCentro #flechasCartel *:focus {outline: none;}
+main .cartelCentro #flechasCartel a i {font-size: 2rem; cursor: pointer;}
 /* Íconos de retroceder y avanzar */
-#cartel #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
-#cartel #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
+main .cartelCentro #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
+main .cartelCentro #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
 /* Íconos especiales */
-#cartel #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
-#cartel #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
+main .cartelCentro #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
+main .cartelCentro #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
 
 /* Barra de progreso */
-#cartel #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
-#cartel #contorno {border-radius: 10px; overflow: hidden;}
-#cartel #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
+main .cartelCentro #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
+main .cartelCentro #contorno {border-radius: 10px; overflow: hidden;}
+main .cartelCentro #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
