@@ -18,8 +18,8 @@ window.addEventListener("load", () => {
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 
 		// Cartel
-		cartelGenerico: document.querySelector("#cartelGenerico"),
-		progreso: document.querySelector("#cartelGenerico #progreso"),
+		cartelProgreso: document.querySelector("#cartelProgreso"),
+		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
 	let codigo = location.pathname;
 	const indice = codigo.lastIndexOf("/");
