@@ -117,8 +117,8 @@ module.exports = {
 					bloque.push({titulo: "Status Canonizac.", valor: registro.canon.nombre});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
-				if (registro.apMar_id && registro.apMar_id != 10 && registro.ap_mar)
-					bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
+				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
+					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
 			}
 
 			// Particularidades para hechos

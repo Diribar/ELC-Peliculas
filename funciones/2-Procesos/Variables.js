@@ -18,6 +18,26 @@ module.exports = {
 		"derechos-de-autor": {titulo: "Política sobre Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
+	// Videos de inducción
+	videosInduccion: {
+		// Todos los usuarios
+		introduccion: {titulo: "Introducción al sitio", icono: "fa-circle-question"},
+		usuario: {titulo: "Temas de usuario", icono: "fa-user"},
+		detalleProds: {titulo: "Detalle de una película", icono: "fa-circle-info", hr: true},
+		detalleRCLVs: {titulo: "Detalle de otras entidades", icono: "fa-user-tie"},
+		consultas: {titulo: "Quiero elegir una película", icono: "fa-clapperboard"},
+
+		// Sólo usuarios con rol de Data Entry
+		dataEntry: {titulo: "Data Entry", icono: "fa-keyboard", permInputs: true, hr: true},
+		abmLinks: {titulo: "Links a portales de streaming", icono: "fa-link", permInputs: true},
+		mantenimiento: {titulo: "Mantenimiento", icono: "fa-screwdriver-wrench", permInputs: true},
+
+		// Sólo usuarios con rol de Revisores
+		revisionEnts: {titulo: "Revisión de Entidades", icono: "fa-video", revisorEnts: true, hr: true},
+		revisionUs: {titulo: "Revisión de Usuarios", icono: "fa-user-check", revisorUs: true},
+		graficos: {titulo: "Gráficos de control", icono: "fa-chart-simple", revisor: true},
+	},
+
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
@@ -410,7 +430,7 @@ module.exports = {
 				titulo: "Rol en la Iglesia",
 				personajes: true,
 				relacInclude: "rolIglesia",
-				tabla: "roles_iglesia",
+				tabla: "rolesIglesia",
 			},
 			{
 				nombre: "canon_id",
@@ -419,7 +439,7 @@ module.exports = {
 				relacInclude: "canon",
 				tabla: "canons",
 			},
-			{nombre: "apMar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
+			{nombre: "apMar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "apMar", tabla: "hechos"},
 			// Hechos
 			{nombre: "anoComienzo", titulo: "Año de Comienzo", hechos: true},
 			{nombre: "soloCfc", titulo: "Hecho de la Iglesia", hechos: true},

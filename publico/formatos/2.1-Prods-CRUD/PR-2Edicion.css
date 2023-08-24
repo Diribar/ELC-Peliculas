@@ -46,7 +46,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos #paises_id .inputError {width: 200px;}
 #datos #paises_id .inputError :is(input#mostrarPaises, select)
 {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-#datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; z-index: 1; padding: 0 5px;}
+#datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* Sinopsis */

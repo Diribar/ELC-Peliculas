@@ -1,7 +1,6 @@
 
 /* Formato de Menús */
-header .menuMostrar {position: absolute; z-index: 15;}
-header .menuMostrar {border: 1px solid rgba(0,0,0,.15); width: max-content;}
+header .menuMostrar {position: absolute; border: 1px solid rgba(0,0,0,.15); width: max-content;}
 header .menuMostrar.menuFondo {padding: 4px 0; border-radius: 10px; background: var(--gris-claro);}
 
 /* Opciones */

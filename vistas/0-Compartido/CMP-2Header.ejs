@@ -1,5 +1,5 @@
 <header>
-	<!-- Home y Agregar -->
+	<!-- Íconos de la izquierda -->
 	<section>
 		<!-- Menú de Home -->
 		<div class="grupos">
@@ -24,30 +24,18 @@
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
 			</div>
 		</a>
-		<!-- Tablero de Entidades -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
-				<div class="scale iconoComb" title="Tablero de Entidades">
-					<i class="fa-solid fa-video iconoHeader revision"></i>
-					<i class="fa-solid fa-check iconoHeader adentro"></i>
-				</div>
-			</a>
-		<% } %>
 		<!-- Tablero de Mantenimiento -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.soloPermInputs) { %>
 			<a href="/mantenimiento" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
 		<% } %>
-	</section>
-	<!-- Título del Encabezado -->
-	<a href="/" id="tituloHeader" tabindex="-1"><p>ELC - Películas</p></a>
-	<section>
-		<!-- Tablero de Usuarios -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorUs) { %>
-			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Tablero de Usuarios"></i>
-			</a>
+		<!-- Tableros de Revisión -->
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisor) { %>
+			<div class="grupos">
+				<i class="fa-solid fa-landmark scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
+				<%- include("CMP-5MenuRevisores") %>
+			</div>
 		<% } %>
 		<!-- Gráficos -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
@@ -56,6 +44,18 @@
 				<%- include("CMP-3MenuGraficos") %>
 			</div>
 		<% } %>
+	</section>
+	<!-- Título del Encabezado -->
+	<a href="/" id="tituloHeader" tabindex="-1">
+		<p>ELC - Películas</p>
+	</a>
+	<!-- Íconos de la derecha -->
+	<section>
+		<!-- Videos de capacitación -->
+		<div class="grupos">
+			<i class="fa-solid fa-circle-question scale desplClick iconoHeader" title="Videos de capacitación"></i>
+			<%- include("CMP-6MenuCapacitac") %>
+		</div>
 		<!-- Usuario -->
 		<div class="grupos">
 			<%- include("CMP-4IconoUsuario") %>

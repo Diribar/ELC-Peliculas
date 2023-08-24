@@ -481,7 +481,7 @@ module.exports = {
 		// Variables
 		const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
 		const statusCualquiera_id = {[Op.ne]: null};
-		const statusDNIrevisar_id = [registrado_id, identPendValidar_id];
+		const statusDNIrevisar_id = [stUsRegistrado_id, stIdentPendValidar_id];
 
 		const objetos = [
 			// Carpetas REVISAR
@@ -495,7 +495,7 @@ module.exports = {
 			// Carpetas USUARIOS
 			{carpeta: "1-Usuarios/Avatar", familia: "usuarios", status_id: statusCualquiera_id},
 			{carpeta: "1-Usuarios/DNI-Revisar", familia: "usuarios", status_id: statusDNIrevisar_id, campoAvatar: "documAvatar"},
-			{carpeta: "1-Usuarios/DNI-Final", familia: "usuarios", status_id: identValidada_id, campoAvatar: "documAvatar"},
+			{carpeta: "1-Usuarios/DNI-Final", familia: "usuarios", status_id: stIdentValidada_id, campoAvatar: "documAvatar"},
 		];
 
 		// Elimina las imágenes de las carpetas "Revisar" y "Final"

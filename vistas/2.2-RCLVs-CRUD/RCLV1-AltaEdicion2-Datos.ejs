@@ -356,7 +356,7 @@
 					<div class="flexRowAlign altoFila segunSexo_id invisible">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-							<% for (let rolIglesia of roles_igl) { %>
+							<% for (let rolIglesia of rolesIgl) { %>
 								<option 
 									value="<%= rolIglesia.id %>" 
 									<% if (dataEntry.rolIglesia_id == rolIglesia.id) { %>selected<% } %>
@@ -382,9 +382,9 @@
 					<div id="sectorApMar" class="flexRowAlign altoFila invisible">
 						<select name="apMar_id" class="input">
 							<option value="" <% if (!dataEntry.apMar_id) { %>selected<% } %>>Aparición Mariana</option>
-							<% for (let ap_mar of ap_mars) { %>
-								<option value="<%= ap_mar.id %>" <% if (dataEntry.apMar_id == ap_mar.id) { %>selected<% } %>>
-									<%= ap_mar.nombre %>
+							<% for (let apMar of apMars) { %>
+								<option value="<%= apMar.id %>" <% if (dataEntry.apMar_id == apMar.id) { %>selected<% } %>>
+									<%= apMar.nombre %>
 								</option>
 							<% } %>
 						</select>

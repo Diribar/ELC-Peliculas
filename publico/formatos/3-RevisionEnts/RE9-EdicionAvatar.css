@@ -21,7 +21,7 @@
 
 /* Sección central - Medio */
 #centro #medio {display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;}
-#centro #medio {width: 100%; z-index: 1;}
+#centro #medio {width: 100%;}
 
 /* Sección central - Medio - Info */
 #centro #medio .contenedorOpcionAvatar {max-width: 40%; border-radius: 20px; }

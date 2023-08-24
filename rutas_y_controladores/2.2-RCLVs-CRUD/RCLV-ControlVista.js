@@ -86,7 +86,7 @@ module.exports = {
 			const eventos = entidad == "eventos";
 			const epocasDelAno = entidad == "epocasDelAno";
 			let dataEntry = {};
-			let ap_mars, roles_igl, edicID, bloqueDer;
+			let apMars, rolesIgl, edicID, bloqueDer;
 
 			// Configura el título de la vista
 			const titulo =
@@ -94,8 +94,8 @@ module.exports = {
 
 			// Variables específicas para personajes
 			if (personajes) {
-				roles_igl = roles_iglesia.filter((m) => m.personaje);
-				ap_mars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
+				rolesIgl = rolesIglesia.filter((m) => m.personaje);
+				apMars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 			}
 
 			// Pasos exclusivos para edición y revisión
@@ -143,7 +143,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{roles_igl, ap_mars, originalUrl, revisor},
+				...{rolesIgl, apMars, originalUrl, revisor},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				...{omitirImagenDerecha: true, omitirFooter: true},
 			});

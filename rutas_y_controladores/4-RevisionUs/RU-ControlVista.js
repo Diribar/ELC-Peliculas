@@ -82,7 +82,7 @@ module.exports = {
 			const usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 			const revID = req.session.usuario.id;
 			let penalizac = 0;
-			let statusRegistro_id = identValidada_id;
+			let statusRegistro_id = stIdentValidada_id;
 			let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 
 			// Acciones si la imagen del documento fue aprobada
@@ -91,7 +91,7 @@ module.exports = {
 					if (datos[campo] == "NO") {
 						// Agrega un registro por la edición rechazada
 						procesos.VI.histEdics({campo, usuario, revID, motivo});
-						statusRegistro_id = registrado_id;
+						statusRegistro_id = stUsRegistrado_id;
 						penalizac += Number(motivo.penalizac);
 					}
 			}
@@ -99,12 +99,12 @@ module.exports = {
 			else {
 				// Rutinas para el campo
 				procesos.VI.histEdics({campo: {titulo: "Imagen del documento", nombre: "documAvatar"}, usuario, revID, motivo});
-				statusRegistro_id = registrado_id;
+				statusRegistro_id = stUsRegistrado_id;
 				penalizac += Number(motivo.penalizac);
 			}
 
 			// Acciones si se aprueba la validación
-			if (statusRegistro_id == identValidada_id) {
+			if (statusRegistro_id == stIdentValidada_id) {
 				// Asigna el rol 'permInputs'
 				objeto.rolUsuario_id = rolPermInputs_id;
 

@@ -1,0 +1,21 @@
+#cuerpo .ayuda, .inputError .errores {z-index: 1;}
+
+.inputError .ayuda {z-index: 3;}
+.ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
+.inputError .errores {z-index: 6}
+.errores .mensajeError {z-index: 7;}
+#primeraColumna {z-index: 7;}
+header .menuMostrar {z-index: 15;}
+main #tapar-el-fondo {z-index: 10;}
+#cartel {z-index: 12;}
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {z-index: 8;}
+header {z-index: 10;}
+header :where(video, #closeVideo) {z-index: 9;}
+header section .grupos .iconoComb .adentro {z-index: 1;}
+#cuerpo form {padding: 20px; min-width: 360px;}
+form #imgDerecha .errores {z-index: 4;}
+#cuerpo #dataEntry {z-index: 11;}
+#dataEntry #paises_id .inputError #mostrarPaises {z-index: 1;}
+#centro #medio {z-index: 1;}
+#cartelRechazo {padding: 30px 40px; text-align: center; z-index: 11; border-radius: 20px;}
+#zona-de-bienvenida #botones a button .iconoComb i.adentro {z-index: 1;}

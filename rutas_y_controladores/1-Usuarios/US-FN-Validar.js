@@ -50,7 +50,7 @@ module.exports = {
 						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
 			// Si el usuario debe ingresar un n° de documento, lo valida
-			else if (usuario.statusRegistro_id == identPendValidar_id || usuario.statusRegistro_id == identValidada_id) {
+			else if (usuario.statusRegistro_id == stIdentPendValidar_id || usuario.statusRegistro_id == stIdentValidada_id) {
 				let {documNumero, documPais_id} = this.documento(datos);
 				errores = {documNumero, documPais_id};
 

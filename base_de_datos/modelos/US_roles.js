@@ -1,12 +1,15 @@
 module.exports = (sequelize, dt) => {
-	const alias = "roles_usuarios";
+	const alias = "rolesUsuarios";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
+		codigo: {type: dt.STRING(15)},
 		permInputs: {type: dt.BOOLEAN},
 		revisorEnts: {type: dt.BOOLEAN},
 		revisorUs: {type: dt.BOOLEAN},
 		omnipotente: {type: dt.BOOLEAN},
+		soloPermInputs: {type: dt.BOOLEAN},
+		revisor: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "us_roles",

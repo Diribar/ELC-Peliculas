@@ -43,7 +43,7 @@ module.exports = {
 					email,
 					contrasena,
 					fechaContrasena: ahora,
-					statusRegistro_id: mailPendValidar_id,
+					statusRegistro_id: stMailPendValidar_id,
 				});
 
 			// Guarda el mail en 'session'
