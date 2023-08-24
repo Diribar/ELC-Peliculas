@@ -13,9 +13,9 @@ window.addEventListener("load", async () => {
 		prodsYaEnBD: document.querySelector("#listado #prodsYaEnBD"),
 
 		// Cartel
-		cartel: document.querySelector("#cartel"),
-		tituloCartel: document.querySelector("#cartel #titulo"),
-		progreso: document.querySelector("#cartel #progreso"),
+		cartelProgreso: document.querySelector("#cartelProgreso"),
+		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
+		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
 	const localhost = await fetch("/api/localhost").then((n) => n.json());
 	let productos = desambiguar.productos;
@@ -35,10 +35,10 @@ window.addEventListener("load", async () => {
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
 
-		// Muestra el cartel
-		DOM.cartel.classList.remove("ocultar");
-		DOM.cartel.classList.remove("disminuye");
-		DOM.cartel.classList.add("aumenta");
+		// Muestra el cartelProgreso
+		DOM.cartelProgreso.classList.remove("ocultar");
+		DOM.cartelProgreso.classList.remove("disminuye");
+		DOM.cartelProgreso.classList.add("aumenta");
 
 		// Ejecuta las APIs 'form'
 		let duracionAcum = 0;
@@ -158,11 +158,11 @@ window.addEventListener("load", async () => {
 	// Acciones luego de elegir un producto nuevo
 	accionesLuegoDeElegirProdNuevo(DOM);
 
-	// Desaparece el cartel
+	// Desaparece el cartelProgreso
 	if (ocultarCartel) {
-		// Oculta el cartel
-		DOM.cartel.classList.remove("aumenta");
-		DOM.cartel.classList.add("disminuye");
+		// Oculta el cartelProgreso
+		DOM.cartelProgreso.classList.remove("aumenta");
+		DOM.cartelProgreso.classList.add("disminuye");
 	}
 });
 // Funciones
@@ -180,12 +180,12 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			if (yaEligio) return;
 			else yaEligio = true;
 
-			// Muestra el cartel
+			// Muestra el cartelProgreso
 			DOM.tituloCartel.innerHTML = "Estamos procesando la información...";
 			DOM.progreso.style.width = "0%";
-			DOM.cartel.classList.remove("ocultar");
-			DOM.cartel.classList.remove("disminuye");
-			DOM.cartel.classList.add("aumenta");
+			DOM.cartelProgreso.classList.remove("ocultar");
+			DOM.cartelProgreso.classList.remove("disminuye");
+			DOM.cartelProgreso.classList.add("aumenta");
 
 			// Obtiene los datos
 			let datos = {
@@ -202,9 +202,9 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			// 2. Averigua si la info tiene errores
 			const errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
 
-			// Desaparece el cartel
-			DOM.cartel.classList.remove("aumenta");
-			DOM.cartel.classList.add("disminuye");
+			// Desaparece el cartelProgreso
+			DOM.cartelProgreso.classList.remove("aumenta");
+			DOM.cartelProgreso.classList.add("disminuye");
 
 			// Fin
 			if (errores.hay) location.href = "datos-duros";
