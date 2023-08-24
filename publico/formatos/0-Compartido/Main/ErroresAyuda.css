@@ -13,6 +13,7 @@
 .inputError .errores {z-index: 6}
 .errores .mensajeError {z-index: 7;}
 #primeraColumna {z-index: 7;}
+header video {z-index: 8;}
 
 /* Bordes */
 .ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, 
