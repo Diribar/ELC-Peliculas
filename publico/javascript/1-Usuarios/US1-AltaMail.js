@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 
-		// Cartel
+		// Cartel progreso
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
@@ -94,9 +94,9 @@ window.addEventListener("load", () => {
 	};
 	let cartelProgreso = async () => {
 		// Muestra el cartel
-		DOM.cartelGenerico.classList.remove("ocultar");
-		DOM.cartelGenerico.classList.remove("disminuye");
-		DOM.cartelGenerico.classList.add("aumenta");
+		DOM.cartelProgreso.classList.remove("ocultar");
+		DOM.cartelProgreso.classList.remove("disminuye");
+		DOM.cartelProgreso.classList.add("aumenta");
 
 		// Progreso
 		const pausa = 200;
@@ -111,10 +111,10 @@ window.addEventListener("load", () => {
 		}
 		DOM.progreso.style.width = "100%";
 
-		// Oculta el cartelGenerico
+		// Oculta el cartelProgreso
 		await espera(pausa);
-		DOM.cartelGenerico.classList.remove("aumenta");
-		DOM.cartelGenerico.classList.add("disminuye");
+		DOM.cartelProgreso.classList.remove("aumenta");
+		DOM.cartelProgreso.classList.add("disminuye");
 
 		// Fin
 		return;
