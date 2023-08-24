@@ -1,16 +1,20 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
+	const clasesHabituales = " ocultar pointer scale absoluteCentro";
 	let DOM = {
-		header: document.querySelector("header"),
+		// Menús
 		menuCapacitac: document.querySelector("header #menuCapacitac"),
 		menus: document.querySelectorAll("header #menuCapacitac .menuOpcion"),
-		tapaElFondo: document.querySelector("#tapaElFondo"),
+
+		// Tapa el fondo
+		todoElMain: document.querySelector("main #todoElMain"),
+		tapaElFondo: document.querySelector("main #todoElMain #tapaElFondo"),
 	};
-	const clasesHabituales = " ocultar pointer scale absoluteCentro";
 
 	// Crea los elementos video
 	const video = document.createElement("video");
+	video.id = "videoCapacitac";
 	video.className = "aparece absoluteCentro";
 	video.preload = "none";
 	// video.controls = true;
@@ -24,24 +28,24 @@ window.addEventListener("load", () => {
 	for (let menu of DOM.menus) {
 		menu.addEventListener("click", () => {
 			// Si ya existía un video, lo elimina
-			if (DOM.header.querySelector("video")) DOM.header.removeChild(video);
+			if (DOM.todoElMain.querySelector("video")) DOM.todoElMain.removeChild(video);
 
 			// Acciones finales
-			DOM.tapaElFondo.classList.remove("ocultar")
+			DOM.tapaElFondo.classList.remove("ocultar");
 			video.src = "/videos/" + menu.id + ".mp4"; // Actualiza el video a mostrar
-			DOM.header.appendChild(video); // Agrega el video a la vista
+			DOM.todoElMain.appendChild(video); // Agrega el video a la vista
 			video.play(); // Ejecuta el video
 
 			// Agrega íconos a la vista
-			if (!DOM.header.querySelector("#cierraVideo")) DOM.header.appendChild(cierraVideo); // Cerrar el video
+			if (!DOM.todoElMain.querySelector("#cierraVideo")) DOM.todoElMain.appendChild(cierraVideo); // Cerrar el video
 		});
 	}
 
 	// Botón cierraVideo
 	cierraVideo.addEventListener("click", () => {
-		DOM.header.removeChild(video);
-		DOM.header.removeChild(cierraVideo);
-		DOM.tapaElFondo.classList.add("ocultar")
+		DOM.todoElMain.removeChild(video);
+		DOM.todoElMain.removeChild(cierraVideo);
+		DOM.tapaElFondo.classList.add("ocultar");
 	});
 
 	// Avanza / Pausa el video
