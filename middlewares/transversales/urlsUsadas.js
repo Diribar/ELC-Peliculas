@@ -3,7 +3,7 @@
 
 module.exports = (req, res, next) => {
 	// Valores de startup
-	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinCaptura", "urlSinPermInput", "urlAnterior", "urlActual"];
+	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinPermInput", "urlSinCaptura", "urlAnterior", "urlActual"];
 	urlsGuardadas.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
@@ -65,6 +65,7 @@ module.exports = (req, res, next) => {
 
 	// 4. urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
+		!urlAnterior.startsWith("/usuarios/") &&
 		((!urlAnterior.startsWith("/producto/") && !urlAnterior.startsWith("/rclv/")) || urlAnterior.includes("/detalle/")) &&
 		!urlAnterior.startsWith("/links/") &&
 		!urlAnterior.startsWith("/revision/")
