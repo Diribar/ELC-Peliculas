@@ -4,8 +4,7 @@ window.addEventListener("load", () => {
 	const clasesHabituales = " ocultar pointer scale absoluteCentro";
 	let DOM = {
 		// Menús
-		menuCapacitac: document.querySelector("header #menuCapacitac"),
-		menus: document.querySelectorAll("header #menuCapacitac .menuOpcion"),
+		menus: document.querySelectorAll("#menuCapacitac .menuOpcion"),
 
 		// Tapa el fondo
 		todoElMain: document.querySelector("main #todoElMain"),
