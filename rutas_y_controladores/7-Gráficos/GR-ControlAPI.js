@@ -2,8 +2,30 @@
 // Variables
 const procsRutinas = require("../../funciones/3-Rutinas/RT-Control");
 const BD_genericas = require("../../funciones/1-BD/Genericas");
+const variables = require("../../funciones/2-Procesos/Variables");
 
 module.exports = {
+	cantPelisPorCfcVpc: async (req, res) => {
+		// Variables
+		let cfc = {};
+		let vpc = {};
+		let productos = [];
+
+		// Obtiene los productos
+		for (const entidad of ["peliculas", "colecciones"])
+			productos.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, {statusRegistro_id: aprobado_id}, "publico"));
+		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+
+		// Cuenta las cantidades
+		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
+		for (const aptoPara of ["mayores", "familia", "menores"]) {
+			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico[aptoPara]).length;
+			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico[aptoPara]).length;
+		}
+
+		// Fin
+		return res.json({cfc, vpc});
+	},
 	vencimLinks: async (req, res) => {
 		// Variables
 		if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno'
