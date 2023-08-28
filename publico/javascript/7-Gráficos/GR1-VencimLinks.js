@@ -27,7 +27,6 @@ window.addEventListener("load", async () => {
 
 		// Opciones del gráfico
 		const options = {
-			title: "Cantidad de links que vencen por semana",
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
 			animation: {
@@ -47,6 +46,7 @@ window.addEventListener("load", async () => {
 			vAxis: {
 				viewWindow: {min: 0, max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				fontSize: 20,
+				title: "Cant. de links que vencen por semana",
 			},
 		};
 
