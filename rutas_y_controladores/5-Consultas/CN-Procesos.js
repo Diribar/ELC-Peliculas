@@ -501,7 +501,15 @@ module.exports = {
 				const campo = orden.codigo == "nombre" ? "nombreCastellano" : orden.codigo;
 
 				// Ordena
-				prods.sort((a, b) => (orden.ascDes == "ASC" ? (a[campo] < b[campo] ? -1 : 1) : a[campo] > b[campo] ? -1 : 1));
+				prods.sort((a, b) =>
+					orden.ascDes == "ASC"
+						? a[campo].toLowerCase() < b[campo].toLowerCase()
+							? -1
+							: 1
+						: a[campo].toLowerCase() > b[campo].toLowerCase()
+						? -1
+						: 1
+				);
 
 				if (orden.codigo == "pppFecha") {
 					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
@@ -529,8 +537,8 @@ module.exports = {
 				// En los demás casos, ordena por su campo
 				else
 					orden.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
-						: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
+						? rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() < b[orden.codigo].toLowerCase() ? -1 : 1))
+						: rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() > b[orden.codigo].toLowerCase() ? -1 : 1));
 
 				// Fin
 				return rclvs;
