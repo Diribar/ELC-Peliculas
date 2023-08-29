@@ -128,7 +128,6 @@ module.exports = {
 			// Obtiene los productos
 			const aprobsPerms = porcentaje < 5 || linksAprobsEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
-			console.log(133, productos.VN);
 
 			// Fin
 			return {productos, linksAprobsEstaSem, linksAprobsTotal};
