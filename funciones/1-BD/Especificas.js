@@ -157,7 +157,11 @@ module.exports = {
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
-				[Op.and]: [{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}}, {statusSugeridoPor_id: {[Op.ne]: revID}}],
+				[Op.and]: [
+					{prodAprob: true},
+					{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}},
+					{statusSugeridoPor_id: {[Op.ne]: revID}},
+				],
 			};
 			const originales = db.links
 				.findAll({where: condiciones, include: [...include, "statusRegistro"]})

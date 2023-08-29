@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
+		prodAprob: {type: dt.BOOLEAN},
 
 		url: {type: dt.STRING(120)},
 		prov_id: {type: dt.INTEGER},
