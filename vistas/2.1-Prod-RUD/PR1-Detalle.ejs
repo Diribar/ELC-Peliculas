@@ -31,6 +31,9 @@
 			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
 		</div>
 	<% } %>
+	<% if (entidad == "colecciones" && !links.TR.length) { %>
+		<p><em>- No disponemos de links de Trailer de esta colección. -</em></p>
+	<% } %>
 </div>
 <div id="marcoDetalle">
 	<div id="etiquetas" class="flexRow">
