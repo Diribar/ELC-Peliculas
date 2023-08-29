@@ -8,7 +8,8 @@ module.exports = (sequelize, dt) => {
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
-		coment_aut: {type: dt.BOOLEAN},
+		comentAut: {type: dt.BOOLEAN},
+		prodInactivo: {type: dt.BOOLEAN},
 		};
 	const config = {
 		tableName: "cam_motivos_status",
