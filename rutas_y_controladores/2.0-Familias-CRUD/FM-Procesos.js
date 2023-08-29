@@ -400,7 +400,13 @@ module.exports = {
 				const stAprob = registro.statusRegistro_id == aprobado_id;
 				const entidadesRCLV = variables.entidades.rclvs;
 
-				// 2. Rutina por entidad RCLV
+				// 2. Actualiza prodAprob en sus links
+				if (registro.links) {
+					const prodAprob = [creadoAprob_id, aprobado_id].includes(registro.statusRegistro_id);
+					for (let link of links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+				}
+
+				// 3. Rutina por entidad RCLV
 				for (let entidad of entidadesRCLV) {
 					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					if (registro[campo_id])
