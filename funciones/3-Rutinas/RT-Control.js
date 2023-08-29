@@ -33,6 +33,7 @@ module.exports = {
 
 		// Fin
 		return;
+		actualizaLinkDeProdAprob();
 		this.EliminaImagenesSinRegistro();
 	},
 
@@ -578,6 +579,38 @@ let actualizaLaEpocaDeEstreno = async () => {
 			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno >= n.desde).id;
 			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
+	}
+
+	// Fin
+	return;
+};
+let actualizaLinkDeProdAprob = async () => {
+	// Variables
+	const prodInactivo_id = motivosStatus.find((n) => n.prodInactivo).id;
+	const inactivo = {statusRegistro_id: inactivo_id, motivo_id: prodInactivo_id};
+
+	// Obtiene todos los links con su producto asociado
+	const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
+
+	// Rutina por link
+	for (let link of links) {
+		// Averigua el status de su producto
+		let statusProd = link.pelicula
+			? link.pelicula.statusRegistro_id
+			: link.coleccion
+			? link.coleccion.statusRegistro_id
+			: link.capitulo
+			? link.capitulo.statusRegistro_id
+			: null;
+		if (!statusProd) continue;
+		if (link.id == 144) console.log(606, link, statusProd);
+
+		// En caso que esté inactivo, inactiva el status del link y actualiza su motivo
+		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
+
+		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
+		if ([creadoAprob_id, aprobado_id].includes(statusProd)) BD_genericas.actualizaPorId("links", link.id, {prodAprob: true});
+		else BD_genericas.actualizaPorId("links", link.id, {prodAprob: false});
 	}
 
 	// Fin
