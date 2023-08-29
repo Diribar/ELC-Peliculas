@@ -3,7 +3,7 @@
 #cuadroDeResultados #listado li form {position: relative;}
 
 /* Íconos para mover */
-#cuadroDeResultados .mover {position: absolute; font-size: 1.75rem; cursor: pointer; top: 50%;}
+#cuadroDeResultados .mover {position: absolute; font-size: 3rem; cursor: pointer; top: 50%;}
 #cuadroDeResultados .mover.fa-caret-left {translate: -100% -50%; left: 0;}
 #cuadroDeResultados .mover.fa-caret-right {translate: 100% -50%; right: 0;}
 

@@ -9,6 +9,7 @@ window.addEventListener("load", async () => {
 		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
 		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
+		todoElMain: document.querySelector("#todoElMain"),
 		tapaElFondo: document.querySelector("#tapaElFondo"),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
@@ -94,6 +95,7 @@ window.addEventListener("load", async () => {
 				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
 				// Muestra el cartel
+				DOM.todoElMain.classList.remove("ocultar");
 				DOM.tapaElFondo.classList.remove("ocultar");
 				cartelGenerico.classList.remove("ocultar");
 			}

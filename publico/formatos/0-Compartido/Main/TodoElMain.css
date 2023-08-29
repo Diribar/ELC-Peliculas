@@ -1,6 +1,8 @@
 /* Tapar el fondo */
 main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
 main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+/* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
+main #tapaElFondo {position: absolute;} 
 
 /* Formato general del cartel */
 main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white;}
