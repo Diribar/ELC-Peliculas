@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 		for (let motivo of DOM.motivos)
 			motivo.addEventListener("change", async () => {
 				const motivo_rech_altas = motivosStatus.find((n) => n.id == motivo.value);
-				DOM.comentario.value = motivo_rech_altas.coment_aut ? motivo_rech_altas.descripcion : "";
+				DOM.comentario.value = motivo_rech_altas.comentAut ? motivo_rech_altas.descripcion : "";
 				botonSubmit();
 			});
 
