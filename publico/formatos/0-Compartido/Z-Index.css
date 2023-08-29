@@ -1,32 +1,26 @@
-/* Triviales */
-body :is(
-    header section .grupos .iconoComb .adentro
-    main #cuerpo .ayuda, 
-    main #cuerpo .inputError .errores, 
-    main #cuerpo #centro #medio,
-    main #cuerpo #paises_id .inputError #mostrarPaises,
-) {z-index: 1;}
+/* Máxima prioridad */
+header .menuMostrar {z-index: 13;}
+main :is(#cartelProgreso, .encimaDelFondo) {z-index: 12;}
+main #todoElMain {z-index: 11;}
 
 /* Header */
 header {z-index: 10;}
+header .iconoComb .adentro {z-index: 1;}
 
-/* Máxima prioridad */
-header .menuMostrar {z-index: 16;}
-header #cierraVideo {z-index: 15;}
-header video {z-index: 14;}
-main :is(#cartelGenerico, #cartelProgreso, .encimaDelFondo) {z-index: 13;}
-main #tapaElFondo {z-index: 12;}
+/* Todo el main */
+main #todoElMain #cierraVideo {z-index: 1;}
 
 /* Cuerpo */
+main #cuerpo #cartelRechazo {z-index: 9;}
 main #cuerpo :is(#tituloPrincipal, #tituloSecundario) {z-index: 8;}
 main #cuerpo #primeraColumna {z-index: 7;}
-main #cuerpo #cartelRechazo {z-index: 9;}
+main #cuerpo :is(.ayuda, .inputError .errores, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
 
 /* Ayuda */
+main #cuerpo .inputError .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
 main #cuerpo .inputError .ayuda {z-index: 3;}
-main #cuerpo .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
 
 /* Errores */
-main #cuerpo form #imgDerecha .errores {z-index: 4;}
-main #cuerpo .inputError .errores {z-index: 6}
 main #cuerpo .errores .mensajeError {z-index: 7;}
+main #cuerpo .inputError .errores {z-index: 6}
+main #cuerpo form #imgDerecha .errores {z-index: 4;}
