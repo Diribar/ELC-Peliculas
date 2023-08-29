@@ -603,14 +603,13 @@ let actualizaLinkDeProdAprob = async () => {
 			? link.capitulo.statusRegistro_id
 			: null;
 		if (!statusProd) continue;
-		if (link.id == 144) console.log(606, link, statusProd);
 
 		// En caso que esté inactivo, inactiva el status del link y actualiza su motivo
 		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
 
 		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
-		if ([creadoAprob_id, aprobado_id].includes(statusProd)) BD_genericas.actualizaPorId("links", link.id, {prodAprob: true});
-		else BD_genericas.actualizaPorId("links", link.id, {prodAprob: false});
+		const prodAprob = [creadoAprob_id, aprobado_id].includes(statusProd);
+		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 	}
 
 	// Fin
