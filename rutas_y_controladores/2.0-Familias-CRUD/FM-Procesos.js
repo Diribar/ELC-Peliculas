@@ -390,7 +390,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeStatus: async function (entidad, registro) {
+		accionesPorCambioDeStatus: function (entidad, registro) {
 			// Variables
 			let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
