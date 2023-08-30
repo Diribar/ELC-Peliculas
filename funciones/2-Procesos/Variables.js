@@ -22,10 +22,11 @@ module.exports = {
 	videosInduccion: {
 		// Todos los usuarios
 		introduccion: {titulo: "Introducción al sitio", icono: "fa-circle-question"},
-		usuario: {titulo: "Temas de usuario", icono: "fa-user"},
+		usuario: {titulo: "Alta de usuario y login", icono: "fa-user", hr: true},
+		consultas: {titulo: "Quiero elegir una película", icono: "fa-clapperboard"},
 		detalleProds: {titulo: "Detalle de una película", icono: "fa-circle-info", hr: true},
 		detalleRCLVs: {titulo: "Detalle de otras entidades", icono: "fa-user-tie"},
-		consultas: {titulo: "Quiero elegir una película", icono: "fa-clapperboard"},
+		rolPermInputs: {titulo: "Rol permiso inputs", icono: "fa-user-check", hr: true},
 
 		// Sólo usuarios con rol permInputs
 		permInputs: {titulo: "Data Entry", icono: "fa-keyboard", permInputs: true, hr: true},
