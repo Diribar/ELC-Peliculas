@@ -502,11 +502,19 @@ module.exports = {
 
 				// Ordena
 				prods.sort((a, b) =>
-					orden.ascDes == "ASC"
-						? a[campo].toLowerCase() < b[campo].toLowerCase()
+					typeof a[campo] == "string" && b[campo] == "string"
+						? orden.ascDes == "ASC"
+							? a[campo].toLowerCase() < b[campo].toLowerCase()
+								? -1
+								: 1
+							: a[campo].toLowerCase() > b[campo].toLowerCase()
 							? -1
 							: 1
-						: a[campo].toLowerCase() > b[campo].toLowerCase()
+						: orden.ascDes == "ASC"
+						? a[campo] < b[campo]
+							? -1
+							: 1
+						: a[campo] > b[campo]
 						? -1
 						: 1
 				);
@@ -536,9 +544,13 @@ module.exports = {
 				}
 				// En los demás casos, ordena por su campo
 				else
-					orden.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() < b[orden.codigo].toLowerCase() ? -1 : 1))
-						: rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() > b[orden.codigo].toLowerCase() ? -1 : 1));
+					typeof a[campo] == "string" && b[campo] == "string"
+						? orden.ascDes == "ASC"
+							? rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() < b[orden.codigo].toLowerCase() ? -1 : 1))
+							: rclvs.sort((a, b) => (a[orden.codigo].toLowerCase() > b[orden.codigo].toLowerCase() ? -1 : 1))
+						: orden.ascDes == "ASC"
+						? rclvs.sort((a, b) => (a[orden.codigo] < b[orden.codigo] ? -1 : 1))
+						: rclvs.sort((a, b) => (a[orden.codigo] > b[orden.codigo] ? -1 : 1));
 
 				// Fin
 				return rclvs;
