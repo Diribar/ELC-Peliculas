@@ -341,7 +341,8 @@ module.exports = {
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
-			const include = comp.obtieneTodosLosCamposInclude(entidad);
+			let include = comp.obtieneTodosLosCamposInclude(entidad);
+			if (familia == "producto") include.push("links");
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
 
