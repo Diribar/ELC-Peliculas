@@ -209,6 +209,7 @@ let cambiosEnBD = {
 
 		// La pone como 'selected'
 		DOM.configsConsPropios.children[indice].selected = true;
+		if (DOM.configsConsPropios.className.includes("ocultar")) DOM.configsConsPropios.classList.remove("ocultar")
 
 		// Fin
 		return;
@@ -246,6 +247,9 @@ let cambiosEnBD = {
 		opciones.forEach((opcion, i) => {
 			if (opcion.value == configCons_id) DOM.configCons_id.remove(i);
 		});
+
+		// Si corresponde, oculta el 'optgroup' de 'propios'
+		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar")
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));

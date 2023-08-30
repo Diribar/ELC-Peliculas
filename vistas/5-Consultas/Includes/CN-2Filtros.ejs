@@ -6,7 +6,7 @@
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
 		<!-- Configuraciones personales -->
-		<optgroup id="propios" label="Configuraciones Propias">
+		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsDeCabecera.propios.length ? 'ocultar' : '' %>">
 			<% for (let configDeCabecera of configsDeCabecera.propios) { %>
 				<option 
 					value="<%= configDeCabecera.id %>"
