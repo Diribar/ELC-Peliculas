@@ -1,15 +1,15 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
 #busquedaRapida {position: relative;}
-#busquedaRapida .menuMostrar {position: absolute; top: 35px;}
+#busquedaRapida .menuMostrar {position: absolute; left: 30px; top: -2px;}
 #busquedaRapida .menuMostrar * {width: max-content;}
 #busquedaRapida .menuMostrar input, 
 #busquedaRapida .menuMostrar #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-#busquedaRapida .menuMostrar input {padding: 2px 5px; width: 200px;}
+#busquedaRapida .menuMostrar input {padding: 4px 5px; width: 250px; font-size: 1.2rem; font-weight: bold;}
 #busquedaRapida .menuMostrar #displayResultados {border-top-left-radius: 0; overflow: hidden;}
 #busquedaRapida .menuMostrar #displayResultados tr td {padding: 0 5px;}
 
 /* Opciones de #displayResultados */
-#busquedaRapida #displayResultados table {border-collapse: collapse;}
+#busquedaRapida #displayResultados table {border-collapse: collapse; min-width: 250px;}
 /* Colores de fondo */
 #busquedaRapida #displayResultados p,
 #busquedaRapida #displayResultados tr.prod:nth-of-type(odd) {background: whitesmoke;}
