@@ -213,8 +213,6 @@ window.addEventListener("load", async () => {
 		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
 
 		// Muestra / Oculta el 'tbody'
-		DOM.expandeContrae[indice].className.includes("ocultaFiltros");
-
 		v.mostrarTBody = DOM.expandeContrae[indice].className.includes("fa-square-plus");
 		v.mostrarTBody
 			? DOM.tbody[indice].classList.replace("ocultar", "aumentaY")
