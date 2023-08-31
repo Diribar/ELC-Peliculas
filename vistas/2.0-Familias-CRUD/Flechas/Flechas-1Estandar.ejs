@@ -41,10 +41,10 @@
 			<!-- Calificar -->
 			<% if (locals.status_id && status_id <= aprobado_id) { %>
 				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-user-graduate <%= locals.yaCalificada %>" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+					<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 				</a>
 			<% } else { %>
-				<i class="fa-solid fa-user-graduate inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+				<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			<% } %>
 		<% } %>
 	<% } %>
