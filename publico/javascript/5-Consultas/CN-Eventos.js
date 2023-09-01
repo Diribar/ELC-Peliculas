@@ -147,7 +147,7 @@ window.addEventListener("load", async () => {
 		// Caption
 		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
 		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && nombre == "verde" && v.mostrar) {
+		else if (padre.id == "comencemos" && nombre == "quieroVer" && v.mostrar) {
 			resultados.muestra.generico();
 		}
 

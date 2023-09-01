@@ -54,9 +54,9 @@ window.addEventListener("load", async () => {
 		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
 		// Zona Disponible
-		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#rojo"),
-		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#verde"),
-		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#azul"),
+		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#asegurate"),
+		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#quieroVer"),
+		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#noTenemos"),
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
 		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
 		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
