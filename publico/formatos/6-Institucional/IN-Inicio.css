@@ -9,13 +9,14 @@
 #zona-de-bienvenida #cartelBienvenida {border: 2px solid var(--azul-frances); background: var(--amarillo-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 #zona-de-bienvenida #cartelBienvenida {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
 #zona-de-bienvenida #cartelBienvenida {max-width: 80%; margin-bottom: 70px; scale: 1.25;}
-#zona-de-bienvenida #cartelBienvenida h1 {margin-top: 0;}
+#zona-de-bienvenida #cartelBienvenida h1 {margin: 0 0 20px; text-align: center;}
 #zona-de-bienvenida #cartelBienvenida h1 span {font-style: italic;}
-#zona-de-bienvenida #cartelBienvenida :where(p, li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+#zona-de-bienvenida #cartelBienvenida p {text-align: center;}
+#zona-de-bienvenida #cartelBienvenida p {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 /* Video orientador */
-#cartelBienvenida #menuCapacitac {padding: 5px 10px; border-radius: 15px;}
-#cartelBienvenida #menuCapacitac {background: var(--verde-oscuro); color: snow;}
-#cartelBienvenida #menuCapacitac span {color: var(--amarillo-oscuro); font-variant: small-caps; font-weight: bold; text-decoration: underline;}
+#cartelBienvenida p#menuCapacitac {padding: 5px 10px; margin-top: 15px; border-radius: 15px;}
+#cartelBienvenida p#menuCapacitac {background: var(--verde-oscuro); color: snow;}
+#cartelBienvenida p#menuCapacitac span {color: var(--amarillo-oscuro); font-variant: small-caps; font-weight: bold; text-decoration: underline;}
 
 /* Zona de Botones */
 #zona-de-bienvenida #botones {flex-wrap: wrap; align-items: center; justify-content: space-evenly;}
