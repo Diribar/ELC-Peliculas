@@ -307,32 +307,3 @@ let verifica = {
 		return existe;
 	},
 };
-
-// Consolidadas
-let cambioDeConfig_id = async () => {
-	// Funciones
-	await actualiza.valoresInicialesDeVariables();
-	cambiosEnBD.configCons_id();
-	await actualiza.statusInicialCampos();
-	// actualiza.cartelQuieroVerVisible();
-	actualiza.muestraOcultaFiltros();
-
-	// Fin
-	return;
-};
-let cambioDeCampos = async () => {
-	// Cambio de clases
-	DOM.configNuevaNombre.classList.remove("nuevo");
-	DOM.configNuevaNombre.classList.remove("edicion");
-
-	// Funciones
-	actualizaConfigCons.consolidado();
-	actualiza.botoneraActivaInactiva();
-	if (v.mostrar) {
-		await resultados.obtiene();
-		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
-	}
-
-	// Fin
-	return;
-};

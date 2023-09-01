@@ -47,9 +47,9 @@ window.addEventListener("load", async () => {
 
 				// Fin
 				return;
-			} else if (e.target.tagName == "SELECT") {
-				if (!e.target.value) e.target.value = "";
 			}
+			// Para reemplazar 'quitar' por el 'placeholder'
+			else if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 
 			// Cambios de campo
 			v.hayCambiosDeCampo = true;
@@ -147,9 +147,7 @@ window.addEventListener("load", async () => {
 		// Caption
 		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
 		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && nombre == "quieroVer" && v.mostrar) {
-			resultados.muestra.generico();
-		}
+		else if (padre.id == "comencemos" && nombre == "quieroVer" && v.mostrar) resultados.muestra.generico();
 
 		// Fin
 		return;
@@ -222,3 +220,32 @@ window.addEventListener("load", async () => {
 		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
 	};
 });
+
+// Consolidadas
+let cambioDeConfig_id = async () => {
+	// Funciones
+	await actualiza.valoresInicialesDeVariables();
+	cambiosEnBD.configCons_id();
+	await actualiza.statusInicialCampos();
+	// actualiza.cartelQuieroVerVisible();
+	actualiza.muestraOcultaFiltros();
+
+	// Fin
+	return;
+};
+let cambioDeCampos = async () => {
+	// Cambio de clases
+	DOM.configNuevaNombre.classList.remove("nuevo");
+	DOM.configNuevaNombre.classList.remove("edicion");
+
+	// Funciones
+	actualizaConfigCons.consolidado();
+	actualiza.botoneraActivaInactiva();
+	if (v.mostrar) {
+		await resultados.obtiene();
+		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
+	}
+
+	// Fin
+	return;
+};

@@ -22,14 +22,15 @@
 #zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden;}
 #zonaDisponible #vistaDeResults {max-width: 700px; width: 100%; position: relative;}
 
-/* Vista de Resultados - Comencemos */
+/* Vista de Resultados - Carteles */
 #vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
 #vistaDeResults #comencemos img {width: 100%}
 #vistaDeResults #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#vistaDeResults #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
-#vistaDeResults #comencemos button#asegurate {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#vistaDeResults #comencemos button {padding: 10px 15px; border-radius: 10px; margin: auto;}
+#vistaDeResults #comencemos button {font-size: 2rem; font-weight: bold; font-style: italic;}
 #vistaDeResults #comencemos button#quieroVer {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#vistaDeResults #comencemos button#quieroVer {font-size: 2rem; font-style: italic;}
+#vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#vistaDeResults #comencemos button#loginPend span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
 
 /* Vista de Resultados - Ícono Actualizar */
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
@@ -41,8 +42,7 @@
 #vistaDeResults #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 
 /* Condicionales */
-#zonaDisponible:has(#comencemos button#quieroVer.ocultar) #vistaDeResults {height: 70vh;}
-#zonaDisponible #comencemos:has(button#quieroVer.ocultar) img {display: none;}
+#zonaDisponible:has(#comencemos img#cartelFondo.ocultar) #vistaDeResults {height: 70vh;}
 #zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding: 15px 0;}
 #zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding-top: 30px; padding-bottom: 30px;}
 #zonaDisponible #vistaDeResults:has(#listados table) {justify-content: flex-start;}
