@@ -688,17 +688,11 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.altaRevisadaEn) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
-		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creadoPor)});
-
-		if (registro.altaRevisadaEn) {
-			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)});
-			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.altaRevisadaPor)});
-		}
-		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.statusSugeridoEn) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.statusSugeridoEn)});
-			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
-		}
+		bloque.push(
+			registro.altaRevisadaEn
+				? {titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)}
+				: {titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)}
+		);
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});

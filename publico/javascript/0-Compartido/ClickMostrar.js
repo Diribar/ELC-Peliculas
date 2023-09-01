@@ -9,9 +9,7 @@ window.addEventListener("load", () => {
 
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {
-		// Se fija que el click haya sido fuera del input deBúsqueda Rápida
-		// En caso afirmativo => toggle u oculta
-		// En caso negativo, no hace nada
+		// Si el click es fuera del input deBúsqueda Rápida => toggle u oculta
 		if (e.target != busquedaRapida_input)
 			for (let i = 0; i < clicks.length; i++)
 				if (e.target.parentElement != mostrar[i])
