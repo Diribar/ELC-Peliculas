@@ -272,7 +272,7 @@ let auxiliares = {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
-			const prefijo = "";
+			const prefijo = "Rango ";
 
 			// Pruebas
 			titulo =

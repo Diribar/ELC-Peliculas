@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const BD_genericas = require("../../funciones/1-BD/Genericas");
-const variables = require("../../funciones/2-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -39,7 +38,7 @@ module.exports = {
 				? usuario.configCons_id // El guardado en el usuario
 				: req.session.configCons_id
 				? req.session.configCons_id // El guardado en la session
-				: 1; // El 'default' es "Por fecha del año"
+				: 2; // El 'default' es "Sorprendeme"
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {

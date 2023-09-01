@@ -1,14 +1,18 @@
 <div id="tituloInfoDetalle" class="relative">
-	<h3>Links</h3>
+	<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
+	<h3>Links para verl<%= oa %></h3>
 	<!-- Ayuda -->
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+			<div class="ayudaMostrar ocultar desplMostrar">
 				<p><u>Significado del borde de los logos:</u></p>
-				<li><b>Verde</b>: en idioma <b>castellano</b></li>
-				<li><b>Amarillo</b>: <b>subtitulos</b> en castellano</li>
-				<li><b>Rojo</b>: en <b>otro</b> idioma</li>
-			</ul>
+				<ul type="dots">
+					<li><b>Azul</b>: en idioma <b>castellano</b></li>
+					<li><b>Gris</b>: <b>subtitulos</b> en castellano</li>
+					<li><b>Rojo</b>: en <b>otro</b> idioma</li>
+				</ul>
+				<p>Para más información, colocá el puntero del mouse sobre la imagen del link</p>
+			</div>
 		</i>
 	</div>
 </div>

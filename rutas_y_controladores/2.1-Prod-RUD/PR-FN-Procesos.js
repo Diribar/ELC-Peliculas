@@ -28,7 +28,8 @@ module.exports = {
 		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
 		if (producto.musica) infoGral.push({titulo: "Música", valor: producto.musica});
 		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
-		if (producto.epocaOcurrencia_id) infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre});
+		if (producto.epocaOcurrencia_id)
+			infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre});
 
 		// Actores
 		if (producto.actores) actores = producto.actores;
@@ -67,9 +68,7 @@ module.exports = {
 			links.sort((a, b) => b.castellano - a.castellano);
 
 			// 2. Les asigna un color en función del idioma
-			links.map((link) => {
-				link.color = link.castellano ? "verde" : link.subtitulos ? "amarillo" : "rojo";
-			});
+			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma"
 
 			// 3. Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
