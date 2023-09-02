@@ -105,11 +105,13 @@ module.exports = {
 
 			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
+				prodAprob: true,
 				yaTuvoPrimRev: true,
 				statusSugeridoEn: {[Op.gt]: lunesDeEstaSemana},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
+				prodAprob: true,
 				statusRegistro_id: [creadoAprob_id, aprobado_id],
 			}).then((n) => n.length);
 
@@ -864,10 +866,6 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 
 		// Ordena por la fecha más antigua
 		if (prods[metodo].length > 1) prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
-		// Deja solamente los prods aprobados
-		if (prods[metodo].length)
-			prods[metodo] = prods[metodo].filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
 
 		// Deja solamente los sin problemas de captura
 		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);

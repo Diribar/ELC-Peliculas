@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 		const statusActualNombre = statusActual.nombre;
 		let statusEsperadoNombres = "";
 		statusEsperados_id.forEach((statusEsperado_id, i) => {
-			if (i) statusEsperadoNombres += "' o '"; // Si es el segundo status, le antepone la palabra 'o'
+			if (i) statusEsperadoNombres += i < statusEsperados_id.length - 1 ? "', '" : "' o '"; // Si es el penúltimo status, le antepone la palabra 'o'
 			statusEsperadoNombres +=
 				entidad == "usuarios"
 					? statusRegistrosUs.find((n) => n.id == statusEsperado_id).nombre

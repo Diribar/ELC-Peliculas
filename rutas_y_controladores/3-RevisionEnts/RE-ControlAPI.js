@@ -81,10 +81,13 @@ module.exports = {
 		// PROBLEMAS
 		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
+
 		// Se obtiene el status original del link
 		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["statusRegistro", "tipo"]);
+
 		// El link no existe en la BD
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
+
 		// El link existe y tiene un status 'estable'
 		if (original.statusRegistro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
@@ -109,7 +112,7 @@ module.exports = {
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		} else datos.yaTuvoPrimRev = true;
-		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
+		datos.motivo_id = aprob != "SI" && IN != "SI" ? (motivo_id ? motivo_id : original.motivo_id) : null;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original

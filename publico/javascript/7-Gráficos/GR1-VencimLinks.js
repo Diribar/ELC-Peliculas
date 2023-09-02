@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 			vAxis: {
 				viewWindow: {min: 0, max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				fontSize: 20,
-				title: "Cant. de links que vencen por semana",
+				title: "Cantidad de links que vencen",
 			},
 		};
 

@@ -360,8 +360,7 @@ let auxiliares = {
 
 		// Le agrega un body
 		const tbody = document.createElement("tbody");
-		if (indice) tbody.className = "ocultar";
-		else tbody.className = "aumentaY";
+		tbody.className = "ocultar";
 		tabla.appendChild(tbody);
 
 		// Fin
