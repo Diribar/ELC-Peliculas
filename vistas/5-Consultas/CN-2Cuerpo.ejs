@@ -33,7 +33,7 @@
 				<div id="pppOpciones" class="">
 					<h2></h2>
 					<table>
-						<% for (let pppOpcion of pppOpciones) { %>
+						<% for (let pppOpcion of pppOpciones.filter(n => !n.sinPref)) { %>
 							<tr>
 								<td><i class="<%= pppOpcion.icono %>"></i></td>
 								<td><%= pppOpcion.nombre %></td>

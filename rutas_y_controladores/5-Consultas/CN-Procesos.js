@@ -218,8 +218,8 @@ module.exports = {
 
 			// Obtiene la condición
 			let condicion = {usuario_id};
-			if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id)
-				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
+			if (configCons.pppOpciones && configCons.pppOpciones != sinPref.id)
+				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPref', restringe la búsqueda a los registros con esa 'opcion_id'
 
 			// Obtiene los registros
 			let pppRegistros = await BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", condicion, "detalle");
@@ -290,7 +290,7 @@ module.exports = {
 				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
-				if (configCons.pppOpciones && configCons.pppOpciones != sinPreferencia.id && !pppRegistros.length) return [];
+				if (configCons.pppOpciones && configCons.pppOpciones != sinPref.id && !pppRegistros.length) return [];
 
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
@@ -301,16 +301,16 @@ module.exports = {
 					if (configCons.pppOpciones) {
 						// Elimina los registros que correspondan
 						if (
-							(configCons.pppOpciones.includes(sinPreferencia.id) && pppRegistro) || // Si tiene alguna preferencia y se había elegido "sin preferencia"
-							(!configCons.pppOpciones.includes(sinPreferencia.id) && !pppRegistro) // Si se había elegido alguna preferencia y no la tiene
+							(configCons.pppOpciones.includes(sinPref.id) && pppRegistro) || // Si tiene alguna preferencia y se había elegido "sin preferencia"
+							(!configCons.pppOpciones.includes(sinPref.id) && !pppRegistro) // Si se había elegido alguna preferencia y no la tiene
 						)
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la ppp del usuario
 						else {
 							// Variable
 							const pppOpcionElegida =
-								configCons.pppOpciones == sinPreferencia.id
-									? sinPreferencia
+								configCons.pppOpciones == sinPref.id
+									? sinPref
 									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
 
 							prods[i] = {
@@ -328,8 +328,8 @@ module.exports = {
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
 					else {
-						prods[i].pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPreferencia.icono;
-						prods[i].pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPreferencia.nombre;
+						prods[i].pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPref.icono;
+						prods[i].pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPref.nombre;
 					}
 				}
 

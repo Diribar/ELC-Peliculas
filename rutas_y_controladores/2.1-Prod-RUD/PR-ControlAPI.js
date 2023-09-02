@@ -139,7 +139,7 @@ module.exports = {
 			const registro = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
 
 			// Acciones si la opción es Sin preferencia personal
-			if (opcion_id == sinPreferencia.id) {
+			if (opcion_id == sinPref.id) {
 				if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
 			} else {
 				// Variable

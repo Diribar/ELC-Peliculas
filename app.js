@@ -168,7 +168,7 @@ app.set("views", [
 
 	// Otros
 	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);
-	global.sinPreferencia = pppOpciones.find((n) => n.sinPreferencia);
+	global.sinPref = pppOpciones.find((n) => n.sinPref);
 	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
 	global.mesesAbrev = meses.map((n) => n.abrev);

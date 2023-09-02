@@ -29,8 +29,11 @@
 #vistaDeResults #comencemos :is(button#quieroVer, #pppOpciones) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #vistaDeResults #comencemos button#loginPend span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
-#vistaDeResults #comencemos #pppOpciones {scale: 1.5;}
-#vistaDeResults #comencemos #pppOpciones table
+#comencemos #pppOpciones {scale: 1.5;}
+#comencemos #pppOpciones table {border-collapse: collapse;}
+/* #comencemos #pppOpciones table td {border: 1px solid blue;} */
+#comencemos #pppOpciones table tr td {padding: 2px 0;}
+#comencemos #pppOpciones table tr td:first-of-type {padding-right: 10px;}
 
 /* Vista de Resultados - Ícono Actualizar */
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}

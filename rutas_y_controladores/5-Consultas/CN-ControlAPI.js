@@ -49,7 +49,7 @@ module.exports = {
 				ordenesBD: cn_ordenes,
 
 				// Check-Boxes
-				noLaVi: String(sinPreferencia.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinks: "conLinks",
 				enCast: "enCast",
 

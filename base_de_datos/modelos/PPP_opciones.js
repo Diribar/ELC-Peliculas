@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(25)},
 		yaLaVi: {type: dt.BOOLEAN},
 		laQuieroVer: {type: dt.BOOLEAN},
-		sinPreferencia: {type: dt.BOOLEAN},
+		sinPref: {type: dt.BOOLEAN},
 		icono: {type: dt.STRING(30)},
 	};
 	const config = {
