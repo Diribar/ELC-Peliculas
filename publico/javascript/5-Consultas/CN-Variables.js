@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		// Zona de Preferencias
 		configCabecera: document.querySelector("#cuerpo #configCons #configCabecera"),
 		configCampos: document.querySelector("#cuerpo #configCons #configCampos"),
-		
+
 		// Encabezado
 		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
 		contadorDeProds: document.querySelector("#encabMasPelis #encabezado #derecha #contadorDeProds"),
@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de de Cabecera - Check-Boxes
-		checkBoxesInputs:DOM.configCons.querySelectorAll("#checkBoxes input"),
+		checkBoxesInputs: DOM.configCons.querySelectorAll("#checkBoxes input"),
 		noLaVi: DOM.configCons.querySelector("#checkBoxes #noLaVi"),
 		conLinks: DOM.configCons.querySelector("#checkBoxes #conLinks"),
 		enCast: DOM.configCons.querySelector("#checkBoxes #enCast"),
@@ -58,7 +58,8 @@ window.addEventListener("load", async () => {
 		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#noTenemos"),
 		loginPend: DOM.zonaDisponible.querySelector("#comencemos button#loginPend"),
-		cartelQuieroVer:DOM.zonaDisponible.querySelector("#comencemos img"),
+		pppOpcionesCartel: DOM.zonaDisponible.querySelector("#comencemos #pppOpcionesCartel"),
+		telonFondo: DOM.zonaDisponible.querySelector("#comencemos img#telonFondo"),
 
 		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),

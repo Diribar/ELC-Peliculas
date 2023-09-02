@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Eventos - Cambio de Configuración o Preferencias
+	// Eventos
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const nombre = e.target.name;
@@ -61,22 +61,18 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-
-	// Eventos - 'click'
 	DOM.cuerpo.addEventListener("click", async (e) => {
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
 		const nombre = elemento.id ? elemento.id : padre.id;
 
-		// Iconos de botonera y 'palabrasClave'
+		// Iconos
 		if (elemento.tagName == "I") {
 			// Si el ícono está inactivo, interrumpe la función
 			if (elemento.className.includes("inactivo")) return;
 
-			// Variable
-
-			// Iconos de botonera
+			// Botonera
 			if (padre.id == "iconosBotonera") {
 				if (["nuevo", "edicion"].includes(nombre)) {
 					// Variables
@@ -111,7 +107,7 @@ window.addEventListener("load", async () => {
 					guardarBotonera();
 				}
 			}
-			// Icono de 'palabrasClave'
+			// 'palabrasClave'
 			else if (nombre == "palabrasClave") palabrasClave();
 			// Preferencia por producto
 			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
@@ -128,8 +124,10 @@ window.addEventListener("load", async () => {
 					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 				}
 			}
-			// Muestra / Oculta los 'tbody'
+			// Expande / Contrae
 			else if (elemento.className && elemento.className.includes("expandeContrae")) expandeContrae(elemento);
+			// Cierra el cartel "pppOpciones"
+			else if (nombre == "cierra") DOM.pppOpcionesCartel.classList.add("ocultar");
 		}
 
 		// Cartel 'mostrarFiltros'
@@ -152,7 +150,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-
 	DOM.cuerpo.addEventListener("keypress", (e) => {
 		if (e.key == "Enter") {
 			// Variables

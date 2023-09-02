@@ -80,14 +80,14 @@ let resultados = {
 		generico: function () {
 			// Si no hubieron resultados, interrumpe la función
 			if (!v.infoResultados || !v.infoResultados.length) {
-				DOM.cartelQuieroVer.classList.remove("ocultar");	
+				DOM.telonFondo.classList.remove("ocultar");	
 				return;
 			}
 
 			// Cartel quieroVer
 			v.mostrarCartelQuieroVer = false;
 			DOM.quieroVer.classList.add("ocultar");
-			DOM.cartelQuieroVer.classList.add("ocultar");
+			DOM.telonFondo.classList.add("ocultar");
 
 			// Limpia los resultados anteriores
 			DOM.botones.innerHTML = "";

@@ -23,23 +23,28 @@
 			<!-- Zona de carteles -->
 			<div id="comencemos">
 				<!-- Telón de fondo -->
-				<img id="cartelFondo" src="<%= localhost %>/imagenes/0-Base/Varios/Cortinas.jpg">
+				<img id="telonFondo" src="<%= localhost %>/imagenes/0-Base/Varios/Cortinas.jpg">
 				<!-- Carteles -->
 				<button id="quieroVer" class="scale pointer ocultar">Quiero ver las<br>películas propuestas</button>
 				<button id="noTenemos" class="ocultar">Sin resultados<br>para esa consulta</button>
 				<button id="asegurate" class="ocultar">Asegurate de contestar<br>los sectores en rojo</button>
 				<button id="loginPend" class="ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span><br>para ver tus preferencias</button>
 				<!-- Preferencias -->
-				<div id="pppOpciones" class="">
-					<h2></h2>
-					<table>
-						<% for (let pppOpcion of pppOpciones.filter(n => !n.sinPref)) { %>
-							<tr>
-								<td><i class="<%= pppOpcion.icono %>"></i></td>
-								<td><%= pppOpcion.nombre %></td>
-							</tr>
-						<% } %>
-					</table>
+				<div id="pppOpcionesCartel" class="boxShadow">
+					<i id="cierra" class="fa-solid fa-xmark absolute pointer"></i>
+					<div>
+						<p class="relative">
+							Sin <i class="fa-regular fa-heart"></i> marcadas
+						</p>
+						<table>
+							<% for (let pppOpcion of pppOpciones.filter(n => !n.sinPref)) { %>
+								<tr>
+									<td><i class="<%= pppOpcion.icono %>"></i></td>
+									<td><%= pppOpcion.nombre %></td>
+								</tr>
+							<% } %>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
