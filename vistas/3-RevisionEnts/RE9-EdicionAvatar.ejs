@@ -29,18 +29,18 @@
 	<div id="medio">
 		<div class="flexRowAlign spaceBetween">
 			<!-- Aceptar la imagen sugerida -->
-			<form id="aprobar" method="POST" class="contOpcionAvatar scale boxShadow">
+			<form id="aprobar" method="POST" class="contOpcionAvatar scale bordeConSombra">
 				<button type="submit" autofocus tabindex="2">
 					<%- include("RE9-AvatarEtiq") %>
 				</button>
 			</form>
 			<!-- Preservar la imagen actual -->
-			<div id="mostrarMotivos" class="contOpcionAvatar scale boxShadow">
+			<div id="mostrarMotivos" class="contOpcionAvatar scale bordeConSombra">
 				<%- include("RE9-AvatarEtiq") %>
 			</div>
 		</div>
 		<% if (familia == "producto") { %>
-			<div id="fichaTecnica" class="boxShadow">
+			<div id="fichaTecnica" class="bordeConSombra">
 				<p><%= entidadNombre %>: <b><%= prodOrig.nombreCastellano %></b></p>
 				<p>Año de estreno: <%= prodOrig.anoEstreno %></p>
 				<p>Dirección: <%= prodOrig.direccion %></p>
