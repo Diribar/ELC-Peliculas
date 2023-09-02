@@ -3,7 +3,6 @@
 
 /* Configuración de la consulta */
 #cuerpo #configCons {display: flex; flex-direction: column; width: 220px; min-width: 220px;}
-#cuerpo #configCons {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Encabezado más películas */
 #cuerpo #encabMasPelis {display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1;}
@@ -17,20 +16,21 @@
 #encabMasPelis #zonaDisponible {width: 100%; padding: 0 10px;}
 
 /* Vista de Resultados */
-#zonaDisponible #vistaDeResults {background: var(--celeste-claro); box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
-#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden;}
-#zonaDisponible #vistaDeResults {max-width: 700px; width: 100%; position: relative;}
+#zonaDisponible #vistaDeResults {background: var(--celeste-claro); display: flex; flex-direction: column; justify-content: center;}
+#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; max-width: 700px; width: 100%; position: relative;}
 
 /* Vista de Resultados - Carteles */
 #vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
 #vistaDeResults #comencemos img {width: 100%}
-#vistaDeResults #comencemos button {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#vistaDeResults #comencemos button {padding: 10px 15px; border-radius: 10px; margin: auto;}
+#vistaDeResults #comencemos :is(button, #pppOpciones) {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
+#vistaDeResults #comencemos :is(button, #pppOpciones) {padding: 10px 15px; border-radius: 10px; margin: auto;}
+#vistaDeResults #comencemos :is(button, #pppOpciones) {border: solid 2px;}
 #vistaDeResults #comencemos button {font-size: 2rem; font-weight: bold; font-style: italic;}
-#vistaDeResults #comencemos button#quieroVer {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#vistaDeResults #comencemos :is(button#quieroVer, #pppOpciones) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #vistaDeResults #comencemos button#loginPend span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
+#vistaDeResults #comencemos #pppOpciones {scale: 1.5;}
+#vistaDeResults #comencemos #pppOpciones table
 
 /* Vista de Resultados - Ícono Actualizar */
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}

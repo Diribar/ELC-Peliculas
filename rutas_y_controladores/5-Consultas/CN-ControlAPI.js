@@ -55,9 +55,16 @@ module.exports = {
 
 				// Otros
 				pppOpciones,
-				userID: req.session.usuario ? req.session.usuario.id : null,
 				rclvNombres: variables.entidades.rclvsNombre,
 			};
+
+			// Datos del usuario
+			if (req.session.usuario && req.session.usuario.id) {
+				datos.userID = req.session.usuario.id;
+				datos.usuarioTienePPP = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
+					usuario_id: datos.userID,
+				}).then((n) => n.length);
+			}
 
 			// Fin
 			return res.json(datos);

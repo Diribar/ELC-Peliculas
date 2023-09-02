@@ -81,7 +81,6 @@ let resultados = {
 			// Si no hubieron resultados, interrumpe la función
 			if (!v.infoResultados || !v.infoResultados.length) {
 				DOM.cartelQuieroVer.classList.remove("ocultar");	
-				v.mostrarCartelQuieroVer = true;
 				return;
 			}
 

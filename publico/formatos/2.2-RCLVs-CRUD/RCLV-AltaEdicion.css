@@ -8,8 +8,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #formCuerpo #datos {justify-content: space-evenly; align-items: center;}
 #formCuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
 #formCuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
-#formCuerpo #dataEntry 
-	{background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#formCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}

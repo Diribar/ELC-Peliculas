@@ -1,5 +1,5 @@
 <!-- Zona de Preferencias -->
-<section id="configCons">
+<section id="configCons" class="boxShadow">
 	<%- include('CN-2Filtros') %>
 </section>
 <!-- Encabezado + Productos -->
@@ -10,7 +10,7 @@
 	</div>
 	<!-- Zona de Productos -->
 	<div id="zonaDisponible">
-		<div id="vistaDeResults">
+		<div id="vistaDeResults" class="boxShadow">
 			<!-- Actualizar -->
 			<div id="actualizar" class="scale">
 				<i class="fa-solid fa-rotate-right" title="Actualizar"></i>
@@ -22,19 +22,25 @@
 			</div>
 			<!-- Zona de carteles -->
 			<div id="comencemos">
+				<!-- Telón de fondo -->
 				<img id="cartelFondo" src="<%= localhost %>/imagenes/0-Base/Varios/Cortinas.jpg">
-				<button id="quieroVer" class="scale pointer ocultar">
-					Quiero ver las<br>películas propuestas
-				</button>
-				<button id="noTenemos" class="ocultar">
-					No tenemos resultados para esa<br>Configuración de Consulta
-				</button>
-				<button id="asegurate" class="ocultar">
-					Asegurate de contestar<br>los sectores en rojo
-				</button>
-				<button id="loginPend" class="ocultar">
-					Tenés que estar <span><a href="/usuarios/login">logueado</a></span><br>para ver tus preferencias
-				</button>
+				<!-- Carteles -->
+				<button id="quieroVer" class="scale pointer ocultar">Quiero ver las<br>películas propuestas</button>
+				<button id="noTenemos" class="ocultar">Sin resultados<br>para esa consulta</button>
+				<button id="asegurate" class="ocultar">Asegurate de contestar<br>los sectores en rojo</button>
+				<button id="loginPend" class="ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span><br>para ver tus preferencias</button>
+				<!-- Preferencias -->
+				<div id="pppOpciones" class="">
+					<h2></h2>
+					<table>
+						<% for (let pppOpcion of pppOpciones) { %>
+							<tr>
+								<td><i class="<%= pppOpcion.icono %>"></i></td>
+								<td><%= pppOpcion.nombre %></td>
+							</tr>
+						<% } %>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -222,7 +222,7 @@ module.exports = {
 				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPreferencia', restringe la búsqueda a los registros con esa 'opcion_id'
 
 			// Obtiene los registros
-			let pppRegistros = await BD_genericas.obtieneTodosPorCondicionConInclude("ppp_registros", condicion, "detalle");
+			let pppRegistros = await BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", condicion, "detalle");
 
 			// Fin
 			return pppRegistros;
