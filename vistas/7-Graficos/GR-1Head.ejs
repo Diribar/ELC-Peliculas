@@ -2,9 +2,14 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="/formatos/7-Graficos/GR-Graficos.css">
 
+<!-- Películas por CFC / VPC -->
+<% if (codigo == "cantPelisPorCFC") { %>
+    <script src="/javascript/7-Gráficos/GR3-cantPelisPorCFC.js"></script>
+<% } %>
+
 <!-- Vencimiento de Links -->
 <% if (codigo == "vencimLinks") { %>
-    <script src="/javascript/7-Gráficos/GR1-VencimLinks.js"></script>
+    <script src="/javascript/7-Gráficos/GR1-vencimLinks.js"></script>
 <% } %>
 
 <!-- Cantidad de Links por Proveedor -->

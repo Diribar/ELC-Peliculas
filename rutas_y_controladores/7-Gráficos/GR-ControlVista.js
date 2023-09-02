@@ -1,7 +1,17 @@
 "use strict";
 
-// *********** Controlador ***********
 module.exports = {
+	// Películas
+	cantPelisPorCfcVpc: async (req, res) => {
+		// Fin
+		return res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "cantPelisPorCFC",
+			titulo: "Películas por Fe Católica / Valores",
+		});
+	},
+
+	// Links
 	vencimLinks: async (req, res) => {
 		// Fin
 		return res.render("CMP-0Estructura", {
