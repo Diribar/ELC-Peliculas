@@ -53,7 +53,7 @@ let actualizaConfigCons = {
 			// Acciones si el orden no pertenece a la  entidad
 			if (!v.ordenEnEntidad) {
 				// Si el código existe en el layout, elige su orden correspondiente
-				v.ordenCodigo = v.ordenesPorEntBD.find((n) => n.id == v.ordenPorEnt_id).orden.codigo;
+				v.ordenCodigo = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id).orden.codigo;
 				v.ordenPorEntBD = v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.orden.codigo == v.ordenCodigo);
 
 				// Asigna el nuevo valor
