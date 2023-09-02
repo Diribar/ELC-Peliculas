@@ -54,6 +54,7 @@ window.addEventListener("load", async () => {
 		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
 		// Zona Disponible - Botones e Imagen de fondo
+		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
 		carteles: DOM.zonaDisponible.querySelectorAll("#comencemos .cartel"),
 		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#asegurate"),
 		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#quieroVer"),

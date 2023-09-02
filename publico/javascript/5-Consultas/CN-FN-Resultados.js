@@ -4,7 +4,6 @@ let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
-		else v.infoResultados=null
 
 		// Si es un orden a mostrar en botones, oculta el contador
 		if (v.ordenPorEntBD.boton) DOM.contadorDeProds.classList.add("ocultar");
@@ -13,10 +12,11 @@ let resultados = {
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
 
 		// Tapa y limpia los resultados anteriores
+		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.replace("desaparece", "aparece");
 		DOM.pppOpcionesCartelCierra.classList.remove("ocultar");
-		DOM.telonFondo.classList.remove("ocultar");
 		DOM.botones.innerHTML = "";
 		DOM.listados.innerHTML = "";
+		v.infoResultados = null;
 
 		// Acciones si el orden es 'pppFecha'
 		if (v.ordenBD.codigo == "pppFecha") {
@@ -95,12 +95,14 @@ let resultados = {
 		generico: function () {
 			// Si no hubieron resultados, interrumpe la función
 			if (!v.infoResultados || !v.infoResultados.length) return;
-			console.log(v.infoResultados);
 
 			// Cartel quieroVer
-			v.mostrarCartelQuieroVer = false;
-			DOM.quieroVer.classList.add("ocultar");
-			DOM.telonFondo.classList.add("ocultar");
+			if (v.mostrarCartelQuieroVer) {
+				DOM.esperandoResultados.classList.remove("ocultar");
+				DOM.quieroVer.classList.add("ocultar");
+				DOM.telonFondo.classList.add("ocultar");
+				v.mostrarCartelQuieroVer = false;
+			}
 
 			// Limpia los resultados anteriores
 			DOM.botones.innerHTML = "";
@@ -108,6 +110,9 @@ let resultados = {
 
 			// Deriva a botones o listados
 			v.ordenPorEntBD.boton ? this.botones() : this.listados();
+
+			// Quita el cartel de 'esperandoResultados'
+			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
 
 			// Fin
 			return;

@@ -18,9 +18,11 @@
 /* Vista de Resultados */
 #zonaDisponible #vistaDeResults {background: var(--celeste-claro); display: flex; flex-direction: column; justify-content: center;}
 #zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; max-width: 700px; width: 100%; position: relative;}
+#vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
+#vistaDeResults #esperandoResultados {background: var(--gris-intermedio); opacity: 50%;}
+#vistaDeResults #esperandoResultados {position: absolute; height: 100%; width: 100%;}
 
 /* Vista de Resultados - Carteles */
-#vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
 #vistaDeResults #comencemos img {width: 100%}
 #vistaDeResults #comencemos :is(button, #pppOpcionesCartel) {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
 #vistaDeResults #comencemos :is(button, #pppOpcionesCartel) {padding: 10px 15px; border-radius: 10px; margin: auto;}
@@ -29,6 +31,8 @@
 #vistaDeResults #comencemos :is(button#quieroVer, #pppOpcionesCartel) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #vistaDeResults #comencemos button#loginPend span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
+
+/* Vista de Resultados - pppOpcionesCartel */
 #comencemos #pppOpcionesCartel {scale: 1.5; overflow: hidden;}
 #comencemos #pppOpcionesCartel #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
 #comencemos #pppOpcionesCartel #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
