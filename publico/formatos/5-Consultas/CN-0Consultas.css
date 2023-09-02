@@ -33,7 +33,7 @@
 #comencemos #pppOpcionesCartel #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
 #comencemos #pppOpcionesCartel #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
 #comencemos #pppOpcionesCartel div p {color: var(--azul-oscuro); margin: 3px 0 10px; font-weight: bold; text-align: center;}
-#comencemos #pppOpcionesCartel div table {border-collapse: collapse;}
+#comencemos #pppOpcionesCartel div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
 #comencemos #pppOpcionesCartel div table tr td {padding: 2px 0;}
 #comencemos #pppOpcionesCartel div table tr td:first-of-type {padding-right: 10px;}
 
