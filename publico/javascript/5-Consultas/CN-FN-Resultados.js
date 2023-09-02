@@ -272,18 +272,18 @@ let auxiliares = {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
-			const prefijo = "Abecedario ";
+			const prefijo = "";
 
 			// Pruebas
 			titulo =
 				!nombreAnt && nombreActual < "G"
-					? "(A - F)"
+					? "A - F"
 					: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G" && nombreActual < "N"
-					? "(G - M)"
+					? "G - M"
 					: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N" && nombreActual < "T"
-					? "(N - S)"
+					? "N - S"
 					: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
-					? "(T - Z)"
+					? "T - Z"
 					: "";
 
 			// Fin
@@ -360,7 +360,7 @@ let auxiliares = {
 
 		// Le agrega un body
 		const tbody = document.createElement("tbody");
-		tbody.className = "ocultar";
+		tbody.className = indice ? "ocultar" : "aumentaY";
 		tabla.appendChild(tbody);
 
 		// Fin

@@ -1,5 +1,6 @@
 /* Máxima prioridad */
-header .menuMostrar {z-index: 13;}
+header .menuMostrar {z-index: 14;}
+main #todoElMain:has(video) {z-index: 13;}
 main :is(#cartelProgreso, .encimaDelFondo) {z-index: 12;}
 main #todoElMain {z-index: 11;}
 

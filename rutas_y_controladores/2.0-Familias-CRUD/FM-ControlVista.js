@@ -183,7 +183,6 @@ module.exports = {
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		let esperar = [];
 
-		// ELIMINA DEPENDIENTES
 		// 1. Elimina las ediciones propias y sus archivos avatar
 		esperar.push(procesos.eliminar.eliminaAvatarMasEdics(entidad, id));
 

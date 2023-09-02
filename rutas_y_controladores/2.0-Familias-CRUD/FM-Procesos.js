@@ -390,7 +390,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeStatus: async function (entidad, registro) {
+		accionesPorCambioDeStatus: function (entidad, registro) {
 			// Variables
 			let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -400,7 +400,13 @@ module.exports = {
 				const stAprob = registro.statusRegistro_id == aprobado_id;
 				const entidadesRCLV = variables.entidades.rclvs;
 
-				// 2. Rutina por entidad RCLV
+				// 2. Actualiza prodAprob en sus links
+				if (registro.links) {
+					const prodAprob = [creadoAprob_id, aprobado_id].includes(registro.statusRegistro_id);
+					for (let link of links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+				}
+
+				// 3. Rutina por entidad RCLV
 				for (let entidad of entidadesRCLV) {
 					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					if (registro[campo_id])
@@ -682,17 +688,11 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.altaRevisadaEn) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
-		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creadoPor)});
-
-		if (registro.altaRevisadaEn) {
-			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)});
-			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.altaRevisadaPor)});
-		}
-		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.statusSugeridoEn) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.statusSugeridoEn)});
-			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
-		}
+		bloque.push(
+			registro.altaRevisadaEn
+				? {titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)}
+				: {titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)}
+		);
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});

@@ -1,17 +1,18 @@
 "use strict";
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida .desplMostrar input");
-	let hallazgos = document.querySelector("#busquedaRapida .desplMostrar #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida .desplMostrar #escribiMas");
+	let DOM = {
+		desplMostrar: document.querySelector("#busquedaRapida .desplMostrar"),
+		input: document.querySelector("#busquedaRapida .desplMostrar input"),
+		muestraResultados: document.querySelector("#busquedaRapida .desplMostrar #muestraResultados"),
+		escribiMas: document.querySelector("#busquedaRapida .desplMostrar #escribiMas"),
+	};
 
 	// Funciones
-	let agregaHallazgos = (registros) => {
-		// Generar las condiciones para que se puedan mostrar los 'hallazgos'
-		input.style.borderBottomLeftRadius = 0;
-		input.style.borderBottomRightRadius = 0;
-		hallazgos.innerHTML = "";
-		hallazgos.classList.remove("ocultar");
+	let agregaResultados = (registros) => {
+		// Generar las condiciones para que se puedan mostrar los 'muestraResultados'
+		DOM.muestraResultados.innerHTML = "";
+		DOM.muestraResultados.classList.remove("ocultar");
 
 		// Rutinas en función del tipo de variable que sea 'registros'
 		if (Array.isArray(registros)) {
@@ -56,7 +57,7 @@ window.addEventListener("load", () => {
 				// Agrega la fila al cuerpo de la tabla (tblbody)
 				tblBody.appendChild(fila);
 				tabla.appendChild(tblBody);
-				hallazgos.appendChild(tabla);
+				DOM.muestraResultados.appendChild(tabla);
 			}
 		}
 		// En caso de que sea un sólo registro
@@ -65,15 +66,15 @@ window.addEventListener("load", () => {
 			parrafo.style.fontStyle = "italic";
 			parrafo.style.textAlign = "center";
 			parrafo.appendChild(document.createTextNode(registros));
-			hallazgos.appendChild(parrafo);
+			DOM.muestraResultados.appendChild(parrafo);
 		}
 	};
 
 	// Add Event Listener
-	input.addEventListener("input", async () => {
+	DOM.input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
-		input.value = input.value.replace(/[^a-záéíóúüñ'\d\s]/gi, "").replace(/ +/g, " ");
-		let dataEntry = input.value;
+		DOM.input.value = DOM.input.value.replace(/[^a-záéíóúüñ'\d\s]/gi, "").replace(/ +/g, " ");
+		let dataEntry = DOM.input.value;
 
 		// Elimina palabras
 		let palabras = dataEntry.split(" ");
@@ -84,22 +85,32 @@ window.addEventListener("load", () => {
 
 		// Acciones si la palabra tiene menos de 4 caracteres significativos
 		if (pasaNoPasa.length < 4) {
-			// Estandariza los bordes redondeados en el input
-			input.style.borderRadius = "5px";
-			// Oculta el sector de Hallazgos
-			hallazgos.classList.add("ocultar");
+			// Oculta el sector de muestraResultados
+			DOM.muestraResultados.classList.add("ocultar");
 			// Muestra el cartel de "escribí más"
-			escribiMas.classList.remove("ocultar");
+			DOM.escribiMas.classList.remove("ocultar");
 			return;
 		}
 		// Oculta el cartel de "escribí más"
-		else escribiMas.classList.add("ocultar");
+		else DOM.escribiMas.classList.add("ocultar");
 
 		// Busca los productos
 		palabras = palabras.join(" ");
 		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
 		// Acciones en función de si encuentra resultados o no
-		if (resultados.length) agregaHallazgos(resultados);
-		else agregaHallazgos("- No encontramos coincidencias -");
+		if (resultados.length) agregaResultados(resultados);
+		else agregaResultados("- No encontramos coincidencias -");
+	});
+	DOM.input.addEventListener("keydown", (e) => {
+		// Redirige a la vista del hallazgo
+		if (e.key == "Enter") {
+			DOM.anchors = DOM.muestraResultados.querySelectorAll("a");
+			if (DOM.anchors.length == 1) location.href = DOM.anchors[0].href;
+			console.log(DOM.anchors.length);
+			console.log(DOM.anchors[0].href);
+		}
+
+		// Escape - Oculta el sector de muestraResultados
+		if (e.key == "Escape") DOM.desplMostrar.classList.add("ocultar");
 	});
 });

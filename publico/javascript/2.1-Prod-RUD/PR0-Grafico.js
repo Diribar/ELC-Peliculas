@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 		let encabezado = ["Atributo"];
 		for (let columna of calificaciones) encabezado.push(columna.autor);
 		// Arma las filas
-		let titulos = ["Deja Hue.", "Entr.", "Cal. Téc."];
+		let titulos = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 		let filas = [];
 		for (let fila = 0; fila < titulos.length; fila++) {
 			filas.push([]);
@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 		// Opciones del gráfico
 		let options = {
 			backgroundColor: "rgb(255,242,204)",
-			width: "100%",
+			// width: "100%",
 			fontSize: 8,
 			animation: {
 				duration: 100,
@@ -50,11 +50,10 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			numberStyle: "percent",
-			chartArea: {top: "10%"},
 			colors: ["green", "lightgreen"],
 			legend: {
 				position: "bottom",
-				alignment: "start",
+				alignment: "end",
 				textStyle: {italic: true},
 			},
 			hAxis: {
@@ -63,6 +62,8 @@ window.addEventListener("load", async () => {
 				ticks: [0, 0.5, 1],
 				format: "percent",
 			},
+			vAxis: {width: "50%", textStyle: {fontSize: "12"}},
+			chartArea: {top: "10%", left: 65, width: 90},
 		};
 
 		// Hace visible el gráfico

@@ -42,14 +42,16 @@ router.get("/api/link/edicion", API.edicAprobRech);
 // Tablero de Control
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
-// PRODUCTO y RCLV
-// Status
+// Form
 router.get("/producto/alta", aptoCRUD, capturaActivar, vista.alta.prodForm);
+router.get("/rclv/alta", aptoCRUD, capturaActivar, vistaRCLV.altaEdic.form);
+
+// Cambios de status
 router.post("/producto/alta", aptoCRUD, capturaInactivar, vista.alta.guardar);
+router.post("/rclv/alta", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.alta.guardar);
 router.post("/:familia/rechazo", aptoCRUD, motivoNecesario, capturaInactivar, vista.alta.guardar);
 router.post("/:familia/inactivar-o-recuperar", aptoCRUD, capturaInactivar, vista.alta.guardar); // Va sin 'motivo'
-router.get("/rclv/alta", aptoCRUD, capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/alta", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.alta.guardar);
+
 router.get("/rclv/solapamiento", aptoCRUD, capturaActivar, vistaRCLV.altaEdic.form);
 router.post("/rclv/solapamiento", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.edic.solapam);
 // Edición

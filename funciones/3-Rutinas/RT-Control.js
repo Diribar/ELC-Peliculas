@@ -120,16 +120,17 @@ module.exports = {
 			mailsEnviados.push(
 				comp
 					.enviarMail(asunto, email, cuerpoMail) // Envía el mail
-					.then((n) => n.OK) // Averigua si el mail fue enviado
-					.then(async (n) => {
+					.then((n) => {
 						// Acciones si el mail fue enviado
-						if (n) {
+						if (n.OK) {
 							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
 							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario}); // Actualiza el registro de usuario en el campo fecha_revisor
+							console.log("Mail enviado a " + email);
 						}
-						console.log("Mail enviado a " + email);
-						return n; // Conserva el valor de si el mail fue enviado
+
+						// Fin
+						return;
 					})
 			);
 		}
@@ -603,14 +604,13 @@ let actualizaLinkDeProdAprob = async () => {
 			? link.capitulo.statusRegistro_id
 			: null;
 		if (!statusProd) continue;
-		if (link.id == 144) console.log(606, link, statusProd);
 
 		// En caso que esté inactivo, inactiva el status del link y actualiza su motivo
 		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
 
 		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
-		if ([creadoAprob_id, aprobado_id].includes(statusProd)) BD_genericas.actualizaPorId("links", link.id, {prodAprob: true});
-		else BD_genericas.actualizaPorId("links", link.id, {prodAprob: false});
+		const prodAprob = [creadoAprob_id, aprobado_id].includes(statusProd);
+		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 	}
 
 	// Fin

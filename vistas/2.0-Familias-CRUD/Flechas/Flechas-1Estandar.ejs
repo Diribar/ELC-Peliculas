@@ -5,6 +5,7 @@
 <% const IRE = tema == "crud" %><!-- Inactivar, Recuperar, Eliminar -->
 <% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
+<% const oa = entidad == "capitulos" ? 'o' : 'a' %>
 <div class="flechas">
 	<% if (IRE || locals.origen && !locals.origen.startsWith("DT")) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
 		<!-- Salir -->
@@ -18,34 +19,22 @@
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if (terminaste || detalle || ABMlinks || calificar) { %>
-		<!-- Edición -->
+	<% if (terminaste || detalle) { %>
+		<!-- Edición, Links y Calificar -->
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
+			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+			</a>
+			<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+oa+' calificaste' : 'Califical'+oa %>"></i>
+			</a>
 		<% } else { %>
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-		<% } %>
-		<% if (!ABMlinks) { %>
-			<!-- Links -->
-			<% if (status_id <= aprobado_id) { %>
-				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
-				</a>
-			<% } else { %>
-				<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
-			<% } %>
-		<% } %>
-		<% if (!calificar) { %>
-			<!-- Calificar -->
-			<% if (locals.status_id && status_id <= aprobado_id) { %>
-				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-user-graduate <%= locals.yaCalificada %>" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
-				</a>
-			<% } else { %>
-				<i class="fa-solid fa-user-graduate inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
-			<% } %>
+			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+			<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 		<% } %>
 	<% } %>
 	<% if (tema == "revisionEnts") { %>
