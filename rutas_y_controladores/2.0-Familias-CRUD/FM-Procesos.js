@@ -440,9 +440,10 @@ module.exports = {
 			const statusAprobado = {statusRegistro_id: [creadoAprob_id, aprobado_id]};
 			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 			const objeto = {[campo_id]: id, tipo_id};
+			const calidad = {[Op.gte]: 720};
 
 			// 1. Averigua si existe algún link, para ese producto
-			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
+			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, calidad}).then((n) =>
 				n
 					? conLinks
 					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido}).then((n) => (n ? talVez : sinLinks))

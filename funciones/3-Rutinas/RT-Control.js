@@ -33,8 +33,8 @@ module.exports = {
 
 		// Fin
 		return;
+		this.LinksEnProd();
 		actualizaLinkDeProdAprob();
-		this.EliminaImagenesSinRegistro();
 	},
 
 	// 1. Rutinas horarias
