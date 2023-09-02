@@ -6,7 +6,7 @@ let resultados = {
 		if (!v.mostrar) return;
 
 		// Si es un orden a mostrar en botones, oculta el contador
-		if (v.ordenPorEntBD.boton) DOM.contadorDeProds.classList.add("ocultar");
+		DOM.contadorDeProds.classList.add("ocultar");
 
 		// Oculta todos los carteles
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
@@ -385,7 +385,7 @@ let auxiliares = {
 
 		// Le agrega un body
 		const tbody = document.createElement("tbody");
-		tbody.className = indice ? "ocultar" : "aumentaY";
+		tbody.className = indice ? "ocultar" : "aparece";
 		tabla.appendChild(tbody);
 
 		// Fin

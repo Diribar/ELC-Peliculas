@@ -210,8 +210,8 @@ window.addEventListener("load", async () => {
 		// Muestra / Oculta el 'tbody'
 		v.mostrarTBody = DOM.expandeContrae[indice].className.includes("fa-square-plus");
 		v.mostrarTBody
-			? DOM.tbody[indice].classList.replace("ocultar", "aumentaY")
-			: DOM.tbody[indice].classList.replace("aumentaY", "ocultar");
+			? DOM.tbody[indice].classList.replace("ocultar", "aparece")
+			: DOM.tbody[indice].classList.replace("aparece", "ocultar");
 
 		// Alterna el signo 'plus' o 'minus'
 		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
