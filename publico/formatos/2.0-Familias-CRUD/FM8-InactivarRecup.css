@@ -20,7 +20,7 @@
 #contenido #botones {margin: 10px 40px 30px;}
 
 /* Condicionales */
-#datosLargos #recuadro:has(input.agregarComent:checked) #comentario textarea {background: snow;}
+#datosLargos #recuadro:has(input.agregarComent:checked, :not(input)) #comentario textarea {background: snow;}
 #datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
 #datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
 #datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
