@@ -1,7 +1,9 @@
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 <div id="nombres">
-	<h2><%- registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : '' %></h2>
-	<h3><em><%= registro.nombreOriginal ? registro.nombreOriginal : '' %></em></h3>
+	<% if (codigo != "detalle") { %><a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= id %>"><% } %>
+		<h2><%- registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : '' %></h2>
+		<h3><em><%= registro.nombreOriginal ? registro.nombreOriginal : '' %></em></h3>
+	<% if (codigo != "detalle") { %></a><% } %>
 </div>
 <% if (entidad != "peliculas") { %>
 	<div id="colCap">
@@ -9,7 +11,7 @@
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
 				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
-					<a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + capID + '&origen=' + rutaCRUD %>">
+					<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
 						<div class="pointer scale">
 							<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
