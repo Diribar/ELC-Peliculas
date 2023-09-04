@@ -29,21 +29,26 @@ module.exports = {
 		// Fin
 		return links;
 	},
-	datosLink: (datos) => {
+	datosLink: async (datos) => {
 		// Datos del producto
-		let campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
 		datos[campo_id] = datos.prodID;
+
+		// Obtiene el status del producto
+		datos.prodAprob = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID).then((n) =>
+			[creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)
+		);
 
 		// Obtiene el proveedor
 		let proveedor = linksProvs.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));
-		// Si no se reconoce el proveedor, se asume el 'desconocido'
-		proveedor = proveedor ? proveedor : linksProvs.find((n) => n.generico);
+		proveedor = proveedor ? proveedor : linksProvs.find((n) => n.generico); // Si no se reconoce el proveedor, se asume el 'desconocido'
 		datos.prov_id = proveedor.id;
 
 		// Particularidades
 		if (datos.castellano == "1") datos.subtitulos = null;
 		if (datos.tipo_id == "1") datos.completo = 1;
 		if (datos.completo == "1") datos.parte = "-";
+
 		// Fin
 		return datos;
 	},
