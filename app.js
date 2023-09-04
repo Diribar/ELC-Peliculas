@@ -1,21 +1,26 @@
-// VARIABLE 'GLOBAL' --------------------------------------------------------------
-// Simples
+// Variable 'global' - Tiempo
 global.unaHora = 60 * 60 * 1000;
 global.unDia = unaHora * 24;
 global.unaSemana = unDia * 7;
-global.vidaPrimRevision = unaSemana * 4;
-global.vidaUtilLinks = unaSemana * 26; // 26 semanas
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-global.conLinks = 2;
-global.talVez = 1;
+
+// Variable 'global' - Links
+global.vidaPrimRevision = unaSemana * 4;
+global.vidaUtilLinks = unaSemana * 26;
 global.sinLinks = 0;
-global.usAutom_id = 2;
+global.talVez = 1;
+global.conLinks = 2;
+global.conLinksHD = 3
+
+// Variable 'global' - Otras
+global.usAutom_id = 2; // usuario 'automático'
 global.fechaPrimerLunesDelAno = null;
 global.semanaUTC = null;
 global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
+
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
