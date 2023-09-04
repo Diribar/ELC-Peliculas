@@ -481,7 +481,7 @@ let creaUnaCelda = {
 		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id + "&origen=CN";
+		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id;
 		anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 
@@ -514,7 +514,7 @@ let creaUnaCelda = {
 		// Variables
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id + "&origen=CN";
+		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
 		anchor.target = "_blank";
 		let span;
 
