@@ -5,39 +5,51 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.mostrar) return;
 
-		// Oculta el cartel de 'No tenemos'
-		DOM.noTenemos.classList.add("ocultar");
-		DOM.loginPend.classList.add("ocultar");
+		// Si es un orden a mostrar en botones, oculta el contador
+		DOM.contadorDeProds.classList.add("ocultar");
 
-		// Si es un resultado a mostrar en botones, oculta el contador
-		v.ordenPorEntBD.boton ? DOM.contadorDeProds.classList.add("ocultar") : DOM.contadorDeProds.classList.remove("ocultar");
+		// Oculta todos los carteles
+		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
 
-		// Variables
-		const ahora = new Date();
-		const dia = ahora.getDate();
-		const mes = ahora.getMonth() + 1;
-		let datos = {configCons, entidad: v.entidad};
+		// Tapa y limpia los resultados anteriores
+		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.replace("desaparece", "aparece");
+		DOM.pppOpcionesCartelCierra.classList.remove("ocultar");
+		DOM.botones.innerHTML = "";
+		DOM.listados.innerHTML = "";
+		v.infoResultados = null;
 
-		// Arma los datos
-		if (v.entidad == "productos" && v.ordenBD.codigo == "fechaDelAno_id") datos = {...datos, dia, mes};
+		// Acciones si el orden es 'pppFecha'
+		if (v.ordenBD.codigo == "pppFecha") {
+			// Muestra el cartel 'loginPend' y termina
+			if (!v.userID) {
+				DOM.loginPend.classList.remove("ocultar");
+				return;
+			}
+			// Muestra el cartel 'pppOpcionesCartel' y termina
+			else if (!v.usuarioTienePPP) {
+				DOM.pppOpcionesCartelCierra.classList.add("ocultar"); // oculta el ícono 'pppOpcionesCartelCierra'
+				DOM.pppOpcionesCartel.classList.remove("ocultar");
+				return;
+			}
+		}
 
 		// Busca la información en el BE
+		const ahora = new Date();
+		const datos =
+			v.entidad == "productos" && v.ordenBD.codigo == "fechaDelAno_id"
+				? {configCons, entidad: v.entidad, dia: ahora.getDate(), mes: ahora.getMonth() + 1}
+				: {configCons, entidad: v.entidad};
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 
-		// Acciones si no hay resultados
-		if (!v.infoResultados || !v.infoResultados.length) {
-			DOM.quieroVer.classList.add("ocultar");
-			v.userID
-				? DOM.noTenemos.classList.remove("ocultar")
-				: DOM.loginPend.classList.remove("ocultar")
-			DOM.botones.innerHTML = "";
-			DOM.listados.innerHTML = "";
-		}
-		// Acciones si hay resultados
-		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
+		// Acciones en consecuencia
+		!v.infoResultados || !v.infoResultados.length
+			? DOM.noTenemos.classList.remove("ocultar") // si no hay resultados, muestra el cartel 'noTenemos'
+			: v.mostrarCartelQuieroVer
+			? DOM.quieroVer.classList.remove("ocultar") // si hay resultados, muestra el cartel 'quieroVer'
+			: null;
 
 		// Contador
-		if (v.infoResultados) this.contador();
+		if (v.infoResultados && !v.ordenPorEntBD.boton) this.contador();
 
 		// Fin
 		return;
@@ -73,21 +85,24 @@ let resultados = {
 			DOM.contadorDeProds.innerHTML = cantRCLVs + " x " + cantProds;
 		}
 
+		// Muestra el contador
+		DOM.contadorDeProds.classList.remove("ocultar");
+
 		// Fin
 		return;
 	},
 	muestra: {
 		generico: function () {
 			// Si no hubieron resultados, interrumpe la función
-			if (!v.infoResultados || !v.infoResultados.length) {
-				DOM.telonFondo.classList.remove("ocultar");	
-				return;
-			}
+			if (!v.infoResultados || !v.infoResultados.length) return;
 
 			// Cartel quieroVer
-			v.mostrarCartelQuieroVer = false;
-			DOM.quieroVer.classList.add("ocultar");
-			DOM.telonFondo.classList.add("ocultar");
+			if (v.mostrarCartelQuieroVer) {
+				DOM.esperandoResultados.classList.remove("ocultar");
+				DOM.quieroVer.classList.add("ocultar");
+				DOM.telonFondo.classList.add("ocultar");
+				v.mostrarCartelQuieroVer = false;
+			}
 
 			// Limpia los resultados anteriores
 			DOM.botones.innerHTML = "";
@@ -95,6 +110,9 @@ let resultados = {
 
 			// Deriva a botones o listados
 			v.ordenPorEntBD.boton ? this.botones() : this.listados();
+
+			// Quita el cartel de 'esperandoResultados'
+			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
 
 			// Fin
 			return;
@@ -367,7 +385,7 @@ let auxiliares = {
 
 		// Le agrega un body
 		const tbody = document.createElement("tbody");
-		tbody.className = indice ? "ocultar" : "aumentaY";
+		tbody.className = indice ? "ocultar" : "aparece";
 		tabla.appendChild(tbody);
 
 		// Fin
