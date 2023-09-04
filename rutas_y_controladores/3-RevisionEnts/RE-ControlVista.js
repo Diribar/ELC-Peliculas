@@ -222,7 +222,6 @@ module.exports = {
 				datos.statusSugeridoEn = ahora;
 			}
 			if (motivo_id) datos.motivo_id = motivo_id;
-
 			// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
