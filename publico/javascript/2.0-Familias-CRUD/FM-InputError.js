@@ -8,14 +8,26 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
-	let motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
+	const motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
 
 	// Botón submit
+	let contador = () => {
+		// Acciones
+		let largo = DOM.comentario.value.length;
+		if (largo) DOM.pendiente.innerHTML = 100 - largo;
+
+		// Fin
+		return;
+	};
 	let botonSubmit = () => {
-		let checked = document.querySelector("#motivos input:checked");
+		// Acciones
+		const checked = document.querySelector("#motivos input:checked");
 		DOM.comentario.value && (!DOM.motivos.length || (DOM.motivos && checked))
 			? DOM.submit.classList.remove("inactivo")
 			: DOM.submit.classList.add("inactivo");
+
+		// Fin
+		return;
 	};
 
 	// Event listeners
@@ -23,8 +35,19 @@ window.addEventListener("load", async () => {
 	if (DOM.motivos.length)
 		for (let motivo of DOM.motivos)
 			motivo.addEventListener("change", async () => {
-				const motivo_rech_altas = motivosStatus.find((n) => n.id == motivo.value);
-				DOM.comentario.value = motivo_rech_altas.comentAut ? motivo_rech_altas.descripcion : "";
+				// Obtiene el detalle del motivo
+				const motivoRechAltas = motivosStatus.find((n) => n.id == motivo.value);
+
+				// Completa el comentario
+				DOM.comentario.value = motivoRechAltas.descripcion;
+				DOM.comentario.readOnly = !motivoRechAltas.agregarComent;
+				if (motivoRechAltas.agregarComent) {
+					DOM.comentario.value += ": ";
+					DOM.comentario.focus();
+				}
+
+				// Actualiza el contador y el botón submit
+				contador();
 				botonSubmit();
 			});
 
@@ -37,14 +60,13 @@ window.addEventListener("load", async () => {
 		// Validaciones estándar
 		amplio.restringeCaracteres(e);
 
-		// Actualiza el contador
-		let largo = DOM.comentario.value.length;
-		if (largo) DOM.pendiente.innerHTML = 100 - largo;
-
-		// Actualiza el botón submit
+		// Actualiza el contador y el botón submit
+		contador();
 		botonSubmit();
-	});
 
+		// Fin
+		return;
+	});
 	// Previene el submit si el botón está inactivo
 	DOM.form.addEventListener("submit", (e) => {
 		if (DOM.submit.className.includes("inactivo")) e.preventDefault();

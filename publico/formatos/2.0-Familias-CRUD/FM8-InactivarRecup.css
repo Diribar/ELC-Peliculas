@@ -3,29 +3,27 @@
 
 /* Colores */
 #datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}
-/* Colores - Inactivar */
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
-
-/* Colores - Recuperar */
-#datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
-#datosLargos #recuadro:has(.recuperar) {background: var(--verde-claro);}
-#datosLargos #recuadro:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
 
 /* Sector de información */
 #recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
 #recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
-/* Motivos */
 #informacion ul {padding-right: 10px;}
 #informacion ul li {margin-top: 3px;}
 
 /* Textarea */
 #informacion #comentario h3 {margin-bottom: 3px;}
 #informacion #comentario h3 span {font-weight: normal; font-size: 1rem;}
-#informacion #comentario textarea {padding: 10px; border-radius: 8px; resize: none;}
-#informacion #comentario textarea {width: 250px; height: 80px;}
-
+#informacion #comentario textarea {padding: 10px; border-radius: 8px; resize: none; height: 80px; width: 250px;}
+#informacion #comentario textarea {background: var(--gris-intermedio); color: var(--gris-mas-oscuro);}
 
 /* Botones */
 #contenido #botones {margin: 10px 40px 30px;}
+
+/* Condicionales */
+#datosLargos #recuadro:has(input.agregarComent:checked) #comentario textarea {background: snow;}
+#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
+#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
+#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+#datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
+#datosLargos #recuadro:has(.recuperar) {background: var(--verde-claro);}
+#datosLargos #recuadro:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
