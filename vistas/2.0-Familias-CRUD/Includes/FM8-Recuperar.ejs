@@ -1,13 +1,13 @@
 <section>
-    <h3>Motivo por el que <%= tituloMotivo %>:</h3>
-    <p><em><%= registro.motivo ? registro.motivo.descripcion : "No disponemos de esa información" %></em></p>
-    <% if (locals.comentarios && comentarios.length) { %>
-        <h3 style="margin-top: 15px;">Comentarios:</h3>
-        <ul type="dots">
-            <% for (let comentario of comentarios) { %>
-                <li><%= comentario %></li>
-            <% } %>
-        </ul>
-    <% } %>
+	<h3>Historial de motivos:</h3>
+	<% if (locals.comentarios && comentarios.length) { %>
+		<ul type="dots">
+			<% for (let comentario of comentarios) { %>
+				<li><%= comentario %></li>
+			<% } %>
+		</ul>
+	<% } else { %>
+		<p><em>No disponemos de esa información</em></p>
+	<% } %>
 </section>
 <%- codigo != "eliminar" ? include("FM1-Comentario") : "" %>
