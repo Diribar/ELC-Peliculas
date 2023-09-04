@@ -50,9 +50,17 @@ let actualizaConfigCons = {
 			// Si hay una entidad elegida, se fija si pertenece al orden elegido
 			if (v.ordenPorEnt_id) v.ordenEnEntidad = v.ordenesPorEnt_id.includes(Number(v.ordenPorEnt_id));
 
-			// Si la entidad no pertenece al orden, asigna el valor default
-			if (!v.ordenEnEntidad)
-				v.ordenPorEnt_id = v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.ordenDefault).id;
+			// Acciones si el orden no pertenece a la  entidad
+			if (!v.ordenEnEntidad) {
+				// Si el código existe en el layout, elige su orden correspondiente
+				v.ordenCodigo = v.ordenesPorEntBD.find((n) => n.id == v.ordenPorEnt_id).orden.codigo;
+				v.ordenPorEntBD = v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.orden.codigo == v.ordenCodigo);
+
+				// Asigna el nuevo valor
+				v.ordenPorEnt_id = v.ordenPorEntBD
+					? v.ordenPorEntBD.id // análogo
+					: v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.ordenDefault).id; // default
+			}
 
 			// Actualiza variables
 			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;

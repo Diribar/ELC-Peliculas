@@ -7,6 +7,7 @@ let resultados = {
 
 		// Oculta el cartel de 'No tenemos'
 		DOM.noTenemos.classList.add("ocultar");
+		DOM.loginPend.classList.add("ocultar");
 
 		// Si es un resultado a mostrar en botones, oculta el contador
 		v.ordenPorEntBD.boton ? DOM.contadorDeProds.classList.add("ocultar") : DOM.contadorDeProds.classList.remove("ocultar");
@@ -26,7 +27,9 @@ let resultados = {
 		// Acciones si no hay resultados
 		if (!v.infoResultados || !v.infoResultados.length) {
 			DOM.quieroVer.classList.add("ocultar");
-			DOM.noTenemos.classList.remove("ocultar");
+			v.userID
+				? DOM.noTenemos.classList.remove("ocultar")
+				: DOM.loginPend.classList.remove("ocultar")
 			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
 		}
@@ -76,11 +79,16 @@ let resultados = {
 	muestra: {
 		generico: function () {
 			// Si no hubieron resultados, interrumpe la función
-			if (!v.infoResultados || !v.infoResultados.length) return;
+			if (!v.infoResultados || !v.infoResultados.length) {
+				DOM.cartelQuieroVer.classList.remove("ocultar");	
+				v.mostrarCartelQuieroVer = true;
+				return;
+			}
 
 			// Cartel quieroVer
 			v.mostrarCartelQuieroVer = false;
 			DOM.quieroVer.classList.add("ocultar");
+			DOM.cartelQuieroVer.classList.add("ocultar");
 
 			// Limpia los resultados anteriores
 			DOM.botones.innerHTML = "";
@@ -272,7 +280,7 @@ let auxiliares = {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
-			const prefijo = "";
+			const prefijo = "Rango ";
 
 			// Pruebas
 			titulo =

@@ -41,13 +41,15 @@ let actualiza = {
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
-		v.mostrar && !claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.mostrar && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? titulo.nuevo
 			: !v.mostrar
 			? "No está permitido crear una configuración cuando hay un error en los filtros"
 			: claseEdicion
 			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
+			: !v.userID
+			? "Necesitamos que estés logueado para crear una configuración"
 			: "";
 
 		// Ícono Edición
@@ -209,7 +211,7 @@ let cambiosEnBD = {
 
 		// La pone como 'selected'
 		DOM.configsConsPropios.children[indice].selected = true;
-		if (DOM.configsConsPropios.className.includes("ocultar")) DOM.configsConsPropios.classList.remove("ocultar")
+		if (DOM.configsConsPropios.className.includes("ocultar")) DOM.configsConsPropios.classList.remove("ocultar");
 
 		// Fin
 		return;
@@ -226,8 +228,8 @@ let cambiosEnBD = {
 		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
 
 		// Limpia
-		delete configCons.edicion
-		delete configCons.nombre
+		delete configCons.edicion;
+		delete configCons.nombre;
 		delete configCons.id;
 
 		// Fin
@@ -249,7 +251,7 @@ let cambiosEnBD = {
 		});
 
 		// Si corresponde, oculta el 'optgroup' de 'propios'
-		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar")
+		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
@@ -304,33 +306,4 @@ let verifica = {
 		// Fin
 		return existe;
 	},
-};
-
-// Consolidadas
-let cambioDeConfig_id = async () => {
-	// Funciones
-	await actualiza.valoresInicialesDeVariables();
-	cambiosEnBD.configCons_id();
-	await actualiza.statusInicialCampos();
-	// actualiza.cartelQuieroVerVisible();
-	actualiza.muestraOcultaFiltros();
-
-	// Fin
-	return;
-};
-let cambioDeCampos = async () => {
-	// Cambio de clases
-	DOM.configNuevaNombre.classList.remove("nuevo");
-	DOM.configNuevaNombre.classList.remove("edicion");
-
-	// Funciones
-	actualizaConfigCons.consolidado();
-	actualiza.botoneraActivaInactiva();
-	if (v.mostrar) {
-		await resultados.obtiene();
-		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
-	}
-
-	// Fin
-	return;
 };

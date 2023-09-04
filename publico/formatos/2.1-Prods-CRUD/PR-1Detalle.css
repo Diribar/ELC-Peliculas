@@ -7,9 +7,9 @@
 .marco#links nav a {margin-right: 10px;}
 .marco#links nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
 .marco#links nav a img {max-width: 70px; max-height: 24px;}
-.marco#links nav a img.verde {border-color: var(--verde-oscuro);}
-.marco#links nav a img.amarillo {border-color: var(--amarillo-oscuro);}
-.marco#links nav a img.rojo {border-color: var(--rojo-oscuro);}
+.marco#links nav a img.enCast {border-color: var(--azul-oscuro);}
+.marco#links nav a img.subtCast {border-color: var(--gris-intermedio);}
+.marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
 /* Marco de Detalle */
 #marcoDetalle {margin-top: 35px; position: relative;}
@@ -32,3 +32,8 @@
 #marcoDetalle #datosDetalle .datosParcial b {color: var(--gris-oscuro);}
 #marcoDetalle #datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
 #marcoDetalle #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
+
+/* Barra de desplazamiento */
+::-webkit-scrollbar {outline: transparent;}
+::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
+::-webkit-scrollbar-thumb {background: var(--gris-intermedio); border-radius: 10px;}

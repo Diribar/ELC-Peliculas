@@ -6,7 +6,7 @@ module.exports = {
 	// Institucional
 	vistasInstitucs: {
 		inicio: {titulo: "Inicio", codigo: "inicio", icono: "fa-house", hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
-		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
+		"quienes-somos": {titulo: "ELC - Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
 		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart"},
 		"en-que-consiste-este-sitio": {
 			titulo: "En qué consiste este sitio",
@@ -22,10 +22,10 @@ module.exports = {
 	videosInduccion: {
 		// Todos los usuarios
 		introduccion: {titulo: "Introducción al sitio", icono: "fa-circle-question"},
-		usuario: {titulo: "Alta de usuario y login", icono: "fa-user", hr: true},
-		consultas: {titulo: "Quiero elegir una película", icono: "fa-clapperboard"},
-		detalleProds: {titulo: "Detalle de una película", icono: "fa-circle-info", hr: true},
-		detalleRCLVs: {titulo: "Detalle de otras entidades", icono: "fa-user-tie"},
+		usuario: {titulo: "Alta de usuario y Login", icono: "fa-user", hr: true},
+		consultas: {titulo: "Quiero elegir una Película", icono: "fa-hand-pointer"},
+		detalleProds: {titulo: "Detalle de una Película", icono: "fa-clapperboard", hr: true},
+		detalleRCLVs: {titulo: "Detalle de un Personaje", icono: "fa-user-tie"},
 		rolPermInputs: {titulo: "Rol permiso inputs", icono: "fa-user-check", hr: true},
 
 		// Sólo usuarios con rol permInputs

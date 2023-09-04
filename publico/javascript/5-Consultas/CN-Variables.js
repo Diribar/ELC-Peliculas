@@ -53,10 +53,14 @@ window.addEventListener("load", async () => {
 		mostrarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
 		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
-		// Zona Disponible
-		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#rojo"),
-		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#verde"),
-		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#azul"),
+		// Zona Disponible - Botones e Imagen de fondo
+		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#asegurate"),
+		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#quieroVer"),
+		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#noTenemos"),
+		loginPend: DOM.zonaDisponible.querySelector("#comencemos button#loginPend"),
+		cartelQuieroVer:DOM.zonaDisponible.querySelector("#comencemos img"),
+
+		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
 		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
 		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
