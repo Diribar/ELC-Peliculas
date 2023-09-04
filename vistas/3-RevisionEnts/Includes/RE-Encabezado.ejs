@@ -1,10 +1,5 @@
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
-<div id="nombres">
-	<h2><%= familia == "rclv" ? registro.nombre : registro.nombreCastellano %></h2>
-	<% if (registro.nombreOriginal || registro.apodo) { %>
-		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombreOriginal %></em></h3>
-	<% } %>
-</div>
+<%- include("FM-EncabIzq") %>
 <% if (entidad != "peliculas") { %>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
