@@ -403,7 +403,7 @@ module.exports = {
 				// 2. Actualiza prodAprob en sus links
 				if (registro.links) {
 					const prodAprob = [creadoAprob_id, aprobado_id].includes(registro.statusRegistro_id);
-					for (let link of links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+					for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 				}
 
 				// 3. Rutina por entidad RCLV
