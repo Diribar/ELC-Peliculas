@@ -3,12 +3,15 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		form: document.querySelector("#recuadro form"),
-		motivos: document.querySelectorAll("#motivos input"),
+		inputs: document.querySelectorAll("#motivos input"),
 		comentario: document.querySelector("#comentario textarea"),
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
 	const motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
+
+	// Si no hay inputs, focus en comentario
+	if (!DOM.inputs.length) DOM.comentario.focus();
 
 	// Botón submit
 	let contador = () => {
@@ -22,7 +25,9 @@ window.addEventListener("load", async () => {
 	let botonSubmit = () => {
 		// Acciones
 		const checked = document.querySelector("#motivos input:checked");
-		DOM.comentario.value && (!DOM.motivos.length || (DOM.motivos && checked))
+		DOM.comentario.value &&
+		(!DOM.inputs.length || // Recuperar
+			checked) // Inactivar o Rechazar
 			? DOM.submit.classList.remove("inactivo")
 			: DOM.submit.classList.add("inactivo");
 
@@ -31,9 +36,8 @@ window.addEventListener("load", async () => {
 	};
 
 	// Event listeners
-	// Motivos
-	if (DOM.motivos.length)
-		for (let motivo of DOM.motivos)
+	if (DOM.inputs.length)
+		for (let motivo of DOM.inputs)
 			motivo.addEventListener("change", async () => {
 				// Obtiene el detalle del motivo
 				const motivoRechAltas = motivosStatus.find((n) => n.id == motivo.value);
