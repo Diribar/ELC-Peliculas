@@ -50,7 +50,7 @@ module.exports = {
 
 				// Check-Boxes
 				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
-				conLinks: "conLinks",
+				conLinksHD: "conLinksHD",
 				enCast: "enCast",
 
 				// Otros
