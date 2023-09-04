@@ -376,14 +376,20 @@ module.exports = {
 			// Obtiene el motivo_id
 			const motivo_id =
 				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
-			console.log(379,motivo_id);
+			console.log(379, motivo_id);
 
 			// Obtiene el comentario
 			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
 			if (req.body.comentario) {
-				let descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
-				descripcion = !req.body.comentario.startsWith(descripcion) ? descripcion + ": " : "";
-				comentario += " - " + descripcion + req.body.comentario;
+				// Variables
+				let aux = "";
+
+				// Si hay un motivo, se asegura de que esté la descripción en el comentario
+				if (motivo_id) {
+					const descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
+					if (!req.body.comentario.startsWith(descripcion)) aux = descripcion + ": ";
+				}
+				comentario += " - " + aux + req.body.comentario;
 				if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 			}
 
