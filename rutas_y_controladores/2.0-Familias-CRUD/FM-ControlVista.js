@@ -107,9 +107,10 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
+			const {entidad, id, motivo_id} = {...req.query, ...req.body};
+			let {comentUs} = req.body;
 			const {ruta} = comp.reqBasePathUrl(req);
-			const codigo = ruta.slice(1, -1);
+			const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 			const userID = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const include = comp.obtieneTodosLosCamposInclude(entidad);
@@ -117,16 +118,23 @@ module.exports = {
 			const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 			// Revisa errores
-			const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
+			const informacion = procesos.infoIncompleta({motivo_id, comentario: comentUs, codigo});
 			if (informacion) {
 				informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
 				return res.render("CMP-0Estructura", {informacion});
 			}
 
 			// Comentario para la BD
-			let motivoComentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-			if (comentario) motivoComentario += " - " + comentario;
-			if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0, -1);
+			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
+
+			// Si es 'inactivar', se asegura de que esté la descripción del motivo
+			let aux = "";
+			if (codigo == "inactivar") {
+				const descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
+				if (!comentUs || !comentUs.startsWith(descripcion)) aux = descripcion + ": ";
+			}
+			comentario += " - " + aux + comentUs;
+			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// CONSECUENCIAS
 			// 1. Actualiza el status en el registro original
@@ -152,7 +160,7 @@ module.exports = {
 				...{sugeridoPor_id: original.statusSugeridoPor_id, sugeridoEn: original.statusSugeridoEn},
 				...{revisadoPor_id: userID, revisadoEn: ahora},
 				...{statusOriginal_id: original.statusRegistro_id, statusFinal_id},
-				comentario: motivoComentario,
+				comentario,
 			};
 			datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 			BD_genericas.agregaRegistro("histStatus", datosHist);
