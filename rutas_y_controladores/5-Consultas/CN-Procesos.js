@@ -92,7 +92,7 @@ module.exports = {
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = variables.camposConsultas;
+				const vars = {...variables.camposConsultas};
 				const {publicos, tiposLink, castellano} = vars;
 				let prefs = {};
 
@@ -218,8 +218,7 @@ module.exports = {
 
 			// Obtiene la condición
 			let condicion = {usuario_id};
-			if (configCons.pppOpciones && configCons.pppOpciones != sinPref.id)
-				condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPref', restringe la búsqueda a los registros con esa 'opcion_id'
+			if (configCons.pppOpciones && configCons.pppOpciones != sinPref.id) condicion.opcion_id = configCons.pppOpciones; // Si el usuario eligió una preferencia y es distinta a 'sinPref', restringe la búsqueda a los registros con esa 'opcion_id'
 
 			// Obtiene los registros
 			let pppRegistros = await BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", condicion, "detalle");
