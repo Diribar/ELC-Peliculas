@@ -10,5 +10,5 @@
 #datos #datosLargos {display: flex; flex-direction: column;}
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
-#datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 #datosLargos #recuadro {border-radius: 20px; overflow: hidden;}

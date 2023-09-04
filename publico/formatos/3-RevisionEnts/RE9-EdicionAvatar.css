@@ -24,13 +24,12 @@
 #centro #medio {width: 100%;}
 
 /* Sección central - Medio - Info */
-#centro #medio .contenedorOpcionAvatar {max-width: 40%; border-radius: 20px; }
-#centro #medio .contenedorOpcionAvatar {border: 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#centro #medio .contenedorOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
-#centro #medio .contenedorOpcionAvatar#aprobar {transform-origin: left; background: var(--verde-claro); border-color: var(--verde-oscuro);}
-#centro #medio .contenedorOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
-#centro #medio .contenedorOpcionAvatar#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
-#centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
+#centro #medio .contOpcionAvatar {max-width: 40%; border-radius: 20px; border: 4px solid;}
+#centro #medio .contOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
+#centro #medio .contOpcionAvatar#aprobar {transform-origin: left; background: var(--verde-claro); border-color: var(--verde-oscuro);}
+#centro #medio .contOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
+#centro #medio .contOpcionAvatar#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
+#centro #medio .contOpcionAvatar button {border: none; background: transparent; outline: none;}
 #centro #medio #info {padding: 15px 20px; width: fit-content;}
 #centro #medio #info :is(h2, ul) {text-align: left;}
 #centro #medio #info ul:has(li) {margin-top: 5px;}
@@ -38,7 +37,7 @@
 
 /* Sección central - Medio - Ficha Técnica */
 #centro #medio #fichaTecnica {padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw; align-self: center;}
-#centro #medio #fichaTecnica {background: var(--gris-claro); border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio #fichaTecnica {background: var(--gris-claro); border: var(--gris-oscuro) 4px solid;}
 #centro #medio #fichaTecnica p {line-height: 1.5; font-size: 1.15rem;}
 
 /* Sección central - Flechas */

@@ -49,15 +49,22 @@ module.exports = {
 				ordenesBD: cn_ordenes,
 
 				// Check-Boxes
-				noLaVi: String(sinPreferencia.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinks: "conLinks",
 				enCast: "enCast",
 
 				// Otros
 				pppOpciones,
-				userID: req.session.usuario ? req.session.usuario.id : null,
 				rclvNombres: variables.entidades.rclvsNombre,
 			};
+
+			// Datos del usuario
+			if (req.session.usuario && req.session.usuario.id) {
+				datos.userID = req.session.usuario.id;
+				datos.usuarioTienePPP = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
+					usuario_id: datos.userID,
+				}).then((n) => n.length);
+			}
 
 			// Fin
 			return res.json(datos);

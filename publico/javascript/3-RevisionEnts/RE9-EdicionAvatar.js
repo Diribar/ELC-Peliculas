@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables de bloque
-	let botonesAvatar = document.querySelectorAll(".contenedorOpcionAvatar ul");
+	let botonesAvatar = document.querySelectorAll(".contOpcionAvatar ul");
 	let imagenNuevaDOM = document.querySelector("#izquierda img");
 	let imagenActualDOM = document.querySelector("#derecha img");
 
