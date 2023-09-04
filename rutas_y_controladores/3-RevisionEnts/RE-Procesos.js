@@ -84,11 +84,19 @@ module.exports = {
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = obtieneRegs(campos);
+			let IN = obtieneRegs(campos).then((regs) => {
+				for (let i = regs.length - 1; i >= 0; i--)
+					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
+				return regs;
+			});
 
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = obtieneRegs(campos);
+			let RC = obtieneRegs(campos).then((regs) => {
+				for (let i = regs.length - 1; i >= 0; i--)
+					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
+				return regs;
+			});
 
 			// Espera los resultados
 			[AL, SE, IN, RC] = await Promise.all([AL, SE, IN, RC]);
@@ -380,18 +388,8 @@ module.exports = {
 
 			// Obtiene el comentario
 			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-			if (req.body.comentario) {
-				// Variables
-				let aux = "";
-
-				// Si hay un motivo, se asegura de que esté la descripción en el comentario
-				if (motivo_id) {
-					const descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
-					if (!req.body.comentario.startsWith(descripcion)) aux = descripcion + ": ";
-				}
-				comentario += " - " + aux + req.body.comentario;
-				if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
-			}
+			if (req.body.comentario) comentario += " - " + req.body.comentario;
+			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Fin
 			return {
