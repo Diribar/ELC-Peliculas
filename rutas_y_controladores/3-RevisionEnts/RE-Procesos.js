@@ -341,7 +341,7 @@ module.exports = {
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
-			let include = comp.obtieneTodosLosCamposInclude(entidad);
+			let include = [...comp.obtieneTodosLosCamposInclude(entidad), "links"];
 			if (familia == "producto") include.push("links");
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
@@ -374,10 +374,20 @@ module.exports = {
 					: aprobado_id;
 
 			// Obtiene el motivo_id y el comentario
-			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+			const motivo_id = inactivarRecuperar
+				? original.motivo_id
+					? original.motivo_id
+					: null
+				: subcodigo == "rechazo"
+				? req.body.motivo_id
+				: null;
 			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-			if (req.body.comentario) comentario += " - " + req.body.comentario;
-			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+			if (req.body.comentario) {
+				let descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
+				descripcion = !req.body.comentario.startsWith(descripcion) ? descripcion + ": " : "";
+				comentario += " - " + descripcion + req.body.comentario;
+				if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+			}
 
 			// Fin
 			return {
