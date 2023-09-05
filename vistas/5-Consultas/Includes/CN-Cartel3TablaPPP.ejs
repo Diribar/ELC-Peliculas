@@ -1,0 +1,8 @@
+<table>
+    <% for (let pppOpcion of pppOpciones.filter(n => !n.sinPref)) { %>
+        <tr>
+            <td><i class="<%= pppOpcion.icono %>"></i></td>
+            <td><%= pppOpcion.nombre %></td>
+        </tr>
+    <% } %>
+</table>

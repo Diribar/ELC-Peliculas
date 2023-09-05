@@ -30,22 +30,10 @@
 				<button id="quieroVer" class="cartel scale pointer ocultar">Quiero ver las<br>películas propuestas</button>
 				<button id="noTenemos" class="cartel ocultar">Sin resultados<br>para esa consulta</button>
 				<button id="asegurate" class="cartel ocultar">Asegurate de contestar<br>los sectores en rojo</button>
-				<button id="loginPend" class="cartel ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span><br>para ver tus preferencias</button>
-				<!-- Preferencias -->
-				<div id="pppOpcionesCartel" class="cartel ocultar bordeConSombra">
-					<i id="cierra" class="fa-solid fa-xmark absolute pointer"></i>
-					<div>
-						<p>No tenés <i class="fa-regular fa-heart"></i> marcadas</p>
-						<table>
-							<% for (let pppOpcion of pppOpciones.filter(n => !n.sinPref)) { %>
-								<tr>
-									<td><i class="<%= pppOpcion.icono %>"></i></td>
-									<td><%= pppOpcion.nombre %></td>
-								</tr>
-							<% } %>
-						</table>
-					</div>
-				</div>
+				<button id="loginPend" class="cartel ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span> para ver tus preferencias</button>
+				<button id="verVideo"  class="cartel ocultar">Te sugerimos <br><span><a href="/usuarios/login">hacer el login</a></span> y <span id="consultas"><br> ver el video explicativo</span></button>
+				<%- include("CN-Cartel1OrdenPPP") %>
+				<%- include("CN-Cartel2UsSinPPP") %>
 			</div>
 		</div>
 	</div>
