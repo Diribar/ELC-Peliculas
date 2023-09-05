@@ -119,6 +119,17 @@ module.exports = {
 			let id = await BD_especificas.validaRepetidos(["nombreCastellano", "anoEstreno"], datos);
 			if (id) errores.nombreCastellano = comp.validacs.cartelRepetido({...datos, id});
 		}
+		// Actores y Tipo de Actuación
+		if (datos.tipoActuacion_id && !errores.actores) {
+			errores.actores =
+				datos.tipoActuacion_id == anime_id && datos.actores != "Dibujos Animados"
+					? 'Debe decir "Dibujos Animados"'
+					: datos.tipoActuacion_id == documental_id && datos.actores != "Documental"
+					? 'Debe decir "Documental"'
+					: datos.tipoActuacion_id == actuada_id && ["Dibujos Animados", "Documental"].includes(datos.actores)
+					? "Deben figurar los nombres de los actores y actrices"
+					: "";
+		}
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
