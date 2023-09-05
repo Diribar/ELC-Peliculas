@@ -5,8 +5,7 @@
 	<div class="inputError">
 		<input type="text" name="<%= nombre %>" value="<%= registro[nombre] %>" autofocus autocomplete="off" 
 			class="input <% if (numero) { %>numero<% } %>"
-			<% if (numero) { %>placeholder="sólo números"<% } %>
-			placeholder="Ingresá el texto"
+			placeholder="<%- numero ? 'Sólo números' : 'Ingresá el texto' %>"
 		>
 		<%- include("CMP-Errores", {nombre}) %>
 		<!-- Aviso de cambio en el data-entry -->
