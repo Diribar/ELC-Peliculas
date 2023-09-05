@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 4/sep",
-	"HoraUTC": "12:56",
+	"FechaUTC": "Mar. 5/sep",
+	"HoraUTC": "13:11",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-sep-23": {"titulo": "ELC - Películas"},
 		"03-sep-23": {"titulo": "ELC - Películas"},
 		"04-sep-23": {"titulo": "San Moisés", "entidad": "personajes", "id": 61},
 		"05-sep-23": {"titulo": "San Chárbel Makhlouf", "entidad": "personajes", "id": 116},
-		"06-sep-23": {"titulo": "ELC - Películas"}
+		"06-sep-23": {"titulo": "ELC - Películas"},
+		"07-sep-23": {"titulo": "ELC - Películas"}
 	}
 }
