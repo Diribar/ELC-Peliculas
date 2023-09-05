@@ -134,7 +134,7 @@ module.exports = {
 			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 5 || linksAprobsEstaSem < 30;
+			const aprobsPerms = porcentaje < 4 || linksAprobsEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
