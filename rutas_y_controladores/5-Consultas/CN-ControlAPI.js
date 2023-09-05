@@ -61,6 +61,7 @@ module.exports = {
 			// Datos del usuario
 			if (req.session.usuario && req.session.usuario.id) {
 				datos.userID = req.session.usuario.id;
+				datos.videoConsVisto = req.session.usuario.videoConsVisto;
 				datos.usuarioTienePPP = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
 					usuario_id: datos.userID,
 				}).then((n) => n.length);
