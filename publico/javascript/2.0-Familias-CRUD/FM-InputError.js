@@ -26,6 +26,7 @@ window.addEventListener("load", async () => {
 		// Acciones
 		const checked = document.querySelector("#motivos input:checked");
 		DOM.comentario.value &&
+		DOM.comentario.value.length > 4 &&
 		(!DOM.inputs.length || // Recuperar
 			checked) // Inactivar o Rechazar
 			? DOM.submit.classList.remove("inactivo")
