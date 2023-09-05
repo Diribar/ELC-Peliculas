@@ -61,15 +61,19 @@ window.addEventListener("load", async () => {
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
 		pppSinLogin: DOM.zonaDisponible.querySelector("#carteles button#pppSinLogin"),
-		loginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
 		cartelOrdenPPP: DOM.zonaDisponible.querySelector("#carteles #cartelOrdenPPP"),
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
+		cartelLoginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
+		cartelVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo"),
 
 		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
 		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
 		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
 		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
+
+		// Otros
+		anchorVerVideo:DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
