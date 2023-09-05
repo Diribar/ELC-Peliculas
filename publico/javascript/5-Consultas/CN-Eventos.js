@@ -146,6 +146,11 @@ window.addEventListener("load", async () => {
 		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
 		// Botón 'quieroVer'
 		else if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) resultados.muestra.generico();
+		// Anchor 'verVideo'
+		else if (elemento == DOM.anchorVerVideo) {
+			v.videoConsVisto = true;
+			DOM.cartelVerVideo.classList.add("ocultar")
+		}
 
 		// Fin
 		return;
