@@ -19,9 +19,9 @@ let resultados = {
 
 		// Acciones si el orden es 'pppFecha'
 		if (v.ordenBD.codigo == "pppFecha") {
-			// Si el usuario no está logueado, muestra el cartel 'loginPend' y termina
+			// Si el usuario no está logueado, muestra el cartel 'pppSinLogin' y termina
 			if (!v.userID) {
-				DOM.loginPend.classList.remove("ocultar");
+				DOM.pppSinLogin.classList.remove("ocultar");
 				return;
 			}
 			// Si el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina

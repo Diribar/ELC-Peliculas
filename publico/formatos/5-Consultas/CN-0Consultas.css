@@ -32,7 +32,7 @@
 #vistaDeResults #carteles :is(button, .cartel.especial) {border: solid 2px;}
 #vistaDeResults #carteles button {font-size: 2rem; font-weight: bold; font-style: italic;}
 #vistaDeResults #carteles :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#vistaDeResults #carteles :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#vistaDeResults #carteles :is(button#asegurate, button#pppSinLogin) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #vistaDeResults #carteles button.cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
 #vistaDeResults #carteles button#verVideo {font-size: 1.6rem;}
 
