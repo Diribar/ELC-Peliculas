@@ -94,7 +94,7 @@ let actualizaConfigCons = {
 			actualizaConfigCons.muestraOcultaPrefs();
 
 			// Redirige a la siguiente instancia
-			if (v.mostrar) actualizaConfigCons.presenciaEstable();
+			if (v.obtener) actualizaConfigCons.presenciaEstable();
 
 			// Fin
 			return;
@@ -102,10 +102,10 @@ let actualizaConfigCons = {
 	},
 	muestraOcultaPrefs: () => {
 		// Variables
-		v.mostrar = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
+		v.obtener = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
 
 		// Acciones si no hay errores
-		if (v.mostrar) {
+		if (v.obtener) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.mostrarOcultarFiltros.classList.remove("ocultar");

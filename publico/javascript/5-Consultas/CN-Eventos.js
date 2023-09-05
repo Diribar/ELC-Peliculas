@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 			}
 			// Actualizar resultados (encabezado)
 			else if (nombre == "actualizar") {
-				if (v.mostrar) {
+				if (v.obtener) {
 					await resultados.obtiene();
 					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 				}
@@ -145,7 +145,7 @@ window.addEventListener("load", async () => {
 		// Caption
 		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
 		// Botón 'quieroVer'
-		else if (padre.id == "carteles" && nombre == "quieroVer" && v.mostrar) resultados.muestra.generico();
+		else if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) resultados.muestra.generico();
 
 		// Fin
 		return;
@@ -238,7 +238,7 @@ let cambioDeCampos = async () => {
 	// Funciones
 	actualizaConfigCons.consolidado();
 	actualiza.botoneraActivaInactiva();
-	if (v.mostrar) {
+	if (v.obtener) {
 		await resultados.obtiene();
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 	}
