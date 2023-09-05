@@ -43,9 +43,7 @@ module.exports = {
 				? "Dibujos Animados"
 				: datos.tipoActuacion_id == documental_id
 				? "Documental"
-				: datos.actores
-				? datos.actores
-				: "Desconocido";
+				: datos.actores;
 		},
 	},
 	confirma: {
@@ -67,7 +65,8 @@ module.exports = {
 					if (!registro) {
 						existe = false;
 						break;
-					} else if (registro.epocaOcurrencia_id && !confirma.epocaOcurrencia_id && !epocaOcurrencia_id) epocaOcurrencia_id = registro.epocaOcurrencia_id;
+					} else if (registro.epocaOcurrencia_id && !confirma.epocaOcurrencia_id && !epocaOcurrencia_id)
+						epocaOcurrencia_id = registro.epocaOcurrencia_id;
 				}
 			}
 
