@@ -30,11 +30,12 @@ module.exports = {
 		// Variables
 		if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno'
 		const semanaActual = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		const prodAprob = true;
 		const linksSemanales = {};
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
-		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id});
-		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id});
+		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
+		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
 		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
 
 		// Obtiene la cantidad de 'creadoAprobs'
