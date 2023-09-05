@@ -23,10 +23,12 @@ let amplio = {
 			const localName = e.target.localName;
 			const type = e.target.type;
 			let valor = e.target.value;
-			let posicCursor = e.target.selectionStart;
 
 			// Validaciones
 			if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
+				// Variables
+				let posicCursor = e.target.selectionStart;
+
 				// Limita el uso del teclado solamente a los caracteres que nos interesan
 				valor = valor
 					.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
