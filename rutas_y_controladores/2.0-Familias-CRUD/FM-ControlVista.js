@@ -65,15 +65,15 @@ module.exports = {
 				? false
 				: tema == "revisionEnts"
 				? [
-						procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
+						procesos.bloqueRegistro({...original, entidad}),
 						await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 				  ]
 				: familia == "producto"
-				? procesos.bloqueRegistro({registro: original, revisor})
+				? procesos.bloqueRegistro(original)
 				: familia == "rclv"
 				? {
 						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-						registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
+						registro: procesos.bloqueRegistro({...original, entidad}),
 				  }
 				: [];
 
@@ -108,7 +108,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, motivo_id} = {...req.query, ...req.body};
-			let {comentUs} = req.body;
+			let {comentario: comentUs} = req.body;
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 			const userID = req.session.usuario.id;
@@ -120,7 +120,7 @@ module.exports = {
 			// Revisa errores
 			const informacion = procesos.infoIncompleta({motivo_id, comentario: comentUs, codigo});
 			if (informacion) {
-				informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
+				informacion.iconos = [variables.vistaEntendido(req.session.urlAnterior)];
 				return res.render("CMP-0Estructura", {informacion});
 			}
 

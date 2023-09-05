@@ -384,7 +384,6 @@ module.exports = {
 			// Obtiene el motivo_id
 			const motivo_id =
 				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
-			console.log(379, motivo_id);
 
 			// Obtiene el comentario
 			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;

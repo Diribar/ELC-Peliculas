@@ -79,8 +79,9 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
-				{id: "conLinks", nombre: "Con links", condic: {linksGeneral: 2}},
-				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: 2}},
+				{id: "conLinksHD", nombre: "Con links HD", condic: {linksGeneral: conLinksHD}},
+				{id: "conLinks", nombre: "Con links", condic: {linksGeneral: [conLinks, conLinksHD]}},
+				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: conLinks}},
 			],
 		},
 		castellano: {

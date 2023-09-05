@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 		// Configuración de de Cabecera - Check-Boxes
 		checkBoxesInputs: DOM.configCons.querySelectorAll("#checkBoxes input"),
 		noLaVi: DOM.configCons.querySelector("#checkBoxes #noLaVi"),
-		conLinks: DOM.configCons.querySelector("#checkBoxes #conLinks"),
+		conLinksHD: DOM.configCons.querySelector("#checkBoxes #conLinksHD"),
 		enCast: DOM.configCons.querySelector("#checkBoxes #enCast"),
 
 		// Configuración de Campos - Preferencias

@@ -13,7 +13,7 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (!detalle && !IRE && !consultaLinks) { %>
+	<% if (!detalle && !IRE && !consultaLinks && tema != "revisionEnts") { %>
 		<!-- Detalle -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>

@@ -445,8 +445,14 @@ module.exports = {
 			// 1. Averigua si existe algún link, para ese producto
 			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, calidad}).then((n) =>
 				n
-					? conLinks
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido}).then((n) => (n ? talVez : sinLinks))
+					? conLinksHD
+					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
+							n
+								? conLinks
+								: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido}).then((n) =>
+										n ? talVez : sinLinks
+								  )
+					  )
 			);
 
 			// 2. Averigua si existe algún link gratuito, para ese producto
@@ -684,7 +690,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function ({registro, revisor}) {
+	bloqueRegistro: function (registro) {
 		// Variable
 		let bloque = [];
 
