@@ -112,7 +112,7 @@ let resultados = {
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
 
-			// Al azar, si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP' y termina
+			// Con una frecuencia dada, si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP' y termina
 			if (!v.usuarioTienePPP) {
 				v.mostrarSinPPP++;
 				if (!(v.mostrarSinPPP % 5)) DOM.cartelUsSinPPP.classList.remove("ocultar");
