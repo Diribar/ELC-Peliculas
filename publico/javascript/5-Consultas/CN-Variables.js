@@ -61,6 +61,7 @@ window.addEventListener("load", async () => {
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
 		pppSinLogin: DOM.zonaDisponible.querySelector("#carteles button#pppSinLogin"),
+		loginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
 		cartelOrdenPPP: DOM.zonaDisponible.querySelector("#carteles #cartelOrdenPPP"),
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
 
@@ -91,7 +92,7 @@ window.addEventListener("load", async () => {
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
-		mostrarSinPPP: 0,
+		mostrarResultados: 0,
 	};
 
 	// Start-up
