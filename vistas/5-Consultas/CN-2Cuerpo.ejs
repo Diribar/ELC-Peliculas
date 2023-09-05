@@ -11,21 +11,19 @@
 	<!-- Zona de Productos -->
 	<div id="zonaDisponible">
 		<div id="vistaDeResults" class="bordeConSombra">
-			<!-- Zona 'Esperando Resultados' -->
+			<!-- Telón de fondo, Zona 'Esperando Resultados' y Actualizar -->
+			<img id="telonFondo" src="<%= localhost %>/imagenes/0-Base/Varios/Cortinas.jpg">
 			<div id="esperandoResultados" class="ocultar desaparece"></div>
-			<!-- Actualizar -->
-			<div id="actualizar" class="scale">
-				<i class="fa-solid fa-rotate-right" title="Actualizar"></i>
-			</div>
+			<div id="actualizar" class="scale"><i class="fa-solid fa-rotate-right" title="Actualizar"></i></div>
+
 			<!-- Zona de scroll -->
 			<div id="scroll">
 				<ul id="botones"></ul>
 				<div id="listados"></div>
 			</div>
+
 			<!-- Zona de carteles -->
-			<div id="comencemos">
-				<!-- Telón de fondo -->
-				<img id="telonFondo" src="<%= localhost %>/imagenes/0-Base/Varios/Cortinas.jpg">
+			<div id="carteles">
 				<!-- Carteles -->
 				<button id="quieroVer" class="cartel scale pointer ocultar">Quiero ver las<br>películas propuestas</button>
 				<button id="noTenemos" class="cartel ocultar">Sin resultados<br>para esa consulta</button>
