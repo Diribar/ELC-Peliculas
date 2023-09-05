@@ -94,18 +94,12 @@ module.exports = {
 			// Obtiene datos para la vista
 			if (entidad == "capitulos")
 				original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
-			const tituloMotivo =
-				subcodigo == "recuperar"
-					? "estuvo 'Inactivo'"
-					: subcodigo == "inactivar"
-					? "está en 'Inactivar'"
-					: "está Inactivo";
 			const status_id = original.statusRegistro_id;
 			const urlActual = req.originalUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
+				...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, entidadNombre, familia, comentarios, urlActual, registro: original},
 				...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 				cartelGenerico: true,

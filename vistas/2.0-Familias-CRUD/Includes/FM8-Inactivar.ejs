@@ -4,7 +4,7 @@
     <ul type="none">
         <% for (let motivo of motivos) { %>
             <li>
-                <input type="radio" name="motivo_id" value="<%= motivo.id %>" id="<%= motivo.id %>">
+                <input type="radio" id="<%= motivo.id %>" class="<%= motivo.agregarComent ? 'agregarComent' : '' %>" name="motivo_id" value="<%= motivo.id %>">
                 <label for="<%= motivo.id %>"><%= motivo.descripcion %></label>
             </li>
         <% } %>

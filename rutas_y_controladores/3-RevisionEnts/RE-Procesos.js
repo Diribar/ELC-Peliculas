@@ -341,7 +341,7 @@ module.exports = {
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
-			let include = comp.obtieneTodosLosCamposInclude(entidad);
+			let include = [...comp.obtieneTodosLosCamposInclude(entidad), "links"];
 			if (familia == "producto") include.push("links");
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
@@ -373,11 +373,25 @@ module.exports = {
 					? creadoAprob_id
 					: aprobado_id;
 
-			// Obtiene el motivo_id y el comentario
-			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+			// Obtiene el motivo_id
+			const motivo_id =
+				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
+			console.log(379, motivo_id);
+
+			// Obtiene el comentario
 			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-			if (req.body.comentario) comentario += " - " + req.body.comentario;
-			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+			if (req.body.comentario) {
+				// Variables
+				let aux = "";
+
+				// Si hay un motivo, se asegura de que esté la descripción en el comentario
+				if (motivo_id) {
+					const descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
+					if (!req.body.comentario.startsWith(descripcion)) aux = descripcion + ": ";
+				}
+				comentario += " - " + aux + req.body.comentario;
+				if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+			}
 
 			// Fin
 			return {
