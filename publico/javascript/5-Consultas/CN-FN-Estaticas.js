@@ -268,13 +268,11 @@ let cambiosEnBD = {
 		// Opción actual
 		const indice = v.ppp.findIndex((n) => n == elemento);
 		const opcionActual = v.pppOpciones.find((n) => v.ppp[indice].className.endsWith(n.icono));
-		if (opcionActual.sinPref) v.usuarioTienePPP++;
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
 		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpciones.length;
 		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
-		if (opcionPropuesta.sinPref && v.usuarioTienePPP) v.usuarioTienePPP--;
 
 		// Actualiza el ícono y el título
 		DOM.ppp[indice].classList.remove(...opcionActual.icono.split(" "));
@@ -286,6 +284,10 @@ let cambiosEnBD = {
 		DOM.ppp[indice].classList.add("inactivo");
 		await fetch(v.pppRrutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
 		DOM.ppp[indice].classList.remove("inactivo");
+
+		// Aumenta o disminuye la cantidad de PPP del usuario
+		if (opcionActual.sinPref) v.usuarioTienePPP++;
+		else if (opcionPropuesta.sinPref && v.usuarioTienePPP) v.usuarioTienePPP--;
 
 		// Fin
 		return;

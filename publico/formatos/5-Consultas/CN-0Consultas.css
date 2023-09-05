@@ -18,41 +18,39 @@
 /* Vista de Resultados */
 #zonaDisponible #vistaDeResults {background: var(--celeste-claro); display: flex; flex-direction: column; justify-content: center;}
 #zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; max-width: 700px; width: 100%; position: relative;}
+#vistaDeResults img#telonFondo {width: 100%}
 #vistaDeResults #esperandoResultados {position: absolute; height: 100%; width: 100%;}
 #vistaDeResults #esperandoResultados {background: var(--gris-intermedio); opacity: 50%;}
-
-/* Vista de Resultados - Carteles */
-#vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
-#vistaDeResults #comencemos img {width: 100%}
-#vistaDeResults #comencemos :is(button, .cartel.especial) {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#vistaDeResults #comencemos :is(button, .cartel.especial) {padding: 10px 15px; border-radius: 10px; margin: auto;}
-#vistaDeResults #comencemos :is(button, .cartel.especial) {border: solid 2px;}
-#vistaDeResults #comencemos button {font-size: 2rem; font-weight: bold; font-style: italic;}
-#vistaDeResults #comencemos :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-#vistaDeResults #comencemos button.cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
-#vistaDeResults #comencemos button#verVideo {font-size: 1.6rem;}
-
-/* Vista de Resultados - pppOpcionesCartel */
-#comencemos .cartel.especial {scale: 1.5; overflow: hidden;}
-#comencemos .cartel.especial #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
-#comencemos .cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
-#comencemos .cartel.especial div p {color: var(--azul-oscuro); margin: 3px 0 10px; font-weight: bold; text-align: center;}
-#comencemos .cartel.especial div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
-#comencemos .cartel.especial div table tr td {padding: 2px 0;}
-#comencemos .cartel.especial div table tr td:first-of-type {padding-right: 10px;}
-
-/* Vista de Resultados - Ícono Actualizar */
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
 #vistaDeResults #actualizar i {background: var(--gris-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #vistaDeResults #actualizar i {font-size: 0.8rem; padding: 5px 5px 4px 4px}
+
+/* Vista de Resultados - Carteles */
+#vistaDeResults #carteles {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
+#vistaDeResults #carteles {display: flex; flex-direction: column;}
+#vistaDeResults #carteles :is(button, .cartel.especial) {padding: 10px 15px; border-radius: 10px; margin: auto;}
+#vistaDeResults #carteles :is(button, .cartel.especial) {border: solid 2px;}
+#vistaDeResults #carteles button {font-size: 2rem; font-weight: bold; font-style: italic;}
+#vistaDeResults #carteles :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#vistaDeResults #carteles :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#vistaDeResults #carteles button.cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
+#vistaDeResults #carteles button#verVideo {font-size: 1.6rem;}
+
+/* Vista de Resultados - pppOpcionesCartel */
+#carteles .cartel.especial {scale: 1.5; overflow: hidden;}
+#carteles .cartel.especial #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
+#carteles .cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
+#carteles .cartel.especial div p {color: var(--azul-oscuro); margin: 5px 0 10px; font-weight: bold; text-align: center;}
+#carteles .cartel.especial div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
+#carteles .cartel.especial div table tr td {padding: 2px 0;}
+#carteles .cartel.especial div table tr td:first-of-type {padding-right: 10px;}
 
 /* Vista de Resultados - Varios */
 #vistaDeResults #ppp {font-size: 1.25rem;}
 #vistaDeResults #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
 
 /* Condicionales */
-#zonaDisponible:has(#comencemos img#telonFondo.ocultar) #vistaDeResults {height: 70vh;}
+#zonaDisponible:has(img#telonFondo.ocultar) #vistaDeResults {height: 70vh;}
 #zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding: 15px 0;}
 #zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding-top: 30px; padding-bottom: 30px;}
 #zonaDisponible #vistaDeResults:has(#listados table) {justify-content: flex-start;}
