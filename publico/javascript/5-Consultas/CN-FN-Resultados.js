@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.mostrar) return;
+		if (!v.obtener) return;
 
 		// Si es un orden a mostrar en botones, oculta el contador
 		DOM.contadorDeProds.classList.add("ocultar");
@@ -111,11 +111,12 @@ let resultados = {
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
+			v.mostrarResultados++;
 
-			// Con una frecuencia dada, si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP' y termina
-			if (!v.usuarioTienePPP) {
-				v.mostrarSinPPP++;
-				if (!(v.mostrarSinPPP % 5)) DOM.cartelUsSinPPP.classList.remove("ocultar");
+			// Carteles periódicos, con una frecuencia dada
+			if (!(v.mostrarResultados % 5)){
+				if (v.userID && !v.usuarioTienePPP ) DOM.cartelUsSinPPP.classList.remove("ocultar"); // Si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP'
+				else if (!v.userID) DOM.loginPend.classList.remove("ocultar"); // Si el usuario no está logueado, muestra el cartel 'loginPend'
 			}
 
 			// Fin
