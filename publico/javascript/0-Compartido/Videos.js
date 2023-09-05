@@ -36,8 +36,11 @@ window.addEventListener("load", () => {
 			DOM.todoElMain.classList.remove("ocultar");
 			video.play(); // Ejecuta el video
 
-			// Agrega íconos a la vista
-			if (!DOM.todoElMain.querySelector("#cierraVideo")) DOM.todoElMain.appendChild(cierraVideo); // Cerrar el video
+			// Agrega el ícono de cerrar el video a la vista
+			if (!DOM.todoElMain.querySelector("#cierraVideo")) DOM.todoElMain.appendChild(cierraVideo);
+
+			// Actualiza el campo 'videoConsVisto' del usuario con el valor 'true'
+			if (menu.id == "consultas") fetch("/usuarios/api/video-de-consultas-visto");
 		});
 	}
 

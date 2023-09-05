@@ -88,4 +88,18 @@ module.exports = {
 			return res.json({errores, feedbackEnvioMail});
 		},
 	},
+	videoConsVisto: async (req, res) => {
+		// Variables
+		const usuario = req.session.usuario;
+		const userID = usuario ? usuario.id : null;
+
+		// Si está logueado, actualiza el usuario
+		if (userID && !usuario.videoConsVisto) {
+			BD_genericas.actualizaPorId("usuarios", userID, {videoConsVisto: true});
+			req.session.usuario.videoConsVisto = true;
+		}
+
+		// Fin
+		return res.json();
+	},
 };
