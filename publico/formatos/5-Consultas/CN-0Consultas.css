@@ -24,22 +24,23 @@
 /* Vista de Resultados - Carteles */
 #vistaDeResults #comencemos {display: flex; flex-direction: column; position: relative;}
 #vistaDeResults #comencemos img {width: 100%}
-#vistaDeResults #comencemos :is(button, #pppOpcionesCartel) {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#vistaDeResults #comencemos :is(button, #pppOpcionesCartel) {padding: 10px 15px; border-radius: 10px; margin: auto;}
-#vistaDeResults #comencemos :is(button, #pppOpcionesCartel) {border: solid 2px;}
+#vistaDeResults #comencemos :is(button, .cartel.especial) {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
+#vistaDeResults #comencemos :is(button, .cartel.especial) {padding: 10px 15px; border-radius: 10px; margin: auto;}
+#vistaDeResults #comencemos :is(button, .cartel.especial) {border: solid 2px;}
 #vistaDeResults #comencemos button {font-size: 2rem; font-weight: bold; font-style: italic;}
-#vistaDeResults #comencemos :is(button#quieroVer, #pppOpcionesCartel) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#vistaDeResults #comencemos :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #vistaDeResults #comencemos :is(button#asegurate, button#loginPend) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-#vistaDeResults #comencemos button#loginPend span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
+#vistaDeResults #comencemos button.cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps; text-decoration: underline;}
+#vistaDeResults #comencemos button#verVideo {font-size: 1.6rem;}
 
 /* Vista de Resultados - pppOpcionesCartel */
-#comencemos #pppOpcionesCartel {scale: 1.5; overflow: hidden;}
-#comencemos #pppOpcionesCartel #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
-#comencemos #pppOpcionesCartel #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
-#comencemos #pppOpcionesCartel div p {color: var(--azul-oscuro); margin: 3px 0 10px; font-weight: bold; text-align: center;}
-#comencemos #pppOpcionesCartel div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
-#comencemos #pppOpcionesCartel div table tr td {padding: 2px 0;}
-#comencemos #pppOpcionesCartel div table tr td:first-of-type {padding-right: 10px;}
+#comencemos .cartel.especial {scale: 1.5; overflow: hidden;}
+#comencemos .cartel.especial #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
+#comencemos .cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
+#comencemos .cartel.especial div p {color: var(--azul-oscuro); margin: 3px 0 10px; font-weight: bold; text-align: center;}
+#comencemos .cartel.especial div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
+#comencemos .cartel.especial div table tr td {padding: 2px 0;}
+#comencemos .cartel.especial div table tr td:first-of-type {padding-right: 10px;}
 
 /* Vista de Resultados - Ícono Actualizar */
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
