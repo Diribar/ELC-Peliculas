@@ -35,10 +35,12 @@ module.exports = {
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
+
+		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
 
 		// Realiza muchísimas tareas y obtiene la edición en su mínima expresión
-		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
+		const objeto = {entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id};
 		edicion = await procesos.edicion.edicAprobRech(objeto);
 
 		// Acciones si se terminó de revisar la edición

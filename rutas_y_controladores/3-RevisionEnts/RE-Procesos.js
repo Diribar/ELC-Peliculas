@@ -560,7 +560,7 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
+		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id}) {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -570,7 +570,6 @@ module.exports = {
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
 			const titulo = campoRevisar.titulo;
-			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 			let motivo;
 
 			// Genera la información a actualizar
