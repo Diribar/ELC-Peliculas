@@ -12,6 +12,7 @@
 @keyframes aumentaY_prefs   {0% {transform: scaleY(0); height: 0;} 100% {transform: scaleY(1); height: 35px;}}
 @keyframes disminuyeY_prefs {0% {transform: scaleY(1); height: 35px;} 100% {transform: scaleY(0); height: 0;}}
 @keyframes aumentaY   {0% {transform: scaleY(0);} 100% {transform: scaleY(1);}}
+@keyframes agrandaAchica {0% {scale: 1} 100% {scale: 1.1}}
 
 /* Animación - Duración */
 .aparece {animation-name: aparece;       animation-duration: .5s;}
@@ -21,6 +22,7 @@
 .aumentaY_prefs {animation-name: aumentaY_prefs;     animation-duration: .4s; transform-origin: top;}
 .disminuyeY_prefs {animation-name: disminuyeY_prefs; animation-duration: .3s; transform-origin: top;}
 .aumentaY {animation-name: aumentaY;     animation-duration: 1.2s; transform-origin: top;}
+.agrandaAchica {animation: agrandaAchica .7s 6 alternate}
 
 /* Animación - Estilos */
 .aparece, .desaparece, .aumenta, .disminuye, .aumentaY_prefs, .disminuyeY_prefs, aumentaY

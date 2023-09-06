@@ -8,7 +8,7 @@ let actualizaConfigCons = {
 		// Obtiene configCons y muestra/oculta campos
 		this.entidad();
 
-		// Muestra / Oculta filtros
+		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
 		actualiza.muestraOcultaFiltros();
 
 		// Fin
@@ -36,7 +36,7 @@ let actualizaConfigCons = {
 		}
 
 		// Redirige a la siguiente instancia
-		else this.muestraOcultaPrefs();
+		else this.muestraOcultaBloqueDeFiltros();
 
 		// Fin
 		return;
@@ -91,24 +91,24 @@ let actualizaConfigCons = {
 			if (v.entidad.bhrSeguro) configCons.bhr = "1";
 
 			// Muestra/Oculta sectores
-			actualizaConfigCons.muestraOcultaPrefs();
+			actualizaConfigCons.muestraOcultaBloqueDeFiltros();
 
 			// Redirige a la siguiente instancia
-			if (v.mostrar) actualizaConfigCons.presenciaEstable();
+			if (v.obtener) actualizaConfigCons.presenciaEstable();
 
 			// Fin
 			return;
 		},
 	},
-	muestraOcultaPrefs: () => {
+	muestraOcultaBloqueDeFiltros: () => {
 		// Variables
-		v.mostrar = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
+		v.obtener = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
 
 		// Acciones si no hay errores
-		if (v.mostrar) {
+		if (v.obtener) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
-			DOM.mostrarOcultarFiltros.classList.remove("ocultar");
+			DOM.mostrarOcultarFiltros.classList.remove("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 
 			// Oculta el mensaje de error
 			DOM.asegurate.classList.add("ocultar");
@@ -125,7 +125,7 @@ let actualizaConfigCons = {
 
 			// Oculta sectores
 			DOM.nav.classList.add("ocultar");
-			DOM.mostrarOcultarFiltros.classList.add("ocultar");
+			DOM.mostrarOcultarFiltros.classList.add("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error

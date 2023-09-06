@@ -25,13 +25,14 @@
 			<!-- Zona de carteles -->
 			<div id="carteles">
 				<!-- Carteles -->
-				<button id="quieroVer" class="cartel scale pointer ocultar">Quiero ver las<br>películas propuestas</button>
+				<button id="quieroVer" class="cartel scale pointer ocultar agrandaAchica">Quiero ver las<br>películas propuestas</button>
 				<button id="noTenemos" class="cartel ocultar">Sin resultados<br>para esa consulta</button>
 				<button id="asegurate" class="cartel ocultar">Asegurate de contestar<br>los sectores en rojo</button>
-				<button id="loginPend" class="cartel ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span> para ver tus preferencias</button>
-				<button id="verVideo"  class="cartel ocultar">Te sugerimos <br><span><a href="/usuarios/login">hacer el login</a></span> y <span id="consultas"><br> ver el video explicativo</span></button>
+				<button id="pppSinLogin" class="cartel ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span> para ver tus preferencias</button>
 				<%- include("CN-Cartel1OrdenPPP") %>
 				<%- include("CN-Cartel2UsSinPPP") %>
+				<%- include("CN-Cartel3LoginPend") %>
+				<%- include("CN-Cartel4VerVideo") %>
 			</div>
 		</div>
 	</div>

@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.mostrar) return;
+		if (!v.obtener) return;
 
 		// Si es un orden a mostrar en botones, oculta el contador
 		DOM.contadorDeProds.classList.add("ocultar");
@@ -19,9 +19,9 @@ let resultados = {
 
 		// Acciones si el orden es 'pppFecha'
 		if (v.ordenBD.codigo == "pppFecha") {
-			// Si el usuario no está logueado, muestra el cartel 'loginPend' y termina
+			// Si el usuario no está logueado, muestra el cartel 'pppSinLogin' y termina
 			if (!v.userID) {
-				DOM.loginPend.classList.remove("ocultar");
+				DOM.pppSinLogin.classList.remove("ocultar");
 				return;
 			}
 			// Si el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
@@ -112,10 +112,18 @@ let resultados = {
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
 
-			// Con una frecuencia dada, si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP' y termina
-			if (!v.usuarioTienePPP) {
-				v.mostrarSinPPP++;
-				if (!(v.mostrarSinPPP % 5)) DOM.cartelUsSinPPP.classList.remove("ocultar");
+			// Carteles periódicos, con una frecuencia dada
+			v.contadorDeMostrarResults++;
+			if (v.userID && !v.videoConsVisto && v.contadorDeMostrarResults == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
+			if (!(v.contadorDeMostrarResults % 5)) {
+				if (v.userID) {
+					// Si el usuario no vio el video, muestra un cartel
+					if (!v.videoConsVisto) DOM.cartelVerVideo.classList.remove("ocultar");
+					// Si el usuario no tiene 'PPPs', muestra un cartel
+					else if (!v.usuarioTienePPP) DOM.cartelUsSinPPP.classList.remove("ocultar");
+				}
+				// Si el usuario no está logueado, muestra un cartel
+				else if (!v.userID) DOM.cartelLoginPend.classList.remove("ocultar");
 			}
 
 			// Fin

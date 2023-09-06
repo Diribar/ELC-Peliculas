@@ -60,15 +60,20 @@ window.addEventListener("load", async () => {
 		asegurate: DOM.zonaDisponible.querySelector("#carteles button#asegurate"),
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
-		loginPend: DOM.zonaDisponible.querySelector("#carteles button#loginPend"),
+		pppSinLogin: DOM.zonaDisponible.querySelector("#carteles button#pppSinLogin"),
 		cartelOrdenPPP: DOM.zonaDisponible.querySelector("#carteles #cartelOrdenPPP"),
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
+		cartelLoginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
+		cartelVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo"),
 
 		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
 		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
 		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
 		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
+
+		// Otros
+		anchorVerVideo:DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
@@ -91,7 +96,7 @@ window.addEventListener("load", async () => {
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
-		mostrarSinPPP: 0,
+		contadorDeMostrarResults: 0,
 	};
 
 	// Start-up

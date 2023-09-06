@@ -30,6 +30,7 @@ module.exports = (sequelize, dt) => {
 		fechaContrasena: {type: dt.DATE},
 		fechaRevisores: {type: dt.DATE},
 		configCons_id: {type: dt.INTEGER},
+		videoConsVisto: {type: dt.BOOLEAN},
 
 		creadoEn: {type: dt.DATE},
 		completadoEn: {type: dt.DATE},

@@ -20,6 +20,7 @@ router.get("/api/valida-editables", API.valida.editables);
 router.get("/api/valida-identidad", API.valida.identidad);
 router.get("/api/alta-mail", API.fin.altaMail);
 router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
+router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Rutas de Altas
 // 1. Sólo visitas
