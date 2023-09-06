@@ -9,7 +9,7 @@ let actualizaConfigCons = {
 		this.entidad();
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
-		actualiza.muestraOcultaBloqueDeFiltros();
+		actualiza.muestraOcultaFiltros();
 
 		// Fin
 		return;
