@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
-		mostrarResultados: 0,
+		contadorDeMostrarResults: 0,
 	};
 
 	// Start-up

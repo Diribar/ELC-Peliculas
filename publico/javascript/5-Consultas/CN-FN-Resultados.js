@@ -113,9 +113,9 @@ let resultados = {
 			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
 
 			// Carteles periódicos, con una frecuencia dada
-			v.mostrarResultados++;
-			if (v.userID && !v.videoConsVisto && v.mostrarResultados == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
-			if (!(v.mostrarResultados % 5)) {
+			v.contadorDeMostrarResults++;
+			if (v.userID && !v.videoConsVisto && v.contadorDeMostrarResults == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
+			if (!(v.contadorDeMostrarResults % 5)) {
 				if (v.userID) {
 					// Si el usuario no vio el video, muestra un cartel
 					if (!v.videoConsVisto) DOM.cartelVerVideo.classList.remove("ocultar");
