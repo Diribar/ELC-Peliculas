@@ -128,7 +128,7 @@ module.exports = {
 			const ahora = comp.fechaHora.ahora();
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
-			const revisorEnts = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			// Limpia la variable 'datos'
 			datos = {};
 
@@ -140,7 +140,7 @@ module.exports = {
 				// Acciones para alta
 				if (subcodigo == "alta") {
 					// Obtiene los datos
-					datos = {...datos, ...req.body, ...req.query, revisorEnts, imgOpcionalnal: true};
+					datos = {...datos, ...req.body, ...req.query, revisorPERL, imgOpcionalnal: true};
 
 					// Si recibimos un avatar, se completa la información
 					if (req.file) datos.tamano = req.file.size;

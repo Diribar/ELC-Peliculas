@@ -72,7 +72,7 @@
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Películas", regs: rclvs.SP, url: "rclv/detalle", mostrarOrigen: true}) %>
-				<% if (usuario.rolUsuario.revisorEnts || omnipotente) { %>
+				<% if (usuario.rolUsuario.revisorPERL) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %>
 				<% } %>
@@ -107,7 +107,7 @@
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Colecciones y Capítulos", regs: prods.SL_CC, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
-				<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
+				<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 				<% } %>
 			</div>

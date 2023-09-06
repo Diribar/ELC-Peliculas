@@ -230,7 +230,7 @@
 		<% } %>
 		<% if (codigo != "rclv/solapamiento") { %>
 			<!-- Prioridad -->
-			<% if (tema == "revisionEnts" || (usuario.rolUsuario.revisorEnts && dataEntry.statusRegistro_id == aprobado_id)) { %>
+			<% if (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id)) { %>
 				<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
 					<h3>Prioridad</h3>
 					<select name="prioridad_id" class="input margenIzq">
