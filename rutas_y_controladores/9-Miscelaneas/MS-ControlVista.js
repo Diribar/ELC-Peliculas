@@ -55,7 +55,6 @@ module.exports = {
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rolUsuario.revisorEnts;
 		const omnipotente = req.session.usuario.rolUsuario.codigo == "omnipotente";
 
 		// Productos
@@ -76,7 +75,7 @@ module.exports = {
 		// return res.send(prods);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
-			...{prods, rclvs, revisor, omnipotente},
+			...{prods, rclvs, omnipotente},
 			dataEntry,
 		});
 	},
