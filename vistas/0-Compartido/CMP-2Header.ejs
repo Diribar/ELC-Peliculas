@@ -25,7 +25,7 @@
 			</div>
 		</a>
 		<!-- Tablero de Mantenimiento -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.soloPermInputs) { %>
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.id == rolPermInputs_id) { %>
 			<a href="/mantenimiento" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
