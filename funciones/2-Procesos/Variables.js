@@ -34,9 +34,11 @@ module.exports = {
 		mantenimiento: {titulo: "Mantenimiento", icono: "fa-screwdriver-wrench", permInputs: true},
 
 		// Sólo usuarios con rol de Revisores
-		revisionEnts: {titulo: "Revisión de Entidades", icono: "fa-video", revisorEnts: true, hr: true},
+		revisionRCLVs: {titulo: "Revisión de Personajes", icono: "fa-user-tie", revisorPERL: true, hr: true},
+		revisionProds: {titulo: "Revisión de Películas", icono: "fa-video", revisorPERL: true, hr: true},
+		revisionLinks: {titulo: "Revisión de Links", icono: "fa-link", revisorLinks: true, hr: true},
 		revisionUs: {titulo: "Revisión de Usuarios", icono: "fa-user-check", revisorUs: true},
-		graficos: {titulo: "Gráficos de control", icono: "fa-chart-simple", revisor: true},
+		graficos: {titulo: "Gráficos de control", icono: "fa-chart-simple", revisorEnts: true},
 	},
 
 	// Productos y RCLVs

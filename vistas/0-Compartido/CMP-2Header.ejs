@@ -31,7 +31,7 @@
 			</a>
 		<% } %>
 		<!-- Tableros de Revisión -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisor) { %>
+		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
 			<div class="grupos">
 				<i class="fa-solid fa-user-graduate scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
 				<%- include("CMP-5MenuRevisores") %>
