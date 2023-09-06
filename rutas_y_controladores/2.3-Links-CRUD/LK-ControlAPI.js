@@ -62,7 +62,7 @@ module.exports = {
 		// Variables
 		const {url, motivo_id} = req.query;
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rolUsuario.revisorEnts;
+		const revisorLinks = req.session.usuario.rolUsuario.revisorLinks;
 		const ahora = comp.fechaHora.ahora();
 		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
 		let respuesta = {};
@@ -75,8 +75,8 @@ module.exports = {
 		else if (
 			// El link está en status 'creado' y por el usuario
 			(link.statusRegistro.creado && link.creadoPor_id == userID) ||
-			// El link está en status 'inactivo' y es un revisor
-			(link.statusRegistro.inactivo && revisor)
+			// El link está en status 'inactivo' y es un revisorLinks
+			(link.statusRegistro.inactivo && revisorLinks)
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
 			link.statusRegistro_id = inactivo_id;

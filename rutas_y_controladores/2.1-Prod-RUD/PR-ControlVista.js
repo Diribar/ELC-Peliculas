@@ -21,7 +21,6 @@ module.exports = {
 		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -88,7 +87,7 @@ module.exports = {
 		// Va a la vista
 		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
@@ -166,12 +165,11 @@ module.exports = {
 				"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 			];
 			const status_id = original.statusRegistro_id;
-			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 			// Va a la vista
 			// return res.send(prodComb)
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
+				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
@@ -183,7 +181,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen} = req.query;
 			const userID = req.session.usuario.id;
-			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+			const revisorEnts = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
 			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
@@ -202,18 +200,18 @@ module.exports = {
 			if (original.capitulos) delete original.capitulos;
 
 			// Averigua si corresponde actualizar el original
-			// 1. Tiene que ser un revisor
+			// 1. Tiene que ser un revisorEnts
 			// 2. El registro debe estar en el status 'creadoAprob'
-			const actualizaOrig = revisor && original.statusRegistro.creadoAprob;
+			const actualizaOrig = revisorEnts && original.statusRegistro.creadoAprob;
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido
 			// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 			let prodComb = {...original, ...edicion, ...req.body, id};
 
-			// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
-			prodComb.epocaOcurrencia = revisor;
-			prodComb.publico = revisor;
+			// Si es un revisorEnts, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
+			prodComb.epocaOcurrencia = revisorEnts;
+			prodComb.publico = revisorEnts;
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores

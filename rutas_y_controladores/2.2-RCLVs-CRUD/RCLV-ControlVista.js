@@ -18,7 +18,6 @@ module.exports = {
 		const userID = usuario ? usuario.id : null;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const revisor = usuario && usuario.rolUsuario.revisorEnts;
 		const articulo = entidad == "epocasDelAno" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 
@@ -57,7 +56,7 @@ module.exports = {
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, canonNombre, RCLVnombre},
@@ -76,7 +75,6 @@ module.exports = {
 			const {entidad, id, prodEntidad, prodID} = req.query;
 			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 			const userID = req.session.usuario.id;
-			const revisor = req.session.usuario.rolUsuario.revisorEnts;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
@@ -143,7 +141,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{rolesIgl, apMars, originalUrl, revisor},
+				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				...{omitirImagenDerecha: true, omitirFooter: true},
 			});
