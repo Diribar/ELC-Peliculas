@@ -53,16 +53,16 @@ window.addEventListener("load", async () => {
 		mostrarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
 		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
 
-		// Zona Disponible - Botones e Imagen de fondo
+		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
-		carteles: DOM.zonaDisponible.querySelectorAll("#comencemos .cartel"),
-		asegurate: DOM.zonaDisponible.querySelector("#comencemos button#asegurate"),
-		quieroVer: DOM.zonaDisponible.querySelector("#comencemos button#quieroVer"),
-		noTenemos: DOM.zonaDisponible.querySelector("#comencemos button#noTenemos"),
-		loginPend: DOM.zonaDisponible.querySelector("#comencemos button#loginPend"),
-		pppOpcionesCartel: DOM.zonaDisponible.querySelector("#comencemos #pppOpcionesCartel"),
-		pppOpcionesCartelCierra:DOM.zonaDisponible.querySelector("#comencemos #pppOpcionesCartel #cierra"),
-		telonFondo: DOM.zonaDisponible.querySelector("#comencemos img#telonFondo"),
+		telonFondo: DOM.zonaDisponible.querySelector("#vistaDeResults img#telonFondo"),
+		carteles: DOM.zonaDisponible.querySelectorAll("#carteles .cartel"),
+		asegurate: DOM.zonaDisponible.querySelector("#carteles button#asegurate"),
+		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
+		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
+		loginPend: DOM.zonaDisponible.querySelector("#carteles button#loginPend"),
+		cartelOrdenPPP: DOM.zonaDisponible.querySelector("#carteles #cartelOrdenPPP"),
+		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
 
 		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
@@ -91,6 +91,7 @@ window.addEventListener("load", async () => {
 		localhost: await fetch("/api/localhost").then((n) => n.json()),
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
+		mostrarSinPPP: 0,
 	};
 
 	// Start-up

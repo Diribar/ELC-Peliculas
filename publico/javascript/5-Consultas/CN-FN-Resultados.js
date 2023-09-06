@@ -13,22 +13,20 @@ let resultados = {
 
 		// Tapa y limpia los resultados anteriores
 		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.replace("desaparece", "aparece");
-		DOM.pppOpcionesCartelCierra.classList.remove("ocultar");
 		DOM.botones.innerHTML = "";
 		DOM.listados.innerHTML = "";
 		v.infoResultados = null;
 
 		// Acciones si el orden es 'pppFecha'
 		if (v.ordenBD.codigo == "pppFecha") {
-			// Muestra el cartel 'loginPend' y termina
+			// Si el usuario no está logueado, muestra el cartel 'loginPend' y termina
 			if (!v.userID) {
 				DOM.loginPend.classList.remove("ocultar");
 				return;
 			}
-			// Muestra el cartel 'pppOpcionesCartel' y termina
+			// Si el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
 			else if (!v.usuarioTienePPP) {
-				DOM.pppOpcionesCartelCierra.classList.add("ocultar"); // oculta el ícono 'pppOpcionesCartelCierra'
-				DOM.pppOpcionesCartel.classList.remove("ocultar");
+				DOM.cartelOrdenPPP.classList.remove("ocultar");
 				return;
 			}
 		}
@@ -113,6 +111,12 @@ let resultados = {
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
+
+			// Con una frecuencia dada, si el usuario no tiene 'PPPs', muestra el cartel 'usuario sin PPP' y termina
+			if (!v.usuarioTienePPP) {
+				v.mostrarSinPPP++;
+				if (!(v.mostrarSinPPP % 5)) DOM.cartelUsSinPPP.classList.remove("ocultar");
+			}
 
 			// Fin
 			return;

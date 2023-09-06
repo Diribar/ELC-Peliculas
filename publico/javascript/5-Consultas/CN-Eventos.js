@@ -127,7 +127,7 @@ window.addEventListener("load", async () => {
 			// Expande / Contrae
 			else if (elemento.className && elemento.className.includes("expandeContrae")) expandeContrae(elemento);
 			// Cierra el cartel "pppOpciones"
-			else if (nombre == "cierra") DOM.pppOpcionesCartel.classList.add("ocultar");
+			else if (nombre == "cierra") padre.classList.add("ocultar");
 		}
 
 		// Cartel 'mostrarFiltros'
@@ -144,8 +144,8 @@ window.addEventListener("load", async () => {
 
 		// Caption
 		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
-		// Botón 'comencemos'
-		else if (padre.id == "comencemos" && nombre == "quieroVer" && v.mostrar) resultados.muestra.generico();
+		// Botón 'quieroVer'
+		else if (padre.id == "carteles" && nombre == "quieroVer" && v.mostrar) resultados.muestra.generico();
 
 		// Fin
 		return;
