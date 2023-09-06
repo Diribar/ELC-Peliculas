@@ -32,6 +32,7 @@ window.addEventListener("load", async () => {
 		},
 
 		// Varios
+		actores: document.querySelector(".inputError input[name=actores"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
@@ -45,16 +46,19 @@ window.addEventListener("load", async () => {
 		paisesListado: Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
 			return {id: n.value, nombre: n.innerHTML};
 		}),
+
 		// Versiones de datos
 		versiones: ["edicN", "edicG", "orig"],
 		versionActual: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
 		esImagen: true,
+
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
 		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
 		avatarInicial: DOM.imgAvatar.src,
+		...(await fetch("/producto/api/obtiene-variables-del-back-end/").then((n) => n.json())),
 	};
 	let rutas = {
 		validar: "/producto/api/valida/?",
@@ -81,10 +85,7 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else
-					version.edicN.avatar = DOM.inputAvatar.files[0]
-						? DOM.inputAvatar.files[0].name
-						: version.edicG.avatar;
+				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
 			}
 
 			// Fin
@@ -290,6 +291,11 @@ window.addEventListener("load", async () => {
 			FN.actualizaPaisesNombre();
 		}
 
+		// Acciones si se cambió el tipo de actuación
+		if (e.target.name == "tipoActuacion_id")
+			DOM.actores.value =
+				e.target.value == v.anime_id ? "Dibujos Animados" : e.target.value == v.documental_id ? "Documental" : "";
+
 		// Acciones si se cambió el avatar
 		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
 		else FN.actualizaVarios();
@@ -373,11 +379,14 @@ window.addEventListener("load", async () => {
 let versiones = async (rutaVersiones) => {
 	// Obtiene las versiones original y de edición
 	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
+
 	// Procesa la versión de edición guardada
 	let edicG_existe = !!edicG.id;
 	edicG = {...orig, ...edicG};
+
 	// Averigua si el original está pendiente de ser aprobado
 	let origPendAprobar = orig.statusRegistro.gr_creado;
+
 	// Fin
 	return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
 };

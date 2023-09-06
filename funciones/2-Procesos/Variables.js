@@ -159,7 +159,7 @@ module.exports = {
 		{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: true},
 		{titulo: "Guión", nombre: "guion", productos: true, campoInput: true},
 		{titulo: "Música", nombre: "musica", productos: true, campoInput: true},
-		{titulo: "Actores", nombre: "actores", productos: true, campoInput: true},
+		{titulo: "Actuación", nombre: "actores", productos: true, campoInput: true},
 		{titulo: "Producción", nombre: "produccion", productos: true, campoInput: true},
 		{nombre: "sinopsis", productos: true},
 		{nombre: "avatar", productos: true},

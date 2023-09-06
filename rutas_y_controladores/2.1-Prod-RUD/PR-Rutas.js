@@ -31,17 +31,19 @@ const aptoCRUD = [...aptoCalificar, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion];
 
 //************************ Rutas ****************************
-// Rutas de APIs
-// Calificaciones
+// API - Calificaciones
 router.get("/api/obtiene-calificaciones", API.califics.delProducto);
 router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
 router.get("/api/elimina-calif-propia", API.califics.elimina);
-// Preferencias por producto
+
+// API - Preferencias por producto
 router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
 router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
-// Edición
+
+// API - Edición
 router.get("/api/valida", API.edicion.valida);
 router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
+router.get("/api/obtiene-variables-del-back-end", API.edicion.variables);
 router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
 router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
 router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);

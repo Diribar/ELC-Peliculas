@@ -91,6 +91,13 @@ module.exports = {
 			// Envía los datos
 			return res.json([prodOrig, prodEdic]);
 		},
+		variables: async (req, res) => {
+			// Tipos de actuación
+			const datos = {anime_id, documental_id, actuada_id};
+
+			// Fin
+			return res.json(datos);
+		},
 		eliminaNueva: async (req, res) => {
 			// Elimina Session y Cookies
 			if (req.session.edicProd) delete req.session.edicProd;

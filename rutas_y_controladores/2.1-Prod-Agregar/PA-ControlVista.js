@@ -213,7 +213,7 @@ module.exports = {
 			// Obtiene el Data Entry de session y cookies
 			let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 
-			// Obtiene los DatosAdics
+			// Obtiene los datosAdics
 			delete datosAdics.sinRCLV;
 			datosAdics = {...datosAdics, ...req.body};
 
