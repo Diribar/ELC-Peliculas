@@ -76,7 +76,7 @@
 			<i class="fa-solid fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
 		
 			<!-- ELIMINAR -->
-			<% if (link.cond.creadoPropio || revisor&&link.cond.inactivo) { %>
+			<% if (link.cond.creadoPropio || usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
 				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 			<% } else if (link.cond.creadoAprob || link.cond.aprobado) { %>
