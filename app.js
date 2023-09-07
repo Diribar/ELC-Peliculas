@@ -143,12 +143,12 @@ app.set("views", [
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
-	global.creado_id = statusRegistros.find((n) => n.creado).id;
-	global.creadoAprob_id = statusRegistros.find((n) => n.creadoAprob).id;
-	global.aprobado_id = statusRegistros.find((n) => n.aprobado).id;
-	global.inactivar_id = statusRegistros.find((n) => n.inactivar).id;
-	global.recuperar_id = statusRegistros.find((n) => n.recuperar).id;
-	global.inactivo_id = statusRegistros.find((n) => n.inactivo).id;
+	global.creado_id = statusRegistros.find((n) => n.codigo == "creado").id;
+	global.creadoAprob_id = statusRegistros.find((n) => n.codigo == "creadoAprob").id;
+	global.aprobado_id = statusRegistros.find((n) => n.codigo == "aprobado").id;
+	global.inactivar_id = statusRegistros.find((n) => n.codigo == "inactivar").id;
+	global.recuperar_id = statusRegistros.find((n) => n.codigo == "recuperar").id;
+	global.inactivo_id = statusRegistros.find((n) => n.codigo == "inactivo").id;
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 
 	// 2. Tipos de actuación
