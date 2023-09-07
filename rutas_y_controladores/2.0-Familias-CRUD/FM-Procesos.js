@@ -710,7 +710,7 @@ module.exports = {
 	statusResumido: (registro) => {
 		return registro.statusRegistro.creados
 			? {id: 1, valor: "Creado"}
-			: registro.statusRegistro.codigo == "aprobado"
+			: registro.statusRegistro_id == aprobado_id
 			? {id: 2, valor: "Aprobado"}
 			: registro.statusRegistro.codigo == "inactivo"
 			? {id: 3, valor: "Inactivo"}

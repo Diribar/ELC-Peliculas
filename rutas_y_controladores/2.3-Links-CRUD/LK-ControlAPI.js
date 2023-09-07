@@ -146,7 +146,7 @@ module.exports = {
 			? {mensaje: "El link no existe", reload: true}
 			: link.statusRegistro_id == creado_id
 			? {mensaje: "El link está en status creado", reload: true}
-			: link.statusRegistro.codigo == "aprobado"
+			: link.statusRegistro_id == aprobado_id
 			? {mensaje: "El link está en status aprobado", reload: true}
 			: link.statusRegistro.codigo == "inactivo"
 			? {mensaje: "El link está en status inactivo", reload: true}
@@ -155,7 +155,7 @@ module.exports = {
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos = link.statusRegistro.codigo == "inactivar"
+			let datos = link.statusRegistro_id == inactivo_id
 				? {statusRegistro_id: aprobado_id, motivo_id: null}
 				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
