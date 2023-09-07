@@ -153,9 +153,9 @@ app.set("views", [
 	global.aprobados_ids = statusRegistros.filter((n) => n.aprobados).map((n) => n.id);
 
 	// 2. Tipos de actuación
-	global.anime_id = tiposActuacion.find((n) => n.anime).id;
-	global.documental_id = tiposActuacion.find((n) => n.documental).id;
-	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
+	global.anime_id = tiposActuacion.find((n) => n.codigo == "anime").id;
+	global.documental_id = tiposActuacion.find((n) => n.codigo == "documental").id;
+	global.actuada_id = tiposActuacion.find((n) => n.codigo == "actuada").id;
 
 	// 3.A. Roles de usuario
 	global.rolConsultas_id = rolesUs.find((n) => n.codigo == "consultas").id;
@@ -168,13 +168,13 @@ app.set("views", [
 	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
 
 	// 4. Públicos
-	global.mayores_ids = publicos.filter((n) => n.mayores).map((n) => n.id);
-	global.familia_id = publicos.find((n) => n.familia).id;
-	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
+	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
+	global.familia_id = publicos.find((n) => n.grupo == "familia").id;
+	global.menores_ids = publicos.filter((n) => n.grupo == "menores").map((n) => n.id);
 
 	// Otros
-	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);
-	global.sinPref = pppOpciones.find((n) => n.sinPref);
+	global.yaLaVi = pppOpciones.find((n) => n.codigo == "yaLaVi");
+	global.sinPref = pppOpciones.find((n) => n.codigo == "sinPref");
 	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
 	global.mesesAbrev = meses.map((n) => n.abrev);
@@ -183,7 +183,7 @@ app.set("views", [
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
-	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea")
+	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");

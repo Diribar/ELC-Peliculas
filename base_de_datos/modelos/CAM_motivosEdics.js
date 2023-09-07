@@ -12,7 +12,6 @@ module.exports = (sequelize, dt) => {
 		links: {type: dt.BOOLEAN},
 		rev_edicion: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
-		bloqueoInput: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cam_motivos_edics",

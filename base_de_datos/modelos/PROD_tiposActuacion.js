@@ -3,8 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		anime: {type: dt.BOOLEAN},
-		documental: {type: dt.BOOLEAN},
+		codigo: {type: dt.STRING(15)},
 	};
 	const config = {
 		tableName: "prod_tipos_actuac",

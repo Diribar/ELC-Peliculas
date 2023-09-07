@@ -320,8 +320,8 @@ module.exports = {
 							if (orden.codigo == "pppFecha") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].pppFecha = pppRegistro.creadoEn;
-								prods[i].yaLaVi = pppOpcionElegida.yaLaVi;
-								prods[i].laQuieroVer = pppOpcionElegida.laQuieroVer;
+								prods[i].yaLaVi = pppOpcionElegida.codigo == "yaLaVi";
+								prods[i].laQuieroVer = pppOpcionElegida.codigo == "laQuieroVer";
 							}
 						}
 					}

@@ -587,7 +587,7 @@ let actualizaLaEpocaDeEstreno = async () => {
 };
 let actualizaLinkDeProdAprob = async () => {
 	// Variables
-	const prodInactivo_id = motivosStatus.find((n) => n.prodInactivo).id;
+	const prodInactivo_id = motivosStatus.find((n) => n.codigo == "prodInactivo").id;
 	const inactivo = {statusRegistro_id: inactivo_id, motivo_id: prodInactivo_id};
 
 	// Obtiene todos los links con su producto asociado
