@@ -609,7 +609,7 @@ let actualizaLinkDeProdAprob = async () => {
 		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
 
 		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
-		const prodAprob = [creadoAprob_id, aprobado_id].includes(statusProd);
+		const prodAprob = aprobados.includes(statusProd);
 		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 	}
 

@@ -46,7 +46,7 @@ module.exports = {
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
 		const statusEstable =
-			codigo == "detalle" && ([creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
+			codigo == "detalle" && (aprobados_ids.includes(status_id) || status_id == inactivo_id);
 
 		// Datos para la vista
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;

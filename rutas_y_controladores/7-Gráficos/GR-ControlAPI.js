@@ -57,7 +57,7 @@ module.exports = {
 
 		// Cuenta la cantidad de links
 		provs = provs.map((m) => {
-			m.links = m.links.filter((p) => [creadoAprob_id, aprobado_id].includes(p.statusRegistro_id)).length;
+			m.links = m.links.filter((p) => aprobados_ids.includes(p.statusRegistro_id)).length;
 			return m;
 		});
 

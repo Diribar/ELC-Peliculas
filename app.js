@@ -149,7 +149,8 @@ app.set("views", [
 	global.inactivar_id = statusRegistros.find((n) => n.codigo == "inactivar").id;
 	global.recuperar_id = statusRegistros.find((n) => n.codigo == "recuperar").id;
 	global.inactivo_id = statusRegistros.find((n) => n.codigo == "inactivo").id;
-	global.atributosCalific = {feValores, entretiene, calidadTecnica};
+	global.creados_ids = statusRegistros.filter((n) => n.creados).map((n) => n.id);
+	global.aprobados_ids = statusRegistros.filter((n) => n.aprobados).map((n) => n.id);
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.anime).id;
@@ -181,6 +182,7 @@ app.set("views", [
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");

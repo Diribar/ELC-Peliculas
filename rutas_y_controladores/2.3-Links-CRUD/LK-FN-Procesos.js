@@ -36,7 +36,7 @@ module.exports = {
 
 		// Obtiene el status del producto
 		datos.prodAprob = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID).then((n) =>
-			[creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)
+			aprobados_ids.includes(n.statusRegistro_id)
 		);
 
 		// Obtiene el proveedor

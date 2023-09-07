@@ -68,7 +68,7 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
-		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
+		const statusEstable = aprobados_ids.includes(status_id) || status_id == inactivo_id;
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.identValidada;
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);

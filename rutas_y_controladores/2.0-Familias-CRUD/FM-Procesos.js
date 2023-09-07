@@ -402,7 +402,7 @@ module.exports = {
 
 				// 2. Actualiza prodAprob en sus links
 				if (registro.links) {
-					const prodAprob = [creadoAprob_id, aprobado_id].includes(registro.statusRegistro_id);
+					const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
 					for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 				}
 
@@ -437,7 +437,7 @@ module.exports = {
 
 			// Más variables
 			const tipo_id = linkPelicula_id; // El tipo de link 'película'
-			const statusAprobado = {statusRegistro_id: [creadoAprob_id, aprobado_id]};
+			const statusAprobado = {statusRegistro_id: aprobados_ids};
 			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 			const objeto = {[campo_id]: id, tipo_id};
 			const calidad = {[Op.gte]: 720};
@@ -708,7 +708,7 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		return registro.statusRegistro.gr_creado
+		return registro.statusRegistro.creados
 			? {id: 1, valor: "Creado"}
 			: registro.statusRegistro.codigo == "aprobado"
 			? {id: 2, valor: "Aprobado"}

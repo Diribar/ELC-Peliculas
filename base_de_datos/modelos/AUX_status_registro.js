@@ -3,12 +3,11 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
-		gr_creado: {type: dt.BOOLEAN},
-		gr_aprobado: {type: dt.BOOLEAN},
-		gr_estables: {type: dt.BOOLEAN},
-		gr_provisorios: {type: dt.BOOLEAN},
-		gr_pasivos: {type: dt.BOOLEAN},
-		gr_inactivos: {type: dt.BOOLEAN},
+		codigo: {type: dt.STRING(15)},
+		creados: {type: dt.BOOLEAN},
+		aprobados: {type: dt.BOOLEAN},
+		estables: {type: dt.BOOLEAN},
+		provisorios: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_status_registros",

@@ -114,8 +114,8 @@ module.exports = {
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
-			// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
-			const condicion = !prodOrig.statusRegistro.gr_creado || prodOrig.creadoPor_id != userID;
+			// No se puede eliminar la edición de un producto con status "creados" y fue creado por el usuario
+			const condicion = !prodOrig.statusRegistro.creados || prodOrig.creadoPor_id != userID;
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", prodEdic.avatar);

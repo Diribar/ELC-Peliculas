@@ -57,7 +57,7 @@ module.exports = {
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 
 				// Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
-				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
+				ED.push(...productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id)));
 			}
 
 			// Fin
@@ -120,7 +120,7 @@ module.exports = {
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
-				statusRegistro_id: [creadoAprob_id, aprobado_id],
+				statusRegistro_id: aprobados_ids,
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores

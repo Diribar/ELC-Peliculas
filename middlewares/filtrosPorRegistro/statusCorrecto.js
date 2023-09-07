@@ -62,29 +62,29 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 		? false
 		: baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
 		? ruta == "/edicion/"
-			? [creado_id, creadoAprob_id, aprobado_id]
+			? [creado_id, ...aprobados_ids]
 			: ruta == "/inactivar/"
-			? [creadoAprob_id, aprobado_id]
+			? aprobados_ids
 			: ruta == "/recuperar/" || ruta == "/eliminar/"
 			? [inactivo_id]
 			: ruta == "/calificar/"
-			? [creado_id, creadoAprob_id, aprobado_id]
+			? [creado_id, ...aprobados_ids]
 			: [99]
 		: baseUrl == "/links" && ruta == "/abm/" // Preguntas para 'Links'
-		? [creado_id, creadoAprob_id, aprobado_id]
+		? [creado_id, ...aprobados_ids]
 		: baseUrl == "/revision" // Preguntas para 'Revisión'
 		? ruta.includes("/alta/") // para 'producto' y 'rclv'
 			? [creado_id]
 			: ruta.includes("/edicion/")
-			? [creadoAprob_id, aprobado_id]
+			? aprobados_ids
 			: ruta.includes("/inactivar-o-recuperar/")
 			? [inactivar_id, recuperar_id]
 			: ruta.includes("/links/")
-			? [creadoAprob_id, aprobado_id]
+			? aprobados_ids
 			: ruta.includes("/rechazo/")
 			? [creado_id]
 			: ruta.includes("/solapamiento/")
-			? [creado_id, aprobado_id]
+			? [creado_id, ...aprobados_ids]
 			: [99]
 		: baseUrl == "/revision/usuarios" && ruta.includes("/validar-identidad/")
 		? [stIdentPendValidar_id]
