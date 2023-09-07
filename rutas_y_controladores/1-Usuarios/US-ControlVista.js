@@ -12,10 +12,10 @@ module.exports = {
 		// Enviar a Login si no está logueado
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
-		let status_usuario = req.session.usuario.statusRegistro;
-		status_usuario.codigo == "mailPendValidar"
+		const statusUsuario_id = req.session.usuario.statusRegistro_id;
+		statusUsuario_id == stMailPendValidar_id
 			? res.redirect("/usuarios/login")
-			: status_usuario.codigo == mailValidado
+			: statusUsuario_id == stMailValidado_id
 			? res.redirect("/usuarios/editables")
 			: req.session.urlFueraDeUsuarios
 			? res.redirect(req.session.urlFueraDeUsuarios)
