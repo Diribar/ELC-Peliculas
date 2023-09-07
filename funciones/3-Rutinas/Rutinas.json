@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 6/sep",
-	"HoraUTC": "14:06",
+	"FechaUTC": "Jue. 7/sep",
+	"HoraUTC": "13:52",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-sep-23": {"titulo": "San Moisés", "entidad": "personajes", "id": 61},
 		"05-sep-23": {"titulo": "San Chárbel Makhlouf", "entidad": "personajes", "id": 116},
 		"06-sep-23": {"titulo": "ELC - Películas"},
 		"07-sep-23": {"titulo": "ELC - Películas"},
-		"08-sep-23": {"titulo": "Ap. Mar. - Coromoto", "entidad": "hechos", "id": 53}
+		"08-sep-23": {"titulo": "Ap. Mar. - Coromoto", "entidad": "hechos", "id": 53},
+		"09-sep-23": {"titulo": "ELC - Películas"}
 	}
 }
