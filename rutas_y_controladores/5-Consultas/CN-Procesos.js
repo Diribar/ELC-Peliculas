@@ -31,7 +31,7 @@ module.exports = {
 					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
 					if (campo == "epocasOcurrencia")
 						campos.epocasOcurrencia.opciones = epocasOcurrencia
-							.filter((n) => !n.varias)
+							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
 					else campos[campo].opciones = global[campo];
 				}

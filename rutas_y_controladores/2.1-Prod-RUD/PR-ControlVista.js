@@ -69,7 +69,7 @@ module.exports = {
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
 		const statusEstable = aprobados_ids.includes(status_id) || status_id == inactivo_id;
-		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.identValidada;
+		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.codigo == "identValidada";
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID});

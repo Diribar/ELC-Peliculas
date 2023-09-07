@@ -162,10 +162,10 @@ app.set("views", [
 	global.rolPermInputs_id = rolesUs.find((n) => n.codigo == "permInputs").id;
 
 	// 3.B. Status de usuario
-	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
-	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.registrado).id;
-	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
-	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
+	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
+	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.codigo == "registrado").id;
+	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "identPendValidar").id;
+	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.codigo == "identValidada").id;
 
 	// 4. Públicos
 	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
@@ -175,8 +175,8 @@ app.set("views", [
 	// Otros
 	global.yaLaVi = pppOpciones.find((n) => n.codigo == "yaLaVi");
 	global.sinPref = pppOpciones.find((n) => n.codigo == "sinPref");
-	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
-	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
+	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
+	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
 	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;

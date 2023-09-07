@@ -45,14 +45,13 @@ module.exports = {
 
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
-		const statusEstable =
-			codigo == "detalle" && (aprobados_ids.includes(status_id) || status_id == inactivo_id);
+		const statusEstable = codigo == "detalle" && (aprobados_ids.includes(status_id) || status_id == inactivo_id);
 
 		// Datos para la vista
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
-		const userIdentVal = usuario && usuario.statusRegistro.identValidada;
+		const userIdentVal = usuario && usuario.statusRegistro.codigo == "identValidada";
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
