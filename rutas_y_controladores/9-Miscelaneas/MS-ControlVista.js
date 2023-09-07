@@ -56,7 +56,7 @@ module.exports = {
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario.rolUsuario.revisorEnts;
-		const omnipotente = req.session.usuario.rolUsuario.omnipotente;
+		const omnipotente = req.session.usuario.rolUsuario.codigo == "omnipotente";
 
 		// Productos
 		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
@@ -68,10 +68,10 @@ module.exports = {
 
 		// Une Productos y Links
 		prods = {...prods, ...prodLinks};
-		
+
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-		
+
 		// Va a la vista
 		// return res.send(prods);
 		return res.render("CMP-0Estructura", {

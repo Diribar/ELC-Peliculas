@@ -11,7 +11,7 @@ global.vidaUtilLinks = unaSemana * 26;
 global.sinLinks = 0;
 global.talVez = 1;
 global.conLinks = 2;
-global.conLinksHD = 3
+global.conLinksHD = 3;
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'
@@ -157,8 +157,8 @@ app.set("views", [
 	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
 
 	// 3.A. Roles de usuario
-	global.rolConsultas_id = rolesUs.find((n) => !n.permInputs).id;
-	global.rolPermInputs_id = rolesUs.find((n) => n.soloPermInputs).id;
+	global.rolConsultas_id = rolesUs.find((n) => n.codigo == "consultas").id;
+	global.rolPermInputs_id = rolesUs.find((n) => n.codigo == "permInputs").id;
 
 	// 3.B. Status de usuario
 	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;

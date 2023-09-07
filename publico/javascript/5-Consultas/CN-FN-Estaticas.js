@@ -155,7 +155,7 @@ let actualiza = {
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
-			if (v.mostrarFiltros || DOM[campo.name].value) DOM[campo.name].parentNode.classList.replace("invisible", "aparece");
+			if (v.mostrarFiltros || DOM[campo.name].value) DOM[campo.name].parentNode.classList.replace("ocultaFiltro", "aparece");
 
 			// Sirve en régimen
 			v.mostrarFiltros || DOM[campo.name].value
@@ -164,7 +164,7 @@ let actualiza = {
 		}
 
 		// Palabras clave - sólo sirve para el start-up
-		if (v.mostrarFiltros || DOM.palClave.value) DOM.palClave.parentNode.classList.replace("invisible", "aparece");
+		if (v.mostrarFiltros || DOM.palClave.value) DOM.palClave.parentNode.classList.replace("ocultaFiltro", "aparece");
 
 		// Palabras clave - sirve en régimen
 		v.mostrarFiltros || DOM.palClave.value

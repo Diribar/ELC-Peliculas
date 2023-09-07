@@ -7,8 +7,6 @@ module.exports = (sequelize, dt) => {
 		permInputs: {type: dt.BOOLEAN},
 		revisorEnts: {type: dt.BOOLEAN},
 		revisorUs: {type: dt.BOOLEAN},
-		omnipotente: {type: dt.BOOLEAN},
-		soloPermInputs: {type: dt.BOOLEAN},
 		revisor: {type: dt.BOOLEAN},
 	};
 	const config = {
