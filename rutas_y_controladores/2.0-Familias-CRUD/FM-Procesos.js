@@ -712,7 +712,7 @@ module.exports = {
 			? {id: 1, valor: "Creado"}
 			: registro.statusRegistro_id == aprobado_id
 			? {id: 2, valor: "Aprobado"}
-			: registro.statusRegistro.codigo == "inactivo"
+			: registro.statusRegistro_id == inactivo_id
 			? {id: 3, valor: "Inactivo"}
 			: {id: 1, valor: "Para Revisar"};
 	},
