@@ -25,7 +25,7 @@
 			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-TipoActuac", {nombre: "tipoActuacion_id"}) %>
-			<% if (revisor || registro.statusRegistro.aprobado) { %>
+			<% if (usuario.rolUsuario.revisorEnts || registro.statusRegistro.aprobado) { %>
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
@@ -46,7 +46,7 @@
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "evento_id"}) %>
 			<!--Época del año-->
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epocaDelAno_id"}) %>
-			<% if (revisor) { %>
+			<% if (usuario.rolUsuario.revisorEnts) { %>
 				<!--Época respecto a Cristo -->
 				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
 			<% } %>

@@ -24,8 +24,8 @@
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
 			</div>
 		</a>
-		<!-- Tablero de Mantenimiento -->
-		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.id == rolPermInputs_id) { %>
+		<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
+		<% if (locals.usuario && usuario.rolUsuario_id == rolPermInputs_id) { %>
 			<a href="/mantenimiento" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
@@ -33,7 +33,7 @@
 		<!-- Tableros de Revisión -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisor) { %>
 			<div class="grupos">
-				<i class="fa-solid fa-landmark scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
+				<i class="fa-solid fa-user-graduate scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
 				<%- include("CMP-5MenuRevisores") %>
 			</div>
 		<% } %>

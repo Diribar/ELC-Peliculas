@@ -4,7 +4,7 @@ const variables = require("../../funciones/2-Procesos/Variables");
 module.exports = (req, res, next) => {
 	// Variables
 	const id = req.query.id;
-	const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+	const revisorEnts = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 	let informacion;
 	// Bloquea el acceso a los ID menores que 10
@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
 			],
 		};
 	// Bloquea la edición de los ID menores que 20
-	else if (req.originalUrl.includes("/edicion/") && id && id < 2 && !revisor)
+	else if (req.originalUrl.includes("/edicion/") && id && id < 2 && !revisorEnts)
 		informacion = {
 			mensajes: [
 				"Este registro es de alta sensibilidad.",

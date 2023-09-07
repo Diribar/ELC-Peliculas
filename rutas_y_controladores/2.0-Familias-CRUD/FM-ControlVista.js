@@ -23,7 +23,6 @@ module.exports = {
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
 
 			// Obtiene el registro

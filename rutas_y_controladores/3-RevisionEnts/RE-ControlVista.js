@@ -128,7 +128,7 @@ module.exports = {
 			const ahora = comp.fechaHora.ahora();
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
-			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+			const revisorEnts = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 			// Limpia la variable 'datos'
 			datos = {};
 
@@ -140,7 +140,7 @@ module.exports = {
 				// Acciones para alta
 				if (subcodigo == "alta") {
 					// Obtiene los datos
-					datos = {...datos, ...req.body, ...req.query, revisor, imgOpcionalnal: true};
+					datos = {...datos, ...req.body, ...req.query, revisorEnts, imgOpcionalnal: true};
 
 					// Si recibimos un avatar, se completa la información
 					if (req.file) datos.tamano = req.file.size;
@@ -297,7 +297,6 @@ module.exports = {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-			const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocasDelAno" ? " la " : "l ";
