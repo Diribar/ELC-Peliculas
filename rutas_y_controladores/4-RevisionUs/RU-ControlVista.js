@@ -66,7 +66,7 @@ module.exports = {
 			const campos = variables.camposRevisar.usuarios;
 			const motivo =
 				datos.motivo_docum_id == "0"
-					? motivosEdics.find((n) => n.info_erronea)
+					? motivoInfoErronea
 					: datos.motivo_docum_id
 					? motivosEdics.find((n) => n.id == datos.motivo_docum_id)
 					: "";

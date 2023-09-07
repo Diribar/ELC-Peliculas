@@ -10,7 +10,6 @@ module.exports = (sequelize, dt) => {
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
-		info_erronea: {type: dt.BOOLEAN},
 		rev_edicion: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
 		bloqueoInput: {type: dt.BOOLEAN},
