@@ -160,6 +160,7 @@ app.set("views", [
 	// 3.A. Roles de usuario
 	global.rolConsultas_id = rolesUs.find((n) => n.codigo == "consultas").id;
 	global.rolPermInputs_id = rolesUs.find((n) => n.codigo == "permInputs").id;
+	global.rolOmnipotente_id = rolesUs.find((n) => n.codigo == "omnipotente").id;
 
 	// 3.B. Status de usuario
 	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;

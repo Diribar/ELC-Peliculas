@@ -296,7 +296,7 @@ module.exports = {
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro.codigo == "mailPendValidar")
+			if (usuario.statusRegistro_id == stMailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Inicia la sesión del usuario

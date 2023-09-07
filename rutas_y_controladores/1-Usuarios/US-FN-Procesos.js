@@ -100,7 +100,7 @@ module.exports = {
 		let informacion;
 
 		// Mensaje si el usuario está en status "identidad a validar"
-		if (usuario.statusRegistro.codigo == "identPendValidar")
+		if (usuario.statusRegistro_id == stIdentPendValidar_id)
 			informacion = {
 				mensajes: [
 					"Para ingresar información, se requiere tener tus datos validados.",
@@ -114,7 +114,7 @@ module.exports = {
 				trabajando: true,
 			};
 		// Mensaje si el usuario está en status "registrado"
-		else if (usuario.statusRegistro.codigo == "registrado")
+		else if (usuario.statusRegistro_id == stUsRegistrado_id)
 			informacion = {
 				mensajes: [
 					"El ingreso de información para otras personas, requiere responsabilidad.",

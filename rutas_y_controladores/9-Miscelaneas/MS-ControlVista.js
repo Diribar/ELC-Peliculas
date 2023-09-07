@@ -55,7 +55,7 @@ module.exports = {
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
-		const omnipotente = req.session.usuario.rolUsuario.codigo == "omnipotente";
+		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
 
 		// Productos
 		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
