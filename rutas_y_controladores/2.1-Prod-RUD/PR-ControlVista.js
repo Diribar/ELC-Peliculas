@@ -202,7 +202,7 @@ module.exports = {
 			// Averigua si corresponde actualizar el original
 			// 1. Tiene que ser un revisorPERL
 			// 2. El registro debe estar en el status 'creadoAprob'
-			const actualizaOrig = revisorPERL && original.statusRegistro.codigo == "creadoAprob";
+			const actualizaOrig = revisorPERL && original.statusRegistro_id == creadoAprob_id;
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido

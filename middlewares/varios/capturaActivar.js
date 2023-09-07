@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
 	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)
 	//	2. Se quiere acceder desde una vista de revisión
-	if (!registro.statusRegistro.codigo == "creado" || baseUrl == "/revision") {
+	if (registro.statusRegistro_id != creado_id || baseUrl == "/revision") {
 		// Activa la entidad y el usuario
 		let datos = {capturaActiva: true, capturadoPor_id: userID};
 		// Fija la nueva hora de captura si corresponde

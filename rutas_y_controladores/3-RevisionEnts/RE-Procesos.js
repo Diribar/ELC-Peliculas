@@ -850,7 +850,7 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en PR y VN
-		if (link.statusRegistro && link.statusRegistro.codigo == "creadoAprob") {
+		if (link.statusRegistro && link.statusRegistro_id == creadoAprob_id) {
 			if (aprobsPerms)
 				link.yaTuvoPrimRev
 					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})

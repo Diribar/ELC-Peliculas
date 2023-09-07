@@ -94,7 +94,7 @@ module.exports = {
 
 		// Más variables
 		const id = original.id;
-		const creado = original.statusRegistro.codigo == "creado";
+		const creado = original.statusRegistro_id == creado_id;
 		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();

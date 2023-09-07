@@ -219,7 +219,7 @@ module.exports = {
 				// Elimina el eventual anterior
 				if (codigo == "/rclv/edicion/") {
 					// Si es un registro propio y en status creado, borra el eventual avatar original
-					if (original.creadoPor_id == userID && original.statusRegistro.codigo == "creado") {
+					if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id) {
 						if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/3-RCLVs/Revisar/", original.avatar);
 					}
 					// Si no está en status 'creado', borra el eventual avatar_edicion anterior
