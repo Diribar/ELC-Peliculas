@@ -39,7 +39,7 @@ module.exports = {
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
-		else if (link.creadoPor_id == userID && link.statusRegistro.creado) {
+		else if (link.creadoPor_id == userID && link.statusRegistro.codigo == "creado") {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
@@ -74,7 +74,7 @@ module.exports = {
 		// El link se elimina definitivamente
 		else if (
 			// El link está en status 'creado' y por el usuario
-			(link.statusRegistro.creado && link.creadoPor_id == userID) ||
+			(link.statusRegistro.codigo == "creado" && link.creadoPor_id == userID) ||
 			// El link está en status 'inactivo' y es un revisorLinks
 			(link.statusRegistro.inactivo && revisorLinks)
 		) {
@@ -144,7 +144,7 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: link.statusRegistro.creado
+			: link.statusRegistro.codigo == "creado"
 			? {mensaje: "El link está en status creado", reload: true}
 			: link.statusRegistro.aprobado
 			? {mensaje: "El link está en status aprobado", reload: true}

@@ -61,7 +61,7 @@ module.exports = {
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status
-		cond.creado = link.statusRegistro.creado;
+		cond.creado = link.statusRegistro.codigo == "creado";
 		cond.creadoAprob = link.statusRegistro.creadoAprob;
 		cond.aprobado = link.statusRegistro.aprobado;
 		cond.inactivar = link.statusRegistro.inactivar;
