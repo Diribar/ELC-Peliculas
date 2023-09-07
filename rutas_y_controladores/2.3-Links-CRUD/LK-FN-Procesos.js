@@ -62,7 +62,7 @@ module.exports = {
 
 		// Condiciones de status
 		cond.creado = link.statusRegistro.codigo == "creado";
-		cond.creadoAprob = link.statusRegistro.creadoAprob;
+		cond.creadoAprob = link.statusRegistro.codigo == "creadoAprob";
 		cond.aprobado = link.statusRegistro.aprobado;
 		cond.inactivar = link.statusRegistro.inactivar;
 		cond.recuperar = link.statusRegistro.recuperar;

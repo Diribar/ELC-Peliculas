@@ -9,12 +9,6 @@ module.exports = (sequelize, dt) => {
 		gr_provisorios: {type: dt.BOOLEAN},
 		gr_pasivos: {type: dt.BOOLEAN},
 		gr_inactivos: {type: dt.BOOLEAN},
-
-		creadoAprob: {type: dt.BOOLEAN},
-		aprobado: {type: dt.BOOLEAN},
-		inactivar: {type: dt.BOOLEAN},
-		inactivo: {type: dt.BOOLEAN},
-		recuperar: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_status_registros",
