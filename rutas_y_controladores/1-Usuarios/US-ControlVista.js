@@ -13,9 +13,9 @@ module.exports = {
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
 		let status_usuario = req.session.usuario.statusRegistro;
-		status_usuario.codigo=="mailPendValidar"
+		status_usuario.codigo == "mailPendValidar"
 			? res.redirect("/usuarios/login")
-			: status_usuario.codigo==mailValidado
+			: status_usuario.codigo == mailValidado
 			? res.redirect("/usuarios/editables")
 			: req.session.urlFueraDeUsuarios
 			? res.redirect(req.session.urlFueraDeUsuarios)
