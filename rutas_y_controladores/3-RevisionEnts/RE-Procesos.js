@@ -266,7 +266,7 @@ module.exports = {
 			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-			const motivoVersionActual = motivosEdics.find((n) => n.version_actual);
+			const motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 			const motivoInfoErronea = motivosEdics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edicsAprob: 0, edicsRech: 0};
