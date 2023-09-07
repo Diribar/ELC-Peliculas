@@ -186,6 +186,7 @@ app.set("views", [
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
+	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
