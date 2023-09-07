@@ -155,7 +155,7 @@ module.exports = {
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos = link.statusRegistro_id == inactivo_id
+			let datos = link.statusRegistro_id == inactivar_id
 				? {statusRegistro_id: aprobado_id, motivo_id: null}
 				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
