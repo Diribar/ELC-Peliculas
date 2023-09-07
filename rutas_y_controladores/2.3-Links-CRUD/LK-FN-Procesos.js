@@ -61,12 +61,12 @@ module.exports = {
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status
-		cond.creado = link.statusRegistro.codigo == "creado";
-		cond.creadoAprob = link.statusRegistro.codigo == "creadoAprob";
-		cond.aprobado = link.statusRegistro.codigo == "aprobado";
-		cond.inactivar = link.statusRegistro.codigo == "inactivar";
-		cond.recuperar = link.statusRegistro.codigo == "recuperar";
-		cond.inactivo = link.statusRegistro.codigo == "inactivo";
+		cond.creado = link.statusRegistro_id == creado_id;
+		cond.creadoAprob = link.statusRegistro_id == creadoAprob_id;
+		cond.aprobado = link.statusRegistro_id == aprobado_id;
+		cond.inactivar = link.statusRegistro_id == inactivar_id;
+		cond.recuperar = link.statusRegistro_id == recuperar_id;
+		cond.inactivo = link.statusRegistro_id == inactivo_id;
 
 		// Condiciones de status combinados
 		cond.grCreado = cond.creado || cond.creadoAprob;
