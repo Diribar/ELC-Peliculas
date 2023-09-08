@@ -19,6 +19,8 @@
 -- Dumping data for table `aux_fechas_del_ano`
 --
 
+USE elc_peliculas;
+
 LOCK TABLES `aux_fechas_del_ano` WRITE;
 /*!40000 ALTER TABLE `aux_fechas_del_ano` DISABLE KEYS */;
 INSERT INTO `aux_fechas_del_ano` VALUES (1,1,1,'1/ene',26);
