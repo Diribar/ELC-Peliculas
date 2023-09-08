@@ -49,9 +49,9 @@
 			</div>
 		</div>
 	</div>
-	<% if (usuario.revisorEnts || usuario.revisorLinks) { %>
+	<% if (usuario.rolUsuario.revisorEnts || usuario.rolUsuario.revisorLinks) { %>
 		<div id="segundaColumna">
-			<% if (usuario.revisorEnts) { %>
+			<% if (usuario.rolUsuario.revisorEnts) { %>
 				<!-- RCLVs -->
 				<div class="bloques" id="rclv">
 					<!-- Título y ayuda -->
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 			<% } %>
-			<% if (usuario.revisorLinks) { %>
+			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
 					<!-- Título y ayuda -->
