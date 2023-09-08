@@ -126,7 +126,7 @@ module.exports = {
 		return respuesta;
 	},
 	prioridad: (datos) => {
-		return !datos.prioridad_id && datos.revisor ? variables.selectVacio : "";
+		return !datos.prioridad_id && datos.revisorPERL ? variables.selectVacio : "";
 	},
 
 	// Entidades distintas a 'epocasDelAno'

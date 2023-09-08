@@ -181,7 +181,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen} = req.query;
 			const userID = req.session.usuario.id;
-			const revisorEnts = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
 			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
@@ -200,18 +200,18 @@ module.exports = {
 			if (original.capitulos) delete original.capitulos;
 
 			// Averigua si corresponde actualizar el original
-			// 1. Tiene que ser un revisorEnts
+			// 1. Tiene que ser un revisorPERL
 			// 2. El registro debe estar en el status 'creadoAprob'
-			const actualizaOrig = revisorEnts && original.statusRegistro.creadoAprob;
+			const actualizaOrig = revisorPERL && original.statusRegistro.creadoAprob;
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido
 			// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 			let prodComb = {...original, ...edicion, ...req.body, id};
 
-			// Si es un revisorEnts, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
-			prodComb.epocaOcurrencia = revisorEnts;
-			prodComb.publico = revisorEnts;
+			// Si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
+			prodComb.epocaOcurrencia = revisorPERL;
+			prodComb.publico = revisorPERL;
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores
