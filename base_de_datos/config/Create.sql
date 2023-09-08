@@ -86,18 +86,11 @@ CREATE TABLE `aux_status_registros` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(25) NOT NULL,
-  `gr_creado` tinyint(1) DEFAULT 0,
-  `gr_aprobado` tinyint(1) DEFAULT 0,
-  `gr_estables` tinyint(1) DEFAULT 0,
-  `gr_provisorios` tinyint(1) DEFAULT 0,
-  `gr_pasivos` tinyint(1) DEFAULT 0,
-  `gr_inactivos` tinyint(1) DEFAULT 0,
-  `creado` tinyint(1) DEFAULT 0,
-  `creadoAprob` tinyint(1) DEFAULT 0,
-  `aprobado` tinyint(1) DEFAULT 0,
-  `inactivar` tinyint(1) DEFAULT 0,
-  `inactivo` tinyint(1) DEFAULT 0,
-  `recuperar` tinyint(1) DEFAULT 0,
+  `codigo` varchar(15) NOT NULL,
+  `creados` tinyint(1) DEFAULT 0,
+  `aprobados` tinyint(1) DEFAULT 0,
+  `estables` tinyint(1) DEFAULT 0,
+  `provisorios` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
@@ -212,17 +205,15 @@ CREATE TABLE `cam_motivos_edics` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `descripcion` varchar(40) NOT NULL,
+  `codigo` varchar(15) NOT NULL,
   `avatar_prods` tinyint(1) DEFAULT 0,
   `avatar_rclvs` tinyint(1) DEFAULT 0,
   `avatar_us` tinyint(1) DEFAULT 0,
   `prods` tinyint(1) DEFAULT 0,
   `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
-  `version_actual` tinyint(1) DEFAULT 0,
-  `info_erronea` tinyint(1) DEFAULT 0,
   `rev_edicion` tinyint(1) DEFAULT 0,
   `penalizac` decimal(4,1) unsigned DEFAULT 0.0,
-  `bloqueoInput` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -230,12 +221,12 @@ CREATE TABLE `cam_motivos_status` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `descripcion` varchar(37) NOT NULL,
-  `bloqueoInput` tinyint(1) DEFAULT 0,
+  `codigo` varchar(15) NOT NULL,
   `prods` tinyint(1) DEFAULT 0,
   `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
   `penalizac` decimal(4,1) unsigned DEFAULT 0.0,
-  `coment_aut` tinyint(1) DEFAULT 0,
+  `agregarComent` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -243,13 +234,14 @@ CREATE TABLE `cn_config_cabecera` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `usuario_id` int(10) unsigned DEFAULT NULL,
   `nombre` varchar(30) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
   `creadoEn` datetime NOT NULL DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `cn_config_cabecera_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cn_filtros_campos` (
+CREATE TABLE `cn_config_campos` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `configCons_id` int(10) unsigned NOT NULL,
   `campo` varchar(20) NOT NULL,
@@ -259,29 +251,38 @@ CREATE TABLE `cn_filtros_campos` (
   CONSTRAINT `cn_config_campos_ibfk_1` FOREIGN KEY (`configCons_id`) REFERENCES `cn_config_cabecera` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cn_layouts` (
+CREATE TABLE `cn_entidades` (
   `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(1) unsigned NOT NULL,
   `nombre` varchar(40) NOT NULL,
-  `entidad` varchar(20) NOT NULL,
-  `boton` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
+  `orden` tinyint(1) unsigned NOT NULL,
+  `codigo` varchar(20) NOT NULL,
+  `bhrSeguro` tinyint(1) NOT NULL DEFAULT 0,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_ordenes` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
-  `layout_id` tinyint(1) unsigned NOT NULL,
-  `ordenDefault` tinyint(1) NOT NULL DEFAULT 0,
+  `id` tinyint(2) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(40) NOT NULL,
-  `valor` varchar(20) NOT NULL,
-  `ascDesDefault` varchar(6) NOT NULL,
-  `ascDesElegible` tinyint(1) NOT NULL DEFAULT 0,
-  `bhrSeguro` tinyint(1) NOT NULL DEFAULT 0,
+  `orden` tinyint(1) unsigned NOT NULL,
+  `codigo` varchar(20) NOT NULL,
+  `ascDes` varchar(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cn_ordenes_por_ent` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `entidad_id` tinyint(1) unsigned NOT NULL,
+  `orden_id` tinyint(1) unsigned NOT NULL,
+  `nombre` varchar(40) NOT NULL,
+  `boton` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `ordenDefault` tinyint(1) NOT NULL DEFAULT 0,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
-  KEY `cn_ordenes_FK` (`layout_id`),
-  CONSTRAINT `cn_ordenes_FK` FOREIGN KEY (`layout_id`) REFERENCES `cn_layouts` (`id`)
+  KEY `cn_ordenes_por_ent_FK` (`entidad_id`),
+  KEY `cn_ordenes_por_ent_FK_1` (`orden_id`),
+  CONSTRAINT `cn_ordenes_por_ent_FK` FOREIGN KEY (`entidad_id`) REFERENCES `cn_entidades` (`id`),
+  CONSTRAINT `cn_ordenes_por_ent_FK_1` FOREIGN KEY (`orden_id`) REFERENCES `cn_ordenes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links` (
@@ -289,6 +290,7 @@ CREATE TABLE `links` (
   `pelicula_id` int(10) unsigned DEFAULT NULL,
   `coleccion_id` int(10) unsigned DEFAULT NULL,
   `capitulo_id` int(10) unsigned DEFAULT NULL,
+  `prodAprob` tinyint(1) NOT NULL DEFAULT 0,
   `url` varchar(120) NOT NULL,
   `prov_id` tinyint(3) unsigned NOT NULL,
   `calidad` smallint(6) NOT NULL,
@@ -373,19 +375,20 @@ CREATE TABLE `links_edicion` (
 
 CREATE TABLE `links_provs` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
+  `orden` tinyint(3) unsigned DEFAULT 90,
   `nombre` varchar(20) NOT NULL,
-  `avatar` varchar(20) DEFAULT NULL,
-  `siemprePago` tinyint(1) DEFAULT NULL,
-  `siempreGratuito` tinyint(1) DEFAULT NULL,
-  `siempreCompleta` tinyint(1) DEFAULT NULL,
+  `copyrightOK` tinyint(1) DEFAULT 0,
+  `avatar` varchar(20) NOT NULL,
+  `siemprePago` tinyint(1) DEFAULT 0,
+  `siempreGratuito` tinyint(1) DEFAULT 0,
+  `siempreCompleta` tinyint(1) DEFAULT 0,
   `calidad` smallint(6) DEFAULT NULL,
   `generico` tinyint(1) DEFAULT 0,
   `url_distintivo` varchar(20) NOT NULL,
-  `buscadorAutom` tinyint(1) NOT NULL,
+  `mostrarSiempre` tinyint(1) DEFAULT 0,
   `url_buscarPre` varchar(25) DEFAULT NULL,
-  `trailer` tinyint(1) NOT NULL,
-  `pelicula` tinyint(1) NOT NULL,
+  `trailer` tinyint(1) DEFAULT 0,
+  `pelicula` tinyint(1) DEFAULT 0,
   `url_buscarPost` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
@@ -403,8 +406,7 @@ CREATE TABLE `links_tipos` (
 CREATE TABLE `ppp_opciones` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(25) NOT NULL,
-  `yaLaVi` tinyint(1) NOT NULL DEFAULT 0,
-  `sinPreferencia` tinyint(1) NOT NULL DEFAULT 0,
+  `codigo` varchar(15) NOT NULL,
   `icono` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
@@ -820,7 +822,8 @@ CREATE TABLE `prod_epocas_estreno` (
 CREATE TABLE `prod_publicos` (
   `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(1) unsigned NOT NULL,
-  `nombre` varchar(100) NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `grupo` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -828,23 +831,23 @@ CREATE TABLE `prod_tipos_actuac` (
   `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(1) unsigned NOT NULL,
   `nombre` varchar(20) NOT NULL,
-  `anime` tinyint(1) NOT NULL,
-  `documental` tinyint(1) NOT NULL,
+  `codigo` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_1personajes` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(35) NOT NULL,
+  `apodo` varchar(35) DEFAULT NULL,
   `prodsAprob` tinyint(1) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned NOT NULL DEFAULT 400,
   `fechaMovil` tinyint(1) DEFAULT 0,
+  `anoFM` smallint(4) DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `prioridad_id` tinyint(1) DEFAULT NULL,
   `avatar` varchar(25) DEFAULT NULL,
-  `anoNacim` smallint(6) DEFAULT NULL,
   `epocaOcurrencia_id` varchar(3) DEFAULT NULL,
-  `apodo` varchar(35) DEFAULT NULL,
+  `anoNacim` smallint(4) DEFAULT NULL,
   `sexo_id` varchar(1) DEFAULT NULL,
   `categoria_id` varchar(3) DEFAULT NULL,
   `rolIglesia_id` varchar(3) DEFAULT NULL,
@@ -907,6 +910,7 @@ CREATE TABLE `rclv_2hechos` (
   `prodsAprob` tinyint(1) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned NOT NULL DEFAULT 400,
   `fechaMovil` tinyint(1) DEFAULT 0,
+  `anoFM` smallint(4) DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `prioridad_id` tinyint(1) DEFAULT NULL,
   `avatar` varchar(25) DEFAULT NULL,
@@ -961,6 +965,7 @@ CREATE TABLE `rclv_3temas` (
   `prodsAprob` tinyint(1) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned NOT NULL DEFAULT 400,
   `fechaMovil` tinyint(1) DEFAULT 0,
+  `anoFM` smallint(4) DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `prioridad_id` tinyint(1) DEFAULT NULL,
   `avatar` varchar(25) DEFAULT NULL,
@@ -1009,6 +1014,7 @@ CREATE TABLE `rclv_4eventos` (
   `prodsAprob` tinyint(1) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned NOT NULL DEFAULT 400,
   `fechaMovil` tinyint(1) DEFAULT 1,
+  `anoFM` smallint(4) DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `prioridad_id` tinyint(1) DEFAULT NULL,
   `avatar` varchar(25) DEFAULT NULL,
@@ -1057,6 +1063,7 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   `prodsAprob` tinyint(1) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned NOT NULL DEFAULT 400,
   `fechaMovil` tinyint(1) DEFAULT 0,
+  `anoFM` smallint(4) DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `diasDeDuracion` smallint(5) unsigned DEFAULT NULL,
   `comentarioDuracion` varchar(70) DEFAULT NULL,
@@ -1114,6 +1121,7 @@ CREATE TABLE `rclv_9edicion` (
   `nombre` varchar(35) DEFAULT NULL,
   `apodo` varchar(30) DEFAULT NULL,
   `fechaMovil` tinyint(1) DEFAULT NULL,
+  `anoFM` smallint(4) DEFAULT NULL,
   `fechaDelAno_id` smallint(5) unsigned DEFAULT NULL,
   `comentarioMovil` varchar(70) DEFAULT NULL,
   `diasDeDuracion` smallint(5) unsigned DEFAULT NULL,
@@ -1122,6 +1130,7 @@ CREATE TABLE `rclv_9edicion` (
   `carpetaAvatars` varchar(20) DEFAULT NULL,
   `sexo_id` varchar(1) DEFAULT NULL,
   `epocaOcurrencia_id` varchar(3) DEFAULT NULL,
+  `anoNacim` smallint(6) DEFAULT NULL,
   `anoComienzo` smallint(6) DEFAULT NULL,
   `categoria_id` varchar(3) DEFAULT NULL,
   `soloCfc` tinyint(1) DEFAULT NULL,
@@ -1131,7 +1140,6 @@ CREATE TABLE `rclv_9edicion` (
   `ama` tinyint(1) DEFAULT NULL,
   `editadoPor_id` int(10) unsigned NOT NULL,
   `editadoEn` datetime DEFAULT utc_timestamp(),
-  `anoNacim` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `rclv_9edicion_ibfk_01` (`fechaDelAno_id`),
   KEY `rclv_9edicion_ibfk_02` (`sexo_id`),
@@ -1173,21 +1181,28 @@ CREATE TABLE `rclv_epocas_ocurr` (
   `nombre` varchar(15) DEFAULT NULL,
   `ayuda_pers` varchar(50) DEFAULT NULL,
   `ayuda_hecho` varchar(50) DEFAULT NULL,
-  `varias` tinyint(1) unsigned DEFAULT 0,
-  `ant` tinyint(1) unsigned DEFAULT 0,
-  `cnt` tinyint(1) unsigned DEFAULT 0,
-  `pst` tinyint(1) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `us_hist_dets_peli` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(10) unsigned NOT NULL,
+  `entidad` varchar(14) NOT NULL,
+  `entidad_id` int(10) unsigned NOT NULL,
+  `visitadaEn` datetime NOT NULL DEFAULT utc_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8mb4;
 CREATE TABLE `us_roles` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
-  `nombre` varchar(30) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `codigo` varchar(15) NOT NULL,
   `permInputs` tinyint(1) NOT NULL,
+  `autTablEnts` tinyint(1) NOT NULL DEFAULT 0,
+  `revisorPERL` tinyint(1) NOT NULL,
+  `revisorLinks` tinyint(1) NOT NULL,
   `revisorEnts` tinyint(1) NOT NULL,
   `revisorUs` tinyint(1) NOT NULL,
-  `omnipotente` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1195,13 +1210,9 @@ CREATE TABLE `us_status_registro` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(20) NOT NULL,
-  `mailPendValidar` tinyint(1) DEFAULT NULL,
-  `mailValidado` tinyint(1) DEFAULT NULL,
-  `editables` tinyint(1) DEFAULT NULL,
-  `identPendValidar` tinyint(1) DEFAULT NULL,
-  `identValidada` tinyint(1) DEFAULT NULL,
+  `codigo` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `usuarios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1227,6 +1238,7 @@ CREATE TABLE `usuarios` (
   `diasLogin` smallint(5) unsigned DEFAULT 1,
   `versionElcUltimoLogin` varchar(4) DEFAULT '1.0',
   `configCons_id` int(10) unsigned DEFAULT NULL,
+  `videoConsVisto` tinyint(1) DEFAULT 0,
   `prodsAprob` smallint(6) DEFAULT 0,
   `prodsRech` smallint(6) DEFAULT 0,
   `rclvsAprob` smallint(6) DEFAULT 0,
@@ -1236,9 +1248,9 @@ CREATE TABLE `usuarios` (
   `edicsAprob` smallint(6) DEFAULT 0,
   `edicsRech` smallint(6) DEFAULT 0,
   `penalizacAcum` decimal(4,1) unsigned DEFAULT 0.0,
-  `fechaUltimoLogin` date DEFAULT utc_date(),
+  `fechaUltimoLogin` datetime DEFAULT utc_date(),
   `fechaContrasena` datetime DEFAULT utc_timestamp(),
-  `fechaRevisores` date DEFAULT NULL,
+  `fechaRevisores` datetime DEFAULT NULL,
   `penalizadoEn` datetime DEFAULT NULL,
   `penalizadoHasta` datetime DEFAULT NULL,
   `creadoEn` datetime DEFAULT utc_timestamp(),
@@ -1247,7 +1259,7 @@ CREATE TABLE `usuarios` (
   `capturadoEn` datetime DEFAULT NULL,
   `capturadoPor_id` int(10) unsigned DEFAULT NULL,
   `capturaActiva` tinyint(1) DEFAULT NULL,
-  `statusRegistro_id` tinyint(3) unsigned NOT NULL,
+  `statusRegistro_id` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `Avatar único` (`avatar`),
@@ -1276,4 +1288,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-07 16:23:26
+-- Dump completed on 2023-09-08 15:09:08
