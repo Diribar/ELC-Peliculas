@@ -739,15 +739,7 @@ module.exports = {
 	},
 
 	// Internet
-	conectividadInternet: async () => {
-		return await internetAvailable()
-			.then(async () => ({OK: true}))
-			.catch(async () => ({OK: false}));
-	},
 	enviarMail: async function ({asunto, email, comentario}) {
-		// Verifica la conexión a internet
-		let hayConexionInternet = this.conectividadInternet();
-
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
@@ -766,20 +758,16 @@ module.exports = {
 			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
-		let mailEnviado = transporter
+		let mailEnviado = await transporter
 			.sendMail(datos)
-			.then(() => ({OK: true}))
-			.catch(() => ({OK: false}));
+			.then(() => true)
+			.catch(() => false);
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
 
-		// Espera a recibir el feedback
-		[hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado]);
-		let resultado = !hayConexionInternet.OK ? hayConexionInternet : !mailEnviado.OK ? mailEnviado : {OK: true};
-
 		// Fin
-		return resultado;
+		return mailEnviado;
 	},
 
 	// Varias

@@ -9,7 +9,7 @@ module.exports = {
 	// ControlVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
 	actualizaElStatusDelUsuario: async (usuario, status, novedades) => {
 		// Obtiene el nuevo status
-		let statusNuevo = statusRegistrosUs.find((n) => n[status]);
+		let statusNuevo = statusRegistrosUs.find((n) => n.codigo == status);
 		// Genera la info a actualizar
 		novedades = {...novedades, statusRegistro_id: statusNuevo.id};
 		// Actualiza la info
@@ -52,11 +52,11 @@ module.exports = {
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 
 		// Envía el mail al usuario con la contraseña
-		const feedbackEnvioMail = await comp.enviarMail({asunto, email, comentario});
+		const mailEnviado = await comp.enviarMail({asunto, email, comentario});
 		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin
-		return {ahora, contrasena, feedbackEnvioMail};
+		return {ahora, contrasena, mailEnviado};
 	},
 
 	// Carteles de información
@@ -72,8 +72,8 @@ module.exports = {
 	},
 	envioExitoso: {
 		mensajes: [
-			"Hemos generado un contraseña para tu uso, que te hemos enviado por mail.",
-			"Con ella y tu dirección de mail, hemos generado tu usuario.",
+			"Hemos generado tu usuario con tu dirección de mail.",
+			"Te hemos enviado por mail la contraseña.",
 			"Con el ícono de abajo accedes al Login.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
@@ -82,9 +82,9 @@ module.exports = {
 	},
 	envioFallido: {
 		mensajes: [
-			"No pudimos enviarte un mail con la contraseña generada por nuestro sistema.",
-			"Por esa razón no podemos avanzar.",
-			"Con el ícono de abajo regresas a la vista anterior.",
+			"No pudimos enviarte un mail con la contraseña.",
+			"Revisá tu conexión a internet y volvé a intentarlo.",
+			"Con el ícono de abajo regresás a la vista anterior.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
 		titulo: "Alta de Usuario fallida",
