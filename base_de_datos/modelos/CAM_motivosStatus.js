@@ -3,13 +3,12 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		descripcion: {type: dt.STRING(33)},
-		bloqueoInput: {type: dt.BOOLEAN},
+		codigo: {type: dt.STRING(15)},
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
 		agregarComent: {type: dt.BOOLEAN},
-		prodInactivo: {type: dt.BOOLEAN},
 		};
 	const config = {
 		tableName: "cam_motivos_status",

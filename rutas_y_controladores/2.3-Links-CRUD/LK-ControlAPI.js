@@ -39,7 +39,7 @@ module.exports = {
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
-		else if (link.creadoPor_id == userID && link.statusRegistro.creado) {
+		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
@@ -74,9 +74,9 @@ module.exports = {
 		// El link se elimina definitivamente
 		else if (
 			// El link está en status 'creado' y por el usuario
-			(link.statusRegistro.creado && link.creadoPor_id == userID) ||
+			(link.statusRegistro_id == creado_id && link.creadoPor_id == userID) ||
 			// El link está en status 'inactivo' y es un revisorLinks
-			(link.statusRegistro.inactivo && revisorLinks)
+			(link.statusRegistro_id == inactivo_id && revisorLinks)
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
 			link.statusRegistro_id = inactivo_id;
@@ -84,7 +84,7 @@ module.exports = {
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
-		else if (![creadoAprob_id, aprobado_id].includes(link.statusRegistro_id))
+		else if (!aprobados_ids.includes(link.statusRegistro_id))
 			respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
 		// No existe el motivo
 		else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
@@ -119,7 +119,7 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: !link.statusRegistro.inactivo // El link no está en status 'inactivo'
+			: link.statusRegistro_id != inactivo_id // El link no está en status 'inactivo'
 			? {mensaje: "El link no está en status 'inactivo'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
@@ -144,18 +144,18 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: link.statusRegistro.creado
+			: link.statusRegistro_id == creado_id
 			? {mensaje: "El link está en status creado", reload: true}
-			: link.statusRegistro.aprobado
+			: link.statusRegistro_id == aprobado_id
 			? {mensaje: "El link está en status aprobado", reload: true}
-			: link.statusRegistro.inactivo
+			: link.statusRegistro_id == inactivo_id
 			? {mensaje: "El link está en status inactivo", reload: true}
 			: link.statusSugeridoPor_id != userID
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos = link.statusRegistro.inactivar
+			let datos = link.statusRegistro_id == inactivar_id
 				? {statusRegistro_id: aprobado_id, motivo_id: null}
 				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);

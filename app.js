@@ -143,44 +143,50 @@ app.set("views", [
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
-	global.creado_id = statusRegistros.find((n) => n.creado).id;
-	global.creadoAprob_id = statusRegistros.find((n) => n.creadoAprob).id;
-	global.aprobado_id = statusRegistros.find((n) => n.aprobado).id;
-	global.inactivar_id = statusRegistros.find((n) => n.inactivar).id;
-	global.recuperar_id = statusRegistros.find((n) => n.recuperar).id;
-	global.inactivo_id = statusRegistros.find((n) => n.inactivo).id;
-	global.atributosCalific = {feValores, entretiene, calidadTecnica};
+	global.creado_id = statusRegistros.find((n) => n.codigo == "creado").id;
+	global.creadoAprob_id = statusRegistros.find((n) => n.codigo == "creadoAprob").id;
+	global.aprobado_id = statusRegistros.find((n) => n.codigo == "aprobado").id;
+	global.inactivar_id = statusRegistros.find((n) => n.codigo == "inactivar").id;
+	global.recuperar_id = statusRegistros.find((n) => n.codigo == "recuperar").id;
+	global.inactivo_id = statusRegistros.find((n) => n.codigo == "inactivo").id;
+	global.creados_ids = statusRegistros.filter((n) => n.creados).map((n) => n.id);
+	global.aprobados_ids = statusRegistros.filter((n) => n.aprobados).map((n) => n.id);
 
 	// 2. Tipos de actuación
-	global.anime_id = tiposActuacion.find((n) => n.anime).id;
-	global.documental_id = tiposActuacion.find((n) => n.documental).id;
-	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
+	global.anime_id = tiposActuacion.find((n) => n.codigo == "anime").id;
+	global.documental_id = tiposActuacion.find((n) => n.codigo == "documental").id;
+	global.actuada_id = tiposActuacion.find((n) => n.codigo == "actuada").id;
 
 	// 3.A. Roles de usuario
 	global.rolConsultas_id = rolesUs.find((n) => n.codigo == "consultas").id;
 	global.rolPermInputs_id = rolesUs.find((n) => n.codigo == "permInputs").id;
+	global.rolOmnipotente_id = rolesUs.find((n) => n.codigo == "omnipotente").id;
 
 	// 3.B. Status de usuario
-	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.mailPendValidar).id;
-	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.registrado).id;
-	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.identPendValidar).id;
-	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.identValidada).id;
+	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
+	global.stMailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;	
+	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.codigo == "registrado").id;
+	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "identPendValidar").id;
+	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.codigo == "identValidada").id;
 
 	// 4. Públicos
-	global.mayores_ids = publicos.filter((n) => n.mayores).map((n) => n.id);
-	global.familia_id = publicos.find((n) => n.familia).id;
-	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
+	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
+	global.familia_id = publicos.find((n) => n.grupo == "familia").id;
+	global.menores_ids = publicos.filter((n) => n.grupo == "menores").map((n) => n.id);
 
 	// Otros
-	global.yaLaVi = pppOpciones.find((n) => n.yaLaVi);
-	global.sinPref = pppOpciones.find((n) => n.sinPref);
-	global.epocasVarias = epocasOcurrencia.find((n) => n.varias);
-	global.epocasSinVarias = epocasOcurrencia.filter((n) => !n.varias);
+	global.yaLaVi = pppOpciones.find((n) => n.codigo == "yaLaVi");
+	global.sinPref = pppOpciones.find((n) => n.codigo == "sinPref");
+	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
+	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
 	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+	global.atributosCalific = {feValores, entretiene, calidadTecnica};
+	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
+	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");

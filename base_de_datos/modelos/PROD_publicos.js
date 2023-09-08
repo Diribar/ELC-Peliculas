@@ -2,10 +2,8 @@ module.exports = (sequelize, dt) => {
 	const alias = "publicos";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(20)},
-		mayores: {type: dt.INTEGER},
-		familia: {type: dt.INTEGER},
-		menores: {type: dt.INTEGER},
+		nombre: {type: dt.STRING(30)},
+		grupo: {type: dt.STRING(15)},
 	};
 	const config = {
 		tableName: "prod_publicos",

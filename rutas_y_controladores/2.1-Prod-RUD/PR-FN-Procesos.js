@@ -51,7 +51,7 @@ module.exports = {
 			? {statusRegistro_id: statusLink_id}
 			: {
 					[Op.or]: [
-						{statusRegistro_id: [creadoAprob_id, aprobado_id]},
+						{statusRegistro_id: aprobados_ids},
 						{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
 					],
 			  };

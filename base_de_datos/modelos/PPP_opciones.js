@@ -2,9 +2,6 @@ module.exports = (sequelize, dt) => {
 	const alias = "pppOpciones";
 	const columns = {
 		nombre: {type: dt.STRING(25)},
-		yaLaVi: {type: dt.BOOLEAN},
-		laQuieroVer: {type: dt.BOOLEAN},
-		sinPref: {type: dt.BOOLEAN},
 		icono: {type: dt.STRING(30)},
 	};
 	const config = {

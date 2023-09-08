@@ -12,10 +12,10 @@ module.exports = {
 		// Enviar a Login si no está logueado
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
-		let status_usuario = req.session.usuario.statusRegistro;
-		status_usuario.mailPendValidar
+		const statusUsuario_id = req.session.usuario.statusRegistro_id;
+		statusUsuario_id == stMailPendValidar_id
 			? res.redirect("/usuarios/login")
-			: status_usuario.mailValidado
+			: statusUsuario_id == stMailValidado_id
 			? res.redirect("/usuarios/editables")
 			: req.session.urlFueraDeUsuarios
 			? res.redirect(req.session.urlFueraDeUsuarios)
@@ -296,7 +296,7 @@ module.exports = {
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro.mailPendValidar)
+			if (usuario.statusRegistro_id == stMailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Inicia la sesión del usuario

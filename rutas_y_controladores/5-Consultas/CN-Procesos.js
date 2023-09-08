@@ -31,7 +31,7 @@ module.exports = {
 					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
 					if (campo == "epocasOcurrencia")
 						campos.epocasOcurrencia.opciones = epocasOcurrencia
-							.filter((n) => !n.varias)
+							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
 					else campos[campo].opciones = global[campo];
 				}
@@ -320,8 +320,8 @@ module.exports = {
 							if (orden.codigo == "pppFecha") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].pppFecha = pppRegistro.creadoEn;
-								prods[i].yaLaVi = pppOpcionElegida.yaLaVi;
-								prods[i].laQuieroVer = pppOpcionElegida.laQuieroVer;
+								prods[i].yaLaVi = pppOpcionElegida.codigo == "yaLaVi";
+								prods[i].laQuieroVer = pppOpcionElegida.codigo == "laQuieroVer";
 							}
 						}
 					}

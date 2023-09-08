@@ -19,8 +19,8 @@ module.exports = {
 		// Cuenta las cantidades
 		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
 		for (const aptoPara of ["mayores", "familia", "menores"]) {
-			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico[aptoPara]).length;
-			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico[aptoPara]).length;
+			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico.codigo == aptoPara).length;
+			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico.codigo == aptoPara).length;
 		}
 
 		// Fin
@@ -57,7 +57,7 @@ module.exports = {
 
 		// Cuenta la cantidad de links
 		provs = provs.map((m) => {
-			m.links = m.links.filter((p) => [creadoAprob_id, aprobado_id].includes(p.statusRegistro_id)).length;
+			m.links = m.links.filter((p) => aprobados_ids.includes(p.statusRegistro_id)).length;
 			return m;
 		});
 

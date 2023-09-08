@@ -68,8 +68,8 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
-		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
-		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.identValidada;
+		const statusEstable = aprobados_ids.includes(status_id) || status_id == inactivo_id;
+		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro_id == stIdentValidada_id;
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID});
@@ -202,7 +202,7 @@ module.exports = {
 			// Averigua si corresponde actualizar el original
 			// 1. Tiene que ser un revisorPERL
 			// 2. El registro debe estar en el status 'creadoAprob'
-			const actualizaOrig = revisorPERL && original.statusRegistro.creadoAprob;
+			const actualizaOrig = revisorPERL && original.statusRegistro_id == creadoAprob_id;
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido

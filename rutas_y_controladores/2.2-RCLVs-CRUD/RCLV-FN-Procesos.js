@@ -261,7 +261,7 @@ module.exports = {
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
-				if (original.creadoPor_id == userID && original.statusRegistro.creado)
+				if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id)
 					await BD_genericas.actualizaPorId(entidad, id, DE);
 				// Si no esta en status 'creado', guarda la edición
 				else edicN = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion: {...edicion, ...DE}, userID});

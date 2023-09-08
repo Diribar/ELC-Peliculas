@@ -9,8 +9,7 @@ const procesos = require("./RE-Procesos");
 module.exports = {
 	// Productos y RCLV
 	obtieneMotivoGenerico: (req, res) => {
-		let motivoGenerico_id = motivosEdics.find((n) => n.info_erronea).id;
-		return res.json(motivoGenerico_id);
+		return res.json(motivoInfoErronea.id);
 	},
 	edicAprobRech: async (req, res) => {
 		// Variables
@@ -91,11 +90,11 @@ module.exports = {
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 
 		// El link existe y tiene un status 'estable'
-		if (original.statusRegistro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		if (original.statusRegistro.estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
 		// Más variables
 		const id = original.id;
-		const creado = original.statusRegistro.creado;
+		const creado = original.statusRegistro_id == creado_id;
 		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();

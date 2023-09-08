@@ -36,7 +36,7 @@ module.exports = {
 
 		// Obtiene el status del producto
 		datos.prodAprob = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID).then((n) =>
-			[creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)
+			aprobados_ids.includes(n.statusRegistro_id)
 		);
 
 		// Obtiene el proveedor
@@ -61,12 +61,12 @@ module.exports = {
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status
-		cond.creado = link.statusRegistro.creado;
-		cond.creadoAprob = link.statusRegistro.creadoAprob;
-		cond.aprobado = link.statusRegistro.aprobado;
-		cond.inactivar = link.statusRegistro.inactivar;
-		cond.recuperar = link.statusRegistro.recuperar;
-		cond.inactivo = link.statusRegistro.inactivo;
+		cond.creado = link.statusRegistro_id == creado_id;
+		cond.creadoAprob = link.statusRegistro_id == creadoAprob_id;
+		cond.aprobado = link.statusRegistro_id == aprobado_id;
+		cond.inactivar = link.statusRegistro_id == inactivar_id;
+		cond.recuperar = link.statusRegistro_id == recuperar_id;
+		cond.inactivo = link.statusRegistro_id == inactivo_id;
 
 		// Condiciones de status combinados
 		cond.grCreado = cond.creado || cond.creadoAprob;

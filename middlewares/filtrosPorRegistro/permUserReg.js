@@ -102,7 +102,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion) {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
-			v.registro.statusRegistro.creado && // en status creado
+			v.registro.statusRegistro_id == creado_id && // en status creado
 			!["/revision", "/links"].includes(baseUrl) // la ruta no es de revisión
 		) {
 			let nombre = comp.nombresPosibles(v.registro);
@@ -192,14 +192,14 @@ module.exports = async (req, res, next) => {
 
 	// 6. Verificaciones exclusivas de las vistas de Revisión
 	if (!informacion && baseUrl == "/revision" && !url.startsWith("/tablero-de-control")) {
-		// 1. El registro está en un status gr_creado, creado por el Revisor
-		if (v.registro.statusRegistro.gr_creado && creadoPorElUsuario)
+		// 1. El registro está en un status 'creados', creado por el Revisor
+		if (v.registro.statusRegistro.creados && creadoPorElUsuario)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
 				iconos: v.vistaAnteriorTablero,
 			};
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
-		else if (v.registro.statusRegistro.gr_provisorios && v.registro.statusSugeridoPor_id == v.userID)
+		else if (v.registro.statusRegistro.provisorios && v.registro.statusSugeridoPor_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,

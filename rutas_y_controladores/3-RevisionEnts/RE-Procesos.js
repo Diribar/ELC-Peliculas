@@ -57,7 +57,7 @@ module.exports = {
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 
 				// Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
-				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
+				ED.push(...productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id)));
 			}
 
 			// Fin
@@ -120,7 +120,7 @@ module.exports = {
 			}).then((n) => n.length);
 			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
-				statusRegistro_id: [creadoAprob_id, aprobado_id],
+				statusRegistro_id: aprobados_ids,
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
@@ -266,8 +266,6 @@ module.exports = {
 			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-			const motivoVersionActual = motivosEdics.find((n) => n.version_actual);
-			const motivoInfoErronea = motivosEdics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edicsAprob: 0, edicsRech: 0};
 			let datosCompleto = {};
@@ -851,7 +849,7 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en PR y VN
-		if (link.statusRegistro && link.statusRegistro.creadoAprob) {
+		if (link.statusRegistro && link.statusRegistro_id == creadoAprob_id) {
 			if (aprobsPerms)
 				link.yaTuvoPrimRev
 					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
