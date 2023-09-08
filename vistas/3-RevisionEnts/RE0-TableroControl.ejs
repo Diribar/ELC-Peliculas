@@ -38,69 +38,76 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% let rp = "revision/producto/" %>
+				<% let dt = usuario.rolUsuario.codigo == "autTablEnts" ? "producto/detalle" : "" %>
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - con Links", regs: prods.SE.filter(n => n.links), url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - sin Links", regs: prods.SE.filter(n => !n.links), url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta"}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - con Links", regs: prods.SE.filter(n => n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - sin Links", regs: prods.SE.filter(n => !n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
 			</div>
 		</div>
 	</div>
-	<div id="segundaColumna">
-		<!-- RCLVs -->
-		<div class="bloques" id="rclv">
-			<!-- Título y ayuda -->
-			<div class="tituloSecundario">
-				<!-- Título -->
-				<% familias = "rclvs" %>
-				<h2><%= familias.toUpperCase() %></h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-							<li>Si en las altas se le cambia el nombre a algún registro, debe seguir refiriéndose a la misma entidad.</li>
-						</ul>
-					</i>
+	<% if (usuario.revisorEnts || usuario.revisorLinks) { %>
+		<div id="segundaColumna">
+			<% if (usuario.revisorEnts) { %>
+				<!-- RCLVs -->
+				<div class="bloques" id="rclv">
+					<!-- Título y ayuda -->
+					<div class="tituloSecundario">
+						<!-- Título -->
+						<% familias = "rclvs" %>
+						<h2><%= familias.toUpperCase() %></h2>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+									<li>Si en las altas se le cambia el nombre a algún registro, debe seguir refiriéndose a la misma entidad.</li>
+								</ul>
+							</i>
+						</div>
+					</div>
+					<!-- Registros -->
+					<div class="temas">
+						<% let rr = "revision/rclv/" %>
+						<% DE = dataEntry[familias] %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
+					</div>
 				</div>
-			</div>
-			<!-- Registros -->
-			<div class="temas">
-				<% let rr = "revision/rclv/" %>
-				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
-			</div>
-		</div>
-		<!-- Links -->
-		<div class="bloques" id="links">
-			<!-- Título y ayuda -->
-			<div class="tituloSecundario">
-				<!-- Título -->
-				<% familias = "links" %>
-				<h2><%= familias.toUpperCase() %></h2>
-				<div id="porcentajeLinksAprobsEstaSem"><%= linksAprobsEstaSem + "/" + linksAprobsTotal + " = " + parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100) %>%</div>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-							<p>Los <u>productos</u> cumplen estas condiciones:</p>
-							<li>Están aprobados.</li>
-							<li>Tienen algún link cuya novedad fue propuesta por otro usuario.</li>
-						</ul>
-					</i>
+			<% } %>
+			<% if (usuario.revisorLinks) { %>
+				<!-- Links -->
+				<div class="bloques" id="links">
+					<!-- Título y ayuda -->
+					<div class="tituloSecundario">
+						<!-- Título -->
+						<% familias = "links" %>
+						<h2><%= familias.toUpperCase() %></h2>
+						<div id="porcentajeLinksAprobsEstaSem"><%= linksAprobsEstaSem + "/" + linksAprobsTotal + " = " + parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100) %>%</div>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<p>Los <u>productos</u> cumplen estas condiciones:</p>
+									<li>Están aprobados.</li>
+									<li>Tienen algún link cuya novedad fue propuesta por otro usuario.</li>
+								</ul>
+							</i>
+						</div>
+					</div>
+					<div class="temas">
+						<% let rl = "revision/links" %>
+						<% DE = dataEntry[familias] %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Primera Revisión", regs: prods.PR, url: rl}) %>
+						<%- include("CMP-RegsTC", {DE, titulo: "Vencidos", regs: prods.VN, url: rl}) %>
+						<%- include("CMP-RegsTC", {DE, titulo: "ABM", regs: prods.OT, url: rl}) %>
+					</div>
 				</div>
-			</div>
-			<div class="temas">
-				<% let rl = "revision/links" %>
-				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Primera Revisión", regs: prods.PR, url: rl}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Vencidos", regs: prods.VN, url: rl}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "ABM", regs: prods.OT, url: rl}) %>
-			</div>
+			<% } %>
 		</div>
-	</div>
+	<% } %>
 </section>
