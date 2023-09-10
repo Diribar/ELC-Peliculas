@@ -2,14 +2,11 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const {cfc, vpc} = await fetch("/graficos/api/cantidad-de-peliculas-por-cfc-y-vpc").then((n) => n.json());
-	console.log(cfc, vpc);
 
 	const ejeX_cfc = [...Object.keys(cfc)].map((n) => "cfc-" + n);
 	const ejeX_vpc = [...Object.keys(vpc).reverse()].map((n) => "vpc-" + n);
 	const ejeX = [...ejeX_cfc, ...ejeX_vpc];
 	const ejeY = [...Object.values(cfc), ...Object.values(vpc).reverse()];
-	console.log(ejeX);
-	console.log(ejeY);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
