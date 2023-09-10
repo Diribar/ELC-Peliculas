@@ -163,25 +163,6 @@ module.exports = {
 			return links;
 		},
 	},
-	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicionAjena: (entidadEdic, datos, include) => {
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const {campo_id, entID, userID} = datos;
-		// Obtiene un registro que cumpla ciertas condiciones
-		return db[entidadEdic]
-			.findOne({
-				where: {
-					// Que pertenezca a la entidad que nos interesa
-					[campo_id]: entID,
-					// Que esté editado por otro usuario
-					editadoPor_id: {[Op.ne]: userID},
-					// Que esté editado desde hace más de 1 hora
-					editadoEn: {[Op.lt]: haceUnaHora},
-				},
-				include,
-			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
 	// Revisar - Inactivo
 	actualizaLosProdsVinculadosNoAprobados: ({entidad, campo_id, id}) => {
 		// Variables
