@@ -38,7 +38,7 @@ module.exports = {
 				: familias == "rclvs"
 				? "rclvsEdicion"
 				: familias == "links"
-				? "links_edicion"
+				? "linksEdicion"
 				: "";
 		},
 	},
@@ -51,7 +51,7 @@ module.exports = {
 				? "productos"
 				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
 				? "rclvs"
-				: ["links", "links_edicion"].includes(entidad)
+				: ["links", "linksEdicion"].includes(entidad)
 				? "links"
 				: entidad == "usuarios"
 				? "usuarios"
@@ -128,7 +128,7 @@ module.exports = {
 				: variables.entidades.rclvs.includes(entidad)
 				? "rclvsEdicion"
 				: entidad == "links"
-				? "links_edicion"
+				? "linksEdicion"
 				: "";
 		},
 	},
@@ -832,7 +832,7 @@ let FN = {
 			? "producto"
 			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
 			? "rclv"
-			: ["links", "links_edicion"].includes(entidad)
+			: ["links", "linksEdicion"].includes(entidad)
 			? "link"
 			: "";
 	},
