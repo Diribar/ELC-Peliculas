@@ -85,7 +85,7 @@ module.exports = async (req, res, next) => {
 	};
 
 	// CAMINO CRÍTICO
-	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder como escritura
+	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder
 	if (!informacion) {
 		if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
 			informacion = {
@@ -97,30 +97,21 @@ module.exports = async (req, res, next) => {
 			};
 	}
 
-	// El registro fue creado hace más de una hora
-	// 2. El registro está en status 'creado' y la vista no es de revisión
+	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
 	if (!informacion) {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 			v.registro.statusRegistro_id == creado_id && // en status creado
-			!["/revision", "/links"].includes(baseUrl) // la ruta no es de revisión
+			!creadoPorElUsuario && // otro usuario quiere acceder
+			baseUrl != "/revision" // la ruta no es de revisión
 		) {
 			let nombre = comp.nombresPosibles(v.registro);
 			if (nombre) nombre = "'" + nombre + "'";
-			let mensajes = creadoPorElUsuario
-				? [
-						"Se cumplió el plazo de 1 hora desde que se creó el registro de" +
-							v.articulo +
-							v.entidadNombreMinuscula +
-							" " +
-							nombre,
-				  ]
-				: ["El registro todavía no está revisado."];
-			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.");
-			informacion = {
-				mensajes,
-				iconos: [v.vistaAnterior],
-			};
+			let mensajes = [
+				"El registro todavía no está revisado.",
+				"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+			];
+			informacion = {mensajes, iconos: [v.vistaAnterior]};
 		}
 	}
 
@@ -186,35 +177,6 @@ module.exports = async (req, res, next) => {
 						horario,
 				],
 				iconos: [v.vistaAnterior, liberar],
-			};
-		}
-	}
-
-	// 6. Verificaciones exclusivas de las vistas de Revisión
-	if (!informacion && baseUrl == "/revision" && !url.startsWith("/tablero-de-control")) {
-		// 1. El registro está en un status 'creados', creado por el Revisor
-		if (v.registro.statusRegistro.creados && creadoPorElUsuario)
-			informacion = {
-				mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
-				iconos: v.vistaAnteriorTablero,
-			};
-		// 2. El registro está en un status provisorio, sugerido por el Revisor
-		else if (v.registro.statusRegistro.provisorios && v.registro.statusSugeridoPor_id == v.userID)
-			informacion = {
-				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
-				iconos: v.vistaAnteriorTablero,
-			};
-		// 3. El registro sólo tiene una edición, es del Revisor, y quiere acceder a una vista de edición
-		else if (
-			v.registro.ediciones &&
-			v.registro.ediciones.length == 1 &&
-			v.registro.ediciones[0].editadoPor_id == v.userID &&
-			!url.startsWith("/links/") &&
-			!url.startsWith("/producto/alta/")
-		) {
-			informacion = {
-				mensajes: ["El registro tiene una sola edición y fue realizada por vos.", "La tiene que revisar otra persona"],
-				iconos: v.vistaAnteriorTablero,
 			};
 		}
 	}
