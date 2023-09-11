@@ -1,5 +1,15 @@
-<!-- Tablero de Control -->
-<% if (codigo == "tableroControl") { %><%- include("GR1-TableroControl") %>
+<section id="tituloPrincipal">
+	<h1 id="titulo"><%= titulo %></h1>
+</section>
 
-<!-- Gráficos -->
-<% } else { %><%- include("GR2-Gráficos") %><% } %>
+<section id="centro">
+	<!-- Zona de Vitreaux -->
+	<%- include("CMP-Vitreaux") %>
+	
+	<!-- Zona de Gráficos -->
+	<div id="zonaDeGraficos">
+		<div id="cuadro" class="bordeConSombra">
+			<div id="grafico"></div>
+		</div>
+	</div>
+</section>
