@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const linksSemanales = await fetch("/graficos/api/vencimiento-de-links-por-semana").then((n) => n.json());
+	const linksSemanales = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
 	const ejeY = Object.values(linksSemanales);
 	let ejeX = Object.keys(linksSemanales);
 	// for (let i = 0; i < ejeX.length; i++) if (ejeX[i] > 52) ejeX[i] -= 52;

@@ -7,15 +7,17 @@ const vista = require("./GR-ControlVista");
 // Middlewares ***********************************************
 
 // API
-router.get("/api/cantidad-de-peliculas-por-cfc-y-vpc", API.cantPelisPorCfcVpc);
-router.get("/api/vencimiento-de-links-por-semana", API.vencimLinks);
-router.get("/api/cantidad-de-links-por-proveedor", API.cantLinksPorProv);
+router.get("/api/peliculas-cfc-y-vpc", API.pelisCfcVpc);
+router.get("/api/peliculas-aprobadas", API.pelisAprob);
+router.get("/api/vencimiento-de-links", API.vencimLinks);
+router.get("/api/links-por-proveedor", API.linksPorProv);
 
 // Vistas *******************************************
-router.get("/cantidad-de-peliculas-por-cfc-y-vpc", vista.cantPelisPorCfcVpc);
+router.get("/peliculas-cfc-y-vpc", vista.pelisCfcVpc);
+router.get("/peliculas-aprobadas", vista.pelisAprob);
 
-router.get("/vencimiento-de-links-por-semana", vista.vencimLinks);
-router.get("/cantidad-de-links-por-proveedor", vista.cantLinksPorProv);
+router.get("/vencimiento-de-links", vista.vencimLinks);
+router.get("/links-por-proveedor", vista.linksPorProv);
 
 // Exportarlo **********************************************
 module.exports = router;
