@@ -20,6 +20,7 @@ global.semanaUTC = null;
 global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
+global.tamMaxImagen = 1000000; // 1Mb
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -164,7 +165,7 @@ app.set("views", [
 
 	// 3.B. Status de usuario
 	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
-	global.stMailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;	
+	global.stMailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;
 	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.codigo == "registrado").id;
 	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "identPendValidar").id;
 	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.codigo == "identValidada").id;
