@@ -37,7 +37,7 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID}) => {
+	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID, autTablEnts}) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
@@ -52,7 +52,9 @@ module.exports = {
 			: {
 					[Op.or]: [
 						{statusRegistro_id: aprobados_ids},
-						{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+						autTablEnts
+							? {statusRegistro_id: creado_id}
+							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
 					],
 			  };
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condiciones}, include);
@@ -68,7 +70,7 @@ module.exports = {
 			links.sort((a, b) => b.castellano - a.castellano);
 
 			// 2. Les asigna un color en función del idioma
-			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma"
+			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 
 			// 3. Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);

@@ -20,6 +20,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
+		const autTablEnts = req.session.usuario ? req.session.usuario.rolUsuario.autTablEnts : false;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -72,7 +73,7 @@ module.exports = {
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro_id == stIdentValidada_id;
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		let links = procesos.obtieneLinksDelProducto({entidad, id, userID});
+		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
 		let interesDelUsuario = userID ? procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
 			? BD_genericas.obtienePorCondicion("cal_registros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)

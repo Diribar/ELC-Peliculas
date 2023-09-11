@@ -11,14 +11,13 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Tablero
 	TC: {
-		obtieneProds_ED: async (revID) => {
+		obtieneProdsConEdic: async (revID) => {
 			// Variables
-			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			let include = [...variables.asocs.prods, ...variables.asocs.rclvs];
 			let productos = [];
 
-			// Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prodsEdicion", revID, include);
+			// Obtiene todas las ediciones
+			let ediciones = await BD_genericas.obtieneTodosConInclude("prodsEdicion", include);
 
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
@@ -70,17 +69,13 @@ module.exports = {
 
 			// AL: En staus 'creado'
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "statusSugeridoPor_id", revID};
-			let AL = obtieneRegs(campos)
-				// Deja solamente las películas y colecciones
-				.then((n) => n.filter((m) => m.entidad != "capitulos"));
+			let AL = obtieneRegs(campos).then((n) => n.filter((m) => m.entidad != "capitulos")); // Deja solamente las películas y colecciones
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
 			let SE = obtieneRegs(campos)
-				// Deja solamente las películas, colecciones, y los capítulos con colección aprobada
-				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id))
-				// Deja solamente los registros sin edición
-				.then((n) => n.filter((m) => !m.ediciones.length));
+				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
+				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
@@ -108,8 +103,8 @@ module.exports = {
 			// Variables
 			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
 
-			// Obtiene los links ajenos 'a revisar'
-			let linksRevisar = BD_especificas.TC.obtieneLinksAjenos(revID);
+			// Obtiene los links 'a revisar'
+			let linksRevisar = BD_especificas.TC.obtieneLinks(revID);
 
 			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
@@ -163,14 +158,14 @@ module.exports = {
 			// Fin
 			return {AL, SL, IR};
 		},
-		obtieneRCLVsConEdicAjena: async function (revID) {
+		obtieneRCLVsConEdic: async function (revID) {
 			// 1. Variables
 			const campoFecha = "editadoEn";
 			let include = variables.asocs.rclvs;
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("rclvsEdicion", revID, include);
+			let ediciones = await BD_genericas.obtieneTodosConInclude("rclvsEdicion", include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -347,7 +342,7 @@ module.exports = {
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
-			let include = [...comp.obtieneTodosLosCamposInclude(entidad), "links"];
+			let include = comp.obtieneTodosLosCamposInclude(entidad);
 			if (familia == "producto") include.push("links");
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;

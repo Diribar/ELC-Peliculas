@@ -28,7 +28,7 @@ module.exports = {
 
 		// Obtiene el link y el id de la edicion
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
-		const edicID = link ? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editadoPor_id: userID}) : "";
+		const edicID = link ? await BD_especificas.obtieneELC_id("linksEdicion", {link_id: link.id, editadoPor_id: userID}) : "";
 
 		// Si el link no existía, lo crea
 		if (!link) {

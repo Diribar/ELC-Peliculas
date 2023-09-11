@@ -107,24 +107,31 @@ module.exports = {
 			let condiciones = {
 				// Con status según parámetro
 				statusRegistro_id: status_id,
-				// Que cumpla alguno de los siguientes sobre la 'captura':
-				[Op.or]: [
-					// Que no esté capturado
-					{capturadoEn: null},
-					// Que esté capturado hace más de dos horas
-					{capturadoEn: {[Op.lt]: haceDosHoras}},
-					// Que la captura haya sido por otro usuario y hace más de una hora
-					{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}},
-					// Que la captura haya sido por otro usuario y esté inactiva
-					{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}},
-					// Que esté capturado por este usuario hace menos de una hora
-					{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}},
+				[Op.and]: [
+					// Que cumpla alguno de los siguientes sobre la 'captura':
+					{
+						[Op.or]: [
+							// Que no esté capturado
+							{capturadoEn: null},
+							// Que esté capturado hace más de dos horas
+							{capturadoEn: {[Op.lt]: haceDosHoras}},
+							// Que la captura haya sido por otro usuario y hace más de una hora
+							{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+							// Que la captura haya sido por otro usuario y esté inactiva
+							{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}},
+							// Que esté capturado por este usuario hace menos de una hora
+							{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}},
+						],
+					},
 				],
 			};
-			// Que esté propuesto por otro usuario
-			if (campoRevID) condiciones[campoRevID] = {[Op.ne]: revID};
-			// Que esté propuesto hace más de una hora
-			if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
+			if (campoFecha) {
+				// Que esté propuesto por el usuario o hace más de una hora
+				if (campoRevID)
+					condiciones[Op.and].push({[Op.or]: [{[campoRevID]: revID}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]});
+				// Que esté propuesto hace más de una hora
+				else condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
+			}
 			// Excluye los registros RCLV cuyo ID es <= 10
 			if (variables.entidades.rclvs.includes(entidad)) condiciones.id = {[Op.gt]: 10};
 
@@ -134,42 +141,20 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) => n.map((m) => ({...m, entidad})));
 		},
-		obtieneEdicsAjenas: (entidad, revID, include) => {
-			// Variables
-			// const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-
-			// Fin
-			return db[entidad]
-				.findAll({
-					where: {
-						// Que esté editado desde hace más de 1 hora
-						// editadoEn: {[Op.lt]: haceUnaHora},
-						// Que sea ajeno
-						editadoPor_id: {[Op.ne]: revID},
-					},
-					include,
-				})
-				.then((n) => n.map((m) => m.toJSON()));
-		},
-		obtieneLinksAjenos: async (revID) => {
+		obtieneLinks: async (revID) => {
 			// Variables
 			const include = variables.asocs.prods;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
-				[Op.and]: [
-					{prodAprob: true},
-					{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}},
-					{statusSugeridoPor_id: {[Op.ne]: revID}},
-				],
+				[Op.and]: [{prodAprob: true}, {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}}],
 			};
 			const originales = db.links
 				.findAll({where: condiciones, include: [...include, "statusRegistro"]})
 				.then((n) => n.map((m) => m.toJSON()));
 
-			// Obtiene todas las ediciones ajenas
-			const condicion = {editadoPor_id: {[Op.ne]: revID}};
-			const ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
+			// Obtiene todas las ediciones
+			const ediciones = db.linksEdicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
 
 			// Los consolida
 			const links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
@@ -177,25 +162,6 @@ module.exports = {
 			// Fin
 			return links;
 		},
-	},
-	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicionAjena: (entidadEdic, datos, include) => {
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const {campo_id, entID, userID} = datos;
-		// Obtiene un registro que cumpla ciertas condiciones
-		return db[entidadEdic]
-			.findOne({
-				where: {
-					// Que pertenezca a la entidad que nos interesa
-					[campo_id]: entID,
-					// Que esté editado por otro usuario
-					editadoPor_id: {[Op.ne]: userID},
-					// Que esté editado desde hace más de 1 hora
-					editadoEn: {[Op.lt]: haceUnaHora},
-				},
-				include,
-			})
-			.then((n) => (n ? n.toJSON() : ""));
 	},
 	// Revisar - Inactivo
 	actualizaLosProdsVinculadosNoAprobados: ({entidad, campo_id, id}) => {
@@ -317,8 +283,9 @@ module.exports = {
 	},
 	usuario_regsConEdicion: async (userID) => {
 		// Variables
-		const entidades = ["prodsEdicion", "rclvsEdicion", "links_edicion"];
+		const entidades = ["prodsEdicion", "rclvsEdicion", "linksEdicion"];
 		let contarRegistros = 0;
+
 		// Rutina para contar
 		let condicion = {editadoPor_id: userID};
 		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});

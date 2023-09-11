@@ -19,8 +19,8 @@ module.exports = {
 		// Cuenta las cantidades
 		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
 		for (const aptoPara of ["mayores", "familia", "menores"]) {
-			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico.codigo == aptoPara).length;
-			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico.codigo == aptoPara).length;
+			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico.grupo == aptoPara).length;
+			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico.grupo == aptoPara).length;
 		}
 
 		// Fin

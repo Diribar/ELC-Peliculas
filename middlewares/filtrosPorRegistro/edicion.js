@@ -44,12 +44,11 @@ module.exports = async (req, res, next) => {
 		let edicion;
 
 		if (revision) {
-			// Averigua si existe una edicion ajena
-			let datos = {campo_id, entID: id, userID: req.session.usuario.id};
-			edicion = await BD_especificas.obtieneEdicionAjena(entidadEdic, datos);
+			// Averigua si existe una edicion
+			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, {[campo_id]: entID})
 			if (!edicion)
 				informacion = {
-					mensajes: ["No encontramos ninguna edición ajena para revisar"],
+					mensajes: ["No encontramos ninguna edición para revisar"],
 					iconos: [
 						{
 							nombre: "fa-spell-check ",
