@@ -9,7 +9,7 @@ const API = require("./FM-ControlAPI");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
+const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
 // Específicos de productos
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
@@ -25,7 +25,7 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEliminar = [...aptoCRUD, usRolRevEnts];
+const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 
 //************************ Rutas ****************************
 // Rutas de APIs
