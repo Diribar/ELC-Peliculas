@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 	if (usuario.statusRegistro_id != stIdentValidada_id) informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// Revisa si el usuario tiene el rol necesario
-	if (!informacion && !usuario.rolUsuario.revisorEnts)
+	if (!informacion && !usuario.rolUsuario.revisorLinks)
 		informacion = {
 			mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
 			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],

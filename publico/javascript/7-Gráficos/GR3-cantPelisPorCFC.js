@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {cfc, vpc} = await fetch("/graficos/api/cantidad-de-peliculas-por-cfc-y-vpc").then((n) => n.json());
+	const {cfc, vpc} = await fetch("/graficos/api/peliculas-cfc-y-vpc").then((n) => n.json());
 
 	const ejeX_cfc = [...Object.keys(cfc)].map((n) => "cfc-" + n);
 	const ejeX_vpc = [...Object.keys(vpc).reverse()].map((n) => "vpc-" + n);
