@@ -32,13 +32,13 @@ module.exports = {
 			const errores = await valida.altaMail(email);
 
 			// Si error => return errores
-			if (errores.hay) return res.json({errores, feedbackEnvioMail: {}});
+			if (errores.hay) return res.json({errores});
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
-			const {ahora, contrasena, feedbackEnvioMail} = await procesos.envioDeMailConContrasena(email);
+			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
-			if (feedbackEnvioMail.OK)
+			if (mailEnviado)
 				await BD_genericas.agregaRegistro("usuarios", {
 					email,
 					contrasena,
@@ -50,7 +50,7 @@ module.exports = {
 			req.session.email = email;
 
 			// Devuelve la info
-			return res.json({errores, feedbackEnvioMail});
+			return res.json({errores, mailEnviado});
 		},
 		olvidoContrasena: async (req, res) => {
 			// Variables
@@ -65,14 +65,14 @@ module.exports = {
 			if (errores.hay) {
 				datos.errores = errores;
 				req.session["olvido-contrasena"] = datos;
-				return res.json({errores, feedbackEnvioMail: {}});
+				return res.json({errores});
 			}
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
-			const {ahora, contrasena, feedbackEnvioMail} = await procesos.envioDeMailConContrasena(email);
+			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del mensaje, actualiza la contraseña del usuario
-			if (feedbackEnvioMail.OK)
+			if (mailEnviado)
 				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 					contrasena,
 					fechaContrasena: ahora,
@@ -85,7 +85,7 @@ module.exports = {
 			delete req.session["olvido-contrasena"];
 
 			// Devuelve la info
-			return res.json({errores, feedbackEnvioMail});
+			return res.json({errores, mailEnviado});
 		},
 	},
 	videoConsVisto: async (req, res) => {

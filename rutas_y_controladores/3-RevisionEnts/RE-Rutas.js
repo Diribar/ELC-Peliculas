@@ -9,6 +9,7 @@ const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usRolAutTablEnts = require("../../middlewares/filtrosPorUsuario/usRolAutTablEnts");
 const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
@@ -22,6 +23,7 @@ const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidado
+const tablEntidades=[usAltaTerm, usPenalizaciones, usRolAutTablEnts];
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, edicion, permUserReg];
@@ -40,7 +42,7 @@ router.get("/api/link/edicion", API.edicAprobRech);
 
 // VISTAS --------------------------------------------------
 // Tablero de Control
-router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
+router.get("/tablero-de-control", ...tablEntidades, vista.tableroControl);
 
 // Form
 router.get("/producto/alta", aptoCRUD, capturaActivar, vista.alta.prodForm);

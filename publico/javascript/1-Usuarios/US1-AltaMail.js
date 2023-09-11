@@ -68,7 +68,7 @@ window.addEventListener("load", () => {
 
 		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
-	let enviaInfoAlBE = () => {
+	let enviaMail = () => {
 		// Prepara la info para el BE
 		const email = DOM.email.value;
 		const documNumero = DOM.documNumero ? DOM.documNumero.value : "";
@@ -128,7 +128,7 @@ window.addEventListener("load", () => {
 			else mostrarErrores();
 		}
 		// Acciones si no hubo errores en el data-entry
-		else location.href = v.feedbackEnvioMail.OK ? v.urlExitoso : v.urlFallido;
+		else location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
@@ -163,15 +163,15 @@ window.addEventListener("load", () => {
 		else DOM.button.classList.add("inactivo");
 
 		// Envía la información al BE
-		let resultado = enviaInfoAlBE();
+		let resultado = enviaMail();
 
 		// Cartel mientras se recibe la respuesta
 		await cartelProgreso();
 
 		// Obtiene los valores recibidos
-		const {errores, feedbackEnvioMail} = await resultado;
+		const {errores, mailEnviado} = await resultado;
 		v.errores = errores
-		v.feedbackEnvioMail = feedbackEnvioMail;
+		v.mailEnviado = mailEnviado;
 
 		// Consecuencias
 		consecuencias();

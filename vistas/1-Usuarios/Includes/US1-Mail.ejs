@@ -1,6 +1,13 @@
 <section class="labelInput flexRow">
 	<div class="inputError">
-		<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= dataEntry.email %>" autofocus>
+		<input 
+			type="text" 
+			class="input" 
+			name="email" 
+			placeholder="Ingresá tu dirección de Correo Electrónico" 
+			<% if (codigo != "alta-mail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
+			autofocus
+		>
 		<%- include("CMP-Errores", {nombre: "email", display: true}) %>
 	</div>
 </section>
