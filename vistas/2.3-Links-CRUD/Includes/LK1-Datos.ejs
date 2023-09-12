@@ -7,7 +7,7 @@
 	<%- link.cond.inactivos ? 'ocultaInactivo' : '' %> 
 	<%= link.tipo_id == 1 ? 'TR' : 'PL' %> 
 	fila<%= fila %>
-	oscuro_<%- link.cond.rud ? link.cond.provAjeno : (link.cond.propios || (link.cond.creado && !!link.ediciones.length) || link.cond.estable) %>
+	oscuro_<%- link.cond.rud ? link.cond.provAjeno : ((link.cond.creado && !!link.ediciones.length) || link.cond.estable) %>
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
@@ -90,17 +90,17 @@
 
 		<!-- Sólo para Revisión -->
 		<% if (link.cond.revision) { %>
-			<% if (link.cond.grCreado && !link.cond.creadoPropio) { %>
+			<% if (link.cond.grCreado) { // && !link.cond.creadoPropio %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-check in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar fuera"></i>
-			<% } else if (link.cond.inactivar && !link.cond.inactivarPropio) { %>
+			<% } else if (link.cond.inactivar) { // && !link.cond.inactivarPropio %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-right fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar out"></i>
-			<% } else if (link.cond.recuperar && !link.cond.recuperarPropio) { %>
+			<% } else if (link.cond.recuperar) { // && !link.cond.recuperarPropio %>
 				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="fa-solid fa-circle-right in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>

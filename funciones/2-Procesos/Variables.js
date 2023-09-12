@@ -16,7 +16,6 @@ module.exports = {
 			hr: true,
 		},
 		"derechos-de-autor": {titulo: "Política sobre Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
-		"portales-de-peliculas": {titulo: "Portales a los que redirigimos", codigo: "portales", icono: "fa-film"},
 	},
 
 	// Videos de inducción

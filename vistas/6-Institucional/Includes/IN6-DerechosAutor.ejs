@@ -1,6 +1,5 @@
 <!-- Nuestra Política -->
 <div class="bloque">
-	<h2>Política sobre Derechos de Autor</h2>
 	<ul type="dots">
 		<li>Nuestro sitio contiene enlaces (links) a sitios web externos.</li>
 		<ul>
@@ -9,5 +8,12 @@
 			<li>Damos de baja los links que nos enteramos que no los respetan.</a></li>
 		</ul>
 		<li>Podés descargar nuestra política en forma más detallada, haciendo click <a href="/descargas/RespetoDerechosAutor.pdf" download><u>aquí</u></a>.</li>
+		<li>Portales con los que trabajamos:</li>
 	</ul>
+	<div id="logosPortales" class="flexRow">
+		<!-- Portales -->
+		<% for (let linkProv of linksProvs.filter(n => n.copyrightOK)) { %>
+			<img src="<%= localhost + '/imagenes/0-Base/Logos/' + linkProv.avatar %>" title="<%= linkProv.nombre %>">
+		<% } %>
+	</div>
 </div>
