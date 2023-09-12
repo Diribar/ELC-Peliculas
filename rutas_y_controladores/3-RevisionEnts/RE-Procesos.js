@@ -868,11 +868,16 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 			);
 		}
 
-		// Ordena por la fecha más antigua
-		if (prods[metodo].length > 1) prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
 		// Deja solamente los sin problemas de captura
 		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
+
+		// Ordena por la fecha más antigua
+		if (prods[metodo].length > 1)
+			prods[metodo]
+				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef))
+				.sort((a, b) => (a.capitulo < b.capitulo ? -1 : a.capitulo > b.capitulo ? 1 : 0))
+				.sort((a, b) => (a.coleccion_id < b.coleccion_id ? -1 : a.coleccion_id > b.coleccion_id ? 1 : 0))
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0))
 	});
 
 	// Fin
