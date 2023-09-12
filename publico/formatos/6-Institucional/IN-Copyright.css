@@ -1,0 +1,6 @@
+#logosPortales {border: 2px solid var(--azul-oscuro); border-radius: 10px; background: var(--celeste-claro);}
+#logosPortales {flex-wrap: wrap; justify-content: center;}
+#logosPortales {margin: 7px 20px 0; padding: 5px; max-width: 470px;}
+
+#logosPortales img {max-height: 20px; margin: 10px 10px; border-radius: 5px;}
+#logosPortales img {box-shadow: 0 0 5px black;}
