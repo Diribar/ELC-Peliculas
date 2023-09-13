@@ -3,7 +3,11 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		copyrightOK: {type: dt.BOOLEAN},
+
+		abierto: {type: dt.BOOLEAN},
+		permUso: {type: dt.BOOLEAN},
+		cantLinks: {type: dt.INTEGER},
+
 		avatar: {type: dt.STRING(20)},
 		siemprePago: {type: dt.BOOLEAN},
 		siempreGratuito: {type: dt.BOOLEAN},
@@ -15,7 +19,9 @@ module.exports = (sequelize, dt) => {
 		urlBuscarPre: {type: dt.STRING(25)},
 		trailer: {type: dt.BOOLEAN},
 		pelicula: {type: dt.BOOLEAN},
-		urlBuscarPost: {type: dt.STRING(20)},	
+		urlBuscarPost: {type: dt.STRING(20)},
+		urlCopyright: {type: dt.STRING(70)},
+		urlHome: {type: dt.STRING(30)},
 	};
 	const config = {
 		tableName: "links_provs",
