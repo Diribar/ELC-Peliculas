@@ -170,7 +170,6 @@ module.exports = {
 
 			// Espera los resultados
 			[AL, SL, IR] = await Promise.all([AL, SL, IR]);
-			console.log(172, AL);
 
 			// Fin
 			return {AL, SL, IR};
