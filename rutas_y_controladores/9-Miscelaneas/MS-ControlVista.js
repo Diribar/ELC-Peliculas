@@ -99,16 +99,16 @@ module.exports = {
 		const {ruta} = comp.reqBasePathUrl(req);
 		const rclv = ruta.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
-		const includes = [...variables.entidades.prods, "prods_ediciones"];
+		const include = [...variables.entidades.prods, "prodsEdiciones"];
 		let rclvs = {};
 		let resultado2 = {};
 
 		// Lectura
-		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, includes)
+		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
 			.then((n) =>
 				n.map((m) => {
 					rclvs[m.nombre] = 0;
-					for (let entidad of includes) rclvs[m.nombre] += m[entidad].length;
+					for (let entidad of include) rclvs[m.nombre] += m[entidad].length;
 				})
 			)
 			.then(() => {
