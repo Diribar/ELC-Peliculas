@@ -7,7 +7,7 @@
 .marco#links nav a {margin-right: 10px;}
 .marco#links nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
 .marco#links nav a img {max-width: 70px; max-height: 24px;}
-.marco#links nav a img.enCast {border-color: var(--azul-oscuro);}
+.marco#links nav a img.enCast {border-color: var(--verde-oscuro);}
 .marco#links nav a img.subtCast {border-color: var(--gris-intermedio);}
 .marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
