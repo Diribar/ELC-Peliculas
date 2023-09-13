@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Mié. 13/sep",
-	"HoraUTC": "11:27",
+	"HoraUTC": "18:33",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/sep",
@@ -10,7 +10,7 @@
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
-	"RutinasDiarias": {"ImagenDerecha": "NO", "PaisesConMasProductos": "NO", "ProductosAlAzar": "NO"},
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "ProductosAlAzar": "SI", "LinksPorProv": "SI"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
 		"LinksVencidos": "SI",
