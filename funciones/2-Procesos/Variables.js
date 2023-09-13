@@ -15,7 +15,7 @@ module.exports = {
 			icono: "fa-trophy",
 			hr: true,
 		},
-		"derechos-de-autor": {titulo: "Política sobre Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
+		"derechos-de-autor": {titulo: "Derechos de Autor (DA)", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
 	// Videos de inducción
