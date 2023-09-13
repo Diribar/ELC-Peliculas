@@ -33,8 +33,6 @@ module.exports = {
 
 		// Fin
 		return;
-		this.LinksEnProd();
-		actualizaLinkDeProdAprob();
 	},
 
 	// 1. Rutinas horarias
@@ -197,7 +195,10 @@ module.exports = {
 		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in rutinasDiarias) await this[rutinaDiaria]();
+		for (let rutinaDiaria in rutinasDiarias) {
+			await this[rutinaDiaria]();
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias");
+		}
 
 		// Fin
 		return;
@@ -208,6 +209,9 @@ module.exports = {
 		const dia = new Date().getUTCDate();
 		const mes = new Date().getUTCMonth() + 1;
 		fechaDelAnoHoy_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+
+		// Fin
+		return;
 	},
 	ImagenDerecha: async function () {
 		// Variables
@@ -313,6 +317,19 @@ module.exports = {
 		// Fin
 		return;
 	},
+	LinksPorProv: async () => {
+		// Obtiene todos los links
+		const linksTotales = await BD_genericas.obtieneTodos("links");
+
+		// Links por proveedor
+		for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
+			let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
+			BD_genericas.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
+		}
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
@@ -340,34 +357,6 @@ module.exports = {
 		for (let rutinaSemanal in rutinasSemanales) feedback_RS[rutinaSemanal] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RS, "RutinasSemanales");
 		await this.RutinasSemanales();
-
-		// Fin
-		return;
-	},
-	variablesSemanales: function () {
-		this.primerLunesDelAno();
-
-		// Otras variables
-		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
-
-		// Fin
-		return;
-	},
-	primerLunesDelAno: () => {
-		// Obtiene el primer día del año
-		const fecha = new Date();
-		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
-		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
-
-		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado:6)
-		const primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria); // Suma la diferencia horaria para tener el día correcto
-		const diaSem_primerDiaDelAno = primerDiaDelAno.getDay();
-
-		// Obtiene el primer lunes del año
-		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
-		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
-		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
 
 		// Fin
 		return;
@@ -565,6 +554,34 @@ module.exports = {
 					// Si no lo encuentra en alguna de las tablas, elimina el registro
 					BD_genericas.eliminaPorId(tabla.nombre, registro.id);
 		}
+
+		// Fin
+		return;
+	},
+	variablesSemanales: function () {
+		this.primerLunesDelAno();
+
+		// Otras variables
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
+
+		// Fin
+		return;
+	},
+	primerLunesDelAno: () => {
+		// Obtiene el primer día del año
+		const fecha = new Date();
+		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
+		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
+
+		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado:6)
+		const primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria); // Suma la diferencia horaria para tener el día correcto
+		const diaSem_primerDiaDelAno = primerDiaDelAno.getDay();
+
+		// Obtiene el primer lunes del año
+		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
+		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
+		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
 
 		// Fin
 		return;
