@@ -45,7 +45,7 @@ module.exports = async (req, res, next) => {
 
 		if (revision) {
 			// Averigua si existe una edicion
-			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, {[campo_id]: entID})
+			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, {[campo_id]: id});
 			if (!edicion)
 				informacion = {
 					mensajes: ["No encontramos ninguna edición para revisar"],
