@@ -195,17 +195,21 @@ module.exports = {
 
 		// 3. Elimina los capítulos, sus ediciones y sus links
 		if (entidad == "colecciones") {
+			// Variables
+			let esperarCapitulos = [];
+
 			// Borra los links de los capítulos
 			for (let capitulo of original.capitulos)
-				esperar.push(
-					 procesos.eliminar.eliminaDependsMasEdics({
+				esperarCapitulos.push(
+					procesos.eliminar.eliminaDependsMasEdics({
 						entidadPadre: "capitulos",
 						padreID: capitulo.id,
 						entidadHijo: "links",
 					})
 				);
-			// Espera a que se borren todos los links
-			await Promise.all(esperar);
+
+			// Espera a que se borren todas las dependencias de los capítulos
+			await Promise.all(esperarCapitulos);
 
 			// Elimina los capítulos
 			esperar.push(
