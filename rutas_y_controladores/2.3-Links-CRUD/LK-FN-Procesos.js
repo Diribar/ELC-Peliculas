@@ -40,7 +40,7 @@ module.exports = {
 		);
 
 		// Obtiene el proveedor
-		let proveedor = linksProvs.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));
+		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.includes(n.urlDistintivo));
 		proveedor = proveedor ? proveedor : linksProvs.find((n) => n.generico); // Si no se reconoce el proveedor, se asume el 'desconocido'
 		datos.prov_id = proveedor.id;
 

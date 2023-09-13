@@ -78,7 +78,7 @@ window.addEventListener("load", async () => {
 				// Obtiene el url
 				let url = v.urlInputs[fila].value;
 				// Intenta reconocer al proveedor
-				prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+				prov = provs.find((n) => !n.generico && url.includes(n.urlDistintivo));
 				// Si no lo reconoce, se asume el 'desconocido'
 				prov = prov ? prov : provs.find((n) => n.generico);
 				// Acciones si es la fila de altas
