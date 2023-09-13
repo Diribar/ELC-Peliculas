@@ -13,7 +13,9 @@
 	<div id="logosPortales" class="flexRow">
 		<!-- Portales -->
 		<% for (let linkProv of linksProvs.filter(n => n.copyrightOK)) { %>
-			<img src="<%= localhost + '/imagenes/0-Base/Logos/' + linkProv.avatar %>" title="<%= linkProv.nombre %>">
+			<a href="//<%= linkProv.urlDistintivo %>" tabindex="-1" target='_blank'>
+				<img src="<%= localhost + '/imagenes/0-Base/Logos/' + linkProv.avatar %>" title="<%= linkProv.nombre %>">
+			</a>
 		<% } %>
 	</div>
 </div>
