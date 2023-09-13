@@ -32,7 +32,7 @@ module.exports = {
 
 		// Consolida los productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
-		AL.sort((a, b) => b.creadoEn - a.creadoEn);
+		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 		// delete prods1.AL_conEdicion;
 		// delete prods2.AL_sinEdicion;
 		let prods = {...prods1, ...prods2, ...links.productos, AL};
