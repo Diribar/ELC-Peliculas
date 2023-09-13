@@ -20,7 +20,7 @@ module.exports = {
 
 		// Productos, Ediciones y Links
 		let prods1 = procesos.TC.obtieneProdsConEdic(revID); // Altas y Ediciones
-		let prods2 = procesos.TC.obtieneProds_AL_SE_IR(revID); // creadoSinEdición, creadoAprobSinEdición, Inactivar y Recuperar
+		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // creadoSinEdición, creadoAprobSinEdición, Inactivar y Recuperar
 		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// RCLV

@@ -68,7 +68,7 @@ module.exports = {
 			// Fin
 			return {AL_conEdicion, ED};
 		},
-		obtieneProds_AL_SE_IR: async (revID) => {
+		obtieneProds_SE_IR: async (revID) => {
 			// Variables
 			const entidades = ["peliculas", "colecciones", "capitulos"];
 			let campos;
