@@ -37,7 +37,7 @@ module.exports = {
 			// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
 			if (userID) {
 				// Obtiene las ediciones
-				let ediciones = RCLV.prods_ediciones ? RCLV.prods_ediciones : [];
+				let ediciones = RCLV.prodsEdiciones ? RCLV.prodsEdiciones : [];
 
 				// Obtiene las ediciones propias
 				let edicionesPropias = ediciones ? ediciones.filter((n) => n.editadoPor_id == userID) : [];
