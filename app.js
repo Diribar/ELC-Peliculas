@@ -121,7 +121,7 @@ app.set("views", [
 		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
 
 		// Variables de links
-		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
+		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
