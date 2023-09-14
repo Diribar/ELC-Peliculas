@@ -68,7 +68,7 @@ module.exports = {
 	obtieneRCLVs: async (userID) => {
 		// Variables
 		const objetoFijo = {petitFamilias: "rclvs", userID};
-		const include = [...variables.entidades.prods, "prods_ediciones", "fechaDelAno"];
+		const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
 		let objeto;
 
 		// Inactivos
@@ -90,7 +90,7 @@ module.exports = {
 
 		// Sin producto
 		const SP = aprobados.filter(
-			(m) => !m.peliculas.length && !m.colecciones.length && !m.capitulos.length && !m.prods_ediciones.length
+			(m) => !m.peliculas.length && !m.colecciones.length && !m.capitulos.length && !m.prodsEdiciones.length
 		);
 
 		// Con fecha móvil

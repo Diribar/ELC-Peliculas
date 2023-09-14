@@ -26,50 +26,65 @@ module.exports = {
 			);
 
 			// Obtiene los productos
-			if (ediciones.length)
-				ediciones.map((n) => {
-					// Variables
-					let entidad = comp.obtieneDesdeEdicion.entidadProd(n);
-					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-
-					// Carga los productos en status menor o igual a aprobado
-					if (n[asociacion].statusRegistro_id <= aprobado_id)
-						productos.push({
-							...n[asociacion],
-							entidad,
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
-							edicID: n.id,
-							fechaRef: n.editadoEn,
-						});
+			ediciones.map((n) => {
+				let entidad = comp.obtieneDesdeEdicion.entidadProd(n);
+				let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+				productos.push({
+					...n[asociacion],
+					entidad,
+					fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
+					edicID: n.id,
+					fechaRef: n.editadoEn,
 				});
+			});
 
-			// Distribuye entre Altas y Ediciones
-			let ED = [];
+			// Acciones varias
 			if (productos.length) {
+				// Deja los productos con status <= 'aprobado_id'
+				productos = productos.filter((n) => n.statusRegistro_id <= aprobado_id);
+
+				// Deja los productos en status distinto a 'creado', o creados por el revisor, o creados hace más de una hora
+				productos = productos.filter(
+					(n) =>
+						n.statusRegistro_id != creado_id || // status distinto a 'creado'
+						n.creadoPor_id == revID || // creado por el revisor
+						n.creadoEn < comp.fechaHora.nuevoHorario(-1) // hace más de una hora
+				);
+
 				// Elimina los productos repetidos
 				productos = comp.eliminaRepetidos(productos);
 
-				// Deja solamente los productos sin problemas de captura
+				// Elimina los productos con problemas de captura
 				productos = comp.sinProblemasDeCaptura(productos, revID);
 
 				// Ordena por fecha descendente
-				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-
-				// Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
-				ED.push(...productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id)));
+				productos.sort((a, b) => b.fechaRef - a.fechaRef);
 			}
 
+			// Separa entre altas y ediciones
+			const AL_conEdicion = productos.filter((n) => n.statusRegistro_id == creado_id);
+			const ED = productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
+
 			// Fin
-			return {ED};
+			return {AL_conEdicion, ED};
 		},
-		obtieneProds_AL_SE_IR: async (revID) => {
+		obtieneProds_SE_IR: async (revID) => {
 			// Variables
 			const entidades = ["peliculas", "colecciones", "capitulos"];
 			let campos;
 
 			// AL: En staus 'creado'
-			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "statusSugeridoPor_id", revID};
-			let AL = obtieneRegs(campos).then((n) => n.filter((m) => m.entidad != "capitulos")); // Deja solamente las películas y colecciones
+			campos = {
+				entidades,
+				status_id: creado_id,
+				campoFecha: "creadoEn",
+				campoRevID: "creadoPor_id",
+				revID,
+				include: "ediciones",
+			};
+			let AL_sinEdicion = obtieneRegs(campos)
+				.then((n) => n.filter((m) => m.entidad != "capitulos")) // Deja solamente las películas y colecciones
+				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
@@ -94,10 +109,10 @@ module.exports = {
 			});
 
 			// Espera los resultados
-			[AL, SE, IN, RC] = await Promise.all([AL, SE, IN, RC]);
+			[AL_sinEdicion, SE, IN, RC] = await Promise.all([AL_sinEdicion, SE, IN, RC]);
 
 			// Fin
-			return {AL, SE, IR: [...IN, ...RC]};
+			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (revID) => {
 			// Variables
@@ -138,7 +153,7 @@ module.exports = {
 		obtieneRCLVs: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
-			const include = ["peliculas", "colecciones", "capitulos", "prods_ediciones"];
+			const include = [...variables.entidades.prods, "prodsEdiciones"];
 			let campos;
 
 			// AL: Altas
@@ -153,6 +168,7 @@ module.exports = {
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
+			// Espera los resultados
 			[AL, SL, IR] = await Promise.all([AL, SL, IR]);
 
 			// Fin

@@ -20,16 +20,24 @@ module.exports = {
 
 		// Productos, Ediciones y Links
 		let prods1 = procesos.TC.obtieneProdsConEdic(revID); // Altas y Ediciones
-		let prods2 = procesos.TC.obtieneProds_AL_SE_IR(revID); // Sin Edición, Inactivar y Recuperar
+		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // creadoSinEdición, creadoAprobSinEdición, Inactivar y Recuperar
 		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// RCLV
 		let rclvs1 = procesos.TC.obtieneRCLVs(revID);
 		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
 
-		// Espera a que se actualicen todos los resultados y consolida
+		// Espera a que se actualicen todos los resultados
 		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
-		let prods = {...prods1, ...prods2, ...links.productos};
+
+		// Consolida los productos
+		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
+		AL.sort((a, b) => b.fechaRef - a.fechaRef);
+		delete prods1.AL_conEdicion;
+		delete prods2.AL_sinEdicion;
+		let prods = {...prods1, ...prods2, ...links.productos, AL};
+
+		// Consolida los RCLVs
 		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Procesa los campos de las 2 familias de entidades

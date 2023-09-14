@@ -61,7 +61,7 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "epocaDelAno_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "epocaDelAno_id"});
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "epocaDelAno_id"});
-		entidad.hasMany(n.prodsEdicion, {as: "prods_ediciones", foreignKey: "epocaDelAno_id"});
+		entidad.hasMany(n.prodsEdicion, {as: "prodsEdiciones", foreignKey: "epocaDelAno_id"});
 
 		entidad.hasMany(n.rclvsEdicion, {as: "ediciones", foreignKey: "epocaDelAno_id"});
 
