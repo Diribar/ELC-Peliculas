@@ -837,11 +837,11 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Separa entre PR, VN y OT
 	for (let link of links) {
 		// Variables
-		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
-		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
-		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+		const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+		const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
+		const fechaRef = link[campoFecha];
+		const fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en PR y VN
 		if (link.statusRegistro && link.statusRegistro_id == creadoAprob_id) {
@@ -860,6 +860,9 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		// Elimina los repetidos dentro del grupo
 		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
 
+		// Deja solamente los sin problemas de captura
+		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
+
 		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
 			const metodoEliminar = metodos[j];
@@ -869,10 +872,12 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		}
 
 		// Ordena por la fecha más antigua
-		if (prods[metodo].length > 1) prods[metodo].sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
-		// Deja solamente los sin problemas de captura
-		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
+		if (prods[metodo].length > 1)
+			prods[metodo]
+				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef))
+				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0))
+				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0))
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
 	});
 
 	// Fin

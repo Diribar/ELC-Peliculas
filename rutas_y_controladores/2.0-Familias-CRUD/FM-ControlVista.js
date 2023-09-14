@@ -179,9 +179,11 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const original = await BD_genericas.obtienePorId(entidad, id);
+		const original =
+			entidad == "colecciones"
+				? await BD_genericas.obtienePorIdConInclude("colecciones", id, "capitulos")
+				: await BD_genericas.obtienePorId(entidad, id);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		let esperar = [];
 
 		// 1. Elimina las ediciones propias y sus archivos avatar
@@ -191,11 +193,29 @@ module.exports = {
 		if (familia == "producto")
 			esperar.push(procesos.eliminar.eliminaDependsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
 
-		// 3. Elimina los capítulos y sus ediciones
-		if (entidad == "colecciones")
+		// 3. Elimina los capítulos, sus ediciones y sus links
+		if (entidad == "colecciones") {
+			// Variables
+			let esperarCapitulos = [];
+
+			// Borra los links de los capítulos
+			for (let capitulo of original.capitulos)
+				esperarCapitulos.push(
+					procesos.eliminar.eliminaDependsMasEdics({
+						entidadPadre: "capitulos",
+						padreID: capitulo.id,
+						entidadHijo: "links",
+					})
+				);
+
+			// Espera a que se borren todas las dependencias de los capítulos
+			await Promise.all(esperarCapitulos);
+
+			// Elimina los capítulos
 			esperar.push(
 				procesos.eliminar.eliminaDependsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"})
 			);
+		}
 
 		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));

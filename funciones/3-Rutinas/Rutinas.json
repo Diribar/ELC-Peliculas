@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 11/sep",
-	"HoraUTC": "8:57",
+	"FechaUTC": "Mié. 13/sep",
+	"HoraUTC": "11:27",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-sep-23": {"titulo": "ELC - Películas"},
-		"10-sep-23": {"titulo": "ELC - Películas"},
 		"11-sep-23": {"titulo": "ELC - Películas"},
 		"12-sep-23": {"titulo": "ELC - Películas"},
-		"13-sep-23": {"titulo": "ELC - Películas"}
+		"13-sep-23": {"titulo": "ELC - Películas"},
+		"14-sep-23": {"titulo": "ELC - Películas"},
+		"15-sep-23": {"titulo": "Beato Pino Puglisi", "entidad": "personajes", "id": 140}
 	}
 }

@@ -123,6 +123,7 @@ module.exports = async (req, res, next) => {
 							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
 					  ],
 				iconos: [vistaAnterior],
+				trabajando: true,
 			};
 	}
 

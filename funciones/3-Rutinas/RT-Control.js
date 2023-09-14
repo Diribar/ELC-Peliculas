@@ -344,7 +344,17 @@ module.exports = {
 		// Fin
 		return;
 	},
-	variablesSemanales: () => {
+	variablesSemanales: function () {
+		this.primerLunesDelAno();
+
+		// Otras variables
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
+
+		// Fin
+		return;
+	},
+	primerLunesDelAno: () => {
 		// Obtiene el primer día del año
 		const fecha = new Date();
 		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
@@ -358,10 +368,6 @@ module.exports = {
 		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
 		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
 		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
-
-		// Otras variables
-		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
 
 		// Fin
 		return;
