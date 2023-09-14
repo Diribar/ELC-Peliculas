@@ -159,7 +159,7 @@ let resultados = {
 
 				// Fin
 				contador++;
-				if (contador > 3) break;
+				if (contador > 3) break; // no permite más de 4 botones
 			}
 
 			// Genera las variables 'ppp'
