@@ -131,7 +131,7 @@ let resultados = {
 		},
 		botones: () => {
 			// Variables
-			v.productos = [...v.infoResultados];
+			v.productos = [];
 			let cfc = 0;
 			let vpc = 0;
 			let contador = 0;
@@ -155,6 +155,7 @@ let resultados = {
 				// Agrega un botón
 				const boton = auxiliares.boton(resultado);
 				DOM.botones.append(boton);
+				v.productos.push(resultado)
 
 				// Fin
 				contador++;

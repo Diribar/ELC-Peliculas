@@ -42,10 +42,10 @@
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - con Links", regs: prods.SE.filter(n => n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas s/Edición - sin Links", regs: prods.SE.filter(n => !n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: dt ? dt : "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Creadas - con Links", regs: prods.AL.filter(n => n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Creadas - sin links", regs: prods.AL.filter(n => !n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
 			</div>
 		</div>
 	</div>
