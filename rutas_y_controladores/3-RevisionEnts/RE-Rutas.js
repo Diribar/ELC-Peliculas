@@ -10,7 +10,8 @@ const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usRolAutTablEnts = require("../../middlewares/filtrosPorUsuario/usRolAutTablEnts");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
+const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
+const usRolRevLinks = require("../../middlewares/filtrosPorUsuario/usRolRevLinks");
 // Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
@@ -23,10 +24,9 @@ const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidado
-const tablEntidades=[usAltaTerm, usPenalizaciones, usRolAutTablEnts];
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
-const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, edicion, permUserReg];
+const usuarioBase = [usAltaTerm, usPenalizaciones];
+const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...usuarioBase, permUserReg];
+const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...usuarioBase, usRolRevPERL, edicion, permUserReg];
 // Otros
 const multer = require("../../middlewares/varios/multer");
 
@@ -42,26 +42,26 @@ router.get("/api/link/edicion", API.edicAprobRech);
 
 // VISTAS --------------------------------------------------
 // Tablero de Control
-router.get("/tablero-de-control", ...tablEntidades, vista.tableroControl);
+router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);
 
 // Form
-router.get("/producto/alta", aptoCRUD, capturaActivar, vista.alta.prodForm);
-router.get("/rclv/alta", aptoCRUD, capturaActivar, vistaRCLV.altaEdic.form);
+router.get("/producto/alta", aptoCRUD, usRolRevPERL, capturaActivar, vista.alta.prodForm);
+router.get("/rclv/alta", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaEdic.form);
 
 // Cambios de status
-router.post("/producto/alta", aptoCRUD, capturaInactivar, vista.alta.guardar);
-router.post("/rclv/alta", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.alta.guardar);
-router.post("/:familia/rechazo", aptoCRUD, motivoNecesario, capturaInactivar, vista.alta.guardar);
-router.post("/:familia/inactivar-o-recuperar", aptoCRUD, capturaInactivar, vista.alta.guardar); // Va sin 'motivo'
+router.post("/producto/alta", aptoCRUD, usRolRevPERL, capturaInactivar, vista.alta.guardar);
+router.post("/rclv/alta", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, vista.alta.guardar);
+router.post("/:familia/rechazo", aptoCRUD, usRolRevPERL, motivoNecesario, capturaInactivar, vista.alta.guardar);
+router.post("/:familia/inactivar-o-recuperar", aptoCRUD, usRolRevPERL, capturaInactivar, vista.alta.guardar); // Va sin 'motivo'
 
-router.get("/rclv/solapamiento", aptoCRUD, capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/solapamiento", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.edic.solapam);
+router.get("/rclv/solapamiento", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/rclv/solapamiento", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, vista.edic.solapam);
 // Edición
 router.get("/:familia/edicion", aptoEdicion, capturaActivar, vista.edic.form);
 router.post("/:familia/edicion", aptoEdicion, motivoOpcional, capturaInactivar, vista.edic.avatar);
 
 // LINKS
-router.get("/links", aptoCRUD, capturaActivar, vista.links);
+router.get("/links", aptoCRUD, usRolRevLinks, capturaActivar, vista.links);
 
 // Exporta **********************************************
 module.exports = router;

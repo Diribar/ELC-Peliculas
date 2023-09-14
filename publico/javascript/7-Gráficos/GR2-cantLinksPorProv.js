@@ -1,11 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const cantLinksPorProv = await fetch("/graficos/api/cantidad-de-links-por-proveedor").then((n) => n.json());
-	let ejeX = cantLinksPorProv.map((n) => n.nombre);
-	const ejeY = cantLinksPorProv.map((n) => n.links);
-	console.log(ejeX);
-	console.log(ejeY);
+	const linksPorProv = await fetch("/graficos/api/links-por-proveedor").then((n) => n.json());
+	let ejeX = linksPorProv.map((n) => n.nombre);
+	const ejeY = linksPorProv.map((n) => n.links);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});

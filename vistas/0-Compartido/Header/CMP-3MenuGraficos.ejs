@@ -1,16 +1,20 @@
 <% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 	<!-- Todos los revisores o superior -->
 	<div class="desplMostrar menuMostrar menuFondo ocultar">
-		<a href="/graficos/cantidad-de-peliculas-por-cfc-y-vpc" class="menuOpcion">
+		<a href="/graficos/peliculas-cfc-y-vpc" class="menuOpcion">
 			<i class="fa-solid fa-chart-pie icono"></i>
 			<span>Películas - Por fe católica</span>
 		</a>
+		<a href="/graficos/peliculas-aprobadas" class="menuOpcion">
+			<i class="fa-solid fa-chart-pie icono"></i>
+			<span>Películas - Aprobadas</span>
+		</a>
 		<hr />
-		<a href="/graficos/vencimiento-de-links-por-semana" class="menuOpcion">
+		<a href="/graficos/vencimiento-de-links" class="menuOpcion">
 			<i class="fa-solid fa-link-slash icono"></i>
 			<span>Links - Vencimiento Semanal</span>
 		</a>
-		<a href="/graficos/cantidad-de-links-por-proveedor" class="menuOpcion">
+		<a href="/graficos/links-por-proveedor" class="menuOpcion">
 			<i class="fa-solid fa-chart-pie icono"></i>
 			<span>Links - Por proveedor</span>
 		</a>

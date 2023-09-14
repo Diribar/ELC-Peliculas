@@ -15,17 +15,12 @@ comp.gestionArchivos.carpetaProvisorio();
 // Guarda la imagen
 module.exports = multer({
 	storage,
-	// fileFilter: (req, file, cb) => {
-	// 	const acceptableExtensions = [".png", ".jpg", "jpeg"];
-	// 	if (!acceptableExtensions.includes(path.extname(file.originalname))) {
-	// 		return cb(new Error("..."));
-	// 	}
+	fileFilter: (req, file, cb) => {
+		// Variables
+		const archivoEsImagen = file.mimetype.startsWith("image/");
+		const tamArchivo = Number(req.headers["content-length"]);
 
-	// 	// added this
-	// 	const fileSize = parseInt(req.headers["content-length"]);
-	// 	console.log(fileSize);
-	// 	if (fileSize > 1000) {
-	// 		return cb(new Error("Error de tamaño"));
-	// 	}
-	// },
+		// Fin
+		return cb(null, archivoEsImagen && tamArchivo <= tamMaxImagen);
+	},
 });

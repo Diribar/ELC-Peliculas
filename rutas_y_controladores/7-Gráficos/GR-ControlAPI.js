@@ -5,7 +5,7 @@ const BD_genericas = require("../../funciones/1-BD/Genericas");
 const variables = require("../../funciones/2-Procesos/Variables");
 
 module.exports = {
-	cantPelisPorCfcVpc: async (req, res) => {
+	pelisCfcVpc: async (req, res) => {
 		// Variables
 		let cfc = {};
 		let vpc = {};
@@ -25,6 +25,29 @@ module.exports = {
 
 		// Fin
 		return res.json({cfc, vpc});
+	},
+	pelisAprob: async (req, res) => {
+		// Variables
+		let productos = [];
+
+		// Obtiene los productos
+		for (const entidad of ["peliculas", "colecciones"])
+			productos.push(BD_genericas.obtieneTodosConInclude(entidad, "publico"));
+		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+
+		// Cuenta las cantidades
+		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
+		const aprob = {
+			cfc: prods.cfc.filter((n) => n.statusRegistro_id == aprobado_id).length,
+			vpc: prods.vpc.filter((n) => n.statusRegistro_id == aprobado_id).length,
+		};
+		const pend = {
+			cfc: prods.cfc.filter((n) => creados_ids.includes(n.statusRegistro_id)).length,
+			vpc: prods.vpc.filter((n) => creados_ids.includes(n.statusRegistro_id)).length,
+		};
+
+		// Fin
+		return res.json({aprob, pend});
 	},
 	vencimLinks: async (req, res) => {
 		// Variables
@@ -51,7 +74,7 @@ module.exports = {
 		// Fin
 		return res.json(linksSemanales);
 	},
-	cantLinksPorProv: async (req, res) => {
+	linksPorProv: async (req, res) => {
 		// Obtiene los provs
 		let provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links");
 

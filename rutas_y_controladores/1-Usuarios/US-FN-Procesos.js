@@ -74,7 +74,7 @@ module.exports = {
 		mensajes: [
 			"Hemos generado tu usuario con tu dirección de mail.",
 			"Te hemos enviado por mail la contraseña.",
-			"Con el ícono de abajo accedes al Login.",
+			"Con el ícono de abajo accedés al Login.",
 		],
 		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 		titulo: "Alta exitosa de Usuario",

@@ -473,24 +473,19 @@ module.exports = {
 			// Respuesta
 			const respuesta = false
 				? false
-				: // Mensajes si existe un avatar
-				avatar
-				? // Valida si es una imagen
-				  esImagen == "NO"
+				: avatar // Mensajes si existe un avatar
+				? esImagen == "NO" // Valida si es una imagen
 					? "El archivo no es una imagen"
-					: // Valida la extensión
-					!ext
+					: !ext // Valida la extensión
 					? "El archivo debe tener alguna extensión"
 					: ![".jpg", ".png", ".jpeg"].includes(ext)
 					? "Usaste un archivo con la extensión '" +
 					  ext.slice(1).toUpperCase() +
 					  "'. Las extensiones válidas son JPG, JPEG y PNG"
-					: // Valida el tamaño
-					tamano && tamano > 1100000
+					: tamano && tamano > tamMaxImagen // Valida el tamaño
 					? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 					: ""
-				: // Mensajes si no existe un avatar
-				imgOpcional == "NO" || imgOpcional === false
+				: imgOpcional == "NO" || imgOpcional === false // Mensajes si no existe un avatar
 				? "Necesitamos que agregues una imagen"
 				: "";
 

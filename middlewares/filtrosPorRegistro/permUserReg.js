@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	// Más variables
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
+	if (v.usuario.rolUsuario.autTablEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.creadoEn = v.registro.creadoEn;
 	v.creadoEn.setSeconds(0);

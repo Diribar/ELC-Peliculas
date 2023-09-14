@@ -9,7 +9,7 @@ const vista = require("./RCLV-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
+const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
 // Específicos de RCLVs
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
@@ -30,7 +30,7 @@ const aptoAgregar = [entValida, ...aptoUsuario];
 const aptoDetalle = [entValida, IDvalido, capturaInactivar];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion, rclvNoEditable];
-const aptoEliminar = [...aptoCRUD, usRolRevEnts];
+const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar

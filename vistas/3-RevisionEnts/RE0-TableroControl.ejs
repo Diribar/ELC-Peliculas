@@ -38,7 +38,7 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% let rp = "revision/producto/" %>
-				<% let dt = usuario.rolUsuario.codigo == "autTablEnts" ? "producto/detalle" : "" %>
+				<% let dt = !usuario.rolUsuario.revisorPERL ? "producto/detalle" : "" %>
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
@@ -49,9 +49,9 @@
 			</div>
 		</div>
 	</div>
-	<% if (usuario.rolUsuario.revisorEnts || usuario.rolUsuario.revisorLinks) { %>
+	<% if (usuario.rolUsuario.revisorEnts) { %>
 		<div id="segundaColumna">
-			<% if (usuario.rolUsuario.revisorEnts) { %>
+			<% if (usuario.rolUsuario.revisorPERL) { %>
 				<!-- RCLVs -->
 				<div class="bloques" id="rclv">
 					<!-- Título y ayuda -->

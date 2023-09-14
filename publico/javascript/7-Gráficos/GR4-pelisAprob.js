@@ -1,12 +1,11 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {cfc, vpc} = await fetch("/graficos/api/peliculas-cfc-y-vpc").then((n) => n.json());
+	const {aprob, pend} = await fetch("/graficos/api/peliculas-aprobadas").then((n) => n.json());
 
-	const ejeX_cfc = [...Object.keys(cfc)].map((n) => "cfc-" + n);
-	const ejeX_vpc = [...Object.keys(vpc).reverse()].map((n) => "vpc-" + n);
-	const ejeX = [...ejeX_cfc, ...ejeX_vpc];
-	const ejeY = [...Object.values(cfc), ...Object.values(vpc).reverse()];
+	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
+	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
+	console.log(10, ejeX, ejeY);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
@@ -15,7 +14,7 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Consolida el resultado
-		const resultado = [["Público", "Cant. de Películas"]];
+		const resultado = [["Status", "Cant. de Películas"]];
 		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
 
 		// Especifica la información
@@ -27,7 +26,7 @@ window.addEventListener("load", async () => {
 
 		const options = {
 			backgroundColor: "rgb(255,242,204)",
-			colors: [gris, gris, gris, azul, azul, azul],
+			colors: [gris, gris, "green", azul],
 			fontSize: 10,
 			chartArea: {height: "80%"},
 			legend: "none",

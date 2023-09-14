@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 10/sep",
-	"HoraUTC": "14:00",
+	"FechaUTC": "Lun. 11/sep",
+	"HoraUTC": "8:57",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 4/sep",
-	"HoraSemUTC": "12:56",
-	"semanaUTC": 35,
+	"FechaSemUTC": "Lun. 11/sep",
+	"HoraSemUTC": "8:57",
+	"semanaUTC": 36,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-sep-23": {"titulo": "Ap. Mar. - Coromoto", "entidad": "hechos", "id": 53},
 		"09-sep-23": {"titulo": "ELC - Películas"},
 		"10-sep-23": {"titulo": "ELC - Películas"},
 		"11-sep-23": {"titulo": "ELC - Películas"},
-		"12-sep-23": {"titulo": "ELC - Películas"}
+		"12-sep-23": {"titulo": "ELC - Películas"},
+		"13-sep-23": {"titulo": "ELC - Películas"}
 	}
 }

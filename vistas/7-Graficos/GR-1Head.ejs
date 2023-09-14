@@ -7,12 +7,17 @@
     <script src="/javascript/7-Gráficos/GR3-cantPelisPorCFC.js"></script>
 <% } %>
 
+<!-- Películas Aprobadas -->
+<% if (codigo == "pelisAprob") { %>
+    <script src="/javascript/7-Gráficos/GR4-pelisAprob.js"></script>
+<% } %>
+
 <!-- Vencimiento de Links -->
 <% if (codigo == "vencimLinks") { %>
     <script src="/javascript/7-Gráficos/GR1-vencimLinks.js"></script>
 <% } %>
 
 <!-- Cantidad de Links por Proveedor -->
-<% if (codigo == "cantLinksPorProv") { %>
-    <script src="/javascript/7-Gráficos/GR2-cantLinksPorProv.js"></script>
+<% if (codigo == "linksPorProv") { %>
+    <script src="/javascript/7-Gráficos/GR2-linksPorProv.js"></script>
 <% } %>
