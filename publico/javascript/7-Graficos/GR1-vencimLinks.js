@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 
 	// Eje vertical
 	const ejeY = Object.values(linksSemanales);
-	const maxValorEjeY = Math.ceil(linksAprobsTotal / 25 / 10) * 10+10
+	const maxValorEjeY = Math.ceil(linksAprobsTotal / 25 / 10 + 0.5) * 10;
 
 	// Eje horizontal
 	let ejeX = Object.keys(linksSemanales);
