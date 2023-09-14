@@ -23,5 +23,6 @@
 #cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px; white-space: nowrap;}
 #cuerpo #encabezado #colCap #tempCapS .pack i {font-size: 1.1rem; }
 #cuerpo #encabezado #colCap #tempCapS .pack i:first-child {margin-right: 3px;}
-#cuerpo #encabezado #colCap #tempCapS #temporada {margin-right: 8px; border-radius: 5px;}
-#cuerpo #encabezado #colCap #tempCapS #capitulo {border-radius: 5px;}
+#cuerpo #encabezado #colCap #tempCapS :is(#temporada, #capitulo) {border-radius: 5px;}
+#cuerpo #encabezado #colCap #tempCapS #temporada {margin-right: 8px;}
+#cuerpo #encabezado #colCap #tempCapS #capitulo {width: 20px;}
