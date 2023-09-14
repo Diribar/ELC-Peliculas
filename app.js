@@ -121,7 +121,7 @@ app.set("views", [
 		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
 
 		// Variables de links
-		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
+		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
@@ -219,7 +219,7 @@ app.set("views", [
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
-	app.use("/graficos", require("./rutas_y_controladores/7-Gráficos/GR-Rutas"));
+	app.use("/graficos", require("./rutas_y_controladores/7-Graficos/GR-Rutas"));
 	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales

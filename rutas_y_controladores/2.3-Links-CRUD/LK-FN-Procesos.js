@@ -8,15 +8,14 @@ const comp = require("../../funciones/2-Procesos/Compartidas");
 module.exports = {
 	// Links - Controlador Vista
 	obtieneLinksActualizados: async (entidad, prodID, userID) => {
-		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
+
 		// Obtiene los linksOriginales
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
-		// Ordenar por ID
-		links.sort((a, b) => a.id - b.id);
+
 		// Los combina con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
@@ -26,6 +25,7 @@ module.exports = {
 						if (edicion[campo] !== null && camposARevisar.includes(campo)) links[i][campo] = edicion[campo];
 			}
 		});
+
 		// Fin
 		return links;
 	},

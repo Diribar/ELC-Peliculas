@@ -113,7 +113,7 @@ module.exports = {
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		} else datos.yaTuvoPrimRev = true;
-		datos.motivo_id = aprob != "SI" && IN != "SI" ? (motivo_id ? motivo_id : original.motivo_id) : null;
+		datos.motivo_id = statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : original.motivo_id) : null;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -137,7 +137,7 @@ module.exports = {
 			datosHist.comentario = statusRegistros.find((n) => n.id == statusRegistro_id).nombre;
 			if (datos.motivo_id) {
 				datosHist.motivo_id = datos.motivo_id;
-				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
+				datosHist.motivo = motivosStatus.find((n) => n.id == datos.motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
 				datosHist.comentario += " - " + datosHist.motivo.descripcion;
 			}

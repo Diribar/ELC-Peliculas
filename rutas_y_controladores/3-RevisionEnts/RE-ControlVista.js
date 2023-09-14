@@ -86,10 +86,11 @@ module.exports = {
 				"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
 				"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 			];
-			// Info para el bloque Izquierdo
-			// Primer proceso: hace más legible la información
+
+			// Info para el bloque Izquierdo - Primer proceso: hace más legible la información
 			const infoProcesada = procsProd.bloqueIzq(original);
-			// Segundo proceso: reagrupa la información
+
+			// Info para el bloque Izquierdo - Segundo proceso: reagrupa la información
 			let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
 			if (infoProcesada.infoGral.length) {
 				let infoGral = infoProcesada.infoGral;
@@ -415,7 +416,16 @@ module.exports = {
 			if (entidadEdic == "prodsEdicion") delete edicion.avatarUrl;
 
 			// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
-			edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+			edicion = await procesos.edicion.edicAprobRech({
+				entidad,
+				original,
+				originalGuardado,
+				edicion,
+				revID,
+				campo,
+				aprob,
+				motivo_id,
+			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
 			if (!edicion && entidadEdic == "prodsEdicion")
