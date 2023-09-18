@@ -28,7 +28,6 @@ module.exports = {
 		// Productos del RCLV
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
-		const cantProds = prodsDelRCLV.length;
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
