@@ -25,12 +25,14 @@
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
-			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
-			</a>
-			<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+oa+' calificaste' : 'Califical'+oa %>"></i>
-			</a>
+			<% if (familia == "productos") { %>
+				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+				</a>
+				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+oa+' calificaste' : 'Califical'+oa %>"></i>
+				</a>
+			<% } %>
 		<% } else { %>
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
