@@ -25,7 +25,7 @@
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
-			<% if (familia == "productos") { %>
+			<% if (familia == "producto") { %>
 				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 				</a>
