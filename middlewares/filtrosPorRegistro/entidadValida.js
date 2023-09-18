@@ -3,10 +3,11 @@
 const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
-	// Obtiene la entidad
+	// Variables
 	let entidad = req.query.entidad;
-	// Verificar los datos
 	let informacion;
+
+	// Verifica los datos
 	if (!entidad)
 		informacion = {
 			mensajes: ["Falta el dato de la 'entidad'"],
@@ -16,6 +17,7 @@ module.exports = (req, res, next) => {
 		// Entidad inexistente
 		const familia1 = comp.obtieneDesdeEntidad.familia(entidad);
 		const familia2 = req.baseUrl + req.path;
+		console.log(21,entidad,familia1,familia2);
 		const rutasPorFamilia = {
 			producto: ["/links/", "/crud/", familia1],
 			rclv: ["/crud/", familia1],
