@@ -17,8 +17,7 @@ module.exports = (req, res, next) => {
 		// Entidad inexistente
 		const familia1 = comp.obtieneDesdeEntidad.familia(entidad);
 		const familia2 = req.baseUrl + req.path;
-		console.log(21,entidad,familia1,familia2);
-		const rutasPorFamilia = {
+				const rutasPorFamilia = {
 			producto: ["/links/", "/crud/", familia1],
 			rclv: ["/crud/", familia1],
 		};
