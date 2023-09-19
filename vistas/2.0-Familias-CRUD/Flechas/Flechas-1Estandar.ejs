@@ -45,10 +45,10 @@
 			<a href="<%= '/revision/links/?entidad=' + entidad + '&id=' + id + '&origen=REP' %>">
 				<i class="fa-solid fa-link" tabindex="-1" title="Para ver los links"></i>
 			</a>
-		<% } else if (codigo == "abmLinks" && locals.origen != "REP") { %>
-			<!-- Link para Revisión de Edición -->
+		<% } else if (codigo == "abmLinks") { %>
+			<!-- Link para Revisión de Links -->
 			<a href="<%= siguienteProducto %>">
-				<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver el siguiente producto"></i>
+				<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
 			</a>
 		<% } %>
 	<% } %>
