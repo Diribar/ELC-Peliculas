@@ -98,7 +98,7 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, saltea al siguiente usuario
+			// Obtiene la fecha en que se le envió el último comunicado
 			const hoyUsuario = procesos.mailDeFeedback.hoyUsuario(usuario);
 
 			// Si la fecha local es igual que la fecha del último comunicado, se saltea el usuario
@@ -522,7 +522,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	EliminaHistorialDeRegsNoLongerAvailable: async () => {
+	EliminaHistorialDeRegsEliminados: async () => {
 		// Variables
 		const tablas = [
 			{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},

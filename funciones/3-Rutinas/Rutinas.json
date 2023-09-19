@@ -18,7 +18,7 @@
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
-		"EliminaHistorialDeRegsNoLongerAvailable": "SI"
+		"EliminaHistorialDeRegsEliminados": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
