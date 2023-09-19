@@ -51,7 +51,7 @@ window.addEventListener("load", async () => {
 				viewWindow: {min: 0, max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				fontSize: 20,
 				title: "Cantidad de links que vencen",
-				viewWindow: {max: maxValorEjeY},
+				viewWindow: {min: 0, max: maxValorEjeY},
 			},
 		};
 
