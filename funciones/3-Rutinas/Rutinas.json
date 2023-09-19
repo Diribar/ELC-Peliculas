@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 18/sep",
-	"HoraUTC": "20:32",
+	"FechaUTC": "Mar. 19/sep",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-sep-23": {"titulo": "ELC - Películas"},
 		"17-sep-23": {"titulo": "Santa Hildegard von Bingen", "entidad": "personajes", "id": 77},
 		"18-sep-23": {"titulo": "San José de Cupertino", "entidad": "personajes", "id": 85},
 		"19-sep-23": {"titulo": "ELC - Películas"},
-		"20-sep-23": {"titulo": "ELC - Películas"}
+		"20-sep-23": {"titulo": "ELC - Películas"},
+		"21-sep-23": {"titulo": "ELC - Películas"}
 	}
 }
