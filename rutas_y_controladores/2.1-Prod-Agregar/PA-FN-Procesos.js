@@ -92,14 +92,12 @@ module.exports = {
 			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
 			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
-			// Genera la información a guardar
+			// Genera la información a guardar - los datos adicionales se completan en la revisión
 			const datosCap = {
 				...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
-				// ...{cfc, bhr, musical, color, tipoActuacion_id},
-				// ...{personaje_id, hecho_id, tema_id},
-				...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
+				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
 			};
 
 			// Obtiene los datos del capítulo
@@ -144,17 +142,13 @@ module.exports = {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			let {direccion, guion, musica, actores, produccion} = datosCol;
-			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
-			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 			// Genera la información a guardar
 			let datos = {
 				...{fuente: "TMDB", coleccion_id: datosCol.id},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
-				// ...{cfc, bhr, musical, color, tipoActuacion_id},
-				// ...{personaje_id, hecho_id, tema_id},
-				...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
+				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
 			};
 			if (datosCap.runtime) datos.duracion = datosCap.runtime;
 
