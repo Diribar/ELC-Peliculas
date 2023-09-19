@@ -71,8 +71,14 @@ module.exports = {
 			linksSemanales[semanaVencim] ? linksSemanales[semanaVencim]++ : (linksSemanales[semanaVencim] = 1);
 		}
 
+		// Obtiene los links aprobados
+		let linksAprobsTotal = await BD_genericas.obtieneTodosPorCondicion("links", {
+			prodAprob: true,
+			statusRegistro_id: aprobados_ids,
+		}).then((n) => n.length);
+
 		// Fin
-		return res.json(linksSemanales);
+		return res.json({linksSemanales, linksAprobsTotal});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs

@@ -131,13 +131,35 @@ let resultados = {
 		},
 		botones: () => {
 			// Variables
-			v.productos = [...v.infoResultados];
+			v.productos = [];
+			let cfc = 0;
+			let vpc = 0;
+			let contador = 0;
+
+			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
+			const seDebeEquilibrar =
+				v.ordenBD.codigo == "azar" &&
+				!configCons.cfc && // 'cfc' no está contestado
+				!configCons.apMar && // 'apMar' no está contestado
+				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
+				!configCons.rolesIgl; // 'rolesIgl' no está contestado
 
 			// Output
-			const tope = Math.min(4, v.infoResultados.length);
-			for (let i = 0; i < tope; i++) {
-				const boton = auxiliares.boton(v.infoResultados[i]);
+			for (let resultado of v.infoResultados) {
+				// Verifica si se superó la cantidad deseada de 'cfc' o 'vpc'
+				if (seDebeEquilibrar) {
+					resultado.cfc ? cfc++ : vpc++;
+					if ((resultado.cfc && cfc > 2) || (!resultado.cfc && vpc > 2)) continue;
+				}
+
+				// Agrega un botón
+				const boton = auxiliares.boton(resultado);
 				DOM.botones.append(boton);
+				v.productos.push(resultado)
+
+				// Fin
+				contador++;
+				if (contador > 3) break; // no permite más de 4 botones
 			}
 
 			// Genera las variables 'ppp'

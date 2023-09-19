@@ -1,10 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	const linksSemanales = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+	// Obtiene información del backend
+	const {linksSemanales, linksAprobsTotal} = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+
+	// Eje vertical
 	const ejeY = Object.values(linksSemanales);
+	const maxValorEjeY = Math.ceil(linksAprobsTotal / 25 / 10 + 0.5) * 10;
+
+	// Eje horizontal
 	let ejeX = Object.keys(linksSemanales);
-	// for (let i = 0; i < ejeX.length; i++) if (ejeX[i] > 52) ejeX[i] -= 52;
 	for (let i = 0; i < ejeX.length; i++) ejeX[i] = Number(ejeX[i]);
 
 	// Aspectos de la imagen de Google
@@ -47,6 +51,7 @@ window.addEventListener("load", async () => {
 				viewWindow: {min: 0, max: Math.ceil(Math.max(...ejeY) / 10) * 10},
 				fontSize: 20,
 				title: "Cantidad de links que vencen",
+				viewWindow: {min: 0, max: maxValorEjeY},
 			},
 		};
 

@@ -873,11 +873,11 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Pule los resultados
 	const metodos = Object.keys(prods);
 	metodos.forEach((metodo, i) => {
-		// Elimina los repetidos dentro del grupo
-		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
-
 		// Deja solamente los sin problemas de captura
 		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
+
+		// Elimina los repetidos dentro del grupo
+		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
 
 		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
@@ -887,10 +887,10 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 			);
 		}
 
-		// Ordena por la fecha más antigua
+		// Ordena los productos
 		if (prods[metodo].length > 1)
 			prods[metodo]
-				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef))
+				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)) // Ordena por la fecha más antigua
 				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0))
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0))
 				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));

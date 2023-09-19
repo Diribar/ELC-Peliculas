@@ -3,10 +3,11 @@
 const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
-	// Obtiene la entidad
+	// Variables
 	let entidad = req.query.entidad;
-	// Verificar los datos
 	let informacion;
+
+	// Verifica los datos
 	if (!entidad)
 		informacion = {
 			mensajes: ["Falta el dato de la 'entidad'"],
