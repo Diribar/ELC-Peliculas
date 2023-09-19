@@ -183,7 +183,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 	LI = comp.eliminaRepetidos(LI);
 
 	// 5. Deja solamente los prods aprobados
-	if (LI.length) LI = LI.filter((n) => n.statusRegistro_id == aprobado_id);
+	if (LI.length) LI = LI.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
 
 	// 6. Deja solamente los prods sin problemas de captura
 	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
