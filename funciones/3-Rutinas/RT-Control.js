@@ -29,6 +29,7 @@ module.exports = {
 		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
+		this.EliminaHistorialDeRegsEliminados()
 		await this.FechaHoraUTC();
 
 		// Fin
@@ -117,10 +118,10 @@ module.exports = {
 			// Envía el mail y actualiza la BD
 			mailsEnviados.push(
 				comp
-					.enviarMail(asunto, email, cuerpoMail) // Envía el mail
+					.enviarMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 					.then((n) => {
 						// Acciones si el mail fue enviado
-						if (n.OK) {
+						if (n) {
 							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
 							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario}); // Actualiza el registro de usuario en el campo fecha_revisor
@@ -422,8 +423,8 @@ module.exports = {
 		// Actualiza el status de los links
 		const objeto = {
 			statusSugeridoPor_id: usAutom_id,
-			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
 			statusRegistro_id: creadoAprob_id,
+			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
 		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
