@@ -54,7 +54,7 @@ app.use(cookies());
 // app.use(morgan("custom")) //use the new format by name
 
 // *********** Para conectarse con el servidor ********************
-app.listen(80, () => console.log("Servidor funcionando..."));
+app.listen(process.env.PORT, () => console.log("Servidor funcionando..."));
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set("view engine", "ejs"); // Terminación de los archivos de vista
