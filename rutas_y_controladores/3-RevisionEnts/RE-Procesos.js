@@ -827,6 +827,11 @@ let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion) => {
 	// Variables
 	const campo = campoRevisar.nombre;
+	const casosEspeciales = [
+		...["cfc", "bhr", "musical", "color"], // productos
+		...["fechaMovil", "soloCfc", "ama"], // rclvs
+		...["castellano", "subtitulos", "gratuito"], // links
+	];
 
 	// Obtiene una primera respuesta
 	let resultado = relacInclude
@@ -836,8 +841,8 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
-	if (["cfc", "bhr", "musical", "color", "fechaMovil", "soloCfc", "ama"].includes(campo))
-		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+	if (casosEspeciales.includes(campo)) resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+	// Reemplaza 'Ninguno' por 'null'
 	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
 	// Últimas correcciones
