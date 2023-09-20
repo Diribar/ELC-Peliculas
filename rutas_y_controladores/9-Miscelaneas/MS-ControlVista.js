@@ -9,7 +9,7 @@ module.exports = {
 	// Redireccionar después de inactivar una captura
 	redireccionar: async (req, res) => {
 		// Variables
-		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
+		let {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
 		// return res.send(req.query)
 		// Si es 'tablero', ir a tablero
 		let destino = false
@@ -23,8 +23,13 @@ module.exports = {
 			? "/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
 			: origen == "CAL"
 			? "/producto/calificar/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-			: origen == "LK"
-			? "/links/abm/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+			: ["LK", "LKM"].includes(origen)
+			? "/links/abm/?entidad=" +
+			  (prodEntidad ? prodEntidad : entidad) +
+			  "&id=" +
+			  (prodID ? prodID : id) +
+			  (origen == "LKM" ? "&origen=TM" : "") +
+			  (grupo ? "&grupo=inactivo" : "")
 			: // RCLV
 			origen == "DTR"
 			? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
