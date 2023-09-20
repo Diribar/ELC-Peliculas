@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 	};
 	let rutas = {
 		eliminar: location.pathname.startsWith("/links/")
-			? "/links/api/inactivar/"
+			? "/links/api/inactiva-o-elimina/"
 			: location.pathname.startsWith("/revision/")
 			? "/revision/api/link/alta-baja"
 			: "",
@@ -28,8 +28,11 @@ window.addEventListener("load", () => {
 	// Listener de 'inactivar'
 	DOM.botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
-			// Eliminar permanentemente
-			if (botonOut.classList.contains("fa-trash-can") && !botonOut.classList.contains("inactivo")) {
+			// Si el ícono está inactivo, interrumpe la función
+			if (botonOut.classList.contains("inactivo")) return;
+
+			// Elimina permanentemente
+			if (botonOut.classList.contains("fa-trash-can")) {
 				let motivo_id = DOM.motivosSelect[fila].value;
 				let url = v.condiciones;
 				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
@@ -39,20 +42,22 @@ window.addEventListener("load", () => {
 				let respuesta = await fetch(rutas.eliminar + url).then((n) => n.json());
 				if (respuesta.ocultar) DOM.filasYaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) location.reload();
-				// if (respuesta.pasivos) DOM.pasivos.innerHTML = "* Pasivos";
 			}
-			// Inactivar
+			// Inactiva
 			else {
 				// Ocultar el botón de edicion
 				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
-				// Reemplazar por el tacho
+
+				// Reemplaza por el tacho
 				botonOut.classList.remove("fa-circle-xmark");
 				botonOut.classList.add("fa-trash-can");
 				botonOut.classList.add("inactivo");
-				// Ocultar los 6 campos
+
+				// Oculta los 6 campos
 				for (let columna = 0; columna < v.columnas; columna++)
 					DOM.taparMotivo[fila * v.columnas + columna].classList.add("ocultar");
-				// Mostrar el select
+
+				// Muestra el select
 				DOM.motivosFila[fila].classList.remove("ocultar");
 				DOM.motivosSelect[fila].focus();
 			}
