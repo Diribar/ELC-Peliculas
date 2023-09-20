@@ -29,7 +29,6 @@ module.exports = {
 		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
-		this.EliminaHistorialDeRegsEliminados()
 		await this.FechaHoraUTC();
 
 		// Fin
@@ -635,6 +634,29 @@ let actualizaLinkDeProdAprob = async () => {
 		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
 		const prodAprob = aprobados.includes(statusProd);
 		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+	}
+
+	// Fin
+	return;
+};
+let eliminaHistorialQueNoCorresponde = async () => {
+	// Obtiene los registros de histStatus en orden descendente
+	let histStatus = await BD_genericas.obtieneTodos("histStatus", false, true);
+
+	// Rutina por registro
+	while (histStatus.length) {
+		// Variables
+		const registro = histStatus[0]; // obtiene el registro más antiguo de 'histStatus'
+		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id); // obtiene el producto
+
+		// Si el status coincide, quita de la variable su historial
+		if (registro.statusFinal_id == producto.statusRegistro_id)
+			histStatus = histStatus.filter((n) => n.entidad != registro.entidad || n.entidad_id != registro.entidad_id);
+		// Si el status difiere, elimina el registro de la variable y de la BD
+		else {
+			BD_genericas.eliminaPorId("histStatus", registro.id);
+			histStatus.splice(0, 1);
+		}
 	}
 
 	// Fin
