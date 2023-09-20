@@ -29,7 +29,7 @@ const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserRe
 router.get("/api/valida", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
 router.get("/api/guardar", API.guarda);
-router.get("/api/inactivar", API.inactiva);
+router.get("/api/inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
