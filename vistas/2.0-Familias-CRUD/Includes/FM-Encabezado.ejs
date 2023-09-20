@@ -5,7 +5,7 @@
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
+				<% if (["prod_rud", "linksCRUD"].includes(tema)) { %>
 					<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
 						<div class="pointer scale">
 							<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
@@ -33,7 +33,7 @@
 				</p>
 			</div>
 			<div id="tempCapS">
-				<% if (tema == "prod_rud" || tema == "links_crud") { %>
+				<% if (tema == "prod_rud" || tema == "linksCRUD") { %>
 					<!-- Cambiar de capítulo -->
 					<div class="pack">
 						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
