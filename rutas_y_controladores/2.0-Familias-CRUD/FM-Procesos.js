@@ -565,7 +565,7 @@ module.exports = {
 			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = talVez;
 
 			// 4. No encontró ningún caso
-			if (!prodsAprob) prodsAprob = NO;
+			if (!prodsAprob) prodsAprob = sinLinks;
 
 			// Actualiza el campo en el RCLV
 			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
