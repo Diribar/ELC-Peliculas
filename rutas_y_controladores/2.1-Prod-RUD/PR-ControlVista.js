@@ -80,11 +80,11 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
+		const tituloEspecial = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
 
 		// Va a la vista
-		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal, tituloEspecial},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
