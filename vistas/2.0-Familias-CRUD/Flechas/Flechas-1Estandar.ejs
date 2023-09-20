@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
 <% const detalle = (tema == "prod_rud" || tema == "rclv_crud") && codigo == "detalle" %>
-<% const ABMlinks = tema == "links_crud" && codigo == "abmLinks" %>
+<% const ABMlinks = tema == "linksCRUD" && codigo == "abmLinks" %>
 <% const calificar = tema == "prod_rud" && codigo == "calificar" %>
 <% const IRE = tema == "crud" %><!-- Inactivar, Recuperar, Eliminar -->
 <% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
@@ -39,17 +39,16 @@
 			<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 		<% } %>
 	<% } %>
-	<% if (tema == "revisionEnts") { %>
-		<% if (codigo == "producto/edicion") { %>
-			<!-- Link para Revisión de Edición -->
-			<a href="<%= '/revision/links/?entidad=' + entidad + '&id=' + id + '&origen=REP' %>">
-				<i class="fa-solid fa-link" tabindex="-1" title="Para ver los links"></i>
-			</a>
-		<% } else if (codigo == "abmLinks") { %>
-			<!-- Link para Revisión de Links -->
-			<a href="<%= siguienteProducto %>">
-				<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
-			</a>
-		<% } %>
+	<% if (tema == "revisionEnts" && codigo == "producto/edicion") { %>
+		<!-- Link para Revisión de Edición -->
+		<a href="<%= '/revision/links/?entidad=' + entidad + '&id=' + id + '&origen=REP' %>">
+			<i class="fa-solid fa-link" tabindex="-1" title="Para ver los links"></i>
+		</a>
+	<% } %>
+	<% if (codigo == "abmLinks" && locals.siguienteProducto) { %>
+		<!-- Link para Revisión/Mantenimiento de Links -->
+		<a href="<%= siguienteProducto %>">
+			<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
+		</a>
 	<% } %>
 </div>
