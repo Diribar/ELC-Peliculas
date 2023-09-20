@@ -55,10 +55,7 @@ module.exports = {
 		// Fin
 		return res.json(mensaje);
 	},
-	inactiva: async (req, res) => {
-		// Proceso
-		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
-		// - Los demás --> se inactivan
+	inactivaElimina: async (req, res) => {
 		// Variables
 		const {url, motivo_id} = req.query;
 		const userID = req.session.usuario.id;
@@ -73,12 +70,12 @@ module.exports = {
 		else if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 		// El link se elimina definitivamente
 		else if (
-			// El link está en status 'creado' y por el usuario
-			(link.statusRegistro_id == creado_id && link.creadoPor_id == userID) ||
-			// El link está en status 'inactivo' y es un revisorLinks
-			(link.statusRegistro_id == inactivo_id && revisorLinks)
+			(link.statusRegistro_id == creado_id && link.creadoPor_id == userID) || // El link está en status 'creado' y por el usuario
+			(link.statusRegistro_id == inactivo_id && revisorLinks) // El link está en status 'inactivo' y es un revisorLinks
 		) {
-			await BD_genericas.eliminaPorId("links", link.id);
+			await BD_genericas.eliminaPorId("links", link.id); // Elimina el registro original
+			BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
+			BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
 			link.statusRegistro_id = inactivo_id;
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
@@ -155,9 +152,10 @@ module.exports = {
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos = link.statusRegistro_id == inactivar_id
-				? {statusRegistro_id: aprobado_id, motivo_id: null}
-				: {statusRegistro_id: inactivo_id};
+			let datos =
+				link.statusRegistro_id == inactivar_id
+					? {statusRegistro_id: aprobado_id, motivo_id: null}
+					: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 
 			// Actualiza los campos del producto asociado
