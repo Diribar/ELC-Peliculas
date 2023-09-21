@@ -177,7 +177,6 @@ window.addEventListener("load", async () => {
 			// Acciones
 			if (nombre == "palabrasClave") palabrasClave();
 			else if (nombre == "configNueva") guardarBotonera();
-			// else if (v.obtener) resultados.muestra.generico();
 		}
 	});
 
