@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {aprob, pend} = await fetch("/graficos/api/peliculas-aprobadas").then((n) => n.json());
+	const {aprob, pend} = await fetch("/graficos/api/peliculas-cfc-vpc").then((n) => n.json());
 
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];

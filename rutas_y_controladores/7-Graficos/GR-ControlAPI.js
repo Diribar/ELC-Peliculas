@@ -5,7 +5,7 @@ const BD_genericas = require("../../funciones/1-BD/Genericas");
 const variables = require("../../funciones/2-Procesos/Variables");
 
 module.exports = {
-	pelisCfcVpc: async (req, res) => {
+	pelisPublico: async (req, res) => {
 		// Variables
 		let cfc = {};
 		let vpc = {};
@@ -26,7 +26,7 @@ module.exports = {
 		// Fin
 		return res.json({cfc, vpc});
 	},
-	pelisAprob: async (req, res) => {
+	pelisCfcVpc: async (req, res) => {
 		// Variables
 		let productos = [];
 

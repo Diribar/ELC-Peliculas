@@ -6,16 +6,16 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "cantPelisPorCFC",
+			codigo: "pelisCfcVpc",
 			titulo: "Películas por Fe Católica / Valores",
 		});
 	},
-	pelisAprob: async (req, res) => {
+	pelisPublico: async (req, res) => {
 		// Fin
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisAprob",
-			titulo: "Películas Aprobadas",
+			codigo: "pelisPublico",
+			titulo: "Películas por Público",
 		});
 	},
 
