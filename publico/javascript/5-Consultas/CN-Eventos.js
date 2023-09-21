@@ -124,8 +124,6 @@ window.addEventListener("load", async () => {
 					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 				}
 			}
-			// Expande / Contrae
-			else if (elemento.className && elemento.className.includes("expandeContrae")) expandeContrae(elemento);
 			// Cierra el cartel "pppOpciones"
 			else if (nombre == "cierra") padre.classList.add("ocultar");
 		}
@@ -143,13 +141,27 @@ window.addEventListener("load", async () => {
 		}
 
 		// Caption
-		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
+		else if ([elemento.tagName, padre.tagName].includes("CAPTION")) {
+			// Obtiene el índice
+			let indice = v.captions.findIndex((n) => n == elemento);
+			if (indice < 0) indice = v.captions.findIndex((n) => n == padre);
+			if (indice < 0) return
+
+			// Muestra / Oculta el 'tbody'
+			v.mostrarTBody = DOM.expandeContraes[indice].className.includes("fa-square-plus");
+			v.mostrarTBody
+				? DOM.tbodies[indice].classList.replace("ocultar", "aparece")
+				: DOM.tbodies[indice].classList.replace("aparece", "ocultar");
+
+			// Alterna el signo 'plus' o 'minus'
+			["plus", "minus"].map((n) => DOM.expandeContraes[indice].classList.toggle("fa-square-" + n));
+		}
 		// Botón 'quieroVer'
 		else if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) resultados.muestra.generico();
 		// Anchor 'verVideo'
 		else if (elemento == DOM.anchorVerVideo) {
 			v.videoConsVisto = true;
-			DOM.cartelVerVideo.classList.add("ocultar")
+			DOM.cartelVerVideo.classList.add("ocultar");
 		}
 
 		// Fin
@@ -165,6 +177,7 @@ window.addEventListener("load", async () => {
 			// Acciones
 			if (nombre == "palabrasClave") palabrasClave();
 			else if (nombre == "configNueva") guardarBotonera();
+			// else if (v.obtener) resultados.muestra.generico();
 		}
 	});
 
@@ -206,20 +219,6 @@ window.addEventListener("load", async () => {
 
 		// Fin
 		return;
-	};
-	let expandeContrae = (elemento) => {
-		// Obtiene el índice
-		let indice = v.expandeContrae.findIndex((n) => n == elemento);
-		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
-
-		// Muestra / Oculta el 'tbody'
-		v.mostrarTBody = DOM.expandeContrae[indice].className.includes("fa-square-plus");
-		v.mostrarTBody
-			? DOM.tbody[indice].classList.replace("ocultar", "aparece")
-			: DOM.tbody[indice].classList.replace("aparece", "ocultar");
-
-		// Alterna el signo 'plus' o 'minus'
-		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
 	};
 });
 
