@@ -104,6 +104,7 @@ window.addEventListener("load", async () => {
 	await cambioDeConfig_id();
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
+	DOM.quieroVer.focus()
 });
 
 // Variables

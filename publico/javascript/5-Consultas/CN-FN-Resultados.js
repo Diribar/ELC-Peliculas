@@ -5,7 +5,7 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.obtener) return;
 
-		// Si es un orden a mostrar en botones, oculta el contador
+		// Oculta el contador
 		DOM.contadorDeProds.classList.add("ocultar");
 
 		// Oculta todos los carteles

@@ -145,7 +145,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el índice
 			let indice = v.captions.findIndex((n) => n == elemento);
 			if (indice < 0) indice = v.captions.findIndex((n) => n == padre);
-			if (indice < 0) return
+			if (indice < 0) return;
 
 			// Muestra / Oculta el 'tbody'
 			v.mostrarTBody = DOM.expandeContraes[indice].className.includes("fa-square-plus");
