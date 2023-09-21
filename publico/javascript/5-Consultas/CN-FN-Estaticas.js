@@ -256,7 +256,7 @@ let cambiosEnBD = {
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
-		const propios = configsDeCabecera.filter((n) => n.usuario_id);
+		const propios = configsDeCabecera.filter((n) => n.usuario_id == v.userID);
 		configCons_id = propios.length ? propios[0].id : v.configConsDefault_id;
 
 		// Actualiza el select con el id
