@@ -24,7 +24,7 @@
 /* Marco de Detalle - Información */
 #marcoDetalle #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
-#marcoDetalle #datosDetalle {max-height: 156px; overflow-y: auto;}
+#marcoDetalle #datosDetalle {max-height: 180px; overflow-y: auto;}
 #marcoDetalle #datosDetalle .datosParcial {flex-direction: column;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}

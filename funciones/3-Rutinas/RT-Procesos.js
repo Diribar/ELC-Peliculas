@@ -190,18 +190,6 @@ module.exports = {
 			// Fin
 			return {regsStatus, regsEdic};
 		},
-		hoyUsuario: (usuario) => {
-			// Variables
-			const ahora = new Date();
-
-			// Obtiene la fecha local del usuario
-			const zonaHoraria = usuario.pais.zonaHoraria;
-			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-			const hoyUsuario = comp.fechaHora.fechaFormatoBD_UTC(ahoraUsuario);
-
-			// Fin
-			return hoyUsuario;
-		},
 		mensajeStatus: async (regsStatus) => {
 			// Variables
 			let resultados = [];
@@ -349,7 +337,7 @@ module.exports = {
 			const condiciones = [
 				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id}, // desde 'creado' a creadoAprob'
 				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id}, // desde 'creadoAprob' a 'aprobado'
-				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id},// desde 'creado' a 'aprobado'
+				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id}, // desde 'creado' a 'aprobado'
 			];
 
 			// Elimina los registros o completa el campo 'comunicadoEn'

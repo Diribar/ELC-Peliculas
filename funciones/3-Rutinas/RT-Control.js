@@ -25,7 +25,6 @@ module.exports = {
 
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
-		const rutinasHorarias = info.RutinasHorarias;
 		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
@@ -98,11 +97,20 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado
-			const hoyUsuario = procesos.mailDeFeedback.hoyUsuario(usuario);
+			// Variables
+			const ahora = new Date();
 
-			// Si la fecha local es igual que la fecha del último comunicado, se saltea el usuario
-			if (hoyUsuario == usuario.fechaRevisores) continue;
+			// Si para el usuario no son las 0hs, lo saltea
+			const zonaHoraria = usuario.pais.zonaHoraria;
+			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
+			if (new Date(ahoraUsuario).getUTCHours()) continue;
+
+			// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
+			const hoyUsuario = comp.fechaHora.fechaDiaMesAno(ahora);
+			const fechaRevisores = comp.fechaHora.fechaDiaMesAno(usuario.fechaRevisores);
+			const horaUsuario = ahora.getUTCHours();
+			const horaRevisores = usuario.fechaRevisores.getUTCHours();
+			if (hoyUsuario == fechaRevisores && horaUsuario == horaRevisores) continue;
 
 			// Variables
 			const email = usuario.email;
@@ -123,7 +131,7 @@ module.exports = {
 						if (n) {
 							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
-							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario}); // Actualiza el registro de usuario en el campo fecha_revisor
+							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 							console.log("Mail enviado a " + email);
 						}
 

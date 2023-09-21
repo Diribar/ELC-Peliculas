@@ -12,11 +12,9 @@ const valida = require("./PR-FN-Validar");
 // *********** Controlador ***********
 module.exports = {
 	detalle: async (req, res) => {
-		// 1. Tema y Código
+		// Variables
 		const tema = "prod_rud";
 		const codigo = "detalle";
-
-		// Variables
 		const {entidad, id} = req.query;
 		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
@@ -25,27 +23,25 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+
 		// Obtiene la versión más completa posible del producto
 		const prodComb = {...original, ...edicion, id};
+
 		// Configura el título de la vista
 		const titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? " un " : " la ") +
 			entidadNombre;
+
 		// Info para el bloque Izquierdo
-		// Primer proceso: hace más legible la información
-		const infoProcesada = procesos.bloqueIzq(prodComb);
-		// Segundo proceso: reagrupa la información
-		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
-		if (infoProcesada.infoGral.length) {
-			let infoGral = infoProcesada.infoGral;
-			for (let i = 0; i < infoGral.length / 2; i++) {
-				// Agrega un dato en 'masInfoIzq'
-				bloqueIzq.masInfoIzq.push(infoGral[i]);
-				// Agrega un dato en 'masInfoDer'
-				let j = parseInt(infoGral.length / 2 + 0.5 + i);
-				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
+		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores};
+		if (infoGral.length) {
+			let lado = "masInfoIzq";
+			for (let dato of infoGral) {
+				if (dato.titulo == "País") lado = "masInfoDer";
+				bloqueIzq[lado].push(dato);
 			}
 		}
 
@@ -84,11 +80,11 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
+		const tituloEspecial = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
 
 		// Va a la vista
-		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal, tituloEspecial},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},

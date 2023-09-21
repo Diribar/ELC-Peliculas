@@ -179,13 +179,13 @@ CREATE TABLE `cam_hist_status` (
   `entidad_id` int(10) unsigned NOT NULL,
   `statusOriginal_id` tinyint(3) unsigned NOT NULL,
   `statusFinal_id` tinyint(3) unsigned NOT NULL,
+  `sugeridoPor_id` int(10) unsigned NOT NULL,
+  `revisadoPor_id` int(10) unsigned NOT NULL,
+  `comentario` varchar(150) NOT NULL,
   `aprobado` tinyint(1) DEFAULT NULL,
   `penalizac` decimal(4,1) unsigned DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
-  `comentario` varchar(150) NOT NULL,
-  `sugeridoPor_id` int(10) unsigned NOT NULL,
   `sugeridoEn` datetime NOT NULL,
-  `revisadoPor_id` int(10) unsigned NOT NULL,
   `revisadoEn` datetime NOT NULL,
   `comunicadoEn` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -376,11 +376,11 @@ CREATE TABLE `links_edicion` (
 
 CREATE TABLE `links_provs` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL DEFAULT 90,
+  `orden` tinyint(3) unsigned DEFAULT 90,
   `nombre` varchar(20) NOT NULL,
-  `abierto` tinyint(1) NOT NULL DEFAULT 0,
-  `permUso` tinyint(1) NOT NULL DEFAULT 0,
-  `cantLinks` smallint(6) NOT NULL DEFAULT 0,
+  `abierto` tinyint(1) DEFAULT 0,
+  `permUso` tinyint(1) DEFAULT 0,
+  `cantLinks` smallint(6) DEFAULT 0,
   `avatar` varchar(20) NOT NULL,
   `siemprePago` tinyint(1) DEFAULT 0,
   `siempreGratuito` tinyint(1) DEFAULT 0,
@@ -397,7 +397,7 @@ CREATE TABLE `links_provs` (
   `urlHome` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
-  UNIQUE KEY `urlDistintivo` (`urlDistintivo`)
+  UNIQUE KEY `url_distintivo` (`urlDistintivo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links_tipos` (
@@ -1254,7 +1254,7 @@ CREATE TABLE `usuarios` (
   `edicsAprob` smallint(6) DEFAULT 0,
   `edicsRech` smallint(6) DEFAULT 0,
   `penalizacAcum` decimal(4,1) unsigned DEFAULT 0.0,
-  `fechaUltimoLogin` datetime DEFAULT utc_date(),
+  `fechaUltimoLogin` date DEFAULT utc_date(),
   `fechaContrasena` datetime DEFAULT utc_timestamp(),
   `fechaRevisores` datetime DEFAULT NULL,
   `penalizadoEn` datetime DEFAULT NULL,
@@ -1294,4 +1294,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-19 16:29:34
+-- Dump completed on 2023-09-20 15:05:34

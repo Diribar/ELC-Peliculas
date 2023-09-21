@@ -141,21 +141,15 @@ module.exports = {
 			const {entidad, entidad_id, opcion_id} = req.query;
 			const usuario_id = req.session.usuario.id;
 
-			// Averigua si existe el registro
+			// Si existe el registro, lo elimina
 			const condics = {entidad, entidad_id, usuario_id};
 			const registro = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
+			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
 
-			// Acciones si la opción es Sin preferencia personal
-			if (opcion_id == sinPref.id) {
-				if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
-			} else {
-				// Variable
+			// Si la opción no es Sin preferencia personal, agrega el registro
+			if (opcion_id != sinPref.id) {
 				const datos = {entidad, entidad_id, opcion_id, usuario_id};
-
-				// Agrega o actualiza
-				registro
-					? BD_genericas.actualizaPorId("pppRegistros", registro.id, datos)
-					: BD_genericas.agregaRegistro("pppRegistros", datos);
+				BD_genericas.agregaRegistro("pppRegistros", datos);
 			}
 
 			// Fin

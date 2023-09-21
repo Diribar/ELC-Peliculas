@@ -303,13 +303,6 @@ module.exports = {
 			let ano = fecha.getUTCFullYear().toString().slice(-2);
 			return this.fechaDiaMes(fecha) + "/" + ano;
 		},
-		fechaFormatoBD_UTC: (fecha) => {
-			fecha = new Date(fecha);
-			let dia = ("0" + fecha.getUTCDate()).slice(-2);
-			let mes = ("0" + (fecha.getUTCMonth() + 1)).slice(-2);
-			let ano = fecha.getUTCFullYear();
-			return ano + "-" + mes + "-" + dia;
-		},
 		fechaHorario: (horario) => {
 			horario = horario ? new Date(horario) : FN.ahora();
 			return (

@@ -12,17 +12,23 @@ module.exports = {
 		let actores = [];
 
 		// Informacion General
-		if (producto.categoria) infoGral.push({titulo: "Categoría", valor: producto.categoria.nombre});
+		if (producto.cfc !== null) infoGral.push({titulo: "Relacionada con la Fe Católica", valor: producto.cfc ? "SI" : "NO"});
+		if (producto.bhr !== null) infoGral.push({titulo: "Basada en Hechos Reales", valor: producto.bhr ? "SI" : "NO"});
 		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
+		if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
+		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
 		if (producto.castellano !== null)
 			infoGral.push({titulo: "Tenemos links en castellano", valor: producto.castellano ? "SI" : "NO"});
 		if (producto.tipoActuacion) infoGral.push({titulo: "Tipo de actuación", valor: producto.tipoActuacion.nombre});
-		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
 		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
-		} else if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
+		}
 		if (producto.color !== null) infoGral.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
-		if (paisesNombre) infoGral.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
+		if (producto.musical !== null) infoGral.push({titulo: "Es un musical", valor: producto.musical ? "SI" : "NO"});
+		infoGral.push({
+			titulo: "País" + (paisesNombre && paisesNombre.includes(",") ? "es" : ""),
+			valor: paisesNombre ? paisesNombre : "desconocido",
+		});
 		if (producto.idioma_original) infoGral.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
 		if (producto.direccion) infoGral.push({titulo: "Dirección", valor: producto.direccion});
 		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
