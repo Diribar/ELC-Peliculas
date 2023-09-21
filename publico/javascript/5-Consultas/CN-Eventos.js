@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia la configuración
 		if (nombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const existe = await verifica.configCons_id();
+			const existe = await verificaConfigCons_id();
 			if (!existe) return;
 
 			// Novedades
@@ -25,9 +25,14 @@ window.addEventListener("load", async () => {
 				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
 				DOM.configNuevaNombre.value = nombre;
 
+				// Averigua si el nombre está OK
+				const nombres = v.configsDeCabecera.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+				v.nombreOK =
+					nombre.length && // que tenga algún caracter
+					!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
+					!nombres.includes(nombre); // que no se repita con un nombre anterior
+
 				// Muestra/Oculta el ícono de confirmación
-				const nombres = v.configsDeCabecera.map((n) => n.nombre);
-				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
 				actualiza.botoneraActivaInactiva();
 
 				// Fin
@@ -96,7 +101,7 @@ window.addEventListener("load", async () => {
 					await cambioDeCampos();
 				} else if (nombre == "eliminar") {
 					// Si hay un error, interrumpe la función
-					const existe = await verifica.configCons_id();
+					const existe = await verificaConfigCons_id();
 					if (!existe || !v.filtroPropio) return;
 
 					// Acciones si existe
@@ -248,4 +253,20 @@ let cambioDeCampos = async () => {
 
 	// Fin
 	return;
+};
+let verificaConfigCons_id = async () => {
+	// Variables
+	const configCons_id = Number(DOM.configCons_id.value);
+
+	// Obtiene los registros posibles de configuración para el usuario
+	const configsCons_id = v.configsDeCabecera.map((m) => m.id);
+
+	// Averigua si el valor está entre los valores posibles
+	const existe = configsCons_id.includes(configCons_id);
+
+	// Si no existe, devuelve a su configuración anterior
+	if (!existe) DOM.configCons_id.value = v.configCons_id;
+
+	// Fin
+	return existe;
 };

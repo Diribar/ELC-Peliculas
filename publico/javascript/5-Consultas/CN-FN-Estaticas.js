@@ -95,7 +95,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Guardar
-		v.obtener && (((v.nuevo || v.edicion) ) || v.propio)
+		v.obtener && (v.nuevo || v.edicion || v.propio)
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
@@ -257,7 +257,7 @@ let cambiosEnBD = {
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
 		const propios = configsDeCabecera.filter((n) => n.usuario_id);
-		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
+		configCons_id = propios.length ? propios[0].id : v.configConsDefault_id;
 
 		// Actualiza el select con el id
 		DOM.configCons_id.value = configCons_id;
@@ -292,23 +292,5 @@ let cambiosEnBD = {
 
 		// Fin
 		return;
-	},
-};
-let verifica = {
-	configCons_id: async () => {
-		// Variables
-		const configCons_id = Number(DOM.configCons_id.value);
-
-		// Obtiene los registros posibles de configuración para el usuario
-		const configsCons_id = [...v.configsDeCabecera].map((m) => m.id);
-
-		// Averigua si el valor está entre los valores posibles
-		const existe = configsCons_id.includes(configCons_id);
-
-		// Si no existe, devuelve a su configuración anterior
-		if (!existe) DOM.configCons_id.value = v.configCons_id;
-
-		// Fin
-		return existe;
 	},
 };
