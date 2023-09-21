@@ -7,6 +7,7 @@ const variables = require("../../funciones/2-Procesos/Variables");
 module.exports = {
 	pelisPublico: async (req, res) => {
 		// Variables
+		const publicos = ["mayores", "familia", "menores"];
 		let cfc = {};
 		let vpc = {};
 		let productos = [];
@@ -18,13 +19,13 @@ module.exports = {
 
 		// Cuenta las cantidades
 		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
-		for (const aptoPara of ["mayores", "familia", "menores"]) {
-			cfc[aptoPara] = prods.cfc.filter((n) => n.publico && n.publico.grupo == aptoPara).length;
-			vpc[aptoPara] = prods.vpc.filter((n) => n.publico && n.publico.grupo == aptoPara).length;
+		for (const publico of publicos) {
+			cfc[publico] = prods.cfc.filter((n) => n.publico && n.publico.grupo == publico).length;
+			vpc[publico] = prods.vpc.filter((n) => n.publico && n.publico.grupo == publico).length;
 		}
 
 		// Fin
-		return res.json({cfc, vpc});
+		return res.json([{cfc, vpc}, publicos]);
 	},
 	pelisCfcVpc: async (req, res) => {
 		// Variables
