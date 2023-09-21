@@ -25,14 +25,13 @@ module.exports = {
 
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
-		const rutinasHorarias = info.RutinasHorarias;
 		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
 		await this.FechaHoraUTC();
 
 		// Fin
-		return;
+				return;
 	},
 
 	// 1. Rutinas horarias
