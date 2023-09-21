@@ -38,7 +38,7 @@ module.exports = {
 				? usuario.configCons_id // El guardado en el usuario
 				: req.session.configCons_id
 				? req.session.configCons_id // El guardado en la session
-				: 2; // El 'default' es "Sorprendeme"
+				: configConsDefault_id
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {

@@ -7,8 +7,8 @@ const variables = require("../../funciones/2-Procesos/Variables");
 module.exports = {
 	configs: {
 		cabecera: async (userID) => {
-			// Obtiene los filtros personalizados propios y de ELC
-			const usuario_id = [1, userID];
+			// Obtiene los filtros personalizados propios y los provistos por ELC
+			const usuario_id = userID ? [1, userID] : 1;
 			const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
 
 			// Los ordena alfabéticamente

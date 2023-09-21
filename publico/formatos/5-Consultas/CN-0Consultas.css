@@ -22,7 +22,7 @@
 #vistaDeResults #esperandoResultados {position: absolute; height: 100%; width: 100%;}
 #vistaDeResults #esperandoResultados {background: var(--gris-intermedio); opacity: 50%;}
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
-#vistaDeResults #actualizar i {background: var(--gris-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
+#vistaDeResults #actualizar i {background: var(--verde-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #vistaDeResults #actualizar i {font-size: 0.8rem; padding: 5px 5px 4px 4px}
 
 /* Vista de Resultados - Carteles */

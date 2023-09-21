@@ -155,7 +155,8 @@ let actualiza = {
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
-			if (v.mostrarFiltros || DOM[campo.name].value) DOM[campo.name].parentNode.classList.replace("ocultaFiltro", "aparece");
+			if (v.mostrarFiltros || DOM[campo.name].value)
+				DOM[campo.name].parentNode.classList.replace("ocultaFiltro", "aparece");
 
 			// Sirve en régimen
 			v.mostrarFiltros || DOM[campo.name].value
@@ -255,8 +256,8 @@ let cambiosEnBD = {
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configsDeCabecera = [...v.configsDeCabecera].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
-		const propios = configsDeCabecera.filter((n) => n.usuario_id);
-		configCons_id = propios.length ? propios[0].id : configsDeCabecera[0];
+		const propios = configsDeCabecera.filter((n) => n.usuario_id == v.userID);
+		configCons_id = propios.length ? propios[0].id : v.configConsDefault_id;
 
 		// Actualiza el select con el id
 		DOM.configCons_id.value = configCons_id;
@@ -266,8 +267,8 @@ let cambiosEnBD = {
 	},
 	ppp: async (elemento) => {
 		// Opción actual
-		const indice = v.ppp.findIndex((n) => n == elemento);
-		const opcionActual = v.pppOpciones.find((n) => v.ppp[indice].className.endsWith(n.icono));
+		const indice = v.ppps.findIndex((n) => n == elemento);
+		const opcionActual = v.pppOpciones.find((n) => v.ppps[indice].className.endsWith(n.icono));
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
@@ -275,15 +276,15 @@ let cambiosEnBD = {
 		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
 
 		// Actualiza el ícono y el título
-		DOM.ppp[indice].classList.remove(...opcionActual.icono.split(" "));
-		DOM.ppp[indice].classList.add(...opcionPropuesta.icono.split(" "));
-		DOM.ppp[indice].title = opcionPropuesta.nombre;
+		DOM.ppps[indice].classList.remove(...opcionActual.icono.split(" "));
+		DOM.ppps[indice].classList.add(...opcionPropuesta.icono.split(" "));
+		DOM.ppps[indice].title = opcionPropuesta.nombre;
 
 		// Actualiza la preferencia
 		const producto = v.productos[indice];
-		DOM.ppp[indice].classList.add("inactivo");
+		DOM.ppps[indice].classList.add("inactivo");
 		await fetch(v.pppRrutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
-		DOM.ppp[indice].classList.remove("inactivo");
+		DOM.ppps[indice].classList.remove("inactivo");
 
 		// Aumenta o disminuye la cantidad de PPP del usuario
 		if (opcionActual.sinPref) v.usuarioTienePPP++;
@@ -291,23 +292,5 @@ let cambiosEnBD = {
 
 		// Fin
 		return;
-	},
-};
-let verifica = {
-	configCons_id: async () => {
-		// Variables
-		const configCons_id = Number(DOM.configCons_id.value);
-
-		// Obtiene los registros posibles de configuración para el usuario
-		const configsCons_id = [...v.configsDeCabecera].map((m) => m.id);
-
-		// Averigua si el valor está entre los valores posibles
-		const existe = configsCons_id.includes(configCons_id);
-
-		// Si no existe, devuelve a su configuración anterior
-		if (!existe) DOM.configCons_id.value = v.configCons_id;
-
-		// Fin
-		return existe;
 	},
 };

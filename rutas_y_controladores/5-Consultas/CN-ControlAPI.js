@@ -56,6 +56,7 @@ module.exports = {
 				// Otros
 				pppOpciones,
 				rclvNombres: variables.entidades.rclvsNombre,
+				configConsDefault_id,
 			};
 
 			// Datos del usuario

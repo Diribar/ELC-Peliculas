@@ -73,7 +73,7 @@ window.addEventListener("load", async () => {
 		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
 
 		// Otros
-		anchorVerVideo:DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
+		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
 	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
@@ -104,6 +104,7 @@ window.addEventListener("load", async () => {
 	await cambioDeConfig_id();
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
+	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
 });
 
 // Variables

@@ -5,7 +5,7 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.obtener) return;
 
-		// Si es un orden a mostrar en botones, oculta el contador
+		// Oculta el contador
 		DOM.contadorDeProds.classList.add("ocultar");
 
 		// Oculta todos los carteles
@@ -155,7 +155,7 @@ let resultados = {
 				// Agrega un botón
 				const boton = auxiliares.boton(resultado);
 				DOM.botones.append(boton);
-				v.productos.push(resultado)
+				v.productos.push(resultado);
 
 				// Fin
 				contador++;
@@ -163,10 +163,10 @@ let resultados = {
 			}
 
 			// Genera las variables 'ppp'
-			DOM.ppp = DOM.botones.querySelectorAll(".producto #ppp");
-			v.ppp = Array.from(DOM.ppp);
+			DOM.ppps = DOM.botones.querySelectorAll(".producto #ppp");
+			v.ppps = Array.from(DOM.ppps);
 
-			// Foco
+			// Foco en el primer botón
 			DOM.botones.querySelector("button").focus();
 
 			// Fin
@@ -196,26 +196,41 @@ let resultados = {
 					DOM.tbody = DOM.tabla.querySelector("tbody"); // Selecciona el body para luego agregarle filas
 				}
 
-				// Agrega fila/s al 'tbody'
+				// Agrega fila/s al 'tbody' de productos
 				if (v.entidad == "productos") {
 					const fila = auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
-				} else {
+				}
+				// Agrega fila/s al 'tbody' de rclv
+				else {
 					const filas = auxiliares.creaLasFilasDeUnRCLV({rclv: registro, indice});
 					for (let fila of filas) DOM.tbody.appendChild(fila);
 				}
 			});
 
 			// Crea variables DOM
-			DOM.ppp = DOM.listados.querySelectorAll("#ppp");
-			DOM.expandeContrae = DOM.listados.querySelectorAll(".expandeContrae");
-			DOM.caption = DOM.listados.querySelectorAll("caption");
-			DOM.tbody = DOM.listados.querySelectorAll("tbody");
+			DOM.tables = DOM.listados.querySelectorAll("table");
+			DOM.captions = DOM.listados.querySelectorAll("table caption");
+			DOM.expandeContraes = DOM.listados.querySelectorAll("table caption .expandeContrae");
+			DOM.tbodies = DOM.listados.querySelectorAll("table tbody");
+			DOM.ppps = DOM.listados.querySelectorAll("table tbody #ppp");
+
+			// Le agrega la cantidad de productos a cada encabezado
+			for (let tabla of DOM.tables) {
+				// Obtiene la cantidad de resultados
+				const cantProds = tabla.querySelectorAll("tr td:last-of-type").length;
+
+				// Lo agrega a la tabla
+				const p = document.createElement("p");
+				p.innerHTML = "(" + cantProds + ")";
+				p.className = "hallazgos";
+				tabla.querySelector("caption").appendChild(p);
+			}
 
 			// Crea variables 'v'
-			v.ppp = Array.from(DOM.ppp);
-			v.expandeContrae = Array.from(DOM.expandeContrae);
-			v.caption = Array.from(DOM.caption);
+			v.ppps = Array.from(DOM.ppps);
+			v.expandeContraes = Array.from(DOM.expandeContraes);
+			v.captions = Array.from(DOM.captions);
 
 			// Fin
 			return;
@@ -405,24 +420,28 @@ let auxiliares = {
 		return titulo;
 	},
 	creaUnaTabla: ({titulo, indice}) => {
-		// Crea una tabla
+		// Crea elementos de la tabla
 		const tabla = document.createElement("table");
+		const caption = document.createElement("caption");
+		const tbody = document.createElement("tbody");
 
-		// Le agrega un título
+		// Formatos
+		caption.className = "relative pointer";
+		tbody.className = indice ? "ocultar" : "aparece";
+
+		// Le agrega un título al encabezado
+		const p = document.createElement("p");
+		p.innerHTML = titulo;
+		caption.appendChild(p);
+
+		// Le agregas el -/+  al encabezado
 		const i = document.createElement("i");
 		i.className = "expandeContrae pointer fa-solid fa-square-" + (indice ? "plus" : "minus");
-		const caption = document.createElement("caption");
-		caption.innerHTML = titulo;
-		caption.className = "relative pointer";
 		caption.appendChild(i);
-		tabla.appendChild(caption);
-
-		// Le agrega un body
-		const tbody = document.createElement("tbody");
-		tbody.className = indice ? "ocultar" : "aparece";
-		tabla.appendChild(tbody);
 
 		// Fin
+		tabla.appendChild(caption);
+		tabla.appendChild(tbody);
 		return tabla;
 	},
 	creaUnaFilaDeProd: function ({producto, indice}) {

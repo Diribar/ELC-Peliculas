@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia la configuración
 		if (nombre == "configCons_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
-			const existe = await verifica.configCons_id();
+			const existe = await verificaConfigCons_id();
 			if (!existe) return;
 
 			// Novedades
@@ -25,9 +25,14 @@ window.addEventListener("load", async () => {
 				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
 				DOM.configNuevaNombre.value = nombre;
 
+				// Averigua si el nombre está OK
+				const nombres = v.configsDeCabecera.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+				v.nombreOK =
+					nombre.length && // que tenga algún caracter
+					!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
+					!nombres.includes(nombre); // que no se repita con un nombre anterior
+
 				// Muestra/Oculta el ícono de confirmación
-				const nombres = v.configsDeCabecera.map((n) => n.nombre);
-				v.nombreOK = nombre.length && !basico.validaCaracteres(nombre) && !nombres.includes(nombre);
 				actualiza.botoneraActivaInactiva();
 
 				// Fin
@@ -96,7 +101,7 @@ window.addEventListener("load", async () => {
 					await cambioDeCampos();
 				} else if (nombre == "eliminar") {
 					// Si hay un error, interrumpe la función
-					const existe = await verifica.configCons_id();
+					const existe = await verificaConfigCons_id();
 					if (!existe || !v.filtroPropio) return;
 
 					// Acciones si existe
@@ -124,8 +129,6 @@ window.addEventListener("load", async () => {
 					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 				}
 			}
-			// Expande / Contrae
-			else if (elemento.className && elemento.className.includes("expandeContrae")) expandeContrae(elemento);
 			// Cierra el cartel "pppOpciones"
 			else if (nombre == "cierra") padre.classList.add("ocultar");
 		}
@@ -143,13 +146,27 @@ window.addEventListener("load", async () => {
 		}
 
 		// Caption
-		else if (elemento.tagName == "CAPTION") expandeContrae(elemento);
+		else if ([elemento.tagName, padre.tagName].includes("CAPTION")) {
+			// Obtiene el índice
+			let indice = v.captions.findIndex((n) => n == elemento);
+			if (indice < 0) indice = v.captions.findIndex((n) => n == padre);
+			if (indice < 0) return;
+
+			// Muestra / Oculta el 'tbody'
+			v.mostrarTBody = DOM.expandeContraes[indice].className.includes("fa-square-plus");
+			v.mostrarTBody
+				? DOM.tbodies[indice].classList.replace("ocultar", "aparece")
+				: DOM.tbodies[indice].classList.replace("aparece", "ocultar");
+
+			// Alterna el signo 'plus' o 'minus'
+			["plus", "minus"].map((n) => DOM.expandeContraes[indice].classList.toggle("fa-square-" + n));
+		}
 		// Botón 'quieroVer'
 		else if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) resultados.muestra.generico();
 		// Anchor 'verVideo'
 		else if (elemento == DOM.anchorVerVideo) {
 			v.videoConsVisto = true;
-			DOM.cartelVerVideo.classList.add("ocultar")
+			DOM.cartelVerVideo.classList.add("ocultar");
 		}
 
 		// Fin
@@ -207,20 +224,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let expandeContrae = (elemento) => {
-		// Obtiene el índice
-		let indice = v.expandeContrae.findIndex((n) => n == elemento);
-		if (indice < 0) indice = v.caption.findIndex((n) => n == elemento);
-
-		// Muestra / Oculta el 'tbody'
-		v.mostrarTBody = DOM.expandeContrae[indice].className.includes("fa-square-plus");
-		v.mostrarTBody
-			? DOM.tbody[indice].classList.replace("ocultar", "aparece")
-			: DOM.tbody[indice].classList.replace("aparece", "ocultar");
-
-		// Alterna el signo 'plus' o 'minus'
-		["plus", "minus"].map((n) => DOM.expandeContrae[indice].classList.toggle("fa-square-" + n));
-	};
 });
 
 // Consolidadas
@@ -250,4 +253,20 @@ let cambioDeCampos = async () => {
 
 	// Fin
 	return;
+};
+let verificaConfigCons_id = async () => {
+	// Variables
+	const configCons_id = Number(DOM.configCons_id.value);
+
+	// Obtiene los registros posibles de configuración para el usuario
+	const configsCons_id = v.configsDeCabecera.map((m) => m.id);
+
+	// Averigua si el valor está entre los valores posibles
+	const existe = configsCons_id.includes(configCons_id);
+
+	// Si no existe, devuelve a su configuración anterior
+	if (!existe) DOM.configCons_id.value = v.configCons_id;
+
+	// Fin
+	return existe;
 };
