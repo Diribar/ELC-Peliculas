@@ -10,18 +10,13 @@ const variables = require("../../funciones/2-Procesos/Variables");
 // *********** Controlador ***********
 module.exports = {
 	links: async (req, res) => {
-		// DETALLE - ABM
-		// Tema y Código
-		const tema = "links_crud";
-		const codigo = "abmLinks";
-
 		// Variables
-		const entidad = req.query.entidad;
-		const id = req.query.id;
+		const tema = "linksCRUD";
+		const codigo = "abmLinks";
+		const {entidad, id, grupo, origen} = req.query;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		const userID = req.session.usuario.id;
-		const origen = req.query.origen;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -29,7 +24,6 @@ module.exports = {
 
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
-		
 		for (let link of links) link.cond = procesos.condiciones(link, userID, tema);
 
 		// Actualiza linksEnProd
@@ -44,6 +38,7 @@ module.exports = {
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const status_id = original.statusRegistro_id;
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
+		const siguienteProducto = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;
 
 		// Va a la vista
 		//return res.send(links);
@@ -52,7 +47,7 @@ module.exports = {
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
-			...{userID, imgDerPers, cartelGenerico: true},
+			...{userID, imgDerPers, cartelGenerico: true, siguienteProducto},
 			vista: req.baseUrl + req.path,
 		});
 	},

@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/1-BD/Genericas");
 const variables = require("../../funciones/2-Procesos/Variables");
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsMS = require("../9-Miscelaneas/MS-Procesos");
 const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = {
@@ -57,7 +57,7 @@ module.exports = {
 		let cond = {};
 		cond.propio = link.statusSugeridoPor_id == userID;
 		cond.ajeno = link.statusSugeridoPor_id != userID;
-		cond.rud = tema == "links_crud";
+		cond.rud = tema == "linksCRUD";
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status
@@ -88,5 +88,28 @@ module.exports = {
 
 		// Fin
 		return cond;
+	},
+	sigProdInactivo: async ({producto, entidad, userID}) => {
+		// Variables
+		const productos = await procsMS.obtieneProds_Links(userID).then((n) => n.LI);
+
+		// Obtiene el siguiente producto
+		const siguienteProducto = productos.find((n) => n.entidad != entidad || n.id != producto.id);
+
+		// Genera el link
+		const link = siguienteProducto
+			? "/inactivar-captura/?entidad=" +
+			  entidad +
+			  "&id=" +
+			  producto.id +
+			  "&prodEntidad=" +
+			  siguienteProducto.entidad +
+			  "&prodID=" +
+			  siguienteProducto.id +
+			  "&origen=LKM&grupo=inactivo"
+			: "/mantenimiento";
+
+		// Fin
+		return link;
 	},
 };

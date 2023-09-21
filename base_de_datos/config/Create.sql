@@ -258,7 +258,8 @@ CREATE TABLE `cn_entidades` (
   `codigo` varchar(20) NOT NULL,
   `bhrSeguro` tinyint(1) NOT NULL DEFAULT 0,
   `activo` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_ordenes` (
@@ -375,24 +376,28 @@ CREATE TABLE `links_edicion` (
 
 CREATE TABLE `links_provs` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned DEFAULT 90,
+  `orden` tinyint(3) unsigned NOT NULL DEFAULT 90,
   `nombre` varchar(20) NOT NULL,
-  `copyrightOK` tinyint(1) DEFAULT 0,
+  `abierto` tinyint(1) NOT NULL DEFAULT 0,
+  `permUso` tinyint(1) NOT NULL DEFAULT 0,
+  `cantLinks` smallint(6) NOT NULL DEFAULT 0,
   `avatar` varchar(20) NOT NULL,
   `siemprePago` tinyint(1) DEFAULT 0,
   `siempreGratuito` tinyint(1) DEFAULT 0,
   `siempreCompleta` tinyint(1) DEFAULT 0,
   `calidad` smallint(6) DEFAULT NULL,
   `generico` tinyint(1) DEFAULT 0,
-  `url_distintivo` varchar(20) NOT NULL,
   `mostrarSiempre` tinyint(1) DEFAULT 0,
-  `url_buscarPre` varchar(25) DEFAULT NULL,
+  `urlBuscarPre` varchar(25) DEFAULT NULL,
   `trailer` tinyint(1) DEFAULT 0,
   `pelicula` tinyint(1) DEFAULT 0,
-  `url_buscarPost` varchar(20) DEFAULT NULL,
+  `urlBuscarPost` varchar(20) DEFAULT NULL,
+  `urlDistintivo` varchar(20) NOT NULL,
+  `urlCopyright` varchar(70) DEFAULT NULL,
+  `urlHome` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
-  UNIQUE KEY `url_distintivo` (`url_distintivo`)
+  UNIQUE KEY `urlDistintivo` (`urlDistintivo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links_tipos` (
@@ -1191,7 +1196,8 @@ CREATE TABLE `us_hist_dets_peli` (
   `entidad_id` int(10) unsigned NOT NULL,
   `visitadaEn` datetime NOT NULL DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `us_roles` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
@@ -1288,4 +1294,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-08 15:09:08
+-- Dump completed on 2023-09-19 16:29:34

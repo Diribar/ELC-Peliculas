@@ -231,14 +231,13 @@ module.exports = {
 		await Promise.all(esperar);
 		await BD_genericas.eliminaPorId(entidad, id);
 
-		// TAREAS QUE NO IMPIDEN ELIMINAR EL REGISTRO
-		// 1. Elimina el historial de status
+		// Elimina el historial de status
 		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
 
-		// 2. Elimina el historial de ediciones
+		// Elimina el historial de ediciones
 		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
 
-		// 3. Se fija si tiene avatar y lo elimina
+		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
 			const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
 			comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Final", original.avatar);

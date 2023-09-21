@@ -310,47 +310,45 @@ module.exports = {
 			// Variables
 			const publico = true;
 			const epocaOcurrencia = true;
-			let statusAprob = false;
 
 			// Acciones si no hay errores
 			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epocaOcurrencia}});
-			if (!errores.hay) {
-				// Variables
-				statusAprob = true;
-				const ahora = comp.fechaHora.ahora();
-				let datos = {statusRegistro_id: aprobado_id};
-				if (!registro.altaTermEn)
-					datos = {
-						...datos,
-						altaTermEn: ahora,
-						leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-						statusSugeridoPor_id: usAutom_id,
-						statusSugeridoEn: ahora,
-					};
+			if (errores.hay) return false;
 
-				// Cambia el status del registro
-				await BD_genericas.actualizaPorId(entidad, registro.id, datos);
-
-				// Si es una colección, revisa si corresponde aprobar capítulos
-				if (entidad == "colecciones") await this.capsAprobs(registro.id);
-
-				// 4. Agrega un registro en el histStatus
-				// 4.A. Genera la información
-				let datosHist = {
-					...{entidad, entidad_id: registro.id},
-					...{sugeridoPor_id: registro.statusSugeridoPor_id, sugeridoEn: registro.statusSugeridoEn},
-					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
-					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
+			// Variables
+			const ahora = comp.fechaHora.ahora();
+			let datos = {statusRegistro_id: aprobado_id};
+			if (!registro.altaTermEn)
+				datos = {
+					...datos,
+					altaTermEn: ahora,
+					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+					statusSugeridoPor_id: usAutom_id,
+					statusSugeridoEn: ahora,
 				};
-				// 4.C. Guarda los datos históricos
-				BD_genericas.agregaRegistro("histStatus", datosHist);
 
-				// Actualiza prodsEnRCLV
-				this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
-			}
+			// Cambia el status del registro
+			await BD_genericas.actualizaPorId(entidad, registro.id, datos);
+
+			// Si es una colección, revisa si corresponde aprobar capítulos
+			if (entidad == "colecciones") await this.capsAprobs(registro.id);
+
+			// 4. Agrega un registro en el histStatus
+			// 4.A. Genera la información
+			let datosHist = {
+				...{entidad, entidad_id: registro.id},
+				...{sugeridoPor_id: registro.statusSugeridoPor_id, sugeridoEn: registro.statusSugeridoEn},
+				...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
+				...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
+			};
+			// 4.C. Guarda los datos históricos
+			BD_genericas.agregaRegistro("histStatus", datosHist);
+
+			// Actualiza prodsEnRCLV
+			this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
 
 			// Fin
-			return statusAprob;
+			return true;
 		},
 		capsAprobs: async (colID) => {
 			// Variables
@@ -567,7 +565,7 @@ module.exports = {
 			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = talVez;
 
 			// 4. No encontró ningún caso
-			if (!prodsAprob) prodsAprob = NO;
+			if (!prodsAprob) prodsAprob = sinLinks;
 
 			// Actualiza el campo en el RCLV
 			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});

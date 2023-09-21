@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let grupo = new URL(location.href).searchParams.get("grupo");
-	let inactivos = document.querySelector("#datos #filtros #activoInactivo #inactivos");
-	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
-	let filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
+	const grupo = new URL(location.href).searchParams.get("grupo");
+	const inactivos = document.querySelector("#datos #filtros #activoInactivo #inactivos");
+	const filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
+	const filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
 
 	// Fórmulas
 	if (grupo) {

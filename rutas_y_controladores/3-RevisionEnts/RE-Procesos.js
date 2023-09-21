@@ -719,7 +719,7 @@ module.exports = {
 		let siguienteProducto;
 		for (let opcion in productos) {
 			const prodsOpcion = productos[opcion];
-			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : ""; // Basta con que sea diferente alguno de los campos
+			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : "";
 			if (siguienteProducto) break;
 		}
 

@@ -106,20 +106,53 @@ module.exports = {
 	obtieneProds_Links: async (userID) => {
 		// Variables
 		let include = variables.asocs.prods;
-		let ahora = comp.fechaHora.ahora();
 		let condicion = {statusRegistro_id: inactivo_id};
 
 		// Obtiene los links 'a revisar'
 		let linksInactivos = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 		// Obtiene los productos
-		let productos = linksInactivos.length ? obtieneProdsDeLinks(linksInactivos, ahora, userID) : [];
+		let productos = linksInactivos.length ? obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
 
 		// Fin
 		return productos;
 	},
 };
 
+let obtieneProdsDeLinks = function (links, userID) {
+	// Variables
+	let LI = [];
+
+	// Obtiene los prods
+	for (let link of links) {
+		// Variables
+		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+		let campoFecha = "statusSugeridoEn";
+		let fechaRef = link[campoFecha];
+		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+
+		// Agrega los registros
+		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+	}
+
+	if (LI.length > 1) {
+		// Ordena
+		LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)); // Fecha más reciente
+
+		// Elimina repetidos
+		LI = comp.eliminaRepetidos(LI);
+	}
+
+	// Deja solamente los prods aprobados
+	if (LI.length) LI = LI.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
+
+	// Deja solamente los prods sin problemas de captura
+	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
+
+	// Fin
+	return {LI};
+};
 let obtienePorEntidad = async ({...objeto}) => {
 	// Variables
 	const petitFamilias = objeto.petitFamilias;
@@ -158,38 +191,6 @@ let obtienePorEntidad = async ({...objeto}) => {
 
 	// Fin
 	return resultados2;
-};
-let obtieneProdsDeLinks = function (links, ahora, userID) {
-	// 1. Variables
-	let LI = []; // Inactivos
-
-	// 2. Obtiene los prods
-	for (let link of links) {
-		// Variables
-		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
-		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = "statusSugeridoEn";
-		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
-
-		// Agrega los registros
-		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-	}
-
-	// 3. Ordena
-	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)); // Fecha más reciente
-
-	// 4. Elimina repetidos
-	LI = comp.eliminaRepetidos(LI);
-
-	// 5. Deja solamente los prods aprobados
-	if (LI.length) LI = LI.filter((n) => n.statusRegistro_id == aprobado_id);
-
-	// 6. Deja solamente los prods sin problemas de captura
-	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
-
-	// Fin
-	return {LI};
 };
 let purgaEdicion = (edicion, entidad) => {
 	// Quita de edición los campos 'null'

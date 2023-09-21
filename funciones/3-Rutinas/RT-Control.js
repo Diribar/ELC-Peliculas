@@ -98,7 +98,7 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, saltea al siguiente usuario
+			// Obtiene la fecha en que se le envió el último comunicado
 			const hoyUsuario = procesos.mailDeFeedback.hoyUsuario(usuario);
 
 			// Si la fecha local es igual que la fecha del último comunicado, se saltea el usuario
@@ -117,10 +117,10 @@ module.exports = {
 			// Envía el mail y actualiza la BD
 			mailsEnviados.push(
 				comp
-					.enviarMail(asunto, email, cuerpoMail) // Envía el mail
+					.enviarMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 					.then((n) => {
 						// Acciones si el mail fue enviado
-						if (n.OK) {
+						if (n) {
 							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
 							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario}); // Actualiza el registro de usuario en el campo fecha_revisor
@@ -422,8 +422,8 @@ module.exports = {
 		// Actualiza el status de los links
 		const objeto = {
 			statusSugeridoPor_id: usAutom_id,
-			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
 			statusRegistro_id: creadoAprob_id,
+			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
 		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
@@ -522,7 +522,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	EliminaHistorialDeRegsNoLongerAvailable: async () => {
+	EliminaHistorialDeRegsEliminados: async () => {
 		// Variables
 		const tablas = [
 			{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
@@ -634,6 +634,29 @@ let actualizaLinkDeProdAprob = async () => {
 		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
 		const prodAprob = aprobados.includes(statusProd);
 		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+	}
+
+	// Fin
+	return;
+};
+let eliminaHistorialQueNoCorresponde = async () => {
+	// Obtiene los registros de histStatus en orden descendente
+	let histStatus = await BD_genericas.obtieneTodos("histStatus", false, true);
+
+	// Rutina por registro
+	while (histStatus.length) {
+		// Variables
+		const registro = histStatus[0]; // obtiene el registro más antiguo de 'histStatus'
+		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id); // obtiene el producto
+
+		// Si el status coincide, quita de la variable su historial
+		if (registro.statusFinal_id == producto.statusRegistro_id)
+			histStatus = histStatus.filter((n) => n.entidad != registro.entidad || n.entidad_id != registro.entidad_id);
+		// Si el status difiere, elimina el registro de la variable y de la BD
+		else {
+			BD_genericas.eliminaPorId("histStatus", registro.id);
+			histStatus.splice(0, 1);
+		}
 	}
 
 	// Fin

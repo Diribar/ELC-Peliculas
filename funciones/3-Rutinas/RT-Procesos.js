@@ -347,9 +347,9 @@ module.exports = {
 			// Variables
 			const comunicadoEn = new Date();
 			const condiciones = [
-				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id},
-				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id},
-				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id},
+				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id}, // desde 'creado' a creadoAprob'
+				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id}, // desde 'creadoAprob' a 'aprobado'
+				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id},// desde 'creado' a 'aprobado'
 			];
 
 			// Elimina los registros o completa el campo 'comunicadoEn'
