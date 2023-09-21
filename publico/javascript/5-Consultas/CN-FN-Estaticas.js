@@ -95,7 +95,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Guardar
-		v.obtener && (v.nuevo || v.edicion || v.propio)
+		v.obtener && (((v.nuevo || v.edicion) ) || v.propio)
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
@@ -155,7 +155,8 @@ let actualiza = {
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
-			if (v.mostrarFiltros || DOM[campo.name].value) DOM[campo.name].parentNode.classList.replace("ocultaFiltro", "aparece");
+			if (v.mostrarFiltros || DOM[campo.name].value)
+				DOM[campo.name].parentNode.classList.replace("ocultaFiltro", "aparece");
 
 			// Sirve en régimen
 			v.mostrarFiltros || DOM[campo.name].value
