@@ -31,7 +31,7 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
-				return;
+		return;
 	},
 
 	// 1. Rutinas horarias
