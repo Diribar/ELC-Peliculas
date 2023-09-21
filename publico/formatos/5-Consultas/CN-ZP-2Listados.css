@@ -15,10 +15,11 @@
 #listados table:has(tbody.ocultar) caption {border-radius: 15px;}
 
 /* Título */
-#listados table caption {padding: 10px;}
-#listados table caption {background: var(--gris-oscuro); color: var(--amarillo-claro); }
-#listados table caption {font-size: 1.25rem; font-weight: bold;}
-#listados table caption .expandeContrae {position: absolute; right: 13px;}
+#listados table caption {padding: 10px; background: var(--gris-oscuro);}
+#listados table caption * {font-size: 1.25rem; color: var(--amarillo-claro); font-weight: bold;}
+#listados table caption :is(.expandeContrae, .hallazgos) {position: absolute; top: 50%; translate: 0% -50%;}
+#listados table caption .expandeContrae {right: 13px;}
+#listados table caption .hallazgos {right: 35px; font-weight: normal; font-size: small; line-height: 1;}
 
 /* Columnas */
 #listados tbody tr td.primeraCol {vertical-align: top;}
