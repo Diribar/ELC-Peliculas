@@ -1,12 +1,16 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {cfc, vpc} = await fetch("/graficos/api/peliculas-cfc-y-vpc").then((n) => n.json());
+	const [resultado,publicos] = await fetch("/graficos/api/peliculas-publico").then((n) => n.json());
 
-	const ejeX_cfc = [...Object.keys(cfc)].map((n) => "cfc-" + n);
-	const ejeX_vpc = [...Object.keys(vpc).reverse()].map((n) => "vpc-" + n);
-	const ejeX = [...ejeX_cfc, ...ejeX_vpc];
-	const ejeY = [...Object.values(cfc), ...Object.values(vpc).reverse()];
+	// Configura los valores de los ejes
+	let ejeX = [];
+	let ejeY = [];
+	for (let publico of publicos)
+		for (let rubro in resultado) {
+			ejeX.push(publico + " - " + rubro);
+			ejeY.push(resultado[rubro][publico]);
+		}
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
@@ -27,12 +31,12 @@ window.addEventListener("load", async () => {
 
 		const options = {
 			backgroundColor: "rgb(255,242,204)",
-			colors: [gris, gris, gris, azul, azul, azul],
+			colors: [gris, gris, azul, azul, "green", "green"],
 			fontSize: 10,
 			chartArea: {height: "80%"},
 			legend: "none",
 			pieSliceText: "value",
-			// sliceVisibilityThreshold: 0.20,
+			sliceVisibilityThreshold: 0.10,
 			legend: {position: "labeled"},
 		};
 

@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {aprob, pend} = await fetch("/graficos/api/peliculas-aprobadas").then((n) => n.json());
+	const {aprob, pend} = await fetch("/graficos/api/peliculas-cfc-vpc").then((n) => n.json());
 
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
@@ -26,13 +26,13 @@ window.addEventListener("load", async () => {
 
 		const options = {
 			backgroundColor: "rgb(255,242,204)",
-			colors: [gris, gris, "green", azul],
+			colors: [gris, gris, azul, azul],
 			fontSize: 10,
 			chartArea: {height: "80%"},
 			legend: "none",
 			pieSliceText: "value",
-			// sliceVisibilityThreshold: 0.20,
 			legend: {position: "labeled"},
+			slices: {1: {offset: 0.1}, 2: {offset: 0.1}},
 		};
 
 		// Hace visible el gráfico

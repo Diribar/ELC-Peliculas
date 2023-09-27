@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 			chartArea: {height: "80%"},
 			legend: "none",
 			pieSliceText: "value",
-			// sliceVisibilityThreshold: 0.20,
+			sliceVisibilityThreshold: 0.05,
 			legend: {position: "labeled"},
 		};
 

@@ -220,10 +220,10 @@ module.exports = {
 			}
 
 			// CONSECUENCIAS
-			// 1. Actualiza el status en el registro original
-			// 1.A. Datos que se necesitan con seguridad
+			// Actualiza el status en el registro original
+			// A. Datos que se necesitan con seguridad
 			datos = {...datos, statusRegistro_id: statusFinal_id};
-			// 1.B. Datos sólo si es un alta/rechazo
+			// B. Datos sólo si es un alta/rechazo
 			if (!original.leadTimeCreacion) {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
@@ -234,10 +234,17 @@ module.exports = {
 				datos.statusSugeridoEn = ahora;
 			}
 			datos.motivo_id = motivo_id;
-			// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
+			// C. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
-			// 2. Si es una colección, actualiza sus capítulos con el mismo status
+			// Si es un producto, actualiza el campo 'prodsAprob' en sus links vinculados
+			if (petitFamilias == "prods") {
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+				const prodAprob = aprobados_ids.includes(statusFinal_id);
+				BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: id}, {prodAprob});
+			}
+
+			// Si es una colección, actualiza sus capítulos con el mismo status
 			if (entidad == "colecciones")
 				statusFinal_id == aprobado_id
 					? await procsCRUD.revisiones.capsAprobs(id)
@@ -247,39 +254,39 @@ module.exports = {
 							{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 					  );
 
-			// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
-			// 4. Agrega un registro en el histStatus
-			// 4.A. Genera la información
+			// Agrega un registro en el histStatus
+			// A. Genera la información
 			let datosHist = {
 				...{entidad, entidad_id: id},
 				...{sugeridoPor_id: userID, sugeridoEn: original.statusSugeridoEn, statusOriginal_id},
 				...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
 				...{aprobado: aprob, motivo_id, comentario},
 			};
-			// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
+			// B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 			const motivo =
 				codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 			if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac);
-			// 4.C. Guarda los datos históricos
+			// C. Guarda los datos históricos
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
-			// 5. Aumenta el valor de aprob/rech en el registro del usuario
+			// Aumenta el valor de aprob/rech en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
-			// 6. Penaliza al usuario si corresponde
+			// Penaliza al usuario si corresponde
 			if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-			// 7. Acciones si es un registro que se mueve a 'inactivo'
+			// Acciones si es un registro que se mueve a 'inactivo'
 			// Elimina el archivo de avatar de las ediciones
 			// Elimina las ediciones que tenga
 			if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
-			// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
+			// Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
 			if (producto) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
 
-			// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
+			// Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 				procesos.descargaAvatarOriginal(original, entidad);
 
