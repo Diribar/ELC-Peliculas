@@ -63,7 +63,7 @@ module.exports = {
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 			let avatar = usuario.avatar
 				? "/imagenes/1-Usuarios/Avatar/" + usuario.avatar
-				: "/imagenes/0-Base/Avatar/Usuario-Generico.jpg";
+				: "/imagenes/Avatar/Usuario-Generico.jpg";
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -149,7 +149,7 @@ module.exports = {
 			// Avatar
 			let avatar = usuario.documAvatar
 				? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
-				: "/imagenes/0-Base/Avatar/DNI-Generico.jpg";
+				: "/imagenes/Avatar/DNI-Generico.jpg";
 			// Crear la carpeta si no existe
 			const ruta = "./publico/imagenes/9-Provisorio";
 			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);

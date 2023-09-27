@@ -81,7 +81,7 @@ module.exports = {
 		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
 		const final = carpeta + "/Final/";
 		const revisar = carpeta + "/Revisar/";
-		const sinAvatar = "0-Base/Avatar/Sin-Avatar.jpg";
+		const sinAvatar = "Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familia, devuelve el genérico
 		if (!familias) return {orig: "/imagenes/" + sinAvatar, edic: "/imagenes/" + sinAvatar};

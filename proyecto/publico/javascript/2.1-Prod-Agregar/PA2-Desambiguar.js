@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
 			let imagen = boton.querySelector("img");
 			imagen.src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+				: "/imagenes/Avatar/Sin-Avatar.jpg";
 			imagen.alt = prod.nombreOriginal;
 			imagen.title = prod.nombreOriginal;
 
@@ -124,7 +124,7 @@ window.addEventListener("load", async () => {
 
 			// Imagen
 			let avatar = !prod.avatar
-				? "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+				? "/imagenes/Avatar/Sin-Avatar.jpg"
 				: prod.avatar.includes("/")
 				? prod.avatar
 				: "/imagenes/2-Productos/Final/" + prod.avatar;

@@ -77,7 +77,7 @@ module.exports = {
 			let imgDerPers = original.avatar;
 			imgDerPers = imgDerPers
 				? (!imgDerPers.includes("/") ? "/imagenes/2-Productos/Revisar/" : "") + imgDerPers
-				: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
+				: "/imagenes/Avatar/Prod-Generico.jpg";
 			// Configura el título de la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
@@ -513,7 +513,7 @@ module.exports = {
 		// Información para la vista
 		const avatar = producto.avatar
 			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
-			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
+			: "/imagenes/Avatar/Prod-Generico.jpg";
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;

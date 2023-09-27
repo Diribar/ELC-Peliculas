@@ -226,7 +226,7 @@ let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 		// Acciones si no es una imagen
 		image.onerror = async () => {
 			// Limpia el avatar
-			DOM.imgAvatar.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+			DOM.imgAvatar.src = "/imagenes/Avatar/Sin-Avatar.jpg";
 
 			// Actualiza la variable 'avatar' en la versión 'edicN'
 			if (DOM.inputAvatarEdicN && DOM.inputAvatarEdicN.value) version.edicN.avatar = "";

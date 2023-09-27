@@ -102,7 +102,7 @@ module.exports = {
 				? "/imagenes/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
-				: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+				: "/imagenes/Avatar/Sin-Avatar.jpg";
 
 			// Datos para la vista
 			const origen =
@@ -361,7 +361,7 @@ module.exports = {
 		// Obtiene el nombre del producto
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
-		const carpetaMG = "0-Base/Muchas-gracias/";
+		const carpetaMG = "Muchas-gracias/";
 		const imagenMG = "/imagenes/" + carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
