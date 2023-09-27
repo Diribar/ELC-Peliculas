@@ -78,7 +78,7 @@ module.exports = {
 	// Imagen Derecha
 	borraLosArchivosDeImgDerechaObsoletos: (fechas) => {
 		// Variables
-		const carpetaImagen = "./publico/imagenes/5-ImagenDerecha/";
+		const carpetaImagen = "./publico/archSinVersion/5-ImagenDerecha/";
 		const archivosDeImagen = fs.readdirSync(carpetaImagen);
 
 		// Revisa si corresponde borrar los archivos
@@ -492,7 +492,7 @@ let avatarConLink = (familia, valorAprob, texto) => {
 	const link = valorAprob && valorAprob.includes("/");
 	const terminacion = "' style='color: inherit; text-decoration: none'><u>la imagen " + texto + "</u></a>";
 	const carpeta = (familia == "producto" ? "2-" : "3-") + familia;
-	const rutaArchivo = !link && valorAprob ? "/imagenes/" + carpeta + "s/Final/" + valorAprob : "";
+	const rutaArchivo = !link && valorAprob ? "/archSinVersion/" + carpeta + "s/Final/" + valorAprob : "";
 	const existe = !link && valorAprob ? comp.gestionArchivos.existe("./publico" + rutaArchivo) : "";
 
 	return link
@@ -657,12 +657,12 @@ let datosImgDerecha = (resultado) => {
 };
 let eliminaLasImagenes = (avatars, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-	const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+	const archivos = fs.readdirSync("./publico/archSinVersion/" + carpeta);
 	const imagenes = avatars.map((n) => n.imagen);
 
 	// Rutina para borrar archivos
 	for (let archivo of archivos)
-		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
+		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
 	for (let avatar of avatars)

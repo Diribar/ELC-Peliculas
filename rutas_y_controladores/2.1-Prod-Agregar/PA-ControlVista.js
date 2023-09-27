@@ -312,7 +312,7 @@ module.exports = {
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
-				let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
+				let rutaYnombre = "./publico/archSinVersion/2-Productos/Revisar/" + confirma.avatar;
 				comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 			}
 			// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'

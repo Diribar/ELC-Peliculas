@@ -260,13 +260,13 @@ module.exports = {
 						comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
 						// Elimina el anterior archivo de imagen original
 						if (original.avatar)
-							comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
+							comp.gestionArchivos.elimina("./publico/archSinVersion/2-Productos/Final/", original.avatar);
 					} else {
 						// Mueve el archivo de la edición para su revisión
 						comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 						// Elimina el anterior archivo de imagen editada
 						if (avatarEdicInicial)
-							comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
+							comp.gestionArchivos.elimina("./publico/archSinVersion/2-Productos/Revisar/", avatarEdicInicial);
 					}
 				}
 

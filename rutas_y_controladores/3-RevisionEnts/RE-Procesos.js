@@ -496,7 +496,7 @@ module.exports = {
 					original.avatar = Date.now() + path.extname(url);
 
 					// Descarga el url
-					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
+					let rutaYnombre = "./publico/archSinVersion/2-Productos/Final/" + original.avatar;
 					await comp.gestionArchivos.descarga(url, rutaYnombre);
 				}
 

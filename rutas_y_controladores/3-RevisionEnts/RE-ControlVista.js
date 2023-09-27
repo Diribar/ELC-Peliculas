@@ -76,7 +76,7 @@ module.exports = {
 			// Obtiene avatar original
 			let imgDerPers = original.avatar;
 			imgDerPers = imgDerPers
-				? (!imgDerPers.includes("/") ? "/imagenes/2-Productos/Revisar/" : "") + imgDerPers
+				? (!imgDerPers.includes("/") ? "/archSinVersion/2-Productos/Revisar/" : "") + imgDerPers
 				: "/imagenes/Avatar/Prod-Generico.jpg";
 			// Configura el título de la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -177,7 +177,7 @@ module.exports = {
 						comp.gestionArchivos.mueveImagen(datos.avatar, "9-Provisorio", "3-RCLVs/Final");
 
 						// Elimina el eventual anterior
-						if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/3-RCLVs/Revisar/", original.avatar);
+						if (original.avatar) comp.gestionArchivos.elimina("./publico/archSinVersion/3-RCLVs/Revisar/", original.avatar);
 					}
 					// Si no recibimos un avatar y hay avatar en original, lo mueve de 'Revisar' a 'Final'
 					else if (original.avatar)
@@ -512,7 +512,7 @@ module.exports = {
 
 		// Información para la vista
 		const avatar = producto.avatar
-			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
+			? (!producto.avatar.includes("/") ? "/archSinVersion/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/Avatar/Prod-Generico.jpg";
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);

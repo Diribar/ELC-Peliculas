@@ -384,8 +384,8 @@ module.exports = {
 			return resultado;
 		},
 		mueveImagen: function (nombre, origen, destino, output) {
-			let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-			let carpetaDestino = "./publico/imagenes/" + destino + "/";
+			let archivoOrigen = "./publico/archSinVersion/" + origen + "/" + nombre;
+			let carpetaDestino = "./publico/archSinVersion/" + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
@@ -397,8 +397,8 @@ module.exports = {
 				});
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
-			let nombreDestino = "./publico/imagenes/" + archivoDestino;
+			let nombreOrigen = "./publico/archSinVersion/" + archivoOrigen;
+			let nombreDestino = "./publico/archSinVersion/" + archivoDestino;
 			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
@@ -411,7 +411,7 @@ module.exports = {
 		},
 		imagenAlAzar: (carpeta) => {
 			// Obtiene el listado de archivos
-			const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+			const archivos = fs.readdirSync("./publico/archSinVersion/" + carpeta);
 
 			// Elije al azar el n° de imagen
 			const indice = parseInt(Math.random() * archivos.length);

@@ -62,7 +62,7 @@ module.exports = {
 			// Generar la info para la vista
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 			let avatar = usuario.avatar
-				? "/imagenes/1-Usuarios/Avatar/" + usuario.avatar
+				? "/archSinVersion/1-Usuarios/Avatar/" + usuario.avatar
 				: "/imagenes/Avatar/Usuario-Generico.jpg";
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
@@ -148,7 +148,7 @@ module.exports = {
 			let rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
 			// Avatar
 			let avatar = usuario.documAvatar
-				? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
+				? "/archSinVersion/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
 				: "/imagenes/Avatar/DNI-Generico.jpg";
 			// Crear la carpeta si no existe
 			const ruta = "./publico/archSinVersion/9-Provisorio";
@@ -178,7 +178,7 @@ module.exports = {
 				id: usuario.id,
 			};
 			if (req.file) datos.tamano = req.file.size;
-			datos.ruta = req.file ? "./publico/archSinVersion/9-Provisorio/" : "./publico/imagenes/1-Usuarios/DNI-Revisar/";
+			datos.ruta = req.file ? "./publico/archSinVersion/9-Provisorio/" : "./publico/archSinVersion/1-Usuarios/DNI-Revisar/";
 
 			// Averigua si hay errores de validación
 			let errores = await valida.identidadBE(datos);
@@ -194,7 +194,7 @@ module.exports = {
 			if (req.file) {
 				// Elimina el archivo 'documAvatar' anterior
 				if (usuario.documAvatar)
-					comp.gestionArchivos.elimina("./publico/imagenes/1-Usuarios/DNI-Revisar/", usuario.documAvatar);
+					comp.gestionArchivos.elimina("./publico/archSinVersion/1-Usuarios/DNI-Revisar/", usuario.documAvatar);
 				// Agrega el campo 'documAvatar' a los datos
 				req.body.documAvatar = req.file.filename;
 			}
