@@ -88,11 +88,10 @@ module.exports = {
 
 		// Obtiene el avatar original
 		const orig = !original.avatar
-			? localhost + "/imagenes/" + sinAvatar
+			? "/imagenes/" + sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
-			: localhost +
-			  "/imagenes/" +
+			: "/imagenes/" +
 			  (comp.gestionArchivos.existe("./publico/imagenes/" + final + original.avatar)
 					? final + original.avatar
 					: // Si el avatar está 'a revisar'
@@ -101,7 +100,7 @@ module.exports = {
 					: sinAvatar);
 
 		// avatarEdic
-		const edic = edicion && edicion.avatar ? localhost + "/imagenes/" + revisar + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? "/imagenes/" + revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};

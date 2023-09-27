@@ -99,10 +99,10 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
+				? "/imagenes/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
-				: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+				: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
 			// Datos para la vista
 			const origen =
@@ -199,7 +199,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosAdics.avatar
-				? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar
+				? "/imagenes/9-Provisorio/" + datosAdics.avatar
 				: datosAdics.avatarUrl;
 
 			// Render del formulario
@@ -266,7 +266,7 @@ module.exports = {
 				if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 			}
 			// 5. Imagen derecha
-			let imgDerPers = confirma.avatar ? localhost + "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 			// 6. Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,
