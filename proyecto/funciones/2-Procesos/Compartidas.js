@@ -738,13 +738,13 @@ module.exports = {
 			secure: true, // true for 465, false for other ports
 			auth: {
 				user: process.env.direccMail, // dirección de gmail
-				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
+				pass: process.env.contrMail, // contraseña de aplicación de gmail
 			},
 		});
 		let datos = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
 			to: email,
-			subject: asunto, // Subject line
+			subject: asunto,
 			//text: comentario, // plain text body
 			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};

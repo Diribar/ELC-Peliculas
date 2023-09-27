@@ -191,7 +191,7 @@ app.set("views", [
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 
-	// Variables que reqiueren 'require'
+	// Variables que requieren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON()
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
