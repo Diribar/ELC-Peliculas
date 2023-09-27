@@ -192,10 +192,13 @@ app.set("views", [
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 
 	// Variables que requieren 'require'
+	global.variables = require("./funciones/2-Procesos/Variables");
+	global.comp = require("./funciones/2-Procesos/Compartidas");
+	global.BD_genericas = require("./funciones/1-BD/Genericas");
+	global.BD_especificas = require("./funciones/1-BD/Especificas");
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON()
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
-	const variables = require("./funciones/2-Procesos/Variables");
 	global.vistasInstitucs = variables.vistasInstitucs;
 	global.videosInduccion = variables.videosInduccion;
 	global.prefijoSanto = variables.prefijoSanto;

@@ -1,11 +1,5 @@
 "use strict";
-// Variables
-const comp = require("../2-Procesos/Compartidas");
-const BD_genericas = require("../1-BD/Genericas");
-const BD_especificas = require("../1-BD/Especificas");
-const variables = require("../2-Procesos/Variables");
 
-// Exportar ------------------------------------
 module.exports = {
 	// Interacciones con el archivo Rutinas.json
 	lecturaRutinasJSON: () => {

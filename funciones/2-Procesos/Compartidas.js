@@ -1,10 +1,7 @@
 "use strict";
 // Definir variables
-const internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
-const BD_genericas = require("../1-BD/Genericas");
 const axios = require("axios");
-const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {

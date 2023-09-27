@@ -1,5 +1,4 @@
 "use strict";
-const variables = require("../../funciones/2-Procesos/Variables");
 
 module.exports = (req, res, next) => {
 	// Variables

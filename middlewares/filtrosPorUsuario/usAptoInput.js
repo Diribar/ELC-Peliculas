@@ -1,10 +1,6 @@
 "use strict";
 // Requires
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const BD_especificas = require("../../funciones/1-BD/Especificas");
-const variables = require("../../funciones/2-Procesos/Variables");
 const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
