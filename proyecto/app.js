@@ -27,7 +27,7 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.fs = require("fs");
 global.archsSinVersion = process.env.archsSinVersion;
-global.carpsImagsEpocaDelAno = fs.readdirSync(archsSinVersion + "4-EpocasDelAno");
+global.carpsImagsEpocaDelAno = fs.readdirSync(archsSinVersion + "/4-EpocasDelAno");
 global.path = require("path");
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
