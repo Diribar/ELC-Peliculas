@@ -26,7 +26,8 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.fs = require("fs");
-global.carpsImagsEpocaDelAno = fs.readdirSync("./publico/imagenes/4-EpocasDelAno");
+global.archsSinVersion = process.env.archsSinVersion;
+global.carpsImagsEpocaDelAno = fs.readdirSync(archsSinVersion + "/4-EpocasDelAno");
 global.path = require("path");
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
@@ -192,7 +193,8 @@ app.set("views", [
 
 	// Variables que reqiueren 'require'
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
-	global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
+	global.rutinasJSON = procesos.lecturaRutinasJSON()
+	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	const variables = require("./funciones/2-Procesos/Variables");
 	global.vistasInstitucs = variables.vistasInstitucs;
 	global.videosInduccion = variables.videosInduccion;

@@ -10,7 +10,7 @@ module.exports = {
 	// Interacciones con el archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
-		const rutaNombre = path.join(__dirname, "Rutinas.json");
+		const rutaNombre = archsSinVersion + "/Rutinas.json";
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
 		const info = json ? JSON.parse(json) : {};
@@ -20,7 +20,7 @@ module.exports = {
 	},
 	guardaArchivoDeRutinas: function (datos, menu) {
 		// Obtiene la informacion vigente
-		let info = this.lecturaRutinasJSON();
+		let info = {...rutinasJSON};
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
@@ -64,7 +64,8 @@ module.exports = {
 		info = menu ? {...info, [menu]: {...info[menu], ...datos}} : {...info, ...datos};
 
 		// Guarda la información actualizada
-		const rutaNombre = path.join(__dirname, "Rutinas.json");
+		const rutaNombre = archsSinVersion + "/Rutinas.json";
+		rutinasJSON = {...info};
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
 			return;

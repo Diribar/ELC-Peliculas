@@ -16,7 +16,7 @@ module.exports = {
 		this.variablesSemanales();
 
 		// Rutinas programadas
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		if (!Object.keys(info).length) return;
 
 		// Rutinas diarias
@@ -37,7 +37,7 @@ module.exports = {
 	// 1. Rutinas horarias
 	RutinasHorarias: async function () {
 		// Obtiene la información del archivo JSON
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		const rutinasHorarias = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
@@ -168,7 +168,7 @@ module.exports = {
 	// 2. Rutinas diarias
 	FechaHoraUTC: async function () {
 		// Obtiene la información del archivo JSON
-		let info = procesos.lecturaRutinasJSON();
+		let info = {...rutinasJSON};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		const rutinasDiarias = info.RutinasDiarias;
@@ -199,7 +199,7 @@ module.exports = {
 	RutinasDiarias: async function () {
 		this.variablesDiarias();
 		// Obtiene la información del archivo JSON
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
@@ -223,7 +223,7 @@ module.exports = {
 	},
 	ImagenDerecha: async function () {
 		// Variables
-		let info = procesos.lecturaRutinasJSON();
+		let info = {...rutinasJSON};
 		const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 		const cantFechas = 5; // Incluye 5 días
@@ -344,7 +344,7 @@ module.exports = {
 		this.variablesSemanales();
 
 		// Obtiene la información del archivo JSON
-		let info = procesos.lecturaRutinasJSON();
+		let info = {...rutinasJSON};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
 		const rutinasSemanales = info.RutinasSemanales;
@@ -371,7 +371,7 @@ module.exports = {
 	},
 	RutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		const rutinasSemanales = info.RutinasSemanales;
 
 		// Si la 'semanaUTC' es distinta o la rutinaSemanal está pendiente, actualiza las rutinasSemanales
