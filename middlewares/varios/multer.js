@@ -5,7 +5,7 @@ const comp = require("../../funciones/2-Procesos/Compartidas");
 
 // Variables
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => cb(null, "./publico/imagenes/9-Provisorio"),
+	destination: (req, file, cb) => cb(null, "./publico/archSinVersion/9-Provisorio"),
 	filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 

@@ -49,7 +49,7 @@ window.addEventListener("load", () => {
 				campo != "avatar" ||
 				DOM.inputs[indice].value ||
 				!v.esImagen ||
-				(tarea == "documento" && DOM.imgAvatar.src.includes("imagenes/0-Base"))
+				(tarea == "documento" && DOM.imgAvatar.src.includes("imagenes/Avatar"))
 					? await fetch(v.rutaApi + campo + "=" + valor).then((n) => n.json())
 					: "";
 			// Fin

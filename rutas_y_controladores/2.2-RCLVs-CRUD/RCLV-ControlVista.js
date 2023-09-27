@@ -200,7 +200,7 @@ module.exports = {
 			// Acciones si hay errores o se eliminó la edición
 			if ((errores && errores.hay) || eliminarEdic) {
 				// Si se agregó un archivo avatar, lo elimina
-				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
+				if (req.file) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datos.avatar);
 
 				// Redirige a la vista 'form'
 				return res.redirect(req.originalUrl);

@@ -150,12 +150,12 @@ module.exports = {
 	},
 	eliminaImagenesProvisorio: () => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-		let archivos = fs.readdirSync("./publico/imagenes/9-Provisorio");
+		let archivos = fs.readdirSync("./publico/archSinVersion/9-Provisorio");
 
 		// Rutina para borrar archivos
 		for (let archivo of archivos) {
-			const fechaHora = fs.statSync("./publico/imagenes/9-Provisorio/" + archivo).birthtime;
-			if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio", archivo);
+			const fechaHora = fs.statSync("./publico/archSinVersion/9-Provisorio/" + archivo).birthtime;
+			if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio", archivo);
 		}
 
 		// Fin

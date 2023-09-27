@@ -274,7 +274,7 @@ module.exports = {
 				delete req.session.edicProd;
 			} else {
 				// Si recibimos un archivo avatar editado, lo elimina
-				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
+				if (req.file) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", req.file.filename);
 
 				// Guarda los datos editados, sin el de avatar
 				req.session.edicProd = req.body;

@@ -151,7 +151,7 @@ module.exports = {
 				? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
 				: "/imagenes/Avatar/DNI-Generico.jpg";
 			// Crear la carpeta si no existe
-			const ruta = "./publico/imagenes/9-Provisorio";
+			const ruta = "./publico/archSinVersion/9-Provisorio";
 			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
@@ -178,7 +178,7 @@ module.exports = {
 				id: usuario.id,
 			};
 			if (req.file) datos.tamano = req.file.size;
-			datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/1-Usuarios/DNI-Revisar/";
+			datos.ruta = req.file ? "./publico/archSinVersion/9-Provisorio/" : "./publico/imagenes/1-Usuarios/DNI-Revisar/";
 
 			// Averigua si hay errores de validación
 			let errores = await valida.identidadBE(datos);

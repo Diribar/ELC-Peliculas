@@ -333,9 +333,9 @@ module.exports = {
 		},
 		carpetaProvisorio: function () {
 			// Averigua si existe la carpeta
-			if (!this.existe("./publico/imagenes/9-Provisorio"))
+			if (!this.existe("./publico/archSinVersion/9-Provisorio"))
 				// Si no existe, la crea
-				fs.mkdirSync("./publico/imagenes/9-Provisorio");
+				fs.mkdirSync("./publico/archSinVersion/9-Provisorio");
 
 			// Fin
 			return;

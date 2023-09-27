@@ -99,7 +99,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? "/imagenes/9-Provisorio/" + datosDuros.avatar
+				? "/archSinVersion/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
 				: "/imagenes/Avatar/Sin-Avatar.jpg";
@@ -127,7 +127,7 @@ module.exports = {
 
 			// Acciones si existe un archivo avatar ingresado anteriormente y ahora se ingresó otro
 			if (datosDuros.avatar && req.file) {
-				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
+				comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datosDuros.avatar);
 				delete datosDuros.avatar;
 			}
 
@@ -199,7 +199,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosAdics.avatar
-				? "/imagenes/9-Provisorio/" + datosAdics.avatar
+				? "/archSinVersion/9-Provisorio/" + datosAdics.avatar
 				: datosAdics.avatarUrl;
 
 			// Render del formulario
@@ -266,7 +266,7 @@ module.exports = {
 				if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 			}
 			// 5. Imagen derecha
-			let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? "/archSinVersion/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 			// 6. Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,

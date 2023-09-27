@@ -162,7 +162,7 @@ module.exports = {
 						res.cookie(entidad, datos, {maxAge: unDia});
 
 						// Si se agregó un archivo avatar, lo elimina
-						if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
+						if (req.file) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datos.avatar);
 
 						// Fin
 						return res.redirect(req.originalUrl);
@@ -201,7 +201,7 @@ module.exports = {
 				// Acciones para avatar por rechazo
 				if (subcodigo == "rechazo") {
 					// Si se había agregado un archivo, lo elimina
-					if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
+					if (req.file) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datos.avatar);
 
 					// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 					if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "3-RCLVs/Revisar", "3-RCLVs/Final");

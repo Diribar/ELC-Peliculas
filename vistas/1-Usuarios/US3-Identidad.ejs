@@ -123,11 +123,11 @@
 					<div class="errores">
 						<i 
 							class="fa-solid fa-circle-xmark<%- !errores.avatar ? ' ocultar' : '' %>"
-							<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
+							<% if (locals.z_index) { %>style="z-index: <%= z_index %>"<% } %>
 						>
 							<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 						</i>
-						<i class="fa-solid fa-circle-check<%- (errores.avatar || avatar.includes("imagenes/0-Base")) ? ' ocultar' : '' %>"></i>
+						<i class="fa-solid fa-circle-check<%- (errores.avatar || avatar.includes("imagenes/Avatar")) ? ' ocultar' : '' %>"></i>
 					</div>
 				</div>
 			</div>

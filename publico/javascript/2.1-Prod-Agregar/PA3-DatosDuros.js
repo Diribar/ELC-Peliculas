@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
-		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/0-Base"),
+		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/Avatar"),
 		datosUrl: null,
 	};
 	let rutas = {
