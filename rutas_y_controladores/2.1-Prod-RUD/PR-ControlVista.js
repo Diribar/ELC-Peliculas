@@ -121,39 +121,36 @@ module.exports = {
 			// Obtiene el nombre de los países
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 
-			// Info para la vista de Edicion o Detalle
-			if (codigo == "edicion") {
-				// Obtiene los datos de session/cookie y luego los elimina
-				let edicSession;
-				// Session
-				if (req.session.edicProd) {
-					if (req.session.edicProd.entidad == entidad && req.session.edicProd.id == id)
-						edicSession = req.session.edicProd;
-					else delete req.session.edicProd;
-				}
-				// Cookies
-				if (req.cookies.edicProd && !edicSession) {
-					if (req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id)
-						edicSession = req.cookies.edicProd;
-					else res.clearCookie("edicProd");
-				}
-				// Actualiza el producto prodComb
-				prodComb = {...prodComb, ...edicSession};
-				// Datos Duros - Campos Input
-				let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
-				camposInput1 = camposInput.filter((n) => n.antesDePais);
-				camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
-				produccion = camposInput.find((n) => n.nombre == "produccion");
-				// Datos Duros - Bases de Datos
-				paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
-				// Datos Duros - Avatar
-				imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
+			// Obtiene los datos de session/cookie y luego los elimina
+			let edicSession;
+			// Session
+			if (req.session.edicProd)
+				req.session.edicProd.entidad == entidad && req.session.edicProd.id == id
+					? (edicSession = req.session.edicProd)
+					: delete req.session.edicProd;
 
-				// Datos Personalizados
-				camposDA = await variables.camposDA_conValores(userID);
-				gruposPers = procsCRUD.grupos.pers(camposDA);
-				gruposHechos = procsCRUD.grupos.hechos(camposDA);
-			}
+			// Cookies
+			if (req.cookies.edicProd && !edicSession)
+				req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id
+					? (edicSession = req.cookies.edicProd)
+					: res.clearCookie("edicProd");
+
+			// Actualiza el producto prodComb
+			prodComb = {...prodComb, ...edicSession};
+			// Datos Duros - Campos Input
+			let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
+			camposInput1 = camposInput.filter((n) => n.antesDePais);
+			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
+			produccion = camposInput.find((n) => n.nombre == "produccion");
+			// Datos Duros - Bases de Datos
+			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
+			// Datos Duros - Avatar
+			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
+
+			// Datos Personalizados
+			camposDA = await variables.camposDA_conValores(userID);
+			gruposPers = procsCRUD.grupos.pers(camposDA);
+			gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Obtiene datos para la vista
 			if (entidad == "capitulos")

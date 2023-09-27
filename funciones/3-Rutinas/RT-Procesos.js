@@ -497,7 +497,7 @@ let avatarConLink = (familia, valorAprob, texto) => {
 	return link
 		? "<a href='" + valorAprob + terminacion
 		: existe
-		? "<a href='http:".concat(localhost, rutaArchivo) + terminacion
+		? "<a href='" + rutaArchivo + terminacion
 		: "la imagen " + texto;
 };
 let formatos = {
@@ -524,9 +524,7 @@ let nombres = async (reg, familia) => {
 		// Obtiene los nombres
 		nombreOrden = comp.nombresPosibles(regEntidad);
 		nombreVisual =
-			"<a href='http:" +
-			localhost +
-			"/" +
+			"<a href='/" +
 			familia +
 			"/detalle/?entidad=" +
 			reg.entidad +

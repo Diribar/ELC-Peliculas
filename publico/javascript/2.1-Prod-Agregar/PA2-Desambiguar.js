@@ -17,7 +17,6 @@ window.addEventListener("load", async () => {
 		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
-	const localhost = await fetch("/api/localhost").then((n) => n.json());
 	let productos = desambiguar.productos;
 	let pausa = 200; // milisegundos
 	let ocultarCartel;
@@ -89,7 +88,7 @@ window.addEventListener("load", async () => {
 			let imagen = boton.querySelector("img");
 			imagen.src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+				: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 			imagen.alt = prod.nombreOriginal;
 			imagen.title = prod.nombreOriginal;
 
@@ -125,10 +124,10 @@ window.addEventListener("load", async () => {
 
 			// Imagen
 			let avatar = !prod.avatar
-				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+				? "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
 				: prod.avatar.includes("/")
 				? prod.avatar
-				: localhost + "/imagenes/2-Productos/Final/" + prod.avatar;
+				: "/imagenes/2-Productos/Final/" + prod.avatar;
 			let imagen = boton.querySelector("img");
 			imagen.src = avatar;
 			imagen.alt = prod.nombreOriginal;
