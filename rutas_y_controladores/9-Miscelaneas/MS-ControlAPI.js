@@ -56,7 +56,4 @@ module.exports = {
 		// Fin
 		return res.json(datos);
 	},
-	localhost: (req, res) => {
-		return res.json(localhost);
-	},
 };

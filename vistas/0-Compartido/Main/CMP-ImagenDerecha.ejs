@@ -4,7 +4,7 @@
 		<% let ruta, titulo, destino %>
 		<% if (locals.tema == "institucional") { %>
 			<!-- 1. Imagen Institucional -->
-			<% ruta = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
+			<% ruta = '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
 		<% } %>
 		<% if (!ruta && locals.imgDerPers) { ruta = imgDerPers } %>
 		<% if (!ruta) { %>
@@ -14,7 +14,7 @@
 			<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 			<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
-			<% ruta = localhost + "/imagenes/5-ImagenDerecha/" + hoyLocal + ".jpg" %>
+			<% ruta = "/imagenes/5-ImagenDerecha/" + hoyLocal + ".jpg" %>
 			<% titulo = ImagenesDerecha[hoyLocal].titulo %>
 			<% ID_entidad = ImagenesDerecha[hoyLocal].entidad; ID_id = ImagenesDerecha[hoyLocal].id %>
 			<% destino = ID_entidad && ID_id ? "/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id : null %>
