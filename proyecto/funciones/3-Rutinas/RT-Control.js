@@ -16,7 +16,7 @@ module.exports = {
 		this.variablesSemanales();
 
 		// Rutinas programadas
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		if (!Object.keys(info).length) return;
 
 		// Rutinas diarias
@@ -37,7 +37,7 @@ module.exports = {
 	// 1. Rutinas horarias
 	RutinasHorarias: async function () {
 		// Obtiene la información del archivo JSON
-		const info = procesos.lecturaRutinasJSON();
+		const info = {...rutinasJSON};
 		const rutinasHorarias = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
