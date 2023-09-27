@@ -240,8 +240,8 @@ module.exports = {
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
 			const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-			comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Final", original.avatar);
-			comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Revisar", original.avatar);
+			comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta + "/Final", original.avatar);
+			comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta + "/Revisar", original.avatar);
 		}
 
 		// Guarda la información para la próxima vista
