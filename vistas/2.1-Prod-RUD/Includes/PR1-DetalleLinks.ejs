@@ -7,7 +7,7 @@
         <% const completoParte = link.completo ? " - Completo" : link.parte != '-' ? (' - Parte ' + link.parte) : '' %>
         <a href="//<%= link.url %>" target="_blank">
             <img 
-                src="/imagenes/0-Base/Logos/<%= link.prov.avatar %>" 
+                src="/archSinVersion/LK-Logos/<%= link.prov.avatar %>" 
                 class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
                 title="<%= castellano + gratuito + calidad + completoParte %>" 
             >
