@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const BD_especificas = require("../../funciones/1-BD/Especificas");
+
 const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {

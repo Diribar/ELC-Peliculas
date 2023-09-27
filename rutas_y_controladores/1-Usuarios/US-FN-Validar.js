@@ -1,9 +1,6 @@
 "use strict";
 // Definir variables
 const bcryptjs = require("bcryptjs");
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const comp = require("../../funciones/2-Procesos/Compartidas");
-const variables = require("../../funciones/2-Procesos/Variables");
 const procesos = require("./US-FN-Procesos");
 
 module.exports = {

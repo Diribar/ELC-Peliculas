@@ -1,9 +1,5 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const BD_especificas = require("../../funciones/1-BD/Especificas");
-const variables = require("../../funciones/2-Procesos/Variables");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
 const procesos = require("./FM-Procesos");
 

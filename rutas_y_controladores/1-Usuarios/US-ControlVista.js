@@ -1,8 +1,5 @@
 "use strict";
-// Definir variables
-const BD_especificas = require("../../funciones/1-BD/Especificas");
-const comp = require("../../funciones/2-Procesos/Compartidas");
-const variables = require("../../funciones/2-Procesos/Variables");
+// Variables
 const procesos = require("./US-FN-Procesos");
 const valida = require("./US-FN-Validar");
 

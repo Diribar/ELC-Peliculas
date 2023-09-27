@@ -1,7 +1,6 @@
 "use strict";
 // Requires
 const procesos = require("../../rutas_y_controladores/2.1-Prod-Agregar/PA-FN-Procesos");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
 	// Acciones comunes entre los pasos de 'producto agregar'

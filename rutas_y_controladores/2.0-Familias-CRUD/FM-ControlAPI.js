@@ -1,9 +1,5 @@
 "use strict";
-// ************ Requires *************
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const BD_especificas = require("../../funciones/1-BD/Especificas");
 
-// *********** Controlador ***********
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
 	obtieneColCap: async (req, res) => {

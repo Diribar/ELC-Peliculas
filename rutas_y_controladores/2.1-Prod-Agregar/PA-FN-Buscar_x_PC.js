@@ -1,8 +1,6 @@
 "use strict";
 // Definir variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 const procesos = require("./PA-FN-Procesos");
 
 module.exports = {

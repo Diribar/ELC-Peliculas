@@ -2,7 +2,6 @@
 // Definir variables
 const valida = require("./US-FN-Validar");
 const procesos = require("./US-FN-Procesos");
-const BD_genericas = require("../../funciones/1-BD/Genericas");
 
 module.exports = {
 	valida: {
