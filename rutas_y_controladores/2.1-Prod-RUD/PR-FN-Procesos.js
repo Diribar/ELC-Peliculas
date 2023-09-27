@@ -1,7 +1,4 @@
 "use strict";
-// Requires
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = {
 	// Producto

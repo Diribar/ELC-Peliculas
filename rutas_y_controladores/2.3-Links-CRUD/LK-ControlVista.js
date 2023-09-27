@@ -1,11 +1,8 @@
 "use strict";
-// ************ Requires *************
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const BD_especificas = require("../../funciones/1-BD/Especificas");
-const comp = require("../../funciones/2-Procesos/Compartidas");
+// Variables
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
-const variables = require("../../funciones/2-Procesos/Variables");
+
 
 // *********** Controlador ***********
 module.exports = {

@@ -1,8 +1,6 @@
 "use strict";
-// Definir variables
+// Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const comp = require("../../funciones/2-Procesos/Compartidas");
-const BD_especificas = require("../../funciones/1-BD/Especificas");
 
 module.exports = {
 	movie: {

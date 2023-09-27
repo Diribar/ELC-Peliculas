@@ -1,6 +1,5 @@
 "use strict";
-// Definir variables
-const variables = require("../../funciones/2-Procesos/Variables");
+// Variables
 const validaProd = require("../2.1-Prod-Agregar/PA-FN-Validar");
 
 module.exports = {

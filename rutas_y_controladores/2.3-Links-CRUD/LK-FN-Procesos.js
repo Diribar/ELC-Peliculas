@@ -1,9 +1,6 @@
 "use strict";
-// Definir variables
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const variables = require("../../funciones/2-Procesos/Variables");
+// Variables
 const procsMS = require("../9-Miscelaneas/MS-Procesos");
-const comp = require("../../funciones/2-Procesos/Compartidas");
 
 module.exports = {
 	// Links - Controlador Vista

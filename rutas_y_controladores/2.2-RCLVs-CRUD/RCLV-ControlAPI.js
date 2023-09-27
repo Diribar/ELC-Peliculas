@@ -1,7 +1,5 @@
 "use strict";
-// ************ Requires ************
-const BD_genericas = require("../../funciones/1-BD/Genericas");
-const variables = require("../../funciones/2-Procesos/Variables");
+// Variables
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
