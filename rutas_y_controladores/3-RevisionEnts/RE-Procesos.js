@@ -745,7 +745,7 @@ module.exports = {
 		// Descarga el archivo avatar
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-		const ruta = "./publico/imagenes/" + carpeta + "/Final/";
+		const ruta = "./publico/archSinVersion/" + carpeta + "/Final/";
 		const avatar = Date.now() + path.extname(original.avatar);
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
@@ -791,7 +791,7 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-		const rutaFinal = "./publico/imagenes/" + carpeta + "/Final/";
+		const rutaFinal = "./publico/archSinVersion/" + carpeta + "/Final/";
 		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
 			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
@@ -800,7 +800,7 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	}
 
 	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Revisar/", avatarEdic);
+	else if (!aprob) comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;

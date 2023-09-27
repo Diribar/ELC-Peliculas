@@ -1,8 +1,8 @@
 <div id="icono_usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
 		<div id="imagenUsuario">
-			<% const avatarUsuario = usuario.avatar ? ("1-Usuarios/Avatar/"+ usuario.avatar) : "Avatar/Usuario-SinRostro.jpg" %>
-			<img src="/imagenes/<%= avatarUsuario %>" class="desplClick">
+			<% const avatarUsuario = usuario.avatar ? ("/archSinVersion/1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
+			<img src="<%= avatarUsuario %>" class="desplClick">
 		</div>
 	<% } else { %>
 		<a href="/usuarios/login">

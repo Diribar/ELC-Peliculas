@@ -357,7 +357,7 @@ module.exports = {
 				codigo += "/avatar";
 				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.orig.includes("/imagenes/");
+				avatarExterno = !avatar.orig.includes("/archSinVersion/");
 				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 				avatarsExternos = variables.avatarsExternos(nombre);
 				titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
