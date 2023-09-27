@@ -1,7 +1,5 @@
 "use strict";
 // Variables
-const variables = require("../../funciones/2-Procesos/Variables");
-const BD_genericas = require("../../funciones/1-BD/Genericas");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
