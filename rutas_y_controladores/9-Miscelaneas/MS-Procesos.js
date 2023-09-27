@@ -1,9 +1,4 @@
 "use strict";
-// Definir variables
-
-
-
-
 
 module.exports = {
 	obtieneProds: async (userID) => {
