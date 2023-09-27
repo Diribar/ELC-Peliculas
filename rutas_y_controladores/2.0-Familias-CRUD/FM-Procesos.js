@@ -79,28 +79,27 @@ module.exports = {
 		// Variables
 		const familias = original.fuente ? "productos" : "RCLVs";
 		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-		const final = carpeta + "/Final/";
-		const revisar = carpeta + "/Revisar/";
-		const sinAvatar = "Avatar/Sin-Avatar.jpg";
+		const final = "/archSinVersion/" + carpeta + "/Final/";
+		const revisar = "/archSinVersion/" + carpeta + "/Revisar/";
+		const sinAvatar = "/imagenes/Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familia, devuelve el genérico
-		if (!familias) return {orig: "/imagenes/" + sinAvatar, edic: "/imagenes/" + sinAvatar};
+		if (!familias) return {orig: sinAvatar, edic: sinAvatar};
 
 		// Obtiene el avatar original
 		const orig = !original.avatar
-			? "/imagenes/" + sinAvatar
+			? sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
-			: "/imagenes/" +
-			  (comp.gestionArchivos.existe("./publico/imagenes/" + final + original.avatar)
+			: (comp.gestionArchivos.existe("./publico" + final + original.avatar)
 					? final + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.gestionArchivos.existe("./publico/imagenes/" + revisar + original.avatar)
+					comp.gestionArchivos.existe("./publico" + revisar + original.avatar)
 					? revisar + original.avatar
 					: sinAvatar);
 
 		// avatarEdic
-		const edic = edicion && edicion.avatar ? "/imagenes/" + revisar + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
@@ -587,7 +586,7 @@ module.exports = {
 				// 1. Elimina el archivo avatar de las ediciones
 				for (let edicion of ediciones)
 					if (edicion.avatar)
-						comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta + "/Revisar", edicion.avatar);
+						comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta + "/Revisar", edicion.avatar);
 
 				// 2. Elimina las ediciones
 				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
