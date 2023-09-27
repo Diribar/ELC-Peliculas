@@ -25,8 +25,6 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-global.entorno = process.env.NODE_ENV;
-global.localhost = entorno == "development" ? "//localhost" : process.env.localhost; // "//192.168.0.57" para ip doméstico
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync("./publico/imagenes/4-EpocasDelAno");
 global.path = require("path");
@@ -56,7 +54,8 @@ app.use(cookies());
 // app.use(morgan("custom")) //use the new format by name
 
 // *********** Para conectarse con el servidor ********************
-app.listen(process.env.PORT, () => console.log("Servidor funcionando..."));
+const PORT = process.env.NODE_ENV == "development" ? "80" : process.env.PORT;
+app.listen(PORT, () => console.log("Servidor funcionando..."));
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set("view engine", "ejs"); // Terminación de los archivos de vista
