@@ -4,11 +4,22 @@
 .marco#links {padding: 5px 20px;}
 .marco#links h4 {width: 50px; margin-right: 5px;}
 .marco#links > div {margin: 5px 0; min-height: 20px;}
+
+/* Links - Ayuda */
+.marco#links #ayudaLinks {margin-right: 10px;}
+.marco#links #ayudaLinks .ayudaMostrar {max-width: 275px;}
+.marco#links #ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
+.marco#links #ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
+.marco#links #ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
+.marco#links #ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
+.marco#links #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
+
+/* Links - Íconos */
 .marco#links nav a {margin-right: 10px;}
 .marco#links nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
 .marco#links nav a img {max-width: 70px; max-height: 24px;}
 .marco#links nav a img.enCast {border-color: var(--verde-oscuro);}
-.marco#links nav a img.subtCast {border-color: var(--gris-intermedio);}
+.marco#links nav a img.subtCast {border-color: gold;}
 .marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
 /* Marco de Detalle */

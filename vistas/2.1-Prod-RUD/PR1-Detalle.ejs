@@ -1,27 +1,28 @@
 <div id="tituloInfoDetalle" class="relative">
 	<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 	<h3>Links para verl<%= oa %></h3>
-	<!-- Ayuda -->
-	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<div class="ayudaMostrar ocultar desplMostrar">
-				<p><u>Significado del borde de los logos:</u></p>
-				<ul type="dots">
-					<li><b>Azul</b>: en idioma <b>castellano</b></li>
-					<li><b>Gris</b>: <b>subtitulos</b> en castellano</li>
-					<li><b>Rojo</b>: en <b>otro</b> idioma</li>
-				</ul>
-				<p>Para más información, colocá el puntero del mouse sobre la imagen del link</p>
-			</div>
-		</i>
-	</div>
 </div>
 <div id="links" class="marco flexCol">
-	<!-- Película -->
+	<!-- Película/Capítulo -->
 	<% if (entidad != "colecciones") { %>
 		<div class="flexRowAlign">
 			<% if (links.TR.length) { %><h4>Película</h4><% } %>
 			<% if (links.PL.length) { %>
+				<!-- Ayuda -->
+				<div id="ayudaLinks">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<div class="ayudaMostrar ocultar desplMostrar">
+							<p><em>Color del borde de los logos (simil semáforo):</em></p>
+							<ul type="dots">
+								<li><i class="fa-solid fa-circle enCast"></i> en idioma <b>castellano</b></li>
+								<li><i class="fa-solid fa-circle subtCast"></i> <b>subtitulos</b> en castellano</li>
+								<li><i class="fa-solid fa-circle otroIdioma"></i> en <b>otro</b> idioma</li>
+							</ul>
+							<p>Si colocás el mouse sobre la imagen de algún link, te damos información específica de él</p>
+						</div>
+					</i>
+				</div>
+				<!-- Íconos -->
 				<%- include("PR1-DetalleLinks", {linksProd: links.PL}) %>
 			<% } else { %>
 				<p><em>- No disponemos de links. ¿Podés aportarnos alguno? -</em></p>

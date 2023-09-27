@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/sep",
-	"HoraUTC": "1:13",
+	"FechaUTC": "Mar. 26/sep",
+	"HoraUTC": "17:17",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 18/sep",
-	"HoraSemUTC": "20:32",
-	"semanaUTC": 37,
+	"FechaSemUTC": "Lun. 25/sep",
+	"HoraSemUTC": "18:01",
+	"semanaUTC": 38,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-sep-23": {"titulo": "ELC - Películas"},
-		"20-sep-23": {"titulo": "ELC - Películas"},
-		"21-sep-23": {"titulo": "ELC - Películas"},
-		"22-sep-23": {"titulo": "ELC - Películas"},
-		"23-sep-23": {"titulo": "San Pío de Pietrelcina", "entidad": "personajes", "id": 104}
+		"24-sep-23": {"titulo": "ELC - Películas"},
+		"25-sep-23": {"titulo": "ELC - Películas"},
+		"26-sep-23": {"titulo": "ELC - Películas"},
+		"27-sep-23": {"titulo": "San Vicente de Paul", "entidad": "personajes", "id": 103},
+		"28-sep-23": {"titulo": "ELC - Películas"}
 	}
 }
