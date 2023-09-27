@@ -25,7 +25,8 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-global.localhost = process.env.localhost;
+global.entorno = process.env.NODE_ENV;
+global.localhost = entorno == "development" ? "//localhost" : process.env.localhost; // "//192.168.0.57" para ip doméstico
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync("./publico/imagenes/4-EpocasDelAno");
 global.path = require("path");
