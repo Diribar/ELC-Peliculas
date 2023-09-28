@@ -172,7 +172,7 @@ module.exports = {
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
 				const edicion = await BD_genericas.obtienePorCondicion("rclvsEdicion", condiciones);
 				if (edicion && edicion.avatar)
-					comp.gestionArchivos.elimina("./publico/archSinVersion/3-RCLVs/Revisar/", edicion.avatar);
+					comp.gestionArchivos.elimina(publicoSinRev + "3-RCLVs/Revisar/", edicion.avatar);
 				if (edicion) await BD_genericas.eliminaPorId("rclvsEdicion", edicion.id);
 
 				// Actualiza el 'originalUrl'
@@ -197,7 +197,7 @@ module.exports = {
 			// Acciones si hay errores o se eliminó la edición
 			if ((errores && errores.hay) || eliminarEdic) {
 				// Si se agregó un archivo avatar, lo elimina
-				if (req.file) comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datos.avatar);
+				if (req.file) comp.gestionArchivos.elimina(publicoSinRev + "9-Provisorio/", datos.avatar);
 
 				// Redirige a la vista 'form'
 				return res.redirect(req.originalUrl);
@@ -216,11 +216,11 @@ module.exports = {
 				if (codigo == "/rclv/edicion/") {
 					// Si es un registro propio y en status creado, borra el eventual avatar original
 					if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id) {
-						if (original.avatar) comp.gestionArchivos.elimina("./publico/archSinVersion/3-RCLVs/Revisar/", original.avatar);
+						if (original.avatar) comp.gestionArchivos.elimina(publicoSinRev + "3-RCLVs/Revisar/", original.avatar);
 					}
 					// Si no está en status 'creado', borra el eventual avatar_edicion anterior
 					else if (edicion && edicion.avatar)
-						comp.gestionArchivos.elimina("./publico/archSinVersion/3-RCLVs/Revisar/", edicion.avatar);
+						comp.gestionArchivos.elimina(publicoSinRev + "3-RCLVs/Revisar/", edicion.avatar);
 				}
 			}
 

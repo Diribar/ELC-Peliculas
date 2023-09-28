@@ -329,10 +329,8 @@ module.exports = {
 			return rutaNombre && fs.existsSync(rutaNombre);
 		},
 		carpetaProvisorio: function () {
-			// Averigua si existe la carpeta
-			if (!this.existe("./publico/archSinVersion/9-Provisorio"))
-				// Si no existe, la crea
-				fs.mkdirSync("./publico/archSinVersion/9-Provisorio");
+			// Si no existe la carpeta, la crea
+			if (!this.existe(publicoSinRev + "9-Provisorio")) fs.mkdirSync(publicoSinRev + "9-Provisorio");
 
 			// Fin
 			return;
@@ -381,8 +379,8 @@ module.exports = {
 			return resultado;
 		},
 		mueveImagen: function (nombre, origen, destino, output) {
-			let archivoOrigen = "./publico/archSinVersion/" + origen + "/" + nombre;
-			let carpetaDestino = "./publico/archSinVersion/" + destino + "/";
+			let archivoOrigen = publicoSinRev + origen + "/" + nombre;
+			let carpetaDestino = publicoSinRev + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
@@ -394,8 +392,8 @@ module.exports = {
 				});
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = "./publico/archSinVersion/" + archivoOrigen;
-			let nombreDestino = "./publico/archSinVersion/" + archivoDestino;
+			let nombreOrigen = publicoSinRev + archivoOrigen;
+			let nombreDestino = publicoSinRev + archivoDestino;
 			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
@@ -640,7 +638,7 @@ module.exports = {
 		let resultado = [];
 
 		// Ordena los productos por su fecha más antigua primero
-		prods.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)); 
+		prods.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 
 		// Agrega los nuevos
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);

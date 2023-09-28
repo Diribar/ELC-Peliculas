@@ -14,7 +14,7 @@
 		<!-- Portales -->
 		<% for (let linkProv of linksProvs.filter(n => n.urlCopyright)) { %>
 			<a href="//<%= linkProv.urlCopyright %>" tabindex="-1" target='_blank'>
-				<img src="/archSinVersion/LK-Logos/<%= linkProv.avatar %>" title="<%= linkProv.nombre %>">
+				<img src="<%= archSinVersion + 'LK-Logos/' + linkProv.avatar %>" title="<%= linkProv.nombre %>">
 			</a>
 		<% } %>
 	</div>

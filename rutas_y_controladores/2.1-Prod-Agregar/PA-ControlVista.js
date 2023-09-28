@@ -96,7 +96,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? "/archSinVersion/9-Provisorio/" + datosDuros.avatar
+				? archSinVersion + "9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
 				: "/imagenes/Avatar/Sin-Avatar.jpg";
@@ -124,7 +124,7 @@ module.exports = {
 
 			// Acciones si existe un archivo avatar ingresado anteriormente y ahora se ingresó otro
 			if (datosDuros.avatar && req.file) {
-				comp.gestionArchivos.elimina("./publico/archSinVersion/9-Provisorio/", datosDuros.avatar);
+				comp.gestionArchivos.elimina(publicoSinRev + "9-Provisorio/", datosDuros.avatar);
 				delete datosDuros.avatar;
 			}
 
@@ -195,7 +195,7 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
-			const imgDerPers = datosAdics.avatar ? "/archSinVersion/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
+			const imgDerPers = datosAdics.avatar ? archSinVersion + "9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -265,7 +265,7 @@ module.exports = {
 				if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 			}
 			// 5. Imagen derecha
-			let imgDerPers = confirma.avatar ? "/archSinVersion/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? archSinVersion + "9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 			// 6. Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -311,7 +311,7 @@ module.exports = {
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
-				let rutaYnombre = "./publico/archSinVersion/2-Productos/Revisar/" + confirma.avatar;
+				let rutaYnombre = publicoSinRev + "2-Productos/Revisar/" + confirma.avatar;
 				comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 			}
 			// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'

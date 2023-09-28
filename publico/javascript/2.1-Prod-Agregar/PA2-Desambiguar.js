@@ -127,7 +127,7 @@ window.addEventListener("load", async () => {
 				? "/imagenes/Avatar/Sin-Avatar.jpg"
 				: prod.avatar.includes("/")
 				? prod.avatar
-				: "/archSinVersion/2-Productos/Final/" + prod.avatar;
+				: archSinVersion + "2-Productos/Final/" + prod.avatar;
 			let imagen = boton.querySelector("img");
 			imagen.src = avatar;
 			imagen.alt = prod.nombreOriginal;

@@ -390,7 +390,7 @@ module.exports = {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-			const ruta = "./publico/archSinVersion/" + carpeta + "/Final/";
+			const ruta = publicoSinRev + carpeta + "/Final/";
 
 			// Descarga el avatar y actualiza el valor en el campo del registro original
 			espera.push(

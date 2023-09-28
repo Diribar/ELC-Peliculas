@@ -78,8 +78,8 @@ module.exports = {
 		// Variables
 		const familias = original.fuente ? "productos" : "RCLVs";
 		const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
-		const final = "/archSinVersion/" + carpeta + "/Final/";
-		const revisar = "/archSinVersion/" + carpeta + "/Revisar/";
+		const final = archSinVersion + carpeta + "/Final/";
+		const revisar = archSinVersion + carpeta + "/Revisar/";
 		const sinAvatar = "/imagenes/Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familia, devuelve el genérico
@@ -587,7 +587,7 @@ module.exports = {
 				// 1. Elimina el archivo avatar de las ediciones
 				for (let edicion of ediciones)
 					if (edicion.avatar)
-						comp.gestionArchivos.elimina("./publico/archSinVersion/" + carpeta + "/Revisar", edicion.avatar);
+						comp.gestionArchivos.elimina(publicoSinRev + carpeta + "/Revisar", edicion.avatar);
 
 				// 2. Elimina las ediciones
 				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});

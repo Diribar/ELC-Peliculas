@@ -4,7 +4,7 @@ const multer = require("multer");
 
 // Variables
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => cb(null, "./publico/archSinVersion/9-Provisorio"),
+	destination: (req, file, cb) => cb(null, publicoSinRev + "9-Provisorio"),
 	filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 
