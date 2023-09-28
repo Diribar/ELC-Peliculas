@@ -87,7 +87,7 @@
 						<!-- Título -->
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<div id="porcentajeLinksAprobsEstaSem"><%= linksAprobsEstaSem + "/" + linksAprobsTotal + " = " + parseInt((linksAprobsEstaSem / linksAprobsTotal) * 1000) / 10 %>%</div>
+						<div id="porcentajeLinksAprobsEstaSem"><%= linksAprobsEstaSem + "/" + linksAprobsTotal + " = " + (Math.ceil((linksAprobsEstaSem / linksAprobsTotal) * 1000) / 10).toFixed(1) %>%</div>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
