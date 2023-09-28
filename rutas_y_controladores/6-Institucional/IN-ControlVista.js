@@ -17,7 +17,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			...vistaActual,
-			...{urlAnt, urlPost},
+			...{urlAnt, urlPost, indice, vistas: vistas.length - 1},
 		});
 	},
 };
