@@ -234,7 +234,7 @@ module.exports = {
 			// C. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
-			// Si es un producto, actualiza el campo 'prodsAprob' en sus links vinculados
+			// Si es un producto, actualiza el campo 'prodAprob' en sus links vinculados
 			if (petitFamilias == "prods") {
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				const prodAprob = aprobados_ids.includes(statusFinal_id);

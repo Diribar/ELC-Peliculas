@@ -306,6 +306,7 @@ module.exports = {
 			// Variables
 			const publico = true;
 			const epocaOcurrencia = true;
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Acciones si no hay errores
 			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epocaOcurrencia}});
@@ -326,18 +327,20 @@ module.exports = {
 			// Cambia el status del registro
 			await BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
+			// Actualiza el campo 'prodAprob' en los links
+			BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob: true});
+
 			// Si es una colección, revisa si corresponde aprobar capítulos
 			if (entidad == "colecciones") await this.capsAprobs(registro.id);
 
-			// 4. Agrega un registro en el histStatus
-			// 4.A. Genera la información
+			// Agrega un registro en el histStatus - Genera la información
 			let datosHist = {
 				...{entidad, entidad_id: registro.id},
 				...{sugeridoPor_id: registro.statusSugeridoPor_id, sugeridoEn: registro.statusSugeridoEn},
 				...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
 				...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
 			};
-			// 4.C. Guarda los datos históricos
+			// Agrega un registro en el histStatus - Guarda los datos históricos
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
 			// Actualiza prodsEnRCLV

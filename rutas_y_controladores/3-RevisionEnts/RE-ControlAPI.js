@@ -42,7 +42,7 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID});
+			let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
 			statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
