@@ -10,7 +10,7 @@ module.exports = {
 	},
 
 	// Lectura de edicion
-	obtieneOriginalEdicion: async (entidad, entID, userID) => {
+	obtieneOriginalEdicion: async (entidad, entID, userID, excluirInclude) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -18,8 +18,10 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 		// Obtiene los campos include
-		let includesEdic = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"];
+		let includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
+		let includesOrig = !excluirInclude
+			? [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"]
+			: "";
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
@@ -88,12 +90,11 @@ module.exports = {
 			? sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
-			: (comp.gestionArchivos.existe("./publico" + final + original.avatar)
-					? final + original.avatar
-					: // Si el avatar está 'a revisar'
-					comp.gestionArchivos.existe("./publico" + revisar + original.avatar)
-					? revisar + original.avatar
-					: sinAvatar);
+			: comp.gestionArchivos.existe("./publico" + final + original.avatar)
+			? final + original.avatar
+			: comp.gestionArchivos.existe("./publico" + revisar + original.avatar)
+			? revisar + original.avatar
+			: sinAvatar;
 
 		// avatarEdic
 		const edic = edicion && edicion.avatar ? revisar + edicion.avatar : orig;
@@ -785,17 +786,15 @@ let puleEdicion = async (entidad, original, edicion) => {
 		if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
 		// CONDICION 1: Los valores de original y edición son significativos e idénticos
-		// 1. Son estrictamente iguales
-		// 1. El campo de la edición tiene algún valor
 		const condic1 =
-			edicion[campo] === original[campo] ||
-			edicion[campo] === original[campo] ||
-			(edicion[campo] === 1 && original[campo] === true) ||
-			(edicion[campo] === 0 && original[campo] === false);
+			edicion[campo] === original[campo] || // son estrictamente iguales
+			(typeof original[campo] == "number" && edicion[campo] == original[campo]) || // coincide el número
+			(edicion[campo] === "1" && original[campo] === true) || // coincide el boolean
+			(edicion[campo] === "0" && original[campo] === false); // coincide el boolean
 		if (condic1) camposNull[campo] = null;
 
 		// CONDICION 2: El objeto vinculado tiene el mismo ID
-		const condic2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
+		const condic2 = !!edicion[campo] && !!edicion[campo].id && !!original[campo] && edicion[campo].id === original[campo].id;
 
 		// Si se cumple alguna de las condiciones, se elimina ese método
 		if (condic1 || condic2) delete edicion[campo];
