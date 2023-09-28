@@ -21,7 +21,6 @@ module.exports = (sequelize, dt) => {
 		pelicula: {type: dt.BOOLEAN},
 		urlBuscarPost: {type: dt.STRING(20)},
 		urlCopyright: {type: dt.STRING(70)},
-		urlHome: {type: dt.STRING(30)},
 	};
 	const config = {
 		tableName: "links_provs",

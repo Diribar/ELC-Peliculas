@@ -29,7 +29,7 @@ module.exports = {
 			// Variables
 			const camposDA = variables.camposDA;
 			const camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
-			if (datos.sinRCLV) for (let campo of camposRCLV) delete datos[campo];
+			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
 
 			// Fin
 			return datos;
