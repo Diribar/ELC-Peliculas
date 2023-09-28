@@ -213,10 +213,12 @@ module.exports = {
 			datosAdics = {...datosAdics, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in datosAdics) {
-				if (!datosAdics[campo]) delete datosAdics[campo]; // elimina los campos vacíos
-				if (typeof datosAdics[campo] == "string") datosAdics[campo] = datosAdics[campo].trim(); // pule los espacios innecesarios
-			}
+			for (let campo in datosAdics)
+				!datosAdics[campo]
+					? delete datosAdics[campo] // elimina los campos vacíos
+					: typeof datosAdics[campo] == "string"
+					? (datosAdics[campo] = datosAdics[campo].trim()) // pule los espacios innecesarios
+					: null;
 
 			// Procesa algunos datos
 			datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
