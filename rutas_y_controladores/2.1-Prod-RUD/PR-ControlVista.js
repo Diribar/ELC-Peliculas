@@ -185,7 +185,7 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID, true);
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -284,7 +284,6 @@ module.exports = {
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Fin
-			console.log(287, edicion);
 			return edicion
 				? res.redirect(req.originalUrl) // Recarga la vista
 				: origen == "TE"
