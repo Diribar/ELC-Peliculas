@@ -205,7 +205,6 @@ module.exports = {
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores
-			console.log(208, errores.hay);
 			if (!errores.hay) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {
