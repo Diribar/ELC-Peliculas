@@ -408,7 +408,7 @@ module.exports = {
 		},
 		imagenAlAzar: (carpeta) => {
 			// Obtiene el listado de archivos
-			const archivos = fs.readdirSync("./publico/archSinVersion/" + carpeta);
+			const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
 
 			// Elije al azar el n° de imagen
 			const indice = parseInt(Math.random() * archivos.length);
