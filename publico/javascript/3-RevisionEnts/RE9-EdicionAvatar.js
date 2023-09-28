@@ -14,7 +14,6 @@ window.addEventListener("load", () => {
 	let imagenActual = FN(imagenActualDOM);
 
 	// Comparaciones de ratio
-	// console.log(imagenNueva, imagenActual);
 	// 1. Mejor imagen nueva
 	if (imagenNueva.ratio > imagenActual.ratio && !imagenActual.ratioAdecuado) resultados[0].push("Mejor relación de alto/ancho");
 	// 2. Mejor imagen actual

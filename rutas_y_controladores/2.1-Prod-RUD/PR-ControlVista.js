@@ -205,6 +205,7 @@ module.exports = {
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores
+			console.log(208, errores.hay);
 			if (!errores.hay) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {
@@ -283,6 +284,7 @@ module.exports = {
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Fin
+			console.log(287, edicion);
 			return edicion
 				? res.redirect(req.originalUrl) // Recarga la vista
 				: origen == "TE"
