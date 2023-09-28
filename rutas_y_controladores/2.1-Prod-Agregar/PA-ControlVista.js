@@ -195,9 +195,7 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
-			const imgDerPers = datosAdics.avatar
-				? "/archSinVersion/9-Provisorio/" + datosAdics.avatar
-				: datosAdics.avatarUrl;
+			const imgDerPers = datosAdics.avatar ? "/archSinVersion/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -215,11 +213,13 @@ module.exports = {
 			datosAdics = {...datosAdics, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
-			for (let campo in datosAdics) if (typeof datosAdics[campo] == "string") datosAdics[campo] = datosAdics[campo].trim();
+			for (let campo in datosAdics) {
+				if (!datosAdics[campo]) delete datosAdics[campo]; // elimina los campos vacíos
+				if (typeof datosAdics[campo] == "string") datosAdics[campo] = datosAdics[campo].trim(); // pule los espacios innecesarios
+			}
 
 			// Procesa algunos datos
-			if (datosAdics.sinRCLV) datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
+			datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
 			datosAdics.actores = procesos.datosAdics.valorParaActores(datosAdics);
 
 			// Guarda el data entry en session y cookie
