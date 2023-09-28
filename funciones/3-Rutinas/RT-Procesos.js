@@ -4,7 +4,7 @@ module.exports = {
 	// Interacciones con el archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
-		const rutaNombre = publicoSinRev + "Rutinas.json";
+		const rutaNombre = publSinVersion + "Rutinas.json";
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
 		const info = json ? JSON.parse(json) : {};
@@ -58,7 +58,7 @@ module.exports = {
 		info = menu ? {...info, [menu]: {...info[menu], ...datos}} : {...info, ...datos};
 
 		// Guarda la información actualizada
-		const rutaNombre = publicoSinRev + "Rutinas.json";
+		const rutaNombre = publSinVersion + "Rutinas.json";
 		rutinasJSON = {...info};
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
@@ -72,7 +72,7 @@ module.exports = {
 	// Imagen Derecha
 	borraLosArchivosDeImgDerechaObsoletos: (fechas) => {
 		// Variables
-		const carpetaImagen = publicoSinRev + "5-ImagenDerecha/";
+		const carpetaImagen = publSinVersion + "5-ImagenDerecha/";
 		const archivosDeImagen = fs.readdirSync(carpetaImagen);
 
 		// Revisa si corresponde borrar los archivos
@@ -144,12 +144,12 @@ module.exports = {
 	},
 	eliminaImagenesProvisorio: () => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-		let archivos = fs.readdirSync(publicoSinRev + "9-Provisorio");
+		let archivos = fs.readdirSync(publSinVersion + "9-Provisorio");
 
 		// Rutina para borrar archivos
 		for (let archivo of archivos) {
-			const fechaHora = fs.statSync(publicoSinRev + "9-Provisorio/" + archivo).birthtime;
-			if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina(publicoSinRev + "9-Provisorio", archivo);
+			const fechaHora = fs.statSync(publSinVersion + "9-Provisorio/" + archivo).birthtime;
+			if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina(publSinVersion + "9-Provisorio", archivo);
 		}
 
 		// Fin
@@ -651,12 +651,12 @@ let datosImgDerecha = (resultado) => {
 };
 let eliminaLasImagenes = (avatars, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-	const archivos = fs.readdirSync(publicoSinRev + carpeta);
+	const archivos = fs.readdirSync(publSinVersion + carpeta);
 	const imagenes = avatars.map((n) => n.imagen);
 
 	// Rutina para borrar archivos
 	for (let archivo of archivos)
-		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(publicoSinRev + carpeta, archivo);
+		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(publSinVersion + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
 	for (let avatar of avatars)

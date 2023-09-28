@@ -330,7 +330,7 @@ module.exports = {
 		},
 		carpetaProvisorio: function () {
 			// Si no existe la carpeta, la crea
-			if (!this.existe(publicoSinRev + "9-Provisorio")) fs.mkdirSync(publicoSinRev + "9-Provisorio");
+			if (!this.existe(publSinVersion + "9-Provisorio")) fs.mkdirSync(publSinVersion + "9-Provisorio");
 
 			// Fin
 			return;
@@ -379,8 +379,8 @@ module.exports = {
 			return resultado;
 		},
 		mueveImagen: function (nombre, origen, destino, output) {
-			let archivoOrigen = publicoSinRev + origen + "/" + nombre;
-			let carpetaDestino = publicoSinRev + destino + "/";
+			let archivoOrigen = publSinVersion + origen + "/" + nombre;
+			let carpetaDestino = publSinVersion + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
@@ -392,8 +392,8 @@ module.exports = {
 				});
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = publicoSinRev + archivoOrigen;
-			let nombreDestino = publicoSinRev + archivoDestino;
+			let nombreOrigen = publSinVersion + archivoOrigen;
+			let nombreDestino = publSinVersion + archivoDestino;
 			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
