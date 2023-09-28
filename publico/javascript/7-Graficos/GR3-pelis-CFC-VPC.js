@@ -5,7 +5,6 @@ window.addEventListener("load", async () => {
 
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
-	console.log(10, ejeX, ejeY);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
