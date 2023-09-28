@@ -45,6 +45,7 @@ module.exports = {
 				entidadesBD: cn_entidades,
 				ordenesPorEntsBD: cn_ordenesPorEnts,
 				ordenesBD: cn_ordenes,
+				archSinVersion,
 
 				// Check-Boxes
 				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs

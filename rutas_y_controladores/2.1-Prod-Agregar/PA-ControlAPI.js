@@ -32,12 +32,12 @@ module.exports = {
 	// Vista (desambiguar)
 	desambForm: {
 		// Busca valores 'session'
-		buscaInfoEnSession: async (req, res) => {
+		buscaInfoEnBE: async (req, res) => {
 			// Variables
 			const desambiguar = req.session.desambiguar;
 
 			// Fin
-			return res.json(desambiguar);
+			return res.json({desambiguar, archSinVersion});
 		},
 		// Busca los productos
 		buscaProds: async (req, res) => {
@@ -67,7 +67,7 @@ module.exports = {
 		// Pule la información
 		puleLaInfo: async (req, res) => {
 			// Variables
-			let productos = req.session.desambiguar.prodProv
+			let productos = req.session.desambiguar.prodProv;
 
 			// Organiza la información
 			productos = await buscar_x_PC.organizaLaInformacion(productos);
@@ -108,7 +108,7 @@ module.exports = {
 
 			// Reemplaza el nombre del método
 			req.session.desambiguar.productos = req.session.desambiguar.prodProv;
-			delete req.session.desambiguar.prodProv
+			delete req.session.desambiguar.prodProv;
 
 			// Fin
 			return res.json(req.session.desambiguar.productos);
