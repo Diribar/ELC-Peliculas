@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 27/sep",
-	"HoraUTC": "9:52",
+	"FechaUTC": "Jue. 28/sep",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 25/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-sep-23": {"titulo": "ELC - Películas"},
 		"26-sep-23": {"titulo": "ELC - Películas"},
 		"27-sep-23": {"titulo": "San Vicente de Paul", "entidad": "personajes", "id": 103},
 		"28-sep-23": {"titulo": "ELC - Películas"},
-		"29-sep-23": {"titulo": "ELC - Películas"}
+		"29-sep-23": {"titulo": "ELC - Películas"},
+		"30-sep-23": {"titulo": "ELC - Películas"}
 	}
 }
