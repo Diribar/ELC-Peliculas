@@ -87,7 +87,7 @@ module.exports = {
 		return errores;
 	},
 	login: async function (datos) {
-				// Variables
+		// Variables
 		const {email, contrasena} = datos;
 		const largoContr = contrasena ? largoContrasena(contrasena) : null;
 		let errores = {};
@@ -96,7 +96,7 @@ module.exports = {
 		errores.email = this.formatoMail(email);
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
-		
+
 		// Verifica credenciales
 		if (!errores.hay) {
 			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
@@ -107,7 +107,7 @@ module.exports = {
 		}
 
 		// Fin
-				return errores;
+		return errores;
 	},
 	editables: (datos) => {
 		// Variables
