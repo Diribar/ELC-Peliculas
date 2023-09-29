@@ -15,9 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE elc_peliculas;
-USE elc_peliculas;
-
 CREATE TABLE `aux_fechas_del_ano` (
   `id` smallint(5) unsigned NOT NULL,
   `dia` tinyint(3) unsigned NOT NULL,
