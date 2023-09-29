@@ -9,12 +9,11 @@
 				<div class="inputError">
 					<!-- Input -->
 					<input class="input" 
-						value="<%= dataEntry ? dataEntry[variable.name] : '' %>" 
+						value="<%= dataEntry[variable.name] %>" 
 						type="<%= variable.type %>" 
 						name="<%= variable.name %>" 
 						placeholder="<%= variable.placeholder %>" 
-						<% if (dataEntry && errores[variable.name]) { %>autofocus<% } %> 
-						<% if (dataEntry) { %>autocomplete= 'new-password'<% } %>
+						<% if (dataEntry[variable.name]) { %>autocomplete= 'new-password'<% } %>
 					>
 					<!-- El autocomplete = 'new-password' es para prevenir el 'autocomplete' -->
 					<!-- Ojito contraseña -->
@@ -27,7 +26,7 @@
 	</section>
 	<!--Credenciales Inválidas-->
 	<div class="flexCol">
-		<p id="credencialesInvalidas" class="<%- !errores || !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
+		<p id="credencialesInvalidas" class="<%- !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
 	</div>
 	<div class="flexRow">
 		<!--Flechas-->
@@ -37,7 +36,7 @@
 				<i class="fa-solid fa-circle-left" title="Salir"></i>
 			</a>
 			<!-- Submit -->
-			<button type="submit" class="<%- errores ? 'inactivo' : '' %>" autofocus>
+			<button type="submit" autofocus>
 				<i class="fa-solid fa-circle-check" title="Login"></i>
 			</button>
 		</div>

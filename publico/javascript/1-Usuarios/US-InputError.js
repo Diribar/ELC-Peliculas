@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	// Tareas
 	let tarea = location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
-	
+
 	// Variables
 	const form = document.querySelector("form");
 	let DOM = {

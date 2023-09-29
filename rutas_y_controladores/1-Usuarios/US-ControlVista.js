@@ -250,7 +250,7 @@ module.exports = {
 			// 1. Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
-			let dataEntry;
+			let dataEntry = {}; // es necesario para que dé error si está vacío
 
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			if (req.session.email || req.session.contrasena) {
@@ -260,7 +260,7 @@ module.exports = {
 			}
 
 			// 3. Variables para la vista
-			let errores = dataEntry ? await valida.login(dataEntry) : "";
+			let errores = await valida.login(dataEntry);
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
