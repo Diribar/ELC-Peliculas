@@ -250,7 +250,7 @@ module.exports = {
 			// 1. Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
-			let dataEntry = {}; // es necesario para que dé error si está vacío
+			let dataEntry = {}; // es necesario que sea un array para que dé error si está vacío
 
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			if (req.session.email || req.session.contrasena) {
