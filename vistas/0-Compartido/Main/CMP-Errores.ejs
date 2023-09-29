@@ -1,13 +1,17 @@
-<!-- Errores -->
 <div id="<%= locals.nombre %>" class="errores" >
+	
+	<!-- Errores -->
 	<i 
 		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
 	>
 		<span class="mensajeError"><%- locals.errores && locals.nombre && errores[nombre] ? errores[nombre] : "" %></span>
 	</i>
+
+	<!-- OK -->
 	<i 
 		class="fa-solid fa-circle-check<%- (locals.nombre && locals.dataEntry && !dataEntry[nombre] || locals.errores && locals.nombre && errores[nombre]) ? ' ocultar' : '' %>"
 		<% if (!locals.display) { %>style="display: none;"<% } %>
-	></i>
+	>
+	</i>
 </div>
