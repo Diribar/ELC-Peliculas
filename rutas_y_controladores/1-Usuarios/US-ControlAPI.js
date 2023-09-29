@@ -10,15 +10,15 @@ module.exports = {
 			return res.json(error);
 		},
 		login: async (req, res) => {
-			let errores = valida.login(req.query);
+			const errores = await valida.login(req.query);
 			return res.json(errores);
 		},
 		editables: async (req, res) => {
-			let errores = await valida.editables(req.query);
+			const errores = await valida.editables(req.query);
 			return res.json(errores);
 		},
 		identidad: async (req, res) => {
-			let errores = await valida.identidadFE(req.query);
+			const errores = await valida.identidadFE(req.query);
 			return res.json(errores);
 		},
 	},
