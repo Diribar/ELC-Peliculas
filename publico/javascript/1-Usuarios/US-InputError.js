@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	// Tareas
 	let tarea = location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
-
+	
 	// Variables
 	const form = document.querySelector("form");
 	let DOM = {
@@ -35,6 +35,7 @@ window.addEventListener("load", () => {
 			// Variables
 			let campo = DOM.inputs[indice].name;
 			let valor = encodeURIComponent(DOM.inputs[indice].value);
+
 			// Particularidad para 'avatar'
 			if (campo.includes("avatar")) {
 				valor += "&imgOpcional=" + (v.imgOpcional ? "SI" : "NO");
@@ -43,15 +44,16 @@ window.addEventListener("load", () => {
 					valor += "&tamano=" + DOM.inputAvatar.files[0].size;
 				}
 			}
+
 			// Averigua los errores
 			let errores =
-				// Corre la rutina, siempre que no sea una avatar opcional vacío
-				campo != "avatar" ||
-				DOM.inputs[indice].value ||
-				!v.esImagen ||
-				(tarea == "documento" && DOM.imgAvatar.src.includes("imagenes/Avatar"))
+				campo != "avatar" || // no es un avatar
+				DOM.inputs[indice].value || // tiene un valor
+				!v.esImagen || // no es una imagen
+				(tarea == "documento" && DOM.imgAvatar.src.includes("imagenes/Avatar")) // es un documento con el avatar genérico
 					? await fetch(v.rutaApi + campo + "=" + valor).then((n) => n.json())
 					: "";
+
 			// Fin
 			return errores;
 		},
