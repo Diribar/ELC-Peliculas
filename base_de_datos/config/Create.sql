@@ -394,7 +394,6 @@ CREATE TABLE `links_provs` (
   `urlBuscarPost` varchar(20) DEFAULT NULL,
   `urlDistintivo` varchar(20) NOT NULL,
   `urlCopyright` varchar(70) DEFAULT NULL,
-  `urlHome` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
   UNIQUE KEY `url_distintivo` (`urlDistintivo`)
@@ -1294,4 +1293,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-20 15:05:34
+-- Dump completed on 2023-09-29  7:47:24
