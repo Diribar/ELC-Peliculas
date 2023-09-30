@@ -392,7 +392,7 @@ module.exports = {
 				});
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = publSinVersion + archivoOrigen;
+			let nombreOrigen = !archivoOrigen.includes("/publico/") ? publSinVersion + archivoOrigen : archivoOrigen;
 			let nombreDestino = publSinVersion + archivoDestino;
 			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
