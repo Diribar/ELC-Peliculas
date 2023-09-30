@@ -1,11 +1,12 @@
 /* General */
 main {overflow-y: hidden; display: flex; flex-direction: row-reverse;}
+main{--anchoImgDer: 32vw}
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 
 /* Imagen Derecha */
 main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
 /* main #imgDerecha {background: var(--gris-claro);} */
-main #imgDerecha img {max-width: 32vw; max-height: 91vh;}
+main #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
 
 /* Cuerpo */
 main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
