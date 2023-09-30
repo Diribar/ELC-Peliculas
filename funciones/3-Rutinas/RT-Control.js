@@ -68,7 +68,14 @@ module.exports = {
 		return;
 	},
 	MailDeFeedback: async () => {
-		// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar, y si no hay pendientes interrumpe
+		// En 'develpment' interrumpe
+		if (nodeEnv == "development") {
+			console.log("En development no se envían mails");
+			procesos.finRutinasHorarias("MailDeFeedback");
+			return;
+		}
+
+		// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 		const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
 		const regsTodos = [...regsStatus, ...regsEdic];
 

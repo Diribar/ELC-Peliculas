@@ -22,7 +22,8 @@ global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
-global.versionELC = "1.03"
+global.versionELC = "1.03";
+global.nodeEnv = process.env.NODE_ENV;
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -57,7 +58,7 @@ app.use(cookies());
 // app.use(morgan("custom")) //use the new format by name
 
 // *********** Para conectarse con el servidor ********************
-const PORT = process.env.NODE_ENV == "development" ? "80" : process.env.PORT;
+const PORT = nodeEnv == "development" ? "80" : process.env.PORT;
 app.listen(PORT, () => console.log("Servidor funcionando..."));
 
 // ******** Todas las carpetas donde se almacenan vistas **********
@@ -199,7 +200,7 @@ app.set("views", [
 	global.BD_genericas = require("./funciones/1-BD/Genericas");
 	global.BD_especificas = require("./funciones/1-BD/Especificas");
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
-	global.rutinasJSON = procesos.lecturaRutinasJSON()
+	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
 	global.videosInduccion = variables.videosInduccion;
