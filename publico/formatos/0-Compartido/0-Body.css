@@ -3,9 +3,11 @@ body {
 	background: url("/imagenes/Varios/Color-de-fondo.png");
 	background-size: cover;
 	background-attachment: fixed;
+	--altHeader: 60px;
+	--altMain: calc(100vh - var(--altHeader));
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}
 
-body header {--altHeader: 60px; height: var(--altHeader);}
-body main {--altMain: calc(100vh - var(--altHeader)); height: var(--altMain);}
+body header {height: var(--altHeader);}
+body main {height: var(--altMain);}
