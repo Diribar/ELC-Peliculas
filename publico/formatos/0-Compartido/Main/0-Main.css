@@ -1,5 +1,5 @@
 /* General */
-main {height: 91vh; overflow-y: hidden;}
+main {overflow-y: hidden; display: flex; flex-direction: row-reverse;}
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 
 /* Imagen Derecha */
