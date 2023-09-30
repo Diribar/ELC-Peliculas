@@ -23,10 +23,10 @@ global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 global.versionELC = "1.03";
-global.nodeEnv = process.env.NODE_ENV;
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
+global.nodeEnv = process.env.NODE_ENV;
 global.fs = require("fs");
 global.archSinVersion = process.env.archSinVersion;
 global.publSinVersion = process.env.publSinVersion;

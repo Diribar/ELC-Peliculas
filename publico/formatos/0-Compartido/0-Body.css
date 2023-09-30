@@ -6,3 +6,6 @@ body {
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}
+
+body header {height: 60px;}
+body main {height: calc(100vh - 60px);}
