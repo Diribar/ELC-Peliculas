@@ -1,0 +1,4 @@
+/* Oculta el vitraux */
+@media (max-width: 1500px) {
+	#cuerpo #zona-de-vitreaux {display: none;}
+}
