@@ -1,12 +1,12 @@
 /* Configuración general */
-header {height: 9vh; background: var(--azul-oscuro); justify-content: space-between;}
+header {background: var(--azul-oscuro); justify-content: space-between;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
 /* Título */
 header #tituloHeader {position: absolute; left: 50%; translate: -50% 0;}
 @font-face {
-	font-family: "Monotype Corsiva";
+	font-family: "Monotype Corsiva", MTCORSVA;
 	src: url('MTCORSVA.TTF') format('truetype');
   }
-header #tituloHeader p {font-family: "Monotype Corsiva"; color: var(--amarillo-claro); font-size: 3rem;}
+header #tituloHeader p {font-family: "Monotype Corsiva", MTCORSVA; color: var(--amarillo-claro); font-size: 3rem;}
