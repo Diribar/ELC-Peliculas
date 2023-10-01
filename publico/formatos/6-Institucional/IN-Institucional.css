@@ -1,10 +1,10 @@
 /* Cuerpo */
-#cuerpo {position: relative; display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {flex-direction: column;}
 
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo #cuadro-de-texto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
 #cuerpo #cuadro-de-texto {display: flex; flex-direction: column; scale: 1.2;}
-#cuerpo #cuadro-de-texto {padding: 30px; border-radius: 20px; max-width: 70%; width: max-content;}
+#cuerpo #cuadro-de-texto {padding: 30px; border-radius: 20px; width: max-content;}
 #cuerpo #cuadro-de-texto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 
 /* CUADRO DE TEXTO - TEXTO */

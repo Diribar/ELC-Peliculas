@@ -1,0 +1,4 @@
+/* Oculta el vitraux */
+@media (max-width: 1267px) {
+	body main #imgDerecha img {display: none;}
+}
