@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 30/sep",
-	"HoraUTC": "1:14",
+	"FechaUTC": "Dom. 1/oct",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 25/sep",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-sep-23": {"titulo": "ELC - Películas"},
 		"29-sep-23": {"titulo": "ELC - Películas"},
 		"30-sep-23": {"titulo": "ELC - Películas"},
 		"01-oct-23": {"titulo": "Santa Teresita del Niño Jesús", "entidad": "personajes", "id": 100},
-		"02-oct-23": {"titulo": "ELC - Películas"}
+		"02-oct-23": {"titulo": "ELC - Películas"},
+		"03-oct-23": {"titulo": "ELC - Películas"}
 	}
 }
