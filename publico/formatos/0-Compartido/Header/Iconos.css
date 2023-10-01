@@ -4,17 +4,20 @@ header section .grupos.margenDerecho {margin-right: 40px;}
 header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
 
+/* Ícono de mostrarMenuMobile */
+header #mostrarMenuMobile {display: none;}
+
+/* Icono de movie */
+header #imagenConsultas {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
+
 /* Ícono de agregar producto */
 header section .grupos .iconoComb {position: relative;}
 header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 3px; transform: translateY(-50%);}
 header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro);}
-
-/* Icono de movie */
-header #imagenMovie {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
 
 /* Íconos de usuario */
 header #icono_usuario {border-radius: 50%; overflow: hidden; }
 header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
 
 /* Imágenes */
-header :is(#imagenMovie, #imagenUsuario) img {height: 100%; width: 100%; object-fit: cover;}
+header :is(#imagenConsultas, #imagenUsuario) img {height: 100%; width: 100%; object-fit: cover;}
