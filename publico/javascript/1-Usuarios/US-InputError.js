@@ -136,5 +136,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Start-up
+	if (tarea == "login")
+		for (let i = 0; i < DOM.inputs.length; i++) if (!DOM.inputs[i].value) DOM.iconosError[i].classList.add("ocultar");
 	if (tarea == "documento") FN.startUp();
 });
