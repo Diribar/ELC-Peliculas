@@ -4,7 +4,7 @@ header, header section {display: flex; flex-direction: row; align-items: center;
 header section {margin: 0 15px;}
 
 /* Título */
-header #tituloHeader {position: absolute; left: 50%; right: 50%; translate: -50% 0; text-wrap: nowrap;}
+header #tituloHeader {position: absolute; left: 50%; translate: -50% 0; text-wrap: nowrap;}
 
 /* Fuente */
 @font-face {font-family: MTCORSVA; src: url('MTCORSVA.TTF') format('truetype');}
