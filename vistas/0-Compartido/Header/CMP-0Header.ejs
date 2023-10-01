@@ -1,14 +1,20 @@
 <header>
 	<!-- Íconos de la izquierda -->
-	<section>
+
+	<section id="izquierda">
+		<!-- Menú para Mobile -->
+		<div id="mostrarMenuMobile" class="grupos">
+			<i class="fa-solid fa-bars desplClick iconoHeader" title="Menú de Inicio"></i>
+			<%- include("CMP-7Mobile") %>
+		</div>
 		<!-- Menú de Home -->
-		<div class="grupos">
+		<div class="grupos ocultoConMobile">
 			<i class="fa-solid fa-house scale desplClick iconoHeader" title="Menú de Inicio"></i>
 			<%- include("CMP-1MenuHome") %>
 		</div>
 		<!-- Consultas -->
-		<a href="/consultas" tabindex="-1" class="grupos">
-			<div id="imagenMovie" class="scale">
+		<a href="/consultas" tabindex="-1" class="grupos ocultoConMobile">
+			<div id="imagenConsultas" class="scale">
 				<img src="/imagenes/Varios/Movie.jpg" title="Quiero elegir una película">
 			</div>
 		</a>
@@ -18,7 +24,7 @@
 			<%- include("CMP-2MenuBusqueda") %>
 		</div>
 		<!-- Agregar un Producto -->
-		<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho">
+		<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoConMobile">
 			<div class="scale iconoComb" title="Agregar una Película">
 				<i class="fa-solid fa-video iconoHeader"></i>
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
@@ -26,20 +32,20 @@
 		</a>
 		<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
 		<% if (locals.usuario && usuario.rolUsuario_id == rolPermInputs_id) { %>
-			<a href="/mantenimiento" tabindex="-1" class="grupos">
+			<a href="/mantenimiento" tabindex="-1" class="grupos ocultoConMobile">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
 		<% } %>
 		<!-- Tableros de Revisión -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
-			<div class="grupos">
+			<div class="grupos ocultoConMobile">
 				<i class="fa-solid fa-user-graduate scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
 				<%- include("CMP-5MenuRevisores") %>
 			</div>
 		<% } %>
 		<!-- Gráficos -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-			<div class="grupos">
+			<div class="grupos ocultoConMobile">
 				<i class="fa-solid fa-chart-line scale desplClick iconoHeader revision" title="Menú de Gráficos"></i>
 				<%- include("CMP-3MenuGraficos") %>
 			</div>

@@ -1,0 +1,9 @@
+<div class="desplMostrar menuMostrar menuFondo ocultar">
+	<% for (let campo in vistasInstitucs) { %>
+		<a href="/institucional/<%= campo %>" class="menuOpcion">
+			<i class="fa-solid icono <%= vistasInstitucs[campo].icono %>"></i>
+			<span><%= vistasInstitucs[campo].titulo %></span>
+		</a>
+		<% if (vistasInstitucs[campo].hr) { %><hr><% } %>
+	<% } %>
+</div>
