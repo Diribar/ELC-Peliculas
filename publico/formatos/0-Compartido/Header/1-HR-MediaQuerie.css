@@ -1,0 +1,4 @@
+@media (max-width: 1100px) {
+    header #izquierda .ocultoConMobile {display: none;}
+    header #izquierda #mostrarMenuMobile {display: block;}
+}
