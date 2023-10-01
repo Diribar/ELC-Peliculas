@@ -3,6 +3,9 @@ body {
 	background: url("/imagenes/Varios/Color-de-fondo.png");
 	background-size: cover;
 	background-attachment: fixed;
+
+	min-width: 720px;
+	
 	--altHeader: 60px;
 	--altMain: calc(100vh - var(--altHeader));
 }
