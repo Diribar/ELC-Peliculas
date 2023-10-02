@@ -129,7 +129,7 @@ module.exports = {
 			// Envía el mail y actualiza la BD
 			mailsEnviados.push(
 				comp
-					.enviarMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
+					.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 					.then((n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
