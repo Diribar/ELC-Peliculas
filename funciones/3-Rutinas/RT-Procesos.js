@@ -18,10 +18,10 @@ module.exports = {
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
-		for (let campo1 in datos) {
+		for (let campo in datos) {
 			// Variable
-			const datoNuevo = datos[campo1];
-			const datoGuardado = info[campo1];
+			const datoNuevo = datos[campo];
+			const datoGuardado = info[campo];
 
 			// Si los datos son iguales, saltea los controles posteriores
 			if (datoNuevo == datoGuardado) continue;
@@ -32,7 +32,10 @@ module.exports = {
 			else if (Array.isArray(datoNuevo)) {
 				if (!Array.isArray(datoGuardado)) sonIguales = false;
 				else if (datoNuevo.length != datoGuardado.length) sonIguales = false;
-				else datoNuevo.forEach((campo, i) => (campo != datoGuardado[i] ? (sonIguales = false) : null));
+				else
+					datoNuevo.forEach((n, i) => {
+						if (n != datoGuardado[i]) sonIguales = false;
+					});
 			}
 			// Objeto - 'RutinasDiarias' y 'RutinasSemanales' / la de 'ImagenesDerecha' se revisa en una función anterior a esta rutina
 			else if (Array.isArray(datoGuardado)) sonIguales = false; // Revisa si el original no es un objeto
@@ -44,7 +47,10 @@ module.exports = {
 				// Revisa que tengan la misma cantidad de campos
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
 				// Revisa que tengan el mismo valor de string
-				else camposNuevo.forEach((campo, i) => (campo != camposGuardado[i] ? (sonIguales = false) : null));
+				else
+					camposNuevo.forEach((n, i) => {
+						if (n != camposGuardado[i]) sonIguales = false;
+					});
 			}
 
 			// Fin
