@@ -190,7 +190,7 @@ module.exports = {
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
-		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
 		await this.RutinasDiarias();
 
@@ -208,8 +208,8 @@ module.exports = {
 
 		// Actualiza todas las rutinas diarias
 		for (let rutinaDiaria in rutinasDiarias) {
-			await this[rutinaDiaria]();
-			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias");
+			await this[rutinaDiaria](); // ejecuta la rutina
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias"); // actualiza el archivo JSON
 		}
 
 		// Fin
@@ -281,7 +281,6 @@ module.exports = {
 		const condicion = {statusRegistro_id: aprobado_id};
 		const entidades = ["peliculas", "colecciones"];
 		let paisesID = {};
-		let espera = [];
 
 		// Obtiene la frecuencia por país
 		for (let entidad of entidades) {
@@ -290,17 +289,17 @@ module.exports = {
 				.then((n) => n.filter((m) => m.paises_id))
 				.then((n) =>
 					n.map((m) => {
-						for (let n of m.paises_id.split(" ")) paisesID[n] ? paisesID[n]++ : (paisesID[n] = 1);
+						for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
 					})
 				);
 		}
 
 		// Actualiza la frecuencia por país
-		for (let pais of paises) {
+		paises.forEach((pais, i) => {
 			const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
-			espera.push(BD_genericas.actualizaPorId("paises", pais.id, {cantProds}));
-		}
-		await Promise.all(espera);
+			paises[i].cantProds = cantProds;
+			BD_genericas.actualizaPorId("paises", pais.id, {cantProds});
+		});
 
 		// Fin
 		return;
