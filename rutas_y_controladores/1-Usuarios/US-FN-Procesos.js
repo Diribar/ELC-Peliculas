@@ -43,7 +43,7 @@ module.exports = {
 		const asunto = "Contraseña para ELC";
 
 		// Contraseña
-		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString(); // más adelante cambia por la codificada
+		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString().padStart(6, '0'); // más adelante cambia por la codificada
 		const comentario = "La contraseña para el mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
 		contrasena = bcryptjs.hashSync(contrasena, 10);
