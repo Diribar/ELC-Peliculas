@@ -49,7 +49,7 @@ module.exports = {
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 
 		// Envía el mail al usuario con la contraseña
-		const mailEnviado = await comp.enviarMail({asunto, email, comentario});
+		const mailEnviado = await comp.enviaMail({asunto, email, comentario});
 		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin

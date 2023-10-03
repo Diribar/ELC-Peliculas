@@ -725,7 +725,7 @@ module.exports = {
 	},
 
 	// Internet
-	enviarMail: async function ({asunto, email, comentario}) {
+	enviaMail: async function ({asunto, email, comentario}) {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
@@ -747,7 +747,10 @@ module.exports = {
 		let mailEnviado = await transporter
 			.sendMail(datos)
 			.then(() => true)
-			.catch(() => false);
+			.catch((error) => {
+				console.log(751, {errorEnvioMail: error});
+				return false;
+			});
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
