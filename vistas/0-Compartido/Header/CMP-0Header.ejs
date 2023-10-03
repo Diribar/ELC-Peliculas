@@ -8,23 +8,23 @@
 			<%- include("CMP-7Mobile") %>
 		</div>
 		<!-- Menú de Home -->
-		<div class="grupos ocultoConMobile">
+		<div class="grupos ocultoMobile_parcial">
 			<i class="fa-solid fa-house scale desplClick iconoHeader" title="Menú de Inicio"></i>
 			<%- include("CMP-1MenuHome") %>
 		</div>
 		<!-- Consultas -->
-		<a href="/consultas" tabindex="-1" class="grupos ocultoConMobile">
+		<a href="/consultas" tabindex="-1" class="grupos ocultoMobile_parcial">
 			<div id="imagenConsultas" class="scale">
 				<img src="/imagenes/Varios/Movie.jpg" title="Quiero elegir una película">
 			</div>
 		</a>
 		<!-- Búsqueda rápida -->
-		<div id="busquedaRapida" class="grupos">
+		<div id="busquedaRapida" class="grupos ocultoMobile_total">
 			<i class="fa-solid fa-magnifying-glass scale desplClick iconoHeader" title="Búsqueda rápida"></i>
 			<%- include("CMP-2MenuBusqueda") %>
 		</div>
 		<!-- Agregar un Producto -->
-		<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoConMobile">
+		<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoMobile_parcial">
 			<div class="scale iconoComb" title="Agregar una Película">
 				<i class="fa-solid fa-video iconoHeader"></i>
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
@@ -32,20 +32,20 @@
 		</a>
 		<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
 		<% if (locals.usuario && usuario.rolUsuario_id == rolPermInputs_id) { %>
-			<a href="/mantenimiento" tabindex="-1" class="grupos ocultoConMobile">
+			<a href="/mantenimiento" tabindex="-1" class="grupos ocultoMobile_parcial">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
 		<% } %>
 		<!-- Tableros de Revisión -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
-			<div class="grupos ocultoConMobile">
+			<div class="grupos ocultoMobile_parcial">
 				<i class="fa-solid fa-user-graduate scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
 				<%- include("CMP-5MenuRevisores") %>
 			</div>
 		<% } %>
 		<!-- Gráficos -->
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-			<div class="grupos ocultoConMobile">
+			<div class="grupos ocultoMobile_parcial">
 				<i class="fa-solid fa-chart-line scale desplClick iconoHeader revision" title="Menú de Gráficos"></i>
 				<%- include("CMP-3MenuGraficos") %>
 			</div>
@@ -59,11 +59,11 @@
 	<section>
 		<!-- Videos de capacitación -->
 		<div class="grupos">
-			<i class="fa-solid fa-circle-question scale desplClick iconoHeader" title="Videos de capacitación"></i>
+			<i class="fa-solid fa-circle-question scale desplClick iconoHeader ocultoMobile_total" title="Videos de capacitación"></i>
 			<%- include("CMP-6MenuCapacitac") %>
 		</div>
 		<!-- Usuario -->
-		<div class="grupos">
+		<div class="grupos ocultoMobile_total">
 			<%- include("CMP-4IconoUsuario") %>
 			<%- include("CMP-4MenuUsuario") %>
 		</div>

@@ -4,9 +4,6 @@ header section .grupos.margenDerecho {margin-right: 40px;}
 header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
 
-/* Ícono de mostrarMenuMobile */
-header #mostrarMenuMobile {display: none;}
-
 /* Icono de movie */
 header #imagenConsultas {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
 
