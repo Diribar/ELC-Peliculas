@@ -1,9 +1,28 @@
 <div class="desplMostrar menuMostrar menuFondo ocultar">
-	<% for (let campo in vistasInstitucs) { %>
-		<a href="/institucional/<%= campo %>" class="menuOpcion">
-			<i class="fa-solid icono <%= vistasInstitucs[campo].icono %>"></i>
-			<span><%= vistasInstitucs[campo].titulo %></span>
+	<a href="/institucional/quienes-somos" class="menuOpcion">
+		<i class="fa-solid icono fa-people-group"></i>
+		<span>ELC - Quiénes somos</span>
+	</a>
+	<!-- <a href="/consultas" class="menuOpcion">
+		<img src="/imagenes/Varios/Movie.jpg" title="Quiero elegir una película">
+		<span>Quiero elegir una película</span>
+	</a> -->
+	<a href="" class="menuOpcion">
+		<i class="fa-solid icono fa-magnifying-glass"></i>
+		<span>Búsqueda rápida</span>
+	</a>
+	<a href="" class="menuOpcion">
+		<i class="fa-solid fa-circle-question" title=""></i>
+		<span>Videos de capacitación</span>
+	</a>
+	<% if (locals.usuario) { %>
+		<div id="imagenUsuario">
+			<% const avatarUsuario = usuario.avatar ? (archSinVersion + "1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
+			<img src="<%= avatarUsuario %>" class="desplClick">
+		</div>
+	<% } else { %>
+		<a href="/usuarios/login">
+			<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
 		</a>
-		<% if (vistasInstitucs[campo].hr) { %><hr><% } %>
 	<% } %>
 </div>
