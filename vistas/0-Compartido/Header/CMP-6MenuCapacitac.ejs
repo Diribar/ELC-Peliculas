@@ -1,6 +1,6 @@
 <div id="menuCapacitac" class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
 	<% for (const video of videosCapac) { %>
-		<% let interrumpir = false %>
+		<% let interrumpir = !video.actualizado %>
 
 		<% // Revisa si se necesita algún permiso para mostrar el menú %>
 		<% for (const permiso of rolesUs.map(n => n.codigo)) { %>
