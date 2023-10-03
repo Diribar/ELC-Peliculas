@@ -16,29 +16,6 @@ module.exports = {
 		"derechos-de-autor": {titulo: "Derechos de Autor (DA)", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
-	// Videos de inducción
-	videosInduccion: {
-		// Todos los usuarios
-		introduccion: {titulo: "Introducción al sitio", icono: "fa-circle-question"},
-		usuario: {titulo: "Alta de usuario y Login", icono: "fa-user", hr: true},
-		consultas: {titulo: "Quiero elegir una Película", icono: "fa-hand-pointer"},
-		detalleProds: {titulo: "Detalle de una Película", icono: "fa-clapperboard", hr: true},
-		detalleRCLVs: {titulo: "Detalle de un Personaje", icono: "fa-user-tie"},
-		rolPermInputs: {titulo: "Rol permiso inputs", icono: "fa-user-check", hr: true},
-
-		// Sólo usuarios con rol permInputs
-		permInputs: {titulo: "Data Entry", icono: "fa-keyboard", permInputs: true, hr: true},
-		abmLinks: {titulo: "Links a portales de streaming", icono: "fa-link", permInputs: true},
-		mantenimiento: {titulo: "Mantenimiento", icono: "fa-screwdriver-wrench", permInputs: true},
-
-		// Sólo usuarios con rol de Revisores
-		revisionRCLVs: {titulo: "Revisión de Personajes", icono: "fa-user-tie", revisorPERL: true, hr: true},
-		revisionProds: {titulo: "Revisión de Películas", icono: "fa-video", revisorPERL: true, hr: true},
-		revisionLinks: {titulo: "Revisión de Links", icono: "fa-link", revisorLinks: true, hr: true},
-		revisionUs: {titulo: "Revisión de Usuarios", icono: "fa-user-check", revisorUs: true},
-		graficos: {titulo: "Gráficos de control", icono: "fa-chart-simple", revisorEnts: true},
-	},
-
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],

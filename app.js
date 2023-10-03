@@ -141,6 +141,7 @@ app.set("views", [
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
+		videosCapac: BD_genericas.obtieneTodos("videosCapac", "orden"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
@@ -203,7 +204,6 @@ app.set("views", [
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
-	global.videosInduccion = variables.videosInduccion;
 	global.prefijoSanto = variables.prefijoSanto;
 
 	// Procesos que dependen de la variable 'global'
