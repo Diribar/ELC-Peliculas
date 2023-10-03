@@ -1,1 +1,31 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Mar. 3/oct","HoraUTC":"1:33","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Lun. 2/oct","HoraSemUTC":"21:12","semanaUTC":39,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["LinksEnProd","MailDeFeedback","ProdsEnRCLV"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","ProductosAlAzar":"SI","LinksPorProv":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","LinksVencidos":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialAntiguo":"SI","EliminaHistorialDeRegsEliminados":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"01-oct-23":{"titulo":"Santa Teresita del Niño Jesús","entidad":"personajes","id":100},"02-oct-23":{"titulo":"ELC - Películas"},"03-oct-23":{"titulo":"ELC - Películas"},"04-oct-23":{"titulo":"San Francisco de Asís","entidad":"personajes","id":57},"05-oct-23":{"titulo":"Santa Faustina Kowalska","entidad":"personajes","id":138}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Mar. 3/oct",
+	"HoraUTC": "1:33",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Lun. 2/oct",
+	"HoraSemUTC": "21:12",
+	"semanaUTC": 39,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "ProductosAlAzar": "SI", "LinksPorProv": "SI"},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"LinksVencidos": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"01-oct-23": {"titulo": "Santa Teresita del Niño Jesús", "entidad": "personajes", "id": 100},
+		"02-oct-23": {"titulo": "ELC - Películas"},
+		"03-oct-23": {"titulo": "ELC - Películas"},
+		"04-oct-23": {"titulo": "San Francisco de Asís", "entidad": "personajes", "id": 57},
+		"05-oct-23": {"titulo": "Santa Faustina Kowalska", "entidad": "personajes", "id": 138}
+	}
+}
