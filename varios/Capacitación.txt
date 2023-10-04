@@ -1,0 +1,14 @@
+Introducción al sitio
+Alta de usuario y Login
+Quiero elegir una Película
+Detalle de una Película
+Detalle de un Personaje
+Rol permiso inputs
+Data Entry
+Links a portales de streaming
+Mantenimiento
+Revisión de Personajes
+Revisión de Películas
+Revisión de Links
+Revisión de Usuarios
+Gráficos de control

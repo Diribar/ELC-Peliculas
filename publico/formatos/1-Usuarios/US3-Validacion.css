@@ -8,4 +8,4 @@
 #cuerpo form label {margin-right: 0; align-self: flex-start; margin-bottom: 3px;}
 #cuerpo form #columna1 .input {width: 150px}
 #cuerpo form #columna2 {margin-left: 40px;}
-#cuerpo form #columna2 .ayudaClick {color: var(--rojo-oscuro);}
+#cuerpo form #columna2 #credencialesInvalidas .ayudaClick {color: var(--rojo-oscuro);}

@@ -7,6 +7,7 @@
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick desplClick">
 				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+					<li>Este paso es para que cada persona tenga un único usuario.</li>
 					<li>Por favor brindanos los datos que figuran en tu Documento <em><u>Nacional</u></em> de Identidad.</li>
 					<li>La fidelidad de los datos es condición necesaria para validar tu identidad.</li>
 				</ul>
@@ -22,7 +23,7 @@
 				<label for="nombre">Nombre</label>
 				<div class="inputError">
 					<% nombre = dataEntry ? dataEntry.nombre : "" %>
-					<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
+					<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
 					<%- include("CMP-Errores", {nombre: "nombre", display: true}) %> 
 				</div>
 			</div>
@@ -31,7 +32,7 @@
 				<label for="apellido">Apellido</label>
 				<div class="inputError">
 					<% apellido = dataEntry ? dataEntry.apellido : "" %>
-					<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
+					<input id="apellido" type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
 					<%- include("CMP-Errores", {nombre: "apellido", display: true}) %> 
 				</div>
 			</div>
@@ -40,7 +41,7 @@
 				<label for="rolIglesia_id">Rol en la Iglesia Católica</label>
 				<div class="inputError">
 					<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
-					<select name="rolIglesia_id" class="input">
+					<select id="rolIglesia_id" name="rolIglesia_id" class="input">
 						<option value="" <% if (!rolIglesia_id) { %>selected<% } %>>Elejí una opción</option>
 						<% for (let rolIglesia of rolesIgl) { %>
 							<option value="<%= rolIglesia.id %>" <% if (rolIglesia_id == rolIglesia.id) { %>selected<% } %>><%= rolIglesia.nombre %></option>
@@ -54,7 +55,7 @@
 				<label for="fechaNacim">Fecha de Nacimiento</label>
 				<div class="inputError">
 					<% fechaNacim = dataEntry ? dataEntry.fechaNacim : "" %>
-					<input type="date" name="fechaNacim" class="input" value="<%= fechaNacim %>">
+					<input id="fechaNacim" type="date" name="fechaNacim" class="input" value="<%= fechaNacim %>">
 					<%- include("CMP-Errores", {nombre: "fechaNacim", display: true}) %> 
 				</div>
 			</div>
@@ -113,7 +114,18 @@
 			<% } %>
 			<!--Imagen del documento-->
 			<div class="labelInput flexCol">
-				<label>Imagen del documento</label>
+				<label class="relative">
+					Imagen del documento
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<li>Sólo necesitamos validar los datos completados en este formulario.</li>
+								<li>Si querés, podés tapar los demás datos y tu foto.</li>
+							</ul>
+						</i>	
+					</div>
+				</label>
 				<div class="inputError flexCol" id="divImagen">
 					<label for="inputImagen" id="preview">
 						<img src="<%= avatar %>">

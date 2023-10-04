@@ -36,7 +36,7 @@ module.exports = {
 		if (infoGral.length) {
 			let lado = "masInfoIzq";
 			for (let dato of infoGral) {
-				if (dato.titulo == "País") lado = "masInfoDer";
+				if (["País", "Países"].includes(dato.titulo)) lado = "masInfoDer";
 				bloqueIzq[lado].push(dato);
 			}
 		}
