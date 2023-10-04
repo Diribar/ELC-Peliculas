@@ -138,10 +138,13 @@ app.set("views", [
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
+		// Menús
+		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden"),
+		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden"),
+
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
-		videosCapac: BD_genericas.obtieneTodos("videosCapac", "orden"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
