@@ -1,22 +1,18 @@
 <div id="menuMobile" class="desplMostrar menuMostrar menuFondo ocultar">
-	<a href="/institucional/quienes-somos" class="menuOpcion">
-		<div>
-			<i class="fa-solid icono fa-people-group"></i>
+	<div class="menuOpcion mm_busquedaRapida">
+		<div class="mm_busquedaRapida">
+			<i class="fa-solid icono fa-magnifying-glass mm_busquedaRapida"></i>
 		</div>
-		<span>ELC - Quiénes somos</span>
-	</a>
+		<span class="mm_busquedaRapida">Búsqueda rápida</span>
+	</div>
+	<hr>
 	<a href="/consultas" class="menuOpcion">
 		<div>
 			<img src="/imagenes/Varios/Movie.jpg" height="20">
 		</div>
 		<span>Quiero elegir una película</span>
 	</a>
-	<div class="menuOpcion">
-		<div>
-			<i class="fa-solid icono fa-magnifying-glass"></i>
-		</div>
-		<span>Búsqueda rápida</span>
-	</div>
+	<hr>
 	<% if (locals.usuario) { %>
 		<div class="menuOpcion">
 			<% const avatarUsuario = usuario.avatar ? (archSinVersion + "1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
@@ -33,4 +29,11 @@
 			<span>Login</span>
 		</a>
 	<% } %>
+	<hr>
+	<a href="/institucional/quienes-somos" class="menuOpcion">
+		<div>
+			<i class="fa-solid icono fa-people-group"></i>
+		</div>
+		<span>ELC - Quiénes somos</span>
+	</a>
 </div>

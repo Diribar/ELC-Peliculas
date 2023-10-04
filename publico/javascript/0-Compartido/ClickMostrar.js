@@ -18,6 +18,11 @@ window.addEventListener("load", () => {
 						? mostrar[i].classList.toggle("ocultar")
 						: mostrar[i].classList.add("ocultar");
 
+		// Si el click fue 'mm_busquedaRapida'
+		if (e.target.className.includes("mm_busquedaRapida")){
+			busquedaRapida_mostrar.classList.remove("ocultar");
+		}
+
 		// Foco en búsqueda rápida
 		if (!busquedaRapida_mostrar.classList.contains("ocultar")) busquedaRapida_input.focus();
 	});

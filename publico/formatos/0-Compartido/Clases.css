@@ -23,7 +23,7 @@
 
 /* Maneras de Ocultar */
 .ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, .ocultaAvatar,
-.ocultaCfc, .ocultaOcurrio, .ocultaFiltros, .ocultaFiltro {display: none;}
+.ocultaCfc, .ocultaOcurrio, .ocultaFiltros, .ocultaFiltro {display: none !important}
 .invisible {visibility: hidden;}
 
 /* Otras */

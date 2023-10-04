@@ -1,6 +1,5 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
-#busquedaRapida {position: relative;}
-#busquedaRapida .menuMostrar {position: absolute; left: 30px; top: -2px;}
+#busquedaRapida .menuMostrar {position: absolute; right: -7px; top: -3px; translate: 100%;}
 #busquedaRapida .menuMostrar :is(input, #muestraResultados) {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
 #busquedaRapida .menuMostrar input {padding: 4px 5px; font-size: 1.2rem; font-weight: bold;}
 #busquedaRapida .menuMostrar #muestraResultados {border-top-left-radius: 0; overflow: hidden;}
