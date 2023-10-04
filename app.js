@@ -22,7 +22,7 @@ global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
-global.versionELC = "1.04";
+global.versionELC = "1.08";
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio

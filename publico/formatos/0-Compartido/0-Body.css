@@ -7,7 +7,7 @@ body {
 	width: 100vw;
 	height: 100vh;
 	
-	--altHeader: 60px;
+	--altHeader: max(52px, min(8vh, 60px));
 	--altMain: calc(100vh - var(--altHeader));
 }
 
