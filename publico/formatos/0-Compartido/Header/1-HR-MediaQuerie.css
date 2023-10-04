@@ -8,6 +8,7 @@
 @media (max-width: 550px) {
     header .ocultoMobile_total {display: none;}
     header :is(#izquierda, #derecha) {margin: 0;}
+    header #tituloHeader {left: 48%;}
     
     /* Búsqueda rápida */
     header #busquedaRapida {position: absolute; margin: 0; width: 100%; top: 13px}
@@ -21,6 +22,5 @@
     header #menuUsuario .menuOpcion {height: 28px;}
 }
 @media (max-width: 450px) {
-    header #tituloHeader {left: 48%;}
     header #tituloHeader p {font-size: 2.5rem;}
 }
