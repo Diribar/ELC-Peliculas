@@ -139,8 +139,8 @@ app.set("views", [
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús
-		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden"),
-		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden"),
+		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
 
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
