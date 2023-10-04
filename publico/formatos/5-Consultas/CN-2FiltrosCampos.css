@@ -16,7 +16,7 @@
 #configCons #configCampos {background: var(--gris-claro); flex-grow: 1;}
 #configCons #configCampos {position: relative; overflow-x: hidden;}
 #configCons #configCampos nav {position: absolute; width: 220px;}
-#configCons #configCampos .flexCol.ocultar {display: none;}
+/* #configCons #configCampos .flexCol.ocultar {display: none;} */
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}

@@ -1,6 +1,6 @@
 /* Resultados */
 #vistaDeResults #botones {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
-#vistaDeResults #botones.ocultar {display: none}
+/* #vistaDeResults #botones.ocultar {display: none} */
 #vistaDeResults #botones {width: 100%;}
 
 /* Botones para productos */

@@ -1,7 +1,7 @@
 /* General */
 #scroll #listados {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
 #scroll #listados {padding: 0 25px; width: 100%;}
-#scroll #listados.ocultar {display: none}
+/* #scroll #listados.ocultar {display: none} */
 #scroll #listados {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);

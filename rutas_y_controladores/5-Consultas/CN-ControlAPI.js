@@ -156,7 +156,6 @@ module.exports = {
 				: procesos.resultados.prods({entidad, configCons: configProd, orden});
 
 		// Obtiene los registros de rclvs
-
 		let rclvs =
 			entidad == "productos"
 				? orden.codigo == "fechaDelAno_id"

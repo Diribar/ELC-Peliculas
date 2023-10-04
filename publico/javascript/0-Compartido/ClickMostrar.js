@@ -1,11 +1,12 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let clicks = document.querySelectorAll(".desplClick");
-	let mostrar = document.querySelectorAll(".desplMostrar");
+	const clicks = document.querySelectorAll(".desplClick");
+	const mostrar = document.querySelectorAll(".desplMostrar");
+
 	// Otras variables
-	let busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .desplMostrar");
-	let busquedaRapida_input = document.querySelector("header #busquedaRapida .desplMostrar input");
+	const busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .desplMostrar");
+	const busquedaRapida_input = document.querySelector("header #busquedaRapida .desplMostrar input");
 
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {
@@ -16,6 +17,9 @@ window.addEventListener("load", () => {
 					e.target == clicks[i] && !clicks[i].classList.contains("inactivo")
 						? mostrar[i].classList.toggle("ocultar")
 						: mostrar[i].classList.add("ocultar");
+
+		// Si el click fue 'mm_busquedaRapida'
+		if (e.target.className.includes("mm_busquedaRapida")) busquedaRapida_mostrar.classList.remove("ocultar");
 
 		// Foco en búsqueda rápida
 		if (!busquedaRapida_mostrar.classList.contains("ocultar")) busquedaRapida_input.focus();

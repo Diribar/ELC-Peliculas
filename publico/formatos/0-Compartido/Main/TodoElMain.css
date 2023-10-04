@@ -9,7 +9,7 @@ main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white
 main .cartelCentro {width: max-content; min-width: 250px; max-width: 600px;}
 main .cartelCentro {color: var(--gris-claro)}
 main .cartelCentro {display: flex; flex-direction: column; align-items: center;}
-main .cartelCentro.ocultar {display: none;}
+/* main .cartelCentro.ocultar {display: none;} */
 main .cartelCentro {background: var(--rojo-oscuro);}
 main .cartelCentro.check {background: var(--verde-oscuro);}
 main .cartelCentro.trabajando {background: var(--azul-oscuro);}
