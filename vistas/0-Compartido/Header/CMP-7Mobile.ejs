@@ -1,28 +1,36 @@
-<div class="desplMostrar menuMostrar menuFondo ocultar">
+<div id="menuMobile" class="desplMostrar menuMostrar menuFondo ocultar">
 	<a href="/institucional/quienes-somos" class="menuOpcion">
-		<i class="fa-solid icono fa-people-group"></i>
+		<div>
+			<i class="fa-solid icono fa-people-group"></i>
+		</div>
 		<span>ELC - Quiénes somos</span>
 	</a>
-	<!-- <a href="/consultas" class="menuOpcion">
-		<img src="/imagenes/Varios/Movie.jpg" title="Quiero elegir una película">
+	<a href="/consultas" class="menuOpcion">
+		<div>
+			<img src="/imagenes/Varios/Movie.jpg" height="20">
+		</div>
 		<span>Quiero elegir una película</span>
-	</a> -->
-	<a href="" class="menuOpcion">
-		<i class="fa-solid icono fa-magnifying-glass"></i>
+	</a>
+	<div class="menuOpcion">
+		<div>
+			<i class="fa-solid icono fa-magnifying-glass"></i>
+		</div>
 		<span>Búsqueda rápida</span>
-	</a>
-	<a href="" class="menuOpcion">
-		<i class="fa-solid fa-circle-question" title=""></i>
-		<span>Videos de capacitación</span>
-	</a>
+	</div>
 	<% if (locals.usuario) { %>
-		<div id="imagenUsuario">
+		<div class="menuOpcion">
 			<% const avatarUsuario = usuario.avatar ? (archSinVersion + "1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
-			<img src="<%= avatarUsuario %>" class="desplClick">
+			<div>
+				<img src="<%= avatarUsuario %>" height="20">
+			</div>
+			<span>Menú de usuario</span>
 		</div>
 	<% } else { %>
-		<a href="/usuarios/login">
-			<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
+		<a href="/usuarios/login" class="menuOpcion">
+			<div>
+				<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
+			</div>
+			<span>Login</span>
 		</a>
 	<% } %>
 </div>
