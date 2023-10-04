@@ -4,7 +4,7 @@
 
 /* Zona de vitreaux */
 #cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
-#cuerpo #zona-de-vitreaux img {width: 330px; max-width: calc(100vw - var(--anchoCentro) - var(--anchoImgDer) - 40px);}
+#cuerpo #zona-de-vitreaux img {width: 230px; max-width: calc(100vw - var(--anchoCentro) - var(--anchoImgDer) - 40px);}
 
 /* Cartel de Bienvenida */
 #cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center; align-items: center; min-width: var(--anchoCentro);}
