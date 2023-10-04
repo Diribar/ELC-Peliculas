@@ -144,6 +144,7 @@ module.exports = {
 		const ordenPorEnt = cn_ordenesPorEnts.find((n) => n.id == configCons.ordenPorEnt_id);
 		const orden = cn_ordenes.find((n) => n.id == ordenPorEnt.orden_id);
 		const {palabrasClave} = configCons;
+		console.log(147,JSON.parse(req.query.datos));
 
 		// Obtiene los registros de productos
 		let configProd = {...configCons};
@@ -156,7 +157,6 @@ module.exports = {
 				: procesos.resultados.prods({entidad, configCons: configProd, orden});
 
 		// Obtiene los registros de rclvs
-
 		let rclvs =
 			entidad == "productos"
 				? orden.codigo == "fechaDelAno_id"
