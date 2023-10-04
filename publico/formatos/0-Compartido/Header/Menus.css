@@ -17,7 +17,7 @@ header .menuMostrar .menuOpcion .icono#ELC {background: var(--azul-oscuro); colo
 /* Específico del Menú de Usuario */
 header .menuDerecha {right: 0px;}
 
-/* Específico del Menú fa-bars */
+/* Específico del Menú Mobile */
 header #menuMobile .menuOpcion {height: 25px;}
 header #menuMobile .menuOpcion div {width: 30px; text-align: start;}
 header #menuMobile .menuOpcion span {font-size: 1rem;}
