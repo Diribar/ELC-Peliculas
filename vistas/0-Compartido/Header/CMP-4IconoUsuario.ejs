@@ -1,4 +1,4 @@
-<div id="icono_usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
+<div id="iconoUsuario" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
 		<div id="imagenUsuario">
 			<% const avatarUsuario = usuario.avatar ? (archSinVersion + "1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
