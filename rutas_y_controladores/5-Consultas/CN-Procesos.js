@@ -30,6 +30,8 @@ module.exports = {
 						campos.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
+					// Para las 'pppOpciones' deja las simples
+					else if (campo == "pppOpciones") campos.pppOpciones.opciones = pppOpciones.filter((n) => !n.combo);
 					else campos[campo].opciones = global[campo];
 				}
 			}
@@ -268,7 +270,7 @@ module.exports = {
 		cruce: {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
-				if (!prods.length) return [];
+				if (!prods.length || !configCons.pppOpciones) return [];
 				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función

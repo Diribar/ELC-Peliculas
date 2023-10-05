@@ -131,6 +131,12 @@ let actualiza = {
 		// Limpia los check-boxes
 		for (let input of DOM.checkBoxesInputs) input.checked = false;
 
+		// Particularidad para check-box 'noLaVi'
+		if (configCampos.pppOpciones == v.noLaVi.id) {
+			DOM.checkBoxesInputs[0].checked = true;
+			DOM.pppOpciones.value = "";
+		}
+
 		// Fin
 		return;
 	},
@@ -144,10 +150,6 @@ let actualiza = {
 		DOM.quieroVer.classList.remove("ocultar");
 		v.mostrarCartelQuieroVer = true;
 
-		// Fin
-		return;
-	},
-	agregaOptionAlSelect: () => {
 		// Fin
 		return;
 	},

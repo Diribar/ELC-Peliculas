@@ -48,8 +48,6 @@ module.exports = {
 				archSinVersion,
 
 				// Check-Boxes
-				laQuieroVer: String(laQuieroVer.id), // Es crítico que sea 'string' para estandarizar con otros inputs
-				sinPref: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinksHD: "conLinksHD",
 				enCast: "enCast",
 
@@ -102,11 +100,14 @@ module.exports = {
 		guardaConfig: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			const {id, ordenPorEnt_id} = configCons;
-
-			// Quita los campos irrelevantes
+			const {id} = configCons;
 			delete configCons.id;
-			if (cn_ordenesPorEnts.find((n) => n.id == ordenPorEnt_id).orden.codigo == "pppFecha") delete configCons.pppOpciones;
+
+			// Acciones si el 'ppp' es un array
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones))
+				configCons.pppOpciones.toString() == noLaVi.combo // se fija si el array es el del combo de 'noLaVi'
+					? (configCons.pppOpciones = noLaVi.id) // le asigna el id de 'noLaVi'
+					: delete configCons.pppOpciones; // elimina el ppp del combo
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});

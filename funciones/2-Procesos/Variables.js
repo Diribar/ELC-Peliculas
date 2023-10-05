@@ -50,9 +50,7 @@ module.exports = {
 		},
 		epocasEstreno: {titulo: "Época de Estreno", campoFiltro: "epocaEstreno_id"},
 		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campoFiltro: "epocaOcurrencia_id"},
-		pppOpciones: {
-			titulo: "Preferencia por Película",
-		},
+		pppOpciones: {titulo: "Preferencia por Película"},
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [

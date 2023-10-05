@@ -184,10 +184,10 @@ app.set("views", [
 	global.familia_id = publicos.find((n) => n.grupo == "familia").id;
 	global.menores_ids = publicos.filter((n) => n.grupo == "menores").map((n) => n.id);
 
+	// Preferencias por producto
+	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
+	
 	// Otros
-	global.yaLaVi = pppOpciones.find((n) => n.codigo == "yaLaVi");
-	global.laQuieroVer = pppOpciones.find((n) => n.codigo == "laQuieroVer");
-	global.sinPref = pppOpciones.find((n) => n.codigo == "sinPref");
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
