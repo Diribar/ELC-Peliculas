@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 		topeParaMasRecientes: 20,
 		contadorDeMostrarResults: 0,
 	};
-	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = String(v.pppOpciones.find((n) => n.codigo == pppOcion.codigo).id);
+	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = v.pppOpciones.find((n) => n.codigo == pppOcion.codigo);
 
 
 	// Start-up

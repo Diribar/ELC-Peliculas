@@ -157,7 +157,7 @@ let actualizaConfigCons = {
 			return this.tiposLink();
 		}
 
-		// Muestra / Oculta el checkbox 'noLaVi'
+		// Muestra / Oculta el checkbox 'noLaVi' dependiendo de si el orden es "pppFecha"
 		v.ordenBD.codigo == "pppFecha"
 			? DOM.noLaVi.parentNode.classList.add("ocultar")
 			: DOM.noLaVi.parentNode.classList.remove("ocultar");
@@ -171,14 +171,15 @@ let actualizaConfigCons = {
 		if (!seMuestra)
 			configCons.pppOpciones =
 				v.ordenBD.codigo == "pppFecha"
-					? v.pppOpciones.find((n) => n.codigo == "misPreferencias").combo.split(" ") // si el orden es 'Tus preferencias', todas excepto 'sinPref'
-					: [v.laQuieroVer, v.sinPref]; // si 'no la vi' tildado, esas son las opciones
+					? v.misPreferencias.combo.split(",") // si el orden es 'Tus preferencias', todas excepto 'sinPref'
+					: v.noLaVi.combo.split(","); // si 'no la vi' tildado, esas son las opciones
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
+		// Le asigna un valor a la fuerza
 		if (!configCons.pppOpciones)
-			configCons.pppOpciones = v.pppOpciones.find((n) => n.codigo == "meInteresan").combo.split(" ");
+			configCons.pppOpciones = v.meInteresan.combo.split(",");
 
 		// Fin
 		this.tiposLink();
