@@ -27,12 +27,12 @@
 #dataEntry .inputError textarea {padding: 0px 5px; resize:vertical; max-height: 45px; min-height: 18px;}
 
 /* Temas de input 'número' */
-#dataEntry .inputError #numero {width: 90px; text-align: right;}
+#dataEntry .inputError .numero {width: 90px !important; text-align: right;}
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#dataEntry .inputError #numero::-webkit-outer-spin-button,
-#dataEntry .inputError #numero::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
+#dataEntry .inputError .numero::-webkit-outer-spin-button,
+#dataEntry .inputError .numero::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
 /* Quitar flechas del input - Firefox */
-#dataEntry .inputError #numero[type=number] {-moz-appearance: textfield;}
+#dataEntry .inputError .numero[type=number] {-moz-appearance: textfield;}
 
 /* País */
 #dataEntry #paises_id {height: 19px;}

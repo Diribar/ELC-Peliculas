@@ -59,11 +59,11 @@ window.addEventListener("load", async () => {
 			DOM.inputs.forEach((input, i) => {
 				// Particularidad para avatar
 				if (input.name == "avatar") {
-					if (!v.agregarAvatar) return
+					if (!v.agregarAvatar) return;
 					if (DOM.inputAvatar.value) {
 						v.datosUrl += "&esImagen=" + (v.esImagen ? "SI" : "NO");
 						v.datosUrl += "&tamano=" + DOM.inputAvatar.files[0].size;
-					}	
+					}
 				}
 
 				// Agrega el campo y el valor
@@ -76,6 +76,8 @@ window.addEventListener("load", async () => {
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
 			let errores = await fetch(rutas.validarDatos + v.datosUrl).then((n) => n.json());
+			console.log(v.datosUrl);
+			console.log(errores);
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
@@ -144,7 +146,7 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			if (DOM.submit.classList.contains("inactivo")) await this.actualizaVarios();
 			else DOM.form.submit();
-			return
+			return;
 		},
 	};
 
@@ -169,40 +171,14 @@ window.addEventListener("load", async () => {
 
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
-		let campo = e.target.name; // su valor puede llegar a cambiar
-		let valor = e.target.value; // su valor puede llegar a cambiar
-		let adicionales = "";
+		const campo = e.target.name;
 
-		// Convierte los ID de los países elegidos, en un texto
-		if (campo == "paises") {
-			FN.actualizaPaises();
-			// Actualiza los valores para 'campo' y 'valor'
-			campo = DOM.paisesID.name;
-			valor = DOM.paisesID.value;
-		}
+		// Particularidades
+		if (campo == "paises") FN.actualizaPaises(); // convierte los ID de los países elegidos, en un texto
 		if (campo == "avatar") await revisaAvatar({DOM, v, FN});
 
-		// Campos combinados
-		if (campo == "anoEstreno") {
-			if (DOM.anoFin) adicionales += "&anoFin=" + encodeURIComponent(DOM.anoFin.value);
-			adicionales += "&nombreOriginal=" + encodeURIComponent(DOM.nombreOriginal.value);
-			adicionales += "&nombreCastellano=" + encodeURIComponent(DOM.nombreCastellano.value);
-			adicionales += "&entidad=" + encodeURIComponent(v.entidad);
-		}
-		if (campo == "anoFin") adicionales += "&anoEstreno=" + encodeURIComponent(DOM.anoEstreno.value);
-		if (campo == "nombreOriginal" || campo == "nombreCastellano") {
-			adicionales += "&anoEstreno=" + encodeURIComponent(DOM.anoEstreno.value);
-			adicionales += "&entidad=" + encodeURIComponent(v.entidad);
-		}
-
-		// Prepara los datosUrl con los datos a validar
-		v.datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
-
-		// Validar errores
-		await FN.averiguaMuestraLosErrores();
-
-		// Actualiza botón Submit
-		FN.actualizaBotonSubmit();
+		// Valida errores y actualiza el botón submit
+		FN.actualizaVarios();
 	});
 
 	// Submit

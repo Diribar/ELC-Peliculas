@@ -1,8 +1,8 @@
 <section class="labelInput">
 	<% let inputOK = idioma_id && !errores.idiomaOriginal_id %>
-	<label>Idioma original</label>
+	<label for="idiomaOriginal_id">Idioma original</label>
 	<div class="inputError">
-		<select name="idiomaOriginal_id" autofocus class="input<% if (inputOK) { %> desplClick<% } %>" <% if (inputOK) { %>disabled<% } %> required>
+		<select id="idiomaOriginal_id" name="idiomaOriginal_id" autofocus class="input<% if (inputOK) { %> desplClick<% } %>" <% if (inputOK) { %>disabled<% } %> required>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %>>Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
