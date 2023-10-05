@@ -76,8 +76,6 @@ window.addEventListener("load", async () => {
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
 			let errores = await fetch(rutas.validarDatos + v.datosUrl).then((n) => n.json());
-			console.log(v.datosUrl);
-			console.log(errores);
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
