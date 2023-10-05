@@ -171,7 +171,7 @@ let actualizaConfigCons = {
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
-		// Si pppOpciones no tiene un valor, le asigna uno
+		// Si 'pppOpciones' no tiene un valor, le asigna uno
 		if (!configCons.pppOpciones)
 			configCons.pppOpciones =
 				v.ordenBD.codigo == "azar"
