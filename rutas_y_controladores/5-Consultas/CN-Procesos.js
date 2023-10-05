@@ -280,7 +280,6 @@ module.exports = {
 					return [];
 
 				// Rutina por producto
-				if (configCons.pppOpciones) console.log(297, configCons.pppOpciones);
 				for (let i = prods.length - 1; i >= 0; i--) {
 					// Averigua si el producto tiene un registro de preferencia del usuario
 					const pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
