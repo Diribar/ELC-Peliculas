@@ -174,7 +174,7 @@ let actualizaConfigCons = {
 		// Si 'pppOpciones' no tiene un valor, le asigna uno
 		if (!configCons.pppOpciones)
 			configCons.pppOpciones =
-				v.ordenBD.codigo == "azar"
+				v.ordenBD.codigo == "azar" // si el orden es 'Sugerime al azar',
 					? v.noLaVi.combo.split(",") // tilda las opciones 'no la vi'
 					: v.meInteresan.combo.split(",");
 
