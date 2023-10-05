@@ -209,12 +209,6 @@ module.exports = {
 				return prefs;
 			},
 		},
-		pppRegistros: async ({usuario_id, configCons}) => {
-			// Obtiene los registros
-
-			// Fin
-			return pppRegistros;
-		},
 		prodsDiaDelAno_id: async ({dia, mes}) => {
 			// Variables
 			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
