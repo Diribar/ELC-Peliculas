@@ -132,7 +132,10 @@ let actualiza = {
 		for (let input of DOM.checkBoxesInputs) input.checked = false;
 
 		// Particularidad para check-box 'noLaVi'
-		if (configCampos.pppOpciones == v.noLaVi.id) DOM.checkBoxesInputs[0].checked = true;
+		if (configCampos.pppOpciones == v.noLaVi.id) {
+			DOM.checkBoxesInputs[0].checked = true;
+			DOM.pppOpciones.value = "";
+		}
 
 		// Fin
 		return;
