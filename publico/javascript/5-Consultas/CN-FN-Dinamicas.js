@@ -148,11 +148,10 @@ let actualizaConfigCons = {
 
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
-		// Si el usuario no está logueado, interumpe la función
+		// Si el usuario no está logueado, interrumpe la función
 		if (!v.userID) {
 			// Si corresponde, actualiza 'configCons'
-			if (v.ordenBD.codigo == "pppFecha")
-				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.sinPref).map((n) => n.id);
+			if (v.ordenBD.codigo == "pppFecha") delete configCons.pppOpciones;
 
 			// Fin
 			return this.tiposLink();
@@ -167,14 +166,19 @@ let actualizaConfigCons = {
 		const seMuestra =
 			!DOM.noLaVi.checked && // 'no la vi' sin tildar
 			v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
+
+		// Acciones
 		if (!seMuestra)
 			configCons.pppOpciones =
 				v.ordenBD.codigo == "pppFecha"
-					? v.pppOpciones.filter((n) => n.id != v.sinPref).map((n) => n.id) // todas excepto 'sinPref'
-					: [v.laQuieroVer, v.sinPref]; // no la vi
+					? v.pppOpciones.find((n) => n.codigo == "misPreferencias").combo.split(" ") // si el orden es 'Tus preferencias', todas excepto 'sinPref'
+					: [v.laQuieroVer, v.sinPref]; // si 'no la vi' tildado, esas son las opciones
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
+
+		if (!configCons.pppOpciones)
+			configCons.pppOpciones = v.pppOpciones.find((n) => n.codigo == "meInteresan").combo.split(" ");
 
 		// Fin
 		this.tiposLink();

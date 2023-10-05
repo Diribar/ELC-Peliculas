@@ -91,12 +91,13 @@ window.addEventListener("load", async () => {
 	v = {
 		...(await obtiene.obtieneVariablesDelBE()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
-		pppOpciones: await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json()),
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
 		contadorDeMostrarResults: 0,
 	};
+	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = String(v.pppOpciones.find((n) => n.codigo == pppOcion.codigo).id);
+
 
 	// Start-up
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución

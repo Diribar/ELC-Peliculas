@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(25)},
 		codigo: {type: dt.STRING(15)},
 		icono: {type: dt.STRING(30)},
+		combo: {type: dt.STRING(10)},
 	};
 	const config = {
 		tableName: "ppp_opciones",
