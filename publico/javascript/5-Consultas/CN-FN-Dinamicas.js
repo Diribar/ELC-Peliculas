@@ -156,23 +156,27 @@ let actualizaConfigCons = {
 			? DOM.noLaVi.parentNode.classList.add("ocultar")
 			: DOM.noLaVi.parentNode.classList.remove("ocultar");
 
-		// Acciones si no se muestra
+		// Averigua si se muestra
 		const seMuestra =
 			!DOM.noLaVi.checked && // 'no la vi' sin tildar
 			v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
 
-		// Acciones
+		// Acciones si no se muestra
 		if (!seMuestra)
 			configCons.pppOpciones =
-				v.ordenBD.codigo == "pppFecha"
-					? v.misPreferencias.combo.split(",") // si el orden es 'Tus preferencias', todas excepto 'sinPref'
-					: v.noLaVi.combo.split(","); // si 'no la vi' tildado, esas son las opciones
+				v.ordenBD.codigo == "pppFecha" // si el orden es 'Tus preferencias',
+					? v.misPreferencias.combo.split(",") // tilda las opciones 'misPreferencias'
+					: v.noLaVi.combo.split(","); // tilda las opciones 'no la vi'
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
-		// Le asigna un valor a la fuerza
-		if (!configCons.pppOpciones) configCons.pppOpciones = v.meInteresan.combo.split(",");
+		// Si pppOpciones no tiene un valor, le asigna uno
+		if (!configCons.pppOpciones)
+			configCons.pppOpciones =
+				v.ordenBD.codigo == "azar"
+					? v.noLaVi.combo.split(",") // tilda las opciones 'no la vi'
+					: v.meInteresan.combo.split(",");
 
 		// Fin
 		this.tiposLink();
