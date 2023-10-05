@@ -149,13 +149,7 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, interrumpe la función
-		if (!v.userID) {
-			// Si corresponde, actualiza 'configCons'
-			if (v.ordenBD.codigo == "pppFecha") delete configCons.pppOpciones;
-
-			// Fin
-			return this.tiposLink();
-		}
+		if (!v.userID) return this.tiposLink();
 
 		// Muestra / Oculta el checkbox 'noLaVi' dependiendo de si el orden es "pppFecha"
 		v.ordenBD.codigo == "pppFecha"
@@ -178,8 +172,7 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
 		// Le asigna un valor a la fuerza
-		if (!configCons.pppOpciones)
-			configCons.pppOpciones = v.meInteresan.combo.split(",");
+		if (!configCons.pppOpciones) configCons.pppOpciones = v.meInteresan.combo.split(",");
 
 		// Fin
 		this.tiposLink();
