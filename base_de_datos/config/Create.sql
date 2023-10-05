@@ -404,11 +404,43 @@ CREATE TABLE `links_tipos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `menu_capacitacion` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(3) unsigned NOT NULL,
+  `titulo` varchar(30) NOT NULL,
+  `codigo` varchar(20) NOT NULL,
+  `icono` varchar(25) NOT NULL,
+  `hr` tinyint(1) NOT NULL DEFAULT 0,
+  `permInputs` tinyint(1) NOT NULL DEFAULT 0,
+  `revisorPERL` tinyint(1) NOT NULL DEFAULT 0,
+  `revisorLinks` tinyint(1) NOT NULL DEFAULT 0,
+  `revisorEnts` tinyint(1) NOT NULL DEFAULT 0,
+  `revisorUs` tinyint(1) NOT NULL DEFAULT 0,
+  `actualizado` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `titulo` (`titulo`),
+  UNIQUE KEY `codigo` (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `menu_usuario` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(3) unsigned NOT NULL,
+  `titulo` varchar(30) NOT NULL,
+  `icono` varchar(30) NOT NULL,
+  `href` varchar(30) NOT NULL,
+  `hr` tinyint(1) NOT NULL DEFAULT 0,
+  `permInputs` tinyint(1) NOT NULL DEFAULT 0,
+  `actualizado` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `titulo` (`titulo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `ppp_opciones` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(25) NOT NULL,
   `codigo` varchar(15) NOT NULL,
   `icono` varchar(30) NOT NULL,
+  `combo` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1290,4 +1322,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-29  7:47:24
+-- Dump completed on 2023-10-05 16:40:36
