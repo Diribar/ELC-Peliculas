@@ -152,16 +152,10 @@ let actualizaConfigCons = {
 		if (!v.userID) {
 			// Si corresponde, actualiza 'configCons'
 			if (v.ordenBD.codigo == "pppFecha")
-				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id);
+				configCons.pppOpciones = v.pppOpciones.filter((n) => n.id != v.sinPref).map((n) => n.id);
 
 			// Fin
 			return this.tiposLink();
-		}
-
-		// Start-up
-		if (DOM.pppOpciones.value == v.noLaVi) {
-			DOM.noLaVi.checked = true;
-			DOM.pppOpciones.value = "";
 		}
 
 		// Muestra / Oculta el checkbox 'noLaVi'
@@ -170,10 +164,14 @@ let actualizaConfigCons = {
 			: DOM.noLaVi.parentNode.classList.remove("ocultar");
 
 		// Acciones si no se muestra
-		const seMuestra = !DOM.noLaVi.checked && v.ordenBD.codigo != "pppFecha";
+		const seMuestra =
+			!DOM.noLaVi.checked && // 'no la vi' sin tildar
+			v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
 		if (!seMuestra)
 			configCons.pppOpciones =
-				v.ordenBD.codigo == "pppFecha" ? v.pppOpciones.filter((n) => n.id != v.noLaVi).map((n) => n.id) : v.noLaVi;
+				v.ordenBD.codigo == "pppFecha"
+					? v.pppOpciones.filter((n) => n.id != v.sinPref).map((n) => n.id) // todas excepto 'sinPref'
+					: [v.laQuieroVer, v.sinPref]; // no la vi
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
