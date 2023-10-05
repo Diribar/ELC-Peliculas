@@ -1,4 +1,3 @@
-/* Oculta el vitraux */
 @media (max-width: 1267px) {
 	body main #imgDerecha img {display: none;}
 }
@@ -6,5 +5,5 @@
     #zona-de-bienvenida #cartelBienvenida {scale: 1.1;}
     #zona-de-bienvenida #botones {width: 600px}
 }
-/* @media (max-height: 800px) {
-} */
+@media (max-height: 800px) {
+}
