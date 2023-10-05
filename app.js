@@ -186,6 +186,7 @@ app.set("views", [
 
 	// Otros
 	global.yaLaVi = pppOpciones.find((n) => n.codigo == "yaLaVi");
+	global.laQuieroVer = pppOpciones.find((n) => n.codigo == "laQuieroVer");
 	global.sinPref = pppOpciones.find((n) => n.codigo == "sinPref");
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");

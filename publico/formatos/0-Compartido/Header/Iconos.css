@@ -13,8 +13,8 @@ header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 
 header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro);}
 
 /* Íconos de usuario */
-header #icono_usuario {border-radius: 50%; overflow: hidden; }
-header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+header #iconoUsuario {border-radius: 50%; overflow: hidden; }
+header #iconoUsuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
 
 /* Imágenes */
 header :is(#imagenConsultas, #imagenUsuario) img {height: 100%; width: 100%; object-fit: cover;}

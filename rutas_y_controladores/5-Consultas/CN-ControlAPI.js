@@ -48,7 +48,8 @@ module.exports = {
 				archSinVersion,
 
 				// Check-Boxes
-				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				laQuieroVer: String(laQuieroVer.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				sinPref: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinksHD: "conLinksHD",
 				enCast: "enCast",
 
@@ -163,8 +164,10 @@ module.exports = {
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.rclvs({entidad, configCons, orden});
 
-		// Obtiene los registros de ppp
-		let pppRegistros = procesos.resultados.pppRegistros({usuario_id, configCons});
+		// Obtiene los registros ppp del usuario
+		let pppRegistros = usuario_id
+			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
+			: [];
 
 		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
