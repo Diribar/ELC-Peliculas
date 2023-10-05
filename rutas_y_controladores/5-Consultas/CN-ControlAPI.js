@@ -48,7 +48,8 @@ module.exports = {
 				archSinVersion,
 
 				// Check-Boxes
-				noLaVi: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				laQuieroVer: String(laQuieroVer.id), // Es crítico que sea 'string' para estandarizar con otros inputs
+				sinPref: String(sinPref.id), // Es crítico que sea 'string' para estandarizar con otros inputs
 				conLinksHD: "conLinksHD",
 				enCast: "enCast",
 
