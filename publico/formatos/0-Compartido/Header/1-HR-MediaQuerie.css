@@ -6,13 +6,20 @@
     header .ocultoMobile_parcial {display: none;}
 }
 @media (max-width: 550px) {
-    header #izquierda {margin: 0;}
     header .ocultoMobile_total {display: none;}
+    header :is(#izquierda, #derecha) {margin: 0;}
+    header #tituloHeader {left: 48%;}
+    
+    /* Búsqueda rápida */
     header #busquedaRapida {position: absolute; margin: 0; width: 100%; top: 13px}
     header #busquedaRapida {display: flex; flex-direction: column; align-items: center;}
     header #busquedaRapida .menuMostrar {translate: 0; right: auto; top: auto;}
     header #busquedaRapida .menuMostrar {display: flex; flex-direction: column; align-items: center;}
     header #busquedaRapida .menuMostrar {max-width: 100vw;}
+
+    /* Usuario */
+    header #icono_usuario #imagenUsuario {height: 2.75rem; width: 2.75rem;}
+    header #menuUsuario .menuOpcion {height: 28px;}
 }
 @media (max-width: 450px) {
     header #tituloHeader p {font-size: 2.5rem;}

@@ -22,7 +22,7 @@ global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
-global.versionELC = "1.04";
+global.versionELC = "1.08";
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -138,10 +138,13 @@ app.set("views", [
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
+		// Menús
+		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
+
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
-		videosCapac: BD_genericas.obtieneTodos("videosCapac", "orden"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);

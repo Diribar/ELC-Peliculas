@@ -29,7 +29,7 @@ module.exports = {
 
 			// Redirecciona quitando los parámetros del 'url'
 			const ruta = req.baseUrl + req.path;
-			res.redirect(ruta);
+			return res.redirect(ruta);
 		}
 
 		const configCons_id =

@@ -1,43 +1,16 @@
 <% if (locals.usuario) { %>
-	<div class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
-		<!-- Mi interés en algunos productos -->
-		<a href="/consultas/?configCons_id=22" class="menuOpcion">
-			<i class="fa-solid fa-heart icono"></i>
-			<span>Mi interés por película</span>
-		</a>
-		<!-- Mis estadísticas -->
-		<a href="#" class="menuOpcion inactivo">
-			<i class="fa-solid fa-film icono"></i>
-			<span>Mis consultas por película</span>
-		</a>
-		<hr />
-		<% if (usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
-			<!-- Status de Productos agregados por mí -->
-			<a href="#" class="menuOpcion inactivo">
-				<i class="fa-solid fa-chart-pie icono"></i>
-				<span>Status de mis agregados</span>
+	<div id="menuUsuario" class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
+		<% for (let menu of menuUsuario) { %>
+
+			<% if (menu.permInputs && (!locals.usuario || !usuario.rolUsuario.permInputs)) { continue } %>
+
+			<% if (menu.hr) { %><hr><% } %>
+
+			<a href="<%= menu.href %>" class="menuOpcion">
+				<i class="<%= menu.icono %> fa-solid icono"></i>
+				<span><%= menu.titulo %></span>
 			</a>
-			<!-- % de entidades aprobadas / presentadas -->
-			<a href="#" class="menuOpcion inactivo">
-				<i class="fa-solid fa-thumbs-up icono"></i>
-				<span>Mi precisión de inputs</span>
-			</a>
-			<!-- Historial de penalizaciones -->
-			<a href="#" class="menuOpcion inactivo">
-				<i class="fa-solid fa-thumbs-up icono"></i>
-				<span>Historial de penalizaciones</span>
-			</a>
-			<hr />
+
 		<% } %>
-		<!-- Detalle del usuario -->
-		<a href="/usuarios/edicion" class="menuOpcion inactivo">
-			<i class="fa-solid fa-user icono"></i>
-			<span>Edición de usuario</span>
-		</a>
-		<!-- Logout -->
-		<a href="/usuarios/logout" class="menuOpcion">
-			<i class="fa-solid fa-right-from-bracket icono"></i>
-			<span>Logout</span>
-		</a>
 	</div>
 <% } %>

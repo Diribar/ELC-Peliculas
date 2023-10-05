@@ -354,10 +354,8 @@ let auxiliares = {
 					? "A - F"
 					: (!nombreAnt || nombreAnt < "G") && nombreActual >= "G" && nombreActual < "N"
 					? "G - M"
-					: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N" && nombreActual < "T"
-					? "N - S"
-					: (!nombreAnt || nombreAnt < "T") && nombreActual >= "T"
-					? "T - Z"
+					: (!nombreAnt || nombreAnt < "N") && nombreActual >= "N"
+					? "N - Z"
 					: "";
 
 			// Fin

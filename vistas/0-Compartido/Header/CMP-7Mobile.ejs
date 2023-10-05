@@ -1,4 +1,5 @@
 <div id="menuMobile" class="desplMostrar menuMostrar menuFondo ocultar">
+	<!-- Búsqueda rápida -->
 	<div class="menuOpcion mm_busquedaRapida">
 		<div class="mm_busquedaRapida">
 			<i class="fa-solid icono fa-magnifying-glass mm_busquedaRapida"></i>
@@ -6,6 +7,7 @@
 		<span class="mm_busquedaRapida">Búsqueda rápida</span>
 	</div>
 	<hr>
+	<!-- Quiero elegir una película -->
 	<a href="/consultas" class="menuOpcion">
 		<div>
 			<img src="/imagenes/Varios/Movie.jpg" height="20">
@@ -13,23 +15,15 @@
 		<span>Quiero elegir una película</span>
 	</a>
 	<hr>
-	<% if (locals.usuario) { %>
-		<div class="menuOpcion">
-			<% const avatarUsuario = usuario.avatar ? (archSinVersion + "1-Usuarios/Avatar/"+ usuario.avatar) : "/imagenes/Avatar/Usuario-SinRostro.jpg" %>
-			<div>
-				<img src="<%= avatarUsuario %>" height="20">
-			</div>
-			<span>Menú de usuario</span>
+	<!-- Demostración -->
+	<div class="menuOpcion mm_demo">
+		<div>
+			<i class="fa-solid fa-play icono mm_demo"></i>
 		</div>
-	<% } else { %>
-		<a href="/usuarios/login" class="menuOpcion">
-			<div>
-				<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
-			</div>
-			<span>Login</span>
-		</a>
-	<% } %>
+		<span class="mm_demo">Ejemplo de uso</span>
+	</div>
 	<hr>
+	<!-- Quiénes somos -->
 	<a href="/institucional/quienes-somos" class="menuOpcion">
 		<div>
 			<i class="fa-solid icono fa-people-group"></i>

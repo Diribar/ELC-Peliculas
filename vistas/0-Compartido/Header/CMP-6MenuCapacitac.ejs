@@ -1,18 +1,15 @@
 <div id="menuCapacitac" class="desplMostrar menuMostrar menuFondo ocultar menuDerecha">
-	<% for (const video of videosCapac) { %>
-		<% let interrumpir = !video.actualizado %>
-
+	<% for (const menu of menuCapacitac) { %>
 		<% // Revisa si se necesita algún permiso para mostrar el menú %>
 		<% for (const permiso of rolesUs.map(n => n.codigo)) { %>
-			<% if (video[permiso] && (!locals.usuario || !usuario.rolUsuario[permiso])) { interrumpir = true } %>
+			<% if (menu[permiso] && (!locals.usuario || !usuario.rolUsuario[permiso])) { continue } %>
 		<% } %>
-		<% if (interrumpir) { break } %>
 
-		<% if (video.hr) { %><hr><% } %>
+		<% if (menu.hr) { %><hr><% } %>
 
-		<p id="<%= video.codigo %>" class="menuOpcion pointer">
-			<i class="fa-solid icono <%= video.icono %>"></i>
-			<span><%= video.titulo %></span>
+		<p id="<%= menu.codigo %>" class="menuOpcion pointer">
+			<i class="fa-solid icono <%= menu.icono %>"></i>
+			<span><%= menu.titulo %></span>
 		</p>
 
 	<% } %>
