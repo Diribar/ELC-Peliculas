@@ -244,29 +244,32 @@ module.exports = {
 	},
 	confirma: {
 		form: (req, res) => {
-			// 1. Tema y Código
+			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "confirma";
 			let maximo;
-			// 2. Obtiene el Data Entry de session y cookies
+
+			// Obtiene el Data Entry de session y cookies
 			let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
-			// 3. Datos de la producción
+
+			// Datos de la producción
 			maximo = 50;
 			let direccion = confirma.direccion;
 			if (direccion.length > maximo) {
 				direccion = direccion.slice(0, maximo);
 				if (direccion.includes(",")) direccion = direccion.slice(0, direccion.lastIndexOf(","));
 			}
-			// 4. Datos de la actuación
+
+			// Datos de la actuación
 			maximo = 170;
 			let actores = confirma.actores;
 			if (actores.length > maximo) {
 				actores = actores.slice(0, maximo);
 				if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 			}
-			// 5. Imagen derecha
+			// Imagen derecha
 			let imgDerPers = confirma.avatar ? archSinVersion + "9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
-			// 6. Render del formulario
+			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
