@@ -12,7 +12,7 @@ main #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);
 main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Footer */
-main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
+main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 main #cuerpoFooter footer p {line-height: 1;}
