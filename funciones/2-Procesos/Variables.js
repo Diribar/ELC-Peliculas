@@ -167,7 +167,7 @@ module.exports = {
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
 				"Menores solamente: apuntado a un público solamente infantil.",
 			],
-			epocaOcurrencia: ["Antes, durante o después de Cristo."],
+			epocaOcurrencia: ["Varias: si el nudo de la trama ocurre en más de una época."],
 			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
 		};
