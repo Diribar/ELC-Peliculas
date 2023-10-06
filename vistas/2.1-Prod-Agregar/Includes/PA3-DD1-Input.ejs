@@ -1,13 +1,15 @@
 <section class="labelInput">
 	<% let inputOK = !errores[nombre] %>
-	<label><%= registro.titulo %></label>
+	<label for="<%= nombre %>"><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="<%- registro.numero ? 'number' : 'text' %>" class="input<% if (inputOK) { %> desplClick<% } %>" name="<%= nombre %>" autocomplete="off"
+		<input id="<%= nombre %>" type="<%- registro.numero ? 'number' : 'text' %>" 
+			class="input<% if (inputOK) { %> desplClick<% } %><% if (registro.numero) { %> numero<% } %>" 
+			name="<%= nombre %>" 
+			autocomplete="off"
 			value="<%= dataEntry[nombre] %>"
-			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
+			placeholder="<%- registro.numero ? "Sólo números" : "Ingresá el texto" %>"
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
-			placeholder="Ingresá el texto"
 		>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
 		<% if (nombre=="actores" && dataEntry.actores && (!locals.errores || !errores.actores)) { %>
