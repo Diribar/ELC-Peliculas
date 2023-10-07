@@ -267,8 +267,10 @@ module.exports = {
 				actores = actores.slice(0, maximo);
 				if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 			}
+
 			// Imagen derecha
 			let imgDerPers = confirma.avatar ? archSinVersion + "9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				tema,
