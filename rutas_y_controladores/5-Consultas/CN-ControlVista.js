@@ -32,12 +32,16 @@ module.exports = {
 			return res.redirect(ruta);
 		}
 
-		const configCons_id =
+		let configCons_id =
 			usuario && usuario.configCons_id
 				? usuario.configCons_id // El guardado en el usuario
-				: req.session.configCons_id
-				? req.session.configCons_id // El guardado en la session
-				: configConsDefault_id
+				: req.session.configCons_id; // El guardado en la session
+
+		if (!configCons_id || !configs.find((n) => n.id == configCons_id)) {
+			configCons_id = configConsDefault_id;
+			req.session.configCons_id = configConsDefault_id;
+			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+		}
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {

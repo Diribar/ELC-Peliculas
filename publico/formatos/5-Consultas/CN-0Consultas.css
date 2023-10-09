@@ -41,7 +41,7 @@
 /* Vista de Resultados - Carteles "Especiales" */
 #carteles .cartel.especial {scale: 1.5; overflow: hidden;}
 #carteles .cartel.especial #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
-#carteles .cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px;}
+#carteles .cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px; transition: 0.7s;}
 #carteles .cartel.especial div:not(p) {margin: 10px 0 5px;}
 
 /* Vista de Resultados - Carteles "Especiales" - Párrafo y Tabla */
