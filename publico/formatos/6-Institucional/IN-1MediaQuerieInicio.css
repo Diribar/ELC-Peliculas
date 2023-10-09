@@ -11,12 +11,12 @@
 @media (max-width: 700px) {
 	#zona-de-bienvenida #cartelBienvenida {display: none;}
 }
-@media (max-width: 700px) and (min-height: 600px) {
+@media (max-width: 550px) and (min-height: 550px) {
 	#zona-de-bienvenida #botones {flex-direction: column; height: 100%;}
 }
 
 /* Altura */
-@media (min-height: 350px) {
+@media (min-height: 351px) and (min-width: 551px) {
 	#zona-de-bienvenida #botones a {scale: 1.1;}
 }
 @media (max-height: 600px) {

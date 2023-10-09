@@ -71,8 +71,8 @@ module.exports = {
 			let campos = Object.keys(req.query);
 
 			// Averigua los errores solamente para esos campos
-			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.revisorPERL;
-			req.query.publico = req.session.usuario.rolUsuario.revisorPERL;
+			req.query.publico = req.session.usuario.rolUsuario.autTablEnts;
+			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.autTablEnts;
 			let errores = await valida.consolidado({campos, datos: req.query});
 
 			// Devuelve el resultado
