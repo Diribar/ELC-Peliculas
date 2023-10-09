@@ -276,7 +276,7 @@ module.exports = {
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
 					configCons.pppOpciones && // se eligieron 'pppOpciones'
-					!configCons.pppOpciones.includes(sinPref.id) && // la opción elegida no incluye a 'sinPref'
+					!configCons.pppOpciones.includes(String(sinPref.id)) && // la opción elegida no incluye a 'sinPref'
 					!pppRegistros.length // no hay registros 'ppp'
 				)
 					return [];
