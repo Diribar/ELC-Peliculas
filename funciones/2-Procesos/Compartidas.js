@@ -337,18 +337,18 @@ module.exports = {
 		},
 		elimina: function (ruta, archivo, output) {
 			// Arma el nombre del archivo
-			let rutaArchivo = path.join(ruta, archivo);
+			let rutaNombre = path.join(ruta, archivo);
 			output = true;
 
 			// Se fija si encuentra el archivo
-			if (this.existe(rutaArchivo)) {
+			if (this.existe(rutaNombre)) {
 				// Borra el archivo
-				fs.unlinkSync(rutaArchivo);
+				fs.unlinkSync(rutaNombre);
 				// Avisa que lo borra
-				if (output) console.log("Archivo '" + rutaArchivo + "' borrado");
+				if (output) console.log("Archivo '" + rutaNombre + "' borrado");
 			}
 			// Mensaje si no lo encuentra
-			else if (output) console.log("Archivo " + rutaArchivo + " no encontrado para borrar");
+			else if (output) console.log("Archivo " + rutaNombre + " no encontrado para borrar");
 
 			// Fin
 			return;
