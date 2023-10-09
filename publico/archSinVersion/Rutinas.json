@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 7/oct",
-	"HoraUTC": "4:46",
+	"FechaUTC": "Lun. 9/oct",
+	"HoraUTC": "12:49",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 2/oct",
-	"HoraSemUTC": "21:12",
-	"semanaUTC": 39,
+	"FechaSemUTC": "Lun. 9/oct",
+	"HoraSemUTC": "12:49",
+	"semanaUTC": 40,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"05-oct-23": {"titulo": "Santa Faustina Kowalska", "entidad": "personajes", "id": 138},
-		"06-oct-23": {"titulo": "ELC - Películas"},
 		"07-oct-23": {"titulo": "ELC - Películas"},
 		"08-oct-23": {"titulo": "ELC - Películas"},
-		"09-oct-23": {"titulo": "San Abraham", "entidad": "personajes", "id": 165}
+		"09-oct-23": {"titulo": "San Abraham", "entidad": "personajes", "id": 165},
+		"10-oct-23": {"titulo": "ELC - Películas"},
+		"11-oct-23": {"titulo": "San Juan XXIII", "entidad": "personajes", "id": 22}
 	}
 }
