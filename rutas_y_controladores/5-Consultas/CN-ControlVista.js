@@ -40,7 +40,7 @@ module.exports = {
 		if (!configCons_id || !configs.find((n) => n.id == configCons_id)) {
 			configCons_id = configConsDefault_id;
 			req.session.configCons_id = configConsDefault_id;
-			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 		}
 
 		// Va a la vista
