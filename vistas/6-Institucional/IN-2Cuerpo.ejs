@@ -7,13 +7,17 @@
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 	</div>
-	<div id="cuadro-de-texto">
-		<% if (codigo == "quienesSomos")    { %><%- include("IN1-QuienesSomos")  %><% } %>
-		<% if (codigo == "misionVision")    { %><%- include("IN2-MisionVision")  %><% } %>
-		<% if (codigo == "nuestrosValores") { %><%- include("IN3-Valores")       %><% } %>
-		<% if (codigo == "enQueConsiste")   { %><%- include("IN4-EnQueConsiste") %><% } %>
-		<% if (codigo == "perfilPelis")     { %><%- include("IN5-PerfilPelis")   %><% } %>
-		<% if (codigo == "derechosAutor")   { %><%- include("IN6-DerechosAutor") %><% } %>
-		<%- include("IN-Flechas") %>
-	</div>
+	<section>
+		<div id="cuadro-de-texto">
+			<div>
+				<% if (codigo == "quienesSomos")    { %><%- include("IN1-QuienesSomos")  %><% } %>
+				<% if (codigo == "misionVision")    { %><%- include("IN2-MisionVision")  %><% } %>
+				<% if (codigo == "nuestrosValores") { %><%- include("IN3-Valores")       %><% } %>
+				<% if (codigo == "enQueConsiste")   { %><%- include("IN4-EnQueConsiste") %><% } %>
+				<% if (codigo == "perfilPelis")     { %><%- include("IN5-PerfilPelis")   %><% } %>
+				<% if (codigo == "derechosAutor")   { %><%- include("IN6-DerechosAutor") %><% } %>
+				<%- include("IN-Flechas") %>
+			</div>
+		</div>
+	</section>
 <% } %>

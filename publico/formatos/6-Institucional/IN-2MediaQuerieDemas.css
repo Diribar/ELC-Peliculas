@@ -1,0 +1,16 @@
+/* Ancho */
+@media (max-width: 1267px) {
+	body main #imgDerecha img {display: none;}
+}
+@media (max-width: 800px) {
+	#zona-de-bienvenida #cartelBienvenida {scale: 1.1;}
+	#zona-de-bienvenida #botones {width: 600px}
+}
+
+/* Ancho y Alto */
+@media (min-width: 701px) and (min-height: 541px) {
+	#cuerpo #cuadro-de-texto {scale: 1.1;}
+}
+@media (min-width: 751px) and (min-height: 581px) {
+	#cuerpo #cuadro-de-texto {scale: 1.2;}
+}
