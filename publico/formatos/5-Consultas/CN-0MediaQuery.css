@@ -1,0 +1,10 @@
+/* Ancho */
+@media (max-width: 1400px) {
+    #configCons {translate: -100% 0; position: absolute;}
+
+}
+
+/* Alto */
+@media (min-height: 701px) {
+    #vistaDeResults #botones {flex-wrap: wrap;}
+}

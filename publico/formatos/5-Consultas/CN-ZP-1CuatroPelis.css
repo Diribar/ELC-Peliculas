@@ -1,11 +1,11 @@
 /* Resultados */
-#vistaDeResults #botones {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly;}
+#vistaDeResults #botones {display: flex; flex-direction: row; justify-content: space-evenly;}
 /* #vistaDeResults #botones.ocultar {display: none} */
-#vistaDeResults #botones {width: 100%;}
+#vistaDeResults #botones {width: 100%; padding: 0 10px;}
 
 /* Botones para productos */
 #botones li {list-style-type: none}
-#botones li {margin: 15px 0;}
+#botones li {margin: 15px 10px;}
 #botones li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #botones li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #botones li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
