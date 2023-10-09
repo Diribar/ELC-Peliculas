@@ -16,9 +16,6 @@
 }
 
 /* Altura */
-@media (min-height: 351px) and (min-width: 551px) {
-	#zona-de-bienvenida #botones a {scale: 1.1;}
-}
 @media (max-height: 600px) {
 	#zona-de-bienvenida #cartelBienvenida {display: none;}
 }
@@ -26,3 +23,11 @@
 	#zona-de-bienvenida #cartelBienvenida {scale: 1.25;}
 }
 
+/* Altura y ancho */
+@media (max-height: 350px), (max-width: 550px) {
+	#zona-de-bienvenida #botones a:hover {scale: 1;}
+}
+@media (min-height: 351px) and (min-width: 551px) {
+	#zona-de-bienvenida #botones a {scale: 1.1;}
+	#zona-de-bienvenida #botones a:hover {scale: 1.3;}
+}

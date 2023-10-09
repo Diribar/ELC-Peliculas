@@ -1,7 +1,7 @@
-#logosPortales {border: 2px solid var(--azul-oscuro); border-radius: 10px; background: var(--celeste-claro);}
 #logosPortales {flex-wrap: wrap; justify-content: center;}
-#logosPortales {margin: 7px auto 0; padding: 5px; }
-#logosPortales {max-width: 470px; width: max-content;}
+#logosPortales {margin: 7px auto 0; padding: 5px;}
+#logosPortales {border: 2px solid var(--azul-oscuro); border-radius: 10px; background: var(--celeste-claro);}
+#logosPortales {max-width: min(470px, 100%); width: max-content;}
 
 #logosPortales img {max-height: 20px; margin: 10px 10px; border-radius: 5px;}
 #logosPortales img {box-shadow: 0 0 5px black;}
