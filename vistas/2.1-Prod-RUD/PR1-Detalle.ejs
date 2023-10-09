@@ -53,9 +53,11 @@
 		<% } %>
 	</div>
 	<div id="datosDetalle">
+		<!-- Sinopsis -->
 		<div id="sinopsis" class="datosParcial">
 			<p><%= registro.sinopsis ? registro.sinopsis : 'No disponemos de esa información' %></p>
 		</div>
+		<!-- Inormación general -->
 		<div id="masInfo" class="datosParcial" style="display: none;">
 			<% if (!bloqueIzq.masInfoIzq.length) { %>
 				<p>No disponemos de esa información</p>
@@ -74,6 +76,7 @@
 				</div>
 			<% } %>
 		</div>
+		<!-- Actores -->
 		<div id="actores" class="datosParcial" style="display: none;">
 			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 		</div>
@@ -82,7 +85,7 @@
 				<div id="rclv" class="datosParcial" style="display: none;">
 					<% for (let campo of bloqueIzq[RCLV.asociacion]) { %>
 						<p>
-							<%= campo.titulo %>: <b><%= campo.valor %></b>
+							<% if (bloqueIzq[RCLV.asociacion].length > 1) { %><%= campo.titulo + ": " %><% } %><b><%= campo.valor %></b>
 							<% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
 								<span>
 									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
