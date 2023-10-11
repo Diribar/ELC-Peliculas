@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Si no existe la información a desambiguar, redirige al paso anterior
-	const {desambiguar} = await fetch("api/desambiguar-busca-info-en-BE").then((n) => n.json());
+	const desambiguar = await fetch("api/desambiguar-busca-info-en-BE").then((n) => n.json());
 	if (!desambiguar) location.reload()
 
 	// Variables
