@@ -780,7 +780,7 @@ let obtieneRegs = async (campos) => {
 let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;
-	const url = avatarOrig.includes("/");
+	const url = avatarOrig && avatarOrig.includes("/");
 	const avatarEdic = edicion.avatar;
 	const familias = comp.obtieneDesdeEntidad.familias(entidad);
 

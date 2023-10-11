@@ -16,15 +16,16 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condicionEdic = {[campo_id]: entID, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		let includesOrig = "";
 
 		// Obtiene los campos include
 		let includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
-		let includesOrig = !excluirInclude
-			? [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"]
-			: "";
-		if (entidad == "capitulos") includesOrig.push("coleccion");
-		if (entidad == "colecciones") includesOrig.push("capitulos");
-		if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
+		if (!excluirInclude) {
+			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"];
+			if (entidad == "capitulos") includesOrig.push("coleccion");
+			if (entidad == "colecciones") includesOrig.push("capitulos");
+			if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
+		}
 
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
