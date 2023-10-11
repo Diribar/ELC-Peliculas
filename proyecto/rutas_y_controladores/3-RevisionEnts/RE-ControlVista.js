@@ -73,8 +73,8 @@ module.exports = {
 			// Obtiene avatar original
 			let imgDerPers = original.avatar;
 			imgDerPers = imgDerPers
-				? (!imgDerPers.includes("/") ? archSinVersion + "2-Productos/Revisar/" : "") + imgDerPers
-				: "/imagenes/Avatar/Prod-Generico.jpg";
+				? (!imgDerPers.includes("/") ? "/sinVersion/2-Productos/Revisar/" : "") + imgDerPers
+				: "/publico/imagenes/Avatar/Prod-Generico.jpg";
 			// Configura el título de la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
@@ -351,7 +351,7 @@ module.exports = {
 				codigo += "/avatar";
 				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.orig.includes(archSinVersion);
+				avatarExterno = !avatar.orig.includes("/sinVersion/");
 				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 				avatarsExternos = variables.avatarsExternos(nombre);
 				titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
@@ -506,8 +506,8 @@ module.exports = {
 
 		// Información para la vista
 		const avatar = producto.avatar
-			? (!producto.avatar.includes("/") ? archSinVersion + "2-Productos/Final/" : "") + producto.avatar
-			: "/imagenes/Avatar/Prod-Generico.jpg";
+			? (!producto.avatar.includes("/") ? "/sinVersion/2-Productos/Final/" : "") + producto.avatar
+			: "/publico/imagenes/Avatar/Prod-Generico.jpg";
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;

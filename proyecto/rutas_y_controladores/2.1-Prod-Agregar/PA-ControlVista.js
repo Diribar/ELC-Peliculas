@@ -96,10 +96,10 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? archSinVersion + "9-Provisorio/" + datosDuros.avatar
+				? "/sinVersion/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
-				: "/imagenes/Avatar/Sin-Avatar.jpg";
+				: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 
 			// Datos para la vista
 			const origen =
@@ -195,7 +195,7 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
-			const imgDerPers = datosAdics.avatar ? archSinVersion + "9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
+			const imgDerPers = datosAdics.avatar ? "/sinVersion/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -269,7 +269,7 @@ module.exports = {
 			}
 
 			// Imagen derecha
-			let imgDerPers = confirma.avatar ? archSinVersion + "9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? "/sinVersion/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -366,7 +366,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		const carpetaMG = "Muchas-gracias/";
-		const imagenMG = "/imagenes/" + carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
+		const imagenMG = "/publico/imagenes/" + carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
