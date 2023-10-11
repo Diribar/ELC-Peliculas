@@ -5,7 +5,7 @@ global.unaSemana = unDia * 7;
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-// Variable 'global' - Links 
+// Variable 'global' - Links
 global.vidaPrimRevision = unaSemana * 4;
 global.vidaUtilLinks = unaSemana * 26;
 global.sinLinks = 0;
@@ -186,7 +186,7 @@ app.set("views", [
 
 	// Preferencias por producto
 	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
-	
+
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
