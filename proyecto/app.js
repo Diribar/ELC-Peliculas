@@ -43,11 +43,11 @@ exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (e
 global.express = require("express");
 const app = express();
 
-// Crea carpetas públicas
-app.use("/publico", express.static(path.join(__dirname, "publico"))); // omit the first arg to app.use if you do not want the /public prefix for these assets
+// Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
+app.use("/publico", express.static(path.join(__dirname, "publico")));
 app.use("/sinVersion", express.static(publSinVersion));
 
-//app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
+// Otros
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 // Para usar PUT y DELETE
