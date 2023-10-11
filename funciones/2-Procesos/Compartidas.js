@@ -280,7 +280,10 @@ module.exports = {
 				.replace(/\n/g, " ") // previene el uso de 'return'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
-	},
+		inicialMayus: (texto) => {
+			return texto.slice(0, 1).toUpperCase() + texto.slice(1);
+		},
+		},
 	fechaHora: {
 		ahora: () => {
 			return FN.ahora();
@@ -769,9 +772,6 @@ module.exports = {
 	},
 
 	// Varias
-	inicialMayus: (texto) => {
-		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
-	},
 	reqBasePathUrl: (req) => {
 		// Obtiene los resultados
 		const baseUrl = req.baseUrl

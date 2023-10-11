@@ -501,7 +501,6 @@ module.exports = {
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
-			console.log(504);
 			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
 			// Si es un registro de 'epocasDelAno', guarda el avatar en la carpeta tematica
@@ -741,7 +740,7 @@ module.exports = {
 	descargaAvatarOriginal: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.inicialMayus(familias);
+		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
 		const ruta = publSinVersion + carpeta + "/Final/";
 		const avatar = Date.now() + path.extname(original.avatar);
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
@@ -788,19 +787,17 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.inicialMayus(familias);
+		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
 		const rutaFinal = publSinVersion + carpeta + "/Final/";
 		if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
 			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		console.log(798);
 		comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
 	}
 
 	// Rechazo - Elimina el archivo de edicion
 	else if (!aprob) comp.gestionArchivos.elimina(publSinVersion + carpeta + "/Revisar/", avatarEdic);
-	console.log(805);
 
 	// Fin
 	return;
