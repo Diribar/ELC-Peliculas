@@ -42,6 +42,13 @@ exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (e
 // Para usar propiedades de express
 global.express = require("express");
 const app = express();
+
+// omit the first arg to app.use if you do not want the /public prefix for these assets
+app.use('/publico', express.static(path.join(__dirname, 'publico')));
+
+var staticResource='C:/Users/Sachin/Desktop/profile/img';
+app.use('/archSinVersion', express.static(path.join(staticResource, 'public2')));
+
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
