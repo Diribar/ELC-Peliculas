@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 10/oct",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mié. 11/oct",
+	"HoraUTC": "3:35",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/oct",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-oct-23": {"titulo": "ELC - Películas"},
 		"09-oct-23": {"titulo": "San Abraham", "entidad": "personajes", "id": 165},
 		"10-oct-23": {"titulo": "ELC - Películas"},
 		"11-oct-23": {"titulo": "San Juan XXIII", "entidad": "personajes", "id": 22},
-		"12-oct-23": {"titulo": "Beato Carlo Acutis", "entidad": "personajes", "id": 196}
+		"12-oct-23": {"titulo": "Beato Carlo Acutis", "entidad": "personajes", "id": 196},
+		"13-oct-23": {"titulo": "ELC - Películas"}
 	}
 }
