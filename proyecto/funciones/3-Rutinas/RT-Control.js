@@ -4,7 +4,7 @@ const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./RT-Procesos");
 
-// Exportar ------------------------------------
+// Exportar
 module.exports = {
 	// 0. Start-up y Configuracion de Rutinas
 	startupMasConfiguracion: async function () {
@@ -68,7 +68,7 @@ module.exports = {
 		return;
 	},
 	MailDeFeedback: async () => {
-		// En 'develpment' interrumpe
+		// En 'development' interrumpe
 		if (nodeEnv == "development") {
 			console.log("En development no se envían mails");
 			procesos.finRutinasHorarias("MailDeFeedback");
