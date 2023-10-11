@@ -402,9 +402,12 @@ module.exports = {
 			return;
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = !archivoOrigen.includes("/publico/") ? publSinVersion + archivoOrigen : archivoOrigen;
-			let nombreDestino = publSinVersion + archivoDestino;
-			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+			// Variables
+			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? publSinVersion : "") + archivoOrigen;
+			const nombreDestino = publSinVersion + archivoDestino;
+			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+
+			// Acciones
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
 			else

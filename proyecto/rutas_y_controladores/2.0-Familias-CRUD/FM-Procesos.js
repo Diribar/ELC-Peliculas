@@ -79,8 +79,8 @@ module.exports = {
 		// Variables
 		const familias = original.fuente ? "productos" : "RCLVs"; // los registros de producto tienen el campo 'fuente'
 		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
-		const final = "/sinVersion/" + carpeta + "/Final/";
-		const revisar = "/sinVersion/" + carpeta + "/Revisar/";
+		const final = carpeta + "/Final/";
+		const revisar = carpeta + "/Revisar/";
 		const sinAvatar = "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familia, devuelve el genérico
@@ -91,14 +91,14 @@ module.exports = {
 			? sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
-			: comp.gestionArchivos.existe("./publico" + final + original.avatar)
-			? final + original.avatar
-			: comp.gestionArchivos.existe("./publico" + revisar + original.avatar)
-			? revisar + original.avatar
+			: comp.gestionArchivos.existe(publSinVersion + final + original.avatar)
+			? "/sinVersion/" + final + original.avatar
+			: comp.gestionArchivos.existe(publSinVersion + revisar + original.avatar)
+			? "/sinVersion/" + revisar + original.avatar
 			: sinAvatar;
 
 		// avatarEdic
-		const edic = edicion && edicion.avatar ? revisar + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? "/sinVersion/" + revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
