@@ -25,15 +25,16 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-global.nodeEnv = process.env.NODE_ENV;
-global.fs = require("fs");
-global.archSinVersion = process.env.archSinVersion;
-global.publSinVersion = process.env.publSinVersion;
-global.carpsImagsEpocaDelAno = fs.readdirSync(publSinVersion + "4-EpocasDelAno");
-global.path = require("path");
 global.fetch = require("node-fetch");
+global.path = require("path");
+global.fs = require("fs");
 global.db = require("./base_de_datos/modelos");
+global.nodeEnv = process.env.NODE_ENV;
+global.archSinVersion = process.env.archSinVersion;
+global.publSinVersion = archSinVersion;
+global.carpsImagsEpocaDelAno = fs.readdirSync(archSinVersion + "4-EpocasDelAno");
 global.Op = db.Sequelize.Op;
+
 // Obtiene la versión
 const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
@@ -44,10 +45,8 @@ global.express = require("express");
 const app = express();
 
 // omit the first arg to app.use if you do not want the /public prefix for these assets
-app.use('/publico', express.static(path.join(__dirname, 'publico')));
-
-var staticResource='C:/Users/Sachin/Desktop/profile/img';
-app.use('/archSinVersion', express.static(path.join(staticResource, 'public2')));
+app.use("/publico", express.static(path.join(__dirname, "publico")));
+app.use("/archSinVersion", express.static(archSinVersion));
 
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
