@@ -280,6 +280,7 @@ module.exports = {
 				.replace(/\n/g, " ") // previene el uso de 'return'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
+		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
 	},
 	fechaHora: {
 		ahora: () => {
@@ -379,17 +380,26 @@ module.exports = {
 			return resultado;
 		},
 		mueveImagen: function (nombre, origen, destino, output) {
+			// Variables
 			let archivoOrigen = publSinVersion + origen + "/" + nombre;
 			let carpetaDestino = publSinVersion + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
+
+			// Si no existe la carpeta de destino, la crea
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+
+			// Si no encuentra el archivo de origen, lo avisa
 			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			// Mueve el archivo
 			else
 				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
 					if (!error) {
 						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
 					} else throw error;
 				});
+
+			// Fin
+			return;
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
 			let nombreOrigen = !archivoOrigen.includes("/publico/") ? publSinVersion + archivoOrigen : archivoOrigen;
@@ -760,9 +770,6 @@ module.exports = {
 	},
 
 	// Varias
-	inicialMayus: (texto) => {
-		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
-	},
 	reqBasePathUrl: (req) => {
 		// Obtiene los resultados
 		const baseUrl = req.baseUrl
