@@ -1,0 +1,14 @@
+/* Ancho */
+@media (max-width: 1400px) {
+	#configCons {translate: -100% 0; position: absolute;}
+
+}
+@media (max-width: 650px) {
+	main #imgDerecha {display: none;}
+}
+
+/* Alto */
+@media (min-height: 660px) {
+	#vistaDeResults #scroll:has(li) {height: 466px;}
+	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap; justify-content: center; top: 0; translate: 0 0;}
+}

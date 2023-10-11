@@ -16,8 +16,9 @@
 #encabMasPelis #zonaDisponible {width: 100%; padding: 0 10px;}
 
 /* Vista de Resultados */
-#zonaDisponible #vistaDeResults {background: var(--celeste-claro); display: flex; flex-direction: column; justify-content: center;}
-#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; max-width: 700px; width: 100%; position: relative;}
+#zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center; position: relative;}
+#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; background: var(--celeste-claro);}
+#zonaDisponible #vistaDeResults {width: 100%; max-width: 670px;}
 #vistaDeResults img#telonFondo {width: 100%}
 #vistaDeResults #esperandoResultados {position: absolute; height: 100%; width: 100%;}
 #vistaDeResults #esperandoResultados {background: var(--gris-intermedio); opacity: 50%;}
@@ -52,10 +53,10 @@
 
 /* Vista de Resultados - Varios */
 #vistaDeResults #ppp {font-size: 1.25rem;}
-#vistaDeResults #scroll {overflow-y: auto; width: 100%; padding-left: 15px; scrollbar-gutter: stable;}
+#vistaDeResults #scroll {overflow: auto; width: 100%;}
 
 /* Condicionales */
-#zonaDisponible:has(img#telonFondo.ocultar) #vistaDeResults {height: 70vh;}
+#zonaDisponible:has(img#telonFondo.ocultar) #vistaDeResults {max-height: calc(0.9*var(--altMain));}
 #zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding: 15px 0;}
 #zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding-top: 30px; padding-bottom: 30px;}
 #zonaDisponible #vistaDeResults:has(#listados table) {justify-content: flex-start;}
