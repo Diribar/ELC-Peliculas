@@ -288,12 +288,11 @@ module.exports = {
 				procesos.descargaAvatarOriginal(original, entidad);
 
 			// Fin
-			// Si es un producto creado y fue aprobado, redirecciona a una edición
 			const {baseUrl} = comp.reqBasePathUrl(req);
+			// Si es un producto creado y fue aprobado, redirecciona a una edición
 			if (producto && codigo == "alta")
 				return res.redirect(baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
-			// En los demás casos, redirecciona al tablero
-			else return res.redirect("/revision/tablero-de-control");
+			else return res.redirect("/revision/tablero-de-control"); // En los demás casos, redirecciona al tablero
 		},
 	},
 
@@ -339,17 +338,15 @@ module.exports = {
 					edicion.avatar && // Que en la edición, el campo 'avatar' tenga un valor
 					original.avatar && // Que en el original, el campo 'avatar' tenga un valor
 					original.avatar == edicion.avatarUrl; // Mismo url para los campos 'original.avatar' y 'edicion.avatarUrl'
+
 				// Reemplazo automático
 				if (reemplAvatarAutomaticam) {
-					// Avatar: impacto en los archivos de avatar (original y edicion)
-					await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob: true});
-					// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
-					await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
-					// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-					await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatar: null, avatarUrl: null});
-					// Recarga la ruta
-					return res.redirect(req.originalUrl);
+					await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob: true}); // Avatar: impacto en los archivos de avatar (original y edicion)
+					await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar}); // REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
+					await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatar: null, avatarUrl: null}); // REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
+					return res.redirect(req.originalUrl); // Recarga la ruta
 				}
+
 				// Reemplazo manual - Variables
 				codigo += "/avatar";
 				avatar = procsCRUD.obtieneAvatar(original, edicion);

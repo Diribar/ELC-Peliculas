@@ -190,9 +190,9 @@ module.exports = {
 			if (original.capitulos) delete original.capitulos;
 
 			// Averigua si corresponde actualizar el original
-			// 1. Tiene que ser un revisorPERL
-			// 2. El registro debe estar en el status 'creadoAprob'
-			const actualizaOrig = revisorPERL && original.statusRegistro_id == creadoAprob_id;
+			const actualizaOrig =
+				revisorPERL && // 1. Tiene que ser un revisorPERL
+				original.statusRegistro_id == creadoAprob_id; // 2. El registro debe estar en el status 'creadoAprob'
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido
@@ -255,8 +255,7 @@ module.exports = {
 						// Mueve el archivo de la edición para reemplazar el original
 						comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
 						// Elimina el anterior archivo de imagen original
-						if (original.avatar)
-							comp.gestionArchivos.elimina(publSinVersion + "2-Productos/Final/", original.avatar);
+						if (original.avatar) comp.gestionArchivos.elimina(publSinVersion + "2-Productos/Final/", original.avatar);
 					} else {
 						// Mueve el archivo de la edición para su revisión
 						comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
