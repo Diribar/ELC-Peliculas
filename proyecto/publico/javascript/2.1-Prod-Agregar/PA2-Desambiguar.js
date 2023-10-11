@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Si no existe la información a desambiguar, redirige al paso anterior
-	const {desambiguar, archSinVersion} = await fetch("api/desambiguar-busca-info-en-BE").then((n) => n.json());
+	const {desambiguar} = await fetch("api/desambiguar-busca-info-en-BE").then((n) => n.json());
 	if (!desambiguar) location.reload()
 
 	// Variables
@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
 			let imagen = boton.querySelector("img");
 			imagen.src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: "/imagenes/Avatar/Sin-Avatar.jpg";
+				: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 			imagen.alt = prod.nombreOriginal;
 			imagen.title = prod.nombreOriginal;
 
@@ -124,10 +124,10 @@ window.addEventListener("load", async () => {
 
 			// Imagen
 			let avatar = !prod.avatar
-				? "/imagenes/Avatar/Sin-Avatar.jpg"
+				? "/publico/imagenes/Avatar/Sin-Avatar.jpg"
 				: prod.avatar.includes("/")
 				? prod.avatar
-				: archSinVersion + "2-Productos/Final/" + prod.avatar;
+				: "/sinVersion/2-Productos/Final/" + prod.avatar;
 			let imagen = boton.querySelector("img");
 			imagen.src = avatar;
 			imagen.alt = prod.nombreOriginal;
