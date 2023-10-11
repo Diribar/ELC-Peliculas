@@ -581,7 +581,7 @@ module.exports = {
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			const carpeta = (familias == "productos" ? "2-" : "3-") + familias;
+			const carpeta = (familias == "productos" ? "2-" : "3-") + comp.inicialMayus(familias);
 
 			if (ediciones.length) {
 				// 1. Elimina el archivo avatar de las ediciones

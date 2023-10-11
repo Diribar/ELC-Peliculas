@@ -491,8 +491,8 @@ let avatarConLink = (familia, valorAprob, texto) => {
 	// Variables
 	const link = valorAprob && valorAprob.includes("/");
 	const terminacion = "' style='color: inherit; text-decoration: none'><u>la imagen " + texto + "</u></a>";
-	const carpeta = (familia == "producto" ? "2-" : "3-") + familia;
-	const rutaArchivo = !link && valorAprob ? archSinVersion + carpeta + "s/Final/" + valorAprob : "";
+	const carpeta = (familia == "producto" ? "2-" : "3-") + comp.inicialMayus(familias) + "s/Final/";
+	const rutaArchivo = !link && valorAprob ? archSinVersion + carpeta  + valorAprob : "";
 	const existe = !link && valorAprob ? comp.gestionArchivos.existe("./publico" + rutaArchivo) : "";
 
 	return link
