@@ -45,7 +45,6 @@ module.exports = {
 				entidadesBD: cn_entidades,
 				ordenesPorEntsBD: cn_ordenesPorEnts,
 				ordenesBD: cn_ordenes,
-				archSinVersion,
 
 				// Check-Boxes
 				conLinksHD: "conLinksHD",

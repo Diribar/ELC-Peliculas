@@ -42,7 +42,7 @@ module.exports = {
 				documNumero: usuario.documNumero,
 			};
 			for (let campo of campos) campo.valor = valores[campo.nombre];
-			const documAvatar = archSinVersion + "1-Usuarios/DNI-Revisar/" + usuario.documAvatar;
+			const documAvatar = "/sinVersion/1-Usuarios/DNI-Revisar/" + usuario.documAvatar;
 			const motivos_docum = motivosEdics.filter((n) => n.avatar_us);
 
 			// 4. Va a la vista

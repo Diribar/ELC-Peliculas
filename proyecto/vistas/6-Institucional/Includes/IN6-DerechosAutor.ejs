@@ -7,14 +7,14 @@
 			<li>Sólo vinculamos a sitios con políticas <em>explícitas</em> de respeto a los DA.</li>
 			<li>Damos de baja los links que nos enteramos que no los respetan.</a></li>
 		</ul>
-		<li>Podés descargar nuestra política en forma más detallada, haciendo click <a href="/descargas/RespetoDerechosAutor.pdf" download><u>aquí</u></a>.</li>
+		<li>Podés descargar nuestra política en forma más detallada, haciendo click <a href="/publico/descargas/RespetoDerechosAutor.pdf" download><u>aquí</u></a>.</li>
 		<li>Declaración de respeto a los DA de los portales de <em>subida libre</em> a los que vinculamos:</li>
 	</ul>
 	<div id="logosPortales" class="flexRow">
 		<!-- Portales -->
 		<% for (let linkProv of linksProvs.filter(n => n.urlCopyright)) { %>
 			<a href="//<%= linkProv.urlCopyright %>" tabindex="-1" target='_blank'>
-				<img src="<%= archSinVersion + 'LK-Logos/' + linkProv.avatar %>" title="<%= linkProv.nombre %>">
+				<img src="/sinVersion/LK-Logos/<%= linkProv.avatar %>" title="<%= linkProv.nombre %>">
 			</a>
 		<% } %>
 	</div>

@@ -1,61 +1,61 @@
 <!-- General -->
-<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-Revision.css">
+<link rel="stylesheet" href="/publico/formatos/3-RevisionEnts/RE0-Revision.css">
 
 <% if (codigo == "tableroControl") { %>
 	<!-- TABLERO -->
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
-	<script src="/javascript/0-Compartido/UnaSolaPestana.js"></script>
-	<script src="/javascript/0-Compartido/TableroControl.js"></script>
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/TableroControl.css">
+	<script src="/publico/javascript/0-Compartido/UnaSolaPestana.js"></script>
+	<script src="/publico/javascript/0-Compartido/TableroControl.js"></script>
 
 <% } else { %>
 	<!-- Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-0CRUD.css">
-		<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
-		<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
-		<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-CRUD/PR-0CRUD.css">
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
+		<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
+		<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
 
 	<!-- RCLV-Altas / Solapamiento -->
 	<% } else if (codigo == "rclv/alta" || codigo == "rclv/solapamiento") { %>
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
-		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
-		<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
+		<link rel="stylesheet" href="/publico/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/DatosBreves.css">
 		<% if (codigo == "rclv/alta") { %>
-			<script src="/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
+			<script src="/publico/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
 		<% } else if (codigo == "rclv/solapamiento") { %>
-			<script src="/javascript/3-RevisionEnts/RE2-RCLV-Solapam.js"></script>
+			<script src="/publico/javascript/3-RevisionEnts/RE2-RCLV-Solapam.js"></script>
 		<% } %>
 		
 
 	<!-- Rechazos -->
 	<% } else if (codigo == "rechazo") { %>
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
-		<script src="/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
+		<script src="/publico/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
 
 	<!-- Revisión de Inactivar o Recuperar -->
 	<% } else if (codigo == "inactivar-o-recuperar") { %>
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
-		<script src="/javascript/3-RevisionEnts/RE8-InacRecup.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
+		<script src="/publico/javascript/3-RevisionEnts/RE8-InacRecup.js"></script>
 
 	<!-- Ediciones -->
 	<% } else if (codigo.endsWith("/edicion")) { %>
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
-		<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/3-RevisionEnts/RE9-Edicion.css">
+		<script src="/publico/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
 
 	<!-- Prod-Avatar -->
 	<% } else if (codigo.endsWith("/edicion/avatar")) { %>
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-EdicionAvatar.css">
-		<script src="/javascript/3-RevisionEnts/RE9-EdicionAvatar.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/3-RevisionEnts/RE9-EdicionAvatar.css">
+		<script src="/publico/javascript/3-RevisionEnts/RE9-EdicionAvatar.js"></script>
 
 	<!-- Links -->
 	<% } else if (codigo == "abmLinks") { %>
 		<!-- Uso compartido -->
-		<link rel="stylesheet" href="/formatos/2.3-Links-CRUD/Links.css">
-		<script src="/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>
-		<script src="/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
-		<script src="/javascript/2.3-Links-CRUD/LK2-Eliminar.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/2.3-Links-CRUD/Links.css">
+		<script src="/publico/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>
+		<script src="/publico/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
+		<script src="/publico/javascript/2.3-Links-CRUD/LK2-Eliminar.js"></script>
 		<!-- Específico -->
-		<script src="/javascript/3-RevisionEnts/RE3-Link1-AltasBajas.js"></script>
-		<script src="/javascript/3-RevisionEnts/RE3-Link2-Ediciones.js"></script>
+		<script src="/publico/javascript/3-RevisionEnts/RE3-Link1-AltasBajas.js"></script>
+		<script src="/publico/javascript/3-RevisionEnts/RE3-Link2-Ediciones.js"></script>
 	<% } %>
 <% } %>

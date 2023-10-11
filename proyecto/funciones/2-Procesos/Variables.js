@@ -448,22 +448,22 @@ module.exports = {
 		return [
 			{
 				href: "//themoviedb.org/search?query=" + nombre,
-				src: "/imagenes/Logos/BD-TMDB.jpg",
+				src: "/publico/imagenes/Logos/BD-TMDB.jpg",
 				alt: "TMDB",
 			},
 			{
 				href: "//filmaffinity.com/es/search.php?stext=" + nombre,
-				src: "/imagenes/Logos/BD-FA.jpg",
+				src: "/publico/imagenes/Logos/BD-FA.jpg",
 				alt: "FA",
 			},
 			{
 				href: "//imdb.com/find?q=" + nombre,
-				src: "/imagenes/Logos/BD-IMDB.jpg",
+				src: "/publico/imagenes/Logos/BD-IMDB.jpg",
 				alt: "IMDB",
 			},
 			{
 				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
-				src: "/imagenes/Logos/BD-Google.jpg",
+				src: "/publico/imagenes/Logos/BD-Google.jpg",
 				alt: "Google",
 			},
 		];

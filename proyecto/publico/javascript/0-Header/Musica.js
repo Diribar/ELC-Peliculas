@@ -10,5 +10,5 @@ window.addEventListener("load", () => {
 // <!-- Música de fondo -->
 // <div class="grupos">
 // 	<i id="icono_musica" class="fa-solid fa-music scale iconoHeader"></i>
-// 	<audio src="/audio/Música-de-fondo.mp3"></audio>
+// 	<audio src="/publico/audio/Música-de-fondo.mp3"></audio>
 // </div>

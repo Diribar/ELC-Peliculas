@@ -59,8 +59,8 @@ module.exports = {
 			// Generar la info para la vista
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 			let avatar = usuario.avatar
-				? archSinVersion + "1-Usuarios/Avatar/" + usuario.avatar
-				: "/imagenes/Avatar/Usuario-Generico.jpg";
+				? "/sinVersion/1-Usuarios/Avatar/" + usuario.avatar
+				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -145,10 +145,10 @@ module.exports = {
 			let rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
 			// Avatar
 			let avatar = usuario.documAvatar
-				? archSinVersion + "1-Usuarios/DNI-Revisar/" + usuario.documAvatar
-				: "/imagenes/Avatar/DNI-Generico.jpg";
+				? "/sinVersion/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
+				: "/publico/imagenes/Avatar/DNI-Generico.jpg";
 			// Crear la carpeta si no existe
-			const ruta = publSinVersion + "9-Provisorio";
+			const ruta = "/sinVersion/9-Provisorio";
 			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
@@ -175,7 +175,7 @@ module.exports = {
 				id: usuario.id,
 			};
 			if (req.file) datos.tamano = req.file.size;
-			datos.ruta = req.file ? publSinVersion + "9-Provisorio/" : archSinVersion + "1-Usuarios/DNI-Revisar/";
+			datos.ruta = req.file ? "/sinVersion/9-Provisorio/" : "/sinVersion/1-Usuarios/DNI-Revisar/";
 
 			// Averigua si hay errores de validación
 			let errores = await valida.identidadBE(datos);

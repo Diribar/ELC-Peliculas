@@ -26,14 +26,13 @@ global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.fetch = require("node-fetch");
-global.path = require("path");
-global.fs = require("fs");
-global.db = require("./base_de_datos/modelos");
 global.nodeEnv = process.env.NODE_ENV;
-global.archSinVersion = process.env.archSinVersion;
-global.publSinVersion = archSinVersion;
-global.carpsImagsEpocaDelAno = fs.readdirSync(archSinVersion + "4-EpocasDelAno");
+global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
+global.path = require("path");
+global.publSinVersion = path.join(__dirname, "../", process.env.archSinVersion); 
+global.fs = require("fs");
+global.carpsImagsEpocaDelAno = fs.readdirSync(publSinVersion + "4-EpocasDelAno");
 
 // Obtiene la versión
 const {exec} = require("child_process");
@@ -44,11 +43,11 @@ exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (e
 global.express = require("express");
 const app = express();
 
-// omit the first arg to app.use if you do not want the /public prefix for these assets
+// Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
 app.use("/publico", express.static(path.join(__dirname, "publico")));
-app.use("/archSinVersion", express.static(archSinVersion));
+app.use("/sinVersion", express.static(publSinVersion));
 
-app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
+// Otros
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 // Para usar PUT y DELETE

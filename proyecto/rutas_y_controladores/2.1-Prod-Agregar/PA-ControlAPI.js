@@ -32,13 +32,7 @@ module.exports = {
 	// Vista (desambiguar)
 	desambForm: {
 		// Busca valores 'session'
-		buscaInfoEnBE: async (req, res) => {
-			// Variables
-			const desambiguar = req.session.desambiguar;
-
-			// Fin
-			return res.json({desambiguar, archSinVersion});
-		},
+		buscaInfoEnBE: async (req, res) => res.json(req.session.desambiguar),
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables

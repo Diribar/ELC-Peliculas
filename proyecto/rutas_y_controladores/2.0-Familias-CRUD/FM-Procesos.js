@@ -79,9 +79,9 @@ module.exports = {
 		// Variables
 		const familias = original.fuente ? "productos" : "RCLVs"; // los registros de producto tienen el campo 'fuente'
 		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
-		const final = archSinVersion + carpeta + "/Final/";
-		const revisar = archSinVersion + carpeta + "/Revisar/";
-		const sinAvatar = "/imagenes/Avatar/Sin-Avatar.jpg";
+		const final = "/sinVersion/" + carpeta + "/Final/";
+		const revisar = "/sinVersion/" + carpeta + "/Revisar/";
+		const sinAvatar = "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familia, devuelve el genérico
 		if (!familias) return {orig: sinAvatar, edic: sinAvatar};
