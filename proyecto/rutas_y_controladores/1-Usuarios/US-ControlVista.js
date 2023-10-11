@@ -175,7 +175,7 @@ module.exports = {
 				id: usuario.id,
 			};
 			if (req.file) datos.tamano = req.file.size;
-			datos.ruta = req.file ? "/sinVersion/9-Provisorio/" : publSinVersion + "1-Usuarios/DNI-Revisar/";
+			datos.ruta = req.file ? "/sinVersion/9-Provisorio/" : "/sinVersion/1-Usuarios/DNI-Revisar/";
 
 			// Averigua si hay errores de validación
 			let errores = await valida.identidadBE(datos);
