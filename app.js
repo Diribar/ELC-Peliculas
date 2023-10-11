@@ -186,7 +186,7 @@ app.set("views", [
 
 	// Preferencias por producto
 	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
-	
+
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
