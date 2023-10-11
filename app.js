@@ -22,7 +22,6 @@ global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 2; // El 'default' es "Sorprendeme"
-global.versionELC = "1.19";
 
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -35,6 +34,10 @@ global.path = require("path");
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
+// Obtiene la versión
+const {exec} = require("child_process");
+const carpeta = path.basename(path.resolve());
+exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (err ? carpeta : stdout.trim()).slice(-4)));
 
 // Para usar propiedades de express
 global.express = require("express");
@@ -211,7 +214,6 @@ app.set("views", [
 	global.prefijoSanto = variables.prefijoSanto;
 
 	// Procesos que dependen de la variable 'global'
-	// Rutinas
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 

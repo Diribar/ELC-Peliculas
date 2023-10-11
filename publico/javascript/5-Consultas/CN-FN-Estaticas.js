@@ -274,7 +274,7 @@ let cambiosEnBD = {
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
-		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpciones.length;
+		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpciones.filter((n) => !n.combo).length;
 		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
 
 		// Actualiza el ícono y el título
