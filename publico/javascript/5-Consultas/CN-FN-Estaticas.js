@@ -266,7 +266,7 @@ let cambiosEnBD = {
 
 		// Fin
 		return;
-	}, 
+	},
 	ppp: async (elemento) => {
 		// Opción actual
 		const indice = v.ppps.findIndex((n) => n == elemento);
