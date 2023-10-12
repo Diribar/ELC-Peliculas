@@ -35,7 +35,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links
-router.get("/abm", aptoABM, vista.links);
+router.get("/abm", aptoABM, capturaActivar, vista.links);
 
 // Fin
 module.exports = router;
