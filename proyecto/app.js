@@ -30,9 +30,9 @@ global.nodeEnv = process.env.NODE_ENV;
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 global.path = require("path");
-global.publSinVersion = path.join(__dirname, "../", process.env.archSinVersion); 
+global.carpetaExterna = path.join(__dirname, "../", process.env.archSinVersion);
 global.fs = require("fs");
-global.carpsImagsEpocaDelAno = fs.readdirSync(publSinVersion + "4-EpocasDelAno");
+global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
 
 // Obtiene la versión
 const {exec} = require("child_process");
@@ -45,7 +45,7 @@ const app = express();
 
 // Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
 app.use("/publico", express.static(path.join(__dirname, "publico")));
-app.use("/sinVersion", express.static(publSinVersion));
+app.use("/externa", express.static(carpetaExterna));
 
 // Otros
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
