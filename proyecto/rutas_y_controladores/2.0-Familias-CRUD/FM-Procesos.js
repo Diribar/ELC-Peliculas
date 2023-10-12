@@ -91,14 +91,14 @@ module.exports = {
 			? sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
-			: comp.gestionArchivos.existe(publSinVersion + final + original.avatar)
-			? "/sinVersion/" + final + original.avatar
-			: comp.gestionArchivos.existe(publSinVersion + revisar + original.avatar)
-			? "/sinVersion/" + revisar + original.avatar
+			: comp.gestionArchivos.existe(carpetaExterna + final + original.avatar)
+			? "/externa/" + final + original.avatar
+			: comp.gestionArchivos.existe(carpetaExterna + revisar + original.avatar)
+			? "/externa/" + revisar + original.avatar
 			: sinAvatar;
 
 		// avatarEdic
-		const edic = edicion && edicion.avatar ? "/sinVersion/" + revisar + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? "/externa/" + revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
@@ -587,7 +587,7 @@ module.exports = {
 			if (ediciones.length) {
 				// 1. Elimina el archivo avatar de las ediciones
 				for (let edicion of ediciones)
-					if (edicion.avatar) comp.gestionArchivos.elimina(publSinVersion + carpeta + "/Revisar", edicion.avatar);
+					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 				// 2. Elimina las ediciones
 				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});

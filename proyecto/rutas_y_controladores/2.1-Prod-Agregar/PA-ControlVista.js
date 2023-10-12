@@ -96,7 +96,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? "/sinVersion/9-Provisorio/" + datosDuros.avatar
+				? "/externa/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
 				: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
@@ -124,7 +124,7 @@ module.exports = {
 
 			// Acciones si existe un archivo avatar ingresado anteriormente y ahora se ingresó otro
 			if (datosDuros.avatar && req.file) {
-				comp.gestionArchivos.elimina(publSinVersion + "9-Provisorio/", datosDuros.avatar);
+				comp.gestionArchivos.elimina(carpetaExterna + "9-Provisorio/", datosDuros.avatar);
 				delete datosDuros.avatar;
 			}
 
@@ -195,7 +195,7 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
-			const imgDerPers = datosAdics.avatar ? "/sinVersion/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
+			const imgDerPers = datosAdics.avatar ? "/externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -269,7 +269,7 @@ module.exports = {
 			}
 
 			// Imagen derecha
-			let imgDerPers = confirma.avatar ? "/sinVersion/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? "/externa/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -316,7 +316,7 @@ module.exports = {
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
-				let rutaYnombre = publSinVersion + "2-Productos/Revisar/" + confirma.avatar;
+				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + confirma.avatar;
 				comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 			}
 			// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'
