@@ -2,17 +2,17 @@
 <!-- RUD: provisorio y ajeno -->
 <!-- Revisión: propio o creado c/ediciones o aprobado/inactivo -->
 <tr class="
-	yaExistentes 
-	inactivo_<%= link.cond.inactivos %> 
-	<%- link.cond.inactivos ? 'ocultaInactivo' : '' %> 
-	<%= link.tipo_id == 1 ? 'TR' : 'PL' %> 
+	yaExistentes
+	inactivo_<%= link.cond.inactivos %>
+	<%- link.cond.inactivos ? 'ocultaInactivo' : '' %>
+	<%= link.tipo_id == 1 ? 'TR' : 'PL' %>
 	fila<%= fila %>
 	oscuro_<%- link.cond.rud ? link.cond.provisorio : ((link.cond.creado && !!link.ediciones.length) || link.cond.estable) %>
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
-			<img src="/sinVersion/LK-Logos/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.url %>">
+			<img src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.url %>">
 		</a>
 		<input name='url' type="text" class="ocultar" value="<%= link.url %>">
 	</td>
@@ -74,7 +74,7 @@
 			<!-- Status inactivo -> RECUPERAR -->
 			<% mostrar = link.cond.inactivo %>
 			<i class="fa-solid fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
-		
+
 			<!-- ELIMINAR -->
 			<% if (link.cond.creadoPropio || usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
 				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
