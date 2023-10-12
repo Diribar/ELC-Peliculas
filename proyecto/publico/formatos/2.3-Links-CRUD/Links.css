@@ -73,7 +73,6 @@ main #cuerpo {flex-direction: column;}
 /* #datos table .inputError input[type=number] {-moz-appearance: textfield;} */
 
 /* Íconos en la tabla */
-#datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td button {border: none; border-radius: 10px; padding: 3px 4px;}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 #datos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
