@@ -145,7 +145,7 @@ window.addEventListener("load", async () => {
 			actualiza.muestraOcultaFiltros();
 		}
 
-		// Caption
+		// Caption - expande/contrae la tabla
 		else if ([elemento.tagName, padre.tagName].includes("CAPTION")) {
 			// Obtiene el índice
 			let indice = v.captions.findIndex((n) => n == elemento);
