@@ -1,26 +1,30 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
+<!-- El id debe ser 'tituloPrincipal' por formato compartido -->
 <section id="tituloPrincipal" class="flexRow">
-	<!-- Entidad -->
-	<select name="entidad_id" class="prefSimple" required>
-		<% for (let entidad of cn_entidades) { %>
+	<!-- Entidad y Orden -->
+	<div id="entidadOrden">
+		<!-- Entidad -->
+		<select name="entidad_id" class="prefSimple" required>
+			<% for (let entidad of cn_entidades) { %>
 			<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
-		<% } %>
-	</select>
+			<% } %>
+		</select>
 
-	<!-- Orden -->
-	<select name="ordenPorEnt_id" class="prefSimple" required>
-		<optgroup id="cuatroPelis" label="Cuatro Películas">
-			<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => n.boton)) { %>
+		<!-- Orden -->
+		<select name="ordenPorEnt_id" class="prefSimple" required>
+			<optgroup id="cuatroPelis" label="Cuatro Películas">
+				<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => n.boton)) { %>
 				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
-			<% } %>
-		</optgroup>
-		<optgroup label="Listado">
-			<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => !n.boton)) { %>
+				<% } %>
+			</optgroup>
+			<optgroup label="Listado">
+				<% for (let ordenPorEnt of cn_ordenesPorEnts.filter(n => !n.boton)) { %>
 				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
-			<% } %>
-		</optgroup>
-	</select>
-	
+				<% } %>
+			</optgroup>
+		</select>
+	</div>
+
 	<!-- Ayuda -->
 	<div id="ayudaOrden">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -29,7 +33,10 @@
 				<li><span>Sorprendeme al Azar</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
 				<li><span>Por Nombre</span>: según el nombre de la entidad, orden ascendente.</li>
 				<li><span>Últimas ingresadas</span>: según la fecha en que la aprobamos.</li>
-				<li><span>Tus preferencias</span>: sólo si estás logueado, muestra las películas a las que les marcaste alguna preferencia.</li>
+				<li>
+					<span>Tus preferencias</span>: sólo si estás logueado, muestra las películas a las que les marcaste alguna
+					preferencia.
+				</li>
 				<li><span>Por Año Histórico</span>: según el año en que nació el personaje u ocurrió el hecho.</li>
 			</ul>
 		</i>

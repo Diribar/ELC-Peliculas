@@ -8,24 +8,25 @@
 	<div id="encabezado">
 		<%- include('CN-1Encabezado') %>
 	</div>
+
 	<!-- Zona de Productos -->
 	<div id="zonaDisponible">
 		<div id="vistaDeResults" class="bordeConSombra">
-			<!-- Telón de fondo, Zona 'Esperando Resultados' y Actualizar -->
-			<img id="telonFondo" src="/publico/imagenes/Varios/Cortinas.jpg">
-			<div id="esperandoResultados" class="ocultar desaparece"></div>
-			<div id="actualizar" class="scale"><i class="fa-solid fa-rotate-right" title="Actualizar"></i></div>
-
 			<!-- Zona de scroll -->
 			<div id="scroll">
 				<ul id="botones"></ul>
 				<div id="listados"></div>
 			</div>
 
+			<!-- Telón de fondo, Zona 'Esperando Resultados' y Actualizar -->
+			<img id="telonFondo" src="/publico/imagenes/Varios/Cortinas.jpg">
+			<div id="actualizar" class="scale"><i class="fa-solid fa-rotate-right" title="Actualizar"></i></div>
+
 			<!-- Zona de carteles -->
 			<div id="carteles">
 				<!-- Carteles -->
 				<button id="quieroVer" class="cartel scale pointer ocultar agrandaAchica">'Click' para ver las<br>películas propuestas</button>
+				<button id="esperandoResultados" class="ocultar desaparece">Esperando resultados</button>
 				<button id="noTenemos" class="cartel ocultar">Sin resultados<br>para esa consulta</button>
 				<button id="asegurate" class="cartel ocultar">Asegurate de contestar<br>los sectores en rojo</button>
 				<button id="pppSinLogin" class="cartel ocultar">Tenés que estar <span><a href="/usuarios/login">logueado</a></span> para ver tus preferencias</button>
@@ -36,5 +37,7 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Pie de página -->
 	<%- include("CMP-3Footer", {mostrar: true}) %>
 </section>
