@@ -24,8 +24,8 @@ module.exports = async (req, res, next) => {
 
 	// Valida que exista el archivo del documAvatar
 	if (!informacion) {
-		documAvatar = archSinVersion + "1-Usuarios/DNI-Revisar/" + usuario.documAvatar;
-		if (!comp.gestionArchivos.existe("./publico" + documAvatar))
+		documAvatar = carpetaExterna + "1-Usuarios/DNI-Revisar/" + usuario.documAvatar;
+		if (!comp.gestionArchivos.existe(documAvatar))
 			informacion = {
 				mensajes: ["No existe el archivo de imagen del documento."],
 				iconos: [vistaEntendido],

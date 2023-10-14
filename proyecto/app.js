@@ -30,7 +30,7 @@ global.nodeEnv = process.env.NODE_ENV;
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 global.path = require("path");
-global.carpetaExterna = path.join(__dirname, "../", process.env.archSinVersion);
+global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
 

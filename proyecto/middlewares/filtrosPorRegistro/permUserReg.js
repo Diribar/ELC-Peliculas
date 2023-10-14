@@ -82,62 +82,51 @@ module.exports = async (req, res, next) => {
 
 	// CAMINO CRÍTICO
 	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder
-	if (!informacion) {
-		if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
-			informacion = {
-				mensajes: [
-					"Por ahora, el registro sólo está accesible para su creador.",
-					"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
-				],
-				iconos: [v.vistaAnterior],
-			};
-	}
-
+	if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
+		informacion = {
+			mensajes: [
+				"Por ahora, el registro sólo está accesible para su creador.",
+				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
+			],
+			iconos: [v.vistaAnterior],
+		};
 	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
-	if (!informacion) {
-		if (
-			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
-			v.registro.statusRegistro_id == creado_id && // en status creado
-			!creadoPorElUsuario && // otro usuario quiere acceder
-			baseUrl != "/revision" // la ruta no es de revisión
-		) {
-			let nombre = comp.nombresPosibles(v.registro);
-			if (nombre) nombre = "'" + nombre + "'";
-			let mensajes = [
-				"El registro todavía no está revisado.",
-				"Estará disponible luego de ser revisado, en caso de ser aprobado.",
-			];
-			informacion = {mensajes, iconos: [v.vistaAnterior]};
-		}
+	else if (
+		v.creadoEn < v.haceUnaHora && // creado hace más de una hora
+		v.registro.statusRegistro_id == creado_id && // en status creado
+		!creadoPorElUsuario && // otro usuario quiere acceder
+		baseUrl != "/revision" // la ruta no es de revisión
+	) {
+		let nombre = comp.nombresPosibles(v.registro);
+		if (nombre) nombre = "'" + nombre + "'";
+		let mensajes = [
+			"El registro todavía no está revisado.",
+			"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+		];
+		informacion = {mensajes, iconos: [v.vistaAnterior]};
 	}
 
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
-	if (!informacion) {
-		if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
-			informacion = {
-				mensajes: [
-					"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
-					"Estará liberado a más tardar el " + v.horarioFinalCaptura,
-				],
-				iconos: v.vistaAnteriorInactivar,
-			};
-	}
-
+	else if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
+		informacion = {
+			mensajes: [
+				"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
+				"Estará liberado a más tardar el " + v.horarioFinalCaptura,
+			],
+			iconos: v.vistaAnteriorInactivar,
+		};
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
-	if (!informacion) {
-		if (v.capturadoEn < v.haceUnaHora && v.capturadoEn > v.haceDosHoras && v.registro.capturadoPor_id == v.userID)
-			informacion = {
-				mensajes: [
-					"Esta captura terminó el " + v.horarioFinalCaptura,
-					"Quedó a disposición de los demás " + v.tipoUsuario + ".",
-					"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
-				],
-				iconos: [v.vistaEntendido],
-			};
-	}
-
+	else if (v.capturadoEn < v.haceUnaHora && v.capturadoEn > v.haceDosHoras && v.registro.capturadoPor_id == v.userID)
+		informacion = {
+			mensajes: [
+				"Esta captura terminó el " + v.horarioFinalCaptura,
+				"Quedó a disposición de los demás " + v.tipoUsuario + ".",
+				"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
+			],
+			iconos: [v.vistaEntendido],
+		};
 	// 5. El usuario tiene capturado otro registro en forma activa
-	if (!informacion) {
+	else {
 		let prodCapturado = await buscaOtrasCapturasActivasDelUsuario();
 		if (prodCapturado) {
 			// Datos para el mensaje
