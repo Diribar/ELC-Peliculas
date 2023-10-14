@@ -1,14 +1,27 @@
 /* Ancho */
-@media (max-width: 1400px) {
-	#configCons {translate: -100% 0; position: absolute;}
-
-}
-@media (max-width: 650px) {
-	main #imgDerecha {display: none;}
-}
+@media (max-width: 415px)  {#encabezado #tituloPrincipal #entidadOrden {flex-direction: column;}} /* Entidad y Orden en formato columna */
+@media (max-width: 310px)  {#vistaDeResults:has(#scroll #botones li) {--anchoPaddEst: 10px; --anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2));}}
+@media (max-width: 970px)  {main #imgDerecha {display: none;}} /* Oculta la Imagen Derecha */
+@media (max-width: 1294px) {#cuerpo #configCons {display: none;}} /* Oculta los filtros */
+@media (min-width: 1294px) {#tituloPrincipal #mostrarConfigCons {display: none;}} /* Muestra el ícono para mostrar los filtros */
 
 /* Alto */
-@media (min-height: 660px) {
-	#vistaDeResults #scroll:has(li) {height: 466px;}
-	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap; justify-content: center; top: 0; translate: 0 0;}
+@media (max-height: 365px) {
+	#zonaDisponible #vistaDeResults {max-height: 100%;}
+	#zonaDisponible #vistaDeResults #actualizar {display: none;}
+}
+@media (min-height: 366px) {
+	#zonaDisponible #vistaDeResults {max-height: 90%;}
+	#zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding-top: 15px; padding-bottom: 15px;}
+}
+@media (max-height: 400px) {#encabMasPelis #encabezado {display: none;}} /* Oculta el encabezado */
+
+/* alto y ancho */
+@media (max-height: 650px) or (max-width: 640px) {
+	#vistaDeResults #scroll:has(#botones li) {overflow-x: auto;}
+	#botones li:first-child {margin-left: 0;}
+	#botones li:last-child {margin-right: 0;}
+}
+@media (min-height: 651px) and (min-width: 641px) {
+	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap;}
 }

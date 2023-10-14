@@ -1,7 +1,10 @@
 /* General */
+#zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding: 30px 0;}
+#vistaDeResults #scroll:has(table) {overflow-y: auto;}
+
+/* Listados */
 #scroll #listados {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
 #scroll #listados {padding: 0 25px; width: 100%;}
-/* #scroll #listados.ocultar {display: none} */
 #scroll #listados {
     --bordeInterno: 1px dotted var(--gris-oscuro);
     --bordeExterno: 2px solid var(--gris-oscuro);
@@ -11,7 +14,7 @@
 #listados table {border-collapse: collapse; width: 100%;}
 #listados table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
 #listados table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
-#listados table {margin-bottom: 30px;}
+#listados table:not(:last-child) {margin-bottom: 30px;}
 #listados table:has(tbody.ocultar) caption {border-radius: 15px;}
 
 /* Título */

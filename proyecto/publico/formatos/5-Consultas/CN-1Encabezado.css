@@ -1,12 +1,12 @@
-/* General */
-#encabezado #izquierda {align-items: flex-start;}
+/* Sector izquierdo */
+#encabezado #tituloPrincipal {justify-content: flex-start;}
 
 /* Orden y Entidad */
-#encabezado #tituloPrincipal {flex-wrap: wrap; align-items: left;}
-#encabezado #tituloPrincipal select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
-#encabezado #tituloPrincipal select[name=ordenPorEnt_id] {border-bottom-right-radius: 7px;}
-#encabezado #tituloPrincipal select {background: var(--rojo-oscuro); color: snow;}
+#encabezado #tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
+#encabezado #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: snow; border: 0.25px solid var(--gris-oscuro);}
+#encabezado #tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
 #encabezado #tituloPrincipal select:valid {background: var(--verde-oscuro);}
+#encabezado #tituloPrincipal select[name=ordenPorEnt_id] {border-bottom-right-radius: 7px;}
 #encabezado #tituloPrincipal select optgroup {background: var(--azul-frances) ;}
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
@@ -16,5 +16,5 @@
 #encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 
 /* Contador */
-#encabezado #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
-#encabezado #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}
+#encabezado #derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
+#encabezado #derecha #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}
