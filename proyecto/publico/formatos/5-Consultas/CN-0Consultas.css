@@ -16,14 +16,13 @@
 #encabMasPelis #zonaDisponible {width: 100%; flex-grow: 1; position: relative;}
 
 /* Vista de Resultados */
-#zonaDisponible #vistaDeResults {position: absolute;}
+#zonaDisponible #vistaDeResults {position: absolute; min-height: min(200px, 90%);}
 #zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
 #zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; background: var(--celeste-claro);}
 #zonaDisponible #vistaDeResults {min-width: min(400px, 100%); max-width: min(660px, 100%); }
 
 /* Dentro de Vista de Resultados */
-#vistaDeResults #esperandoResultados {position: absolute; height: 100%; width: 100%;}
-#vistaDeResults #esperandoResultados {background: var(--gris-intermedio); opacity: 50%;}
+#vistaDeResults #esperandoResultados {transition: .3s;}
 #vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
 #vistaDeResults #actualizar i {background: var(--verde-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #vistaDeResults #actualizar i {font-size: 0.8rem; padding: 5px 5px 4px 4px}
