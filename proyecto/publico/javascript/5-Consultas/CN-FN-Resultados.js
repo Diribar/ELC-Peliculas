@@ -263,7 +263,7 @@ let auxiliares = {
 		avatar.className = "imagenChica";
 		avatar.src = producto.avatar.includes("/")
 			? producto.avatar
-			: "/sinVersion/2-Productos/Final/" + producto.avatar;
+			: "/externa/2-Productos/Final/" + producto.avatar;
 		avatar.alt = producto.nombreCastellano;
 		avatar.title = producto.nombreCastellano;
 		button.appendChild(avatar);

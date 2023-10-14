@@ -331,7 +331,8 @@ module.exports = {
 		},
 		carpetaProvisorio: function () {
 			// Si no existe la carpeta, la crea
-			if (!this.existe(publSinVersion + "9-Provisorio")) fs.mkdirSync(publSinVersion + "9-Provisorio");
+			const provisorio = carpetaExterna + "9-Provisorio"
+			if (!this.existe(provisorio)) fs.mkdirSync(provisorio);
 
 			// Fin
 			return;
@@ -381,8 +382,8 @@ module.exports = {
 		},
 		mueveImagen: function (nombre, origen, destino, output) {
 			// Variables
-			let archivoOrigen = publSinVersion + origen + "/" + nombre;
-			let carpetaDestino = publSinVersion + destino + "/";
+			let archivoOrigen = carpetaExterna + origen + "/" + nombre;
+			let carpetaDestino = carpetaExterna + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
 
 			// Si no existe la carpeta de destino, la crea
@@ -403,8 +404,8 @@ module.exports = {
 		},
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
 			// Variables
-			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? publSinVersion : "") + archivoOrigen;
-			const nombreDestino = publSinVersion + archivoDestino;
+			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
+			const nombreDestino = carpetaExterna + archivoDestino;
 			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 
 			// Acciones

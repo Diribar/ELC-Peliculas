@@ -6,10 +6,10 @@
         <% const calidad = " - " + link.calidad + 'px' %>
         <% const completoParte = link.completo ? " - Completo" : link.parte != '-' ? (' - Parte ' + link.parte) : '' %>
         <a href="//<%= link.url %>" target="_blank">
-            <img 
-                src="/sinVersion/LK-Logos/<%= link.prov.avatar %>" 
+            <img
+                src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>"
                 class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
-                title="<%= castellano + gratuito + calidad + completoParte %>" 
+                title="<%= castellano + gratuito + calidad + completoParte %>"
             >
         </a>
     <% } %>

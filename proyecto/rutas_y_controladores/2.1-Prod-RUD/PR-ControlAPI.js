@@ -116,7 +116,7 @@ module.exports = {
 			const condicion = !prodOrig.statusRegistro.creados || prodOrig.creadoPor_id != userID;
 
 			if (condicion && prodEdic) {
-				if (prodEdic.avatar) comp.gestionArchivos.elimina(publSinVersion + "2-Productos/Revisar/", prodEdic.avatar);
+				if (prodEdic.avatar) comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", prodEdic.avatar);
 				BD_genericas.eliminaPorId("prodsEdicion", prodEdic.id);
 			}
 			// Terminar
