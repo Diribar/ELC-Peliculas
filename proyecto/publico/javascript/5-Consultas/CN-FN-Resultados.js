@@ -12,7 +12,7 @@ let resultados = {
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
 
 		// Tapa y limpia los resultados anteriores
-		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.replace("desaparece", "aparece");
+		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.remove("ocultar");
 		DOM.botones.innerHTML = "";
 		DOM.listados.innerHTML = "";
 		v.infoResultados = null;
@@ -110,7 +110,7 @@ let resultados = {
 			v.ordenPorEntBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
-			DOM.esperandoResultados.classList.replace("aparece", "desaparece");
+			DOM.esperandoResultados.classList.add("ocultar");
 
 			// Carteles periódicos, con una frecuencia dada
 			v.contadorDeMostrarResults++;
