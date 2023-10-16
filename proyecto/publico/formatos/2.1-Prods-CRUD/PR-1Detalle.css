@@ -1,4 +1,6 @@
-#datosLargos #recuadro {min-width: 40vw;}
+/* General */
+#datos #datosLargos {width: min(675px, 100%);}
+#datosLargos #recuadro {overflow-y: scroll;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}

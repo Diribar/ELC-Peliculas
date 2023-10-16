@@ -1,5 +1,6 @@
 /* Información */
-#datosLargos #recuadro {max-width: 45vw;}
+#datos #datosLargos {position: absolute; max-height: 100%;}
+#datosLargos #datosLargos {max-width: 100%;}
 #recuadro #contenido {justify-content: space-around;}
 #contenido #informacion {margin: 30px 40px 0;}
 #informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}

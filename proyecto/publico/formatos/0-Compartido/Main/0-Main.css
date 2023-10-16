@@ -5,7 +5,6 @@ main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;
 
 /* Imagen Derecha */
 main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
-/* main #imgDerecha {background: var(--gris-claro);} */
 main #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
 
 /* Cuerpo */
