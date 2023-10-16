@@ -134,7 +134,7 @@ let resultados = {
 			v.productos = [];
 			let cfc = 0;
 			let vpc = 0;
-			let contador = 0;
+			v.contador = 0;
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 			const seDebeEquilibrar =
@@ -151,16 +151,15 @@ let resultados = {
 					resultado.cfc ? cfc++ : vpc++;
 					if ((resultado.cfc && cfc > 2) || (!resultado.cfc && vpc > 2)) continue;
 				}
-
-				// Agrega un botón
-				const boton = auxiliares.boton(resultado);
-				DOM.botones.append(boton);
-				v.productos.push(resultado);
-
-				// Fin
-				contador++;
-				if (contador > 3) break; // no permite más de 4 botones
+				agregaUnBoton(resultado); // Agrega un botón
+				if (v.contador > 3) break; // no permite más de 4 botones
 			}
+			if (v.contador < 4 && v.infoResultados.length >= 4)
+				for (let resultado of v.infoResultados) {
+					if (v.productos.find((n) => n.id == resultado.id && n.entidad == resultado.entidad)) continue; // Saltea los productos ya agregados
+					agregaUnBoton(resultado); // Agrega un botón
+					if (v.contador > 3) break; // no permite más de 4 botones
+				}
 
 			// Genera las variables 'ppp'
 			DOM.ppps = DOM.botones.querySelectorAll(".producto #ppp");
@@ -261,9 +260,7 @@ let auxiliares = {
 		// Crea la imagen
 		const avatar = document.createElement("img");
 		avatar.className = "imagenChica";
-		avatar.src = producto.avatar.includes("/")
-			? producto.avatar
-			: "/externa/2-Productos/Final/" + producto.avatar;
+		avatar.src = producto.avatar + (!producto.avatar.includes("/") ? "/externa/2-Productos/Final/" : "");
 		avatar.alt = producto.nombreCastellano;
 		avatar.title = producto.nombreCastellano;
 		button.appendChild(avatar);
@@ -614,4 +611,14 @@ let creaUnaCelda = {
 		// Fin
 		return celda;
 	},
+};
+
+let agregaUnBoton = (resultado) => {
+	const boton = auxiliares.boton(resultado);
+	DOM.botones.append(boton);
+	v.productos.push(resultado);
+	v.contador++;
+
+	// Fin
+	return;
 };

@@ -1,7 +1,7 @@
 {
   "Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-  "FechaUTC": "Sáb. 14/oct",
-  "HoraUTC": "0:00",
+  "FechaUTC": "Dom. 15/oct",
+  "HoraUTC": "4:15",
   "FechaHoraUTC": "SI",
   "Subtitulo2": "------------TEMAS DE SEMANA ------------------",
   "FechaSemUTC": "Lun. 9/oct",
@@ -27,11 +27,6 @@
   },
   "Subtitulo4": "------------ IMAGEN DERECHA -------------------",
   "ImagenesDerecha": {
-    "12-oct-23": {
-      "titulo": "Beato Carlo Acutis",
-      "entidad": "personajes",
-      "id": 196
-    },
     "13-oct-23": { "titulo": "ELC - Películas" },
     "14-oct-23": { "titulo": "ELC - Películas" },
     "15-oct-23": {
@@ -39,6 +34,7 @@
       "entidad": "personajes",
       "id": 99
     },
-    "16-oct-23": { "titulo": "ELC - Películas" }
+    "16-oct-23": { "titulo": "ELC - Películas" },
+    "17-oct-23": { "titulo": "ELC - Películas" }
   }
 }
