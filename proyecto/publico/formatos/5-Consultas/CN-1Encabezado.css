@@ -11,7 +11,7 @@
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */
-#encabezado #tituloPrincipal #ayudaOrden {align-self: center; margin-left: 10px;}
+#encabezado #tituloPrincipal #ayudaOrden {margin-left: 10px;}
 #encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
 #encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 

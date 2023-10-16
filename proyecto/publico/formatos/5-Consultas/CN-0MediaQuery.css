@@ -3,11 +3,24 @@
 	#encabezado #tituloPrincipal #entidadOrden {flex-direction: column;} /* Entidad y Orden en formato columna */
 	#encabezado #tituloPrincipal #ayudaOrden {align-self: flex-end; margin-bottom: 3px;} /* 'Ayuda' a la altura de 'Orden' */
 }
-@media (width <= 620px)  {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}}
-@media (width <= 740px)  {}
-@media (width <= 970px)  {main #imgDerecha {display: none;}} /* Oculta la Imagen Derecha */
+@media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}}
+@media (width <= 970px) {main #imgDerecha {display: none;}} /* Oculta la Imagen Derecha */
 @media (width <= 1294px) {#cuerpo #configCons {display: none;}} /* Oculta los filtros */
 @media (width > 1294px) {#tituloPrincipal #mostrarConfigCons {display: none;}} /* Muestra el ícono para mostrar los filtros */
+
+/* Ayuda */
+@media (width <= 740px) {
+	#tituloPrincipal .ayudaMostrar {top: 21px; transform: none;}
+	#tituloPrincipal .ayudaMostrar::before {top: 0; left: auto; transform: none; translate: 0 -100%; border-color: transparent transparent var(--backAyuda) transparent;}
+}
+@media (width <= 415px) {
+	#tituloPrincipal .ayudaMostrar {translate: -50% 0; left: calc(-181px + 50vw); max-width: min(350px, calc(100vw - 10px));}
+	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 181px + 3px);}
+}
+@media (415px < width <= 740px) {
+	#tituloPrincipal .ayudaMostrar {right: 0;}
+	#tituloPrincipal .ayudaMostrar::before {right: 3px;}
+}
 
 /* Alto */
 @media (height <= 365px) {
