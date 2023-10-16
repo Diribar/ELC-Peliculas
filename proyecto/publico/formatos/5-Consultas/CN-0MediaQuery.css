@@ -5,7 +5,12 @@
 }
 @media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}}
 @media (width <= 970px) {main #imgDerecha {display: none;}} /* Oculta la Imagen Derecha */
-@media (width <= 1294px) {#cuerpo #configCons {display: none;}} /* Oculta los filtros */
+@media (width <= 1294px) {
+	#cuerpo #configCons {position: absolute; translate: -100% 0; height: 100%;}
+	#configCampos .ocultaFiltro {display: block !important;}
+	#mostrarOcultarFiltros {display: none;}
+}
+/* Oculta los filtros */
 @media (width > 1294px) {#tituloPrincipal #mostrarConfigCons {display: none;}} /* Muestra el ícono para mostrar los filtros */
 
 /* Ayuda */
