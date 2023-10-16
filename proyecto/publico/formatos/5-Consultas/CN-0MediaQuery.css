@@ -9,8 +9,7 @@
 	#cuerpo #configCons {position: absolute; translate: -100% 0; height: 100%;}
 	#configCampos .ocultaFiltro {display: block !important;}
 	#mostrarOcultarFiltros {display: none;}
-}
-/* Oculta los filtros */
+} /* Desplaza los filtros hacia la izquierda */
 @media (width > 1294px) {#tituloPrincipal #mostrarConfigCons {display: none;}} /* Muestra el ícono para mostrar los filtros */
 
 /* Ayuda */
