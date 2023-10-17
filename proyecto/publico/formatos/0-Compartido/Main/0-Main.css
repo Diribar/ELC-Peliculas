@@ -1,4 +1,5 @@
 /* General */
+main {height: var(--altMain);}
 main {overflow-y: hidden; display: flex; flex-direction: row-reverse;}
 main{--anchoImgDer: 32vw}
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
