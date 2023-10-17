@@ -22,11 +22,8 @@
 	<!-- Header genérico -->
 	<%- include('CMP-0Header') %>
 	<main class="relative">
-		<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
-		<%- include('CMP-TodoElMain') %>
 		<!-- Cuerpo y Footer -->
 		<section id="cuerpoFooter">
-			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 				<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
@@ -43,7 +40,10 @@
 				<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
 				<% } %>
 			</section>
+			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 		</section>
+		<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
+		<%- include('CMP-TodoElMain') %>
 	</main>
 </body>
 </html>
