@@ -5,13 +5,13 @@
 
 /* Cuerpo */
 #cuerpo {flex-direction: column; background: transparent;}
-#cuerpo #datos {justify-content: space-evenly; align-items: center;}
+#cuerpo #datos {display: flex; flex-direction: row; flex-grow: 1; justify-content: space-evenly; align-items: center;}
 
 /* Encabezado */
 #cuerpo #encabezado {padding: 15px 25px;}
 
 /* Datos Largos */
-#datos #datosLargos {display: flex; flex-direction: column; align-items: center;}
+#datos #datosLargos {display: flex; flex-direction: column; justify-content: center;}
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}

@@ -2,7 +2,7 @@
 #datosBreves {display: flex; flex-direction: column; justify-content: center; align-self: center;}
 #datosBreves {border: var(--gris-oscuro) 3px solid; margin: 0;}
 #datosBreves {padding: 20px; border-radius: 15px; background: snow;}
-#datosBreves {max-width: 18vw; width: 220px; min-width: 14vw;}
+#datosBreves {max-width: 220px; width: fit-content;}
 #datosBreves {max-height: 80vh;}
 
 /* Títulos */
