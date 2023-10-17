@@ -1,17 +1,20 @@
 /* Ancho */
-@media (width < 1400px) {#cuerpo {width: 100vw;}}
-@media (width < 1000px) {#cuerpo #zonaDeVitreaux {display: none;}}
-@media (min-width: 701px) {#zonaDeBienvenida #botones {flex-direction: row;}}
-@media (max-width: 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
-@media (max-width: 550px) and (min-height: 550px) {#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}}
+@media (width <= 1400px) {
+	#cuerpo {width: 100vw;}
+	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+}
+@media (width <= 1000px) {#cuerpo #zonaDeVitreaux {display: none;}}
+@media (width <= 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
+@media (width > 700px) {#zonaDeBienvenida #botones {flex-direction: row;}}
+@media (width <= 550px) and (height > 550px) {#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}}
 
 /* Altura */
-@media (max-height: 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
-@media (min-height: 701px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
+@media (height <= 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
+@media (height > 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
 
-/* Altura y ancho */
-@media (max-height: 350px), (max-width: 550px) {#zonaDeBienvenida #botones a:hover {scale: 1;}}
-@media (min-height: 351px) and (min-width: 551px) {
+/* Altura y Ancho */
+@media (height <= 350px), (width <= 550px) {#zonaDeBienvenida #botones a:hover {scale: 1;}}
+@media (height > 350px) and (width > 550px) {
 	#zonaDeBienvenida #botones a {scale: 1.1;}
 	#zonaDeBienvenida #botones a:hover {scale: 1.3;}
 }

@@ -1,14 +1,12 @@
 /* General */
 #cuerpo {flex-direction: row;}
-#cuerpo {--anchoVitreaux: 230px; --anchoCentro: calc(100% - 230px);}
 
 /* Zona de vitreaux */
 #cuerpo #zonaDeVitreaux {display: flex; flex-direction: column; justify-content: center;}
-#cuerpo #zonaDeVitreaux img {width: var(--anchoVitreaux);}
+#cuerpo #zonaDeVitreaux img {width: 230px;}
 
 /* Cartel de Bienvenida */
 #cuerpo #zonaDeBienvenida {display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; flex-grow: 1;}
-#cuerpo #zonaDeBienvenida {width: var(--anchoCentro);}
 #zonaDeBienvenida #cartelBienvenida {border: 2px solid var(--azul-frances); background: var(--amarillo-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 #zonaDeBienvenida #cartelBienvenida {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
 #zonaDeBienvenida #cartelBienvenida h1 {margin: 0 0 20px; text-align: center;}
@@ -21,7 +19,7 @@
 #cartelBienvenida p#menuCapacitac span {color: var(--amarillo-oscuro); font-variant: small-caps; font-weight: bold; text-decoration: underline;}
 
 /* Zona de Botones */
-#zonaDeBienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: var(--anchoCentro);}
+#zonaDeBienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: 100%;}
 #zonaDeBienvenida #botones a {border-radius: 50%; overflow: hidden;}
 #zonaDeBienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
 #zonaDeBienvenida #botones a button {width: 200px; height: 210px; padding: 15px; border-radius: 50%; background: var(--gris-claro);}
