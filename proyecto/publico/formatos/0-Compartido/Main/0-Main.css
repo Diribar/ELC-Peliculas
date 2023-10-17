@@ -1,8 +1,8 @@
 /* General */
 main {height: var(--altMain);}
-main {overflow-y: hidden; display: flex; flex-direction: row-reverse;}
+main {overflow-y: hidden; display: flex; flex-direction: row;}
 main{--anchoImgDer: 32vw}
-main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
+main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column;}
 
 /* Imagen Derecha */
 main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
