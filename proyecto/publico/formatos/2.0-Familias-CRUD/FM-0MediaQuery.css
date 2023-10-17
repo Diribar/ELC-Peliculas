@@ -16,3 +16,8 @@
 	#datos #datosLargos {margin: 0;}
 	#datosLargos #recuadro {width: calc(100vw - 2px)}
 }
+
+@media (height < 780px) {
+	#cuerpo #tituloPrincipal {display: none;}
+	#datos #datosLargos {height: 100%;}
+}

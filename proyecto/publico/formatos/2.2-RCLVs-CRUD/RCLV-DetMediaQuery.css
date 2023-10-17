@@ -4,8 +4,17 @@
 @media (width <= 745px) {
 	#cuerpo #datos #datosLargos {margin: 0;}
 	#cuadroDeResultados i.mover {display: none;}
-	#recuadro #contenido {margin-left: 0; margin-right: 0;}
-	#recuadro #contenido #informacion {margin: 0;}
+	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-left: 0;}
+	#datos #datosLargos #recuadro {border: none;}
+}
+
+@media (height <= 550px) {
+	#recuadro #contenido #informacion {margin: 0;}
+
+}
+
+@media (height <= 421px) {
+	#cuerpo #recuadro #encabezado {display: none;}
 }
