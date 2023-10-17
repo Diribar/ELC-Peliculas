@@ -38,6 +38,7 @@ global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno")
 const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
 exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (err ? carpeta : stdout.trim()).slice(-4)));
+exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.anoELC = (err ? carpeta : stdout.trim()).slice(0, 4)));
 
 // Para usar propiedades de express
 global.express = require("express");
