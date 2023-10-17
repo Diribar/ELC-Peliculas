@@ -1,12 +1,12 @@
 {
   "Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-  "FechaUTC": "Dom. 15/oct",
-  "HoraUTC": "4:15",
+  "FechaUTC": "Mar. 17/oct",
+  "HoraUTC": "0:00",
   "FechaHoraUTC": "SI",
   "Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-  "FechaSemUTC": "Lun. 9/oct",
-  "HoraSemUTC": "12:49",
-  "semanaUTC": 40,
+  "FechaSemUTC": "Mar. 17/oct",
+  "HoraSemUTC": "0:00",
+  "semanaUTC": 41,
   "SemanaUTC": "SI",
   "Subtitulo3": "-------------- RUTINAS -----------------------",
   "RutinasHorarias": [
@@ -31,14 +31,22 @@
   },
   "Subtitulo4": "------------ IMAGEN DERECHA -------------------",
   "ImagenesDerecha": {
-    "13-oct-23": { "titulo": "ELC - Películas" },
-    "14-oct-23": { "titulo": "ELC - Películas" },
     "15-oct-23": {
       "titulo": "Santa Teresa de Jesús",
       "entidad": "personajes",
       "id": 99
     },
     "16-oct-23": { "titulo": "ELC - Películas" },
-    "17-oct-23": { "titulo": "ELC - Películas" }
+    "17-oct-23": { "titulo": "ELC - Películas" },
+    "18-oct-23": {
+      "titulo": "Thomas Alva Edison",
+      "entidad": "personajes",
+      "id": 192
+    },
+    "19-oct-23": {
+      "titulo": "Beato Jorge Popieluszko",
+      "entidad": "personajes",
+      "id": 141
+    }
   }
 }
