@@ -3,14 +3,16 @@
 	#encabezado #tituloPrincipal #entidadOrden {flex-direction: column;} /* Entidad y Orden en formato columna */
 	#encabezado #tituloPrincipal #ayudaOrden {align-self: flex-end; margin-bottom: 3px;} /* 'Ayuda' a la altura de 'Orden' */
 }
-@media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}}
-@media (width <= 970px) {main #imgDerecha {display: none;}} /* Oculta la Imagen Derecha */
-@media (width <= 1294px) {
-	#cuerpo #configCons {position: absolute; translate: -100% 0; height: 100%;}
+@media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */
+@media (width <= 970px) {
+	#cuerpoFooter #cuerpo {flex-direction: row-reverse;}
 	#configCampos .ocultaFiltro {display: block !important;}
 	#mostrarOcultarFiltros {display: none;}
-} /* Desplaza los filtros hacia la izquierda */
-@media (width > 1294px) {#tituloPrincipal #mostrarConfigCons {display: none;}} /* Muestra el ícono para mostrar los filtros */
+} /* Desplaza los filtros */
+@media (width <= 1294px) {
+	#cuerpoFooterImgDer #cuerpo #encabMasPelis {width: 100vw;}
+	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+} /* Oculta la Imagen Derecha */
 
 /* Ayuda */
 @media (width <= 740px) {
