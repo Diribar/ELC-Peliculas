@@ -1,8 +1,5 @@
 /* Ancho */
-@media (width <= 1400px) {
-	#cuerpo {width: 100vw;}
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-}
+@media (width <= 1400px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
 @media (width <= 1000px) {#cuerpo #zonaDeVitreaux {display: none;}}
 @media (width <= 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
 @media (width > 700px) {#zonaDeBienvenida #botones {flex-direction: row;}}
