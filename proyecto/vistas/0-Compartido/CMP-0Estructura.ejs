@@ -22,27 +22,30 @@
 	<!-- Header genérico -->
 	<%- include('CMP-0Header') %>
 	<main class="relative">
-		<!-- Cuerpo y Footer -->
-		<section id="cuerpoFooter">
-			<section id="cuerpo">
-				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
-				<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
-				<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
-				<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
-				<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
-				<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>
-				<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
-				<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
-				<% } else if (tema == "mantenimiento") { %><%- include("MT-2Cuerpo") %>
-				<% } else if (tema == "consultas") { %><%- include("CN-2Cuerpo") %>
-				<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
-				<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
-				<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
-				<% } %>
-			</section>
-			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
+		<!-- CuerpoFooter e Imagen Derecha -->
+		<section id="cuerpoFooterImgDer">
+			<!-- Cuerpo y Footer -->
+			<div id="cuerpoFooter">
+				<div id="cuerpo">
+					<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
+					<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
+					<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
+					<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
+					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
+					<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>
+					<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
+					<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
+					<% } else if (tema == "mantenimiento") { %><%- include("MT-2Cuerpo") %>
+					<% } else if (tema == "consultas") { %><%- include("CN-2Cuerpo") %>
+					<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
+					<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
+					<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
+					<% } %>
+				</div>
+				<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
+			</div>
+			<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
 		</section>
-		<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
 		<%- include('CMP-TodoElMain') %>
 	</main>
 </body>

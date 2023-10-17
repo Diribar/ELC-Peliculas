@@ -21,4 +21,4 @@ form #imgDerecha.inputError .errores .mensajeError::before {border-color: var(--
 form #imgDerecha.inputError .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
 form #imgDerecha.inputError .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
 form #imgDerecha.inputError .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
-form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
+#cuerpoFooterImgDer form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
