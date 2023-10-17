@@ -1,33 +1,31 @@
 /* Ancho */
-@media (max-width: 1470px) {
-	#cuerpo #zona-de-vitreaux {display: none;}
-}
-@media (max-width: 1200px) {
-	body main #imgDerecha {display: none;}
+@media (width < 1400px) {#cuerpo {width: 100vw;}}
+@media (width < 1000px) {
+	#cuerpo #zonaDeVitreaux {display: none;}
 }
 @media (min-width: 701px) {
-	#zona-de-bienvenida #botones {flex-direction: row;}
+	#zonaDeBienvenida #botones {flex-direction: row;}
 }
 @media (max-width: 700px) {
-	#zona-de-bienvenida #cartelBienvenida {display: none;}
+	#zonaDeBienvenida #cartelBienvenida {display: none;}
 }
 @media (max-width: 550px) and (min-height: 550px) {
-	#zona-de-bienvenida #botones {flex-direction: column; height: 100%;}
+	#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}
 }
 
 /* Altura */
 @media (max-height: 600px) {
-	#zona-de-bienvenida #cartelBienvenida {display: none;}
+	#zonaDeBienvenida #cartelBienvenida {display: none;}
 }
 @media (min-height: 701px) {
-	#zona-de-bienvenida #cartelBienvenida {scale: 1.25;}
+	#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}
 }
 
 /* Altura y ancho */
 @media (max-height: 350px), (max-width: 550px) {
-	#zona-de-bienvenida #botones a:hover {scale: 1;}
+	#zonaDeBienvenida #botones a:hover {scale: 1;}
 }
 @media (min-height: 351px) and (min-width: 551px) {
-	#zona-de-bienvenida #botones a {scale: 1.1;}
-	#zona-de-bienvenida #botones a:hover {scale: 1.3;}
+	#zonaDeBienvenida #botones a {scale: 1.1;}
+	#zonaDeBienvenida #botones a:hover {scale: 1.3;}
 }

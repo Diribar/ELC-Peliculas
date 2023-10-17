@@ -1,36 +1,36 @@
 /* General */
 #cuerpo {flex-direction: row;}
-#cuerpo {--anchoCentro: min(750px, 100%);}
+#cuerpo {--anchoVitreaux: 230px; --anchoCentro: calc(100% - 230px);}
 
 /* Zona de vitreaux */
-#cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
-#cuerpo #zona-de-vitreaux img {width: 230px; max-width: calc(100vw - var(--anchoCentro) - var(--anchoImgDer) - 40px);}
+#cuerpo #zonaDeVitreaux {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo #zonaDeVitreaux img {width: var(--anchoVitreaux);}
 
 /* Cartel de Bienvenida */
-#cuerpo #zona-de-bienvenida {flex-grow: 1; justify-content: center; align-items: center; justify-content: space-evenly;}
-#cuerpo #zona-de-bienvenida {min-width: var(--anchoCentro);}
-#zona-de-bienvenida #cartelBienvenida {border: 2px solid var(--azul-frances); background: var(--amarillo-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
-#zona-de-bienvenida #cartelBienvenida {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
-#zona-de-bienvenida #cartelBienvenida h1 {margin: 0 0 20px; text-align: center;}
-#zona-de-bienvenida #cartelBienvenida h1 span {font-style: italic;}
-#zona-de-bienvenida #cartelBienvenida p {text-align: center;}
-#zona-de-bienvenida #cartelBienvenida p {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+#cuerpo #zonaDeBienvenida {display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; flex-grow: 1;}
+#cuerpo #zonaDeBienvenida {width: var(--anchoCentro);}
+#zonaDeBienvenida #cartelBienvenida {border: 2px solid var(--azul-frances); background: var(--amarillo-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#zonaDeBienvenida #cartelBienvenida {padding: 30px; border-radius: 15px; text-align: left; align-self: center;}
+#zonaDeBienvenida #cartelBienvenida h1 {margin: 0 0 20px; text-align: center;}
+#zonaDeBienvenida #cartelBienvenida h1 span {font-style: italic;}
+#zonaDeBienvenida #cartelBienvenida p {text-align: center;}
+#zonaDeBienvenida #cartelBienvenida p {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 /* Video orientador */
 #cartelBienvenida p#menuCapacitac {padding: 5px 10px; margin-top: 15px; border-radius: 15px;}
 #cartelBienvenida p#menuCapacitac {background: var(--verde-oscuro); color: snow;}
 #cartelBienvenida p#menuCapacitac span {color: var(--amarillo-oscuro); font-variant: small-caps; font-weight: bold; text-decoration: underline;}
 
 /* Zona de Botones */
-#zona-de-bienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: var(--anchoCentro);}
-#zona-de-bienvenida #botones a {border-radius: 50%; overflow: hidden;}
-#zona-de-bienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
-#zona-de-bienvenida #botones a button {width: 200px; height: 210px; padding: 15px; border-radius: 50%; background: var(--gris-claro);}
+#zonaDeBienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: var(--anchoCentro);}
+#zonaDeBienvenida #botones a {border-radius: 50%; overflow: hidden;}
+#zonaDeBienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
+#zonaDeBienvenida #botones a button {width: 200px; height: 210px; padding: 15px; border-radius: 50%; background: var(--gris-claro);}
 
-#zona-de-bienvenida #botones a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
-#zona-de-bienvenida #botones a button p {font-size: 1.1rem;}
-#zona-de-bienvenida #botones a button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
+#zonaDeBienvenida #botones a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+#zonaDeBienvenida #botones a button p {font-size: 1.1rem;}
+#zonaDeBienvenida #botones a button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
 
-#zona-de-bienvenida #botones a button .iconoComb {position: relative; padding: 20px 0;}
-#zona-de-bienvenida #botones a button .iconoComb i {font-size: 5rem;}
-#zona-de-bienvenida #botones a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
-#zona-de-bienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro);}
+#zonaDeBienvenida #botones a button .iconoComb {position: relative; padding: 20px 0;}
+#zonaDeBienvenida #botones a button .iconoComb i {font-size: 5rem;}
+#zonaDeBienvenida #botones a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
+#zonaDeBienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro);}

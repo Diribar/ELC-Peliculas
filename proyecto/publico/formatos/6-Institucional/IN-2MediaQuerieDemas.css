@@ -3,8 +3,8 @@
 	body main #imgDerecha img {display: none;}
 }
 @media (max-width: 800px) {
-	#zona-de-bienvenida #cartelBienvenida {scale: 1.1;}
-	#zona-de-bienvenida #botones {width: 600px}
+	#zonaDeBienvenida #cartelBienvenida {scale: 1.1;}
+	#zonaDeBienvenida #botones {width: 600px}
 }
 
 /* Ancho y Alto */
