@@ -1,6 +1,5 @@
 /* General */
-#datos #datosLargos {width: min(675px, 100%);}
-#datosLargos #recuadro {overflow-y: scroll;}
+#datosLargos #recuadro {width: min(675px, 100%); overflow-y: scroll;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}
@@ -37,7 +36,6 @@
 /* Marco de Detalle - Información */
 #marcoDetalle #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
-#marcoDetalle #datosDetalle {max-height: 180px; overflow-y: auto;}
 #marcoDetalle #datosDetalle .datosParcial {flex-direction: column;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
@@ -47,6 +45,6 @@
 #marcoDetalle #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
 
 /* Barra de desplazamiento */
-::-webkit-scrollbar {outline: transparent;}
-::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
-::-webkit-scrollbar-thumb {background: var(--gris-intermedio); border-radius: 10px;}
+/* ::-webkit-scrollbar {outline: transparent;} */
+/* ::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;} */
+/* ::-webkit-scrollbar-thumb {background: var(--gris-intermedio); border-radius: 10px;} */
