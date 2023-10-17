@@ -15,4 +15,4 @@
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
-#datosLargos #recuadro {border-radius: 20px;}
+#datosLargos #recuadro {border-radius: 20px; overflow: hidden;}

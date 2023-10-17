@@ -1,0 +1,11 @@
+@media (width <= 785px) {
+	#cuerpo #datos #datosLargos {width: min(100vw, 745px); margin: 0 calc((100vw - 745px) / 2);}
+}
+@media (width <= 745px) {
+	#cuerpo #datos #datosLargos {margin: 0;}
+	#cuadroDeResultados i.mover {display: none;}
+	#recuadro #contenido {margin-left: 0; margin-right: 0;}
+	#recuadro #contenido #informacion {margin: 0;}
+	#listado #prodsNuevos:first-child {padding-left: 0;}
+	#listado #prodsNuevos:last-child {padding-left: 0;}
+}
