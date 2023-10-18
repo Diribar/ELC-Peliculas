@@ -1,5 +1,5 @@
 /* Ancho */
-@media (width <= 1400px) {
+@media (width <= 1450px) {
 	#recuadro #encabezado {padding: 10px 20px;}
 	#contenido #informacion {margin: 12px 20px 0;} /* Achica los márgenes de la información del contenido */
 	#cuerpoFooterImgDer #cuerpo {width: max-content;}
@@ -15,4 +15,9 @@
 @media (width <= 675px) {
 	#datos #datosLargos {margin: 0;}
 	#datosLargos #recuadro {width: calc(100vw - 2px)}
+}
+
+@media (height < 780px) {
+	#cuerpo #tituloPrincipal {display: none;}
+	#datos #datosLargos {height: 100%;}
 }

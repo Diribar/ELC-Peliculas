@@ -1,6 +1,6 @@
 #cuerpoFooterImgDer #cuerpoFooter {position: relative; height: 100%;}
 #cuerpoFooter #cuerpo {height: calc(100% - 24px);}
-#cuerpo #datos {position: relative; height: calc(100% - 37px);}
+#cuerpo #datos {position: relative; height: 100%;}
 #datos #datosLargos {position: relative; height: 90%;}
 
 /* Cuerpo */
@@ -15,4 +15,4 @@
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
-#datosLargos #recuadro {border-radius: 20px;}
+#datosLargos #recuadro {border-radius: 20px; overflow: scroll;}
