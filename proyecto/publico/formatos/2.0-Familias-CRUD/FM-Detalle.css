@@ -13,6 +13,6 @@
 /* Datos Largos */
 #datos #datosLargos {display: flex; flex-direction: column; justify-content: center;}
 /* Datos */
-#datosLargos #recuadro {display: flex; flex-direction: column;}
+#datosLargos #recuadro {display: flex; flex-direction: column; width: max-content;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 #datosLargos #recuadro {border-radius: 20px; overflow: scroll;}

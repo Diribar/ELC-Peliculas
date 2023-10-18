@@ -1,5 +1,5 @@
 /* Datos */
-#cuerpo #datos #datosLargos {width: max(50vw, 745px);}
+#cuerpo #datos #datosLargos {max-width: max(50vw, 745px);}
 
 /* Recuadro */
 #recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}

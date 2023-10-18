@@ -8,7 +8,7 @@
 #dataEntry #encabezado #tituloSecundario ul li {max-width: 350px;}
 
 /* Cuadro de resultados */
-#dataEntry #cuadroDeResultados {width: 86vw; position: relative;}
+#dataEntry #cuadroDeResultados {max-width: 86vw; position: relative;}
 #dataEntry #cuadroDeResultados {background: var(--celeste-claro); border-radius: 10px;}
 
 /* Flechas */
