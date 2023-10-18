@@ -1,6 +1,13 @@
 /* Ancho */
 @media (width <= 1267px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
 
+/* Alto */
+@media (height <= 450px) {
+	#cuerpo section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
+	#cuerpo section #cuadroDeTexto #contenido .flechas {display: flex;}
+}
+@media (height > 450px) {#cuerpo section #cuadroDeTexto > .flechas {display: flex;}}
+
 /* Ancho y Alto */
 @media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
 @media (width > 750px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
