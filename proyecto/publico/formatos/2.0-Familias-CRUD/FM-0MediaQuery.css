@@ -5,7 +5,7 @@
 	#cuerpoFooterImgDer #cuerpo {width: max-content;}
 	#datos :is(#datosLargos, #datosBreves) {margin: 0 20px;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-	#datos #datosBreves {max-height: 100%; max-width: none;}
+	#datos #datosBreves {max-height: 100%; max-width: 99vw;}
 }
 @media (width <= 950px) {
 	#cuerpoFooterImgDer #cuerpo, #cuerpo #datos {width: max-content;}
