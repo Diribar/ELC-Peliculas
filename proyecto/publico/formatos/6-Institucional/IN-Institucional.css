@@ -3,24 +3,24 @@
 
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo section {position: relative; display: flex; flex-direction: column; flex-grow: 1;}
-#cuerpo section #cuadro-de-texto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
-#cuerpo section #cuadro-de-texto {display: flex; flex-direction: column; max-width: 90%}
-#cuerpo section #cuadro-de-texto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
-#cuerpo section #cuadro-de-texto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
-#cuerpo section #cuadro-de-texto > div {overflow: auto; padding-right: 15px;}
+#cuerpo section #cuadroDeTexto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
+#cuerpo section #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
+#cuerpo section #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
+#cuerpo section #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#cuerpo section #cuadroDeTexto > div {overflow: auto; padding-right: 15px;}
 
 /* CUADRO DE TEXTO - TEXTO */
-#cuerpo section #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
-#cuerpo section #cuadro-de-texto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
-#cuerpo section #cuadro-de-texto .bloque ul ul li {margin-top: 2px;}
+#cuerpo section #cuadroDeTexto .bloque:nth-child(n+2) {margin-top: 15px;}
+#cuerpo section #cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+#cuerpo section #cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
 
 /* Miscelaneas */
 mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
-#cuerpo section #cuadro-de-texto .flechas {margin: 30px 0 10px; display: flex; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
-#cuerpo section #cuadro-de-texto .flechas i {font-size: 2rem;}
+#cuerpo section #cuadroDeTexto .flechas {margin: 30px 0 10px; display: flex; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
+#cuerpo section #cuadroDeTexto .flechas i {font-size: 2rem;}
 
 /* Responsive */
-#cuerpo section #cuadro-de-texto {max-height: 90%;}
-::-webkit-scrollbar {outline: transparent;}
-::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
-::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+#cuerpo section #cuadroDeTexto {max-height: 90%;}
+#cuadroDeTexto > div::-webkit-scrollbar {outline: transparent;}
+#cuadroDeTexto > div::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
+#cuadroDeTexto > div::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}

@@ -1,18 +1,20 @@
 /* General */
-main {overflow-y: hidden; display: flex; flex-direction: row-reverse;}
-main{--anchoImgDer: 32vw}
-main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
+main {height: var(--altMain);}
+main {overflow-y: hidden; display: flex; flex-direction: row;}
+main {--anchoImgDer: 32vw}
 
-/* Imagen Derecha */
-main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
-/* main #imgDerecha {background: var(--gris-claro);} */
-main #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
+main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
+#cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Cuerpo */
-main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
+#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Footer */
-main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
-main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
-main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
-main #cuerpoFooter footer p {line-height: 1;}
+#cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
+#cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
+#cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
+#cuerpoFooter footer p {line-height: 1;}
+
+/* Imagen Derecha */
+#cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
+#cuerpoFooterImgDer #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}

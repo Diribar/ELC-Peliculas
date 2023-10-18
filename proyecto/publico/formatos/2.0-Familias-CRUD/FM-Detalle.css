@@ -1,14 +1,18 @@
+#cuerpoFooterImgDer #cuerpoFooter {position: relative; height: 100%;}
+#cuerpoFooter #cuerpo {height: calc(100% - 24px);}
+#cuerpo #datos {position: relative; height: calc(100% - 37px);}
+#datos #datosLargos {position: relative; height: 90%;}
+
 /* Cuerpo */
-#cuerpo {flex-direction: column;}
-#cuerpo {background: transparent;}
-#cuerpo #datos {justify-content: space-evenly; align-items: center;}
+#cuerpo {flex-direction: column; background: transparent;}
+#cuerpo #datos {display: flex; flex-direction: row; flex-grow: 1; justify-content: space-evenly; align-items: center;}
 
 /* Encabezado */
 #cuerpo #encabezado {padding: 15px 25px;}
 
 /* Datos Largos */
-#datos #datosLargos {display: flex; flex-direction: column;}
+#datos #datosLargos {display: flex; flex-direction: column; justify-content: center;}
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
-#datosLargos #recuadro {border-radius: 20px; overflow: hidden;}
+#datosLargos #recuadro {border-radius: 20px;}

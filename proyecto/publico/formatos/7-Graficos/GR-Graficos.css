@@ -3,7 +3,7 @@
 #cuerpo #centro {display: flex; flex-direction: row; justify-content: flex-start; align-items: center; flex-grow: 1;}
 
 /* Zona de Vitreaux */
-#cuerpo #zona-de-vitreaux {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo #zonaDeVitreaux {display: flex; flex-direction: column; justify-content: center;}
 
 /* Zona de gráficos */
 #cuerpo #zonaDeGraficos {padding: 20px 50px; height: 100%;}

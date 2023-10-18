@@ -1,4 +1,3 @@
-/* BACKGROUND IMAGE */
 body {
 	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg");
 	background-size: cover;
@@ -6,12 +5,9 @@ body {
 
 	width: 100vw;
 	height: 100vh;
-	
+
 	--altHeader: max(52px, min(8vh, 60px));
 	--altMain: calc(100vh - var(--altHeader));
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}
-
-body header {height: var(--altHeader);}
-body main {height: var(--altMain);}

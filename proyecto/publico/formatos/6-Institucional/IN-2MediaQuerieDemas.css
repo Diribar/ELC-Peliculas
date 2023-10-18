@@ -1,16 +1,6 @@
 /* Ancho */
-@media (max-width: 1267px) {
-	body main #imgDerecha img {display: none;}
-}
-@media (max-width: 800px) {
-	#zona-de-bienvenida #cartelBienvenida {scale: 1.1;}
-	#zona-de-bienvenida #botones {width: 600px}
-}
+@media (width <= 1267px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
 
 /* Ancho y Alto */
-@media (min-width: 701px) and (min-height: 541px) {
-	#cuerpo #cuadro-de-texto {scale: 1.1;}
-}
-@media (min-width: 751px) and (min-height: 581px) {
-	#cuerpo #cuadro-de-texto {scale: 1.2;}
-}
+@media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
+@media (width > 750px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}

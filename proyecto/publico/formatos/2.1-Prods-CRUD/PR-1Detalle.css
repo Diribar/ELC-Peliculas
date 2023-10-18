@@ -1,4 +1,5 @@
-#datosLargos #recuadro {min-width: 40vw;}
+/* General */
+#datosLargos #recuadro {width: min(675px, 95vw); overflow-y: scroll;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}
@@ -23,19 +24,16 @@
 .marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
 /* Marco de Detalle */
-#marcoDetalle {margin-top: 35px; position: relative;}
+#marcoDetalle {margin-top: 20px; position: relative;}
 /* Marco de Detalle - Etiqueta */
-#marcoDetalle #etiquetas {position: absolute; left: 0; top: 0; translate: 0 -21px;}
-#marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: var(--gris-oscuro) 2px solid;}
+#marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
 #marcoDetalle #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
 #marcoDetalle #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
 #marcoDetalle #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
 #marcoDetalle #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
-#marcoDetalle #etiquetas p.resaltar {border-width: 2px; border-bottom: 3px solid var(--amarillo-claro);}
 /* Marco de Detalle - Información */
 #marcoDetalle #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
-#marcoDetalle #datosDetalle {max-height: 180px; overflow-y: auto;}
 #marcoDetalle #datosDetalle .datosParcial {flex-direction: column;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
@@ -45,6 +43,6 @@
 #marcoDetalle #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
 
 /* Barra de desplazamiento */
-::-webkit-scrollbar {outline: transparent;}
-::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
-::-webkit-scrollbar-thumb {background: var(--gris-intermedio); border-radius: 10px;}
+/* ::-webkit-scrollbar {outline: transparent;} */
+/* ::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;} */
+/* ::-webkit-scrollbar-thumb {background: var(--gris-intermedio); border-radius: 10px;} */
