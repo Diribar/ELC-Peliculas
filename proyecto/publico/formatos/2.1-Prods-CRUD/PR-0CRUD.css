@@ -1,7 +1,7 @@
 /* Información */
 #datosLargos #datosLargos {max-width: 100%;}
 #recuadro #contenido {justify-content: space-around;}
-#contenido #informacion {margin: 30px 40px 0;}
+#contenido #informacion {margin: 30px 40px 0; overflow-x: scroll;}
 #informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
 #informacion #tituloInfoDetalle h3 {width: max-content;}
 #tituloInfoDetalle ul p {margin-top: 3px;}

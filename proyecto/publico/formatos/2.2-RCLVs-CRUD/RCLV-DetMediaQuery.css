@@ -1,5 +1,5 @@
 @media (width <= 785px) {
-	#cuerpo #datos #datosLargos {width: min(100vw, 745px); margin: 0 calc((100vw - 745px) / 2);}
+	#cuerpo #datos #datosLargos {max-width: min(100vw, 745px); margin: 0 calc((100vw - 745px) / 2);}
 }
 @media (width <= 745px) {
 	#cuerpo #datos #datosLargos {margin: 0;}

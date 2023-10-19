@@ -24,7 +24,7 @@
 .marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
 /* Marco de Detalle */
-#marcoDetalle {margin-top: 20px; position: relative;}
+#marcoDetalle {margin-top: 20px; display: flex; flex-direction: column; width: fit-content;}
 /* Marco de Detalle - Etiqueta */
 #marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
 #marcoDetalle #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}

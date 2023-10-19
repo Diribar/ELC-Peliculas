@@ -8,15 +8,16 @@
 	#datos #datosBreves {max-height: 100%; max-width: 99vw;}
 }
 @media (width <= 950px) {
-	#cuerpoFooterImgDer #cuerpo, #cuerpo #datos {width: max-content;}
+	#cuerpo #datos {width: max-content;}
 	#datos #datosLargos {margin-left: 2.5vw;}
-	#datos #datosBreves {margin: 0 20px;}
 }
 @media (width <= 675px) {
+	#cuerpo #datos {min-width: 100vw;}
 	#datos #datosLargos {margin: 0;}
-	#datosLargos #recuadro {width: calc(100vw - 2px)}
+	#datosLargos #recuadro {max-width: calc(100vw - 2px)}
 }
 
+/* Alto */
 @media (height < 780px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
