@@ -1,22 +1,25 @@
 /* General */
-#datosBreves {display: flex; flex-direction: column; justify-content: center; align-self: center;}
-#datosBreves {border: var(--gris-oscuro) 3px solid; margin: 0;}
-#datosBreves {padding: 20px; border-radius: 15px; background: snow;}
-#datosBreves {max-width: 220px; width: max-content;}
-#datosBreves {max-height: 80vh;}
+#datosBreves {display: flex; flex-direction: column; justify-content: center; height: 100%;}
+
+/* Recuadro */
+#datosBreves #recuadro {display: flex; flex-direction: column; justify-content: flex-start;}
+#datosBreves #recuadro {border: var(--gris-oscuro) 3px solid; margin: 0;}
+#datosBreves #recuadro {padding: 20px; border-radius: 15px; background: snow;}
+#datosBreves #recuadro {max-width: 220px; width: max-content;}
+#datosBreves #recuadro {max-height: 80%;}
 
 /* Títulos */
-#datosBreves h3 {background: var(--gris-oscuro); color: snow;}
-#datosBreves h3 {padding: 3px; border-radius: 10px; text-align: center;}
-#datosBreves h3:nth-child(n+2) {margin-top: 20px;}
+#datosBreves #recuadro h3 {background: var(--gris-oscuro); color: snow;}
+#datosBreves #recuadro h3 {padding: 3px; border-radius: 10px; text-align: center;}
+#datosBreves #recuadro h3:nth-child(n+2) {margin-top: 20px;}
 
 /* Gráfico */
-#datosBreves #calificacionesResultados {text-align: center}
+#datosBreves #recuadro #calificacionesResultados {text-align: center}
 
 /* Texto */
-#datosBreves #texto {margin: 0 5px;}
-#datosBreves #texto p {margin-top: 10px;}
-#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #texto p#status1 span {background: var(--verde-claro); color: var(--verde-oscuro);}
-#datosBreves #texto p#status2 span {background: var(--verde-oscuro); color: snow;}
-#datosBreves #texto p#status3 span {background: var(--rojo-oscuro); color: snow;}
+#datosBreves #recuadro #texto {margin: 0 5px;}
+#datosBreves #recuadro #texto p {margin-top: 10px;}
+#datosBreves #recuadro #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves #recuadro #texto p#status1 span {background: var(--verde-claro); color: var(--verde-oscuro);}
+#datosBreves #recuadro #texto p#status2 span {background: var(--verde-oscuro); color: snow;}
+#datosBreves #recuadro #texto p#status3 span {background: var(--rojo-oscuro); color: snow;}
