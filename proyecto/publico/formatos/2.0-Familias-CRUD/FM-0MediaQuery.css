@@ -1,20 +1,21 @@
 /* Ancho */
 @media (width <= 1450px) {
-	#recuadro #encabezado {padding: 10px 20px;}
-	#contenido #informacion {margin: 12px 20px 0;} /* Achica los márgenes de la información del contenido */
-	#cuerpoFooterImgDer #cuerpo {width: max-content;}
-	#datos :is(#datosLargos, #datosBreves) {margin: 0 20px;}
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-	#datos #datosBreves {max-height: 100%; max-width: 99vw;}
-}
-@media (width <= 950px) {
-	#cuerpo #datos {width: max-content;}
+	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
+	#datos #datosBreves {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
+
+	/* Achica márgenes y paddings */
+	#datos :is(#datosLargos, #datosBreves) {margin-right: 2.5vw;}
 	#datos #datosLargos {margin-left: 2.5vw;}
+	#recuadro #encabezado {padding: 10px 20px;}
+	#contenido #informacion {margin: 12px 20px 0;}
+}
+@media (width <= 715px) {
+
 }
 @media (width <= 675px) {
-	#cuerpo #datos {min-width: 100vw;}
-	#datos #datosLargos {margin: 0;}
-	#datosLargos #recuadro {max-width: calc(100vw - 2px)}
+	#cuerpo #datos {min-width: 100vw;} /* limita el ancho mínimo al de la pantalla */
+	#datosLargos #recuadro {max-width: calc(100vw - 2px)} /* limita el ancho máximo al de la pantalla */
+	#datos #datosLargos {margin: 0;} /* quita todos los márgenes */
 }
 
 /* Alto */
