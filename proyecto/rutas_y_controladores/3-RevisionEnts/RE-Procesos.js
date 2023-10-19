@@ -112,8 +112,10 @@ module.exports = {
 		},
 		obtieneProds_Links: async (revID) => {
 			// Variables
-			let productos;
-			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
+			let productos = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
+
+			// En caso de que no exista la variable global, la obtiene con la FN
+			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno();
 
 			// Obtiene los links 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinks();
@@ -146,9 +148,9 @@ module.exports = {
 				const aprobsPerms = porcentaje < 4 || cantLinksEstaSem < 30;
 
 				// Procesa los links
-				productos = PR_VN_OT({links: linksRevisar, aprobsPerms});
+				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
 				puleLosResultados({productos, revID});
-			} else productos = [];
+			}
 
 			// Fin
 			return {productos, cantLinksEstaSem, cantLinksTotal};
@@ -855,10 +857,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Fin
 	return resultado;
 };
-let PR_VN_OT = ({links, aprobsPerms}) => {
-	// Variables
-	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
-
+let PR_VN_OT = ({links, aprobsPerms, productos}) => {
 	// Separa entre PR, VN y OT
 	for (let link of links) {
 		// Variables
@@ -871,14 +870,15 @@ let PR_VN_OT = ({links, aprobsPerms}) => {
 		// Separa en PR y VN
 		if (link.statusRegistro_id == creadoAprob_id && aprobsPerms)
 			link.yaTuvoPrimRev
-				? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
-				: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+				? productos.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
+				: productos.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		// Grupo OT
-		else if (link.statusRegistro_id != creadoAprob_id) prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+		else if (link.statusRegistro_id != creadoAprob_id)
+			productos.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	}
 
 	// Fin
-	return prods;
+	return;
 };
 let puleLosResultados = ({productos, revID}) => {
 	// Variables
