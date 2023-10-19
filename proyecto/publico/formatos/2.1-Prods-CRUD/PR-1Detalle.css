@@ -1,5 +1,6 @@
 /* General */
-#datosLargos #recuadro {width: min(675px, 95vw); overflow-y: scroll;}
+#datosLargos #recuadro {overflow-y: auto;}
+#datosLargos #recuadro {--anchoRecuadro: 675px;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}
@@ -36,8 +37,8 @@
 #marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
 #marcoDetalle #datosDetalle .datosParcial {flex-direction: column;}
 #marcoDetalle #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
-#marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
-#marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoDer {width: 50%;}
+#marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoIzq {max-width: 45%;}
+#marcoDetalle #datosDetalle .datosParcial#masInfo #masInfoDer {max-width: 50%;}
 #marcoDetalle #datosDetalle .datosParcial b {color: var(--gris-oscuro);}
 #marcoDetalle #datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
 #marcoDetalle #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
