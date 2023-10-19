@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
-		form: document.querySelector("#recuadro form"),
+		form: document.querySelector("#datosLargos #recuadro form"),
 		inputs: document.querySelectorAll("#motivos input"),
 		comentario: document.querySelector("#comentario textarea"),
 		pendiente: document.querySelector("#comentario #pendiente"),

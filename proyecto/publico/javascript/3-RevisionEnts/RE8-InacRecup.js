@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let form = document.querySelector("#recuadro form");
+	let form = document.querySelector("#datosLargos #recuadro form");
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let desaprueba = document.querySelector("#botones label[for='desaprueba']");
