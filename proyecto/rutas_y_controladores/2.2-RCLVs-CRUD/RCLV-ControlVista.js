@@ -15,12 +15,11 @@ module.exports = {
 		const userID = usuario ? usuario.id : null;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const articulo = entidad == "epocasDelAno" ? "a" : "";
-		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 
 		// Obtiene RCLV con productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let rclv = {...original, ...edicion, id};
+		const titulo = entidadNombre + " - " + rclv.nombre; // título de la vista
 
 		// Productos del RCLV
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
@@ -171,8 +170,7 @@ module.exports = {
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
 				const edicion = await BD_genericas.obtienePorCondicion("rclvsEdicion", condiciones);
-				if (edicion && edicion.avatar)
-					comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", edicion.avatar);
+				if (edicion && edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", edicion.avatar);
 				if (edicion) await BD_genericas.eliminaPorId("rclvsEdicion", edicion.id);
 
 				// Actualiza el 'originalUrl'
