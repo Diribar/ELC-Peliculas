@@ -1,7 +1,7 @@
 {
   "Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-  "FechaUTC": "Mié. 18/oct",
-  "HoraUTC": "13:41",
+  "FechaUTC": "Jue. 19/oct",
+  "HoraUTC": "10:56",
   "FechaHoraUTC": "SI",
   "Subtitulo2": "------------TEMAS DE SEMANA ------------------",
   "FechaSemUTC": "Mar. 17/oct",
@@ -31,7 +31,6 @@
   },
   "Subtitulo4": "------------ IMAGEN DERECHA -------------------",
   "ImagenesDerecha": {
-    "16-oct-23": { "titulo": "ELC - Películas" },
     "17-oct-23": { "titulo": "ELC - Películas" },
     "18-oct-23": {
       "titulo": "Thomas Alva Edison",
@@ -43,6 +42,7 @@
       "entidad": "personajes",
       "id": 141
     },
-    "20-oct-23": { "titulo": "ELC - Películas" }
+    "20-oct-23": { "titulo": "ELC - Películas" },
+    "21-oct-23": { "titulo": "ELC - Películas" }
   }
 }
