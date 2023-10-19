@@ -71,13 +71,13 @@ module.exports = {
 		}
 
 		// Obtiene los links aprobados
-		let linksAprobsTotal = await BD_genericas.obtieneTodosPorCondicion("links", {
+		let cantLinksTotal = await BD_genericas.obtieneTodosPorCondicion("links", {
 			prodAprob: true,
 			statusRegistro_id: aprobados_ids,
 		}).then((n) => n.length);
 
 		// Fin
-		return res.json({linksSemanales, linksAprobsTotal});
+		return res.json({linksSemanales, cantLinksTotal});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs

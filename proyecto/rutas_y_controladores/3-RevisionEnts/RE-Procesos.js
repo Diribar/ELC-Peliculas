@@ -118,33 +118,33 @@ module.exports = {
 			let linksRevisar = BD_especificas.TC.obtieneLinks();
 
 			// Averigua la cantidad de links de esta semana y totales
-			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
+			let cantLinksEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
 				yaTuvoPrimRev: true,
 				statusSugeridoEn: {[Op.gt]: lunesDeEstaSemana},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
-			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
+			let cantLinksTotal = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
 				statusRegistro_id: aprobados_ids,
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
-			[linksRevisar, linksAprobsEstaSem, linksAprobsTotal] = await Promise.all([
+			[linksRevisar, cantLinksEstaSem, cantLinksTotal] = await Promise.all([
 				linksRevisar,
-				linksAprobsEstaSem,
-				linksAprobsTotal,
+				cantLinksEstaSem,
+				cantLinksTotal,
 			]);
 
 			// Averigua el porcentaje de links aprobados en la semana
-			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
+			const porcentaje = parseInt((cantLinksEstaSem / cantLinksTotal) * 100);
 
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 4 || linksAprobsEstaSem < 30;
+			const aprobsPerms = porcentaje < 4 || cantLinksEstaSem < 30;
 			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
-			return {productos, linksAprobsEstaSem, linksAprobsTotal};
+			return {productos, cantLinksEstaSem, cantLinksTotal};
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables

@@ -43,14 +43,14 @@ module.exports = {
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
-		const {linksAprobsEstaSem, linksAprobsTotal} = links;
+		const {cantLinksEstaSem, cantLinksTotal} = links;
 
 		// Va a la vista
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, origen: "TE"},
-			...{dataEntry, linksAprobsEstaSem, linksAprobsTotal},
+			...{dataEntry, cantLinksEstaSem, cantLinksTotal},
 		});
 	},
 
