@@ -15,5 +15,9 @@
 }
 
 /* Alto */
-@media (height <= 550px) {#recuadro #contenido #informacion {margin: 0;}}
-@media (height <= 421px) {#cuerpo #recuadro #encabezado {display: none;}}
+@media (height <= 445px) {#recuadro #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
+@media (height <= 430px) {
+	#cuerpo #recuadro #encabezado {display: none;} /* oculta el encabezado */
+	#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 13px - 24px)/2));} /* 52px: header, 200px: botones, 13px: borde, 24px: footer */
+	#listado li#prodsNuevos {padding-top: var(--altoLi); padding-bottom: var(--altoLi);}
+}
