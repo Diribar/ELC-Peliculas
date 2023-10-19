@@ -1,14 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
-	const {linksSemanales, cantLinksTotal} = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+	const {cantLinksPorSem, cantLinksTotal} = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
 
 	// Eje vertical
-	const ejeY = Object.values(linksSemanales);
+	const ejeY = Object.values(cantLinksPorSem);
 	const maxValorEjeY = Math.ceil(cantLinksTotal / 25 / 10 + 0.5) * 10;
 
 	// Eje horizontal
-	let ejeX = Object.keys(linksSemanales);
+	let ejeX = Object.keys(cantLinksPorSem);
 	for (let i = 0; i < ejeX.length; i++) ejeX[i] = Number(ejeX[i]);
 
 	// Aspectos de la imagen de Google

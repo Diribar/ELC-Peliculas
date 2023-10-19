@@ -53,7 +53,7 @@ module.exports = {
 		if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno'
 		const semanaActual = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
 		const prodAprob = true;
-		const linksSemanales = {};
+		const cantLinksPorSem = {};
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
 		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
@@ -61,13 +61,13 @@ module.exports = {
 		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
 
 		// Obtiene la cantidad de 'creadoAprobs'
-		linksSemanales[semanaActual] = creadoAprobs.length;
+		cantLinksPorSem[semanaActual] = creadoAprobs.length;
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
 			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? vidaUtilLinks : vidaPrimRevision);
 			const semanaVencim = parseInt((diaVencim - fechaPrimerLunesDelAno) / unDia / 7) + 1;
-			linksSemanales[semanaVencim] ? linksSemanales[semanaVencim]++ : (linksSemanales[semanaVencim] = 1);
+			cantLinksPorSem[semanaVencim] ? cantLinksPorSem[semanaVencim]++ : (cantLinksPorSem[semanaVencim] = 1);
 		}
 
 		// Obtiene los links aprobados
@@ -77,7 +77,7 @@ module.exports = {
 		}).then((n) => n.length);
 
 		// Fin
-		return res.json({linksSemanales, cantLinksTotal});
+		return res.json({cantLinksPorSem, cantLinksTotal});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
