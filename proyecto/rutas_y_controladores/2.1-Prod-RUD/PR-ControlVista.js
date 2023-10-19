@@ -19,16 +19,11 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-
-		// Obtiene la versión más completa posible del producto
-		const prodComb = {...original, ...edicion, id};
+		const prodComb = {...original, ...edicion, id};// obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
-		const titulo =
-			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
-			" de" +
-			(entidad == "capitulos" ? " un " : " la ") +
-			entidadNombre;
+		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
+		let titulo = entidadNombre + " - " + nombre;
 
 		// Info para el bloque Izquierdo
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
@@ -76,11 +71,10 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
-		const tituloEspecial = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal, tituloEspecial},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
