@@ -5,6 +5,7 @@
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
 
 	/* Cambia márgenes y padding */
+	#recuadro #encabezado {padding-left: 20px; padding-right: 20px;}
 	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
