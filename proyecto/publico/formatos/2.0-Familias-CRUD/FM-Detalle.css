@@ -1,18 +1,23 @@
+/* General */
 #cuerpoFooterImgDer #cuerpoFooter {position: relative; height: 100%;}
-#cuerpoFooter #cuerpo {height: calc(100% - 24px);}
-#cuerpo #datos {position: relative; height: 100%;}
-#datos #datosLargos {position: relative; height: 90%;}
 
 /* Cuerpo */
-#cuerpo {flex-direction: column; background: transparent;}
+#cuerpoFooter #cuerpo {height: calc(100% - 24px);}
+#cuerpoFooter #cuerpo {flex-direction: column; background: transparent;}
+
+/* Datos */
+#cuerpo #datos {position: relative; height: 100%;}
 #cuerpo #datos {display: flex; flex-direction: row; flex-grow: 1; justify-content: space-evenly; align-items: center;}
 
-/* Encabezado */
-#cuerpo #encabezado {padding: 15px 25px;}
-
 /* Datos Largos */
+#datos #datosLargos {position: relative; height: 90%;}
 #datos #datosLargos {display: flex; flex-direction: column; justify-content: center;}
-/* Datos */
+
+/* Recuadro */
 #datosLargos #recuadro {display: flex; flex-direction: column; width: max-content;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 #datosLargos #recuadro {border-radius: 20px; overflow: scroll;}
+#datosLargos #recuadro {max-width: max(var(--anchoRecuadro), calc(100vw - 32vw - 220px - 6vw));}
+
+/* Encabezado */
+#recuadro #encabezado {padding: 15px 25px;}
