@@ -4,18 +4,11 @@
 	#datos #datosBreves {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
 
 	/* Achica márgenes y paddings */
-	#datos :is(#datosLargos, #datosBreves) {margin-right: 2.5vw;}
-	#datos #datosLargos {margin-left: 2.5vw;}
+	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
+	#datos :is(#datosLargos, #datosBreves) {margin-right: var(--margenes);}
+	#datos #datosLargos {margin-left: var(--margenes);}
 	#recuadro #encabezado {padding: 10px 20px;}
 	#contenido #informacion {margin: 12px 20px 0;}
-}
-@media (width <= 715px) {
-
-}
-@media (width <= 675px) {
-	#cuerpo #datos {min-width: 100vw;} /* limita el ancho mínimo al de la pantalla */
-	#datosLargos #recuadro {max-width: calc(100vw - 2px)} /* limita el ancho máximo al de la pantalla */
-	#datos #datosLargos {margin: 0;} /* quita todos los márgenes */
 }
 
 /* Alto */
