@@ -1,17 +1,20 @@
 /* Ancho */
-@media (width <= 715px) {
+@media (width < 732px) {
 	/* Cambia anchos */
 	#datos {min-width: 100vw;} /* ancho mínimo: la pantalla */
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
 
 	/* Cambia márgenes y padding */
-	#datos #datosLargos {margin: 0;}
 	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
 
 	/* Varios */
 	#cuadroDeResultados i.mover {display: none;} /* oculta los triangulitos */
+}
+@media (width < 345px) {
+	#recuadro #contenido {--margenCostado: min(20px, calc(100% - 290px)/2);}
+	#recuadro #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
 }
 
 /* Alto */

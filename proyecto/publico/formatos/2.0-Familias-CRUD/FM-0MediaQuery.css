@@ -8,7 +8,7 @@
 	#datos #datosLargos {margin-left: var(--margenes);}
 	#datos #datosBreves {margin: max(30px, var(--margenes));}
 	#recuadro #encabezado {padding: 10px 20px;}
-	#contenido #informacion {margin: 12px 20px 0;}
+	#contenido #informacion {margin-top: 12px; margin-bottom: 0;}
 }
 
 /* Alto */

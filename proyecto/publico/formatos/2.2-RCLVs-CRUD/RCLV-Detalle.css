@@ -1,9 +1,9 @@
 /* Datos */
-#datos {--anchoRecuadro: 715px;}
-#cuerpo #datos #datosLargos {max-width: max(50vw, 745px);}
+#datos {--anchoRecuadro: 732px;}
 
 /* Recuadro */
 #recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
+#recuadro #encabezado p {text-align: right;}
 #recuadro #contenido {margin: 0 40px;}
 
 /* Información */
@@ -11,7 +11,7 @@
 #contenido #informacion #cuadroDeResultados {position: relative;}
 
 /* Productos */
-#listado li#prodsNuevos {padding-top: 15px; padding-bottom: 15px;}
+#listado #prodsNuevos {padding: 15px;}
 
 /* Flechas */
 #contenido #botones {margin: 20px;}
