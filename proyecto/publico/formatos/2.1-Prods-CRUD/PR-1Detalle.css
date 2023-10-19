@@ -1,6 +1,6 @@
 /* General */
+#datos {--anchoRecuadro: 675px;}
 #datosLargos #recuadro {overflow-y: auto;}
-#datosLargos #recuadro {--anchoRecuadro: 675px;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}
