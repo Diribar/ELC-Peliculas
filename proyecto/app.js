@@ -34,7 +34,7 @@ global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
 
-// Obtiene la versión
+// Obtiene la versión y el año
 const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
 exec("git rev-parse --abbrev-ref HEAD", (err, stdout) => (global.versionELC = (err ? carpeta : stdout.trim()).slice(-4)));

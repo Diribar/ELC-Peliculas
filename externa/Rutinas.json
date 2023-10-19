@@ -1,7 +1,7 @@
 {
   "Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-  "FechaUTC": "Mar. 17/oct",
-  "HoraUTC": "0:00",
+  "FechaUTC": "Mié. 18/oct",
+  "HoraUTC": "13:41",
   "FechaHoraUTC": "SI",
   "Subtitulo2": "------------TEMAS DE SEMANA ------------------",
   "FechaSemUTC": "Mar. 17/oct",
@@ -31,11 +31,6 @@
   },
   "Subtitulo4": "------------ IMAGEN DERECHA -------------------",
   "ImagenesDerecha": {
-    "15-oct-23": {
-      "titulo": "Santa Teresa de Jesús",
-      "entidad": "personajes",
-      "id": 99
-    },
     "16-oct-23": { "titulo": "ELC - Películas" },
     "17-oct-23": { "titulo": "ELC - Películas" },
     "18-oct-23": {
@@ -47,6 +42,7 @@
       "titulo": "Beato Jorge Popieluszko",
       "entidad": "personajes",
       "id": 141
-    }
+    },
+    "20-oct-23": { "titulo": "ELC - Películas" }
   }
 }
