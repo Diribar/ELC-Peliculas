@@ -115,7 +115,7 @@ module.exports = {
 			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
 
 			// Obtiene los links 'a revisar'
-			let linksRevisar = BD_especificas.TC.obtieneLinks(revID);
+			let linksRevisar = BD_especificas.TC.obtieneLinks();
 
 			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
