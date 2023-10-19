@@ -1,0 +1,6 @@
+/* Ancho */
+@media (width <= 675px) {
+	#datos {min-width: 100vw;} /* limita el ancho mínimo al de la pantalla */
+	#datos #datosLargos {margin: 0;} /* quita todos los márgenes */
+	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* limita el ancho máximo al de la pantalla */
+}
