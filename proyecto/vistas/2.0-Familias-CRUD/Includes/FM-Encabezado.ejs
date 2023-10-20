@@ -22,8 +22,6 @@
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
-			<script src="/publico/javascript/2.1-Prod-RUD/PR0-CambioTempCap.js"></script>
-			<script src="/publico/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
 				<p><b>De la colección:</b>
@@ -34,6 +32,8 @@
 			</div>
 			<div id="tempCapS">
 				<% if (tema == "prod_rud" || tema == "linksCRUD") { %>
+					<script src="/publico/javascript/2.1-Prod-RUD/PR0-CambioTempCap.js"></script>
+					<script src="/publico/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
 					<!-- Cambiar de capítulo -->
 					<div class="pack">
 						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
@@ -51,10 +51,8 @@
 					</select>
 				<% } else { %>
 					<!-- Temporada y Capítulo - no se cambia -->
-					<div class="flexRow">
-						<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
-						<p><b>Capítulo:</b> <%= registro.capitulo %></p>
-					</div>
+					<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
+					<p><b>Capítulo:</b> <%= registro.capitulo %></p>
 				<% } %>
 			</div>
 		<% } %>
