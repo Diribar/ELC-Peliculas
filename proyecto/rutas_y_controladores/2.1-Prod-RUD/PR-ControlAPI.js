@@ -131,9 +131,7 @@ module.exports = {
 	},
 
 	prefsDeCampo: {
-		obtieneOpciones: (req, res) => {
-			return res.json(pppOpciones);
-		},
+		obtieneOpciones: (req, res) => res.json(pppOpcionesSimples),
 		guardaLaPreferencia: async (req, res) => {
 			// Variables
 			const {entidad, entidad_id, opcion_id} = req.query;
