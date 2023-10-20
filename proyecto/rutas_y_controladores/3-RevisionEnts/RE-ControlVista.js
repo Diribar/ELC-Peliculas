@@ -65,6 +65,21 @@ module.exports = {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
+			// Excluye los capítulos
+			if (entidad == "capitulos")
+				res.render("CMP-0Estructura", {
+					informacion: {
+						mensajes: ["Sólo se aprueban/rechazan películas y colecciones"],
+						iconos: [
+							{
+								nombre: "fa-spell-check ",
+								link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
+								titulo: "Regresar al Tablero de Control",
+							},
+						],
+					},
+				});
+
 			// Obtiene el registro original
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 			include.push("statusRegistro", "creadoPor", "sugerido_por");
