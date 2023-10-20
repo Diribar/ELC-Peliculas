@@ -105,6 +105,7 @@ window.addEventListener("load", async () => {
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
+	document.querySelector('main').scrollLeft = 220
 });
 
 // Variables
