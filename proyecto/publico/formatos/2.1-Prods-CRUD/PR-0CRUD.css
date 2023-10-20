@@ -2,7 +2,7 @@
 #recuadro #contenido {justify-content: space-around; margin: 0 40px;}
 
 /* Información */
-#contenido #informacion {margin-top: 30px; overflow-x: scroll;}
+#contenido #informacion {margin-top: 30px; overflow-x: auto;}
 #informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
 #informacion #tituloInfoDetalle h3 {width: max-content;}
 #informacion #tituloInfoDetalle ul p {margin-top: 3px;}
