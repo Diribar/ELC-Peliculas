@@ -10,7 +10,7 @@
 }
 
 /* Alto */
-@media (height < 780px) {
+@media (height < 500px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
 	#recuadro #encabezado {padding-top: 10px; padding-bottom: 10px;}
