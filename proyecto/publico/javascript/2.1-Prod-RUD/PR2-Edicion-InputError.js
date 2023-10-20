@@ -66,6 +66,7 @@ window.addEventListener("load", async () => {
 	};
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
 	let version = await versiones(rutas.versiones);
+	const statusRegistro_id = version.orig.statusRegistro_id;
 
 	// Funciones Data-Entry
 	let FN = {
@@ -111,7 +112,7 @@ window.addEventListener("load", async () => {
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
-			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
+			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID + "&statusRegistro_id=" + statusRegistro_id;
 			for (let campo of v.camposTodos) {
 				let indice = camposResp.indexOf(campo);
 				let valor = indice > -1 ? inputsResp[indice].value : "";
