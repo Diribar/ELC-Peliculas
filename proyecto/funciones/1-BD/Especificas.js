@@ -141,18 +141,16 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) => n.map((m) => ({...m, entidad})));
 		},
-		obtieneLinks: async (revID) => {
+		obtieneLinks: async () => {
 			// Variables
 			const include = variables.asocs.prods;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
 				prodAprob: true,
-				[Op.and]: [{statusRegistro_id: {[Op.ne]: aprobado_id}}, {statusRegistro_id: {[Op.ne]: inactivo_id}}],
+				statusRegistro_id: {[Op.and]: {[Op.ne]: aprobado_id}, [Op.ne]: inactivo_id},
 			};
-			const originales = db.links
-				.findAll({where: condiciones, include: [...include, "statusRegistro"]})
-				.then((n) => n.map((m) => m.toJSON()));
+			const originales = db.links.findAll({where: condiciones, include}).then((n) => n.map((m) => m.toJSON()));
 
 			// Obtiene todas las ediciones
 			const ediciones = db.linksEdicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));

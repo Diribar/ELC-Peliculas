@@ -112,39 +112,48 @@ module.exports = {
 		},
 		obtieneProds_Links: async (revID) => {
 			// Variables
-			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
+			let productos = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
+
+			// En caso de que no exista la variable global, la obtiene con la FN
+			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno();
 
 			// Obtiene los links 'a revisar'
-			let linksRevisar = BD_especificas.TC.obtieneLinks(revID);
+			let linksRevisar = BD_especificas.TC.obtieneLinks();
 
-			// Averigua la cantidad de links de esta semana y totales
-			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
+			// Averigua la cantidad de links aprobados en esta semana
+			let cantLinksEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
 				yaTuvoPrimRev: true,
 				statusSugeridoEn: {[Op.gt]: lunesDeEstaSemana},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
-			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
+
+			// Averigua la cantidad de links aprobados en total
+			let cantLinksTotal = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
 				statusRegistro_id: aprobados_ids,
 			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
-			[linksRevisar, linksAprobsEstaSem, linksAprobsTotal] = await Promise.all([
+			[linksRevisar, cantLinksEstaSem, cantLinksTotal] = await Promise.all([
 				linksRevisar,
-				linksAprobsEstaSem,
-				linksAprobsTotal,
+				cantLinksEstaSem,
+				cantLinksTotal,
 			]);
 
-			// Averigua el porcentaje de links aprobados en la semana
-			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
-
 			// Obtiene los productos
-			const aprobsPerms = porcentaje < 4 || linksAprobsEstaSem < 30;
-			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
+			if (linksRevisar.length) {
+				// Variables
+				const porcentaje = parseInt((cantLinksEstaSem / cantLinksTotal) * 100); // averigua el porcentaje de links aprobados en la semana
+				const aprobsPerms = porcentaje < 4 || cantLinksEstaSem < 30;
+
+				// Procesa los links
+				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
+				puleLosResultados({productos, revID});
+			}
 
 			// Fin
-			return {productos, linksAprobsEstaSem, linksAprobsTotal};
+			return {productos, cantLinksEstaSem, cantLinksTotal};
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
@@ -848,10 +857,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Fin
 	return resultado;
 };
-let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
-	// Variables
-	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
-
+let PR_VN_OT = ({links, aprobsPerms, productos}) => {
 	// Separa entre PR, VN y OT
 	for (let link of links) {
 		// Variables
@@ -859,45 +865,51 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 		const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 		const fechaRef = link[campoFecha];
-		const fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+		const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 
 		// Separa en PR y VN
-		if (link.statusRegistro && link.statusRegistro_id == creadoAprob_id) {
-			if (aprobsPerms)
-				link.yaTuvoPrimRev
-					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
-					: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-		}
+		if (link.statusRegistro_id == creadoAprob_id && aprobsPerms)
+			link.yaTuvoPrimRev
+				? productos.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
+				: productos.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		// Grupo OT
-		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+		else if (link.statusRegistro_id != creadoAprob_id)
+			productos.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	}
 
-	// Pule los resultados
-	const metodos = Object.keys(prods);
+	// Fin
+	return;
+};
+let puleLosResultados = ({productos, revID}) => {
+	// Variables
+	const metodos = Object.keys(productos); // PR, VN, OT
+
+	// Rutina por método
 	metodos.forEach((metodo, i) => {
-		// Deja solamente los sin problemas de captura
-		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
+		// Deja solamente los registros sin problemas de captura
+		if (productos[metodo].length) productos[metodo] = comp.sinProblemasDeCaptura(productos[metodo], revID);
 
 		// Elimina los repetidos dentro del grupo
-		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
+		productos[metodo] = comp.eliminaRepetidos(productos[metodo]);
 
 		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
 		for (let j = i + 1; j < metodos.length; j++) {
 			const metodoEliminar = metodos[j];
-			prods[metodoEliminar] = prods[metodoEliminar].filter(
-				(n) => !prods[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
+			productos[metodoEliminar] = productos[metodoEliminar].filter(
+				(n) => !productos[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
 			);
 		}
 
 		// Ordena los productos
-		if (prods[metodo].length > 1)
-			prods[metodo]
-				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)) // Ordena por la fecha más antigua
-				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0))
-				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0))
-				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
+		if (productos[metodo].length > 1)
+			productos[metodo]
+				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)) // por fecha más antigua
+				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
+				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
+				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)); // por entidad
 	});
 
 	// Fin
-	return prods;
+	return;
 };
