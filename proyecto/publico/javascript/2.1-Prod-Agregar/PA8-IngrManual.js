@@ -42,17 +42,19 @@ window.addEventListener("load", async () => {
 	coleccion_id.addEventListener("change", async () => {
 		// Existe un valor
 		if (!coleccion_id.value) return;
+
 		// Limpia las opciones de lo relacionado con temporadas
 		limpiaLasOpciones(temporada);
+
 		// Obtiene la cantidad de temporadas de la colección
-		let cantTemporadas = await fetch("api/IM-cantTemps/?id=" + coleccion_id.value).then((n) => n.json());
+		const cantTemporadas = await fetch("api/IM-cantTemps/?id=" + coleccion_id.value).then((n) => n.json());
+
 		// Agrega las temporadas vigentes más una
 		for (let numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
-			// Agregar el n° y el nombre de las temporadas a las opciones
+			// Agrega el n° y el nombre de las temporadas a las opciones
 			let opcion = document.createElement("option");
 			opcion.value = numTemporada;
-			opcion.innerHTML =
-				cantTemporadas == 1 && numTemporada == 1 ? "Temporada única" : "Temporada " + numTemporada;
+			opcion.innerHTML = cantTemporadas == 1 && numTemporada == 1 ? "Temporada única" : "Temporada " + numTemporada;
 			temporada.appendChild(opcion);
 		}
 		// Habilitar campo siguiente
@@ -63,15 +65,17 @@ window.addEventListener("load", async () => {
 		// Existe un valor
 		if (!coleccion_id.value) return;
 		if (!temporada.value) return;
+
 		// Limpia las opciones de lo relacionado con capitulos
 		limpiaLasOpciones(capitulo);
+
 		// Obtiene los capitulos de la temporada
-		let ruta = "/crud/api/obtiene-capitulos/";
-		let capitulos = await fetch(
-			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value
-		).then((n) => n.json());
+		const ruta = "/crud/api/obtiene-capitulos/";
+		const capitulos = await fetch(ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value).then((n) =>
+			n.json()
+		);
 		// Agrega las temporadas vigentes más una
-		let cantCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
+		const cantCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
 		for (let numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
 			// Agrega sólo los capítulos inexistentes
 			if (!capitulos.includes(numCapitulo)) {
@@ -99,7 +103,6 @@ window.addEventListener("load", async () => {
 			(entidad.value == "capitulos" && coleccion_id.value && temporada.value && capitulo.value))
 	)
 		for (let submit of submits) submit.classList.remove("inactivo");
-
 });
 
 let muestraOcultaCampos = (campo) => {
