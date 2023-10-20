@@ -1,14 +1,14 @@
 /* Ancho */
 @media (width <= 1450px) {
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
-	#datos #datosBreves {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
+	#datos #datosBreves #recuadro {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
 
 	/* Achica márgenes y paddings */
 	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
-	#datos :is(#datosLargos, #datosBreves) {margin-right: var(--margenes);}
 	#datos #datosLargos {margin-left: var(--margenes);}
+	#datos #datosBreves {margin: max(30px, var(--margenes));}
 	#recuadro #encabezado {padding: 10px 20px;}
-	#contenido #informacion {margin: 12px 20px 0;}
+	#contenido #informacion {margin-top: 12px; margin-bottom: 0;}
 }
 
 /* Alto */

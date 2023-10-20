@@ -1,14 +1,17 @@
 /* Datos */
-#datos {--anchoRecuadro: 715px;}
-#cuerpo #datos #datosLargos {max-width: max(50vw, 745px);}
+#datos {--anchoRecuadro: 732px;}
 
 /* Recuadro */
 #recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
-#recuadro #contenido {margin: 0 40px 20px;}
+#recuadro #encabezado p {text-align: right;}
+#recuadro #contenido {margin: 0 40px;}
 
 /* Información */
 #contenido #informacion {margin: 20px 0;}
 #contenido #informacion #cuadroDeResultados {position: relative;}
 
 /* Productos */
-#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 24px)/2)); padding: var(--altoLi) 10px;}
+#listado #prodsNuevos {padding: 15px;}
+
+/* Flechas */
+#contenido #botones {margin: 20px;}
