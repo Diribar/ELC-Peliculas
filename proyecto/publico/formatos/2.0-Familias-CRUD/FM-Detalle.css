@@ -16,7 +16,7 @@
 /* Recuadro */
 #datosLargos #recuadro {display: flex; flex-direction: column; width: max-content;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
-#datosLargos #recuadro {border-radius: 20px; overflow: scroll;}
+#datosLargos #recuadro {border-radius: 20px; overflow: auto;}
 #datosLargos #recuadro {max-width: max(var(--anchoRecuadro), calc(100vw - 32vw - 220px - 6vw));} /* 32vw: anchoImagen, 220px: datosBreves, 6vw: márgenes */
 
 /* Encabezado */

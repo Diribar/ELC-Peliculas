@@ -5,7 +5,9 @@
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
 
 	/* Cambia márgenes y padding */
-	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
+	#recuadro #encabezado {padding-left: 20px; padding-right: 20px;}
+	#recuadro #contenido {--margenCostado: min(20px, calc(50% - 305px));}
+	#recuadro #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
 
@@ -14,7 +16,6 @@
 }
 @media (width < 345px) {
 	#recuadro #contenido {--margenCostado: min(20px, calc(100% - 290px)/2);}
-	#recuadro #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
 }
 
 /* Alto */

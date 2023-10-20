@@ -7,12 +7,12 @@
 	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
 	#datos #datosLargos {margin-left: var(--margenes);}
 	#datos #datosBreves {margin: max(30px, var(--margenes));}
-	#recuadro #encabezado {padding: 10px 20px;}
-	#contenido #informacion {margin-top: 12px; margin-bottom: 0;}
 }
 
 /* Alto */
 @media (height < 780px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
+	#recuadro #encabezado {padding-top: 10px; padding-bottom: 10px;}
+	#contenido #informacion {margin-top: 12px; margin-bottom: 0;}
 }

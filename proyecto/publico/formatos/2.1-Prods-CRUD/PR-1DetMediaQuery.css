@@ -3,4 +3,9 @@
 	#datos {min-width: 100vw;} /* limita el ancho mínimo al de la pantalla */
 	#datos #datosLargos {margin: 0;} /* quita todos los márgenes */
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* limita el ancho máximo al de la pantalla */
+	#recuadro #encabezado {padding-left: 20px; padding-right: 20px;}
+}
+@media (width <= 500px) {
+	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
+
 }
