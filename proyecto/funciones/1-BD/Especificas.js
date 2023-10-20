@@ -92,7 +92,7 @@ module.exports = {
 			.findAll({where: {coleccion_id, temporada}, order: [["capitulo", "ASC"]]})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n.map((m) => ({numero: m.capitulo, nombre: m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal}))
+				n.map((m) => ({id: m.id, numero: m.capitulo, nombre: m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal}))
 			);
 	},
 

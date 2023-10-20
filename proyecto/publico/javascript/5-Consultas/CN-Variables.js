@@ -98,13 +98,14 @@ window.addEventListener("load", async () => {
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = v.pppOpciones.find((n) => n.codigo == pppOcion.codigo);
 
-
 	// Start-up
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
 	await cambioDeConfig_id();
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
+	document.querySelector("main").scrollLeft = 220;
+	document.querySelector("main #cuerpoFooterImgDer").style.visibility = "visible";
 });
 
 // Variables

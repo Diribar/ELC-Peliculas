@@ -1,4 +1,5 @@
 /* Cuerpo */
+main #cuerpoFooterImgDer {visibility: hidden;}
 #cuerpoFooter #cuerpo {flex-direction: row;}
 
 /* Configuración de la consulta */

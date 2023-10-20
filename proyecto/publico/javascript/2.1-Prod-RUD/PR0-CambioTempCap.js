@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(1,-1)
+	const codigo = location.pathname.slice(1, -1);
 	const origen = false
 		? null
 		: codigo == "producto/detalle"
@@ -25,34 +25,32 @@ window.addEventListener("load", async () => {
 	// CAMBIOS EN LA TEMPORADA --> se deben actualizar los capítulos
 	tempSelect.addEventListener("change", async () => {
 		// Obtiene la temporada
-		let tempNum = temporada.value
-		// Obtiene los capítulos de la temporada
-		let ruta = "/crud/api/obtiene-capitulos/";
-		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
-		// Elimina las opciones actuales
-		capSelect.innerHTML = "<option selected class='ocultar'>Elegí</option>";
-		// Agregar las nuevas opciones
-		for (let capitulo of capitulos) {
-			capSelect.innerHTML += "<option>" + capitulo.numero + ". " + capitulo.nombre + "</option>";
-		}
+		const tempNum = temporada.value;
+
+		// Obtiene el primer capítulo de la temporada
+		const ruta = "/crud/api/obtiene-capitulos/";
+		const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
+		const capID = capitulos[0].id;
+
+		// Actualiza la vista
+		location.href =
+			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + origen;
 	});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
 	capSelect.addEventListener("change", async () => {
 		// Obtiene los datos para conseguir el capID
-		let tempNum = temporada.value
-		let capNum = capitulo.value
+		const tempNum = temporada.value;
+		const capNum = capitulo.value;
+
 		// Obtiene el capID
-		let ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
-		let capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
+		const ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
+		const capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
 			n.json()
 		);
+
+		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/?entidad=capitulos&id=" +
-			prodID +
-			"&prodEntidad=capitulos&prodID=" +
-			capID +
-			"&origen=" +
-			origen;
+			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + origen;
 	});
 });

@@ -8,7 +8,7 @@
 
 /* Ancho, dependiendo de si tiene capítulos */
 #cuerpo #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
-#cuerpo #encabezado :is(#colCap) {max-width: 50%;}
+/* #cuerpo #encabezado :is(#colCap) {max-width: 50%;} */
 
 /* Otros */
 #cuerpo #encabezado #nombres h2 {margin: 0; }
@@ -17,7 +17,7 @@
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap #colecciones a div {border: 1px solid var(--azul-oscuro); background: var(--gris-claro);}
 #cuerpo #encabezado #colCap #colecciones a div {padding: 5px 10px; border-radius: 10px; text-align: center;}
-#cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
+#cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px; max-width: max-content;}
 #cuerpo #encabezado #colCap #tempCapI i {color: white; background: var(--gris-oscuro); cursor: pointer; margin-right: 15px; align-self: center; line-height: 1; border-radius: 15px;}
 #cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center;}
 #cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px; white-space: nowrap;}

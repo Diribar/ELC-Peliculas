@@ -1,7 +1,7 @@
 {
   "Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-  "FechaUTC": "Jue. 19/oct",
-  "HoraUTC": "10:56",
+  "FechaUTC": "Vie. 20/oct",
+  "HoraUTC": "0:43",
   "FechaHoraUTC": "SI",
   "Subtitulo2": "------------TEMAS DE SEMANA ------------------",
   "FechaSemUTC": "Mar. 17/oct",
@@ -31,7 +31,6 @@
   },
   "Subtitulo4": "------------ IMAGEN DERECHA -------------------",
   "ImagenesDerecha": {
-    "17-oct-23": { "titulo": "ELC - Películas" },
     "18-oct-23": {
       "titulo": "Thomas Alva Edison",
       "entidad": "personajes",
@@ -43,6 +42,11 @@
       "id": 141
     },
     "20-oct-23": { "titulo": "ELC - Películas" },
-    "21-oct-23": { "titulo": "ELC - Películas" }
+    "21-oct-23": { "titulo": "ELC - Películas" },
+    "22-oct-23": {
+      "titulo": "San Juan Pablo II",
+      "entidad": "personajes",
+      "id": 24
+    }
   }
 }
