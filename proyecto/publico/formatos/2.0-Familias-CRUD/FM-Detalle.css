@@ -11,7 +11,7 @@
 
 /* Datos Largos */
 #datos #datosLargos {position: relative; height: 90%;}
-#datos #datosLargos {display: flex; flex-direction: column; justify-content: center;}
+#datos #datosLargos {display: flex; flex-direction: column; justify-content: center; align-items: center;}
 
 /* Recuadro */
 #datosLargos #recuadro {display: flex; flex-direction: column; width: max-content;}
