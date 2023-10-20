@@ -1,11 +1,12 @@
-/* Información */
-#datosLargos #datosLargos {max-width: 100%;}
+/* General */
 #recuadro #contenido {justify-content: space-around;}
+
+/* Información */
 #contenido #informacion {margin: 30px 40px 0; overflow-x: scroll;}
 #informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
 #informacion #tituloInfoDetalle h3 {width: max-content;}
-#tituloInfoDetalle ul p {margin-top: 3px;}
-#tituloInfoDetalle ul b {color: snow;}
+#informacion #tituloInfoDetalle ul p {margin-top: 3px;}
+#informacion #tituloInfoDetalle ul b {color: snow;}
 
 /* Marco */
 #contenido .marco {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
