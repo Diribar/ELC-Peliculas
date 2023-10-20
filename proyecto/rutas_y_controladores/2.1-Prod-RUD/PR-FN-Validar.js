@@ -21,8 +21,8 @@ module.exports = {
 
 		// Si corresponde, agrega campos particulares
 		if (datos.entidad != "capitulos" && datos.statusRegistro_id != creado_id) {
-			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 			if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
+			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 		}
 
 		// Consolida si hay un error
