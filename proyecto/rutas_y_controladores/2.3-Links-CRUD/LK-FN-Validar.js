@@ -29,47 +29,48 @@ module.exports = {
 		// calidad
 		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? variables.inputVacio : "";
 		// castellano
-		if (campos.includes("castellano")) {
+		if (campos.includes("castellano"))
 			errores.castellano = !datos.castellano
 				? variables.inputVacio
 				: datos.castellano != "0" && datos.castellano != "1"
 				? "Valor inválido"
 				: "";
-		}
+
 		// subtitulos castellano
-		if (campos.includes("subtitulos") && datos.castellano != "1") {
+		if (campos.includes("subtitulos") && datos.castellano != "1")
 			errores.subtitulos = !datos.subtitulos
 				? variables.inputVacio
 				: datos.subtitulos != "0" && datos.subtitulos != "1"
 				? "Valor inválido"
 				: "";
-		}
+
 		// gratuito
-		if (campos.includes("gratuito")) {
+		if (campos.includes("gratuito"))
 			errores.gratuito = !datos.gratuito
 				? variables.inputVacio
 				: datos.gratuito != "0" && datos.gratuito != "1"
 				? "Valor inválido"
 				: "";
-		}
+
 		// tipo_id
-		if (campos.includes("tipo_id")) {
+		if (campos.includes("tipo_id"))
 			errores.tipo_id = !datos.tipo_id
 				? variables.inputVacio
 				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
-		}
+
 		// completo
 		if (campos.includes("completo") && datos.tipo_id != "1") errores.completo = !datos.completo ? variables.inputVacio : "";
+
 		// parte
-		if (campos.includes("parte") && datos.completo == "0") {
+		if (campos.includes("parte") && datos.completo == "0")
 			errores.parte = !datos.parte
 				? variables.inputVacio
 				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
 				? "Necesitamos que ingreses un número positivo"
 				: "";
-		}
+
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
