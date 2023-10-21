@@ -792,11 +792,11 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	const url = avatarOrig && avatarOrig.includes("/");
 	const avatarEdic = edicion.avatar;
 	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
 
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
 		const rutaFinal = carpetaExterna + carpeta + "/Final/";
 		if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
 			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
