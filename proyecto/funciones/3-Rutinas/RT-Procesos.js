@@ -295,6 +295,8 @@ module.exports = {
 					const texto = n.aprobado ? {aprob: "sugerida", desc: "anterior"} : {aprob: "vigente", desc: "sugerida"};
 					n.valorAprob = avatarConLink(n.familia, n.valorAprob, texto.aprob);
 					n.valorDesc = avatarConLink(n.familia, n.valorDesc, texto.desc);
+					console.log(298, n.valorAprob);
+					console.log(299, n.valorDesc);
 				}
 
 				// Dots + campo
@@ -303,7 +305,7 @@ module.exports = {
 					? n.valorAprob && n.valorDesc
 						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
 						: n.valorAprob
-						? "<em><b>" + n.valorAprob + "</b></em>"
+						? "<em><b>" + n.valorAprob + "</b></em> fue ingresado"
 						: "<em><b>" + n.valorDesc + "</b></em> fue quitado"
 					: "se mantuvo <em><b>" +
 					  (n.valorAprob ? n.valorAprob : "(vacío)") +
@@ -487,19 +489,21 @@ let ordenarEdic = (resultados) => {
 			: 0
 	);
 };
-let avatarConLink = (familia, valorAprob, texto) => {
+let avatarConLink = (familia, valor, texto) => {
 	// Variables
-	const link = valorAprob && valorAprob.includes("/");
-	const terminacion = "' style='color: inherit; text-decoration: none'><u>la imagen " + texto + "</u></a>";
-	const carpeta = (familia == "producto" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familia) + "s/Final/";
-	const rutaArchivo = valorAprob && !valorAprob.includes("/") ? carpetaExterna + carpeta + valorAprob : "";
-	const existe = rutaArchivo && comp.gestionArchivos.existe(rutaArchivo);
+	texto = "la imagen " + texto;
+	const terminacion = '" style="color: inherit; text-decoration: none"><u>' + texto + "</u></a>";
+	const carpeta = (familia == "producto" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familia) + "s";
+	const rutaArchivo = carpeta + "/Final/" + valor;
 
-	return link
-		? "<a href='" + valorAprob + terminacion
-		: existe
-		? "<a href='" + rutaArchivo + terminacion
-		: "la imagen " + texto;
+	// Fin
+	return !valor
+		? "" // si no tiene un valor
+		: valor.includes("/")
+		? '<a href="' + valor + terminacion // si es una imagen externa
+		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
+		? '<a href="https://elc.lat/externa/' + rutaArchivo + terminacion // si se encuentra el archivo
+		: texto; // si no se encuentra el archivo
 };
 let formatos = {
 	h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
