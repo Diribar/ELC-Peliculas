@@ -303,8 +303,8 @@ module.exports = {
 					? n.valorAprob && n.valorDesc
 						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
 						: n.valorAprob
-						? "<em><b>" + n.valorAprob + "</b></em> fue ingresado"
-						: "<em><b>" + n.valorDesc + "</b></em> fue quitado"
+						? "<em><b>" + n.valorAprob + "</b></em> fue aceptado"
+						: "<em><b>" + n.valorDesc + "</b></em> fue rechazado"
 					: "se mantuvo <em><b>" +
 					  (n.valorAprob ? n.valorAprob : "(vacío)") +
 					  "</b></em> como mejor opción que <em>" +
