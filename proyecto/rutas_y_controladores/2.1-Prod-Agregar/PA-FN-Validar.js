@@ -51,6 +51,7 @@ module.exports = {
 				errores[nombre] = respuesta;
 			}
 		}
+
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("anoEstreno"))
 			errores.anoEstreno = !datos.anoEstreno
@@ -147,12 +148,16 @@ module.exports = {
 		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 		if (campos.some((n) => rclvs_id.includes(n)))
 			errores.RCLV =
-				datos.entidad != "capitulos" && rclvs_id.every((n) => !datos[n] || datos[n] == 1)
+				datos.entidad != "capitulos" &&
+				rclvs_id.every((n) => !datos[n] || datos[n] == 1) &&
+				datos.statusRegistro_id != creado_id
 					? "Necesitamos que respondas alguna de las opciones"
 					: "";
 
-		// ***** RESUMEN *******
+		// Consolida la información
 		errores.hay = Object.values(errores).some((n) => !!n);
+
+		// Fin
 		return errores;
 	},
 	// ControllerAPI (validaIngresoFA)

@@ -1,6 +1,5 @@
 /* General */
 #datos {--anchoRecuadro: 675px;}
-#datosLargos #recuadro {max-height: 90%;}
 
 /* Links */
 .marco#links {padding: 5px 20px;}

@@ -1,5 +1,5 @@
 /* Datos Largos */
-#datosLargos #recuadro {width: 45vw;}
+#datos {--anchoRecuadro: 675px;}
 #datosLargos #contenido {background: var(--verde-claro); padding: 0 40px;}
 
 /* Informacion */

@@ -58,7 +58,7 @@ module.exports = {
 			}
 
 			// Separa entre altas y ediciones
-			const AL_conEdicion = productos.filter((n) => n.statusRegistro_id == creado_id);
+			const AL_conEdicion = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
 			const ED = productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 			// Fin

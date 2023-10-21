@@ -20,11 +20,17 @@ module.exports = {
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares
-		if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
-		if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
+		if (datos.entidad != "capitulos" && datos.statusRegistro_id != creado_id) {
+			if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
+			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
+		}
 
-		// Terminar
-		errores.hay = erroresDD.hay || erroresDA.hay || !!errores.publico_id;
+		// Consolida si hay un error
+		errores.hay = erroresDD.hay || erroresDA.hay || errores.publico_id || errores.epocaOcurrencia_id;
+		delete erroresDD.hay;
+		delete erroresDA.hay;
+
+		// Fin
 		return errores;
 	},
 	calificar: (datos) => {

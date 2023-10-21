@@ -1,9 +1,9 @@
 <form method="POST" enctype="multipart/form-data">
-	<%- include("RCLV1-AltaEdicion1-Avatar") %> 
+	<%- include("RCLV1-AltaEdicion1-Avatar") %>
 	<section id="formCuerpoFooter">
 		<%- include('CMP-3Footer', {mostrar: true}) %>
 		<!--**************************** CUERPO ************************-->
-		
+
 		<div id="formCuerpo">
 			<%- codigo != "agregar" ? include('CMP-TimerContador') : "" %>
 			<div id="tituloPrincipal">
@@ -13,7 +13,7 @@
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
 						<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
 							<li>Al terminar, te pedimos que vayas a la vista <em>Detalle de Producto</em> para liberarlo.</li>
-						</ul>	
+						</ul>
 					</i>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 					<%- include('RCLV1-AltaEdicion2-Datos') %>
 				</div>
 				<% if (locals.bloqueDer) { %>
-					<div id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+					<div id="datosBreves">
 						<%- include("RE0-Breves") %>
 					</div>
 				<% } %>
