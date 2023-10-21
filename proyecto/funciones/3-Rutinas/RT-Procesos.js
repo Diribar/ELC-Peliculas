@@ -295,8 +295,6 @@ module.exports = {
 					const texto = n.aprobado ? {aprob: "sugerida", desc: "anterior"} : {aprob: "vigente", desc: "sugerida"};
 					n.valorAprob = avatarConLink(n.familia, n.valorAprob, texto.aprob);
 					n.valorDesc = avatarConLink(n.familia, n.valorDesc, texto.desc);
-					console.log(298, n.valorAprob);
-					console.log(299, n.valorDesc);
 				}
 
 				// Dots + campo
