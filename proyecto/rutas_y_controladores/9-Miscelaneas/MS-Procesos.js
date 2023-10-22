@@ -47,15 +47,15 @@ module.exports = {
 			// Links - sin links
 			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
 			SL_caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
-			SL_HD: aprobados.filter((n) => n.linksGral == conLinks), // alta definición
+			SL_HD: aprobados.filter((n) => n.linksGral && !n.HD_Gral), // con Links pero sin HD
 
-			// Links - sin links gratuitos
-			SLG_basico: aprobados.filter((m) => m.linksGral && !m.linksGratis),
-			SLG_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksGratis),
+			// Links Basicos
+			SLG_basico: aprobados.filter((n) => n.linksGral && !n.linksGratis), // sin links gratuitos
+			SLC_basico: aprobados.filter((n) => n.linksGral && !n.linksCast), // sin links en castellano
 
-			// Links - sin links en castellano
-			SLC_basico: aprobados.filter((m) => m.linksGral && !m.linksCast),
-			SLC_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksCast),
+			// Links HD
+			SLG_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
+			SLC_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Cast), // sin HD en castellano
 		};
 
 		// Fin

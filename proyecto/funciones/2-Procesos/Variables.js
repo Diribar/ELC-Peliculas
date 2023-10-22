@@ -54,20 +54,19 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
-				{id: "conLinksHD", nombre: "Con links HD", condic: {linksHD: conLinksHD}},
-				{id: "conLinks", nombre: "Con links", condic: {linksGral: [conLinks, conLinksHD]}},
-				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratis: [conLinks, conLinksHD]}},
+				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
+				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
+				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratis: conLinks}},
 			],
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
 			opciones: [
-				{id: "SI", nombre: "Hablada en castellano", condic: {linksCast: [conLinks, conLinksHD]}},
-				{id: "subt", nombre: "Subtítulos en castellano", condic: {linksSubt: [conLinks, conLinksHD]}},
+				{id: "SI", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
 				{
 					id: "enCast",
 					nombre: "En castellano (habl./subt.)",
-					condic: {[Op.or]: [{linksCast: [conLinks, conLinksHD]}, {linksSubt: [conLinks, conLinksHD]}]},
+					condic: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
 				},
 			],
 		},
