@@ -488,7 +488,7 @@ module.exports = {
 				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
-				const total = HD + SI + potencial + NO;
+				const total = SI + potencial + NO;
 				const resultado = {
 					SI: SI / total,
 					potencial: (SI + potencial) / total,
@@ -836,7 +836,7 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 	// Fin
 	return;
 };
-let averiguaTipoDeLink = async (links, condicion) => {
+let averiguaTipoDeLink = (links, condicion) => {
 	// Filtro inicial
 	if (condicion) links = links.filter((n) => n[condicion]);
 
