@@ -432,7 +432,7 @@ module.exports = {
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
-			const lectura = await BD_genericas.obtienePorCondicion("links", {[campo_id]: id});
+			const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
 
 			// Obtiene las películas y trailers
 			const linksPelis = lectura.filter((n) => n.tipo_id != linkTrailer_id);
@@ -442,9 +442,9 @@ module.exports = {
 			const tiposDeLink = {
 				// Películas
 				linksGral: averiguaTipoDeLink(linksPelis),
-				linksGratis: averiguaTipoDeLink(linkPelis, "gratuito"),
-				linksCast: averiguaTipoDeLink(linkPelis, "castellano"),
-				linksSubt: averiguaTipoDeLink(linkPelis, "subtitulos"),
+				linksGratis: averiguaTipoDeLink(linksPelis, "gratuito"),
+				linksCast: averiguaTipoDeLink(linksPelis, "castellano"),
+				linksSubt: averiguaTipoDeLink(linksPelis, "subtitulos"),
 
 				// Trailer
 				linksTrailer: averiguaTipoDeLink(linksTrailers),

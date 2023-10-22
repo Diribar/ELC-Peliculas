@@ -38,15 +38,24 @@ module.exports = {
 
 		// Resultados
 		let resultados = {
-			SE: [...SE_pel, ...SE_col, ...SE_cap],
-			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // Inactivos (los tres productos)
+			// Productos
+			SE: [...SE_pel, ...SE_col, ...SE_cap], // sin edición
+			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // películas y colecciones inactivas, y capítulos con su colección aprobada
 			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // Aprobados - Sin calificar
 			ST: pelisColes.filter((n) => n.tema_id == 1), // Aprobados - Sin tema
-			SL_Pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // Aprobados - Sin links
-			SL_Caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // Aprobados - Sin links
-			SL_HD: pelisColes.filter((n) => n.linksGral && !n.linksHD), // Aprobados - Sin links
-			SLG: aprobados.filter((m) => m.linksGral).filter((m) => !m.linksGratis), // Aprobados - Sin links gratuitos
-			SLC: aprobados.filter((m) => m.linksGral).filter((m) => !m.linksCast), // Aprobados - Sin links en castellano
+
+			// Links - sin links
+			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
+			SL_caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
+			SL_HD: aprobados.filter((n) => n.linksGral == conLinks), // alta definición
+
+			// Links - sin links gratuitos
+			SLG_basico: aprobados.filter((m) => m.linksGral && !m.linksGratis),
+			SLG_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksGratis),
+
+			// Links - sin links en castellano
+			SLC_basico: aprobados.filter((m) => m.linksGral && !m.linksCast),
+			SLC_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksCast),
 		};
 
 		// Fin
