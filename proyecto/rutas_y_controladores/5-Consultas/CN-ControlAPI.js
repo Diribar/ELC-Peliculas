@@ -149,8 +149,8 @@ module.exports = {
 		delete configProd.canons;
 		let prods =
 			entidad == "productos"
-				? procesos.resultados.prods({entidad, configCons, orden})
-				: procesos.resultados.prods({entidad, configCons: configProd, orden});
+				? procesos.resultados.prods({entidad, orden, configCons})
+				: procesos.resultados.prods({entidad, orden, configCons: configProd});
 
 		// Obtiene los registros de rclvs
 		let rclvs =
