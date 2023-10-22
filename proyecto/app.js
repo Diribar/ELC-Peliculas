@@ -107,7 +107,7 @@ app.set("views", [
 (async () => {
 	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/1-BD/Genericas");
-	let campos = {
+	let datos = {
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
 		rolesUs: BD_genericas.obtieneTodos("rolesUsuarios", "orden"),
@@ -156,9 +156,8 @@ app.set("views", [
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
 	};
 	// Procesa todas las lecturas
-	let valores = Object.values(campos);
-	valores = await Promise.all(valores);
-	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
+	const valores = await Promise.all(Object.values(datos));
+	Object.keys(datos).forEach((campo, i) => (global[campo] = valores[i]));
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
@@ -200,7 +199,6 @@ app.set("views", [
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
-	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
