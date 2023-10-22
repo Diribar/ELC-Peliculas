@@ -21,14 +21,14 @@ router.get("/api/horario-inicial/", API.horarioInicial);
 
 // Rutas de vistas
 // Inactivar captura
-router.get("/inactivar-captura", capturaInactivar, vista.redireccionar);
+router.get("/inactivar-captura", capturaInactivar, vista.redirecciona);
 
 // Tablero de mantenimiento
 router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Redireccionar a Inicio
-router.get("/", vista.redireccionarInicio);
-router.get("/inicio", vista.redireccionarInicio);
+router.get("/", vista.redireccionaInicio);
+router.get("/inicio", vista.redireccionaInicio);
 
 // Contenido de session y cookies
 router.get("/session", vista.session);

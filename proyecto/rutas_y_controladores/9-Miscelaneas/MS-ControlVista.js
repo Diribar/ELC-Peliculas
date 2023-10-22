@@ -5,8 +5,39 @@ const procesos = require("./MS-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
+	// Tablero de mantenimiento
+	tableroMantenim: async (req, res) => {
+		// Variables
+		const tema = "mantenimiento";
+		const codigo = "tableroControl";
+		const userID = req.session.usuario.id;
+		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
+
+		// Productos
+		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
+		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.TC.procesaCampos.rclvs(n));
+		let prodLinks = procesos.obtieneProds_Links(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
+
+		// RCLVs
+		[prods, rclvs, prodLinks] = await Promise.all([prods, rclvs, prodLinks]);
+
+		// Une Productos y Links
+		prods = {...prods, ...prodLinks};
+
+		// Obtiene información para la vista
+		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
+
+		// Va a la vista
+		// return res.send(prods);
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
+			...{prods, rclvs, omnipotente},
+			dataEntry,
+		});
+	},
+
 	// Redireccionar después de inactivar una captura
-	redireccionar: async (req, res) => {
+	redirecciona: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
 		// return res.send(req.query)
@@ -52,50 +83,9 @@ module.exports = {
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},
-
-	// Tablero de mantenimiento
-	tableroMantenim: async (req, res) => {
-		// Variables
-		const tema = "mantenimiento";
-		const codigo = "tableroControl";
-		const userID = req.session.usuario.id;
-		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
-
-		// Productos
-		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
-		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.TC.procesaCampos.rclvs(n));
-		let prodLinks = procesos.obtieneProds_Links(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
-
-		// RCLVs
-		[prods, rclvs, prodLinks] = await Promise.all([prods, rclvs, prodLinks]);
-
-		// Une Productos y Links
-		prods = {...prods, ...prodLinks};
-
-		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-
-		// Va a la vista
-		// return res.send(prods);
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
-			...{prods, rclvs, omnipotente},
-			dataEntry,
-		});
-	},
-
-	// Redireccionar a Inicio
-	redireccionarInicio: (req, res) => {
-		return res.redirect("/institucional/inicio");
-	},
-
-	// Session y Cookies
-	session: (req, res) => {
-		return res.send(req.session);
-	},
-	cookies: (req, res) => {
-		return res.send(req.cookies);
-	},
+	redireccionaInicio: (req, res) => res.redirect("/institucional/inicio"), // redirecciona a Inicio
+	session: (req, res) => res.send(req.session), // session
+	cookies: (req, res) => res.send(req.cookies), // cookies
 
 	// Productos por RCLV
 	listadoRCLVs: async (req, res) => {
