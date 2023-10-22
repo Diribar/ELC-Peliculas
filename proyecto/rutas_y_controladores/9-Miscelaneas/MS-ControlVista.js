@@ -16,13 +16,13 @@ module.exports = {
 		// Productos
 		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
 		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.TC.procesaCampos.rclvs(n));
-		let prodLinks = procesos.obtieneProds_Links(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
+		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
 
 		// RCLVs
-		[prods, rclvs, prodLinks] = await Promise.all([prods, rclvs, prodLinks]);
+		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
 
 		// Une Productos y Links
-		prods = {...prods, ...prodLinks};
+		prods = {...prods, ...prodsConLinksInactivos};
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};

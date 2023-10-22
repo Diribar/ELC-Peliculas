@@ -46,10 +46,6 @@ module.exports = {
 				ordenesPorEntsBD: cn_ordenesPorEnts,
 				ordenesBD: cn_ordenes,
 
-				// Check-Boxes
-				conLinksHD: "conLinksHD",
-				enCast: "enCast",
-
 				// Otros
 				pppOpciones,
 				rclvNombres: variables.entidades.rclvsNombre,

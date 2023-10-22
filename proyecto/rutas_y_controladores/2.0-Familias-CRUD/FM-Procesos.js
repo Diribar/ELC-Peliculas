@@ -438,6 +438,7 @@ module.exports = {
 			// Averigua qué links tiene
 			const tiposDeLink = {
 				linksGral: averiguaSiTieneLink({...objeto}),
+				linksHD: averiguaSiTieneLink({...objeto, calidad: {[Op.gte]: 720}}),
 				linksGratis: averiguaSiTieneLink({...objeto, gratuito: true}),
 				linksCast: averiguaSiTieneLink({...objeto, castellano: true}),
 				linksSubt: averiguaSiTieneLink({...objeto, subtitulos: true}),
@@ -460,7 +461,7 @@ module.exports = {
 			// Rutinas
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: [conLinks, conLinksHD]});
+				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: conLinks});
 				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
 				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: sinLinks});
 				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
@@ -816,14 +817,12 @@ let averiguaSiTieneLink = async (objeto) => {
 	// Variables
 	const statusAprobado = {statusRegistro_id: aprobados_ids};
 	const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
-	const calidad = {[Op.gte]: 720};
 
 	// Lecturas
-	let res1 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, calidad});
-	let res2 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado});
-	let res3 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido});
+	let res1 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado});
+	let res2 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido});
 
 	// Fin
-	[res1, res2, res3] = await Promise.all([res1, res2, res3]);
-	return res1 ? conLinksHD : res2 ? conLinks : res3 ? talVez : sinLinks;
+	[res1, res2] = await Promise.all([res1, res2]);
+	return res1 ? conLinks : res2 ? talVez : sinLinks;
 };

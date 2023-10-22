@@ -34,31 +34,23 @@ module.exports = {
 			ppp,
 		]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
-		const SE = [...SE_pel, ...SE_col, ...SE_cap];
-
-		// Inactivos (los tres productos)
-		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id);
-
-		// Aprobados - Sin calificar
 		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
-		const SC = pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id));
 
-		// Aprobados - Sin tema
-		const ST = pelisColes.filter((n) => n.tema_id == 1);
-
-		// Aprobados - Sin links
-		const SL_Pelis = pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas");
-
-		const SL_CC = aprobados.filter((n) => !n.linksGral && n.entidad != "peliculas");
-
-		// Aprobados - Sin links gratuitos
-		const SLG = aprobados.filter((m) => m.linksGral).filter((m) => !m.linksGratis);
-
-		// Aprobados - Sin links en castellano
-		const SLC = aprobados.filter((m) => m.linksGral).filter((m) => !m.linksCast);
+		// Resultados
+		let resultados = {
+			SE: [...SE_pel, ...SE_col, ...SE_cap],
+			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // Inactivos (los tres productos)
+			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // Aprobados - Sin calificar
+			ST: pelisColes.filter((n) => n.tema_id == 1), // Aprobados - Sin tema
+			SL_Pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // Aprobados - Sin links
+			SL_Caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // Aprobados - Sin links
+			SL_HD: pelisColes.filter((n) => n.linksGral && !n.linksHD), // Aprobados - Sin links
+			SLG: aprobados.filter((m) => m.linksGral).filter((m) => !m.linksGratis), // Aprobados - Sin links gratuitos
+			SLC: aprobados.filter((m) => m.linksGral).filter((m) => !m.linksCast), // Aprobados - Sin links en castellano
+		};
 
 		// Fin
-		return {IN, SE, SC, ST, SL_Pelis, SL_CC, SLG, SLC};
+		return resultados;
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
@@ -98,7 +90,7 @@ module.exports = {
 		// Fin
 		return {IN, SA, SF, SP, FM};
 	},
-	obtieneProds_Links: async (userID) => {
+	obtieneLinksInactivos: async (userID) => {
 		// Variables
 		let include = variables.asocs.prods;
 		let condicion = {statusRegistro_id: inactivo_id};
