@@ -48,8 +48,8 @@
 				<%- include("CMP-RegsTC", {DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed ? ed : "producto/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed ? ed : "producto/edicion", mostrarOrigen: true}) %>
 				<% if (usuario.rolUsuario.revisorEnts) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "A aprob/rech - con Links", regs: prods.AL.filter(n => n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
-					<%- include("CMP-RegsTC", {DE, titulo: "A aprob/rech - sin links", regs: prods.AL.filter(n => !n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
+					<%- include("CMP-RegsTC", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
+					<%- include("CMP-RegsTC", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: dt ? dt : rp + "alta", mostrarOrigen: !!dt}) %>
 				<% } %>
 			</div>
 		</div>
