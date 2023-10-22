@@ -472,7 +472,7 @@ module.exports = {
 				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
-				const total = HD + OK + potencial + NO;
+				const total = HD + basico + potencial + NO;
 				const resultado = {
 					HD: HD / total,
 					basico: (HD + basico) / total,
