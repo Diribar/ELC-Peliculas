@@ -432,23 +432,28 @@ module.exports = {
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
-			const tipo_id = linksTipos.find((n) => n.pelicula).id; // El tipo de link 'película'
-			const objeto = {[campo_id]: id, tipo_id};
+			const lectura = await BD_genericas.obtienePorCondicion("links", {[campo_id]: id});
+
+			// Obtiene las películas y trailers
+			const linksPelis = lectura.filter((n) => n.tipo_id != linkTrailer_id);
+			const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
 
 			// Averigua qué links tiene
 			const tiposDeLink = {
-				linksGral: averiguaSiTieneLink({...objeto}),
-				linksHD: averiguaSiTieneLink({...objeto, calidad: {[Op.gte]: 720}}),
-				linksGratis: averiguaSiTieneLink({...objeto, gratuito: true}),
-				linksCast: averiguaSiTieneLink({...objeto, castellano: true}),
-				linksSubt: averiguaSiTieneLink({...objeto, subtitulos: true}),
-				linksTrailer: averiguaSiTieneLink({...objeto, tipo_id: linkTrailer_id}),
-			};
-			const valores = await Promise.all(Object.values(tiposDeLink));
-			Object.keys(tiposDeLink).forEach((campo, i) => (tiposDeLink[campo] = valores[i]));
+				// Películas
+				linksGral: averiguaTipoDeLink(linksPelis),
+				linksGratis: averiguaTipoDeLink(linkPelis, "gratuito"),
+				linksCast: averiguaTipoDeLink(linkPelis, "castellano"),
+				linksSubt: averiguaTipoDeLink(linkPelis, "subtitulos"),
 
-			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
-			await BD_genericas.actualizaPorId(entidad, id, tiposDeLink);
+				// Trailer
+				linksTrailer: averiguaTipoDeLink(linksTrailers),
+			};
+
+			// Actualiza el registro
+			entidad != "capitulos"
+				? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
+				: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
 
 			// Fin
 			return;
@@ -456,21 +461,31 @@ module.exports = {
 		linksEnColec: async (colID) => {
 			// Variables
 			const campos = ["linksGral", "linksGratis", "linksCast", "linksSubt", "linksTrailer"];
-			const objeto = {coleccion_id: colID};
 
 			// Rutinas
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: conLinks});
-				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: sinLinks});
-				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+				const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+				const HD = links.filter((n) => n[campo] == conLinksHD).length;
+				const basico = links.filter((n) => n[campo] == conLinks).length;
+				const potencial = links.filter((n) => n[campo] == talVez).length;
+				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
-				const total = OK + potencial + no;
-				const resultadoOK = OK / total;
-				const resultadoPot = (OK + potencial) / total;
-				const valor = resultadoOK >= 0.5 ? conLinks : resultadoPot >= 0.5 ? talVez : sinLinks;
+				const total = HD + OK + potencial + NO;
+				const resultado = {
+					HD: HD / total,
+					basico: (HD + basico) / total,
+					potencial: (HD + basico + potencial) / total,
+				};
+				const valor =
+					resultado.HD >= 0.5
+						? conLinksHD
+						: resultado.basico > 0.5
+						? conLinks
+						: resultadoPot >= 0.5
+						? talVez
+						: sinLinks;
 
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
@@ -813,16 +828,17 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 	// Fin
 	return;
 };
-let averiguaSiTieneLink = async (objeto) => {
-	// Variables
-	const statusAprobado = {statusRegistro_id: aprobados_ids};
-	const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
+let averiguaTipoDeLink = async (links, condicion) => {
+	// Filtro inicial
+	if (condicion) links = links.filter((n) => n[condicion]);
 
-	// Lecturas
-	let res1 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado});
-	let res2 = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido});
+	// Resultados
+	let resultado = {
+		HD: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id) && n.calidad >= 720).length,
+		comun: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+		talVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+	};
 
 	// Fin
-	[res1, res2] = await Promise.all([res1, res2]);
-	return res1 ? conLinks : res2 ? talVez : sinLinks;
+	return resultado.HD ? conLinksHD : resultado.comun ? conLinks : resultado.talVez ? talVez : sinLinks;
 };
