@@ -35,7 +35,6 @@ module.exports = (sequelize, dt) => {
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 		epocaEstreno_id: {type: dt.INTEGER},
 		linksGral: {type: dt.INTEGER},
-		linksHD: {type: dt.INTEGER},
 		linksGratis: {type: dt.INTEGER},
 		linksCast: {type: dt.INTEGER},
 		linksSubt: {type: dt.INTEGER},
