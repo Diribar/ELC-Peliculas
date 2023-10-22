@@ -199,6 +199,7 @@ app.set("views", [
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
+	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");

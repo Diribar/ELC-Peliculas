@@ -435,7 +435,7 @@ module.exports = {
 			const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
 
 			// Obtiene las películas y trailers
-			const linksPelis = lectura.filter((n) => n.tipo_id != linkTrailer_id);
+			const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
 			const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
 
 			// Averigua qué links tiene
