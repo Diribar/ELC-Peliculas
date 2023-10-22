@@ -47,15 +47,15 @@ module.exports = {
 		const ST = pelisColes.filter((n) => n.tema_id == 1);
 
 		// Aprobados - Sin links
-		const SL_Pelis = pelisColes.filter((n) => !n.linksGeneral && n.entidad == "peliculas");
+		const SL_Pelis = pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas");
 
-		const SL_CC = aprobados.filter((n) => !n.linksGeneral && n.entidad != "peliculas");
+		const SL_CC = aprobados.filter((n) => !n.linksGral && n.entidad != "peliculas");
 
 		// Aprobados - Sin links gratuitos
-		const SLG = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.linksGratuitos);
+		const SLG = aprobados.filter((m) => m.linksGral).filter((m) => !m.linksGratis);
 
 		// Aprobados - Sin links en castellano
-		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
+		const SLC = aprobados.filter((m) => m.linksGral).filter((m) => !m.linksCast);
 
 		// Fin
 		return {IN, SE, SC, ST, SL_Pelis, SL_CC, SLG, SLC};
