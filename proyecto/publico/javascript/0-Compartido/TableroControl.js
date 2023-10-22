@@ -20,12 +20,10 @@ window.addEventListener("load", async () => {
 
 			// Genera los datos a exportar
 			const familias = DOM.mostrarOcultar[i].parentNode.parentNode.children[0].children[0].innerText.toLowerCase();
-			console.log(familias);
 			let titulo = DOM.mostrarOcultar[i].innerHTML.toLowerCase();
 			titulo = titulo.slice(0, titulo.indexOf("(") - 1);
 			const desplegar = !DOM.bloqueRegistros[i].className.includes("ocultar");
 			const datos = {circuito, familias, titulo, desplegar};
-			console.log(datos);
 
 			// Exporta los datos
 			fetch(actualizarVisibles + JSON.stringify(datos));
