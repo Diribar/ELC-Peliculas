@@ -101,10 +101,12 @@
 					</i>
 				</div>
 			</div>
+			<!-- Temas -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Peliculas", regs: prods.SL_Pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Colecciones y Capítulos", regs: prods.SL_CC, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Colecciones y Capítulos", regs: prods.SL_Caps, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD", regs: prods.SL_HD, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
