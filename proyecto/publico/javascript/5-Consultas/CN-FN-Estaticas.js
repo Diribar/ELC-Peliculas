@@ -123,7 +123,11 @@ let actualiza = {
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configCampos[prefSimple.name] ? configCampos[prefSimple.name] : "";
+			prefSimple.value = configCampos[prefSimple.name]
+				? configCampos[prefSimple.name]
+				: v.filtrosConDefault[prefSimple.name]
+				? v.filtrosConDefault[prefSimple.name]
+				: "";
 
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
