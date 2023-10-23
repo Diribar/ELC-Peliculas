@@ -150,7 +150,7 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
-		if (!v.userID) return this.cfc();
+		if (!v.userID) return this.idioma();
 
 		// Si el orden elegido es "Mis preferencias", le asigna ese valor a 'pppOpciones'
 		if (v.ordenBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
