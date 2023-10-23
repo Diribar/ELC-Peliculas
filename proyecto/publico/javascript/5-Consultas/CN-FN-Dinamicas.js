@@ -179,6 +179,7 @@ let actualizaConfigCons = {
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "idioma");
+		if (configCons.idioma == "sinFiltro") delete configCons.idioma;
 
 		// Fin
 		this.cfc();
