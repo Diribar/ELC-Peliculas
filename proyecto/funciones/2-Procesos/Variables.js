@@ -52,11 +52,21 @@ module.exports = {
 		idioma: {
 			default: "enCast",
 			opciones: [
-				{id: "hablCast", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
+				{
+					id: "hablCast",
+					nombre: "Hablada en castellano",
+					condic: {
+						conLinks: {linksCast: conLinks},
+						conLinksHD: {HD_Cast: conLinks},
+					},
+				},
 				{
 					id: "enCast",
 					nombre: "En castellano (habl./subt.)",
-					condic: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
+					condic: {
+						conLinks: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
+						conLinksHD: {[Op.or]: [{HD_Cast: conLinks}, {HD_Subt: conLinks}]},
+					},
 				},
 				{id: "sinFiltro", nombre: "En cualquier idioma"},
 			],
