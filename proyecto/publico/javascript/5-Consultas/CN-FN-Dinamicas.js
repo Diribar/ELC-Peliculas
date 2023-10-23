@@ -160,15 +160,8 @@ let actualizaConfigCons = {
 			return this.tiposLink();
 		}
 
-		// Muestra / Oculta el checkbox 'noLaVi' dependiendo de si el orden es "pppFecha"
-		v.ordenBD.codigo == "pppFecha"
-			? DOM.noLaVi.parentNode.classList.add("ocultar")
-			: DOM.noLaVi.parentNode.classList.remove("ocultar");
-
 		// Averigua si se muestra
-		const seMuestra =
-			!DOM.noLaVi.checked && // 'no la vi' sin tildar
-			v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
+		const seMuestra = v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
 
 		// Acciones si no se muestra
 		if (!seMuestra)
