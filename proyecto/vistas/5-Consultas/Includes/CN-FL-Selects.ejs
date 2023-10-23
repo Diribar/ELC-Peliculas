@@ -1,7 +1,9 @@
 <div id="<%= asunto.codigo %>" class="pref contSelect ocultaFiltro <%- locals.color ? color : '' %>">
 	<select name="<%= asunto.codigo %>" class="<%= locals.eventual ? asunto.codigo : 'presenciaEstable' %> prefSimple">
-		<option value="" class="ocultar"><%= asunto.titulo %></option>
-		<option value="" id="sinFiltro">Quitar la opción elegida</option>
+		<% if (asunto.titulo) { %>
+			<option value="" class="ocultar"><%= asunto.titulo %></option>
+			<option value="" class="sinFiltro">Quitar la opción elegida</option>
+		<% } %>
 		<% for (let opcion of asunto.opciones) { %>
 			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 		<% } %>

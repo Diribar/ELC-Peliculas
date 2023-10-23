@@ -24,7 +24,7 @@
 #configCampos .pref select {margin: 6px 0;}
 #configCampos .pref select option {background: snow; color: var(--azul-oscuro);}
 #configCampos .pref select option[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
-option#sinFiltro {display: block; font-style: italic}
+select option.sinFiltro {display: block; font-style: italic}
 #configCampos .pref select:has(option[value=""]:checked) option[value=""] {display: none;}
 
 /* Filtros - Búsqueda */
