@@ -39,6 +39,14 @@ module.exports = {
 				{id: "", nombre: "Con y sin links", condic: {linksGral: conLinks}},
 			],
 		},
+		pppOpciones: {
+			opciones: [
+				{id: "2", nombre: "Marcadas para ver"},
+				{id: "3", nombre: "Películas sin marcar"},
+				{id: "5", nombre: "Para ver y sin marcar", default: true},
+				{id: "", nombre: "Todas las películas"},
+			],
+		},
 		idioma: {
 			opciones: [
 				{id: "hablCast", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
@@ -49,14 +57,6 @@ module.exports = {
 					default: true,
 				},
 				{id: "", nombre: "En cualquier idioma"},
-			],
-		},
-		pppOpciones: {
-			opciones: [
-				{id: "2", nombre: "Marcadas para ver"},
-				{id: "3", nombre: "Películas sin marcar"},
-				{id: "5", nombre: "Para ver y sin marcar", default: true},
-				{id: "", nombre: "Todas las películas"},
 			],
 		},
 		// criterioPago: {
