@@ -41,15 +41,9 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				// Órdenes y Entidades
-				entidadesBD: cn_entidades,
-				ordenesPorEntsBD: cn_ordenesPorEnts,
-				ordenesBD: cn_ordenes,
-
-				// Otros
-				pppOpciones,
-				rclvNombres: variables.entidades.rclvsNombre,
-				configConsDefault_id,
+				...{entidadesBD: cn_entidades, ordenesPorEntsBD: cn_ordenesPorEnts, ordenesBD: cn_ordenes}, // Órdenes y Entidades
+				...{pppOpciones, pppOpcionesSimples},
+				...{rclvNombres: variables.entidades.rclvsNombre, configConsDefault_id},
 			};
 
 			// Datos del usuario
