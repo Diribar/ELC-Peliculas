@@ -33,30 +33,32 @@ module.exports = {
 	camposConsultas: {
 		// Con una opción elegida siempre
 		calidadImagen: {
+			default: "conLinks",
 			opciones: [
-				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}, default: true},
+				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
 				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
-				{id: "", nombre: "Con y sin links", condic: {linksGral: conLinks}},
+				{id: "sinFiltro", nombre: "Con y sin links", condic: {linksGral: conLinks}},
 			],
 		},
 		pppOpciones: {
+			default: "5",
 			opciones: [
-				{id: "2", nombre: "Marcadas para ver"},
+				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
-				{id: "5", nombre: "Para ver y sin marcar", default: true},
-				{id: "", nombre: "Todas las películas"},
+				{id: "5", nombre: "Para ver y sin marcar"},
+				{id: "sinFiltro", nombre: "Todas las películas"},
 			],
 		},
 		idioma: {
+			default: "enCast",
 			opciones: [
 				{id: "hablCast", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
 				{
 					id: "enCast",
 					nombre: "En castellano (habl./subt.)",
 					condic: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
-					default: true,
 				},
-				{id: "", nombre: "En cualquier idioma"},
+				{id: "sinFiltro", nombre: "En cualquier idioma"},
 			],
 		},
 		// criterioPago: {
