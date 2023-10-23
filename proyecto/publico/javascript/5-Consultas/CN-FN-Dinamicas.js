@@ -185,14 +185,8 @@ let actualizaConfigCons = {
 		return;
 	},
 	tiposLink: function () {
-		// Start-up
-		if (DOM.tiposLink.value == v.conLinksHD) {
-			DOM.conLinksHD.checked = true;
-			DOM.tiposLink.value = "";
-		}
-
 		// Variables
-		const seMuestra = !DOM.conLinksHD.checked;
+		const seMuestra = true;
 		if (!seMuestra) configCons.tiposLink = v.conLinksHD;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
