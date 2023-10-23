@@ -150,16 +150,7 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
-		if (!v.userID) {
-			// Le asigna un valor a las opciones
-			configCons.pppOpciones =
-				v.ordenBD.codigo == "azar" // si el orden es 'Sugerime al azar',
-					? v.noLaVi.combo.split(",") // tilda las opciones 'no la vi'
-					: v.meInteresan.combo.split(",");
-
-			// Sigue a la siguiente rutina
-			return this.calidadImagen();
-		}
+		if (!v.userID) return this.cfc();
 
 		// Averigua si se muestra
 		const seMuestra = v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
@@ -170,38 +161,15 @@ let actualizaConfigCons = {
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
 
-		// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
+		// Revisa el valor
 		if (typeof configCons.pppOpciones == "string")
 			if (configCons.pppOpciones == "sinFiltro") delete configCons.pppOpciones;
+			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
 			else {
 				const id = configCons.pppOpciones;
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
 			}
-
-		// Fin
-		this.calidadImagen();
-		return;
-	},
-	calidadImagen: function () {
-		// Variables
-		const seMuestra = true;
-		if (!seMuestra) configCons.calidadImagen = v.conLinksHD;
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "calidadImagen");
-
-		// Fin
-		this.idioma();
-		return;
-	},
-	idioma: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = true;
-		if (!seMuestra) configCons.idioma = v.enCast;
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "idioma");
 
 		// Fin
 		this.cfc();
