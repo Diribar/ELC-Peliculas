@@ -152,17 +152,14 @@ let actualizaConfigCons = {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
 		if (!v.userID) return this.cfc();
 
-		// Averigua si se muestra
-		const seMuestra = v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
+		// Si el orden elegido es "Mis preferencias", le asigna ese valor a 'pppOpciones'
+		if (v.ordenBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
+		// Acciones si el orden elegido es otro
+		else {
+			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+			muestraOcultaActualizaPref(true, "pppOpciones");
 
-		// Acciones si no se muestra
-		if (!seMuestra) configCons.pppOpciones = v.misPreferencias.combo.split(","); // tilda las opciones 'misPreferencias'
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
-
-		// Revisa el valor
-		if (typeof configCons.pppOpciones == "string")
+			// Revisa el valor
 			if (configCons.pppOpciones == "sinFiltro") delete configCons.pppOpciones;
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
 			else {
@@ -170,6 +167,7 @@ let actualizaConfigCons = {
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
 			}
+		}
 
 		// Fin
 		this.cfc();
