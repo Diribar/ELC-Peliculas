@@ -1,9 +1,3 @@
-/* Checkboxes */
-#configCons #checkBoxes {background: var(--verde-oscuro); color: var(--amarillo-claro); border-top: solid 1px snow;}
-#configCons #checkBoxes {padding: 7px 0 10px; justify-content: center; flex-wrap: wrap; }
-#configCons #checkBoxes div {padding: 3px 10px; flex-wrap: nowrap;}
-#configCons #checkBoxes label {margin-left: 3px;}
-
 /* Carteles para mostrar/ocultar filtros */
 #configCons #mostrarOcultarFiltros {justify-content: center; align-items: center; height: 100px;}
 #configCons #mostrarOcultarFiltros {background: var(--celeste-claro);}
@@ -41,7 +35,7 @@ option#sinFiltro {display: block; font-style: italic}
 
 /* Condicionales */
 /* Fondo verde a los sectores con elegibles elegidos */
-#configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) 
+#configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde)
     {background: var(--verde-oscuro); border-top: solid 1px snow;}
 /* Fondo verde a los elegibles elegidos */
 #configCampos .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
