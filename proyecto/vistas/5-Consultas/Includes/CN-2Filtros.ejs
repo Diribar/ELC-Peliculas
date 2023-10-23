@@ -8,7 +8,7 @@
 		<!-- Configuraciones personales -->
 		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsDeCabecera.propios.length ? 'ocultar' : '' %>">
 			<% for (let configDeCabecera of configsDeCabecera.propios) { %>
-				<option 
+				<option
 					value="<%= configDeCabecera.id %>"
 					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
 				><%= configDeCabecera.nombre %></option>
@@ -18,7 +18,7 @@
 		<% if (userID != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
 				<% for (let configDeCabecera of configsDeCabecera.predeterms) { %>
-					<option 
+					<option
 						value="<%= configDeCabecera.id %>"
 						<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
 					><%= configDeCabecera.nombre %></option>
@@ -34,34 +34,19 @@
 		<i id="eliminar" class="fa-solid fa-trash-can scale inactivo" title="Elimina el filtro actual"></i>
 	</div>
 </div>
-<div id="checkBoxes" class="flexRow">
-	<% if (locals.usuario) { %>
-		<div class="flexRow">
-			<input id="noLaVi" type="checkbox"><label for="noLaVi">No la vi</label>
-		</div>
-	<% } %>
-	<div class="flexRow">
-		<input id="conLinksHD" type="checkbox"><label for="conLinksHD">Links HD</label>
-	</div>
-	<div class="flexRow">
-		<input id="enCast" type="checkbox"><label for="enCast">En castellano (habl./subt.)</label>
-	</div>
-</div>
 
 <!-- Campos -->
 <div id="configCampos" class="flexCol sectorConDesplV">
 	<nav class="startUp flexCol ocultar">
-		<!-- Búsqueda -->
-		<div id="palabrasClave" class="pref ocultaFiltro">
-			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
-			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
-		</div>
-
 		<!-- PRIORITARIOS -->
+		<!-- Calidad de la Imagen -->
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.calidadImagen, eventual: true}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
 			<%- include('CN-FL-Selects', {asunto: configsConsCampos.pppOpciones, eventual: true, color: 'ppp'}) %>
 		<% } %>
+		<!-- Idioma -->
+		<%- include('CN-FL-Selects', {asunto: configsConsCampos.idioma, eventual: true}) %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
@@ -84,12 +69,14 @@
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.publicos}) %>
 		<!-- Época de Estreno -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.epocasEstreno}) %>
-		<!-- Tipos de Link -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposLink, eventual: true}) %>
-		<!-- Idioma Castellano -->
-		<%- include('CN-FL-Selects', {asunto: configsConsCampos.castellano, eventual: true}) %>
 		<!-- Tipo de Actuación -->
 		<%- include('CN-FL-Selects', {asunto: configsConsCampos.tiposActuacion}) %>
+
+		<!-- Palabras Clave -->
+		<div id="palabrasClave" class="pref ocultaFiltro">
+			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
+			<i class="fa-solid fa-circle-right inactivo scale" title="Aplicar las palabras"></i>
+		</div>
 	</nav>
 </div>
 
