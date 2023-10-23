@@ -197,14 +197,8 @@ let actualizaConfigCons = {
 		return;
 	},
 	castellano: function () {
-		// Start-up
-		if (DOM.castellano.value == v.enCast) {
-			DOM.enCast.checked = true;
-			DOM.castellano.value = "";
-		}
-
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked;
+		const seMuestra = true;
 		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
