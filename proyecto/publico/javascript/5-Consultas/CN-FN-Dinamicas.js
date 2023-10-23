@@ -170,10 +170,21 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
+		this.idioma();
+		return;
+	},
+	idioma: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = true;
+		if (!seMuestra) configCons.idioma = v.enCast;
+
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		muestraOcultaActualizaPref(seMuestra, "idioma");
+
+		// Fin
 		this.cfc();
 		return;
 	},
-
 	// Presencia eventual - Resto
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
