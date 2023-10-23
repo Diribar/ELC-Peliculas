@@ -3,7 +3,7 @@
 
 /* Orden y Entidad */
 #encabezado #tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
-#encabezado #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: snow; border: 0.25px solid var(--gris-oscuro);}
+#encabezado #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
 #encabezado #tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
 #encabezado #tituloPrincipal select:valid {background: var(--verde-oscuro);}
 #encabezado #tituloPrincipal select[name=ordenPorEnt_id] {border-bottom-right-radius: 7px;}
