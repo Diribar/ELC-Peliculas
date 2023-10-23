@@ -60,7 +60,7 @@ module.exports = {
 			],
 		},
 		castellano: {
-			titulo: "Idioma Castellano",
+			titulo: "Idioma",
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
 				{
