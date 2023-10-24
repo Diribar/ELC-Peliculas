@@ -1,74 +1,12 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const procesos = require("./PA-FN-Procesos");
+const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
 	movie: {
-		obtieneInfo: async function (datos) {
-			// Variables
-			datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"}; // La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
-
-			// Obtiene las API
-			let detalles = APIsTMDB.details("movie", datos.TMDB_id);
-			let creditos = APIsTMDB.credits("movie", datos.TMDB_id);
-			let datosAPI = await Promise.all([detalles, creditos]).then(([a, b]) => ({...a, ...b}));
-
-			// Procesa la información
-			if (Object.keys(datosAPI).length) datos = {...datos, ...this.datosPelis(datosAPI)};
-
-			// Limpia el resultado de caracteres especiales
-			const avatar = datos.avatar;
-			datos = comp.convierteLetras.alCastellano(datos);
-			if (avatar) datos.avatar = avatar;
-
-			// Fin
-			return datos;
-		},
-		datosPelis: (datosAPI) => {
-			// Variables
-			let datos = {};
-
-			// Procesa la información
-			if (!datosAPI.belongs_to_collection) {
-				datos.entidadNombre = "Película";
-				datos.entidad = "peliculas";
-			}
-			// IMDB_id, nombreOriginal, nombreCastellano
-			if (datosAPI.imdb_id) datos.IMDB_id = datosAPI.imdb_id;
-			if (datosAPI.original_title) datos.nombreOriginal = datosAPI.original_title;
-			if (datosAPI.title) datos.nombreCastellano = datosAPI.title;
-			// Idioma
-			if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
-
-			// año de estreno, duración, país de origen
-			if (datosAPI.release_date) {
-				datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
-				datos.epocaEstreno_id = comp.obtieneLaEpocaDeEstreno(datos.anoEstreno);
-			}
-			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
-			if (datosAPI.production_countries.length > 0)
-				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
-			// sinopsis, avatar
-			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
-			// Producción
-			if (datosAPI.production_companies.length > 0)
-				datos.produccion = procesos.FN.valores(datosAPI.production_companies);
-			// Crew
-			if (datosAPI.crew.length > 0) {
-				const direccion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				if (direccion) datos.direccion = direccion;
-				const guion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				if (guion) datos.guion = guion;
-				const musica = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
-				if (musica) datos.musica = musica;
-			}
-			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = procesos.FN.actores(datosAPI.cast);
-
-			// Fin
-			return datos;
+		obtieneInfo: async (datos) => {
+			return procsComp.obtieneInfoDeMovie(datos);
 		},
 	},
 	collection: {
@@ -159,16 +97,15 @@ module.exports = {
 				if (capitulo.production_countries.length)
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
-				if (capitulo.production_companies.length)
-					produccion += procesos.FN.valores(capitulo.production_companies) + ", ";
+				if (capitulo.production_companies.length) produccion += procsComp.valores(capitulo.production_companies) + ", ";
 				// Crew
 				if (capitulo.crew.length) {
-					direccion += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
-					guion += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
-					musica += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
+					direccion += procsComp.valores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += procsComp.valores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += procsComp.valores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actores += procesos.FN.actores(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += procsComp.actores(capitulo.cast) + ", ";
 			}
 
 			// Procesa los resultados
@@ -226,19 +163,18 @@ module.exports = {
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
-			if (datosAPI.production_companies.length > 0)
-				datos.produccion = procesos.FN.valores(datosAPI.production_companies);
+			if (datosAPI.production_companies.length > 0) datos.produccion = procsComp.valores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = procesos.FN.actores(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = procsComp.actores(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
