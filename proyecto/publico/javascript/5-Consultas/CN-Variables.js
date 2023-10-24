@@ -92,6 +92,8 @@ window.addEventListener("load", async () => {
 		...(await obtiene.obtieneVariablesDelBE()),
 		configsDeCabecera: await obtiene.configsDeCabecera(),
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
+		conLinksHD: "conLinksHD",
+		enCast: "enCast",
 		mostrarFiltros: false,
 		topeParaMasRecientes: 20,
 		contadorDeMostrarResults: 0,

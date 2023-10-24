@@ -28,6 +28,9 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
+		// await this.LinksEnProd();
+
+		console.log("Rutinas de inicio terminadas");
 		return;
 	},
 

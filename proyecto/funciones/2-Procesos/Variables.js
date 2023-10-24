@@ -54,17 +54,21 @@ module.exports = {
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
-				{id: "conLinksHD", nombre: "Con links HD", condic: {linksGeneral: conLinksHD}},
-				{id: "conLinks", nombre: "Con links", condic: {linksGeneral: [conLinks, conLinksHD]}},
-				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratuitos: conLinks}},
+				{id: "conLinksHD", nombre: "Con links HD", condic: {linksHD: conLinksHD}},
+				{id: "conLinks", nombre: "Con links", condic: {linksGral: [conLinks, conLinksHD]}},
+				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratis: [conLinks, conLinksHD]}},
 			],
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
 			opciones: [
-				{id: "SI", nombre: "Hablada en castellano", condic: {castellano: 2}},
-				{id: "subt", nombre: "Subtítulos en castellano", condic: {subtitulos: 2}},
-				{id: "enCast", nombre: "En castellano (habl./subt.)", condic: {[Op.or]: [{castellano: 2}, {subtitulos: 2}]}},
+				{id: "SI", nombre: "Hablada en castellano", condic: {linksCast: [conLinks, conLinksHD]}},
+				{id: "subt", nombre: "Subtítulos en castellano", condic: {linksSubt: [conLinks, conLinksHD]}},
+				{
+					id: "enCast",
+					nombre: "En castellano (habl./subt.)",
+					condic: {[Op.or]: [{linksCast: [conLinks, conLinksHD]}, {linksSubt: [conLinks, conLinksHD]}]},
+				},
 			],
 		},
 		tiposActuacion: {titulo: "Tipo de Actuación", campoFiltro: "tipoActuacion_id"},

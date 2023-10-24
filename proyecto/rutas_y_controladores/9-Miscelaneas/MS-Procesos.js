@@ -34,31 +34,32 @@ module.exports = {
 			ppp,
 		]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
-		const SE = [...SE_pel, ...SE_col, ...SE_cap];
-
-		// Inactivos (los tres productos)
-		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id);
-
-		// Aprobados - Sin calificar
 		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
-		const SC = pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id));
 
-		// Aprobados - Sin tema
-		const ST = pelisColes.filter((n) => n.tema_id == 1);
+		// Resultados
+		let resultados = {
+			// Productos
+			SE: [...SE_pel, ...SE_col, ...SE_cap], // sin edición
+			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // películas y colecciones inactivas, y capítulos con su colección aprobada
+			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // Aprobados - Sin calificar
+			ST: pelisColes.filter((n) => n.tema_id == 1), // Aprobados - Sin tema
 
-		// Aprobados - Sin links
-		const SL_Pelis = pelisColes.filter((n) => !n.linksGeneral && n.entidad == "peliculas");
+			// Links - sin links
+			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
+			SL_caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
+			SL_HD: aprobados.filter((n) => n.linksGral == conLinks), // alta definición
 
-		const SL_CC = aprobados.filter((n) => !n.linksGeneral && n.entidad != "peliculas");
+			// Links - sin links gratuitos
+			SLG_basico: aprobados.filter((m) => m.linksGral && !m.linksGratis),
+			SLG_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksGratis),
 
-		// Aprobados - Sin links gratuitos
-		const SLG = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.linksGratuitos);
-
-		// Aprobados - Sin links en castellano
-		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
+			// Links - sin links en castellano
+			SLC_basico: aprobados.filter((m) => m.linksGral && !m.linksCast),
+			SLC_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksCast),
+		};
 
 		// Fin
-		return {IN, SE, SC, ST, SL_Pelis, SL_CC, SLG, SLC};
+		return resultados;
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
@@ -98,7 +99,7 @@ module.exports = {
 		// Fin
 		return {IN, SA, SF, SP, FM};
 	},
-	obtieneProds_Links: async (userID) => {
+	obtieneLinksInactivos: async (userID) => {
 		// Variables
 		let include = variables.asocs.prods;
 		let condicion = {statusRegistro_id: inactivo_id};

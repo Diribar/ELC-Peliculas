@@ -81,7 +81,7 @@
 				<% } %>
 			</div>
 		</div>
-		<!-- Links -->
+		<!-- Sin Links -->
 		<div class="bloques" id="links">
 			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
@@ -101,15 +101,44 @@
 					</i>
 				</div>
 			</div>
+			<!-- Temas -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Peliculas", regs: prods.SL_Pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Colecciones y Capítulos", regs: prods.SL_CC, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Peliculas", regs: prods.SL_pelis, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Capítulos", regs: prods.SL_caps, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_basico, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC_basico, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 				<% } %>
+			</div>
+		</div>
+		<!-- Sin Links HD -->
+		<div class="bloques" id="links">
+			<!-- Título y ayuda -->
+			<div class="tituloSecundario">
+				<!-- Título -->
+				<% familias = "links" %>
+				<h2>LINKS HD</h2>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+							<p>Las columnas son: </p>
+							<li>Fecha de la novedad</li>
+							<li>Tipo de producto</li>
+							<li>Nombre del producto</li>
+							<li>Año de lanzamiento</li>
+						</ul>
+					</i>
+				</div>
+			</div>
+			<!-- Temas -->
+			<div class="temas">
+				<% DE = dataEntry[familias] %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD", regs: prods.SL_HD, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_HD, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC_HD, url: "links/abm", mostrarOrigen: true}) %>
 			</div>
 		</div>
 	</div>

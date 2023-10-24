@@ -431,93 +431,61 @@ module.exports = {
 		// Actualiza los campos de 'links' en el producto
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
+			const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
 
-			// Más variables
-			const tipo_id = linkPelicula_id; // El tipo de link 'película'
-			const statusAprobado = {statusRegistro_id: aprobados_ids};
-			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
-			const objeto = {[campo_id]: id, tipo_id};
-			const calidad = {[Op.gte]: 720};
+			// Obtiene las películas y trailers
+			const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
+			const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
 
-			// 1. Averigua si existe algún link, para ese producto
-			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, calidad}).then((n) =>
-				n
-					? conLinksHD
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
-							n
-								? conLinks
-								: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido}).then((n) =>
-										n ? talVez : sinLinks
-								  )
-					  )
-			);
+			// Averigua qué links tiene
+			const tiposDeLink = {
+				// Películas
+				linksGral: averiguaTipoDeLink(linksPelis),
+				linksGratis: averiguaTipoDeLink(linksPelis, "gratuito"),
+				linksCast: averiguaTipoDeLink(linksPelis, "castellano"),
+				linksSubt: averiguaTipoDeLink(linksPelis, "subtitulos"),
 
-			// 2. Averigua si existe algún link gratuito, para ese producto
-			let linksGratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
-				(n) =>
-					n
-						? conLinks
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, gratuito: true}).then((n) =>
-								n ? talVez : sinLinks
-						  )
-			);
+				// Trailer
+				linksTrailer: averiguaTipoDeLink(linksTrailers),
+			};
 
-			// 3. Averigua si existe algún link en castellano, para ese producto
-			let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then(
-				(n) =>
-					n
-						? conLinks
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, castellano: true}).then((n) =>
-								n ? talVez : sinLinks
-						  )
-			);
-
-			// 4. Averigua si existe algún link con subtitulos, para ese producto
-			let subtitulos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, subtitulos: true}).then(
-				(n) =>
-					n
-						? conLinks
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusValido, subtitulos: true}).then((n) =>
-								n ? talVez : sinLinks
-						  )
-			);
-
-			// 5. Averigua si existe algún link de trailer, para ese producto
-			let linksTrailer = BD_genericas.obtienePorCondicion("links", {
-				[campo_id]: id,
-				tipo_id: linkTrailer_id,
-				...statusValido,
-			}).then((n) => (n ? conLinks : sinLinks));
-
-			// Consolida
-			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer]);
-			[linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer] = respuesta;
-
-			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
-			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos, linksTrailer});
+			// Actualiza el registro
+			entidad != "capitulos"
+				? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
+				: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
 
 			// Fin
 			return;
 		},
 		linksEnColec: async (colID) => {
 			// Variables
-			const campos = ["linksGeneral", "linksGratuitos", "castellano", "subtitulos", "linksTrailer"];
-			const objeto = {coleccion_id: colID};
+			const campos = ["linksGral", "linksGratis", "linksCast", "linksSubt", "linksTrailer"];
 
 			// Rutinas
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: conLinks});
-				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: sinLinks});
-				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+				const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+				const HD = links.filter((n) => n[campo] == conLinksHD).length;
+				const basico = links.filter((n) => n[campo] == conLinks).length;
+				const potencial = links.filter((n) => n[campo] == talVez).length;
+				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
-				const total = OK + potencial + no;
-				const resultadoOK = OK / total;
-				const resultadoPot = (OK + potencial) / total;
-				const valor = resultadoOK >= 0.5 ? conLinks : resultadoPot >= 0.5 ? talVez : sinLinks;
+				const total = HD + basico + potencial + NO;
+				const resultado = {
+					HD: HD / total,
+					basico: (HD + basico) / total,
+					potencial: (HD + basico + potencial) / total,
+				};
+				const valor =
+					resultado.HD >= 0.5
+						? conLinksHD
+						: resultado.basico > 0.5
+						? conLinks
+						: resultadoPot >= 0.5
+						? talVez
+						: sinLinks;
 
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
@@ -859,4 +827,18 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 
 	// Fin
 	return;
+};
+let averiguaTipoDeLink = async (links, condicion) => {
+	// Filtro inicial
+	if (condicion) links = links.filter((n) => n[condicion]);
+
+	// Resultados
+	let resultado = {
+		HD: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id) && n.calidad >= 720).length,
+		comun: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+		talVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+	};
+
+	// Fin
+	return resultado.HD ? conLinksHD : resultado.comun ? conLinks : resultado.talVez ? talVez : sinLinks;
 };
