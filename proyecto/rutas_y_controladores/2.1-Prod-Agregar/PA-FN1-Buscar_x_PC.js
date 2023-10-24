@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const procesos = require("./PA-FN-Procesos");
+const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
 	// ControllerAPI (cantProductos)

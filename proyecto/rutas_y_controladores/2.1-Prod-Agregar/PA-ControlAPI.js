@@ -1,9 +1,9 @@
 "use strict";
 // Variables
-const buscar_x_PC = require("./PA-FN-Buscar_x_PC");
-const procsDesamb = require("./PA-FN-Desambiguar");
-const procesos = require("./PA-FN-Procesos");
-const valida = require("./PA-FN-Validar");
+const buscar_x_PC = require("./PA-FN1-Buscar_x_PC");
+const procsDesamb = require("./PA-FN2-Desambiguar");
+const valida = require("./PA-FN3-Validar");
+const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
 	// Vista (palabrasClave)
