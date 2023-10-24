@@ -37,7 +37,7 @@ module.exports = {
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
 				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
-				{id: "sinFiltro", nombre: "Con y sin links", condic: {linksGral: conLinks}},
+				{id: "sinFiltro", nombre: "Con y sin links"},
 			],
 		},
 		pppOpciones: {
@@ -45,7 +45,7 @@ module.exports = {
 			opciones: [
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
-				{id: "5", nombre: "Para ver y sin marcar"},
+				{id: "5", nombre: "Peliculas que me interesan"},
 				{id: "sinFiltro", nombre: "Todas las películas"},
 			],
 		},

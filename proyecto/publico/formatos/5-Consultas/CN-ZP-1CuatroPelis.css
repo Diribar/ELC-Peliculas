@@ -3,7 +3,7 @@
 	--anchoPaddEst: 20px; --anchoPaddDin: min(var(--anchoPaddEst), calc(50vw - 300px));
 	padding-left: var(--anchoPaddDin); padding-right: var(--anchoPaddDin);
 }
-#vistaDeResults #scroll:has(#botones li) {overflow-x: hidden;}
+/* #vistaDeResults #scroll:has(#botones li) {overflow-x: hidden;} */
 #vistaDeResults #scroll #botones {display: flex; flex-direction: row;}
 
 /* Botones para productos */

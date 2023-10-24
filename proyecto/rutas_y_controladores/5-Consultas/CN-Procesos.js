@@ -42,18 +42,17 @@ module.exports = {
 		prods: async function ({configCons, entidad, orden}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+			const include = variables.asocs.rclvs;
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
-
-			let include = [...variables.asocs.rclvs];
 			let entsProd = ["peliculas", "colecciones"];
+			if (orden.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let productos = [];
 			let resultados = [];
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
-			if (orden.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			// if (orden.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (orden.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
@@ -92,29 +91,29 @@ module.exports = {
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = {...variables.camposConsultas};
-				const {publicos, tiposLink, castellano} = vars;
+				const vars = variables.camposConsultas;
+				const {calidadImagen, idioma, publicos} = vars;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let campo in configCons)
 					if (vars[campo] && vars[campo].campoFiltro) prefs[vars[campo].campoFiltro] = configCons[campo];
 
+				// Conversión de 'calidadImagen'
+				if (configCons.calidadImagen) {
+					const aux = calidadImagen.opciones.find((n) => n.id == configCons.calidadImagen).condic;
+					prefs = {...prefs, ...aux};
+				}
+
+				// Conversión de 'idioma'
+				if (configCons.idioma) {
+					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[configCons.calidadImagen];
+					prefs = {...prefs, ...aux};
+				}
+
 				// Conversión de 'publicos'
 				if (configCons.publicos) {
 					const aux = publicos.opciones.find((n) => n.id == configCons.publicos).condic;
-					prefs = {...prefs, ...aux};
-				}
-
-				// Conversión de 'tiposLink'
-				if (configCons.tiposLink) {
-					const aux = tiposLink.opciones.find((n) => n.id == configCons.tiposLink).condic;
-					prefs = {...prefs, ...aux};
-				}
-
-				// Conversión de 'castellano'
-				if (configCons.castellano) {
-					const aux = castellano.opciones.find((n) => n.id == configCons.castellano).condic;
 					prefs = {...prefs, ...aux};
 				}
 
@@ -271,7 +270,7 @@ module.exports = {
 		cruce: {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
-				if (!prods.length || !configCons.pppOpciones) return [];
+				if (!prods.length ) return [];
 				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función

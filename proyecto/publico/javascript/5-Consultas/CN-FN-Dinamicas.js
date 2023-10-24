@@ -139,15 +139,14 @@ let actualizaConfigCons = {
 	// Presencia estable
 	presenciaEstable: function () {
 		// Impacto en configCons: todos los campos con presencia estable
-		for (let campo of DOM.camposPresenciaEstable)
-			if (campo.value && campo.value != "sinFiltro") configCons[campo.name] = campo.value;
+		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
 		this.pppOpciones();
 		return;
 	},
 
-	// Presencia eventual - Checkboxes
+	// Presencia eventual
 	pppOpciones: function () {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
 		if (!v.userID) return this.idioma();
@@ -159,10 +158,8 @@ let actualizaConfigCons = {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 			muestraOcultaActualizaPref(true, "pppOpciones");
 
-			// Revisa el valor
-			if (configCons.pppOpciones == "sinFiltro") delete configCons.pppOpciones;
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			else {
+			if (configCons.pppOpciones != "sinFiltro") {
 				const id = configCons.pppOpciones;
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
