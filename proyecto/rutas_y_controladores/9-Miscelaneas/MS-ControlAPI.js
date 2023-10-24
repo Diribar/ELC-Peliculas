@@ -51,7 +51,6 @@ module.exports = {
 			);
 		}
 		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
-		console.log(55,resultados);
 
 		// Ordena los resultados
 		resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // segunda prioridad: nombre
