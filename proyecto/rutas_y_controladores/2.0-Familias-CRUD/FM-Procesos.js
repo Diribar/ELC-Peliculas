@@ -435,19 +435,26 @@ module.exports = {
 			const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
 
 			// Obtiene las películas y trailers
-			const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
 			const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
+			const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
+			const linksHD = linksPelis.filter((n) => n.calidad >= 720);
 
 			// Averigua qué links tiene
 			const tiposDeLink = {
+				// Trailer
+				linksTrailer: averiguaTipoDeLink(linksTrailers),
+
 				// Películas
 				linksGral: averiguaTipoDeLink(linksPelis),
 				linksGratis: averiguaTipoDeLink(linksPelis, "gratuito"),
 				linksCast: averiguaTipoDeLink(linksPelis, "castellano"),
 				linksSubt: averiguaTipoDeLink(linksPelis, "subtitulos"),
 
-				// Trailer
-				linksTrailer: averiguaTipoDeLink(linksTrailers),
+				// Películas HD
+				HD_Gral: averiguaTipoDeLink(linksHD),
+				HD_Gratis: averiguaTipoDeLink(linksHD, "gratuito"),
+				HD_Cast: averiguaTipoDeLink(linksHD, "castellano"),
+				HD_Subt: averiguaTipoDeLink(linksHD, "subtitulos"),
 			};
 
 			// Actualiza el registro
@@ -460,32 +467,33 @@ module.exports = {
 		},
 		linksEnColec: async (colID) => {
 			// Variables
-			const campos = ["linksGral", "linksGratis", "linksCast", "linksSubt", "linksTrailer"];
+			const campos = [
+				"linksTrailer",
+				"linksGral",
+				"linksGratis",
+				"linksCast",
+				"linksSubt",
+				"HD_Gral",
+				"HD_Gratis",
+				"HD_Cast",
+				"HD_Subt",
+			];
 
 			// Rutinas
+			const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-				const HD = links.filter((n) => n[campo] == conLinksHD).length;
-				const basico = links.filter((n) => n[campo] == conLinks).length;
+				const SI = links.filter((n) => n[campo] == conLinks).length;
 				const potencial = links.filter((n) => n[campo] == talVez).length;
 				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
-				const total = HD + basico + potencial + NO;
+				const total = SI + potencial + NO;
 				const resultado = {
-					HD: HD / total,
-					basico: (HD + basico) / total,
-					potencial: (HD + basico + potencial) / total,
+					SI: SI / total,
+					potencial: (SI + potencial) / total,
 				};
-				const valor =
-					resultado.HD >= 0.5
-						? conLinksHD
-						: resultado.basico > 0.5
-						? conLinks
-						: resultadoPot >= 0.5
-						? talVez
-						: sinLinks;
+				const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? talVez : sinLinks;
 
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
@@ -828,17 +836,16 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 	// Fin
 	return;
 };
-let averiguaTipoDeLink = async (links, condicion) => {
+let averiguaTipoDeLink = (links, condicion) => {
 	// Filtro inicial
 	if (condicion) links = links.filter((n) => n[condicion]);
 
 	// Resultados
 	let resultado = {
-		HD: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id) && n.calidad >= 720).length,
-		comun: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+		SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
 		talVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
 	};
 
 	// Fin
-	return resultado.HD ? conLinksHD : resultado.comun ? conLinks : resultado.talVez ? talVez : sinLinks;
+	return resultado.SI ? conLinks : resultado.talVez ? talVez : sinLinks;
 };

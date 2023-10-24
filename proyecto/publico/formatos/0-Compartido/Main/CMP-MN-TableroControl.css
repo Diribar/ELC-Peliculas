@@ -20,8 +20,8 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Scroll */
 #primeraColumna .temas {max-height: 60vh; overflow-y: auto;}
-#segundaColumna #rclv .temas {max-height: 30vh; overflow-y: auto;}
-#segundaColumna #links .temas {max-height: 30vh; overflow-y: auto;}
+#segundaColumna .temas {max-height: 30vh; overflow-y: auto;}
+#segundaColumna:has(#linksHD) .temas {max-height: 20vh;}
 
 /* Particulares */
 #porcentajeLinksAprobsEstaSem {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}

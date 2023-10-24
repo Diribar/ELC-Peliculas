@@ -4,15 +4,15 @@ module.exports = {
 	obtieneProds: async (userID) => {
 		// Variables
 		const petitFamilias = "prods";
-		let objeto = {petitFamilias, userID};
+		let condiciones = {petitFamilias, userID};
 
 		// Productos Inactivos
-		objeto = {...objeto, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-		let inactivos = obtienePorEntidad(objeto);
+		condiciones = {...condiciones, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+		let inactivos = obtienePorEntidad(condiciones);
 
 		// Productos Aprobados
-		objeto = {...objeto, campoFecha: "altaTermEn", status_id: aprobado_id};
-		let aprobados = obtienePorEntidad(objeto);
+		condiciones = {...condiciones, campoFecha: "altaTermEn", status_id: aprobado_id};
+		let aprobados = obtienePorEntidad(condiciones);
 
 		// Productos Sin Edición (en status creadoAprob)
 		let SE_pel = obtieneSinEdicion("peliculas");
@@ -47,15 +47,15 @@ module.exports = {
 			// Links - sin links
 			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
 			SL_caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
-			SL_HD: aprobados.filter((n) => n.linksGral == conLinks), // alta definición
+			SL_HD: aprobados.filter((n) => n.linksGral && !n.HD_Gral), // con Links pero sin HD
 
-			// Links - sin links gratuitos
-			SLG_basico: aprobados.filter((m) => m.linksGral && !m.linksGratis),
-			SLG_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksGratis),
+			// Links Basicos
+			SLG_basico: aprobados.filter((n) => n.linksGral && !n.linksGratis), // sin links gratuitos
+			SLC_basico: aprobados.filter((n) => n.linksGral && !n.linksCast), // sin links en castellano
 
-			// Links - sin links en castellano
-			SLC_basico: aprobados.filter((m) => m.linksGral && !m.linksCast),
-			SLC_HD: aprobados.filter((m) => m.linksGral == conLinksHD && !m.linksCast),
+			// Links HD
+			SLG_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
+			SLC_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Cast), // sin HD en castellano
 		};
 
 		// Fin
@@ -65,15 +65,15 @@ module.exports = {
 		// Variables
 		const objetoFijo = {petitFamilias: "rclvs", userID};
 		const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
-		let objeto;
+		let condiciones;
 
 		// Inactivos
-		objeto = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-		let IN = obtienePorEntidad(objeto);
+		condiciones = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+		let IN = obtienePorEntidad(condiciones);
 
 		// Aprobados
-		objeto = {...objetoFijo, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
-		let aprobados = obtienePorEntidad({...objeto, include});
+		condiciones = {...objetoFijo, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
+		let aprobados = obtienePorEntidad({...condiciones, include});
 
 		// Await
 		[IN, aprobados] = await Promise.all([IN, aprobados]);
@@ -149,11 +149,11 @@ let obtieneProdsDeLinks = function (links, userID) {
 	// Fin
 	return {LI};
 };
-let obtienePorEntidad = async ({...objeto}) => {
+let obtienePorEntidad = async ({...condiciones}) => {
 	// Variables
-	const petitFamilias = objeto.petitFamilias;
+	const petitFamilias = condiciones.petitFamilias;
 	const entidades = variables.entidades[petitFamilias];
-	objeto.include ? objeto.include.push("ediciones") : (objeto.include = "ediciones");
+	condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = "ediciones");
 
 	let resultados1 = [];
 	let resultados2 = [];
@@ -161,10 +161,10 @@ let obtienePorEntidad = async ({...objeto}) => {
 	// Rutina
 	for (let entidad of entidades)
 		resultados1.push(
-			BD_especificas.MT_obtieneRegs({entidad, ...objeto}).then((n) =>
+			BD_especificas.MT_obtieneRegs({entidad, ...condiciones}).then((n) =>
 				n.map((m) => {
 					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == objeto.userID);
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condiciones.userID);
 					delete m.ediciones;
 
 					// Actualiza el original con la edición

@@ -1,14 +1,12 @@
 "use strict";
+
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		mostrarOcultar: document.querySelectorAll(".bloques .temas h3"),
 		bloqueRegistros: document.querySelectorAll(".bloques .temas .bloqueRegistros"),
 	};
-
-	let ruta = {
-		actualizarVisibles: "/crud/api/actualiza-visibles/?datos=",
-	};
+	const actualizarVisibles = "/crud/api/actualiza-visibles/?datos=";
 	let circuito = location.pathname.slice(1);
 	const indice = circuito.indexOf("/");
 	if (indice != -1) circuito = circuito.slice(0, indice);
@@ -28,7 +26,7 @@ window.addEventListener("load", async () => {
 			const datos = {circuito, familias, titulo, desplegar};
 
 			// Exporta los datos
-			fetch(ruta.actualizarVisibles + JSON.stringify(datos));
+			fetch(actualizarVisibles + JSON.stringify(datos));
 		});
 	});
 });
