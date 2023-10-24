@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const validaProd = require("../2.1-Prod-Agregar/PA-FN-Validar");
+const validaProd = require("../2.1-Prod-Agregar/PA-FN3-Validar");
 
 module.exports = {
 	// ControllerAPI (validaEdicion_changes)
