@@ -259,7 +259,7 @@ module.exports = {
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			let condiciones = BD_especificas.quickSearchCondics(palabrasClave, campos, userID);
+			let condiciones = comp.quickSearchCondics(palabrasClave, campos, userID);
 
 			// Agrega la condición de que no provenga de 'TMDB'
 			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
