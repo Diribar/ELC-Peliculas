@@ -40,11 +40,6 @@ module.exports = {
 		},
 		variables: async (req, res) => {
 			// Variables
-			const camposConsultas = variables.camposConsultas;
-			let filtrosConDefault = {};
-			for (let filtro in variables.camposConsultas)
-				if (camposConsultas[filtro].default) filtrosConDefault[filtro] = camposConsultas[filtro].default;
-
 			const datos = {
 				...{entidadesBD: cn_entidades, ordenesPorEntsBD: cn_ordenesPorEnts, ordenesBD: cn_ordenes}, // Órdenes y Entidades
 				...{pppOpciones, pppOpcionesSimples},
@@ -104,6 +99,9 @@ module.exports = {
 					? (configCons.pppOpciones = noLaVi.id) // le asigna el id de 'noLaVi'
 					: delete configCons.pppOpciones; // elimina el ppp del combo
 
+			// Quita los campos con valor 'default'
+			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
+
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
@@ -141,6 +139,8 @@ module.exports = {
 		const ordenPorEnt = cn_ordenesPorEnts.find((n) => n.id == configCons.ordenPorEnt_id);
 		const orden = cn_ordenes.find((n) => n.id == ordenPorEnt.orden_id);
 		const {palabrasClave} = configCons;
+		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
+		console.log(143,configCons);
 
 		// Obtiene los registros de productos
 		let prods = procesos.resultados.prods({entidad, orden, configCons});

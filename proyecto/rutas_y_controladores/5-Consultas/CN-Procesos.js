@@ -270,8 +270,9 @@ module.exports = {
 		cruce: {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
-				if (!prods.length || !configCons.pppOpciones) return [];
+				if (!prods.length ) return [];
 				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
+				if (!configCons.pppOpciones) return prods
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
