@@ -7,6 +7,7 @@ let actualizaConfigCons = {
 
 		// Obtiene configCons y muestra/oculta campos
 		this.entidad();
+		console.log(configCons);
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
 		actualiza.muestraOcultaFiltros();
@@ -147,7 +148,7 @@ let actualizaConfigCons = {
 		return;
 	},
 
-	// Presencia eventual - Checkboxes
+	// Presencia eventual
 	pppOpciones: function () {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
 		if (!v.userID) return this.idioma();
