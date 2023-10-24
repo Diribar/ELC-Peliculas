@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const procesos = require("./PA-FN-Procesos");
 
 module.exports = {
 	movie: {
@@ -53,18 +54,18 @@ module.exports = {
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = comp.prodAgregar.limpiaValores(datosAPI.production_companies);
+				datos.produccion = procesos.FN.limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = comp.prodAgregar.FN_actores(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = procesos.FN.actores(datosAPI.cast);
 
 			// Fin
 			return datos;
@@ -159,15 +160,15 @@ module.exports = {
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
 				if (capitulo.production_companies.length)
-					produccion += comp.prodAgregar.limpiaValores(capitulo.production_companies) + ", ";
+					produccion += procesos.FN.limpiaValores(capitulo.production_companies) + ", ";
 				// Crew
 				if (capitulo.crew.length) {
-					direccion += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
-					guion += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
-					musica += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
+					direccion += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actores += comp.prodAgregar.FN_actores(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += procesos.FN.actores(capitulo.cast) + ", ";
 			}
 
 			// Procesa los resultados
@@ -226,18 +227,18 @@ module.exports = {
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = comp.prodAgregar.limpiaValores(datosAPI.production_companies);
+				datos.produccion = procesos.FN.limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = comp.prodAgregar.FN_actores(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = procesos.FN.actores(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);

@@ -220,6 +220,7 @@ module.exports = {
 			// Rutina por campo
 			for (let campo in objeto)
 				if (typeof objeto[campo] == "string") objeto[campo] = this.alCastellano_campo(objeto[campo]);
+				else if (objeto[campo] === undefined) delete objeto[campo];
 
 			// Fin
 			return objeto;
@@ -653,49 +654,6 @@ module.exports = {
 	},
 
 	// Productos
-	prodAgregar: {
-		limpiaValores: (datos) => {
-			// Variables
-			let largo = 100;
-			let texto = "";
-
-			// Procesa si hay información
-			if (datos.length) {
-				// Obtiene el nombre y descarta lo demás
-				datos = datos.map((n) => n.name);
-
-				// Quita duplicados
-				let valores = [];
-				for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
-
-				// Acorta el string excedente
-				texto = valores.join(", ");
-				if (texto.length > largo) {
-					texto = texto.slice(0, largo);
-					if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
-				}
-			}
-			// Fin
-			return texto;
-		},
-		FN_actores: (dato) => {
-			// Variables
-			let actores = "";
-			let largo = 500;
-			// Acciones
-			if (dato.length) {
-				// Obtiene los nombres y convierte el array en string
-				actores = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
-				// Quita el excedente
-				if (actores.length > largo) {
-					actores = actores.slice(0, largo);
-					if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
-				}
-			}
-			// Fin
-			return actores;
-		},
-	},
 	eliminaRepetidos: (prods) => {
 		// Variables
 		let resultado = [];
