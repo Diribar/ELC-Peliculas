@@ -143,11 +143,7 @@ module.exports = {
 		const {palabrasClave} = configCons;
 
 		// Obtiene los registros de productos
-		let {apMar, rolesIgl, canons, configProd} = {...configCons}; // quita los campos prescindibles
-		let prods =
-			entidad == "productos"
-				? procesos.resultados.prods({entidad, orden, configCons})
-				: procesos.resultados.prods({entidad, orden, configCons: configProd});
+		let prods =procesos.resultados.prods({entidad, orden, configCons})
 
 		// Obtiene los registros de rclvs
 		let rclvs =
