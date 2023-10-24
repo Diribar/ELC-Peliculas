@@ -143,7 +143,7 @@ module.exports = {
 		const {palabrasClave} = configCons;
 
 		// Obtiene los registros de productos
-		let prods =procesos.resultados.prods({entidad, orden, configCons})
+		let prods = procesos.resultados.prods({entidad, orden, configCons});
 
 		// Obtiene los registros de rclvs
 		let rclvs =
