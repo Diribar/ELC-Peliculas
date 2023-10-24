@@ -179,6 +179,11 @@ module.exports = {
 				? "epocaDelAno_id"
 				: "";
 		},
+		campo_id: function (edicion) {
+			const producto = this.campo_idProd(edicion);
+			const RCLV = this.campo_idRCLV(edicion);
+			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+		},
 		asocProd: (edicion) => {
 			return edicion.pelicula_id ? "pelicula" : edicion.coleccion_id ? "coleccion" : edicion.capitulo_id ? "capitulo" : "";
 		},
