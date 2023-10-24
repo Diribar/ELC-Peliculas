@@ -40,16 +40,16 @@ module.exports = {
 		},
 		variables: async (req, res) => {
 			// Variables
-			const datos = {
-				// Órdenes y Entidades
-				entidadesBD: cn_entidades,
-				ordenesPorEntsBD: cn_ordenesPorEnts,
-				ordenesBD: cn_ordenes,
+			const camposConsultas = variables.camposConsultas;
+			let filtrosConDefault = {};
+			for (let filtro in variables.camposConsultas)
+				if (camposConsultas[filtro].default) filtrosConDefault[filtro] = camposConsultas[filtro].default;
 
-				// Otros
-				pppOpciones,
-				rclvNombres: variables.entidades.rclvsNombre,
-				configConsDefault_id,
+			const datos = {
+				...{entidadesBD: cn_entidades, ordenesPorEntsBD: cn_ordenesPorEnts, ordenesBD: cn_ordenes}, // Órdenes y Entidades
+				...{pppOpciones, pppOpcionesSimples},
+				...{rclvNombres: variables.entidades.rclvsNombre, configConsDefault_id},
+				filtrosConDefault,
 			};
 
 			// Datos del usuario

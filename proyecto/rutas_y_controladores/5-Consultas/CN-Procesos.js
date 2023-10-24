@@ -30,8 +30,6 @@ module.exports = {
 						campos.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					// Para las 'pppOpciones' deja las simples
-					else if (campo == "pppOpciones") campos.pppOpciones.opciones = pppOpciones.filter((n) => !n.combo);
 					else campos[campo].opciones = global[campo];
 				}
 			}

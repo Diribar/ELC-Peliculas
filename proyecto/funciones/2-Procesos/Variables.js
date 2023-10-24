@@ -31,7 +31,48 @@ module.exports = {
 
 	// Consulta de Productos
 	camposConsultas: {
-		// Se muestran siempre
+		// Con una opción elegida siempre
+		calidadImagen: {
+			default: "conLinks",
+			opciones: [
+				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
+				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
+				{id: "sinFiltro", nombre: "Con y sin links", condic: {linksGral: conLinks}},
+			],
+		},
+		pppOpciones: {
+			default: "5",
+			opciones: [
+				{id: "2", nombre: "Películas marcadas para ver"},
+				{id: "3", nombre: "Películas sin marcar"},
+				{id: "5", nombre: "Para ver y sin marcar"},
+				{id: "sinFiltro", nombre: "Todas las películas"},
+			],
+		},
+		idioma: {
+			default: "enCast",
+			opciones: [
+				{id: "hablCast", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
+				{
+					id: "enCast",
+					nombre: "En castellano (habl./subt.)",
+					condic: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
+				},
+				{id: "sinFiltro", nombre: "En cualquier idioma"},
+			],
+		},
+		// criterioPago: {
+		// 	titulo: "Criterio de Pago",
+		// 	opciones: [
+		// 		{id: "gratis", nombre: "Links gratuitos", condic: {linksGratis: conLinks}},
+		// {id: "ppv"},
+		// {id: "gratisPpv"},
+		// {id: "misAbonos"},
+		// {id: "gratisAbonos"},
+		// 	{id: "", nombre: "Todos los criterios de pago"},
+		// ],
+		// },
+
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			campoFiltro: "cfc",
@@ -50,26 +91,6 @@ module.exports = {
 		},
 		epocasEstreno: {titulo: "Época de Estreno", campoFiltro: "epocaEstreno_id"},
 		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campoFiltro: "epocaOcurrencia_id"},
-		pppOpciones: {titulo: "Preferencia por Película"},
-		tiposLink: {
-			titulo: "Tipos de link",
-			opciones: [
-				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
-				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
-				{id: "gratis", nombre: "Links gratuitos", condic: {linksGratis: conLinks}},
-			],
-		},
-		castellano: {
-			titulo: "Idioma Castellano",
-			opciones: [
-				{id: "SI", nombre: "Hablada en castellano", condic: {linksCast: conLinks}},
-				{
-					id: "enCast",
-					nombre: "En castellano (habl./subt.)",
-					condic: {[Op.or]: [{linksCast: conLinks}, {linksSubt: conLinks}]},
-				},
-			],
-		},
 		tiposActuacion: {titulo: "Tipo de Actuación", campoFiltro: "tipoActuacion_id"},
 		// Se muestran ocasionalmente
 		bhr: {

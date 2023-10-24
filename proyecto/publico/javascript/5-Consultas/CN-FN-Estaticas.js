@@ -123,19 +123,14 @@ let actualiza = {
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configCampos[prefSimple.name] ? configCampos[prefSimple.name] : "";
+			prefSimple.value = configCampos[prefSimple.name]
+				? configCampos[prefSimple.name]
+				: v.filtrosConDefault[prefSimple.name]
+				? v.filtrosConDefault[prefSimple.name]
+				: "";
 
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
-
-		// Limpia los check-boxes
-		for (let input of DOM.checkBoxesInputs) input.checked = false;
-
-		// Particularidad para check-box 'noLaVi'
-		if (configCampos.pppOpciones == v.noLaVi.id) {
-			DOM.checkBoxesInputs[0].checked = true;
-			DOM.pppOpciones.value = "";
-		}
 
 		// Fin
 		return;
@@ -274,7 +269,7 @@ let cambiosEnBD = {
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
-		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpciones.filter((n) => !n.combo).length;
+		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpcionesSimples.length;
 		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
 
 		// Actualiza el ícono y el título

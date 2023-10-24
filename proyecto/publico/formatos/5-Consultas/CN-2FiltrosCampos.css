@@ -1,15 +1,9 @@
-/* Checkboxes */
-#configCons #checkBoxes {background: var(--verde-oscuro); color: var(--amarillo-claro); border-top: solid 1px snow;}
-#configCons #checkBoxes {padding: 7px 0 10px; justify-content: center; flex-wrap: wrap; }
-#configCons #checkBoxes div {padding: 3px 10px; flex-wrap: nowrap;}
-#configCons #checkBoxes label {margin-left: 3px;}
-
 /* Carteles para mostrar/ocultar filtros */
 #configCons #mostrarOcultarFiltros {justify-content: center; align-items: center; height: 100px;}
 #configCons #mostrarOcultarFiltros {background: var(--celeste-claro);}
 #configCons #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCons #mostrarOcultarFiltros #mostrarFiltros {background: var(--verde-oscuro); color: snow;}
-#configCons #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: snow;}
+#configCons #mostrarOcultarFiltros #mostrarFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+#configCons #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
 #configCons #mostrarOcultarFiltros span {font-weight: bold;}
 
 /* Filtros Campos */
@@ -20,7 +14,6 @@
 
 /* Filtros Campos - Contenedor de Select e Input */
 #configCampos .pref {padding: 0 20px;}
-#configCampos .pref.ppp {background: var(--celeste-oscuro);}
 #configCampos .pref.cfc {background: var(--amarillo-oscuro);}
 #configCampos .pref.bhr {background: var(--verde-intermedio);}
 
@@ -28,10 +21,10 @@
 #configCampos .pref :is(select, input) {width: 100%;}
 
 /* Filtros Campos - Select */
-#configCampos .pref select {margin: 7.5px 0;}
+#configCampos .pref select {margin: 6px 0;}
 #configCampos .pref select option {background: snow; color: var(--azul-oscuro);}
 #configCampos .pref select option[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
-option#sinFiltro {display: block; font-style: italic}
+select option.sinFiltro {display: block; font-style: italic}
 #configCampos .pref select:has(option[value=""]:checked) option[value=""] {display: none;}
 
 /* Filtros - Búsqueda */
@@ -41,7 +34,6 @@ option#sinFiltro {display: block; font-style: italic}
 
 /* Condicionales */
 /* Fondo verde a los sectores con elegibles elegidos */
-#configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) 
-    {background: var(--verde-oscuro); border-top: solid 1px snow;}
+#configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
 /* Fondo verde a los elegibles elegidos */
-#configCampos .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
+#configCampos .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: var(--amarillo-claro); border-color: transparent;}

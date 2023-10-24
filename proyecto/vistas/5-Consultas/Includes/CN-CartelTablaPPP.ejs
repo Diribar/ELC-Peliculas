@@ -1,5 +1,5 @@
 <table>
-    <% for (let pppOpcion of pppOpciones.filter(n => !n.sinPrefb && !n.combo)) { %>
+    <% for (let pppOpcion of pppOpcionesSimples.filter(n => !n.sinPrefb)) { %>
         <tr>
             <td><i class="<%= pppOpcion.icono %>"></i></td>
             <td><%= pppOpcion.nombre %></td>

@@ -35,12 +35,6 @@ window.addEventListener("load", async () => {
 		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
-		// Configuración de de Cabecera - Check-Boxes
-		checkBoxesInputs: DOM.configCons.querySelectorAll("#checkBoxes input"),
-		noLaVi: DOM.configCons.querySelector("#checkBoxes #noLaVi"),
-		conLinksHD: DOM.configCons.querySelector("#checkBoxes #conLinksHD"),
-		enCast: DOM.configCons.querySelector("#checkBoxes #enCast"),
-
 		// Configuración de Campos - Preferencias
 		nav: DOM.configCampos.querySelector("nav"),
 		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),

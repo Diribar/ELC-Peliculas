@@ -160,15 +160,8 @@ let actualizaConfigCons = {
 			return this.tiposLink();
 		}
 
-		// Muestra / Oculta el checkbox 'noLaVi' dependiendo de si el orden es "pppFecha"
-		v.ordenBD.codigo == "pppFecha"
-			? DOM.noLaVi.parentNode.classList.add("ocultar")
-			: DOM.noLaVi.parentNode.classList.remove("ocultar");
-
 		// Averigua si se muestra
-		const seMuestra =
-			!DOM.noLaVi.checked && // 'no la vi' sin tildar
-			v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
+		const seMuestra = v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
 
 		// Acciones si no se muestra
 		if (!seMuestra)
@@ -192,14 +185,8 @@ let actualizaConfigCons = {
 		return;
 	},
 	tiposLink: function () {
-		// Start-up
-		if (DOM.tiposLink.value == v.conLinksHD) {
-			DOM.conLinksHD.checked = true;
-			DOM.tiposLink.value = "";
-		}
-
 		// Variables
-		const seMuestra = !DOM.conLinksHD.checked;
+		const seMuestra = true;
 		if (!seMuestra) configCons.tiposLink = v.conLinksHD;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
@@ -210,14 +197,8 @@ let actualizaConfigCons = {
 		return;
 	},
 	castellano: function () {
-		// Start-up
-		if (DOM.castellano.value == v.enCast) {
-			DOM.enCast.checked = true;
-			DOM.castellano.value = "";
-		}
-
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !DOM.enCast.checked;
+		const seMuestra = true;
 		if (!seMuestra) configCons.castellano = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
