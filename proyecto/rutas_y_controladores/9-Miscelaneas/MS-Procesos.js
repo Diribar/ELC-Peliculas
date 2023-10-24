@@ -50,12 +50,12 @@ module.exports = {
 			SL_HD: aprobados.filter((n) => n.linksGral && !n.HD_Gral), // con Links pero sin HD
 
 			// Links Basicos
-			SLG_basico: aprobados.filter((n) => n.linksGral && !n.linksGratis), // sin links gratuitos
-			SLC_basico: aprobados.filter((n) => n.linksGral && !n.linksCast), // sin links en castellano
+			SLG_basico: aprobados.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
+			SLC_basico: aprobados.filter((n) => n.linksGral && !n.HD_Gral && !n.linksCast && !n.linksSubt), // sin links en castellano
 
 			// Links HD
 			SLG_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
-			SLC_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Cast), // sin HD en castellano
+			SLC_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
 		};
 
 		// Fin
