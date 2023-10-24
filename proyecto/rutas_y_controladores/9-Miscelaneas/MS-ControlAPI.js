@@ -44,7 +44,6 @@ module.exports = {
 			const condiciones = quickSearchCondics(palabras, dato.campos, userID, dato.original);
 
 			// Obtiene los registros que cumplen las condiciones
-			console.log(46, dato.original);
 			aux.push(
 				dato.original
 					? BD_especificas.quickSearchRegistros(condiciones, dato)
