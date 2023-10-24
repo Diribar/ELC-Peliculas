@@ -180,7 +180,7 @@ module.exports = {
 
 			// Avatar
 			const avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
-			datos.avatar = avatar ? "https://image.tmdb.org/t/p/original" + avatar : "";
+			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 
 			// Fin
 			return datos;
