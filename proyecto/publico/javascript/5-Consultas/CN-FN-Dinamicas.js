@@ -157,7 +157,7 @@ let actualizaConfigCons = {
 					: v.meInteresan.combo.split(",");
 
 			// Sigue a la siguiente rutina
-			return this.tiposLink();
+			return this.calidadImagen();
 		}
 
 		// Averigua si se muestra
@@ -181,28 +181,28 @@ let actualizaConfigCons = {
 					: v.meInteresan.combo.split(",");
 
 		// Fin
-		this.tiposLink();
+		this.calidadImagen();
 		return;
 	},
-	tiposLink: function () {
+	calidadImagen: function () {
 		// Variables
 		const seMuestra = true;
-		if (!seMuestra) configCons.tiposLink = v.conLinksHD;
+		if (!seMuestra) configCons.calidadImagen = v.conLinksHD;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "tiposLink");
+		muestraOcultaActualizaPref(seMuestra, "calidadImagen");
 
 		// Fin
-		this.castellano();
+		this.idioma();
 		return;
 	},
-	castellano: function () {
+	idioma: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = true;
-		if (!seMuestra) configCons.castellano = v.enCast;
+		if (!seMuestra) configCons.idioma = v.enCast;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "castellano");
+		muestraOcultaActualizaPref(seMuestra, "idioma");
 
 		// Fin
 		this.cfc();
