@@ -40,10 +40,10 @@
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<!-- Calidad de la Imagen -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.calidadImagen, eventual: true}) %>
+		<%- include('CN-FL-Selects', {campos: configsConsCampos.calidadImagen}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {campos: configsConsCampos.pppOpciones, eventual: true,}) %>
+			<%- include('CN-FL-Selects', {campos: configsConsCampos.pppOpciones, eventual: true}) %>
 		<% } %>
 		<!-- Idioma -->
 		<%- include('CN-FL-Selects', {campos: configsConsCampos.idioma, eventual: true}) %>

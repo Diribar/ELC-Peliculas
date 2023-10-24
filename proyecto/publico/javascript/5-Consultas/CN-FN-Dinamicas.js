@@ -139,7 +139,8 @@ let actualizaConfigCons = {
 	// Presencia estable
 	presenciaEstable: function () {
 		// Impacto en configCons: todos los campos con presencia estable
-		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
+		for (let campo of DOM.camposPresenciaEstable)
+			if (campo.value && campo.value != "sinFiltro") configCons[campo.name] = campo.value;
 
 		// Fin
 		this.pppOpciones();
@@ -149,48 +150,24 @@ let actualizaConfigCons = {
 	// Presencia eventual - Checkboxes
 	pppOpciones: function () {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
-		if (!v.userID) {
-			// Le asigna un valor a las opciones
-			configCons.pppOpciones =
-				v.ordenBD.codigo == "azar" // si el orden es 'Sugerime al azar',
-					? v.noLaVi.combo.split(",") // tilda las opciones 'no la vi'
-					: v.meInteresan.combo.split(",");
+		if (!v.userID) return this.idioma();
 
-			// Sigue a la siguiente rutina
-			return this.calidadImagen();
+		// Si el orden elegido es "Mis preferencias", le asigna ese valor a 'pppOpciones'
+		if (v.ordenBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
+		// Acciones si el orden elegido es otro
+		else {
+			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+			muestraOcultaActualizaPref(true, "pppOpciones");
+
+			// Revisa el valor
+			if (configCons.pppOpciones == "sinFiltro") delete configCons.pppOpciones;
+			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
+			else {
+				const id = configCons.pppOpciones;
+				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
+				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
+			}
 		}
-
-		// Averigua si se muestra
-		const seMuestra = v.ordenBD.codigo != "pppFecha"; // el orden es distinto a 'Tus preferencias'
-
-		// Acciones si no se muestra
-		if (!seMuestra)
-			configCons.pppOpciones =
-				v.ordenBD.codigo == "pppFecha" // si el orden es 'Tus preferencias',
-					? v.misPreferencias.combo.split(",") // tilda las opciones 'misPreferencias'
-					: v.noLaVi.combo.split(","); // tilda las opciones 'no la vi'
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "pppOpciones");
-
-		// Si 'pppOpciones' no tiene un valor, le asigna uno
-		if (!configCons.pppOpciones)
-			configCons.pppOpciones =
-				v.ordenBD.codigo == "azar" // si el orden es 'Sugerime al azar',
-					? v.noLaVi.combo.split(",") // tilda las opciones 'no la vi'
-					: v.meInteresan.combo.split(",");
-
-		// Fin
-		this.calidadImagen();
-		return;
-	},
-	calidadImagen: function () {
-		// Variables
-		const seMuestra = true;
-		if (!seMuestra) configCons.calidadImagen = v.conLinksHD;
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "calidadImagen");
 
 		// Fin
 		this.idioma();
@@ -198,17 +175,16 @@ let actualizaConfigCons = {
 	},
 	idioma: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = true;
-		if (!seMuestra) configCons.idioma = v.enCast;
+		const seMuestra = !!configCons.calidadImagen; // si no se eligió una calidad, no se muestran
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "idioma");
+		if (configCons.idioma == "sinFiltro") delete configCons.idioma;
 
 		// Fin
 		this.cfc();
 		return;
 	},
-
 	// Presencia eventual - Resto
 	cfc: function () {
 		// Averigua si el campo se debe mostrar

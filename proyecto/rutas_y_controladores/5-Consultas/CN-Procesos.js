@@ -42,6 +42,9 @@ module.exports = {
 		prods: async function ({configCons, entidad, orden}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+			let {apMar, rolesIgl, canons, configProd} = configCons;
+			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
+
 			let include = [...variables.asocs.rclvs];
 			let entsProd = ["peliculas", "colecciones"];
 			let productos = [];

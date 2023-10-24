@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 		topeParaMasRecientes: 20,
 		contadorDeMostrarResults: 0,
 	};
-	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = v.pppOpciones.find((n) => n.codigo == pppOcion.codigo);
+	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
 	// Start-up
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
