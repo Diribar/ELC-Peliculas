@@ -37,7 +37,7 @@ module.exports = {
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
 				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
-				{id: "sinFiltro", nombre: "Con y sin links", condic: {linksGral: conLinks}},
+				{id: "sinFiltro", nombre: "Con y sin links"},
 			],
 		},
 		pppOpciones: {
