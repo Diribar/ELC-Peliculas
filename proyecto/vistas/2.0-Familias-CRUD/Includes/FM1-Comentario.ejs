@@ -4,5 +4,5 @@
         <h3>Comentario</h3>
         <p><span id="pendiente">100</span>/100</p>
     </div>
-    <textarea name="comentario" readonly></textarea>
+    <textarea name="comentario" <% if (codigo=="inactivar") { %>readonly<% } %>></textarea>
 </section>
