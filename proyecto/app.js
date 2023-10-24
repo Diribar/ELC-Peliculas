@@ -209,7 +209,7 @@ app.set("views", [
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");
-	global.comp = require("./funciones/2-Procesos/Compartidas");
+	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
 	global.BD_genericas = require("./funciones/1-BD/Genericas");
 	global.BD_especificas = require("./funciones/1-BD/Especificas");
 	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
