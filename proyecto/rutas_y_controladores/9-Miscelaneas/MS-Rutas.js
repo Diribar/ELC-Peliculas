@@ -16,7 +16,7 @@ const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
 
 //************************ Rutas ****************************
 // Rutas de APIs
-router.get("/api/quick-search/", API.quickSearch);
+router.get("/api/busqueda-rapida/", API.busquedaRapida);
 router.get("/api/horario-inicial/", API.horarioInicial);
 
 // Rutas de vistas

@@ -96,7 +96,7 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		palabras = palabras.join(" ");
-		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
+		let resultados = await fetch("/api/busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
 		// Acciones en función de si encuentra resultados o no
 		if (resultados.length) agregaResultados(resultados);
 		else agregaResultados("- No encontramos coincidencias -");
