@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const procsDesamb = require("./PA-FN-Desambiguar");
+const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -98,8 +98,8 @@ module.exports = {
 			};
 
 			// Obtiene los datos del capítulo
-			await procsDesamb.movie
-				.obtieneInfo({TMDB_id: capituloID_TMDB})
+			await procsComp
+				.obtieneInfoDeMovie({TMDB_id: capituloID_TMDB})
 				// Le agrega los datos de cabecera
 				.then((n) => (n = {...datosCap, ...n}))
 				// Guarda los datos del capítulo
@@ -148,43 +148,39 @@ module.exports = {
 			let datos = {
 				...{fuente: "TMDB", coleccion_id: datosCol.id},
 				TMDB_id: datosCap.id,
-				// ...{paises_id, idiomaOriginal_id, produccion},
-				// ...{actores},
+				...{paises_id, idiomaOriginal_id, produccion},
 				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
 				...{temporada: datosTemp.season_number, capitulo: datosCap.episode_number},
-				duracion: datosCap.runtime,
 				nombreCastellano: datosCap.name,
 				anoEstreno: datosCap.air_date,
+				duracion: datosCap.runtime,
+				sinopsis: datosCap.overview,
 			};
 
 			// Datos distintivos del capítulo
 
-			if (datosCap.crew.length > 0) {
-				// Dirección
-				const direccion = datosCrew ? this.FN.valores(datosCap.crew.filter((n) => n.department == "Directing")) : "";
-				datos.direccion = direccion ? direccion : datosCol.direccion;
-				// Guión
-				const guion = this.FN.valores(datosCap.crew.filter((n) => n.department == "Writing"));
-				datos.guion = guion ? guion : datosCol.guion;
-				// Música
-				const musica = this.FN.valores(datosCap.crew.filter((n) => n.department == "Sound"));
-				datos.musica = musica ? musica : datosCol.musica;
-			}
+			// Dirección
+			const direccion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Directing")) : "";
+			datos.direccion = direccion ? direccion : datosCol.direccion;
+			// Guión
+			const guion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Writing")) : "";
+			datos.guion = guion ? guion : datosCol.guion;
+			// Música
+			const musica = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Sound")) : "";
+			datos.musica = musica ? musica : datosCol.musica;
 
-			let {actores} = datosCol;
+			// Actores
+			let actores = [...datosTemp.cast, ...datosCap.guest_stars];
+			if (!actores.length && datosCol.actores) actores = [{name: datosCol.actores}];
+			datos.actores = procsComp.actores(actores);
 
-			actores = [];
-			if (datosTemp.cast.length) actores = [...datosTemp.cast];
-			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-			if (actores.length) datos.actores = this.FN.actores(actores);
-			if (datosCap.overview) datos.sinopsis = datosCap.overview;
-			let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
-			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
-
-			// Limpia el resultado de caracteres especiales
-			avatar = datos.avatar;
+			// Limpia el resultado
+			for (let campo in datos) if (!datos[campo]) delete datos[campo];
 			datos = comp.convierteLetras.alCastellano(datos);
-			if (avatar) datos.avatar = avatar;
+
+			// Avatar
+			const avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+			datos.avatar = avatar ? "https://image.tmdb.org/t/p/original" + avatar : "";
 
 			// Fin
 			return datos;
@@ -288,51 +284,6 @@ module.exports = {
 
 			// Fin
 			return url;
-		},
-	},
-
-	// Funciones
-	FN: {
-		valores: (datos) => {
-			// Variables
-			let largo = 100;
-			let texto = "";
-
-			// Procesa si hay información
-			if (datos.length) {
-				// Obtiene el nombre y descarta lo demás
-				datos = datos.map((n) => n.name);
-
-				// Quita duplicados
-				let valores = [];
-				for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
-
-				// Acorta el string excedente
-				texto = valores.join(", ");
-				if (texto.length > largo) {
-					texto = texto.slice(0, largo);
-					if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
-				}
-			}
-			// Fin
-			return texto;
-		},
-		actores: (dato) => {
-			// Variables
-			let actores = "";
-			let largo = 500;
-			// Acciones
-			if (dato.length) {
-				// Obtiene los nombres y convierte el array en string
-				actores = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
-				// Quita el excedente
-				if (actores.length > largo) {
-					actores = actores.slice(0, largo);
-					if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
-				}
-			}
-			// Fin
-			return actores;
 		},
 	},
 };
