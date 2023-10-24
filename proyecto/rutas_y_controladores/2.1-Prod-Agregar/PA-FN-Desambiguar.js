@@ -54,14 +54,14 @@ module.exports = {
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = procesos.FN.limpiaValores(datosAPI.production_companies);
+				datos.produccion = procesos.FN.valores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
@@ -160,12 +160,12 @@ module.exports = {
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
 				if (capitulo.production_companies.length)
-					produccion += procesos.FN.limpiaValores(capitulo.production_companies) + ", ";
+					produccion += procesos.FN.valores(capitulo.production_companies) + ", ";
 				// Crew
 				if (capitulo.crew.length) {
-					direccion += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
-					guion += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
-					musica += procesos.FN.limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
+					direccion += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += procesos.FN.valores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
 				if (capitulo.cast.length) actores += procesos.FN.actores(capitulo.cast) + ", ";
@@ -227,14 +227,14 @@ module.exports = {
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = procesos.FN.limpiaValores(datosAPI.production_companies);
+				datos.produccion = procesos.FN.valores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = procesos.FN.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = procesos.FN.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
