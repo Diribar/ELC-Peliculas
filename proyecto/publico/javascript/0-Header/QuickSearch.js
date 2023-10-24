@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 				// 1. Procesa el nombre
 				let anchoMax = 40;
 				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
-				if (familia == "producto") nombre += " (" + anoEstreno + ")";
+				if (familia == "producto" && anoEstreno) nombre += " (" + anoEstreno + ")";
 				// 2. Procesa la entidad
 				let ent = entidad.slice(0, 5);
 				if (ent == "perso") ent = "pers.";
