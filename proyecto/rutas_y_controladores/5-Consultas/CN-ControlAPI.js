@@ -140,7 +140,6 @@ module.exports = {
 		const orden = cn_ordenes.find((n) => n.id == ordenPorEnt.orden_id);
 		const {palabrasClave} = configCons;
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
-		console.log(143,configCons);
 
 		// Obtiene los registros de productos
 		let prods = procesos.resultados.prods({entidad, orden, configCons});
