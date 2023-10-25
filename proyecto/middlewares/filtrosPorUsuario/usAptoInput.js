@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
 		};
 
 	// VERIFICACIÓN 3: Revisa si está dentro de su Nivel de Confianza
-	if (!informacion) {
+	if (!informacion && !usuario.rolUsuario.autTablEnts) {
 		// Funciones
 		const FN = {
 			entidades: () => {
