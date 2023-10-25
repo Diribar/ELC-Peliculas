@@ -172,7 +172,6 @@ module.exports = {
 			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 
 			// Fin
-			console.log(datos);
 			return datos;
 		},
 	},
