@@ -22,11 +22,13 @@ let resultados = {
 			// Si el usuario no está logueado, muestra el cartel 'pppSinLogin' y termina
 			if (!v.userID) {
 				DOM.pppSinLogin.classList.remove("ocultar");
+				DOM.esperandoResultados.classList.add("ocultar");
 				return;
 			}
 			// Si el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
 			else if (!v.usuarioTienePPP) {
 				DOM.cartelOrdenPPP.classList.remove("ocultar");
+				DOM.esperandoResultados.classList.add("ocultar");
 				return;
 			}
 		}
