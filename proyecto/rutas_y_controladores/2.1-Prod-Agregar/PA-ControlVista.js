@@ -1,8 +1,8 @@
 "use strict";
 // Definir funciones
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procesos = require("./PA-FN-Procesos");
-const valida = require("./PA-FN-Validar");
+const valida = require("./PA-FN3-Validar");
+const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
 	palabrasClave: {

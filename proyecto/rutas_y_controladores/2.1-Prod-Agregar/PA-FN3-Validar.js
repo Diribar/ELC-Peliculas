@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procesos = require("./PA-FN-Procesos");
+const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
 	// ControllerAPI (validaPalabrasClave)

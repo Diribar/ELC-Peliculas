@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
-const procsDesamb = require("./PA-FN-Desambiguar");
+const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -86,8 +86,6 @@ module.exports = {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			const {direccion, guion, musica, actores, produccion} = datosCol;
-			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
-			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 			// Genera la información a guardar - los datos adicionales se completan en la revisión
 			const datosCap = {
@@ -98,8 +96,8 @@ module.exports = {
 			};
 
 			// Obtiene los datos del capítulo
-			await procsDesamb.movie
-				.obtieneInfo({TMDB_id: capituloID_TMDB})
+			await procsComp
+				.obtieneInfoDeMovie({TMDB_id: capituloID_TMDB})
 				// Le agrega los datos de cabecera
 				.then((n) => (n = {...datosCap, ...n}))
 				// Guarda los datos del capítulo
@@ -126,57 +124,52 @@ module.exports = {
 
 			// Guarda los CAPITULOS
 			for (let datosCap of datosTemp.episodes) {
-				// Obtiene la información del capítulo
-				const capitulo = this.datosCap(datosCol, datosTemp, datosCap);
-				// Guarda el capítulo
-				await BD_genericas.agregaRegistro("capitulos", capitulo);
+				const capitulo = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
+				await BD_genericas.agregaRegistro("capitulos", capitulo); // Guarda el capítulo
 			}
 
 			// Fin
 			return;
 		},
-		datosCap: (datosCol, datosTemp, datosCap) => {
-			// Toma los datos de la colección
-			const {paises_id, idiomaOriginal_id} = datosCol;
-			let {direccion, guion, musica, actores, produccion} = datosCol;
+		datosCap: function (datosCol, datosTemp, datosCap) {
+			// Variables
+			const {paises_id, idiomaOriginal_id, produccion} = datosCol;
+			const datosCrew = datosCap.crew.length;
 
 			// Genera la información a guardar
 			let datos = {
-				...{fuente: "TMDB", coleccion_id: datosCol.id},
-				...{paises_id, idiomaOriginal_id},
-				...{direccion, guion, musica, actores, produccion},
-				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
+				...{coleccion_id: datosCol.id, temporada: datosTemp.season_number, capitulo: datosCap.episode_number},
+				...{fuente: "TMDB", creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
+				...{TMDB_id: datosCap.id, nombreCastellano: datosCap.name},
+				...{paises_id, idiomaOriginal_id, produccion},
+				...{duracion: datosCap.runtime, sinopsis: datosCap.overview},
+				anoEstreno: datosCap.air_date ? parseInt(datosCap.air_date.slice(0, 4)) : "",
 			};
-			if (datosCap.runtime) datos.duracion = datosCap.runtime;
 
-			// Datos de la temporada
-			datos.temporada = datosTemp.season_number;
+			// Dirección
+			const direccion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Directing")) : "";
+			datos.direccion = direccion ? direccion : datosCol.direccion;
 
-			// Datos distintivos del capítulo
-			datos.capitulo = datosCap.episode_number;
-			datos.TMDB_id = datosCap.id;
-			if (datosCap.name) datos.nombreCastellano = datosCap.name;
-			if (datosCap.air_date) datos.anoEstreno = datosCap.air_date;
-			if (datosCap.crew.length > 0) {
-				direccion = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
-				if (direccion) datos.direccion = direccion;
-				guion = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
-				if (guion) datos.guion = guion;
-				musica = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
-				if (musica) datos.musica = musica;
-			}
-			actores = [];
-			if (datosTemp.cast.length) actores = [...datosTemp.cast];
-			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-			if (actores.length) datos.actores = comp.prodAgregar.FN_actores(actores);
-			if (datosCap.overview) datos.sinopsis = datosCap.overview;
-			let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
-			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
+			// Guión
+			const guion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Writing")) : "";
+			datos.guion = guion ? guion : datosCol.guion;
 
-			// Limpia el resultado de caracteres especiales
-			avatar = datos.avatar;
+			// Música
+			const musica = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Sound")) : "";
+			datos.musica = musica ? musica : datosCol.musica;
+
+			// Actores
+			let actores = [...datosTemp.cast, ...datosCap.guest_stars];
+			if (!actores.length && datosCol.actores) actores = [{name: datosCol.actores}];
+			datos.actores = procsComp.actores(actores);
+
+			// Limpia el resultado
+			for (let campo in datos) if (!datos[campo]) delete datos[campo];
 			datos = comp.convierteLetras.alCastellano(datos);
-			if (avatar) datos.avatar = avatar;
+
+			// Avatar
+			const avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 
 			// Fin
 			return datos;

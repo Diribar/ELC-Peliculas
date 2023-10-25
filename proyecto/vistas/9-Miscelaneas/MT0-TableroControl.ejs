@@ -38,9 +38,9 @@
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Ya Vistas y Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Vistas sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
 				<% if (omnipotente) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
 				<% } %>
