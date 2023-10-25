@@ -6,7 +6,7 @@ const procsComp = require("./PA-FN5-Compartidos");
 module.exports = {
 	movie: {
 		obtieneInfo: async (datos) => {
-			return procsComp.prods.obtieneInfoDeMovie(datos);
+			return procsComp.obtieneInfoDeMovie(datos);
 		},
 	},
 	collection: {
@@ -60,7 +60,7 @@ module.exports = {
 			}
 
 			// sinopsis, avatar
-			if (datosColec.overview) datos.sinopsis = procsComp.prods.fuenteSinopsisTMDB(datosColec.overview);
+			if (datosColec.overview) datos.sinopsis = procsComp.fuenteSinopsisTMDB(datosColec.overview);
 			if (datosColec.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosColec.poster_path;
 
 			// ID de los capitulos
@@ -159,7 +159,7 @@ module.exports = {
 			if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
 			// sinopsis, avatar
-			if (datosAPI.overview) datos.sinopsis = procsComp.prods.fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datos.sinopsis = procsComp.fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
