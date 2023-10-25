@@ -86,8 +86,6 @@ module.exports = {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			const {direccion, guion, musica, actores, produccion} = datosCol;
-			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
-			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 			// Genera la información a guardar - los datos adicionales se completan en la revisión
 			const datosCap = {
@@ -125,15 +123,9 @@ module.exports = {
 			]).then(([a, b]) => ({...a, ...b}));
 
 			// Guarda los CAPITULOS
-			console.log(130, datosTemp.episodes.length);
-			let i = 0;
 			for (let datosCap of datosTemp.episodes) {
-				console.log(131);
 				const capitulo = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
-				console.log(133, capitulo);
 				await BD_genericas.agregaRegistro("capitulos", capitulo); // Guarda el capítulo
-				i++;
-				console.log(134, i, "OK");
 			}
 
 			// Fin
@@ -146,25 +138,22 @@ module.exports = {
 
 			// Genera la información a guardar
 			let datos = {
-				...{fuente: "TMDB", coleccion_id: datosCol.id},
-				TMDB_id: datosCap.id,
+				...{coleccion_id: datosCol.id, temporada: datosTemp.season_number, capitulo: datosCap.episode_number},
+				...{fuente: "TMDB", creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
+				...{TMDB_id: datosCap.id, nombreCastellano: datosCap.name},
 				...{paises_id, idiomaOriginal_id, produccion},
-				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
-				...{temporada: datosTemp.season_number, capitulo: datosCap.episode_number},
-				nombreCastellano: datosCap.name,
-				anoEstreno: datosCap.air_date,
-				duracion: datosCap.runtime,
-				sinopsis: datosCap.overview,
+				...{duracion: datosCap.runtime, sinopsis: datosCap.overview},
+				anoEstreno: datosCap.air_date ? parseInt(datosCap.air_date.slice(0, 4)) : "",
 			};
-
-			// Datos distintivos del capítulo
 
 			// Dirección
 			const direccion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Directing")) : "";
 			datos.direccion = direccion ? direccion : datosCol.direccion;
+
 			// Guión
 			const guion = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Writing")) : "";
 			datos.guion = guion ? guion : datosCol.guion;
+
 			// Música
 			const musica = datosCrew ? procsComp.valores(datosCap.crew.filter((n) => n.department == "Sound")) : "";
 			datos.musica = musica ? musica : datosCol.musica;
@@ -183,6 +172,7 @@ module.exports = {
 			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 
 			// Fin
+			console.log(datos);
 			return datos;
 		},
 	},
