@@ -17,7 +17,7 @@ module.exports = {
 					let lanzam =
 						(prod.first_air_date && prod.first_air_date > "1900") ||
 						(prod.release_date && prod.release_date > "1900");
-					if ((TMDB_entidad == "collection" && poster) || (poster && lanzam)) productos.push(prod);
+					if (poster && (TMDB_entidad == "collection" || lanzam)) productos.push(prod);
 				}
 				// Fin
 				lote = {
