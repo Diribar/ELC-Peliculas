@@ -50,18 +50,18 @@ module.exports = {
 		if (datosAPI.overview) datos.sinopsis = this.fuenteSinopsisTMDB(datosAPI.overview);
 		if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 		// Producción
-		if (datosAPI.production_companies.length > 0) datos.produccion = procsComp.valores(datosAPI.production_companies);
+		if (datosAPI.production_companies.length > 0) datos.produccion = this.valores(datosAPI.production_companies);
 		// Crew
 		if (datosAPI.crew.length > 0) {
-			const direccion = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
+			const direccion = this.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
 			if (direccion) datos.direccion = direccion;
-			const guion = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
+			const guion = this.valores(datosAPI.crew.filter((n) => n.department == "Writing"));
 			if (guion) datos.guion = guion;
-			const musica = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
+			const musica = this.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			if (musica) datos.musica = musica;
 		}
 		// Cast
-		if (datosAPI.cast.length > 0) datos.actores = procsComp.actores(datosAPI.cast);
+		if (datosAPI.cast.length > 0) datos.actores = this.actores(datosAPI.cast);
 
 		// Fin
 		return datos;
