@@ -20,53 +20,6 @@ module.exports = {
 		return db[datos.entidad].findOne({where: condicion}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondics: (palabras, campos, userID) => {
-		// Variables
-		let todasLasPalabrasEnAlgunCampo = [];
-
-		// Convierte las palabras en un array
-		palabras = palabras.split(" ");
-
-		// Almacena la condición en una matriz
-		for (let campo of campos) {
-			// Variables
-			let palabrasEnElCampo = [];
-
-			// Dónde debe buscar cada palabra
-			for (let palabra of palabras) {
-				const palabraEnElCampo = {
-					[Op.or]: [
-						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // En el comienzo de una palabra
-						{[campo]: {[Op.like]: palabra + "%"}}, // En el comienzo del texto
-					],
-				};
-				palabrasEnElCampo.push(palabraEnElCampo);
-			}
-
-			// Exige que cada palabra del conjunto esté presente
-			const todasLasPalabrasEnElCampo = {[Op.and]: palabrasEnElCampo};
-
-			// Consolida el resultado
-			todasLasPalabrasEnAlgunCampo.push(todasLasPalabrasEnElCampo);
-		}
-
-		// Se fija que la condición de palabras se cumpla en alguno de los campos
-		const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
-
-		// Se fija que el registro esté en statusAprobado, o statusGrCreado por el usuario
-		const condicStatus = {
-			[Op.or]: [
-				{statusRegistro_id: aprobado_id},
-				{[Op.and]: [{statusRegistro_id: [creado_id, creadoAprob_id]}, {creadoPor_id: userID}]},
-			],
-		};
-
-		// Consolidado
-		const condics = {[Op.and]: [condicPalabras, condicStatus]};
-
-		// Fin
-		return condics;
-	},
 	quickSearchRegistros: (condiciones, dato) => {
 		// Obtiene los registros
 		return db[dato.entidad]
@@ -79,9 +32,24 @@ module.exports = {
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
-					// Específicos para desambiguar
+					// Específicos para PA-Desambiguar
 					avatar: m.avatar,
 					nombreOriginal: m.nombreOriginal,
+				}))
+			);
+	},
+	quickSearchEdiciones: (condiciones, dato) => {
+		// Obtiene los registros
+		return db[dato.entidad]
+			.findAll({where: condiciones, limit: 10})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) =>
+				n.map((m) => ({
+					id: m[comp.obtieneDesdeEdicion.campo_id(m)],
+					anoEstreno: m.anoEstreno,
+					nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
+					entidad: comp.obtieneDesdeEdicion.entidad(m),
+					familia: dato.familia,
 				}))
 			);
 	},

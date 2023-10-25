@@ -88,7 +88,7 @@ module.exports = {
 	},
 	sigProdInactivo: async ({producto, entidad, userID}) => {
 		// Variables
-		const productos = await procsMS.obtieneProds_Links(userID).then((n) => n.LI);
+		const productos = await procsMS.obtieneLinksInactivos(userID).then((n) => n.LI);
 
 		// Obtiene el siguiente producto
 		const siguienteProducto = productos.find((n) => n.entidad != entidad || n.id != producto.id);
