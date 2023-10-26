@@ -114,10 +114,9 @@ module.exports = {
 		else if (usuario.statusRegistro_id == stUsRegistrado_id)
 			informacion = {
 				mensajes: [
-					"El ingreso de información para otras personas, requiere responsabilidad.",
-					"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
-					"Si querés avanzar, necesitamos validar tu identidad con tu documento.",
-					"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
+					"El ingreso de información pública requiere responsabilidad.",
+					"Te pedimos que cuides la reputación de tu usuario.",
+					"Podés iniciar el trámite con la flecha hacia la derecha.",
 				],
 				iconos: [
 					{
