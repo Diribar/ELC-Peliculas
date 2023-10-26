@@ -36,7 +36,7 @@ main .cartelCentro #contorno {border-radius: 10px; overflow: hidden;}
 main .cartelCentro #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
 
 /* Media Query */
-@media (height < 400px) {
+@media (height < 400px) or (width < 400px) {
 	main .cartelCentro .inicio {margin-bottom: 20px;}
 	main .cartelCentro #mensajes {margin-bottom: 20px;}
 }
