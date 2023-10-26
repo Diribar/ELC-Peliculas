@@ -29,7 +29,7 @@
 		<div id="flechasCartel">
 			<% if (locals.informacion) { %>
 				<% informacion.iconos.forEach((icono, i) => { %>
-					<% let autoFocus = informacion.iconos.length == 1 || icono.autofocus %> 
+					<% let autoFocus = informacion.iconos.length == 1 || icono.autofocus %>
 					<a href="<%= icono.link %>" tabindex="<%= i + 1 %>" <% if (autoFocus) { %>autofocus<% } %>>
 						<i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i>
 					</a>
