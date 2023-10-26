@@ -3,6 +3,12 @@ main {height: var(--altMain);}
 main {overflow-y: hidden; display: flex; flex-direction: row;}
 main {--anchoImgDer: 32vw}
 
+/* Tapar el fondo */
+main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
+main #tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
+main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+
+/* Cuerpo Footer */
 main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 #cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
 
