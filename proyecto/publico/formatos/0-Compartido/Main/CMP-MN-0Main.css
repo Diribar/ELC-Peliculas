@@ -23,7 +23,7 @@ main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 
 /* Imagen Derecha */
 #cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
-#cuerpoFooterImgDer #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
+#imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
 
 /* Media Queries para cuando el cuerpo no tiene contenido - 360px es el ancho mínimo del footer, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
 @media (width <= calc(360px + 0.67 * (100vh - 60px))) {main:not(:has(#cuerpoFooterImgDer #cuerpoFooter #cuerpo *)) #cuerpoFooterImgDer #imgDerecha img {display: none;}}
