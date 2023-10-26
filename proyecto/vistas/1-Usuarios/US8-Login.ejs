@@ -1,54 +1,56 @@
 <div id="tapaElFondo"></div>
-<form method="POST" id="dataEntry" class="encimaDelFondo">
-	<h1>Login</h1>
-	<!-- Datos -->
-	<section id="datos">
-		<% for (let variable of variables) { %>
-			<div class="labelInput flexRow">
-				<label><%= variable.titulo %></label>
-				<div class="inputError">
-					<!-- Input -->
-					<input class="input" 
-						value="<%= dataEntry[variable.name] %>" 
-						type="<%= variable.type %>" 
-						name="<%= variable.name %>" 
-						placeholder="<%= variable.placeholder %>" 
-						<% if (dataEntry[variable.name]) { %>autocomplete='new-password'<% } %>
-					>
-					<!-- El autocomplete = 'new-password' es para prevenir el 'autocomplete' -->
-					<!-- Ojito contraseña -->
-					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
-					<!-- Error/OK -->
-					<%- include("CMP-Errores", {nombre: variable.name, display: true}) %>
+<div id="dataEntry" class="encimaDelFondo">
+	<form method="POST">
+		<h1>Login</h1>
+		<!-- Datos -->
+		<section id="datos">
+			<% for (let variable of variables) { %>
+				<div class="labelInput flexRow">
+					<label><%= variable.titulo %></label>
+					<div class="inputError">
+						<!-- Input -->
+						<input class="input"
+							value="<%= dataEntry[variable.name] %>"
+							type="<%= variable.type %>"
+							name="<%= variable.name %>"
+							placeholder="<%= variable.placeholder %>"
+							<% if (dataEntry[variable.name]) { %>autocomplete='new-password'<% } %>
+						>
+						<!-- El autocomplete = 'new-password' es para prevenir el 'autocomplete' -->
+						<!-- Ojito contraseña -->
+						<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
+						<!-- Error/OK -->
+						<%- include("CMP-Errores", {nombre: variable.name, display: true}) %>
+					</div>
 				</div>
+			<% } %>
+		</section>
+		<!--Credenciales Inválidas-->
+		<div class="flexCol">
+			<p id="credencialesInvalidas" class="<%- !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
+		</div>
+		<div class="flexRow">
+			<!--Flechas-->
+			<div class="flechas">
+				<!-- Salir -->
+				<a href="<%= urlSalir %>" tabindex="-1">
+					<i class="fa-solid fa-circle-left" title="Salir"></i>
+				</a>
+				<!-- Submit -->
+				<button type="submit" autofocus>
+					<i class="fa-solid fa-circle-check" title="Login"></i>
+				</button>
 			</div>
-		<% } %>
-	</section>
-	<!--Credenciales Inválidas-->
-	<div class="flexCol">
-		<p id="credencialesInvalidas" class="<%- !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
-	</div>
-	<div class="flexRow">
-		<!--Flechas-->
-		<div class="flechas">
-			<!-- Salir -->
-			<a href="<%= urlSalir %>" tabindex="-1">
-				<i class="fa-solid fa-circle-left" title="Salir"></i>
-			</a>
-			<!-- Submit -->
-			<button type="submit" autofocus>
-				<i class="fa-solid fa-circle-check" title="Login"></i>
-			</button>
+			<div class="flechas">
+				<!-- Olvido de contraseña -->
+				<a href="/usuarios/olvido-contrasena" tabindex="-1" class="rojo">
+					<i class="fa-solid fa-key" title="Olvidé mi contraseña"></i>
+				</a>
+				<!-- Nuevo usuario -->
+				<a href="/usuarios/alta-mail" tabindex="-1"  class="verde">
+					<i class="fa-solid fa-user-plus" title="Crear un usuario"></i>
+				</a>
+			</div>
 		</div>
-		<div class="flechas">
-			<!-- Olvido de contraseña -->
-			<a href="/usuarios/olvido-contrasena" tabindex="-1" class="rojo">
-				<i class="fa-solid fa-key" title="Olvidé mi contraseña"></i>
-			</a>
-			<!-- Nuevo usuario -->
-			<a href="/usuarios/alta-mail" tabindex="-1"  class="verde">
-				<i class="fa-solid fa-user-plus" title="Crear un usuario"></i>
-			</a>
-		</div>
-	</div>
-</form>
+	</form>
+</div>
