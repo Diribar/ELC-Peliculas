@@ -1,7 +1,7 @@
 /* General */
 /* #cuerpo {position: absolute; height: 100%;} */
-#cuerpo {margin: 0; width: 100%;}
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
+#cuerpo {margin: 0; width: 100%; max-height: calc(100% - 23.6px);} /* 23.6px es la altura del footer */
 
 /* General del formulario */
 #cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
