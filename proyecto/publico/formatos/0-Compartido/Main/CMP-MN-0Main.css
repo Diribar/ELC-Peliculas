@@ -7,7 +7,7 @@ main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 #cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Cuerpo */
-#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;} /* 23.6px es la altura del footer */
+#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Footer */
 #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
