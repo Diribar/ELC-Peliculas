@@ -12,8 +12,8 @@ form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
 	#cuerpo form {min-width: min-content; max-width: 90vw;}
 	.inputError .input {width: min(100%, 260px);}
 }
-@media (width <= calc(72vh + 400px) ) {#imgDerecha img {display: none;}}
-@media (width > calc(72vh + 400px) ) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
+@media (width <= calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {display: none;}}
+@media (width > calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
 
 /* Media Query - Alto */
 @media (height < 335px) {
