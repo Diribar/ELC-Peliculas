@@ -1,3 +1,5 @@
+form .labelInput {justify-content: space-between;}
+
 /* Botón de imagen */
 input#inputImagen {display:none}
 #cuerpo form #labelImagen {color: var(--azul-oscuro); background: white;}
