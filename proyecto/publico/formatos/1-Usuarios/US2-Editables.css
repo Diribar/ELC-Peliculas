@@ -1,5 +1,5 @@
 /* Imagen */
-form #divImagen {width: 200px;align-items: center;}
+form #divImagen {width: 200px; align-items: center;}
 #divImagen label#preview {display: flex; flex-direction: row; justify-content: center;}
 #divImagen label#preview {cursor: pointer; margin-right: 0px; width: inherit;}
 #divImagen input#inputImagen {display:none}
@@ -12,4 +12,10 @@ label#preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
 	#cuerpo form {min-width: min-content; max-width: 85vw;}
 	#cuerpo form .labelInput {justify-content: center;}
 	#cuerpo form label {display: none;}
+}
+
+/* Media Query - Alto */
+@media (height < 560px) {
+	form h1 {margin: 0;}
+	form .flechas {margin-bottom: 0;}
 }
