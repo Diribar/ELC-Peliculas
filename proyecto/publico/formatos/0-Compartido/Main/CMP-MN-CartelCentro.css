@@ -1,9 +1,7 @@
 /* Formato general del cartel */
-main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white;}
 main .cartelCentro {width: max-content; min-width: 250px; max-width: min(600px, 95vw);}
-main .cartelCentro {color: var(--gris-claro)}
-main .cartelCentro {display: flex; flex-direction: column; align-items: center;}
-/* main .cartelCentro.ocultar {display: none;} */
+main .cartelCentro {max-height: 95%; overflow-y: auto; color: var(--gris-claro)}
+main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white;}
 main .cartelCentro {background: var(--rojo-oscuro);}
 main .cartelCentro.check {background: var(--verde-oscuro);}
 main .cartelCentro.trabajando {background: var(--azul-oscuro);}
@@ -36,3 +34,13 @@ main .cartelCentro #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen
 main .cartelCentro #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
 main .cartelCentro #contorno {border-radius: 10px; overflow: hidden;}
 main .cartelCentro #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
+
+/* Media Query */
+@media (height < 400px) {
+	main .cartelCentro .inicio {margin-bottom: 20px;}
+	main .cartelCentro #mensajes {margin-bottom: 20px;}
+}
+@media (height < 350px) {
+	main .cartelCentro .inicio {margin-bottom: 10px;}
+	main .cartelCentro #mensajes {margin-bottom: 10px;}
+}
