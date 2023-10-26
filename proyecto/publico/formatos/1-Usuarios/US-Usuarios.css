@@ -1,11 +1,10 @@
 /* General */
-/* #cuerpo {position: absolute; height: 100%;} */
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
 #cuerpo {margin: 0; width: 100%; max-height: calc(100% - 23.6px);} /* 23.6px es la altura del footer */
 
 /* General del formulario */
-#cuerpo #dataEntry {border-radius: 10px;}
-#cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
+#cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}
+#cuerpo form {background: var(--gris-oscuro);}
 #cuerpo form {padding: 20px; min-width: 360px;}
 #cuerpo form {display: flex; flex-direction: column;}
 
