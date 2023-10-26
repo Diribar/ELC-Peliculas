@@ -312,7 +312,7 @@ module.exports = {
 			}
 
 			// AVATAR -------------------------------------
-			// Acciones para el avatar
+			// Acciones si el avatar no se descargó (sólo para la mayoría de los TMDB)
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
@@ -351,30 +351,37 @@ module.exports = {
 		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "terminaste";
-		// Obtiene el Data Entry de session y cookies
+		const userID = req.session.usuario.id;
+
+		// Si se perdió la info, redirige a 'palabras clave'
 		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
-		// Borra 'session' y 'cookie' para que no se pueda recargar la página
 		delete req.session.terminaste;
 		res.clearCookie("terminaste");
-		// Si se perdió la info, redirige a 'palabras clave'
 		if (!terminaste) return res.redirect("palabras-clave");
-		// Obtiene los datos clave del producto
+
+		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
-		// Obtiene los demás datos del producto
-		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "statusRegistro");
-		// Obtiene el nombre del producto
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID, true);
+
+		// Prepara las imágenes
 		const carpetaMG = "Muchas-gracias/";
 		const imagenMG = "/publico/imagenes/" + carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
-		// Imagen derecha
-		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
-		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
+		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion);
+		imgDerPers = original.avatar ? imgDerPers.orig : imgDerPers.edic;
+
+		// Prepara variables para la vista
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const tituloImgDerPers = original.nombreCastellano
+			? original.nombreCastellano
+			: original.nombreOriginal
+			? original.nombreOriginal
+			: "";
+
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMG},
-			...{entidad, familia: "producto", id, dataEntry: registroProd, entidadNombre, ruta: "/producto/"},
-			...{imgDerPers, tituloImgDerPers: registroProd.nombreCastellano, status_id: creado_id},
+			...{entidad, familia: "producto", id, dataEntry: original, entidadNombre, ruta: "/producto/"},
+			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},
 

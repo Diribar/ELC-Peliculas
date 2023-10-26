@@ -1,6 +1,7 @@
 /* General */
-#cuerpo {position: absolute; margin: 0; height: 100%; width: 100%;}
+/* #cuerpo {position: absolute; height: 100%;} */
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
+#cuerpo {margin: 0; width: 100%; max-height: calc(100% - 23.6px);} /* 23.6px es la altura del footer */
 
 /* General del formulario */
 #cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
@@ -29,6 +30,5 @@
 #cuerpo form #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}
 #cuerpo form #credencialesInvalidas {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
 /* #cuerpo form #credencialesInvalidas.ocultar {display: none;} */
-#cuerpo form #credencialesInvalidas, 
-#cuerpo form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
+#cuerpo form #credencialesInvalidas, #cuerpo form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
 #cuerpo form #credencialesInvalidas p {margin: 0;}
