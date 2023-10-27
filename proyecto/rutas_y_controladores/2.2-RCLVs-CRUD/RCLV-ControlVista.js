@@ -46,7 +46,7 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
-		const userPerenne = usuario && usuario.statusRegistro_id == stPerennes_id;
+		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {

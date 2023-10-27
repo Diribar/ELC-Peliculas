@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 	let informacion;
 
 	// Revisa si el usuario tiene el status perenne
-	if (usuario.statusRegistro_id != stPerennes_id) informacion = procesos.infoNoPerenne(req);
+	if (usuario.statusRegistro_id != perennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// Revisa si el usuario tiene el rol necesario
 	if (!informacion && !usuario.rolUsuario.revisorPERL)

@@ -47,7 +47,7 @@ module.exports = {
 						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
 			// Si el usuario tiene status 'perenne_id' valida su n° de documento
-			else if (usuario.statusRegistro_id == stPerennes_id) {
+			else if (usuario.statusRegistro_id == perennes_id) {
 				let {documNumero, documPais_id} = this.documento(datos);
 				errores = {documNumero, documPais_id};
 

@@ -8,9 +8,9 @@ module.exports = async (req, res, next) => {
 	// Obtiene el statusEsperado
 	const {ruta} = comp.reqBasePathUrl(req);
 	const statusEsperado =
-		(ruta == "/editables" && usuario.statusRegistro_id == stMailValidado_id) ||
-		(["/editables-bienvenido", "/perennes"].includes(ruta) && usuario.statusRegistro_id == stEditables_id) ||
-		(ruta == "/perennes-bienvenido" && usuario.statusRegistro_id == stPerennes_id) ||
+		(ruta == "/editables" && usuario.statusRegistro_id == mailValidado_id) ||
+		(["/editables-bienvenido", "/perennes"].includes(ruta) && usuario.statusRegistro_id == editables_id) ||
+		(ruta == "/perennes-bienvenido" && usuario.statusRegistro_id == perennes_id) ||
 		ruta == "/logout";
 
 	// Fin
