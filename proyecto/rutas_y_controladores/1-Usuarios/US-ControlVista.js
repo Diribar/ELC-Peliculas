@@ -162,21 +162,21 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const usuario = req.session.usuario;
-			const datos = {...req.body, id: usuario.id};
+			let datos = {...req.body, id: usuario.id};
 
 			// Averigua si hay errores de validación
 			let errores = await valida.perenneBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 				req.session.dataEntry = req.body; // No guarda el documAvatar
 				req.session.errores = errores;
 				return res.redirect("/usuarios/perennes");
 			}
 
 			// Actualiza el usuario
-			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", req.body);
+			datos.rolUsuario_id = rolPermInputs_id; // Le sube el rol a permInputs
+			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", datos);
 
 			// Redirecciona
 			return res.redirect("/usuarios/perennes-bienvenido");
