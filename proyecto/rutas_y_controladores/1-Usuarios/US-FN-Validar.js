@@ -139,17 +139,19 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
+
 		// Validaciones
 		if (campos.includes("nombre")) {
 			// Variables
 			let respuesta = "";
 			let dato = datos.nombre;
+
 			// Validaciones
-			if (dato) {
-				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
-				if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
-			} else respuesta = variables.inputVacio;
+			if (!dato) respuesta = variables.inputVacio;
+			if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
+			if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
+			if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
+
 			// Fin
 			errores.nombre = respuesta;
 		}
@@ -157,12 +159,13 @@ module.exports = {
 			// Variables
 			let respuesta = "";
 			let dato = datos.apellido;
+
 			// Validaciones
-			if (dato) {
-				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
-				if (!respuesta) comp.validacs.longitud(dato, 2, 30);
-			} else respuesta = variables.inputVacio;
+			if (!dato) respuesta = variables.inputVacio;
+			if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
+			if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
+			if (!respuesta) comp.validacs.longitud(dato, 2, 30);
+
 			// Fin
 			errores.apellido = respuesta;
 		}
@@ -173,21 +176,20 @@ module.exports = {
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
 		if (campos.includes("rolIglesia_id")) errores.rolIglesia_id = !datos.rolIglesia_id ? variables.selectVacio : "";
-		// Revisar 'documNumero'
 		if (campos.includes("documNumero")) {
 			// Variables
 			let dato = datos.documNumero;
 			let respuesta = "";
+
 			// Validaciones
-			if (dato) respuesta = comp.validacs.longitud(dato, 4, 15);
-			else respuesta = variables.inputVacio;
+			if (!dato) respuesta = variables.inputVacio;
+			if (!respuesta) respuesta = comp.validacs.longitud(dato, 4, 15);
+
 			// Fin
 			errores.documNumero = respuesta;
 		}
-		// Revisar 'documPais_id'
 		if (campos.includes("documPais_id")) errores.documPais_id = !datos.documPais_id ? variables.selectVacio : "";
-		// Revisar 'avatar'
-		if (campos.includes("avatar") || campos.includes("documAvatar")) errores.avatar = comp.validacs.avatar(datos);
+
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -197,24 +199,14 @@ module.exports = {
 		let errores = await this.perennesFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			// 1. Verifica que el documento no exista ya en la Base de Datos
+			// Verifica que el documento no exista ya en la Base de Datos
 			let documNumero = datos.documNumero;
 			let documPais_id = datos.documPais_id;
 			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {documNumero, documPais_id});
 			if (averigua && averigua.id != datos.id) errores.credenciales = true;
 
-			// 2. Verifica el documAvatar
-			errores.documAvatar =
-				// Que tenga nombre
-				!datos.documAvatar
-					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
-					: // Que exista el archivo
-					!comp.gestionArchivos.existe(datos.ruta + datos.documAvatar)
-					? "El archivo de imagen no existe"
-					: "";
-
-			// 3. Resumen
-			if (errores.credenciales || errores.documAvatar) errores.hay = true;
+			// Resumen
+			errores.hay = errores.credenciales
 		}
 		// Fin
 		return errores;

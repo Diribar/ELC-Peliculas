@@ -161,44 +161,22 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			let usuario = req.session.usuario;
-
-			// Obtiene los datos
-			let datos = {
-				...req.body,
-				documAvatar: req.file ? req.file.filename : usuario.documAvatar,
-				id: usuario.id,
-			};
-			if (req.file) datos.tamano = req.file.size;
-			datos.ruta = "/externa/" + (req.file ? "9-Provisorio/" : "1-Usuarios/DNI-Revisar/");
+			const usuario = req.session.usuario;
+			let datos = {...req.body, id: usuario.id};
 
 			// Averigua si hay errores de validación
 			let errores = await valida.perenneBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 				req.session.dataEntry = req.body; // No guarda el documAvatar
 				req.session.errores = errores;
 				return res.redirect("/usuarios/perennes");
 			}
 
-			if (req.file) {
-				// Elimina el archivo 'documAvatar' anterior
-				if (usuario.documAvatar)
-					comp.gestionArchivos.elimina(carpetaExterna + "1-Usuarios/DNI-Revisar/", usuario.documAvatar);
-				// Agrega el campo 'documAvatar' a los datos
-				req.body.documAvatar = req.file.filename;
-			}
-
-			// Prepara la información a actualizar
-			req.body.fechaRevisores = comp.fechaHora.ahora();
-
 			// Actualiza el usuario
-			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "identPendValidar", req.body);
-
-			// Mueve el archivo a la carpeta 'Revisar''
-			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/DNI-Revisar");
+			datos.rolUsuario_id = rolPermInputs_id; // Le sube el rol a permInputs
+			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", datos);
 
 			// Redirecciona
 			return res.redirect("/usuarios/perennes-bienvenido");

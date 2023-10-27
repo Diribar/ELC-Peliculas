@@ -15,7 +15,7 @@ form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
 
 /* Información */
 form #informacion {display: flex; flex-direction: row; justify-content: space-between;}
-#informacion .labelInput {margin: 10px 0;}
+#informacion .labelInput {margin: 10px 0; display: flex; flex-direction: column;}
 .labelInput label {margin-right: 0; align-self: flex-start; margin-bottom: 3px;}
 .inputError .input {width: 170px;}
 
