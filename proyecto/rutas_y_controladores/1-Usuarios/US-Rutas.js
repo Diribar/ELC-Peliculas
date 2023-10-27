@@ -42,7 +42,7 @@ router.get("/perennes-bienvenido", validarIdentidad, vista.perennes.bienvenido);
 
 // Rutas RUD
 router.get("/edicion", usAltaTerm, vista.edicion.form);
-router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar); //Validar mail y registrado
+router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);
 
 // Login
 router.get("/login", visitas, vista.login.form);
