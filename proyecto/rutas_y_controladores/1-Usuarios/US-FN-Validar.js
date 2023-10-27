@@ -46,8 +46,8 @@ module.exports = {
 						comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
 						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
-			// Si el usuario debe ingresar un n° de documento, lo valida
-			else if (usuario.statusRegistro_id == stIdentPendValidar_id || usuario.statusRegistro_id == stIdentValidada_id) {
+			// Si el usuario tiene status 'perenne_id' valida su n° de documento
+			else if (usuario.statusRegistro_id == stPerennes_id) {
 				let {documNumero, documPais_id} = this.documento(datos);
 				errores = {documNumero, documPais_id};
 
