@@ -55,7 +55,7 @@ module.exports = {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const email = datos.email;
-			const usuario = datos.email ? await procesos.usuarioDelMail(email) : "";
+			const usuario = datos.email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Validaciones
 			const errores = await valida.olvidoContrasena({...datos, usuario});

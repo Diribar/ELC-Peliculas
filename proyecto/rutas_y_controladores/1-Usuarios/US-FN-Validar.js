@@ -19,7 +19,7 @@ module.exports = {
 		// Validaciones
 		errores.email = mensaje
 			? mensaje
-			: (await procesos.usuarioDelMail(email))
+			: (await BD_genericas.obtienePorCondicion("usuarios", {email}))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 

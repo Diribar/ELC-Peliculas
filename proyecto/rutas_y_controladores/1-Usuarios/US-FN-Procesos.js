@@ -34,16 +34,14 @@ module.exports = {
 		return;
 	},
 	// ControlVista: altaMail y olvidoContr
-	usuarioDelMail: async (email) => {
-		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-		return usuario;
-	},
 	envioDeMailConContrasena: async (email) => {
 		// Variables
 		const asunto = "Contraseña para ELC";
 
 		// Contraseña
-		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString().padStart(6, '0'); // más adelante cambia por la codificada
+		let contrasena = Math.round(Math.random() * Math.pow(10, 6))
+			.toString()
+			.padStart(6, "0"); // más adelante cambia por la codificada
 		const comentario = "La contraseña para el mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
 		contrasena = bcryptjs.hashSync(contrasena, 10);
@@ -88,38 +86,35 @@ module.exports = {
 	},
 	validaPerenne: (req) => {
 		// Variables
-		const usuario = req.session.usuario;
 		const {entidad, id, origen} = req.query;
 		const linkVolver =
 			entidad && id
 				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "")
 				: req.session.urlSinPermInput;
-		let informacion;
 
 		// Mensaje si el usuario está en status "editables"
-		if (usuario.statusRegistro_id != stPerennes_id)
-			informacion = {
-				mensajes: [
-					"El ingreso de información pública requiere responsabilidad.",
-					"Te pedimos que cuides la reputación de tu usuario.",
-					"Podés iniciar el trámite con la flecha hacia la derecha.",
-				],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: linkVolver,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-circle-right",
-						link: "/usuarios/perenne",
-						titulo: "Ir a 'Solicitud de Autorización de Inputs'",
-						autofocus: true,
-					},
-				],
-				titulo: "Aviso",
-				trabajando: true,
-			};
+		let informacion = {
+			mensajes: [
+				"El ingreso de información pública requiere responsabilidad.",
+				"Te pedimos que cuides la reputación de tu usuario.",
+				"Podés iniciar el trámite con la flecha hacia la derecha.",
+			],
+			iconos: [
+				{
+					nombre: "fa-circle-left",
+					link: linkVolver,
+					titulo: "Ir a la vista anterior",
+				},
+				{
+					nombre: "fa-circle-right",
+					link: "/usuarios/perenne",
+					titulo: "Ir a 'Solicitud de Autorización de Inputs'",
+					autofocus: true,
+				},
+			],
+			titulo: "Aviso",
+			trabajando: true,
+		};
 
 		// Fin
 		return informacion;
