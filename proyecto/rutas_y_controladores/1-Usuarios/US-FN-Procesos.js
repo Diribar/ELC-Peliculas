@@ -7,11 +7,14 @@ module.exports = {
 	actualizaElStatusDelUsuario: async (usuario, status, novedades) => {
 		// Obtiene el nuevo status
 		let statusNuevo = statusRegistrosUs.find((n) => n.codigo == status);
+
 		// Genera la info a actualizar
 		novedades = {...novedades, statusRegistro_id: statusNuevo.id};
+
 		// Actualiza la info
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
-		usuario = {...usuario, ...novedades, statusRegistro: statusNuevo};
+		usuario = {...usuario, ...novedades};
+
 		// Fin
 		return usuario;
 	},
