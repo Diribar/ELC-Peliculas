@@ -23,5 +23,4 @@ main #cuerpo .inputError .ayuda {z-index: 3;}
 
 /* Errores */
 main #cuerpo .errores .mensajeError {z-index: 7;}
-main #cuerpo .inputError .errores {z-index: 6}
 main #cuerpo form #imgDerecha .errores {z-index: 4;}
