@@ -175,8 +175,7 @@ module.exports = {
 				return res.redirect("/usuarios/perennes");
 			}
 
-			// Prepara la información y actualiza el usuario
-			req.body.fechaRevisores = comp.fechaHora.ahora();
+			// Actualiza el usuario
 			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", req.body);
 
 			// Redirecciona
