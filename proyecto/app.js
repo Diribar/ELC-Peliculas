@@ -182,9 +182,8 @@ app.set("views", [
 	// 3.B. Status de usuario
 	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
 	global.stMailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;
-	global.stUsRegistrado_id = statusRegistrosUs.find((n) => n.codigo == "registrado").id;
-	global.stIdentPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "identPendValidar").id;
-	global.stIdentValidada_id = statusRegistrosUs.find((n) => n.codigo == "identValidada").id;
+	global.stEditables_id = statusRegistrosUs.find((n) => n.codigo == "editables").id;
+	global.stPerennes_id = statusRegistrosUs.find((n) => n.codigo == "perennes").id;
 
 	// 4. Públicos
 	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
