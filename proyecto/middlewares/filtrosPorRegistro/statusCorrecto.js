@@ -82,7 +82,5 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta.includes("/solapamiento/")
 			? [creado_id, ...aprobados_ids]
 			: [99]
-		: baseUrl == "/revision/usuarios" && ruta.includes("/validar-identidad/")
-		? [stIdentPendValidar_id]
 		: [99];
 };
