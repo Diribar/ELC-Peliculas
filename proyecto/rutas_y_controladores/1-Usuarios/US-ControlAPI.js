@@ -17,7 +17,7 @@ module.exports = {
 			const errores = await valida.editables(req.query);
 			return res.json(errores);
 		},
-		identidad: async (req, res) => {
+		perennes: async (req, res) => {
 			const errores = await valida.identidadFE(req.query);
 			return res.json(errores);
 		},
