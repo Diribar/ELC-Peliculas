@@ -1,5 +1,5 @@
 /* General */
-#cuerpo form {width: 450px; padding: 30px;}
+#cuerpo form {width: 430px; padding: 30px;}
 
 /* Título principal */
 form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
@@ -20,8 +20,8 @@ form #informacion {display: flex; flex-direction: row; justify-content: space-be
 .inputError .input {width: 170px;}
 
 /* Media Query - Ancho */
-@media (width > calc(550px + 0.67 * (100vh - 60px))) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}} /* 470px es el ancho del form, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
-@media (width <= calc(550px + 0.67 * (100vh - 60px))) {#imgDerecha img {display: none;}}
+@media (width > calc(520px + 0.67 * (100vh - 60px))) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}} /* 470px es el ancho del form, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
+@media (width <= calc(520px + 0.67 * (100vh - 60px))) {#imgDerecha img {display: none;}}
 @media (width < 480px) {
 	#cuerpo form {width: auto;}
 	form #tituloPrincipal {max-width: 210px;}
