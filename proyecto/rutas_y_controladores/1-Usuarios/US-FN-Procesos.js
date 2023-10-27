@@ -84,7 +84,7 @@ module.exports = {
 		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
 		titulo: "Alta de Usuario fallida",
 	},
-	validaPerenne: (req) => {
+	infoNoPerenne: (req) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const linkVolver =

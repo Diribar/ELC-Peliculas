@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// VERIFICACIÓN 1: Revisa si el usuario tiene el status perenne
-	if (usuario.statusRegistro_id != stPerennes_id) informacion = procesos.validaPerenne(req);
+	if (usuario.statusRegistro_id != stPerennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
 	if (!informacion && !usuario.rolUsuario.permInputs)
