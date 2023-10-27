@@ -21,8 +21,7 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; translate: -100% -50%; content: ""; border-style: solid;}
-.ayudaMostrar, .mensajeError {right: -7px; top: 50%; translate: 100% -50%; }
+.ayudaMostrar, .mensajeError {right: -3px; bottom: -3px; translate: 0 100%;}
 .ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 250px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 
@@ -52,5 +51,9 @@
 .ayudaMostrar {border-color: var(--bordeAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
 .link {background: var(--gris-oscuro); color: var(--gris-claro);}
+
+/* Before */
 .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
-.mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}
+.mensajeError::before {border-color: transparent transparent var(--colorMensajeError) transparent;}
+.ayudaMostrar::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
+.ayudaMostrar::before, .mensajeError::before {right: 3px; top: 0; translate: 0 -100%; }
