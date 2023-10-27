@@ -8,7 +8,6 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionUs";
 		const codigo = "tableroControl";
-		const revID = req.session.usuario.id;
 
 		// Va a la vista
 		// return res.send(autInputs);
@@ -16,7 +15,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Revisión - Tablero de Usuarios",
-			usuarios,
 		});
 	},
 };
