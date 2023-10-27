@@ -113,7 +113,7 @@ module.exports = {
 			req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 
 			// Redirecciona
-			return res.redirect("/usuarios/bienvenido");
+			return res.redirect("/usuarios/editables-bienvenido");
 		},
 		bienvenido: (req, res) => {
 			// Variables
@@ -138,20 +138,14 @@ module.exports = {
 		form: async (req, res) => {
 			// Variables
 			const tema = "usuario";
-			const codigo = "perenne";
-			let usuario = req.session.usuario;
+			const codigo = "perennes";
+			const usuario = req.session.usuario;
+			const rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
+
 			// Genera la info para la vista
-			let errores = req.session.errores ? req.session.errores : false;
-			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
-			// Roles de Iglesia
-			let rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
-			// Avatar
-			let avatar = usuario.documAvatar
-				? "/externa/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
-				: "/publico/imagenes/Avatar/DNI-Generico.jpg";
-			// Crear la carpeta si no existe
-			const provisorio = carpetaExterna + "9-Provisorio";
-			if (!fs.existsSync(provisorio)) fs.mkdirSync(provisorio);
+			const errores = req.session.errores ? req.session.errores : false;
+			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				tema,
@@ -162,7 +156,6 @@ module.exports = {
 				hablaHispana,
 				hablaNoHispana,
 				rolesIgl,
-				avatar,
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -208,7 +201,7 @@ module.exports = {
 			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/DNI-Revisar");
 
 			// Redirecciona
-			return res.redirect("/usuarios/validacion-en-proceso");
+			return res.redirect("/usuarios/perennes-bienvenido");
 		},
 		bienvenido: (req, res) => {
 			// Variables

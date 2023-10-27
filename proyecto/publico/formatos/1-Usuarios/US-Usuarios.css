@@ -4,9 +4,8 @@
 
 /* General del formulario */
 #cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}
-#cuerpo form {background: var(--gris-oscuro);}
-#cuerpo form {padding: 20px; min-width: 360px;}
 #cuerpo form {display: flex; flex-direction: column;}
+#cuerpo form {background: var(--gris-oscuro); padding: 20px;}
 
 /* Partes del formulario */
 form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}

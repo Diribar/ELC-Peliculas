@@ -93,7 +93,7 @@ module.exports = {
 				: req.session.urlSinPermInput;
 
 		// Fin
-		return informacion = {
+		return {
 			mensajes: [
 				"El ingreso de información pública requiere responsabilidad.",
 				"Te pedimos que cuides la reputación de tu usuario.",
@@ -107,7 +107,7 @@ module.exports = {
 				},
 				{
 					nombre: "fa-circle-right",
-					link: "/usuarios/perenne",
+					link: "/usuarios/perennes",
 					titulo: "Ir a 'Solicitud de Autorización de Inputs'",
 					autofocus: true,
 				},
