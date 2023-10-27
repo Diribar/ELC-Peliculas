@@ -1,3 +1,5 @@
+#cuerpo form {min-width: 360px;}
+
 /* Imagen */
 form #divImagen {width: 200px; align-items: center;}
 #divImagen label#preview {display: flex; flex-direction: row; justify-content: center;}
@@ -7,7 +9,7 @@ label#preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
 
 /* Media Query - Ancho */
 @media (width <= calc(470px + 0.67 * (100vh - 60px))) {#imgDerecha img {display: none;}}
-@media (width > calc(470px + 0.67 * (100vh - 60px))) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}} /* 360px es el ancho mínimo del footer, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
+@media (width > calc(470px + 0.67 * (100vh - 60px))) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}} /* 470px es el ancho del form, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
 @media (width <= 450px) {
 	#cuerpo form {min-width: min-content; max-width: 85vw;}
 	#cuerpo form .labelInput {justify-content: center;}

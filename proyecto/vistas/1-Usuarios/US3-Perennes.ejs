@@ -8,19 +8,19 @@
 			<div class="ayuda">
 				<i class="fa-solid fa-circle-question ayudaClick desplClick">
 					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-						<li>Por favor brindanos datos fieles a tu identidad, nos permiten conocerte mejor.</li>
-						<li>El único dato que vas a poder cambiar en el futuro es tu Rol en la Iglesia.</li>
+						<li>Por favor brindanos datos fieles a tu identidad.</li>
 						<li>Algunos de estos datos se te pueden pedir en el futuro para validar tu identidad.</li>
+						<li>El único dato que vas a poder editar en el futuro es tu Rol en la Iglesia.</li>
 					</ul>
 				</i>
 			</div>
 		</div>
 		<!-- Datos -->
-		<section class="flexRow">
+		<section id="informacion">
 			<!-- Varios -->
 			<div id="columna1">
 				<!--Nombre-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="nombre">Nombre</label>
 					<div class="inputError">
 						<% nombre = dataEntry ? dataEntry.nombre : "" %>
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<!--Apellido-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="apellido">Apellido</label>
 					<div class="inputError">
 						<% apellido = dataEntry ? dataEntry.apellido : "" %>
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 				<!--Fecha de Nacimiento-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="fechaNacim">Fecha de Nacimiento</label>
 					<div class="inputError">
 						<% fechaNacim = dataEntry ? dataEntry.fechaNacim : "" %>
@@ -50,7 +50,7 @@
 			<!-- Documento -->
 			<div id="columna2">
 				<!--Número de Documento-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="documNumero">Número de Documento</label>
 					<div class="inputError">
 						<input type="text" id="documNumero" class="input" name="documNumero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.documNumero : "" %>">
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<!--Expedido en qué país-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="documPais_id">Expedido en qué país</label>
 					<div class="inputError">
 						<select id="documPais_id" name="documPais_id" class="input">
@@ -88,19 +88,8 @@
 						<%- include("CMP-Errores", {nombre: "documPais_id", display: true}) %>
 					</div>
 				</div>
-				<!--Credenciales Inválidas-->
-				<% if (errores && errores.credenciales) { %>
-					<div id="credencialesInvalidas" class="inputError">
-						<p>Credenciales inválidas</p>
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick">
-								<span class="ayudaMostrar ocultar">Ya tenemos ingresada esa combinación de <em>Número de Documento</em> y <em>País</em> en nuestra Base de Datos.</span>
-							</i>
-						</div>
-					</div>
-				<% } %>
 				<!--Rol en la iglesia-->
-				<div class="labelInput flexCol">
+				<div class="labelInput">
 					<label for="rolIglesia_id">Rol en la Iglesia Católica</label>
 					<div class="inputError">
 						<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
