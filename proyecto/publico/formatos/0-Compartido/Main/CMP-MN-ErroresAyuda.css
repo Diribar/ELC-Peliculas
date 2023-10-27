@@ -22,7 +22,7 @@
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
 .ayudaMostrar, .mensajeError {right: -3px; bottom: -3px; translate: 0 100%;}
-.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 250px; width: max-content;}
+.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 70vw); width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 
 /* Desplegables Ayuda - Temas generales */
