@@ -3,6 +3,12 @@ main {height: var(--altMain);}
 main {overflow-y: hidden; display: flex; flex-direction: row;}
 main {--anchoImgDer: 32vw}
 
+/* Tapar el fondo */
+main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
+main #tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
+main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+
+/* Cuerpo Footer */
 main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 #cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
 
@@ -18,3 +24,7 @@ main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 /* Imagen Derecha */
 #cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
 #cuerpoFooterImgDer #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
+
+/* Media Queries para cuando el cuerpo no tiene contenido - 360px es el ancho mínimo del footer, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */
+@media (width <= calc(360px + 0.67 * (100vh - 60px))) {main:not(:has(#cuerpoFooterImgDer #cuerpoFooter #cuerpo *)) #cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (width > calc(360px + 0.67 * (100vh - 60px))) {main:not(:has(#cuerpoFooterImgDer #cuerpoFooter #cuerpo *)) #cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}}

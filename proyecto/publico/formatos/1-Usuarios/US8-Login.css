@@ -13,7 +13,7 @@
 
 /* Media Query - Alto */
 @media (height < 335px) {
-	#cuerpo #dataEntry {overflow: auto; max-height: 100%;}
+	#cuerpo #dataEntry {overflow: auto; max-height: 95%;}
 	#dataEntry form h1 {margin: 0;}
 	#dataEntry form .flechas {margin: 0 auto;}
 

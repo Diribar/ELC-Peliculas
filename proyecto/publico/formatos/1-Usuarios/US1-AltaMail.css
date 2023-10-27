@@ -1,5 +1,24 @@
-#cuerpo form .labelInput {justify-content: center;}
-#cuerpo form .input {width: 260px;}
-#cuerpo form .input[name="documNumero"], #cuerpo form .input[name="documPais_id"] {width: 160px;}
-#cuerpo form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
-#cuerpo form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
+#cuerpo form {padding-left: 30px; padding-right: 30px;}
+form .labelInput {justify-content: center; margin: 0; margin-top: 20px;}
+.labelInput .inputError {width: 100%; display: flex; flex-direction: row; justify-content: center;}
+.inputError .input {width: 260px;}
+.inputError :is(.input[name="documNumero"], .input[name="documPais_id"]) {width: 160px;}
+
+form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
+form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
+
+/* Media Query - Ancho */
+@media (width <= 400px) {
+	#cuerpo form {min-width: min-content; max-width: 90vw;}
+	.inputError .input {width: min(100%, 260px);}
+}
+@media (width <= calc(72vh + 400px) ) {#imgDerecha img {display: none;}}
+@media (width > calc(72vh + 400px) ) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
+
+/* Media Query - Alto */
+@media (height < 335px) {
+	#cuerpo #dataEntry {overflow: auto; max-height: 95%;}
+	form h1 {margin: 0;}
+	form .flechas {margin: 0 auto;}
+
+}

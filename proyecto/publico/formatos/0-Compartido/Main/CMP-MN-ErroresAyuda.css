@@ -1,6 +1,6 @@
 /* Contenedores */
 #cuerpo #tituloPrincipal, #cuerpo #tituloSecundario,
-#cuerpo .inputError {position: relative; align-items: center;}
+#cuerpo .inputError {position: relative;} /* align-items: center; */
 
 /* Formato común entre Ayuda y Errores */
 #cuerpo .ayuda, .inputError .errores {right: -5px; line-height: 1rem; font-size: 1rem;}
@@ -8,7 +8,7 @@
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Bordes */
-.ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, 
+.ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark,
 .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
 .fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question
 .ayudaMostrar {border-width: 1px; border-style: solid}

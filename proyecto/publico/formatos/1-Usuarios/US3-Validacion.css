@@ -1,4 +1,4 @@
-#cuerpo form #tituloPrincipal {padding: 8px 10px;}
+#cuerpo form #tituloPrincipal {align-self: center; padding: 8px 10px;}
 #cuerpo form #tituloPrincipal h1 {margin: 0;}
 #cuerpo form .ayudaClick {border-style: solid; border-width: 1px; color: var(--gris-mas-oscuro);}
 #cuerpo form .ayudaMostrar {background: var(--gris-mas-oscuro);}

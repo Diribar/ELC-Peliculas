@@ -1,22 +1,24 @@
 <div id="tapaElFondo"></div>
-<form class="encimaDelFondo">
-	<!-- Cartel de progreso -->
-	<%- include('CMP-CartelProgreso', {tarea: "Enviando el mail"}) %>
-	<h1><%= titulo %> </h1>
+<div id="dataEntry" class="encimaDelFondo">
+	<form>
+		<!-- Cartel de progreso -->
+		<%- include('CMP-CartelProgreso', {tarea: "Enviando el mail"}) %>
+		<h1><%= titulo %> </h1>
 
-	<!--E-Mail-->
-	<%- include("US1-Mail") %>
+		<!--E-Mail-->
+		<%- include("US1-Mail") %>
 
-	<!--Número de Documento y País-->
-	<% if (errores.documento) { %>
-		<%- include("US1-Docum") %>
-	<% } %>
+		<!--Número de Documento y País-->
+		<% if (errores.documento) { %>
+			<%- include("US1-Docum") %>
+		<% } %>
 
-	<!--Flechas-->
-	<section class="flechas">
-		<!-- Salir -->
-		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
-		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
-	</section>
-</form>
+		<!--Flechas-->
+		<section class="flechas">
+			<!-- Salir -->
+			<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
+			<!-- Submit -->
+			<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
+		</section>
+	</form>
+</div>
