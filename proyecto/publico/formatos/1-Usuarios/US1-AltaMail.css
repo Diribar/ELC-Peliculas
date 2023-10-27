@@ -10,7 +10,7 @@ form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
 /* Media Query - Ancho */
 @media (width <= 400px) {
 	#cuerpo form {min-width: min-content; max-width: 90vw;}
-	.inputError .input {width: min(100%, 260px);}
+	form .labelInput {width: min(100%, 260px);}
 }
 @media (width <= calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {display: none;}}
 @media (width > calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
