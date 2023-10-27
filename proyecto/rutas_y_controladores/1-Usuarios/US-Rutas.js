@@ -38,7 +38,7 @@ router.get("/editables-bienvenido", statusCorrecto, vista.editables.bienvenido);
 // 3. Perennes
 router.get("/perennes", validarIdentidad, vista.perennes.form);
 router.post("/perennes", validarIdentidad, multer.single("avatar"), vista.perennes.guardar);
-router.get("/perennes-bienvenido", statusCorrecto, vista.perennes.bienvenido);
+router.get("/perennes-bienvenido", validarIdentidad, vista.perennes.bienvenido);
 
 // Rutas RUD
 router.get("/edicion", usAltaTerm, vista.edicion.form);
