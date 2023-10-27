@@ -1,6 +1,6 @@
 /* General */
 main {height: var(--altMain);}
-main {overflow-y: hidden; display: flex; flex-direction: row;}
+main {display: flex; flex-direction: row; overflow-y: hidden;}
 main {--anchoImgDer: 32vw}
 
 /* Tapar el fondo */

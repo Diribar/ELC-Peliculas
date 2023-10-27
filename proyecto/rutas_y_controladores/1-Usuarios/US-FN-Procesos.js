@@ -34,16 +34,14 @@ module.exports = {
 		return;
 	},
 	// ControlVista: altaMail y olvidoContr
-	usuarioDelMail: async (email) => {
-		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-		return usuario;
-	},
 	envioDeMailConContrasena: async (email) => {
 		// Variables
 		const asunto = "Contraseña para ELC";
 
 		// Contraseña
-		let contrasena = Math.round(Math.random() * Math.pow(10, 6)).toString().padStart(6, '0'); // más adelante cambia por la codificada
+		let contrasena = Math.round(Math.random() * Math.pow(10, 6))
+			.toString()
+			.padStart(6, "0"); // más adelante cambia por la codificada
 		const comentario = "La contraseña para el mail " + email + " es: " + contrasena;
 		console.log("Contraseña: " + contrasena);
 		contrasena = bcryptjs.hashSync(contrasena, 10);
@@ -86,57 +84,36 @@ module.exports = {
 		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
 		titulo: "Alta de Usuario fallida",
 	},
-	feedbackSobreIdentidadValidada: (req) => {
+	infoNoPerenne: (req) => {
 		// Variables
-		const usuario = req.session.usuario;
 		const {entidad, id, origen} = req.query;
 		const linkVolver =
 			entidad && id
 				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "")
 				: req.session.urlSinPermInput;
-		let informacion;
-
-		// Mensaje si el usuario está en status "identidad a validar"
-		if (usuario.statusRegistro_id == stIdentPendValidar_id)
-			informacion = {
-				mensajes: [
-					"Para ingresar información, se requiere tener tus datos validados.",
-					"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fechaRevisores) + ".",
-					"Tenés que esperar a que el equipo de Revisores haga la validación.",
-					"Luego de la validación, recibirás un mail de feedback.",
-					"En caso de estar aprobado, podrás ingresarnos información.",
-				],
-				iconos: [variables.vistaEntendido(linkVolver)],
-				titulo: "Aviso",
-				trabajando: true,
-			};
-		// Mensaje si el usuario está en status "registrado"
-		else if (usuario.statusRegistro_id == stUsRegistrado_id)
-			informacion = {
-				mensajes: [
-					"El ingreso de información para otras personas, requiere responsabilidad.",
-					"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
-					"Si querés avanzar, necesitamos validar tu identidad con tu documento.",
-					"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
-				],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: linkVolver,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-circle-right",
-						link: "/usuarios/identidad",
-						titulo: "Ir a 'Solicitud de Validación de Identidad'",
-						autofocus: true,
-					},
-				],
-				titulo: "Aviso",
-				trabajando: true,
-			};
 
 		// Fin
-		return informacion;
+		return informacion = {
+			mensajes: [
+				"El ingreso de información pública requiere responsabilidad.",
+				"Te pedimos que cuides la reputación de tu usuario.",
+				"Podés iniciar el trámite con la flecha hacia la derecha.",
+			],
+			iconos: [
+				{
+					nombre: "fa-circle-left",
+					link: linkVolver,
+					titulo: "Ir a la vista anterior",
+				},
+				{
+					nombre: "fa-circle-right",
+					link: "/usuarios/perenne",
+					titulo: "Ir a 'Solicitud de Autorización de Inputs'",
+					autofocus: true,
+				},
+			],
+			titulo: "Aviso",
+			trabajando: true,
+		};
 	},
 };

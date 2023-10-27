@@ -17,8 +17,8 @@ module.exports = {
 			const errores = await valida.editables(req.query);
 			return res.json(errores);
 		},
-		identidad: async (req, res) => {
-			const errores = await valida.identidadFE(req.query);
+		perennes: async (req, res) => {
+			const errores = await valida.perennesFE(req.query);
 			return res.json(errores);
 		},
 	},
@@ -55,7 +55,7 @@ module.exports = {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const email = datos.email;
-			const usuario = datos.email ? await procesos.usuarioDelMail(email) : "";
+			const usuario = datos.email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Validaciones
 			const errores = await valida.olvidoContrasena({...datos, usuario});

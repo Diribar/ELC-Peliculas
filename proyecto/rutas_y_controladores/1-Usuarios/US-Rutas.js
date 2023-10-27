@@ -17,7 +17,7 @@ const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 router.get("/api/valida-formato-mail", API.valida.formatoMail); // alta-de-mail, olvido-de-contraseña
 router.get("/api/valida-login", API.valida.login);
 router.get("/api/valida-editables", API.valida.editables);
-router.get("/api/valida-identidad", API.valida.identidad);
+router.get("/api/valida-perennes", API.valida.perennes);
 router.get("/api/alta-mail", API.fin.altaMail);
 router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
 router.get("/api/video-de-consultas-visto", API.videoConsVisto);
@@ -30,16 +30,15 @@ router.get("/olvido-contrasena", visitas, vista.altaMail.form);
 router.get("/envio-exitoso-de-mail", visitas, vista.altaMail.envioExitoso);
 router.get("/envio-fallido-de-mail", visitas, vista.altaMail.envioFallido);
 
-// 2. Solo usuarios con status 'mailValidado'
+// 2. Editables
 router.get("/editables", statusCorrecto, vista.editables.form);
 router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editables.guardar);
-// 3. Solo usuarios con status 'registrado'
-router.get("/bienvenido", statusCorrecto, vista.registradoBienvenido);
-// 4. Solo usuarios con status 'registrado' y no penalizadas
-router.get("/identidad", validarIdentidad, vista.identidad.form);
-router.post("/identidad", validarIdentidad, multer.single("avatar"), vista.identidad.guardar);
-// 5. Solo usuarios con status 'identPendValidar'
-router.get("/validacion-en-proceso", statusCorrecto, vista.identidad.enProceso);
+router.get("/editables-bienvenido", statusCorrecto, vista.editables.bienvenido);
+
+// 3. Perennes
+router.get("/perennes", validarIdentidad, vista.perennes.form);
+router.post("/perennes", validarIdentidad, multer.single("avatar"), vista.perennes.guardar);
+router.get("/perennes-bienvenido", validarIdentidad, vista.perennes.bienvenido);
 
 // Rutas RUD
 router.get("/edicion", usAltaTerm, vista.edicion.form);

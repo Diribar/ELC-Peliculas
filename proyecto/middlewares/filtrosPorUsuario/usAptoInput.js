@@ -4,20 +4,20 @@ const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos"
 
 module.exports = async (req, res, next) => {
 	// Variables
-	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
+	const usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
+	req.session.usuario = usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinPermInput);
 	let informacion;
-	let usuario = req.session.usuario;
 
-	// VERIFICACIÓN 1: Revisa si tiene validada su identidad
-	informacion = procesos.feedbackSobreIdentidadValidada(req);
+	// VERIFICACIÓN 1: Revisa si el usuario tiene el status perenne
+	if (usuario.statusRegistro_id != stPerennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
 	if (!informacion && !usuario.rolUsuario.permInputs)
 		informacion = {
 			mensajes: [
-				"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
-				"Seguramente se te explicó el motivo vía mail.",
+				"Se te quitó el permiso para ingresar información pública.",
+				"Se te debe hacer comunicado el motivo vía mail.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 			titulo: "Aviso",

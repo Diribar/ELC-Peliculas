@@ -19,7 +19,7 @@ module.exports = {
 		// Validaciones
 		errores.email = mensaje
 			? mensaje
-			: (await procesos.usuarioDelMail(email))
+			: (await BD_genericas.obtienePorCondicion("usuarios", {email}))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 
@@ -46,8 +46,8 @@ module.exports = {
 						comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
 						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
-			// Si el usuario debe ingresar un n° de documento, lo valida
-			else if (usuario.statusRegistro_id == stIdentPendValidar_id || usuario.statusRegistro_id == stIdentValidada_id) {
+			// Si el usuario tiene status 'perenne_id' valida su n° de documento
+			else if (usuario.statusRegistro_id == stPerennes_id) {
 				let {documNumero, documPais_id} = this.documento(datos);
 				errores = {documNumero, documPais_id};
 
@@ -135,7 +135,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	identidadFE: (datos) => {
+	perennesFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
@@ -192,9 +192,9 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	identidadBE: async function (datos) {
+	perenneBE: async function (datos) {
 		// Averigua los errores
-		let errores = await this.identidadFE(datos);
+		let errores = await this.perennesFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Verifica que el documento no exista ya en la Base de Datos

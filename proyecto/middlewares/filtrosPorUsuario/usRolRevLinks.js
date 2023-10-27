@@ -7,8 +7,8 @@ module.exports = (req, res, next) => {
 	const usuario = req.session.usuario;
 	let informacion;
 
-	// Revisa si el usuario tiene validada su identidad
-	if (usuario.statusRegistro_id != stIdentValidada_id) informacion = procesos.feedbackSobreIdentidadValidada(req);
+	// Revisa si el usuario tiene el status perenne
+	if (usuario.statusRegistro_id != stPerennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// Revisa si el usuario tiene el rol necesario
 	if (!informacion && !usuario.rolUsuario.revisorLinks)

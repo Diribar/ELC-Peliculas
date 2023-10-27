@@ -13,8 +13,9 @@ module.exports = {
 		const codigo = "detalle";
 		const {entidad, id} = req.query;
 		const origen = req.query.origen;
-		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const autTablEnts = req.session.usuario ? req.session.usuario.rolUsuario.autTablEnts : false;
+		const usuario = req.session.usuario ? req.session.usuario : null;
+		const userID = usuario ? usuario.id : "";
+		const autTablEnts = usuario ? usuario.rolUsuario.autTablEnts : false;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -57,7 +58,7 @@ module.exports = {
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
 		const statusEstable = aprobados_ids.includes(status_id) || status_id == inactivo_id;
-		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro_id == stIdentValidada_id;
+		const userPerenne = usuario && usuario.statusRegistro_id == stPerennes_id;
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
@@ -74,7 +75,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, userIdentVal},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, userPerenne},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
