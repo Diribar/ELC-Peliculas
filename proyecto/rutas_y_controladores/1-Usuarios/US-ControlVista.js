@@ -9,9 +9,9 @@ module.exports = {
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
 		const statusUsuario_id = req.session.usuario.statusRegistro_id;
-		statusUsuario_id == stMailPendValidar_id
+		statusUsuario_id == mailPendValidar_id
 			? res.redirect("/usuarios/login")
-			: statusUsuario_id == stMailValidado_id
+			: statusUsuario_id == mailValidado_id
 			? res.redirect("/usuarios/editables")
 			: req.session.urlFueraDeUsuarios
 			? res.redirect(req.session.urlFueraDeUsuarios)
@@ -292,7 +292,7 @@ module.exports = {
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro_id == stMailPendValidar_id)
+			if (usuario.statusRegistro_id == mailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Inicia la sesión del usuario

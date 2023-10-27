@@ -180,10 +180,10 @@ app.set("views", [
 	global.rolOmnipotente_id = rolesUs.find((n) => n.codigo == "omnipotente").id;
 
 	// 3.B. Status de usuario
-	global.stMailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
-	global.stMailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;
-	global.stEditables_id = statusRegistrosUs.find((n) => n.codigo == "editables").id;
-	global.stPerennes_id = statusRegistrosUs.find((n) => n.codigo == "perennes").id;
+	global.mailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;
+	global.mailValidado_id = statusRegistrosUs.find((n) => n.codigo == "mailValidado").id;
+	global.editables_id = statusRegistrosUs.find((n) => n.codigo == "editables").id;
+	global.perennes_id = statusRegistrosUs.find((n) => n.codigo == "perennes").id;
 
 	// 4. Públicos
 	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
