@@ -180,7 +180,7 @@ module.exports = {
 			datos.ruta = "/externa/" + (req.file ? "9-Provisorio/" : "1-Usuarios/DNI-Revisar/");
 
 			// Averigua si hay errores de validación
-			let errores = await valida.identidadBE(datos);
+			let errores = await valida.perenneBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {

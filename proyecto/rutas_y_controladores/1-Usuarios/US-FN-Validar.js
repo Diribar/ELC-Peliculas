@@ -192,7 +192,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	identidadBE: async function (datos) {
+	perenneBE: async function (datos) {
 		// Averigua los errores
 		let errores = await this.perennesFE(datos);
 		// Acciones si no hay errores
