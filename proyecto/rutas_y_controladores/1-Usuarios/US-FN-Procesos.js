@@ -92,8 +92,8 @@ module.exports = {
 				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "")
 				: req.session.urlSinPermInput;
 
-		// Mensaje si el usuario está en status "editables"
-		let informacion = {
+		// Fin
+		return informacion = {
 			mensajes: [
 				"El ingreso de información pública requiere responsabilidad.",
 				"Te pedimos que cuides la reputación de tu usuario.",
@@ -115,8 +115,5 @@ module.exports = {
 			titulo: "Aviso",
 			trabajando: true,
 		};
-
-		// Fin
-		return informacion;
 	},
 };
