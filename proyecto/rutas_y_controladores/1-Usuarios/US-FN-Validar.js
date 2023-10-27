@@ -135,7 +135,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	identidadFE: (datos) => {
+	perenneFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
@@ -194,7 +194,7 @@ module.exports = {
 	},
 	identidadBE: async function (datos) {
 		// Averigua los errores
-		let errores = await this.identidadFE(datos);
+		let errores = await this.perenneFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Verifica que el documento no exista ya en la Base de Datos

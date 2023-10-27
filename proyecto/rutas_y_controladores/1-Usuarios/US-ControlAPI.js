@@ -18,7 +18,7 @@ module.exports = {
 			return res.json(errores);
 		},
 		perennes: async (req, res) => {
-			const errores = await valida.identidadFE(req.query);
+			const errores = await valida.perenneFE(req.query);
 			return res.json(errores);
 		},
 	},
