@@ -115,30 +115,30 @@ module.exports = {
 			// Redirecciona
 			return res.redirect("/usuarios/bienvenido");
 		},
-	},
-	registradoBienvenido: (req, res) => {
-		// Variables
-		let usuario = req.session.usuario;
-		let informacion = {
-			mensajes: [
-				"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-				"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
-				"Con tu alta de usuario, ya podés guardar tus consultas.",
-				"Si querés influir en nuestra base de datos, podés iniciar el trámite con el ícono 'Agregar una película' que está en el 'Header'.",
-			],
-			iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
-			titulo: "Bienvenido/a a la familia ELC",
-			check: true,
-		};
+		bienvenido: (req, res) => {
+			// Variables
+			let usuario = req.session.usuario;
+			let informacion = {
+				mensajes: [
+					"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+					"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
+					"Con tu alta de usuario, ya podés guardar tus consultas.",
+					"Si querés influir en nuestra base de datos, podés iniciar el trámite con el ícono 'Agregar una película' que está en el 'Header'.",
+				],
+				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
+				titulo: "Bienvenido/a a la familia ELC",
+				check: true,
+			};
 
-		// Fin
-		return res.render("CMP-0Estructura", {informacion});
+			// Fin
+			return res.render("CMP-0Estructura", {informacion});
+		},
 	},
-	identidad: {
+	perennes: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "usuario";
-			const codigo = "identidad";
+			const codigo = "perenne";
 			let usuario = req.session.usuario;
 			// Genera la info para la vista
 			let errores = req.session.errores ? req.session.errores : false;
@@ -150,13 +150,13 @@ module.exports = {
 				? "/externa/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
 				: "/publico/imagenes/Avatar/DNI-Generico.jpg";
 			// Crear la carpeta si no existe
-			const ruta = "/externa/9-Provisorio";
-			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+			const provisorio = carpetaExterna + "9-Provisorio";
+			if (!fs.existsSync(provisorio)) fs.mkdirSync(provisorio);
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
-				titulo: "Solicitar la Validación de Identidad",
+				titulo: "Solicitud de Autorización de Inputs",
 				dataEntry,
 				errores,
 				hablaHispana,
@@ -187,7 +187,7 @@ module.exports = {
 				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 				req.session.dataEntry = req.body; // No guarda el documAvatar
 				req.session.errores = errores;
-				return res.redirect("/usuarios/identidad");
+				return res.redirect("/usuarios/perennes");
 			}
 
 			if (req.file) {
@@ -210,16 +210,14 @@ module.exports = {
 			// Redirecciona
 			return res.redirect("/usuarios/validacion-en-proceso");
 		},
-		enProceso: (req, res) => {
+		bienvenido: (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
 			let letra = usuario.sexo_id == "M" ? "a " : "o ";
 			let informacion = {
 				mensajes: [
 					"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
-					"Ahora, queda a cargo del equipo de Revisores la tarea de revisarlos.",
-					"Luego de la revisión, recibirás un mail de feedback.",
-					"En caso de estar aprobado, ya podrás ingresar información.",
+					"Ya podés ingresarnos información para compartir con el público.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 				titulo: "Validación en Proceso",
