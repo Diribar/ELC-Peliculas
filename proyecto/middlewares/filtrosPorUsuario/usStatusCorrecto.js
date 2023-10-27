@@ -10,10 +10,10 @@ module.exports = async (req, res, next) => {
 	const statusEsperado =
 		ruta == "/editables"
 			? usuario.statusRegistro_id == stMailValidado_id
-			: ruta == "/bienvenido" || ruta == "/identidad"
-			? usuario.statusRegistro_id == stUsRegistrado_id
-			: ruta == "/validacion-en-proceso"
-			? usuario.statusRegistro_id == stIdentPendValidar_id
+			: ruta == "/editables-bienvenido"
+			? usuario.statusRegistro_id == stEditables_id
+			: ruta == "/perennes-bienvenido"
+			? usuario.statusRegistro_id == stPerennes_id
 			: ruta == "/logout"
 			? true
 			: false;
