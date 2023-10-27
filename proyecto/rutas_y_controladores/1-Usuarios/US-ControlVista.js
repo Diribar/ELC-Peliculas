@@ -56,11 +56,13 @@ module.exports = {
 			const codigo = "editables";
 			let usuario = req.session.usuario;
 			let errores = req.session.errores ? req.session.errores : false;
+
 			// Generar la info para la vista
-			let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
+			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 			let avatar = usuario.avatar
 				? "/externa/1-Usuarios/Avatar/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
+
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				tema,

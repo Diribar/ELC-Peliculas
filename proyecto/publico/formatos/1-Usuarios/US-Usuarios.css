@@ -1,11 +1,10 @@
 /* General */
-/* #cuerpo {position: absolute; height: 100%;} */
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
 #cuerpo {margin: 0; width: 100%; max-height: calc(100% - 23.6px);} /* 23.6px es la altura del footer */
 
 /* General del formulario */
-#cuerpo #dataEntry {border-radius: 10px;}
-#cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
+#cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}
+#cuerpo form {background: var(--gris-oscuro);}
 #cuerpo form {padding: 20px; min-width: 360px;}
 #cuerpo form {display: flex; flex-direction: column;}
 
@@ -14,7 +13,7 @@ form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
 form h1 {font-size: 1.5em; text-align: center;}
 
 /* Input del formulario */
-#datos .labelInput {justify-content: space-between; margin: 20px 10px 0px; align-items: center}
+#datos .labelInput, form .labelInput {justify-content: space-between; margin: 20px 10px 0px; align-items: center}
 .labelInput label {color: white; margin-right: 30px; text-align: left;}
 .inputError .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
 

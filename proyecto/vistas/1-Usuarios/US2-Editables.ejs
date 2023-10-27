@@ -1,74 +1,76 @@
 <div id="tapaElFondo"></div>
-<form method="POST" enctype="multipart/form-data" class="encimaDelFondo">
-	<h1><%= titulo %></h1>
-	<!--Apodo-->
-	<section class="labelInput flexRow">
-		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
-		<div class="inputError">
-			<input id="apodo" type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>" autofocus>
-			<%- include("CMP-Errores", {nombre: "apodo", display: true}) %>
-		</div>
-	</section>
-	<!--Sexo-->
-	<div class="labelInput flexRow">
-		<label for="sexo_id">Sexo</label>
-		<div class="inputError">
-			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
-			<select id="sexo_id" name="sexo_id" class="input" required>
-				<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
-				<% for (let sexo of sexos) { %>
-					<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
-				<% } %> 
-			</select>
-			<%- include("CMP-Errores", {nombre: "sexo_id", display: true}) %> 
-		</div>
-	</div>
-	<!--Pais de residencia-->
-	<section class="labelInput flexRow">
-		<label for="pais">País de residencia</label>
-		<div class="inputError">
-			<select id="pais" name="pais_id" class="input" required>
-				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>>Elejí un país</option>
-				<optgroup label="Países de habla hispana">
-					<% for (let pais of hablaHispana) { %>
-						<option value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
-							<%= pais.nombre %>
-						</option>
+<div id="dataEntry" class="encimaDelFondo">
+	<form method="POST" enctype="multipart/form-data">
+		<h1><%= titulo %></h1>
+		<!--Apodo-->
+		<section class="labelInput flexRow">
+			<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
+			<div class="inputError">
+				<input id="apodo" type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>" autofocus>
+				<%- include("CMP-Errores", {nombre: "apodo", display: true}) %>
+			</div>
+		</section>
+		<!--Sexo-->
+		<div class="labelInput flexRow">
+			<label for="sexo_id">Sexo</label>
+			<div class="inputError">
+				<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
+				<select id="sexo_id" name="sexo_id" class="input" required>
+					<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
+					<% for (let sexo of sexos) { %>
+						<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 					<% } %>
-				</optgroup>
-				<optgroup label="Países de habla no hispana">
-					<% for (let pais of hablaNoHispana) { %>
-						<option value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
-							<%= pais.nombre %>
-						</option>
-					<% } %>
-				</optgroup>
-			</select>
-			<%- include("CMP-Errores", {nombre: "pais_id", display: true}) %>
-		</div>
-	</section>
-	<!--Imagen de perfil-->
-	<section class="labelInput flexRow">
-		<label>Imagen del perfil <br>(opcional)</label>
-		<div class="inputError flexCol" id="divImagen">
-			<label for="inputImagen" id="preview">
-				<img src="<%= avatar %>">
-			</label>
-			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
-			<!-- Errores -->
-			<div class="errores">
-				<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
-					<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
-				</i>
-				<i class="fa-solid fa-circle-check ocultaOK_imagen"></i>
+				</select>
+				<%- include("CMP-Errores", {nombre: "sexo_id", display: true}) %>
 			</div>
 		</div>
-	</section>
-	<!--Flechas-->
-	<section class="flechas">
-		<!-- Salir -->
-		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
-		<!-- Submit -->
-		<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check" title="Aceptar"></i></button>
-	</section>
-</form>
+		<!--Pais de residencia-->
+		<section class="labelInput flexRow">
+			<label for="pais">País de residencia</label>
+			<div class="inputError">
+				<select id="pais" name="pais_id" class="input" required>
+					<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>>Elejí un país</option>
+					<optgroup label="Países de habla hispana">
+						<% for (let pais of hablaHispana) { %>
+							<option value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+					<optgroup label="Países de habla no hispana">
+						<% for (let pais of hablaNoHispana) { %>
+							<option value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+				</select>
+				<%- include("CMP-Errores", {nombre: "pais_id", display: true}) %>
+			</div>
+		</section>
+		<!--Imagen de perfil-->
+		<section class="labelInput flexRow">
+			<label>Imagen del perfil <br>(opcional)</label>
+			<div id="divImagen" class="inputError flexCol">
+				<label id="preview" for="inputImagen">
+					<img src="<%= avatar %>">
+				</label>
+				<input id="inputImagen" name="avatar" type="file" accept="image/*" class="input ocultar">
+				<!-- Errores -->
+				<div class="errores">
+					<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
+						<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
+					</i>
+					<i class="fa-solid fa-circle-check ocultaOK_imagen"></i>
+				</div>
+			</div>
+		</section>
+		<!--Flechas-->
+		<section class="flechas">
+			<!-- Salir -->
+			<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
+			<!-- Submit -->
+			<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check" title="Aceptar"></i></button>
+		</section>
+	</form>
+</div>
