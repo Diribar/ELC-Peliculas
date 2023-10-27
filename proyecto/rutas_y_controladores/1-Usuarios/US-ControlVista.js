@@ -138,7 +138,7 @@ module.exports = {
 		form: async (req, res) => {
 			// Variables
 			const tema = "usuario";
-			const codigo = "perenne";
+			const codigo = "perennes";
 			let usuario = req.session.usuario;
 			// Genera la info para la vista
 			let errores = req.session.errores ? req.session.errores : false;
