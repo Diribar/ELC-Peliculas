@@ -93,7 +93,7 @@ module.exports = {
 				: req.session.urlSinPermInput;
 
 		// Fin
-		return informacion = {
+		return {
 			mensajes: [
 				"El ingreso de información pública requiere responsabilidad.",
 				"Te pedimos que cuides la reputación de tu usuario.",

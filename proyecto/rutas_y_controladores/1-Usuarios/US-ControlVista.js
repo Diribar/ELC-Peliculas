@@ -113,7 +113,7 @@ module.exports = {
 			req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 
 			// Redirecciona
-			return res.redirect("/usuarios/bienvenido");
+			return res.redirect("/usuarios/editables-bienvenido");
 		},
 		bienvenido: (req, res) => {
 			// Variables
@@ -208,7 +208,7 @@ module.exports = {
 			if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/DNI-Revisar");
 
 			// Redirecciona
-			return res.redirect("/usuarios/validacion-en-proceso");
+			return res.redirect("/usuarios/perennes-bienvenido");
 		},
 		bienvenido: (req, res) => {
 			// Variables
