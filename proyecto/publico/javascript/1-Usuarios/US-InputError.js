@@ -119,6 +119,9 @@ window.addEventListener("load", () => {
 				const posicCursor = input.selectionStart;
 				input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 				input.selectionEnd = posicCursor;
+			} else if (tarea == "login" && campo == "email") {
+				input.value = input.value.toLowerCase();
+				input.selectionEnd = posicCursor;
 			}
 
 			// Acciones si se cambió el avatar

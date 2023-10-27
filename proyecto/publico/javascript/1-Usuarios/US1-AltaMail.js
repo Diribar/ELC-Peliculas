@@ -137,6 +137,7 @@ window.addEventListener("load", () => {
 	// Acciones 'input'
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
+		e.target.value = e.target.value.toLowerCase()
 		const campo = e.target.name;
 		let valor = e.target.value;
 
