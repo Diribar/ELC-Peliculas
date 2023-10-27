@@ -86,7 +86,7 @@ module.exports = {
 		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
 		titulo: "Alta de Usuario fallida",
 	},
-	feedbackSobreIdentidadValidada: (req) => {
+	validaPerenne: (req) => {
 		// Variables
 		const usuario = req.session.usuario;
 		const {entidad, id, origen} = req.query;
@@ -96,22 +96,8 @@ module.exports = {
 				: req.session.urlSinPermInput;
 		let informacion;
 
-		// Mensaje si el usuario está en status "identidad a validar"
-		if (usuario.statusRegistro_id == stIdentPendValidar_id)
-			informacion = {
-				mensajes: [
-					"Para ingresar información, se requiere tener tus datos validados.",
-					"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fechaRevisores) + ".",
-					"Tenés que esperar a que el equipo de Revisores haga la validación.",
-					"Luego de la validación, recibirás un mail de feedback.",
-					"En caso de estar aprobado, podrás ingresarnos información.",
-				],
-				iconos: [variables.vistaEntendido(linkVolver)],
-				titulo: "Aviso",
-				trabajando: true,
-			};
-		// Mensaje si el usuario está en status "registrado"
-		else if (usuario.statusRegistro_id == stUsRegistrado_id)
+		// Mensaje si el usuario está en status "editables"
+		if (usuario.statusRegistro_id != stPerennes_id)
 			informacion = {
 				mensajes: [
 					"El ingreso de información pública requiere responsabilidad.",
@@ -126,8 +112,8 @@ module.exports = {
 					},
 					{
 						nombre: "fa-circle-right",
-						link: "/usuarios/identidad",
-						titulo: "Ir a 'Solicitud de Validación de Identidad'",
+						link: "/usuarios/perenne",
+						titulo: "Ir a 'Solicitud de Autorización de Inputs'",
 						autofocus: true,
 					},
 				],
