@@ -503,7 +503,7 @@ module.exports = {
 			{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
 
 			// Carpetas USUARIOS
-			{carpeta: "1-Usuarios/Avatar", familia: "usuarios", status_id: statusCualquiera_id},
+			{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
 		];
 
 		// Elimina las imágenes de las carpetas "Revisar" y "Final"
