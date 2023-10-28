@@ -1,17 +1,14 @@
-#cuerpo form {padding-left: 30px; padding-right: 30px; min-width: 360px;}
-form .labelInput {justify-content: center; margin: 0; margin-top: 20px;}
+#cuerpo form {padding-left: 30px; padding-right: 30px; min-width: 360px; align-items: center;}
+form .labelInput {justify-content: center; margin: 0; margin-top: 20px; width: min(100%, 260px)}
 .labelInput .inputError {width: 100%; display: flex; flex-direction: row; justify-content: center;}
-.inputError .input {width: 260px;}
+.inputError .input {width: 100%}
 .inputError :is(.input[name="documNumero"], .input[name="documPais_id"]) {width: 160px;}
 
 form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
 form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
 
 /* Media Query - Ancho */
-@media (width <= 400px) {
-	#cuerpo form {min-width: min-content; max-width: 90vw;}
-	form .labelInput {width: min(100%, 260px);}
-}
+@media (width <= 400px) {#cuerpo form {min-width: min-content; max-width: 90vw;}}
 @media (width <= calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {display: none;}}
 @media (width > calc(400px + 0.67 * (100vh - 60px)) ) {#imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
 

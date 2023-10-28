@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 	let FN = {
 		averiguaLosErrores: async (indice) => {
 			// Variables
-			let campo = DOM.inputs[indice].name;
+			const campo = DOM.inputs[indice].name;
 			let valor = encodeURIComponent(DOM.inputs[indice].value);
 
 			// Particularidad para 'avatar'
@@ -59,10 +59,12 @@ window.addEventListener("load", () => {
 		},
 		muestraLosErrores: (error, indice) => {
 			// Variables
-			let campo = DOM.inputs[indice].name;
+			const campo = DOM.inputs[indice].name;
 			let mensaje = error[campo];
+
 			// Reemplaza el mensaje, con particularidad para 'avatar'
 			DOM.mensajesError[indice].innerHTML = mensaje;
+
 			// Acciones en función de si hay o no mensajes de error
 			mensaje ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
 			mensaje ? DOM.iconosOK[indice].classList.add("ocultar") : DOM.iconosOK[indice].classList.remove("ocultar");
@@ -104,7 +106,8 @@ window.addEventListener("load", () => {
 	DOM.inputs.forEach((input, indice) => {
 		input.addEventListener("input", async () => {
 			// Variables
-			let campo = input.name;
+			const campo = input.name;
+			const posicCursor = input.selectionStart;
 
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (
@@ -116,8 +119,10 @@ window.addEventListener("load", () => {
 			// Primera letra en mayúscula
 			if (tarea != "login" && input.localName == "input" && input.type == "text") {
 				let aux = input.value;
-				const posicCursor = input.selectionStart;
 				input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+				input.selectionEnd = posicCursor;
+			} else if (tarea == "login" && campo == "email") {
+				input.value = input.value.toLowerCase();
 				input.selectionEnd = posicCursor;
 			}
 

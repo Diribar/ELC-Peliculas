@@ -4,7 +4,7 @@
 
 /* General del formulario */
 #cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}
-#cuerpo form {display: flex; flex-direction: column; align-items: center;}
+#cuerpo form {display: flex; flex-direction: column;}
 #cuerpo form {background: var(--gris-oscuro); padding: 20px;}
 
 /* Partes del formulario */
