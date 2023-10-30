@@ -72,7 +72,6 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
-		console.log(75,links);
 		const ayudasTitulo = links.PL.length
 			? ["Eligiendo uno de los links, podés ver la película"]
 			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
