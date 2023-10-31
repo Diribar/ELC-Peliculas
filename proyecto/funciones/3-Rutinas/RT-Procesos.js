@@ -78,7 +78,7 @@ module.exports = {
 	// Imagen Derecha
 	borraLosArchivosDeImgDerechaObsoletos: (fechas) => {
 		// Variables
-		const carpetaImagen = carpetaExterna + "5-ImagenDerecha/";
+		const carpetaImagen = "./publico/imagenes/ImagenDerecha/";
 		const archivosDeImagen = fs.readdirSync(carpetaImagen);
 
 		// Revisa si corresponde borrar los archivos

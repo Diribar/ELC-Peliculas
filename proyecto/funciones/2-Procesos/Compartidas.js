@@ -411,7 +411,7 @@ module.exports = {
 		copiaImagen: function (archivoOrigen, archivoDestino, output) {
 			// Variables
 			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
-			const nombreDestino = carpetaExterna + archivoDestino;
+			const nombreDestino = (!archivoDestino.includes("/publico/") ? carpetaExterna : "") + archivoDestino;
 			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 
 			// Acciones
