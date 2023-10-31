@@ -4,7 +4,7 @@ module.exports = {
 	// Interacciones con el archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
-		const rutaNombre = carpetaExterna + "Rutinas.json";
+		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
 		const info = json ? JSON.parse(json) : {};
