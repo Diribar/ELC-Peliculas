@@ -3,7 +3,7 @@
 #botones :is(.flechas) {margin: 0;}
 
 /* Flechas */
-.flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+.flechas {display: flex; flex-direction: row;}
 .flechas {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
 .flechas {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
 .flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}

@@ -308,9 +308,6 @@ module.exports = {
 		return;
 	},
 	ProductosAlAzar: async () => {
-		// Establece la condición en que sean productos aprobados y con calificación superior o igual al 70%
-		const condics = {calificacion: {[Op.gte]: 70}, statusRegistro_id: aprobado_id};
-
 		// Rastrilla las películas y colecciones
 		for (let entidad of ["peliculas", "colecciones"]) {
 			// Obtiene los productos
@@ -318,10 +315,9 @@ module.exports = {
 
 			// Rastrilla los productos
 			for (let producto of productos) {
-				let azar =
-					producto.statusRegistro_id == aprobado_id // Averigua si el producto está aprobado y su calificación es superior o igual al 70%
-						? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
-						: null; // Para los demás, les limpia el campo azar
+				let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
+					? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
+					: null; // Para los demás, les limpia el campo azar
 
 				// Actualiza el campo en el registro
 				BD_genericas.actualizaPorId(entidad, producto.id, {azar});

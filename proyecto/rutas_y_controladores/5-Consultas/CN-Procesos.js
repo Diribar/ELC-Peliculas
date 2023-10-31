@@ -52,7 +52,7 @@ module.exports = {
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
-			let condiciones = {statusRegistro_id: aprobado_id, ...prefs};
+			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
 			// if (orden.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
 			if (orden.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
