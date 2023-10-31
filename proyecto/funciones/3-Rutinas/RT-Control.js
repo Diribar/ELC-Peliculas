@@ -30,7 +30,7 @@ module.exports = {
 		// Fin
 		// await this.LinksEnProd();
 
-		console.log("Rutinas de inicio terminadas");
+		console.log("Rutinas de inicio terminadas en "+ new Date().toLocaleString());
 		return;
 	},
 
