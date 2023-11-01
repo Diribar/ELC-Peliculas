@@ -264,7 +264,7 @@ module.exports = {
 				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "5-ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 

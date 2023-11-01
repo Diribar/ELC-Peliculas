@@ -31,7 +31,7 @@ window.addEventListener("load", () => {
 
 			// Acciones finales
 			DOM.tapaElFondo.classList.remove("ocultar");
-			video.src = "/publico/videos/" + menu.id + ".mp4"; // Actualiza el video a mostrar
+			video.src = "/externa/5-Videos/" + menu.id + ".mp4"; // Actualiza el video a mostrar
 			DOM.todoElMain.appendChild(video); // Agrega el video a la vista
 			DOM.todoElMain.classList.remove("ocultar");
 			video.play(); // Ejecuta el video
