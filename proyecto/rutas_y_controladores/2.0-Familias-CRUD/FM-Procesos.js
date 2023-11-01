@@ -388,7 +388,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeStatus: function (entidad, registro) {
+		accionesPorCambioDeStatus: async function (entidad, registro) {
 			// Variables
 			let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -422,7 +422,11 @@ module.exports = {
 				const prodID = registro[campo_id];
 
 				// Actualiza el producto
-				this.linksEnProd({entidad: prodEntidad, id: prodID});
+				await this.linksEnProd({entidad: prodEntidad, id: prodID});
+				if (prodEntidad == "capitulos") {
+					const colID = await BD_genericas.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
+					this.linksEnColec(colID);
+				}
 			}
 
 			// Fin

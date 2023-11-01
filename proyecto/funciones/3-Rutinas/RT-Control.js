@@ -57,7 +57,9 @@ module.exports = {
 		// Rutina por peliculas y capitulos
 		for (let entidad of ["peliculas", "capitulos"]) {
 			// Obtiene los ID de los registros de la entidad
-			const IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+			const IDs = await BD_genericas.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}).then((n) =>
+				n.map((m) => m.id)
+			);
 
 			// Ejecuta la función linksEnProd
 			for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
@@ -65,7 +67,9 @@ module.exports = {
 		await Promise.all(esperar);
 
 		// Rutina por colecciones
-		const IDs = await BD_genericas.obtieneTodos("colecciones").then((n) => n.map((m) => m.id));
+		const IDs = await BD_genericas.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
+			n.map((m) => m.id)
+		);
 		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
@@ -264,7 +268,10 @@ module.exports = {
 				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(
+					carpeta + nombreArchivo,
+					"./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg"
+				);
 			}
 		}
 
