@@ -28,7 +28,6 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
-		// await this.LinksEnProd();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
@@ -50,10 +49,7 @@ module.exports = {
 		console.log();
 		return;
 	},
-	prodAprobEnLink: async () => {
-		// Variables
-		let espera=[]
-
+	ProdAprobEnLink: async () => {
 		// Obtiene todos los links con su producto asociado
 		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
 
@@ -71,9 +67,8 @@ module.exports = {
 
 			// Actualiza el campo prodAprob a 'true' o 'false'
 			const prodAprob = aprobados_ids.includes(statusProd);
-		 	espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
+			BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 		}
-		await Promise.all(espera)
 
 		// Fin
 		return;
