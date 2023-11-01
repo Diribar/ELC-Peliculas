@@ -4,7 +4,7 @@ module.exports = {
 	// Interacciones con el archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
-		const rutaNombre = carpetaExterna + "Rutinas.json";
+		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
 		const info = json ? JSON.parse(json) : {};
@@ -64,7 +64,7 @@ module.exports = {
 		info = menu ? {...info, [menu]: {...info[menu], ...datos}} : {...info, ...datos};
 
 		// Guarda la información actualizada
-		const rutaNombre = carpetaExterna + "Rutinas.json";
+		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		rutinasJSON = {...info};
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
@@ -397,7 +397,11 @@ module.exports = {
 	finRutinasHorarias: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
+		const mensaje =
+			campo == "MailDeFeedback" && nodeEnv == "development"
+				? "En development no se envían mails"
+				: "Rutina '" + campo + "' implementada";
+		console.log(FechaUTC, HoraUTC + "hs. -", mensaje);
 
 		// Fin
 		return;

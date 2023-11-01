@@ -16,11 +16,11 @@ module.exports = {
 		const info = {...rutinasJSON};
 		if (!Object.keys(info).length) return;
 
-		// Rutinas diarias
+		// Rutinas diarias (a las 0:00hs)
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
 
-		// Rutinas horarias
+		// Rutinas horarias (a las 0:01hs)
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
@@ -29,8 +29,7 @@ module.exports = {
 
 		// Fin
 		// await this.LinksEnProd();
-
-		console.log("Rutinas de inicio terminadas");
+		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
 
@@ -41,12 +40,14 @@ module.exports = {
 		const rutinasHorarias = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
+		console.log("Rutinas horarias:");
 		for (let rutinaHoraria of rutinasHorarias) {
 			await this[rutinaHoraria]();
 			procesos.finRutinasHorarias(rutinaHoraria);
 		}
 
 		// Fin
+		console.log();
 		return;
 	},
 	LinksEnProd: async function () {
@@ -72,11 +73,7 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// En 'development' interrumpe
-		if (nodeEnv == "development") {
-			console.log("En development no se envían mails");
-			procesos.finRutinasHorarias("MailDeFeedback");
-			return;
-		}
+		if (nodeEnv == "development") return;
 
 		// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 		const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -174,28 +171,33 @@ module.exports = {
 
 	// 2. Rutinas diarias
 	FechaHoraUTC: async function () {
-		// Obtiene la información del archivo JSON
-		let info = {...rutinasJSON};
-		if (!Object.keys(info).length) return;
-		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
+		// Variables
+		const info = {...rutinasJSON};
+		const minutos = new Date().getMinutes();
+
+		// Filtros
+		if (!Object.keys(info).length || !info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		const rutinasDiarias = info.RutinasDiarias;
 
-		// Obtiene la fecha y hora UTC actual
-		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
+		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 		if (info.FechaUTC == FechaUTC) return;
 
-		// Actualiza los campos de fecha
-		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'finRutinasDiariasSemanales', se actualiza a 'SI'
-		procesos.guardaArchivoDeRutinas(feedback);
-		procesos.finRutinasDiariasSemanales("FechaHoraUTC");
+		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
+		console.log("\n" + "Rutinas diarias:");
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
+		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC"); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
 		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
-		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
-		await this.RutinasDiarias();
+		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias"); // actualiza el valor "NO" en los campos de "RutinasDiarias"
+		await this.RutinasDiarias(); // ejecuta las rutinas diarias
+		console.log();
+
+		// Verifica si se deben correr las rutinas horarias
+		if (minutos > 1) await this.RutinasHorarias();
 
 		// Verifica si se deben correr las rutinas semanales
 		await this.SemanaUTC();
@@ -267,11 +269,7 @@ module.exports = {
 		}
 
 		// Guarda los títulos de las imágenes nuevas
-		if (tituloNuevo) {
-			procesos.guardaArchivoDeRutinas({ImagenesDerecha});
-			const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-			console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Imagen Derecha' actualizados y  guardados en JSON");
-		}
+		if (tituloNuevo) procesos.guardaArchivoDeRutinas({ImagenesDerecha});
 
 		// Borra los archivos de imagen que no se corresponden con los títulos
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
@@ -308,9 +306,6 @@ module.exports = {
 		return;
 	},
 	ProductosAlAzar: async () => {
-		// Establece la condición en que sean productos aprobados y con calificación superior o igual al 70%
-		const condics = {calificacion: {[Op.gte]: 70}, statusRegistro_id: aprobado_id};
-
 		// Rastrilla las películas y colecciones
 		for (let entidad of ["peliculas", "colecciones"]) {
 			// Obtiene los productos
@@ -318,10 +313,9 @@ module.exports = {
 
 			// Rastrilla los productos
 			for (let producto of productos) {
-				let azar =
-					producto.statusRegistro_id == aprobado_id // Averigua si el producto está aprobado y su calificación es superior o igual al 70%
-						? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
-						: null; // Para los demás, les limpia el campo azar
+				let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
+					? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
+					: null; // Para los demás, les limpia el campo azar
 
 				// Actualiza el campo en el registro
 				BD_genericas.actualizaPorId(entidad, producto.id, {azar});
@@ -373,6 +367,7 @@ module.exports = {
 		await this.RutinasSemanales();
 
 		// Fin
+		console.log();
 		return;
 	},
 	RutinasSemanales: async function () {

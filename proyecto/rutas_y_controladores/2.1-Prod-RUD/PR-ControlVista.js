@@ -20,7 +20,7 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		const prodComb = {...original, ...edicion, id};// obtiene la versión más completa posible del producto
+		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
@@ -72,10 +72,13 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
+		const ayudasTitulo = links.PL.length
+			? ["Eligiendo uno de los links, podés ver la película"]
+			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, userPerenne},
+			...{tema, codigo, titulo, ayudasTitulo, origen, userPerenne},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
