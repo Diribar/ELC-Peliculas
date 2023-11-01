@@ -1,6 +1,6 @@
 /* Botones */
 #botones {display: flex; flex-direction: row; justify-content: space-around;}
-#botones :is(.flechas) {margin: 0;}
+#botones :is(.flechas) {margin: 0; display: flex; flex-direction: row; align-items: center;}
 
 /* Flechas */
 .flechas {display: flex; flex-direction: row;}
