@@ -50,6 +50,34 @@ module.exports = {
 		console.log();
 		return;
 	},
+	prodAprobEnLink: async () => {
+		// Variables
+		let espera=[]
+
+		// Obtiene todos los links con su producto asociado
+		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
+
+		// Rutina por link
+		for (let link of links) {
+			// Averigua el status de su producto
+			let statusProd = link.pelicula
+				? link.pelicula.statusRegistro_id
+				: link.coleccion
+				? link.coleccion.statusRegistro_id
+				: link.capitulo
+				? link.capitulo.statusRegistro_id
+				: null;
+			if (!statusProd) continue;
+
+			// Actualiza el campo prodAprob a 'true' o 'false'
+			const prodAprob = aprobados_ids.includes(statusProd);
+		 	espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
+		}
+		await Promise.all(espera)
+
+		// Fin
+		return;
+	},
 	LinksEnProd: async function () {
 		// Variables
 		let esperar = [];
@@ -616,37 +644,6 @@ let actualizaLaEpocaDeEstreno = async () => {
 			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno >= n.desde).id;
 			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
-	}
-
-	// Fin
-	return;
-};
-let actualizaLinkDeProdAprob = async () => {
-	// Variables
-	const prodInactivo_id = motivosStatus.find((n) => n.codigo == "prodInactivo").id;
-	const inactivo = {statusRegistro_id: inactivo_id, motivo_id: prodInactivo_id};
-
-	// Obtiene todos los links con su producto asociado
-	const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
-
-	// Rutina por link
-	for (let link of links) {
-		// Averigua el status de su producto
-		let statusProd = link.pelicula
-			? link.pelicula.statusRegistro_id
-			: link.coleccion
-			? link.coleccion.statusRegistro_id
-			: link.capitulo
-			? link.capitulo.statusRegistro_id
-			: null;
-		if (!statusProd) continue;
-
-		// En caso que esté inactivo, inactiva el status del link y actualiza su motivo
-		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
-
-		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
-		const prodAprob = aprobados.includes(statusProd);
-		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 	}
 
 	// Fin
