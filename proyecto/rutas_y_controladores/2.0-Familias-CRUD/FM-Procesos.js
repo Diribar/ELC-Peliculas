@@ -376,9 +376,9 @@ module.exports = {
 				const errores = await validaPR.consolidado({datos: validar});
 
 				// Actualiza los datos
-				const datos = !errores.hay
-					? {...datosFijos, ...datosSugeridos, ...datosTerm}
-					: {...datosFijos, statusRegistro_id: creadoAprob_id};
+				const datos = errores.hay
+					? {...datosFijos, statusRegistro_id: creadoAprob_id}
+					: {...datosFijos, ...datosSugeridos, ...datosTerm};
 				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
 

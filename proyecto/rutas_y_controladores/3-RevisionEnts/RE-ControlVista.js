@@ -256,8 +256,9 @@ module.exports = {
 				BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: id}, {prodAprob});
 			}
 
-			// Si es una colección, actualiza sus capítulos con el mismo status
-			if (entidad == "colecciones")
+			// Acciones si es una colección
+			if (entidad == "colecciones"){
+				// Actualiza el status de los capítulos
 				statusFinal_id == aprobado_id
 					? await procsCRUD.revisiones.capsAprobs(id)
 					: await BD_genericas.actualizaTodosPorCondicion(
@@ -265,6 +266,10 @@ module.exports = {
 							{coleccion_id: id},
 							{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 					  );
+
+				// Actualiza el campo 'prodAprob' en los links de sus capítulos
+				procesos.guardar.prodAprobEnLink(id, statusFinal_id)
+			}
 
 			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
