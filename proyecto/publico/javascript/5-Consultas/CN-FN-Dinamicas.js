@@ -66,7 +66,7 @@ let actualizaConfigCons = {
 			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
 			configCons.ordenPorEnt_id = v.ordenPorEnt_id;
 			v.ordenPorEntBD = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id);
-			v.ordenBD = v.ordenesBD.find((n) => n.id == v.ordenPorEntBD.orden_id);
+			v.opcionBD = v.opcionesBD.find((n) => n.id == v.ordenPorEntBD.orden_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -152,7 +152,7 @@ let actualizaConfigCons = {
 		if (!v.userID) return this.idioma();
 
 		// Si el orden elegido es "Mis preferencias", le asigna ese valor a 'pppOpciones'
-		if (v.ordenBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
+		if (v.opcionBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
 		// Acciones si el orden elegido es otro
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'

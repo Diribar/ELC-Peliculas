@@ -41,7 +41,7 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				...{entidadesBD: cn_entidades, ordenesPorEntsBD: cn_opcionesPorEnt, ordenesBD: cn_opciones}, // Órdenes y Entidades
+				...{entidadesBD: cn_entidades, ordenesPorEntsBD: cn_opcionesPorEnt, opcionesBD: cn_opciones}, // Órdenes y Entidades
 				...{pppOpciones, pppOpcionesSimples},
 				...{rclvNombres: variables.entidades.rclvsNombre, configConsDefault_id},
 				filtrosConDefault,
