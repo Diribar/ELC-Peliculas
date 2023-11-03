@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 2/nov",
-	"HoraUTC": "11:54",
+	"FechaUTC": "Vie. 3/nov",
+	"HoraUTC": "13:26",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 30/oct",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"31-oct-23": {"titulo": "Cisma protestante", "entidad": "hechos", "id": 59},
 		"01-nov-23": {"titulo": "ELC - Películas"},
 		"02-nov-23": {"titulo": "ELC - Películas"},
 		"03-nov-23": {"titulo": "San Martín de Porres", "entidad": "personajes", "id": 93},
-		"04-nov-23": {"titulo": "ELC - Películas"}
+		"04-nov-23": {"titulo": "ELC - Películas"},
+		"05-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
