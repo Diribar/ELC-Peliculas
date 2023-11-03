@@ -39,22 +39,21 @@ module.exports = {
 		},
 	},
 	resultados: {
-		prods: async function ({configCons, entidad, orden}) {
+		prods: async function ({configCons, entidad, opcion}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = variables.asocs.rclvs;
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
 			let entsProd = ["peliculas", "colecciones"];
-			if (orden.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para el orden 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (opcion.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let productos = [];
 			let resultados = [];
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
-			// if (orden.codigo == "azar") condiciones = {...condiciones, calificacion: {[Op.gte]: 70}}; // Para el orden 'azar', agrega pautas en las condiciones
-			if (orden.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para el orden 'calificación', agrega pautas en las condiciones
+			if (opcion.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Obtiene los productos
@@ -70,14 +69,14 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		rclvs: async function ({configCons, entidad, orden}) {
+		rclvs: async function ({configCons, entidad, opcion}) {
 			// Obtiene los include
 			let include = [...variables.entidades.prods, "fechaDelAno"];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
 			// Obtiene las condiciones
-			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs({configCons, entidad, orden}) : null;
+			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs({configCons, entidad, opcion}) : null;
 			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
 			// Obtiene los RCLVs
@@ -176,13 +175,13 @@ module.exports = {
 				// Fin
 				return resultados;
 			},
-			rclvs: ({configCons, entidad, orden}) => {
+			rclvs: ({configCons, entidad, opcion}) => {
 				// Variables
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
-				// Si el orden es 'Por fecha en que se lo recuerda'
-				if (orden.codigo == "fechaDelAno_id") prefs.fechaDelAno_id = {[Op.lt]: 400};
+				// Si la opción es 'Por fecha en que se lo recuerda'
+				if (opcion.codigo == "fechaDelAno_id") prefs.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
@@ -269,9 +268,9 @@ module.exports = {
 		},
 		cruce: {
 			// Productos
-			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, orden}) => {
+			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, opcion}) => {
 				if (!prods.length ) return [];
-				if (!usuario_id) return orden.codigo != "pppFecha" ? prods : [];
+				if (!usuario_id) return opcion.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
@@ -311,8 +310,8 @@ module.exports = {
 								pppNombre: pppOpcionElegida.nombre,
 							};
 
-							// Le agrega datos adicionales si se eligió el orden 'pppFecha'
-							if (orden.codigo == "pppFecha") {
+							// Le agrega datos adicionales si se eligió la opción 'pppFecha'
+							if (opcion.codigo == "pppFecha") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].pppFecha = pppRegistro.creadoEn;
 								prods[i].yaLaVi = pppOpcionElegida.codigo == "yaLaVi";
@@ -486,25 +485,25 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		orden: {
-			prods: ({prods, orden, configCons}) => {
+		opcion: {
+			prods: ({prods, opcion, configCons}) => {
 				// Si no corresponde ordenar, interrumpe la función
-				if (prods.length <= 1 || orden.codigo == "fechaDelAno_id") return prods;
+				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
 
 				// Variables
-				const campo = orden.codigo == "nombre" ? "nombreCastellano" : orden.codigo;
+				const campo = opcion.codigo == "nombre" ? "nombreCastellano" : opcion.codigo;
 
 				// Ordena
 				prods.sort((a, b) =>
 					typeof a[campo] == "string" && b[campo] == "string"
-						? orden.ascDes == "ASC"
+						? opcion.ascDes == "ASC"
 							? a[campo].toLowerCase() < b[campo].toLowerCase()
 								? -1
 								: 1
 							: a[campo].toLowerCase() > b[campo].toLowerCase()
 							? -1
 							: 1
-						: orden.ascDes == "ASC"
+						: opcion.ascDes == "ASC"
 						? a[campo] < b[campo]
 							? -1
 							: 1
@@ -513,7 +512,7 @@ module.exports = {
 						: 1
 				);
 
-				if (orden.codigo == "pppFecha") {
+				if (opcion.codigo == "pppFecha") {
 					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
 					prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
 				}
@@ -521,38 +520,38 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, orden, configCons, entidad}) => {
+			rclvs: ({rclvs, opcion, configCons, entidad}) => {
 				// Si no hay nada que ordenar, interrumpe la función
 				if (rclvs.length < 2) return rclvs;
 
-				// Si el orden es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
-				if (orden.codigo == "anoHistorico") {
+				// Si la opción es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
+				if (opcion.codigo == "anoHistorico") {
 					const campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
 
-					orden.ascDes == "ASC"
+					opcion.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
 						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
 
-					orden.ascDes == "ASC"
+					opcion.ascDes == "ASC"
 						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
 						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
 				}
 				// En los demás casos, ordena por su campo
 				else
 					rclvs.sort((a, b) =>
-						typeof a[orden.codigo] == "string" && b[orden.codigo] == "string"
-							? orden.ascDes == "ASC"
-								? a[orden.codigo].toLowerCase() < b[orden.codigo].toLowerCase()
+						typeof a[opcion.codigo] == "string" && b[opcion.codigo] == "string"
+							? opcion.ascDes == "ASC"
+								? a[opcion.codigo].toLowerCase() < b[opcion.codigo].toLowerCase()
 									? -1
 									: 1
-								: a[orden.codigo].toLowerCase() > b[orden.codigo].toLowerCase()
+								: a[opcion.codigo].toLowerCase() > b[opcion.codigo].toLowerCase()
 								? -1
 								: 1
-							: orden.ascDes == "ASC"
-							? a[orden.codigo] < b[orden.codigo]
+							: opcion.ascDes == "ASC"
+							? a[opcion.codigo] < b[opcion.codigo]
 								? -1
 								: 1
-							: a[orden.codigo] > b[orden.codigo]
+							: a[opcion.codigo] > b[opcion.codigo]
 							? -1
 							: 1
 					);
@@ -562,7 +561,7 @@ module.exports = {
 			},
 		},
 		camposNecesarios: {
-			prods: (prods, orden) => {
+			prods: (prods, opcion) => {
 				// Si no hay registros a achicar, interrumpe la función
 				if (!prods.length) return [];
 
@@ -588,7 +587,7 @@ module.exports = {
 						// RCLV nombre
 						if (prod[campo_id] > 10) {
 							datos[entidadNombre] = prod[asociacion].nombre;
-							if (orden.codigo == "fechaDelAno_id") datos.fechaDelAno = prod[asociacion].fechaDelAno;
+							if (opcion.codigo == "fechaDelAno_id") datos.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
 					}
@@ -606,7 +605,7 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, orden, entidad}) => {
+			rclvs: ({rclvs, opcion, entidad}) => {
 				// Si no hay registros a achicar, interrumpe la función
 				if (!rclvs.length) return [];
 
@@ -615,7 +614,7 @@ module.exports = {
 					// Arma el resultado
 					const {id, nombre, productos, fechaDelAno_id, fechaDelAno} = n;
 					let datos = {id, nombre, productos};
-					if (orden.codigo == "fechaDelAno_id")
+					if (opcion.codigo == "fechaDelAno_id")
 						datos = {...datos, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
 					else if (n.apodo) datos.apodo = n.apodo;
 
