@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_ordenesPorEnts";
+	const alias = "cn_opcionesPorEnt";
 	const columns = {
 		entidad_id: {type: dt.INTEGER},
 		orden_id: {type: dt.INTEGER},
@@ -9,13 +9,13 @@ module.exports = (sequelize, dt) => {
 		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "cn_ordenes_por_ent",
+		tableName: "cn_opcs_por_ent",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.cn_entidades, {as: "entidad", foreignKey: "entidad_id"});
-		entidad.belongsTo(n.cn_ordenes, {as: "orden", foreignKey: "orden_id"});
+		entidad.belongsTo(n.cn_opciones, {as: "opcion", foreignKey: "orden_id"});
 	};
 	return entidad;
 };

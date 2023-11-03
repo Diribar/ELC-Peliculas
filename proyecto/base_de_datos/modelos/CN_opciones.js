@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_ordenesPorEnts, {as: "entidades", foreignKey: "orden_id"});
+		entidad.hasMany(n.cn_opcionesPorEnt, {as: "entidades", foreignKey: "orden_id"});
 	};
 	return entidad;
 };
