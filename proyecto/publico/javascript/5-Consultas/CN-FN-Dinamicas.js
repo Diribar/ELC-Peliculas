@@ -28,8 +28,8 @@ let actualizaConfigCons = {
 
 			// Obtiene los órdenes posibles
 			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
-			v.ordenesPorEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-			v.ordenes_id = v.opcsPorEstaEntBD.map((n) => n.orden.id);
+			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
+			//v.opciones_id = v.opcsPorEstaEntBD.map((n) => n.orden.id);
 
 			// Continúa la rutina
 			this.orden.asignaUno();
@@ -47,25 +47,25 @@ let actualizaConfigCons = {
 			v.ordenPorEnt_id = DOM.ordenPorEnt_id.value;
 			v.ordenEnEntidad = false;
 
-			// Si hay una entidad elegida, se fija si pertenece al orden elegido
-			if (v.ordenPorEnt_id) v.ordenEnEntidad = v.ordenesPorEnt_id.includes(Number(v.ordenPorEnt_id));
+			// Si hay una entidad elegida, se fija si la opción está vinculada a ella
+			if (v.ordenPorEnt_id) v.ordenEnEntidad = v.opcionesPorEstaEnt_id.includes(Number(v.ordenPorEnt_id));
 
 			// Acciones si el orden no pertenece a la  entidad
 			if (!v.ordenEnEntidad) {
 				// Si el código existe en el layout, elige su opción correspondiente
-				v.ordenPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.ordenPorEnt_id);
+				v.opcionPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.ordenPorEnt_id);
 
 				// Asigna el nuevo valor
-				v.ordenPorEnt_id = v.ordenPorEntBD
-					? v.ordenPorEntBD.id // análogo
+				v.ordenPorEnt_id = v.opcionPorEntBD
+					? v.opcionPorEntBD.id // análogo
 					: v.opcsPorEstaEntBD.find((n) => n.ordenDefault).id; // default
 			}
 
 			// Actualiza variables
 			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
 			configCons.ordenPorEnt_id = v.ordenPorEnt_id;
-			v.ordenPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.ordenPorEnt_id);
-			v.opcionBD = v.opcionesBD.find((n) => n.id == v.ordenPorEntBD.orden_id);
+			v.opcionPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.ordenPorEnt_id);
+			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcionPorEntBD.orden_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -76,7 +76,7 @@ let actualizaConfigCons = {
 		muestraOcultaOpciones: () => {
 			// Oculta/Muestra las opciones según la entidad elegida
 			for (let opcion of DOM.ordenPorEntOpciones) {
-				v.ordenesPorEnt_id.includes(Number(opcion.value))
+				v.opcionesPorEstaEnt_id.includes(Number(opcion.value))
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
 					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden al orden
 			}
