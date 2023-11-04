@@ -6,7 +6,7 @@
 #encabezado #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
 #encabezado #tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
 #encabezado #tituloPrincipal select:valid {background: var(--verde-oscuro);}
-#encabezado #tituloPrincipal select[name=ordenPorEnt_id] {border-bottom-right-radius: 7px;}
+#encabezado #tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
 #encabezado #tituloPrincipal select optgroup {background: var(--azul-frances) ;}
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 

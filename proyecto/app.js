@@ -139,11 +139,11 @@ app.set("views", [
 
 		// Consultas
 		cn_entidades: BD_genericas.obtieneTodosPorCondicion("cn_entidades", {activo: true}),
-		cn_ordenesPorEnts: BD_genericas.obtieneTodosPorCondicionConInclude("cn_ordenesPorEnts", {activo: true}, [
+		cn_opcionesPorEnt: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opcionesPorEnt", {activo: true}, [
 			"entidad",
-			"orden",
-		]),
-		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
+			"opcion",
+		]).then((n) => n.sort((a, b) => a.orden - b.orden)),
+		cn_opciones: BD_genericas.obtieneTodos("cn_opciones"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús

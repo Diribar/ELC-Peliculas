@@ -17,8 +17,8 @@ let resultados = {
 		DOM.listados.innerHTML = "";
 		v.infoResultados = null;
 
-		// Acciones si el orden es 'pppFecha'
-		if (v.ordenBD.codigo == "pppFecha") {
+		// Acciones si la opción es 'pppFecha'
+		if (v.opcionBD.codigo == "pppFecha") {
 			// Si el usuario no está logueado, muestra el cartel 'pppSinLogin' y termina
 			if (!v.userID) {
 				DOM.pppSinLogin.classList.remove("ocultar");
@@ -36,7 +36,7 @@ let resultados = {
 		// Busca la información en el BE
 		const ahora = new Date();
 		const datos =
-			v.entidad == "productos" && v.ordenBD.codigo == "fechaDelAno_id"
+			v.entidad == "productos" && v.opcionBD.codigo == "fechaDelAno_id"
 				? {configCons, entidad: v.entidad, dia: ahora.getDate(), mes: ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -49,7 +49,7 @@ let resultados = {
 			: null;
 
 		// Contador
-		if (v.infoResultados && !v.ordenPorEntBD.boton) this.contador();
+		if (v.infoResultados && !v.opcionPorEntBD.boton) this.contador();
 
 		// Fin
 		return;
@@ -62,9 +62,9 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.ordenPorEntBD.boton) return;
+			if (v.opcionPorEntBD.boton) return;
 			// Contador para 'listado-altaRevisadaEn'
-			else if (v.ordenBD.codigo == "altaRevisadaEn") {
+			else if (v.opcionBD.codigo == "altaRevisadaEn") {
 				// Variables
 				const parcial = Math.min(v.topeParaMasRecientes, total);
 
@@ -109,7 +109,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.ordenPorEntBD.boton ? this.botones() : this.listados();
+			v.opcionPorEntBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
@@ -140,7 +140,7 @@ let resultados = {
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 			const seDebeEquilibrar =
-				v.ordenBD.codigo == "azar" &&
+				v.opcionBD.codigo == "azar" &&
 				!configCons.cfc && // 'cfc' no está contestado
 				!configCons.apMar && // 'apMar' no está contestado
 				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
@@ -180,8 +180,8 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
-				// Para el orden 'Por fecha en nuestro sistema', muestra sólo las primeras
-				if (v.ordenBD.codigo == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
+				// Para la opción 'Por fecha en nuestro sistema', muestra sólo las primeras
+				if (v.opcionBD.codigo == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
 
 				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
@@ -315,11 +315,11 @@ let auxiliares = {
 	},
 	titulo: (registroAct, registroAnt, indice) => {
 		// Variables
-		const orden = v.ordenBD.codigo;
+		const opcion = v.opcionBD.codigo;
 		let titulo;
 
 		// fechaDelAno_id
-		if (!titulo && orden == "fechaDelAno_id") {
+		if (!titulo && opcion == "fechaDelAno_id") {
 			// Variables
 			const diaAnt = registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
@@ -341,7 +341,7 @@ let auxiliares = {
 		}
 
 		// nombre
-		if (!titulo && orden == "nombre") {
+		if (!titulo && opcion == "nombre") {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
@@ -362,7 +362,7 @@ let auxiliares = {
 		}
 
 		// anoHistorico
-		if (!titulo && orden == "anoHistorico") {
+		if (!titulo && opcion == "anoHistorico") {
 			// Variables
 			const epocaAnt = registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
@@ -399,12 +399,12 @@ let auxiliares = {
 		}
 
 		// altaRevisadaEn
-		if (!titulo && orden == "altaRevisadaEn") {
+		if (!titulo && opcion == "altaRevisadaEn") {
 			titulo = !indice ? "Últimas ingresadas" : "";
 		}
 
 		// pppFecha
-		if (!titulo && orden == "pppFecha") {
+		if (!titulo && opcion == "pppFecha") {
 			// Variables
 			const nombreAnt = registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;
@@ -526,7 +526,7 @@ let creaUnaCelda = {
 		const cantProds = rclv.productos.length;
 		const VF_apodo = !!rclv.apodo;
 		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
-		const VF_epoca = !v.ordenBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
+		const VF_epoca = !v.opcionBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
 		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
@@ -569,7 +569,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.ordenPorEntBD.boton;
+		const agregarRCLV = v.entidad == "productos" && !v.opcionPorEntBD.boton;
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
