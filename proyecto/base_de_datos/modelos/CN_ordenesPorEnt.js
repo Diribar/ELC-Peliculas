@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		opcion_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
 		boton: {type: dt.INTEGER},
-		ordenDefault: {type: dt.BOOLEAN},
+		opcionDefault: {type: dt.BOOLEAN},
 		activo: {type: dt.BOOLEAN},
 	};
 	const config = {

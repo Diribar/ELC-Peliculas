@@ -11,15 +11,15 @@
 		</select>
 
 		<!-- Orden -->
-		<select name="ordenPorEnt_id" class="prefSimple" required>
+		<select name="opcionPorEnt_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
 				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => n.boton)) { %>
-				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.orden.nombre %></option>
+				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.opcion.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listado">
 				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton)) { %>
-				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.orden.nombre %></option>
+				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.opcion.nombre %></option>
 				<% } %>
 			</optgroup>
 		</select>
