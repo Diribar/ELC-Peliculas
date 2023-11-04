@@ -167,13 +167,13 @@ module.exports = {
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
-			prods = procesos.resultados.opcion.prods({prods, opcion, configCons}); // Ordena los productos
+			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
 			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
-			rclvs = procesos.resultados.opcion.rclvs({rclvs, opcion, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.orden.rclvs({rclvs, opcion, configCons, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, opcion, entidad}); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}

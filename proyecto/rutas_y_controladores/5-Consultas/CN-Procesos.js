@@ -46,7 +46,7 @@ module.exports = {
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
 			let entsProd = ["peliculas", "colecciones"];
-			if (opcion.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (["fechaDelAno_id", "calificacion"].includes(opcion.codigo) || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let productos = [];
 			let resultados = [];
 
@@ -64,6 +64,8 @@ module.exports = {
 					)
 				);
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
+
+			// Aplica otros filtros
 			resultados = this.prefs.prodsConInclude({resultados, configCons});
 
 			// Fin
@@ -269,7 +271,7 @@ module.exports = {
 		cruce: {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, opcion}) => {
-				if (!prods.length ) return [];
+				if (!prods.length) return [];
 				if (!usuario_id) return opcion.codigo != "pppFecha" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
@@ -485,7 +487,7 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		opcion: {
+		orden: {
 			prods: ({prods, opcion, configCons}) => {
 				// Si no corresponde ordenar, interrumpe la función
 				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
@@ -568,8 +570,10 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar, cfc} = prod;
-					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno, avatar, cfc};
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
+					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
+					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre};
+					datos = {...datos, direccion, anoEstreno, avatar, cfc, calificacion};
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datos.direccion = direccion.slice(0, direccion.indexOf(","));

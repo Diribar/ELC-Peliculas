@@ -34,6 +34,9 @@
 #listados tbody tr.parRCLV td {background: var(--amarillo-claro);}
 #listados tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 
+/* Celdas calificacion */
+#listados tbody tr td.calificacion {padding: 0 10px;}
+
 /* Celdas - anchor y ppp */
 #listados tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
 #listados tbody tr td:has(i) {width: min-content; text-align: right;}
