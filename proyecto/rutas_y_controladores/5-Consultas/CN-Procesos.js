@@ -485,7 +485,7 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		opcion: {
+		orden: {
 			prods: ({prods, opcion, configCons}) => {
 				// Si no corresponde ordenar, interrumpe la función
 				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
