@@ -7,11 +7,11 @@
 @media (width <= 970px) {
 	#configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
 	#mostrarOcultarFiltros {display: none;} /* oculta el botón muestra/oculta */
+	#vistaDeResults #actualizar {display: none;}
 }
 @media (width <= 1294px) {
 	#cuerpoFooterImgDer #cuerpo #encabMasPelis {width: 100vw;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-	#vistaDeResults #actualizar {display: none;}
 }
 
 /* Ayuda */

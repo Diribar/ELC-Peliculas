@@ -46,7 +46,7 @@ module.exports = {
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
 			let entsProd = ["peliculas", "colecciones"];
-			if (opcion.codigo == "fechaDelAno_id" || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (["fechaDelAno_id", "calificacion"].includes(opcion.codigo) || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let productos = [];
 			let resultados = [];
 
