@@ -27,9 +27,9 @@ let actualizaConfigCons = {
 			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
 
 			// Obtiene los órdenes posibles
-			v.ordenesPorEntBD = v.ordenesPorEntsBD.filter((n) => n.entidad_id == v.entidad_id);
-			v.ordenesPorEnt_id = v.ordenesPorEntBD.map((n) => n.id);
-			v.ordenes_id = v.ordenesPorEntBD.map((n) => n.orden.id);
+			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
+			v.ordenesPorEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
+			v.ordenes_id = v.opcsPorEstaEntBD.map((n) => n.orden.id);
 
 			// Continúa la rutina
 			this.orden.asignaUno();
@@ -52,20 +52,19 @@ let actualizaConfigCons = {
 
 			// Acciones si el orden no pertenece a la  entidad
 			if (!v.ordenEnEntidad) {
-				// Si el código existe en el layout, elige su orden correspondiente
-				v.ordenCodigo = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id).orden.codigo;
-				v.ordenPorEntBD = v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.orden.codigo == v.ordenCodigo);
+				// Si el código existe en el layout, elige su opción correspondiente
+				v.ordenPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.ordenPorEnt_id);
 
 				// Asigna el nuevo valor
 				v.ordenPorEnt_id = v.ordenPorEntBD
 					? v.ordenPorEntBD.id // análogo
-					: v.ordenesPorEntBD.find((n) => n.entidad_id == v.entidad_id && n.ordenDefault).id; // default
+					: v.opcsPorEstaEntBD.find((n) => n.ordenDefault).id; // default
 			}
 
 			// Actualiza variables
 			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
 			configCons.ordenPorEnt_id = v.ordenPorEnt_id;
-			v.ordenPorEntBD = v.ordenesPorEntsBD.find((n) => n.id == v.ordenPorEnt_id);
+			v.ordenPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.ordenPorEnt_id);
 			v.opcionBD = v.opcionesBD.find((n) => n.id == v.ordenPorEntBD.orden_id);
 
 			// Redirige a la siguiente instancia
@@ -83,7 +82,7 @@ let actualizaConfigCons = {
 			}
 
 			// Muestra / Oculta el título "Cuatro Pelis" en las opciones
-			v.ordenesPorEntBD.filter((n) => n.entidad_id == v.entidad_id && n.boton).length
+			v.opcsPorEstaEntBD.filter((n) => n.boton).length
 				? DOM.optgroupCuatroPelis.classList.remove("ocultar")
 				: DOM.optgroupCuatroPelis.classList.add("ocultar");
 
