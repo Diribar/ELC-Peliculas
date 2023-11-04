@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 31/oct",
-	"HoraUTC": "14:49",
+	"FechaUTC": "Mié. 1/nov",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 30/oct",
@@ -9,7 +9,7 @@
 	"semanaUTC": 43,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
-	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV", "ProductosAlAzar"],
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "MailDeFeedback", "ProdsEnRCLV", "ProductosAlAzar"],
 	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "LinksPorProv": "SI"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-oct-23": {"titulo": "Beata Chiara Luce Badano", "entidad": "personajes", "id": 200},
 		"30-oct-23": {"titulo": "Hugh O'Flaherty", "entidad": "personajes", "id": 163},
 		"31-oct-23": {"titulo": "Cisma protestante", "entidad": "hechos", "id": 59},
 		"01-nov-23": {"titulo": "ELC - Películas"},
-		"02-nov-23": {"titulo": "ELC - Películas"}
+		"02-nov-23": {"titulo": "ELC - Películas"},
+		"03-nov-23": {"titulo": "San Martín de Porres", "entidad": "personajes", "id": 93}
 	}
 }

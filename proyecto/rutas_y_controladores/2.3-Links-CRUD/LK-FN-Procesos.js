@@ -53,7 +53,7 @@ module.exports = {
 		// Variables
 		let cond = {};
 		cond.propio = link.statusSugeridoPor_id == userID;
-		cond.ajeno = link.statusSugeridoPor_id != userID;
+		cond.ajeno = !cond.propio;
 		cond.rud = tema == "linksCRUD";
 		cond.revision = tema == "revisionEnts";
 

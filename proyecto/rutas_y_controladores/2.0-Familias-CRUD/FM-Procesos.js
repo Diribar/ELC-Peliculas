@@ -376,9 +376,9 @@ module.exports = {
 				const errores = await validaPR.consolidado({datos: validar});
 
 				// Actualiza los datos
-				const datos = !errores.hay
-					? {...datosFijos, ...datosSugeridos, ...datosTerm}
-					: {...datosFijos, statusRegistro_id: creadoAprob_id};
+				const datos = errores.hay
+					? {...datosFijos, statusRegistro_id: creadoAprob_id}
+					: {...datosFijos, ...datosSugeridos, ...datosTerm};
 				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
 
@@ -388,7 +388,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeStatus: function (entidad, registro) {
+		accionesPorCambioDeStatus: async function (entidad, registro) {
 			// Variables
 			let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -422,7 +422,11 @@ module.exports = {
 				const prodID = registro[campo_id];
 
 				// Actualiza el producto
-				this.linksEnProd({entidad: prodEntidad, id: prodID});
+				await this.linksEnProd({entidad: prodEntidad, id: prodID});
+				if (prodEntidad == "capitulos") {
+					const colID = await BD_genericas.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
+					this.linksEnColec(colID);
+				}
 			}
 
 			// Fin
@@ -468,15 +472,8 @@ module.exports = {
 		linksEnColec: async (colID) => {
 			// Variables
 			const campos = [
-				"linksTrailer",
-				"linksGral",
-				"linksGratis",
-				"linksCast",
-				"linksSubt",
-				"HD_Gral",
-				"HD_Gratis",
-				"HD_Cast",
-				"HD_Subt",
+				...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+				...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
 			];
 
 			// Rutinas

@@ -28,7 +28,6 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
-		// await this.LinksEnProd();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
@@ -50,6 +49,30 @@ module.exports = {
 		console.log();
 		return;
 	},
+	ProdAprobEnLink: async () => {
+		// Obtiene todos los links con su producto asociado
+		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
+
+		// Rutina por link
+		for (let link of links) {
+			// Averigua el status de su producto
+			let statusProd = link.pelicula
+				? link.pelicula.statusRegistro_id
+				: link.coleccion
+				? link.coleccion.statusRegistro_id
+				: link.capitulo
+				? link.capitulo.statusRegistro_id
+				: null;
+			if (!statusProd) continue;
+
+			// Actualiza el campo prodAprob a 'true' o 'false'
+			const prodAprob = aprobados_ids.includes(statusProd);
+			BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+		}
+
+		// Fin
+		return;
+	},
 	LinksEnProd: async function () {
 		// Variables
 		let esperar = [];
@@ -57,7 +80,9 @@ module.exports = {
 		// Rutina por peliculas y capitulos
 		for (let entidad of ["peliculas", "capitulos"]) {
 			// Obtiene los ID de los registros de la entidad
-			const IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+			const IDs = await BD_genericas.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}).then((n) =>
+				n.map((m) => m.id)
+			);
 
 			// Ejecuta la función linksEnProd
 			for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
@@ -65,7 +90,9 @@ module.exports = {
 		await Promise.all(esperar);
 
 		// Rutina por colecciones
-		const IDs = await BD_genericas.obtieneTodos("colecciones").then((n) => n.map((m) => m.id));
+		const IDs = await BD_genericas.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
+			n.map((m) => m.id)
+		);
 		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
@@ -264,7 +291,10 @@ module.exports = {
 				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(
+					carpeta + nombreArchivo,
+					"./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg"
+				);
 			}
 		}
 
@@ -609,37 +639,6 @@ let actualizaLaEpocaDeEstreno = async () => {
 			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno >= n.desde).id;
 			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
-	}
-
-	// Fin
-	return;
-};
-let actualizaLinkDeProdAprob = async () => {
-	// Variables
-	const prodInactivo_id = motivosStatus.find((n) => n.codigo == "prodInactivo").id;
-	const inactivo = {statusRegistro_id: inactivo_id, motivo_id: prodInactivo_id};
-
-	// Obtiene todos los links con su producto asociado
-	const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
-
-	// Rutina por link
-	for (let link of links) {
-		// Averigua el status de su producto
-		let statusProd = link.pelicula
-			? link.pelicula.statusRegistro_id
-			: link.coleccion
-			? link.coleccion.statusRegistro_id
-			: link.capitulo
-			? link.capitulo.statusRegistro_id
-			: null;
-		if (!statusProd) continue;
-
-		// En caso que esté inactivo, inactiva el status del link y actualiza su motivo
-		if (statusProd == inactivo_id) BD_genericas.actualizaPorId("links", link.id, inactivo);
-
-		// En caso que esté aprobado, le actualiza el campo prodAprob a 'true'
-		const prodAprob = aprobados.includes(statusProd);
-		BD_genericas.actualizaPorId("links", link.id, {prodAprob});
 	}
 
 	// Fin

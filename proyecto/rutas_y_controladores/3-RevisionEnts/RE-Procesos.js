@@ -474,6 +474,20 @@ module.exports = {
 				}
 			}
 		},
+		prodAprobEnLink: async (coleccion_id, statusCol) => {
+			// Variables
+			const prodAprob = aprobados_ids.includes(statusCol);
+			const capsID = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id}).then((n) =>
+				n.map((m) => m.id)
+			);
+			const links = await BD_genericas.obtieneTodosPorCondicion("links", {capitulo_id: capsID});
+
+			// Actualiza el campo 'prodAprob' a cada link
+			for (let link of links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+
+			// Fin
+			return;
+		},
 	},
 
 	// Edición
