@@ -29,10 +29,10 @@ let actualizaConfigCons = {
 			// Obtiene los órdenes posibles
 			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
 			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-			//v.opciones_id = v.opcsPorEstaEntBD.map((n) => n.orden.id);
+			//v.opciones_id = v.opcsPorEstaEntBD.map((n) => n.opcion.id);
 
 			// Continúa la rutina
-			this.orden.asignaUno();
+			this.opcion.asignaUno();
 		}
 
 		// Redirige a la siguiente instancia
@@ -41,31 +41,31 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	orden: {
+	opcion: {
 		asignaUno: function () {
-			// Averigua si hay un orden elegido
-			v.ordenPorEnt_id = DOM.ordenPorEnt_id.value;
-			v.ordenEnEntidad = false;
+			// Averigua si hay una opción elegida
+			v.opcionPorEnt_id = DOM.opcionPorEnt_id.value;
+			v.opcionEnEntidad = false;
 
 			// Si hay una entidad elegida, se fija si la opción está vinculada a ella
-			if (v.ordenPorEnt_id) v.ordenEnEntidad = v.opcionesPorEstaEnt_id.includes(Number(v.ordenPorEnt_id));
+			if (v.opcionPorEnt_id) v.opcionEnEntidad = v.opcionesPorEstaEnt_id.includes(Number(v.opcionPorEnt_id));
 
-			// Acciones si el orden no pertenece a la  entidad
-			if (!v.ordenEnEntidad) {
+			// Acciones si la opción no pertenece a la  entidad
+			if (!v.opcionEnEntidad) {
 				// Si el código existe en el layout, elige su opción correspondiente
-				v.opcionPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.ordenPorEnt_id);
+				v.opcionPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.opcionPorEnt_id);
 
 				// Asigna el nuevo valor
-				v.ordenPorEnt_id = v.opcionPorEntBD
+				v.opcionPorEnt_id = v.opcionPorEntBD
 					? v.opcionPorEntBD.id // análogo
-					: v.opcsPorEstaEntBD.find((n) => n.ordenDefault).id; // default
+					: v.opcsPorEstaEntBD.find((n) => n.opcionDefault).id; // default
 			}
 
 			// Actualiza variables
-			DOM.ordenPorEnt_id.value = v.ordenPorEnt_id;
-			configCons.ordenPorEnt_id = v.ordenPorEnt_id;
-			v.opcionPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.ordenPorEnt_id);
-			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcionPorEntBD.orden_id);
+			DOM.opcionPorEnt_id.value = v.opcionPorEnt_id;
+			configCons.opcionPorEnt_id = v.opcionPorEnt_id;
+			v.opcionPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.opcionPorEnt_id);
+			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcionPorEntBD.opcion_id);
 
 			// Redirige a la siguiente instancia
 			this.muestraOcultaOpciones();
@@ -75,10 +75,10 @@ let actualizaConfigCons = {
 		},
 		muestraOcultaOpciones: () => {
 			// Oculta/Muestra las opciones según la entidad elegida
-			for (let opcion of DOM.ordenPorEntOpciones) {
+			for (let opcion of DOM.opcionesPorEnt) {
 				v.opcionesPorEstaEnt_id.includes(Number(opcion.value))
-					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden al orden
-					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden al orden
+					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden a la entidad
+					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden a la entidad
 			}
 
 			// Muestra / Oculta el título "Cuatro Pelis" en las opciones
@@ -101,7 +101,7 @@ let actualizaConfigCons = {
 	},
 	muestraOcultaBloqueDeFiltros: () => {
 		// Variables
-		v.obtener = !!configCons.entidad_id && !!configCons.ordenPorEnt_id;
+		v.obtener = !!configCons.entidad_id && !!configCons.opcionPorEnt_id;
 
 		// Acciones si no hay errores
 		if (v.obtener) {
@@ -150,9 +150,9 @@ let actualizaConfigCons = {
 		// Si el usuario no está logueado, sigue a la siguiente rutina
 		if (!v.userID) return this.idioma();
 
-		// Si el orden elegido es "Mis preferencias", le asigna ese valor a 'pppOpciones'
+		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
 		if (v.opcionBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
-		// Acciones si el orden elegido es otro
+		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 			muestraOcultaActualizaPref(true, "pppOpciones");
