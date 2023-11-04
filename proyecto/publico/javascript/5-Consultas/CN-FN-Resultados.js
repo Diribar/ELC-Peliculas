@@ -66,7 +66,7 @@ let resultados = {
 			// Contador para 'listado-altaRevisadaEn'
 			else if (v.opcionBD.codigo == "altaRevisadaEn") {
 				// Variables
-				const parcial = Math.min(v.topeParaMasRecientes, total);
+				const parcial = Math.min(v.cantListadoBreve, total);
 
 				// Actualiza el contador
 				DOM.contadorDeProds.innerHTML = parcial;
@@ -180,8 +180,8 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
-				// Para la opción 'Por fecha en nuestro sistema', muestra sólo las primeras
-				if (v.opcionBD.codigo == "altaRevisadaEn" && indice >= v.topeParaMasRecientes) return;
+				// Para la opción 'Últimos ingresos', muestra sólo las primeras
+				if (["altaRevisadaEn", "calificacion"].includes(v.opcionBD.codigo) && indice >= v.cantListadoBreve) return;
 
 				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
@@ -318,13 +318,13 @@ let auxiliares = {
 		const opcion = v.opcionBD.codigo;
 		let titulo;
 
-		// fechaDelAno_id
+		// Casos
 		if (!titulo && opcion == "fechaDelAno_id") {
 			// Variables
 			const diaAnt = registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
 
-			// Pruebas
+			// Resultado
 			titulo =
 				!diaAnt && diaActual < 92
 					? "Primer"
@@ -339,15 +339,13 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-
-		// nombre
 		if (!titulo && opcion == "nombre") {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
 			const prefijo = "Rango ";
 
-			// Pruebas
+			// Resultado
 			titulo =
 				!nombreAnt && nombreActual < "G"
 					? "A - F"
@@ -360,8 +358,6 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo = prefijo + titulo;
 		}
-
-		// anoHistorico
 		if (!titulo && opcion == "anoHistorico") {
 			// Variables
 			const epocaAnt = registroAnt.epocaOcurrencia_id;
@@ -369,7 +365,7 @@ let auxiliares = {
 			const anoAnt = registroAnt.anoNacim ? registroAnt.anoNacim : registroAnt.anoComienzo;
 			const anoActual = registroAct.anoNacim ? registroAct.anoNacim : registroAct.anoComienzo;
 
-			// Pruebas
+			// Resultado
 			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registroAct.epocaOcurrenciaNombre;
 			if (epocaActual == "pst") {
 				// Variables
@@ -397,20 +393,19 @@ let auxiliares = {
 				if (titulo) titulo = registroAct.epocaOcurrenciaNombre + " " + titulo;
 			}
 		}
-
-		// altaRevisadaEn
 		if (!titulo && opcion == "altaRevisadaEn") {
 			titulo = !indice ? "Últimas ingresadas" : "";
 		}
-
-		// pppFecha
 		if (!titulo && opcion == "pppFecha") {
 			// Variables
 			const nombreAnt = registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;
 
-			// Pruebas
+			// Resultado
 			titulo = nombreAnt != nombreActual ? nombreActual : "";
+		}
+		if (!titulo && opcion == "calificacion") {
+			titulo = !indice ? "Mejor calificadas" : "";
 		}
 
 		// Fin
@@ -454,6 +449,12 @@ let auxiliares = {
 		celda = creaUnaCelda.prod(producto);
 		celda.className = "primeraCol";
 		fila.appendChild(celda);
+
+		// Si se eligió la opción de 'Mejor calificadas', crea la celda correspondiente
+		if (v.opcionBD.codigo == "calificacion") {
+			celda = creaUnaCelda.calificacion(producto);
+			fila.appendChild(celda);
+		}
 
 		// Crea la celda del ppp y se la agrega a la fila
 		celda = creaUnaCelda.ppp(producto);
@@ -526,7 +527,8 @@ let creaUnaCelda = {
 		const cantProds = rclv.productos.length;
 		const VF_apodo = !!rclv.apodo;
 		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
-		const VF_epoca = !v.opcionBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
+		const VF_epoca =
+			!v.opcionBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
 		const VF_canon = rclv.canonNombre;
 		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
@@ -598,8 +600,8 @@ let creaUnaCelda = {
 		// Variables
 		const celda = document.createElement("td");
 
-		// Se necesita crear la celda, porque el CSS considera siempre 3 celdas de ancho
-		if (producto.pppNombre) {
+		// Acciones si el usuario está logueado
+		if (v.userID) {
 			// Crea el ppp
 			const ppp = document.createElement("i");
 			ppp.id = "ppp";
@@ -609,6 +611,21 @@ let creaUnaCelda = {
 			// Lo agrega a la celda
 			celda.appendChild(ppp);
 		}
+
+		// Fin
+		return celda;
+	},
+	calificacion: (producto) => {
+		// Variables
+		const celda = document.createElement("td");
+		celda.className = "calificacion";
+
+		// Crea el contenido
+		const contenido = document.createElement("p");
+		contenido.innerHTML = producto.calificacion + "%";
+
+		// Lo agrega a la celda
+		celda.appendChild(contenido);
 
 		// Fin
 		return celda;
