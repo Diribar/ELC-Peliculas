@@ -49,7 +49,7 @@ let resultados = {
 			: null;
 
 		// Contador
-		if (v.infoResultados && !v.ordenPorEntBD.boton) this.contador();
+		if (v.infoResultados && !v.opcionPorEntBD.boton) this.contador();
 
 		// Fin
 		return;
@@ -62,7 +62,7 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.ordenPorEntBD.boton) return;
+			if (v.opcionPorEntBD.boton) return;
 			// Contador para 'listado-altaRevisadaEn'
 			else if (v.opcionBD.codigo == "altaRevisadaEn") {
 				// Variables
@@ -109,7 +109,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.ordenPorEntBD.boton ? this.botones() : this.listados();
+			v.opcionPorEntBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
@@ -569,7 +569,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.ordenPorEntBD.boton;
+		const agregarRCLV = v.entidad == "productos" && !v.opcionPorEntBD.boton;
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
