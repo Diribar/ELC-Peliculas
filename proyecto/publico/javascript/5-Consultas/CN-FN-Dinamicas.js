@@ -29,7 +29,6 @@ let actualizaConfigCons = {
 			// Obtiene los órdenes posibles
 			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
 			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-			//v.opciones_id = v.opcsPorEstaEntBD.map((n) => n.opcion.id);
 
 			// Continúa la rutina
 			this.opcion.asignaUno();
