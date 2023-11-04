@@ -195,6 +195,26 @@ module.exports = {
 		// Fin
 		return;
 	},
+	ProductosAlAzar: async () => {
+		// Rastrilla las películas y colecciones
+		for (let entidad of ["peliculas", "colecciones"]) {
+			// Obtiene los productos
+			const productos = await BD_genericas.obtieneTodos(entidad);
+
+			// Rastrilla los productos
+			for (let producto of productos) {
+				let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
+					? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
+					: null; // Para los demás, les limpia el campo azar
+
+				// Actualiza el campo en el registro
+				BD_genericas.actualizaPorId(entidad, producto.id, {azar});
+			}
+		}
+
+		// Fin
+		return;
+	},
 
 	// 2. Rutinas diarias
 	FechaHoraUTC: async function () {
@@ -331,26 +351,6 @@ module.exports = {
 			paises[i].cantProds = cantProds;
 			BD_genericas.actualizaPorId("paises", pais.id, {cantProds});
 		});
-
-		// Fin
-		return;
-	},
-	ProductosAlAzar: async () => {
-		// Rastrilla las películas y colecciones
-		for (let entidad of ["peliculas", "colecciones"]) {
-			// Obtiene los productos
-			const productos = await BD_genericas.obtieneTodos(entidad);
-
-			// Rastrilla los productos
-			for (let producto of productos) {
-				let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
-					? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
-					: null; // Para los demás, les limpia el campo azar
-
-				// Actualiza el campo en el registro
-				BD_genericas.actualizaPorId(entidad, producto.id, {azar});
-			}
-		}
 
 		// Fin
 		return;
