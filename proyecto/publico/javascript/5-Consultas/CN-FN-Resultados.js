@@ -40,13 +40,12 @@ let resultados = {
 				? {configCons, entidad: v.entidad, dia: ahora.getDate(), mes: ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
+		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
-		!v.infoResultados || !v.infoResultados.length
-			? DOM.noTenemos.classList.remove("ocultar") // si no hay resultados, muestra el cartel 'noTenemos'
-			: v.mostrarCartelQuieroVer
-			? DOM.quieroVer.classList.remove("ocultar") // si hay resultados, muestra el cartel 'quieroVer'
-			: null;
+		if (!v.infoResultados || !v.infoResultados.length)
+			DOM.noTenemos.classList.remove("ocultar"); // si no hay resultados, muestra el cartel 'noTenemos'
+		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
 		if (v.infoResultados && !v.opcionPorEntBD.boton) this.contador();
