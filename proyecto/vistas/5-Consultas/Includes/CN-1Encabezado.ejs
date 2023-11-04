@@ -13,13 +13,13 @@
 		<!-- Orden -->
 		<select name="ordenPorEnt_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
-				<% for (let ordenPorEnt of cn_opcionesPorEnt.filter(n => n.boton)) { %>
-				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
+				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => n.boton)) { %>
+				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.orden.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listado">
-				<% for (let ordenPorEnt of cn_opcionesPorEnt.filter(n => !n.boton)) { %>
-				<option value="<%= ordenPorEnt.id %>"><%= ordenPorEnt.orden.nombre %></option>
+				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton)) { %>
+				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.orden.nombre %></option>
 				<% } %>
 			</optgroup>
 		</select>

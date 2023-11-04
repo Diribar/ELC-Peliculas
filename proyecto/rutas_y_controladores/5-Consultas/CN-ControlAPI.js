@@ -136,8 +136,8 @@ module.exports = {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const ordenPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.ordenPorEnt_id);
-		const opcion = cn_opciones.find((n) => n.id == ordenPorEnt.orden_id);
+		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.ordenPorEnt_id);
+		const opcion = cn_opciones.find((n) => n.id == opcionPorEnt.orden_id);
 		const {palabrasClave} = configCons;
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
