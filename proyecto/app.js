@@ -142,8 +142,7 @@ app.set("views", [
 		cn_opcionesPorEnt: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opcionesPorEnt", {activo: true}, [
 			"entidad",
 			"opcion",
-		]),
-		//.then(n=>n.sort((a,b)=>a.)),
+		]).then((n) => n.sort((a, b) => a.orden - b.orden)),
 		cn_opciones: BD_genericas.obtieneTodos("cn_opciones"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 

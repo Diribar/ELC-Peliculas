@@ -1,6 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "cn_opcionesPorEnt";
 	const columns = {
+		orden: {type: dt.INTEGER},
 		entidad_id: {type: dt.INTEGER},
 		opcion_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
