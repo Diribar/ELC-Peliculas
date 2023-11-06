@@ -122,6 +122,67 @@ module.exports = {
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
+	ABM_noRevs: async () => {
+		// Variables
+		let condiciones = {
+			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]}, // que no tenga un status estable
+			statusSugeridoPor_id: {[Op.ne]: usAutom_id},
+		};
+		let entsPERL, include;
+
+		// regsPERL
+		entsPERL = [...variables.entidades.prods, ...variables.entidades.rclvs];
+		include = "statusSugeridoPor";
+		let regsPERL = [];
+		for (let entidad of entsPERL) {
+			let registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
+				.then((regs) => regs.map((reg) => ({...reg, entidad})));
+			regsPERL.push(...registros);
+		}
+
+		// regsLinks
+		condiciones = {...condiciones, prodAprob: true};
+		include = ["statusSugeridoPor", ...variables.asocs.prods];
+		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
+			.then((links) =>
+				links.map((link) => {
+					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
+					return {...link[asociacion], entidad: "links"};
+				})
+			);
+
+		// edicsPERL
+		entsPERL = ["prodsEdicion", "rclvsEdicion"];
+		include = {prodsEdicion: variables.asocs.prods, rclvsEdicion: variables.asocs.rclvs};
+		let edicsPERL = [];
+		for (let entidad of entsPERL) {
+			let registros = await BD_genericas.obtieneTodosConInclude(entidad, ["editadoPor", ...include[entidad]])
+				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
+				.then((edics) =>
+					edics.map((edic) => {
+						const asociacion = comp.obtieneDesdeEdicion.asoc(edic);
+						return {...edic[asociacion], entidad: comp.obtieneDesdeEdicion.entidad(edic)};
+					})
+				);
+			edicsPERL.push(...registros);
+		}
+
+		// edicsLinks
+		include = ["editadoPor", ...variables.asocs.prods];
+		let edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
+			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
+			.then((edics) =>
+				edics.map((edic) => {
+					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
+					return {...edic[asociacion], entidad: comp.obtieneDesdeEdicion.entidadProd(edic)};
+				})
+			);
+
+		// Fin
+		return {regs: {perl: regsPERL, links: regsLinks}, edics: {perl: edicsPERL, links: edicsLinks}};
+	},
 
 	// Borra imágenes obsoletas
 	eliminaImagenesSinRegistro: async ({carpeta, familia, entidadEdic, status_id, campoAvatar}) => {
@@ -332,6 +393,56 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
+		mensajeParaRevisores: ({regs, edics}) => {
+			// Variables
+			let resultados = [];
+			let mensajesAcum = "";
+			let mensajesAprob = "";
+			let mensajesRech = "";
+			let color;
+
+			// De cada registro de status, obtiene los campos clave o los elabora
+			for (let regStatus of regsStatus) {
+				// Variables
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
+				const status = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
+				if (!nombreOrden) continue;
+
+				// Alimenta el resultado
+				resultados.push({
+					familia,
+					entidadNombre,
+					nombreOrden,
+					nombreVisual,
+					statusInicial,
+					statusFinal,
+					aprobado,
+					motivo,
+				});
+			}
+
+			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
+			resultados = ordenarStatus(resultados);
+
+			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
+			resultados.map((n) => {
+				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
+				mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
+				mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
+				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				color = n.aprobado ? "green" : "firebrick";
+				mensaje = formatos.li(mensaje, color);
+				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+			});
+
+			// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
+			if (mensajesAprob) mensajesAcum += formatos.h2("Cambios de Status - APROBADOS") + formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesAcum += formatos.h2("Cambios de Status - RECHAZADOS") + formatos.ol(mensajesRech);
+			const mensajeGlobal = mensajesAcum;
+
+			// Fin
+			return mensajeGlobal;
+		},
 		eliminaRegsStatusComunica: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
@@ -398,7 +509,7 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		const mensaje =
-			campo == "MailDeFeedback" && nodeEnv == "development"
+			campo == "FeedbackParaUsers" && nodeEnv == "development"
 				? "En development no se envían mails"
 				: "Rutina '" + campo + "' implementada";
 		console.log(FechaUTC, HoraUTC + "hs. -", mensaje);
@@ -526,7 +637,7 @@ let nombres = async (reg, familia) => {
 	if (reg.entidad != "links") {
 		// Obtiene el registro
 		const regEntidad = await BD_genericas.obtienePorId(reg.entidad, reg.entidad_id);
-		if (!regEntidad.id) return {};
+		if (!regEntidad) return {};
 
 		// Obtiene los nombres
 		nombreOrden = comp.nombresPosibles(regEntidad);
