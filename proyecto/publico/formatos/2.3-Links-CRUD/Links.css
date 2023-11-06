@@ -84,3 +84,9 @@ main #cuerpo {flex-direction: column;}
 #cuerpo .flechas.img {padding-left: 5px; padding-right: 5px;}
 #cuerpo .flechas.img a {display: flex; flex-direction: row; margin: 0;}
 #cuerpo .flechas a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
+
+/* Colores de los bordes de logos */
+tr td a img {border: solid 4px; box-sizing: content-box;}
+tr td a img.enCast {border-color: var(--verde-oscuro);}
+tr td a img.subtCast {border-color: gold;}
+tr td a img.otroIdioma {border-color: var(--rojo-oscuro);}

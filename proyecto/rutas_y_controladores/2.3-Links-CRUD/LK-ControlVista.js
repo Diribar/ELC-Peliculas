@@ -21,7 +21,10 @@ module.exports = {
 
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
-		for (let link of links) link.cond = procesos.condiciones(link, userID, tema);
+		for (let link of links) {
+			link.cond = procesos.condiciones(link, userID, tema);
+			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
+		}
 
 		// Actualiza linksEnProd
 		procsCRUD.revisiones.linksEnProd({entidad, id});

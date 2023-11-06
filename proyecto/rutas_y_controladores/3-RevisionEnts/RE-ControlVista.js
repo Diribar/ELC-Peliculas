@@ -519,7 +519,10 @@ module.exports = {
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
-		for (let link of links) link.cond = procsLinks.condiciones(link, revID, tema);
+		for (let link of links) {
+			link.cond = procsLinks.condiciones(link, revID, tema);
+			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
+		}
 
 		// Averigua cuál es el próximo producto
 		const siguienteProducto = !origen ? await procesos.siguienteProducto({producto, entidad, revID}) : "";
