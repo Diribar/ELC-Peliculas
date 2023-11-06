@@ -400,31 +400,45 @@ module.exports = {
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
 			// Variables
+			let mensaje = "";
 			let registros;
 
 			// Productos - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
+				mensaje += "Productos - Cambios de Status";
+				for (let registro of registros)
+					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
 			}
 
 			// Productos - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
+				mensaje += "Productos - Ediciones";
+				for (let registro of registros)
+					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
 			}
 
 			// RCLVS - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
+				mensaje += "RCLVs - Cambios de Status";
+				for (let registro of registros) mensaje += registro.nombre;
 			}
 
 			// RCLVs - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
+				mensaje += "RCLVs - Ediciones";
+				for (let registro of registros) mensaje += registro.nombre;
 			}
 
 			// Links
 			registros = [...regs.links, ...edics.links];
 			if (registros.length) {
+				mensaje += "Links";
+				for (let registro of registros)
+					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
 			}
 
 			// Fin
