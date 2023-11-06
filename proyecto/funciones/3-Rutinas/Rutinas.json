@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 4/nov",
-	"HoraUTC": "10:39",
+	"FechaUTC": "Lun. 6/nov",
+	"HoraUTC": "11:22",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 30/oct",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 43,
+	"FechaSemUTC": "Lun. 6/nov",
+	"HoraSemUTC": "11:22",
+	"semanaUTC": 44,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "MailDeFeedback", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-nov-23": {"titulo": "ELC - Películas"},
-		"03-nov-23": {"titulo": "San Martín de Porres", "entidad": "personajes", "id": 93},
 		"04-nov-23": {"titulo": "ELC - Películas"},
 		"05-nov-23": {"titulo": "ELC - Películas"},
-		"06-nov-23": {"titulo": "ELC - Películas"}
+		"06-nov-23": {"titulo": "ELC - Películas"},
+		"07-nov-23": {"titulo": "ELC - Películas"},
+		"08-nov-23": {"titulo": "Beato Juan Duns Scoto", "entidad": "personajes", "id": 73}
 	}
 }
