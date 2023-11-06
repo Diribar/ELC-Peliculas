@@ -21,7 +21,7 @@ module.exports = {
 		// Obtiene los campos include
 		let includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
 		if (!excluirInclude) {
-			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "sugerido_por", "statusRegistro", "motivo"];
+			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
 			if (entidad == "colecciones") includesOrig.push("capitulos");
 			if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
