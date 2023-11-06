@@ -394,54 +394,7 @@ module.exports = {
 			return mensajeGlobal;
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
-			// Variables
-			let resultados = [];
-			let mensajesAcum = "";
-			let mensajesAprob = "";
-			let mensajesRech = "";
-			let color;
 
-			// De cada registro de status, obtiene los campos clave o los elabora
-			for (let regStatus of regsStatus) {
-				// Variables
-				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
-				const status = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
-				if (!nombreOrden) continue;
-
-				// Alimenta el resultado
-				resultados.push({
-					familia,
-					entidadNombre,
-					nombreOrden,
-					nombreVisual,
-					statusInicial,
-					statusFinal,
-					aprobado,
-					motivo,
-				});
-			}
-
-			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
-			resultados = ordenarStatus(resultados);
-
-			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
-			resultados.map((n) => {
-				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
-				mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
-				mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
-				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
-				color = n.aprobado ? "green" : "firebrick";
-				mensaje = formatos.li(mensaje, color);
-				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
-			});
-
-			// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
-			if (mensajesAprob) mensajesAcum += formatos.h2("Cambios de Status - APROBADOS") + formatos.ol(mensajesAprob);
-			if (mensajesRech) mensajesAcum += formatos.h2("Cambios de Status - RECHAZADOS") + formatos.ol(mensajesRech);
-			const mensajeGlobal = mensajesAcum;
-
-			// Fin
-			return mensajeGlobal;
 		},
 		eliminaRegsStatusComunica: (regs) => {
 			// Variables
