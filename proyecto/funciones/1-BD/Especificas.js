@@ -75,18 +75,23 @@ module.exports = {
 			let condiciones = {
 				// Con status según parámetro
 				statusRegistro_id: status_id,
-				// Que cumpla alguno de los siguientes sobre la 'captura':
-				[Op.or]: [
-					// Que no esté capturado
-					{capturadoEn: null},
-					// Que esté capturado hace más de dos horas
-					{capturadoEn: {[Op.lt]: haceDosHoras}},
-					// Que la captura haya sido por otro usuario y hace más de una hora
-					{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}},
-					// Que la captura haya sido por otro usuario y esté inactiva
-					{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}},
-					// Que esté capturado por este usuario hace menos de una hora
-					{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}},
+				// Es necesario el [Op.and], porque luego se le agregan condiciones
+				[Op.and]: [
+					// Que cumpla alguno de los siguientes sobre la 'captura':
+					{
+						[Op.or]: [
+							// Que no esté capturado
+							{capturadoEn: null},
+							// Que esté capturado hace más de dos horas
+							{capturadoEn: {[Op.lt]: haceDosHoras}},
+							// Que la captura haya sido por otro usuario y hace más de una hora
+							{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+							// Que la captura haya sido por otro usuario y esté inactiva
+							{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}},
+							// Que esté capturado por este usuario hace menos de una hora
+							{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}},
+						],
+					},
 				],
 			};
 			if (campoFecha) {
