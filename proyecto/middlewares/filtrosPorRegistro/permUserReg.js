@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		userID: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		// Registro
-		include: ["statusRegistro", "capturado_por"],
+		include: ["statusRegistro", "capturadoPor"],
 		// Vistas
 		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
 		vistaInactivar: variables.vistaInactivar(req),
@@ -110,7 +110,7 @@ module.exports = async (req, res, next) => {
 	else if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
 		informacion = {
 			mensajes: [
-				"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
+				"El registro está capturado por " + v.registro.capturadoPor.apodo + ".",
 				"Estará liberado a más tardar el " + v.horarioFinalCaptura,
 			],
 			iconos: v.vistaAnteriorInactivar,
