@@ -200,6 +200,11 @@ module.exports = {
 				? "epocaDelAno"
 				: "";
 		},
+		asoc: function (edicion) {
+			const producto = this.asocProd(edicion);
+			const RCLV = this.asocRCLV(edicion);
+			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+		},
 	},
 
 	convierteLetras: {
