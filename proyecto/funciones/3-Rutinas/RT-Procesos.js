@@ -135,9 +135,10 @@ module.exports = {
 		include = "statusSugeridoPor";
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
-			let registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
-				.then((regs) => regs.map((reg) => ({...reg, entidad})));
+				.then((regs) => regs.map((reg) => ({...reg, entidad, familias})));
 			regsPERL.push(...registros);
 		}
 
@@ -149,7 +150,7 @@ module.exports = {
 			.then((links) =>
 				links.map((link) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					return {...link[asociacion], entidad: "links"};
+					return {...link[asociacion], entidad: "links", familias: "links"};
 				})
 			);
 
@@ -163,7 +164,9 @@ module.exports = {
 				.then((edics) =>
 					edics.map((edic) => {
 						const asociacion = comp.obtieneDesdeEdicion.asoc(edic);
-						return {...edic[asociacion], entidad: comp.obtieneDesdeEdicion.entidad(edic)};
+						const entidad = comp.obtieneDesdeEdicion.entidad(edic);
+						const familias = comp.obtieneDesdeEntidad.familias(entidad);
+						return {...edic[asociacion], entidad, familias};
 					})
 				);
 			edicsPERL.push(...registros);
@@ -176,7 +179,9 @@ module.exports = {
 			.then((edics) =>
 				edics.map((edic) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
-					return {...edic[asociacion], entidad: comp.obtieneDesdeEdicion.entidadProd(edic)};
+					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
+					const familias = comp.obtieneDesdeEntidad.familias(entidad);
+					return {...edic[asociacion], entidad, familias};
 				})
 			);
 
@@ -394,7 +399,36 @@ module.exports = {
 			return mensajeGlobal;
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
+			// Variables
+			let registros;
 
+			// Productos - Cambios de Status
+			registros = regs.perl.filter((n) => n.familias == "productos");
+			if (registros.length) {
+			}
+
+			// Productos - Ediciones
+			registros = edics.perl.filter((n) => n.familias == "productos");
+			if (registros.length) {
+			}
+
+			// RCLVS - Cambios de Status
+			registros = regs.perl.filter((n) => n.familias == "rclvs");
+			if (registros.length) {
+			}
+
+			// RCLVs - Ediciones
+			registros = edics.perl.filter((n) => n.familias == "rclvs");
+			if (registros.length) {
+			}
+
+			// Links
+			registros = [...regs.links, ...edics.links];
+			if (registros.length) {
+			}
+
+			// Fin
+			return;
 		},
 		eliminaRegsStatusComunica: (regs) => {
 			// Variables
