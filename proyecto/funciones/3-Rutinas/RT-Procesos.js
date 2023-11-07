@@ -125,7 +125,7 @@ module.exports = {
 	ABM_noRevs: async () => {
 		// Variables
 		let condiciones = {
-			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]}, // que no tenga un status estable
+			statusRegistro_id: [creado_id, inactivar_id, recuperar_id],
 			statusSugeridoPor_id: {[Op.ne]: usAutom_id},
 		};
 		let entsPERL, include;
@@ -135,10 +135,10 @@ module.exports = {
 		include = "statusSugeridoPor";
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
-				.then((regs) => regs.map((reg) => ({...reg, entidad, familias})));
+				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
 		}
 
@@ -150,7 +150,7 @@ module.exports = {
 			.then((links) =>
 				links.map((link) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					return {...link[asociacion], entidad: "links", familias: "links"};
+					return {...link[asociacion], entidad: "links", familia: "links"};
 				})
 			);
 
@@ -165,8 +165,8 @@ module.exports = {
 					edics.map((edic) => {
 						const asociacion = comp.obtieneDesdeEdicion.asoc(edic);
 						const entidad = comp.obtieneDesdeEdicion.entidad(edic);
-						const familias = comp.obtieneDesdeEntidad.familias(entidad);
-						return {...edic[asociacion], entidad, familias};
+						const familia = comp.obtieneDesdeEntidad.familia(entidad);
+						return {...edic[asociacion], entidad, familia};
 					})
 				);
 			edicsPERL.push(...registros);
@@ -180,8 +180,8 @@ module.exports = {
 				edics.map((edic) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
 					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
-					const familias = comp.obtieneDesdeEntidad.familias(entidad);
-					return {...edic[asociacion], entidad, familias};
+					const familia = comp.obtieneDesdeEntidad.familia(entidad);
+					return {...edic[asociacion], entidad, familia};
 				})
 			);
 
@@ -400,59 +400,67 @@ module.exports = {
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
 			// Variables
-			let mensajeAcum = "";
+			let cuerpoMail = {perl: "", links: ""};
 			let registros;
 
 			// Productos - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				mensajeAcum += formatos.h2("Productos - Cambios de Status");
+				cuerpoMail.perl += formatos.h2("Productos - Cambios de Status");
 				let mensajes = "";
-				for (let registro of registros)
-					mensajes += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
-				mensajeAcum += formatos.ol(mensajes);
+				for (let registro of registros) {
+					// Variables
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+					const status_id = registro.statusRegistro_id;
+					let operacion = status_id == creado_id ? "alta" : "inactivar-o-recuperar";
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// Productos - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				mensajeAcum += formatos.h2("Productos - Ediciones");
+				cuerpoMail.perl += formatos.h2("Productos - Ediciones");
 				let mensajes = "";
 				for (let registro of registros)
 					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
-				mensajeAcum += formatos.ol(mensajes);
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVS - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				mensajeAcum += formatos.h2("RCLVs - Cambios de Status");
+				cuerpoMail.perl += formatos.h2("RCLVs - Cambios de Status");
 				let mensajes = "";
 				for (let registro of registros) mensaje += formatos.li(registro.nombre);
-				mensajeAcum += formatos.ol(mensajes);
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVs - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				mensajeAcum += formatos.h2("RCLVs - Ediciones");
+				cuerpoMail.perl += formatos.h2("RCLVs - Ediciones");
 				let mensajes = "";
 				for (let registro of registros) mensaje += formatos.li(registro.nombre);
-				mensajeAcum += formatos.ol(mensajes);
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// Links
 			registros = [...regs.links, ...edics.links];
 			if (registros.length) {
-				mensajeAcum += formatos.h2("Links");
+				cuerpoMail.links += formatos.h2("Links");
 				let mensajes = "";
 				for (let registro of registros)
 					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
-				mensajeAcum += formatos.ol(mensajes);
+				cuerpoMail.links += formatos.ol(mensajes);
 			}
 
 			// Fin
-			return;
+			return cuerpoMail;
 		},
 		eliminaRegsStatusComunica: (regs) => {
 			// Variables
@@ -626,7 +634,7 @@ let avatarConLink = (familia, valor, texto) => {
 		: valor.includes("/")
 		? '<a href="' + valor + terminacion // si es una imagen externa
 		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
-		? '<a href="https://elc.lat/externa/' + rutaArchivo + terminacion // si se encuentra el archivo
+		? '<a href="' + urlSitio + "/externa/" + rutaArchivo + terminacion // si se encuentra el archivo
 		: texto; // si no se encuentra el archivo
 };
 let formatos = {
@@ -638,6 +646,15 @@ let formatos = {
 		let formato = normalize;
 		if (color) formato = formato.replace("rgb(37,64,97)", color);
 		return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
+	},
+	a: (texto, registro, operacion) => {
+		let respuesta = '<a href="' + urlSitio + "/revision/" + registro.familia + "/";
+		respuesta += operacion;
+		respuesta += "/?entidad=" + registro.entidad + "&id=" + registro.id;
+		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
+
+		// Fin
+		return respuesta;
 	},
 };
 let nombres = async (reg, familia) => {
@@ -653,7 +670,9 @@ let nombres = async (reg, familia) => {
 		// Obtiene los nombres
 		nombreOrden = comp.nombresPosibles(regEntidad);
 		nombreVisual =
-			"<a href='/" +
+			"<a href='" +
+			urlSitio +
+			+"/" +
 			familia +
 			"/detalle/?entidad=" +
 			reg.entidad +
@@ -672,7 +691,7 @@ let nombres = async (reg, familia) => {
 		const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
 		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
 		nombreVisual =
-			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
+			"<a href='https://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
 	}
 
 	// Fin
