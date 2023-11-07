@@ -124,10 +124,8 @@ module.exports = {
 	},
 	ABM_noRevs: async () => {
 		// Variables
-		let condiciones = {
-			statusRegistro_id: [creado_id, inactivar_id, recuperar_id],
-			statusSugeridoPor_id: {[Op.ne]: usAutom_id},
-		};
+		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
+		let condiciones = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
 		let entsPERL, include;
 
 		// regsPERL
@@ -150,7 +148,8 @@ module.exports = {
 			.then((links) =>
 				links.map((link) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					return {...link[asociacion], entidad: "links", familia: "links"};
+					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+					return {...link[asociacion], entidad, familia: "links"};
 				})
 			);
 
@@ -168,7 +167,8 @@ module.exports = {
 						const familia = comp.obtieneDesdeEntidad.familia(entidad);
 						return {...edic[asociacion], entidad, familia};
 					})
-				);
+				)
+				.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)));
 			edicsPERL.push(...registros);
 		}
 
@@ -401,18 +401,19 @@ module.exports = {
 		mensajeParaRevisores: ({regs, edics}) => {
 			// Variables
 			let cuerpoMail = {perl: "", links: ""};
-			let registros;
+			let registros, prods, rclvs;
 
 			// Productos - Cambios de Status
-			registros = regs.perl.filter((n) => n.familias == "productos");
+			registros = regs.perl.filter((n) => n.familia == "producto");
 			if (registros.length) {
-				cuerpoMail.perl += formatos.h2("Productos - Cambios de Status");
+				cuerpoMail.perl += formatos.h2("Productos");
+				prods = true;
 				let mensajes = "";
 				for (let registro of registros) {
 					// Variables
-					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
 					const status_id = registro.statusRegistro_id;
-					let operacion = status_id == creado_id ? "alta" : "inactivar-o-recuperar";
+					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
 
 					// Formatos
 					mensaje = formatos.a(mensaje, registro, operacion);
@@ -422,30 +423,53 @@ module.exports = {
 			}
 
 			// Productos - Ediciones
-			registros = edics.perl.filter((n) => n.familias == "productos");
+			registros = edics.perl.filter((n) => n.familia == "producto");
 			if (registros.length) {
-				cuerpoMail.perl += formatos.h2("Productos - Ediciones");
+				if (!prods) cuerpoMail.perl += formatos.h2("Productos");
 				let mensajes = "";
-				for (let registro of registros)
-					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
+				for (let registro of registros) {
+					// Variables
+					const operacion = "edicion/";
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
 				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVS - Cambios de Status
-			registros = regs.perl.filter((n) => n.familias == "rclvs");
+			registros = regs.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
-				cuerpoMail.perl += formatos.h2("RCLVs - Cambios de Status");
+				cuerpoMail.perl += formatos.h2("RCLVs");
+				rclvs = true;
 				let mensajes = "";
-				for (let registro of registros) mensaje += formatos.li(registro.nombre);
+				for (let registro of registros) {
+					// Variables
+					const status_id = registro.statusRegistro_id;
+					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
+
+					// Formatos
+					let mensaje = formatos.a(registro.nombre, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
 				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVs - Ediciones
-			registros = edics.perl.filter((n) => n.familias == "rclvs");
+			registros = edics.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
-				cuerpoMail.perl += formatos.h2("RCLVs - Ediciones");
+				if (!rclvs) cuerpoMail.perl += formatos.h2("RCLVs");
 				let mensajes = "";
-				for (let registro of registros) mensaje += formatos.li(registro.nombre);
+				for (let registro of registros) {
+					// Variables
+					const operacion = "edicion/";
+
+					// Formatos
+					let mensaje = formatos.a(registro.nombre, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
 				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
@@ -454,8 +478,14 @@ module.exports = {
 			if (registros.length) {
 				cuerpoMail.links += formatos.h2("Links");
 				let mensajes = "";
-				for (let registro of registros)
-					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
+				for (let registro of registros) {
+					// Variables
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, "");
+					mensajes += formatos.li(mensaje);
+				}
 				cuerpoMail.links += formatos.ol(mensajes);
 			}
 
@@ -650,7 +680,7 @@ let formatos = {
 	a: (texto, registro, operacion) => {
 		let respuesta = '<a href="' + urlSitio + "/revision/" + registro.familia + "/";
 		respuesta += operacion;
-		respuesta += "/?entidad=" + registro.entidad + "&id=" + registro.id;
+		respuesta += "?entidad=" + registro.entidad + "&id=" + registro.id;
 		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
 
 		// Fin
