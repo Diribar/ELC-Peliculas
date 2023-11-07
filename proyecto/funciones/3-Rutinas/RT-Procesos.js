@@ -406,8 +406,8 @@ module.exports = {
 			// Productos - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				let mensajes = "";
 				mensajeAcum += formatos.h2("Productos - Cambios de Status");
+				let mensajes = "";
 				for (let registro of registros)
 					mensajes += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
 				mensajeAcum += formatos.ol(mensajes);
@@ -416,8 +416,8 @@ module.exports = {
 			// Productos - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				let mensajes = "";
 				mensajeAcum += formatos.h2("Productos - Ediciones");
+				let mensajes = "";
 				for (let registro of registros)
 					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
 				mensajeAcum += formatos.ol(mensajes);
@@ -426,8 +426,8 @@ module.exports = {
 			// RCLVS - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				let mensajes = "";
 				mensajeAcum += formatos.h2("RCLVs - Cambios de Status");
+				let mensajes = "";
 				for (let registro of registros) mensaje += formatos.li(registro.nombre);
 				mensajeAcum += formatos.ol(mensajes);
 			}
@@ -435,8 +435,8 @@ module.exports = {
 			// RCLVs - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				let mensajes = "";
 				mensajeAcum += formatos.h2("RCLVs - Ediciones");
+				let mensajes = "";
 				for (let registro of registros) mensaje += formatos.li(registro.nombre);
 				mensajeAcum += formatos.ol(mensajes);
 			}
@@ -444,8 +444,8 @@ module.exports = {
 			// Links
 			registros = [...regs.links, ...edics.links];
 			if (registros.length) {
-				let mensajes = "";
 				mensajeAcum += formatos.h2("Links");
+				let mensajes = "";
 				for (let registro of registros)
 					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
 				mensajeAcum += formatos.ol(mensajes);
