@@ -722,7 +722,7 @@ let nombres = async (reg, familia) => {
 		const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
 		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
 		nombreVisual =
-			"<a href='https://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
+			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
 	}
 
 	// Fin
