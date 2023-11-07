@@ -140,19 +140,6 @@ module.exports = {
 			regsPERL.push(...registros);
 		}
 
-		// regsLinks
-		condiciones = {...condiciones, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.asocs.prods];
-		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
-			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
-			.then((links) =>
-				links.map((link) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
-					return {...link[asociacion], entidad, familia: "links"};
-				})
-			);
-
 		// edicsPERL
 		entsPERL = ["prodsEdicion", "rclvsEdicion"];
 		include = {prodsEdicion: variables.asocs.prods, rclvsEdicion: variables.asocs.rclvs};
@@ -172,18 +159,32 @@ module.exports = {
 			edicsPERL.push(...registros);
 		}
 
+		// regsLinks
+		condiciones = {...condiciones, prodAprob: true};
+		include = ["statusSugeridoPor", ...variables.asocs.prods];
+		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
+			.then((links) =>
+				links.map((link) => {
+					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
+					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+					return {...link[asociacion], entidad, familia: "links"};
+				})
+			)
+			.then((prods) => eliminaRepetidos(prods));
+
 		// edicsLinks
 		include = ["editadoPor", ...variables.asocs.prods];
-		let edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
+		const edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
 					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
-					const familia = comp.obtieneDesdeEntidad.familia(entidad);
-					return {...edic[asociacion], entidad, familia};
+					return {...edic[asociacion], entidad, familia: "links"};
 				})
-			);
+			)
+			.then((prods) => eliminaRepetidos(prods));
 
 		// Fin
 		return {regs: {perl: regsPERL, links: regsLinks}, edics: {perl: edicsPERL, links: edicsLinks}};
@@ -847,4 +848,20 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Fin
 	return;
+};
+let eliminaRepetidos = (prods) => {
+	// Rutina
+	for (let i = prods.length - 1; i > 0; i--) {
+		const repetido = prods[i];
+		for (let j = 0; j < i; j++) {
+			const original = prods[j];
+			if (repetido.id == original.id && repetido.entidad == original.entidad) {
+				prods.splice(i, 1);
+				break;
+			}
+		}
+	}
+
+	// Fin
+	return prods;
 };
