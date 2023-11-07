@@ -10,7 +10,7 @@
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
-	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "LinksPorProv": "SI"},
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "LinksPorProv": "SI", "FeedbackParaRevisores": "SI"},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
 		"LinksVencidos": "SI",
