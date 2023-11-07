@@ -312,7 +312,7 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		mensajeEdic: async (regsEdic) => {
+		mensajeEdicion: async (regsEdic) => {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
@@ -400,45 +400,55 @@ module.exports = {
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
 			// Variables
-			let mensaje = "";
+			let mensajeAcum = "";
 			let registros;
 
 			// Productos - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				mensaje += "Productos - Cambios de Status";
+				let mensajes = "";
+				mensajeAcum += formatos.h2("Productos - Cambios de Status");
 				for (let registro of registros)
-					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
+					mensajes += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
+				mensajeAcum += formatos.ol(mensajes);
 			}
 
 			// Productos - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "productos");
 			if (registros.length) {
-				mensaje += "Productos - Ediciones";
+				let mensajes = "";
+				mensajeAcum += formatos.h2("Productos - Ediciones");
 				for (let registro of registros)
-					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
+					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
+				mensajeAcum += formatos.ol(mensajes);
 			}
 
 			// RCLVS - Cambios de Status
 			registros = regs.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				mensaje += "RCLVs - Cambios de Status";
-				for (let registro of registros) mensaje += registro.nombre;
+				let mensajes = "";
+				mensajeAcum += formatos.h2("RCLVs - Cambios de Status");
+				for (let registro of registros) mensaje += formatos.li(registro.nombre);
+				mensajeAcum += formatos.ol(mensajes);
 			}
 
 			// RCLVs - Ediciones
 			registros = edics.perl.filter((n) => n.familias == "rclvs");
 			if (registros.length) {
-				mensaje += "RCLVs - Ediciones";
-				for (let registro of registros) mensaje += registro.nombre;
+				let mensajes = "";
+				mensajeAcum += formatos.h2("RCLVs - Ediciones");
+				for (let registro of registros) mensaje += formatos.li(registro.nombre);
+				mensajeAcum += formatos.ol(mensajes);
 			}
 
 			// Links
 			registros = [...regs.links, ...edics.links];
 			if (registros.length) {
-				mensaje += "Links";
+				let mensajes = "";
+				mensajeAcum += formatos.h2("Links");
 				for (let registro of registros)
-					mensaje += registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original;
+					mensaje += formatos.li(registro.nombre_castellano ? registro.nombre_castellano : registro.nombre_original);
+				mensajeAcum += formatos.ol(mensajes);
 			}
 
 			// Fin
