@@ -6,7 +6,7 @@ const procesos = require("./RT-Procesos");
 
 // Exportar
 module.exports = {
-	// 0. Start-up y Configuracion de Rutinas
+	// 0. Start-up y Configuración de Rutinas
 	startupMasConfiguracion: async function () {
 		// Variables
 		this.variablesDiarias();
@@ -26,7 +26,6 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		// await this.FeedbackParaRevisores()
 
 		// Fin
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
@@ -369,12 +368,15 @@ module.exports = {
 	},
 	FeedbackParaRevisores: async () => {
 		// Variables
-		const asunto = "ABMs de no revisores";
+		const asunto = {
+			perl: "Productos y RCLVs prioritarios a revisar",
+			links: "Links prioritarios a revisar",
+		};
 		const {regs, edics} = await procesos.ABM_noRevs();
 		let mailsEnviados = [];
 
 		// Si no hay casos, termina
-		if (regs.perl.length + regs.links.length + edics.perl.length + edics.links.length == 0) return;
+		if (regs.perl.length + edics.perl.length + regs.links.length + edics.links.length == 0) return;
 
 		// Arma el cuerpo del mensaje
 		const cuerpoMail = procesos.mailDeFeedback.mensajeParaRevisores({regs, edics});
@@ -387,8 +389,11 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let tipo of ["perl", "links"])
-			for (let revisor of revisores[tipo])
-				mailsEnviados.push(comp.enviaMail({asunto, email: revisor.email, comentario: cuerpoMail[tipo]})); // Envía el mail y actualiza la BD
+			if (regs[tipo].length || edics[tipo].length)
+				for (let revisor of revisores[tipo])
+					mailsEnviados.push(
+						comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
+					); // Envía el mail y actualiza la BD
 
 		// Avisa que está procesando el envío de los mails
 		console.log("Procesando el envío de mails a revisores...");
