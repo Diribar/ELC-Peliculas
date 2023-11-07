@@ -150,7 +150,7 @@ module.exports = {
 
 			// Arma el cuerpo del mail
 			if (regsStatus_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeStatus(regsStatus_user);
-			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic_user);
+			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdicion(regsEdic_user);
 
 			// Envía el mail y actualiza la BD
 			mailsEnviados.push(
