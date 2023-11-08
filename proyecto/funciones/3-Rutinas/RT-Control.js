@@ -26,6 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
+		// await this.FeedbackParaRevisores()
 
 		// Fin
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
@@ -98,7 +99,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	MailDeFeedback: async () => {
+	FeedbackParaUsers: async () => {
 		// En 'development' interrumpe
 		if (nodeEnv == "development") return;
 
@@ -110,7 +111,7 @@ module.exports = {
 		if (!regsTodos.length) {
 			// Outputs
 			console.log("Sin mails para enviar");
-			procesos.finRutinasHorarias("MailDeFeedback");
+			procesos.finRutinasHorarias("FeedbackParaUsers");
 
 			// Fin
 			return;
@@ -122,9 +123,7 @@ module.exports = {
 
 		// Obtiene los usuarios relacionados con esos registros
 		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
-		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
-			n.filter((m) => usuarios_id.includes(m.id))
-		);
+		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
@@ -364,6 +363,36 @@ module.exports = {
 			let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
 			BD_genericas.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
 		}
+
+		// Fin
+		return;
+	},
+	FeedbackParaRevisores: async () => {
+		// Variables
+		const asunto = "ABMs de no revisores";
+		const {regs, edics} = await procesos.ABM_noRevs();
+		let mailsEnviados = [];
+
+		// Si no hay casos, termina
+		if (regs.perl.length + regs.links.length + edics.perl.length + edics.links.length == 0) return;
+
+		// Arma el cuerpo del mensaje
+		const cuerpoMail = procesos.mailDeFeedback.mensajeParaRevisores({regs, edics});
+
+		// Obtiene los usuarios revisorPERL y revisorLinks
+		let perl = BD_genericas.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+		let links = BD_genericas.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+		[perl, links] = await Promise.all([perl, links]);
+		const revisores = {perl, links};
+
+		// Rutina por usuario
+		for (let tipo of ["perl", "links"])
+			for (let revisor of revisores[tipo])
+				mailsEnviados.push(comp.enviaMail({asunto, email: revisor.email, comentario: cuerpoMail[tipo]})); // Envía el mail y actualiza la BD
+
+		// Avisa que está procesando el envío de los mails
+		console.log("Procesando el envío de mails a revisores...");
+		await Promise.all(mailsEnviados);
 
 		// Fin
 		return;
