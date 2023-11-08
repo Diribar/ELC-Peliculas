@@ -179,7 +179,7 @@ let resultados = {
 
 			// Rutina por registro
 			v.infoResultados.forEach((registro, indice) => {
-				// Para la opción 'Últimos ingresos', muestra sólo las primeras
+				// Para algunas opciones, muestra sólo las primeras
 				if (["altaRevisadaEn", "calificacion"].includes(v.opcionBD.codigo) && indice >= v.cantListadoBreve) return;
 
 				// Acumula los productos
@@ -406,6 +406,9 @@ let auxiliares = {
 		if (!titulo && opcion == "calificacion") {
 			titulo = !indice ? "Mejor calificadas" : "";
 		}
+		if (!titulo && opcion == "misCalificadas") {
+			titulo = !indice ? "Mis calificadas" : "";
+		}
 
 		// Fin
 		return titulo;
@@ -449,8 +452,8 @@ let auxiliares = {
 		celda.className = "primeraCol";
 		fila.appendChild(celda);
 
-		// Si se eligió la opción de 'Mejor calificadas', crea la celda correspondiente
-		if (v.opcionBD.codigo == "calificacion") {
+		// Si se eligió una opción de 'calificadas', crea la celda correspondiente
+		if (["calificacion", "misCalificadas"].includes(v.opcionBD.codigo)) {
 			celda = creaUnaCelda.calificacion(producto);
 			fila.appendChild(celda);
 		}
