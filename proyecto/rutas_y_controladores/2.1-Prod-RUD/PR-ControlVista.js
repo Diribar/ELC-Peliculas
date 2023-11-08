@@ -64,7 +64,7 @@ module.exports = {
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
 		let interesDelUsuario = userID ? procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
-			? BD_genericas.obtienePorCondicion("cal_registros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
+			? BD_genericas.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
 		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
@@ -313,7 +313,7 @@ module.exports = {
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 			const condics = {entidad, entidad_id: id, usuario_id: userID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
+			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id});
 
 			// Va a la vista
@@ -351,10 +351,10 @@ module.exports = {
 			valores.resultado = Math.round(resultado);
 
 			// Averigua si existe la calificacion
-			const existe = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+			const existe = await BD_genericas.obtienePorCondicion("calRegistros", condics);
 			existe
-				? await BD_genericas.actualizaPorId("cal_registros", existe.id, valores)
-				: await BD_genericas.agregaRegistro("cal_registros", valores);
+				? await BD_genericas.actualizaPorId("calRegistros", existe.id, valores)
+				: await BD_genericas.agregaRegistro("calRegistros", valores);
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});

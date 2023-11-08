@@ -26,7 +26,7 @@ module.exports = {
 			// Datos particulares
 			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			datos = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
+			datos = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			if (datos) {
 				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
 				calificaciones.push({autor: "Tuya", valores: datos});
@@ -42,7 +42,7 @@ module.exports = {
 
 			// Datos particulares
 			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
 
 			// Fin
 			return res.json({califGuardada, atributosCalific, criteriosCalif});
@@ -54,7 +54,7 @@ module.exports = {
 
 			// Elimina
 			const condics = {usuario_id: userID, entidad, entidad_id};
-			await BD_genericas.eliminaTodosPorCondicion("cal_registros", condics);
+			await BD_genericas.eliminaTodosPorCondicion("calRegistros", condics);
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});

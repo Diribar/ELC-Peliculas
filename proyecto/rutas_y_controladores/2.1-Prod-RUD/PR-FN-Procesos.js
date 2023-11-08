@@ -90,7 +90,7 @@ module.exports = {
 		// Obtiene las calificaciones
 		const condics = {entidad, entidad_id};
 		const include = ["feValores", "entretiene", "calidadTecnica"];
-		const califics = await BD_genericas.obtieneTodosPorCondicionConInclude("cal_registros", condics, include);
+		const califics = await BD_genericas.obtieneTodosPorCondicionConInclude("calRegistros", condics, include);
 
 		// Si existen calificaciones, obtiene los promedios
 		if (califics.length)
