@@ -399,17 +399,19 @@ module.exports = {
 				return prodsCruzadosConRCLVs;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
-				if (!prods.length ) return [];
+				if (!prods.length || !usuario_id) return [];
 				if (opcion.codigo != "misCalificadas") return prods;
 
 				// Variables
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
-				if (!misCalificadas.length ) return [];
+				if (!misCalificadas.length) return [];
 
 				// Elimina los productos no calificados
-				for (let i = prods.length - 1; i >= 0; i--)
-					if (!misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id))
-						prods.splice(i, 1);
+				for (let i = prods.length - 1; i >= 0; i--) {
+					const calificacion = misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					if (!calificacion) prods.splice(i, 1);
+					else prods[i].calificacion = calificacion.resultado;
+				}
 
 				// Fin
 				return prods;
@@ -505,12 +507,17 @@ module.exports = {
 			},
 		},
 		orden: {
-			prods: ({prods, opcion, configCons}) => {
+			prods: ({prods, opcion}) => {
 				// Si no corresponde ordenar, interrumpe la función
 				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
 
 				// Variables
-				const campo = opcion.codigo == "nombre" ? "nombreCastellano" : opcion.codigo;
+				const campo =
+					opcion.codigo == "nombre"
+						? "nombreCastellano"
+						: opcion.codigo == "misCalificadas"
+						? "calificacion"
+						: opcion.codigo;
 
 				// Ordena
 				prods.sort((a, b) =>
