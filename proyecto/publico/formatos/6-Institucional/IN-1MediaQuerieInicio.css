@@ -3,15 +3,16 @@
 @media (width <= 1000px) {#cuerpo #zonaDeVitreaux {display: none;}}
 @media (width <= 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
 @media (width > 700px) {#zonaDeBienvenida #botones {flex-direction: row;}}
-@media (width <= 550px) and (height > 550px) {#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}}
+@media (width <= 550px) and (orientation:portrait) {#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}}
 
 /* Altura */
 @media (height <= 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
 @media (height > 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
+@media (height < 490px) and (orientation:portrait) {#zonaDeBienvenida #botones a button p {display: none;}}
 
 /* Altura y Ancho */
-@media (height <= 350px), (width <= 550px) {#zonaDeBienvenida #botones a:hover {scale: 1;}}
-@media (height > 350px) and (width > 550px) {
+@media (width <= 550px), (height <= 350px) {#zonaDeBienvenida #botones a:hover {scale: 1;}}
+@media (width > 550px) and (height > 350px) {
 	#zonaDeBienvenida #botones a {scale: 1.1;}
 	#zonaDeBienvenida #botones a:hover {scale: 1.3;}
 }
