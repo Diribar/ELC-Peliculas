@@ -19,9 +19,9 @@ let resultados = {
 
 		// Acciones si la opción es 'pppFecha'
 		if (v.opcionBD.codigo == "pppFecha") {
-			// Si el usuario no está logueado, muestra el cartel 'pppSinLogin' y termina
+			// Si el usuario no está logueado, muestra el cartel 'loginNecesario' y termina
 			if (!v.userID) {
-				DOM.pppSinLogin.classList.remove("ocultar");
+				DOM.loginNecesario.classList.remove("ocultar");
 				DOM.esperandoResultados.classList.add("ocultar");
 				return;
 			}

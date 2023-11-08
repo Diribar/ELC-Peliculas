@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 		asegurate: DOM.zonaDisponible.querySelector("#carteles button#asegurate"),
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
-		pppSinLogin: DOM.zonaDisponible.querySelector("#carteles button#pppSinLogin"),
+		loginNecesario: DOM.zonaDisponible.querySelector("#carteles button#loginNecesario"),
 		cartelOrdenPPP: DOM.zonaDisponible.querySelector("#carteles #cartelOrdenPPP"),
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
 		cartelLoginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
