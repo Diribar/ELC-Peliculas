@@ -22,8 +22,7 @@
 #zonaDeBienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: 100%;}
 #zonaDeBienvenida #botones a {border-radius: 50%; overflow: hidden;}
 #zonaDeBienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
-#zonaDeBienvenida #botones a {width: 200px;}
-#zonaDeBienvenida #botones a button {width: 100%; padding: 20px; border-radius: 50%; background: var(--gris-claro);}
+#zonaDeBienvenida #botones a button {width: 200px; padding: 20px; border-radius: 50%; background: var(--gris-claro);}
 
 #zonaDeBienvenida #botones a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
 #zonaDeBienvenida #botones a button p {font-size: 1.1rem;}
