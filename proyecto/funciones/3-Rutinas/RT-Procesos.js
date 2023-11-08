@@ -124,10 +124,8 @@ module.exports = {
 	},
 	ABM_noRevs: async () => {
 		// Variables
-		let condiciones = {
-			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]}, // que no tenga un status estable
-			statusSugeridoPor_id: {[Op.ne]: usAutom_id},
-		};
+		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
+		let condiciones = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
 		let entsPERL, include;
 
 		// regsPERL
@@ -135,24 +133,12 @@ module.exports = {
 		include = "statusSugeridoPor";
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
-				.then((regs) => regs.map((reg) => ({...reg, entidad, familias})));
+				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
 		}
-
-		// regsLinks
-		condiciones = {...condiciones, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.asocs.prods];
-		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
-			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
-			.then((links) =>
-				links.map((link) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					return {...link[asociacion], entidad: "links", familias: "links"};
-				})
-			);
 
 		// edicsPERL
 		entsPERL = ["prodsEdicion", "rclvsEdicion"];
@@ -165,25 +151,40 @@ module.exports = {
 					edics.map((edic) => {
 						const asociacion = comp.obtieneDesdeEdicion.asoc(edic);
 						const entidad = comp.obtieneDesdeEdicion.entidad(edic);
-						const familias = comp.obtieneDesdeEntidad.familias(entidad);
-						return {...edic[asociacion], entidad, familias};
+						const familia = comp.obtieneDesdeEntidad.familia(entidad);
+						return {...edic[asociacion], entidad, familia};
 					})
-				);
+				)
+				.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)));
 			edicsPERL.push(...registros);
 		}
 
+		// regsLinks
+		condiciones = {...condiciones, prodAprob: true};
+		include = ["statusSugeridoPor", ...variables.asocs.prods];
+		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
+			.then((links) =>
+				links.map((link) => {
+					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
+					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+					return {...link[asociacion], entidad, familia: "links"};
+				})
+			)
+			.then((prods) => eliminaRepetidos(prods));
+
 		// edicsLinks
 		include = ["editadoPor", ...variables.asocs.prods];
-		let edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
+		const edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
 					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
 					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
-					const familias = comp.obtieneDesdeEntidad.familias(entidad);
-					return {...edic[asociacion], entidad, familias};
+					return {...edic[asociacion], entidad, familia: "links"};
 				})
-			);
+			)
+			.then((prods) => eliminaRepetidos(prods));
 
 		// Fin
 		return {regs: {perl: regsPERL, links: regsLinks}, edics: {perl: edicsPERL, links: edicsLinks}};
@@ -312,7 +313,7 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		mensajeEdic: async (regsEdic) => {
+		mensajeEdicion: async (regsEdic) => {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
@@ -400,35 +401,97 @@ module.exports = {
 		},
 		mensajeParaRevisores: ({regs, edics}) => {
 			// Variables
-			let registros;
+			let cuerpoMail = {perl: "", links: ""};
+			let registros, prods, rclvs;
 
 			// Productos - Cambios de Status
-			registros = regs.perl.filter((n) => n.familias == "productos");
+			registros = regs.perl.filter((n) => n.familia == "producto");
 			if (registros.length) {
+				cuerpoMail.perl += formatos.h2("Productos");
+				prods = true;
+				let mensajes = "";
+				for (let registro of registros) {
+					// Variables
+					const status_id = registro.statusRegistro_id;
+					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// Productos - Ediciones
-			registros = edics.perl.filter((n) => n.familias == "productos");
+			registros = edics.perl.filter((n) => n.familia == "producto");
 			if (registros.length) {
+				if (!prods) cuerpoMail.perl += formatos.h2("Productos");
+				let mensajes = "";
+				for (let registro of registros) {
+					// Variables
+					const operacion = "edicion/";
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVS - Cambios de Status
-			registros = regs.perl.filter((n) => n.familias == "rclvs");
+			registros = regs.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
+				cuerpoMail.perl += formatos.h2("RCLVs");
+				rclvs = true;
+				let mensajes = "";
+				for (let registro of registros) {
+					// Variables
+					const status_id = registro.statusRegistro_id;
+					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
+
+					// Formatos
+					let mensaje = formatos.a(registro.nombre, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// RCLVs - Ediciones
-			registros = edics.perl.filter((n) => n.familias == "rclvs");
+			registros = edics.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
+				if (!rclvs) cuerpoMail.perl += formatos.h2("RCLVs");
+				let mensajes = "";
+				for (let registro of registros) {
+					// Variables
+					const operacion = "edicion/";
+
+					// Formatos
+					let mensaje = formatos.a(registro.nombre, registro, operacion);
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
 			// Links
 			registros = [...regs.links, ...edics.links];
 			if (registros.length) {
+				cuerpoMail.links += formatos.h2("Links");
+				let mensajes = "";
+				for (let registro of registros) {
+					// Variables
+					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
+
+					// Formatos
+					mensaje = formatos.a(mensaje, registro, "");
+					mensajes += formatos.li(mensaje);
+				}
+				cuerpoMail.links += formatos.ol(mensajes);
 			}
 
 			// Fin
-			return;
+			return cuerpoMail;
 		},
 		eliminaRegsStatusComunica: (regs) => {
 			// Variables
@@ -602,7 +665,7 @@ let avatarConLink = (familia, valor, texto) => {
 		: valor.includes("/")
 		? '<a href="' + valor + terminacion // si es una imagen externa
 		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
-		? '<a href="https://elc.lat/externa/' + rutaArchivo + terminacion // si se encuentra el archivo
+		? '<a href="' + urlSitio + "/externa/" + rutaArchivo + terminacion // si se encuentra el archivo
 		: texto; // si no se encuentra el archivo
 };
 let formatos = {
@@ -614,6 +677,15 @@ let formatos = {
 		let formato = normalize;
 		if (color) formato = formato.replace("rgb(37,64,97)", color);
 		return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
+	},
+	a: (texto, registro, operacion) => {
+		let respuesta = '<a href="' + urlSitio + "/revision/" + registro.familia + "/";
+		respuesta += operacion;
+		respuesta += "?entidad=" + registro.entidad + "&id=" + registro.id;
+		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
+
+		// Fin
+		return respuesta;
 	},
 };
 let nombres = async (reg, familia) => {
@@ -629,7 +701,9 @@ let nombres = async (reg, familia) => {
 		// Obtiene los nombres
 		nombreOrden = comp.nombresPosibles(regEntidad);
 		nombreVisual =
-			"<a href='/" +
+			"<a href='" +
+			urlSitio +
+			+"/" +
 			familia +
 			"/detalle/?entidad=" +
 			reg.entidad +
@@ -774,4 +848,20 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Fin
 	return;
+};
+let eliminaRepetidos = (prods) => {
+	// Rutina
+	for (let i = prods.length - 1; i > 0; i--) {
+		const repetido = prods[i];
+		for (let j = 0; j < i; j++) {
+			const original = prods[j];
+			if (repetido.id == original.id && repetido.entidad == original.entidad) {
+				prods.splice(i, 1);
+				break;
+			}
+		}
+	}
+
+	// Fin
+	return prods;
 };
