@@ -14,7 +14,8 @@ main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
 #cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Cuerpo */
-#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
+#cuerpoFooter #cuerpo {--alturaCuerpo: calc(100% - 23.6px)}
+#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative; max-height: var(--alturaCuerpo);}
 
 /* Footer */
 #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
