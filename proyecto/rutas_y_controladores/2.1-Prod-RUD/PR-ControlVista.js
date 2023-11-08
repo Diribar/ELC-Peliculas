@@ -315,11 +315,15 @@ module.exports = {
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id});
+			const ayudasTitulo = [
+				"Sólo podés calificar una película si la viste.",
+				"Necesitamos saber TU opinión, no te guíes por lo que opinan otras personas.",
+			];
 
 			// Va a la vista
 			// return res.send(interesDelUsuario);
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo: [], origen},
+				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
