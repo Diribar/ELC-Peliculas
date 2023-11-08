@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cal_registros";
+	const alias = "calRegistros";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		entidad: {type: dt.STRING(20)},
