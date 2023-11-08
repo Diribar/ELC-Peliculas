@@ -8,7 +8,6 @@ module.exports = (sequelize, dt) => {
 		boton: {type: dt.INTEGER},
 		opcionDefault: {type: dt.BOOLEAN},
 		activo: {type: dt.BOOLEAN},
-		loginNeces: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_opcs_por_ent",

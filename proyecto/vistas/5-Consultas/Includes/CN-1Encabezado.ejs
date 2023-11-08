@@ -21,7 +21,7 @@
 				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton)) { %>
 				<option
 					value="<%= opcionPorEnt.id %>"
-					<% if (opcionPorEnt.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
+					<% if (opcionPorEnt.opcion.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
 				><%= opcionPorEnt.opcion.nombre %></option>
 				<% } %>
 			</optgroup>

@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(40)},
 		codigo: {type: dt.STRING(20)},
 		ascDes: {type: dt.STRING(6)},
+		loginNeces: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "cn_opciones",

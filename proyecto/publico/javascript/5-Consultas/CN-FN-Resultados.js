@@ -5,10 +5,8 @@ let resultados = {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.obtener) return;
 
-		// Oculta el contador
+		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
-
-		// Oculta todos los carteles
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
 
 		// Tapa y limpia los resultados anteriores
@@ -17,20 +15,18 @@ let resultados = {
 		DOM.listados.innerHTML = "";
 		v.infoResultados = null;
 
-		// Acciones si la opción es 'pppFecha'
-		if (v.opcionBD.codigo == "pppFecha") {
-			// Si el usuario no está logueado, muestra el cartel 'loginNecesario' y termina
-			if (!v.userID) {
-				DOM.loginNecesario.classList.remove("ocultar");
-				DOM.esperandoResultados.classList.add("ocultar");
-				return;
-			}
-			// Si el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
-			else if (!v.usuarioTienePPP) {
-				DOM.cartelOrdenPPP.classList.remove("ocultar");
-				DOM.esperandoResultados.classList.add("ocultar");
-				return;
-			}
+		// Acciones si el usuario no está logueado y es requerido
+		if (!v.userID && v.opcionBD.loginNeces) {
+			DOM.loginNecesario.classList.remove("ocultar");
+			DOM.esperandoResultados.classList.add("ocultar");
+			return;
+		}
+
+		// Si la opción es 'pppFecha' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
+		if (v.userID && v.opcionBD.codigo == "pppFecha" && !v.usuarioTienePPP) {
+			DOM.cartelOrdenPPP.classList.remove("ocultar");
+			DOM.esperandoResultados.classList.add("ocultar");
+			return;
 		}
 
 		// Busca la información en el BE
