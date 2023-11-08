@@ -46,14 +46,16 @@ module.exports = {
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
 			let entsProd = ["peliculas", "colecciones"];
-			if (["fechaDelAno_id", "calificacion"].includes(opcion.codigo) || entidad != "productos") entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			if (["fechaDelAno_id", "calificacion", "misCalificadas"].includes(opcion.codigo) || entidad != "productos")
+				entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let productos = [];
 			let resultados = [];
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
-			if (opcion.codigo == "calificacion") condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
+			if (["calificacion", "misCalificadas"].includes(opcion.codigo))
+				condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Obtiene los productos
@@ -351,10 +353,9 @@ module.exports = {
 						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) prods[i].palsClave = true;
 
 					if (!prods[i].palsClave)
-						for (let campo of camposInclude) {
+						for (let campo of camposInclude)
 							if (prod[campo].nombre && prod[campo].nombre.toLowerCase().includes(palabrasClave))
 								prods[i].palsClave = true;
-						}
 
 					// Si la entidad es 'productos' y el producto no tiene las palsClave, lo elimina
 					if (entidad == "productos" && !prods[i].palsClave) prods.splice(i, 1);
@@ -396,6 +397,22 @@ module.exports = {
 
 				// Fin
 				return prodsCruzadosConRCLVs;
+			},
+			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
+				if (!prods.length ) return [];
+				if (opcion.codigo != "misCalificadas") return prods;
+
+				// Variables
+				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
+				if (!misCalificadas.length ) return [];
+
+				// Elimina los productos no calificados
+				for (let i = prods.length - 1; i >= 0; i--)
+					if (!misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id))
+						prods.splice(i, 1);
+
+				// Fin
+				return prods;
 			},
 			// RCLVs
 			rclvsConPalsClave: ({rclvs, palabrasClave}) => {
