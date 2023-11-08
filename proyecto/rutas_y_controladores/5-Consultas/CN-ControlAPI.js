@@ -160,13 +160,14 @@ module.exports = {
 		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
-		// Cruza 'prods' con 'pppRegistros' y con 'palabrasClave'
+		// Cruces de 'prods'
 		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
 		prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave, entidad});
 
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
+			prods = procesos.resultados.cruce.prodsConMisCalifs({prods, rclvs, opcion});
 			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
 			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
 			return res.json(prods);
