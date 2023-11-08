@@ -8,9 +8,10 @@
 
 /* Links - Ayuda */
 .marco#links #ayudaLinks {margin-right: 10px;}
-.marco#links #ayudaLinks .ayudaMostrar {max-width: 275px; translate: 100% 0; top: -25px;}
-.marco#links #ayudaLinks .ayudaMostrar::before {top: 25px; translate: -100% 0;}
+.marco#links #ayudaLinks .ayudaMostrar {max-width: min(275px, 69vw); translate: 100% 0; top: -25px; bottom: auto;}
+.marco#links #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
 .marco#links #ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
+.marco#links #ayudaLinks .ayudaMostrar ul {list-style-type: none;}
 .marco#links #ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
 .marco#links #ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
 .marco#links #ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
