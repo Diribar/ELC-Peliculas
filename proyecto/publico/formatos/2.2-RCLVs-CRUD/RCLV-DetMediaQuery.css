@@ -11,8 +11,13 @@
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
 
-	/* Varios */
-	#cuadroDeResultados i.mover {display: none;} /* oculta los triangulitos */
+	/* oculta los triangulitos de desplazamiento */
+	#cuadroDeResultados i.mover {display: none;}
+
+	/* Temas de ayuda */
+	#tituloPrincipal .ayudaMostrar {top: auto; right: auto; bottom: -3px; translate: -50% 100%;}
+	#tituloPrincipal .ayudaMostrar::before {top: 0px; left: 50%; translate: 3px -100%;}
+	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
 @media (width < 345px) {
 	#recuadro #contenido {--margenCostado: max(0px, min(20px, calc(100% - 290px)/2));}

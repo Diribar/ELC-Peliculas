@@ -73,7 +73,7 @@ module.exports = {
 			yaCalificada,
 		]);
 		const ayudasTitulo = links.PL.length
-			? ["Eligiendo uno de los links, podés ver la película"]
+			? ["Eligiendo " + (links.PL.length == 1 ? "el link" : "uno de los links") + ", podés ver la película"]
 			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
 
 		// Va a la vista

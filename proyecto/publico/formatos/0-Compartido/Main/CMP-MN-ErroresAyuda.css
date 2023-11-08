@@ -18,12 +18,12 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 70vw); width: max-content;}
+.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 .ayudaMostrar::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
 
 /* Títulos - Temas particulares */
-#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
+#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: min(350px, 90vw);}
 #tituloPrincipal .ayudaMostrar {top: -7px; right: -7px; translate: 100% 0;}
 #tituloPrincipal .ayudaMostrar::before {top: 7px; left: 0px; translate: -100% 0;}
 #tituloPrincipal .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
