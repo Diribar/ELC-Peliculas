@@ -82,7 +82,7 @@ module.exports = {
 
 			// Obtiene el registro original
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-			include.push("statusRegistro", "creadoPor", "sugerido_por");
+			include.push("statusRegistro", "creadoPor", "statusSugeridoPor");
 			if (entidad == "colecciones") include.push("capitulos");
 			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			// Obtiene avatar original
@@ -340,7 +340,7 @@ module.exports = {
 				...comp.obtieneTodosLosCamposInclude(entidad),
 				"statusRegistro",
 				"creadoPor",
-				"sugerido_por",
+				"statusSugeridoPor",
 				"altaRevisadaPor",
 			];
 			if (entidad == "capitulos") include.push("coleccion");
@@ -519,7 +519,10 @@ module.exports = {
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
-		for (let link of links) link.cond = procsLinks.condiciones(link, revID, tema);
+		for (let link of links) {
+			link.cond = procsLinks.condiciones(link, revID, tema);
+			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
+		}
 
 		// Averigua cuál es el próximo producto
 		const siguienteProducto = !origen ? await procesos.siguienteProducto({producto, entidad, revID}) : "";

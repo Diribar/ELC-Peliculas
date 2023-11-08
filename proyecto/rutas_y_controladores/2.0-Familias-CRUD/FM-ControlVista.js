@@ -23,7 +23,7 @@ module.exports = {
 
 			// Obtiene el registro
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-			include.push("statusRegistro", "creadoPor", "sugerido_por", "altaRevisadaPor", "motivo");
+			include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
 			if (familia == "rclv") include.push(...variables.entidades.prods);

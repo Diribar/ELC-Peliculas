@@ -12,7 +12,12 @@
 	<!-- 1. Url -->
 	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
-			<img src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.url %>">
+			<img
+				src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>"
+				alt="<%= link.prov.nombre %>"
+				title="<%= link.url %>"
+				class="<%= link.idioma %>"
+			>
 		</a>
 		<input name='url' type="text" class="ocultar" value="<%= link.url %>">
 	</td>
@@ -76,7 +81,7 @@
 			<i class="fa-solid fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
 
 			<!-- ELIMINAR -->
-			<% if (link.cond.creadoPropio || usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
+			<% if (link.cond.creadoPropio || locals.usuario && usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
 				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 			<% } else if (link.cond.creadoAprob || link.cond.aprobado) { %>

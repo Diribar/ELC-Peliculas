@@ -108,7 +108,7 @@
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Capítulos", regs: prods.SL_caps, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_basico, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC_basico, url: "links/abm", mostrarOrigen: true}) %>
-				<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
+				<% if (usuario.rolUsuario.revisorPERL) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 				<% } %>
 			</div>

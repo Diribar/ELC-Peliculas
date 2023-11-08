@@ -178,6 +178,8 @@ app.set("views", [
 	global.rolConsultas_id = rolesUs.find((n) => n.codigo == "consultas").id;
 	global.rolPermInputs_id = rolesUs.find((n) => n.codigo == "permInputs").id;
 	global.rolOmnipotente_id = rolesUs.find((n) => n.codigo == "omnipotente").id;
+	global.rolesRevPERL_ids = rolesUs.filter((n) => n.revisorPERL).map((n) => n.id);
+	global.rolesRevLinks_ids = rolesUs.filter((n) => n.revisorLinks).map((n) => n.id);
 
 	// 3.B. Status de usuario
 	global.mailPendValidar_id = statusRegistrosUs.find((n) => n.codigo == "mailPendValidar").id;

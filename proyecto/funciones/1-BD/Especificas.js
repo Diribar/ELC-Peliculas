@@ -75,6 +75,7 @@ module.exports = {
 			let condiciones = {
 				// Con status según parámetro
 				statusRegistro_id: status_id,
+				// Es necesario el [Op.and], porque luego se le agregan condiciones
 				[Op.and]: [
 					// Que cumpla alguno de los siguientes sobre la 'captura':
 					{

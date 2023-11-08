@@ -8,7 +8,7 @@
         <a href="//<%= link.url %>" target="_blank">
             <img
                 src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>"
-                class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
+                class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && locals.usuario && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
                 title="<%= castellano + gratuito + calidad + completoParte %>"
             >
         </a>
