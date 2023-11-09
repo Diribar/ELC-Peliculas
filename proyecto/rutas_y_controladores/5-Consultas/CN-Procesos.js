@@ -399,8 +399,8 @@ module.exports = {
 				return prodsCruzadosConRCLVs;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
-				if (!prods.length || !usuario_id) return [];
 				if (opcion.codigo != "misCalificadas") return prods;
+				if (!prods.length || !usuario_id) return [];
 
 				// Variables
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
