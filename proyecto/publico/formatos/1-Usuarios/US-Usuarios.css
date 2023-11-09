@@ -20,7 +20,9 @@ form select {text-align: left;}
 #cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Íconos y Mensajes de Error */
-/* #cuerpo .inputError .mensajeError {left: 20px;} */
+#cuerpo .inputError .mensajeError {right: -5px; top: -5px; translate: 0 -100%;}
+#cuerpo .inputError .mensajeError::before {left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;}
+#cuerpo .inputError .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent transparent;}
 
 /* Flechas */
 form .flechas {margin: 15px auto 5px;}
@@ -28,6 +30,5 @@ form .flechas {margin: 15px auto 5px;}
 /* Credenciales inválidas*/
 form #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}
 form #credencialesInvalidas {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
-/* form #credencialesInvalidas.ocultar {display: none;} */
 form #credencialesInvalidas, form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
 form #credencialesInvalidas p {margin: 0;}

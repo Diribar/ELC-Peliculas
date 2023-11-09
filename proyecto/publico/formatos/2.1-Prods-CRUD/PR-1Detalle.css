@@ -8,22 +8,22 @@
 
 /* Links - Ayuda */
 .marco#links #ayudaLinks {margin-right: 10px;}
-.marco#links #ayudaLinks .ayudaMostrar {max-width: min(275px, 69vw); translate: 100% 0; top: -25px; bottom: auto;}
-.marco#links #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
-.marco#links #ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
-.marco#links #ayudaLinks .ayudaMostrar ul {list-style-type: none;}
-.marco#links #ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
-.marco#links #ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
-.marco#links #ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
-.marco#links #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
+#ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
+#ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
+#ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
+#ayudaLinks .ayudaMostrar ul {list-style-type: none;}
+#ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
+#ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
+#ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
+#ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
 
 /* Links - Íconos */
 .marco#links nav a {margin-right: 10px;}
-.marco#links nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
-.marco#links nav a img {max-width: 70px; max-height: 24px;}
-.marco#links nav a img.enCast {border-color: var(--verde-oscuro);}
-.marco#links nav a img.subtCast {border-color: gold;}
-.marco#links nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
+nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
+nav a img {max-width: 70px; max-height: 24px;}
+nav a img.enCast {border-color: var(--verde-oscuro);}
+nav a img.subtCast {border-color: gold;}
+nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 
 /* Marco de Detalle */
 #marcoDetalle {margin-top: 20px; display: flex; flex-direction: column; width: fit-content;}
