@@ -1,17 +1,14 @@
 /* Contenedores */
-#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario,
-#cuerpo .inputError {position: relative;} /* align-items: center; */
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario, #cuerpo .inputError {position: relative;}
 
 /* Formato común entre Ayuda y Errores */
-#cuerpo .ayuda, .inputError .errores {right: -5px; line-height: 1rem; font-size: 1rem;}
-#cuerpo .ayuda, .inputError .errores {position: absolute; top: 50%; translate: 100% -50%;}
+#cuerpo .ayuda, .inputError .errores {line-height: 1rem; font-size: 1rem;}
+#cuerpo .ayuda, .inputError .errores {position: absolute; right: -5px; top: 50%; translate: 100% -50%;}
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Bordes */
-.ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark,
-.fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
-.fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question
-.ayudaMostrar {border-width: 1px; border-style: solid}
+.ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
+.fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question, .ayudaMostrar {border-width: 1px; border-style: solid}
 .errores .fa-circle-xmark .mensajeError {border-width: 2px; border-style: solid}
 
 /* Donde se hace 'click' */
@@ -21,20 +18,29 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar, .mensajeError {right: -3px; bottom: -3px; translate: 0 100%;}
 .ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 70vw); width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
+.ayudaMostrar::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
 
-/* Desplegables Ayuda - Temas generales */
+/* Títulos - Temas particulares */
+#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
+#tituloPrincipal .ayudaMostrar {top: -7px; right: -7px; translate: 100% 0;}
+#tituloPrincipal .ayudaMostrar::before {top: 7px; left: 0px; translate: -100% 0;}
+#tituloPrincipal .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
+
+/* Ayuda - Temas particulares */
+.ayudaMostrar {right: -7px; top: 50%; translate: 100% -50%; }
+.ayudaMostrar::before {left: 0px; top: 50%; translate: -100% -50%;}
+.ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
 
-/* Desplegables Errores - Temas generales */
+/* Errores - Temas particulares */
 .mensajeError {display: none;}
+.mensajeError {right: -7px; top: 50%; translate: 100% -50%;}
+.mensajeError::before {left: -2px; top: 50%; translate: -100% -50%;}
+.mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}
 
-/* Desplegables - Temas particulares */
-#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
-#tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%); translate: none;}
-#tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%); translate: none;}
+/* Hover */
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 .errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
@@ -51,9 +57,3 @@
 .ayudaMostrar {border-color: var(--bordeAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
 .link {background: var(--gris-oscuro); color: var(--gris-claro);}
-
-/* Before */
-.ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
-.mensajeError::before {border-color: transparent transparent var(--colorMensajeError) transparent;}
-.ayudaMostrar::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
-.ayudaMostrar::before, .mensajeError::before {right: 3px; top: 0; translate: 0 -100%; }

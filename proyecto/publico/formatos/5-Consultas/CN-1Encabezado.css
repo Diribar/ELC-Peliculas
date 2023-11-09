@@ -9,6 +9,7 @@
 #encabezado #tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
 #encabezado #tituloPrincipal select optgroup {background: var(--azul-frances) ;}
 #encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
+#encabezado #tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
 
 /* Ayuda y Actualizar */
 #encabezado #tituloPrincipal #ayudaOrden {margin-left: 10px;}

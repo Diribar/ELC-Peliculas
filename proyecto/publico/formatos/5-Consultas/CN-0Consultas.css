@@ -39,7 +39,7 @@ main #cuerpoFooterImgDer {visibility: hidden;}
 /* Vista de Resultados - Carteles "Botón" */
 #vistaDeResults #carteles button.cartel {font-size: 2rem; font-weight: bold; font-style: italic;}
 #vistaDeResults #carteles :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#vistaDeResults #carteles :is(button#asegurate, button#pppSinLogin) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#vistaDeResults #carteles :is(button#asegurate, button#loginNecesario) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 
 /* Vista de Resultados - Carteles "Especiales" */
 #carteles .cartel.especial {scale: 1.5; overflow: hidden;}
