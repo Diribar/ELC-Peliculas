@@ -13,8 +13,3 @@
 @media (width <= 500px) {
 	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
 }
-@media (width <= 430px) {
-	#ayudaLinks .ayudaMostrar {top: auto; right: auto; bottom: -3px; translate: -65px 100%;}
-	#ayudaLinks .ayudaMostrar::before {top: 0px; left: 65px; translate: 3px -100%;}
-	#ayudaLinks .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-}
