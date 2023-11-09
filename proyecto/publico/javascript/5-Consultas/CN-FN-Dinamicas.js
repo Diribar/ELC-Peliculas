@@ -146,8 +146,8 @@ let actualizaConfigCons = {
 
 	// Presencia eventual
 	pppOpciones: function () {
-		// Si el usuario no está logueado, sigue a la siguiente rutina
-		if (!v.userID) return this.idioma();
+		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
+		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.idioma();
 
 		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
 		if (v.opcionBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
