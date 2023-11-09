@@ -28,7 +28,7 @@ module.exports = {
 
 		// Info para el bloque Izquierdo
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
-		let bloqueIzq = {infoGral, actores};
+		const bloqueIzq = {infoGral, actores};
 
 		// RCLV
 		const entidadesRCLV = variables.entidades.rclvs;
