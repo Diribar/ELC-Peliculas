@@ -195,7 +195,7 @@ module.exports = {
 		// Mensajes
 		const mensajes = {
 			publico: [
-				"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
+				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
 				"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
 				"Familia: ideal para compartir en familia y que todos la disfruten.",
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
