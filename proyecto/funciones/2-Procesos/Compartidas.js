@@ -289,6 +289,7 @@ module.exports = {
 				.replace("]", ")")
 				.replace(/\t/g, " ") // previene el uso de 'tab'
 				.replace(/\n/g, " ") // previene el uso de 'return'
+				.replace(/\r/g, " ") // previene el uso de 'return'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),

@@ -189,9 +189,6 @@ window.addEventListener("load", async () => {
 	DOM.submit.addEventListener("keydown", async (e) => {
 		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
 	});
-
-	// STATUS INICIAL *************************************
-	await FN.actualizaVarios();
 });
 
 // Variables
