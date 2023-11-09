@@ -21,3 +21,4 @@ header .menuDerecha {right: 0px;}
 header #menuMobile .menuOpcion {height: 28px;}
 header #menuMobile .menuOpcion div {width: 30px; text-align: start;}
 header #menuMobile .menuOpcion span {font-size: 1rem;}
+header #menuMobile .soloAngosto {display: none;}
