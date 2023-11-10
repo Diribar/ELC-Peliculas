@@ -108,8 +108,8 @@ module.exports = {
 					: req.session.IM || req.cookies.IM
 					? "ingreso-manual"
 					: "desambiguar";
-			// Render del formulario
 
+			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Agregar - Datos Duros", origen},
 				...{dataEntry: datosDuros, imgDerPers, errores},

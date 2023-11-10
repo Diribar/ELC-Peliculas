@@ -2,6 +2,7 @@
 	<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 	<h3>Links para verl<%= oa %></h3>
 </div>
+<!-- Links -->
 <div id="links" class="marco flexCol">
 	<!-- Película/Capítulo -->
 	<% if (entidad != "colecciones") { %>
@@ -31,6 +32,7 @@
 		<p><em>- No disponemos de links de Trailer de esta colección. -</em></p>
 	<% } %>
 </div>
+<!-- Información -->
 <div id="marcoDetalle">
 	<div id="etiquetas" class="flexRow">
 		<p class="resaltar">Sinopsis</p>
@@ -50,18 +52,11 @@
 		</div>
 		<!-- Inormación general -->
 		<div id="masInfo" class="datosParcial" style="display: none;">
-			<% if (!bloqueIzq.masInfoIzq.length) { %>
+			<% if (!bloqueIzq.infoGral.length) { %>
 				<p>No disponemos de esa información</p>
 			<% } else { %>
-				<div id="masInfoIzq">
-					<% for (let campo of bloqueIzq.masInfoIzq) { %>
-						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
-					<% } %>
-				</div>
-			<% } %>
-			<% if (bloqueIzq.masInfoDer.length) { %>
-				<div id="masInfoDer">
-					<% for (let campo of bloqueIzq.masInfoDer) { %>
+				<div id="infoGral">
+					<% for (let campo of bloqueIzq.infoGral) { %>
 						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
 					<% } %>
 				</div>

@@ -28,14 +28,7 @@ module.exports = {
 
 		// Info para el bloque Izquierdo
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
-		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores};
-		if (infoGral.length) {
-			let lado = "masInfoIzq";
-			for (let dato of infoGral) {
-				if (["País", "Países"].includes(dato.titulo)) lado = "masInfoDer";
-				bloqueIzq[lado].push(dato);
-			}
-		}
+		const bloqueIzq = {infoGral, actores};
 
 		// RCLV
 		const entidadesRCLV = variables.entidades.rclvs;

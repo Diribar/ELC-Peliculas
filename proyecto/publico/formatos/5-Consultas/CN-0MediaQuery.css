@@ -1,8 +1,5 @@
 /* Ancho */
-@media (width <= 415px)  {
-	#encabezado #tituloPrincipal #entidadOrden {flex-direction: column;} /* Entidad y Orden en formato columna */
-	#encabezado #tituloPrincipal #ayudaOrden {align-self: flex-end; margin-bottom: 3px;} /* 'Ayuda' a la altura de 'Orden' */
-}
+@media (width <= 415px)  {#encabezado #tituloPrincipal #entidadOrden {flex-direction: column;}} /* Entidad y Orden en formato columna */
 @media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */
 @media (width <= 970px) {
 	#configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */

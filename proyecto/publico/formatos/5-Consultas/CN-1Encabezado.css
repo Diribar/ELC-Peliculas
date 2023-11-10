@@ -12,7 +12,7 @@
 #encabezado #tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
 
 /* Ayuda y Actualizar */
-#encabezado #tituloPrincipal #ayudaOrden {margin-left: 10px;}
+#encabezado #tituloPrincipal #ayudaOrden {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
 #encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
 #encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 

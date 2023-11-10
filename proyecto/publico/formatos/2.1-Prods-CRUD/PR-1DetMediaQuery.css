@@ -10,6 +10,5 @@
 	#tituloPrincipal .ayudaMostrar::before {top: 0px; left: 50%; translate: 3px -100%;}
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
-@media (width <= 500px) {
-	#recuadro #contenido {margin-left: 20px; margin-right: 20px;}
-}
+@media (width <= 500px) {#recuadro #contenido {margin-left: 20px; margin-right: 20px;}}
+@media (width <= 390px) {#datosDetalle .datosParcial#masInfo #infoGral {column-count: 1;}}

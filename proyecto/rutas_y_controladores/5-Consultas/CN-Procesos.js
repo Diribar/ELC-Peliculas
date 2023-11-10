@@ -68,7 +68,7 @@ module.exports = {
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
 			// Aplica otros filtros
-			resultados = this.prefs.prodsConInclude({resultados, configCons});
+			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons});
 
 			// Fin
 			return resultados;
@@ -102,11 +102,12 @@ module.exports = {
 				for (let campo in configCons)
 					if (vars[campo] && vars[campo].campoFiltro) prefs[vars[campo].campoFiltro] = configCons[campo];
 
-				// Conversión de 'calidadImagen'
-				if (configCons.calidadImagen) {
-					const aux = calidadImagen.opciones.find((n) => n.id == configCons.calidadImagen).condic;
-					prefs = {...prefs, ...aux};
-				}
+				// Conversión de campos similares
+				for (let campo of ["calidadImagen", "publicos"])
+					if (configCons[campo]) {
+						const aux = vars[campo].opciones.find((n) => n.id == configCons[campo]).condic;
+						prefs = {...prefs, ...aux};
+					}
 
 				// Conversión de 'idioma'
 				if (configCons.idioma) {
@@ -114,21 +115,15 @@ module.exports = {
 					prefs = {...prefs, ...aux};
 				}
 
-				// Conversión de 'publicos'
-				if (configCons.publicos) {
-					const aux = publicos.opciones.find((n) => n.id == configCons.publicos).condic;
-					prefs = {...prefs, ...aux};
-				}
-
 				// Fin
 				return prefs;
 			},
-			prodsConInclude: ({resultados, configCons}) => {
+			otrosFiltros: ({resultados, configCons}) => {
 				// Variables
-				const {apMar, rolesIgl, canons} = configCons;
+				const {apMar, rolesIgl, canons, entidad} = configCons;
 
 				// Filtra por apMar
-				if (apMar && resultados.length) {
+				if (apMar) {
 					if (apMar == "SI")
 						resultados = resultados.filter(
 							(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
@@ -140,7 +135,7 @@ module.exports = {
 				}
 
 				// Filtra por rolesIgl
-				if (rolesIgl && resultados.length) {
+				if (rolesIgl) {
 					if (rolesIgl == "RS")
 						resultados = resultados.filter(
 							(n) =>
@@ -154,7 +149,7 @@ module.exports = {
 				}
 
 				// Filtra por canons
-				if (canons && resultados.length) {
+				if (canons) {
 					// Santos y Beatos
 					if (canons == "SB")
 						resultados = resultados.filter(
@@ -175,6 +170,9 @@ module.exports = {
 					// Sin proceso de canonización
 					else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN"));
 				}
+
+				// Filtra por entidad
+				if (entidad) resultados = resultados.filter((n) => n.entidad == entidad);
 
 				// Fin
 				return resultados;
@@ -299,13 +297,11 @@ module.exports = {
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la 'ppp' del usuario
 						else {
-							// console.log(prods[i].nombreCastellano);
 							// Variable
 							const pppOpcionElegida =
 								configCons.pppOpciones == sinPref.id || !pppRegistro
 									? sinPref
 									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
-							// console.log(319, pppOpcionElegida);
 
 							// Le agrega a los productos la 'ppp' del usuario
 							prods[i] = {
@@ -399,8 +395,8 @@ module.exports = {
 				return prodsCruzadosConRCLVs;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
-				if (!prods.length || !usuario_id) return [];
 				if (opcion.codigo != "misCalificadas") return prods;
+				if (!prods.length || !usuario_id) return [];
 
 				// Variables
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
