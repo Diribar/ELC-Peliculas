@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 9/nov",
-	"HoraUTC": "9:58",
+	"FechaUTC": "Vie. 10/nov",
+	"HoraUTC": "11:13",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 6/nov",
@@ -22,10 +22,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"07-nov-23": {"titulo": "ELC - Películas"},
 		"08-nov-23": {"titulo": "Beato Juan Duns Scoto", "entidad": "personajes", "id": 73},
 		"09-nov-23": {"titulo": "ELC - Películas"},
 		"10-nov-23": {"titulo": "ELC - Películas"},
-		"11-nov-23": {"titulo": "San Martín de Tours", "entidad": "personajes", "id": 152}
+		"11-nov-23": {"titulo": "San Martín de Tours", "entidad": "personajes", "id": 152},
+		"12-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
