@@ -12,7 +12,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
+#dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px; z-index: 7;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
 #dataEntry :is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario)
