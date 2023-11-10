@@ -235,7 +235,7 @@ module.exports = {
 
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
-			const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
+			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 			comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Final", original.avatar);
 			comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", original.avatar);
 		}

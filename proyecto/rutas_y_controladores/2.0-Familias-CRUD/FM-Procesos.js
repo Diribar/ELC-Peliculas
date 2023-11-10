@@ -78,7 +78,7 @@ module.exports = {
 	obtieneAvatar: (original, edicion) => {
 		// Variables
 		const familias = original.fuente ? "productos" : "RCLVs"; // los registros de producto tienen el campo 'fuente'
-		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
+		const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 		const final = carpeta + "/Final/";
 		const revisar = carpeta + "/Revisar/";
 		const sinAvatar = "/publico/imagenes/Avatar/Sin-Avatar.jpg";
@@ -555,7 +555,7 @@ module.exports = {
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
+			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 
 			if (ediciones.length) {
 				// 1. Elimina el archivo avatar de las ediciones

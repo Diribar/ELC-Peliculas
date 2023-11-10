@@ -502,6 +502,7 @@ module.exports = {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
+			// Acciones para productos
 			if (familias == "productos") {
 				// Variables
 				const url = original.avatar;
@@ -763,7 +764,7 @@ module.exports = {
 	descargaAvatarOriginal: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
+		const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 		const ruta = carpetaExterna + carpeta + "/Final/";
 		const avatar = Date.now() + path.extname(original.avatar);
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
@@ -806,7 +807,7 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	const url = avatarOrig && avatarOrig.includes("/");
 	const avatarEdic = edicion.avatar;
 	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const carpeta = (familias == "productos" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familias);
+	const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 
 	// Reemplazo
 	if (aprob) {

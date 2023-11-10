@@ -656,7 +656,7 @@ let avatarConLink = (familia, valor, texto) => {
 	// Variables
 	texto = "la imagen " + texto;
 	const terminacion = '" style="color: inherit; text-decoration: none"><u>' + texto + "</u></a>";
-	const carpeta = (familia == "producto" ? "2-" : "3-") + comp.convierteLetras.inicialMayus(familia) + "s";
+	const carpeta = familia == "producto" ? "2-Productos" : "3-RCLVs";
 	const rutaArchivo = carpeta + "/Final/" + valor;
 
 	// Fin
