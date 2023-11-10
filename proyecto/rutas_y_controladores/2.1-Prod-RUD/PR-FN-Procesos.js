@@ -106,7 +106,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	interesDelUsuario: async ({usuario_id, entidad, entidad_id}) => {
+	obtieneInteresDelUsuario: async ({usuario_id, entidad, entidad_id}) => {
 		// Variables
 		const condics = {usuario_id, entidad, entidad_id};
 		const include = "detalle";
