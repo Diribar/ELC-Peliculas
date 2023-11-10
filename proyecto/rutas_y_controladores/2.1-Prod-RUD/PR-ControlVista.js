@@ -308,13 +308,16 @@ module.exports = {
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id});
-			const ayudasTitulo = [
-				"Sólo podés calificar una película si la viste.",
-				"Necesitamos saber TU opinión, no te guíes por lo que opinan otras personas.",
-			];
+
+			// Ayuda para el título
+			const ayudasTitulo = [];
+			if ([sinPref.id, laQuieroVer.id].includes(interesDelUsuario.id))
+				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
+			if (interesDelUsuario.id == sinPref.id)
+				ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
+			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.")
 
 			// Va a la vista
-			// return res.send(interesDelUsuario);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},
