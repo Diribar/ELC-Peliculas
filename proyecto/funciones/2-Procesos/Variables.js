@@ -146,6 +146,13 @@ module.exports = {
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
+		entidad: {
+			titulo: "Películas / Colecciones",
+			opciones: [
+				{id: "peliculas", nombre: "Sólo películas"},
+				{id: "colecciones", nombre: "Sólo colecciones"},
+			],
+		},
 	},
 
 	// Agregar Productos
