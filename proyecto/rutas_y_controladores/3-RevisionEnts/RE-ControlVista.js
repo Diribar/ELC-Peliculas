@@ -506,7 +506,7 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
-		links.sort((a, b) => a.id - b.id);
+		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			link.cond = procsLinks.condiciones(link, revID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
