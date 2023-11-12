@@ -678,9 +678,9 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		return registro.statusRegistro.creados
+		return registro.statusRegistro_id == creado_id
 			? {id: 1, valor: "Creado"}
-			: registro.statusRegistro_id == aprobado_id
+			: registro.statusRegistro.aprobados
 			? {id: 2, valor: "Aprobado"}
 			: registro.statusRegistro_id == inactivo_id
 			? {id: 3, valor: "Inactivo"}
