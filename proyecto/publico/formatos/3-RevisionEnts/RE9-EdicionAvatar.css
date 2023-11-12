@@ -1,6 +1,6 @@
 /* General */
-#cuerpoFooter {display: flex; flex-direction: column-reverse;}
 #cuerpoFooter #cuerpo {background: transparent; flex-direction: row; justify-content: space-between;}
+#cuerpoFooter #cuerpo {max-height: 100%;}
 
 /* Secciones de Imagen */
 #cuerpo .imagenes {position: relative;}

@@ -55,7 +55,7 @@ module.exports = {
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
-		let interesDelUsuario = userID ? procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
+		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
 			? BD_genericas.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
@@ -307,14 +307,16 @@ module.exports = {
 			const condics = {entidad, entidad_id: id, usuario_id: userID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
-			const interesDelUsuario = await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id});
-			const ayudasTitulo = [
-				"Sólo podés calificar una película si la viste.",
-				"Necesitamos saber TU opinión, no te guíes por lo que opinan otras personas.",
-			];
+			const interesDelUsuario = await procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id});
+
+			// Ayuda para el título
+			const ayudasTitulo = [];
+			if ([sinPref.id, laQuieroVer.id].includes(interesDelUsuario.id))
+				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
+			if (interesDelUsuario.id == sinPref.id) ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
+			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
-			// return res.send(interesDelUsuario);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},
@@ -327,14 +329,13 @@ module.exports = {
 			// Variables
 			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
 			const userID = req.session.usuario.id;
-			const condics = {usuario_id: userID, entidad, entidad_id};
-			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
 
 			// Verifica errores
 			const errores = valida.calificar({feValores_id, entretiene_id, calidadTecnica_id});
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Obtiene el resultado
+			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
 			let resultado = 0;
 			for (let criterio of criteriosCalif) {
 				const campo_id = criterio.atributo_id;
@@ -348,6 +349,7 @@ module.exports = {
 			valores.resultado = Math.round(resultado);
 
 			// Averigua si existe la calificacion
+			const condics = {usuario_id: userID, entidad, entidad_id};
 			const existe = await BD_genericas.obtienePorCondicion("calRegistros", condics);
 			existe
 				? await BD_genericas.actualizaPorId("calRegistros", existe.id, valores)
@@ -355,6 +357,13 @@ module.exports = {
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});
+
+			// Actualiza la ppp
+			const interesDelUsuario = await procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id});
+			if (interesDelUsuario.id == sinPref.id) {
+				const datos = {usuario_id: userID, entidad, entidad_id, opcion_id: yaLaVi.id};
+				await BD_genericas.agregaRegistro("pppRegistros", datos);
+			}
 
 			// Fin
 			return res.redirect(req.originalUrl);

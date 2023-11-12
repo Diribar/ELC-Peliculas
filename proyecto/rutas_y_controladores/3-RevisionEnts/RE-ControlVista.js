@@ -99,21 +99,9 @@ module.exports = {
 				"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 			];
 
-			// Info para el bloque Izquierdo - Primer proceso: hace más legible la información
-			const infoProcesada = procsProd.bloqueIzq(original);
-
-			// Info para el bloque Izquierdo - Segundo proceso: reagrupa la información
-			let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
-			if (infoProcesada.infoGral.length) {
-				let infoGral = infoProcesada.infoGral;
-				for (let i = 0; i < infoGral.length / 2; i++) {
-					// Agrega un dato en 'masInfoIzq'
-					bloqueIzq.masInfoIzq.push(infoGral[i]);
-					// Agrega un dato en 'masInfoDer'
-					let j = parseInt(infoGral.length / 2 + 0.5 + i);
-					if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
-				}
-			}
+			// Info para el bloque Izquierdo
+			const {infoGral, actores} = procsProd.bloqueIzq(original);
+			const bloqueIzq = {infoGral, actores};
 
 			// Bloque Derecho
 			const bloqueDer = [
@@ -257,7 +245,7 @@ module.exports = {
 			}
 
 			// Acciones si es una colección
-			if (entidad == "colecciones"){
+			if (entidad == "colecciones") {
 				// Actualiza el status de los capítulos
 				statusFinal_id == aprobado_id
 					? await procsCRUD.revisiones.capsAprobs(id)
@@ -268,7 +256,7 @@ module.exports = {
 					  );
 
 				// Actualiza el campo 'prodAprob' en los links de sus capítulos
-				procesos.guardar.prodAprobEnLink(id, statusFinal_id)
+				procesos.guardar.prodAprobEnLink(id, statusFinal_id);
 			}
 
 			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
