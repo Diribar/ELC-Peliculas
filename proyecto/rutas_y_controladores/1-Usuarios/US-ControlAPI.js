@@ -43,6 +43,7 @@ module.exports = {
 					contrasena,
 					fechaContrasena: ahora,
 					statusRegistro_id: mailPendValidar_id,
+					versionElcUltimoLogin: versionELC,
 				});
 
 			// Guarda el mail en 'session'
