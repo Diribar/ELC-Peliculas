@@ -38,11 +38,8 @@ module.exports = {
 			registro: procsCRUD.bloqueRegistro(rclv),
 		};
 
-		// Status de la entidad
-		const status_id = original.statusRegistro_id;
-		const statusEstable = codigo == "detalle" && (aprobados_ids.includes(status_id) || status_id == inactivo_id);
-
 		// Datos para la vista
+		const status_id = original.statusRegistro_id;
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
@@ -52,7 +49,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, id, familia, status_id, statusEstable, creadoPor_id},
+			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, canonNombre, RCLVnombre},
 			userPerenne,
