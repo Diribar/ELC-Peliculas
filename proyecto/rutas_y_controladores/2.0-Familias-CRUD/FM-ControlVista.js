@@ -173,6 +173,7 @@ module.exports = {
 	eliminar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
+		//return res.send(req.query)
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const original =
