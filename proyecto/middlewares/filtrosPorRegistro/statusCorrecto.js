@@ -54,15 +54,15 @@ module.exports = async (req, res, next) => {
 
 // Funciones
 let FN_statusEsperados_id = (baseUrl, ruta) => {
-	return false
-		? false
-		: baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
+	return baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
 		? ruta == "/edicion/"
 			? [creado_id, ...aprobados_ids]
 			: ruta == "/inactivar/"
 			? aprobados_ids
 			: ruta == "/recuperar/" || ruta == "/eliminar/"
 			? [inactivo_id]
+			: ruta == "/eliminadoPorCreador/"
+			? [creado_id]
 			: ruta == "/calificar/"
 			? [creado_id, ...aprobados_ids]
 			: [99]
