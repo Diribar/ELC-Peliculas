@@ -47,11 +47,12 @@ module.exports = {
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
 		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const creadoPor_id = rclv.creadoPor_id;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
+			...{entidad, entidadNombre, id, familia, status_id, statusEstable, creadoPor_id},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, canonNombre, RCLVnombre},
 			userPerenne,
