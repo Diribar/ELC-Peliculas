@@ -8,13 +8,13 @@
 				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 			</a>
 		<% } %>
-		<% else if (locals.status_id == aprobado_id) { %>
+		<% if (locals.status_id == aprobado_id) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
-		<% else if (locals.status_id == inactivo_id) { %>
+		<% if (locals.status_id == inactivo_id) { %>
 			<!-- Recuperar -->
 			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
