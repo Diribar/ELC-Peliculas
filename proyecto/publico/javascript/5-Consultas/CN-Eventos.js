@@ -72,69 +72,74 @@ window.addEventListener("load", async () => {
 		const padre = elemento.parentNode;
 		const nombre = elemento.id ? elemento.id : padre.id;
 
-		// Iconos
-		if (elemento.tagName == "I") {
-			// Si el ícono está inactivo, interrumpe la función
-			if (elemento.className.includes("inactivo")) return;
+		// Si el ícono está inactivo, interrumpe la función
+		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
-			// Botonera
-			if (padre.id == "iconosBotonera") {
-				if (["nuevo", "edicion"].includes(nombre)) {
-					// Variables
-					v.nombreOK = false;
+		// Botonera
+		if (padre.id == "iconosBotonera") {
+			if (["nuevo", "edicion"].includes(nombre)) {
+				// Variables
+				v.nombreOK = false;
 
-					// Valor en el input
-					DOM.configNuevaNombre.value =
-						nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
+				// Valor en el input
+				DOM.configNuevaNombre.value =
+					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
 
-					// Alterna la clase 'nuevo' o 'edicion' en el input
-					DOM.configNuevaNombre.classList.toggle(nombre);
+				// Alterna la clase 'nuevo' o 'edicion' en el input
+				DOM.configNuevaNombre.classList.toggle(nombre);
 
-					// Actualiza la botonera
-					actualiza.botoneraActivaInactiva();
+				// Actualiza la botonera
+				actualiza.botoneraActivaInactiva();
 
-					// Pone el cursor en el input
-					DOM.configNuevaNombre.focus();
-				} else if (nombre == "deshacer") {
-					await actualiza.valoresInicialesDeVariables();
-					await actualiza.statusInicialCampos();
-					await cambioDeCampos();
-				} else if (nombre == "eliminar") {
-					// Si hay un error, interrumpe la función
-					const existe = await verificaConfigCons_id();
-					if (!existe || !v.filtroPropio) return;
+				// Pone el cursor en el input
+				DOM.configNuevaNombre.focus();
+			} else if (nombre == "deshacer") {
+				await actualiza.valoresInicialesDeVariables();
+				await actualiza.statusInicialCampos();
+				await cambioDeCampos();
+			} else if (nombre == "eliminar") {
+				// Si hay un error, interrumpe la función
+				const existe = await verificaConfigCons_id();
+				if (!existe || !v.filtroPropio) return;
 
-					// Acciones si existe
-					await cambiosEnBD.eliminaConfigCons();
-					await cambioDeConfig_id();
-					await cambioDeCampos();
-				} else if (nombre == "guardar") {
-					guardarBotonera();
-				}
+				// Acciones si existe
+				await cambiosEnBD.eliminaConfigCons();
+				await cambioDeConfig_id();
+				await cambioDeCampos();
+			} else if (nombre == "guardar") guardarBotonera();
+			return;
+		}
+
+		// 'palabrasClave'
+		if (nombre == "palabrasClave") {
+			palabrasClave();
+			return;
+		}
+
+		// Preferencia por producto
+		if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
+			e.preventDefault(); // Previene el efecto del anchor
+			await cambiosEnBD.ppp(elemento); // Actualiza la 'ppp'
+			return;
+		}
+
+		// Actualizar resultados (encabezado)
+		if (nombre == "actualizar") {
+			if (v.obtener) {
+				await resultados.obtiene();
+				if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 			}
-			// 'palabrasClave'
-			else if (nombre == "palabrasClave") palabrasClave();
-			// Preferencia por producto
-			else if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
-				// Previene el efecto del anchor
-				e.preventDefault();
+			return;
+		}
 
-				// Actualiza la 'ppp'
-				await cambiosEnBD.ppp(elemento);
-			}
-			// Actualizar resultados (encabezado)
-			else if (nombre == "actualizar") {
-				if (v.obtener) {
-					await resultados.obtiene();
-					if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
-				}
-			}
-			// Cierra el cartel "pppOpciones"
-			else if (nombre == "cierra") padre.classList.add("ocultar");
+		// Cierra el cartel "pppOpciones"
+		if (nombre == "cierra") {
+			padre.classList.add("ocultar");
+			return;
 		}
 
 		// Cartel 'mostrarFiltros'
-		else if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
+		if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
@@ -143,10 +148,13 @@ window.addEventListener("load", async () => {
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
 			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
 			actualiza.muestraOcultaFiltros();
+
+			// Fin
+			return;
 		}
 
 		// Caption - expande/contrae la tabla
-		else if ([elemento.tagName, padre.tagName].includes("CAPTION")) {
+		if ([elemento.tagName, padre.tagName].includes("CAPTION")) {
 			// Obtiene el índice
 			let indice = v.captions.findIndex((n) => n == elemento);
 			if (indice < 0) indice = v.captions.findIndex((n) => n == padre);
@@ -160,17 +168,23 @@ window.addEventListener("load", async () => {
 
 			// Alterna el signo 'plus' o 'minus'
 			["plus", "minus"].map((n) => DOM.expandeContraes[indice].classList.toggle("fa-square-" + n));
-		}
-		// Botón 'quieroVer'
-		else if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) resultados.muestra.generico();
-		// Anchor 'verVideo'
-		else if (elemento == DOM.anchorVerVideo) {
-			v.videoConsVisto = true;
-			DOM.cartelVerVideo.classList.add("ocultar");
+
+			// Fin
+			return;
 		}
 
-		// Fin
-		return;
+		// Botón 'quieroVer'
+		if (padre.id == "carteles" && nombre == "quieroVer" && v.obtener) {
+			resultados.muestra.generico();
+			return;
+		}
+
+		// Anchor 'verVideo'
+		if (elemento == DOM.anchorVerVideo) {
+			v.videoConsVisto = true;
+			DOM.cartelVerVideo.classList.add("ocultar");
+			return;
+		}
 	});
 	DOM.cuerpo.addEventListener("keypress", (e) => {
 		if (e.key == "Enter") {
