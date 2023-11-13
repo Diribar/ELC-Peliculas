@@ -694,7 +694,6 @@ let actualizaLaEpocaDeEstreno = async () => {
 	return;
 };
 let eliminaHistorialQueNoCorresponde = async () => {
-	return;
 	// Obtiene los calRegistros
 	let calRegistros = await BD_genericas.obtieneTodos("calRegistros");
 
