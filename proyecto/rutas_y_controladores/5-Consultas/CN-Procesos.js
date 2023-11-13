@@ -516,6 +516,7 @@ module.exports = {
 						: opcion.codigo;
 
 				// Ordena
+				prods.sort((a, b) => a.azar - b.azar);
 				prods.sort((a, b) =>
 					typeof a[campo] == "string" && b[campo] == "string"
 						? opcion.ascDes == "ASC"
