@@ -14,6 +14,7 @@ const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL")
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
+const creadoPorUsuario = require("../../middlewares/filtrosPorRegistro/creadoPorUsuario");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 // Temas de captura
@@ -26,6 +27,7 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
+const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -42,6 +44,7 @@ router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecup.form
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecup.form);
 router.get("/:familia/eliminado", vista.eliminado);
+router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminar);
 
 // CRUD-Inactivar, Recuperar, Eliminar
 router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup.guardar);
