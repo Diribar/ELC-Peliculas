@@ -154,6 +154,7 @@ app.set("views", [
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
+		versionesELC: [], // BD_genericas.obtieneTodos("versionesELC", "fechaLanzam"),
 	};
 	// Procesa todas las lecturas
 	const valores = await Promise.all(Object.values(datos));
