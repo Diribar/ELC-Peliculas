@@ -266,15 +266,11 @@ module.exports = {
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Inicia la sesión del usuario y guarda el mail en cookies
-			req.session.usuario = usuario;
+			// req.session.usuario = usuario;
 			res.cookie("email", req.body.email, {maxAge: unDia});
 
 			// Notifica al contador de logins y averigua si cambio la versión
 			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
-			if (usuario.versionElcUltimoLogin != versionELC) {
-				const informacion = await comp.novedadesELC(usuario, req);
-				if (informacion) return res.render("CMP-0Estructura", {informacion});
-			}
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
