@@ -1,7 +1,7 @@
 <% if (locals.userPerenne ) { %>
 	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
-	<div class="flechas">
+	<div id="flechasCambioStatus" class="flechas">
 		<% if (locals.status_id == creado_id && usuario.id == locals.creadoPor_id) { %>
 			<!-- Eliminar -->
 			<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
@@ -26,8 +26,6 @@
 				</a>
 			<% } %>
 		<% } %>
-		<!-- Color azul para las vistas de Detalle -->
-		<style>.flechas :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}</style>
 	</div>
 <% } %>
 
