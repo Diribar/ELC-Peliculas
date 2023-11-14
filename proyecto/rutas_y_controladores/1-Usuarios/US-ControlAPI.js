@@ -34,14 +34,13 @@ module.exports = {
 			if (errores.hay) return res.json({errores});
 
 			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
-			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
+			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
 			if (mailEnviado)
 				await BD_genericas.agregaRegistro("usuarios", {
 					email,
 					contrasena,
-					fechaContrasena: ahora,
 					statusRegistro_id: mailPendValidar_id,
 					versionElcUltimoLogin: versionELC,
 				});
