@@ -269,7 +269,7 @@ module.exports = {
 			// req.session.usuario = usuario;
 			res.cookie("email", req.body.email, {maxAge: unDia});
 
-			// Notifica al contador de logins y averigua si cambio la versión
+			// Notifica al contador de logins
 			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
 
 			// Redirecciona
