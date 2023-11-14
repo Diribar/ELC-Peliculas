@@ -271,8 +271,12 @@ module.exports = {
 
 			// Notifica al contador de logins y averigua si cambio la versión
 			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
+			if (usuario.versionElcUltimoLogin != versionELC) {
+				const informacion = await comp.novedadesELC(usuario, req);
+				if (informacion) return res.render("CMP-0Estructura", {informacion});
+			}
 
-			// 9. Redireccionar
+			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 	},
