@@ -11,7 +11,9 @@
 .flechas button :is(i) {margin: 0;}
 .flechas .pack :where(i, img, button) {margin: 0 5px;}
 .flechas .pack {margin: 0 5px; display: flex; flex-direction: row; align-items: center;}
-
 .flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
-
 .flechas button, .flechas a {display: flex; flex-direction: row; align-items: center; height: min-content;}
+
+/* Cambios de status */
+#flechasCambioStatus :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}
+.flechas#flechasCambioStatus:not(:has(i)) {display: none}
