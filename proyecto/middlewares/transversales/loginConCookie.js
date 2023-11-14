@@ -17,27 +17,8 @@ module.exports = async (req, res, next) => {
 		}
 	}
 
-	// Miscelaneas
-	if (req.session.usuario) {
-		// Graba los datos del usuario a 'locals' para la vista
-		if (!res.locals.usuario) res.locals.usuario = req.session.usuario;
-
-		// Acciones si cambió la versión
-		if (req.session.usuario.versionElcUltimoLogin != versionELC) {
-			const novedades = await comp.novedadesELC(req.session.usuario, req);
-			res.locals.usuario = req.session.usuario;
-
-			// Si hubieron novedades, redirige
-			if (novedades.length)
-				return res.render("CMP-0Estructura", {
-					informacion: {
-						mensajes: novedades,
-						iconos: [variables.vistaEntendido(req.session.urlActual)],
-						titulo: "Novedades",
-					},
-				});
-		}
-	}
+	// Graba los datos del usuario a 'locals' para la vista
+	if (req.session.usuario && !res.locals.usuario) res.locals.usuario = req.session.usuario;
 
 	// Fin
 	next();
