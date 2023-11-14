@@ -21,6 +21,7 @@ module.exports = {
 
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
+		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			link.cond = procesos.condiciones(link, userID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";

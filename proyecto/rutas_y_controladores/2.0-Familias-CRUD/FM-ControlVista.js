@@ -227,11 +227,11 @@ module.exports = {
 		await Promise.all(esperar);
 		await BD_genericas.eliminaPorId(entidad, id);
 
-		// Elimina el historial de status
+		// Elimina registros vinculados
 		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
-
-		// Elimina el historial de ediciones
 		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
+		BD_genericas.eliminaTodosPorCondicion("pppRegistros", {entidad, entidad_id: id});
+		BD_genericas.eliminaTodosPorCondicion("calRegistros", {entidad, entidad_id: id});
 
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {

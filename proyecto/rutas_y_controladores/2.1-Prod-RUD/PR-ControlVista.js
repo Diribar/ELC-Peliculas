@@ -50,8 +50,8 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
-		const statusEstable = aprobados_ids.includes(status_id) || status_id == inactivo_id;
 		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const creadoPor_id = prodComb.creadoPor_id;
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
@@ -72,7 +72,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, userPerenne},
-			...{entidad, id, familia: "producto", status_id, statusEstable},
+			...{entidad, id, familia: "producto", status_id, creadoPor_id},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},

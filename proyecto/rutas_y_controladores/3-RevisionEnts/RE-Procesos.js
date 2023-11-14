@@ -240,7 +240,7 @@ module.exports = {
 							nombre,
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
 							fechaRefTexto: n.fechaRefTexto,
-							links: n.linksGral || n.linksTrailer,
+							links: n.linksGral,
 						};
 						if (rubro == "ED") datos.edicID = n.edicID;
 						return datos;
@@ -782,6 +782,7 @@ let obtieneRegs = async (campos) => {
 	// Variables
 	let lecturas = [];
 	let resultados = [];
+
 	// Obtiene el resultado por entidad
 	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC.obtieneRegs({entidad, ...campos}));
 	await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));

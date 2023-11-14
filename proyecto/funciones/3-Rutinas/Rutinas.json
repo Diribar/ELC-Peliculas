@@ -1,16 +1,22 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 10/nov",
-	"HoraUTC": "11:13",
+	"FechaUTC": "Lun. 13/nov",
+	"HoraUTC": "1:43",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 6/nov",
-	"HoraSemUTC": "11:22",
-	"semanaUTC": 44,
+	"FechaSemUTC": "Lun. 13/nov",
+	"HoraSemUTC": "1:43",
+	"semanaUTC": 45,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
-	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI", "LinksPorProv": "SI", "FeedbackParaRevisores": "SI"},
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"PaisesConMasProductos": "SI",
+		"LinksPorProv": "SI",
+		"FeedbackParaRevisores": "SI",
+		"eliminaCalifsSinPPP": "SI"
+	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
 		"LinksVencidos": "SI",
@@ -22,10 +28,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-nov-23": {"titulo": "Beato Juan Duns Scoto", "entidad": "personajes", "id": 73},
-		"09-nov-23": {"titulo": "ELC - Películas"},
-		"10-nov-23": {"titulo": "ELC - Películas"},
 		"11-nov-23": {"titulo": "San Martín de Tours", "entidad": "personajes", "id": 152},
-		"12-nov-23": {"titulo": "ELC - Películas"}
+		"12-nov-23": {"titulo": "ELC - Películas"},
+		"13-nov-23": {"titulo": "Santa Francisca Javiera Cabrini", "entidad": "personajes", "id": 109},
+		"14-nov-23": {"titulo": "ELC - Películas"},
+		"15-nov-23": {"titulo": "Helena Studler", "entidad": "personajes", "id": 155}
 	}
 }

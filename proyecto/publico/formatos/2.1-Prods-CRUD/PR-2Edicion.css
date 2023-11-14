@@ -1,5 +1,5 @@
 /* Temas generales */
-main #cuerpo {background: var(--gris-claro);}
+#cuerpoFooter #cuerpo {background: var(--gris-claro); max-height: 100%;}
 #cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow: 1; position: relative;}
 #formCuerpoFooter #formCuerpo {display: flex; flex-direction: column; flex-grow: 1;}
@@ -37,7 +37,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos .labelInput .inputError .input.numero {text-align: right;}
 #datos .labelInput .inputError input {padding: 0px 5px;}
 #datos .labelInput .inputError select {padding: 0;}
-#datos .labelInput .inputError .input:disabled, #datos .labelInput#paises_id 
+/* #datos .labelInput .inputError .input:disabled, #datos .labelInput#paises_id */
 #datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 #datos .flexRowAlign #siNoTitulo {width: 210px;}
 

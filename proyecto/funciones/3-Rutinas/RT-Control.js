@@ -402,6 +402,21 @@ module.exports = {
 		// Fin
 		return;
 	},
+	eliminaCalifsSinPPP: async () => {
+		// Variables
+		const calRegistros = await BD_genericas.obtieneTodos("calRegistros");
+		const pppRegistros = await BD_genericas.obtieneTodos("pppRegistros");
+
+		// Si una calificación no tiene ppp, la elimina
+		for (let calRegistro of calRegistros) {
+			const {usuario_id, entidad, entidad_id} = calRegistro;
+			if (!pppRegistros.find((n) => n.usuario_id == usuario_id && n.entidad == entidad && n.entidad_id == entidad_id))
+				await BD_genericas.eliminaPorId("calRegistros", calRegistro.id);
+		}
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
@@ -679,22 +694,34 @@ let actualizaLaEpocaDeEstreno = async () => {
 	return;
 };
 let eliminaHistorialQueNoCorresponde = async () => {
-	// Obtiene los registros de histStatus en orden descendente
-	let histStatus = await BD_genericas.obtieneTodos("histStatus", false, true);
+	// Obtiene los calRegistros
+	let calRegistros = await BD_genericas.obtieneTodos("calRegistros");
 
 	// Rutina por registro
-	while (histStatus.length) {
-		// Variables
-		const registro = histStatus[0]; // obtiene el registro más antiguo de 'histStatus'
-		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id); // obtiene el producto
+	for (let registro of calRegistros) {
+		// Si el producto no existe, elimina el registro
+		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id);
+		if (!producto) BD_genericas.eliminaPorId("calRegistros", registro.id);
+	}
 
-		// Si el status coincide, quita de la variable su historial
-		if (registro.statusFinal_id == producto.statusRegistro_id)
-			histStatus = histStatus.filter((n) => n.entidad != registro.entidad || n.entidad_id != registro.entidad_id);
-		// Si el status difiere, elimina el registro de la variable y de la BD
-		else {
-			BD_genericas.eliminaPorId("histStatus", registro.id);
-			histStatus.splice(0, 1);
+	// Fin
+	return;
+};
+let IDdeTablas = async () => {
+	//return
+	// Variables
+	const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion"];
+
+	// Rutina para todas las tablas
+	for (let tabla of tablas) {
+		// Variables
+		const registros = await BD_genericas.obtieneTodos(tabla);
+		let id = 1;
+
+		// Rutina por tabla
+		for (let registro of registros) {
+			BD_genericas.actualizaPorId(tabla, registro.id, {id});
+			id++;
 		}
 	}
 
