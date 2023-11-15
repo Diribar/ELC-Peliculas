@@ -2,7 +2,7 @@
 	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div id="flechasCambioStatus" class="flechas">
-		<% if (locals.status_id == creado_id && usuario.id == locals.creadoPor_id) { %>
+		<% if (locals.status_id == creado_id && locals.usuario && usuario.id == locals.creadoPor_id) { %>
 			<!-- Eliminar -->
 			<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
@@ -19,7 +19,7 @@
 			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
-			<% if (usuario.rolUsuario.revisorPERL) { %>
+			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 				<!-- Eliminar -->
 				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
