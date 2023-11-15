@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "novedadesELC";
 	const columns = {
 		comentario: {type: dt.STRING(60)},
-		fechaNovedad: {type: dt.DATE},
+		fecha: {type: dt.DATE},
 		versionELC: {type: dt.STRING(4)},
 
 		permInputs: {type: dt.BOOLEAN},
