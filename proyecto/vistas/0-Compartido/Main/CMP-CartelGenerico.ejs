@@ -13,7 +13,7 @@
 			<i id="trabajando" class="fa-solid fa-tools inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
 
 			<!-- Título -->
-			<p id="titulo"></p>
+			<p id="titulo"><%= locals.titulo %></p>
 
 			<!-- Si existe información, la muestra -->
 			<% if (locals.informacion) { %>
