@@ -265,12 +265,8 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
-			// Inicia la sesión del usuario y guarda el mail en cookies
-			// req.session.usuario = usuario;
+			// Guarda el mail en cookies
 			res.cookie("email", req.body.email, {maxAge: unDia});
-
-			// Notifica al contador de logins
-			if (usuario.pais_id) procesos.actualizaElContadorDeLogins(usuario);
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
