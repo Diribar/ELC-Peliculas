@@ -20,6 +20,8 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
+		if (!usuario.pais_id) return;
+
 		// Variables
 		const ahoraUTC = comp.fechaHora.ahora().getTime();
 		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zonaHoraria;
