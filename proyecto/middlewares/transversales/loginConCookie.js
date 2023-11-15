@@ -5,7 +5,7 @@ const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos"
 
 module.exports = async (req, res, next) => {
 	// Condiciones a superar
-	// if (req.session.usuario) return next(); // si ya tiene 'session', saltea la rutina
+	if (req.session.usuario) return next(); // si ya tiene 'session', saltea la rutina
 	if (!req.cookies || !req.cookies.email) return next(); // si no hay cookies, saltea la rutina
 
 	// Obtiene los datos del usuario
@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
 		for (let novedad of novedades)
 			for (let rol of roles)
 				if (novedad[rol]) {
-					mensajes.push(novedad.comentario);
+					mensajes.push(comp.fechaHora.fechaDiaMesAno(novedad.fecha) + " - " + novedad.comentario);
 					break;
 				}
 
