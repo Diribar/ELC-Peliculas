@@ -5,7 +5,7 @@ const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos"
 
 module.exports = async (req, res, next) => {
 	// Condiciones a superar
-	if (req.session.usuario) return next(); // si ya tiene 'session', saltea la rutina
+	// if (req.session.usuario) return next(); // si ya tiene 'session', saltea la rutina
 	if (!req.cookies || !req.cookies.email) return next(); // si no hay cookies, saltea la rutina
 
 	// Obtiene los datos del usuario
@@ -29,9 +29,7 @@ module.exports = async (req, res, next) => {
 		}
 
 		// Obtiene las novedades
-		console.log(33,novedadesELC);
 		let novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
-		console.log(34,novedades);
 		for (let novedad of novedades)
 			for (let rol of roles)
 				if (novedad[rol]) {
@@ -44,9 +42,9 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes,
 				iconos: [variables.vistaEntendido(req.session.urlActual)],
-				titulo: "Novedades",
+				titulo: "Novedades:",
+				check: true,
 			};
-		console.log(48, mensajes);
 
 		// Actualiza la versión en el usuario
 		// req.session.usuario = {...usuario, versionElcUltimoLogin: versionELC};
