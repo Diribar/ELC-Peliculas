@@ -2,6 +2,7 @@
 // Requires
 
 module.exports = (req, res, next) => {
+	if (req.originalUrl.includes("/api/")) return next()
 	// Valores de startup
 	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinPermInput", "urlSinCaptura", "urlAnterior", "urlActual"];
 	urlsGuardadas.forEach((url) => {
