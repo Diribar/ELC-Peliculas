@@ -749,19 +749,6 @@ module.exports = {
 	nombreApellido: (usuario) => {
 		return usuario.nombre + " " + usuario.apellido;
 	},
-	novedadesELC: async (usuario, req) => {
-		// Variables
-		const novedades = versionesELC.filter((n) => n.version > versionELC);
-		let informacion;
-
-		// Actualiza la versión en el usuario
-		usuario = {...usuario, versionElcUltimoLogin: versionELC};
-		req.session.usuario = usuario;
-		BD_genericas.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
-
-		// Fin
-		return novedades.length ? novedades.map((n) => n.comentario) : "";
-	},
 
 	// Internet
 	enviaMail: async function ({asunto, email, comentario}) {
