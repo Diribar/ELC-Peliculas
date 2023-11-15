@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		comentario: {type: dt.STRING(60)},
 		fechaNovedad: {type: dt.DATE},
-		versionElc: {type: dt.STRING(4)},
+		versionELC: {type: dt.STRING(4)},
 
 		permInputs: {type: dt.BOOLEAN},
 		autTablEnts:{type: dt.BOOLEAN},
