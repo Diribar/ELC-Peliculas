@@ -206,7 +206,6 @@ module.exports = {
 			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
 		},
 	},
-
 	convierteLetras: {
 		alIngles: (resultado) => {
 			return resultado

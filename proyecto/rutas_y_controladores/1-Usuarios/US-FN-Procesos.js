@@ -20,6 +20,8 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
+		if (!usuario.pais_id) return;
+
 		// Variables
 		const ahoraUTC = comp.fechaHora.ahora().getTime();
 		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zonaHoraria;
@@ -51,10 +53,9 @@ module.exports = {
 
 		// Envía el mail al usuario con la contraseña
 		const mailEnviado = await comp.enviaMail({asunto, email, comentario});
-		const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 
 		// Fin
-		return {ahora, contrasena, mailEnviado};
+		return {contrasena, mailEnviado};
 	},
 
 	// Carteles de información

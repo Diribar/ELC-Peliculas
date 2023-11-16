@@ -30,10 +30,13 @@ main .cartelCentro #flechasCartel :where(.fa-circle-right) {color: var(--verde-o
 main .cartelCentro #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
 main .cartelCentro #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
 
-/* Barra de progreso */
-main .cartelCentro #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
-main .cartelCentro #contorno {border-radius: 10px; overflow: hidden;}
-main .cartelCentro #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
+/* Particularidades de cartelGenerico */
+#cartelGenerico:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
+
+/* Particularidades de cartelProgreso */
+#cartelProgreso #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
+#cartelProgreso #contorno {border-radius: 10px; overflow: hidden;}
+#cartelProgreso #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
 
 /* Media Query */
 @media (height < 400px) or (width < 400px) {

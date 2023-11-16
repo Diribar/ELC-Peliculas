@@ -189,9 +189,7 @@ module.exports = {
 			// 1. Se debe agregar el id del original, para verificar que no esté repetido
 			// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 			let prodComb = {...original, ...edicion, ...req.body, id};
-
-			// Si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
-			prodComb.epocaOcurrencia = revisorPERL;
+			prodComb.epocaOcurrencia = revisorPERL; // si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
 			prodComb.publico = revisorPERL;
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 

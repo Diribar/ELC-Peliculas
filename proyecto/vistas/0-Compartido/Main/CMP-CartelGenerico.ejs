@@ -6,14 +6,13 @@
 	<!-- Cartel -->
 	<div id="cartelGenerico" class="cartelCentro absoluteCentro <%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
 		<div class="flexColAlign">
-
 			<!-- Íconos -->
 			<i id="alerta" class="fa-solid fa-triangle-exclamation inicio <%- locals.informacion && (locals.informacion.check || locals.informacion.trabajando) ? 'ocultar' : '' %>"></i>
 			<img id="check" src="/publico/imagenes/Varios/Check.png" class="inicio <%- !locals.informacion || !locals.informacion.check ? 'ocultar' : '' %>" height="60px">
 			<i id="trabajando" class="fa-solid fa-tools inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
 
 			<!-- Título -->
-			<p id="titulo"></p>
+			<h1 id="titulo"><%= locals.informacion ? informacion.titulo : '' %></h1>
 
 			<!-- Si existe información, la muestra -->
 			<% if (locals.informacion) { %>
