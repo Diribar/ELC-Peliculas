@@ -3,12 +3,9 @@ window.addEventListener("load", async () => {
 	// Obtiene información del backend
 	const {sinPrimRev, conPrimRev, cantLinksTotal} = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
 
-	// Eje vertical
-	const maxValorEjeY = Math.ceil(cantLinksTotal / 26 / 10 + 0.6) * 10; // redondea a la decena superior
-
 	// Eje horizontal
-	let sinPrimRevX = Object.keys(sinPrimRev).map((n) => Number(n));
-	let conPrimRevX = Object.keys(conPrimRev).map((n) => Number(n));
+	const sinPrimRevX = Object.keys(sinPrimRev).map((n) => Number(n));
+	const conPrimRevX = Object.keys(conPrimRev).map((n) => Number(n));
 	const minX = Math.min(...sinPrimRevX, ...conPrimRevX);
 	const maxX = Math.max(...sinPrimRevX, ...conPrimRevX);
 
@@ -28,7 +25,7 @@ window.addEventListener("load", async () => {
 		const resultado = [["Semana", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
 		let ticks = [];
 		for (let valorX = minX; valorX <= maxX; valorX++) {
-			resultado.push([valorX, conPrimRev[valorX], sinPrimRev[valorX],""]);
+			resultado.push([valorX, conPrimRev[valorX], sinPrimRev[valorX], ""]);
 			ticks.push({v: valorX, f: String(valorX < 53 ? valorX : valorX - 52)});
 		}
 
@@ -45,7 +42,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(31,73,125)","rgb(79,98,40)"],
+			colors: ["rgb(31,73,125)", "rgb(79,98,40)"],
 			legend: {position: "none"},
 			hAxis: {
 				format: "decimal",
@@ -56,7 +53,7 @@ window.addEventListener("load", async () => {
 			vAxis: {
 				fontSize: 20,
 				title: "Cantidad de links que vencen",
-				viewWindow: {min: 0, max: maxValorEjeY},
+				viewWindow: {min: 0},
 			},
 			isStacked: true, // columnas apiladas
 		};
