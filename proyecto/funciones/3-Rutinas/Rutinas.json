@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 15/nov",
-	"HoraUTC": "16:48",
+	"FechaUTC": "Jue. 16/nov",
+	"HoraUTC": "11:36",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 13/nov",
@@ -28,10 +28,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-nov-23": {"titulo": "Santa Francisca Javiera Cabrini", "entidad": "personajes", "id": 109},
 		"14-nov-23": {"titulo": "ELC - Películas"},
 		"15-nov-23": {"titulo": "Helena Studler", "entidad": "personajes", "id": 155},
 		"16-nov-23": {"titulo": "ELC - Películas"},
-		"17-nov-23": {"titulo": "Venerable Henriette DeLille", "entidad": "personajes", "id": 131}
+		"17-nov-23": {"titulo": "Venerable Henriette DeLille", "entidad": "personajes", "id": 131},
+		"18-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
