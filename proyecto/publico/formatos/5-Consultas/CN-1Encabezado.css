@@ -8,7 +8,7 @@
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
 #tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
 #tituloPrincipal select optgroup {background: var(--azul-frances);}
-#tituloPrincipal select optgroup:has(:not(.ocultar)) {display: none;}
+#tituloPrincipal select optgroup:not(:has(:not(.ocultar))) {display: none;}
 #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 #tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
 
