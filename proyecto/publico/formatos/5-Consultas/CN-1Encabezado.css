@@ -2,20 +2,21 @@
 #encabezado #tituloPrincipal {justify-content: flex-start;}
 
 /* Orden y Entidad */
-#encabezado #tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
-#encabezado #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
-#encabezado #tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
-#encabezado #tituloPrincipal select:valid {background: var(--verde-oscuro);}
-#encabezado #tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
-#encabezado #tituloPrincipal select optgroup {background: var(--azul-frances) ;}
-#encabezado #tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
-#encabezado #tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
+#tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
+#tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
+#tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
+#tituloPrincipal select:valid {background: var(--verde-oscuro);}
+#tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
+#tituloPrincipal select optgroup {background: var(--azul-frances);}
+#tituloPrincipal select optgroup:has(:not(.ocultar)) {display: none;}
+#tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
+#tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
 
 /* Ayuda y Actualizar */
-#encabezado #tituloPrincipal #ayudaOrden {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
-#encabezado #tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
-#encabezado #tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
+#tituloPrincipal #ayudaOrden {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
+#tituloPrincipal #ayudaOrden i.ayudaClick {font-size: 1.2rem;}
+#tituloPrincipal #ayudaOrden ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
 
 /* Contador */
-#encabezado #derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
-#encabezado #derecha #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}
+#derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
+#derecha #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}
