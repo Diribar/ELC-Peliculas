@@ -145,7 +145,7 @@ module.exports = {
 			if (linksRevisar.length) {
 				// Variables
 				const porcentaje = (cantLinksEstaSem / cantLinksTotal) * 100; // averigua el porcentaje de links aprobados en la semana
-				const aprobsPerms = porcentaje < 100 / 25;
+				const aprobsPerms = porcentaje < 100 / 25 || cantLinksEstaSem < 45
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
