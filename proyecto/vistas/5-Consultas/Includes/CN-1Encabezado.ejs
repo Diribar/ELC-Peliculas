@@ -17,8 +17,16 @@
 				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.opcion.nombre %></option>
 				<% } %>
 			</optgroup>
-			<optgroup label="Listado">
-				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton)) { %>
+			<optgroup label="Listados">
+				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
+				<option
+					value="<%= opcionPorEnt.id %>"
+					<% if (opcionPorEnt.opcion.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
+				><%= opcionPorEnt.opcion.nombre %></option>
+				<% } %>
+			</optgroup>
+			<optgroup label="Mis listados">
+				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton && n.opcion.loginNeces)) { %>
 				<option
 					value="<%= opcionPorEnt.id %>"
 					<% if (opcionPorEnt.opcion.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
@@ -32,15 +40,9 @@
 	<div id="ayudaOrden">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<li><span>Por Fecha en que se lo Recuerda</span>: películas que acompañan la efemérides durante el año.</li>
-				<li><span>Sorprendeme al Azar</span>: películas con una calificación ≥ 70%, elegidas al azar cada día.</li>
-				<li><span>Por Nombre</span>: según el nombre de la entidad, orden ascendente.</li>
-				<li><span>Últimas ingresadas</span>: según la fecha en que la aprobamos.</li>
-				<li>
-					<span>Tus preferencias</span>: sólo si estás logueado, muestra las películas a las que les marcaste alguna
-					preferencia.
-				</li>
-				<li><span>Por Año Histórico</span>: según el año en que nació el personaje u ocurrió el hecho.</li>
+				<% for (let opcionPorEnt of cn_opcionesPorEnt) { %>
+					<li class="ocultar ent<%= opcionPorEnt.entidad_id %>"><span><%= opcionPorEnt.opcion.nombre %></span>: <%= opcionPorEnt.ayuda %>.</li>
+				<% } %>
 			</ul>
 		</i>
 	</div>

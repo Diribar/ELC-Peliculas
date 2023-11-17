@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		opcionPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id']"),
 		opcionesPorEnt: DOM.tituloPrincipal.querySelectorAll("select[name='opcionPorEnt_id'] option"),
 		optgroupCuatroPelis: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id'] optgroup#cuatroPelis"),
-		iconosAyuda: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
+		ayudas: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
