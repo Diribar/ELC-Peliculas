@@ -64,18 +64,25 @@ module.exports = {
 
 		// Procesos si hay links
 		if (links.length) {
-			// 1. Los ordena
-			// 1.A. Por calidad
+			// Los ordena por url
+			links.sort((a, b) => (a.url < b.url ? -1 : 1));
+
+			// Los ordena por calidad
 			links.sort((a, b) => b.calidad - a.calidad);
-			// 1.B. Por completo
+
+			// Los ordena por partes
+			links.sort((a, b) => a.parte - b.parte);
+
+			// Los ordena por completo
 			links.sort((a, b) => b.completo - a.completo);
-			// 1.C. Por idioma
+
+			// Los ordena por idioma
 			links.sort((a, b) => b.castellano - a.castellano);
 
-			// 2. Les asigna un color en función del idioma
+			// Les asigna un color en función del idioma
 			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 
-			// 3. Los separa entre Películas y Trailers
+			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
 			TR = links.filter((n) => n.tipo && n.tipo.trailer);
 		}
