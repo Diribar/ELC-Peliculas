@@ -49,10 +49,7 @@ module.exports = {
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
-		// Obtiene datos para la vista
-		const status_id = original.statusRegistro_id;
-		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
-		const creadoPor_id = prodComb.creadoPor_id;
+		// Lecturas de BD
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
@@ -66,6 +63,11 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
+
+		// Obtiene datos para la vista
+		const status_id = original.statusRegistro_id;
+		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const creadoPor_id = prodComb.creadoPor_id;
 		const ayudasTitulo = links.PL.length
 			? ["Eligiendo " + (links.PL.length == 1 ? "el link" : "uno de los links") + ", podés ver la película"]
 			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
