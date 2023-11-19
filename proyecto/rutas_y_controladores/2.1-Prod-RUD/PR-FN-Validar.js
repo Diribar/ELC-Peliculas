@@ -26,6 +26,14 @@ module.exports = {
 		}
 
 		// Consolida si hay un error
+		for (let campo in errores)
+			if (
+				errores[campo] &&
+				errores[campo] != variables.selectVacio &&
+				!errores[campo].includes(variables.inputVacio) &&
+				campo != "hay"
+			)
+				errores.sensible = true;
 		errores.hay = erroresDD.hay || erroresDA.hay || errores.publico_id || errores.epocaOcurrencia_id;
 		delete erroresDD.hay;
 		delete erroresDA.hay;
