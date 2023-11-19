@@ -13,3 +13,6 @@
 
 /* Botones */
 #contenido #botones {margin: 30px 0}
+
+/* Gráfico de Calificaciones */
+#datosBreves #calificacionesGrafico {min-width: 170px;}
