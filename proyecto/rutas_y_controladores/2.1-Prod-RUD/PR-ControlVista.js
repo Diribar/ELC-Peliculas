@@ -165,7 +165,8 @@ module.exports = {
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
-			// Pule los espacios innecesarios
+			// Elimina los campos vacíos y pule los espacios innecesarios
+			for (let campo in req.body) if (!req.body[campo]) req.body[campo] = null;
 			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 			// Si recibimos un avatar, se completa la información
@@ -201,7 +202,7 @@ module.exports = {
 					prodComb.altaRevisadaPor_id = userID;
 					prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 
-					// 1. Actualiza el registro original
+					// Actualiza el registro original
 					await BD_genericas.actualizaPorId(entidad, id, prodComb);
 
 					// Actualiza los campos de los capítulos de una colección
@@ -218,10 +219,10 @@ module.exports = {
 						await Promise.all(esperar);
 					}
 
-					// 3. Elimina otras ediciones que tengan los mismos valores
+					// Elimina otras ediciones que tengan los mismos valores
 					let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, id});
 
-					// 4. Se fija si corresponde cambiar el status
+					// Se fija si corresponde cambiar el status
 					let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
 
 					// Espera a que se completen las funciones con 'Promise'
