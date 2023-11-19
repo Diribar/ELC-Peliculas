@@ -13,12 +13,12 @@
 	</div>
 </div>
 <form method="POST" class="marco flexColAlign">
-	<div class="flexRowAlign">
-		<div id="resultados" class="flexColAlign">
+	<div id="calificaciones">
+		<div id="individuales" class="flexColAlign">
 			<% let i = 0 %>
 			<% for (let atributo in atributosCalific) { %>
 				<% const atributo_id = atributo + "_id" %>
-				<div class="flexRowAlign">
+				<div>
 					<h4>
 						<% if (!i) { %>
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">

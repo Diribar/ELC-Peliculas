@@ -1,5 +1,5 @@
 /* General */
-#cuerpoFooterImgDer #cuerpoFooter {position: relative; height: 100%;}
+#cuerpoFooterImgDer #cuerpoFooter {height: 100%;} /* position: relative;  */
 
 /* Cuerpo */
 #cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */

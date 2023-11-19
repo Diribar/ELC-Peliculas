@@ -299,7 +299,7 @@ module.exports = {
 			// Info para la vista
 			if (entidad == "capitulos")
 				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
+			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 			const status_id = original.statusRegistro_id;
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 			const condics = {entidad, entidad_id: id, usuario_id: userID};
