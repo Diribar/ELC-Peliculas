@@ -3,7 +3,7 @@
 	<h3>Links para verl<%= oa %></h3>
 </div>
 <!-- Links -->
-<div id="links" class="marco flexCol">
+<div id="links" class="marco">
 	<!-- Película/Capítulo -->
 	<% if (entidad != "colecciones") { %>
 		<div class="flexRowAlign">
@@ -17,6 +17,10 @@
 				<p><em>- No disponemos de links. ¿Podés aportarnos alguno? -</em></p>
 			<% } %>
 		</div>
+	<% } else { %>
+		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
+			<button class="pointer scale">Ir al primer capítulo</button>
+		</a>
 	<% } %>
 	<% if (links.TR.length) { %>
 		<!-- Trailer -->
