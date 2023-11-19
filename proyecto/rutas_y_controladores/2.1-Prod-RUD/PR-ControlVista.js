@@ -24,6 +24,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
+		let tituloDetalle = "Detalle de " + entidadNombre;
 		let titulo = entidadNombre + " - " + nombre;
 
 		// Info para el bloque Izquierdo
@@ -71,7 +72,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, userPerenne},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, userPerenne},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
