@@ -64,6 +64,7 @@ window.addEventListener("load", async () => {
 		validar: "/producto/api/valida/?",
 		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodID,
 	};
+
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
 	let version = await versiones(rutas.versiones);
 	const statusRegistro_id = version.orig.statusRegistro_id;
@@ -141,7 +142,7 @@ window.addEventListener("load", async () => {
 			});
 
 			// Fin
-			return errores;
+			return;
 		},
 		actualizaBotones: () => {
 			// Acciones sobre la edición guardada
@@ -172,10 +173,7 @@ window.addEventListener("load", async () => {
 				DOM.botonesEliminar[0].classList.remove("inactivoVersion");
 
 				// Activa / Inactiva Guardar, dependiendo de si hay errores en la edición nueva
-				let hayErrores = Array.from(DOM.iconosError)
-					.map((n) => n.className)
-					.some((n) => !n.includes("ocultar"));
-				if (hayErrores) DOM.botonGuardar.classList.add("inactivoVersion");
+				if (errores.sensible) DOM.botonGuardar.classList.add("inactivoVersion");
 				else DOM.botonGuardar.classList.remove("inactivoVersion");
 			}
 
