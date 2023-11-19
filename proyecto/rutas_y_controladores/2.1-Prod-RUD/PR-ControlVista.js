@@ -163,9 +163,9 @@ module.exports = {
 			const {entidad, id, origen} = req.query;
 			const userID = req.session.usuario.id;
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
-			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+			// Pule los espacios innecesarios
 			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 			// Si recibimos un avatar, se completa la información
@@ -194,7 +194,7 @@ module.exports = {
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores
-			if (!errores.hay) {
+			if (!errores.sensible) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {
 					// Completa los datos a guardar
@@ -234,7 +234,7 @@ module.exports = {
 				else {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
-					// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
+					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 					edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 				}
 
@@ -267,8 +267,6 @@ module.exports = {
 				// Recarga la vista
 				return res.redirect(req.originalUrl);
 			}
-
-			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Fin
 			return edicion
