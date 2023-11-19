@@ -12,3 +12,8 @@
 }
 @media (width <= 500px) {#recuadro #contenido {margin-left: 20px; margin-right: 20px;}}
 @media (width <= 390px) {#datosDetalle .datosParcial#masInfo #infoGral {column-count: 1;}}
+
+/* Alto */
+@media (width < 700px) or (height < 700) {
+	.flechas :is(a:has(i.fa-pen), a:has(i.fa-link)) {display: none;}
+}
