@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
 		if (mensajes.length)
 			informacion = {
 				mensajes,
-				iconos: [variables.vistaEntendido(req.session.urlActual)],
+				iconos: [variables.vistaEntendido(req.originalUrl)],
 				titulo: "Novedades del sitio:",
 				check: true,
 			};
