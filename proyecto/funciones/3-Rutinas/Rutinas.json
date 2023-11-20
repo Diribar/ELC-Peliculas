@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 19/nov",
-	"HoraUTC": "0:40",
+	"FechaUTC": "Lun. 20/nov",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 13/nov",
-	"HoraSemUTC": "1:43",
-	"semanaUTC": 45,
+	"FechaSemUTC": "Lun. 20/nov",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 46,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -28,10 +28,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-nov-23": {"titulo": "Venerable Henriette DeLille", "entidad": "personajes", "id": 131},
 		"18-nov-23": {"titulo": "ELC - Películas"},
 		"19-nov-23": {"titulo": "ELC - Películas"},
 		"20-nov-23": {"titulo": "San José Sánchez del Río", "entidad": "personajes", "id": 204},
-		"21-nov-23": {"titulo": "ELC - Películas"}
+		"21-nov-23": {"titulo": "ELC - Películas"},
+		"22-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
