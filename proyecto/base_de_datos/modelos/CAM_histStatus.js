@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "histStatus";
 	const columns = {
-		entidad: {type: dt.STRING(14)},
+		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
 
 		motivo_id: {type: dt.INTEGER},
