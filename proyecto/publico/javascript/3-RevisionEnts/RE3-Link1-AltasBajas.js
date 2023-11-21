@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
 			url += "&IN=NO";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta.reload) DOM.yaExistentes.classList.add("ocultar")
+			if (respuesta.reload) DOM.yaExistentes[indice].classList.add("ocultar")
 		});
 	});
 });
