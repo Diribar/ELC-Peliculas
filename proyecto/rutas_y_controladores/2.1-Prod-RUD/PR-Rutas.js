@@ -13,7 +13,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const histDetsPeli = require("../../middlewares/varios/histDetsPeli");
+const misConsultas = require("../../middlewares/varios/misConsultas");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 // Temas de captura
@@ -25,7 +25,7 @@ const multer = require("../../middlewares/varios/multer");
 
 // Consolida
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID, histDetsPeli];
+const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
 const aptoCRUD = [...aptoCalificar, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion];
@@ -49,7 +49,7 @@ router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
 router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);
 
 // Rutas de vistas
-router.get("/detalle", aptoDetalle, capturaInactivar, vista.detalle);
+router.get("/detalle", aptoDetalle, misConsultas, capturaInactivar, vista.detalle);
 router.get("/edicion", aptoEdicion, capturaActivar, vista.edicion.form);
 router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
 router.get("/calificar", aptoCalificar, vista.califica.form);
