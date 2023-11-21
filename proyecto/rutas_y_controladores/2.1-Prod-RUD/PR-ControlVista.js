@@ -24,6 +24,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
+		let tituloDetalle = "Detalle de " + entidadNombre;
 		let titulo = entidadNombre + " - " + nombre;
 
 		// Info para el bloque Izquierdo
@@ -48,10 +49,7 @@ module.exports = {
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
-		// Obtiene datos para la vista
-		const status_id = original.statusRegistro_id;
-		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
-		const creadoPor_id = prodComb.creadoPor_id;
+		// Lecturas de BD
 		if (entidad == "capitulos")
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
@@ -65,13 +63,18 @@ module.exports = {
 			interesDelUsuario,
 			yaCalificada,
 		]);
+
+		// Obtiene datos para la vista
+		const status_id = original.statusRegistro_id;
+		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const creadoPor_id = prodComb.creadoPor_id;
 		const ayudasTitulo = links.PL.length
 			? ["Eligiendo " + (links.PL.length == 1 ? "el link" : "uno de los links") + ", podés ver la película"]
 			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, userPerenne},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, userPerenne},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
