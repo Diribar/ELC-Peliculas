@@ -3,8 +3,7 @@
 <!-- Revisión: propio o creado c/ediciones o aprobado/inactivo -->
 <tr class="
 	yaExistentes
-	inactivo_<%= link.cond.inactivos %>
-	<%- link.cond.inactivos ? 'ocultaInactivo' : '' %>
+	inactivo_<%= link.cond.inactivos %><% if (link.cond.inactivos) { %> ocultaInactivo<% } %>
 	<%= link.tipo_id == 1 ? 'TR' : 'PL' %>
 	fila<%= fila %>
 	oscuro_<%- link.cond.rud ? link.cond.provisorio : ((link.cond.creado && !!link.ediciones.length) || link.cond.estable) %>
