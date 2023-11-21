@@ -26,9 +26,18 @@ module.exports = {
 		}
 
 		// Consolida si hay un error
-		errores.hay = erroresDD.hay || erroresDA.hay || errores.publico_id || errores.epocaOcurrencia_id;
+		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id;
 		delete erroresDD.hay;
 		delete erroresDA.hay;
+		for (let campo in errores)
+			if (
+				campo != "hay" &&
+				errores[campo] &&
+				errores[campo] != variables.selectVacio &&
+				!errores[campo].startsWith(variables.inputVacio)&&
+				errores[campo] !="Necesitamos que respondas alguna de las opciones"
+			)
+				errores.sensible = true;
 
 		// Fin
 		return errores;

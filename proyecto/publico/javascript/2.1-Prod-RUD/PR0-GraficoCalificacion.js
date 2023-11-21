@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 
 	// Resultados de la calificación
 	let dondeUbicarLosResultados = document.querySelector("#calificacionesResultados");
-	let resultados = "General: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
+	let resultados = "Gral.: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
 	if (calificaciones.length == 2) resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3]) + "%</span>";
 	dondeUbicarLosResultados.innerHTML = resultados;
 
@@ -23,6 +23,7 @@ window.addEventListener("load", async () => {
 		// Arma los títulos
 		let encabezado = ["Atributo"];
 		for (let columna of calificaciones) encabezado.push(columna.autor);
+
 		// Arma las filas
 		let titulos = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 		let filas = [];
@@ -53,7 +54,7 @@ window.addEventListener("load", async () => {
 			colors: ["green", "lightgreen"],
 			legend: {
 				position: "bottom",
-				alignment: "end",
+				alignment: "start",
 				textStyle: {italic: true},
 			},
 			hAxis: {
@@ -62,7 +63,7 @@ window.addEventListener("load", async () => {
 				ticks: [0, 0.5, 1],
 				format: "percent",
 			},
-			vAxis: {width: "50%", textStyle: {fontSize: "12"}},
+			vAxis: {textStyle: {fontSize: "12"}},
 			chartArea: {top: "10%", left: 65, width: 90},
 		};
 

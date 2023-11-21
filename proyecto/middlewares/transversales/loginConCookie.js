@@ -5,7 +5,6 @@ const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos"
 
 module.exports = async (req, res, next) => {
 	// Condiciones a superar
-	if (req.originalUrl.includes("/api/")) return next();
 	res.locals.usuario = req.session.usuario;
 	if (req.session.usuario || !req.cookies || !req.cookies.email) return next(); // si ya tiene 'session' o no hay cookies, saltea la rutina
 

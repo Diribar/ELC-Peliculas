@@ -163,9 +163,10 @@ module.exports = {
 			const {entidad, id, origen} = req.query;
 			const userID = req.session.usuario.id;
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+			for (let campo in req.body) if (!req.body[campo]) req.body[campo] = null;
 			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 			// Si recibimos un avatar, se completa la información
@@ -194,14 +195,14 @@ module.exports = {
 			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores
-			if (!errores.hay) {
+			if (!errores.sensible) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {
 					// Completa los datos a guardar
 					prodComb.altaRevisadaPor_id = userID;
 					prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 
-					// 1. Actualiza el registro original
+					// Actualiza el registro original
 					await BD_genericas.actualizaPorId(entidad, id, prodComb);
 
 					// Actualiza los campos de los capítulos de una colección
@@ -218,10 +219,10 @@ module.exports = {
 						await Promise.all(esperar);
 					}
 
-					// 3. Elimina otras ediciones que tengan los mismos valores
+					// Elimina otras ediciones que tengan los mismos valores
 					let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, id});
 
-					// 4. Se fija si corresponde cambiar el status
+					// Se fija si corresponde cambiar el status
 					let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
 
 					// Espera a que se completen las funciones con 'Promise'
@@ -234,7 +235,7 @@ module.exports = {
 				else {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
-					// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
+					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 					edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 				}
 
@@ -268,8 +269,6 @@ module.exports = {
 				return res.redirect(req.originalUrl);
 			}
 
-			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
-
 			// Fin
 			return edicion
 				? res.redirect(req.originalUrl) // Recarga la vista
@@ -299,7 +298,7 @@ module.exports = {
 			// Info para la vista
 			if (entidad == "capitulos")
 				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
+			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 			const status_id = original.statusRegistro_id;
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 			const condics = {entidad, entidad_id: id, usuario_id: userID};

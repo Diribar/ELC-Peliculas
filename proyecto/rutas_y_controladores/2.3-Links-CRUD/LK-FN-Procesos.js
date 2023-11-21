@@ -12,6 +12,8 @@ module.exports = {
 
 		// Obtiene los linksOriginales
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
+		links.sort((a, b) => (a.url < b.url ? -1 : 1));
+		links.sort((a, b) => a.parte - b.parte);
 
 		// Los combina con la edición, si existe
 		links.forEach((link, i) => {

@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 17/nov",
-	"HoraUTC": "11:41",
+	"FechaUTC": "Dom. 19/nov",
+	"HoraUTC": "0:40",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 13/nov",
@@ -28,10 +28,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-nov-23": {"titulo": "Helena Studler", "entidad": "personajes", "id": 155},
-		"16-nov-23": {"titulo": "ELC - Películas"},
 		"17-nov-23": {"titulo": "Venerable Henriette DeLille", "entidad": "personajes", "id": 131},
 		"18-nov-23": {"titulo": "ELC - Películas"},
-		"19-nov-23": {"titulo": "ELC - Películas"}
+		"19-nov-23": {"titulo": "ELC - Películas"},
+		"20-nov-23": {"titulo": "San José Sánchez del Río", "entidad": "personajes", "id": 204},
+		"21-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
