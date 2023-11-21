@@ -30,12 +30,21 @@ let actualizaConfigCons = {
 			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
 			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
 
+			// Actualiza los ayudas
+			for (let ayuda of DOM.ayudas)
+				ayuda.className.includes("ent" + DOM.entidad_id.value)
+					? ayuda.classList.remove("ocultar")
+					: ayuda.classList.add("ocultar");
+
 			// Continúa la rutina
 			this.opcion.asignaUno();
 		}
 
-		// Redirige a la siguiente instancia
-		else this.muestraOcultaBloqueDeFiltros();
+		// Acciones si no existe la entidad
+		else {
+			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
+			this.muestraOcultaBloqueDeFiltros();
+		}
 
 		// Fin
 		return;
@@ -79,11 +88,6 @@ let actualizaConfigCons = {
 					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden a la entidad
 					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden a la entidad
 			}
-
-			// Muestra / Oculta el título "Cuatro Pelis" en las opciones
-			v.opcsPorEstaEntBD.filter((n) => n.boton).length
-				? DOM.optgroupCuatroPelis.classList.remove("ocultar")
-				: DOM.optgroupCuatroPelis.classList.add("ocultar");
 
 			// Si corresponde, actualiza 'bhr'
 			if (v.entidad.bhrSeguro) configCons.bhr = "1";

@@ -124,7 +124,7 @@ module.exports = {
 			let cantLinksEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
 				prodAprob: true,
 				yaTuvoPrimRev: true,
-				statusSugeridoEn: {[Op.gt]: lunesDeEstaSemana},
+				statusSugeridoEn: {[Op.and]: [{[Op.gt]: lunesDeEstaSemana}, {[Op.lt]: lunesDeEstaSemana + unaSemana}]},
 				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
 
@@ -144,8 +144,8 @@ module.exports = {
 			// Obtiene los productos
 			if (linksRevisar.length) {
 				// Variables
-				const porcentaje = parseInt((cantLinksEstaSem / cantLinksTotal) * 100); // averigua el porcentaje de links aprobados en la semana
-				const aprobsPerms = porcentaje < 100 / 25;
+				const porcentaje = (cantLinksEstaSem / cantLinksTotal) * 100; // averigua el porcentaje de links aprobados en la semana
+				const aprobsPerms = porcentaje < 100 / 25 || cantLinksEstaSem < 45
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
