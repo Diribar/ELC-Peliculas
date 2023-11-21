@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 20/nov",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 21/nov",
+	"HoraUTC": "11:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 20/nov",
@@ -28,10 +28,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"18-nov-23": {"titulo": "ELC - Películas"},
 		"19-nov-23": {"titulo": "ELC - Películas"},
 		"20-nov-23": {"titulo": "San José Sánchez del Río", "entidad": "personajes", "id": 204},
 		"21-nov-23": {"titulo": "ELC - Películas"},
-		"22-nov-23": {"titulo": "ELC - Películas"}
+		"22-nov-23": {"titulo": "ELC - Películas"},
+		"23-nov-23": {"titulo": "Beato Miguel Pro", "entidad": "personajes", "id": 177}
 	}
 }
