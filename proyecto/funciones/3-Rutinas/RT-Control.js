@@ -636,7 +636,7 @@ module.exports = {
 					!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
 					!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
 				)
-					// Si no lo encuentra en alguna de las tablas, elimina el registro
+					// Si no lo encuentra en ambas tablas, elimina el registro
 					BD_genericas.eliminaPorId(tabla.nombre, registro.id);
 		}
 
