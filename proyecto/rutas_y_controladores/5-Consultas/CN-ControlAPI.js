@@ -142,9 +142,14 @@ module.exports = {
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
 		// Obtiene los registros de productos
-		let prods = procesos.resultados.prods({entidad, opcion, configCons});
+		if (opcion.codigo == "misConsultas") {
+			let prods = await procesos.resultados.misConsultas(usuario_id);
+			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
+			return res.json(prods);
+		}
 
-		// Obtiene los registros de rclvs
+		// Obtiene los registros de productos y rclvs
+		let prods = procesos.resultados.prods({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
 				? opcion.codigo == "fechaDelAno_id"
