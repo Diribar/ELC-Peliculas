@@ -17,7 +17,6 @@ window.addEventListener("load", async () => {
 		botonesDeshacer: document.querySelectorAll("tbody .yaExistentes i.deshacer"),
 		botonesGuardar: document.querySelectorAll("tbody tr td button"),
 	};
-	console.log(DOM.activos);
 	let v = {
 		prodEntidad: new URL(location.href).searchParams.get("entidad"),
 		prodID: new URL(location.href).searchParams.get("id"),
