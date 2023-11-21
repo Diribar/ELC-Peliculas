@@ -6,6 +6,7 @@ window.addEventListener("load", () => {
 		iconosIN: document.querySelectorAll(".yaExistentes .in"),
 		iconosFuera: document.querySelectorAll(".yaExistentes .fuera"),
 		linksUrl: document.querySelectorAll(".yaExistentes input[name='url'"),
+		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
 	};
 	let v = {
 		prodEntidad: new URL(location.href).searchParams.get("entidad"),
@@ -24,7 +25,10 @@ window.addEventListener("load", () => {
 			url += "&IN=SI";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta.reload) location.reload();
+			if (respuesta.reload) {
+				DOM.yaExistentes[indice].classList.replace("oscuro_false", "oscuro_true");
+				DOM.ancho_status[indice].innerHTML = "Aprobado"
+			}
 		});
 	});
 	DOM.iconosFuera.forEach((icono, indice) => {
@@ -36,7 +40,7 @@ window.addEventListener("load", () => {
 			url += "&IN=NO";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta.reload) DOM.yaExistentes[indice].classList.add("ocultar")
+			if (respuesta.reload) DOM.yaExistentes[indice].classList.add("ocultar");
 		});
 	});
 });
