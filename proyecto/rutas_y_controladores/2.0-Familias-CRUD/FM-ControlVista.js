@@ -228,10 +228,8 @@ module.exports = {
 		await BD_genericas.eliminaPorId(entidad, id);
 
 		// Elimina registros vinculados
-		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("pppRegistros", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("calRegistros", {entidad, entidad_id: id});
+		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
+		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
