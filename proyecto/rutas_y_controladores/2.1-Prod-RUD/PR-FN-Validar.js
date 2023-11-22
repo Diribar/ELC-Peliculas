@@ -27,7 +27,6 @@ module.exports = {
 
 		// Consolida si hay un error
 		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id;
-		console.log(41, errores);
 		delete erroresDD.hay;
 		delete erroresDA.hay;
 		for (let campo in errores)
