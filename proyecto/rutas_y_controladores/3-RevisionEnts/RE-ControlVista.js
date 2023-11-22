@@ -237,13 +237,6 @@ module.exports = {
 			// C. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
-			// Si es un producto, actualiza el campo 'prodAprob' en sus links vinculados
-			if (petitFamilias == "prods") {
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-				const prodAprob = aprobados_ids.includes(statusFinal_id);
-				BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: id}, {prodAprob});
-			}
-
 			// Acciones si es una colección
 			if (entidad == "colecciones") {
 				// Actualiza el status de los capítulos
@@ -289,7 +282,8 @@ module.exports = {
 			if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
 			// Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
-			if (producto) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
+			if (producto)
+				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 			// Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
