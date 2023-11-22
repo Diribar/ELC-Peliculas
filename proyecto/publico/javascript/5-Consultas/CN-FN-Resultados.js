@@ -37,6 +37,7 @@ let resultados = {
 				: {configCons, entidad: v.entidad};
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
+		console.log(v.infoResultados);
 
 		// Acciones en consecuencia
 		if (!v.infoResultados || !v.infoResultados.length)
@@ -404,6 +405,9 @@ let auxiliares = {
 		}
 		if (!titulo && opcion == "misCalificadas") {
 			titulo = !indice ? "Mis calificadas" : "";
+		}
+		if (!titulo && opcion == "misConsultas") {
+			titulo = !indice ? "Mis consultas" : "";
 		}
 
 		// Fin
