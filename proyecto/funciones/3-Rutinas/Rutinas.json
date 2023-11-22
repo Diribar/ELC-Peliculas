@@ -24,7 +24,8 @@
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
-		"EliminaHistorialDeRegsEliminados": "SI"
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"IDdeTablas": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
