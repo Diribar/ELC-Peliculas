@@ -589,19 +589,37 @@ module.exports = {
 		// Fin
 		return;
 	},
-	EliminaHistorialAntiguo: () => {
+	EliminaHistorialAntiguo: async () => {
 		// Variables
 		const ahora = Date.now();
 		const tablas = [
 			{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
 			{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
-			{nombre: "histDetsPeli", campo: "visitadaEn", antiguedad: unDia * 183},
 		];
 
 		// Elimina historial antiguo
 		for (let tabla of tablas) {
 			const fechaDeCorte = new Date(ahora - tabla.antiguedad);
 			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+		}
+
+		// Elimina misConsultas > 20
+		let misConsultas = await BD_genericas.obtieneTodos("misConsultas");
+		const limite = 20;
+		while (misConsultas.length) {
+			// Obtiene los registros del primer usuario
+			const usuario_id = misConsultas[0].usuario_id;
+			let registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
+
+			// Elimina los registros sobrantes en la BD
+			if (registros.length > limite) {
+				registros.reverse();
+				for (let i = limite; i < registros.length; i++) BD_genericas.eliminaPorId("misConsultas", registros[i].id);
+			}
+
+			// Elimina los registros del usuario de la lectura
+			misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
+			console.log(623, misConsultas.length);
 		}
 
 		// Fin
@@ -612,7 +630,7 @@ module.exports = {
 		const tablas = [
 			{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
 			{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
-			{nombre: "histDetsPeli", campoUsuario: "usuario_id"},
+			{nombre: "misConsultas", campoUsuario: "usuario_id"},
 		];
 		const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 		let available = {};
@@ -636,8 +654,31 @@ module.exports = {
 					!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
 					!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
 				)
-					// Si no lo encuentra en alguna de las tablas, elimina el registro
+					// Si no lo encuentra en ambas tablas, elimina el registro
 					BD_genericas.eliminaPorId(tabla.nombre, registro.id);
+		}
+
+		// Fin
+		return;
+	},
+	IDdeTablas: async () => {
+		// Variables
+		const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas"];
+
+		// Actualiza los valores de ID
+		for (let tabla of tablas) {
+			// Variables
+			const registros = await BD_genericas.obtieneTodos(tabla);
+			let id = 1;
+
+			// Actualiza los IDs
+			for (let registro of registros) {
+				BD_genericas.actualizaPorId(tabla, registro.id, {id});
+				id++;
+			}
+
+			// Reduce el próximo valor de ID
+			//BD_genericas.reduceElProximoValorDeID(tabla);
 		}
 
 		// Fin
@@ -702,27 +743,6 @@ let eliminaHistorialQueNoCorresponde = async () => {
 		// Si el producto no existe, elimina el registro
 		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id);
 		if (!producto) BD_genericas.eliminaPorId("calRegistros", registro.id);
-	}
-
-	// Fin
-	return;
-};
-let IDdeTablas = async () => {
-	//return
-	// Variables
-	const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion"];
-
-	// Rutina para todas las tablas
-	for (let tabla of tablas) {
-		// Variables
-		const registros = await BD_genericas.obtieneTodos(tabla);
-		let id = 1;
-
-		// Rutina por tabla
-		for (let registro of registros) {
-			BD_genericas.actualizaPorId(tabla, registro.id, {id});
-			id++;
-		}
 	}
 
 	// Fin

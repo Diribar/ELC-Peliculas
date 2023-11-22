@@ -39,6 +39,43 @@ module.exports = {
 		},
 	},
 	resultados: {
+		misConsultas: async (usuario_id, pppRegistros) => {
+			if (!usuario_id) return [];
+
+			// Obtiene los registros del usuario
+			let registros = await BD_genericas.obtieneTodosPorCondicion("misConsultas", {usuario_id});
+			if (!registros.length) return [];
+			else registros.reverse();
+
+			// Deja solamente los últimos 20 registros
+			if (registros.length > 20) registros.splice(20);
+
+			// Obtiene los productos
+			const include = variables.asocs.rclvs;
+			let prods = [];
+			for (let registro of registros)
+				prods.push(
+					BD_genericas.obtienePorIdConInclude(registro.entidad, registro.entidad_id, include).then((n) => ({
+						...n,
+						entidad: registro.entidad,
+					}))
+				);
+			prods = await Promise.all(prods);
+			[pppRegistros] = await Promise.all([pppRegistros]);
+
+			// Rutina por producto
+			for (let prod of prods) {
+				// Averigua si el producto tiene un registro de preferencia del usuario
+				const pppRegistro = pppRegistros.find((n) => n.entidad == prod.entidad && n.entidad_id == prod.id);
+
+				// Le agrega a los productos la ppp del usuario
+				prod.pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPref.icono;
+				prod.pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPref.nombre;
+			}
+
+			// Fin
+			return prods;
+		},
 		prods: async function ({configCons, entidad, opcion}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
@@ -304,11 +341,8 @@ module.exports = {
 									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
 
 							// Le agrega a los productos la 'ppp' del usuario
-							prods[i] = {
-								...prods[i],
-								pppIcono: pppOpcionElegida.icono,
-								pppNombre: pppOpcionElegida.nombre,
-							};
+							prods[i].pppIcono = pppOpcionElegida.icono;
+							prods[i].pppNombre = pppOpcionElegida.nombre;
 
 							// Le agrega datos adicionales si se eligió la opción 'pppFecha'
 							if (opcion.codigo == "pppFecha") {
@@ -361,7 +395,7 @@ module.exports = {
 				return prods;
 			},
 			prodsConRCLVs: ({prods, rclvs}) => {
-				// Si no hay RCLVs porque no se pidió cruzar contra ellos, devuelve la variable intacta
+				// Si no se pidió cruzar contra RCLVs, devuelve la variable intacta
 				if (!rclvs) return prods;
 
 				// Si no hay RCLVs, reduce a cero los productos
@@ -594,7 +628,8 @@ module.exports = {
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
 					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
 					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre};
-					datos = {...datos, direccion, anoEstreno, avatar, cfc, calificacion};
+					datos = {...datos, direccion, anoEstreno, avatar, cfc};
+					if (calificacion) datos.calificacion = calificacion;
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datos.direccion = direccion.slice(0, direccion.indexOf(","));
@@ -618,7 +653,7 @@ module.exports = {
 					}
 
 					// Obtiene la época del año
-					datos.epocaEstrenoNombre = prod.epocaEstreno ? prod.epocaEstreno.nombre : "";
+					if (prod.epocaEstreno) datos.epocaEstrenoNombre = prod.epocaEstreno.nombre;
 
 					// Si es una colección, agrega el campo 'anoFin'
 					if (prod.entidad == "colecciones") datos.anoFin = prod.anoFin;

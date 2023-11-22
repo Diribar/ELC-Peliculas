@@ -1,37 +1,46 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let prodEntidad = new URL(location.href).searchParams.get("entidad");
-	let prodID = new URL(location.href).searchParams.get("id");
-	let iconosIN = document.querySelectorAll(".yaExistentes .in");
-	let iconosFuera = document.querySelectorAll(".yaExistentes .fuera");
-	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
-	let ruta = "/revision/api/link/alta-baja/";
-	let condiciones = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	let DOM = {
+		yaExistentes: document.querySelectorAll(".yaExistentes"),
+		iconosIN: document.querySelectorAll(".yaExistentes .in"),
+		iconosFuera: document.querySelectorAll(".yaExistentes .fuera"),
+		linksUrl: document.querySelectorAll(".yaExistentes input[name='url'"),
+		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
+	};
+	let v = {
+		prodEntidad: new URL(location.href).searchParams.get("entidad"),
+		prodID: new URL(location.href).searchParams.get("id"),
+		ruta: "/revision/api/link/alta-baja/",
+	};
+	const condiciones = "?prodEntidad=" + v.prodEntidad + "&prodID=" + v.prodID;
 
 	// Decisión tomada
-	iconosIN.forEach((icono, indice) => {
+	DOM.iconosIN.forEach((icono, indice) => {
 		icono.addEventListener("click", async () => {
 			// Variables
 			let url = condiciones;
 			// Completar el url
-			url += "&url=" + encodeURIComponent(links_url[indice].value);
+			url += "&url=" + encodeURIComponent(DOM.linksUrl[indice].value);
 			url += "&IN=SI";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-			let respuesta = await fetch(ruta + url).then((n) => n.json());
-			if (respuesta.reload) location.reload();
+			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			if (respuesta.reload) {
+				DOM.yaExistentes[indice].classList.replace("oscuro_false", "oscuro_true");
+				DOM.ancho_status[indice].innerHTML = "Aprobado"
+			}
 		});
 	});
-	iconosFuera.forEach((icono, indice) => {
+	DOM.iconosFuera.forEach((icono, indice) => {
 		icono.addEventListener("click", async () => {
 			// Variables
 			let url = condiciones;
 			// Completar el url
-			url += "&url=" + encodeURIComponent(links_url[indice].value);
+			url += "&url=" + encodeURIComponent(DOM.linksUrl[indice].value);
 			url += "&IN=NO";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-			let respuesta = await fetch(ruta + url).then((n) => n.json());
-			if (respuesta.reload) location.reload();
+			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			if (respuesta.reload) DOM.yaExistentes[indice].classList.add("ocultar");
 		});
 	});
 });

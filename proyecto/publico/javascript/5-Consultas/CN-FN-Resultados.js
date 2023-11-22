@@ -405,6 +405,9 @@ let auxiliares = {
 		if (!titulo && opcion == "misCalificadas") {
 			titulo = !indice ? "Mis calificadas" : "";
 		}
+		if (!titulo && opcion == "misConsultas") {
+			titulo = !indice ? "Mis consultas" : "";
+		}
 
 		// Fin
 		return titulo;

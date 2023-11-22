@@ -141,21 +141,26 @@ module.exports = {
 		const {palabrasClave} = configCons;
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
-		// Obtiene los registros de productos
-		let prods = procesos.resultados.prods({entidad, opcion, configCons});
+		// Obtiene los registros ppp del usuario
+		let pppRegistros = usuario_id
+			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
+			: [];
 
-		// Obtiene los registros de rclvs
+		// Obtiene los registros de productos
+		if (opcion.codigo == "misConsultas") {
+			let prods = await procesos.resultados.misConsultas(usuario_id, pppRegistros);
+			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
+			return res.json(prods);
+		}
+
+		// Obtiene los registros de productos y rclvs
+		let prods = procesos.resultados.prods({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
 				? opcion.codigo == "fechaDelAno_id"
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.rclvs({entidad, configCons, opcion});
-
-		// Obtiene los registros ppp del usuario
-		let pppRegistros = usuario_id
-			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
-			: [];
 
 		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);

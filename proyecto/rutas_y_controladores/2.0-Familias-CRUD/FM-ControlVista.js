@@ -182,14 +182,14 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let esperar = [];
 
-		// 1. Elimina las ediciones propias y sus archivos avatar
+		// Elimina las ediciones propias y sus archivos avatar
 		esperar.push(procesos.eliminar.eliminaAvatarMasEdics(entidad, id));
 
-		// 2. Elimina los links y sus ediciones
+		// Elimina los links y sus ediciones
 		if (familia == "producto")
 			esperar.push(procesos.eliminar.eliminaDependsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
 
-		// 3. Elimina los capítulos, sus ediciones y sus links
+		// Elimina los capítulos, sus ediciones y sus links
 		if (entidad == "colecciones") {
 			// Variables
 			let esperarCapitulos = [];
@@ -213,13 +213,13 @@ module.exports = {
 			);
 		}
 
-		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+		// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
 
-		// 5. Borra el vínculo en los productos y les baja de status si corresponde
+		// Borra el vínculo en los productos y les baja de status si corresponde
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
-		// 6. Borra el vínculo en los fechasDelAno
+		// Borra el vínculo en los fechasDelAno
 		if (entidad == "epocasDelAno")
 			esperar.push(BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
 
@@ -228,10 +228,8 @@ module.exports = {
 		await BD_genericas.eliminaPorId(entidad, id);
 
 		// Elimina registros vinculados
-		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("pppRegistros", {entidad, entidad_id: id});
-		BD_genericas.eliminaTodosPorCondicion("calRegistros", {entidad, entidad_id: id});
+		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
+		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {

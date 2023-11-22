@@ -15,6 +15,7 @@ module.exports = {
 
 		// Si tiene ID, agrega la condición de que sea distinto
 		if (datos.id) condicion.id = {[Op.ne]: datos.id};
+		if (datos.coleccion_id) condicion.coleccion_id = datos.coleccion_id;
 
 		// Fin
 		return db[datos.entidad].findOne({where: condicion}).then((n) => (n ? n.id : false));

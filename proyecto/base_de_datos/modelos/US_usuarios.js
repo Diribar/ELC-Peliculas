@@ -74,7 +74,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.hasMany(n.calRegistros, {as: "calificaciones", foreignKey: "usuario_id"});
 		entidad.hasMany(n.pppRegistros, {as: "prefPorProd", foreignKey: "usuario_id"});
-		entidad.hasMany(n.histDetsPeli, {as: "histDetsPeli", foreignKey: "usuario_id"});
+		entidad.hasMany(n.misConsultas, {as: "misConsultas", foreignKey: "usuario_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "capturadoPor", foreignKey: "capturadoPor_id"});
 	};

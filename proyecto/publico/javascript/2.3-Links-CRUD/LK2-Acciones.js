@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
-			if (respuesta.DOM.activos) DOM.activos.innerHTML = "* Activos";
+			if (respuesta.activos) DOM.activos.innerHTML = "* Activos";
 		});
 	});
 	DOM.botonesDeshacer.forEach((botonDeshacer, fila) => {
@@ -83,8 +83,8 @@ window.addEventListener("load", async () => {
 			// location.reload();
 			if (respuesta.reload) location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
-			if (respuesta.DOM.activos && DOM.activos.classList.contains("traslucido")) DOM.activos.innerHTML = "* Activos";
-			if (respuesta.DOM.pasivos && DOM.pasivos.classList.contains("traslucido")) DOM.pasivos.innerHTML = "* Pasivos";
+			if (respuesta.activos && DOM.activos.classList.contains("traslucido")) DOM.activos.innerHTML = "* Activos";
+			if (respuesta.pasivos && DOM.pasivos.classList.contains("traslucido")) DOM.pasivos.innerHTML = "* Pasivos";
 		});
 	});
 });

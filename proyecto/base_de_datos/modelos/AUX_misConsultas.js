@@ -1,13 +1,13 @@
 module.exports = (sequelize, dt) => {
-	const alias = "histDetsPeli";
+	const alias = "misConsultas";
 	const columns = {
-		usuario_id: {type: dt.INTEGER},
-		entidad: {type: dt.STRING(14)},
+		entidad: {type: dt.STRING(11)},
 		entidad_id: {type: dt.INTEGER},
+		usuario_id: {type: dt.INTEGER},
 		visitadaEn: {type: dt.DATE},
 		};
 	const config = {
-		tableName: "us_hist_dets_peli",
+		tableName: "aux_mis_consultas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
