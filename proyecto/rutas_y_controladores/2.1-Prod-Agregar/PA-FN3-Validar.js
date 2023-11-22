@@ -148,9 +148,8 @@ module.exports = {
 		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 		if (campos.some((n) => rclvs_id.includes(n)))
 			errores.RCLV =
-				datos.entidad != "capitulos" &&
-				rclvs_id.every((n) => !datos[n] || datos[n] == 1) &&
-				datos.statusRegistro_id != creado_id
+				datos.entidad != "capitulos" && // no es un capítulo
+				rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
 					? "Necesitamos que respondas alguna de las opciones"
 					: "";
 
