@@ -1,6 +1,4 @@
 "use strict";
-// Definir variables
-
 module.exports = {
 	// Obtiene todos
 	obtieneTodos: (entidad, campoOrden, desc) =>
@@ -29,6 +27,7 @@ module.exports = {
 	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
 	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}).then(() => true),
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => db[entidad].increment(campo, {by: aumento, where: {id}}),
+	//reduceElProximoValorDeID: (entidad) => queryInterface.sequelize.query("ALTER TABLE " + entidad + " AUTO_INCREMENT = 1;"),
 
 	// Lectura
 	contarCasos: (entidad, condicion) => db[entidad].count({where: condicion}),

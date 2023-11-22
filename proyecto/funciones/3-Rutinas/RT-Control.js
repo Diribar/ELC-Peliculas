@@ -603,7 +603,7 @@ module.exports = {
 			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
 		}
 
-		// Elimina misConsultas > límite
+		// Elimina misConsultas > 20
 		let misConsultas = await BD_genericas.obtieneTodos("misConsultas");
 		const limite = 20;
 		while (misConsultas.length) {
@@ -665,13 +665,20 @@ module.exports = {
 		// Variables
 		const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas"];
 
-		// Rutina para todas las tablas
+		// Actualiza los valores de ID
 		for (let tabla of tablas) {
 			// Variables
 			const registros = await BD_genericas.obtieneTodos(tabla);
+			let id = 1;
 
-			// Actualiza los ID
-			registros.forEach((registro, id) => BD_genericas.actualizaPorId(tabla, registro.id, {id: id + 1}));
+			// Actualiza los IDs
+			for (let registro of registros) {
+				BD_genericas.actualizaPorId(tabla, registro.id, {id});
+				id++;
+			}
+
+			// Reduce el próximo valor de ID
+			//BD_genericas.reduceElProximoValorDeID(tabla);
 		}
 
 		// Fin
