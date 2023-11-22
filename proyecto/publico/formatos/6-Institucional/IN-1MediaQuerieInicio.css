@@ -1,6 +1,6 @@
 /* Ancho */
-@media (width <= 1400px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
-@media (width <= 1000px) {#cuerpo #zonaDeVitreaux {display: none;}}
+@media (width <= 1250px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (width <= 900px) {#cuerpo #zonaDeVitreaux {display: none;}}
 @media (width <= 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
 @media (width > 700px) {#zonaDeBienvenida #botones {flex-direction: row;}}
 @media (width <= 550px) and (orientation:portrait) {#zonaDeBienvenida #botones {flex-direction: column; height: 100%;}}
