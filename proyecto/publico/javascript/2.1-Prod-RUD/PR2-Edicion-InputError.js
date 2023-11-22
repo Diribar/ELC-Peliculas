@@ -58,12 +58,13 @@ window.addEventListener("load", async () => {
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
 		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
 		avatarInicial: DOM.imgAvatar.src,
-		...(await fetch("/producto/api/obtiene-variables-del-back-end/").then((n) => n.json())),
 	};
 	let rutas = {
 		validar: "/producto/api/valida/?",
 		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodID,
+		variablesBE: "/producto/api/obtiene-variables-del-back-end/?entidad=" + v.entidad + "&id=" + v.prodID,
 	};
+	v = {...v, ...(await fetch(rutas.variablesBE).then((n) => n.json()))};
 
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
 	let version = await versiones(rutas.versiones);
@@ -114,6 +115,7 @@ window.addEventListener("load", async () => {
 
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID + "&statusRegistro_id=" + statusRegistro_id;
+			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
 			for (let campo of v.camposTodos) {
 				let indice = camposResp.indexOf(campo);
 				let valor = indice > -1 ? inputsResp[indice].value : "";

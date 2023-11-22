@@ -90,8 +90,13 @@ module.exports = {
 			return res.json([prodOrig, prodEdic]);
 		},
 		variables: async (req, res) => {
+			// Variables
+			const {entidad, id} = req.query;
+
 			// Tipos de actuación
 			const datos = {anime_id, documental_id, actuada_id};
+			if (entidad == "capitulos")
+				datos.coleccion_id = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 
 			// Fin
 			return res.json(datos);
