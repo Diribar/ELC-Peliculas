@@ -5,7 +5,7 @@
 .marco#links {display: flex; flex-direction: column; align-items: flex-start;}
 .marco#links {padding: 5px 20px;}
 .marco#links h4 {width: 50px; margin-right: 5px;}
-.marco#links h4#coleccion {width: 60px;}
+.marco#links:has(h4#coleccion) h4 {width: 60px;}
 .marco#links > div {margin: 5px 0; min-height: 20px;}
 .marco#links button {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
 
