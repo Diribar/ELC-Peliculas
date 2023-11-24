@@ -125,10 +125,8 @@ module.exports = {
 		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 
 		// Rutina por usuario
+		const ahora = new Date();
 		for (let usuario of usuarios) {
-			// Variables
-			const ahora = new Date();
-
 			// Si para el usuario no son las 0hs, lo saltea
 			const zonaHoraria = usuario.pais.zonaHoraria;
 			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
@@ -495,6 +493,7 @@ module.exports = {
 		// Variables
 		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - vidaPrimRevision);
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
+		const ahora = new Date();
 
 		// Condiciones
 		const condiciones = [
@@ -511,7 +510,7 @@ module.exports = {
 		const objeto = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
-			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
+			statusSugeridoEn: ahora,
 		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
