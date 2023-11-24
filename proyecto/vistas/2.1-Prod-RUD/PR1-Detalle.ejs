@@ -18,9 +18,12 @@
 			<% } %>
 		</div>
 	<% } else { %>
-		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
-			<button class="pointer scale">Ir al primer capítulo</button>
-		</a>
+		<div class="flexRowAlign">
+			<h4>Colección</h4>
+			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
+				<button class="pointer scale">Ir al primer capítulo</button>
+			</a>
+		</div>
 	<% } %>
 	<% if (links.TR.length) { %>
 		<!-- Trailer -->
