@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 22/nov",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Vie. 24/nov",
+	"HoraUTC": "13:49",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 20/nov",
@@ -29,10 +29,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-nov-23": {"titulo": "San José Sánchez del Río", "entidad": "personajes", "id": 204},
-		"21-nov-23": {"titulo": "ELC - Películas"},
 		"22-nov-23": {"titulo": "ELC - Películas"},
 		"23-nov-23": {"titulo": "Beato Miguel Pro", "entidad": "personajes", "id": 177},
-		"24-nov-23": {"titulo": "ELC - Películas"}
+		"24-nov-23": {"titulo": "ELC - Películas"},
+		"25-nov-23": {"titulo": "Beatos Luis y María Beltrame Quattrocchi", "entidad": "personajes", "id": 149},
+		"26-nov-23": {"titulo": "Familia Von Trapp", "entidad": "personajes", "id": 72}
 	}
 }
