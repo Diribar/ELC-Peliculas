@@ -44,7 +44,7 @@ module.exports = {
 			let datos = {};
 
 			// nombreCastellano
-			if (datosColec.name) datos.nombreCastellano = datosColec.name;
+			if (datosColec.name) datos.nombreCastellano = comp.convierteLetras.inicialMayus(datosColec.name.toLowerCase());
 
 			// año de estreno, año de fin
 			if (datosColec.parts.length) {
@@ -145,9 +145,11 @@ module.exports = {
 			// Variables
 			let datos = {};
 
-			// nombreOriginal, nombreCastellano, duración de capítulos
-			if (datosAPI.original_name) datos.nombreOriginal = datosAPI.original_name;
-			if (datosAPI.name) datos.nombreCastellano = datosAPI.name;
+			// nombreOriginal, nombreCastellano
+			if (datosAPI.original_name)
+				datos.nombreOriginal = comp.convierteLetras.inicialMayus(datosAPI.original_name.toLowerCase());
+			if (datosAPI.name) datos.nombreCastellano = comp.convierteLetras.inicialMayus(datosAPI.name.toLowerCase());
+
 			// Idioma
 			if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
 
@@ -158,12 +160,15 @@ module.exports = {
 			}
 			if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
+
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = procsComp.fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0) datos.produccion = procsComp.valores(datosAPI.production_companies);
+
 			// Crew
 			if (datosAPI.crew.length > 0) {
 				const direccion = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Directing"));
@@ -173,6 +178,7 @@ module.exports = {
 				const musica = procsComp.valores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
+
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actores = procsComp.actores(datosAPI.cast);
 
@@ -214,7 +220,7 @@ module.exports = {
 					yaEnBD_id: resultado.id,
 					anoEstreno: resultado.anoEstreno,
 					epocaEstreno_id: comp.obtieneLaEpocaDeEstreno(resultado.anoEstreno),
-					nombreCastellano: resultado.nombre,
+					nombreCastellano: comp.convierteLetras.inicialMayus(resultado.nombre.toLowerCase()),
 					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
 				};
 			});
