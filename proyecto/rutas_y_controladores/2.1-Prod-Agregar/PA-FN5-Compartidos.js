@@ -33,8 +33,9 @@ module.exports = {
 		}
 		// IMDB_id, nombreOriginal, nombreCastellano
 		if (datosAPI.imdb_id) datos.IMDB_id = datosAPI.imdb_id;
-		if (datosAPI.original_title) datos.nombreOriginal = datosAPI.original_title;
-		if (datosAPI.title) datos.nombreCastellano = datosAPI.title;
+		if (datosAPI.original_title)
+			datos.nombreOriginal = comp.convierteLetras.inicialMayus(datosAPI.original_title.toLowerCase());
+		if (datosAPI.title) datos.nombreCastellano = comp.convierteLetras.inicialMayus(datosAPI.title.toLowerCase());
 		// Idioma
 		if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
 
