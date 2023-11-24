@@ -394,23 +394,20 @@ module.exports = {
 
 			// prodsEnRCLV
 			if (familias == "productos") {
-				// 1. Variables
-				const stAprob = registro.statusRegistro_id == aprobado_id;
+				// Variables
+				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
+
+				// Actualiza prodAprob en sus links
+				if (registro.links) for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+
+				// Rutina por entidad RCLV
 				const entidadesRCLV = variables.entidades.rclvs;
-
-				// 2. Actualiza prodAprob en sus links
-				if (registro.links) {
-					const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
-					for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
-				}
-
-				// 3. Rutina por entidad RCLV
-				for (let entidad of entidadesRCLV) {
-					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-					if (registro[campo_id])
-						stAprob
-							? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: conLinks})
-							: this.prodsEnRCLV({entidad, id: registro[campo_id]});
+				for (let entidadRCLV of entidadesRCLV) {
+					const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+					if (registro[campo_id] && registro[campo_id] != 1)
+						prodAprob
+							? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
+							: this.prodsEnRCLV({entidadRCLV, id: registro[campo_id]});
 				}
 			}
 

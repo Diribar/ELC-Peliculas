@@ -34,8 +34,8 @@ module.exports = {
 				campo != "hay" &&
 				errores[campo] &&
 				errores[campo] != variables.selectVacio &&
-				!errores[campo].startsWith(variables.inputVacio)&&
-				errores[campo] !="Necesitamos que respondas alguna de las opciones"
+				!errores[campo].startsWith(variables.inputVacio) &&
+				errores[campo] != "Necesitamos que respondas alguna de las opciones"
 			)
 				errores.sensible = true;
 

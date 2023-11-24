@@ -18,22 +18,26 @@
 			<% } %>
 		</div>
 	<% } else { %>
-		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
-			<button class="pointer scale">Ir al primer capítulo</button>
-		</a>
+		<div class="flexRowAlign">
+			<h4 id="coleccion">Colección</h4>
+			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
+				<button class="pointer scale">Ir al primer capítulo</button>
+			</a>
+		</div>
 	<% } %>
-	<% if (links.TR.length) { %>
+	<% if (links.TR.length || entidad == "colecciones") { %>
 		<!-- Trailer -->
 		<div class="flexRowAlign">
 			<h4>Trailer</h4>
-			<!-- Ayuda -->
-			<%- include("PR1-DetalleAyuda") %>
-			<!-- Íconos -->
-			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
+			<% if (links.TR.length) { %>
+				<!-- Ayuda -->
+				<%- include("PR1-DetalleAyuda") %>
+				<!-- Íconos -->
+				<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
+			<% } else { %>
+				<p><em>- No disponemos -</em></p>
+			<% } %>
 		</div>
-	<% } %>
-	<% if (entidad == "colecciones" && !links.TR.length) { %>
-		<p><em>- No disponemos de links de Trailer de esta colección. -</em></p>
 	<% } %>
 </div>
 <!-- Información -->

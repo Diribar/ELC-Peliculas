@@ -260,6 +260,7 @@ module.exports = {
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
 		const link = origen == "TM" ? "/mantenimiento" : "/";
+		const titulo = comp.convierteLetras.inicialMayus(entidadNombre) + " eliminad" + articulo2 + plural2;
 
 		// Cartel de registro eliminado
 		const informacion = {
@@ -282,6 +283,6 @@ module.exports = {
 		};
 
 		// Fin
-		return res.render("CMP-0Estructura", {informacion});
+		return res.render("CMP-0Estructura", {informacion, titulo});
 	},
 };
