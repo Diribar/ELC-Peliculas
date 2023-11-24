@@ -19,6 +19,7 @@ const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorre
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
+const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
@@ -45,7 +46,7 @@ router.get("/api/link/edicion", API.edicAprobRech);
 router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);
 
 // Form
-router.get("/producto/alta", aptoCRUD, usRolRevPERL, capturaActivar, vista.alta.prodForm);
+router.get("/producto/alta", aptoCRUD, rutaCRUD_ID, usRolRevPERL, capturaActivar, vista.alta.prodForm);
 router.get("/rclv/alta", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaEdic.form);
 
 // Cambios de status
