@@ -150,7 +150,7 @@ module.exports = {
 				const aprobsPerms =
 					porcentaje < 100 / semanas || // si el porcentaje es menor al umbral
 					(linksRevisar.length > cantLinksEstaSem && // si hay más links pendientes que aprobados
-						cantLinksEstaSem < 1.1 * promSemanal); // si se aprobó menos del 110% del promedio
+						cantLinksEstaSem < 1.2 * promSemanal); // si se aprobó menos del 110% del promedio
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
