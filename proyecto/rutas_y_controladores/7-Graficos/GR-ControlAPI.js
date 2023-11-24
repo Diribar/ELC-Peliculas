@@ -62,8 +62,10 @@ module.exports = {
 		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
 
 		// Obtiene la cantidad de 'creadoAprobs'
-		sinPrimRev[semanaActual] = creadoAprobs.filter((n) => !n.yaTuvoPrimRev).length;
-		conPrimRev[semanaActual] = creadoAprobs.filter((n) => n.yaTuvoPrimRev).length;
+		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
+		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana);
+		sinPrimRev[semanaActual] = recientes.filter((n) => !n.yaTuvoPrimRev).length;
+		conPrimRev[semanaActual] = recientes.filter((n) => n.yaTuvoPrimRev).length;
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
@@ -78,14 +80,8 @@ module.exports = {
 				: (sinPrimRev[semVencim] = 1);
 		}
 
-		// Obtiene los links aprobados
-		let cantLinksTotal = await BD_genericas.obtieneTodosPorCondicion("links", {
-			prodAprob: true,
-			statusRegistro_id: aprobados_ids,
-		}).then((n) => n.length);
-
 		// Fin
-		return res.json({sinPrimRev, conPrimRev, cantLinksTotal});
+		return res.json({antiguos, sinPrimRev, conPrimRev});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
