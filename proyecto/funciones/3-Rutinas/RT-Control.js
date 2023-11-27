@@ -672,7 +672,7 @@ module.exports = {
 
 			// Actualiza los IDs
 			for (let registro of registros) {
-				BD_genericas.actualizaPorId(tabla, registro.id, {id});
+				await BD_genericas.actualizaPorId(tabla, registro.id, {id});
 				id++;
 			}
 
