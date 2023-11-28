@@ -148,12 +148,11 @@ module.exports = {
 			// Obtiene los productos
 			if (linksRevisar.length) {
 				// Variables
-				const semanas = 25;
+				const semanas = 26;
 				const promSemanal = cantLinksTotal / semanas;
 				const aprobsPerms =
 					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
-					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-						cantLinksEstaSem < 1.2 * promSemanal); // si se aprobaron menos del 120% del promedio
+					(cantVencsAnts && cantLinksEstaSem < 1.2 * promSemanal); // si quedan vencidos de la semana anterior y se aprobaron menos del 120% del promedio
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
