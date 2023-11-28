@@ -510,12 +510,12 @@ module.exports = {
 		];
 
 		// Actualiza el status de los links
-		const objeto = {
+		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
 			statusSugeridoEn: ahora,
 		};
-		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
+		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 		// Fin
 		return;
