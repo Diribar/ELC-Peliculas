@@ -1,6 +1,6 @@
 /* Ancho */
 @media (width <= 1294px) {
-	#cuerpoFooter {width: 100vw;}
+	#cuerpoFooterImgDer #cuerpo #encabMasPelis {width: 100vw;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 }
 @media (width <= 970px) {
