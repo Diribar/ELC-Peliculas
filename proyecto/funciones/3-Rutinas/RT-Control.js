@@ -39,6 +39,7 @@ module.exports = {
 		const rutinasHorarias = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
+		console.log();
 		console.log("Rutinas horarias:");
 		for (let rutinaHoraria of rutinasHorarias) {
 			await this[rutinaHoraria]();
@@ -46,7 +47,6 @@ module.exports = {
 		}
 
 		// Fin
-		console.log();
 		return;
 	},
 	ProdAprobEnLink: async () => {

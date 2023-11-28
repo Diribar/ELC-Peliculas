@@ -61,7 +61,7 @@ router.post("/confirma", dataEntryMasYaEnBD, vista.confirma.guardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", vista.terminaste);
 // Ingreso Manual
-router.get("/ingreso-manual", dataEntry, usAutorizFA, vista.IM.form);
+router.get("/ingreso-manual", dataEntry, vista.IM.form);
 router.post("/ingreso-manual", dataEntry, vista.IM.guardar);
 // Ingreso FA
 router.get("/ingreso-fa", dataEntryMasFA, vista.copiarFA.form);

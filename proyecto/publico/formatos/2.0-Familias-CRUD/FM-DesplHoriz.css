@@ -21,8 +21,8 @@
 /* Partes del botón */
 #listado button .imagenChica {height: 100%;}
 #listado button #infoPeli {margin: 10px 15px;}
-button #infoPeli #nombreOriginal {font-weight: bold;}
-button #infoPeli #nombreCastellano {font-style: italic;}
+button #infoPeli #nombreCastellano {font-weight: bold;}
+button #infoPeli #nombreOriginal {font-style: italic;}
 button #infoPeli .interlineadoChico {margin-top: 5px;}
 
 /* Barra de desplazamiento */

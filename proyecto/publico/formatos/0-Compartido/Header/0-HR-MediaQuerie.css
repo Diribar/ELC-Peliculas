@@ -10,7 +10,7 @@
     header #menuMobile div.soloAngosto {display: flex;}
     header #menuMobile hr.soloAngosto {display: block;}
     header :is(#izquierda, #derecha) {margin: 0;}
-    header #tituloHeader {left: 48%;}
+    header #tituloHeader {left: 47%;}
 
     header #busquedaRapida {position: absolute; margin: 0; width: 100%; top: 13px}
     header #busquedaRapida {display: flex; flex-direction: column; align-items: center;}
@@ -21,4 +21,4 @@
     header #iconoUsuario #imagenUsuario {height: 2.75rem; width: 2.75rem;}
     header #menuUsuario .menuOpcion {height: 28px;}
 }
-@media (width <= 450px) {header #tituloHeader p {font-size: 2.5rem;}}
+@media (width <= 450px) {header #tituloHeader p {font-size: 2.3rem;}}
