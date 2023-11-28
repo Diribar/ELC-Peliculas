@@ -1,11 +1,11 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 27/nov",
-	"HoraUTC": "11:18",
+	"FechaUTC": "Mar. 28/nov",
+	"HoraUTC": "4:30",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 27/nov",
-	"HoraSemUTC": "11:18",
+	"FechaSemUTC": "Mar. 28/nov",
+	"HoraSemUTC": "4:30",
 	"semanaUTC": 47,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
@@ -25,14 +25,14 @@
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-		"IDdeTablas": "NO"
+		"IDdeTablas": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-nov-23": {"titulo": "Beatos Luis y María Beltrame Quattrocchi", "entidad": "personajes", "id": 149},
 		"26-nov-23": {"titulo": "Familia Von Trapp", "entidad": "personajes", "id": 72},
 		"27-nov-23": {"titulo": "Ap. Mar. - Medalla Milagrosa", "entidad": "hechos", "id": 69},
 		"28-nov-23": {"titulo": "ELC - Películas"},
-		"29-nov-23": {"titulo": "Beata María Magdalena de la Encarnación", "entidad": "personajes", "id": 186}
+		"29-nov-23": {"titulo": "Beata María Magdalena de la Encarnación", "entidad": "personajes", "id": 186},
+		"30-nov-23": {"titulo": "ELC - Películas"}
 	}
 }
