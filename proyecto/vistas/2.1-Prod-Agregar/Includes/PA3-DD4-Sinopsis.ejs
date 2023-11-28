@@ -2,10 +2,10 @@
 	<% let inputOK = dataEntry.sinopsis && !errores.sinopsis %>
 	<label for="sinopsis">Sinopsis</label>
 	<div class="inputError">
-		<textarea 
-			id="sinopsis" name="sinopsis" rows="1" 
-			class="input<% if (inputOK) { %> desplClick<% } %>" 
-			placeholder="Ingresa aquí la sinopsis"
+		<textarea
+			id="sinopsis" name="sinopsis" rows="1"
+			class="input<% if (inputOK) { %> desplClick<% } %>"
+			placeholder="Ingresá acá la sinopsis"
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 		><%= dataEntry.sinopsis %></textarea>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
