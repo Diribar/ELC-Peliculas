@@ -8,7 +8,7 @@
 				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 			</a>
 		<% } %>
-		<% if (locals.status_id == aprobado_id) { %>
+		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
