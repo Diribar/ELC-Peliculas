@@ -1,5 +1,6 @@
 /* Formato del cuerpo */
 #cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo #tituloPrincipal #titulo {max-width: 99vw;}
 
 /* Formato del formulario */
 #cuerpo #dataEntry {margin: auto;}
