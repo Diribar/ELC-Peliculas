@@ -1,11 +1,11 @@
 /* Configuración general */
-header {width: 100vw; height: var(--altHeader);}
+header {width: 100vw; height: var(--altHeader); position: relative;}
 header {background: var(--azul-oscuro); justify-content: space-between;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
 /* Título */
-header #tituloHeader {position: absolute; left: 50%; translate: -50% 5%; text-wrap: nowrap;}
+header #tituloHeader {position: absolute; left: 50%; top: 50%; translate: -50% -45%; text-wrap: nowrap;}
 
 /* Fuente */
 @font-face {font-family: MTCORSVA; src: url('MTCORSVA.TTF') format('truetype');}
