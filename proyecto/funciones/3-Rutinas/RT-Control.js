@@ -125,10 +125,8 @@ module.exports = {
 		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 
 		// Rutina por usuario
+		const ahora = new Date();
 		for (let usuario of usuarios) {
-			// Variables
-			const ahora = new Date();
-
 			// Si para el usuario no son las 0hs, lo saltea
 			const zonaHoraria = usuario.pais.zonaHoraria;
 			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
@@ -229,7 +227,8 @@ module.exports = {
 		if (info.FechaUTC == FechaUTC) return;
 
 		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
-		console.log("\n" + "Rutinas diarias:");
+		console.log();
+		console.log("Rutinas diarias:");
 		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
 		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
 		procesos.finRutinasDiariasSemanales("FechaHoraUTC"); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
@@ -435,6 +434,8 @@ module.exports = {
 		if (info.semanaUTC == semanaUTC) return;
 
 		// Actualiza los campos de semana
+		console.log();
+		console.log("Rutinas semanales:");
 		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'finRutinasDiariasSemanales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
 		procesos.finRutinasDiariasSemanales("SemanaUTC");
@@ -495,6 +496,7 @@ module.exports = {
 		// Variables
 		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - vidaPrimRevision);
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
+		const ahora = new Date();
 
 		// Condiciones
 		const condiciones = [
@@ -511,7 +513,7 @@ module.exports = {
 		const objeto = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
-			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
+			statusSugeridoEn: ahora,
 		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
@@ -603,23 +605,20 @@ module.exports = {
 			BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
 		}
 
-		// Elimina misConsultas > 20
-		let misConsultas = await BD_genericas.obtieneTodos("misConsultas");
+		// Elimina misConsultas > límite
+		let misConsultas = await BD_genericas.obtieneTodos("misConsultas").reverse();
 		const limite = 20;
 		while (misConsultas.length) {
 			// Obtiene los registros del primer usuario
 			const usuario_id = misConsultas[0].usuario_id;
-			let registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
+			const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
 
 			// Elimina los registros sobrantes en la BD
-			if (registros.length > limite) {
-				registros.reverse();
+			if (registros.length > limite)
 				for (let i = limite; i < registros.length; i++) BD_genericas.eliminaPorId("misConsultas", registros[i].id);
-			}
 
 			// Elimina los registros del usuario de la lectura
 			misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
-			console.log(623, misConsultas.length);
 		}
 
 		// Fin
@@ -673,7 +672,7 @@ module.exports = {
 
 			// Actualiza los IDs
 			for (let registro of registros) {
-				BD_genericas.actualizaPorId(tabla, registro.id, {id});
+				await BD_genericas.actualizaPorId(tabla, registro.id, {id});
 				id++;
 			}
 

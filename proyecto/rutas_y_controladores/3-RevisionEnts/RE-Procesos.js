@@ -141,11 +141,19 @@ module.exports = {
 				cantLinksTotal,
 			]);
 
+			// Depura los links a revisar
+			const linksVencidos = linksRevisar.filter((n) => n.statusRegistro_id == creadoAprob_id);
+			const cantVencsAnts = linksVencidos.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
+
 			// Obtiene los productos
 			if (linksRevisar.length) {
 				// Variables
-				const porcentaje = (cantLinksEstaSem / cantLinksTotal) * 100; // averigua el porcentaje de links aprobados en la semana
-				const aprobsPerms = porcentaje < 100 / 25 || cantLinksEstaSem < 45
+				const semanas = 25;
+				const promSemanal = cantLinksTotal / semanas;
+				const aprobsPerms =
+					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
+					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
+						cantLinksEstaSem < 1.2 * promSemanal); // si se aprobaron menos del 120% del promedio
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});

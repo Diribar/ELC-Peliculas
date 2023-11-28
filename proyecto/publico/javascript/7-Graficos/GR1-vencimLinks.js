@@ -1,7 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
-	const {sinPrimRev, conPrimRev, cantLinksTotal} = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+	const datos = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+	const {sinPrimRev, conPrimRev} = datos;
+	let {antiguos} = datos;
 
 	// Eje horizontal
 	const sinPrimRevX = Object.keys(sinPrimRev).map((n) => Number(n));
@@ -22,11 +24,12 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Consolida el resultado
-		const resultado = [["Semana", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
+		const resultado = [["Semana", "Antiguos", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
 		let ticks = [];
 		for (let valorX = minX; valorX <= maxX; valorX++) {
-			resultado.push([valorX, conPrimRev[valorX], sinPrimRev[valorX], ""]);
+			resultado.push([valorX, antiguos, conPrimRev[valorX], sinPrimRev[valorX], ""]);
 			ticks.push({v: valorX, f: String(valorX < 53 ? valorX : valorX - 52)});
+			if (antiguos) antiguos = 0;
 		}
 
 		// Especifica la información
@@ -42,7 +45,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(31,73,125)", "rgb(79,98,40)"],
+			colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
 			legend: {position: "none"},
 			hAxis: {
 				format: "decimal",

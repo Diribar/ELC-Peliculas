@@ -216,7 +216,7 @@ module.exports = {
 		// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
 
-		// Borra el vínculo en los productos y les baja de status si corresponde
+		// Borra el vínculo en los productos y les cambia el status si corresponde
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
 		// Borra el vínculo en los fechasDelAno
