@@ -18,11 +18,11 @@ module.exports = {
 
 		// Rutinas diarias (a las 0:00hs)
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
+		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
 
 		// Rutinas horarias (a las 0:01hs)
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
-		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
+		cron.schedule("1 * * * *", () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
 		await this.FechaHoraUTC();
@@ -116,20 +116,19 @@ module.exports = {
 			return;
 		}
 
-		// Variables
-		const asunto = "Resultado de las sugerencias realizadas";
-		let mailsEnviados = [];
-
 		// Obtiene los usuarios relacionados con esos registros
 		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
 		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 
 		// Rutina por usuario
+		const asunto = "Resultado de las sugerencias realizadas";
 		const ahora = new Date();
 		for (let usuario of usuarios) {
-			// Si para el usuario no son las 0hs, lo saltea
+			// Variables
 			const zonaHoraria = usuario.pais.zonaHoraria;
 			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
+
+			// Si para el usuario no son las 0hs, lo saltea
 			if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 			// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
@@ -150,27 +149,21 @@ module.exports = {
 			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdicion(regsEdic_user);
 
 			// Envía el mail y actualiza la BD
-			mailsEnviados.push(
-				comp
-					.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
-					.then((n) => {
-						// Acciones si el mail fue enviado
-						if (n) {
-							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
-							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
-							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
-							console.log("Mail enviado a " + email);
-						}
+			await comp
+				.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
+				.then((n) => {
+					// Acciones si el mail fue enviado
+					if (n) {
+						if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
+						if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
+						BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
+						console.log("Mail enviado a " + email);
+					}
 
-						// Fin
-						return;
-					})
-			);
+					// Fin
+					return;
+				});
 		}
-
-		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails...");
-		await Promise.all(mailsEnviados);
 
 		// Fin
 		return;
@@ -387,16 +380,11 @@ module.exports = {
 		const revisores = {perl, links};
 
 		// Rutina por usuario
+		console.log("Procesando el envío de mails a revisores...");
 		for (let tipo of ["perl", "links"])
 			if (regs[tipo].length || edics[tipo].length)
 				for (let revisor of revisores[tipo])
-					mailsEnviados.push(
-						comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
-					); // Envía el mail y actualiza la BD
-
-		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails a revisores...");
-		await Promise.all(mailsEnviados);
+					await comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]}); // Envía el mail y actualiza la BD
 
 		// Fin
 		return;
