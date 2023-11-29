@@ -68,7 +68,7 @@ window.addEventListener("load", () => {
 
 		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
-	let enviaMail = () => {
+	let enviaMail = async () => {
 		// Prepara la info para el BE
 		const email = DOM.email.value;
 		const documNumero = DOM.documNumero ? DOM.documNumero.value : "";
@@ -82,7 +82,7 @@ window.addEventListener("load", () => {
 				: "";
 
 		// Envía la información al BE
-		const resultado = fetch("/usuarios/api/" + ruta)
+		const resultado = await fetch("/usuarios/api/" + ruta)
 			.then((n) => n.json())
 			.then((n) => {
 				v.pendiente = false;
@@ -137,7 +137,7 @@ window.addEventListener("load", () => {
 	// Acciones 'input'
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
-		e.target.value = e.target.value.toLowerCase()
+		e.target.value = e.target.value.toLowerCase();
 		const campo = e.target.name;
 		let valor = e.target.value;
 
@@ -163,19 +163,18 @@ window.addEventListener("load", () => {
 		// De lo contrario lo inactiva
 		else DOM.button.classList.add("inactivo");
 
-		// Envía la información al BE
-		let resultado = enviaMail();
-
 		// Cartel mientras se recibe la respuesta
-		await cartelProgreso();
+		cartelProgreso();
 
-		// Obtiene los valores recibidos
-		const {errores, mailEnviado} = await resultado;
-		v.errores = errores
-		v.mailEnviado = mailEnviado;
+		// Envía la información al BE y obtiene los valores recibidos
+		const {errores, mailEnviado} = await enviaMail();
+		v = {...v, errores, mailEnviado};
 
 		// Consecuencias
 		consecuencias();
+
+		// Fin
+		return;
 	});
 
 	// Start-up: anula 'submit' si hay algún error
