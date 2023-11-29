@@ -14,10 +14,11 @@
 			<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 			<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
+			<% const ID_entidad = ImagenesDerecha[hoyLocal].entidad %>
+			<% const ID_id = ImagenesDerecha[hoyLocal].id %>
+			<% destino = ID_entidad && ID_id ? ("/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id) : null %>
 			<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
 			<% titulo = ImagenesDerecha[hoyLocal].titulo %>
-			<% ID_entidad = ImagenesDerecha[hoyLocal].entidad; ID_id = ImagenesDerecha[hoyLocal].id %>
-			<% destino = ID_entidad && ID_id ? "/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id : null %>
 		<% } %>
 
 		<% if (destino) { %>
