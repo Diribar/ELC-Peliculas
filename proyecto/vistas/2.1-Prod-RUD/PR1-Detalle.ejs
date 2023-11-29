@@ -18,14 +18,15 @@
 			<% } %>
 		</div>
 	<% } else { %>
+		<!-- Colección -->
 		<div class="flexRowAlign">
-			<h4 id="coleccion">Colección</h4>
+			<% if (links.TR.length) { %><h4 id="coleccion">Colección</h4><% } %>
 			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
 				<button class="pointer scale">Ir al primer capítulo</button>
 			</a>
 		</div>
 	<% } %>
-	<% if (links.TR.length || entidad == "colecciones") { %>
+	<% if (links.TR.length) { %>
 		<!-- Trailer -->
 		<div class="flexRowAlign">
 			<h4>Trailer</h4>
