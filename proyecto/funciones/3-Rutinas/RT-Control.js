@@ -117,7 +117,7 @@ module.exports = {
 		}
 
 		// Variables
-		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
+		const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
 		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 		const asunto = "Resultado de las sugerencias realizadas";
 		const ahora = new Date();
