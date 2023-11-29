@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 28/nov",
-	"HoraUTC": "4:30",
+	"FechaUTC": "Mié. 29/nov",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 28/nov",
@@ -29,10 +29,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-nov-23": {"titulo": "Familia Von Trapp", "entidad": "personajes", "id": 72},
 		"27-nov-23": {"titulo": "Ap. Mar. - Medalla Milagrosa", "entidad": "hechos", "id": 69},
 		"28-nov-23": {"titulo": "ELC - Películas"},
 		"29-nov-23": {"titulo": "Beata María Magdalena de la Encarnación", "entidad": "personajes", "id": 186},
-		"30-nov-23": {"titulo": "ELC - Películas"}
+		"30-nov-23": {"titulo": "ELC - Películas"},
+		"01-dic-23": {"titulo": "ELC - Películas"}
 	}
 }
