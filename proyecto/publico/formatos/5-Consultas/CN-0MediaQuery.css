@@ -6,9 +6,9 @@
 }
 @media (width <= 950px) {
 	/* cuerpo, encabMasPelis, encabezado */
-	#tituloPrincipal #mostrarFiltros {display: flex;}
-	#tituloPrincipal #mostrarFiltros .fa-chevron-right {display: inline-block;}
-	#tituloPrincipal #mostrarFiltros .fa-chevron-left {display: none;}
+	#tituloPrincipal #toggleFiltrosGlobal {display: flex;}
+	#tituloPrincipal #toggleFiltrosGlobal .fa-chevron-right {display: inline-block;}
+	#tituloPrincipal #toggleFiltrosGlobal .fa-chevron-left {display: none;}
 
 	/* Filtros */
 	#cuerpo #configCons {position: absolute; left: 35px; transform-origin: left; transform: scaleX(0);}
