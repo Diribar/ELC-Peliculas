@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Cartel 'mostrarFiltros'
-		if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
+		if ([padre.id, padre.parentNode.id].includes("muestraOcultaFiltros")) {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");

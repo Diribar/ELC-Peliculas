@@ -42,9 +42,9 @@ window.addEventListener("load", async () => {
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
 		// Muestra / Oculta filtros
-		mostrarOcultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros"),
-		mostrarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
-		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
+		muestraOcultaFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros"),
+		mostrarFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros #mostrarFiltros"),
+		ocultarFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros #ocultarFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),

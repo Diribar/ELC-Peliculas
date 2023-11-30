@@ -4,14 +4,17 @@
 	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 }
-/* Ancho - Filtros */
 @media (width <= 950px) {
+	/* cuerpo, encabMasPelis, encabezado */
 	#tituloPrincipal #mostrarFiltros {display: flex;}
 	#tituloPrincipal #mostrarFiltros .fa-chevron-right {display: inline-block;}
 	#tituloPrincipal #mostrarFiltros .fa-chevron-left {display: none;}
-	#cuerpo #configCons {position: absolute; left: 35px; transform: scaleX(0); transform-origin: left}
-	#configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
-	#mostrarOcultarFiltros {display: none;} /* oculta el botón muestra/oculta */
+
+	/* Filtros */
+	#cuerpo #configCons {position: absolute; left: 35px; transform-origin: left; transform: scaleX(0);}
+	#configCons #configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
+	#configCons #muestraOcultaFiltros {display: none;} /* oculta el botón muestra/oculta */
+
 	#vistaDeResults #actualizar {display: none;}
 }
 @media (width <= 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */

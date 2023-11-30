@@ -110,7 +110,7 @@ let actualizaConfigCons = {
 		if (v.obtener) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
-			DOM.mostrarOcultarFiltros.classList.remove("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
+			DOM.muestraOcultaFiltros.classList.remove("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 
 			// Oculta el mensaje de error
 			DOM.asegurate.classList.add("ocultar");
@@ -127,7 +127,7 @@ let actualizaConfigCons = {
 
 			// Oculta sectores
 			DOM.nav.classList.add("ocultar");
-			DOM.mostrarOcultarFiltros.classList.add("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
+			DOM.muestraOcultaFiltros.classList.add("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
