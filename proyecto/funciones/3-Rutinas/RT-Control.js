@@ -28,6 +28,7 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Fin
+		console.log();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
@@ -240,7 +241,6 @@ module.exports = {
 		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias"); // actualiza el valor "NO" en los campos de "RutinasDiarias"
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
-		console.log();
 
 		// Verifica si se deben correr las rutinas horarias
 		if (minutos > 1) await this.RutinasHorarias();
@@ -449,7 +449,6 @@ module.exports = {
 		await this.RutinasSemanales();
 
 		// Fin
-		console.log();
 		return;
 	},
 	RutinasSemanales: async function () {
