@@ -44,8 +44,8 @@ window.addEventListener("load", async () => {
 
 		// Muestra / Oculta filtros
 		toggleFiltrosIndivs: DOM.configCons.querySelector("#toggleFiltrosIndivs"),
-		mostrarFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #mostrarFiltros"),
-		ocultarFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultarFiltros"),
+		muestraFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #muestraFiltros"),
+		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultaFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		conLinksHD: "conLinksHD",
 		enCast: "enCast",
-		mostrarFiltros: false,
+		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
 	};

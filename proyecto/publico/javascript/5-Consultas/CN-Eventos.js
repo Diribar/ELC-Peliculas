@@ -138,15 +138,15 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Cartel 'mostrarFiltros'
+		// Cartel 'muestraFiltros'
 		if ([padre.id, padre.parentNode.id].includes("toggleFiltrosIndivs")) {
 			// Cambia el status de los botones
-			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
-			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
+			DOM.muestraFiltros.classList.toggle("ocultaFiltros");
+			DOM.ocultaFiltros.classList.toggle("ocultaFiltros");
 
 			// Muestra u oculta los filtros vacíos
-			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
+			v.muestraFiltros = DOM.muestraFiltros.className.includes("ocultaFiltros");
+			if (v.muestraFiltros) DOM.nav.classList.remove("startUp");
 			actualiza.toggleFiltrosIndivs();
 
 			// Fin

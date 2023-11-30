@@ -2,8 +2,8 @@
 #configCons #toggleFiltrosIndivs {justify-content: center; align-items: center; height: 100px;}
 #configCons #toggleFiltrosIndivs {background: var(--celeste-claro);}
 #configCons #toggleFiltrosIndivs .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCons #toggleFiltrosIndivs #mostrarFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
-#configCons #toggleFiltrosIndivs #ocultarFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltrosIndivs #muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltrosIndivs #ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
 #configCons #toggleFiltrosIndivs span {font-weight: bold;}
 
 /* Filtros Campos */

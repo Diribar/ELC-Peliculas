@@ -277,7 +277,7 @@ let actualizaConfigCons = {
 let muestraOcultaActualizaPref = (seMuestra, elemento) => {
 	// Muestra
 	seMuestra
-		? v.mostrarFiltros
+		? v.muestraFiltros
 			? DOM[elemento].parentNode.classList.remove("ocultar")
 			: DOM[elemento].parentNode.classList.replace("ocultar", "ocultaFiltro")
 		: DOM[elemento].parentNode.classList.add("ocultar");
