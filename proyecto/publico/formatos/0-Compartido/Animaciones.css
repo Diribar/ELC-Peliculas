@@ -8,9 +8,9 @@
 @keyframes aparece        {0% {opacity: 0} 100% {opacity: 1}}
 @keyframes desaparece     {0% {opacity: 1} 100% {opacity: 0; display: none}}
 @keyframes aumenta        {0% {scale: 0}   100% {scale: 1}}
-@keyframes aumentaX        {0% {transform: scaleX(0)}   100% {transform: scaleX(1);}}
+@keyframes aumentaX       {0% {transform: scaleX(0)}   100% {transform: scaleX(1);}}
 @keyframes disminuye      {0% {scale: 1}   100% {scale: 0}}
-@keyframes disminuyeX        {0% {transform: scaleX(1)}   100% {transform: scaleX(0);}}
+@keyframes disminuyeX     {0% {transform: scaleX(1)}   100% {transform: scaleX(0);}}
 @keyframes agrandaAchica  {0% {scale: 1}   100% {scale: 1.1}}
 
 /* Animación - Duración */
