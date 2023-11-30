@@ -148,7 +148,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	muestraOcultaFiltros: () => {
+	toggleFiltrosIndivs: () => {
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up

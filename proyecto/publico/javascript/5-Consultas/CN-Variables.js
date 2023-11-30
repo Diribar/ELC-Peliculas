@@ -23,6 +23,7 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
+
 		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
 		opcionPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id']"),
 		opcionesPorEnt: DOM.tituloPrincipal.querySelectorAll("select[name='opcionPorEnt_id'] option"),
@@ -42,9 +43,9 @@ window.addEventListener("load", async () => {
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
 		// Muestra / Oculta filtros
-		muestraOcultaFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros"),
-		mostrarFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros #mostrarFiltros"),
-		ocultarFiltros: DOM.configCons.querySelector("#muestraOcultaFiltros #ocultarFiltros"),
+		toggleFiltrosIndivs: DOM.configCons.querySelector("#toggleFiltrosIndivs"),
+		mostrarFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #mostrarFiltros"),
+		ocultarFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultarFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),

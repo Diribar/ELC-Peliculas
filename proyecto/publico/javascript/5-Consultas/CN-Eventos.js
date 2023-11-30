@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Cartel 'mostrarFiltros'
-		if ([padre.id, padre.parentNode.id].includes("muestraOcultaFiltros")) {
+		if ([padre.id, padre.parentNode.id].includes("toggleFiltrosIndivs")) {
 			// Cambia el status de los botones
 			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
@@ -147,7 +147,7 @@ window.addEventListener("load", async () => {
 			// Muestra u oculta los filtros vacíos
 			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
 			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
-			actualiza.muestraOcultaFiltros();
+			actualiza.toggleFiltrosIndivs();
 
 			// Fin
 			return;
@@ -247,7 +247,7 @@ let cambioDeConfig_id = async () => {
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	// actualiza.cartelQuieroVerVisible();
-	actualiza.muestraOcultaFiltros();
+	actualiza.toggleFiltrosIndivs();
 
 	// Fin
 	return;

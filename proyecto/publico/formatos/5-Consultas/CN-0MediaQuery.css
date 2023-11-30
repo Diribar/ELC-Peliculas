@@ -13,7 +13,7 @@
 	/* Filtros */
 	#cuerpo #configCons {position: absolute; left: 35px; transform-origin: left; transform: scaleX(0);}
 	#configCons #configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
-	#configCons #muestraOcultaFiltros {display: none;} /* oculta el botón muestra/oculta */
+	#configCons #toggleFiltrosIndivs {display: none;} /* oculta el botón muestra/oculta */
 
 	#vistaDeResults #actualizar {display: none;}
 }
