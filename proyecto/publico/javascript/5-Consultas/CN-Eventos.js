@@ -75,6 +75,20 @@ window.addEventListener("load", async () => {
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
+		// Toggle filtros
+		if (nombre == "toggleFiltrosGlobal") {
+			const startUp = !DOM.muestraFiltrosGlobal.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
+			if (startUp) {
+				DOM.muestraFiltrosGlobal.classList.add("flechaIzq");
+				DOM.configCons.classList.add("aumentaX");
+			} else {
+				DOM.muestraFiltrosGlobal.classList.toggle("flechaDer");
+				DOM.muestraFiltrosGlobal.classList.toggle("flechaIzq");
+				DOM.configCons.classList.toggle("aumentaX");
+				DOM.configCons.classList.toggle("disminuyeX");
+			}
+		}
+
 		// Botonera
 		if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {

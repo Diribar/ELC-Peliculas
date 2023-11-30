@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-
+		muestraFiltrosGlobal: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
 		opcionPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id']"),
 		opcionesPorEnt: DOM.tituloPrincipal.querySelectorAll("select[name='opcionPorEnt_id'] option"),
