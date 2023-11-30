@@ -1,9 +1,15 @@
 /* Ancho */
-@media (width <= 1294px) {
-	#cuerpoFooterImgDer #cuerpo #encabMasPelis {width: 100vw;}
+@media (width <= 1350px) {
+	/* #cuerpoFooter #encabMasPelis {width: 100vw;} */
+	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 }
-@media (width <= 970px) {
+/* Ancho - Filtros */
+@media (width <= 950px) {
+	#tituloPrincipal #mostrarFiltros {display: flex;}
+	#tituloPrincipal #mostrarFiltros .fa-chevron-right {display: inline-block;}
+	#tituloPrincipal #mostrarFiltros .fa-chevron-left {display: none;}
+	#cuerpo #configCons {display: none; position: absolute; left: 35px; overflow: hidden;}
 	#configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
 	#mostrarOcultarFiltros {display: none;} /* oculta el botón muestra/oculta */
 	#vistaDeResults #actualizar {display: none;}
