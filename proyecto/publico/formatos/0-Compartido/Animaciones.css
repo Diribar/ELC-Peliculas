@@ -8,18 +8,22 @@
 @keyframes aparece        {0% {opacity: 0} 100% {opacity: 1}}
 @keyframes desaparece     {0% {opacity: 1} 100% {opacity: 0; display: none}}
 @keyframes aumenta        {0% {scale: 0}   100% {scale: 1}}
+@keyframes aumentaX        {0% {transform: scaleX(0)}   100% {transform: scaleX(1);}}
 @keyframes disminuye      {0% {scale: 1}   100% {scale: 0}}
+@keyframes disminuyeX        {0% {transform: scaleX(1)}   100% {transform: scaleX(0);}}
 @keyframes agrandaAchica  {0% {scale: 1}   100% {scale: 1.1}}
 
 /* Animación - Duración */
 .aparece {animation-name: aparece;       animation-duration: .5s;}
 .desaparece {animation-name: desaparece; animation-duration: .5s;}
 .aumenta {animation-name: aumenta;       animation-duration: .3s;}
+.aumentaX {animation-name: aumentaX;       animation-duration: .3s;}
 .disminuye {animation-name: disminuye;   animation-duration: .5s;}
+.disminuyeX {animation-name: disminuyeX;   animation-duration: .5s;}
 .agrandaAchica {animation: agrandaAchica .7s 6 alternate;}
 
 /* Animación - Estilos */
-.aparece, .desaparece, .aumenta, .disminuye {animation-timing-function: ease-in; animation-fill-mode: forwards;}
+.aparece, .desaparece, .aumenta, .aumentaX, .disminuye, .disminuyeX {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
 .flechas button, .flechas i, #cuerpo a, .scale {transition: 300ms;}

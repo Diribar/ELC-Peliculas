@@ -9,7 +9,7 @@
 	#tituloPrincipal #mostrarFiltros {display: flex;}
 	#tituloPrincipal #mostrarFiltros .fa-chevron-right {display: inline-block;}
 	#tituloPrincipal #mostrarFiltros .fa-chevron-left {display: none;}
-	#cuerpo #configCons {display: none; position: absolute; left: 35px; overflow: hidden;}
+	#cuerpo #configCons {position: absolute; left: 35px; transform: scaleX(0); transform-origin: left}
 	#configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
 	#mostrarOcultarFiltros {display: none;} /* oculta el botón muestra/oculta */
 	#vistaDeResults #actualizar {display: none;}
