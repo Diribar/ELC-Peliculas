@@ -3,18 +3,16 @@
 	<label for="<%= nombre %>"><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input id="<%= nombre %>" type="<%- registro.numero ? 'number' : 'text' %>" 
-			class="input<% if (inputOK) { %> desplClick<% } %><% if (registro.numero) { %> numero<% } %>" 
-			name="<%= nombre %>" 
+		<input id="<%= nombre %>" type="<%- registro.numero ? 'number' : 'text' %>"
+			class="input<% if (inputOK) { %> desplClick<% } %><% if (registro.numero) { %> numero<% } %>"
+			name="<%= nombre %>"
 			autocomplete="off"
 			value="<%= dataEntry[nombre] %>"
 			placeholder="<%- registro.numero ? "Sólo números" : "Ingresá el texto" %>"
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 		>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
-		<% if (nombre=="actores" && dataEntry.actores && (!locals.errores || !errores.actores)) { %>
-			<%- include("PA3-DD8-Ayuda") %>
-		<% } %>
+		<% if (nombre=="actores") { %><%- include("PA3-DD8-Ayuda") %><% } %>
 		<%- include("CMP-Errores", {nombre}) %>
 	</div>
 </section>

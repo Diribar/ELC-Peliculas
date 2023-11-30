@@ -18,16 +18,17 @@ module.exports = {
 
 		// Rutinas diarias (a las 0:00hs)
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
+		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
 
 		// Rutinas horarias (a las 0:01hs)
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
-		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
+		cron.schedule("1 * * * *", () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
 
 		// Start-up
 		await this.FechaHoraUTC();
 
 		// Fin
+		console.log();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
@@ -117,27 +118,29 @@ module.exports = {
 		}
 
 		// Variables
+		const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
+		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 		const asunto = "Resultado de las sugerencias realizadas";
+		const ahora = new Date();
 		let mailsEnviados = [];
 
-		// Obtiene los usuarios relacionados con esos registros
-		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
-		const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
-
 		// Rutina por usuario
-		const ahora = new Date();
 		for (let usuario of usuarios) {
-			// Si para el usuario no son las 0hs, lo saltea
+			if (!usuario.pais || !usuario.email) continue;
+
+			// Variables
 			const zonaHoraria = usuario.pais.zonaHoraria;
 			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
+
+			// Si para el usuario no son las 0hs, lo saltea
 			if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 			// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
 			const hoyUsuario = comp.fechaHora.fechaDiaMesAno(ahora);
-			const fechaRevisores = comp.fechaHora.fechaDiaMesAno(usuario.fechaRevisores);
+			const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.fechaDiaMesAno(usuario.fechaRevisores) : null;
 			const horaUsuario = ahora.getUTCHours();
-			const horaRevisores = usuario.fechaRevisores.getUTCHours();
-			if (hoyUsuario == fechaRevisores && horaUsuario == horaRevisores) continue;
+			const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
+			if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
 
 			// Variables
 			const email = usuario.email;
@@ -238,7 +241,6 @@ module.exports = {
 		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias"); // actualiza el valor "NO" en los campos de "RutinasDiarias"
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
-		console.log();
 
 		// Verifica si se deben correr las rutinas horarias
 		if (minutos > 1) await this.RutinasHorarias();
@@ -447,7 +449,6 @@ module.exports = {
 		await this.RutinasSemanales();
 
 		// Fin
-		console.log();
 		return;
 	},
 	RutinasSemanales: async function () {
@@ -510,12 +511,12 @@ module.exports = {
 		];
 
 		// Actualiza el status de los links
-		const objeto = {
+		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
 			statusSugeridoEn: ahora,
 		};
-		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
+		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 		// Fin
 		return;
