@@ -110,8 +110,10 @@ module.exports = {
 			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
 		});
 
-		// Ordena decreciente
+		// Ordena los registros
 		fechas.sort((a, b) => b.rango - a.rango);
+		fechas.splice(10);
+		fechas.sort((a, b) => a.id - b.id);
 
 		// Fin
 		return res.json(fechas);

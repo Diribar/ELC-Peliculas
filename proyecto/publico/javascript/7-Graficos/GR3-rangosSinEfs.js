@@ -2,7 +2,6 @@
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/rangos-sin-efemerides").then((n) => n.json());
-	datos.splice(10);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
