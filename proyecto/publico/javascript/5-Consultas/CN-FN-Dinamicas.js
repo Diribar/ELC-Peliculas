@@ -9,7 +9,7 @@ let actualizaConfigCons = {
 		this.entidad();
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
-		actualiza.muestraOcultaFiltros();
+		actualiza.toggleFiltrosIndivs();
 
 		// Fin
 		return;
@@ -110,7 +110,7 @@ let actualizaConfigCons = {
 		if (v.obtener) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
-			DOM.mostrarOcultarFiltros.classList.remove("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
+			DOM.toggleFiltrosIndivs.classList.remove("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 
 			// Oculta el mensaje de error
 			DOM.asegurate.classList.add("ocultar");
@@ -127,7 +127,7 @@ let actualizaConfigCons = {
 
 			// Oculta sectores
 			DOM.nav.classList.add("ocultar");
-			DOM.mostrarOcultarFiltros.classList.add("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
+			DOM.toggleFiltrosIndivs.classList.add("ocultar"); // los botones "mostrar flitros" y "ocultar filtros"
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
@@ -277,7 +277,7 @@ let actualizaConfigCons = {
 let muestraOcultaActualizaPref = (seMuestra, elemento) => {
 	// Muestra
 	seMuestra
-		? v.mostrarFiltros
+		? v.muestraFiltros
 			? DOM[elemento].parentNode.classList.remove("ocultar")
 			: DOM[elemento].parentNode.classList.replace("ocultar", "ocultaFiltro")
 		: DOM[elemento].parentNode.classList.add("ocultar");

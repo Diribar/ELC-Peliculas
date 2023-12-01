@@ -1,10 +1,10 @@
 /* Carteles para mostrar/ocultar filtros */
-#configCons #mostrarOcultarFiltros {justify-content: center; align-items: center; height: 100px;}
-#configCons #mostrarOcultarFiltros {background: var(--celeste-claro);}
-#configCons #mostrarOcultarFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCons #mostrarOcultarFiltros #mostrarFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
-#configCons #mostrarOcultarFiltros #ocultarFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#configCons #mostrarOcultarFiltros span {font-weight: bold;}
+#configCons #toggleFiltrosIndivs {justify-content: center; align-items: center; height: 100px;}
+#configCons #toggleFiltrosIndivs {background: var(--celeste-claro);}
+#configCons #toggleFiltrosIndivs .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
+#configCons #toggleFiltrosIndivs #muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltrosIndivs #ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltrosIndivs span {font-weight: bold;}
 
 /* Filtros Campos */
 #configCons #configCampos {background: var(--gris-claro); flex-grow: 1;}

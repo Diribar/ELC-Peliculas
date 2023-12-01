@@ -10,5 +10,5 @@
 #configCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
 /* Filtros Cabecera - Nombre Actual */
 #configCabecera select {font-weight: bold;}
-#configCabecera #iconosBotonera {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
+#configCabecera #iconosBotonera {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center; overflow: hidden;}
 #configCabecera #iconosBotonera i {cursor: pointer; color: snow;}

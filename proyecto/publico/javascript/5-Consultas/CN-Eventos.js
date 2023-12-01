@@ -75,6 +75,20 @@ window.addEventListener("load", async () => {
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
+		// Toggle filtros
+		if (nombre == "toggleFiltrosGlobal") {
+			const startUp = !DOM.muestraFiltrosGlobal.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
+			if (startUp) {
+				DOM.muestraFiltrosGlobal.classList.add("flechaIzq");
+				DOM.configCons.classList.add("aumentaX");
+			} else {
+				DOM.muestraFiltrosGlobal.classList.toggle("flechaDer");
+				DOM.muestraFiltrosGlobal.classList.toggle("flechaIzq");
+				DOM.configCons.classList.toggle("aumentaX");
+				DOM.configCons.classList.toggle("disminuyeX");
+			}
+		}
+
 		// Botonera
 		if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -138,16 +152,16 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Cartel 'mostrarFiltros'
-		if ([padre.id, padre.parentNode.id].includes("mostrarOcultarFiltros")) {
+		// Cartel 'muestraFiltros'
+		if ([padre.id, padre.parentNode.id].includes("toggleFiltrosIndivs")) {
 			// Cambia el status de los botones
-			DOM.mostrarFiltros.classList.toggle("ocultaFiltros");
-			DOM.ocultarFiltros.classList.toggle("ocultaFiltros");
+			DOM.muestraFiltros.classList.toggle("ocultaFiltros");
+			DOM.ocultaFiltros.classList.toggle("ocultaFiltros");
 
 			// Muestra u oculta los filtros vacíos
-			v.mostrarFiltros = DOM.mostrarFiltros.className.includes("ocultaFiltros");
-			if (v.mostrarFiltros) DOM.nav.classList.remove("startUp");
-			actualiza.muestraOcultaFiltros();
+			v.muestraFiltros = DOM.muestraFiltros.className.includes("ocultaFiltros");
+			if (v.muestraFiltros) DOM.nav.classList.remove("startUp");
+			actualiza.toggleFiltrosIndivs();
 
 			// Fin
 			return;
@@ -247,7 +261,7 @@ let cambioDeConfig_id = async () => {
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
 	// actualiza.cartelQuieroVerVisible();
-	actualiza.muestraOcultaFiltros();
+	actualiza.toggleFiltrosIndivs();
 
 	// Fin
 	return;

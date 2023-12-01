@@ -23,6 +23,7 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
+		muestraFiltrosGlobal: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
 		opcionPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id']"),
 		opcionesPorEnt: DOM.tituloPrincipal.querySelectorAll("select[name='opcionPorEnt_id'] option"),
@@ -42,9 +43,9 @@ window.addEventListener("load", async () => {
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
 		// Muestra / Oculta filtros
-		mostrarOcultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros"),
-		mostrarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #mostrarFiltros"),
-		ocultarFiltros: DOM.configCons.querySelector("#mostrarOcultarFiltros #ocultarFiltros"),
+		toggleFiltrosIndivs: DOM.configCons.querySelector("#toggleFiltrosIndivs"),
+		muestraFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #muestraFiltros"),
+		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultaFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
@@ -87,7 +88,7 @@ window.addEventListener("load", async () => {
 		pppRrutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		conLinksHD: "conLinksHD",
 		enCast: "enCast",
-		mostrarFiltros: false,
+		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
 	};
@@ -99,8 +100,7 @@ window.addEventListener("load", async () => {
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
-	document.querySelector("main").scrollLeft = 220;
-	document.querySelector("main #cuerpoFooterImgDer").style.visibility = "visible";
+//	document.querySelector("main #cuerpoFooterImgDer").style.visibility = "visible";
 });
 
 // Variables
