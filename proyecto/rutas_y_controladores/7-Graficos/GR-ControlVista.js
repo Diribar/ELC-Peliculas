@@ -34,10 +34,10 @@ module.exports = {
 	},
 
 	// Otros
-	rangosSinEfemerides: (req, res) => {
+	rangosSinEfs: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "rangosSinEfemerides",
+			codigo: "rangosSinEfs",
 			titulo: "Rangos sin Efemérides",
 		});
 	},
