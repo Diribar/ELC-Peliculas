@@ -2,16 +2,14 @@
 
 module.exports = {
 	// Películas
-	pelisCfcVpc: async (req, res) => {
-		// Fin
+	pelisCfcVpc: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "pelisCfcVpc",
 			titulo: "Películas por Fe Católica / Valores",
 		});
 	},
-	pelisPublico: async (req, res) => {
-		// Fin
+	pelisPublico: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "pelisPublico",
@@ -20,20 +18,27 @@ module.exports = {
 	},
 
 	// Links
-	vencimLinks: async (req, res) => {
-		// Fin
+	vencimLinks: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "vencimLinks",
 			titulo: "Vencimiento Semanal de Links",
 		});
 	},
-	linksPorProv: async (req, res) => {
-		// Fin
+	linksPorProv: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "linksPorProv",
 			titulo: "Cantidad de Links por Proveedor",
+		});
+	},
+
+	// Otros
+	rangosSinEfs: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "rangosSinEfs",
+			titulo: "Rangos sin Efemérides",
 		});
 	},
 };

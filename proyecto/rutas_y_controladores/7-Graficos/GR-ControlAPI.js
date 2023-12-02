@@ -99,4 +99,56 @@ module.exports = {
 		// Fin
 		return res.json(provs);
 	},
+	rangosSinEfs: async (req, res) => {
+		// Variables
+		let fechas = await obtieneEfemerides();
+
+		// Obtiene rangos entre efemérides
+		fechas.forEach((fecha, i) => {
+			const sig = i + 1 < fechas.length ? i + 1 : 0; // si se llegó al final, empieza desde el comienzo
+			fecha.rango = fechas[sig].id - fecha.id;
+			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
+		});
+
+		// Ordena los registros
+		fechas.sort((a, b) => b.rango - a.rango);
+		fechas.splice(10);
+		fechas.sort((a, b) => a.id - b.id);
+
+		// Fin
+		return res.json(fechas);
+	},
+};
+let obtieneEfemerides = async () => {
+	// Variables
+	const entsRCLV = variables.entidades.rclvs.slice(0, -1);
+	const include = ["personajes", "hechos", "temas", "eventos"];
+	let fechas;
+
+	// Obtiene las fechas con sus RCLV
+	fechas = await BD_genericas.obtieneTodosConInclude("fechasDelAno", include);
+	fechas = fechas.filter((n) => n.id < 400);
+
+	// Concentra los distintos RCLVs en el campo RCLV
+	for (let fecha of fechas) {
+		// Variables
+		fecha.rclvs = [];
+
+		// Rutina
+		for (let entRCLV of entsRCLV)
+			if (fecha[entRCLV].length) {
+				const nombres = fecha[entRCLV].map((n) => n.nombre);
+				fecha.rclvs.push(...nombres);
+			}
+
+		// Elimina info innecesaria
+		for (let campo in fecha) if (!["id", "nombre", "rclvs"].includes(campo)) delete fecha[campo];
+		if (!fecha.rclvs.length) delete fecha.rclvs;
+	}
+
+	// Conserva solo las fechas con efemérides
+	fechas = fechas.filter((n) => n.rclvs);
+
+	// Fin
+	return fechas;
 };

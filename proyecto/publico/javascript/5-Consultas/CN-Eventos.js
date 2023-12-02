@@ -76,7 +76,7 @@ window.addEventListener("load", async () => {
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
 		// Toggle filtros
-		if (nombre == "toggleFiltrosGlobal") {
+		if (nombre == "toggleFiltrosGlobal" || (nombre == "zonaDisponible" && DOM.configCons.className.includes("aumentaX"))) {
 			const startUp = !DOM.muestraFiltrosGlobal.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
 			if (startUp) {
 				DOM.muestraFiltrosGlobal.classList.add("flechaIzq");
