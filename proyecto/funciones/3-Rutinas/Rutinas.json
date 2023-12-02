@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 1/dic",
-	"HoraUTC": "11:19",
+	"FechaUTC": "Sáb. 2/dic",
+	"HoraUTC": "8:09",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 28/nov",
@@ -29,10 +29,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-nov-23": {"titulo": "Beata María Magdalena de la Encarnación", "entidad": "personajes", "id": 186},
 		"30-nov-23": {"titulo": "ELC - Películas"},
 		"01-dic-23": {"titulo": "ELC - Películas"},
 		"02-dic-23": {"titulo": "ELC - Películas"},
-		"03-dic-23": {"titulo": "San Francisco Javier", "entidad": "personajes", "id": 167}
+		"03-dic-23": {"titulo": "San Francisco Javier", "entidad": "personajes", "id": 167},
+		"04-dic-23": {"titulo": "Santa Barbara de Nicomedia", "entidad": "personajes", "id": 68}
 	}
 }
