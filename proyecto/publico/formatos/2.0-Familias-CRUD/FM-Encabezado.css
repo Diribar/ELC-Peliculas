@@ -11,18 +11,19 @@
 /* #cuerpo #encabezado :is(#colCap) {max-width: 50%;} */
 
 /* Otros */
-#cuerpo #encabezado #nombres h2 {margin: 0; }
-#cuerpo #encabezado #nombres h2 {padding-bottom: 3px;}
-#cuerpo #encabezado #nombres h3 {font-weight: normal; font-size: 1rem;}
-#cuerpo #encabezado #colCap {text-align: right;}
-#cuerpo #encabezado #colCap #colecciones a div {border: 1px solid var(--azul-oscuro); background: var(--gris-claro);}
-#cuerpo #encabezado #colCap #colecciones a div {padding: 5px 10px; border-radius: 10px; text-align: center;}
-#cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px; max-width: max-content;}
-#cuerpo #encabezado #colCap #tempCapI button {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
-#cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center;}
-#cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px; white-space: nowrap;}
-#cuerpo #encabezado #colCap #tempCapS .pack i {font-size: 1.1rem; }
-#cuerpo #encabezado #colCap #tempCapS .pack i:first-child {margin-right: 3px;}
-#cuerpo #encabezado #colCap #tempCapS :is(#temporada, #capitulo) {border-radius: 5px;}
-#cuerpo #encabezado #colCap #tempCapS #temporada {margin-right: 8px;}
-#cuerpo #encabezado #colCap #tempCapS select#capitulo {width: 20px;}
+#encabezado #nombres h2 {margin: 0; }
+#encabezado #nombres h2 {padding-bottom: 3px;}
+#encabezado #nombres h3 {font-weight: normal; font-size: 1rem;}
+#encabezado #colCap {text-align: right;}
+#colCap #colecciones a div {border: 1px solid var(--azul-oscuro); background: var(--gris-claro);}
+#colCap #colecciones a div {padding: 5px 10px; border-radius: 10px; text-align: center;}
+#colCap #tempCapI {margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;}
+#colCap #tempCapI button {margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;}
+#colCap #tempCapI button {font-weight: bold; background: var(--gris-oscuro); color: snow;}
+#colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center;}
+#colCap #tempCapS .pack {line-height: 1; margin-right: 5px; white-space: nowrap;}
+#colCap #tempCapS .pack i {font-size: 1.1rem; }
+#colCap #tempCapS .pack i:first-child {margin-right: 3px;}
+#colCap #tempCapS :is(#temporada, #capitulo) {border-radius: 5px;}
+#colCap #tempCapS #temporada {margin-right: 8px;}
+#colCap #tempCapS select#capitulo {width: 20px;}
