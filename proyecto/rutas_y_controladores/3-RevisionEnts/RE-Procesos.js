@@ -153,7 +153,7 @@ module.exports = {
 				const aprobsPerms =
 					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
 					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-						cantLinksEstaSem < 1.1 * promSemanal); // si se aprobaron menos del 120% del promedio
+						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos del 120% del promedio
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
@@ -745,9 +745,10 @@ module.exports = {
 
 		// Obtiene el siguiente producto
 		let siguienteProducto;
+		// Busca en cada grupo de producto
 		for (let opcion in productos) {
-			const prodsOpcion = productos[opcion];
-			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : "";
+			const prodsOpcion = productos[opcion]; // obtiene el conjunto de productos para la opción
+			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : ""; // busca un producto distinto al actual
 			if (siguienteProducto) break;
 		}
 
