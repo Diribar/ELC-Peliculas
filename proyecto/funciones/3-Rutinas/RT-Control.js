@@ -418,6 +418,22 @@ module.exports = {
 		// Fin
 		return;
 	},
+	loginsDiarios:async()=>{
+		// Variables
+
+		// Obtiene los logins diarios
+
+		// Loop mientras el día sea menor al actual
+
+			// Averigua si existe un registro para la fecha más antigua, y en caso negativo lo crea (await)
+
+			// Agrega la cantidad de logins del día más antiguo
+
+			// Elimina los logins del día más antiguo
+
+		// Fin
+		return
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {

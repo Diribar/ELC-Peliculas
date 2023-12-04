@@ -32,6 +32,7 @@ module.exports = {
 			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin: hoy});
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
 
+			// Agrega un registro de login del día
 		}
 
 		// Fin
