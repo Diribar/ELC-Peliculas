@@ -26,7 +26,8 @@ module.exports = {
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}).then(() => true),
 	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
 	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}).then(() => true),
-	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => db[entidad].increment(campo, {by: aumento, where: {id}}),
+	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) =>
+		db[entidad].increment(campo, {by: aumento ? aumento : 1, where: {id}}),
 	//reduceElProximoValorDeID: (entidad) => queryInterface.sequelize.query("ALTER TABLE " + entidad + " AUTO_INCREMENT = 1;"),
 
 	// Lectura

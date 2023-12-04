@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: {type: dt.STRING(2), primaryKey: true},
 		nombre: {type: dt.STRING(20)},
-		mas_frecuente: {type: dt.BOOLEAN},
+		masFrecuente: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_idiomas",
