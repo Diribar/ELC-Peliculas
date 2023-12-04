@@ -172,7 +172,6 @@ module.exports = {
 		}
 
 		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails...");
 		await Promise.all(mailsEnviados);
 
 		// Fin
@@ -397,7 +396,6 @@ module.exports = {
 					); // Envía el mail y actualiza la BD
 
 		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails a revisores...");
 		await Promise.all(mailsEnviados);
 
 		// Fin
