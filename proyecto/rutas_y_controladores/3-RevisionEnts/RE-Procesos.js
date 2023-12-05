@@ -110,10 +110,30 @@ module.exports = {
 			// Fin
 			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
 		},
-		obtieneProds_Links: async (revID) => {
+		obtieneProds_Links: async function (revID) {
 			// Variables
+			const {linksRevisar, cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts} = await this.obtieneLinks();
 			let productos = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
+			// Obtiene los productos
+			if (linksRevisar.length) {
+				// Variables
+				const semanas = vidaUtilLinks / unaSemana; // vida útil en semanas
+				const promSemanal = cantLinksTotal / semanas;
+				const aprobsPerms =
+					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
+					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
+						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos que el promedio más la tolerancia
+
+				// Procesa los links
+				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
+				puleLosResultados({productos, revID});
+			}
+
+			// Fin
+			return {productos, cantLinksEstaSem, cantLinksTotal};
+		},
+		obtieneLinks: async () => {
 			// En caso de que no exista la variable global, la obtiene con la FN
 			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno();
 
@@ -145,23 +165,8 @@ module.exports = {
 			const linksVencidos = linksRevisar.filter((n) => n.statusRegistro_id == creadoAprob_id);
 			const cantVencsAnts = linksVencidos.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 
-			// Obtiene los productos
-			if (linksRevisar.length) {
-				// Variables
-				const semanas = vidaUtilLinks / unaSemana; // vida útil en semanas
-				const promSemanal = cantLinksTotal / semanas;
-				const aprobsPerms =
-					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
-					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos que el promedio más la tolerancia
-
-				// Procesa los links
-				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
-				puleLosResultados({productos, revID});
-			}
-
 			// Fin
-			return {productos, cantLinksEstaSem, cantLinksTotal};
+			return {linksRevisar, cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts};
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
