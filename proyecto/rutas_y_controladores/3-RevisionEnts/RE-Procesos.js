@@ -148,7 +148,7 @@ module.exports = {
 			// Obtiene los productos
 			if (linksRevisar.length) {
 				// Variables
-				const semanas = vidaUtilLinks / unaSemana;
+				const semanas = vidaUtilLinks / unaSemana; // vida útil en semanas
 				const promSemanal = cantLinksTotal / semanas;
 				const aprobsPerms =
 					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
