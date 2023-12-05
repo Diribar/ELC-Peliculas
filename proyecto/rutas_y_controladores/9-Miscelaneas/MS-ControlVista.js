@@ -40,7 +40,7 @@ module.exports = {
 	redirecciona: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
-		// return res.send(req.query)
+
 		// Si es 'tablero', ir a tablero
 		let destino = false
 			? null
