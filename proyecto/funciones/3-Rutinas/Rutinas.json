@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Mar. 5/dic",
-	"HoraUTC": "0:30",
+	"HoraUTC": "1:13",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/dic",
@@ -15,7 +15,8 @@
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
-		"eliminaCalifsSinPPP": "SI"
+		"eliminaCalifsSinPPP": "SI",
+		"loginsDiarios": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",

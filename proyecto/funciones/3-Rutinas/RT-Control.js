@@ -172,7 +172,6 @@ module.exports = {
 		}
 
 		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails...");
 		await Promise.all(mailsEnviados);
 
 		// Fin
@@ -397,7 +396,6 @@ module.exports = {
 					); // Envía el mail y actualiza la BD
 
 		// Avisa que está procesando el envío de los mails
-		console.log("Procesando el envío de mails a revisores...");
 		await Promise.all(mailsEnviados);
 
 		// Fin
@@ -417,6 +415,22 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	loginsDiarios:async()=>{
+		// Variables
+
+		// Obtiene los logins diarios
+
+		// Loop mientras el día sea menor al actual
+
+			// Averigua si existe un registro para la fecha más antigua, y en caso negativo lo crea (await)
+
+			// Agrega la cantidad de logins del día más antiguo
+
+			// Elimina los logins del día más antiguo
+
+		// Fin
+		return
 	},
 
 	// 3. Rutinas semanales
