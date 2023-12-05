@@ -1,27 +1,13 @@
 "use strict";
+const procesos = require("../../rutas_y_controladores/3-RevisionEnts/RE-Procesos");
 
 module.exports = async (req, res, next) => {
-	// Averigua la cantidad de links aprobados en esta semana
-	let cantLinksEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
-		prodAprob: true,
-		yaTuvoPrimRev: true,
-		statusSugeridoEn: {[Op.and]: [{[Op.gt]: lunesDeEstaSemana}, {[Op.lt]: lunesDeEstaSemana + unaSemana}]},
-		statusRegistro_id: aprobado_id,
-	}).then((n) => n.length);
-
-	// Averigua la cantidad de links aprobados en total
-	let cantLinksTotal = BD_genericas.obtieneTodosPorCondicion("links", {
-		prodAprob: true,
-		statusRegistro_id: aprobados_ids,
-	}).then((n) => n.length);
-
-	// Espera a que se actualicen los valores
-	[cantLinksEstaSem, cantLinksTotal] = await Promise.all([cantLinksEstaSem, cantLinksTotal]);
-
 	// Variables
+	const {cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts} = await procesos.TC.obtieneLinks();
 	const semanas = vidaUtilLinks / unaSemana; // vida útil en semanas
 	const promSemanal = cantLinksTotal / semanas;
 
+	// Averigua si se pueden aprobar más links
 	const aprobsPerms =
 		cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
 		((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
