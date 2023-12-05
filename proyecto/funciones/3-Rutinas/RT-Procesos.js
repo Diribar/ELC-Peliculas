@@ -819,7 +819,7 @@ let datosImgDerecha = (resultado) => {
 			imgDerecha.nombreArchivo = resultado.avatar;
 		} else {
 			imgDerecha.carpeta = "4-EpocasDelAno/" + resultado.carpetaAvatars + "/";
-			imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
+			imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(carpetaExterna + imgDerecha.carpeta);
 		}
 	}
 	// Acciones si no encontró una imagen para la fecha
