@@ -20,23 +20,22 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
-		if (!usuario.pais_id) return;
-
 		// Variables
-		const ahoraUTC = comp.fechaHora.ahora().getTime();
-		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zonaHoraria;
-		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
-		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10);
-		const fechaUltimoLogin = usuario.fechaUltimoLogin;
+		const hoy = new Date().toISOString().slice(0, 10);
+		let fechaUltimoLogin = usuario.fechaUltimoLogin;
 
 		// Acciones si el último login fue anterior a hoy
-		if (hoyUsuario != fechaUltimoLogin) {
+		if (hoy != fechaUltimoLogin) {
+			fechaUltimoLogin = hoy;
+
+			// Actualiza el usuario
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin: hoy});
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin: hoyUsuario});
+
 		}
 
 		// Fin
-		return;
+		return {...usuario, fechaUltimoLogin};
 	},
 	// ControlVista: altaMail y olvidoContr
 	envioDeMailConContrasena: async (email) => {

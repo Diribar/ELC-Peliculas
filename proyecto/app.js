@@ -47,7 +47,7 @@ const app = express();
 
 // Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
 app.use("/publico", express.static(path.join(__dirname, "publico")));
-app.use("/externa", express.static(carpetaExterna));
+app.use("/Externa", express.static(carpetaExterna));
 
 // Otros
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)

@@ -3,14 +3,14 @@
 	<div class="inputError">
 		<select name="idiomaOriginal_id" class="input">
 			<optgroup label="Más frecuentes">
-				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
+				<% for (let idioma of idiomas.filter(n => n.masFrecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
-				<% } %>	
+				<% } %>
 			</optgroup>
 			<optgroup label="Demás idiomas">
-				<% for (let idioma of idiomas.filter(n => !n.mas_frecuente)) { %>
+				<% for (let idioma of idiomas.filter(n => !n.masFrecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
-				<% } %>	
+				<% } %>
 			</optgroup>
 		</select>
 		<%- include("CMP-Errores", {nombre: "idiomaOriginal_id"}) %>

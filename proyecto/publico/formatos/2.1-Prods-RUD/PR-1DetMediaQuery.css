@@ -11,7 +11,12 @@
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
 @media (width <= 500px) {#recuadro #contenido {margin-left: 20px; margin-right: 20px;}}
-@media (width <= 390px) {#datosDetalle .datosParcial#masInfo #infoGral {column-count: 1;}}
+@media (width <= 390px) {
+	#datosDetalle .datosParcial#masInfo #infoGral {column-count: 1;}
+	#cuerpo #encabezado #colCap #tempCapI {flex-direction: column; align-items: center;}
+	#cuerpo #encabezado #colCap #tempCapS {justify-content: center;}
+	#encabezado #colCap #tempCapS select#temporada {width: 20px;}
+}
 
 /* Ancho y Alto */
 @media (width < 700px) or (height < 700) {

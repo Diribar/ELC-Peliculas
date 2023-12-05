@@ -2,8 +2,8 @@
 <%- include("FM-EncabIzq") %>
 <% if (entidad != "peliculas") { %>
 	<div id="colCap">
-		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
+			<!-- Cantidad de Temporadas y de Capítulos -->
 			<div id="colecciones">
 				<% if (["prod_rud", "linksCRUD"].includes(tema)) { %>
 					<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
@@ -19,27 +19,25 @@
 					</div>
 				<% } %>
 			</div>
-			<% } %>
-		<!-- Colección a la que pertenece -->
+		<% } %>
 		<% if (entidad == "capitulos") { %>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p><b>De la colección:</b>
-					<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
-						<button class="scale pointer"><%= registro.coleccion.nombreCastellano %></button>
-					</a>
-				</p>
+				<p><b>Colección:</b></p>
+				<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
+					<button class="scale pointer"><%= registro.coleccion.nombreCastellano %></button>
+				</a>
 			</div>
 			<div id="tempCapS">
 				<% if (tema == "prod_rud" || tema == "linksCRUD") { %>
 					<script src="/publico/javascript/2.1-Prod-RUD/PR0-CambioTempCap.js"></script>
 					<script src="/publico/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
-					<!-- Cambiar de capítulo -->
+					<!-- Cambia de capítulo -->
 					<div class="pack">
 						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
 						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
 					</div>
-					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
+					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %> <% if (registro.coleccion.cantTemps == 1) { %>class="ocultar"<% } %>>
 						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
 							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 						<% } %>

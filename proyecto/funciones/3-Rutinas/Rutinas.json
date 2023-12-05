@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 2/dic",
-	"HoraUTC": "8:09",
+	"FechaUTC": "Lun. 4/dic",
+	"HoraUTC": "12:34",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Mar. 28/nov",
-	"HoraSemUTC": "4:30",
-	"semanaUTC": 47,
+	"FechaSemUTC": "Lun. 4/dic",
+	"HoraSemUTC": "12:34",
+	"semanaUTC": 48,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -23,16 +23,16 @@
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
-		"EliminaHistorialAntiguo": "SI",
-		"EliminaHistorialDeRegsEliminados": "SI",
-		"IDdeTablas": "SI"
+		"EliminaHistorialAntiguo": "NO",
+		"EliminaHistorialDeRegsEliminados": "NO",
+		"IDdeTablas": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"30-nov-23": {"titulo": "ELC - Películas"},
-		"01-dic-23": {"titulo": "ELC - Películas"},
 		"02-dic-23": {"titulo": "ELC - Películas"},
 		"03-dic-23": {"titulo": "San Francisco Javier", "entidad": "personajes", "id": 167},
-		"04-dic-23": {"titulo": "Santa Barbara de Nicomedia", "entidad": "personajes", "id": 68}
+		"04-dic-23": {"titulo": "Santa Barbara de Nicomedia", "entidad": "personajes", "id": 68},
+		"05-dic-23": {"titulo": "Nelson Mandela", "entidad": "personajes", "id": 52},
+		"06-dic-23": {"titulo": "San Nicolás de Bari", "entidad": "personajes", "id": 168}
 	}
 }

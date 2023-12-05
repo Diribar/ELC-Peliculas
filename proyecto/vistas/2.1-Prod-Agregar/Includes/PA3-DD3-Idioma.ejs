@@ -5,14 +5,14 @@
 		<select id="idiomaOriginal_id" name="idiomaOriginal_id" autofocus class="input<% if (inputOK) { %> desplClick<% } %>" <% if (inputOK) { %>disabled<% } %> required>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %>>Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
-				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
+				<% for (let idioma of idiomas.filter(n => n.masFrecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
-				<% } %>	
+				<% } %>
 			</optgroup>
 			<optgroup label="Demás idiomas">
-				<% for (let idioma of idiomas.filter(n => !n.mas_frecuente)) { %>
+				<% for (let idioma of idiomas.filter(n => !n.masFrecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
-				<% } %>	
+				<% } %>
 			</optgroup>
 		</select>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>

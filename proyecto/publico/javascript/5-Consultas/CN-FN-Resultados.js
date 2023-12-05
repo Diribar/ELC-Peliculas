@@ -257,7 +257,7 @@ let auxiliares = {
 		// Crea la imagen
 		const avatar = document.createElement("img");
 		avatar.className = "imagenChica";
-		avatar.src = (!producto.avatar.includes("/") ? "/externa/2-Productos/Final/" : "") + producto.avatar;
+		avatar.src = (!producto.avatar.includes("/") ? "/Externa/2-Productos/Final/" : "") + producto.avatar;
 		avatar.alt = producto.nombreCastellano;
 		avatar.title = producto.nombreCastellano;
 		button.appendChild(avatar);

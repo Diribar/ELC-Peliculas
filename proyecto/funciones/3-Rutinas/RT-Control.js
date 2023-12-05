@@ -607,7 +607,7 @@ module.exports = {
 		}
 
 		// Elimina misConsultas > límite
-		let misConsultas = await BD_genericas.obtieneTodos("misConsultas").reverse();
+		let misConsultas = await BD_genericas.obtieneTodos("misConsultas").then((n) => n.reverse());
 		const limite = 20;
 		while (misConsultas.length) {
 			// Obtiene los registros del primer usuario

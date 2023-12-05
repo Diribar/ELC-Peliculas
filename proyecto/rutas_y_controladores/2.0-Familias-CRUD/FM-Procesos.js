@@ -92,13 +92,13 @@ module.exports = {
 			: original.avatar.includes("/")
 			? original.avatar
 			: comp.gestionArchivos.existe(carpetaExterna + final + original.avatar)
-			? "/externa/" + final + original.avatar
+			? "/Externa/" + final + original.avatar
 			: comp.gestionArchivos.existe(carpetaExterna + revisar + original.avatar)
-			? "/externa/" + revisar + original.avatar
+			? "/Externa/" + revisar + original.avatar
 			: sinAvatar;
 
 		// avatarEdic
-		const edic = edicion && edicion.avatar ? "/externa/" + revisar + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? "/Externa/" + revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};

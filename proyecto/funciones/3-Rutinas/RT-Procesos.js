@@ -663,9 +663,9 @@ let avatarConLink = (familia, valor, texto) => {
 	return !valor
 		? "" // si no tiene un valor
 		: valor.includes("/")
-		? '<a href="' + valor + terminacion // si es una imagen externa
+		? '<a href="' + valor + terminacion // si es una imagen Externa
 		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
-		? '<a href="' + urlSitio + "/externa/" + rutaArchivo + terminacion // si se encuentra el archivo
+		? '<a href="' + urlSitio + "/Externa/" + rutaArchivo + terminacion // si se encuentra el archivo
 		: texto; // si no se encuentra el archivo
 };
 let formatos = {
