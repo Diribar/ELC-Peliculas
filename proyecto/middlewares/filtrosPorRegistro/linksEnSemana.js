@@ -25,9 +25,8 @@ module.exports = async (req, res, next) => {
 	const aprobsPerms =
 		cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
 		((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-			cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos del 120% del promedio
+			cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos que el promedio más la tolerancia
 
 	// Fin
-	if (!aprobsPerms) return res.redirect("/revision/tablero-de-control");
-	next();
+	return !aprobsPerms ? res.redirect("/revision/tablero-de-control") : next();
 };

@@ -5,19 +5,13 @@
 		<% if (entidad == "colecciones") { %>
 			<!-- Cantidad de Temporadas y de Capítulos -->
 			<div id="colecciones">
-				<% if (["prod_rud", "linksCRUD"].includes(tema)) { %>
-					<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
-						<div class="pointer scale">
-							<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
-							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
-						</div>
-					</a>
-				<% } else { %>
-					<div>
-						<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+				<% const anchor = ["prod_rud", "linksCRUD"].includes(tema) %>
+				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
+					<div class="pointer scale">
+						<p <% if (registro.cantTemps == 1) { %>class="ocultar"<% } %>><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 					</div>
-				<% } %>
+				<% if (anchor) { %></a><% } %>
 			</div>
 		<% } %>
 		<% if (entidad == "capitulos") { %>

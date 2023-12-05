@@ -153,7 +153,7 @@ module.exports = {
 				const aprobsPerms =
 					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
 					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos del 120% del promedio
+						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos que el promedio más la tolerancia
 
 				// Procesa los links
 				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
