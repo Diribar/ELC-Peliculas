@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 			// Crea las filas y celdas
 			for (let registro of registros) {
 				// Variables
-				let {familia, entidad, id, anoEstreno, nombre} = registro;
+				let {familia, entidad, asoc, id, anoEstreno, nombre} = registro;
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				fila.classList.add(familia.slice(0, 4));
@@ -34,10 +34,10 @@ window.addEventListener("load", () => {
 				let anchoMax = 40;
 				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
 				if (familia == "producto" && anoEstreno) nombre += " (" + anoEstreno + ")";
-				// 2. Procesa la entidad
-				let ent = entidad.slice(0, 5);
-				if (ent == "perso") ent = "pers.";
-				else if (ent != entidad) ent += ".";
+				// 2. Procesa la asociación
+				let ent = asoc.slice(0, 5);
+				if (ent == "perso") ent = "pers";
+				if (ent != asoc && ent != "epoca") ent += ".";
 				let datos = [nombre, ent];
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
@@ -96,10 +96,14 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		palabras = palabras.join(" ");
-		let resultados = await fetch("/api/busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
-		// Acciones en función de si encuentra resultados o no
+		const resultados = await fetch("/api/busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
+
+		// Acciones en función de si encuentra resultados
 		if (resultados.length) agregaResultados(resultados);
 		else agregaResultados("- No encontramos coincidencias -");
+
+		// Fin
+		return;
 	});
 	DOM.input.addEventListener("keydown", (e) => {
 		// Redirige a la vista del hallazgo

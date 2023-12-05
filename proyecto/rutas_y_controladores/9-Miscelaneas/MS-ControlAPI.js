@@ -24,17 +24,26 @@ module.exports = {
 		const palabras = req.query.palabras;
 		const userID = req.session.usuario ? req.session.usuario.id : 0;
 		const entidadesProd = variables.entidades.prods;
+		const asocsProds = variables.asocs.prods;
 		const entidadesRCLV = variables.entidades.rclvs;
+		const asocsRCLVs = variables.asocs.rclvs;
 		const camposProds = ["nombreCastellano", "nombreOriginal"];
 		const camposPers = ["nombre", "apodo"];
+		const original = true;
 		let datos = [];
 		let aux = [];
 		let resultados = [];
 
 		// Armado de la variable 'datos'
-		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos: camposProds, original: true}); // productos originales
-		for (let entidad of entidadesRCLV)
-			datos.push({familia: "rclv", entidad, campos: entidad == "personajes" ? camposPers : ["nombre"], original: true}); // rclvs originales
+		entidadesProd.forEach((entidad, i) => {
+			const asoc = asocsProds[i];
+			datos.push({familia: "producto", entidad, asoc, campos: camposProds, original}); // productos originales
+		});
+		entidadesRCLV.forEach((entidad, i) => {
+			const asoc = asocsRCLVs[i];
+			const campos = entidad == "personajes" ? camposPers : ["nombre"];
+			datos.push({familia: "rclv", entidad, asoc, campos, original}); // rclvs originales
+		});
 		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds}); // productos ediciones
 		// datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers}); // rclvs ediciones
 

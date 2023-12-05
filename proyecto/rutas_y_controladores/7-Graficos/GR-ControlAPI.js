@@ -110,10 +110,8 @@ module.exports = {
 			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
 		});
 
-		// Ordena los registros
-		fechas.sort((a, b) => b.rango - a.rango);
-		fechas.splice(10);
-		fechas.sort((a, b) => a.id - b.id);
+		// Filtra los registros
+		fechas = fechas.filter((n) => n.rango > 4);
 
 		// Fin
 		return res.json(fechas);

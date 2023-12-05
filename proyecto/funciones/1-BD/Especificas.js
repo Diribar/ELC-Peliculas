@@ -33,6 +33,7 @@ module.exports = {
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
+					asoc: dato.asoc,
 					// Específicos para PA-Desambiguar
 					avatar: m.avatar,
 					nombreOriginal: m.nombreOriginal,
@@ -50,6 +51,7 @@ module.exports = {
 					anoEstreno: m.anoEstreno,
 					nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
 					entidad: comp.obtieneDesdeEdicion.entidad(m),
+					asoc: comp.obtieneDesdeEdicion.asoc(m),
 					familia: dato.familia,
 				}))
 			);
