@@ -190,7 +190,7 @@ module.exports = {
 				original.statusRegistro_id == creadoAprob_id; // 2. El registro debe estar en el status 'creadoAprob'
 
 			// Averigua si hay errores de validación
-			// 1. Se debe agregar el id del original, para verificar que no esté repetido
+			// 1. Se debe agregar el id del original, para verificar que el registro no está repetido
 			// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 			let prodComb = {...original, ...edicion, ...req.body, id};
 			prodComb.epocaOcurrencia = revisorPERL; // si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
