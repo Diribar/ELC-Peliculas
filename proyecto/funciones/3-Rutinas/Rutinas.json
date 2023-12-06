@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 5/dic",
-	"HoraUTC": "1:13",
+	"FechaUTC": "Mié. 6/dic",
+	"HoraUTC": "7:57",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/dic",
@@ -30,10 +30,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"03-dic-23": {"titulo": "San Francisco Javier", "entidad": "personajes", "id": 167},
 		"04-dic-23": {"titulo": "Santa Barbara de Nicomedia", "entidad": "personajes", "id": 68},
 		"05-dic-23": {"titulo": "Nelson Mandela", "entidad": "personajes", "id": 52},
 		"06-dic-23": {"titulo": "San Nicolás de Bari", "entidad": "personajes", "id": 168},
-		"07-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
+		"07-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
+		"08-dic-23": {"titulo": "Inmaculada Concepción de María", "entidad": "eventos", "id": 30}
 	}
 }
