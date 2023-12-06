@@ -16,7 +16,7 @@
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
 		"eliminaCalifsSinPPP": "SI",
-		"loginsDiarios": "SI"
+		"loginsDiariosAcum": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",

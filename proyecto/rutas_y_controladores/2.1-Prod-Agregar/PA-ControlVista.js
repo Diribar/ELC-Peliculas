@@ -364,7 +364,7 @@ module.exports = {
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID, true);
 
 		// Prepara las imágenes
-		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
+		const carpetaMG = "./publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
 		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion);
 		imgDerPers = original.avatar ? imgDerPers.orig : imgDerPers.edic;
