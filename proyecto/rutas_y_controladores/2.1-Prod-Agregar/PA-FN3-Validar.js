@@ -92,7 +92,7 @@ module.exports = {
 				? datos.entidad != "capitulos"
 					? variables.inputVacio
 					: ""
-				: datos.paises_id.length > 2 * 1 + 3 * 3
+				: datos.paises_id.length > 2 * 1 + 3 * 4
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idiomaOriginal_id"))
