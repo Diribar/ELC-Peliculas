@@ -52,4 +52,35 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 		});
 	},
+	visualizacion: async (req, res) => {
+		// Variables
+		const tema = "linksCRUD";
+		const codigo = "visualizacion";
+		const linkID = req.query.link_id;
+		const usuario = req.session.usuario ? req.session.usuario : null;
+		const userID = usuario ? usuario.id : "";
+
+		// Obtiene el link
+		const link = await BD_genericas.obtienePorId("links", linkID); // link
+		const provLink = linksProvs.find((n) => n.id == link.prov_id); // provLink
+		const entidad = comp.obtieneDesdeEdicion.entidadProd(link); // entidad del producto
+		const id = link[comp.obtieneDesdeEdicion.campo_idProd(link)]; // id del producto
+
+		// Obtiene el producto 'Original' y 'Editado'
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+
+		// Configura el título de la vista
+		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
+		const tituloDetalle = nombre + "(" + provLink.nombre + ")";
+		const titulo = nombre;
+
+		// Va a la vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, tituloDetalle, titulo},
+			...{entidad, id, familia: "producto", registro: prodComb},
+			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
+		});
+	},
 };
