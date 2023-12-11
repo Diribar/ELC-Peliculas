@@ -479,8 +479,9 @@ module.exports = {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
-		const {entidad, id, origen} = req.query;
+		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
+		let {origen} = req.query;
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -516,11 +517,13 @@ module.exports = {
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
+		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
+		origen = origen ? origen : "TE";
 
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, origen: origen ? origen : "TE"},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
