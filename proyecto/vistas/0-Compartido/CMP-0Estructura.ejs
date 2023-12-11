@@ -7,8 +7,8 @@
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prodAgregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema == "prod_rud") { %><%- include("PR-1Head") %><% } %>
-	<% if (tema == "rclv_crud") { %><%- include("RCLV-1Head") %><% } %>
+	<% if (tema == "prodRud") { %><%- include("PR-1Head") %><% } %>
+	<% if (tema == "rclvCrud") { %><%- include("RCLV-1Head") %><% } %>
 	<% if (tema == "linksCRUD") { %><%- include("LK-1Head") %><% } %>
 	<% if (tema == "responsabilidad" || tema == "crud") { %><%- include("FM-1Head") %><% } %>
 	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
@@ -30,8 +30,8 @@
 					<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 					<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
 					<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
-					<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
-					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
+					<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
+					<% } else if (tema == "rclvCrud") { %><%- include("RCLV-2Cuerpo") %>
 					<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>
 					<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
 					<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
