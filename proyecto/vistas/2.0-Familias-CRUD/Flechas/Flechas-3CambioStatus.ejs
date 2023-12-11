@@ -29,14 +29,14 @@
 	</div>
 <% } %>
 
-<% condic1 = tema == "rclv_crud" && (codigo == "agregar" || codigo == "edicion") %>
+<% condic1 = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
 <% condic2 = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
 <% if (condic1 || condic2) { %>
 	<!-- VISTA CRUD     - AGREGAR/EDICION/ELIMINAR EDICIÓN RCLV -->
 	<!-- VISTA REVISIÓN - SOLAPAMIENTO -->
 	<div class="flechas">
 		<!-- Eliminar edición -->
-		<% if (tema == "rclv_crud" && codigo == "edicion" && edicID) { %>
+		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
 			<label for="eliminaEdicion" title="Eliminar la Edición">
 				<i class="fa-solid fa-trash-can"></i>
 			</label>
