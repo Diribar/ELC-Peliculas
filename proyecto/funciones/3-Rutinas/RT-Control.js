@@ -416,7 +416,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	loginsDiariosAcum:async()=>{
+	loginsDiariosAcum: async () => {
 		// Variables
 
 		// Obtiene los logins diarios
@@ -430,7 +430,7 @@ module.exports = {
 			// Elimina los logins del día más antiguo
 
 		// Fin
-		return
+		return;
 	},
 
 	// 3. Rutinas semanales
@@ -708,22 +708,22 @@ module.exports = {
 		// Fin
 		return;
 	},
-	primerLunesDelAno: () => {
+	primerLunesDelAno: function (fecha) {
 		// Obtiene el primer día del año
-		const fecha = new Date();
+		fecha = fecha ? new Date(fecha) : new Date();
 		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
-		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
+		const comienzoAnoUTC = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria;
 
-		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado:6)
-		const primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria); // Suma la diferencia horaria para tener el día correcto
-		const diaSem_primerDiaDelAno = primerDiaDelAno.getDay();
+		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado: 6)
+		const diaSemComienzoAnoUTC = new Date(comienzoAnoUTC).getUTCDay();
 
 		// Obtiene el primer lunes del año
-		let diasAdicsPorLunes = 1 - diaSem_primerDiaDelAno;
+		let diasAdicsPorLunes = 1 - diaSemComienzoAnoUTC;
 		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
-		fechaPrimerLunesDelAno = comienzoAno + diasAdicsPorLunes * unDia;
+		fechaPrimerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
 
 		// Fin
+		if (fechaPrimerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
 		return;
 	},
 };
