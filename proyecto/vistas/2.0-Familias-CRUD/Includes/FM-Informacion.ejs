@@ -1,6 +1,6 @@
 <!-- Información -->
 <div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
-    
+
     <!-- PRODUCTO: Detalle y Revisión de Alta -->
     <% if (familia == "producto" && ["detalle", "producto/alta"].includes(codigo)) { %><%- include("PR1-Detalle") %>
 
@@ -8,7 +8,7 @@
     <% } else if (codigo == "calificar") { %><%- include("PR3-Calificar") %>
 
     <!-- RCLV: Detalle -->
-    <% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
+    <% } else if (tema == "rclvCrud") { %><%- include("RCLV-DT1-Largos") %>
 
     <!-- RCLV: Revisión de Alta -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/alta")) { %><%- include("RCLV-DT1-Largos") %>
@@ -18,7 +18,7 @@
 
     <!-- AMBOS: Inactivar y Rechazo -->
     <% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM8-Inactivar") %>
-    
+
     <!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
     <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM8-Recuperar") %>
 
