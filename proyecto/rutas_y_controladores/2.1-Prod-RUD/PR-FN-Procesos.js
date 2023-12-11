@@ -83,8 +83,7 @@ module.exports = {
 			// Reemplaza los embeded
 			for (let link of links) {
 				const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
-				if (provEmbeded) link.url = urlSitio + "/links/visualizacion/?link_id=" + link.id;
-				else link.url = "//" + link.url;
+				link.url = provEmbeded ? urlSitio + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
 			}
 
 			// Los separa entre Películas y Trailers
