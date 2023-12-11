@@ -3,7 +3,6 @@
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
 
-
 // *********** Controlador ***********
 module.exports = {
 	abm: async (req, res) => {
@@ -40,11 +39,16 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
 		const siguienteProducto = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;
+		const ayudasTitulo = [
+			"Sé muy cuidadoso de incluir links que respeten los derechos de autor",
+			"Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto",
+			"Si hay datos en rojo, es porque están editados por otro usuario",
+		];
 
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: producto.nombreCastellano},
+			...{tema, codigo, titulo,ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
@@ -73,7 +77,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		const tituloDetalle = nombre + "(" + provLink.nombre + ")";
+		const tituloDetalle = nombre + " - Link de " + provLink.nombre;
 		const titulo = nombre;
 
 		// Va a la vista
