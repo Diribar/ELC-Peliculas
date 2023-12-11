@@ -35,7 +35,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links
-router.get("/abm", aptoABM, capturaActivar, vista.links);
+router.get("/abm", aptoABM, capturaActivar, vista.abm);
 router.get("/visualizacion", vista.visualizacion);
 
 // Fin

@@ -6,7 +6,7 @@ const procesos = require("./LK-FN-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	links: async (req, res) => {
+	abm: async (req, res) => {
 		// Variables
 		const tema = "linksCRUD";
 		const codigo = "abmLinks";
