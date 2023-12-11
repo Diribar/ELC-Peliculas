@@ -933,11 +933,11 @@ let puleLosResultados = ({productos, revID}) => {
 		// Ordena los productos
 		if (productos[metodo].length > 1)
 			productos[metodo]
-				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)) // por fecha más antigua
 				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
 				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
-				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)); // por entidad
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
+				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)); // por fecha más antigua
 	});
 
 	// Fin
