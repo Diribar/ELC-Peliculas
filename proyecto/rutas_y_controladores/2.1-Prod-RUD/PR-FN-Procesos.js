@@ -80,6 +80,13 @@ module.exports = {
 			// Les asigna un color en función del idioma
 			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 
+			// Reemplaza los embeded
+			for (let link of links) {
+				const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+				if (provEmbeded) link.url = urlSitio + "/producto/visualizacion/link_id=" + link.id;
+				else link.url = "//" + link.url;
+			}
+
 			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
 			TR = links.filter((n) => n.tipo && n.tipo.trailer);
