@@ -165,4 +165,19 @@ module.exports = {
 		// Fin
 		return res.json(respuesta);
 	},
+	// Visualiza
+	obtieneEmbededLink: async (req, res) => {
+		// Variables
+		const linkID = req.query.link_id;
+
+		// Obtiene el link y el proveedor
+		const link = await BD_genericas.obtienePorId("links", linkID); // link
+		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+
+		// Acciones si es embeded
+		const url = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
+
+		// Fin
+		return res.json(url);
+	},
 };

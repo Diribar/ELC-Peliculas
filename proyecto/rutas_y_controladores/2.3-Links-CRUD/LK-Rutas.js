@@ -24,17 +24,20 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
 
 //************************ Rutas ****************************
-// Rutas de APIs
-// Links
+// Rutas de APIs - Links
 router.get("/api/valida", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
+
+// Rutas de APIs - ABM
 router.get("/api/guardar", API.guarda);
 router.get("/api/inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
+// Rutas de APIs - Visualiza
+router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
+
 // Rutas de vistas
-// Links
 router.get("/abm", aptoABM, capturaActivar, vista.abm);
 router.get("/visualizacion", vista.visualizacion);
 
