@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 7/dic",
-	"HoraUTC": "2:44",
+	"FechaUTC": "Lun. 11/dic",
+	"HoraUTC": "11:35",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 4/dic",
-	"HoraSemUTC": "12:34",
-	"semanaUTC": 48,
+	"FechaSemUTC": "Lun. 11/dic",
+	"HoraSemUTC": "10:41",
+	"semanaUTC": 49,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -23,17 +23,17 @@
 		"LinksVencidos": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
-		"EliminaImagenesSinRegistro": "SI",
+		"EliminaImagenesSinRegistro": "NO",
 		"EliminaHistorialAntiguo": "NO",
 		"EliminaHistorialDeRegsEliminados": "NO",
 		"IDdeTablas": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"05-dic-23": {"titulo": "Nelson Mandela", "entidad": "personajes", "id": 52},
-		"06-dic-23": {"titulo": "San Nicolás de Bari", "entidad": "personajes", "id": 168},
-		"07-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"08-dic-23": {"titulo": "Inmaculada Concepción de María", "entidad": "eventos", "id": 30},
-		"09-dic-23": {"titulo": "Santa Narcisa de Jesús", "entidad": "personajes", "id": 190}
+		"09-dic-23": {"titulo": "Santa Narcisa de Jesús", "entidad": "personajes", "id": 190},
+		"10-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
+		"11-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
+		"12-dic-23": {"titulo": "Ap. Mar. - Guadalupe", "entidad": "hechos", "id": 24},
+		"13-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }
