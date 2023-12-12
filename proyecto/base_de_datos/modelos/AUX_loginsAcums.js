@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		fecha: {type: dt.DATE},
 		diaSem: {type: dt.STRING(3)},
-		mes: {type: dt.STRING(3)},
+		anoMes: {type: dt.STRING(3)},
 		cantLogins: {type: dt.INTEGER},
 	};
 	const config = {
