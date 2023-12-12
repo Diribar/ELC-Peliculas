@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 11/dic",
-	"HoraUTC": "11:35",
+	"FechaUTC": "Mar. 12/dic",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/dic",
@@ -30,10 +30,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-dic-23": {"titulo": "Santa Narcisa de Jesús", "entidad": "personajes", "id": 190},
 		"10-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"11-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"12-dic-23": {"titulo": "Ap. Mar. - Guadalupe", "entidad": "hechos", "id": 24},
-		"13-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
+		"13-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
+		"14-dic-23": {"titulo": "San Juan de la Cruz", "entidad": "personajes", "id": 183}
 	}
 }
