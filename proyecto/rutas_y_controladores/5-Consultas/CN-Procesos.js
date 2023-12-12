@@ -638,11 +638,11 @@ module.exports = {
 					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 					// Obtiene los RCLV
-					for (let rclv of variables.entidades.rclvs) {
+					for (let entRclv of variables.entidades.rclvs) {
 						// Variables
-						const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv);
-						const asociacion = comp.obtieneDesdeEntidad.asociacion(rclv);
-						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(rclv);
+						const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
+						const asociacion = comp.obtieneDesdeEntidad.asociacion(entRclv);
+						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entRclv);
 
 						// RCLV nombre
 						if (
@@ -650,12 +650,13 @@ module.exports = {
 							(opcion.codigo != "fechaDelAno_id" || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
 							datos[entidadNombre] = prod[asociacion].nombre;
-							if (opcion.codigo == "fechaDelAno_id") datos.fechaDelAno = prod[asociacion].fechaDelAno;
+							if (opcion.codigo == "fechaDelAno_id" && entRclv != "epocasDelAno")
+								datos.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
 					}
 
-					// Obtiene la época del año
+					// Obtiene la época de estreno
 					if (prod.epocaEstreno) datos.epocaEstrenoNombre = prod.epocaEstreno.nombre;
 
 					// Si es una colección, agrega el campo 'anoFin'
