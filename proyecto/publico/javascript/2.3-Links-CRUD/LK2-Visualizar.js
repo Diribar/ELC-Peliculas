@@ -14,14 +14,14 @@ window.addEventListener("load", async () => {
 	// Agrega el entorno del iframe
 	const div = document.createElement("div");
 	div.id = "videoDetPeli";
-	div.className = "absoluteCentro";
+	div.className = "absoluteCentro bordeConSombra";
 	body.appendChild(div);
 
 	// Agrega el iframe
 	const iframe = document.createElement("iframe");
 	iframe.src = link;
 	iframe.allow = "autoplay";
-	iframe.setAttribute('allowFullScreen', '')
+	iframe.setAttribute("allowFullScreen", "");
 	div.appendChild(iframe);
 
 	// Fin
