@@ -500,7 +500,7 @@ let auxiliares = {
 		return filas;
 	},
 	obtieneElRCLV: (producto) => {
-		for (let rclvNombre of v.rclvNombres)
+		for (let rclvNombre of v.rclvsNombre)
 			if (producto[rclvNombre]) {
 				// Crea el rclv con sus características
 				const rclv = document.createElement("p");
