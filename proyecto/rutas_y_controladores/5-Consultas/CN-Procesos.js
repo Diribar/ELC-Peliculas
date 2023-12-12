@@ -645,7 +645,10 @@ module.exports = {
 						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(rclv);
 
 						// RCLV nombre
-						if (prod[campo_id] > 10) {
+						if (
+							prod[campo_id] > 10 && // el id es de un registro válido
+							(opcion.codigo != "fechaDelAno_id" || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
+						) {
 							datos[entidadNombre] = prod[asociacion].nombre;
 							if (opcion.codigo == "fechaDelAno_id") datos.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
