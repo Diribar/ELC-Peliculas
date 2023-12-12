@@ -15,8 +15,8 @@
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
-		"eliminaCalifsSinPPP": "SI",
-		"loginsAcums": "SI"
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",

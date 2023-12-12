@@ -401,7 +401,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	eliminaCalifsSinPPP: async () => {
+	EliminaCalifsSinPPP: async () => {
 		// Variables
 		const calRegistros = await BD_genericas.obtieneTodos("calRegistros");
 		const pppRegistros = await BD_genericas.obtieneTodos("pppRegistros");
@@ -416,7 +416,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	loginsAcums: async () => {
+	LoginsAcums: async () => {
 		// Variables
 		const hoy = new Date().toISOString().slice(0, 10);
 
