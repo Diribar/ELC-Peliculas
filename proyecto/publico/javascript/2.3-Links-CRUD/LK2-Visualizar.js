@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	// Agrega el entorno del iframe
 	const div = document.createElement("div");
 	div.id = "videoDetPeli";
-	div.className = "absoluteCentro bordeConSombra";
+	div.className = "absoluteCentro";
 	body.appendChild(div);
 
 	// Agrega el iframe
