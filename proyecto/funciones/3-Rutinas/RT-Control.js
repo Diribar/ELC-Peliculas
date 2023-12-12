@@ -416,18 +416,37 @@ module.exports = {
 		// Fin
 		return;
 	},
-	loginsDiariosAcum: async () => {
+	loginsAcums: async () => {
 		// Variables
+		const hoy = new Date().toISOString().slice(0, 10);
 
-		// Obtiene los logins diarios
+		// Obtiene los logins diarios y acumulados
+		const loginsDiarios = await BD_genericas.obtieneTodos("loginsDelDia");
+		let ultFecha = await BD_genericas.obtieneTodos("loginsAcums")
+			.then((n) =>
+				n.length
+					? n[n.length - 1].fecha
+					: loginsDiarios.length
+					? new Date(new Date(loginsDiarios[0].fecha).getTime() - unDia).toISOString().slice(0, 10)
+					: hoy
+			)
+			.then((n) => new Date(new Date(n).getTime() + unDia).toISOString().slice(0, 10));
 
 		// Loop mientras el día sea menor al actual
+		while (ultFecha < hoy) {
+			// Variables
+			const diaSem = diasSemana[new Date(ultFecha).getUTCDay()];
+			const anoMes = ultFecha.slice(0, 7);
+			const cantLogins = loginsDiarios.filter((n) => n.fecha == ultFecha).length;
 
-			// Averigua si existe un registro para la fecha más antigua, y en caso negativo lo crea (await)
+			// Agrega la cantidad de logins
+			await BD_genericas.agregaRegistro("loginsAcums", {fecha: ultFecha, diaSem, anoMes, cantLogins});
 
-			// Agrega la cantidad de logins del día más antiguo
+			// Obtiene la fecha siguiente
+			ultFecha = new Date(new Date(ultFecha).getTime() + unDia).toISOString().slice(0, 10);
+		}
 
-			// Elimina los logins del día más antiguo
+		// Elimina los logins anteriores
 
 		// Fin
 		return;
