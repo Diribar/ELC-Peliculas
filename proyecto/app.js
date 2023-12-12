@@ -210,6 +210,7 @@ app.set("views", [
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
+	global.provsEmbeded = linksProvs.filter((n) => n.embededQuitar || n.embededPoner);
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");

@@ -9,7 +9,7 @@ const valida = require("./PR-FN-Validar");
 module.exports = {
 	detalle: async (req, res) => {
 		// Variables
-		const tema = "prod_rud";
+		const tema = "prodRud";
 		const codigo = "detalle";
 		const {entidad, id} = req.query;
 		const origen = req.query.origen;
@@ -24,8 +24,8 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		let tituloDetalle = "Detalle de " + entidadNombre;
-		let titulo = entidadNombre + " - " + nombre;
+		const tituloDetalle = "Detalle de " + entidadNombre;
+		const titulo = entidadNombre + " - " + nombre;
 
 		// Info para el bloque Izquierdo
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
@@ -84,7 +84,7 @@ module.exports = {
 	edicion: {
 		form: async (req, res) => {
 			// Tema y Código
-			const tema = "prod_rud";
+			const tema = "prodRud";
 			const codigo = "edicion";
 
 			// Más variables
@@ -283,7 +283,7 @@ module.exports = {
 	califica: {
 		form: async (req, res) => {
 			// Variables
-			const tema = "prod_rud";
+			const tema = "prodRud";
 			const codigo = "calificar";
 			const {entidad, id} = req.query;
 			const origen = req.query.origen; // ? req.query.origen : "CAL";

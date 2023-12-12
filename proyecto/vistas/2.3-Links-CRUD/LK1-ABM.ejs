@@ -1,22 +1,4 @@
-<%- include('CMP-TimerContador') %>
-<section id="tituloPrincipal">
-	<h1 id="titulo"><%= titulo %></h1>
-	<!-- Ayuda -->
-	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<% if (tema == "revisionEnts") { %>
-					<li>Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor</li>
-				<% } else { %>
-					<li>Por favor intentá incluir por lo menos un link gratuito</li>
-					<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-					<li>Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto</li>
-					<li>Si hay datos en rojo, es porque están editados por otro usuario</li>
-				<% } %>
-			</ul>
-		</i>
-	</div>
-</section>
+<%- include("FM-TituloPrincipal") %>
 <section id="contenido">
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->

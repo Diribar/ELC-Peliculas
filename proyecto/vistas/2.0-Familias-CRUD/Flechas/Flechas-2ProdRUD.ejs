@@ -1,4 +1,4 @@
-<% if (tema == "prod_rud") { %>
+<% if (tema == "prodRud") { %>
 	<% if (["detalle", "calificar"].includes(codigo) && interesDelUsuario && aprobados_ids.includes(registro.statusRegistro_id)) { %>
 		<div class="flechas">
 			<i id="preferenciasPersonales" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>

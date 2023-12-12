@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Flechas.css">
-<% const detalle = (tema == "prod_rud" || tema == "rclv_crud") && codigo == "detalle" %>
+<% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
 <% const ABMlinks = tema == "linksCRUD" && codigo == "abmLinks" %>
-<% const calificar = tema == "prod_rud" && codigo == "calificar" %>
+<% const calificar = tema == "prodRud" && codigo == "calificar" %>
 <% const IRE = tema == "crud" %><!-- Inactivar, Recuperar, Eliminar -->
 <% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>

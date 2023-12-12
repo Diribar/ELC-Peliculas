@@ -7,7 +7,7 @@ const valida = require("./RCLV-FN-Validar");
 module.exports = {
 	detalle: async (req, res) => {
 		// Variables
-		const tema = "rclv_crud";
+		const tema = "rclvCrud";
 		const codigo = "detalle";
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
@@ -60,7 +60,7 @@ module.exports = {
 			// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 			// Tema y Código
 			const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-			const tema = baseUrl == "/rclv" ? "rclv_crud" : baseUrl == "/revision" ? "revisionEnts" : "";
+			const tema = baseUrl == "/rclv" ? "rclvCrud" : baseUrl == "/revision" ? "revisionEnts" : "";
 			const codigo = ruta.slice(1, -1); // Resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/solapamiento'
 
 			// Más variables
