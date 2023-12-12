@@ -1,3 +1,3 @@
 body {position: relative;}
-body #videoDetPeli {z-index: 11;}
-body #videoDetPeli iframe {min-width: 560px; min-height: 315px;}
+body #videoDetPeli {z-index: 11; border-radius: 25px; overflow: hidden;}
+body #videoDetPeli iframe {min-width: 560px; min-height: 315px; border-radius: 25px;}
