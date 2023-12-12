@@ -742,13 +742,8 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		const condicion = {fechaDelAno_id: fechaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 
 		// Obtiene los RCLVs
-		rclvs.push(
-			BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-				// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
-				// .then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
-				// Le agrega la entidad
-				.then((n) => n.map((m) => ({...m, entidad})))
-		);
+		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+		rclvs.push(registros.then((n) => n.map((m) => ({...m, entidad}))));
 	}
 
 	// Busca el registro de 'epocaDelAno'

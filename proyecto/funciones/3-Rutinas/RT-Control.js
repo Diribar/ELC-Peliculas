@@ -416,7 +416,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	loginsDiarios:async()=>{
+	loginsDiariosAcum:async()=>{
 		// Variables
 
 		// Obtiene los logins diarios

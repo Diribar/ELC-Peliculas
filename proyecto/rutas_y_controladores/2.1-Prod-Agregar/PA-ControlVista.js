@@ -365,7 +365,7 @@ module.exports = {
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
-		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
+		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
 		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion);
 		imgDerPers = original.avatar ? imgDerPers.orig : imgDerPers.edic;
 

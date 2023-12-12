@@ -34,8 +34,9 @@ module.exports = {
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Pule la edición
-		if (edicion) edicion = await puleEdicion(entidad, original, edicion); // El output puede ser 'null'
-		if (!edicion) edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
+		edicion = edicion
+			? await puleEdicion(entidad, original, edicion) // El output puede ser 'null'
+			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
 		return [original, edicion];
