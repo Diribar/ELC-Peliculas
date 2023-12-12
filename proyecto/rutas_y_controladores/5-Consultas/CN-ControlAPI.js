@@ -43,7 +43,7 @@ module.exports = {
 			const datos = {
 				...{entidadesBD: cn_entidades, opcionesPorEntBD: cn_opcionesPorEnt, opcionesBD: cn_opciones}, // Órdenes y Entidades
 				...{pppOpciones, pppOpcionesSimples},
-				...{rclvNombres: variables.entidades.rclvsNombre, configConsDefault_id},
+				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				filtrosConDefault,
 			};
 
