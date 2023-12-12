@@ -17,6 +17,8 @@ module.exports = (sequelize, dt) => {
 		urlBuscarPre: {type: dt.STRING(25)},
 		urlBuscarPost: {type: dt.STRING(20)},
 		urlDistintivo: {type: dt.STRING(20)},
+		embededQuitar: {type: dt.STRING(20)},
+		embededPoner: {type: dt.STRING(20)},
 		urlCopyright: {type: dt.STRING(70)},
 
 		mostrarSiempre: {type: dt.BOOLEAN},
