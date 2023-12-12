@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "loginsDiariosAcum";
+	const alias = "loginsAcum";
 	const columns = {
 		fecha: {type: dt.DATE},
 		diaSem: {type: dt.STRING(3)},
@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		logins: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "aux_logins_diarios_acum",
+		tableName: "aux_logins_acum",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
