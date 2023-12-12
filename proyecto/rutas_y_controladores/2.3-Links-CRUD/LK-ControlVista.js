@@ -48,7 +48,7 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo,ayudasTitulo},
+			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
@@ -77,7 +77,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		const tituloDetalle = nombre + " - Link de " + provLink.nombre;
+		const tituloDetalle = nombre + " (" + provLink.nombre + ")";
 		const titulo = nombre;
 
 		// Va a la vista
