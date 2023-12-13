@@ -3,8 +3,7 @@
 /* Encabezado del formulario */
 #dataEntry #titulos {display: flex; justify-content: space-between;}
 #dataEntry #titulos h1 {margin-top: 0;}
-#dataEntry #titulos #links, 
-#dataEntry #segundaColumna {display: flex; flex-direction: column; align-items: center; width: 200px;}
+#dataEntry #titulos #links, #dataEntry #segundaColumna {display: flex; flex-direction: column; align-items: center; width: 200px;}
 
 #dataEntry #titulos #links nav {display: flex; flex-direction: row; justify-content: space-around; width: 100%;}
 #dataEntry #titulos #links nav a.logos {width: 30px; height: 30px; position: relative; }
@@ -24,7 +23,7 @@
 #dataEntry .inputError select[name="idiomaOriginal_id"]:has(option[value=""]:checked) {color: var(--gris-oscuro);}
 #dataEntry .inputError :is(input.input, textarea) {padding: 0px 5px;}
 #dataEntry .inputError input.input.angosto {width: 90px;}
-#dataEntry .inputError textarea {padding: 0px 5px; resize:vertical; max-height: 45px; min-height: 18px;}
+#dataEntry .inputError textarea {padding: 0px 5px; resize: vertical; max-height: 45px; min-height: 18px;}
 
 /* Temas de input 'número' */
 #dataEntry .inputError .numero {width: 90px !important; text-align: right;}
