@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 12/dic",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mié. 13/dic",
+	"HoraUTC": "10:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/dic",
@@ -15,8 +15,8 @@
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
-		"eliminaCalifsSinPPP": "SI",
-		"loginsDiariosAcum": "SI"
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
@@ -30,10 +30,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"11-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"12-dic-23": {"titulo": "Ap. Mar. - Guadalupe", "entidad": "hechos", "id": 24},
 		"13-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"14-dic-23": {"titulo": "San Juan de la Cruz", "entidad": "personajes", "id": 183}
+		"14-dic-23": {"titulo": "San Juan de la Cruz", "entidad": "personajes", "id": 183},
+		"15-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }
