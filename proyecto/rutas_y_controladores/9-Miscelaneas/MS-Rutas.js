@@ -19,16 +19,17 @@ router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
 // Vistas
 router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
+router.get("/contactanos", aptoUsuario, vista.contactanos);
 
-// Redirecionamientos
-router.get("/inactivar-captura", capturaInactivar, vista.redirecciona);
-router.get("/", vista.redireccionaInicio);
-router.get("/inicio", vista.redireccionaInicio);
+// Redireciona
+router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);
+router.get("/inicio", vista.redirecciona.inicio);
+router.get("/", vista.redirecciona.inicio);
 
 // Información para mostrar en el explorador
-router.get("/session", vista.session);
-router.get("/cookies", vista.cookies);
-router.get("/:id", entidadRclv, vista.listadoRCLVs);
+router.get("/session", vista.listados.session);
+router.get("/cookies", vista.listados.cookies);
+router.get("/:id", entidadRclv, vista.listados.RCLVs);
 
 // Fin
 module.exports = router;
