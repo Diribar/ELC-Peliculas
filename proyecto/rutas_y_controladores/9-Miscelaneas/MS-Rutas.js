@@ -1,41 +1,34 @@
 "use strict";
-//************************* Requires *******************************
+// Variables
 const router = express.Router();
 const API = require("./MS-ControlAPI");
 const vista = require("./MS-ControlVista");
 
-//************************ Middlewares ******************************
-// Específicos de usuarios
+// Middlewares - Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-// Varios
+// Middlewares - Varios
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
 
-//************************ Rutas ****************************
-// Rutas de APIs
+// APIs
 router.get("/api/horario-inicial/", API.horarioInicial);
 router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
-// Rutas de vistas
-// Inactivar captura
-router.get("/inactivar-captura", capturaInactivar, vista.redirecciona);
-
-// Tablero de mantenimiento
+// Vistas
 router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
-// Redireccionar a Inicio
+// Redirecionamientos
+router.get("/inactivar-captura", capturaInactivar, vista.redirecciona);
 router.get("/", vista.redireccionaInicio);
 router.get("/inicio", vista.redireccionaInicio);
 
-// Contenido de session y cookies
+// Información para mostrar en el explorador
 router.get("/session", vista.session);
 router.get("/cookies", vista.cookies);
-
-// Productos por RCLV
 router.get("/:id", entidadRclv, vista.listadoRCLVs);
 
-// Exportarlo **********************************************
+// Fin
 module.exports = router;

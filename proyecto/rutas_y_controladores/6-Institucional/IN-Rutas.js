@@ -1,14 +1,13 @@
 "use strict";
-// Requires ************************************************
+// Variables
 const router = express.Router();
 const vista = require("./IN-ControlVista");
 
-// Middlewares ***********************************************
+// Middlewares
 const institucional = require("../../middlewares/varios/urlInstitDescon");
 
-// Vistas *******************************************
-// Vistas de vistas - Institucional
-router.get("/:id", institucional, vista.institucional);
+// Vistas
+router.get("/:id", institucional, vista.institucional); // institucional
 
-// Exportarlo **********************************************
+// Fin
 module.exports = router;

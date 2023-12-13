@@ -1,43 +1,44 @@
 "use strict";
-//************************* Requires *******************************
+// Variables
 const router = express.Router();
 const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
 
-//************************ Middlewares ******************************
-// Específicos de usuarios
+// Middlewares - Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-// Específicos de productos
+
+// Middlewares - Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
-// Temas de captura
+
+// Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
-// Varios
+
+// Middlewares - Otros
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
-// Consolidados
+// Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
 
-//************************ Rutas ****************************
-// Rutas de APIs - Links
+// APIs - Links
 router.get("/api/valida", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
 
-// Rutas de APIs - ABM
+// APIs - ABM
 router.get("/api/guardar", API.guarda);
 router.get("/api/inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
-// Rutas de APIs - Visualiza
+// APIs - Visualiza
 router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
-// Rutas de vistas
+// Vistas
 router.get("/abm", aptoABM, capturaActivar, vista.abm);
 router.get("/visualizacion", vista.visualizacion);
 
