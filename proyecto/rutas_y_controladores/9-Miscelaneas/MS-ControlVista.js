@@ -28,14 +28,12 @@ module.exports = {
 		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
 
 		// Va a la vista
-		// return res.send(prods);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
 			...{prods, rclvs, omnipotente},
 			dataEntry,
 		});
 	},
-	contactanos: async (req, res) => {},
 
 	// Redireccionar después de inactivar una captura
 	redirecciona: {
