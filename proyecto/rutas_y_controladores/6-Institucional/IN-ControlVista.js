@@ -24,7 +24,7 @@ module.exports = {
 		// Variables
 		const tema = "institucional";
 		const codigo = "contactanos";
-		const titulo = "Mantenimiento";
+		const titulo = "Contactanos";
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
