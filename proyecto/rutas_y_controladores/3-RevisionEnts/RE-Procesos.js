@@ -252,6 +252,7 @@ module.exports = {
 							entidad: n.entidad,
 							nombre,
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRef: n.fechaRef,
 							fechaRefTexto: n.fechaRefTexto,
 							links: n.linksGral,
 						};
@@ -742,31 +743,32 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	siguienteProducto: async function ({producto, entidad, revID}) {
+	sigProd: async function ({producto, entidad, revID}) {
 		// Variables
-		const productos = await this.TC.obtieneProds_Links(revID)
-			.then((n) => n.productos) // Obtiene solamente la parte de productos
-			.then((n) => this.TC.procesaCampos.prods(n)); // Los ordena según corresponda
+		let sigProd = [];
 
-		// Obtiene el siguiente producto
-		let siguienteProducto;
-		// Busca en cada grupo de producto
-		for (let opcion in productos) {
-			const prodsOpcion = productos[opcion]; // obtiene el conjunto de productos para la opción
-			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : ""; // busca un producto distinto al actual
-			if (siguienteProducto) break;
-		}
+		// Obtiene los productos
+		await this.TC.obtieneProds_Links(revID)
+			.then((n) => n.productos) // Obtiene los productos
+			.then((n) => this.TC.procesaCampos.prods(n)) // transforma los datos de cada producto
+			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))); // agrupa los productos en una sola array
+
+		// Obtiene el producto más antiguo
+		if (sigProd.length) {
+			sigProd.sort((a, b) => (a.fechaRef < b.fechaRef ? -1 : a.fechaRef > b.fechaRef ? 1 : 0)); // ordena los productos por fecha
+			sigProd = sigProd[0];
+		} else sigProd = null;
 
 		// Genera el link
-		const link = siguienteProducto
+		const link = sigProd
 			? "/inactivar-captura/?entidad=" +
 			  entidad +
 			  "&id=" +
 			  producto.id +
 			  "&prodEntidad=" +
-			  siguienteProducto.entidad +
+			  sigProd.entidad +
 			  "&prodID=" +
-			  siguienteProducto.id +
+			  sigProd.id +
 			  "&origen=RLK"
 			: "/revision/tablero-de-control";
 
