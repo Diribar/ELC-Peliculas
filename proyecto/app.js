@@ -221,7 +221,6 @@ app.set("views", [
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
-	global.prefijoSanto = variables.prefijoSanto;
 
 	// Filtros con 'default'
 	const camposConsultas = variables.camposConsultas;
