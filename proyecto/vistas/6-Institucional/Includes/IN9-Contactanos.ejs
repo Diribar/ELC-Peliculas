@@ -1,6 +1,6 @@
 <form method="POST" class="flexCol">
 
-	<!-- Inputs -->
+	<!-- Asunto -->
 	<div class="inputError">
 		<select name="asunto" class="input">
 			<option value="">Elegí un asunto</option>
@@ -10,6 +10,8 @@
 		</select>
 		<%- include("CMP-Errores", {nombre: "asunto"}) %>
 	</div>
+
+	<!-- Comentario -->
 	<div class="inputError">
 		<textarea name="comentario" class="input" placeholder="Escribinos tu comentario"></textarea>
 		<%- include("CMP-Errores", {nombre: "comentario"}) %>
