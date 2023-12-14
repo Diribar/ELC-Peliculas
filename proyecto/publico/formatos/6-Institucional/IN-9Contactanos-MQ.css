@@ -1,6 +1,3 @@
-/* Ancho */
-@media (width <= 1450px) {#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}}
-
 /* Alto */
 @media (height < 500px) {
 	#cuerpo #tituloPrincipal {display: none;}
