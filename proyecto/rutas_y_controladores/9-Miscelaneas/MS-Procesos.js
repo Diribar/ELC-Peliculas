@@ -124,9 +124,8 @@ let obtieneProdsDeLinks = function (links, userID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = "statusSugeridoEn";
-		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaHora.diaMes(link[campoFecha]);
+		let fechaRef = link.statusSugeridoEn;
+		let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
 
 		// Agrega los registros
 		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
