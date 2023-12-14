@@ -44,7 +44,7 @@ module.exports = async (req, res, next) => {
 		for (let novedad of novedades)
 			for (let rol of roles)
 				if (novedad[rol]) {
-					mensajes.push(comp.fechaHora.fechaDiaMesAno(novedad.fecha) + " - " + novedad.comentario);
+					mensajes.push(comp.fechaHora.diaMesAno(novedad.fecha) + " - " + novedad.comentario);
 					break;
 				}
 
