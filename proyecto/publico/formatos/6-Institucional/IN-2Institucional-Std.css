@@ -4,7 +4,8 @@
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo #cuadroDeTexto {margin: auto;}
 #cuerpo #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
-#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
+#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content;}
+#cuerpo #cuadroDeTexto:not(:has(form)) {padding-right: 15px;}
 #cuerpo #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 #cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
 
