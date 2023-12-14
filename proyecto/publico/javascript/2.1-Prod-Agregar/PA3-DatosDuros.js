@@ -151,17 +151,14 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	DOM.form.addEventListener("input", (e) => {
-		// Validaciones estándar
-		amplio.restringeCaracteres(e);
+	DOM.inputs.forEach((input, i) => {
+		input.addEventListener("input", (e) => {
+			amplio.restringeCaracteres(e);
+			DOM.iconosError[i].classList.add("ocultar");
 
-		// Validaciones particulares
-		const campo = e.target.name == "paises" ? "paises_id" : e.target.name;
-		const indice = v.campos.indexOf(campo);
-		DOM.iconosError[indice].classList.add("ocultar");
-
-		// Fin
-		return;
+			// Fin
+			return;
+		});
 	});
 
 	DOM.form.addEventListener("change", async (e) => {
