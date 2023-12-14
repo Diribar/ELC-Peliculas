@@ -532,7 +532,7 @@ module.exports = {
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
 		const ahora = new Date();
 
-		// Condiciones
+		// Condiciones y nuevo status
 		const condiciones = [
 			{statusRegistro_id: aprobado_id},
 			{
@@ -542,13 +542,13 @@ module.exports = {
 				],
 			},
 		];
-
-		// Actualiza el status de los links
 		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
 			statusSugeridoEn: ahora,
 		};
+
+		// Actualiza el status de los links
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 		// Fin
