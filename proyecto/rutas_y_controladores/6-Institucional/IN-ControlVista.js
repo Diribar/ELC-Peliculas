@@ -20,17 +20,23 @@ module.exports = {
 			...{urlAnt, urlPost, indice, vistas: vistas.length - 1},
 		});
 	},
-	contactanos: async (req, res) => {
-		// Variables
-		const tema = "institucional";
-		const codigo = "contactanos";
-		const titulo = "Contactanos";
-		const urlAnterior = req.session.urlAnterior;
+	contactanos: {
+		form: async (req, res) => {
+			// Variables
+			const tema = "institucional";
+			const codigo = "contactanos";
+			const titulo = "Contactanos";
+			const urlAnterior = req.session.urlAnterior;
 
-		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
+			// Obtiene información para la vista
+			const dataEntry =
+				req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
 
-		// Va a la vista
-		return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
+			// Va a la vista
+			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
+		},
+		guardar: async (req, res) => {
+
+		},
 	},
 };
