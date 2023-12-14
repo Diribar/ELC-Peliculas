@@ -665,8 +665,8 @@ module.exports = {
 		// Datos CRUD
 		bloque.push(
 			registro.altaRevisadaEn
-				? {titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)}
-				: {titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)}
+				? {titulo: "Revisado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
+				: {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
 		);
 
 		// Status resumido
