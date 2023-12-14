@@ -15,9 +15,9 @@
 .inputError select option {background: snow; font-size: 1.2rem;}
 
 /* Aspectos particulares - Textarea */
-.inputError:has(textarea) {margin-top: 10px;}
+.inputError:has(textarea) {margin-top: 10px; display: flex; flex-direction: column;}
 .inputError p {text-align: right;}
-.inputError textarea {padding: 5px; resize: none; height: 100%;}
+.inputError textarea {padding: 5px; resize: none; height: inherit;}
 
 /* Flechas */
 form .flechas {margin-top: 20px; display: flex;}
