@@ -31,10 +31,7 @@ window.addEventListener("load", async () => {
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
 		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/Avatar"),
 		datosUrl: null,
-	};
-	let rutas = {
-		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
-		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
+		validaDatos: "/producto/agregar/api/valida/" + paso + "/?",
 	};
 	if (DOM.paisesSelect) {
 		DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
@@ -75,7 +72,7 @@ window.addEventListener("load", async () => {
 		},
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
-			let errores = await fetch(rutas.validarDatos + v.datosUrl).then((n) => n.json());
+			let errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
