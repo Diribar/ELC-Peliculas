@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	let contador = () => {
 		// Acciones
 		let largo = DOM.comentario.value.length;
-		if (largo) DOM.pendiente.innerHTML = 100 - largo;
+		DOM.pendiente.innerHTML = 100 - largo ? largo : 0;
 
 		// Fin
 		return;
