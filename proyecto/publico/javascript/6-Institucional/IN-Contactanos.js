@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 
 		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
-		textArea: document.querySelectorAll(".inputError textarea.input"),
+		textArea: document.querySelector(".inputError textarea.input"),
 		pendiente: document.querySelector(".inputError #pendiente"),
 
 		// OK/Errores
@@ -24,9 +24,19 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let FN = {
 		actualizaVarios: async function () {
+			this.contador();
 			this.obtieneLosValores();
 			await this.averiguaMuestraLosErrores();
 			this.actualizaBotonSubmit();
+
+			// Fin
+			return;
+		},
+		contador: () => {
+			// Acciones
+			const largo = DOM.textArea.value.length;
+
+			DOM.pendiente.innerHTML = 100 - largo ;
 
 			// Fin
 			return;
