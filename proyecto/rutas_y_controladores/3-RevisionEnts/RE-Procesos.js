@@ -212,8 +212,8 @@ module.exports = {
 						entidad,
 						editadoEn: n.editadoEn,
 						edicID: n.id,
-						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaHora.diaMes(n[campoFecha]),
+						fechaRef: n.editadoEn,
+						fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					});
 				});
 				// Deja solamente los rclvs aprobados
