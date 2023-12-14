@@ -16,6 +16,7 @@
 
 /* Aspectos particulares - Textarea */
 .inputError:has(textarea) {margin-top: 10px;}
+.inputError p {text-align: right;}
 .inputError textarea {padding: 5px; resize: none; height: 100%;}
 
 /* Flechas */
