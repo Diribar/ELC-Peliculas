@@ -28,7 +28,7 @@ module.exports = {
 				productos.push({
 					...n[asociacion],
 					entidad,
-					fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
+					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					edicID: n.id,
 					fechaRef: n.editadoEn,
 				});
@@ -213,7 +213,7 @@ module.exports = {
 						editadoEn: n.editadoEn,
 						edicID: n.id,
 						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
+						fechaRefTexto: comp.fechaHora.diaMes(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -744,14 +744,17 @@ module.exports = {
 		return informacion;
 	},
 	sigProd: async function ({producto, entidad, revID}) {
-		// Variables
-		let sigProd = [];
-
 		// Obtiene los productos
+		let sigProd = [];
 		await this.TC.obtieneProds_Links(revID)
 			.then((n) => n.productos) // Obtiene los productos
 			.then((n) => this.TC.procesaCampos.prods(n)) // transforma los datos de cada producto
-			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))); // agrupa los productos en una sola array
+			.then((n) => {
+				Object.keys(n).forEach((m) => (n[m] = n[m].slice(0, 2)));
+				return n;
+			}) // deja un máximo de 2 valores por método
+			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))) // agrupa los productos en una sola array
+			.then(() => (sigProd = sigProd.filter((n) => n.entidad != entidad || n.id != producto.id))); // quita el producto vigente
 
 		// Obtiene el producto más antiguo
 		if (sigProd.length) {
@@ -806,7 +809,7 @@ let obtieneRegs = async (campos) => {
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
 			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+			const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
 
@@ -897,7 +900,7 @@ let PR_VN_OT = ({links, aprobsPerms, productos}) => {
 		const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 		const fechaRef = link[campoFecha];
-		const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+		const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 		// Separa en PR y VN
 		if (link.statusRegistro_id == creadoAprob_id && aprobsPerms)
@@ -939,7 +942,7 @@ let puleLosResultados = ({productos, revID}) => {
 				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
 				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
-				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)); // por fecha más antigua
+				.sort((a, b) => new Date(comp.fechaHora.anoMesDia(a.fechaRef)) - new Date(comp.fechaHora.anoMesDia(b.fechaRef))); // por fecha más antigua
 	});
 
 	// Fin
