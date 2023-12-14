@@ -1,6 +1,6 @@
 <% if (mostrar) { %>
 	<!-- Mostrar la Imagen -->
-	<section id="imgDerecha">
+	<div id="imgDerecha">
 		<% let ruta, titulo, destino %>
 		<% if (locals.tema == "institucional") { %>
 			<!-- 1. Imagen Institucional -->
@@ -29,5 +29,5 @@
 		<% } else { %>
 			<img src="<%= ruta %>" title="<%= titulo %>">
 		<% } %>
-	</section>
+	</div>
 <% } %>
