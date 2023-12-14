@@ -151,7 +151,7 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	DOM.form.addEventListener("input", async (e) => {
+	DOM.form.addEventListener("input", (e) => {
 		// Validaciones estándar
 		amplio.restringeCaracteres(e);
 
