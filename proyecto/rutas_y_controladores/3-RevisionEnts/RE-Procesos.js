@@ -194,7 +194,6 @@ module.exports = {
 		},
 		obtieneRCLVsConEdic: async function (revID) {
 			// 1. Variables
-			const campoFecha = "editadoEn";
 			let include = variables.asocs.rclvs;
 			let rclvs = [];
 
