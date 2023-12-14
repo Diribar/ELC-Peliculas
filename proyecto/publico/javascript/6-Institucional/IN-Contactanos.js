@@ -33,10 +33,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		contador: () => {
-			// Acciones
-			const largo = DOM.textArea.value.length;
-
-			DOM.pendiente.innerHTML = 100 - largo ;
+			DOM.pendiente.innerHTML = 100 - DOM.textArea.value.length;
 
 			// Fin
 			return;
@@ -93,8 +90,13 @@ window.addEventListener("load", async () => {
 	// Eventos
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
-			amplio.restringeCaracteres(e);
-			DOM.iconosError[i].classList.add("ocultar");
+			// Acciones
+			amplio.restringeCaracteres(e); // restringe caracteres indeseados
+			DOM.iconosError[i].classList.add("ocultar"); // oculta los íconos de error
+			FN.contador(); // actualiza el contador
+			if (!input.value) FN.actualizaVarios(); // busca el mensaje de error
+
+			// Fin
 			return;
 		});
 	});
