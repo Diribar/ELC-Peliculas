@@ -300,17 +300,21 @@ module.exports = {
 		nuevoHorario: (delay, horario) => {
 			return FN.nuevoHorario(delay, horario);
 		},
-		fechaDiaMes: (fecha) => {
+		diaMes: (fecha) => {
 			fecha = new Date(fecha);
 			let dia = fecha.getUTCDate();
 			let mes = mesesAbrev[fecha.getUTCMonth()];
 			fecha = dia + "/" + mes;
 			return fecha;
 		},
-		fechaDiaMesAno: function (fecha) {
+		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
 			let ano = fecha.getUTCFullYear().toString().slice(-2);
-			return this.fechaDiaMes(fecha) + "/" + ano;
+			return this.diaMes(fecha) + "/" + ano;
+		},
+		anoMesDia:(fecha)=>{
+			fecha = new Date(fecha).toISOString().slice(0, 10);
+			return fecha
 		},
 		fechaHorario: (horario) => {
 			horario = horario ? new Date(horario) : FN.ahora();

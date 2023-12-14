@@ -136,8 +136,8 @@ module.exports = {
 			if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 			// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
-			const hoyUsuario = comp.fechaHora.fechaDiaMesAno(ahora);
-			const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.fechaDiaMesAno(usuario.fechaRevisores) : null;
+			const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
+			const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
 			const horaUsuario = ahora.getUTCHours();
 			const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
 			if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
