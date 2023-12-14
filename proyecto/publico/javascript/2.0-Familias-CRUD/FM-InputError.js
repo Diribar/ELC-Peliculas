@@ -12,11 +12,7 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let contador = () => {
-		// Acciones
-		const largo = DOM.comentario.value.length;
-		DOM.pendiente.innerHTML = 100 - largo;
-
-		// Fin
+		DOM.pendiente.innerHTML = 100 - DOM.comentario.value.length;
 		return;
 	};
 	let botonSubmit = () => {
