@@ -4,8 +4,8 @@
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 	</div>
-	<section>
-		<div id="cuadroDeTexto">
+	<div id="cuadroDeTexto">
+		<% if (codigo != "contactanos") { %>
 			<div id="contenido">
 				<% if (codigo == "quienesSomos")    { %><%- include("IN1-QuienesSomos")  %><% } %>
 				<% if (codigo == "misionVision")    { %><%- include("IN2-MisionVision")  %><% } %>
@@ -13,10 +13,11 @@
 				<% if (codigo == "enQueConsiste")   { %><%- include("IN4-EnQueConsiste") %><% } %>
 				<% if (codigo == "perfilPelis")     { %><%- include("IN5-PerfilPelis")   %><% } %>
 				<% if (codigo == "derechosAutor")   { %><%- include("IN6-DerechosAutor") %><% } %>
-				<% if (codigo == "contactanos")     { %><%- include("IN9-Contactanos") %>
-				<% } else { %><%- include("IN-Flechas") %><% } %>
+				<%- include("IN-Flechas") %>
 			</div>
-			<% if (codigo != "contactanos") { %><%- include("IN-Flechas") %><% } %>
-		</div>
-	</section>
+			<%- include("IN-Flechas") %>
+		<% } else { %>
+			<%- include("IN9-Contactanos") %>
+		<% } %>
+	</div>
 <% } %>
