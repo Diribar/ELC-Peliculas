@@ -1,0 +1,27 @@
+/* Cuerpo */
+#cuerpoFooter #cuerpo {flex-direction: column;}
+
+/* CUADRO DE TEXTO - CUADRO */
+#cuerpo #cuadroDeTexto {margin: auto;}
+#cuerpo #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
+#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
+#cuerpo #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
+
+/* CUADRO DE TEXTO - TEXTO */
+#cuadroDeTexto .bloque:nth-child(n+2) {margin-top: 15px;}
+#cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+#cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
+
+/* Miscelaneas */
+mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
+#cuerpo #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;}
+#cuerpo .flechas {margin: 20px 0 0; display: none;}
+#cuadroDeTexto .flechas {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
+#cuadroDeTexto .flechas i {font-size: 2rem;}
+
+/* Responsive */
+#cuerpo #cuadroDeTexto {max-height: 90%;}
+#cuadroDeTexto > div::-webkit-scrollbar {outline: transparent;}
+#cuadroDeTexto > div::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
+#cuadroDeTexto > div::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
