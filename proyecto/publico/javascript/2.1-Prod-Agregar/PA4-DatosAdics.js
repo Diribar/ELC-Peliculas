@@ -285,7 +285,7 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
 	DOM.form.addEventListener("change", async (e) => {
-		// Definir los valores para 'campo' y 'valor'
+		// Define los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = encodeURIComponent(e.target.value);
 		let datosUrl = "";
