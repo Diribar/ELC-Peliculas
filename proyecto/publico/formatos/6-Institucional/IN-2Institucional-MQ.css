@@ -1,5 +1,5 @@
 /* Ancho */
-@media (width <= 1267px) {#cuerpoFooterImgDer:not(:has(form)) > #imgDerecha img {display: none;}}
+@media (width <= 1267px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
 
 /* Alto */
 @media (height <= 450px) {
