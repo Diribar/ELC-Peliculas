@@ -4,8 +4,8 @@
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 11/dic",
-	"HoraSemUTC": "10:41",
+	"FechaSemUTC": "Vie. 15/dic",
+	"HoraSemUTC": "8:41",
 	"semanaUTC": 49,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
@@ -24,10 +24,10 @@
 		"LinksVencidos": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
-		"EliminaImagenesSinRegistro": "NO",
-		"EliminaHistorialAntiguo": "NO",
-		"EliminaHistorialDeRegsEliminados": "NO",
-		"IDdeTablas": "NO"
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"IDdeTablas": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
