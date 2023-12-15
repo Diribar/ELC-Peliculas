@@ -13,11 +13,11 @@
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
 		"PaisesConMasProductos": "SI",
+		"EliminaLinksInactivos": "SI",
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
 		"EliminaCalifsSinPPP": "SI",
-		"LoginsAcums": "SI",
-		"EliminaLinksInactivos": "SI"
+		"LoginsAcums": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
