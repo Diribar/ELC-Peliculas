@@ -89,8 +89,9 @@ module.exports = {
 			return res.redirect(destino);
 		},
 		envioExitoso: (req, res) => {
-			if (!req.session.contactanos) return res.redirect(req.session.urlActual)
 			// Variables
+			const direccion = req.session.urlFueraDeContactanos;
+			if (!req.session.contactanos) return res.redirect(direccion);
 			const {asunto, comentario} = req.session.contactanos;
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			delete req.session.contactanos;
@@ -103,7 +104,7 @@ module.exports = {
 						'", y el comentario: ' +
 						comentario,
 				],
-				iconos: [{...variables.vistaEntendido(req.session.urlActual), titulo: "Entendido"}],
+				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				titulo: "Envío exitoso de mail",
 				check: true,
 			};
