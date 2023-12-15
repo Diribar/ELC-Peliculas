@@ -89,7 +89,6 @@ module.exports = (req, res, next) => {
 	// Actualiza la url 'urlActual'
 	activaSessionCookie("urlActual");
 	res.locals.urlActual = urlActual;
-	console.log(83, req.session.urlFueraDeContactanos);
 
 	// Fin
 	next();
