@@ -10,15 +10,18 @@ module.exports = {
 		let errores = {};
 
 		// Asunto
-		if (campos.includes("asunto")) errores.asunto = !datos.asunto ? variables.selectVacio : "";
+		if (campos.includes("asunto"))
+			if (!datos.asunto) errores.asunto = "Necesitamos que elijas un asunto";
+			else if (!variables.asuntosContactanos.find((n) => n.codigo == datos.asunto))
+				errores.asunto = "Necesitamos que elijas un asunto válido";
 
 		// Comentario
 		if (campos.includes("comentario")) {
-			let respuesta = !datos.comentario ? variables.inputVacio : "";
+			let respuesta = !datos.comentario ? "Necesitamos que nos escribas un comentario" : "";
 			if (!respuesta) respuesta = comp.validacs.longitud(datos.comentario, 5, 100);
 			if (!respuesta) respuesta = comp.validacs.castellano.completo(datos.comentario);
 			if (!respuesta) respuesta = comp.validacs.inicial.completo(datos.comentario);
-			errores.comentario = respuesta
+			if (respuesta) errores.comentario = respuesta;
 		}
 
 		// Fin
