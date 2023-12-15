@@ -89,6 +89,7 @@ module.exports = {
 			return res.redirect(destino);
 		},
 		envioExitoso: (req, res) => {
+			if (!req.session.contactanos) res.redirect(req.session.urlActual)
 			// Variables
 			const {asunto, comentario} = req.session.contactanos;
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
