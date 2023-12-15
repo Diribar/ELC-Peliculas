@@ -4,18 +4,23 @@ const procesos = require("./US-FN-Procesos");
 const valida = require("./US-FN-Validar");
 
 module.exports = {
-	login_y_completo: async (req, res) => {
-		// Enviar a Login si no está logueado
+	loginCompleto: async (req, res) => {
+		// Envía a Login si no está logueado
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
-		// Redireccionar
+
+		// Variables
 		const statusUsuario_id = req.session.usuario.statusRegistro_id;
-		statusUsuario_id == mailPendValidar_id
-			? res.redirect("/usuarios/login")
-			: statusUsuario_id == mailValidado_id
-			? res.redirect("/usuarios/editables")
-			: req.session.urlFueraDeUsuarios
-			? res.redirect(req.session.urlFueraDeUsuarios)
-			: res.redirect("/");
+		const url =
+			statusUsuario_id == mailPendValidar_id
+				? "/usuarios/login"
+				: statusUsuario_id == mailValidado_id
+				? "/usuarios/editables"
+				: req.session.urlFueraDeUsuarios
+				? req.session.urlFueraDeUsuarios
+				: "/";
+
+		// Redirecciona
+		return res.redirect(url);
 	},
 	// Circuito de alta de usuario
 	altaMail: {
