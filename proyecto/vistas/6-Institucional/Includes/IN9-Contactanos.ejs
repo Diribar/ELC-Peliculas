@@ -2,7 +2,7 @@
 
 	<!-- Asunto -->
 	<div class="inputError">
-		<select name="asunto" class="input">
+		<select name="asunto" class="input" autofocus>
 			<option value="">Elegí un asunto</option>
 			<% for (let opcion of variables.asuntosContactanos) { %>
 				<option value="<%= opcion.codigo %>" <% if (opcion.codigo==dataEntry.asunto) { %>selected<% } %>><%= opcion.descripcion %></option>
