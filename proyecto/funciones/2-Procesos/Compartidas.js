@@ -755,9 +755,9 @@ module.exports = {
 	},
 
 	// Internet
-	enviaMail: async function ({asunto, email, comentario}) {
+	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
-		let transporter = nodemailer.createTransport({
+		const transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
 			port: 465,
 			secure: true, // true for 465, false for other ports
@@ -766,7 +766,7 @@ module.exports = {
 				pass: process.env.contrMail, // contraseña de aplicación de gmail
 			},
 		});
-		let datos = {
+		const datos = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
 			to: email,
 			subject: asunto,
@@ -774,7 +774,7 @@ module.exports = {
 			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
-		let mailEnviado = await transporter
+		const mailEnviado = await transporter
 			.sendMail(datos)
 			.then(() => true)
 			.catch((error) => {
