@@ -12,8 +12,6 @@ module.exports = (req, res, next) => {
 	// Variables
 	const urlAnterior = req.session.urlActual;
 	const urlActual = req.originalUrl;
-
-	// Condición
 	const rutasAceptadas = [
 		"/producto",
 		"/rclv",
@@ -32,7 +30,7 @@ module.exports = (req, res, next) => {
 	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
-		!urlActual.includes("/contactanos") &&
+		!urlActual.includes("/contactanos/envio") &&
 		!urlActual.includes("/api/");
 	const rutaAceptada = diferenteRutaAnterior && perteneceRutasAceptadas && noContieneCiertasPalabras;
 	if (!rutaAceptada) return next();
@@ -81,5 +79,6 @@ module.exports = (req, res, next) => {
 	activaSessionCookie("urlActual");
 	res.locals.urlActual = urlActual;
 
+	// Fin
 	next();
 };
