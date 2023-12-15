@@ -39,7 +39,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Revisa errores
 			const errores = await valida.contactanos(req.body);
-			req.session.contactanos = errores.hay ? req.body : null; // actualiza el contenido del formulario en 'session'
+			req.session.contactanos = req.body; // actualiza el contenido del formulario en 'session'
 
 			// Si hay errores, redirige a la vista de errores
 			if (errores.hay) {
@@ -68,7 +68,7 @@ module.exports = {
 					usuario.email,
 			};
 			mailEnviado = await comp.enviaMail(datos);
-			if (!mailEnviado) destino = "/institucional/contactanos/problema";
+			if (!mailEnviado) destino = "/institucional/contactanos/envio-fallido";
 			// Envía el email al usuario
 			else {
 				datos = {
@@ -82,7 +82,7 @@ module.exports = {
 						"</em>",
 				};
 				comp.enviaMail(datos);
-				destino = "/institucional/contactanos/exito";
+				destino = "/institucional/contactanos/envio-exitoso";
 			}
 
 			// Fin
@@ -90,11 +90,19 @@ module.exports = {
 		},
 		envioExitoso: (req, res) => {
 			// Variables
+			const {asunto, comentario} = req.session.contactanos;
+			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
+			delete req.session.contactanos;
+
+			// Información
 			const informacion = {
 				mensajes: [
-					'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' + asunto + '", y el comentario: ' + comentario,
+					'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' +
+						asuntoMail +
+						'", y el comentario: ' +
+						comentario,
 				],
-				iconos: [{...variables.vistaEntendido("/"), titulo: "Entendido"}],
+				iconos: [{...variables.vistaEntendido(req.session.urlActual), titulo: "Entendido"}],
 				titulo: "Envío exitoso de mail",
 				check: true,
 			};
