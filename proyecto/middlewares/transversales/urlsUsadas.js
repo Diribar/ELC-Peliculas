@@ -2,7 +2,7 @@
 // Requires
 
 module.exports = (req, res, next) => {
-	if (req.originalUrl.includes("/api/")) return next()
+	if (req.originalUrl.includes("/api/")) return next();
 	// Valores de startup
 	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinPermInput", "urlSinCaptura", "urlAnterior", "urlActual"];
 	urlsGuardadas.forEach((url) => {
@@ -32,6 +32,7 @@ module.exports = (req, res, next) => {
 	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
+		!urlActual.includes("/contactanos") &&
 		!urlActual.includes("/api/");
 	const rutaAceptada = diferenteRutaAnterior && perteneceRutasAceptadas && noContieneCiertasPalabras;
 	if (!rutaAceptada) return next();
