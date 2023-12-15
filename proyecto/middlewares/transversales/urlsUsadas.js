@@ -4,7 +4,15 @@
 module.exports = (req, res, next) => {
 	if (req.originalUrl.includes("/api/")) return next();
 	// Valores de startup
-	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinPermInput", "urlSinCaptura", "urlAnterior", "urlActual"];
+	const urlsGuardadas = [
+		"urlSinLogin",
+		"urlFueraDeUsuarios",
+		"urlFueraDeContactanos",
+		"urlSinPermInput",
+		"urlSinCaptura",
+		"urlAnterior",
+		"urlActual",
+	];
 	urlsGuardadas.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
@@ -30,18 +38,17 @@ module.exports = (req, res, next) => {
 	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
-		!urlActual.includes("/contactanos/envio") &&
 		!urlActual.includes("/api/");
 	const rutaAceptada = diferenteRutaAnterior && perteneceRutasAceptadas && noContieneCiertasPalabras;
 	if (!rutaAceptada) return next();
 
 	// Función
 	let activaSessionCookie = (url, anterior) => {
-		req.session[url] = !anterior ? urlActual : urlAnterior;
+		req.session[url] = anterior ? urlAnterior : urlActual;
 		res.cookie(url, req.session[url], {maxAge: unDia});
 	};
 
-	// 1. urlSinLogin - cualquier ruta que no requiera login
+	// urlSinLogin - cualquier ruta que no requiera login
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		!urlAnterior.startsWith("/links/") &&
@@ -51,10 +58,14 @@ module.exports = (req, res, next) => {
 	)
 		activaSessionCookie("urlSinLogin", true);
 
-	// 2. urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
+	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
 	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios", true);
 
-	// 3. urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	// urlFueraDeContactanos - cualquier ruta fuera del circuito de contactanos
+	if (!urlAnterior.startsWith("/usuarios/") && !urlAnterior.includes("/contactanos"))
+		activaSessionCookie("urlFueraDeContactanos", true);
+
+	// urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		!urlAnterior.startsWith("/links/") &&
@@ -63,7 +74,7 @@ module.exports = (req, res, next) => {
 	)
 		activaSessionCookie("urlSinCaptura", true);
 
-	// 4. urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	// urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		((!urlAnterior.startsWith("/producto/") && !urlAnterior.startsWith("/rclv/")) || urlAnterior.includes("/detalle/")) &&
@@ -78,6 +89,7 @@ module.exports = (req, res, next) => {
 	// Actualiza la url 'urlActual'
 	activaSessionCookie("urlActual");
 	res.locals.urlActual = urlActual;
+	console.log(83, req.session.urlFueraDeContactanos);
 
 	// Fin
 	next();
