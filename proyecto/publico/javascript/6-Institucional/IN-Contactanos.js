@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		contador: () => {
-			DOM.pendiente.innerHTML = 100 - DOM.textArea.value.length;
+			DOM.pendiente.innerHTML = Math.max(500 - DOM.textArea.value.length, 0);
 
 			// Fin
 			return;
