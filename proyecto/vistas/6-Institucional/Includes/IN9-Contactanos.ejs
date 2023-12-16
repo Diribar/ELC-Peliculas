@@ -4,8 +4,8 @@
 	<div class="inputError">
 		<select name="asunto" class="input">
 			<option value="">Elegí un asunto</option>
-			<% for (let opcion of variables.contactanos) { %>
-				<option value="<%= opcion.codigo %>"><%= opcion.descripcion %></option>
+			<% for (let opcion of variables.asuntosContactanos) { %>
+				<option value="<%= opcion.codigo %>" <% if (opcion.codigo==dataEntry.asunto) { %>selected<% } %>><%= opcion.descripcion %></option>
 			<% } %>
 		</select>
 		<%- include("CMP-Errores", {nombre: "asunto"}) %>
@@ -14,7 +14,7 @@
 	<!-- Comentario -->
 	<div class="inputError">
         <p><span id="pendiente">100</span>/100</p>
-		<textarea name="comentario" class="input" placeholder="Escribinos tu comentario"></textarea>
+		<textarea name="comentario" class="input" placeholder="Escribinos tu comentario"><%= dataEntry.comentario %></textarea>
 		<%- include("CMP-Errores", {nombre: "comentario"}) %>
 	</div>
 

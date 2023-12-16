@@ -70,25 +70,6 @@ module.exports = {
 		titulo: "La generación de una nueva contraseña fue exitosa",
 		check: true,
 	},
-	envioExitoso: {
-		mensajes: [
-			"Hemos generado tu usuario con tu dirección de mail.",
-			"Te hemos enviado por mail la contraseña.",
-			"Con el ícono de abajo accedés al Login.",
-		],
-		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-		titulo: "Alta exitosa de Usuario",
-		check: true,
-	},
-	envioFallido: {
-		mensajes: [
-			"No pudimos enviarte un mail con la contraseña.",
-			"Revisá tu conexión a internet y volvé a intentarlo.",
-			"Con el ícono de abajo regresás a la vista anterior.",
-		],
-		iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-		titulo: "Alta de Usuario fallida",
-	},
 	infoNoPerenne: (req) => {
 		// Variables
 		const {entidad, id, origen} = req.query;

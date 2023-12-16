@@ -353,6 +353,11 @@ module.exports = {
 		// Fin
 		return;
 	},
+	EliminaLinksInactivos: async () => {
+		const condicion = {statusRegistro_id: inactivo_id};
+		await BD_genericas.eliminaTodosPorCondicion("links", condicion);
+		return
+	},
 	LinksPorProv: async () => {
 		// Obtiene todos los links
 		const linksTotales = await BD_genericas.obtieneTodos("links");

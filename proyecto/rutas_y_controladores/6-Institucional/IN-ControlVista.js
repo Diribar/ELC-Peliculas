@@ -1,4 +1,6 @@
 "use strict";
+// Variables
+const valida = require("./IN-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -29,14 +31,91 @@ module.exports = {
 			const urlAnterior = req.session.urlAnterior;
 
 			// Obtiene información para la vista
-			const dataEntry =
-				req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
+			const dataEntry = req.session.contactanos ? req.session.contactanos : {};
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
 		},
 		guardar: async (req, res) => {
+			// Revisa errores
+			const errores = await valida.contactanos(req.body);
+			req.session.contactanos = errores.hay ? req.body : null; // actualiza el contenido del formulario en 'session'
 
+			// Si hay errores, redirige a la vista de errores
+			if (errores.hay) {
+				const informacion = {
+					mensajes: [Object.values(errores)[0]],
+					iconos: [variables.vistaEntendido("/institucional/contactanos")],
+				};
+				return res.render("CMP-0Estructura", {informacion});
+			}
+
+			// Variables
+			const {asunto, comentario} = req.body;
+			const usuario = req.session.usuario;
+			const emailELC = "sp2015w@gmail";
+			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
+			let mailEnviado, destino, datos;
+
+			// Envía el mail a ELC
+			datos = {
+				email: emailELC,
+				asunto: asuntoMail,
+				comentario:
+					comentario +
+					"<br><br>" +
+					(usuario.nombre + " " + usuario.apellido + " (" + usuario.apodo + ")" + "<br>") +
+					usuario.email,
+			};
+			mailEnviado = await comp.enviaMail(datos);
+			if (!mailEnviado) destino = "/institucional/contactanos/problema";
+			// Envía el email al usuario
+			else {
+				datos = {
+					email: usuario.email,
+					asunto: "Mail enviado a ELC",
+					comentario:
+						'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' +
+						asunto +
+						'", y el siguiente comentario:<br><em>' +
+						comentario +
+						"</em>",
+				};
+				comp.enviaMail(datos);
+				destino = "/institucional/contactanos/exito";
+			}
+
+			// Fin
+			return res.redirect(destino);
+		},
+		envioExitoso: (req, res) => {
+			// Variables
+			const informacion = {
+				mensajes: [
+					'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' + asunto + '", y el comentario: ' + comentario,
+				],
+				iconos: [{...variables.vistaEntendido("/"), titulo: "Entendido"}],
+				titulo: "Envío exitoso de mail",
+				check: true,
+			};
+
+			// Vista
+			return res.render("CMP-0Estructura", {informacion});
+		},
+		envioFallido: (req, res) => {
+			// Variables
+			const informacion = {
+				mensajes: [
+					"No pudimos enviar el mail.",
+					"Revisá tu conexión a internet y volvé a intentarlo.",
+					"Con el ícono de abajo regresás a la vista anterior.",
+				],
+				iconos: [{...variables.vistaEntendido("/institucional/contactanos"), titulo: "Entendido"}],
+				titulo: "Envío fallido de mail",
+			};
+
+			// Vista
+			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
 };

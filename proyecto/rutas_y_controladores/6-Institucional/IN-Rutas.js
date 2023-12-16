@@ -21,6 +21,8 @@ router.get("/api/valida-contactanos", API.validaContactanos);
 // Vistas
 router.get("/contactanos", aptoUsuario, vista.contactanos.form);
 router.post("/contactanos", aptoUsuario, vista.contactanos.guardar);
+router.get("/contactanos/envio-exitoso", aptoUsuario, vista.contactanos.envioExitoso);
+router.get("/contactanos/envio-fallido", aptoUsuario, vista.contactanos.envioFallido);
 
 router.get("/:id", institucional, vista.institucional); // institucional
 
