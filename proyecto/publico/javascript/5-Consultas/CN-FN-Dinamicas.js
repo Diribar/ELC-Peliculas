@@ -154,14 +154,19 @@ let actualizaConfigCons = {
 		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.idioma();
 
 		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
-		if (v.opcionBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
+		if (v.opcionBD.codigo == "misPrefs") configCons.pppOpciones = v.misPreferencias.combo.split(",");
 		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 			muestraOcultaActualizaPref(true, "pppOpciones");
 
+			// Si 'pppOpciones' no tiene un filtro, si corresponde le pone las opciones de "Me interesan"
+			if (configCons.pppOpciones == "sinFiltro") {
+				if (v.opcionBD.quitaNoMeInteresa) configCons.pppOpciones = v.meInteresan.combo.split(",");
+			}
+
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			if (configCons.pppOpciones != "sinFiltro") {
+			else if (configCons.pppOpciones != "sinFiltro") {
 				const id = configCons.pppOpciones;
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
