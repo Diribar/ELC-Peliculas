@@ -46,7 +46,7 @@ module.exports = {
 			],
 		},
 		pppOpciones: {
-			default: "5",
+			default: "6",
 			opciones: [
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
