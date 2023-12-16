@@ -1,5 +1,5 @@
 /* Marco general */
-section #cuadroDeTexto {min-width: min(50%, 500px); min-height: min(300px, 100%);}
+section #cuadroDeTexto {min-width: min(100%, 450px); min-height: min(300px, 100%);}
 #cuadroDeTexto #contenido {overflow-y: visible; position: relative;}
 
 /* Aspectos comunes */

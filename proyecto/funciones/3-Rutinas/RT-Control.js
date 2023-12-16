@@ -136,8 +136,8 @@ module.exports = {
 			if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 			// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
-			const hoyUsuario = comp.fechaHora.fechaDiaMesAno(ahora);
-			const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.fechaDiaMesAno(usuario.fechaRevisores) : null;
+			const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
+			const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
 			const horaUsuario = ahora.getUTCHours();
 			const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
 			if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
@@ -532,7 +532,7 @@ module.exports = {
 		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
 		const ahora = new Date();
 
-		// Condiciones
+		// Condiciones y nuevo status
 		const condiciones = [
 			{statusRegistro_id: aprobado_id},
 			{
@@ -542,13 +542,13 @@ module.exports = {
 				],
 			},
 		];
-
-		// Actualiza el status de los links
 		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
 			statusSugeridoEn: ahora,
 		};
+
+		// Actualiza el status de los links
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 		// Fin

@@ -199,7 +199,7 @@ module.exports = {
 			.then((n) =>
 				n.map((m) => {
 					const fechaRef = m[campoFecha];
-					const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 					return {...m, entidad, fechaRef, fechaRefTexto};
 				})
 			);

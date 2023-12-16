@@ -537,7 +537,7 @@ module.exports = {
 	fechaHoraUTC: () => {
 		// Obtiene la fecha y la hora y las procesa
 		const ahora = new Date();
-		const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaHora.fechaDiaMes(ahora);
+		const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaHora.diaMes(ahora);
 		const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
 
 		// Fin

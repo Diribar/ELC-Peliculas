@@ -508,7 +508,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		const siguienteProducto = !origen ? await procesos.siguienteProducto({producto, entidad, revID}) : "";
+		const siguienteProducto = !origen ? await procesos.sigProd({producto, entidad, revID}) : "";
 
 		// Información para la vista
 		const avatar = producto.avatar

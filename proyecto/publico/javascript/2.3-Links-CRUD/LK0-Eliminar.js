@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
 	let DOM = {
-		filasYaExistentes: document.querySelectorAll(".yaExistentes"),
+		yaExistentes: document.querySelectorAll(".yaExistentes"),
 		botonesEditar: document.querySelectorAll(".edicion"), // No lleva 'yaExistentes'
 		links_url: document.querySelectorAll(".yaExistentes input[name='url'"),
 		taparMotivo: document.querySelectorAll(".yaExistentes .taparMotivo"),
@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 	};
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
-		columnas: DOM.taparMotivo.length / DOM.filasYaExistentes.length,
+		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
 	};
 	let rutas = {
 		eliminar: location.pathname.startsWith("/links/")
@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 				url += "&IN=NO";
 				url += "&aprob=NO";
 				let respuesta = await fetch(rutas.eliminar + url).then((n) => n.json());
-				if (respuesta.ocultar) DOM.filasYaExistentes[fila].classList.add("ocultar");
+				if (respuesta.ocultar) DOM.yaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) location.reload();
 			}
 			// Inactiva

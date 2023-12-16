@@ -11,7 +11,7 @@ module.exports = {
 		let inactivos = obtienePorEntidad(condiciones);
 
 		// Productos Aprobados
-		condiciones = {...condiciones, campoFecha: "altaTermEn", status_id: aprobado_id};
+		condiciones = {...condiciones, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
 		let aprobados = obtienePorEntidad(condiciones);
 
 		// Productos Sin Edición (en status creadoAprob)
@@ -72,7 +72,7 @@ module.exports = {
 		let IN = obtienePorEntidad(condiciones);
 
 		// Aprobados
-		condiciones = {...objetoFijo, campoFecha: "altaRevisadaEn", status_id: aprobado_id};
+		condiciones = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
 		let aprobados = obtienePorEntidad({...condiciones, include});
 
 		// Await
@@ -124,9 +124,8 @@ let obtieneProdsDeLinks = function (links, userID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = "statusSugeridoEn";
-		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+		let fechaRef = link.statusSugeridoEn;
+		let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
 
 		// Agrega los registros
 		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
@@ -215,7 +214,7 @@ let obtieneSinEdicion = (entidad) => {
 					...m,
 					entidad,
 					fechaRef: m.statusSugeridoEn,
-					fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
+					fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn),
 				};
 
 				// Fin

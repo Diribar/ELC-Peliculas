@@ -28,7 +28,7 @@ module.exports = {
 				productos.push({
 					...n[asociacion],
 					entidad,
-					fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
+					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					edicID: n.id,
 					fechaRef: n.editadoEn,
 				});
@@ -194,7 +194,6 @@ module.exports = {
 		},
 		obtieneRCLVsConEdic: async function (revID) {
 			// 1. Variables
-			const campoFecha = "editadoEn";
 			let include = variables.asocs.rclvs;
 			let rclvs = [];
 
@@ -212,8 +211,8 @@ module.exports = {
 						entidad,
 						editadoEn: n.editadoEn,
 						edicID: n.id,
-						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
+						fechaRef: n.editadoEn,
+						fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -252,6 +251,7 @@ module.exports = {
 							entidad: n.entidad,
 							nombre,
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
+							fechaRef: n.fechaRef,
 							fechaRefTexto: n.fechaRefTexto,
 							links: n.linksGral,
 						};
@@ -742,31 +742,35 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	siguienteProducto: async function ({producto, entidad, revID}) {
-		// Variables
-		const productos = await this.TC.obtieneProds_Links(revID)
-			.then((n) => n.productos) // Obtiene solamente la parte de productos
-			.then((n) => this.TC.procesaCampos.prods(n)); // Los ordena según corresponda
+	sigProd: async function ({producto, entidad, revID}) {
+		// Obtiene los productos
+		let sigProd = [];
+		await this.TC.obtieneProds_Links(revID)
+			.then((n) => n.productos) // Obtiene los productos
+			.then((n) => this.TC.procesaCampos.prods(n)) // transforma los datos de cada producto
+			.then((n) => {
+				Object.keys(n).forEach((m) => (n[m] = n[m].slice(0, 2)));
+				return n;
+			}) // deja un máximo de 2 valores por método
+			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))) // agrupa los productos en una sola array
+			.then(() => (sigProd = sigProd.filter((n) => n.entidad != entidad || n.id != producto.id))); // quita el producto vigente
 
-		// Obtiene el siguiente producto
-		let siguienteProducto;
-		// Busca en cada grupo de producto
-		for (let opcion in productos) {
-			const prodsOpcion = productos[opcion]; // obtiene el conjunto de productos para la opción
-			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : ""; // busca un producto distinto al actual
-			if (siguienteProducto) break;
-		}
+		// Obtiene el producto más antiguo
+		if (sigProd.length) {
+			sigProd.sort((a, b) => (a.fechaRef < b.fechaRef ? -1 : a.fechaRef > b.fechaRef ? 1 : 0)); // ordena los productos por fecha
+			sigProd = sigProd[0];
+		} else sigProd = null;
 
 		// Genera el link
-		const link = siguienteProducto
+		const link = sigProd
 			? "/inactivar-captura/?entidad=" +
 			  entidad +
 			  "&id=" +
 			  producto.id +
 			  "&prodEntidad=" +
-			  siguienteProducto.entidad +
+			  sigProd.entidad +
 			  "&prodID=" +
-			  siguienteProducto.id +
+			  sigProd.id +
 			  "&origen=RLK"
 			: "/revision/tablero-de-control";
 
@@ -804,7 +808,7 @@ let obtieneRegs = async (campos) => {
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
 			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+			const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
 
@@ -895,7 +899,7 @@ let PR_VN_OT = ({links, aprobsPerms, productos}) => {
 		const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 		const fechaRef = link[campoFecha];
-		const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
+		const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 		// Separa en PR y VN
 		if (link.statusRegistro_id == creadoAprob_id && aprobsPerms)
@@ -937,7 +941,7 @@ let puleLosResultados = ({productos, revID}) => {
 				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
 				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
-				.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef)); // por fecha más antigua
+				.sort((a, b) => a.fechaRef - b.fechaRef); // por fecha más antigua
 	});
 
 	// Fin
