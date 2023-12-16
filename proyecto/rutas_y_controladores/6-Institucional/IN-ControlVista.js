@@ -61,11 +61,7 @@ module.exports = {
 			datos = {
 				email: emailELC,
 				asunto: asuntoMail,
-				comentario:
-					comentario +
-					"<br><br>" +
-					(usuario.nombre + " " + usuario.apellido + " (" + usuario.apodo + ")" + "<br>") +
-					usuario.email,
+				comentario: comentario + "<br><br>" + usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email,
 			};
 			mailEnviado = await comp.enviaMail(datos);
 			if (!mailEnviado) destino = "/institucional/contactanos/envio-fallido";
