@@ -1,14 +1,22 @@
 "use strict";
-// Requires ************************************************
+// Variables
 const router = express.Router();
 const vista = require("./IN-ControlVista");
 
-// Middlewares ***********************************************
+// Middlewares - Específicos de usuarios
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
+
+// Middlewares - Varios
 const institucional = require("../../middlewares/varios/urlInstitDescon");
 
-// Vistas *******************************************
-// Vistas de vistas - Institucional
-router.get("/:id", institucional, vista.institucional);
+// Middlewares - Consolidados
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 
-// Exportarlo **********************************************
+// Vistas
+router.get("/contactanos", aptoUsuario, vista.contactanos);
+router.get("/:id", institucional, vista.institucional); // institucional
+
+// Fin
 module.exports = router;

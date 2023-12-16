@@ -1,7 +1,4 @@
-<% if (codigo == "inicio") { %>
-	<!-- Inicio -->
-	<%- include("IN0-Inicio") %>
-
+<% if (codigo == "inicio") { %><%- include("IN0-Inicio") %>
 <% } else { %>
 	<!-- Institucional -->
 	<div id="tituloPrincipal">
@@ -16,9 +13,10 @@
 				<% if (codigo == "enQueConsiste")   { %><%- include("IN4-EnQueConsiste") %><% } %>
 				<% if (codigo == "perfilPelis")     { %><%- include("IN5-PerfilPelis")   %><% } %>
 				<% if (codigo == "derechosAutor")   { %><%- include("IN6-DerechosAutor") %><% } %>
-				<%- include("IN-Flechas") %>
+				<% if (codigo == "contactanos")     { %><%- include("IN9-Contactanos") %>
+				<% } else { %><%- include("IN-Flechas") %><% } %>
 			</div>
-			<%- include("IN-Flechas") %>
+			<% if (codigo != "contactanos") { %><%- include("IN-Flechas") %><% } %>
 		</div>
 	</section>
 <% } %>
