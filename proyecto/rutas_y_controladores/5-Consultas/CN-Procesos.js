@@ -131,26 +131,27 @@ module.exports = {
 		prefs: {
 			prods: (configCons) => {
 				// Variables
-				const vars = variables.camposConsultas;
-				const {tipoLink, idioma, publicos} = vars;
+				const camposConsultas = variables.camposConsultas;
+				const {idioma, tipoLink, publicos} = camposConsultas;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let campo in configCons)
-					if (vars[campo] && vars[campo].campoFiltro) prefs[vars[campo].campoFiltro] = configCons[campo];
-
-				// Conversión de campos similares
-				for (let campo of ["tipoLink", "publicos"])
-					if (configCons[campo]) {
-						const aux = vars[campo].opciones.find((n) => n.id == configCons[campo]).condic;
-						prefs = {...prefs, ...aux};
-					}
+					if (camposConsultas[campo] && camposConsultas[campo].campoFiltro)
+						prefs[camposConsultas[campo].campoFiltro] = configCons[campo];
 
 				// Conversión de 'idioma'
 				if (configCons.idioma) {
 					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[configCons.tipoLink];
 					prefs = {...prefs, ...aux};
 				}
+
+				// Conversión de campos similares
+				for (let campo of ["tipoLink", "publicos"])
+					if (configCons[campo]) {
+						const aux = camposConsultas[campo].opciones.find((n) => n.id == configCons[campo]).condic;
+						prefs = {...prefs, ...aux};
+					}
 
 				// Fin
 				return prefs;
@@ -309,7 +310,7 @@ module.exports = {
 			// Productos
 			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, opcion}) => {
 				if (!prods.length) return [];
-				if (!usuario_id) return opcion.codigo != "pppFecha" ? prods : [];
+				if (!usuario_id) return opcion.codigo != "misPrefs" ? prods : [];
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
@@ -344,10 +345,10 @@ module.exports = {
 							prods[i].pppIcono = pppOpcionElegida.icono;
 							prods[i].pppNombre = pppOpcionElegida.nombre;
 
-							// Le agrega datos adicionales si se eligió la opción 'pppFecha'
-							if (opcion.codigo == "pppFecha") {
+							// Le agrega datos adicionales si se eligió la opción 'misPrefs'
+							if (opcion.codigo == "misPrefs") {
 								prods[i].ppp_id = pppOpcionElegida.id;
-								prods[i].pppFecha = pppRegistro.creadoEn;
+								prods[i].misPrefs = pppRegistro.creadoEn;
 								prods[i].yaLaVi = pppOpcionElegida.codigo == "yaLaVi";
 								prods[i].laQuieroVer = pppOpcionElegida.codigo == "laQuieroVer";
 							}
@@ -569,7 +570,7 @@ module.exports = {
 						: 1
 				);
 
-				if (opcion.codigo == "pppFecha") {
+				if (opcion.codigo == "misPrefs") {
 					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
 					prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
 				}

@@ -22,8 +22,8 @@ let resultados = {
 			return;
 		}
 
-		// Si la opción es 'pppFecha' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
-		if (v.userID && v.opcionBD.codigo == "pppFecha" && !v.usuarioTienePPP) {
+		// Si la opción es 'misPrefs' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
+		if (v.userID && v.opcionBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
 			DOM.cartelOrdenPPP.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
@@ -391,7 +391,7 @@ let auxiliares = {
 		if (!titulo && opcion == "altaRevisadaEn") {
 			titulo = !indice ? "Últimas ingresadas" : "";
 		}
-		if (!titulo && opcion == "pppFecha") {
+		if (!titulo && opcion == "misPrefs") {
 			// Variables
 			const nombreAnt = registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;

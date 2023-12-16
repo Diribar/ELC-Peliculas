@@ -39,7 +39,7 @@
 <div id="configCampos" class="flexCol sectorConDesplV">
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
-		<!-- Calidad de la Imagen -->
+		<!-- Tipos de Link -->
 		<%- include('CN-FL-Selects', {campos: configsConsCampos.tipoLink}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
@@ -47,6 +47,8 @@
 		<% } %>
 		<!-- Idioma -->
 		<%- include('CN-FL-Selects', {campos: configsConsCampos.idioma, eventual: true}) %>
+		<!-- Público Recomendado -->
+		<%- include('CN-FL-Selects', {campos: configsConsCampos.publicos}) %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
@@ -65,8 +67,6 @@
 		<%- include('CN-FL-Selects', {campos: configsConsCampos.epocasOcurrencia, color: 'bhr'}) %>
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
-		<!-- Público Recomendado -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.publicos}) %>
 		<!-- Época de Estreno -->
 		<%- include('CN-FL-Selects', {campos: configsConsCampos.epocasEstreno}) %>
 		<!-- Tipo de Actuación -->
