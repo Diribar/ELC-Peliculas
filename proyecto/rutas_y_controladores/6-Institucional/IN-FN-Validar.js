@@ -18,7 +18,7 @@ module.exports = {
 		// Comentario
 		if (campos.includes("comentario")) {
 			let respuesta = !datos.comentario ? "Necesitamos que nos escribas un comentario" : "";
-			if (!respuesta) respuesta = comp.validacs.longitud(datos.comentario, 5, 100);
+			if (!respuesta) respuesta = comp.validacs.longitud(datos.comentario, 5, 500);
 			if (!respuesta) respuesta = comp.validacs.castellano.completo(datos.comentario);
 			if (!respuesta) respuesta = comp.validacs.inicial.completo(datos.comentario);
 			if (respuesta) errores.comentario = respuesta;

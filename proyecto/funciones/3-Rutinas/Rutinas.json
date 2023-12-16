@@ -1,6 +1,6 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 15/dic",
+	"FechaUTC": "Sáb. 16/dic",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"14-dic-23": {"titulo": "San Juan de la Cruz", "entidad": "personajes", "id": 183},
 		"15-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"16-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"17-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
+		"17-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
+		"18-dic-23": {"titulo": "Robert Tyre Jones", "entidad": "personajes", "id": 157}
 	}
 }

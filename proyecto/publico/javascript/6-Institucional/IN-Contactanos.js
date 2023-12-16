@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		contador: () => {
-			DOM.pendiente.innerHTML = 100 - DOM.textArea.value.length;
+			DOM.pendiente.innerHTML = Math.max(500 - DOM.textArea.value.length, 0);
 
 			// Fin
 			return;
@@ -117,5 +117,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await FN.actualizaVarios();
+	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
 });
