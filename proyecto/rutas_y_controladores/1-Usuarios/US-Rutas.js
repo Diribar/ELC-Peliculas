@@ -24,7 +24,7 @@ router.get("/api/olvido-contrasena", API.fin.olvidoContrasena);
 router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas
-router.get("/garantiza-login-y-completo", vista.login_y_completo);
+router.get("/garantiza-login-y-completo", vista.loginCompleto);
 router.get("/alta-mail", visitas, vista.altaMail.form);
 router.get("/olvido-contrasena", visitas, vista.altaMail.form);
 router.get("/envio-exitoso-de-mail", visitas, vista.altaMail.envioExitoso);
