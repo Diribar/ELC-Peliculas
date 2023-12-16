@@ -31,10 +31,7 @@ window.addEventListener("load", async () => {
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
 		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/Avatar"),
 		datosUrl: null,
-	};
-	let rutas = {
-		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
-		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
+		validaDatos: "/producto/agregar/api/valida/" + paso + "/?",
 	};
 	if (DOM.paisesSelect) {
 		DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
@@ -75,7 +72,7 @@ window.addEventListener("load", async () => {
 		},
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
-			let errores = await fetch(rutas.validarDatos + v.datosUrl).then((n) => n.json());
+			let errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
@@ -154,17 +151,14 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	DOM.form.addEventListener("input", async (e) => {
-		// Validaciones estándar
-		amplio.restringeCaracteres(e);
+	DOM.inputs.forEach((input, i) => {
+		input.addEventListener("input", (e) => {
+			amplio.restringeCaracteres(e);
+			DOM.iconosError[i].classList.add("ocultar");
 
-		// Validaciones particulares
-		const campo = e.target.name == "paises" ? "paises_id" : e.target.name;
-		const indice = v.campos.indexOf(campo);
-		DOM.iconosError[indice].classList.add("ocultar");
-
-		// Fin
-		return;
+			// Fin
+			return;
+		});
 	});
 
 	DOM.form.addEventListener("change", async (e) => {

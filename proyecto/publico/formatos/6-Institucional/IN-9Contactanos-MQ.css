@@ -1,0 +1,9 @@
+/* Alto */
+@media (height < 500px) {
+	#cuerpo #tituloPrincipal {display: none;}
+	#cuerpo #cuadroDeTexto {padding-bottom: 20px;}
+}
+
+/* Ancho y Alto */
+@media (width > 930px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
+@media (width > 1000px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}

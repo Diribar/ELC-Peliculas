@@ -10,16 +10,9 @@ window.addEventListener("load", async () => {
 	};
 	const motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
 
-	// Si no hay inputs, focus en comentario
-	if (!DOM.inputs.length) DOM.comentario.focus();
-
-	// Botón submit
+	// Funciones
 	let contador = () => {
-		// Acciones
-		let largo = DOM.comentario.value.length;
-		if (largo) DOM.pendiente.innerHTML = 100 - largo;
-
-		// Fin
+		DOM.pendiente.innerHTML = 100 - DOM.comentario.value.length;
 		return;
 	};
 	let botonSubmit = () => {
@@ -55,8 +48,6 @@ window.addEventListener("load", async () => {
 				contador();
 				botonSubmit();
 			});
-
-	// Comentario
 	DOM.comentario.addEventListener("keypress", (e) => {
 		keyPressed(e);
 		return;
@@ -72,8 +63,10 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-	// Previene el submit si el botón está inactivo
 	DOM.form.addEventListener("submit", (e) => {
 		if (DOM.submit.className.includes("inactivo")) e.preventDefault();
 	});
+
+	// Si no hay inputs, focus en comentario
+	if (!DOM.inputs.length) DOM.comentario.focus();
 });

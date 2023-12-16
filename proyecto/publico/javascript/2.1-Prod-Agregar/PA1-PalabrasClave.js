@@ -15,11 +15,8 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	let rutas = {
-		validarDatos: "/producto/agregar/api/valida/palabras-clave/?",
-		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
-	};
 	let v = {
+		validaDatos: "/producto/agregar/api/valida/palabras-clave/?",
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 	};
 
@@ -102,7 +99,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		muestraLosErrores: async (datos, mostrarIconoError) => {
-			let errores = await fetch(rutas.validarDatos + datos).then((n) => n.json());
+			let errores = await fetch(v.validaDatos + datos).then((n) => n.json());
 			v.campos.forEach((campo, indice) => {
 				if (errores[campo] !== undefined) {
 					DOM.mensajesError[indice].innerHTML = errores[campo];

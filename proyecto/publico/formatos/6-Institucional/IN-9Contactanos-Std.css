@@ -1,5 +1,6 @@
 /* Marco general */
-#cuerpo #cuadroDeTexto {min-width: min(100%, 450px); min-height: min(300px, 100%);}
+#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+#cuerpo #cuadroDeTexto {min-width: min(100vw, 450px); min-height: min(300px, 100%);}
 
 /* Aspectos comunes */
 #cuerpo #cuadroDeTexto, #cuadroDeTexto form {position: relative;}
@@ -15,7 +16,8 @@
 
 /* Aspectos particulares - Textarea */
 .inputError:has(textarea) {margin-top: 10px;}
+.inputError p {text-align: right;}
 .inputError textarea {padding: 5px; resize: none; height: 100%;}
 
 /* Flechas */
-form .flechas {display: flex !important;}
+form .flechas {margin-top: 20px; display: flex;}

@@ -1,4 +1,5 @@
 "use strict";
+const caractsAmplio = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
 let keyPressed = (e) => {
 	// Variables
 	const localName = e.target.localName;
@@ -9,8 +10,7 @@ let keyPressed = (e) => {
 
 	// Limita el uso del teclado solamente a los caracteres que nos interesan
 	if ((localName == "input" && type == "text") || localName == "textarea") {
-		const formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
-		if (!formato.test(e.key)) e.preventDefault();
+		if (!caractsAmplio.test(e.key)) e.preventDefault();
 	}
 
 	// Fin
@@ -55,8 +55,7 @@ let amplio = {
 		return;
 	},
 	validaCaracteres: (dato) => {
-		let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
-		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		return !caractsAmplio.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };
 
@@ -76,8 +75,8 @@ let basico = {
 		return;
 	},
 	validaCaracteres: (dato) => {
-		let formato = /^[a-záéíóúüñ0-9. \-]+$/i;
-		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		const caractsBasico = /^[a-záéíóúüñ0-9. \-]+$/i;
+		return !caractsBasico.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };
 

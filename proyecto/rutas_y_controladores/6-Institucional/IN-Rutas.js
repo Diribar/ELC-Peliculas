@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const router = express.Router();
+const API = require("./IN-ControlAPI");
 const vista = require("./IN-ControlVista");
 
 // Middlewares - Específicos de usuarios
@@ -14,8 +15,13 @@ const institucional = require("../../middlewares/varios/urlInstitDescon");
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 
+// API
+router.get("/api/valida-contactanos", API.validaContactanos);
+
 // Vistas
-router.get("/contactanos", aptoUsuario, vista.contactanos);
+router.get("/contactanos", aptoUsuario, vista.contactanos.form);
+router.post("/contactanos", aptoUsuario, vista.contactanos.guardar);
+
 router.get("/:id", institucional, vista.institucional); // institucional
 
 // Fin

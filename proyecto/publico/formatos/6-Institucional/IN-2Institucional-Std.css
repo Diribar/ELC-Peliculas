@@ -4,7 +4,8 @@
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo #cuadroDeTexto {margin: auto;}
 #cuerpo #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
-#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
+#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content;}
+#cuerpo #cuadroDeTexto:not(:has(form)) {padding-right: 15px;}
 #cuerpo #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
 #cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
 
@@ -15,9 +16,9 @@
 
 /* Miscelaneas */
 mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
-#cuerpo #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;}
-#cuerpo .flechas {margin: 20px 0 0; display: none;}
-#cuadroDeTexto .flechas {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
+#cuerpo #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;} /* Flechas en 'cuadro de texto' */
+#contenido .flechas {margin: 20px 0 0; display: none;} /* Flechas dentro de 'contenido' */
+#cuadroDeTexto .flechas {flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todas las flechas */
 #cuadroDeTexto .flechas i {font-size: 2rem;}
 
 /* Responsive */

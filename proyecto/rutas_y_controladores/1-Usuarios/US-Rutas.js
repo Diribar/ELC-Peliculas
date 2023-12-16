@@ -15,7 +15,7 @@ const multer = require("../../middlewares/varios/multer");
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 
 // APIs
-router.get("/api/valida-formato-mail", API.valida.formatoMail); // alta-de-mail, olvido-de-contraseña
+router.get("/api/valida-formato-mail", API.valida.formatoMail);
 router.get("/api/valida-login", API.valida.login);
 router.get("/api/valida-editables", API.valida.editables);
 router.get("/api/valida-perennes", API.valida.perennes);

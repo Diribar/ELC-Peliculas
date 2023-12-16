@@ -501,7 +501,7 @@ module.exports = {
 	AprobadoConAvatarLink: async () => {
 		// Variables
 		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		let espera = [];
+		let descargas = [];
 
 		// Revisa, descarga, actualiza
 		for (let entidad of ["peliculas", "colecciones", ...variables.entidades.rclvs]) {
@@ -511,7 +511,7 @@ module.exports = {
 			const ruta = carpetaExterna + carpeta + "/Final/";
 
 			// Descarga el avatar y actualiza el valor en el campo del registro original
-			espera.push(
+			descargas.push(
 				BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
 					n.map((m) => {
 						const nombre = Date.now() + path.extname(m.avatar);
@@ -521,7 +521,7 @@ module.exports = {
 				)
 			);
 		}
-		await Promise.all(espera);
+		await Promise.all(descargas);
 
 		// Fin
 		return;
