@@ -53,7 +53,7 @@ module.exports = {
 			// Variables
 			const {asunto, comentario} = req.body;
 			const usuario = req.session.usuario;
-			const emailELC = "sp2015w@gmail";
+			const emailELC = "sp2015w@gmail.com";
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			let mailEnviado, destino, datos;
 
@@ -76,7 +76,7 @@ module.exports = {
 					asunto: "Mail enviado a ELC",
 					comentario:
 						'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' +
-						asunto +
+						asuntoMail +
 						'", y el siguiente comentario:<br><em>' +
 						comentario +
 						"</em>",
@@ -99,10 +99,8 @@ module.exports = {
 			// Información
 			const informacion = {
 				mensajes: [
-					'Hemos enviado tu e-mail al equipo de ELC, con el asunto "' +
-						asuntoMail +
-						'", y el comentario: ' +
-						comentario,
+					"Hemos enviado tu mensaje al equipo de ELC, con el asunto '" + asuntoMail + "'",
+					"Incluimos tu nombre y dirección de mail, para que puedas recibir una respuesta",
 				],
 				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				titulo: "Envío exitoso de mail",
