@@ -40,7 +40,7 @@
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<!-- Calidad de la Imagen -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.calidadImagen}) %>
+		<%- include('CN-FL-Selects', {campos: configsConsCampos.tipoLink}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
 			<%- include('CN-FL-Selects', {campos: configsConsCampos.pppOpciones, eventual: true}) %>

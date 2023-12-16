@@ -174,7 +174,7 @@ let actualizaConfigCons = {
 	},
 	idioma: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !!configCons.calidadImagen; // si no se eligió una calidad, no se muestran
+		const seMuestra = !!configCons.tipoLink; // si no se eligió una calidad, no se muestran
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "idioma");

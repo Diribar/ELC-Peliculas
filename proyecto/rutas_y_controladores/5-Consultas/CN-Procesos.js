@@ -132,7 +132,7 @@ module.exports = {
 			prods: (configCons) => {
 				// Variables
 				const vars = variables.camposConsultas;
-				const {calidadImagen, idioma, publicos} = vars;
+				const {tipoLink, idioma, publicos} = vars;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
@@ -140,7 +140,7 @@ module.exports = {
 					if (vars[campo] && vars[campo].campoFiltro) prefs[vars[campo].campoFiltro] = configCons[campo];
 
 				// Conversión de campos similares
-				for (let campo of ["calidadImagen", "publicos"])
+				for (let campo of ["tipoLink", "publicos"])
 					if (configCons[campo]) {
 						const aux = vars[campo].opciones.find((n) => n.id == configCons[campo]).condic;
 						prefs = {...prefs, ...aux};
@@ -148,7 +148,7 @@ module.exports = {
 
 				// Conversión de 'idioma'
 				if (configCons.idioma) {
-					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[configCons.calidadImagen];
+					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[configCons.tipoLink];
 					prefs = {...prefs, ...aux};
 				}
 

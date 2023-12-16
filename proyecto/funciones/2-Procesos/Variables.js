@@ -37,7 +37,7 @@ module.exports = {
 	// Consulta de Productos
 	camposConsultas: {
 		// Con una opción elegida siempre
-		calidadImagen: {
+		tipoLink: {
 			default: "conLinks",
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
@@ -97,8 +97,11 @@ module.exports = {
 			],
 		},
 		publicos: {
-			titulo: "Público Recomendado",
+			//titulo: "Público Recomendado",
+			default: "MC",
 			opciones: [
+				{id: "TP", nombre: "Todos los públicos"},
+				{id: "MC", nombre: "Mayores o sin calificar", condic: {publico_id: {[Op.or]: [null, mayores_ids]}}},
 				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
 				{id: "FM", nombre: "Familia", condic: {publico_id: familia_id}},
 				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
