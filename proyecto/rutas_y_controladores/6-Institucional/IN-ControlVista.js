@@ -90,7 +90,7 @@ module.exports = {
 		},
 		envioExitoso: (req, res) => {
 			// Variables
-			const direccion = req.session.urlFueraDeContactanos;
+			const direccion = req.session.urlSinLogin;
 			if (!req.session.contactanos) return res.redirect(direccion);
 			const {asunto, comentario} = req.session.contactanos;
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
