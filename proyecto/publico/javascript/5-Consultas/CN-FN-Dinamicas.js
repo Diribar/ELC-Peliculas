@@ -160,13 +160,8 @@ let actualizaConfigCons = {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 			muestraOcultaActualizaPref(true, "pppOpciones");
 
-			// Si 'pppOpciones' no tiene un filtro, si corresponde le pone las opciones de "Me interesan"
-			if (configCons.pppOpciones == "sinFiltro") {
-				if (v.opcionBD.quitaNoMeInteresa) configCons.pppOpciones = v.meInteresan.combo.split(",");
-			}
-
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			else if (configCons.pppOpciones != "sinFiltro") {
+			if (configCons.pppOpciones != "sinFiltro") {
 				const id = configCons.pppOpciones;
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
