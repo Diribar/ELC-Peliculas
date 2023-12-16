@@ -117,5 +117,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await FN.actualizaVarios();
+	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
 });
