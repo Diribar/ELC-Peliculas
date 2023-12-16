@@ -7,6 +7,7 @@ module.exports = (req, res, next) => {
 	const urlsGuardadas = [
 		"urlSinLogin",
 		"urlFueraDeUsuarios",
+		"urlFueraDeContactanos",
 		"urlSinPermInput",
 		"urlSinCaptura",
 		"urlAnterior",
@@ -53,13 +54,16 @@ module.exports = (req, res, next) => {
 		!urlAnterior.startsWith("/links/") &&
 		!urlAnterior.startsWith("/revision/") &&
 		!urlAnterior.includes("/agregar/") &&
-		!urlAnterior.includes("/edicion/") &&
-		!urlAnterior.includes("/contactanos")
+		!urlAnterior.includes("/edicion/")
 	)
 		activaSessionCookie("urlSinLogin", true);
 
 	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
 	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios", true);
+
+	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
+	if (!urlAnterior.startsWith("/usuarios/") && !urlAnterior.includes("/contactanos"))
+		activaSessionCookie("urlFueraDeContactanos", true);
 
 	// urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (

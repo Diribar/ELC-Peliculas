@@ -86,7 +86,7 @@ module.exports = {
 		},
 		envioExitoso: (req, res) => {
 			// Variables
-			const direccion = req.session.urlSinLogin;
+			const direccion = req.session.urlFueraDeContactanos;
 			if (!req.session.contactanos) return res.redirect(direccion);
 			const {asunto, comentario} = req.session.contactanos;
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
