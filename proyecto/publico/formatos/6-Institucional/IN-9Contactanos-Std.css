@@ -1,10 +1,9 @@
 /* Marco general */
-section #cuadroDeTexto {min-width: min(100%, 450px); min-height: min(300px, 100%);}
-#cuadroDeTexto #contenido {overflow-y: visible; position: relative;}
+#cuerpo #cuadroDeTexto {min-width: min(100%, 450px); min-height: min(300px, 100%);}
 
 /* Aspectos comunes */
-section #cuadroDeTexto, #cuadroDeTexto #contenido, #contenido form {position: relative;}
-#cuadroDeTexto #contenido, #contenido form, .inputError:has(textarea) {height: 100%;}
+#cuerpo #cuadroDeTexto, #cuadroDeTexto form {position: relative;}
+#cuadroDeTexto form, .inputError:has(textarea) {height: 100%;}
 .inputError .input {border-radius: 7px; width: 100%;}
 
 /* Aspectos particulares - Select */
