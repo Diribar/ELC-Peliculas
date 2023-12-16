@@ -3,26 +3,26 @@
 
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo section {position: relative; display: flex; flex-direction: column; flex-grow: 1;}
-#cuerpo section #cuadroDeTexto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
-#cuerpo section #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
-#cuerpo section #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
-#cuerpo section #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
-#cuerpo section #cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
+section #cuadroDeTexto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
+section #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
+section #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content; padding-right: 15px;}
+section #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+#cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
 
 /* CUADRO DE TEXTO - TEXTO */
-#cuerpo section #cuadroDeTexto .bloque:nth-child(n+2) {margin-top: 15px;}
-#cuerpo section #cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
-#cuerpo section #cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
+section #cuadroDeTexto .bloque:nth-child(n+2) {margin-top: 15px;}
+section #cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+section #cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
 
 /* Miscelaneas */
 mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
-#cuerpo section #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;}
-#cuerpo section #cuadroDeTexto #contenido .flechas {margin: 20px 0 0; display: none;}
-#cuerpo section #cuadroDeTexto .flechas {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
-#cuerpo section #cuadroDeTexto .flechas i {font-size: 2rem;}
+section #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;}
+#contenido .flechas {margin: 20px 0 0; display: none;}
+#cuadroDeTexto .flechas {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;}
+#cuadroDeTexto .flechas i {font-size: 2rem;}
 
 /* Responsive */
-#cuerpo section #cuadroDeTexto {max-height: 90%;}
+section #cuadroDeTexto {max-height: 90%;}
 #cuadroDeTexto > div::-webkit-scrollbar {outline: transparent;}
 #cuadroDeTexto > div::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
 #cuadroDeTexto > div::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}

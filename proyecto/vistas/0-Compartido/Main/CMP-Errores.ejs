@@ -1,7 +1,7 @@
 <div id="<%= locals.nombre %>" class="errores" >
-	
+
 	<!-- Errores -->
-	<i 
+	<i
 		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
 	>
@@ -9,9 +9,9 @@
 	</i>
 
 	<!-- OK -->
-	<i 
-		class="fa-solid fa-circle-check<%- (locals.nombre && locals.dataEntry && !dataEntry[nombre] || locals.nombre && locals.errores && errores[nombre]) ? ' ocultar' : '' %>"
-		<% if (!locals.display) { %>style="display: none;"<% } %>
+	<i
+		class="fa-solid fa-circle-check<%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
+		<% if (!locals.display) { %>style="display: one;"<% } %>
 	>
 	</i>
 </div>

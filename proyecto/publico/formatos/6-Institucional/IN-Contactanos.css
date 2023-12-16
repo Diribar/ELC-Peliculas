@@ -1,0 +1,22 @@
+/* Marco general */
+section #cuadroDeTexto {min-width: min(50%, 500px); min-height: min(300px, 100%);}
+#cuadroDeTexto #contenido {overflow-y: visible; position: relative;}
+
+/* Aspectos comunes */
+section #cuadroDeTexto, #cuadroDeTexto #contenido, #contenido form {position: relative;}
+#cuadroDeTexto #contenido, #contenido form, .inputError:has(textarea) {height: 100%;}
+.inputError .input {border-radius: 7px; width: 100%;}
+
+/* Aspectos particulares - Select */
+.inputError :is(select, option) {color: var(--azul-oscuro);}
+.inputError select {font-weight: bold;}
+.inputError select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow;}
+.inputError select:has(option[value=""]:checked) {background: var(--rojo-claro);}
+.inputError select option {background: snow; font-size: 1.2rem;}
+
+/* Aspectos particulares - Textarea */
+.inputError:has(textarea) {margin-top: 10px;}
+.inputError textarea {padding: 5px; resize: none; height: 100%;}
+
+/* Flechas */
+form .flechas {display: flex !important;}

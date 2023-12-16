@@ -15,6 +15,11 @@ module.exports = {
 		},
 		"derechos-de-autor": {titulo: "Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
+	contactanos: [
+		{descripcion: "Comentario sobre nuestro sitio", codigo: "sitio"},
+		{descripcion: "Quiero ser parte del equipo ELC", codigo: "equipo"},
+		{descripcion: "Otro motivo", codigo: "varios"},
+	],
 
 	// Productos y RCLVs
 	entidades: {
