@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 20/dic",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Jue. 21/dic",
+	"HoraUTC": "22:32",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 19/dic",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"18-dic-23": {"titulo": "Robert Tyre Jones", "entidad": "personajes", "id": 157},
 		"19-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"20-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
 		"21-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"22-dic-23": {"titulo": "Santa Francisca Javiera Cabrini", "entidad": "personajes", "id": 109}
+		"22-dic-23": {"titulo": "Santa Francisca Javiera Cabrini", "entidad": "personajes", "id": 109},
+		"23-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }
