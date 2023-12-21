@@ -5,15 +5,17 @@
 module.exports = {
 	horarioInicial: async (req, res) => {
 		// Variables
-		let {entidad, id} = req.query;
+		const {entidad, id} = req.query;
+		const userID = req.session.usuario.id;
+
 		// Obtiene el registro
-		let registro = await BD_genericas.obtienePorId(entidad, id);
-		let datos = {
+		const registro = await BD_genericas.obtienePorId(entidad, id);
+		const datos = {
 			creadoEn: registro.creadoEn,
 			creadoPor_id: registro.creadoPor_id,
 			capturadoEn: registro.capturadoEn,
 			capturadoPor_id: registro.capturadoPor_id,
-			userID: req.session.usuario.id,
+			userID,
 		};
 
 		// Fin
