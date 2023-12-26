@@ -356,7 +356,7 @@ module.exports = {
 	EliminaLinksInactivos: async () => {
 		const condicion = {statusRegistro_id: inactivo_id};
 		await BD_genericas.eliminaTodosPorCondicion("links", condicion);
-		return
+		return;
 	},
 	LinksPorProv: async () => {
 		// Obtiene todos los links
@@ -494,7 +494,7 @@ module.exports = {
 		const info = {...rutinasJSON};
 		const rutinasSemanales = info.RutinasSemanales;
 
-		// Si la 'semanaUTC' es distinta o la rutinaSemanal está pendiente, actualiza las rutinasSemanales
+		// Actualiza las rutinasSemanales
 		for (let rutinaSemanal in rutinasSemanales) {
 			await this[rutinaSemanal]();
 			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales");
@@ -726,8 +726,8 @@ module.exports = {
 		this.primerLunesDelAno();
 
 		// Otras variables
-		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
-		lunesDeEstaSemana = fechaPrimerLunesDelAno + semanaUTC * unaSemana;
+		semanaUTC = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7) + 1;
+		lunesDeEstaSemana = fechaPrimerLunesDelAno + (semanaUTC - 1) * unaSemana;
 
 		// Fin
 		return;
