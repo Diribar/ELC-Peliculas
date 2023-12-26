@@ -662,7 +662,7 @@ let avatarConLink = (familia, valor, texto) => {
 		: valor.includes("/")
 		? '<a href="' + valor + terminacion // si es una imagen Externa
 		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
-		? '<a href="' + urlSitio + "/Externa/" + rutaArchivo + terminacion // si se encuentra el archivo
+		? '<a href="' + urlHost + "/Externa/" + rutaArchivo + terminacion // si se encuentra el archivo
 		: texto; // si no se encuentra el archivo
 };
 let formatos = {
@@ -676,7 +676,7 @@ let formatos = {
 		return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
 	},
 	a: (texto, registro, operacion) => {
-		let respuesta = '<a href="' + urlSitio + "/revision/" + registro.familia + "/";
+		let respuesta = '<a href="' + urlHost + "/revision/" + registro.familia + "/";
 		respuesta += operacion;
 		respuesta += "?entidad=" + registro.entidad + "&id=" + registro.id;
 		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
@@ -699,7 +699,7 @@ let nombres = async (reg, familia) => {
 		nombreOrden = comp.nombresPosibles(regEntidad);
 		nombreVisual =
 			"<a href='" +
-			urlSitio +
+			urlHost +
 			+"/" +
 			familia +
 			"/detalle/?entidad=" +
