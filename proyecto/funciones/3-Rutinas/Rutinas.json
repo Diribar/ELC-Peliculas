@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 16/dic",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 26/dic",
+	"HoraUTC": "12:05",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 11/dic",
-	"HoraSemUTC": "10:41",
-	"semanaUTC": 49,
+	"FechaSemUTC": "Mar. 26/dic",
+	"HoraSemUTC": "12:05",
+	"semanaUTC": 52,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"14-dic-23": {"titulo": "San Juan de la Cruz", "entidad": "personajes", "id": 183},
-		"15-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"16-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"17-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"18-dic-23": {"titulo": "Robert Tyre Jones", "entidad": "personajes", "id": 157}
+		"24-dic-23": {"titulo": "Navidad", "entidad": "hechos", "id": 11},
+		"25-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"26-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"27-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"28-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
 	}
 }

@@ -135,7 +135,7 @@ module.exports = {
 		},
 		obtieneLinks: async () => {
 			// En caso de que no exista la variable global, la obtiene con la FN
-			if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno();
+			if (!fechaPrimerLunesDelAno) procsRutinas.primerLunesDelAno();
 
 			// Obtiene los links 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinks();
@@ -556,7 +556,7 @@ module.exports = {
 			const familias = original.fuente ? "productos" : "rclvs";
 
 			// Obtiene todos los campos a revisar
-			let camposRevisar = [...variables.camposRevisar[familias]]; // Escrito así para desligarlos
+			const camposRevisar = [...variables.camposRevisar[familias]]; // Escrito así para desligarlos
 			let resultado = [];
 
 			// Deja solamente la intersección entre: los campos presentes en edición y los que se comparan
@@ -570,7 +570,7 @@ module.exports = {
 				// Obtiene las variables de include
 				let relacInclude = campoRevisar.relacInclude;
 
-				// Criterio para determinar qué valores originales mostrar
+				// Criterio para determinar qué valores mostrar
 				const esEdicion = true;
 				campoRevisar.mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
 				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
@@ -882,6 +882,8 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 
 	// Casos especiales
 	if (casosEspeciales.includes(campo)) resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+	// Prioridad
+	else if (campo == "prioridad_id") resultado = variables.prioridadesRCLV.find((n) => n.id == resultado).nombre;
 	// Reemplaza 'Ninguno' por 'null'
 	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 

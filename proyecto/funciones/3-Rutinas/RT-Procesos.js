@@ -558,10 +558,7 @@ module.exports = {
 	finRutinasHorarias: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		const mensaje =
-			campo == "FeedbackParaUsers" && nodeEnv == "development"
-				? "En development no se envían mails"
-				: "Rutina '" + campo + "' implementada";
+		const mensaje = campo == "FeedbackParaUsers" && nodeEnv == "development" ? "En development no se envían mails" : campo;
 		console.log(FechaUTC, HoraUTC + "hs. -", mensaje);
 
 		// Fin
@@ -574,7 +571,7 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		const novedades = sonIguales ? ", sin novedades" : "";
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada" + novedades);
+		console.log(FechaUTC, HoraUTC + "hs. -", campo + novedades);
 
 		// Fin
 		return;

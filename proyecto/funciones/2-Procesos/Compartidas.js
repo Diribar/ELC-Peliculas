@@ -652,7 +652,7 @@ module.exports = {
 
 		// Se fija que el registro esté en statusAprobado, o status 'creados_ids' y por el usuario
 		const condicStatus = {
-			[Op.or]: [{statusRegistro_id: aprobado_id}, {[Op.and]: [{statusRegistro_id: creados_ids}, {creadoPor_id: userID}]}],
+			[Op.or]: [{statusRegistro_id: aprobados_ids}, {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]}],
 		};
 
 		// Se fija que una edición sea del usuario
