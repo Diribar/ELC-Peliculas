@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/dic",
-	"HoraUTC": "22:32",
+	"FechaUTC": "Mar. 26/dic",
+	"HoraUTC": "12:05",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Mar. 19/dic",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 50,
+	"FechaSemUTC": "Mar. 26/dic",
+	"HoraSemUTC": "12:05",
+	"semanaUTC": 52,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"20-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"21-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25},
-		"22-dic-23": {"titulo": "Santa Francisca Javiera Cabrini", "entidad": "personajes", "id": 109},
-		"23-dic-23": {"titulo": "Adviento", "entidad": "epocasDelAno", "id": 25}
+		"24-dic-23": {"titulo": "Navidad", "entidad": "hechos", "id": 11},
+		"25-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"26-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"27-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"28-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
 	}
 }
