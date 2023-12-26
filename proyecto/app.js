@@ -27,7 +27,7 @@ global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.fetch = require("node-fetch");
 global.nodeEnv = process.env.NODE_ENV; // obtiene si es 'development' o 'production'
-global.urlSitio = nodeEnv == "development" ? "http://localhost" : "https://elc.lat";
+global.urlHost = nodeEnv == "development" ? "http://localhost" : "https://elc.lat";
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 global.path = require("path");
