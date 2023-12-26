@@ -10,11 +10,10 @@
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
-		<a href="<%= link.url %>" target="_blank">
+		<a <% if (link.href) { %>href="<%= link.href %>"<% } %> target="_blank">
 			<img
 				src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>"
 				alt="<%= link.prov.nombre %>"
-				title="<%= link.url %>"
 				class="<%= link.idioma %>"
 			>
 		</a>
