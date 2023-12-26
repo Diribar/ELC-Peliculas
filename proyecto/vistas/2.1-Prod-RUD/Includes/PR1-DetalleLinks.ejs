@@ -5,7 +5,7 @@
         <% const gratuito = " - " + (link.gratuito ? 'Link gratuito' : 'Link pago') %>
         <% const calidad = " - " + link.calidad + 'px' %>
         <% const completoParte = link.completo ? " - Completo" : link.parte != '-' ? (' - Parte ' + link.parte) : '' %>
-        <a href="<%= link.url %>" target="_blank">
+        <a href="<%= link.href %>" target="_blank">
             <img
                 src="/publico/imagenes/Logos-provs/<%= link.prov.avatar %>"
                 class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && locals.usuario && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
