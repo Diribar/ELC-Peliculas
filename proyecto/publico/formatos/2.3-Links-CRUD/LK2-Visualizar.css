@@ -3,6 +3,7 @@ body #videoDetPeli {z-index: 11; border-radius: 25px; overflow: hidden;}
 body #videoDetPeli {border: solid var(--gris-oscuro) 9px;}
 body #videoDetPeli iframe {border: none; display: block;}
 body #videoDetPeli iframe {max-width: calc(100vw - 20px); min-width: 50vw; height: 50vh;}
+body #videoDetPeli:has(iframe[src=""]) {display: none;}
 
 /* limita el ancho mínimo al de la pantalla */
 @media (width <= 600px) {#cuerpoFooter {min-width: 100vw;}}
