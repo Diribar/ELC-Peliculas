@@ -81,10 +81,7 @@ module.exports = {
 			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 
 			// Reemplaza los url
-			for (let link of links) {
-				const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
-				link.url = provEmbeded ? urlSitio + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
-			}
+			comp.reemplUrlPorVisualizEmbeded(links)
 
 			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
