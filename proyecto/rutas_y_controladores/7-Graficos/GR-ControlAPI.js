@@ -50,7 +50,7 @@ module.exports = {
 	},
 	vencimLinks: async (req, res) => {
 		// Variables
-		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno' y la 'semanaUTC'
+		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'primerLunesDelAno' y la 'semanaUTC'
 		const prodAprob = true;
 		const sinPrimRev = {};
 		const conPrimRev = {};
@@ -69,7 +69,7 @@ module.exports = {
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
 			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? vidaUtilLinks : vidaPrimRevision);
-			const semVencim = parseInt((diaVencim - fechaPrimerLunesDelAno) / unaSemana) + 1;
+			const semVencim = parseInt((diaVencim - primerLunesDelAno) / unaSemana) + 1;
 			link.yaTuvoPrimRev
 				? conPrimRev[semVencim]
 					? conPrimRev[semVencim]++
@@ -80,7 +80,7 @@ module.exports = {
 		}
 
 		// Fin
-		return res.json({antiguos, sinPrimRev, conPrimRev});
+		return res.json({antiguos, sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
