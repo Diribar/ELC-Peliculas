@@ -503,6 +503,7 @@ module.exports = {
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
+		comp.reemplUrlPorVisualizEmbeded(links)
 		for (let link of links) {
 			link.cond = procsLinks.condiciones(link, revID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
