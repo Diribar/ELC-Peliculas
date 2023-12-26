@@ -154,7 +154,7 @@ let actualizaConfigCons = {
 		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.idioma();
 
 		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
-		if (v.opcionBD.codigo == "pppFecha") configCons.pppOpciones = v.misPreferencias.combo.split(",");
+		if (v.opcionBD.codigo == "misPrefs") configCons.pppOpciones = v.misPreferencias.combo.split(",");
 		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
@@ -174,7 +174,7 @@ let actualizaConfigCons = {
 	},
 	idioma: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !!configCons.calidadImagen; // si no se eligió una calidad, no se muestran
+		const seMuestra = !!configCons.tipoLink; // si no se eligió una calidad, no se muestran
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		muestraOcultaActualizaPref(seMuestra, "idioma");

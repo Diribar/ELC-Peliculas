@@ -37,7 +37,7 @@ module.exports = {
 	// Consulta de Productos
 	camposConsultas: {
 		// Con una opción elegida siempre
-		calidadImagen: {
+		tipoLink: {
 			default: "conLinks",
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
@@ -46,11 +46,11 @@ module.exports = {
 			],
 		},
 		pppOpciones: {
-			default: "5",
+			default: "6",
 			opciones: [
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
-				{id: "5", nombre: "Peliculas que me interesan"},
+				{id: "6", nombre: "Peliculas que me interesan"},
 				{id: "sinFiltro", nombre: "Todas las películas"},
 			],
 		},
@@ -76,6 +76,17 @@ module.exports = {
 				{id: "sinFiltro", nombre: "En cualquier idioma"},
 			],
 		},
+		publicos: {
+			//titulo: "Público Recomendado",
+			default: "MC",
+			opciones: [
+				{id: "sinFiltro", nombre: "Todos los públicos"},
+				{id: "MC", nombre: "Mayores o sin calificar", condic: {publico_id: {[Op.or]: [null, mayores_ids]}}},
+				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
+				{id: "FM", nombre: "Familia", condic: {publico_id: familia_id}},
+				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
+			],
+		},
 		// criterioPago: {
 		// 	titulo: "Criterio de Pago",
 		// 	opciones: [
@@ -94,14 +105,6 @@ module.exports = {
 			opciones: [
 				{id: "1", nombre: "Con relac. c/Fe Católica"},
 				{id: "0", nombre: "Sin relac. c/Fe Católica"},
-			],
-		},
-		publicos: {
-			titulo: "Público Recomendado",
-			opciones: [
-				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
-				{id: "FM", nombre: "Familia", condic: {publico_id: familia_id}},
-				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
 			],
 		},
 		epocasEstreno: {titulo: "Época de Estreno", campoFiltro: "epocaEstreno_id"},

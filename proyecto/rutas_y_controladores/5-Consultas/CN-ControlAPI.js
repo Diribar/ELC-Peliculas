@@ -95,8 +95,8 @@ module.exports = {
 
 			// Acciones si el 'ppp' es un array
 			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones))
-				configCons.pppOpciones.toString() == noLaVi.combo // se fija si el array es el del combo de 'noLaVi'
-					? (configCons.pppOpciones = noLaVi.id) // le asigna el id de 'noLaVi'
+				configCons.pppOpciones.toString() == meInteresan.combo // se fija si el array es del combo de 'meInteresan'
+					? (configCons.pppOpciones = meInteresan.id) // le asigna el id de 'meInteresan'
 					: delete configCons.pppOpciones; // elimina el ppp del combo
 
 			// Quita los campos con valor 'default'

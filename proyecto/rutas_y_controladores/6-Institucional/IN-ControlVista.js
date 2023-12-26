@@ -61,7 +61,7 @@ module.exports = {
 			datos = {
 				email: emailELC,
 				asunto: asuntoMail,
-				comentario: comentario + "<br><br>" + usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email,
+				comentario: comentario + "<br><br><br>" + usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email,
 			};
 			mailEnviado = await comp.enviaMail(datos);
 			if (!mailEnviado) destino = "/institucional/contactanos/envio-fallido";
@@ -86,7 +86,7 @@ module.exports = {
 		},
 		envioExitoso: (req, res) => {
 			// Variables
-			const direccion = req.session.urlSinLogin;
+			const direccion = req.session.urlFueraDeContactanos;
 			if (!req.session.contactanos) return res.redirect(direccion);
 			const {asunto, comentario} = req.session.contactanos;
 			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
