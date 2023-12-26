@@ -23,17 +23,17 @@ window.addEventListener("load", async () => {
 
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
-		// Consolida el resultado
+		// Variables
 		const resultado = [["Semana", "Antiguos", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
-		let ticks = [];
+		const ano52Sems =
+			new Date(primerLunesDelAno + unaSemana * 53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
 		let restar = 0;
+		let ticks = [];
+
+		// Consolida el resultado
 		for (let valorX = minX; valorX <= maxX; valorX++) {
 			// Averigua si cambia el año
-			if (
-				valorX == 53 &&
-				new Date(primerLunesDelAno + unaSemana * 53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear()
-			)
-				restar = 52;
+			if (valorX == 53 && ano52Sems) restar = 52;
 			if (valorX == 54 && !restar) restar = 53;
 
 			// Agrega los valores
