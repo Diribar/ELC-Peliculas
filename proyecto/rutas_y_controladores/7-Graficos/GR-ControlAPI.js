@@ -50,8 +50,7 @@ module.exports = {
 	},
 	vencimLinks: async (req, res) => {
 		// Variables
-		if (!fechaPrimerLunesDelAno) procsRutinas.FechaPrimerLunesDelAno(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno'
-		const semanaActual = parseInt((Date.now() - fechaPrimerLunesDelAno) / unDia / 7);
+		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'fechaPrimerLunesDelAno' y la 'semanaUTC'
 		const prodAprob = true;
 		const sinPrimRev = {};
 		const conPrimRev = {};
@@ -64,8 +63,8 @@ module.exports = {
 		// Obtiene la cantidad de 'creadoAprobs'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana);
-		sinPrimRev[semanaActual] = recientes.filter((n) => !n.yaTuvoPrimRev).length;
-		conPrimRev[semanaActual] = recientes.filter((n) => n.yaTuvoPrimRev).length;
+		sinPrimRev[semanaUTC] = recientes.filter((n) => !n.yaTuvoPrimRev).length;
+		conPrimRev[semanaUTC] = recientes.filter((n) => n.yaTuvoPrimRev).length;
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
