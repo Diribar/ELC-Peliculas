@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 			},
 			chartArea: {width: "80%", height: "70%"},
 			colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
-			legend: {position: "none"},
+			legend: "none",
 			hAxis: {
 				format: "decimal",
 				scaleType: "number",
