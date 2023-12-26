@@ -364,6 +364,7 @@ module.exports = {
 				if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
 					// Descarga el archivo avatar y actualiza el registro 'original'
 					procesos.descargaAvatarOriginal(original, entidad);
+
 					// Actualiza el registro 'edición'
 					edicion.avatarUrl = null;
 					const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
