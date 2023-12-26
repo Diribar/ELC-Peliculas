@@ -14,7 +14,7 @@ global.conLinks = 2;
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'
-global.fechaPrimerLunesDelAno = null;
+global.primerLunesDelAno = null;
 global.semanaUTC = null;
 global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
