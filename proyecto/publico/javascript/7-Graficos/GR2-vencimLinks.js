@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Variables
-		const resultado = [["Semana", "Antiguos", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
+		const resultado = [["Semana", "Ant.", "Venc.", "Nuevos", {role: "annotation"}]];
 		const ano52Sems =
 			new Date(primerLunesDelAno + unaSemana * 53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
 		let restar = 0;
