@@ -135,7 +135,7 @@ module.exports = {
 		},
 		obtieneLinks: async () => {
 			// En caso de que no exista la variable global, la obtiene con la FN
-			if (!fechaPrimerLunesDelAno) procsRutinas.primerLunesDelAno();
+			if (!primerLunesDelAno) procsRutinas.PrimerLunesDelAno();
 
 			// Obtiene los links 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinks();

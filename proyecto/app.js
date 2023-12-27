@@ -14,7 +14,7 @@ global.conLinks = 2;
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'
-global.fechaPrimerLunesDelAno = null;
+global.primerLunesDelAno = null;
 global.semanaUTC = null;
 global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
@@ -27,7 +27,7 @@ global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.fetch = require("node-fetch");
 global.nodeEnv = process.env.NODE_ENV; // obtiene si es 'development' o 'production'
-global.urlSitio = nodeEnv == "development" ? "http://localhost" : "https://elc.lat";
+global.urlHost = nodeEnv == "development" ? "http://localhost" : "https://elc.lat";
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 global.path = require("path");
@@ -210,7 +210,7 @@ app.set("views", [
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
-	global.provsEmbeded = linksProvs.filter((n) => n.embededQuitar || n.embededPoner);
+	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");

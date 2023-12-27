@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
-	const {sinPrimRev, conPrimRev} = datos;
+	const {sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana} = datos;
 	let {antiguos} = datos;
 
 	// Eje horizontal
@@ -23,12 +23,22 @@ window.addEventListener("load", async () => {
 
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
-		// Consolida el resultado
+		// Variables
 		const resultado = [["Semana", "Antiguos", "Links con 1a Revisión", "Links sin 1a Revisión", {role: "annotation"}]];
+		const ano52Sems =
+			new Date(primerLunesDelAno + unaSemana * 53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
+		let restar = 0;
 		let ticks = [];
+
+		// Consolida el resultado
 		for (let valorX = minX; valorX <= maxX; valorX++) {
+			// Averigua si cambia el año
+			if (valorX == 53 && ano52Sems) restar = 52;
+			if (valorX == 54 && !restar) restar = 53;
+
+			// Agrega los valores
 			resultado.push([valorX, antiguos, conPrimRev[valorX], sinPrimRev[valorX], ""]);
-			ticks.push({v: valorX, f: String(valorX < 53 ? valorX : valorX - 52)});
+			ticks.push({v: valorX, f: String(valorX - restar)});
 			if (antiguos) antiguos = 0;
 		}
 
