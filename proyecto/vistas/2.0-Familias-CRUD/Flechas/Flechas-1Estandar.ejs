@@ -18,7 +18,7 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (!IRE && !consultaLinks && tema != "revisionEnts" && ORIGEN_DIF_DT) { %>
+	<% if (detalle && ORIGEN_DIF_DT) { %>
 		<!-- Detalle -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
