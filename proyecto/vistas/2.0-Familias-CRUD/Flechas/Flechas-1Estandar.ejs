@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Flechas.css">
 <% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
-<% const IRE = tema == "crud" %><!-- Inactivar, Recuperar, Eliminar -->
-<% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
