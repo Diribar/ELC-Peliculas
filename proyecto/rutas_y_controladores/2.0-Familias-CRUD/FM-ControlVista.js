@@ -20,6 +20,7 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, origen, urlDestino;
 
+			// Origen y urlDestino
 			if (req.query.origen) origen = req.query.origen;
 			else urlDestino = encodeURIComponent(req.session.urlAnterior);
 
