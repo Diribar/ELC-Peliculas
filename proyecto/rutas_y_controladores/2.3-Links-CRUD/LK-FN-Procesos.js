@@ -93,20 +93,20 @@ module.exports = {
 		const productos = await procsMS.obtieneLinksInactivos(userID).then((n) => n.LI);
 
 		// Obtiene el siguiente producto
-		const siguienteProducto = productos.find((n) => n.entidad != entidad || n.id != producto.id);
+		const sigProd = productos.find((n) => n.entidad != entidad || n.id != producto.id);
 
 		// Genera el link
-		const link = siguienteProducto
+		const link = sigProd
 			? "/inactivar-captura/?entidad=" +
 			  entidad +
 			  "&id=" +
 			  producto.id +
 			  "&prodEntidad=" +
-			  siguienteProducto.entidad +
+			  sigProd.entidad +
 			  "&prodID=" +
-			  siguienteProducto.id +
+			  sigProd.id +
 			  "&origen=LKM&grupo=inactivo"
-			: "/mantenimiento";
+			: "";
 
 		// Fin
 		return link;
