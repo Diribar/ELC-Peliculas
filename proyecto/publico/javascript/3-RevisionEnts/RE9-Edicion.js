@@ -25,6 +25,7 @@ window.addEventListener("load", async () => {
 		// Datos del registro
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		entID: new URL(location.href).searchParams.get("id"),
+		origen: new URL(location.href).searchParams.get("origen"),
 		edicID: new URL(location.href).searchParams.get("edicID"),
 		// Otras variables
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
@@ -37,7 +38,7 @@ window.addEventListener("load", async () => {
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
 
-	// FUNCIONES ----------------------------------------------------------------
+	// Funciones
 	let consecuencias = (resultado) => {
 		// Fórmulas
 		let ocultaBloque = (bloque, filas) => {
@@ -66,6 +67,9 @@ window.addEventListener("load", async () => {
 		if (todoProcesado == resultado.quedanCampos) console.log("Error", {todoProcesado, quedanCampos: resultado.quedanCampos});
 		// Acciones si está todo procesado
 		else if (todoProcesado && !resultado.quedanCampos) {
+			// Variables
+			const cola = "?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TE");
+
 			// 1. Si el registro pasó al status 'aprobado', publica el cartel
 			if (resultado.statusAprob) {
 				// Mensajes
@@ -73,7 +77,7 @@ window.addEventListener("load", async () => {
 				// Flechas
 				let icono = {
 					HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
-					link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE",
+					link: "/inactivar-captura/" + cola,
 				};
 				// Partes del cartel
 				let cartelGenerico = document.querySelector("#cartelGenerico");
@@ -100,14 +104,14 @@ window.addEventListener("load", async () => {
 				cartelGenerico.classList.remove("ocultar");
 			}
 			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
-			else location.href = "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";
+			else location.href = "/producto/edicion/" + cola;
 		}
 
 		// Fin
 		return;
 	};
 
-	// LISTENERS --------------------------------------------------------------------
+	// Listeners
 	for (let indice = 0; indice < v.casos; indice++) {
 		// Variables
 		let indiceMotivo = indice - v.sinMotivo;

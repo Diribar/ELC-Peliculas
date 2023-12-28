@@ -42,21 +42,34 @@ module.exports = async (req, res, next) => {
 		if (revision) {
 			// Averigua si existe una edicion
 			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, {[campo_id]: id});
-			if (!edicion)
+
+			// Mensaje si no existe una edición
+			if (!edicion) {
+				// Variables
+				const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
+				const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+				// Mensaje
 				informacion = {
 					mensajes: ["No encontramos ninguna edición para revisar"],
 					iconos: [
 						{
-							nombre: "fa-spell-check ",
-							link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
-							titulo: "Regresar al Tablero de Control",
+							nombre: "fa-solid fa-circle-left",
+							link: "/inactivar-captura/" + cola,
+							titulo: "Entendido",
+						},
+						{
+							nombre: "fa-solid fa-pen",
+							link: "/" + familia + "/edicion/" + cola,
+							titulo: "Edición",
 						},
 					],
 				};
+			}
 		} else {
 			// Averigua si existe una edicion propia
-			let objeto = {[campo_id]: id, editadoPor_id: req.session.usuario.id};
-			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, objeto);
+			const condicion = {[campo_id]: id, editadoPor_id: req.session.usuario.id};
+			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, condicion);
 		}
 
 		// En caso que exista una edición, redirige incluyendo esa edicID en el url

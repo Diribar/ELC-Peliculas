@@ -29,5 +29,6 @@ p, li {line-height: 1.2rem;}
 .bordeRojo {border: 1px solid red;}
 
 /* Anchor */
+a[href] {cursor: pointer;}
 a {text-decoration: none;}
 a:has(img) {font-size: 1px;}

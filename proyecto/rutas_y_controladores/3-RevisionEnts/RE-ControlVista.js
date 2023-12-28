@@ -131,6 +131,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, origen} = req.query;
+			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let datos = await procesos.guardar.obtieneDatos(req);
 			const {original, statusOriginal_id, statusFinal_id} = datos;
 			const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
@@ -141,6 +142,9 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const {baseUrl} = comp.reqBasePathUrl(req);
+			let destino;
+
 			// Limpia la variable 'datos'
 			datos = {};
 
@@ -292,12 +296,13 @@ module.exports = {
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 				procesos.descargaAvatarOriginal(original, entidad);
 
+			// Opciones de redireccionamiento
+			if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
+			else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
+			else destino = "/revision/tablero-de-control"; // sin origen
+
 			// Fin
-			const {baseUrl} = comp.reqBasePathUrl(req);
-			// Si es un producto creado y fue aprobado, redirecciona a una edición
-			if (producto && codigo == "alta")
-				return res.redirect(baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
-			else return res.redirect("/revision/tablero-de-control"); // En los demás casos, redirecciona al tablero
+			return res.redirect(destino);
 		},
 	},
 
@@ -311,6 +316,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, edicID} = req.query;
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -399,7 +405,7 @@ module.exports = {
 			}
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen: "TE"},
+				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
 				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternos, imgDerPers},
@@ -485,7 +491,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		let {origen} = req.query;
+		const origen = req.query.origen ? req.query.origen : "TE";
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -523,7 +529,6 @@ module.exports = {
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
-		origen = origen ? origen : "TE";
 
 		// Va a la vista
 		//return res.send(links)

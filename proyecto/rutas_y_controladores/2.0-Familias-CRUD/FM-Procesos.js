@@ -687,12 +687,10 @@ module.exports = {
 		const href =
 			registro.statusRegistro_id == creado_id
 				? "/revision/" + familia + "/alta" + cola
+				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
+				? "/revision/" + familia + "/edicion" + cola
 				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
 				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
-				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
-				? "/" + familia + "/edicion" + cola
-				: registro.statusRegistro_id == inactivo_id
-				? "/" + familia + "/recuperar" + cola
 				: "";
 
 		// Fin

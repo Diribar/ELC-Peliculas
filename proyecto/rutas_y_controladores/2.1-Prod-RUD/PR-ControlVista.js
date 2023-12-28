@@ -277,7 +277,7 @@ module.exports = {
 				? res.redirect(req.originalUrl) // Recarga la vista
 				: origen == "TE"
 				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
-				: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
+				: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la vista sin la edición
 		},
 	},
 	califica: {
