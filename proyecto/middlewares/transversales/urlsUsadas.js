@@ -2,7 +2,9 @@
 // Requires
 
 module.exports = (req, res, next) => {
+	// Aborta si es una API
 	if (req.originalUrl.includes("/api/")) return next();
+
 	// Valores de startup
 	const urlsGuardadas = [
 		"urlSinLogin",
