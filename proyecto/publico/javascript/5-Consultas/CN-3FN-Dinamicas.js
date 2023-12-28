@@ -111,12 +111,10 @@ let actualizaConfigCons = {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltrosIndivs.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
-
-			// Oculta el mensaje de error
-			DOM.asegurate.classList.add("ocultar");
-
-			// Si corresponde, muestra el cartel de quieroVer
 			if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
+
+			// Oculta sectores
+			DOM.asegurate.classList.add("ocultar");
 		}
 		// Acciones si hay algún error que se necesita resolver
 		else {

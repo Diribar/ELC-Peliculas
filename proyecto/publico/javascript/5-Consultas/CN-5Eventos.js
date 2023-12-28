@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
-		// Toggle filtros
+		// Toggle filtros para celular parado
 		if (nombre == "toggleFiltrosGlobal" || (nombre == "zonaDisponible" && DOM.configCons.className.includes("aumentaX"))) {
 			const startUp = !DOM.muestraFiltrosGlobal.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
 			if (startUp) {
@@ -256,7 +256,6 @@ let cambioDeConfig_id = async () => {
 	await actualiza.valoresInicialesDeVariables();
 	cambiosEnBD.configCons_id();
 	await actualiza.statusInicialCampos();
-	// actualiza.cartelQuieroVerVisible();
 	actualiza.toggleFiltrosIndivs();
 
 	// Fin

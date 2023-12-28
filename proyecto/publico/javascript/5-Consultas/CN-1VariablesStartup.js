@@ -91,7 +91,6 @@ window.addEventListener("load", async () => {
 		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
-		muestraFiltros: FN_muestraFiltros(window),
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
@@ -108,7 +107,7 @@ const ruta = "/consultas/api/";
 let DOM, v, configCons, titulo;
 
 // Funciones
-let FN_muestraFiltros = (window) => {
+let actualizaMuestraFiltros = () => {
 	v.muestraFiltros =
 		window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
 		window.getComputedStyle(DOM.muestraFiltros).display == "none";
