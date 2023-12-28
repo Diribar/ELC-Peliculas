@@ -131,6 +131,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, origen} = req.query;
+			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let datos = await procesos.guardar.obtieneDatos(req);
 			const {original, statusOriginal_id, statusFinal_id} = datos;
 			const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
@@ -296,12 +297,9 @@ module.exports = {
 				procesos.descargaAvatarOriginal(original, entidad);
 
 			// Si es un producto creado y fue aprobado, redirecciona a una edición
-			if (producto && codigo == "alta") {
-				destino = baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-				if (origen) destino += "&origen=" + origen;
-			}
+			if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola;
 			// Otros casos con origen
-			else if (origen) destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			else if (origen) destino = "/inactivar-captura" + cola;
 			// Si no tiene origen, redirecciona al tablero
 			else destino = "/revision/tablero-de-control";
 
