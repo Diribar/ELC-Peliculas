@@ -39,9 +39,9 @@
 			<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 		<% } %>
 	<% } %>
-	<% if (codigo == "abmLinks" && locals.siguienteProducto) { %>
+	<% if (codigo == "abmLinks" && locals.sigProd) { %>
 		<!-- Link para Revisión/Mantenimiento de Links -->
-		<a href="<%= siguienteProducto %>">
+		<a href="<%= sigProd %>">
 			<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
 		</a>
 	<% } %>
