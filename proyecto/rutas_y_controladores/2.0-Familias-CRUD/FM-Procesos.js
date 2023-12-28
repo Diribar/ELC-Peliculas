@@ -408,7 +408,7 @@ module.exports = {
 					if (registro[campo_id] && registro[campo_id] != 1)
 						prodAprob
 							? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-							: this.prodsEnRCLV({entidadRCLV, id: registro[campo_id]});
+							: this.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
 				}
 			}
 
@@ -676,13 +676,27 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		return registro.statusRegistro_id == creado_id
-			? {id: 1, valor: "Creado"}
-			: registro.statusRegistro.aprobados
-			? {id: 2, valor: "Aprobado"}
-			: registro.statusRegistro_id == inactivo_id
-			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Para Revisar"};
+		// Variables
+		const {entidad, id} = registro;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const {codigo, nombre} = registro.statusRegistro;
+		const origen = familia == "producto" ? "P" : "R";
+		const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=DT" + origen;
+
+		// Genera el href
+		const href =
+			registro.statusRegistro_id == creado_id
+				? "/revision/" + familia + "/alta" + cola
+				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
+				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
+				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
+				? "/" + familia + "/edicion" + cola
+				: registro.statusRegistro_id == inactivo_id
+				? "/" + familia + "/recuperar" + cola
+				: "";
+
+		// Fin
+		return {codigo, valor: nombre, href};
 	},
 	fichaDelUsuario: async function (userID, petitFamilias) {
 		// Variables

@@ -35,7 +35,7 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...rclv, entidad}),
-			registro: procsCRUD.bloqueRegistro(rclv),
+			registro: procsCRUD.bloqueRegistro({...rclv, entidad}),
 		};
 
 		// Datos para la vista

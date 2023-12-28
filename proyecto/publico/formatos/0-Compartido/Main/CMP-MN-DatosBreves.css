@@ -20,6 +20,7 @@
 #datosBreves #recuadro #texto {margin: 0 5px;}
 #datosBreves #recuadro #texto p {margin-top: 10px;}
 #datosBreves #recuadro #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #recuadro #texto p#status1 span {background: var(--verde-claro); color: var(--verde-oscuro);}
-#datosBreves #recuadro #texto p#status2 span {background: var(--verde-oscuro); color: snow;}
-#datosBreves #recuadro #texto p#status3 span {background: var(--rojo-oscuro); color: snow;}
+#datosBreves #recuadro #texto:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
+#datosBreves #recuadro #texto:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
+#datosBreves #recuadro #texto:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
+#datosBreves #recuadro #texto:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}

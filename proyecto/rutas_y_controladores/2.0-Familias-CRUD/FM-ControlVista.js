@@ -64,7 +64,7 @@ module.exports = {
 						await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 				  ]
 				: familia == "producto"
-				? procesos.bloqueRegistro(original)
+				? procesos.bloqueRegistro({...original, entidad})
 				: familia == "rclv"
 				? {
 						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),

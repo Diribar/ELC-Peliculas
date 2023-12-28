@@ -39,13 +39,17 @@ module.exports = {
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
 			// Variables
-			let {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
+			const {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
+			let destino;
 
-			// Si es 'tablero', ir a tablero
-			let destino = false
-				? null
-				: // Producto
-				origen == "DA"
+			// Casos particulares
+			if (urlDestino) return res.redirect(urlDestino);
+			if (!origen) return res.redirect("/");
+
+			// Producto
+			destino = destino
+				? destino
+				: origen == "DA"
 				? "/producto/agregar/datos-adicionales"
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
@@ -53,6 +57,16 @@ module.exports = {
 				? "/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
 				: origen == "CAL"
 				? "/producto/calificar/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+				: origen == "REP"
+				? "/revision/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+				: "";
+
+			// RCLV
+			if (origen == "DTR") destino = "/rclv/detalle/?entidad=" + entidad + "&id=" + id;
+
+			// Links
+			destino = destino
+				? destino
 				: ["LK", "LKM"].includes(origen)
 				? "/links/abm/?entidad=" +
 				  (prodEntidad ? prodEntidad : entidad) +
@@ -60,27 +74,24 @@ module.exports = {
 				  (prodID ? prodID : id) +
 				  (origen == "LKM" ? "&origen=TM" : "") +
 				  (grupo ? "&grupo=inactivo" : "")
-				: // RCLV
-				origen == "DTR"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
-				: // Revisión
-				origen == "TE"
-				? "/revision/tablero-de-control"
 				: origen == "RLK"
 				? "/revision/links/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: origen == "REP"
-				? "/revision/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: // Otros
-				origen == "TU"
-				? "/revision/usuarios/tablero-de-control"
+				: "";
+
+			// Usuarios
+			if (origen == "TU") destino = "/revision/usuarios/tablero-de-control";
+
+			// Entidades
+			destino = destino
+				? destino
+				: origen == "TE"
+				? "/revision/tablero-de-control"
 				: origen == "TM"
 				? "/mantenimiento"
-				: origen == "CN"
-				? "/consultas"
-				: urlDestino
-				? urlDestino
-				: "/";
-			// Redireccionar a la vista que corresponda
+				: "";
+
+			// Redirecciona a la vista que corresponda
+			if (!destino) destino = "/";
 			return res.redirect(destino);
 		},
 		inicio: (req, res) => res.redirect("/institucional/inicio"), // redirecciona a Inicio
@@ -109,7 +120,9 @@ module.exports = {
 				)
 				.then(() => {
 					// Ordena los métodos
-					const metodos = Object.keys(rclvs).sort((a, b) => (rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1));
+					const metodos = Object.keys(rclvs).sort((a, b) =>
+						rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
+					);
 					// Crea un objeto nuevo, con los métodos ordenados
 					metodos.map((n) => (resultado2[n] = rclvs[n]));
 				});

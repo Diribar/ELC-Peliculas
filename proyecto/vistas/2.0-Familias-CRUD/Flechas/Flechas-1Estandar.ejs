@@ -7,9 +7,13 @@
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <div class="flechas">
-	<% if (IRE || locals.origen && !locals.origen.startsWith("DT")) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
+	<% if (locals.origen || locals.urlDestino) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
 		<!-- Salir -->
-		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
+		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
+		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID ? prodID : id)) : '' %>
+		<% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
+		<% const URL_DESTINO = locals.urlDestino ? ('&urlDestino=' + urlDestino) : '' %>
+		<a href="/inactivar-captura/?<%= ENTIDAD + ID + ORIGEN + URL_DESTINO %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
