@@ -16,13 +16,10 @@ module.exports = {
 
 			// Más variables
 			const {entidad, id} = req.query;
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, origen, urlDestino;
-
-			// Origen y urlDestino
-			if (req.query.origen) origen = req.query.origen;
-			else urlDestino = encodeURIComponent(req.session.urlAnterior);
+			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
 
 			// Obtiene el registro
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -97,7 +94,7 @@ module.exports = {
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, urlDestino},
+				...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, entidadNombre, familia, comentarios, urlActual, registro: original},
 				...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 				cartelGenerico: true,
