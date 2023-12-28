@@ -1,6 +1,5 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Eventos
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const nombre = e.target.name;
@@ -212,49 +211,46 @@ window.addEventListener("load", async () => {
 			else if (nombre == "configNueva") guardarBotonera();
 		}
 	});
-
-	// Funciones
-	let palabrasClave = async () => {
-		DOM.palClaveAprob.classList.add("inactivo");
-		v.hayCambiosDeCampo = true;
-		await cambioDeCampos();
-
-		// Fin
-		return;
-	};
-	let guardarBotonera = async () => {
-		if (v.nuevo || v.edicion) {
-			// Obtiene el nuevo nombre
-			configCons.nombre = DOM.configNuevaNombre.value;
-
-			// Si es una configuración nueva, agrega la cabecera
-			if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
-
-			// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
-			if (v.edicion) configCons.edicion = true;
-
-			// Quita la clase
-			const clase = v.nuevo ? "nuevo" : "edicion";
-			DOM.configNuevaNombre.classList.remove(clase);
-		}
-
-		// Guarda la información en la base de datos
-		await cambiosEnBD.guardaUnaConfiguracion();
-
-		// Acciones particulares
-		if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
-		if (v.nuevo) await actualiza.valoresInicialesDeVariables();
-		if (v.propio) v.hayCambiosDeCampo = false;
-
-		// Actualiza la botonera
-		actualiza.botoneraActivaInactiva();
-
-		// Fin
-		return;
-	};
 });
+// Funciones
+let palabrasClave = async () => {
+	DOM.palClaveAprob.classList.add("inactivo");
+	v.hayCambiosDeCampo = true;
+	await cambioDeCampos();
 
-// Consolidadas
+	// Fin
+	return;
+};
+let guardarBotonera = async () => {
+	if (v.nuevo || v.edicion) {
+		// Obtiene el nuevo nombre
+		configCons.nombre = DOM.configNuevaNombre.value;
+
+		// Si es una configuración nueva, agrega la cabecera
+		if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
+
+		// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
+		if (v.edicion) configCons.edicion = true;
+
+		// Quita la clase
+		const clase = v.nuevo ? "nuevo" : "edicion";
+		DOM.configNuevaNombre.classList.remove(clase);
+	}
+
+	// Guarda la información en la base de datos
+	await cambiosEnBD.guardaUnaConfiguracion();
+
+	// Acciones particulares
+	if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
+	if (v.nuevo) await actualiza.valoresInicialesDeVariables();
+	if (v.propio) v.hayCambiosDeCampo = false;
+
+	// Actualiza la botonera
+	actualiza.botoneraActivaInactiva();
+
+	// Fin
+	return;
+};
 let cambioDeConfig_id = async () => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
