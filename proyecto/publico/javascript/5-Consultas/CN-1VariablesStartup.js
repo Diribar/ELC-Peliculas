@@ -91,11 +91,11 @@ window.addEventListener("load", async () => {
 		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
-		muestraFiltros: FN_muestraFiltros(window),
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
 	// Start-up
+	obtieneMuestraOcultaFiltros(window)
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
 	await cambioDeConfig_id();
 	actualiza.cartelQuieroVerVisible();
@@ -108,7 +108,7 @@ const ruta = "/consultas/api/";
 let DOM, v, configCons, titulo;
 
 // Funciones
-let FN_muestraFiltros = (window) => {
+let obtieneMuestraOcultaFiltros = (window) => {
 	v.muestraFiltros =
 		window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
 		window.getComputedStyle(DOM.muestraFiltros).display == "none";
