@@ -253,7 +253,7 @@ module.exports = {
 							abrev: n.entidad.slice(0, 3).toUpperCase(),
 							fechaRef: n.fechaRef,
 							fechaRefTexto: n.fechaRefTexto,
-							links: n.linksGral,
+							links: n.linksGral || n.linksTrailer,
 						};
 						if (rubro == "ED") datos.edicID = n.edicID;
 						return datos;

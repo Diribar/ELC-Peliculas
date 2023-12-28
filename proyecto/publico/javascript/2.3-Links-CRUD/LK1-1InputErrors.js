@@ -56,11 +56,12 @@ window.addEventListener("load", async () => {
 			let indice2 = valor.indexOf("//");
 			let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
-			// Si es YOUTUBE, quitarle el sufijo
+			// Quita el sufijo
 			if (url.startsWith("youtube.com") && url.includes("&")) url = url.slice(0, url.indexOf("&"));
-
-			// Si es FORMED-LAT o Netflix, quitarle el sufijo
-			if ((url.startsWith("ver.formed.lat") || url.startsWith("netflix.com")) && url.includes("?"))
+			if (
+				(url.startsWith("ver.formed.lat") || url.startsWith("netflix.com") || url.startsWith("dailymotion.com")) &&
+				url.includes("?")
+			)
 				url = url.slice(0, url.indexOf("?"));
 
 			// Conclusiones

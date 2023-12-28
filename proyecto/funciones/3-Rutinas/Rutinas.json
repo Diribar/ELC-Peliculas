@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 26/dic",
-	"HoraUTC": "12:05",
+	"FechaUTC": "Jue. 28/dic",
+	"HoraUTC": "11:17",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 26/dic",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"24-dic-23": {"titulo": "Navidad", "entidad": "hechos", "id": 11},
-		"25-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"26-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"27-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
-		"28-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
+		"28-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"29-dic-23": {"titulo": "Santo Tomas Becket", "entidad": "personajes", "id": 101},
+		"30-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
 	}
 }

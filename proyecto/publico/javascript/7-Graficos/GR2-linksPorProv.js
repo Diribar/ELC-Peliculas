@@ -23,7 +23,6 @@ window.addEventListener("load", async () => {
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
 			chartArea: {height: "80%"},
-			legend: "none",
 			pieSliceText: "value",
 			sliceVisibilityThreshold: 0.05,
 			legend: {position: "labeled"},

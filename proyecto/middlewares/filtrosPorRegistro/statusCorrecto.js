@@ -19,30 +19,23 @@ module.exports = async (req, res, next) => {
 	if (!statusEsperados_id.includes(statusActual.id)) {
 		// Variables para el mensaje
 		const statusActualNombre = statusActual.nombre;
-		let statusEsperadoNombres = "";
-		statusEsperados_id.forEach((statusEsperado_id, i) => {
-			if (i) statusEsperadoNombres += i < statusEsperados_id.length - 1 ? "', '" : "' o '"; // Si es el penúltimo status, le antepone la palabra 'o'
-			statusEsperadoNombres +=
-				entidad == "usuarios"
-					? statusRegistrosUs.find((n) => n.id == statusEsperado_id).nombre
-					: statusRegistros.find((n) => n.id == statusEsperado_id).nombre; // Le agrega un nombre de status
-		});
-		let articulo = statusEsperados_id.length == 1 ? "el" : "los";
 
 		// Variables para el ícono
-		let origen = req.query.origen;
-		if (!origen)
-			origen = baseUrl == "/revision/usuarios" ? "TU" : baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
-		let link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
-		let vistaEntendido = variables.vistaEntendido(link);
+		const origen = req.query.origen
+			? req.query.origen
+			: baseUrl == "/revision/usuarios"
+			? "TU"
+			: baseUrl == "/revision"
+			? "TE"
+			: baseUrl == "/rclv"
+			? "DTR"
+			: "DTP";
+		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+		const vistaEntendido = variables.vistaEntendido(link);
 
 		// Información a mostrar
 		informacion = {
-			mensajes: [
-				"El registro no está en el status esperado.",
-				"Se esperaba que estuviera en " + articulo + " status '" + statusEsperadoNombres + "'.",
-				"Está en el status '" + statusActualNombre + "'.",
-			],
+			mensajes: ["El registro no está en el status esperado.", "Está en el status '" + statusActualNombre + "'."],
 			iconos: [vistaEntendido],
 		};
 	}

@@ -28,7 +28,6 @@ window.addEventListener("load", async () => {
 			colors: [gris, gris, azul, azul],
 			fontSize: 10,
 			chartArea: {height: "80%"},
-			legend: "none",
 			pieSliceText: "value",
 			legend: {position: "labeled"},
 			slices: {1: {offset: 0.1}, 2: {offset: 0.1}},
