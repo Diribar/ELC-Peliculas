@@ -141,6 +141,9 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const {baseUrl} = comp.reqBasePathUrl(req);
+			let destino;
+
 			// Limpia la variable 'datos'
 			datos = {};
 
@@ -292,12 +295,16 @@ module.exports = {
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 				procesos.descargaAvatarOriginal(original, entidad);
 
-			// Fin
-			const {baseUrl} = comp.reqBasePathUrl(req);
 			// Si es un producto creado y fue aprobado, redirecciona a una edición
-			if (producto && codigo == "alta")
-				return res.redirect(baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
-			else return res.redirect("/revision/tablero-de-control"); // En los demás casos, redirecciona al tablero
+			if (producto && codigo == "alta") {
+				destino = baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+				if (origen) destino += "&origen=" + origen;
+			}
+			// En los demás casos, redirecciona al tablero
+			else destino = "/revision/tablero-de-control";
+
+			// Fin
+			return res.redirect(destino);
 		},
 	},
 
