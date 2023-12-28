@@ -89,7 +89,7 @@ module.exports = {
 			// Obtiene avatar original
 			let imgDerPers = original.avatar;
 			imgDerPers = imgDerPers
-				? (!imgDerPers.includes("/") ? "/Externa/2-Productos/Revisar/" : "") + imgDerPers
+				? (!imgDerPers.includes("/") ? "/externa/2-Productos/Revisar/" : "") + imgDerPers
 				: "/publico/imagenes/Avatar/Prod-Generico.jpg";
 
 			// Configura el título de la vista
@@ -362,7 +362,7 @@ module.exports = {
 				codigo += "/avatar";
 				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.orig.includes("/Externa/");
+				avatarExterno = !avatar.orig.includes("/externa/");
 				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 				avatarsExternos = variables.avatarsExternos(nombre);
 				titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
@@ -523,7 +523,7 @@ module.exports = {
 
 		// Información para la vista
 		const avatar = producto.avatar
-			? (!producto.avatar.includes("/") ? "/Externa/2-Productos/Final/" : "") + producto.avatar
+			? (!producto.avatar.includes("/") ? "/externa/2-Productos/Final/" : "") + producto.avatar
 			: "/publico/imagenes/Avatar/Prod-Generico.jpg";
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
