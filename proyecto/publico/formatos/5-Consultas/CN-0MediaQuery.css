@@ -7,7 +7,6 @@
 @media (width <= 950px) {
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;}
 	#cuerpo #configCons {position: absolute; left: 35px; transform-origin: left; transform: scaleX(0); max-height: var(--alturaCuerpo);}
-	#configCons #configCampos .ocultaFiltro {display: block !important;} /* muestra los campos individuales */
 	#configCons #toggleFiltrosIndivs {display: none;} /* oculta el botón muestra/oculta */
 
 	#vistaDeResults #actualizar {display: none;}
