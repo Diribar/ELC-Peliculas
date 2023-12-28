@@ -35,6 +35,7 @@ window.addEventListener("load", async () => {
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
+	console.log(v.origen);
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
 
@@ -67,6 +68,9 @@ window.addEventListener("load", async () => {
 		if (todoProcesado == resultado.quedanCampos) console.log("Error", {todoProcesado, quedanCampos: resultado.quedanCampos});
 		// Acciones si está todo procesado
 		else if (todoProcesado && !resultado.quedanCampos) {
+			// Variables
+			const cola = "?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TE");
+
 			// 1. Si el registro pasó al status 'aprobado', publica el cartel
 			if (resultado.statusAprob) {
 				// Mensajes
@@ -74,8 +78,7 @@ window.addEventListener("load", async () => {
 				// Flechas
 				let icono = {
 					HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
-					link:
-						"/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TE"),
+					link: "/inactivar-captura/" + cola,
 				};
 				// Partes del cartel
 				let cartelGenerico = document.querySelector("#cartelGenerico");
@@ -102,7 +105,7 @@ window.addEventListener("load", async () => {
 				cartelGenerico.classList.remove("ocultar");
 			}
 			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
-			else location.href = "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";
+			else location.href = "/producto/edicion/" + cola;
 		}
 
 		// Fin
