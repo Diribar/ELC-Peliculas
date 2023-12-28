@@ -676,22 +676,23 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		//console.log(679, registro);
 		// Variables
 		const {entidad, id} = registro;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {codigo, nombre} = registro.statusRegistro;
+		const origen = familia == "producto" ? "P" : "R";
+		const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=DT" + origen;
 
 		// Genera el href
 		const href =
 			registro.statusRegistro_id == creado_id
-				? "/revision/" + familia + "/alta/?entidad=" + entidad + "&id=" + id
+				? "/revision/" + familia + "/alta" + cola
 				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
-				? "/revision/" + familia + "/inactivar-o-recuperar/?entidad=" + entidad + "&id=" + id
+				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
 				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
-				? "/" + familia + "/edicion/?entidad=" + entidad + "&id=" + id
+				? "/" + familia + "/edicion" + cola
 				: registro.statusRegistro_id == inactivo_id
-				? "/" + familia + "/recuperar/?entidad=" + entidad + "&id=" + id
+				? "/" + familia + "/recuperar" + cola
 				: "";
 
 		// Fin
