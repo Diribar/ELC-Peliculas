@@ -22,7 +22,7 @@ main .cartelCentro #mensajes span {font-weight: bold; font-style: italic;}
 main .cartelCentro #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 main .cartelCentro #flechasCartel * {border-radius: 50%;}
 main .cartelCentro #flechasCartel *:focus {outline: none;}
-main .cartelCentro #flechasCartel a i {font-size: 2rem; cursor: pointer;}
+main .cartelCentro #flechasCartel a i {font-size: 2rem;}
 /* Íconos de retroceder y avanzar */
 main .cartelCentro #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
 main .cartelCentro #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
