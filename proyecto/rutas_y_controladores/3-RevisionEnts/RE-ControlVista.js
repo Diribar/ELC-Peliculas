@@ -57,11 +57,11 @@ module.exports = {
 	// ALTAS
 	alta: {
 		prodForm: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "revisionEnts";
 			const codigo = "producto/alta";
-			// Variables
 			const {entidad, id} = req.query;
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -120,7 +120,7 @@ module.exports = {
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo, origen: "TE"},
+				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia, status_id, statusCreado},
 				...{entidadNombre, registro: original, links},
 				...{imgDerPers, tituloImgDerPers: original.nombreCastellano},
@@ -129,10 +129,11 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// Variables - Alta, Rechazo, Inactivar, Recuperar
+			// Variables
+			const {entidad, id, origen} = req.query;
 			let datos = await procesos.guardar.obtieneDatos(req);
-			const {entidad, id, original, statusOriginal_id, statusFinal_id} = {...datos};
-			const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
+			const {original, statusOriginal_id, statusFinal_id} = datos;
+			const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
 			const producto = !rclv;
 			const userID = original.statusSugeridoPor_id;
 			const revID = req.session.usuario.id;
