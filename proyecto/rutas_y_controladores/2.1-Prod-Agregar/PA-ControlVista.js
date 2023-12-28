@@ -96,7 +96,7 @@ module.exports = {
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
-				? "/Externa/9-Provisorio/" + datosDuros.avatar
+				? "/externa/9-Provisorio/" + datosDuros.avatar
 				: datosDuros.avatarUrl
 				? datosDuros.avatarUrl
 				: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
@@ -195,7 +195,7 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Imagen derecha
-			const imgDerPers = datosAdics.avatar ? "/Externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
+			const imgDerPers = datosAdics.avatar ? "/externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -269,7 +269,7 @@ module.exports = {
 			}
 
 			// Imagen derecha
-			let imgDerPers = confirma.avatar ? "/Externa/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
+			let imgDerPers = confirma.avatar ? "/externa/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
