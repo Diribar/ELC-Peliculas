@@ -300,7 +300,9 @@ module.exports = {
 				destino = baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 				if (origen) destino += "&origen=" + origen;
 			}
-			// En los demás casos, redirecciona al tablero
+			// Otros casos con origen
+			else if (origen) destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			// Si no tiene origen, redirecciona al tablero
 			else destino = "/revision/tablero-de-control";
 
 			// Fin
@@ -318,6 +320,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, edicID} = req.query;
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -406,7 +409,7 @@ module.exports = {
 			}
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen: "TE"},
+				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
 				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternos, imgDerPers},
@@ -492,7 +495,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		let {origen} = req.query;
+		const origen = req.query.origen ? req.query.origen : "TE";
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -530,7 +533,6 @@ module.exports = {
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
-		origen = origen ? origen : "TE";
 
 		// Va a la vista
 		//return res.send(links)
