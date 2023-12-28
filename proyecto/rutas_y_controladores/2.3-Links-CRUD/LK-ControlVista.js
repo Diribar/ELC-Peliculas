@@ -39,7 +39,7 @@ module.exports = {
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const status_id = original.statusRegistro_id;
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
-		const siguienteProducto = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;
+		const sigProd = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;
 		const ayudasTitulo = [
 			"Sé muy cuidadoso de incluir links que respeten los derechos de autor",
 			"Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto",
@@ -53,7 +53,7 @@ module.exports = {
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
-			...{userID, imgDerPers, cartelGenerico: true, siguienteProducto},
+			...{userID, imgDerPers, cartelGenerico: true, sigProd},
 			vista: req.baseUrl + req.path,
 		});
 	},
