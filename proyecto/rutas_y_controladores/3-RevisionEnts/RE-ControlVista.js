@@ -296,12 +296,10 @@ module.exports = {
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 				procesos.descargaAvatarOriginal(original, entidad);
 
-			// Si es un producto creado y fue aprobado, redirecciona a una edición
-			if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola;
-			// Otros casos con origen
-			else if (origen) destino = "/inactivar-captura" + cola;
-			// Si no tiene origen, redirecciona al tablero
-			else destino = "/revision/tablero-de-control";
+			// Opciones de redireccionamiento
+			if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
+			else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
+			else destino = "/revision/tablero-de-control"; // sin origen
 
 			// Fin
 			return res.redirect(destino);
