@@ -408,7 +408,7 @@ module.exports = {
 					if (registro[campo_id] && registro[campo_id] != 1)
 						prodAprob
 							? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-							: this.prodsEnRCLV({entidadRCLV, id: registro[campo_id]});
+							: this.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
 				}
 			}
 
@@ -689,9 +689,9 @@ module.exports = {
 				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
 				? "/revision/" + familia + "/inactivar-o-recuperar/?entidad=" + entidad + "&id=" + id
 				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
-				? "/" + familia + "/edicion/?entidad=" + entidad + "&id=" + id + "&origen=TE"
+				? "/" + familia + "/edicion/?entidad=" + entidad + "&id=" + id
 				: registro.statusRegistro_id == inactivo_id
-				? "/" + familia + "/recuperar/?entidad=" + entidad + "&id=" + id + "&origen=TM"
+				? "/" + familia + "/recuperar/?entidad=" + entidad + "&id=" + id
 				: "";
 
 		// Fin
