@@ -676,13 +676,26 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		return registro.statusRegistro_id == creado_id
-			? {id: 1, valor: "Creado"}
-			: registro.statusRegistro.aprobados
-			? {id: 2, valor: "Aprobado"}
-			: registro.statusRegistro_id == inactivo_id
-			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Para Revisar"};
+		//console.log(679, registro);
+		// Variables
+		const {entidad, id} = registro;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const {codigo, nombre} = registro.statusRegistro;
+
+		// Genera el href
+		const href =
+			registro.statusRegistro_id == creado_id
+				? "/revision/" + familia + "/alta/?entidad=" + entidad + "&id=" + id
+				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
+				? "/revision/" + familia + "/inactivar-o-recuperar/?entidad=" + entidad + "&id=" + id
+				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
+				? "/" + familia + "/edicion/?entidad=" + entidad + "&id=" + id + "&origen=TE"
+				: registro.statusRegistro_id == inactivo_id
+				? "/" + familia + "/recuperar/?entidad=" + entidad + "&id=" + id + "&origen=TM"
+				: "";
+
+		// Fin
+		return {codigo, valor: nombre, href};
 	},
 	fichaDelUsuario: async function (userID, petitFamilias) {
 		// Variables
