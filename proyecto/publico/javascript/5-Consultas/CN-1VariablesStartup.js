@@ -91,7 +91,6 @@ window.addEventListener("load", async () => {
 		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
-		muestraFiltros: window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none",
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
@@ -106,3 +105,10 @@ window.addEventListener("load", async () => {
 // Variables
 const ruta = "/consultas/api/";
 let DOM, v, configCons, titulo;
+
+// Funciones
+let actualizaMuestraFiltros = () => {
+	v.muestraFiltros =
+		window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
+		window.getComputedStyle(DOM.muestraFiltros).display == "none";
+};

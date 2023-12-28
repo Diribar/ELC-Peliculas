@@ -30,10 +30,10 @@
 .aparece, .desaparece, .aumenta, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
-.flechas button, .flechas i, main a, .scale {transition: 300ms;}
+.flechas button, .flechas i, #cuerpo a, #flechasCartel a, .scale {transition: 300ms;}
 
 /* Hover - anchor */
-main a:has(i, img):hover, .scale:hover {scale: 1.3;}
+#cuerpo a:has(i, img):hover, #flechasCartel a:hover, .scale:hover {scale: 1.3;}
 /* Hover - button */
 .flechas button:hover {scale: 1.3;}
 .flechas button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
