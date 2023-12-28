@@ -7,7 +7,7 @@
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <div class="flechas">
-	<% if (IRE || locals.origen && !locals.origen.startsWith("DT") || locals.urlDestino) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
+	<% if (locals.origen || locals.urlDestino) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
 		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID ? prodID : id)) : '' %>
