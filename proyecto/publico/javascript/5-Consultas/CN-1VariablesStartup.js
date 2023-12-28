@@ -107,7 +107,7 @@ const ruta = "/consultas/api/";
 let DOM, v, configCons, titulo;
 
 // Funciones
-let obtieneMuestraOcultaFiltros = () => {
+let actualizaMuestraFiltros = () => {
 	v.muestraFiltros =
 		window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
 		window.getComputedStyle(DOM.muestraFiltros).display == "none";
