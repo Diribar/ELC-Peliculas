@@ -91,6 +91,7 @@ window.addEventListener("load", async () => {
 		muestraFiltros: false,
 		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
+		muestraFiltros: window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none",
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
