@@ -519,7 +519,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		const siguienteProducto = !origen ? await procesos.sigProd({producto, entidad, revID}) : "";
+		const sigProd = await procesos.sigProd({producto, entidad, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
@@ -537,7 +537,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers, cartelGenerico: true, siguienteProducto},
+			...{imgDerPers, cartelGenerico: true, sigProd},
 		});
 	},
 };
