@@ -61,7 +61,7 @@ module.exports = {
 			const tema = "revisionEnts";
 			const codigo = "producto/alta";
 			// Variables
-			let {entidad, id} = req.query;
+			const {entidad, id} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -85,11 +85,13 @@ module.exports = {
 			include.push("statusRegistro", "creadoPor", "statusSugeridoPor");
 			if (entidad == "colecciones") include.push("capitulos");
 			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+
 			// Obtiene avatar original
 			let imgDerPers = original.avatar;
 			imgDerPers = imgDerPers
 				? (!imgDerPers.includes("/") ? "/Externa/2-Productos/Revisar/" : "") + imgDerPers
 				: "/publico/imagenes/Avatar/Prod-Generico.jpg";
+
 			// Configura el título de la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
@@ -105,7 +107,7 @@ module.exports = {
 
 			// Bloque Derecho
 			const bloqueDer = [
-				procsCRUD.bloqueRegistro(original),
+				procsCRUD.bloqueRegistro({...original, entidad}),
 				await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 			];
 			// Info para la vista
