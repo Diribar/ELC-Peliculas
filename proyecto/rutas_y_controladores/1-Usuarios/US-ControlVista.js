@@ -88,7 +88,7 @@ module.exports = {
 			// Generar la info para la vista
 			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 			let avatar = usuario.avatar
-				? "/externa/1-Usuarios/" + usuario.avatar
+				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
 
 			// Va a la vista
