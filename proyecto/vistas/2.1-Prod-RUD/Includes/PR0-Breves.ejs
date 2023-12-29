@@ -16,11 +16,6 @@
 			<% if (anchor) { %><a href="<%= campo.href %>"><% } %>
 				<p <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
 					<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
-					<% if (campo.RCLV_entidad) { %>
-						<a href="/rclv/detalle/?entidad=<%= campo.RCLV_entidad %>&id=<%= campo.RCLV_id %>">
-							<i class="fa-solid fa-circle-info"></i>
-						</a>
-					<% } %>
 				</p>
 			<% if (anchor) { %></a><% } %>
 		<% } %>
