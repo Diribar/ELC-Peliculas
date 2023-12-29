@@ -19,7 +19,6 @@ module.exports = {
 		// Obtiene RCLV con productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let rclv = {...original, ...edicion, id};
-		const titulo = entidadNombre + " - " + rclv.nombre; // título de la vista
 
 		// Productos del RCLV
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
@@ -45,6 +44,7 @@ module.exports = {
 		const RCLVnombre = rclv.nombre;
 		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
 		const creadoPor_id = rclv.creadoPor_id;
+		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre; // título de la vista
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
