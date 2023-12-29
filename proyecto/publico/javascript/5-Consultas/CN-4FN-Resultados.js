@@ -143,7 +143,7 @@ let resultados = {
 
 			// Output
 			for (let resultado of v.infoResultados) {
-				// Verifica si se superó la cantidad deseada de 'cfc' o 'vpc'
+				// Saltea el resultado si se superó la cantidad deseada de 'cfc' o 'vpc'
 				if (seDebeEquilibrar) {
 					resultado.cfc ? cfc++ : vpc++;
 					if ((resultado.cfc && cfc > 2) || (!resultado.cfc && vpc > 2)) continue;
@@ -151,9 +151,9 @@ let resultados = {
 				agregaUnBoton(resultado); // Agrega un botón
 				if (v.contador > 3) break; // no permite más de 4 botones
 			}
+			// Agrega registros hasta llegar a cuatro
 			if (v.contador < 4 && v.infoResultados.length >= 4)
 				for (let resultado of v.infoResultados) {
-					if (v.productos.find((n) => n.id == resultado.id && n.entidad == resultado.entidad)) continue; // Saltea los productos ya agregados
 					agregaUnBoton(resultado); // Agrega un botón
 					if (v.contador > 3) break; // no permite más de 4 botones
 				}
@@ -634,10 +634,17 @@ let creaUnaCelda = {
 };
 
 let agregaUnBoton = (resultado) => {
+	// Agrega el resultado al botón
 	const boton = auxiliares.boton(resultado);
 	DOM.botones.append(boton);
+
+	// Agrega el resultado al array de productos y actualiza el contador
 	v.productos.push(resultado);
 	v.contador++;
+
+	// Quita el registro de los resultados
+	const indice = v.infoResultados.findIndex((n) => n.id == resultado.id && n.entidad == resultado.entidad);
+	v.infoResultados.splice(indice, 1);
 
 	// Fin
 	return;
