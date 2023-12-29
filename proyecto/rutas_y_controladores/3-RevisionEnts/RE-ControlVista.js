@@ -492,6 +492,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
 		const origen = req.query.origen ? req.query.origen : "TE";
+		let sigProd;
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -519,7 +520,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		const sigProd = await procesos.sigProd({producto, entidad, revID});
+		if (origen == "TE") sigProd = await procesos.sigProd({producto, entidad, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
