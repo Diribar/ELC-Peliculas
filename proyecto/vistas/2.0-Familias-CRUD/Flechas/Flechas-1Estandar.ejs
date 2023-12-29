@@ -5,7 +5,7 @@
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
 <div class="flechas">
-	<% if (locals.origen) { %><!-- Cuando es IRE o tiene origen distinto a 'DT' -->
+	<% if (locals.origen && origen != "DTR") { %><!-- Cuando tiene origen distinto a 'DTR' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
 		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID ? prodID : id)) : '' %>
