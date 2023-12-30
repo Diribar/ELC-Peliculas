@@ -9,9 +9,12 @@
 	<h3>Datos del Registro</h3>
 	<div id="texto">
 		<% for (campo of bloqueDer.registro) { %>
-			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
-				<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
-			</p>
+			<% const anchor = !!campo.href && usuario && usuario.rolUsuario.revisorPERL %>
+			<% if (anchor) { %><a href="<%= campo.href %>"><% } %>
+				<p <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
+					<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
+				</p>
+			<% if (anchor) { %></a><% } %>
 		<% } %>
 	</div>
 </div>

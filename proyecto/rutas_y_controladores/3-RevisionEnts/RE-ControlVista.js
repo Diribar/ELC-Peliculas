@@ -229,19 +229,25 @@ module.exports = {
 			// CONSECUENCIAS
 			// Actualiza el status en el registro original
 			// A. Datos que se necesitan con seguridad
-			datos = {...datos, statusRegistro_id: statusFinal_id};
+			datos = {
+				...datos,
+				motivo_id,
+				statusRegistro_id: statusFinal_id,
+				statusSugeridoPor_id: revID,
+				statusSugeridoEn: ahora,
+			};
+
 			// B. Datos sólo si es un alta/rechazo
-			if (!original.leadTimeCreacion) {
+			if (!original.altaRevisadaEn) {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 			}
-			if (statusFinal_id != creadoAprob_id) {
-				datos.statusSugeridoPor_id = revID;
-				datos.statusSugeridoEn = ahora;
-			}
-			datos.motivo_id = motivo_id;
-			// C. Actualiza el registro original --> es crítico el uso del 'await'
+
+			// C. Datos sólo si es un producto
+			if (!rclv) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
+
+			// D. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
 			// Acciones si es una colección
@@ -492,6 +498,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
 		const origen = req.query.origen ? req.query.origen : "TE";
+		let sigProd;
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -519,7 +526,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		const siguienteProducto = !origen ? await procesos.sigProd({producto, entidad, revID}) : "";
+		if (origen == "TE") sigProd = await procesos.sigProd({producto, entidad, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
@@ -537,7 +544,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers, cartelGenerico: true, siguienteProducto},
+			...{imgDerPers, cartelGenerico: true, sigProd},
 		});
 	},
 };

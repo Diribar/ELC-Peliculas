@@ -772,7 +772,7 @@ module.exports = {
 			  "&prodID=" +
 			  sigProd.id +
 			  "&origen=RLK"
-			: "/revision/tablero-de-control";
+			: "";
 
 		// Fin
 		return link;
