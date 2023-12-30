@@ -183,7 +183,7 @@ let resultados = {
 					resultado = provisorio.find((n) => n.cfc);
 					agregaUnBoton(resultado);
 				}
-				console.log("Posteriores años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
+				 console.log("Posteriores años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 				// Filtra por 'vpc'
 				resultado = null;
