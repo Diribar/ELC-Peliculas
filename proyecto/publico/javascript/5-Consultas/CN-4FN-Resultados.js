@@ -149,11 +149,11 @@ let resultados = {
 			agregaUnBoton(resultado);
 			console.log("Último día: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
-			// Outputs - Última semana
+			// Outputs - Últimos días
 			resultado = null;
 			if (!v.productos.length) {
 				resultado = v.infoResultados.find(
-					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 5
+					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 7
 				);
 				agregaUnBoton(resultado);
 			}
