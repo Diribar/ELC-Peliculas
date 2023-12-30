@@ -132,7 +132,7 @@ let resultados = {
 			v.cfc = 0;
 			v.vpc = 0;
 			v.contador = 0;
-			let resultado;
+			let resultado, provisorio;
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 			const seDebeEquilibrar =
@@ -146,54 +146,46 @@ let resultados = {
 			// Outputs - Último día
 			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia);
 			if (resultado) agregaUnBoton(resultado);
-			console.log("Último día: " + (resultado ? "SI" : "NO"));
+			console.log("Último día: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Última semana
 			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unaSemana);
 			if (resultado) agregaUnBoton(resultado);
-			console.log("Última semana: " + (resultado ? "SI" : "NO"));
+			console.log("Última semana: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Estrenada en los últimos 10 años
-			resultado = v.infoResultados.filter((n) => n.anoEstreno >= new Date().getFullYear() - 10);
-			if (resultado.length) {
+			provisorio = v.infoResultados.filter((n) => n.anoEstreno >= new Date().getFullYear() - 10);
+			if (provisorio.length) {
 				// Filtra por 'cfc'
-				if (!v.cfc) {
-					const resultadoCFC = resultado.find((n) => n.cfc);
-					if (resultadoCFC) {
-						agregaUnBoton(resultadoCFC);
-						console.log("Últimos 10 años CFC: " + (resultado ? "SI" : "NO"));
-					}
+				if (!v.productos.find((n) => n.anoEstreno >= new Date().getFullYear() - 10 && n.cfc)) {
+					resultado = provisorio.find((n) => n.cfc);
+					if (resultado) agregaUnBoton(resultado);
+					console.log("Últimos 10 años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 
 				// Filtra por 'vpc'
-				if (!v.vpc) {
-					const resultadoVPC = resultado.find((n) => !n.cfc);
-					if (resultadoVPC) {
-						agregaUnBoton(resultadoVPC);
-						console.log("Últimos 10 años VPC: " + (resultado ? "SI" : "NO"));
-					}
+				if (!v.productos.find((n) => n.anoEstreno >= new Date().getFullYear() - 10 && !n.cfc)) {
+					resultado = provisorio.find((n) => !n.cfc);
+					if (resultado) agregaUnBoton(resultado);
+					console.log("Últimos 10 años VPC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 			}
 
 			// Outputs - Estrenada pasados los últimos 10 años
-			resultado = v.infoResultados.filter((n) => n.anoEstreno < new Date().getFullYear() - 10);
-			if (resultado.length) {
+			provisorio = v.infoResultados.filter((n) => n.anoEstreno < new Date().getFullYear() - 10);
+			if (provisorio.length) {
 				// Filtra por 'cfc'
-				if (!v.cfc) {
-					const resultadoCFC = resultado.find((n) => n.cfc);
-					if (resultadoCFC) {
-						agregaUnBoton(resultadoCFC);
-						console.log("Posteriores 10 años CFC: " + (resultado ? "SI" : "NO"));
-					}
+				if (!v.productos.find((n) => n.anoEstreno < new Date().getFullYear() - 10 && n.cfc)) {
+					resultado = provisorio.find((n) => n.cfc);
+					if (resultado) agregaUnBoton(resultado);
+					console.log("Posteriores 10 años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 
 				// Filtra por 'vpc'
-				if (!v.vpc) {
-					const resultadoVPC = resultado.find((n) => !n.cfc);
-					if (resultadoVPC) {
-						agregaUnBoton(resultadoVPC);
-						console.log("Posteriores 10 años VPC: " + (resultado ? "SI" : "NO"));
-					}
+				if (!v.productos.find((n) => n.anoEstreno < new Date().getFullYear() - 10 && !n.cfc)) {
+					resultado = provisorio.find((n) => !n.cfc);
+					if (resultado) agregaUnBoton(resultado);
+					console.log("Posteriores 10 años VPC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 			}
 
@@ -701,6 +693,7 @@ let agregaUnBoton = (resultado) => {
 	v.productos.push(resultado);
 	v.contador++;
 	resultado.cfc ? v.cfc++ : v.vpc++;
+	console.log(v.cfc, v.vpc);
 
 	// Quita el registro de los resultados
 	const indice = v.infoResultados.findIndex((n) => n.id == resultado.id && n.entidad == resultado.entidad);
