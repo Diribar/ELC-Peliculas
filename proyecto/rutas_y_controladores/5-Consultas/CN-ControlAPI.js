@@ -44,8 +44,8 @@ module.exports = {
 				...{entidadesBD: cn_entidades, opcionesPorEntBD: cn_opcionesPorEnt, opcionesBD: cn_opciones}, // Órdenes y Entidades
 				...{pppOpciones, pppOpcionesSimples},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
-				filtrosConDefault,
-				...{unDia, unaSemana},
+				...{filtrosConDefault, unDia},
+				anoQuiebre: epocasEstreno[0].desde,
 			};
 
 			// Datos del usuario
