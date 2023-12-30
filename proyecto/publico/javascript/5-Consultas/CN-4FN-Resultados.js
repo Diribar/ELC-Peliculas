@@ -129,9 +129,10 @@ let resultados = {
 		botones: () => {
 			// Variables
 			v.productos = [];
-			let cfc = 0;
-			let vpc = 0;
+			v.cfc = 0;
+			v.vpc = 0;
 			v.contador = 0;
+			let resultado;
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 			const seDebeEquilibrar =
@@ -140,23 +141,82 @@ let resultados = {
 				!configCons.apMar && // 'apMar' no está contestado
 				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
 				!configCons.rolesIgl; // 'rolesIgl' no está contestado
+			//console.log(v.infoResultados);
 
-			// Output
-			for (let resultado of v.infoResultados) {
-				// Saltea el resultado si se superó la cantidad deseada de 'cfc' o 'vpc'
-				if (seDebeEquilibrar) {
-					resultado.cfc ? cfc++ : vpc++;
-					if ((resultado.cfc && cfc > 2) || (!resultado.cfc && vpc > 2)) continue;
+			// Outputs - Último día
+			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia);
+			if (resultado) agregaUnBoton(resultado);
+			console.log("Último día: " + (resultado ? "SI" : "NO"));
+
+			// Outputs - Última semana
+			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unaSemana);
+			if (resultado) agregaUnBoton(resultado);
+			console.log("Última semana: " + (resultado ? "SI" : "NO"));
+
+			// Outputs - Estrenada en los últimos 10 años
+			resultado = v.infoResultados.filter((n) => n.anoEstreno >= new Date().getFullYear() - 10);
+			if (resultado.length) {
+				// Filtra por 'cfc'
+				if (!v.cfc) {
+					const resultadoCFC = resultado.find((n) => n.cfc);
+					if (resultadoCFC) {
+						agregaUnBoton(resultadoCFC);
+						console.log("Últimos 10 años CFC: " + (resultado ? "SI" : "NO"));
+					}
 				}
-				agregaUnBoton(resultado); // Agrega un botón
-				if (v.contador > 3) break; // no permite más de 4 botones
+
+				// Filtra por 'vpc'
+				if (!v.vpc) {
+					const resultadoVPC = resultado.find((n) => !n.cfc);
+					if (resultadoVPC) {
+						agregaUnBoton(resultadoVPC);
+						console.log("Últimos 10 años VPC: " + (resultado ? "SI" : "NO"));
+					}
+				}
 			}
+
+			// Outputs - Estrenada pasados los últimos 10 años
+			resultado = v.infoResultados.filter((n) => n.anoEstreno < new Date().getFullYear() - 10);
+			if (resultado.length) {
+				// Filtra por 'cfc'
+				if (!v.cfc) {
+					const resultadoCFC = resultado.find((n) => n.cfc);
+					if (resultadoCFC) {
+						agregaUnBoton(resultadoCFC);
+						console.log("Posteriores 10 años CFC: " + (resultado ? "SI" : "NO"));
+					}
+				}
+
+				// Filtra por 'vpc'
+				if (!v.vpc) {
+					const resultadoVPC = resultado.find((n) => !n.cfc);
+					if (resultadoVPC) {
+						agregaUnBoton(resultadoVPC);
+						console.log("Posteriores 10 años VPC: " + (resultado ? "SI" : "NO"));
+					}
+				}
+			}
+
 			// Agrega registros hasta llegar a cuatro
-			if (v.contador < 4 && v.infoResultados.length >= 4)
+			if (v.contador < 4 && v.infoResultados.length)
+				for (let resultado of v.infoResultados) {
+					if (!seDebeEquilibrar || (resultado.cfc && v.cfc < 2) || (!resultado.cfc && v.vpc < 2))
+						agregaUnBoton(resultado); // Agrega un botón
+					if (v.contador > 3) break; // no permite más de 4 botones
+				}
+			if (v.contador < 4 && v.infoResultados.length)
 				for (let resultado of v.infoResultados) {
 					agregaUnBoton(resultado); // Agrega un botón
 					if (v.contador > 3) break; // no permite más de 4 botones
 				}
+
+			// Ordena los resultados y los incorpora a la vista
+			v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
+			for (let producto of v.productos) {
+				// Agrega el producto al botón
+				const boton = auxiliares.boton(producto);
+				DOM.botones.append(boton);
+			}
 
 			// Genera las variables 'ppp'
 			DOM.ppps = DOM.botones.querySelectorAll(".producto #ppp");
@@ -634,13 +694,13 @@ let creaUnaCelda = {
 };
 
 let agregaUnBoton = (resultado) => {
-	// Agrega el resultado al botón
-	const boton = auxiliares.boton(resultado);
-	DOM.botones.append(boton);
+	// Si se llegó a los cuatro, aborta
+	if (v.contador == 4) return;
 
-	// Agrega el resultado al array de productos y actualiza el contador
+	// Miscelaneas
 	v.productos.push(resultado);
 	v.contador++;
+	resultado.cfc ? v.cfc++ : v.vpc++;
 
 	// Quita el registro de los resultados
 	const indice = v.infoResultados.findIndex((n) => n.id == resultado.id && n.entidad == resultado.entidad);
