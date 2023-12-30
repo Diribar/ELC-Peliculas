@@ -55,7 +55,7 @@ module.exports = {
 				if (release_date.length) {
 					datos.anoEstreno = Math.min(...release_date);
 					datos.anoFin = Math.max(...release_date);
-					datos.epocaEstreno_id = comp.obtieneLaEpocaDeEstreno(datos.anoEstreno);
+					datos.epocaEstreno_id = epocasEstrenoDesde.find((n) => datos.anoEstreno >= n.desde).id;
 				}
 			}
 
