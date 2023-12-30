@@ -229,19 +229,25 @@ module.exports = {
 			// CONSECUENCIAS
 			// Actualiza el status en el registro original
 			// A. Datos que se necesitan con seguridad
-			datos = {...datos, statusRegistro_id: statusFinal_id};
+			datos = {
+				...datos,
+				motivo_id,
+				statusRegistro_id: statusFinal_id,
+				statusSugeridoPor_id: revID,
+				statusSugeridoEn: ahora,
+			};
+
 			// B. Datos sólo si es un alta/rechazo
-			if (!original.leadTimeCreacion) {
+			if (!original.altaRevisadaEn) {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 			}
-			if (statusFinal_id != creadoAprob_id) {
-				datos.statusSugeridoPor_id = revID;
-				datos.statusSugeridoEn = ahora;
-			}
-			datos.motivo_id = motivo_id;
-			// C. Actualiza el registro original --> es crítico el uso del 'await'
+
+			// C. Datos sólo si es un producto
+			if (!rclv) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
+
+			// D. Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
 			// Acciones si es una colección
