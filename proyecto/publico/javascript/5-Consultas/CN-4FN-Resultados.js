@@ -30,10 +30,10 @@ let resultados = {
 		}
 
 		// Busca la información en el BE
-		const ahora = new Date();
+		v.ahora = new Date();
 		const datos =
 			v.entidad == "productos" && v.opcionBD.codigo == "fechaDelAno_id"
-				? {configCons, entidad: v.entidad, dia: ahora.getDate(), mes: ahora.getMonth() + 1}
+				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
 		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
@@ -143,7 +143,7 @@ let resultados = {
 				!configCons.rolesIgl; // 'rolesIgl' no está contestado
 
 			// Outputs - Último día
-			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia);
+			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia);
 			agregaUnBoton(resultado);
 			console.log("Último día: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
@@ -151,11 +151,11 @@ let resultados = {
 			resultado = null;
 			if (!v.productos.length) {
 				resultado = v.infoResultados.find(
-					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 3
+					(n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia * 3
 				);
 				agregaUnBoton(resultado);
 			}
-			console.log("Última semana: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
+			console.log("Últimos días: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Estrenada en los últimos años
 			provisorio = v.infoResultados.filter((n) => n.anoEstreno >= v.anoQuiebre);
