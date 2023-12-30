@@ -128,7 +128,7 @@ app.set("views", [
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
-		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "orden"),
+		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Variables de RCLVs
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),

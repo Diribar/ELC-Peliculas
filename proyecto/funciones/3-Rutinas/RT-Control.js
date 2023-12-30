@@ -26,6 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
+		//actualizaLaEpocaDeEstreno();
 
 		// Fin
 		console.log();
@@ -754,7 +755,6 @@ module.exports = {
 
 // Variables
 let actualizaLaEpocaDeEstreno = async () => {
-	const epocasEstrenoDesde = epocasEstreno.sort((a, b) => (a.desde > b.desde ? -1 : 1));
 	const condicion = {anoEstreno: {[Op.ne]: null}};
 
 	// Rutina
@@ -762,10 +762,10 @@ let actualizaLaEpocaDeEstreno = async () => {
 		// Obtiene los productos
 		const productos = await BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
 
-		// Actualiza el ID
+		// Actualiza cada producto
 		for (let producto of productos) {
-			const epocaEstreno_id = epocasEstrenoDesde.find((n) => producto.anoEstreno >= n.desde).id;
-			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+			const epocaEstreno_id = epocasEstreno.find((n) => producto.anoEstreno >= n.desde).id;
+			await BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
 	}
 

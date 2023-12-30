@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "epocasEstreno";
 	const columns = {
-		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(15)},
 		desde: {type: dt.INTEGER},
 		hasta: {type: dt.INTEGER},
