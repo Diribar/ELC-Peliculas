@@ -150,8 +150,13 @@ let resultados = {
 			console.log("Último día: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Última semana
-			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unaSemana);
-			agregaUnBoton(resultado);
+			resultado = null;
+			if (!v.productos.length) {
+				resultado = v.infoResultados.find(
+					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 5
+				);
+				agregaUnBoton(resultado);
+			}
 			console.log("Última semana: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Estrenada en los últimos años
