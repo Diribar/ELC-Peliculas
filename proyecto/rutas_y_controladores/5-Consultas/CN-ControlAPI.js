@@ -45,6 +45,7 @@ module.exports = {
 				...{pppOpciones, pppOpcionesSimples},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				...{filtrosConDefault, unDia},
+				anoQuiebre: epocasEstreno[0].desde,
 			};
 
 			// Datos del usuario

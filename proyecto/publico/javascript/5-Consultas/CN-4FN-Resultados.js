@@ -128,7 +128,6 @@ let resultados = {
 		},
 		botones: () => {
 			// Variables
-			const anoQuiebre = new Date().getFullYear() - 5;
 			v.productos = [];
 			v.cfc = 0;
 			v.vpc = 0;
@@ -142,7 +141,6 @@ let resultados = {
 				!configCons.apMar && // 'apMar' no está contestado
 				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
 				!configCons.rolesIgl; // 'rolesIgl' no está contestado
-			//console.log(v.infoResultados);
 
 			// Outputs - Último día
 			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia);
@@ -153,18 +151,18 @@ let resultados = {
 			resultado = null;
 			if (!v.productos.length) {
 				resultado = v.infoResultados.find(
-					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 7
+					(n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia * 3
 				);
 				agregaUnBoton(resultado);
 			}
 			console.log("Última semana: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Estrenada en los últimos años
-			provisorio = v.infoResultados.filter((n) => n.anoEstreno >= anoQuiebre);
+			provisorio = v.infoResultados.filter((n) => n.anoEstreno >= v.anoQuiebre);
 			if (provisorio.length) {
 				// Filtra por 'cfc'
 				resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno >= anoQuiebre && n.cfc)) {
+				if (!v.productos.find((n) => n.anoEstreno >= v.anoQuiebre && n.cfc)) {
 					resultado = provisorio.find((n) => n.cfc);
 					agregaUnBoton(resultado);
 				}
@@ -172,7 +170,7 @@ let resultados = {
 
 				// Filtra por 'vpc'
 				resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno >= anoQuiebre && !n.cfc)) {
+				if (!v.productos.find((n) => n.anoEstreno >= v.anoQuiebre && !n.cfc)) {
 					resultado = provisorio.find((n) => !n.cfc);
 					agregaUnBoton(resultado);
 				}
@@ -180,11 +178,11 @@ let resultados = {
 			}
 
 			// Outputs - Estrenada pasados los últimos años
-			provisorio = v.infoResultados.filter((n) => n.anoEstreno < anoQuiebre);
+			provisorio = v.infoResultados.filter((n) => n.anoEstreno < v.anoQuiebre);
 			if (provisorio.length) {
 				// Filtra por 'cfc'
 				resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno < anoQuiebre && n.cfc)) {
+				if (!v.productos.find((n) => n.anoEstreno < v.anoQuiebre && n.cfc)) {
 					resultado = provisorio.find((n) => n.cfc);
 					agregaUnBoton(resultado);
 				}
@@ -192,7 +190,7 @@ let resultados = {
 
 				// Filtra por 'vpc'
 				resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno < anoQuiebre && !n.cfc)) {
+				if (!v.productos.find((n) => n.anoEstreno < v.anoQuiebre && !n.cfc)) {
 					resultado = provisorio.find((n) => !n.cfc);
 					agregaUnBoton(resultado);
 				}
