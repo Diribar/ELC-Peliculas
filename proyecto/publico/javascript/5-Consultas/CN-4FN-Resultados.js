@@ -128,7 +128,7 @@ let resultados = {
 		},
 		botones: () => {
 			// Variables
-			const hace10anos=new Date().getFullYear() - 10
+			const hace10anos = new Date().getFullYear() - 10;
 			v.productos = [];
 			v.cfc = 0;
 			v.vpc = 0;
@@ -146,12 +146,12 @@ let resultados = {
 
 			// Outputs - Último día
 			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unDia);
-			if (resultado) agregaUnBoton(resultado);
+			agregaUnBoton(resultado);
 			console.log("Último día: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Última semana
 			resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > new Date().getTime() - v.unaSemana);
-			if (resultado) agregaUnBoton(resultado);
+			agregaUnBoton(resultado);
 			console.log("Última semana: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 
 			// Outputs - Estrenada en los últimos 10 años
@@ -160,14 +160,14 @@ let resultados = {
 				// Filtra por 'cfc'
 				if (!v.productos.find((n) => n.anoEstreno >= hace10anos && n.cfc)) {
 					resultado = provisorio.find((n) => n.cfc);
-					if (resultado) agregaUnBoton(resultado);
+					agregaUnBoton(resultado);
 					console.log("Últimos 10 años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 
 				// Filtra por 'vpc'
 				if (!v.productos.find((n) => n.anoEstreno >= hace10anos && !n.cfc)) {
 					resultado = provisorio.find((n) => !n.cfc);
-					if (resultado) agregaUnBoton(resultado);
+					agregaUnBoton(resultado);
 					console.log("Últimos 10 años VPC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 			}
@@ -178,14 +178,14 @@ let resultados = {
 				// Filtra por 'cfc'
 				if (!v.productos.find((n) => n.anoEstreno < hace10anos && n.cfc)) {
 					resultado = provisorio.find((n) => n.cfc);
-					if (resultado) agregaUnBoton(resultado);
+					agregaUnBoton(resultado);
 					console.log("Posteriores 10 años CFC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 
 				// Filtra por 'vpc'
 				if (!v.productos.find((n) => n.anoEstreno < hace10anos && !n.cfc)) {
 					resultado = provisorio.find((n) => !n.cfc);
-					if (resultado) agregaUnBoton(resultado);
+					agregaUnBoton(resultado);
 					console.log("Posteriores 10 años VPC: " + (resultado ? "SI - " + resultado.nombreCastellano : "NO"));
 				}
 			}
@@ -688,7 +688,7 @@ let creaUnaCelda = {
 
 let agregaUnBoton = (resultado) => {
 	// Si se llegó a los cuatro, aborta
-	if (v.contador == 4) return;
+	if (v.contador == 4 || !resultado) return;
 
 	// Miscelaneas
 	v.productos.push(resultado);
