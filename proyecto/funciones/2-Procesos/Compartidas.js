@@ -152,10 +152,22 @@ module.exports = {
 				? "epocasDelAno"
 				: "";
 		},
-		entidad: function (edicion) {
+		entidad: function (edicion, familiaEdic) {
 			const producto = this.entidadProd(edicion);
 			const RCLV = this.entidadRCLV(edicion);
-			return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
+
+			// Fin
+			return familiaEdic == "prodsEdicion"
+				? producto
+				: familiaEdic == "rclvsEdicion"
+				? RCLV
+				: edicion.link_id
+				? "links"
+				: RCLV
+				? RCLV
+				: producto
+				? producto
+				: "";
 		},
 		campo_idProd: (edicion) => {
 			return edicion.pelicula_id
@@ -200,7 +212,7 @@ module.exports = {
 				? "epocaDelAno"
 				: "";
 		},
-		asoc: function (edicion) {
+		asociacion: function (edicion) {
 			const producto = this.asocProd(edicion);
 			const RCLV = this.asocRCLV(edicion);
 			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
