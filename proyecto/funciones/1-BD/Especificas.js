@@ -41,19 +41,21 @@ module.exports = {
 			);
 	},
 	quickSearchEdiciones: (condiciones, dato) => {
-		// Obtiene los registros
 		return db[dato.entidad]
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n.map((m) => ({
-					id: m[comp.obtieneDesdeEdicion.campo_id(m)],
-					anoEstreno: m.anoEstreno,
-					nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
-					entidad: comp.obtieneDesdeEdicion.entidad(m),
-					asoc: comp.obtieneDesdeEdicion.asoc(m),
-					familia: dato.familia,
-				}))
+				n.map((m) => {
+					const entidad = comp.obtieneDesdeEdicion.entidad(m, dato.entidad);
+					return {
+						entidad,
+						id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
+						anoEstreno: m.anoEstreno,
+						nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
+						asoc: comp.obtieneDesdeEntidad.asociacion(entidad),
+						familia: dato.familia,
+					};
+				})
 			);
 	},
 
