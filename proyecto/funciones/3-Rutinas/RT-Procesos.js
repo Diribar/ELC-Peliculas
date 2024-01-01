@@ -149,7 +149,7 @@ module.exports = {
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
-						const asociacion = comp.obtieneDesdeEdicion.asoc(edic);
+						const asociacion = comp.obtieneDesdeEdicion.asociacion(edic);
 						const entidad = comp.obtieneDesdeEdicion.entidad(edic);
 						const familia = comp.obtieneDesdeEntidad.familia(entidad);
 						return {...edic[asociacion], entidad, familia};
