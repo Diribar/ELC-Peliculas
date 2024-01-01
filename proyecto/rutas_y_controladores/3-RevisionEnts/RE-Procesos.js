@@ -209,9 +209,7 @@ module.exports = {
 				.then((n) => n.filter((m) => !m.anoFM || m.anoFM < anoHoy || m.fechaDelAno_id < fechaDelAnoHoy_id)) // sin año, año menor al actual, con fecha menor
 				.then((originales) =>
 					originales.map((original) => {
-						const fechaRefTexto = fechasDelAno.find(
-							(fechaDelAno) => fechaDelAno.id == original.fechaDelAno_id
-						).nombre;
+						const fechaRefTexto = fechasDelAno.find((n) => n.id == original.fechaDelAno_id).nombre;
 						return {...original, fechaRefTexto};
 					})
 				)
