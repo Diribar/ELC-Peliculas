@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 30/dic",
-	"HoraUTC": "0:06",
+	"FechaUTC": "Lun. 1/ene",
+	"HoraUTC": "11:31",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Mar. 26/dic",
-	"HoraSemUTC": "12:05",
-	"semanaUTC": 52,
+	"FechaSemUTC": "Lun. 1/ene",
+	"HoraSemUTC": "11:31",
+	"semanaUTC": 1,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
-		"29-dic-23": {"titulo": "Santo Tomas Becket", "entidad": "personajes", "id": 101},
 		"30-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"31-dic-23": {"titulo": "Transfiguración de Nuestro Señor", "entidad": "eventos", "id": 28},
-		"01-ene-24": {"titulo": "María madre de Dios", "entidad": "eventos", "id": 29}
+		"01-ene-24": {"titulo": "María madre de Dios", "entidad": "eventos", "id": 29},
+		"02-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"03-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
 	}
 }
