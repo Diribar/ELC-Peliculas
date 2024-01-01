@@ -36,18 +36,22 @@ module.exports = {
 		let aux = [];
 		let resultados = [];
 
-		// Armado de la variable 'datos'
+		// Armado de la variable 'datos' para productos originales
 		entidadesProd.forEach((entidad, i) => {
 			const asoc = asocsProds[i];
-			datos.push({familia: "producto", entidad, asoc, campos: camposProds, original}); // productos originales
+			datos.push({familia: "producto", entidad, asoc, campos: camposProds, original});
 		});
+
+		// Armado de la variable 'datos' para rclvs originales
 		entidadesRCLV.forEach((entidad, i) => {
 			const asoc = asocsRCLVs[i];
 			const campos = entidad == "personajes" ? camposPers : ["nombre"];
-			datos.push({familia: "rclv", entidad, asoc, campos, original}); // rclvs originales
+			datos.push({familia: "rclv", entidad, asoc, campos, original});
 		});
-		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds}); // productos ediciones
-		// datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers}); // rclvs ediciones
+
+		// Armado de la variable 'datos' para ediciones
+		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds}); // productos
+		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers}); // rclvs
 
 		// Rutina
 		for (let dato of datos) {
