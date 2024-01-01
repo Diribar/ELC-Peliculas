@@ -55,7 +55,7 @@ module.exports = {
 				if (release_date.length) {
 					datos.anoEstreno = Math.min(...release_date);
 					datos.anoFin = Math.max(...release_date);
-					datos.epocaEstreno_id = comp.obtieneLaEpocaDeEstreno(datos.anoEstreno);
+					datos.epocaEstreno_id = epocasEstrenoDesde.find((n) => datos.anoEstreno >= n.desde).id;
 				}
 			}
 
@@ -154,7 +154,7 @@ module.exports = {
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) {
 				datos.anoEstreno = parseInt(datosAPI.first_air_date.slice(0, 4));
-				datos.epocaEstreno_id = comp.obtieneLaEpocaDeEstreno(datos.anoEstreno);
+				datos.epocaEstreno_id = epocasEstrenoDesde.find((n) => datos.anoEstreno >= n.desde).id;
 			}
 			if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
@@ -213,7 +213,7 @@ module.exports = {
 					...resultado,
 					yaEnBD_id: resultado.id,
 					anoEstreno: resultado.anoEstreno,
-					epocaEstreno_id: comp.obtieneLaEpocaDeEstreno(resultado.anoEstreno),
+					epocaEstreno_id: epocasEstrenoDesde.find((n) => resultado.anoEstreno >= n.desde).id,
 					nombreCastellano: resultado.nombre,
 					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
 				};
