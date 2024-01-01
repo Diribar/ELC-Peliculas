@@ -41,7 +41,7 @@ module.exports = {
 		// año de estreno, duración, país de origen
 		if (datosAPI.release_date) {
 			datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
-			datos.epocaEstreno_id = epocasEstrenoDesde.find((n) => datos.anoEstreno >= n.desde).id;
+			datos.epocaEstreno_id = epocasEstreno.find((n) => datos.anoEstreno >= n.desde).id;
 		}
 		if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
 		if (datosAPI.production_countries.length > 0)

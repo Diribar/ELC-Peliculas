@@ -163,7 +163,7 @@ module.exports = {
 			if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
 				// Variables
 				const {nombreOriginal, nombreCastellano, anoEstreno, sinopsis} = datosDuros;
-				const epocaEstreno_id = epocasEstrenoDesde.find((n) => Number(anoEstreno) >= n.desde).id; // se debe agregar en el original
+				const epocaEstreno_id = epocasEstreno.find((n) => Number(anoEstreno) >= n.desde).id; // se debe agregar en el original
 				let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 
 				// Se consolida la información
