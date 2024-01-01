@@ -282,7 +282,7 @@ module.exports = {
 				.replace(/[“”«»]/g, '"')
 				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
-				.replace(/[  ​​#]/g, "")
+				.replace(/[  ®​​#]/g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
@@ -312,9 +312,9 @@ module.exports = {
 			let ano = fecha.getUTCFullYear().toString().slice(-2);
 			return this.diaMes(fecha) + "/" + ano;
 		},
-		anoMesDia:(fecha)=>{
+		anoMesDia: (fecha) => {
 			fecha = new Date(fecha).toISOString().slice(0, 10);
-			return fecha
+			return fecha;
 		},
 		fechaHorario: (horario) => {
 			horario = horario ? new Date(horario) : FN.ahora();
@@ -799,7 +799,7 @@ module.exports = {
 		// Fin
 		return {baseUrl, ruta, url};
 	},
-	reemplUrlPorVisualizEmbeded:(links)=>{
+	reemplUrlPorVisualizEmbeded: (links) => {
 		for (let link of links) {
 			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 			link.href = provEmbeded ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
