@@ -89,15 +89,8 @@ module.exports = {
 			(m) => !m.peliculas.length && !m.colecciones.length && !m.capitulos.length && !m.prodsEdiciones.length
 		);
 
-		// Con fecha móvil
-		const FM = aprobados
-			.filter((n) => n.fechaMovil) // con fecha móvil
-			.filter((n) => !n.anoFM || n.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAnoHoy_id)) // sin año, año menor al actual, de este año con fecha menor
-			.map((n) => ({...n, fechaRef: n.fechaDelAno_id, fechaRefTexto: n.fechaDelAno.nombre}))
-			.sort((a, b) => a.fechaRef - b.fechaRef);
-
 		// Fin
-		return {IN, SA, SF, SP, FM};
+		return {IN, SA, SF, SP};
 	},
 	obtieneLinksInactivos: async (userID) => {
 		// Variables
