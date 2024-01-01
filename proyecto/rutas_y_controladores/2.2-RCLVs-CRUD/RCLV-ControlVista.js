@@ -138,7 +138,7 @@ module.exports = {
 				...{omitirImagenDerecha: true, omitirFooter: true},
 			});
 		},
-		// Puede venir de agregarProd, edicionProd, o detalleRCLV
+		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;

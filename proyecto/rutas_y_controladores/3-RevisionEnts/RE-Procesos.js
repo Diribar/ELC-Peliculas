@@ -186,11 +186,33 @@ module.exports = {
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
+			// FM: Con fecha móvil
+			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			let FM = obtieneRegs(campos)
+				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
+				.then((originales) =>
+					originales.map((original) => {
+						// Obtiene la edición del usuario
+						let edicion = original.ediciones.find((n) => n.editadoPor_id == revID);
+						delete original.ediciones;
+
+						// Actualiza el original con la edición
+						if (edicion) {
+							edicion = purgaEdicion(edicion, original.entidad);
+							original = {...original, ...edicion};
+						}
+
+						// Fin
+						return original;
+					})
+				) // fusiona el original con su edición
+				.then((n) => n.filter((m) => !m.anoFM || m.anoFM < anoHoy || m.fechaDelAno_id < fechaDelAnoHoy_id)); // sin año, año menor al actual, con fecha menor
+
 			// Espera los resultados
-			[AL, SL, IR] = await Promise.all([AL, SL, IR]);
+			[AL, SL, IR, FM] = await Promise.all([AL, SL, IR, FM]);
 
 			// Fin
-			return {AL, SL, IR};
+			return {AL, SL, IR, FM};
 		},
 		obtieneRCLVsConEdic: async function (revID) {
 			// 1. Variables
@@ -627,8 +649,7 @@ module.exports = {
 			if (aprob) {
 				// 1. Actualiza el registro 'original'
 				datos[campo] = edicion[campo];
-				if (campo == "anoEstreno")
-					datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
+				if (campo == "anoEstreno") datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
@@ -949,4 +970,16 @@ let puleLosResultados = ({productos, revID}) => {
 
 	// Fin
 	return;
+};
+let purgaEdicion = (edicion, entidad) => {
+	// Quita de edición los campos 'null'
+	for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
+
+	// Quita de edición los campos que no se comparan
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
+	for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+
+	// Fin
+	return edicion;
 };
