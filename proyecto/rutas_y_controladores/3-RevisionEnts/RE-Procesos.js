@@ -629,7 +629,7 @@ module.exports = {
 				datos[campo] = edicion[campo];
 				console.log(630, );
 				if (campo == "anoEstreno")
-					datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde =< edicion.anoEstreno).id;
+					datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos

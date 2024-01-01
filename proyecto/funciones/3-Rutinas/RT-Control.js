@@ -764,7 +764,7 @@ let actualizaLaEpocaDeEstreno = async () => {
 
 		// Actualiza cada producto
 		for (let producto of productos) {
-			const epocaEstreno_id = epocasEstreno.find((n) => producto.anoEstreno >= n.desde).id;
+			const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
 			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
 	}
