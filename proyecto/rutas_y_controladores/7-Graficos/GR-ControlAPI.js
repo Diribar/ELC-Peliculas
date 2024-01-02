@@ -48,6 +48,27 @@ module.exports = {
 		// Fin
 		return res.json({aprob, pend});
 	},
+	pelisEpocaEstreno: async (req, res) => {
+		// Variables
+		const epocasInverso = [...epocasEstreno].reverse();
+		const condicion = {statusRegistro_id: aprobados_ids, anoEstreno: {[Op.ne]: null}, linksGral: {[Op.gt]: 0}};
+		let cfc = {};
+		let vpc = {};
+		let productos = [];
+
+		for (let entidad of ["peliculas", "colecciones"])
+			productos.push(...(await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)));
+
+		for (let epoca of epocasInverso) {
+			const cantPelis = productos.filter((n) => n.anoEstreno >= epoca.desde && n.anoEstreno <= epoca.hasta);
+			cfc[epoca.nombre] = cantPelis.filter((n) => n.cfc).length;
+			vpc[epoca.nombre] = cantPelis.filter((n) => !n.cfc).length;
+		}
+
+		// Fin
+		return res.json({cfc, vpc});
+	},
+
 	linksVencim: async (req, res) => {
 		// Variables
 		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'primerLunesDelAno' y la 'semanaUTC'
