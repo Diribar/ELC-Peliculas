@@ -16,6 +16,13 @@ module.exports = {
 			titulo: "Películas por Público",
 		});
 	},
+	pelisEpocaEstreno: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "pelisEpocaEstreno",
+			titulo: "Películas por Época de Estreno",
+		});
+	},
 
 	// Links
 	linksVencim: (req, res) => {
