@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 1/ene",
-	"HoraUTC": "11:31",
+	"FechaUTC": "Mar. 2/ene",
+	"HoraUTC": "15:17",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"30-dic-23": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"31-dic-23": {"titulo": "Transfiguración de Nuestro Señor", "entidad": "eventos", "id": 28},
 		"01-ene-24": {"titulo": "María madre de Dios", "entidad": "eventos", "id": 29},
 		"02-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
-		"03-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26}
+		"03-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"04-ene-24": {"titulo": "Santa Isabel Ana Seton", "entidad": "personajes", "id": 130}
 	}
 }
