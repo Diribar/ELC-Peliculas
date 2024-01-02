@@ -18,10 +18,10 @@ module.exports = {
 	},
 
 	// Links
-	vencimLinks: (req, res) => {
+	linksVencim: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "vencimLinks",
+			codigo: "linksVencim",
 			titulo: "Vencimiento Semanal de Links",
 		});
 	},

@@ -48,7 +48,7 @@ module.exports = {
 		// Fin
 		return res.json({aprob, pend});
 	},
-	vencimLinks: async (req, res) => {
+	linksVencim: async (req, res) => {
 		// Variables
 		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'primerLunesDelAno' y la 'semanaUTC'
 		const prodAprob = true;
