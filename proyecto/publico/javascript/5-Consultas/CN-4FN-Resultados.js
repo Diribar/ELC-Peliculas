@@ -129,7 +129,7 @@ let resultados = {
 		botones: () => {
 			// Variables
 			v.productos = [];
-			v.botones = {cfc:0,vpc:0,epoca1:0,epoca2:0,epoca3:0,epoca4:0};
+			v.botones = {cfc: 0, vpc: 0, epoca1: 0, epoca2: 0, epoca3: 0, epoca4: 0};
 			v.contador = 0;
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
