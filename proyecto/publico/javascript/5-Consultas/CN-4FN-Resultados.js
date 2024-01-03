@@ -185,16 +185,16 @@ let resultados = {
 
 			// Agrega registros hasta llegar a cuatro
 			if (v.contador < 4 && v.infoResultados.length)
-				for (let resultado of v.infoResultados) {
-					if (!seDebeEquilibrar || (resultado.cfc && v.cfc < 2) || (!resultado.cfc && v.vpc < 2)) {
-						v.resultado = resultado;
+				for (let producto of v.infoResultados) {
+					if (!seDebeEquilibrar || (producto.cfc && v.botones.cfc < 2) || (!producto.cfc && v.botones.vpc < 2)) {
+						v.resultado = producto;
 						agregaUnBoton(); // Agrega un botón
 					}
 					if (v.contador > 3) break; // no permite más de 4 botones
 				}
 			if (v.contador < 4 && v.infoResultados.length)
-				for (let resultado of v.infoResultados) {
-					v.resultado = resultado;
+				for (let producto of v.infoResultados) {
+					v.resultado = producto;
 					agregaUnBoton(); // Agrega un botón
 					if (v.contador > 3) break; // no permite más de 4 botones
 				}
@@ -689,8 +689,8 @@ let agregaUnBoton = () => {
 	// Miscelaneas
 	v.productos.push(v.resultado);
 	v.contador++;
-	v.resultado.cfc ? v.cfc++ : v.vpc++;
-	console.log(v.cfc, v.vpc);
+	v.resultado.cfc ? v.botones.cfc++ : v.botones.vpc++;
+	console.log(v.botones.cfc, v.botones.vpc);
 
 	// Quita el registro de los resultados
 	const indice = v.infoResultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
