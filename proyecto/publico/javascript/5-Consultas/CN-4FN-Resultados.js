@@ -162,7 +162,7 @@ let resultados = {
 				}
 
 			// Ordena los resultados y los incorpora a la vista
-			v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
+			if (v.opcionBD.codigo == "azar") v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
 			for (let producto of v.productos) {
 				// Agrega el producto al botón
 				const boton = auxiliares.boton(producto);
@@ -665,18 +665,18 @@ let obtieneProducto = {
 		// Outputs - Último día
 		v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia);
 		agregaUnBoton();
-		console.log("Último día: " + (v.productos.length ? "SI" : "NO"));
+		console.log("Último día: " + (v.productos.length ? "SI - " + v.resultado.nombreCastellano : "NO"));
 
 		// Outputs - Últimos días
 		v.resultado = null;
 		if (!v.productos.length) {
 			v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia * 2);
 			agregaUnBoton();
-			console.log("Últimos días: " + (v.productos.length ? "SI" : "NO"));
+			console.log("Últimos días: " + (v.productos.length ? "SI - " + v.resultado.nombreCastellano : "NO"));
 		}
 
 		// Fin
-		return
+		return;
 	},
 	porEpocaDeEstreno: (epocaEstreno) => {
 		// Variables
@@ -700,6 +700,7 @@ let obtieneProducto = {
 			v.resultado = v.provisorio[0];
 			agregaUnBoton();
 		}
+		console.log(epocaEstreno.nombre + ": " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
 
 		// Fin
 		return;
