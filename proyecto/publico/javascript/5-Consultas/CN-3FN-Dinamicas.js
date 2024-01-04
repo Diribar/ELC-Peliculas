@@ -167,22 +167,9 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
-		this.idioma();
-		return;
-	},
-	idioma: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !!configCons.tipoLink; // si no se eligió una calidad, no se muestran
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		muestraOcultaActualizaPref(seMuestra, "idioma");
-		if (configCons.idioma == "sinFiltro") delete configCons.idioma;
-
-		// Fin
 		this.cfc();
 		return;
 	},
-	// Presencia eventual - Resto
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
