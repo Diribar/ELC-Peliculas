@@ -128,75 +128,37 @@ let resultados = {
 		},
 		botones: () => {
 			// Variables
-			v.productos = [];
-			v.botones = {cfc: 0, vpc: 0, epoca1: 0, epoca2: 0, epoca3: 0, epoca4: 0};
+			v.cfc = 0;
+			v.vpc = 0;
 			v.contador = 0;
+			v.productos = [];
 
 			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
-			const seDebeEquilibrar =
+			v.seDebeEquilibrar =
 				v.opcionBD.codigo == "azar" &&
 				!configCons.cfc && // 'cfc' no está contestado
 				!configCons.apMar && // 'apMar' no está contestado
 				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
 				!configCons.rolesIgl; // 'rolesIgl' no está contestado
 
-			// Outputs - 1. Alta en los últimos días
-			ultimosDias();
-
-			// Outputs - 2. Estrenada en los últimos años
-			v.provisorio = v.infoResultados.filter((n) => n.anoEstreno >= v.anoQuiebre);
-			if (v.provisorio.length) {
-				// Filtra por 'cfc'
-				v.resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno >= v.anoQuiebre && n.cfc)) {
-					v.resultado = v.provisorio.find((n) => n.cfc);
-					agregaUnBoton();
-					console.log("Últimos años CFC: " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-				}
-
-				// Filtra por 'vpc'
-				v.resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno >= v.anoQuiebre && !n.cfc)) {
-					v.resultado = v.provisorio.find((n) => !n.cfc);
-					agregaUnBoton();
-					console.log("Últimos años VPC: " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-				}
-			}
-
-			// Outputs - 3. Estrenada pasados los últimos años
-			v.provisorio = v.infoResultados.filter((n) => n.anoEstreno < v.anoQuiebre);
-			if (v.provisorio.length) {
-				// Filtra por 'cfc'
-				v.resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno < v.anoQuiebre && n.cfc)) {
-					v.resultado = v.provisorio.find((n) => n.cfc);
-					agregaUnBoton();
-					console.log("Posteriores años CFC: " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-				}
-
-				// Filtra por 'vpc'
-				v.resultado = null;
-				if (!v.productos.find((n) => n.anoEstreno < v.anoQuiebre && !n.cfc)) {
-					v.resultado = v.provisorio.find((n) => !n.cfc);
-					agregaUnBoton();
-					console.log("Posteriores años VPC: " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-				}
-			}
+			// Elije los productos
+			obtieneProducto.porAltaUltimosDias();
+			for (let epocaEstreno of v.epocasEstreno) obtieneProducto.porEpocaDeEstreno(epocaEstreno);
 
 			// Agrega registros hasta llegar a cuatro
 			if (v.contador < 4 && v.infoResultados.length)
 				for (let producto of v.infoResultados) {
-					if (!seDebeEquilibrar || (producto.cfc && v.botones.cfc < 2) || (!producto.cfc && v.botones.vpc < 2)) {
+					if (!v.seDebeEquilibrar || (producto.cfc && v.cfc < 2) || (!producto.cfc && v.vpc < 2)) {
 						v.resultado = producto;
 						agregaUnBoton(); // Agrega un botón
 					}
-					if (v.contador > 3) break; // no permite más de 4 botones
+					if (v.contador == 4) break; // no permite más de 4 botones
 				}
 			if (v.contador < 4 && v.infoResultados.length)
 				for (let producto of v.infoResultados) {
 					v.resultado = producto;
 					agregaUnBoton(); // Agrega un botón
-					if (v.contador > 3) break; // no permite más de 4 botones
+					if (v.contador == 4) break; // no permite más de 4 botones
 				}
 
 			// Ordena los resultados y los incorpora a la vista
@@ -689,8 +651,7 @@ let agregaUnBoton = () => {
 	// Miscelaneas
 	v.productos.push(v.resultado);
 	v.contador++;
-	v.resultado.cfc ? v.botones.cfc++ : v.botones.vpc++;
-	console.log(v.botones.cfc, v.botones.vpc);
+	v.resultado.cfc ? v.cfc++ : v.vpc++;
 
 	// Quita el registro de los resultados
 	const indice = v.infoResultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
@@ -699,17 +660,48 @@ let agregaUnBoton = () => {
 	// Fin
 	return;
 };
-let ultimosDias = () => {
-	// Outputs - Último día
-	v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia);
-	agregaUnBoton();
-	if (v.resultado) console.log("Último día: SI");
-
-	// Outputs - Últimos días
-	v.resultado = null;
-	if (!v.productos.length) {
-		v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia * 2);
+let obtieneProducto = {
+	porAltaUltimosDias: () => {
+		// Outputs - Último día
+		v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia);
 		agregaUnBoton();
-		console.log("Últimos días: " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-	}
+		console.log("Último día: " + (v.productos.length ? "SI" : "NO"));
+
+		// Outputs - Últimos días
+		v.resultado = null;
+		if (!v.productos.length) {
+			v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia * 2);
+			agregaUnBoton();
+			console.log("Últimos días: " + (v.productos.length ? "SI" : "NO"));
+		}
+
+		// Fin
+		return
+	},
+	porEpocaDeEstreno: (epocaEstreno) => {
+		// Variables
+		const epocaID = epocaEstreno.id;
+		const suma = [1, 2].includes(epocaID) ? 3 : 7; // la suma de los IDs posibles
+		v.resultado = null;
+
+		// Si ya existe un producto para esa epoca de estreno, termina la función
+		if (v.productos.find((n) => n.epocaEstreno_id == epocaID)) return;
+
+		// Obtiene cfc/vpc
+		const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
+		const cfc = v.seDebeEquilibrar && contraparte ? (contraparte.cfc ? false : true) : null;
+
+		// Obtiene los productos de esa época de estreno
+		v.provisorio = v.infoResultados.filter((n) => n.epocaEstreno_id == epocaID);
+		if (v.provisorio.length && cfc !== null) v.provisorio = v.provisorio.filter((n) => n.cfc === cfc);
+
+		// Agrega un botón
+		if (v.provisorio.length) {
+			v.resultado = v.provisorio[0];
+			agregaUnBoton();
+		}
+
+		// Fin
+		return;
+	},
 };
