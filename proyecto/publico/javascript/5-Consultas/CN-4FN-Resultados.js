@@ -142,29 +142,30 @@ let resultados = {
 				!configCons.rolesIgl; // 'rolesIgl' no está contestado
 
 			// Elije los productos
-			obtieneProducto.porAltaUltimosDias();
-			for (let epocaEstreno of v.epocasEstreno) obtieneProducto.porEpocaDeEstreno(epocaEstreno);
+			if (v.opcionBD.codigo == "azar") {
+				obtieneProducto.porAltaUltimosDias();
+				for (let epocaEstreno of v.epocasEstreno) obtieneProducto.porEpocaDeEstreno(epocaEstreno);
+			}
 
 			// Agrega registros hasta llegar a cuatro
-			if (v.contador < 4 && v.infoResultados.length)
-				for (let producto of v.infoResultados) {
-					if (!v.seDebeEquilibrar || (producto.cfc && v.cfc < 2) || (!producto.cfc && v.vpc < 2)) {
-						v.resultado = producto;
-						agregaUnBoton(); // Agrega un botón
-					}
-					if (v.contador == 4) break; // no permite más de 4 botones
-				}
-			if (v.contador < 4 && v.infoResultados.length)
-				for (let producto of v.infoResultados) {
+			let indice = 0;
+			while (v.contador < 4 && v.infoResultados.length && indice < v.infoResultados.length) {
+				const producto = v.infoResultados[indice];
+				if (!v.seDebeEquilibrar || (producto.cfc && v.cfc < 2) || (!producto.cfc && v.vpc < 2)) {
 					v.resultado = producto;
-					agregaUnBoton(); // Agrega un botón
-					if (v.contador == 4) break; // no permite más de 4 botones
-				}
+					agregaUnBoton();
+				} else indice++;
+			}
+			while (v.contador < 4 && v.infoResultados.length) {
+				v.resultado = v.infoResultados[0];
+				agregaUnBoton();
+			}
 
-			// Ordena los resultados y los incorpora a la vista
+			// Si corresponde, ordena los resultados
 			if (v.opcionBD.codigo == "azar") v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
+
+			// Agrega el producto al botón
 			for (let producto of v.productos) {
-				// Agrega el producto al botón
 				const boton = auxiliares.boton(producto);
 				DOM.botones.append(boton);
 			}
