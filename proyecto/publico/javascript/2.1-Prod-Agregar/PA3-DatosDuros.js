@@ -150,7 +150,6 @@ window.addEventListener("load", async () => {
 		keyPressed(e);
 		return;
 	});
-
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
 			amplio.restringeCaracteres(e);
@@ -160,7 +159,6 @@ window.addEventListener("load", async () => {
 			return;
 		});
 	});
-
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		const campo = e.target.name;
