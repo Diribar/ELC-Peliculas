@@ -31,7 +31,7 @@ module.exports = {
 			{nombre: "actores", tipoIdioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
 			{nombre: "sinopsis", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 11, largo: 1004},
 		];
-		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
+		// Campos individuales estándar
 		for (let campo of camposPosibles) {
 			let nombre = campo.nombre;
 			let tipoIdioma = campo.tipoIdioma;
