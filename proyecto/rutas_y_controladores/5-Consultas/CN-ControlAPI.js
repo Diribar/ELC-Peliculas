@@ -44,8 +44,7 @@ module.exports = {
 				...{entidadesBD: cn_entidades, opcionesPorEntBD: cn_opcionesPorEnt, opcionesBD: cn_opciones}, // Órdenes y Entidades
 				...{pppOpciones, pppOpcionesSimples},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
-				...{filtrosConDefault, unDia},
-				anoQuiebre: epocasEstreno[1].desde,// año de quiebre entre pelis de los últimos años y anteriores
+				...{filtrosConDefault, epocasEstreno, unDia},
 			};
 
 			// Datos del usuario
