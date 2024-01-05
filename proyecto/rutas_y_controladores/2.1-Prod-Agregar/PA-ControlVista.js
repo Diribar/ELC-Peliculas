@@ -83,6 +83,7 @@ module.exports = {
 				req.session.datosDuros = datosDuros;
 				res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 			}
+			datosDuros.imgOpcional = !["FA", "IM"].includes(datosDuros.fuente);
 
 			// Obtiene los errores
 			const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -142,6 +143,9 @@ module.exports = {
 				datosDuros.tamano = req.file.size;
 				datosDuros.avatarUrl = "Avatar ingresado manualmente en 'Datos Duros'";
 			}
+
+			// Imagen opcional (SI/NO)
+			datosDuros.imgOpcional = !["FA", "IM"].includes(datosDuros.fuente);
 
 			// Guarda Session y Cookie de Datos Duros
 			req.session.datosDuros = datosDuros;
