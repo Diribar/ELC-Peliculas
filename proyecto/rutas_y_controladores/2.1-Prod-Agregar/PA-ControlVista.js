@@ -83,7 +83,6 @@ module.exports = {
 				req.session.datosDuros = datosDuros;
 				res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 			}
-			datosDuros.imgOpcional = !["FA", "IM"].includes(datosDuros.fuente);
 
 			// Obtiene los errores
 			const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -143,9 +142,6 @@ module.exports = {
 				datosDuros.tamano = req.file.size;
 				datosDuros.avatarUrl = "Avatar ingresado manualmente en 'Datos Duros'";
 			}
-
-			// Imagen opcional (SI/NO)
-			datosDuros.imgOpcional = !["FA", "IM"].includes(datosDuros.fuente);
 
 			// Guarda Session y Cookie de Datos Duros
 			req.session.datosDuros = datosDuros;
@@ -301,29 +297,26 @@ module.exports = {
 				if (!existe) return res.redirect("datos-adicionales");
 				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
-			// ORIGINAL ------------------------------------
+
 			// Guarda el registro original
 			const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
 			const registro = await BD_genericas.agregaRegistro(entidad, original);
 
-			// CAPÍTULOS -----------------------------------
-			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
-			// No se guardan los datos editados, eso se realiza en la revisión
+			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
 				if (confirma.TMDB_entidad == "collection")
 					procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
 				if (confirma.TMDB_entidad == "tv") procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
 			}
 
-			// AVATAR -------------------------------------
-			// Acciones si el avatar no se descargó (sólo para la mayoría de los TMDB)
+			// Avatar - acciones si no se descargó (sólo para la mayoría de los TMDB y los FA)
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
 				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + confirma.avatar;
 				comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 			}
-			// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'
+			// Avatar - si ya se había descargado el avatar (IM y algunos TMDB), lo mueve de 'provisorio' a 'revisar'
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 			// EDICION -------------------------------------
@@ -425,6 +418,7 @@ module.exports = {
 				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 			};
 			IM.fuente = IM.ingreso_fa ? "FA" : "IM";
+			if (IM.fuente == "IM") IM.imgOpcional = "NO";
 
 			// Copia session y cookie
 			req.session.IM = IM;
