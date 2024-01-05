@@ -206,7 +206,14 @@ module.exports = {
 						return original;
 					})
 				) // fusiona el original con su edición
-				.then((n) => n.filter((m) => !m.anoFM || m.anoFM < anoHoy || m.fechaDelAno_id < fechaDelAnoHoy_id)); // sin año, año menor al actual, con fecha menor
+				.then((n) => n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAnoHoy_id))) // sin año, año menor al actual, con fecha menor
+				.then((originales) =>
+					originales.map((original) => {
+						const fechaRefTexto = fechasDelAno.find((n) => n.id == original.fechaDelAno_id).nombre;
+						return {...original, fechaRefTexto};
+					})
+				)
+				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
 			[AL, SL, IR, FM] = await Promise.all([AL, SL, IR, FM]);

@@ -132,7 +132,7 @@ module.exports = {
 			prods: (configCons) => {
 				// Variables
 				const camposConsultas = variables.camposConsultas;
-				const {idioma, tipoLink, publicos} = camposConsultas;
+				const {idioma} = camposConsultas;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
@@ -142,7 +142,8 @@ module.exports = {
 
 				// Conversión de 'idioma'
 				if (configCons.idioma) {
-					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[configCons.tipoLink];
+					const tipoLink = configCons.tipoLink == "conLinksHD" ? "conLinksHD" : "conLinks";
+					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic[tipoLink];
 					prefs = {...prefs, ...aux};
 				}
 

@@ -16,12 +16,19 @@ module.exports = {
 			titulo: "Películas por Público",
 		});
 	},
-
-	// Links
-	vencimLinks: (req, res) => {
+	pelisEpocaEstreno: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "vencimLinks",
+			codigo: "pelisEpocaEstreno",
+			titulo: "Películas por Época de Estreno",
+		});
+	},
+
+	// Links
+	linksVencim: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "linksVencim",
 			titulo: "Vencimiento Semanal de Links",
 		});
 	},

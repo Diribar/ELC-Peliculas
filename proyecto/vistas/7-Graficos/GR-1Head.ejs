@@ -3,26 +3,22 @@
 <link rel="stylesheet" href="/publico/formatos/7-Graficos/GR-Graficos.css">
 
 <% if (codigo == "pelisCfcVpc") { %>
-    <!-- Películas por CFC / VPC -->
     <script src="/publico/javascript/7-Graficos/GR1-pelis-CFC-VPC.js"></script>
 <% } %>
-
 <% if (codigo == "pelisPublico") { %>
-    <!-- Películas Aprobadas -->
     <script src="/publico/javascript/7-Graficos/GR1-pelisPublico.js"></script>
 <% } %>
-
-<% if (codigo == "vencimLinks") { %>
-    <!-- Vencimiento de Links -->
-    <script src="/publico/javascript/7-Graficos/GR2-vencimLinks.js"></script>
+<% if (codigo == "pelisEpocaEstreno") { %>
+    <script src="/publico/javascript/7-Graficos/GR1-pelisEpocaEstreno.js"></script>
 <% } %>
 
+<% if (codigo == "linksVencim") { %>
+    <script src="/publico/javascript/7-Graficos/GR2-linksVencim.js"></script>
+<% } %>
 <% if (codigo == "linksPorProv") { %>
-    <!-- Cantidad de Links por Proveedor -->
     <script src="/publico/javascript/7-Graficos/GR2-linksPorProv.js"></script>
 <% } %>
 
 <% if (codigo == "rangosSinEfs") { %>
-    <!-- Rangos sin Efemérides -->
     <script src="/publico/javascript/7-Graficos/GR3-rangosSinEfs.js"></script>
 <% } %>

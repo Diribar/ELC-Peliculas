@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
-	const datos = await fetch("/graficos/api/vencimiento-de-links").then((n) => n.json());
+	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
 	const {sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana} = datos;
 	let {antiguos} = datos;
 
