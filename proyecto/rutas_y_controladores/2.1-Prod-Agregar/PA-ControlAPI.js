@@ -154,10 +154,14 @@ module.exports = {
 
 	// Vista (datosDuros)
 	validaDatosDuros: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
+		// Variables
+		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		const datos = {imgOpcional: !["FA", "IM"].includes(datosDuros.fuente), ...req.query};
+		const campos = Object.keys(datos);
+
 		// Averigua los errores solamente para esos campos
-		let errores = await valida.datosDuros(campos, req.query);
+		let errores = await valida.datosDuros(campos, datos);
+
 		// Devuelve el resultado
 		return res.json(errores);
 	},
