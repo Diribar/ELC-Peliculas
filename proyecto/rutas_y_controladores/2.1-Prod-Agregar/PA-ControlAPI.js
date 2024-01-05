@@ -117,6 +117,7 @@ module.exports = {
 			// Obtiene más información del producto
 			const TMDB_entidad = datos.TMDB_entidad;
 			const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
+			if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
 
 			// Guarda los datos originales en una cookie
 			res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
@@ -156,7 +157,7 @@ module.exports = {
 	validaDatosDuros: async (req, res) => {
 		// Variables
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		const datos = {imgOpcional: !["FA", "IM"].includes(datosDuros.fuente), ...req.query};
+		const datos = {imgOpcional: datosDuros.imgOpcional, ...req.query};
 		const campos = Object.keys(datos);
 
 		// Averigua los errores solamente para esos campos
