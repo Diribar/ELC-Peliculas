@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 		// Acciones si está todo procesado
 		else if (todoProcesado && !resultado.quedanCampos) {
 			// Variables
-			const cola = "?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TE");
+			const cola = "?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TR");
 
 			// 1. Si el registro pasó al status 'aprobado', publica el cartel
 			if (resultado.statusAprob) {
