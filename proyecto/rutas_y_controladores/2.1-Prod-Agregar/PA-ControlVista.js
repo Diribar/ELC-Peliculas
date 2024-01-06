@@ -394,6 +394,21 @@ module.exports = {
 			// Obtiene el Data Entry de session y cookies
 			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
 			if (req.query.entidad) IM.entidad = req.query.entidad;
+			else if (IM.entidad) {
+				// Crea la variable de destino
+				let destino = req.originalUrl;
+				const indice = destino.indexOf("?");
+				if (indice > 0) destino = destino.slice(0, indice);
+				if (destino.slice(-1) == "/") destino = destino.slice(0, -1);
+
+				// Le agrega los parámetros
+				destino += "/?entidad=" + IM.entidad;
+				if (IM.coleccion_id) destino += "&coleccion_id=" + IM.coleccion_id;
+				if (IM.temporada) destino += "&temporada=" + IM.temporada;
+
+				// Fin
+				return res.redirect(destino);
+			}
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -404,12 +419,9 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Prepara los datos y los guarda en 'session' y 'cookie'
-			let IM = {
-				...req.body,
-				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
-			};
-			IM.fuente = IM.ingreso_fa ? "FA" : "IM";
-			if (IM.fuente == "IM") IM.imgOpcional = "NO";
+			let IM = {...req.body, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad)};
+			if (req.query.ingreso_fa) IM.fuente = "FA";
+			else IM = {...IM, fuente: "IM", imgOpcional: "NO"};
 
 			// Copia session y cookie
 			req.session.IM = IM;
@@ -447,7 +459,7 @@ module.exports = {
 			res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			let sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
@@ -490,23 +502,31 @@ module.exports = {
 			let errores = valida.FA(FA);
 			if (errores.hay) return res.redirect(req.originalUrl);
 
+			// Procesa la información
+			const datosDuros = {...procesos.FA.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
+
 			// Si es un capítulo, termina y redirige a la edición
-			if (FA.entidad == "capitulos") {
+			if (datosDuros.entidad == "capitulos") {
 				// Variables
 				const userID = req.session.usuario.id;
-				FA.creadoPor_id = userID;
-				FA.statusSugeridoPor_id = userID;
+				datosDuros.creadoPor_id = userID;
+				datosDuros.statusSugeridoPor_id = userID;
 
 				// Guarda el registro original
-				const registro = await BD_genericas.agregaRegistro("capitulos", FA);
+				const registro = await BD_genericas.agregaRegistro("capitulos", datosDuros);
 
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
-				FA.avatar = Date.now() + path.extname(FA.avatarUrl);
-				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + FA.avatar;
-				comp.gestionArchivos.descarga(FA.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+				datosDuros.avatar = Date.now() + path.extname(datosDuros.avatarUrl);
+				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + datosDuros.avatar;
+				await comp.gestionArchivos.descarga(datosDuros.avatarUrl, rutaYnombre);
 
 				// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
-				await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...FA}, entidad: "capitulos", userID});
+				await procsCRUD.guardaActEdicCRUD({
+					original: {...registro},
+					edicion: {...datosDuros},
+					entidad: "capitulos",
+					userID,
+				});
 
 				// Elimina todas las session y cookie del proceso AgregarProd
 				procesos.borraSessionCookies(req, res, "IM"); // se borra desde el posterior a 'IM'
@@ -516,7 +536,6 @@ module.exports = {
 			}
 
 			// Actualiza Session y Cookies de datosDuros
-			const datosDuros = {...procesos.FA.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
 			req.session.datosDuros = datosDuros;
 			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
