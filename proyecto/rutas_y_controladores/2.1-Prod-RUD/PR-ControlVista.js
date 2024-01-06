@@ -275,7 +275,7 @@ module.exports = {
 			// Fin
 			return edicion
 				? res.redirect(req.originalUrl) // Recarga la vista
-				: origen == "TE"
+				: origen == "TR"
 				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la vista sin la edición
 		},

@@ -65,7 +65,7 @@ module.exports = {
 
 			// Más variables
 			const {entidad, id, prodEntidad, prodID} = req.query;
-			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
+			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TR" : "";
 			const userID = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
