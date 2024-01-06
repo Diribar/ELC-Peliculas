@@ -44,7 +44,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.validacs.longitud(dato, campo.corto, campo.largo);
 					if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
 					if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
-				} else respuesta = datos.entidad != "capitulos" ? variables.inputVacio : "";
+				} else respuesta = variables.inputVacio;
 
 				// Fin
 				errores[nombre] = respuesta;
@@ -54,9 +54,7 @@ module.exports = {
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("anoEstreno"))
 			errores.anoEstreno = !datos.anoEstreno
-				? datos.entidad != "capitulos"
-					? variables.inputVacio
-					: ""
+				? variables.inputVacio
 				: formatoAno(datos.anoEstreno)
 				? "Debe ser un número de 4 dígitos"
 				: datos.anoEstreno < 1900
@@ -66,9 +64,7 @@ module.exports = {
 				: "";
 		if (campos.includes("anoFin"))
 			errores.anoFin = !datos.anoFin
-				? datos.entidad != "capitulos"
-					? variables.inputVacio
-					: ""
+				? variables.inputVacio
 				: formatoAno(datos.anoFin)
 				? "Debe ser un número de 4 dígitos"
 				: datos.anoFin < 1900
@@ -78,9 +74,7 @@ module.exports = {
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
-				? datos.entidad != "capitulos"
-					? variables.inputVacio
-					: ""
+				? variables.inputVacio
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
 				: datos.duracion > 300
@@ -88,18 +82,15 @@ module.exports = {
 				: "";
 		if (campos.includes("paises_id"))
 			errores.paises_id = !datos.paises_id
-				? datos.entidad != "capitulos"
-					? variables.inputVacio
-					: ""
+				? variables.inputVacio
 				: datos.paises_id.length > 2 * 1 + 3 * 4
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idiomaOriginal_id"))
-			errores.idiomaOriginal_id = !datos.idiomaOriginal_id && datos.entidad != "capitulos" ? variables.inputVacio : "";
+			errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
 
 		// Personas
-		if (campos.includes("avatar"))
-			errores.avatar = datos.avatar || datos.entidad != "capitulos" ? comp.validacs.avatar(datos) : "";
+		if (campos.includes("avatar")) errores.avatar = datos.avatar ? comp.validacs.avatar(datos) : "";
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
@@ -139,17 +130,14 @@ module.exports = {
 		let camposPosibles = ["cfc", "bhr", "musical", "color", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
-			if (campos.includes(campo))
-				errores[campo] =
-					!datos[campo] && datos[campo] !== false && datos.entidad != "capitulos" ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
+			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLVs
 		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 		if (campos.some((n) => rclvs_id.includes(n)))
 			errores.RCLV =
-				datos.entidad != "capitulos" && // no es un capítulo
 				rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
-					? "Necesitamos que respondas alguna de las opciones"
+					? variables.rclvSinElegir
 					: "";
 
 		// Consolida la información
