@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 		if (!edicion) {
 			if (!origen) {
 				const {baseUrl} = comp.reqBasePathUrl(req);
-				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
+				origen = baseUrl == "/revision" ? "TR" : baseUrl == "/rclv" ? "DTR" : "DTP";
 			}
 			informacion = {
 				mensajes: ["No encontramos esa edición."],
@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const {baseUrl} = comp.reqBasePathUrl(req);
 		const revision = baseUrl == "/revision";
-		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
+		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TR");
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let edicion;
 
@@ -48,7 +48,7 @@ module.exports = async (req, res, next) => {
 			// Mensaje si no existe una edición
 			if (!edicion) {
 				// Acciones si el origen no es revisión
-				if (origen != "TE") return res.redirect("/" + familia + "/edicion/" + cola);
+				if (origen != "TR") return res.redirect("/" + familia + "/edicion/" + cola);
 
 				// Mensaje si el origen es revisión
 				informacion = {
