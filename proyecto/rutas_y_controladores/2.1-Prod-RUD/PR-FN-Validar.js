@@ -20,7 +20,7 @@ module.exports = {
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares
-		if (datos.entidad != "capitulos" && datos.statusRegistro_id != creado_id) {
+		if (datos.statusRegistro_id != creado_id) {
 			if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 		}
@@ -30,12 +30,9 @@ module.exports = {
 
 		// Averigua si hay errores
 		delete errores.hay;
-		if (entidad != "capitulos")
-			errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id;
-		else
-			for (let campo in errores)
-				if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
-					errores.hay = true;
+		for (let campo in errores)
+			if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
+				errores.hay = true;
 		errores.hay = !!errores.hay;
 
 		// Fin
