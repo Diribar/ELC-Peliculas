@@ -21,8 +21,9 @@
 		<!-- Colección -->
 		<div class="flexRowAlign">
 			<% if (links.TR.length) { %><h4 id="coleccion">Colección</h4><% } %>
-			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>">
-				<button class="pointer scale">Ir al primer capítulo</button>
+			<% const cola = locals.urlDestino ? ("&urlDestino=" + urlDestino) : "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + rutaCRUD %> %>
+			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
+				<button type="button" class="pointer scale">Ir al primer capítulo</button>
 			</a>
 		</div>
 	<% } %>
