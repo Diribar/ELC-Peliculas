@@ -36,7 +36,10 @@ module.exports = {
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			const palabrasClave = req.session.desambiguar.palabrasClave;
+			const palabrasClave =
+				req.session.desambiguar && req.session.desambiguar.palabrasClave
+					? req.session.desambiguar.palabrasClave
+					: req.cookies.desambiguar.palabrasClave;
 
 			// Obtiene los productos y los conserva en session
 			req.session.desambiguar.prodProv = await buscar_x_PC.search(palabrasClave);
