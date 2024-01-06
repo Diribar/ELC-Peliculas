@@ -422,8 +422,9 @@ module.exports = {
 			// Si es un capítulo, compara su temporada vs la cant. de temps. en la colección
 			if (IM.entidad == "capitulos") {
 				const coleccion = await BD_genericas.obtienePorId("colecciones", IM.coleccion_id);
-				if (!coleccion.cantTemps || coleccion.cantTemps < Number(IM.cantTemps))
-					BD_genericas.actualizaPorId("colecciones", IM.coleccion_id, {cantTemps: IM.cantTemps});
+				console.log(425, coleccion.cantTemps, Number(IM.temporada));
+				if (!coleccion.cantTemps || coleccion.cantTemps < Number(IM.temporada))
+					await BD_genericas.actualizaPorId("colecciones", IM.coleccion_id, {cantTemps: IM.temporada});
 			}
 
 			// Si es un IM y un capítulo, termina y redirige a la edición
