@@ -17,6 +17,7 @@ window.addEventListener("load", async () => {
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		coleccion_id: new URL(location.href).searchParams.get("coleccion_id"),
 		temporada: new URL(location.href).searchParams.get("temporada"),
+		capitulo: new URL(location.href).searchParams.get("capitulo"),
 	};
 
 	// Funciones
@@ -24,7 +25,7 @@ window.addEventListener("load", async () => {
 		// Inputs
 		entidadConValor: async function () {
 			// Autofocus
-			DOM.entidad.focus()
+			DOM.entidad.focus();
 
 			// Es una película o colección
 			if (DOM.entidad.value != "capitulos") {
@@ -68,7 +69,7 @@ window.addEventListener("load", async () => {
 		},
 		coleccionConValor: async function () {
 			// Autofocus
-			DOM.coleccion_id.focus()
+			DOM.coleccion_id.focus();
 
 			// Existe un valor
 			if (!DOM.coleccion_id.value) return;
@@ -98,7 +99,7 @@ window.addEventListener("load", async () => {
 		},
 		temporadaConValor: async function () {
 			// Autofocus
-			DOM.temporada.focus()
+			DOM.temporada.focus();
 
 			// Existe un valor
 			if (!DOM.temporada.value) return;
@@ -113,11 +114,13 @@ window.addEventListener("load", async () => {
 				.then((n) => n.map((m) => m.numero));
 
 			// Agrega los capítulos vigentes más uno
-			const cantCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
-			for (let numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
+			const maxCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
+			for (let numCapitulo = 1; numCapitulo <= maxCapitulos + 1; numCapitulo++) {
+				if (capitulos.includes(numCapitulo)) continue;
 				const opcion = document.createElement("option");
 				opcion.value = numCapitulo;
 				opcion.innerHTML = "Capítulo " + numCapitulo;
+				if (opcion.value == v.capitulo) opcion.selected = true;
 				DOM.capitulo.appendChild(opcion);
 			}
 
@@ -130,7 +133,7 @@ window.addEventListener("load", async () => {
 		},
 		capituloConValor: () => {
 			// Autofocus
-			DOM.capitulo.focus()
+			DOM.capitulo.focus();
 
 			// Existe un valor
 			if (!DOM.capitulo.value) return;
