@@ -13,7 +13,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Partes del formulario */
 #edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 .labelInput .inputError .input {width: 100%;}
-.errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: transparent; cursor: pointer;}
+.errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
 #primeraColumna {width: 350px;}
 #primeraColumna .inputError {width: 100%;}
 #primeraColumna .labelInput .inputError {max-width: 200px;}
