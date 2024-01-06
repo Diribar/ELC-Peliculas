@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 				// Variables
 				const mensaje = errores[campo] ? errores[campo] : "";
 				const mensajeSensible = ![v.inputVacio, v.selectVacio, v.rclvSinElegir].includes(mensaje);
-				const error = mensaje && (v.entidad != "capitulos" || mensajeSensible);
+				const error = mensaje && mensajeSensible;
 				const advertencia = mensaje && !error;
 
 				// Actualiza los mensajes
