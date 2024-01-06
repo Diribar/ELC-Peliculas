@@ -84,7 +84,7 @@ module.exports = {
 			// Entidades
 			destino = destino
 				? destino
-				: origen == "TE"
+				: origen == "TR"
 				? "/revision/tablero-de-control"
 				: origen == "TM"
 				? "/mantenimiento"
