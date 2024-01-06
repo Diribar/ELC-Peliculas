@@ -10,6 +10,7 @@ window.addEventListener("load", async () => {
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		iconosAdvertencia: document.querySelectorAll(".inputError .fa-triangle-exclamation"),
 		mensajesError: document.querySelectorAll(".inputError .fa-circle-xmark .mensajeError"),
 		mensajesAdvertencia: document.querySelectorAll(".inputError .fa-triangle-exclamation .mensajeError"),
 
@@ -136,13 +137,20 @@ window.addEventListener("load", async () => {
 			// Actualiza los errores
 			v.camposError.forEach((campo, indice) => {
 				// Variables
-				let mensaje = errores[campo];
-				DOM.mensajesError[indice].innerHTML = mensaje;
+				const mensaje = errores[campo] ? errores[campo] : "";
+				const mensajeSensible = ![v.inputVacio, v.selectVacio, v.rclvSinElegir].includes(mensaje);
+				const error = mensaje && (v.entidad != "capitulos" || mensajeSensible);
+				const advertencia = mensaje && !error;
+
+				// Actualiza los mensajes
+				DOM.mensajesError[indice].innerHTML = error ? mensaje : "";
+				DOM.mensajesAdvertencia[indice].innerHTML = advertencia ? mensaje : "";
 
 				// Acciones en función de si hay o no mensajes de error
-				errores[campo]
-					? DOM.iconosError[indice].classList.remove("ocultar")
-					: DOM.iconosError[indice].classList.add("ocultar");
+				error ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
+				advertencia
+					? DOM.iconosAdvertencia[indice].classList.remove("ocultar")
+					: DOM.iconosAdvertencia[indice].classList.add("ocultar");
 			});
 
 			// Fin
@@ -177,8 +185,9 @@ window.addEventListener("load", async () => {
 				DOM.botonesEliminar[0].classList.remove("inactivoVersion");
 
 				// Activa / Inactiva Guardar, dependiendo de si hay errores en la edición nueva
-				if (errores.sensible) DOM.botonGuardar.classList.add("inactivoVersion");
-				else DOM.botonGuardar.classList.remove("inactivoVersion");
+				errores.hay
+					? DOM.botonGuardar.classList.add("inactivoVersion")
+					: DOM.botonGuardar.classList.remove("inactivoVersion");
 			}
 
 			// Fin
