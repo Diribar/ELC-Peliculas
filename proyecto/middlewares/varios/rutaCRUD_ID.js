@@ -24,7 +24,6 @@ module.exports = async (req, res, next) => {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
 		res.locals.capID = await BD_genericas.obtienePorCondicion("capitulos", condicion).then((n) => n.id);
 		const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + res.locals.capID + "&origen=" + res.locals.rutaCRUD;
-		console.log(6, encodeURIComponent(urlDestino));
 		res.locals.urlDestino = encodeURIComponent(urlDestino);
 	}
 
