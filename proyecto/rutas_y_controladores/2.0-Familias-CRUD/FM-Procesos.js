@@ -57,16 +57,17 @@ module.exports = {
 
 			// Si existe la edición pero no su 'ID' --> se agrega el registro
 			if (!edicion.id) {
-				// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
 				// 1. campo_id, editadoPor_id
 				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
 				edicion.editadoPor_id = userID;
+
 				// 2. producto_id (links)
 				if (entidad == "links") {
 					let producto_id = comp.obtieneDesdeEdicion.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
 				}
+
 				// Se agrega el registro
 				await BD_genericas.agregaRegistro(entidadEdic, edicion);
 			}
