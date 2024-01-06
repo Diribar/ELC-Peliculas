@@ -75,7 +75,8 @@
 				<label class="inactivo submit" for="inputSubmit" title="Avanzar mediante Film Affinity">
 					<img src="/publico/imagenes/Logos-gral/BD-FA.jpg" alt="FA" height="30px">
 				</label>
-				<input id="inputSubmit" type="submit" class="submit" formaction="<%= urlActual %>/?ingreso_fa=true" formmethod="post" >
+				<% const cola = (!urlActual.includes("/?") ? "/?" : "&") + "ingreso_fa=true" %>
+				<input id="inputSubmit" type="submit" class="submit" formaction="<%= urlActual + cola %>" formmethod="post" >
 			<% } %>
 		</section>
 	</form>
