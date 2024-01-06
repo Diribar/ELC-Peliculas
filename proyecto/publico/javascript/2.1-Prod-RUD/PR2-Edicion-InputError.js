@@ -10,7 +10,8 @@ window.addEventListener("load", async () => {
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+		mensajesError: document.querySelectorAll(".inputError .fa-circle-xmark .mensajeError"),
+		mensajesAdvertencia: document.querySelectorAll(".inputError .fa-triangle-exclamation .mensajeError"),
 
 		// Variables de país
 		paisesID: document.querySelector("#paises_id input[name='paises_id']"), // Lugar donde almacenar los ID
