@@ -329,6 +329,7 @@ module.exports = {
 			// Variables
 			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
 			const userID = req.session.usuario.id;
+			let condics;
 
 			// Verifica errores
 			const errores = valida.calificar({feValores_id, entretiene_id, calidadTecnica_id});
@@ -349,7 +350,7 @@ module.exports = {
 			valores.resultado = Math.round(resultado);
 
 			// Averigua si existe la calificacion
-			const condics = {usuario_id: userID, entidad, entidad_id};
+			condics = {usuario_id: userID, entidad, entidad_id};
 			const existe = await BD_genericas.obtienePorCondicion("calRegistros", condics);
 			existe
 				? await BD_genericas.actualizaPorId("calRegistros", existe.id, valores)
@@ -359,11 +360,12 @@ module.exports = {
 			await procesos.actualizaCalifProd({entidad, entidad_id});
 
 			// Actualiza la ppp
-			const interesDelUsuario = await procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id});
-			if (interesDelUsuario.id == sinPref.id) {
-				const datos = {usuario_id: userID, entidad, entidad_id, opcion_id: yaLaVi.id};
-				await BD_genericas.agregaRegistro("pppRegistros", datos);
-			}
+			condics = {usuario_id: userID, entidad, entidad_id};
+			const interesDelUsuario = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
+			const novedades = {usuario_id: userID, entidad, entidad_id, opcion_id: yaLaVi.id};
+			interesDelUsuario
+				? await BD_genericas.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
+				: await BD_genericas.agregaRegistro("pppRegistros", novedades);
 
 			// Fin
 			return res.redirect(req.originalUrl);
