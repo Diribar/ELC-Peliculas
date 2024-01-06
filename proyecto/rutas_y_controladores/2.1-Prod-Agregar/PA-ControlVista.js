@@ -319,15 +319,12 @@ module.exports = {
 			// Avatar - si ya se había descargado el avatar (IM y algunos TMDB), lo mueve de 'provisorio' a 'revisar'
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
-			// EDICION -------------------------------------
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 			await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
-			// RCLV
-			// Actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro);
-			// No es necesario el 'await', el proceso no necesita ese resultado
+				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 			// SESSION Y COOKIES
 			// Establece como vista anterior la vista del primer paso
@@ -406,10 +403,9 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// 1. Prepara los datos y los guarda en 'session' y 'cookie'
+			// Prepara los datos y los guarda en 'session' y 'cookie'
 			let IM = {
 				...req.body,
-				...req.query,
 				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 			};
 			IM.fuente = IM.ingreso_fa ? "FA" : "IM";
@@ -419,9 +415,33 @@ module.exports = {
 			req.session.IM = IM;
 			res.cookie("IM", IM, {maxAge: unDia});
 
-			// 2. Si hay errores de validación, redirecciona al Form
+			// Si hay errores de validación, redirecciona al Form
 			let errores = await valida.IM(IM);
 			if (errores.hay) return res.redirect(req.baseUrl + req.path); // No se puede usar 'req.originalUrl' porque en el query tiene la alusión a FA
+
+			// Si es un capítulo, compara su temporada vs la cant. de temps. en la colección
+			if (IM.entidad == "capitulos") {
+				const coleccion = await BD_genericas.obtienePorId("colecciones", IM.coleccion_id);
+				if (!coleccion.cantTemps || coleccion.cantTemps < Number(IM.cantTemps))
+					BD_genericas.actualizaPorId("colecciones", IM.coleccion_id, {cantTemps: IM.cantTemps});
+			}
+
+			// Si es un IM y un capítulo, termina y redirige a la edición
+			if (IM.fuente == "IM" && IM.entidad == "capitulos") {
+				// Variables
+				const userID = req.session.usuario.id;
+				IM.creadoPor_id = userID;
+				IM.statusSugeridoPor_id = userID;
+
+				// Guarda el registro
+				const registro = await BD_genericas.agregaRegistro("capitulos", IM);
+
+				// Elimina todas las session y cookie del proceso AgregarProd
+				procesos.borraSessionCookies(req, res, "borrarTodo");
+
+				// Redirecciona
+				return res.redirect("/producto/edicion/?entidad=" + IM.entidad + "&id=" + registro.id);
+			}
 
 			// Guarda en 'cookie' de datosOriginales
 			res.cookie("datosOriginales", IM, {maxAge: unDia});
