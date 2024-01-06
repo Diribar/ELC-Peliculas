@@ -22,7 +22,7 @@
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	<!-- Links a sitios externos para buscar imágenes alternativas -->
 	<nav class="agregados">
-		<% const nombre = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : registro.nombreOriginal.toLowerCase() %>
+		<% const nombre = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : registro.nombreOriginal ? registro.nombreOriginal.toLowerCase() : "" %>
 		<a href="<%= '//google.com/search?q=' + nombre + '&tbm=isch&tbs=isz:l&hl=es-419' %>" target="_blank">
 			<img src="/publico/imagenes/Logos-gral/BD-Google.jpg" title="Buscar en Google" class="scale">
 		</a>
