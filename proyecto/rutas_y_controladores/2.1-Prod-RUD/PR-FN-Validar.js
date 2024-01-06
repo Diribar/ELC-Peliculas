@@ -18,6 +18,7 @@ module.exports = {
 		const erroresDD = await validaProd.datosDuros(campos, datos);
 		const erroresDA = validaProd.datosAdics(campos, datos);
 		let errores = {...erroresDD, ...erroresDA};
+		delete errores.hay;
 
 		// Si corresponde, agrega campos particulares
 		if (datos.entidad != "capitulos" && datos.statusRegistro_id != creado_id) {
@@ -25,19 +26,11 @@ module.exports = {
 			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 		}
 
-		// Consolida si hay un error
+		// Lleva los errores a su mínima expresión
+		for (let campo in errores) if (!errores[campo]) delete errores[campo];
+		if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
+			errores.sensible = true;
 		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id;
-		delete erroresDD.hay;
-		delete erroresDA.hay;
-		for (let campo in errores)
-			if (
-				campo != "hay" &&
-				errores[campo] &&
-				errores[campo] != variables.selectVacio &&
-				!errores[campo].startsWith(variables.inputVacio) &&
-				errores[campo] != "Necesitamos que respondas alguna de las opciones"
-			)
-				errores.sensible = true;
 
 		// Fin
 		return errores;
