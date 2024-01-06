@@ -500,7 +500,7 @@ module.exports = {
 				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + datosDuros.avatar;
 				await comp.gestionArchivos.descarga(datosDuros.avatarUrl, rutaYnombre);
 
-				// Actualiza el archivo original
+				// Guarda el original
 				return accionesParaCapitulosIMFA(datosDuros, res);
 			}
 
