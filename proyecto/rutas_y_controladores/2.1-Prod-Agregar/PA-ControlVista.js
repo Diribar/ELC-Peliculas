@@ -286,10 +286,10 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario.id;
-			const entidad = req.cookies.datosOriginales.entidad;
 
 			// Obtiene el Data Entry de session y cookies
 			const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			const entidad = confirma.entidad;
 
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 			if (!confirma.sinRCLV) {
@@ -440,7 +440,7 @@ module.exports = {
 				procesos.borraSessionCookies(req, res, "IM");
 
 				// Redirecciona
-				return res.redirect("/producto/edicion/?entidad=" + IM.entidad + "&id=" + registro.id);
+				return res.redirect("/producto/edicion/?entidad=capitulos&id=" + registro.id);
 			}
 
 			// Guarda en 'cookie' de datosOriginales
@@ -461,14 +461,14 @@ module.exports = {
 			// Variables
 			const tema = "prodAgregar";
 			const codigo = "FA";
-			const FA = req.session.FA ? req.session.FA : req.cookies.FA;
+			const dataEntry = req.session.FA ? req.session.FA : req.cookies.FA;
 
 			// Fin
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo: "Agregar - Copiar FA",
-				dataEntry: FA,
+				dataEntry,
 			});
 		},
 		guardar: async (req, res) => {
@@ -489,6 +489,31 @@ module.exports = {
 			// Si hay errores de validación, redirecciona
 			let errores = valida.FA(FA);
 			if (errores.hay) return res.redirect(req.originalUrl);
+
+			// Si es un capítulo, termina y redirige a la edición
+			if (FA.entidad == "capitulos") {
+				// Variables
+				const userID = req.session.usuario.id;
+				FA.creadoPor_id = userID;
+				FA.statusSugeridoPor_id = userID;
+
+				// Guarda el registro original
+				const registro = await BD_genericas.agregaRegistro("capitulos", FA);
+
+				// Descarga el avatar en la carpeta 'Prods-Revisar'
+				FA.avatar = Date.now() + path.extname(FA.avatarUrl);
+				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + FA.avatar;
+				comp.gestionArchivos.descarga(FA.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+
+				// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
+				await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...FA}, entidad: "capitulos", userID});
+
+				// Elimina todas las session y cookie del proceso AgregarProd
+				procesos.borraSessionCookies(req, res, "IM"); // se borra desde el posterior a 'IM'
+
+				// Redirecciona
+				return res.redirect("/producto/edicion/?entidad=capitulos&id=" + registro.id);
+			}
 
 			// Actualiza Session y Cookies de datosDuros
 			const datosDuros = {...procesos.FA.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
