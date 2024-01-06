@@ -15,13 +15,17 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		entidad: new URL(location.href).searchParams.get("entidad"),
-		coleccion_id: new URL(location.href).searchParams.get("id"),
+		coleccion_id: new URL(location.href).searchParams.get("coleccion_id"),
+		temporada: new URL(location.href).searchParams.get("temporada"),
 	};
 
 	// Funciones
 	let FN = {
 		// Inputs
 		entidadConValor: async function () {
+			// Autofocus
+			DOM.entidad.focus()
+
 			// Es una película o colección
 			if (DOM.entidad.value != "capitulos") {
 				// Deja visible y accesible solamente el campo "entidad"
@@ -36,7 +40,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Es un capítulo
-			else if (DOM.entidad.value == "capitulos") {
+			else {
 				// Deja accesibles los campos que correspondan
 				this.muestraOcultaCampos(DOM.coleccion_id);
 				DOM.invisible.classList.remove("invisible");
@@ -52,16 +56,20 @@ window.addEventListener("load", async () => {
 					const opcion = document.createElement("option");
 					opcion.value = coleccion.id;
 					opcion.innerHTML = coleccion.nombreCastellano;
-					if (coleccion.id == v.coleccion_id) opcion.selected = true;
+					if (opcion.value == v.coleccion_id) opcion.selected = true;
 					DOM.coleccion_id.appendChild(opcion);
 				}
 			}
 
 			// Fin
+
 			this.coleccionConValor();
 			return;
 		},
 		coleccionConValor: async function () {
+			// Autofocus
+			DOM.coleccion_id.focus()
+
 			// Existe un valor
 			if (!DOM.coleccion_id.value) return;
 
@@ -77,6 +85,7 @@ window.addEventListener("load", async () => {
 				const opcion = document.createElement("option");
 				opcion.value = numTemporada;
 				opcion.innerHTML = cantTemporadas == 1 && numTemporada == 1 ? "Temporada única" : "Temporada " + numTemporada;
+				if (opcion.value == v.temporada) opcion.selected = true;
 				DOM.temporada.appendChild(opcion);
 			}
 
@@ -84,11 +93,15 @@ window.addEventListener("load", async () => {
 			this.muestraOcultaCampos(DOM.temporada);
 
 			// Fin
+			this.temporadaConValor();
 			return;
 		},
 		temporadaConValor: async function () {
+			// Autofocus
+			DOM.temporada.focus()
+
 			// Existe un valor
-			if (!DOM.coleccion_id.value || !DOM.temporada.value) return;
+			if (!DOM.temporada.value) return;
 
 			// Limpia las opciones de lo relacionado con capitulos
 			this.limpiaLasOpciones(DOM.capitulo);
@@ -116,8 +129,11 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		capituloConValor: () => {
+			// Autofocus
+			DOM.capitulo.focus()
+
 			// Existe un valor
-			if (!DOM.coleccion_id.value || !DOM.temporada.value) return;
+			if (!DOM.capitulo.value) return;
 
 			// Activa los submits
 			for (let submit of DOM.submits)
