@@ -13,7 +13,7 @@
 			<select name="entidad" class="input" autofocus>
 				<option value="" selected>Elegí una opción</option>
 				<% for (entidad of entidades) { %>
-					<option value="<%= entidad.codigo %>" <% if (dataEntry && dataEntry.entidad == entidad.codigo) { %>selected<% } %>>
+					<option value="<%= entidad.codigo %>" <% if (dataEntry.entidad == entidad.codigo) { %>selected<% } %>>
 						<%= entidad.nombre %>
 					</option>
 				<% } %>
@@ -22,7 +22,6 @@
 			<div class="invisible">
 				<!-- Datos del capítulo -->
 				<h3>Nombre de la Colección</h3>
-				<!-- Data Entry -->
 				<div class="inputError">
 					<select name="coleccion_id" class="input" disabled>
 						<option value="">Elejí una opción</option>
