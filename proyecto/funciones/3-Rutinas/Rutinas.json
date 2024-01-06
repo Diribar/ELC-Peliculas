@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 5/ene",
-	"HoraUTC": "20:35",
+	"FechaUTC": "Sáb. 6/ene",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"03-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"04-ene-24": {"titulo": "Santa Isabel Ana Seton", "entidad": "personajes", "id": 130},
 		"05-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"06-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
-		"07-ene-24": {"titulo": "Bautismo de Nuestro Señor", "entidad": "hechos", "id": 61}
+		"07-ene-24": {"titulo": "Bautismo de Nuestro Señor", "entidad": "hechos", "id": 61},
+		"08-ene-24": {"titulo": "ELC - Películas"}
 	}
 }
