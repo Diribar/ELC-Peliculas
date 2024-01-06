@@ -447,11 +447,13 @@ module.exports = {
 			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			req.session.FA = IM;
-			res.cookie("FA", IM, {maxAge: unDia});
+			const sigPaso = IM.fuente = "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			req.session[sigPaso.codigo] = IM;
+			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("../ingreso-fa");
+			const {baseUrl} = comp.reqBasePathUrl(req);
+			return res.redirect(baseUrl + sigPaso.url);
 		},
 	},
 	copiarFA: {
