@@ -28,12 +28,15 @@ module.exports = {
 		// Lleva los errores a su mínima expresión
 		for (let campo in errores) if (!errores[campo]) delete errores[campo];
 
-		// Averigua si hay errores
+		// Obtiene errores 'sensible'
 		delete errores.hay;
 		for (let campo in errores)
 			if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
-				errores.hay = true;
-		errores.hay = !!errores.hay;
+				errores.sensible = true;
+
+		// Resumen de errores
+		errores.sensible = !!errores.sensible; // se usa para guardar una edición
+		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id; // se usa para cambiar de status a 'aprobado'
 
 		// Fin
 		return errores;
