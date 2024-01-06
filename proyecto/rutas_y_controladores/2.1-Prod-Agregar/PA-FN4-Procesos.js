@@ -7,6 +7,7 @@ const procsComp = require("./PA-FN5-Compartidos");
 module.exports = {
 	// USO COMPARTIDO *********************
 	borraSessionCookies: (req, res, paso) => {
+		// Variables
 		const etapas = [
 			"borrarTodo",
 			"palabrasClave",
@@ -20,11 +21,16 @@ module.exports = {
 			"terminaste",
 		];
 		const inicio = etapas.indexOf(paso) + 1;
+
+		// Elimina las sessions y cookies
 		for (let i = inicio; i < etapas.length; i++) {
 			const etapa = etapas[i];
 			if (req.session && req.session[etapa]) delete req.session[etapa];
 			if (req.cookies && req.cookies[etapa]) res.clearCookie(etapa);
 		}
+
+		// Fin
+		return
 	},
 	datosAdics: {
 		quitaCamposRCLV: (datos) => {
