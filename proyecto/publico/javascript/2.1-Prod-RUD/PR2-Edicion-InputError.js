@@ -138,6 +138,7 @@ window.addEventListener("load", async () => {
 				// Variables
 				let mensaje = errores[campo];
 				DOM.mensajesError[indice].innerHTML = mensaje;
+
 				// Acciones en función de si hay o no mensajes de error
 				errores[campo]
 					? DOM.iconosError[indice].classList.remove("ocultar")
