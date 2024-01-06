@@ -196,12 +196,10 @@ module.exports = {
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
 		let datos = await BD_genericas.obtieneTodos("colecciones", "nombreCastellano");
-		// Deja solamente las que no son de TMDB
-		datos = datos.filter((n) => !n.TMDB_id);
+
 		// Deja solamente los campos 'id' y 'nombreCastellano'
-		datos = datos.map((m) => {
-			return {id: m.id, nombreCastellano: m.nombreCastellano};
-		});
+		datos = datos.map((n) => ({id: n.id, nombreCastellano: n.nombreCastellano + " (" + n.anoEstreno + ")"}));
+
 		// Fin
 		return res.json(datos);
 	},
