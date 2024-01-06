@@ -385,29 +385,24 @@ module.exports = {
 	// Ingresos Manuales
 	IM: {
 		form: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "prodAgregar";
 			const codigo = "IM";
-
-			// Obtiene el Data Entry de session y cookies
-			let IM = req.session.IM ? req.session.IM : req.cookies.IM;
-
-			// Datos para la vista
-			let entidades = [
-				{codigo: "peliculas", nombre: "Películas"},
-				{codigo: "colecciones", nombre: "Colecciones"},
+			const entidades = [
+				{codigo: "peliculas", nombre: "Película"},
+				{codigo: "colecciones", nombre: "Colección"},
 				{codigo: "capitulos", nombre: "Capítulo de una colección"},
 			];
 
+			// Obtiene el Data Entry de session y cookies
+			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
+			if (req.query.entidad) IM.entidad = req.query.entidad;
+
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Agregar - Tipo de Producto",
-				dataEntry: IM,
-				autorizadoFA: req.session.usuario.autorizadoFA,
-				entidades,
-				urlActual: req.session.urlActual,
+				...{tema, codigo, titulo: "Agregar - Tipo de Producto"},
+				...{entidades, dataEntry: IM},
+				...{autorizadoFA: req.session.usuario.autorizadoFA, urlActual: req.session.urlActual},
 			});
 		},
 		guardar: async (req, res) => {
