@@ -72,8 +72,7 @@ module.exports = {
 	},
 	obtieneCapitulos: async (req, res) => {
 		// Variables
-		const coleccion_id = req.query.coleccion_id;
-		const temporada = req.query.temporada;
+		const {coleccion_id, temporada} = req.query;
 
 		// Obtiene los datos
 		const datos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
