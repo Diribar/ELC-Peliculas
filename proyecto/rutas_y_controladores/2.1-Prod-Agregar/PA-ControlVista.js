@@ -437,7 +437,7 @@ module.exports = {
 				const registro = await BD_genericas.agregaRegistro("capitulos", IM);
 
 				// Elimina todas las session y cookie del proceso AgregarProd
-				procesos.borraSessionCookies(req, res, "borrarTodo");
+				procesos.borraSessionCookies(req, res, "IM");
 
 				// Redirecciona
 				return res.redirect("/producto/edicion/?entidad=" + IM.entidad + "&id=" + registro.id);
