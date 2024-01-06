@@ -69,9 +69,8 @@ window.addEventListener("load", async () => {
 			this.limpiaLasOpciones(DOM.temporada);
 
 			// Obtiene la cantidad de temporadas de la colección
-			const cantTemporadas = await fetch("/producto/agregar/api/obtiene-cantTemps/?id=" + DOM.coleccion_id.value).then(
-				(n) => n.json()
-			);
+			const ruta = "/producto/agregar/api/obtiene-cantTemps/?id=";
+			const cantTemporadas = await fetch(ruta + DOM.coleccion_id.value).then((n) => n.json());
 
 			// Agrega las temporadas vigentes más una
 			for (let numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
@@ -96,11 +95,11 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los capitulos de la temporada
 			const ruta = "/crud/api/obtiene-capitulos/";
-			const capitulos = await fetch(
-				ruta + "?coleccion_id=" + DOM.coleccion_id.value + "&temporada=" + DOM.temporada.value
-			).then((n) => n.json());
+			const capitulos = await fetch(ruta + "?coleccion_id=" + DOM.coleccion_id.value + "&temporada=" + DOM.temporada.value)
+				.then((n) => n.json())
+				.then((n) => n.map((m) => m.numero));
 
-			// Agrega las temporadas vigentes más una
+			// Agrega los capítulos vigentes más uno
 			const cantCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
 			for (let numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
 				const opcion = document.createElement("option");
