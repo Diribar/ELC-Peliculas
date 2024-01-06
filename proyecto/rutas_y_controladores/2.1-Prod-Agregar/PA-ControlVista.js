@@ -499,21 +499,18 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Procesa la información
-			let datosDuros = procesos.FA.infoFAparaDD(FA);
+			let datosDuros = {...procesos.FA.infoFAparaDD(FA), ...FA};
+			delete datosDuros.url;
+			delete datosDuros.contenido;
 
 			// Acciones si es un capítulo
 			if (datosDuros.entidad == "capitulos") {
-				// Actualiza los datos
-				const {avatarUrl, creadoPor_id, statusSugeridoPor_id} = FA;
-				datosDuros = {...datosDuros, creadoPor_id, statusSugeridoPor_id};
-
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
-				datosDuros.avatar = Date.now() + path.extname(avatarUrl);
+				datosDuros.avatar = Date.now() + path.extname(FA.avatarUrl);
 				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + datosDuros.avatar;
-				await comp.gestionArchivos.descarga(avatarUrl, rutaYnombre);
+				await comp.gestionArchivos.descarga(FA.avatarUrl, rutaYnombre);
 
 				// Guarda el original
-				//return res.send(datosDuros);
 				return accionesParaCapitulosIMFA(datosDuros, req, res);
 			}
 
@@ -538,7 +535,6 @@ let accionesParaCapitulosIMFA = async (datos, req, res) => {
 		await BD_genericas.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
 
 	// Guarda el registro original
-	res.send(datos);
 	const id = await BD_genericas.agregaRegistro("capitulos", datos).then((n) => n.id);
 
 	// Elimina todas las session y cookie del proceso AgregarProd
