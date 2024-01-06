@@ -440,10 +440,7 @@ module.exports = {
 				IM.statusSugeridoPor_id = userID;
 
 				// Acciones si es un 'IM'
-				if (IM.fuente == "IM") {
-					// Actualiza el archivo original
-					return accionesParaCapitulosIMFA(IM, res);
-				}
+				if (IM.fuente == "IM") return accionesParaCapitulosIMFA(IM, res);
 			}
 
 			// Si no es un capítulo, guarda en 'cookie' de datosOriginales
