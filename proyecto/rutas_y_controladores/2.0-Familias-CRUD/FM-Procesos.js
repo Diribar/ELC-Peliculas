@@ -832,7 +832,7 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 			// Acciones por cada PRODUCTO
 			for (let original of prodsPorEnts[i]) {
 				// Si hay errores, le cambia el status
-				const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epocaOcurrencia: true}});
+				const errores = await validaPR.consolidado({datos: {...original, entidad}});
 				if (errores.impideAprobado)
 					BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
 			}
