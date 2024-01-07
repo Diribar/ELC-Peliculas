@@ -207,7 +207,7 @@ module.exports = {
 					})
 				) // fusiona el original con su edición
 				.then((n) =>
-					n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAnoHoy_id))
+					n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (m.anoFM == anoHoy && m.fechaDelAno_id < fechaDelAnoHoy_id))
 				) // sin año, año menor al actual, con fecha menor
 				.then((originales) =>
 					originales.map((original) => {
