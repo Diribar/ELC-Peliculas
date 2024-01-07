@@ -195,9 +195,9 @@ module.exports = {
 			let prodComb = {...original, ...edicion, ...req.body, id};
 			prodComb.epocaOcurrencia = revisorPERL; // si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
 			prodComb.publico = revisorPERL;
-			let errores = await valida.consolidado({datos: {...prodComb, entidad}});
+			const errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
-			// Acciones si no hay errores
+			// Acciones si no hay errores sensibles
 			if (!errores.sensible) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {

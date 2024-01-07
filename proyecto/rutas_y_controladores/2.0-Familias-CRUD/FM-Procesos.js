@@ -307,13 +307,11 @@ module.exports = {
 		},
 		prodsPosibleAprob: async function (entidad, registro) {
 			// Variables
-			const publico = true;
-			const epocaOcurrencia = true;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Acciones si no hay errores
-			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epocaOcurrencia}});
-			if (errores.hay) return false;
+			const errores = await validaPR.consolidado({datos: {...registro, entidad}});
+			if (errores.impideAprobado) return false;
 
 			// Variables
 			const ahora = comp.fechaHora.ahora();
@@ -355,9 +353,8 @@ module.exports = {
 		capsAprobs: async (colID) => {
 			// Variables
 			const ahora = comp.fechaHora.ahora();
-			const publico = true;
-			const epocaOcurrencia = true;
 			let esperar = [];
+			let datos;
 
 			// Prepara los datos
 			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
@@ -374,11 +371,11 @@ module.exports = {
 					: {};
 
 				// Revisa si cada capítulo supera el test de errores
-				let validar = {entidad: "capitulos", ...capitulo, publico, epocaOcurrencia};
-				const errores = await validaPR.consolidado({datos: validar});
+				datos = {entidad: "capitulos", ...capitulo};
+				const errores = await validaPR.consolidado({datos});
 
 				// Actualiza los datos
-				const datos = errores.hay
+				datos = errores.impideAprobado
 					? {...datosFijos, statusRegistro_id: creadoAprob_id}
 					: {...datosFijos, ...datosSugeridos, ...datosTerm};
 				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
@@ -613,7 +610,7 @@ module.exports = {
 			let prods = [];
 			let esperar = [];
 
-			// Obtiene los productos vinculados al RCLV, abierto por entidad
+			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
 				prodsPorEnts.push(
 					BD_genericas.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID}).then((n) =>
@@ -621,10 +618,9 @@ module.exports = {
 					)
 				);
 			prodsPorEnts = await Promise.all(prodsPorEnts);
-
-			// Averigua si existían productos vinculados al RCLV
 			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
 
+			// Averigua si existían productos vinculados al RCLV
 			if (prods.length) {
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)
@@ -837,7 +833,8 @@ let siHayErroresBajaElStatus = (prodsPorEnts) => {
 			for (let original of prodsPorEnts[i]) {
 				// Si hay errores, le cambia el status
 				const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epocaOcurrencia: true}});
-				if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+				if (errores.impideAprobado)
+					BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
 			}
 	});
 

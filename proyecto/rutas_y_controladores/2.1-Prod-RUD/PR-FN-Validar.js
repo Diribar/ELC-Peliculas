@@ -20,10 +20,8 @@ module.exports = {
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares
-		if (datos.statusRegistro_id != creado_id) {
-			if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
-			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
-		}
+		errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
+		errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 
 		// Lleva los errores a su mínima expresión
 		for (let campo in errores) if (!errores[campo]) delete errores[campo];
@@ -37,6 +35,7 @@ module.exports = {
 		// Resumen de errores
 		errores.sensible = !!errores.sensible; // se usa para guardar una edición
 		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id; // se usa para cambiar de status a 'aprobado'
+		errores.impideAprobado = entidad != "capitulos" ? errores.hay : errores.sensible;
 
 		// Fin
 		return errores;

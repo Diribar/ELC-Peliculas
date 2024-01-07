@@ -206,7 +206,9 @@ module.exports = {
 						return original;
 					})
 				) // fusiona el original con su edición
-				.then((n) => n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAnoHoy_id))) // sin año, año menor al actual, con fecha menor
+				.then((n) =>
+					n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (n.anoFM == anoHoy && n.fechaDelAno_id < fechaDelAnoHoy_id))
+				) // sin año, año menor al actual, con fecha menor
 				.then((originales) =>
 					originales.map((original) => {
 						const fechaRefTexto = fechasDelAno.find((n) => n.id == original.fechaDelAno_id).nombre;
@@ -425,15 +427,11 @@ module.exports = {
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
-				// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
-				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
-					? inactivo_id
-					: // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
-					// Si es un RCLV, se aprueba
-					rclv
-					? aprobado_id
-					: // Si es un producto, se revisa si tiene errores
-					(await validaPR.consolidado({datos: {...original, entidad, ...adicionales}}).then((n) => n.hay))
+				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+					? inactivo_id // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+					: rclv // Si es un RCLV, se aprueba
+					? aprobado_id // Si es un producto, se revisa si tiene errores
+					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado))
 					? creadoAprob_id
 					: aprobado_id;
 
@@ -484,7 +482,7 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const statusSugeridoPor_id = usAutom_id;
 			const statusSugeridoEn = comp.fechaHora.ahora();
-			const cambioStatus = {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id: creadoAprob_id};
+			const statusCreadoAprob = {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id: creadoAprob_id};
 
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
@@ -503,15 +501,15 @@ module.exports = {
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creadoAprob'
-					if (errores.hay) objeto = {...objeto, ...cambioStatus};
+					if (errores.impideAprobado) objeto = {...objeto, ...statusCreadoAprob};
 
 					// Actualiza el registro del producto
 					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
 
 					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
-					if (entidadProd == "colecciones" && errores.hay) {
+					if (entidadProd == "colecciones" && errores.impideAprobado) {
 						const condiciones = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
-						BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, cambioStatus);
+						BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, statusCreadoAprob);
 					}
 				}
 			}
