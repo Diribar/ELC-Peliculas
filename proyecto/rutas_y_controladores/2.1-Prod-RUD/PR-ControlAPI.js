@@ -92,9 +92,13 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const {entidad, id} = req.query;
+			const {inputVacio, selectVacio, rclvSinElegir} = {...variables};
 
 			// Tipos de actuación
-			const datos = {anime_id, documental_id, actuada_id};
+			const datos = {
+				...{anime_id, documental_id, actuada_id},
+				...{inputVacio, selectVacio, rclvSinElegir},
+			};
 			if (entidad == "capitulos")
 				datos.coleccion_id = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 

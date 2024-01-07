@@ -1,5 +1,7 @@
 /* Temas generales */
 #cuerpoFooter #cuerpo {background: var(--gris-claro); max-height: 100%;}
+.ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
+.ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
 #cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow: 1; position: relative;}
 #formCuerpoFooter #formCuerpo {display: flex; flex-direction: column; flex-grow: 1;}
@@ -11,8 +13,8 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Partes del formulario */
 #edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
-
 .labelInput .inputError .input {width: 100%;}
+.errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
 #primeraColumna {width: 350px;}
 #primeraColumna .inputError {width: 100%;}
 #primeraColumna .labelInput .inputError {max-width: 200px;}

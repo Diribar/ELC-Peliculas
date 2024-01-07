@@ -523,6 +523,7 @@ module.exports = {
 	selectVacio: "Necesitamos que elijas una opción",
 	radioVacio: "Necesitamos que elijas una opción",
 	urlDesconocida: "No tenemos esa dirección de url en nuestro sistema",
+	rclvSinElegir:"Necesitamos que respondas alguna de las opciones",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},

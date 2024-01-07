@@ -9,11 +9,11 @@
 /* Bordes */
 .ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
 .fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question, .ayudaMostrar {border-width: 1px; border-style: solid}
-.errores .fa-circle-xmark .mensajeError {border-width: 2px; border-style: solid}
+.errores :is(.fa-circle-xmark, .fa-triangle-exclamation) .mensajeError {border-width: 2px; border-style: solid}
 
 /* Donde se hace 'click' */
-.ayudaClick, .errores .fa-circle-xmark, .errores .fa-circle-check {font-size: 1rem;}
-.ayudaClick, .errores .fa-circle-xmark {position: relative; cursor: pointer;}
+.ayudaClick, .errores :is(.fa-circle-xmark, .fa-circle-check, .fa-triangle-exclamation) {font-size: 1rem;}
+.ayudaClick, .errores :is(.fa-circle-xmark, .fa-triangle-exclamation) {position: relative; cursor: pointer;}
 .errores .fa-circle-check {cursor: default;}
 
 /* Desplegables - Temas comunes */
@@ -41,7 +41,7 @@
 .mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}
 
 /* Hover */
-.errores .fa-circle-xmark:hover .mensajeError {display: inline;}
+.errores :is(.fa-circle-xmark, .fa-triangle-exclamation):hover .mensajeError {display: inline;}
 .errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
 /* Mensajes */

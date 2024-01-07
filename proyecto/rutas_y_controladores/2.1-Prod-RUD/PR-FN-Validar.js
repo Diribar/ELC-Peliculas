@@ -20,24 +20,20 @@ module.exports = {
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares
-		if (datos.entidad != "capitulos" && datos.statusRegistro_id != creado_id) {
+		if (datos.statusRegistro_id != creado_id) {
 			if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 			if (datos.epocaOcurrencia) errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 		}
 
-		// Consolida si hay un error
-		errores.hay = !!erroresDD.hay || !!erroresDA.hay || !!errores.publico_id || !!errores.epocaOcurrencia_id;
-		delete erroresDD.hay;
-		delete erroresDA.hay;
+		// Lleva los errores a su mínima expresión
+		for (let campo in errores) if (!errores[campo]) delete errores[campo];
+
+		// Averigua si hay errores
+		delete errores.hay;
 		for (let campo in errores)
-			if (
-				campo != "hay" &&
-				errores[campo] &&
-				errores[campo] != variables.selectVacio &&
-				!errores[campo].startsWith(variables.inputVacio) &&
-				errores[campo] != "Necesitamos que respondas alguna de las opciones"
-			)
-				errores.sensible = true;
+			if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
+				errores.hay = true;
+		errores.hay = !!errores.hay;
 
 		// Fin
 		return errores;

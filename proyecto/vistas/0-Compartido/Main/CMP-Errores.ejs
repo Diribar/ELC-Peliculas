@@ -8,10 +8,15 @@
 		<span class="mensajeError"><%- locals.errores && locals.nombre && errores[nombre] ? errores[nombre] : "" %></span>
 	</i>
 
+	<!-- Advertencia -->
+	<i class="fa-solid fa-triangle-exclamation ocultar">
+		<span class="mensajeError"></span>
+	</i>
+
 	<!-- OK -->
 	<i
 		class="fa-solid fa-circle-check<%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
-		<% if (!locals.display) { %>style="display: one;"<% } %>
+		<% if (!locals.display) { %>style="display: none;"<% } %>
 	>
 	</i>
 </div>
