@@ -403,9 +403,17 @@ module.exports = {
 
 				// Le agrega los parámetros
 				destino += "/?entidad=" + IM.entidad;
-				if (IM.coleccion_id) destino += "&coleccion_id=" + IM.coleccion_id;
-				if (IM.temporada) destino += "&temporada=" + IM.temporada;
-				if (IM.capitulo) destino += "&capitulo=" + IM.capitulo;
+				if (IM.entidad == "capitulos" && IM.coleccion_id) {
+					destino += "&coleccion_id=" + IM.coleccion_id;
+					if (IM.temporada) {
+						destino += "&temporada=" + IM.temporada;
+						if (IM.capitulo) {
+							const {coleccion_id, temporada, capitulo} = IM;
+							if (!(await BD_genericas.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})))
+								destino += "&capitulo=" + IM.capitulo;
+						}
+					}
+				}
 
 				// Fin
 				return res.redirect(destino);
@@ -440,14 +448,14 @@ module.exports = {
 				IM.statusSugeridoPor_id = userID;
 
 				// Acciones si es un 'IM'
-				if (IM.fuente == "IM") return accionesParaCapitulosIMFA(IM, res);
+				if (IM.fuente == "IM") return accionesParaCapitulosIMFA(IM, req, res);
 			}
 
 			// Si no es un capítulo, guarda en 'cookie' de datosOriginales
 			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			const sigPaso = IM.fuente = "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
@@ -491,17 +499,19 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Procesa la información
-			const datosDuros = {...procesos.FA.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
+			let datosDuros = {...procesos.FA.infoFAparaDD(FA), ...FA};
+			delete datosDuros.url;
+			delete datosDuros.contenido;
 
 			// Acciones si es un capítulo
 			if (datosDuros.entidad == "capitulos") {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
-				datosDuros.avatar = Date.now() + path.extname(datosDuros.avatarUrl);
+				datosDuros.avatar = Date.now() + path.extname(FA.avatarUrl);
 				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + datosDuros.avatar;
-				await comp.gestionArchivos.descarga(datosDuros.avatarUrl, rutaYnombre);
+				await comp.gestionArchivos.descarga(FA.avatarUrl, rutaYnombre);
 
 				// Guarda el original
-				return accionesParaCapitulosIMFA(datosDuros, res);
+				return accionesParaCapitulosIMFA(datosDuros, req, res);
 			}
 
 			// Actualiza Session y Cookies de datosDuros
@@ -518,7 +528,7 @@ module.exports = {
 		},
 	},
 };
-let accionesParaCapitulosIMFA = async (datos, res) => {
+let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	// Compara su temporada vs la cant. de temps. en la colección
 	const coleccion = await BD_genericas.obtienePorId("colecciones", datos.coleccion_id);
 	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))
