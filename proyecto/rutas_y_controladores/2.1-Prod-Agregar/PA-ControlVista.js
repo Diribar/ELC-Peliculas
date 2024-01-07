@@ -286,10 +286,10 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario.id;
-			const entidad = req.cookies.datosOriginales.entidad;
 
 			// Obtiene el Data Entry de session y cookies
 			const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			const entidad = confirma.entidad;
 
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 			if (!confirma.sinRCLV) {
@@ -394,6 +394,22 @@ module.exports = {
 			// Obtiene el Data Entry de session y cookies
 			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
 			if (req.query.entidad) IM.entidad = req.query.entidad;
+			else if (IM.entidad) {
+				// Crea la variable de destino
+				let destino = req.originalUrl;
+				const indice = destino.indexOf("?");
+				if (indice > 0) destino = destino.slice(0, indice);
+				if (destino.slice(-1) == "/") destino = destino.slice(0, -1);
+
+				// Le agrega los parámetros
+				destino += "/?entidad=" + IM.entidad;
+				if (IM.coleccion_id) destino += "&coleccion_id=" + IM.coleccion_id;
+				if (IM.temporada) destino += "&temporada=" + IM.temporada;
+				if (IM.capitulo) destino += "&capitulo=" + IM.capitulo;
+
+				// Fin
+				return res.redirect(destino);
+			}
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -404,12 +420,9 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Prepara los datos y los guarda en 'session' y 'cookie'
-			let IM = {
-				...req.body,
-				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
-			};
-			IM.fuente = IM.ingreso_fa ? "FA" : "IM";
-			if (IM.fuente == "IM") IM.imgOpcional = "NO";
+			let IM = {...req.body, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad)};
+			if (req.query.ingreso_fa) IM.fuente = "FA";
+			else IM = {...IM, fuente: "IM", imgOpcional: "NO"};
 
 			// Copia session y cookie
 			req.session.IM = IM;
@@ -419,35 +432,22 @@ module.exports = {
 			let errores = await valida.IM(IM);
 			if (errores.hay) return res.redirect(req.baseUrl + req.path); // No se puede usar 'req.originalUrl' porque en el query tiene la alusión a FA
 
-			// Si es un capítulo, compara su temporada vs la cant. de temps. en la colección
+			// Acciones si es un capítulo
 			if (IM.entidad == "capitulos") {
-				const coleccion = await BD_genericas.obtienePorId("colecciones", IM.coleccion_id);
-				if (!coleccion.cantTemps || coleccion.cantTemps < Number(IM.temporada))
-					await BD_genericas.actualizaPorId("colecciones", IM.coleccion_id, {cantTemps: IM.temporada});
-			}
-
-			// Si es un IM y un capítulo, termina y redirige a la edición
-			if (IM.fuente == "IM" && IM.entidad == "capitulos") {
-				// Variables
+				// Genera información a guardar
 				const userID = req.session.usuario.id;
 				IM.creadoPor_id = userID;
 				IM.statusSugeridoPor_id = userID;
 
-				// Guarda el registro
-				const registro = await BD_genericas.agregaRegistro("capitulos", IM);
-
-				// Elimina todas las session y cookie del proceso AgregarProd
-				procesos.borraSessionCookies(req, res, "IM");
-
-				// Redirecciona
-				return res.redirect("/producto/edicion/?entidad=" + IM.entidad + "&id=" + registro.id);
+				// Acciones si es un 'IM'
+				if (IM.fuente == "IM") return accionesParaCapitulosIMFA(IM, res);
 			}
 
-			// Guarda en 'cookie' de datosOriginales
-			res.cookie("datosOriginales", IM, {maxAge: unDia});
+			// Si no es un capítulo, guarda en 'cookie' de datosOriginales
+			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			const sigPaso = IM.fuente = "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
@@ -461,14 +461,14 @@ module.exports = {
 			// Variables
 			const tema = "prodAgregar";
 			const codigo = "FA";
-			const FA = req.session.FA ? req.session.FA : req.cookies.FA;
+			const dataEntry = req.session.FA ? req.session.FA : req.cookies.FA;
 
 			// Fin
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo: "Agregar - Copiar FA",
-				dataEntry: FA,
+				dataEntry,
 			});
 		},
 		guardar: async (req, res) => {
@@ -490,8 +490,21 @@ module.exports = {
 			let errores = valida.FA(FA);
 			if (errores.hay) return res.redirect(req.originalUrl);
 
-			// Actualiza Session y Cookies de datosDuros
+			// Procesa la información
 			const datosDuros = {...procesos.FA.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
+
+			// Acciones si es un capítulo
+			if (datosDuros.entidad == "capitulos") {
+				// Descarga el avatar en la carpeta 'Prods-Revisar'
+				datosDuros.avatar = Date.now() + path.extname(datosDuros.avatarUrl);
+				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + datosDuros.avatar;
+				await comp.gestionArchivos.descarga(datosDuros.avatarUrl, rutaYnombre);
+
+				// Guarda el original
+				return accionesParaCapitulosIMFA(datosDuros, res);
+			}
+
+			// Actualiza Session y Cookies de datosDuros
 			req.session.datosDuros = datosDuros;
 			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
@@ -504,4 +517,19 @@ module.exports = {
 			return res.redirect("datos-duros");
 		},
 	},
+};
+let accionesParaCapitulosIMFA = async (datos, res) => {
+	// Compara su temporada vs la cant. de temps. en la colección
+	const coleccion = await BD_genericas.obtienePorId("colecciones", datos.coleccion_id);
+	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))
+		await BD_genericas.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
+
+	// Guarda el registro original
+	const id = await BD_genericas.agregaRegistro("capitulos", datos).then((n) => n.id);
+
+	// Elimina todas las session y cookie del proceso AgregarProd
+	procesos.borraSessionCookies(req, res, "IM");
+
+	// Redirecciona a su edición
+	return res.redirect("/producto/edicion/?entidad=capitulos&id=" + id);
 };

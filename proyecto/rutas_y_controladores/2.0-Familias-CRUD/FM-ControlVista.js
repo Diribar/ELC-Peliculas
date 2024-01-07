@@ -16,7 +16,7 @@ module.exports = {
 
 			// Más variables
 			const {entidad, id} = req.query;
-			const origen = req.query.origen ? req.query.origen : "TE";
+			const origen = req.query.origen ? req.query.origen : "TR";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;

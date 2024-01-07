@@ -124,11 +124,13 @@ app.set("views", [
 		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
+		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
+
+		// Calificación de productos
 		criteriosCalif: BD_genericas.obtieneTodos("cal_criterio"),
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
-		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Variables de RCLVs
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
@@ -198,19 +200,23 @@ app.set("views", [
 	// Preferencias por producto
 	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
 
+	// Otros - Productos
+	global.atributosCalific = {feValores, entretiene, calidadTecnica};
+	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
+	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+
+	// Links
+	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
+	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
+	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
+
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");
 	global.epocasSinVarias = epocasOcurrencia.filter((n) => n.id != "var");
 	global.mesesAbrev = meses.map((n) => n.abrev);
-	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
-	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
-	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
-	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
-	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");

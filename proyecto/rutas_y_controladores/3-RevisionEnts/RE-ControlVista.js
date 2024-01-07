@@ -49,7 +49,7 @@ module.exports = {
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{prods, rclvs, origen: "TE"},
+			...{prods, rclvs, origen: "TR"},
 			...{dataEntry, cantLinksEstaSem, cantLinksTotal},
 		});
 	},
@@ -61,7 +61,7 @@ module.exports = {
 			const tema = "revisionEnts";
 			const codigo = "producto/alta";
 			const {entidad, id} = req.query;
-			const origen = req.query.origen ? req.query.origen : "TE";
+			const origen = req.query.origen ? req.query.origen : "TR";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -322,7 +322,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, edicID} = req.query;
-			const origen = req.query.origen ? req.query.origen : "TE";
+			const origen = req.query.origen ? req.query.origen : "TR";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -497,7 +497,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "TE";
+		const origen = req.query.origen ? req.query.origen : "TR";
 		let sigProd;
 
 		// Configura el título
@@ -526,7 +526,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		if (origen == "TE") sigProd = await procesos.sigProd({producto, entidad, revID});
+		if (origen == "TR") sigProd = await procesos.sigProd({producto, entidad, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
