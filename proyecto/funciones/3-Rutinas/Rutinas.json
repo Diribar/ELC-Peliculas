@@ -1,1 +1,40 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Dom. 7/ene","HoraUTC":"11:25","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Lun. 1/ene","HoraSemUTC":"11:31","semanaUTC":1,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["ProdAprobEnLink","LinksEnProd","FeedbackParaUsers","ProdsEnRCLV","ProductosAlAzar"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","EliminaLinksInactivos":"SI","LinksPorProv":"SI","FeedbackParaRevisores":"SI","EliminaCalifsSinPPP":"SI","LoginsAcums":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","LinksVencidos":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialAntiguo":"SI","EliminaHistorialDeRegsEliminados":"SI","IDdeTablas":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"05-ene-24":{"titulo":"Navidad","entidad":"epocasDelAno","id":26},"06-ene-24":{"titulo":"Navidad","entidad":"epocasDelAno","id":26},"07-ene-24":{"titulo":"Bautismo de Nuestro Señor","entidad":"hechos","id":61},"08-ene-24":{"titulo":"ELC - Películas"},"09-ene-24":{"titulo":"ELC - Películas"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Dom. 7/ene",
+	"HoraUTC": "11:25",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Lun. 1/ene",
+	"HoraSemUTC": "11:31",
+	"semanaUTC": 1,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"PaisesConMasProductos": "SI",
+		"EliminaLinksInactivos": "SI",
+		"LinksPorProv": "SI",
+		"FeedbackParaRevisores": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI"
+	},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"LinksVencidos": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"IDdeTablas": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"05-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"06-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
+		"07-ene-24": {"titulo": "Bautismo de Nuestro Señor", "entidad": "hechos", "id": 61},
+		"08-ene-24": {"titulo": "ELC - Películas"},
+		"09-ene-24": {"titulo": "ELC - Películas"}
+	}
+}
