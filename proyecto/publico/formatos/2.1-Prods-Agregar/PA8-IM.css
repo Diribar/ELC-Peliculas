@@ -3,7 +3,7 @@
 
 /* Sector de Data Entry */
 #dataEntry #datos {display: flex; flex-direction: column; align-items: flex-start;}
-#dataEntry #datos select {padding: 0px 2px;}
+#dataEntry #datos select {padding: 0px 2px; width: 175px;}
 
 /* Submit button */
 #dataEntry .flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}

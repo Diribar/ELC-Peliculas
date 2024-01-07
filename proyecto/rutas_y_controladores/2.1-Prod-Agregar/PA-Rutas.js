@@ -42,8 +42,8 @@ router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuard
 
 // APIs - Varias
 router.get("/api/PC-cant-prods", API.cantProductos);
-router.get("/api/IM-colecciones", API.averiguaColecciones);
-router.get("/api/IM-cantTemps", API.averiguaCantTemps);
+router.get("/api/obtiene-colecciones", API.averiguaColecciones);
+router.get("/api/obtiene-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
 router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);

@@ -36,7 +36,10 @@ module.exports = {
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			const palabrasClave = req.session.desambiguar.palabrasClave;
+			const palabrasClave =
+				req.session.desambiguar && req.session.desambiguar.palabrasClave
+					? req.session.desambiguar.palabrasClave
+					: req.cookies.desambiguar.palabrasClave;
 
 			// Obtiene los productos y los conserva en session
 			req.session.desambiguar.prodProv = await buscar_x_PC.search(palabrasClave);
@@ -117,6 +120,7 @@ module.exports = {
 			// Obtiene más información del producto
 			const TMDB_entidad = datos.TMDB_entidad;
 			const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
+			if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
 
 			// Guarda los datos originales en una cookie
 			res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
@@ -154,10 +158,14 @@ module.exports = {
 
 	// Vista (datosDuros)
 	validaDatosDuros: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
+		// Variables
+		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		const datos = {imgOpcional: datosDuros.imgOpcional, ...req.query};
+		const campos = Object.keys(datos);
+
 		// Averigua los errores solamente para esos campos
-		let errores = await valida.datosDuros(campos, req.query);
+		let errores = await valida.datosDuros(campos, datos);
+
 		// Devuelve el resultado
 		return res.json(errores);
 	},
@@ -191,12 +199,10 @@ module.exports = {
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
 		let datos = await BD_genericas.obtieneTodos("colecciones", "nombreCastellano");
-		// Deja solamente las que no son de TMDB
-		datos = datos.filter((n) => !n.TMDB_id);
+
 		// Deja solamente los campos 'id' y 'nombreCastellano'
-		datos = datos.map((m) => {
-			return {id: m.id, nombreCastellano: m.nombreCastellano};
-		});
+		datos = datos.map((n) => ({id: n.id, nombreCastellano: n.nombreCastellano + " (" + n.anoEstreno + ")"}));
+
 		// Fin
 		return res.json(datos);
 	},

@@ -7,16 +7,16 @@ module.exports = {
 	// ControllerVista (Edicion - Form + Grabar)
 	consolidado: async ({campos, datos}) => {
 		// Obtiene la entidad
-		let entidad = datos.entidad;
+		const entidad = datos.entidad;
 		// Obtiene los campos
 		if (!campos) {
-			let camposDD = variables.camposDD.filter((n) => n[entidad] || n.productos);
-			let camposDA = variables.camposDA;
+			const camposDD = variables.camposDD.filter((n) => n[entidad] || n.productos);
+			const camposDA = variables.camposDA;
 			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
 		// Averigua si hay errores de validación DD y DA
-		let erroresDD = await validaProd.datosDuros(campos, datos);
-		let erroresDA = validaProd.datosAdics(campos, datos);
+		const erroresDD = await validaProd.datosDuros(campos, datos);
+		const erroresDA = validaProd.datosAdics(campos, datos);
 		let errores = {...erroresDD, ...erroresDA};
 
 		// Si corresponde, agrega campos particulares

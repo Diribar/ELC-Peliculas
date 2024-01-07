@@ -1,4 +1,5 @@
 "use strict";
+
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
 const procsComp = require("./PA-FN5-Compartidos");
@@ -6,7 +7,8 @@ const procsComp = require("./PA-FN5-Compartidos");
 module.exports = {
 	// USO COMPARTIDO *********************
 	borraSessionCookies: (req, res, paso) => {
-		let pasos = [
+		// Variables
+		const etapas = [
 			"borrarTodo",
 			"palabrasClave",
 			"desambiguar",
@@ -18,11 +20,17 @@ module.exports = {
 			"confirma",
 			"terminaste",
 		];
-		let indice = pasos.indexOf(paso) + 1;
-		for (indice; indice < pasos.length; indice++) {
-			if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
-			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
+		const inicio = etapas.indexOf(paso) + 1;
+
+		// Elimina las sessions y cookies
+		for (let i = inicio; i < etapas.length; i++) {
+			const etapa = etapas[i];
+			if (req.session && req.session[etapa]) delete req.session[etapa];
+			if (req.cookies && req.cookies[etapa]) res.clearCookie(etapa);
 		}
+
+		// Fin
+		return
 	},
 	datosAdics: {
 		quitaCamposRCLV: (datos) => {

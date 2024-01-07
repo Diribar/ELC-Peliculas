@@ -2,6 +2,7 @@
 	<label>Idioma original</label>
 	<div class="inputError">
 		<select name="idiomaOriginal_id" class="input">
+			<option value="" <% if (!idioma_id) { %>selected<% } %>>Elegí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.masFrecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>

@@ -297,40 +297,34 @@ module.exports = {
 				if (!existe) return res.redirect("datos-adicionales");
 				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
-			// ORIGINAL ------------------------------------
+
 			// Guarda el registro original
 			const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
 			const registro = await BD_genericas.agregaRegistro(entidad, original);
 
-			// CAPÍTULOS -----------------------------------
-			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
-			// No se guardan los datos editados, eso se realiza en la revisión
+			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
 				if (confirma.TMDB_entidad == "collection")
 					procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
 				if (confirma.TMDB_entidad == "tv") procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
 			}
 
-			// AVATAR -------------------------------------
-			// Acciones si el avatar no se descargó (sólo para la mayoría de los TMDB)
+			// Avatar - acciones si no se descargó (sólo para la mayoría de los TMDB y los FA)
 			if (!confirma.avatar) {
 				// Descarga el avatar en la carpeta 'Prods-Revisar'
 				confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
 				let rutaYnombre = carpetaExterna + "2-Productos/Revisar/" + confirma.avatar;
 				comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 			}
-			// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'
+			// Avatar - si ya se había descargado el avatar (IM y algunos TMDB), lo mueve de 'provisorio' a 'revisar'
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
-			// EDICION -------------------------------------
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 			await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
-			// RCLV
-			// Actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro);
-			// No es necesario el 'await', el proceso no necesita ese resultado
+				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 			// SESSION Y COOKIES
 			// Establece como vista anterior la vista del primer paso
@@ -388,47 +382,66 @@ module.exports = {
 	// Ingresos Manuales
 	IM: {
 		form: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "prodAgregar";
 			const codigo = "IM";
-
-			// Obtiene el Data Entry de session y cookies
-			let IM = req.session.IM ? req.session.IM : req.cookies.IM;
-
-			// Datos para la vista
-			let entidades = [
-				{codigo: "peliculas", nombre: "Películas"},
-				{codigo: "colecciones", nombre: "Colecciones"},
+			const entidades = [
+				{codigo: "peliculas", nombre: "Película"},
+				{codigo: "colecciones", nombre: "Colección"},
 				{codigo: "capitulos", nombre: "Capítulo de una colección"},
 			];
 
+			// Obtiene el Data Entry de session y cookies
+			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
+			if (req.query.entidad) IM.entidad = req.query.entidad;
+
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Agregar - Tipo de Producto",
-				dataEntry: IM,
-				autorizadoFA: req.session.usuario.autorizadoFA,
-				entidades,
-				urlActual: req.session.urlActual,
+				...{tema, codigo, titulo: "Agregar - Tipo de Producto"},
+				...{entidades, dataEntry: IM},
+				...{autorizadoFA: req.session.usuario.autorizadoFA, urlActual: req.session.urlActual},
 			});
 		},
 		guardar: async (req, res) => {
-			// 1. Prepara los datos y los guarda en 'session' y 'cookie'
+			// Prepara los datos y los guarda en 'session' y 'cookie'
 			let IM = {
 				...req.body,
-				...req.query,
 				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 			};
 			IM.fuente = IM.ingreso_fa ? "FA" : "IM";
+			if (IM.fuente == "IM") IM.imgOpcional = "NO";
 
 			// Copia session y cookie
 			req.session.IM = IM;
 			res.cookie("IM", IM, {maxAge: unDia});
 
-			// 2. Si hay errores de validación, redirecciona al Form
+			// Si hay errores de validación, redirecciona al Form
 			let errores = await valida.IM(IM);
 			if (errores.hay) return res.redirect(req.baseUrl + req.path); // No se puede usar 'req.originalUrl' porque en el query tiene la alusión a FA
+
+			// Si es un capítulo, compara su temporada vs la cant. de temps. en la colección
+			if (IM.entidad == "capitulos") {
+				const coleccion = await BD_genericas.obtienePorId("colecciones", IM.coleccion_id);
+				if (!coleccion.cantTemps || coleccion.cantTemps < Number(IM.temporada))
+					await BD_genericas.actualizaPorId("colecciones", IM.coleccion_id, {cantTemps: IM.temporada});
+			}
+
+			// Si es un IM y un capítulo, termina y redirige a la edición
+			if (IM.fuente == "IM" && IM.entidad == "capitulos") {
+				// Variables
+				const userID = req.session.usuario.id;
+				IM.creadoPor_id = userID;
+				IM.statusSugeridoPor_id = userID;
+
+				// Guarda el registro
+				const registro = await BD_genericas.agregaRegistro("capitulos", IM);
+
+				// Elimina todas las session y cookie del proceso AgregarProd
+				procesos.borraSessionCookies(req, res, "IM");
+
+				// Redirecciona
+				return res.redirect("/producto/edicion/?entidad=" + IM.entidad + "&id=" + registro.id);
+			}
 
 			// Guarda en 'cookie' de datosOriginales
 			res.cookie("datosOriginales", IM, {maxAge: unDia});

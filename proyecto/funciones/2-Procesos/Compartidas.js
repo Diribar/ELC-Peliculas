@@ -500,9 +500,7 @@ module.exports = {
 			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 
 			// Respuesta
-			const respuesta = false
-				? false
-				: avatar // Mensajes si existe un avatar
+			const respuesta = avatar // Mensajes si existe un avatar
 				? esImagen == "NO" // Valida si es una imagen
 					? "El archivo no es una imagen"
 					: !ext // Valida la extensión

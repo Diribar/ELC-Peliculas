@@ -19,7 +19,7 @@
 						<ul type="dots" id="subPuntos">
 							<li><b><em>Aprobado</em></b>.</li>
 							<li><b><em>Desaprobado</em></b>.</li>
-						</ul>						
+						</ul>
 						<li>Si el registro queda aprobado, pasará a estar accesible en las consultas para todo el público.</li>
 						<li>Enviaremos un único mail con las novedades del día.</li>
 					</ul>
@@ -41,9 +41,9 @@
 	<%- include("Flechas-1Estandar") %>
 	<% if (dataEntry.fuente != "TMDB" && entidad != "peliculas") { %>
 		<div class="flechas">
-			<a href="<%= ruta %>agregar/ingreso-manual/?entidad=capitulos&id=<%= entidad == "colecciones" ? id : dataEntry.coleccion_id %>" autofocus>
+			<a href="<%= ruta %>agregar/ingreso-manual/?entidad=capitulos&id=<%= entidad == "colecciones" ? id : dataEntry.coleccion_id %>">
 				<i class="fa-solid fa-layer-group" title="Agregar un capítulo en forma manual"></i>
 			</a>
-		</div>	
+		</div>
 	<% } %>
 </section>

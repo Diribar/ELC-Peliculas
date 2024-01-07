@@ -19,9 +19,9 @@ module.exports = {
 		// Variables
 		let errores = {};
 		if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
-		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
-		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
-		let camposPosibles = [
+		const cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
+		const cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
+		const camposPosibles = [
 			{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
@@ -31,13 +31,13 @@ module.exports = {
 			{nombre: "actores", tipoIdioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
 			{nombre: "sinopsis", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 11, largo: 1004},
 		];
-		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
+		// Campos individuales estándar
 		for (let campo of camposPosibles) {
-			let nombre = campo.nombre;
-			let tipoIdioma = campo.tipoIdioma;
+			const nombre = campo.nombre;
+			const tipoIdioma = campo.tipoIdioma;
 			if (campos.includes(nombre)) {
 				// Variables
-				let dato = datos[nombre];
+				const dato = datos[nombre];
 				let respuesta = "";
 				// Validaciones
 				if (datos[nombre]) {
@@ -45,8 +45,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
 					if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
 				} else respuesta = datos.entidad != "capitulos" ? variables.inputVacio : "";
-				// Excepción para actores
-				// if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
+
 				// Fin
 				errores[nombre] = respuesta;
 			}
