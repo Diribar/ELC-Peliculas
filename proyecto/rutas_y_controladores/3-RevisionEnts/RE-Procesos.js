@@ -427,11 +427,11 @@ module.exports = {
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
-				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
-					? inactivo_id // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
-					: rclv // Si es un RCLV, se aprueba
-					? aprobado_id // Si es un producto, se revisa si tiene errores
-					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado))
+				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+					? inactivo_id
+					: rclv// demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+					? aprobado_id // si es un RCLV, se aprueba
+					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
 					? creadoAprob_id
 					: aprobado_id;
 
