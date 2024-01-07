@@ -185,7 +185,7 @@ window.addEventListener("load", async () => {
 				DOM.botonesEliminar[0].classList.remove("inactivoVersion");
 
 				// Activa / Inactiva Guardar, dependiendo de si hay errores en la edición nueva
-				errores.hay
+				errores.sensible
 					? DOM.botonGuardar.classList.add("inactivoVersion")
 					: DOM.botonGuardar.classList.remove("inactivoVersion");
 			}

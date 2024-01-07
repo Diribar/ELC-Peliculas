@@ -90,7 +90,7 @@ module.exports = {
 			errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
 
 		// Personas
-		if (campos.includes("avatar")) errores.avatar = datos.avatar ? comp.validacs.avatar(datos) : "";
+		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
@@ -135,10 +135,9 @@ module.exports = {
 		// RCLVs
 		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 		if (campos.some((n) => rclvs_id.includes(n)))
-			errores.RCLV =
-				rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
-					? variables.rclvSinElegir
-					: "";
+			errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
+				? variables.rclvSinElegir
+				: "";
 
 		// Consolida la información
 		errores.hay = Object.values(errores).some((n) => !!n);
