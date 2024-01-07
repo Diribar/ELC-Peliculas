@@ -409,8 +409,10 @@ module.exports = {
 						destino += "&temporada=" + IM.temporada;
 						if (IM.capitulo) {
 							const {coleccion_id, temporada, capitulo} = IM;
-							if (!(await BD_genericas.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})))
+							if (await BD_genericas.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})) {
+								IM.capitulo++;
 								destino += "&capitulo=" + IM.capitulo;
+							}
 						}
 					}
 				}
