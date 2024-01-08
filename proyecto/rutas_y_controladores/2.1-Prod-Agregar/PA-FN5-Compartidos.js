@@ -44,7 +44,7 @@ module.exports = {
 			datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= datos.anoEstreno).id;
 		}
 		if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
-		if (datosAPI.production_countries.length > 0){
+		if (datosAPI.production_countries.length > 0) {
 			datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
 			if (!datos.idiomaOriginal_id && datos.paises_id.length == 2) {
 				const pais = paises.find((n) => n.id == datos.paises_id);
