@@ -15,14 +15,19 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 .labelInput .inputError .input {width: 100%;}
 .errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
+
+/* Primera columna */
 #primeraColumna {width: 350px;}
 #primeraColumna .inputError {width: 100%;}
 #primeraColumna .labelInput .inputError {max-width: 200px;}
 #primeraColumna .labelInput .inputError:has(.angosto, .numero) {max-width: 70px;}
+
+/* Segunda columna */
 #segundaColumna {width: 380px; display: flex; flex-direction: column;}
 #segundaColumna .labelInput .inputError:not(:has(textarea)) {width: 240px;}
 #segundaColumna .labelInput .inputError:has(select[name="epocaOcurrencia_id"]) {width: 150px}
 #segundaColumna .labelInput .inputError {width: 100%;}
+#segundaColumna .labelInput .inputError :is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
 /* Partes específicas del formulario */
 #datos .columna {display: flex; flex-direction: column; justify-content: space-between;}

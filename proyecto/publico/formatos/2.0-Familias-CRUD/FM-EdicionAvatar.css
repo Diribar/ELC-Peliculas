@@ -3,7 +3,9 @@ form #imgDerecha label {line-height: 0;}
 
 /* Imagen - Íconos */
 form #imgDerecha .fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
-form #imgDerecha :is(.ayuda, .errores) {left: 50%; translate: -50% -50%; right: auto;}
+form #imgDerecha .ayudaErrores {display: flex; flex-direction: row;}
+form #imgDerecha :is(.ayuda, .errores) {position: static; translate: none;}
+form #imgDerecha .errores {margin-left: 10px;}
 
 /* Imagen - AyudaMostrar */
 form #imgDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
