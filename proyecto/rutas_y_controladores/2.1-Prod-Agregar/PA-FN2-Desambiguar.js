@@ -149,7 +149,7 @@ module.exports = {
 			if (datosAPI.original_name) datos.nombreOriginal = datosAPI.original_name;
 			if (datosAPI.name) datos.nombreCastellano = datosAPI.name;
 			// Idioma
-			if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
+			if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language.toUpperCase();
 
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) {
@@ -157,7 +157,13 @@ module.exports = {
 				datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= datos.anoEstreno).id;
 			}
 			if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
-			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
+			if (datosAPI.origin_country.length > 0) {
+				datos.paises_id = datosAPI.origin_country.join(" ");
+				if (!datos.idiomaOriginal_id && datos.paises_id.length == 2) {
+					const pais = paises.find((n) => n.id == datos.paises_id);
+					if (pais) datos.idiomaOriginal_id = pais.idioma_id;
+				}
+			}
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = procsComp.fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
