@@ -203,8 +203,8 @@ app.set("views", [
 	// Otros - Productos
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
-	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+	global.hablaHispana = paises.filter((n) => n.idioma_id == "ES");
+	global.hablaNoHispana = paises.filter((n) => n.idioma_id != "ES");
 
 	// Links
 	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
