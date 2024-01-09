@@ -21,7 +21,7 @@ module.exports = {
 		resultado = await buscar_x_PC.search(palabrasClave);
 
 		// Revisa si debe reemplazar una película por su colección
-		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion.consolidado(resultado);
+		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
 
 		// Prepara la respuesta
 		let cantProds = resultado.productos.length;
@@ -56,7 +56,7 @@ module.exports = {
 			let productos = req.session.desambiguar.prodProv;
 
 			// Revisa si debe reemplazar una película por su colección
-			productos = await buscar_x_PC.reemplazoDePeliPorColeccion.consolidado(productos);
+			productos = await buscar_x_PC.reemplazoDePeliPorColeccion(productos);
 
 			// Conserva la información en session
 			req.session.desambiguar.prodProv = productos;
