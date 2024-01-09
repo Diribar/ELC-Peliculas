@@ -90,7 +90,6 @@ module.exports = {
 						: anoFM == anoHoy && fechaDelAno_id < fechaDelAnoHoy_id
 						? cartelAnoProximo
 						: "";
-				console.log(95, respuesta, anoFM, anoHoy, fechaDelAno_id, fechaDelAnoHoy_id);
 
 				// Valida si existe un comentario adecuado para la fecha móvil
 				if (!respuesta && !datos.comentarioMovil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
