@@ -191,7 +191,7 @@ module.exports = {
 						? anosEstreno.reduce((a, b) => ((a < b && a != "-") || b == "-" ? a : b))
 						: "-";
 					const anoFin = anosEstreno.length ? anosEstreno.reduce((a, b) => (a > b ? a : b)) : "-";
-					const capitulosID_TMDB = coleccion.parts.map((n) => n.id);
+					const capsTMDB_id = coleccion.parts.map((n) => n.id);
 
 					// Agrega información
 					resultados.productos[indice] = {
@@ -199,7 +199,7 @@ module.exports = {
 						anoEstreno: anoEstreno != "-" ? parseInt(anoEstreno.slice(0, 4)) : "-",
 						anoFin: anoFin != "-" ? parseInt(anoFin.slice(0, 4)) : "-",
 						capitulos: anosEstreno.length,
-						capitulosID_TMDB,
+						capsTMDB_id,
 					};
 				}
 
@@ -283,7 +283,7 @@ module.exports = {
 		};
 		let agregaCapitulosCollection = async (coleccion) => {
 			// Recorre los capítulos
-			await coleccion.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
+			await coleccion.capsTMDB_id.forEach(async (capituloID_TMDB, indice) => {
 				// Averigua si algún capítulo es nuevo
 				if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
 					// Si es nuevo, lo agrega
@@ -301,10 +301,10 @@ module.exports = {
 			for (let numTemp = 1; numTemp <= coleccion.cantTemps; numTemp++) {
 				// Obtiene los datos de la temporada y los ID de los capítulos
 				let datosTemp = await APIsTMDB.details(numTemp, coleccion.TMDB_id);
-				coleccion.capitulosID_TMDB = datosTemp.episodes.map((m) => m.id);
+				coleccion.capsTMDB_id = datosTemp.episodes.map((m) => m.id);
 
 				// Acciones si algún capítulo es nuevo
-				for (let capituloID_TMDB of coleccion.capitulosID_TMDB)
+				for (let capituloID_TMDB of coleccion.capsTMDB_id)
 					if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
 						// Procesa la información
 						datosTemp = {...datosTemp, ...(await APIsTMDB.credits(numTemp, coleccion.TMDB_id))};
