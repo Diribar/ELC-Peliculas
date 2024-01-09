@@ -93,7 +93,7 @@ module.exports = {
 
 				// Idioma original
 				let idiomaOriginal_id = resultados.productos[indice].idiomaOriginal_id;
-				idiomaOriginal_id = idiomaOriginal_id ? idiomaOriginal_id : "";
+				idiomaOriginal_id = idiomaOriginal_id ? idiomaOriginal_id.toUpperCase() : "";
 
 				// Si es una película de colección, cambia sus datos por los de la colección
 				resultados.productos[indice] = {
@@ -410,6 +410,7 @@ let procesaInfoDeAPI = (prodsPorEnt, TMDB_entidad, palabrasClave) => {
 			let desempate2 = comp.convierteLetras.alIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
 
 			// Deja sólo algunos campos
+			if (idiomaOriginal_id) idiomaOriginal_id = idiomaOriginal_id.toUpperCase();
 			const resultado = {
 				...{entidad, entidadNombre, TMDB_entidad, TMDB_id: producto.id, desempate1, desempate2},
 				...{nombreOriginal, nombreCastellano, idiomaOriginal_id, anoEstreno, anoFin},
