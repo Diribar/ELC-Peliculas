@@ -28,7 +28,7 @@ module.exports = {
 				datos = {...datos, ...this.datosColec(datosColec)};
 
 				// Obtiene la información de los capítulos y la procesa
-				datos = {...datos, ...(await this.datosCaps(datos.capitulosID_TMDB))};
+				datos = {...datos, ...(await this.datosCaps(datos.capsTMDB_id))};
 			}
 
 			// Limpia el resultado de caracteres especiales
@@ -64,32 +64,28 @@ module.exports = {
 			if (datosColec.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosColec.poster_path;
 
 			// ID de los capitulos
-			datos.capitulosID_TMDB = datosColec.parts.map((n) => n.id);
+			datos.capsTMDB_id = datosColec.parts.map((n) => n.id);
 
 			// Fin
 			return datos;
 		},
-		datosCaps: async (capitulosID_TMDB) => {
+		datosCaps: async (capsTMDB_id) => {
 			// Variables
 			let paises_id, produccion, direccion, guion, musica, actores;
 			paises_id = produccion = direccion = guion = musica = actores = "";
-			let datosAPI = [];
+			let detalles = [];
+			let creditos = [];
 			let capitulos = [];
 			let datos = {};
 
 			// Obtiene la info de los capítulos
-			capitulosID_TMDB.forEach((capTMDB_id, orden) => {
-				const detalles = APIsTMDB.details("movie", capTMDB_id);
-				const creditos = APIsTMDB.credits("movie", capTMDB_id);
-				datosAPI.push(detalles, creditos, {orden});
-			});
-			await Promise.all(datosAPI).then((n) => {
-				// En una misma variable reúne los detalles, créditos y el orden
-				for (let i = 0; i < n.length; i += 3) capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
-			});
-
-			// Ordena los registros
-			capitulos.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
+			for (let capTMDB_id of capsTMDB_id) {
+				detalles.push(APIsTMDB.details("movie", capTMDB_id));
+				creditos.push(APIsTMDB.credits("movie", capTMDB_id));
+			}
+			detalles = await Promise.all(detalles);
+			creditos = await Promise.all(creditos);
+			for (let i = 0; i < capsTMDB_id.length; i++) capitulos.push({...detalles[i], ...creditos[i]});
 
 			// Toma información de cada capítulo, para alimentar la colección
 			for (let capitulo of capitulos) {
@@ -237,6 +233,7 @@ let consolidaValoresColeccion = (datos, cantCapitulos) => {
 	datos = datos.trim();
 	if (datos.slice(-1) == ",") datos = datos.slice(0, -1);
 	datos = datos.split(", ");
+	for (let i = datos.length - 1; i >= 0; i--) if (!datos[i]) datos.splice(i, 1);
 
 	// Averigua cuántas veces se repite el dato más frecuente
 	let objeto = {};
