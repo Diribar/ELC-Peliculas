@@ -5,17 +5,19 @@
 			<img src="<%= imgDerPers %>" id="imgAvatar" class="pointer">
 		</label>
 		<input name="avatar" id="inputImagen" type="file" accept="image/*" class="input ocultar">
-		<!-- Ayuda -->
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaClick desplClick">
-				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-					<li>Haciendo <em>click</em> en la imagen podés reemplazarla.</li>
-					<li>Podés elegir una imagen de internet sin descargarla en tu equipo, ingresando su dirección url</li>
-					<li>La extensión de la imagen debe ser <em><b>JPG</b></em>, <em><b>JPEG</b></em> o <em><b>PNG</b></em></li>
-				</ul>
-			</i>
+		<div class="ayudaErrores absoluteCentro">
+			<!-- Ayuda -->
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+						<li>Haciendo <em>click</em> en la imagen podés reemplazarla.</li>
+						<li>Podés elegir una imagen de internet sin descargarla en tu equipo, ingresando su dirección url</li>
+						<li>La extensión de la imagen debe ser <em><b>JPG</b></em>, <em><b>JPEG</b></em> o <em><b>PNG</b></em></li>
+					</ul>
+				</i>
+			</div>
+			<%- include("CMP-Errores", {nombre: "avatar", display: true}) %>
 		</div>
-		<%- include("CMP-Errores", {nombre: "avatar", display: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Links a sitios externos para buscar imágenes alternativas -->
