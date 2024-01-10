@@ -20,6 +20,7 @@
 #colCap #tempCapI {margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;}
 #colCap #tempCapI button {margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;}
 #colCap #tempCapI button {font-weight: bold; background: var(--gris-oscuro); color: snow;}
+#colCap #tempCapI button:hover {scale: 1.1}
 #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center;}
 #colCap #tempCapS .pack {line-height: 1; margin-right: 5px; white-space: nowrap;}
 #colCap #tempCapS .pack i {font-size: 1.1rem; }
