@@ -13,7 +13,7 @@ let resultados = {
 		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.remove("ocultar");
 		DOM.botones.innerHTML = "";
 		DOM.listados.innerHTML = "";
-		v.infoResultados = null;
+		v.resultados = null;
 
 		// Acciones si el usuario no está logueado y es requerido
 		if (!v.userID && v.opcionBD.loginNeces) {
@@ -35,16 +35,16 @@ let resultados = {
 			v.entidad == "productos" && v.opcionBD.codigo == "fechaDelAno_id"
 				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
-		v.infoResultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
+		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
-		if (!v.infoResultados || !v.infoResultados.length)
+		if (!v.resultados || !v.resultados.length)
 			DOM.noTenemos.classList.remove("ocultar"); // si no hay resultados, muestra el cartel 'noTenemos'
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		if (v.infoResultados && !v.opcionPorEntBD.boton) this.contador();
+		if (v.resultados && !v.opcionPorEntBD.boton) this.contador();
 
 		// Fin
 		return;
@@ -52,7 +52,7 @@ let resultados = {
 	// Contador para productos
 	contador: () => {
 		// Variables
-		const total = v.infoResultados ? v.infoResultados.length : 0;
+		const total = v.resultados ? v.resultados.length : 0;
 
 		// Contador para Productos
 		if (v.entidad == "productos") {
@@ -74,7 +74,7 @@ let resultados = {
 			// Variables
 			const cantRCLVs = total;
 			let cantProds = 0;
-			if (v.infoResultados) for (let rclv of v.infoResultados) cantProds += rclv.productos.length;
+			if (v.resultados) for (let rclv of v.resultados) cantProds += rclv.productos.length;
 
 			// Actualiza el contador
 			DOM.contadorDeProds.innerHTML = cantRCLVs + " x " + cantProds;
@@ -89,7 +89,7 @@ let resultados = {
 	muestra: {
 		generico: function () {
 			// Si no hubieron resultados, interrumpe la función
-			if (!v.infoResultados || !v.infoResultados.length) return;
+			if (!v.resultados || !v.resultados.length) return;
 
 			// Cartel quieroVer
 			if (v.mostrarCartelQuieroVer) {
@@ -128,7 +128,7 @@ let resultados = {
 		},
 		botones: () => {
 			// Agrega el producto al botón
-			for (let producto of v.infoResultados) {
+			for (let producto of v.resultados) {
 				const boton = auxiliares.boton(producto);
 				DOM.botones.append(boton);
 			}
@@ -149,7 +149,7 @@ let resultados = {
 			let registroAnt = {};
 
 			// Rutina por registro
-			v.infoResultados.forEach((registro, indice) => {
+			v.resultados.forEach((registro, indice) => {
 				// Para algunas opciones, muestra sólo las primeras
 				if (["altaRevisadaEn", "calificacion"].includes(v.opcionBD.codigo) && indice >= v.cantListadoBreve) return;
 
@@ -618,8 +618,8 @@ let agregaUnBoton = () => {
 	v.resultado.cfc ? v.cfc++ : v.vpc++;
 
 	// Quita el registro de los resultados
-	const indice = v.infoResultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
-	v.infoResultados.splice(indice, 1);
+	const indice = v.resultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
+	v.resultados.splice(indice, 1);
 
 	// Fin
 	return;
