@@ -30,7 +30,7 @@ module.exports = {
 		}
 
 		// Fin
-		return
+		return;
 	},
 	datosAdics: {
 		quitaCamposRCLV: (datos) => {
@@ -194,26 +194,26 @@ module.exports = {
 			const FA_id = this.obtieneFA_id(url);
 			contenido = this.contenidoFA(contenido);
 
-			// Conversión de 'string de nombres' en  'string de IDs'
-			if (contenido.pais_nombre) {
+			// Obtiene el pais_id y el idiomaOriginal_id
+			if (contenido.paisNombre) {
 				// Variables
-				const pais_nombre = contenido.pais_nombre;
 				let resultado = [];
 
-				// Obtiene los paises_id
-				delete contenido.pais_nombre;
-				if (pais_nombre.length) {
-					// Convierte el string en array
-					const pais_nombreArray = pais_nombre.split(", ");
-
-					// Obtiene un 'string de IDs' a partir de un 'array de nombres'
-					for (let pais_nombre of pais_nombreArray) {
-						const aux = paises.find((n) => n.nombre == pais_nombre);
-						if (aux) resultado.push(aux.id);
-					}
+				// Obtiene el país
+				const pais_nombreArray = contenido.paisNombre.split(", ");
+				for (let paisNombre of pais_nombreArray) {
+					const pais = paises.find((n) => n.nombre == paisNombre);
+					if (pais) resultado.push(pais.id);
 				}
-				contenido.paises_id = resultado.length ? resultado.join(" ") : "";
+				if (resultado.length) contenido.paises_id = resultado.join(" ");
+
+				// Obtiene el idioma
+				if (contenido.paises_id && contenido.paises_id.length == 2) {
+					const pais = paises.find((n) => n.id == contenido.paises_id);
+					if (pais) contenido.idiomaOriginal_id = pais.idioma_id;
+				}
 			}
+			delete contenido.paisNombre;
 
 			// Genera el resultado
 			let resultado = {entidadNombre, entidad, fuente: "FA", FA_id, ...contenido};
@@ -247,8 +247,8 @@ module.exports = {
 				resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));
 			}
 			if (indice("País") > 0) {
-				let pais_nombre = contenidos[indice("País") + 1];
-				resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
+				let paisNombre = contenidos[indice("País") + 1];
+				resultado.paisNombre = paisNombre.slice((paisNombre.length + 1) / 2);
 			}
 			if (indice("Dirección") > 0) resultado.direccion = contenidos[indice("Dirección") + 1];
 			if (indice("Guion") > 0) resultado.guion = contenidos[indice("Guion") + 1];

@@ -84,7 +84,7 @@
 		<a href="/producto/agregar/<%= origen %>" tabindex="-1" title="Volver al paso anterior">
 			<i class="fa-solid fa-circle-left"></i>
 		</a>
-		<i id="submit" class="fa-solid fa-circle-check inactivo" title="Avanzar" tabindex="0" autofocus></i>
+		<i id="submit" class="fa-solid fa-circle-check <%- errores.hay ? 'inactivo' : '' %>" title="Avanzar" tabindex="0" autofocus></i>
 	</section>
 	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
 </form>
