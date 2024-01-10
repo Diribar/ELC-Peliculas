@@ -107,9 +107,6 @@ module.exports = {
 			// Aplica otros filtros
 			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons});
 
-			// Botones
-			if (opcionPorEnt.boton) resultados = botones.consolidado({resultados, opcionPorEnt, opcion, configCons});
-
 			// Fin
 			return resultados;
 		},
@@ -545,7 +542,12 @@ module.exports = {
 			prods: ({prods, opcion}) => {
 				// Si no corresponde ordenar, interrumpe la función
 				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
-				console.log(547, opcion.codigo);
+
+				// Ordena por el azar decreciente
+				prods.sort((a, b) => b.azar - a.azar);
+
+				// Si corresponde, interrumpe la función
+				if (opcion.codigo == "azar") return prods;
 
 				// Variables
 				const campo = false
@@ -554,12 +556,9 @@ module.exports = {
 					? "nombreCastellano"
 					: opcion.codigo == "misCalificadas"
 					? "calificacion"
-					: opcion.codigo == "azar"
-					? "anoEstreno"
 					: opcion.codigo;
 
 				// Ordena
-				prods.sort((a, b) => b.azar - a.azar); // decreciente
 				prods.sort((a, b) =>
 					false
 						? false
@@ -580,6 +579,7 @@ module.exports = {
 						: 1
 				);
 
+				// Orden adicional para "misPrefs"
 				if (opcion.codigo == "misPrefs") {
 					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
 					prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
@@ -718,6 +718,13 @@ module.exports = {
 				return rclvs;
 			},
 		},
+		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
+			// Botones
+			if (opcionPorEnt.boton) resultados = botones.consolidado({resultados, opcionPorEnt, opcion, configCons});
+
+			// Fin
+			return resultados;
+		},
 	},
 };
 
@@ -746,9 +753,8 @@ let botones = {
 
 		// Elije los productos
 		if (opcion.codigo == "azar") {
-			resultados.sort((a, b) => b.azar - a.azar); // decreciente
-			v = this.porAltaUltimosDias(v);
-			for (let epocaEstreno of epocasEstreno) v = this.porEpocaDeEstreno({epocaEstreno, v});
+			this.porAltaUltimosDias(v);
+			for (let epocaEstreno of epocasEstreno) this.porEpocaDeEstreno({epocaEstreno, v});
 		}
 
 		// Agrega registros hasta llegar a cuatro
@@ -803,10 +809,11 @@ let botones = {
 		// Agrega un botón
 		if (v.resultado.length) {
 			v.resultado = v.resultado[0];
-			v = this.agregaUnBoton(v);
+			this.agregaUnBoton(v);
 		}
 
 		// Fin
+		console.log(816,Object.keys(v));
 		return v;
 	},
 	agregaUnBoton: (v) => {
