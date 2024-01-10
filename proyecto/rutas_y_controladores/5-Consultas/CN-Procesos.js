@@ -39,7 +39,8 @@ module.exports = {
 		},
 	},
 	resultados: {
-		misConsultas: async (usuario_id, pppRegistros) => {
+		misConsultas: async ({usuario_id, pppRegistros, opcionPorEnt}) => {
+			// Si el usuario no está logueado, interrumpe la función
 			if (!usuario_id) return [];
 
 			// Obtiene los registros del usuario
@@ -48,7 +49,7 @@ module.exports = {
 			else registros.reverse();
 
 			// Deja solamente los últimos 20 registros
-			if (registros.length > 20) registros.splice(20);
+			if (registros.length > opcionPorEnt.cantidad) registros.splice(20);
 
 			// Obtiene los productos
 			const include = variables.asocs.rclvs;
