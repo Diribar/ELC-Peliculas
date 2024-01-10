@@ -637,9 +637,9 @@ module.exports = {
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, avatar, cfc, calificacion, altaRevisadaEn} = prod;
+					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
 					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre};
-					datos = {...datos, direccion, anoEstreno, avatar, cfc, altaRevisadaEn};
+					datos = {...datos, direccion, anoEstreno, avatar, cfc};
 					if (calificacion) datos.calificacion = calificacion;
 
 					// Achica el campo dirección
