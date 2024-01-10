@@ -76,7 +76,7 @@ module.exports = {
 			// Fin
 			return prods;
 		},
-		obtieneProds: async function ({entidad, opcionPorEnt, opcion, configCons}) {
+		obtieneProds: async function ({entidad, opcion, configCons}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = variables.asocs.rclvs;
