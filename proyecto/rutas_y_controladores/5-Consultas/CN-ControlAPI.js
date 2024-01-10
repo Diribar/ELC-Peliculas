@@ -139,6 +139,8 @@ module.exports = {
 		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.opcionPorEnt_id);
 		const opcion = cn_opciones.find((n) => n.id == opcionPorEnt.opcion_id);
 		const {palabrasClave} = configCons;
+
+		// Pule la variable 'configCons'
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
 		// Obtiene los registros ppp del usuario
@@ -154,7 +156,7 @@ module.exports = {
 		}
 
 		// Obtiene los registros de productos y rclvs
-		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
+		let prods = procesos.resultados.obtieneProds({entidad, opcionPorEnt, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
 				? opcion.codigo == "fechaDelAno_id"
