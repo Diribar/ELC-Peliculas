@@ -761,13 +761,12 @@ let botones = {
 		let indice = 0;
 		while (v.contador < 4 && v.resultados.length && indice < v.resultados.length) {
 			v.resultado = v.resultados[indice];
-			if (!v.seDebeEquilibrar || (v.resultado.cfc && v.cfc < 2) || (!v.resultado.cfc && v.vpc < 2))
-				v = this.agregaUnBoton(v);
+			if (!v.seDebeEquilibrar || (v.resultado.cfc && v.cfc < 2) || (!v.resultado.cfc && v.vpc < 2)) this.agregaUnBoton(v);
 			else indice++;
 		}
 		while (v.contador < 4 && v.resultados.length) {
 			v.resultado = v.resultados[0];
-			v = this.agregaUnBoton(v);
+			this.agregaUnBoton(v);
 		}
 
 		// Si corresponde, ordena los resultados
@@ -779,16 +778,16 @@ let botones = {
 	porAltaUltimosDias: function (v) {
 		// Outputs - Último día
 		v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia);
-		v = this.agregaUnBoton(v);
+		this.agregaUnBoton(v);
 
 		// Outputs - Últimos días
 		if (!v.productos.length) {
 			v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia * 2);
-			v = this.agregaUnBoton(v);
+			this.agregaUnBoton(v);
 		}
 
 		// Fin
-		return v;
+		return;
 	},
 	porEpocaDeEstreno: function ({epocaEstreno, v}) {
 		// Variables
@@ -813,8 +812,7 @@ let botones = {
 		}
 
 		// Fin
-		console.log(816,Object.keys(v));
-		return v;
+		return;
 	},
 	agregaUnBoton: (v) => {
 		// Si se llegó a los cuatro, aborta
@@ -829,8 +827,10 @@ let botones = {
 		const indice = v.resultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
 		v.resultados.splice(indice, 1);
 
-		// Fin
+		// Borra los últimos resultados
 		delete v.resultado;
-		return v;
+
+		// Fin
+		return;
 	},
 };
