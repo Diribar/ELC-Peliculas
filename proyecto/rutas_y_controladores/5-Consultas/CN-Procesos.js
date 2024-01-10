@@ -76,7 +76,7 @@ module.exports = {
 			// Fin
 			return prods;
 		},
-		prods: async function ({configCons, entidad, opcion}) {
+		obtieneProds: async function ({entidad, opcionPorEnt, opcion, configCons}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = variables.asocs.rclvs;
@@ -107,10 +107,13 @@ module.exports = {
 			// Aplica otros filtros
 			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons});
 
+			// Botones
+			if (opcionPorEnt.boton) resultados = botones.consolidado({resultados, opcionPorEnt, opcion, configCons});
+
 			// Fin
 			return resultados;
 		},
-		rclvs: async function ({configCons, entidad, opcion}) {
+		obtieneRclvs: async function ({configCons, entidad, opcion}) {
 			// Obtiene los include
 			let include = [...variables.entidades.prods, "fechaDelAno"];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
@@ -542,27 +545,33 @@ module.exports = {
 			prods: ({prods, opcion}) => {
 				// Si no corresponde ordenar, interrumpe la función
 				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
+				console.log(547, opcion.codigo);
 
 				// Variables
-				const campo =
-					opcion.codigo == "nombre"
-						? "nombreCastellano"
-						: opcion.codigo == "misCalificadas"
-						? "calificacion"
-						: opcion.codigo;
+				const campo = false
+					? false
+					: opcion.codigo == "nombre"
+					? "nombreCastellano"
+					: opcion.codigo == "misCalificadas"
+					? "calificacion"
+					: opcion.codigo == "azar"
+					? "anoEstreno"
+					: opcion.codigo;
 
 				// Ordena
-				prods.sort((a, b) => a.azar - b.azar);
+				prods.sort((a, b) => b.azar - a.azar); // decreciente
 				prods.sort((a, b) =>
-					typeof a[campo] == "string" && b[campo] == "string"
-						? opcion.ascDes == "ASC"
+					false
+						? false
+						: typeof a[campo] == "string" && b[campo] == "string"
+						? opcion.ascDes == "ASC" // acciones para strings
 							? a[campo].toLowerCase() < b[campo].toLowerCase()
 								? -1
 								: 1
 							: a[campo].toLowerCase() > b[campo].toLowerCase()
 							? -1
 							: 1
-						: opcion.ascDes == "ASC"
+						: opcion.ascDes == "ASC" // acciones para 'no strings'
 						? a[campo] < b[campo]
 							? -1
 							: 1
@@ -709,5 +718,112 @@ module.exports = {
 				return rclvs;
 			},
 		},
+	},
+};
+
+// Funciones
+let botones = {
+	consolidado: function ({resultados, opcionPorEnt, opcion, configCons}) {
+		// Variables
+		let v = {
+			resultados,
+			opcionPorEnt,
+			cantResultados: opcionPorEnt.cantidad,
+			ahora: new Date(),
+			cfc: 0,
+			vpc: 0,
+			contador: 0,
+			productos: [],
+		};
+
+		// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
+		v.seDebeEquilibrar =
+			opcion.codigo == "azar" &&
+			!configCons.cfc && // 'cfc' no está contestado
+			!configCons.apMar && // 'apMar' no está contestado
+			(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
+			!configCons.rolesIgl; // 'rolesIgl' no está contestado
+
+		// Elije los productos
+		if (opcion.codigo == "azar") {
+			resultados.sort((a, b) => b.azar - a.azar); // decreciente
+			v = this.porAltaUltimosDias(v);
+			for (let epocaEstreno of epocasEstreno) v = this.porEpocaDeEstreno({epocaEstreno, v});
+		}
+
+		// Agrega registros hasta llegar a cuatro
+		let indice = 0;
+		while (v.contador < 4 && v.resultados.length && indice < v.resultados.length) {
+			v.resultado = v.resultados[indice];
+			if (!v.seDebeEquilibrar || (v.resultado.cfc && v.cfc < 2) || (!v.resultado.cfc && v.vpc < 2))
+				v = this.agregaUnBoton(v);
+			else indice++;
+		}
+		while (v.contador < 4 && v.resultados.length) {
+			v.resultado = v.resultados[0];
+			v = this.agregaUnBoton(v);
+		}
+
+		// Si corresponde, ordena los resultados
+		if (opcion.codigo == "azar") v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
+
+		// Fin
+		return v.productos;
+	},
+	porAltaUltimosDias: function (v) {
+		// Outputs - Último día
+		v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia);
+		v = this.agregaUnBoton(v);
+
+		// Outputs - Últimos días
+		if (!v.productos.length) {
+			v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia * 2);
+			v = this.agregaUnBoton(v);
+		}
+
+		// Fin
+		return v;
+	},
+	porEpocaDeEstreno: function ({epocaEstreno, v}) {
+		// Variables
+		const epocaID = epocaEstreno.id;
+		const suma = [1, 2].includes(epocaID) ? 3 : 7; // la suma de los IDs posibles
+
+		// Si ya existe un producto para esa epoca de estreno, termina la función
+		if (v.productos.find((n) => n.epocaEstreno_id == epocaID)) return;
+
+		// Obtiene cfc/vpc
+		const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
+		const cfc = v.seDebeEquilibrar && contraparte ? (contraparte.cfc ? false : true) : null;
+
+		// Obtiene los productos de esa época de estreno
+		v.resultado = v.resultados.filter((n) => n.epocaEstreno_id == epocaID);
+		if (v.resultado.length && cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
+
+		// Agrega un botón
+		if (v.resultado.length) {
+			v.resultado = v.resultado[0];
+			v = this.agregaUnBoton(v);
+		}
+
+		// Fin
+		return v;
+	},
+	agregaUnBoton: (v) => {
+		// Si se llegó a los cuatro, aborta
+		if (v.contador == v.cantResultados || !v.resultado) return v;
+
+		// Miscelaneas
+		v.productos.push(v.resultado);
+		v.contador++;
+		v.resultado.cfc ? v.cfc++ : v.vpc++;
+
+		// Quita el registro de los resultados
+		const indice = v.resultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
+		v.resultados.splice(indice, 1);
+
+		// Fin
+		delete v.resultado;
+		return v;
 	},
 };
