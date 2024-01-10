@@ -176,6 +176,7 @@ module.exports = {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
 			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
+			prods = procesos.resultados.botonesListado({resultados: prods, opcionPorEnt, opcion, configCons});
 			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
