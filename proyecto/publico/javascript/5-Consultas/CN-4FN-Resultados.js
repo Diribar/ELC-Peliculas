@@ -37,6 +37,7 @@ let resultados = {
 				: {configCons, entidad: v.entidad};
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
+		console.log(v.resultados);
 
 		// Acciones en consecuencia
 		if (!v.resultados || !v.resultados.length)
@@ -606,21 +607,4 @@ let creaUnaCelda = {
 		// Fin
 		return celda;
 	},
-};
-
-let agregaUnBoton = () => {
-	// Si se llegó a los cuatro, aborta
-	if (v.contador == 4 || !v.resultado) return;
-
-	// Miscelaneas
-	v.productos.push(v.resultado);
-	v.contador++;
-	v.resultado.cfc ? v.cfc++ : v.vpc++;
-
-	// Quita el registro de los resultados
-	const indice = v.resultados.findIndex((n) => n.id == v.resultado.id && n.entidad == v.resultado.entidad);
-	v.resultados.splice(indice, 1);
-
-	// Fin
-	return;
 };
