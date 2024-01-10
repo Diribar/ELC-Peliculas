@@ -637,9 +637,9 @@ module.exports = {
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, epocaEstreno_id, avatar, cfc, calificacion, altaRevisadaEn} = prod;
+					const {direccion, anoEstreno, avatar, cfc, calificacion, altaRevisadaEn} = prod;
 					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre};
-					datos = {...datos, direccion, anoEstreno, epocaEstreno_id, avatar, cfc, altaRevisadaEn};
+					datos = {...datos, direccion, anoEstreno, avatar, cfc, altaRevisadaEn};
 					if (calificacion) datos.calificacion = calificacion;
 
 					// Achica el campo dirección
@@ -666,9 +666,6 @@ module.exports = {
 							break;
 						}
 					}
-
-					// Obtiene la época de estreno
-					if (prod.epocaEstreno) datos.epocaEstrenoNombre = prod.epocaEstreno.nombre;
 
 					// Si es una colección, agrega el campo 'anoFin'
 					if (prod.entidad == "colecciones") datos.anoFin = prod.anoFin;
