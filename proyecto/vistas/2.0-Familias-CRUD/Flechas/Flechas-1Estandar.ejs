@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Flechas.css">
 <% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
+<% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
@@ -13,7 +14,7 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (ORIGEN_DIF_DT || !detalle && !locals.origen) { %>
+	<% if (ORIGEN_DIF_DT && !revLinks || !detalle && !locals.origen) { %>
 		<!-- Siempre que el origen sea distinto a 'Detalle' o no haya origen -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
@@ -41,6 +42,9 @@
 	<% } %>
 	<% if (codigo == "abmLinks" && locals.sigProd) { %>
 		<!-- Link para Revisión/Mantenimiento de Links -->
+		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>">
+			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+		</a>
 		<a href="<%= sigProd %>">
 			<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
 		</a>

@@ -5,7 +5,7 @@ form #imgDerecha label {line-height: 0;}
 form #imgDerecha .fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
 form #imgDerecha .ayudaErrores {display: flex; flex-direction: row;}
 form #imgDerecha :is(.ayuda, .errores) {position: static; translate: none;}
-form #imgDerecha .errores {margin-left: 10px;}
+form #imgDerecha .errores .fa-solid {margin-left: 10px;}
 
 /* Imagen - AyudaMostrar */
 form #imgDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}

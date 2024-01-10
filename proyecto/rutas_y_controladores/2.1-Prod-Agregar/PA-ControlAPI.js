@@ -16,10 +16,13 @@ module.exports = {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		let resultado;
+
 		// Obtiene los productos
 		resultado = await buscar_x_PC.search(palabrasClave);
+
 		// Revisa si debe reemplazar una película por su colección
 		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
+
 		// Prepara la respuesta
 		let cantProds = resultado.productos.length;
 		let cantProdsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id).length;

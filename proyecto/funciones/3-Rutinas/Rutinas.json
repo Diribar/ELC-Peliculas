@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 8/ene",
-	"HoraUTC": "16:20",
+	"FechaUTC": "Mar. 9/ene",
+	"HoraUTC": "0:51",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 8/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"06-ene-24": {"titulo": "Navidad", "entidad": "epocasDelAno", "id": 26},
 		"07-ene-24": {"titulo": "Bautismo de Nuestro Señor", "entidad": "hechos", "id": 61},
 		"08-ene-24": {"titulo": "ELC - Películas"},
 		"09-ene-24": {"titulo": "ELC - Películas"},
-		"10-ene-24": {"titulo": "ELC - Películas"}
+		"10-ene-24": {"titulo": "ELC - Películas"},
+		"11-ene-24": {"titulo": "ELC - Películas"}
 	}
 }
