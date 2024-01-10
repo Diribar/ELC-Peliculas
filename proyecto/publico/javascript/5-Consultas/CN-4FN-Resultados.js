@@ -127,45 +127,8 @@ let resultados = {
 			return;
 		},
 		botones: () => {
-			// Variables
-			v.cfc = 0;
-			v.vpc = 0;
-			v.contador = 0;
-			v.productos = [];
-
-			// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
-			v.seDebeEquilibrar =
-				v.opcionBD.codigo == "azar" &&
-				!configCons.cfc && // 'cfc' no está contestado
-				!configCons.apMar && // 'apMar' no está contestado
-				(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
-				!configCons.rolesIgl; // 'rolesIgl' no está contestado
-
-			// Elije los productos
-			if (v.opcionBD.codigo == "azar") {
-				obtieneProducto.porAltaUltimosDias();
-				for (let epocaEstreno of v.epocasEstreno) obtieneProducto.porEpocaDeEstreno(epocaEstreno);
-			}
-
-			// Agrega registros hasta llegar a cuatro
-			let indice = 0;
-			while (v.contador < 4 && v.infoResultados.length && indice < v.infoResultados.length) {
-				const producto = v.infoResultados[indice];
-				if (!v.seDebeEquilibrar || (producto.cfc && v.cfc < 2) || (!producto.cfc && v.vpc < 2)) {
-					v.resultado = producto;
-					agregaUnBoton();
-				} else indice++;
-			}
-			while (v.contador < 4 && v.infoResultados.length) {
-				v.resultado = v.infoResultados[0];
-				agregaUnBoton();
-			}
-
-			// Si corresponde, ordena los resultados
-			if (v.opcionBD.codigo == "azar") v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
-
 			// Agrega el producto al botón
-			for (let producto of v.productos) {
+			for (let producto of v.infoResultados) {
 				const boton = auxiliares.boton(producto);
 				DOM.botones.append(boton);
 			}
@@ -660,50 +623,4 @@ let agregaUnBoton = () => {
 
 	// Fin
 	return;
-};
-let obtieneProducto = {
-	porAltaUltimosDias: () => {
-		// Outputs - Último día
-		v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia);
-		agregaUnBoton();
-		console.log("Último día: " + (v.productos.length ? "SI - " + v.resultado.nombreCastellano : "NO"));
-
-		// Outputs - Últimos días
-		v.resultado = null;
-		if (!v.productos.length) {
-			v.resultado = v.infoResultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - v.unDia * 2);
-			agregaUnBoton();
-			console.log("Últimos días: " + (v.productos.length ? "SI - " + v.resultado.nombreCastellano : "NO"));
-		}
-
-		// Fin
-		return;
-	},
-	porEpocaDeEstreno: (epocaEstreno) => {
-		// Variables
-		const epocaID = epocaEstreno.id;
-		const suma = [1, 2].includes(epocaID) ? 3 : 7; // la suma de los IDs posibles
-		v.resultado = null;
-
-		// Si ya existe un producto para esa epoca de estreno, termina la función
-		if (v.productos.find((n) => n.epocaEstreno_id == epocaID)) return;
-
-		// Obtiene cfc/vpc
-		const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
-		const cfc = v.seDebeEquilibrar && contraparte ? (contraparte.cfc ? false : true) : null;
-
-		// Obtiene los productos de esa época de estreno
-		v.provisorio = v.infoResultados.filter((n) => n.epocaEstreno_id == epocaID);
-		if (v.provisorio.length && cfc !== null) v.provisorio = v.provisorio.filter((n) => n.cfc === cfc);
-
-		// Agrega un botón
-		if (v.provisorio.length) {
-			v.resultado = v.provisorio[0];
-			agregaUnBoton();
-		}
-		console.log(epocaEstreno.nombre + ": " + (v.resultado ? "SI - " + v.resultado.nombreCastellano : "NO"));
-
-		// Fin
-		return;
-	},
 };
