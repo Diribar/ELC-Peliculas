@@ -147,7 +147,6 @@ module.exports = {
 		let pppRegistros = usuario_id
 			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
 			: [];
-
 		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
