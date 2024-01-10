@@ -394,6 +394,7 @@ module.exports = {
 				return prodsCruzadosConRCLVs;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
+				// Interrupciones de la función
 				if (opcion.codigo != "misCalificadas") return prods;
 				if (!prods.length || !usuario_id) return [];
 
@@ -411,9 +412,10 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConMisConsultas: async ({prods, usuario_id}) => {
-				// Si el usuario no está logueado, interrumpe la función
-				if (!usuario_id) return [];
+			prodsConMisConsultas: async ({prods, usuario_id, opcion}) => {
+				// Interrupciones de la función
+				if (opcion.codigo != "misConsultas") return prods;
+				if (!prods.length || !usuario_id) return [];
 
 				// Obtiene los registros del usuario
 				let misConsultas = await BD_genericas.obtieneTodosPorCondicion("misConsultas", {usuario_id});
