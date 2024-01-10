@@ -143,19 +143,11 @@ module.exports = {
 		// Pule la variable 'configCons'
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
-		// Obtiene los registros ppp del usuario
+		// Obtiene los registros ppp del usuario, productos y rclvs
 		let pppRegistros = usuario_id
 			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
 			: [];
 
-		// Obtiene los registros de productos
-		if (opcion.codigo == "misConsultas") {
-			let prods = await procesos.resultados.misConsultas(usuario_id, pppRegistros);
-			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
-			return res.json(prods);
-		}
-
-		// Obtiene los registros de productos y rclvs
 		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
@@ -163,13 +155,12 @@ module.exports = {
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
 				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
-
-		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Cruces de 'prods'
 		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
-		prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave, entidad});
+		prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
+		prods = procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id});
 
 		// Acciones varias
 		if (entidad == "productos") {
