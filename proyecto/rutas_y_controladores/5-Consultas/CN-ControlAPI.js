@@ -148,12 +148,13 @@ module.exports = {
 			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
 			: [];
 		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
+		if (opcion.codigo == "fechaDelAno_id") entidad == null;
 		let rclvs =
-			entidad == "productos"
-				? opcion.codigo == "fechaDelAno_id"
-					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
-					: null // Si el usuario no eligió 'Momento del Año'
-				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
+			opcion.codigo == "fechaDelAno_id" // no tiene entidad
+				? procesos.resultados.prodsDiaDelAno_id({dia, mes, entidad})
+				: entidad != "productos"
+				? procesos.resultados.obtieneRclvs({entidad, configCons, opcion})
+				: null; // Si el usuario no eligió 'Momento del Año'
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Acciones varias
