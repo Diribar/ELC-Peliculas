@@ -273,10 +273,7 @@ module.exports = {
 						let nombre =
 							(n.nombreCastellano.length > anchoMax
 								? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
-								: n.nombreCastellano) +
-							" (" +
-							n.anoEstreno +
-							")";
+								: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
 						let datos = {
 							id: n.id,
 							entidad: n.entidad,
@@ -429,7 +426,7 @@ module.exports = {
 			const statusFinal_id =
 				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 					? inactivo_id
-					: rclv// demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
 					? aprobado_id // si es un RCLV, se aprueba
 					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
 					? creadoAprob_id

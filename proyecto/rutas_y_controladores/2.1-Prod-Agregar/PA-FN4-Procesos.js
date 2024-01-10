@@ -82,15 +82,15 @@ module.exports = {
 		agregaCaps_Colec: async function (datos) {
 			// Replica para todos los capítulos de la colección - ¡No se debe usar 'forEach' porque no respeta el await!
 			let indice = 0;
-			for (let capituloID_TMDB of datos.capitulosID_TMDB) {
+			for (let capTMDB_id of datos.capsTMDB_id) {
 				indice++;
-				await this.agregaUnCap_Colec(datos, capituloID_TMDB, indice);
+				await this.agregaUnCap_Colec(datos, capTMDB_id, indice);
 			}
 
 			// Fin
 			return;
 		},
-		agregaUnCap_Colec: async function (datosCol, capituloID_TMDB, indice) {
+		agregaUnCap_Colec: async function (datosCol, capTMDB_id, indice) {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			const {direccion, guion, musica, actores, produccion} = datosCol;
@@ -105,7 +105,7 @@ module.exports = {
 
 			// Obtiene los datos del capítulo
 			await procsComp
-				.obtieneInfoDeMovie({TMDB_id: capituloID_TMDB})
+				.obtieneInfoDeMovie({TMDB_id: capTMDB_id})
 				// Le agrega los datos de cabecera
 				.then((n) => (n = {...datosCap, ...n}))
 				// Guarda los datos del capítulo

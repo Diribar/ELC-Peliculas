@@ -305,7 +305,7 @@ module.exports = {
 			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
 				if (confirma.TMDB_entidad == "collection")
-					procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
+					procesos.confirma.agregaCaps_Colec({...registro, capsTMDB_id: confirma.capsTMDB_id});
 				if (confirma.TMDB_entidad == "tv") procesos.confirma.agregaTemps_TV({...registro, cantTemps: confirma.cantTemps});
 			}
 
