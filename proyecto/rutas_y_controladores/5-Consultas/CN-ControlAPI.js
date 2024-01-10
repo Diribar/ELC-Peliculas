@@ -154,13 +154,13 @@ module.exports = {
 		}
 
 		// Obtiene los registros de productos y rclvs
-		let prods = procesos.resultados.prods({entidad, opcion, configCons});
+		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
 				? opcion.codigo == "fechaDelAno_id"
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
-				: procesos.resultados.rclvs({entidad, configCons, opcion});
+				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
 
 		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
