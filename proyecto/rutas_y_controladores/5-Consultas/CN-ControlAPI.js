@@ -156,15 +156,13 @@ module.exports = {
 				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
-		// Cruces de 'prods'
-		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
-		prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
-		prods = procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id});
-
 		// Acciones varias
 		if (entidad == "productos") {
+			prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
+			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
+			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, opcion});
 			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
 			prods = procesos.resultados.botonesListado({resultados: prods, opcionPorEnt, opcion, configCons});
 			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
