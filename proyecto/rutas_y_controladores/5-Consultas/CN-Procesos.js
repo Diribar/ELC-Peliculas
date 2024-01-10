@@ -235,8 +235,8 @@ module.exports = {
 
 				// Aparición mariana
 				if (configCons.apMar) {
-					prefs.apMar_id = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
-					prefs.apMar_id = entidad == "personajes" ? prefs.apMar_id.pers : prefs.apMar_id.hec;
+					const condicion = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
+					entidad == "personajes" ? (prefs.apMar_id = condicion.pers) : (prefs.ama = condicion.hec);
 				}
 
 				// Roles en la Iglesia
