@@ -673,8 +673,8 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {entidad, id, nombre, productos, fechaDelAno_id, fechaDelAno} = n;
-					let datos = {entidad, id, nombre, productos};
+					const {entidad, id, nombre, productos, avatar, fechaDelAno_id, fechaDelAno} = n;
+					let datos = {entidad, id, nombre, productos, avatar};
 					if (opcion.codigo == "fechaDelAno_id")
 						datos = {...datos, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
 					else if (n.apodo) datos.apodo = n.apodo;
