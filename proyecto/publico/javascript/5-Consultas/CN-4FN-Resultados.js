@@ -216,7 +216,7 @@ let auxiliares = {
 	boton: function (registro) {
 		// Variables
 		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
-		const carpeta = familia == "producto" ? "2-Productos" : "3-RCLVs";
+		const esUnProducto = familia == "producto";
 
 		// Crea el elemento 'li' que engloba todo el registro
 		const li = document.createElement("li");
@@ -238,10 +238,11 @@ let auxiliares = {
 
 		// Crea la imagen
 		const avatar = document.createElement("img");
+		const carpeta = esUnProducto ? "2-Productos" : "3-RCLVs";
 		avatar.className = "imagenChica";
 		avatar.src = (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar;
-		avatar.alt = familia == "producto" ? registro.nombreCastellano : registro.nombre;
-		avatar.title = familia == "producto" ? registro.nombreCastellano : registro.nombre;
+		avatar.alt = esUnProducto ? registro.nombreCastellano : registro.nombre;
+		avatar.title = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		button.appendChild(avatar);
 
 		// Crea el sector de informacion
@@ -250,15 +251,21 @@ let auxiliares = {
 		informacion.className = "flexCol";
 		button.appendChild(informacion);
 
+		// Datos de un producto o rclv
+		if (esUnProducto) this.datosProducto({informacion, producto: registro});
+		if (!esUnProducto) this.datosRclv({informacion, rclv: registro});
+
+		// Fin
+		return li;
+	},
+	datosProducto: function ({informacion, producto}) {
 		// Crea infoPeli
 		const infoPeli = document.createElement("div");
 		infoPeli.id = "infoPeli";
 		informacion.appendChild(infoPeli);
 
-		// Crea nombreCastellano, anoEstreno, direccion
-		let elementos =familia == "producto"
-		? ["nombreCastellano", "anoEstreno", "direccion", "ppp"]
-		:["nombre","fechaDelAno",];
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		const elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
 		let aux = {};
 		for (let elemento of elementos) {
 			aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
@@ -290,7 +297,28 @@ let auxiliares = {
 		if (rclv) infoRCLV.appendChild(rclv);
 
 		// Fin
-		return li;
+		return;
+	},
+	obtieneElRCLV: (producto) => {
+		for (let rclvNombre of v.rclvsNombre)
+			if (producto[rclvNombre]) {
+				// Crea el rclv con sus características
+				const rclv = document.createElement("p");
+				rclv.className = "interlineadoChico rclv";
+				rclv.innerHTML = rclvNombre + ": ";
+
+				// Crea el em
+				const em = document.createElement("em");
+				const fechaDelAno = producto.fechaDelAno;
+				em.innerHTML = producto[rclvNombre] + (fechaDelAno ? " (" + fechaDelAno + ")" : "");
+				rclv.appendChild(em);
+
+				// Fin
+				return rclv;
+			}
+
+		// Fin
+		return false;
 	},
 	titulo: (registroAct, registroAnt, indice) => {
 		// Variables
@@ -482,27 +510,6 @@ let auxiliares = {
 
 		// Fin
 		return filas;
-	},
-	obtieneElRCLV: (producto) => {
-		for (let rclvNombre of v.rclvsNombre)
-			if (producto[rclvNombre]) {
-				// Crea el rclv con sus características
-				const rclv = document.createElement("p");
-				rclv.className = "interlineadoChico rclv";
-				rclv.innerHTML = rclvNombre + ": ";
-
-				// Crea el em
-				const em = document.createElement("em");
-				const fechaDelAno = producto.fechaDelAno;
-				em.innerHTML = producto[rclvNombre] + (fechaDelAno ? " (" + fechaDelAno + ")" : "");
-				rclv.appendChild(em);
-
-				// Fin
-				return rclv;
-			}
-
-		// Fin
-		return false;
 	},
 };
 
