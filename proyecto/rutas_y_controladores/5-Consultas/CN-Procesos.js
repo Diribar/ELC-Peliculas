@@ -96,7 +96,8 @@ module.exports = {
 		},
 		obtienePorDiaDelAno: async ({entidad, dia, mes}) => {
 			// Variables
-			const entidadesRCLV = entidad ? [entidad] : variables.entidades.rclvs; // descarta la última entidad (epocaDelAno)
+			entidad = "rclvs";
+			const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
 			const diaInicial_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
 			const inclStd = [...variables.entidades.prods, "fechaDelAno"];
 			const inclHec = [...inclStd, "epocaOcurrencia"];
@@ -617,6 +618,18 @@ module.exports = {
 				return rclvs;
 			},
 		},
+		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
+			// Variables
+			const cantResults = opcionPorEnt.cantidad;
+
+			// Botones
+			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
+			else if (cantResults) resultados.splice(cantResults);
+			console.log();
+
+			// Fin
+			return resultados;
+		},
 		camposNecesarios: {
 			prods: ({prods, opcion}) => {
 				// Si no hay registros a achicar, interrumpe la función
@@ -702,17 +715,6 @@ module.exports = {
 				// Fin
 				return rclvs;
 			},
-		},
-		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
-			// Variables
-			const cantResults = opcionPorEnt.cantidad;
-
-			// Botones
-			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
-			else if (cantResults) resultados.splice(cantResults);
-
-			// Fin
-			return resultados;
 		},
 	},
 };
