@@ -625,7 +625,6 @@ module.exports = {
 			// Botones
 			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
 			else if (cantResults) resultados.splice(cantResults);
-			console.log();
 
 			// Fin
 			return resultados;
