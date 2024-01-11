@@ -39,7 +39,7 @@ module.exports = {
 		},
 	},
 	resultados: {
-		obtieneProds: async function ({entidad, opcion, configCons}) {
+		obtieneProds: async function ({entidad, configCons, opcion}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = variables.asocs.rclvs;
@@ -73,7 +73,10 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRclvs: async function ({configCons, entidad, opcion}) {
+		obtieneRclvs: async function ({entidad, configCons, opcion}) {
+			// Interrumpe la función
+			if (entidad == "productos") return null;
+
 			// Obtiene los include
 			let include = [...variables.entidades.prods, "fechaDelAno"];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
@@ -87,6 +90,61 @@ module.exports = {
 			const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
 				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
 			);
+
+			// Fin
+			return rclvs;
+		},
+		obtienePorDiaDelAno: async ({entidad, dia, mes}) => {
+			// Variables
+			const entidadesRCLV = entidad ? [entidad] : variables.entidades.rclvs; // descarta la última entidad (epocaDelAno)
+			const diaInicial_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+			const inclStd = [...variables.entidades.prods, "fechaDelAno"];
+			const inclHec = [...inclStd, "epocaOcurrencia"];
+			const inclPers = [...inclHec, "rolIglesia", "canon"];
+			let registros = [];
+			let rclvs = [];
+			let condicion;
+
+			// Rutina para obtener los RCLVs
+			for (let dia = 0; dia < 366; dia++) {
+				// Variables
+				let fechaDelAno_id = diaInicial_id + dia;
+				if (fechaDelAno_id > 366) fechaDelAno_id -= 366;
+				const epocaDelAno_id = fechasDelAno.find((n) => n.id == fechaDelAno_id).epocaDelAno_id;
+
+				// Obtiene los RCLV, a excepción de la familia 'epocaDelAno'
+				for (let entidad of entidadesRCLV) {
+					// Variables
+					condicion =
+						entidad != "epocasDelAno"
+							? {id: {[Op.gt]: 10}, statusRegistro_id: aprobado_id, fechaDelAno_id}
+							: {id: epocaDelAno_id, statusRegistro_id: aprobado_id}; // hay varias fechas para cada época del año
+					const includes = entidad == "hechos" ? inclHec : entidad == "personajes" ? inclPers : inclStd;
+
+					// Obtiene los registros
+					if (entidad == "epocasDelAno" && epocaDelAno_id == 1) continue;
+					registros.push(
+						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, includes)
+							// Les agrega su entidad y el dia (para ordenarlos)
+							.then((n) => n.map((m) => ({...m, entidad, dia})))
+					);
+				}
+			}
+
+			// Espera y consolida la informacion
+			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
+
+			// Elimina las 'epocasDelAno' repetidas
+			if (rclvs.length)
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					let rclv = rclvs[i];
+					if (i != rclvs.findIndex((n) => n.id == rclv.id && n.entidad == rclv.entidad)) rclvs.splice(i, 1);
+					else if (rclv.entidad != "epocasDelAno") break;
+				}
+
+			// Los ordena
+			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad); // Prioridad descendente
+			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Día ascendente
 
 			// Fin
 			return rclvs;
@@ -213,62 +271,6 @@ module.exports = {
 				// Fin
 				return prefs;
 			},
-		},
-		prodsDiaDelAno_id: async ({dia, mes}) => {
-			// Variables
-			const entidadesRCLV = variables.entidades.rclvs.slice(0, -1); // Descarta la última entidad (epocaDelAno)
-			const diaInicial_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
-			let registros = [];
-			let condicion;
-
-			// Rutina para obtener los RCLVs de los días 0, +1, +2
-			for (let dia = 0; dia < 366; dia++) {
-				// Variables
-				let fechaDelAno_id = diaInicial_id + dia;
-				if (fechaDelAno_id > 366) fechaDelAno_id -= 366;
-
-				// Obtiene los RCLV, a excepción de la familia 'epocaDelAno'
-				for (let entidad of entidadesRCLV) {
-					// Condicion estandar: RCLVs del dia y en status aprobado
-					condicion = {id: {[Op.gt]: 10}, fechaDelAno_id, statusRegistro_id: aprobado_id};
-
-					// Obtiene los registros
-					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "fechaDelAno")
-							// Les agrega su entidad y el dia
-							.then((n) => n.map((m) => ({...m, entidad, dia})))
-					);
-				}
-
-				// Busca el registro de 'epocaDelAno'
-				const epocaDelAno_id = fechasDelAno.find((n) => n.id == fechaDelAno_id).epocaDelAno_id;
-				if (epocaDelAno_id != 1) {
-					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
-					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, "fechaDelAno")
-							// Les agrega su entidad y el dia
-							.then((n) => n.map((m) => ({...m, entidad: "epocasDelAno", dia})))
-					);
-				}
-			}
-
-			// Espera y consolida la informacion
-			let rclvs = [];
-			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
-
-			// Elimina los repetidos
-			if (rclvs.length)
-				for (let i = rclvs.length - 1; i >= 0; i--) {
-					let rclv = rclvs[i];
-					if (i != rclvs.findIndex((n) => n.id == rclv.id && n.entidad == rclv.entidad)) rclvs.splice(i, 1);
-				}
-
-			// Los ordena:
-			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad); // Prioridad descendente
-			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Día ascendente
-
-			// Fin
-			return rclvs;
 		},
 		cruce: {
 			// Productos
@@ -454,17 +456,18 @@ module.exports = {
 				// Fin
 				return rclvs;
 			},
-			rclvsConProds: ({rclvs, prods, palabrasClave}) => {
+			rclvsConProds: ({rclvs, prods, palabrasClave, cantResults}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
 				// Rutina por RCLV
-				for (let i = rclvs.length - 1; i >= 0; i--) {
+				let i = 0;
+				while (i < rclvs.length && (cantResults ? i < cantResults : true)) {
 					// Variables
 					rclvs[i].productos = [];
 					let rclv = rclvs[i];
 
-					// Rutina por entProd de cada RCLV
+					// Agrupa los productos en el método 'productos'
 					for (let entProd of variables.entidades.prods) {
 						let prodsRCLV = rclv[entProd];
 
@@ -480,18 +483,18 @@ module.exports = {
 						}
 
 						// Acciones finales
-						rclvs[i].productos.push(...rclvs[i][entProd]); // Agrupa los productos en el array 'productos'
+						rclvs[i].productos.push(...rclvs[i][entProd]); // Agrupa los productos en el método 'productos'
 						delete rclvs[i][entProd]; // Elimina la familia
 					}
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
 					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos las tienen, elimina el rclv
-					else if (palabrasClave && !rclv.palsClave && !rclvs[i].productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
+					else if (palabrasClave && !rclv.palsClave && !rclv.productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
 						// Si el usuario busca por 'palabrasClave' y el rclv no las tiene, deja solamente los productos que las tienen
-						if (palabrasClave && !rclv.palsClave) rclvs[i].productos = rclvs[i].productos.filter((n) => n.palsClave);
+						if (palabrasClave && !rclv.palsClave) rclvs[i].productos = rclv.productos.filter((n) => n.palsClave);
 
 						// Ordena los productos por su año de estreno
 						rclvs[i].productos.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
@@ -515,6 +518,9 @@ module.exports = {
 							// Fin
 							return datos;
 						});
+
+						// Aumenta el índice para analizar el siguiente registro
+						i++;
 					}
 				}
 
@@ -524,9 +530,6 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, opcion}) => {
-				// Si no corresponde ordenar, interrumpe la función
-				if (prods.length <= 1 || opcion.codigo == "fechaDelAno_id") return prods;
-
 				// Ordena por el azar decreciente
 				prods.sort((a, b) => b.azar - a.azar);
 
@@ -574,9 +577,9 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, opcion, configCons, entidad}) => {
-				// Si no hay nada que ordenar, interrumpe la función
-				if (rclvs.length < 2) return rclvs;
+			rclvs: ({rclvs, opcion, entidad}) => {
+				// Si no corresponde ordenar, interrumpe la función
+				if (rclvs.length <= 1 || opcion.codigo == "fechaDelAno_id") return rclvs;
 
 				// Si la opción es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
 				if (opcion.codigo == "anoHistorico") {
@@ -615,7 +618,7 @@ module.exports = {
 			},
 		},
 		camposNecesarios: {
-			prods: (prods, opcion) => {
+			prods: ({prods, opcion}) => {
 				// Si no hay registros a achicar, interrumpe la función
 				if (!prods.length) return [];
 
@@ -663,15 +666,15 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			rclvs: ({rclvs, opcion, entidad}) => {
-				// Si no hay registros a achicar, interrumpe la función
+			rclvs: ({rclvs, opcion}) => {
+				// Si no hay registros, interrumpe la función
 				if (!rclvs.length) return [];
 
 				// Deja solamente los campos necesarios
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
-					const {id, nombre, productos, fechaDelAno_id, fechaDelAno} = n;
-					let datos = {id, nombre, productos};
+					const {entidad, id, nombre, productos, fechaDelAno_id, fechaDelAno} = n;
+					let datos = {entidad, id, nombre, productos};
 					if (opcion.codigo == "fechaDelAno_id")
 						datos = {...datos, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
 					else if (n.apodo) datos.apodo = n.apodo;
@@ -683,7 +686,6 @@ module.exports = {
 						datos.anoNacim = n.anoNacim;
 						if (!n.rolIglesia_id.startsWith("NN")) {
 							datos.rolIglesiaNombre = n.rolIglesia.nombre;
-							// datos.rolIglesiaGrupo = n.rolIglesia.plural;
 							if (!n.canon_id.startsWith("NN")) datos.canonNombre = n.canon.nombre;
 						}
 					}
@@ -702,8 +704,12 @@ module.exports = {
 			},
 		},
 		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
+			// Variables
+			const cantResults = opcionPorEnt.cantidad;
+
 			// Botones
-			if (opcionPorEnt.boton) resultados = botones.consolidado({resultados, opcionPorEnt, opcion, configCons});
+			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
+			else if (cantResults) resultados.splice(cantResults);
 
 			// Fin
 			return resultados;
@@ -712,13 +718,12 @@ module.exports = {
 };
 
 // Funciones
-let botones = {
-	consolidado: function ({resultados, opcionPorEnt, opcion, configCons}) {
+let alAzar = {
+	consolidado: function ({resultados, cantResults, opcion, configCons}) {
 		// Variables
 		let v = {
 			resultados,
-			opcionPorEnt,
-			cantResultados: opcionPorEnt.cantidad,
+			cantResults,
 			ahora: new Date(),
 			cfc: 0,
 			vpc: 0,
@@ -799,7 +804,7 @@ let botones = {
 	},
 	agregaUnBoton: (v) => {
 		// Si se llegó a los cuatro, aborta
-		if (v.contador == v.cantResultados || !v.resultado) return v;
+		if (v.contador == v.cantResults || !v.resultado) return v;
 
 		// Miscelaneas
 		v.productos.push(v.resultado);
