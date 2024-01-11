@@ -37,6 +37,8 @@ let resultados = {
 				: {configCons, entidad: v.entidad};
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
+		console.log(v.resultados);
+		return
 
 		// Acciones en consecuencia
 		if (!v.resultados || !v.resultados.length)
@@ -127,15 +129,17 @@ let resultados = {
 			return;
 		},
 		botones: () => {
-			// Agrega el producto al botón
-			for (let producto of v.resultados) {
-				const boton = auxiliares.boton(producto);
+			// Agrega el resultado al botón
+			for (let resultado of v.resultados) {
+				const boton = auxiliares.boton(resultado);
 				DOM.botones.append(boton);
 			}
 
 			// Genera las variables 'ppp'
-			DOM.ppps = DOM.botones.querySelectorAll(".producto #ppp");
-			v.ppps = Array.from(DOM.ppps);
+			if (v.opcionBD.codigo == "azar") {
+				DOM.ppps = DOM.botones.querySelectorAll(".registro #ppp");
+				v.ppps = Array.from(DOM.ppps);
+			}
 
 			// Foco en el primer botón
 			DOM.botones.querySelector("button").focus();
@@ -210,15 +214,19 @@ let resultados = {
 };
 
 let auxiliares = {
-	boton: function (producto) {
-		// Crea el elemento 'li' que engloba todo el producto
+	boton: function (registro) {
+		// Variables
+		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
+		const carpeta = familia == "producto" ? "2-Productos" : "3-RCLVs";
+
+		// Crea el elemento 'li' que engloba todo el registro
 		const li = document.createElement("li");
-		li.className = "producto";
+		li.className = "registro";
 		li.tabIndex = "-1";
 
 		// Crea el anchor
 		const anchor = document.createElement("a");
-		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
+		anchor.href = "/" + familia + "/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
 		anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 		li.appendChild(anchor);
@@ -232,9 +240,9 @@ let auxiliares = {
 		// Crea la imagen
 		const avatar = document.createElement("img");
 		avatar.className = "imagenChica";
-		avatar.src = (!producto.avatar.includes("/") ? "/Externa/2-Productos/Final/" : "") + producto.avatar;
-		avatar.alt = producto.nombreCastellano;
-		avatar.title = producto.nombreCastellano;
+		avatar.src = (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar;
+		avatar.alt = familia == "producto" ? registro.nombreCastellano : registro.nombre;
+		avatar.title = familia == "producto" ? registro.nombreCastellano : registro.nombre;
 		button.appendChild(avatar);
 
 		// Crea el sector de informacion
@@ -249,7 +257,9 @@ let auxiliares = {
 		informacion.appendChild(infoPeli);
 
 		// Crea nombreCastellano, anoEstreno, direccion
-		let elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
+		let elementos =familia == "producto"
+		? ["nombreCastellano", "anoEstreno", "direccion", "ppp"]
+		:["nombre","fechaDelAno",];
 		let aux = {};
 		for (let elemento of elementos) {
 			aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
