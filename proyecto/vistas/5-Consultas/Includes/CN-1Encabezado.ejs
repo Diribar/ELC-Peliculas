@@ -6,16 +6,8 @@
 		<i class="fa-solid fa-chevron-right"></i>
 	</div>
 
-	<!-- Entidad y Orden -->
+	<!-- Opciones -->
 	<div id="entidadOrden">
-		<!-- Entidad -->
-		<select name="entidad_id" class="prefSimple" required>
-			<% for (let entidad of cn_entidades) { %>
-			<option value="<%= entidad.id %>"><%= entidad.nombre %></option>
-			<% } %>
-		</select>
-
-		<!-- Orden -->
 		<select name="opcionPorEnt_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
 				<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
