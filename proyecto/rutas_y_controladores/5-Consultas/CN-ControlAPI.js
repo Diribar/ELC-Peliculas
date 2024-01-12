@@ -135,7 +135,6 @@ module.exports = {
 	resultados: async (req, res) => {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
-		//console.log(138,{dia, mes, configCons, entidad});
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.opcionPorEnt_id);
 		const cantResults = opcionPorEnt.cantidad;
