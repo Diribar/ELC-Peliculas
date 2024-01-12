@@ -7,27 +7,25 @@
 	</div>
 
 	<!-- Opciones -->
-	<div id="entidadOrden">
-		<select name="opcionPorEnt_id" class="prefSimple" required>
-			<optgroup id="cuatroPelis" label="Cuatro Películas">
-				<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
-				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
-				<% } %>
-			</optgroup>
-			<optgroup label="Listados">
-				<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
-				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
-				<% } %>
-			</optgroup>
-			<% if (locals.usuario) { %>
-				<optgroup label="Mis listados">
-					<% for (let opcion of cn_opciones.filter(n => !n.boton && n.opcion.loginNeces)) { %>
-					<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
-					<% } %>
-				</optgroup>
+	<select name="opcionPorEnt_id" class="prefSimple" required>
+		<optgroup id="cuatroPelis" label="Cuatro Películas">
+			<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
+			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 			<% } %>
-		</select>
-	</div>
+		</optgroup>
+		<optgroup label="Listados">
+			<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
+			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+			<% } %>
+		</optgroup>
+		<% if (locals.usuario) { %>
+			<optgroup label="Mis listados">
+				<% for (let opcion of cn_opciones.filter(n => !n.boton && n.opcion.loginNeces)) { %>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% } %>
+			</optgroup>
+		<% } %>
+	</select>
 
 	<!-- Ayuda -->
 	<div id="ayudaOrden">

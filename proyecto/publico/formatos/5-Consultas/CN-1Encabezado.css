@@ -4,7 +4,6 @@
 #tituloPrincipal #toggleFiltrosGlobal {width: 25px; height: 25px; margin: auto 5px;}
 
 /* Orden y Entidad */
-#tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
 #tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
