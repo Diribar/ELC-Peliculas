@@ -60,7 +60,7 @@ let actualizaConfigCons = {
 
 			// Acciones si la opción no pertenece a la  entidad
 			if (!v.opcionEnEntidad) {
-				// Si el código existe en el layout, elige su opción correspondiente
+				// Si la opción existe en la entidad,la elige
 				v.opcionPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.opcionPorEnt_id);
 
 				// Asigna el nuevo valor
