@@ -37,7 +37,6 @@ let resultados = {
 				: {configCons, entidad: v.entidad};
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
-		console.log(v.resultados);
 
 		// Acciones en consecuencia
 		if (!v.resultados || !v.resultados.length)
