@@ -161,7 +161,7 @@ module.exports = {
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
-			prods = procesos.resultados.cruce.prodsConPalsClave({prods, ...configCons});
+			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
 			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, opcion});
 			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
