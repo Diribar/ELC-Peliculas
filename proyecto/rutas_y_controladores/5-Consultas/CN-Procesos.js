@@ -94,7 +94,7 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		obtienePorDiaDelAno: async ({entidad, dia, mes}) => {
+		obtienePorFechaDelAno: async ({entidad, dia, mes}) => {
 			// Variables
 			entidad = "rclvs";
 			const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
