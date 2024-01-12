@@ -41,10 +41,10 @@ let actualiza = {
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
-		v.obtener && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.opcion_id && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? titulo.nuevo
-			: !v.obtener
+			: !v.opcion_id
 			? "No está permitido crear una configuración cuando hay un error en los filtros"
 			: claseEdicion
 			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
@@ -53,7 +53,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Edición
-		!claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo && v.obtener
+		!claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo && v.opcion_id
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 		DOM.edicion.title = !DOM.edicion.className.includes("inactivo")
@@ -64,7 +64,7 @@ let actualiza = {
 			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
 			: v.hayCambiosDeCampo
 			? "No está permitido editar el nombre de una configuración cuando se le hicieron cambios"
-			: !v.obtener
+			: !v.opcion_id
 			? "No está permitido editar una configuración cuando hay un error en los filtros"
 			: "";
 
@@ -95,12 +95,12 @@ let actualiza = {
 			: "";
 
 		// Ícono Guardar
-		v.obtener && (v.nuevo || v.edicion || v.propio)
+		v.opcion_id && (v.nuevo || v.edicion || v.propio)
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
 			? titulo.guardar
-			: !v.obtener
+			: !v.opcion_id
 			? "No está permitido guardar una configuración cuando hay un error en los filtros"
 			: (claseNuevo || claseEdicion) && !v.nombreOK
 			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
