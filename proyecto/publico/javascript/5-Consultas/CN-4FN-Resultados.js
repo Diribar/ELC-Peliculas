@@ -32,7 +32,7 @@ let resultados = {
 		// Busca la información en el BE
 		v.ahora = new Date();
 		const datos =
-			v.entidad == "productos" && v.opcionBD.codigo == "fechaDelAno_id"
+			v.opcionBD.codigo == "fechaDelAno_id"
 				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -260,9 +260,10 @@ let auxiliares = {
 	},
 	datosProducto: function ({informacion, producto}) {
 		// Crea infoPeli
-		const infoPeli = document.createElement("div");
-		infoPeli.id = "infoPeli";
-		informacion.appendChild(infoPeli);
+		const infoSup = document.createElement("div");
+		infoSup.id = "infoSup";
+		infoSup.className="infoFormato"
+		informacion.appendChild(infoSup);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
 		const elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
@@ -271,7 +272,7 @@ let auxiliares = {
 			aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
 			aux[elemento].id = elemento;
 			aux[elemento].className = "interlineadoChico";
-			infoPeli.appendChild(aux[elemento]);
+			infoSup.appendChild(aux[elemento]);
 		}
 
 		// Particularidades
@@ -287,14 +288,73 @@ let auxiliares = {
 		aux.direccion.innerHTML = "Dirección: ";
 		aux.direccion.appendChild(em);
 
-		// Crea infoRCLV
-		const infoRCLV = document.createElement("div");
-		infoRCLV.id = "infoRCLV";
-		informacion.appendChild(infoRCLV);
+		// Crea la infoInf
+		const infoInf = document.createElement("div");
+		infoInf.id = "infoInf";
+		infoInf.className="infoFormato"
+		informacion.appendChild(infoInf);
 
-		// Agrega el rclv en infoRCLV
+		// Agrega el rclv en infoInf
 		const rclv = this.obtieneElRCLV(producto);
-		if (rclv) infoRCLV.appendChild(rclv);
+		if (rclv) infoInf.appendChild(rclv);
+
+		// Fin
+		return;
+	},
+	datosRclv: function ({informacion, rclv}) {
+		// Variables
+		let elementos;
+
+		// Crea la infoSup
+		const infoSup = document.createElement("div");
+		infoSup.id = "infoSup";
+		infoSup.className="infoFormato"
+		informacion.appendChild(infoSup);
+
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		elementos = ["nombre", "canonRol", "fechaDelAno"];
+		let auxSup = {};
+		for (let elemento of elementos) {
+			if (elemento == "canonRol" && !rclv.canonNombre && !rclv.rolIglesiaNombre) continue;
+			auxSup[elemento] = document.createElement("p");
+			auxSup[elemento].id = elemento;
+			auxSup[elemento].className = "interlineadoChico";
+			infoSup.appendChild(auxSup[elemento]);
+		}
+
+		// Otras particularidades
+		auxSup.nombre.innerHTML = rclv.nombre;
+		if (rclv.canonNombre || rclv.rolIglesiaNombre) {
+			auxSup.canonRol.innerHTML = "";
+			if (rclv.canonNombre) auxSup.canonRol.innerHTML += rclv.canonNombre;
+			if (rclv.canonNombre && rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += " - ";
+			if (rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += rclv.rolIglesiaNombre;
+		}
+		auxSup.fechaDelAno.innerHTML = "Se lo/la recuerda el " + rclv.fechaDelAno;
+
+		// Crea la infoInf
+		const infoInf = document.createElement("div");
+		infoInf.id = "infoInf";
+		infoInf.className="infoFormato"
+		informacion.appendChild(infoInf);
+
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		elementos = ["epocaOcurrenciaNombre", "anoNacim", "anoComienzo", "productos"];
+		let auxInf = {};
+		for (let elemento of elementos) {
+			if (!rclv[elemento]) continue;
+			auxInf[elemento] = document.createElement("p");
+			auxInf[elemento].id = elemento;
+			auxInf[elemento].className = "interlineadoChico";
+			infoInf.appendChild(auxInf[elemento]);
+		}
+
+		// Otras particularidades
+		console.log(rclv);
+		auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
+		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacimiento: " + rclv.anoNacim;
+		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
+		auxInf.productos.innerHTML = rclv.productos.length + " películas, según los criterios de búsqueda";
 
 		// Fin
 		return;
