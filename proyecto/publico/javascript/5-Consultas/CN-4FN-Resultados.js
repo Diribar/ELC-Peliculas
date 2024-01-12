@@ -262,7 +262,7 @@ let auxiliares = {
 		// Crea infoPeli
 		const infoSup = document.createElement("div");
 		infoSup.id = "infoSup";
-		infoSup.className="infoFormato"
+		infoSup.className = "infoFormato";
 		informacion.appendChild(infoSup);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
@@ -291,7 +291,7 @@ let auxiliares = {
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
 		infoInf.id = "infoInf";
-		infoInf.className="infoFormato"
+		infoInf.className = "infoFormato";
 		informacion.appendChild(infoInf);
 
 		// Agrega el rclv en infoInf
@@ -308,7 +308,7 @@ let auxiliares = {
 		// Crea la infoSup
 		const infoSup = document.createElement("div");
 		infoSup.id = "infoSup";
-		infoSup.className="infoFormato"
+		infoSup.className = "infoFormato";
 		informacion.appendChild(infoSup);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
@@ -330,12 +330,12 @@ let auxiliares = {
 			if (rclv.canonNombre && rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += " - ";
 			if (rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += rclv.rolIglesiaNombre;
 		}
-		auxSup.fechaDelAno.innerHTML = "Se lo/la recuerda el " + rclv.fechaDelAno;
+		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno.nombre;
 
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
 		infoInf.id = "infoInf";
-		infoInf.className="infoFormato"
+		infoInf.className = "infoFormato";
 		informacion.appendChild(infoInf);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
@@ -343,6 +343,7 @@ let auxiliares = {
 		let auxInf = {};
 		for (let elemento of elementos) {
 			if (!rclv[elemento]) continue;
+			if (elemento == "epocaOcurrenciaNombre" && (rclv.anoNacim || rclv.anoComienzo)) continue;
 			auxInf[elemento] = document.createElement("p");
 			auxInf[elemento].id = elemento;
 			auxInf[elemento].className = "interlineadoChico";
@@ -350,11 +351,10 @@ let auxiliares = {
 		}
 
 		// Otras particularidades
-		console.log(rclv);
-		auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
-		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacimiento: " + rclv.anoNacim;
+		if(auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
+		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacim.: " + rclv.anoNacim;
 		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
-		auxInf.productos.innerHTML = rclv.productos.length + " películas, según los criterios de búsqueda";
+		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
 
 		// Fin
 		return;
