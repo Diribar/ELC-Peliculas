@@ -142,8 +142,10 @@ app.set("views", [
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
-		cn_entidades: BD_genericas.obtieneTodos("cn_entidades",),
-		cn_opciones: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opciones", {activo: true}, "entidades"),
+		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
+		cn_opciones: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opciones", {activo: true}, "entidades").then((n) =>
+			n.sort((a, b) => a.orden - b.orden)
+		),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús

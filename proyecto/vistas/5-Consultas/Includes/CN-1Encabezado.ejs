@@ -14,13 +14,13 @@
 			<% } %>
 		</optgroup>
 		<optgroup label="Listados">
-			<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
+			<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.loginNeces)) { %>
 			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 			<% } %>
 		</optgroup>
 		<% if (locals.usuario) { %>
 			<optgroup label="Mis listados">
-				<% for (let opcion of cn_opciones.filter(n => !n.boton && n.opcion.loginNeces)) { %>
+				<% for (let opcion of cn_opciones.filter(n => !n.boton && n.loginNeces)) { %>
 				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 				<% } %>
 			</optgroup>
