@@ -22,13 +22,15 @@ let actualizaConfigCons = {
 
 		// Obtiene los valores completos de la opción elegida
 		if (v.opcion_id) {
-			v.opcionBD = opcionesBD.find((n) => n.id == v.opcion_id);
+			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcion_id);
 			if (!v.opcionBD) v.opcion_id = null;
 		}
 
-		// Actualiza 'configCons.entidad_id'
-		if (v.opcion_id && (!v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value))
-			configCons.entidad_id = v.opcionBD.entDefault_id;
+		// Actualiza variables
+		if (v.opcion_id) {
+			configCons.opcion_id = v.opcion_id;
+			if (!v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value) configCons.entidad_id = v.opcionBD.entDefault_id;
+		}
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
@@ -76,42 +78,20 @@ let actualizaConfigCons = {
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
-		this.pppOpciones();
+		this.entidad();
 		return;
 	},
 
 	// Presencia eventual
 	entidad: function () {
-		// Variables
-		v.entidad_id = DOM.entidad_id.value;
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !!v.opcionBD.entidades; // sólo si la opción acepta más de una entidad
 
-		// Acciones si existe un valor de entidad
-		if (v.entidad_id) {
-			// Actualiza 'configCons.entidad_id'
-			configCons.entidad_id = v.entidad_id;
-			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
-
-			// Obtiene los órdenes posibles
-			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
-			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-
-			// Actualiza los ayudas
-			for (let ayuda of DOM.ayudas)
-				ayuda.className.includes("ent" + DOM.entidad_id.value)
-					? ayuda.classList.remove("ocultar")
-					: ayuda.classList.add("ocultar");
-
-			// Continúa la rutina
-			this.opcion.asignaUno();
-		}
-
-		// Acciones si no existe la entidad
-		else {
-			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
-			this.muestraOcultaBloques();
-		}
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		//muestraOcultaActualizaPref(seMuestra, "entidad_id");
 
 		// Fin
+		this.pppOpciones();
 		return;
 	},
 	pppOpciones: function () {
