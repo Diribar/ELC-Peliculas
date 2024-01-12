@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.obtener) return;
+		if (!v.opcion_id) return;
 
 		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
