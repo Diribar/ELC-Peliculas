@@ -39,9 +39,7 @@ let actualizaConfigCons = {
 		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.opcion_id) {
-			this.presenciaEstable();
-		}
+		if (v.opcion_id) this.presenciaEstable();
 
 		// Fin
 		return;
@@ -91,8 +89,6 @@ let actualizaConfigCons = {
 	entidad: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = !!v.opcionBD.entidades; // sólo si la opción acepta más de una entidad
-
-		// Variables
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		//muestraOcultaActualizaPref(seMuestra, "entidad_id");

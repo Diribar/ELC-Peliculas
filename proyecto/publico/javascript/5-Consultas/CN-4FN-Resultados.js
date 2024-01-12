@@ -32,9 +32,9 @@ let resultados = {
 		// Busca la información en el BE
 		v.ahora = new Date();
 		const datos =
-			v.opcionBD.codigo == "fechaDelAno_id"
-				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-				: {configCons, entidad: v.entidad};
+			v.opcionBD.codigo.startsWith("fechaDelAno")
+				? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
+				: configCons;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
