@@ -151,7 +151,7 @@ module.exports = {
 		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
 		let rclvs =
 			opcion.codigo == "fechaDelAno_id"
-				? procesos.resultados.obtienePorDiaDelAno({dia, mes, entidad})
+				? procesos.resultados.obtienePorFechaDelAno({dia, mes, entidad})
 				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
 
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
