@@ -41,7 +41,7 @@ module.exports = {
 	resultados: {
 		obtieneProds: async function ({entidad, configCons, opcion}) {
 			// Variables
-			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = variables.asocs.rclvs;
 			let {apMar, rolesIgl, canons, configProd} = configCons;
 			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
@@ -54,9 +54,11 @@ module.exports = {
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
+
 			if (["calificacion", "misCalificadas"].includes(opcion.codigo))
 				condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
 			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
+			//console.log(61, condiciones);
 
 			// Obtiene los productos
 			for (let entProd of entsProd)
