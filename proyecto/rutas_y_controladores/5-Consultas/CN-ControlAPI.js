@@ -135,6 +135,7 @@ module.exports = {
 	resultados: async (req, res) => {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
+		//console.log(138,{dia, mes, configCons, entidad});
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.opcionPorEnt_id);
 		const cantResults = opcionPorEnt.cantidad;
@@ -156,10 +157,12 @@ module.exports = {
 
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
+		// Cruces que siempre se deben realizar
+		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
+		prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
+
 		// Acciones varias
 		if (entidad == "productos") {
-			prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
-			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
 			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, opcion});
