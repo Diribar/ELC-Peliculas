@@ -44,7 +44,8 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		if (v.resultados && !v.opcionPorEntBD.boton) this.contador();
+		console.log(v.opcionBD.boton);
+		if (v.resultados && !v.opcionBD.boton) this.contador();
 
 		// Fin
 		return;
