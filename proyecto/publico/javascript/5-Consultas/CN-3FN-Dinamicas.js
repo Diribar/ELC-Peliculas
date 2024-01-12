@@ -20,24 +20,26 @@ let actualizaConfigCons = {
 		// Variables
 		v.opcion_id = DOM.opcion_id.value;
 
-		// Acciones si existe un valor de opción
+		// Obtiene los valores completos de la opción elegida
 		if (v.opcion_id) {
-			// Actualiza 'configCons.entidad_id' y lo muestra/oculta
-
-			// Si corresponde, obtiene las entidades posibles
-
+			v.opcionBD = opcionesBD.find((n) => n.id == v.opcion_id);
+			if (!v.opcionBD) v.opcion_id = null;
 		}
 
+		// Actualiza 'configCons.entidad_id'
+		if (v.opcion_id && (!v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value))
+			configCons.entidad_id = v.opcionBD.entDefault_id;
+
 		// Muestra/Oculta los bloques de filtros
-		this.muestraOcultaBloqueDeFiltros();
+		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.obtener) this.presenciaEstable();
+		if (v.opcion_id) this.presenciaEstable();
 
 		// Fin
 		return;
 	},
-	muestraOcultaBloqueDeFiltros: () => {
+	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
 		if (v.opcion_id) {
 			// Muestra sectores
@@ -106,7 +108,7 @@ let actualizaConfigCons = {
 		// Acciones si no existe la entidad
 		else {
 			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
-			this.muestraOcultaBloqueDeFiltros();
+			this.muestraOcultaBloques();
 		}
 
 		// Fin
