@@ -65,7 +65,7 @@ let actualiza = {
 			: v.hayCambiosDeCampo
 			? "No está permitido editar el nombre de una configuración cuando se le hicieron cambios"
 			: !v.opcion_id
-			? "No está permitido editar una configuración cuando hay un error en los filtros"
+			? "No está permitido editar una configuración si no se eligió una opción"
 			: "";
 
 		// Ícono Deshacer
@@ -101,7 +101,7 @@ let actualiza = {
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
 			? titulo.guardar
 			: !v.opcion_id
-			? "No está permitido guardar una configuración cuando hay un error en los filtros"
+			? "No está permitido guardar una configuración si no se eligió una opción"
 			: (claseNuevo || claseEdicion) && !v.nombreOK
 			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
 			: claseEdicion && !v.filtroPropio
