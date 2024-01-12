@@ -29,14 +29,19 @@ let actualizaConfigCons = {
 		// Actualiza variables
 		if (v.opcion_id) {
 			configCons.opcion_id = v.opcion_id;
-			if (!v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value) configCons.entidad_id = v.opcionBD.entDefault_id;
+			const asignaEnt = !v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value;
+			v.entidadBD = asignaEnt ? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id) : {};
+			v.entidad = v.entidadBD.codigo;
+			if (v.entidad) configCons.entidad = v.entidad;
 		}
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.opcion_id) this.presenciaEstable();
+		if (v.opcion_id) {
+			this.presenciaEstable();
+		}
 
 		// Fin
 		return;
@@ -86,6 +91,8 @@ let actualizaConfigCons = {
 	entidad: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = !!v.opcionBD.entidades; // sólo si la opción acepta más de una entidad
+
+		// Variables
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		//muestraOcultaActualizaPref(seMuestra, "entidad_id");
