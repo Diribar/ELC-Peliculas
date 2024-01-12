@@ -18,26 +18,22 @@
 		<!-- Orden -->
 		<select name="opcionPorEnt_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
-				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => n.boton)) { %>
-				<option value="<%= opcionPorEnt.id %>"><%= opcionPorEnt.opcion.nombre %></option>
+				<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listados">
-				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
-				<option
-					value="<%= opcionPorEnt.id %>"
-					<% if (opcionPorEnt.opcion.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
-				><%= opcionPorEnt.opcion.nombre %></option>
+				<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.opcion.loginNeces)) { %>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 				<% } %>
 			</optgroup>
-			<optgroup label="Mis listados">
-				<% for (let opcionPorEnt of cn_opcionesPorEnt.filter(n => !n.boton && n.opcion.loginNeces)) { %>
-				<option
-					value="<%= opcionPorEnt.id %>"
-					<% if (opcionPorEnt.opcion.loginNeces && !locals.usuario) { %>class="inactivo"<% } %>
-				><%= opcionPorEnt.opcion.nombre %></option>
-				<% } %>
-			</optgroup>
+			<% if (locals.usuario) { %>
+				<optgroup label="Mis listados">
+					<% for (let opcion of cn_opciones.filter(n => !n.boton && n.opcion.loginNeces)) { %>
+					<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+					<% } %>
+				</optgroup>
+			<% } %>
 		</select>
 	</div>
 
@@ -45,8 +41,8 @@
 	<div id="ayudaOrden">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<% for (let opcionPorEnt of cn_opcionesPorEnt) { %>
-					<li class="ocultar ent<%= opcionPorEnt.entidad_id %>"><span><%= opcionPorEnt.opcion.nombre %></span>: <%= opcionPorEnt.ayuda %>.</li>
+				<% for (let opcion of cn_opciones) { %>
+					<li><span><%= opcion.nombre %></span>: <%= opcion.ayuda %>.</li>
 				<% } %>
 			</ul>
 		</i>

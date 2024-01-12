@@ -142,12 +142,8 @@ app.set("views", [
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
-		cn_entidades: BD_genericas.obtieneTodosPorCondicion("cn_entidades", {activo: true}),
-		cn_opcionesPorEnt: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opcionesPorEnt", {activo: true}, [
-			"entidad",
-			"opcion",
-		]).then((n) => n.sort((a, b) => a.orden - b.orden)),
-		cn_opciones: BD_genericas.obtieneTodos("cn_opciones"),
+		cn_entidades: BD_genericas.obtieneTodos("cn_entidades",),
+		cn_opciones: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opciones", {activo: true}, "entidades"),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús

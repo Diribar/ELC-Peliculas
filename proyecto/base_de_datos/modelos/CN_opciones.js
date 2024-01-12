@@ -1,10 +1,16 @@
 module.exports = (sequelize, dt) => {
 	const alias = "cn_opciones";
 	const columns = {
+		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
 		codigo: {type: dt.STRING(20)},
+		entDefault_id: {type: dt.BOOLEAN},
+		cantidad: {type: dt.INTEGER},
 		ascDes: {type: dt.STRING(6)},
 		loginNeces: {type: dt.BOOLEAN},
+		boton: {type: dt.INTEGER},
+		activo: {type: dt.BOOLEAN},
+		ayuda: {type: dt.STRING(60)},
 	};
 	const config = {
 		tableName: "cn_opciones",
@@ -12,7 +18,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_opcionesPorEnt, {as: "entidades", foreignKey: "opcion_id"});
+		entidad.hasMany(n.cn_entsPorOpcion, {as: "entidades", foreignKey: "opcion_id"});
 	};
 	return entidad;
 };
