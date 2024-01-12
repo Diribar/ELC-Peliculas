@@ -105,18 +105,19 @@ module.exports = {
 			let rclvs = [];
 
 			// Rutina para obtener los RCLVs
-			for (let entidad of entidadesRCLV) {
+			for (let entidadRCLV of entidadesRCLV) {
 				// Variables
 				const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
-				const includes = entidad == "hechos" ? inclHec : entidad == "personajes" ? inclPers : inclStd;
+				const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
 
-				// Obtiene los registros y les agrega la entidad
+				// Obtiene los registros y les agrega la entidadRCLV
 				registros.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, includes)
-					.then((n) =>n.map((m) => ({...m, entidad})))
+					BD_genericas.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
+						n.map((m) => ({...m, entidad: entidadRCLV}))
+					)
 				);
-				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 			}
+			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 
 			// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
 			const epocaDelAno_id = diaHoy.epocaDelAno_id;
@@ -455,32 +456,15 @@ module.exports = {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
-				// Rutina por RCLV
+				// Tareas por RCLV
 				let i = 0;
 				while (i < rclvs.length && (cantResults ? i < cantResults : true)) {
 					// Variables
-					rclvs[i].productos = [];
 					let rclv = rclvs[i];
 
 					// Agrupa los productos en el método 'productos'
-					for (let entProd of variables.entidades.prods) {
-						let prodsRCLV = rclv[entProd];
-
-						// Rutina por productos de cada entProd
-						for (let j = prodsRCLV.length - 1; j >= 0; j--) {
-							// Rutina por producto
-							const prodRCLV = prodsRCLV[j];
-
-							// Averigua si existe la intersección
-							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
-							if (!existe) rclvs[i][entProd].splice(j, 1); // Si no existe, lo elimina
-							else rclvs[i][entProd][j] = existe; // Reemplaza la información del producto por otra más completa
-						}
-
-						// Acciones finales
-						rclvs[i].productos.push(...rclvs[i][entProd]); // Agrupa los productos en el método 'productos'
-						delete rclvs[i][entProd]; // Elimina la familia
-					}
+					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
+					rclvs[i].productos = prods.filter((n) => n[campo_id] == rclv.id);
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
