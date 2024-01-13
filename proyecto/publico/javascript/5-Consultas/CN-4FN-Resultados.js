@@ -31,10 +31,9 @@ let resultados = {
 
 		// Busca la información en el BE
 		v.ahora = new Date();
-		const datos =
-			v.opcionBD.codigo.startsWith("fechaDelAno")
-				? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-				: configCons;
+		const datos = v.opcionBD.codigo.startsWith("fechaDelAno")
+			? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
+			: configCons;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
@@ -44,7 +43,6 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		console.log(v.opcionBD.boton);
 		if (v.resultados && !v.opcionBD.boton) this.contador();
 
 		// Fin
@@ -58,11 +56,11 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.opcionPorEntBD.boton) return;
+			if (v.opcionBD.boton) return;
 			// Contador para 'listado-altaRevisadaEn'
 			else if (v.opcionBD.codigo == "altaRevisadaEn") {
 				// Variables
-				const parcial = Math.min(v.cantListadoBreve, total);
+				const parcial = Math.min(v.opcionBD.cantidad, total);
 
 				// Actualiza el contador
 				DOM.contadorDeProds.innerHTML = parcial;
@@ -105,7 +103,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.opcionPorEntBD.boton ? this.botones() : this.listados();
+			v.opcionBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
@@ -154,7 +152,7 @@ let resultados = {
 			// Rutina por registro
 			v.resultados.forEach((registro, indice) => {
 				// Para algunas opciones, muestra sólo las primeras
-				if (["altaRevisadaEn", "calificacion"].includes(v.opcionBD.codigo) && indice >= v.cantListadoBreve) return;
+				if (indice == v.opcionBD.cantidad) return;
 
 				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
@@ -351,7 +349,7 @@ let auxiliares = {
 		}
 
 		// Otras particularidades
-		if(auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
+		if (auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
 		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacim.: " + rclv.anoNacim;
 		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
 		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
@@ -479,6 +477,8 @@ let auxiliares = {
 		}
 		if (!titulo && opcion == "misConsultas") {
 			titulo = !indice ? "Mis consultas" : "";
+		}
+		if (!titulo && opcion == "anoEstreno") {
 		}
 
 		// Fin
@@ -623,7 +623,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.opcionPorEntBD.boton;
+		const agregarRCLV = v.entidad == "productos" && !v.opcionBD.boton;
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
