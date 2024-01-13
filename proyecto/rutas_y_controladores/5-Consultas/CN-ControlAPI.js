@@ -135,7 +135,6 @@ module.exports = {
 	resultados: async (req, res) => {
 		// Variables
 		const configCons = JSON.parse(req.query.datos);
-		console.log(138, configCons);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 		const opcion = cn_opciones.find((n) => n.id == configCons.opcion_id);
 		const cantResults = opcion.cantidad;
