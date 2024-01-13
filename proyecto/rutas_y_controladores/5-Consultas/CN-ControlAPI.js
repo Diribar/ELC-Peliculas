@@ -147,7 +147,7 @@ module.exports = {
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds({...configCons, opcion});
 		let rclvs =
-			opcion.codigo == "fechaDelAno_id"
+			opcion.codigo.startsWith("fechaDelAno")
 				? procesos.resultados.obtienePorFechaDelAno(configCons)
 				: procesos.resultados.obtieneRclvs({...configCons, opcion});
 		let pppRegistros = usuario_id
