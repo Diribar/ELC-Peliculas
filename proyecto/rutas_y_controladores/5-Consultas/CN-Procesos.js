@@ -43,14 +43,13 @@ module.exports = {
 			// Variables
 			const {entidad, opcion} = configCons;
 			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = opcion.codigo != "fechaDelAno_id" ? variables.asocs.rclvs : "";
+			const include = !opcion.codigo.startsWith("fechaDelAno") ? variables.asocs.rclvs : "";
 			let productos = [];
 			let resultados = [];
 
 			// Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
 			let entsProd = ["peliculas", "colecciones"];
-			if (["fechaDelAno_id", "calificacion", "misCalificadas"].includes(opcion.codigo) || entidad != "productos")
-				entsProd.push("capitulos");
+			if (opcion.caps) entsProd.push("capitulos");
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
@@ -243,7 +242,7 @@ module.exports = {
 				let prefs = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'
-				if (opcion.codigo == "fechaDelAno_id") prefs.fechaDelAno_id = {[Op.lt]: 400};
+				if (opcion.codigo.startsWith("fechaDelAno")) prefs.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
@@ -562,7 +561,7 @@ module.exports = {
 			},
 			rclvs: ({rclvs, opcion, entidad}) => {
 				// Si no corresponde ordenar, interrumpe la función
-				if (rclvs.length <= 1 || opcion.codigo == "fechaDelAno_id") return rclvs;
+				if (rclvs.length <= 1 || opcion.codigo.startsWith("fechaDelAno")) return rclvs;
 
 				// Si la opción es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
 				if (opcion.codigo == "anoHistorico") {
@@ -600,9 +599,9 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
+		botonesListado: ({resultados, opcion, configCons}) => {
 			// Variables
-			const cantResults = opcionPorEnt.cantidad;
+			const cantResults = opcion.cantidad;
 
 			// Botones
 			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
@@ -641,10 +640,10 @@ module.exports = {
 						// RCLV nombre
 						if (
 							prod[campo_id] > 10 && // el id es de un registro válido
-							(opcion.codigo != "fechaDelAno_id" || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
+							(!opcion.codigo.includes("fechaDelAno_id") || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
 							datosProd[entidadNombre] = prod[asociacion].nombre;
-							if (opcion.codigo == "fechaDelAno_id" && entRclv != "epocasDelAno")
+							if (opcion.codigo.startsWith("fechaDelAno") && entRclv != "epocasDelAno")
 								datosProd.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
@@ -669,7 +668,7 @@ module.exports = {
 					// Arma el resultado
 					const {entidad, id, nombre, productos, avatar, fechaDelAno_id, fechaDelAno} = n;
 					let datosRclv = {entidad, id, nombre, productos, avatar};
-					if (opcion.codigo == "fechaDelAno_id")
+					if (opcion.codigo.startsWith("fechaDelAno"))
 						datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
 					else if (n.apodo) datosRclv.apodo = n.apodo;
 
