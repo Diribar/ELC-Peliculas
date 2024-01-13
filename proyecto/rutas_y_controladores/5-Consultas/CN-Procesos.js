@@ -44,19 +44,15 @@ module.exports = {
 			const {entidad, opcion} = configCons;
 			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = !opcion.codigo.startsWith("fechaDelAno") ? variables.asocs.rclvs : "";
+			const entsProd = opcion.caps ? ["peliculas", "colecciones", "capitulos"] : ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
-
-			// Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
-			let entsProd = ["peliculas", "colecciones"];
-			if (opcion.caps) entsProd.push("capitulos");
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
 			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
-			if (["calificacion", "misCalificadas"].includes(opcion.codigo))
-				condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
-			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
+			if (["calificacion", "misCalificadas"].includes(opcion.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+			if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 			// Obtiene los productos
 			for (let entProd of entsProd)
@@ -68,7 +64,7 @@ module.exports = {
 			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
 			// Aplica otros filtros
-			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons});
+			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons, campo_id});
 
 			// Fin
 			return resultados;
@@ -176,61 +172,58 @@ module.exports = {
 				// Fin
 				return prefs;
 			},
-			otrosFiltros: ({resultados, configCons}) => {
+			otrosFiltros: ({resultados, configCons, campo_id}) => {
 				// Variables
 				const {apMar, rolesIgl, canons, entidad} = configCons;
 
 				// Filtra por apMar
-				if (apMar) {
-					if (apMar == "SI")
-						resultados = resultados.filter(
-							(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
-						);
-					if (apMar == "NO")
-						resultados = resultados.filter(
-							(n) => (n.personaje_id > 10 && n.personaje.apMar_id == 10) || (n.hecho_id > 10 && n.hecho.ama == 0)
-						);
-				}
+				if (apMar)
+					resultados =
+						apMar == "SI"
+							? resultados.filter(
+									(n) =>
+										(n.personaje_id > 10 && n.personaje.apMar_id != 10) ||
+										(n.hecho_id > 10 && n.hecho.ama == 1)
+							  )
+							: resultados.filter(
+									(n) =>
+										(n.personaje_id > 10 && n.personaje.apMar_id == 10) ||
+										(n.hecho_id > 10 && n.hecho.ama == 0)
+							  );
 
 				// Filtra por rolesIgl
-				if (rolesIgl) {
-					if (rolesIgl == "RS")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
-						);
-					else
-						resultados = resultados.filter(
-							(n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl)
-						);
-				}
+				if (rolesIgl)
+					resultados =
+						rolesIgl == "RS"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
+							  )
+							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl));
 
 				// Filtra por canons
-				if (canons) {
-					// Santos y Beatos
-					if (canons == "SB")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
-						);
-					// Venerables y Siervos de Dios
-					else if (canons == "VS")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
-						);
-					// Todos (Santos a Siervos)
-					else if (canons == "TD")
-						resultados = resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN"));
-					// Sin proceso de canonización
-					else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN"));
-				}
+
+				if (canons)
+					resultados =
+						canons == "SB"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+							  ) // Santos y Beatos
+							: canons == "VS"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+							  ) // Venerables y Siervos de Dios
+							: canons == "TD"
+							? resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
+							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
 
 				// Filtra por entidad
-				if (entidad) resultados = resultados.filter((n) => n.entidad == entidad);
+				if (campo_id) resultados = resultados.filter((n) => n.entidad == entidad);
 
 				// Fin
 				return resultados;
@@ -527,6 +520,8 @@ module.exports = {
 					? "calificacion"
 					: opcion.codigo == "misConsultas"
 					? "fechaConsulta"
+					: opcion.codigo.startsWith("fechaDelAno")
+					? "fechaDelAno_id"
 					: opcion.codigo;
 
 				// Ordena
