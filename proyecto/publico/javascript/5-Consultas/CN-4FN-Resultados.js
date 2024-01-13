@@ -386,7 +386,7 @@ let auxiliares = {
 		let titulo;
 
 		// Casos
-		if (!titulo && opcion == "fechaDelAno_id") {
+		if (!titulo && opcion.startsWith("fechaDelAno")) {
 			// Variables
 			const diaAnt = registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
