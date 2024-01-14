@@ -327,21 +327,21 @@ let auxiliares = {
 		informacion.appendChild(infoInf);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
-		elementos = ["epocaOcurrenciaNombre", "anoNacim", "anoComienzo", "productos"];
+		elementos = ["epocaOcurrencia", "anoOcurrencia", "productos"];
 		let auxInf = {};
 		for (let elemento of elementos) {
 			if (!rclv[elemento]) continue;
-			if (elemento == "epocaOcurrenciaNombre" && (rclv.anoNacim || rclv.anoComienzo)) continue;
+			if (elemento == "epocaOcurrencia" && rclv.anoOcurrencia) continue; // si existe el año de ocurrencia, omite la época de ocurrencia
 			auxInf[elemento] = document.createElement("p");
 			auxInf[elemento].id = elemento;
 			auxInf[elemento].className = "interlineadoChico";
 			infoInf.appendChild(auxInf[elemento]);
 		}
 
-		// Otras particularidades
-		if (auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
-		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacim.: " + rclv.anoNacim;
-		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
+		// Contenido escrito
+		if (auxInf.epocaOcurrencia) auxInf.epocaOcurrencia.innerHTML = rclv.epocaOcurrencia;
+		if (rclv.anoOcurrencia)
+			auxInf.anoOcurrencia.innerHTML = (rclv.entidad == "personajes" ? "nacim.: " : "comienzo: ") + rclv.anoOcurrencia;
 		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
 
 		// Fin
@@ -413,23 +413,22 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo = prefijo + titulo;
 		}
-		if (opcion == "anoHistorico") {
+		if (opcion == "anoOcurrencia") {
 			// Variables
 			const epocaAnt = v.registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
-			const anoAnt = v.registroAnt.anoNacim ? v.registroAnt.anoNacim : v.registroAnt.anoComienzo;
-			const anoActual = registroAct.anoNacim ? registroAct.anoNacim : registroAct.anoComienzo;
+			const anoAnt = v.registroAnt.anoOcurrencia;
+			const anoActual = registroAct.anoOcurrencia;
 
 			// Resultado
-			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registroAct.epocaOcurrenciaNombre;
 			if (epocaActual == "pst") {
 				// Variables
-				const mayor1800 = "(año 1.801 en adelante)";
-				const mayor1000 = "(años 1.001 al 1.800)";
-				const menorIgual1000 = "(años 34 al 1.000)";
+				const mayor1800 = "Año 1.801 en adelante";
+				const mayor1000 = "Años 1.001 al 1.800";
+				const menorIgual1000 = "Años 34 al 1.000";
 
 				titulo =
-					!anoAnt || anoAnt < anoActual //Ascendente
+					!anoAnt || anoAnt < anoActual // ascendente
 						? (!anoAnt || anoAnt <= 1800) && anoActual > 1800
 							? mayor1800
 							: (!anoAnt || anoAnt <= 1000) && anoActual > 1000
@@ -437,16 +436,14 @@ let auxiliares = {
 							: !anoAnt
 							? menorIgual1000
 							: ""
-						: //Descendente
-						anoActual <= 1000 && anoAnt > 1000
+						: anoActual <= 1000 && anoAnt > 1000 // descendente
 						? menorIgual1000
 						: anoActual <= 1800 && anoAnt > 1800
 						? mayor1000
 						: "";
-
-				// Título para la vista
-				if (titulo) titulo = registroAct.epocaOcurrenciaNombre + " " + titulo;
 			}
+			// Épocas anteriores
+			else if (epocaAnt != epocaActual) titulo = registroAct.epocaOcurrencia;
 		}
 
 		// Cambio de grupo
@@ -462,14 +459,6 @@ let auxiliares = {
 			// Variables
 			const nombreAnt = v.registroAnt.epocaEstreno;
 			const nombreActual = registroAct.epocaEstreno;
-
-			// Resultado
-			titulo = nombreAnt != nombreActual ? nombreActual : "";
-		}
-		if (opcion == "anoOcurrencia") {
-			// Variables
-			const nombreAnt = v.registroAnt.epocaOcurrencia;
-			const nombreActual = registroAct.epocaOcurrencia;
 
 			// Resultado
 			titulo = nombreAnt != nombreActual ? nombreActual : "";
@@ -577,12 +566,7 @@ let creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
 		const cantProds = rclv.productos.length;
-		const VF_apodo = !!rclv.apodo;
 		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
-		const VF_epoca =
-			!v.opcionBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
-		const VF_canon = rclv.canonNombre;
-		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id;
@@ -597,17 +581,21 @@ let creaUnaCelda = {
 		primeraLinea.innerHTML = rclv.nombre; // Nombre
 		const span = document.createElement("span");
 
-		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
-		else if (VF_diaDelAno) span.innerHTML += " (" + rclv.fechaDelAno + ")"; // Día del Año
+		if (rclv.apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 
-		// Genera la información - 2a línea
+		// Genera la información - 2a línea - Fechas
 		const segundaLinea = document.createElement("p");
-		if (VF_epoca) segundaLinea.innerHTML += rclv.epocaOcurrenciaNombre;
-		segundaLinea.innerHTML += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
-		if (VF_canon) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.canonNombre; // Proceso de canonización
-		if (VF_rolIglesia) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
+		else if (rclv.anoOcurrencia)
+			segundaLinea.innerHTML +=
+				(rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia; // Año de Nacimiento o Comienzo
+		else if (rclv.epocaOcurrencia) segundaLinea.innerHTML += rclv.epocaOcurrencia;
+
+		// Genera la información - 2a línea - Otros datos del personaje
+		if (rclv.canonNombre) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.canonNombre; // Proceso de canonización
+		if (rclv.rolIglesiaNombre) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
 		anchor.appendChild(segundaLinea);
 
 		// Fin
