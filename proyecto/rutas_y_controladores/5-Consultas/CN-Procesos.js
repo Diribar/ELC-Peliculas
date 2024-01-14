@@ -126,7 +126,7 @@ module.exports = {
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
 			// Obtiene las condiciones
-			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs(configCons) : null;
+			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs(entidad, configCons) : null;
 			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
 			// Fin
@@ -269,9 +269,9 @@ module.exports = {
 				// Fin
 				return resultados;
 			},
-			rclvs: (configCons) => {
-				// Variables
-				const {entidad, opcion} = configCons;
+			rclvs: (entidad, configCons) => {
+				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
+				const {opcion} = configCons;
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
@@ -284,7 +284,7 @@ module.exports = {
 				// Relación con la Iglesia Católica
 				if (configCons.cfc)
 					entidad == "personajes"
-						? (prefs.rolIglesia_id = configCons.cfc == 1 ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
+						? (prefs.rolIglesia_id = configCons.cfc == "1" ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
 						: (prefs.soloCfc = configCons.cfc);
 
 				// Aparición mariana
