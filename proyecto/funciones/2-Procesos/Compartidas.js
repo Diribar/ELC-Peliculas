@@ -3,7 +3,7 @@
 const nodemailer = require("nodemailer");
 const axios = require("axios");
 
-// Exportar ------------------------------------
+// Exportar
 module.exports = {
 	// Entidades
 	obtieneDesdeFamilias: {
@@ -727,6 +727,29 @@ module.exports = {
 
 		// Fin
 		return canonNombre;
+	},
+
+	// Links
+	prodAprobEnLink: (links) => {
+		// Rutina por link
+		for (let link of links) {
+			// Averigua el status de su producto
+			let statusProd = link.pelicula
+				? link.pelicula.statusRegistro_id
+				: link.coleccion
+				? link.coleccion.statusRegistro_id
+				: link.capitulo
+				? link.capitulo.statusRegistro_id
+				: null;
+			if (!statusProd) continue;
+
+			// Actualiza el campo prodAprob a 'true' o 'false'
+			const prodAprob = aprobados_ids.includes(statusProd);
+			BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+		}
+
+		// Fin
+		return;
 	},
 
 	// Usuarios
