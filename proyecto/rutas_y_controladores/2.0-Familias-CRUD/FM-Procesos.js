@@ -477,7 +477,7 @@ module.exports = {
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
 				const SI = links.filter((n) => n[campo] == conLinks).length;
-				const potencial = links.filter((n) => n[campo] == talVez).length;
+				const potencial = links.filter((n) => n[campo] == linksTalVez).length;
 				const NO = links.filter((n) => n[campo] == sinLinks).length;
 
 				// Averigua los porcentajes de OK y Potencial
@@ -486,7 +486,7 @@ module.exports = {
 					SI: SI / total,
 					potencial: (SI + potencial) / total,
 				};
-				const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? talVez : sinLinks;
+				const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? linksTalVez : sinLinks;
 
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
@@ -525,13 +525,13 @@ module.exports = {
 				for (let entidadProd of entidadesProds) {
 					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
 					if (prodsAprob) {
-						prodsAprob = talVez;
+						prodsAprob = linksTalVez;
 						break;
 					}
 				}
 
 			// 3. Averigua si existe alguna edición con ese rclv_id
-			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = talVez;
+			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
 
 			// 4. No encontró ningún caso
 			if (!prodsAprob) prodsAprob = sinLinks;
@@ -848,9 +848,9 @@ let averiguaTipoDeLink = (links, condicion) => {
 	// Resultados
 	let resultado = {
 		SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
-		talVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+		linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
 	};
 
 	// Fin
-	return resultado.SI ? conLinks : resultado.talVez ? talVez : sinLinks;
+	return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 };
