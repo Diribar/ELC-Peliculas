@@ -112,7 +112,7 @@ module.exports = {
 					.then((n) => n.map((m) => ({...m, entidad})));
 			}
 
-			//
+			// Para la opción 'Año de Ocurrencia' estandariza el campo
 			if (opcion.codigo == "anoOcurrencia")
 				rclvs = rclvs.map((n) => ({...n, anoOcurrencia: n.anoNacim ? n.anoNacim : n.anoComienzo ? n.anoComienzo : null}));
 
