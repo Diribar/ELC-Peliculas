@@ -55,22 +55,8 @@ module.exports = {
 		// Obtiene todos los links con su producto asociado
 		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
 
-		// Rutina por link
-		for (let link of links) {
-			// Averigua el status de su producto
-			let statusProd = link.pelicula
-				? link.pelicula.statusRegistro_id
-				: link.coleccion
-				? link.coleccion.statusRegistro_id
-				: link.capitulo
-				? link.capitulo.statusRegistro_id
-				: null;
-			if (!statusProd) continue;
-
-			// Actualiza el campo prodAprob a 'true' o 'false'
-			const prodAprob = aprobados_ids.includes(statusProd);
-			BD_genericas.actualizaPorId("links", link.id, {prodAprob});
-		}
+		// Actualiza su valor
+		comp.prodAprobEnLink(links)
 
 		// Fin
 		return;
