@@ -105,28 +105,13 @@ module.exports = {
 			// Obtiene la versión más completa posible del producto
 			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			let prodComb = {...original, ...edicion, id};
-			if (req.session.edicProd) prodComb = {...prodComb, ...req.session.edicProd};
+			const session = req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id;
 			delete req.session.edicProd;
-
-			// Obtiene el nombre de los países
-			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
-
-			// Obtiene los datos de session/cookie y luego los elimina
-			let edicSession;
-			// Session
-			if (req.session.edicProd)
-				req.session.edicProd.entidad == entidad && req.session.edicProd.id == id
-					? (edicSession = req.session.edicProd)
-					: delete req.session.edicProd;
-
-			// Cookies
-			if (req.cookies.edicProd && !edicSession)
-				req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id
-					? (edicSession = req.cookies.edicProd)
-					: res.clearCookie("edicProd");
-
-			// Actualiza el producto prodComb
+			const cookie = req.cookies.edicProd && req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id;
+			res.clearCookie("edicProd");
+			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 			prodComb = {...prodComb, ...edicSession};
+
 			// Datos Duros - Campos Input
 			let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
 			camposInput1 = camposInput.filter((n) => n.antesDePais);
@@ -149,9 +134,10 @@ module.exports = {
 				"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 			];
 			const status_id = original.statusRegistro_id;
+			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 
 			// Va a la vista
-			// return res.send(prodComb)
+			//return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
