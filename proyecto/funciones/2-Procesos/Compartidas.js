@@ -780,7 +780,7 @@ module.exports = {
 			.sendMail(datos)
 			.then(() => true)
 			.catch((error) => {
-				console.log(751, {errorEnvioMail: error});
+				console.log("Mail no enviado. ", {errorEnvioMail: error});
 				return false;
 			});
 
