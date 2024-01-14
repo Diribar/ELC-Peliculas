@@ -79,16 +79,20 @@ module.exports = {
 			if (configCons.entidad == "productos") return null;
 
 			// Variables
-			const {entidad} = configCons;
+			const {entidad, opcion} = configCons;
 			let rclvs = [];
 
 			// Obtiene los RCLVs
 			if (entidad == "rclvs") {
 				// Variables
+				const entidadesRCLV =
+					opcion.codigo == "anoOcurrencia"
+						? ["personajes", "hechos"] // son las únicas entidades que tienen el año histórico en que ocurrió
+						: [...variables.entidades.rclvs];
 				let aux = [];
 
 				// Rutina por RCLV
-				for (let rclvEnt of variables.entidades.rclvs) {
+				for (let rclvEnt of entidadesRCLV) {
 					// Obtiene los registros
 					const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, configCons);
 					aux.push(
@@ -107,6 +111,10 @@ module.exports = {
 					.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 					.then((n) => n.map((m) => ({...m, entidad})));
 			}
+
+			//
+			if (opcion.codigo == "anoOcurrencia")
+				rclvs = rclvs.map((n) => ({...n, anoOcurrencia: n.anoNacim ? n.anoNacim : n.anoComienzo ? n.anoComienzo : null}));
 
 			// Fin
 			return rclvs;
@@ -589,17 +597,10 @@ module.exports = {
 				// Si no corresponde ordenar, interrumpe la función
 				if (rclvs.length <= 1 || opcion.codigo.startsWith("fechaDelAno")) return rclvs;
 
-				// Si la opción es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
-				if (opcion.codigo == "anoHistorico") {
-					const campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
-
-					opcion.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
-						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
-
-					opcion.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
-						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
+				// Particularidad para el Año de Ocurrencia
+				if (opcion.codigo == "anoOcurrencia") {
+					rclvs.sort((a, b) => b.anoOcurrencia - a.anoOcurrencia);
+					rclvs.sort((a, b) => b.epocaOcurrencia.orden - a.epocaOcurrencia.orden);
 				}
 				// En los demás casos, ordena por su campo
 				else
@@ -691,28 +692,31 @@ module.exports = {
 				if (!rclvs.length) return [];
 
 				// Deja solamente los campos necesarios
-				rclvs = rclvs.map((n) => {
+				rclvs = rclvs.map((rclv) => {
 					// Arma el resultado
-					const {entidad, id, nombre, productos, avatar, fechaDelAno_id, fechaDelAno} = n;
+					const {entidad, id, nombre, productos, avatar} = rclv; // necesarios
+					const {fechaDelAno_id, fechaDelAno, epocaOcurrencia} = rclv; // eventuales
 					let datosRclv = {entidad, id, nombre, productos, avatar};
-					if (opcion.codigo.startsWith("fechaDelAno"))
-						datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
-					else if (n.apodo) datosRclv.apodo = n.apodo;
+
+					// Casos especiales
+					if (rclv.apodo) datosRclv.apodo = rclv.apodo;
+					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
+					if (epocaOcurrencia) datosRclv.epocaOcurrencia = epocaOcurrencia.consulta;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {
-						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datosRclv.anoNacim = n.anoNacim;
-						if (!n.rolIglesia_id.startsWith("NN")) {
-							datosRclv.rolIglesiaNombre = n.rolIglesia.nombre;
-							if (!n.canon_id.startsWith("NN")) datosRclv.canonNombre = n.canon.nombre;
+						datosRclv.epocaOcurrenciaNombre = rclv.epocaOcurrencia.consulta;
+						datosRclv.epocaOcurrencia_id = rclv.epocaOcurrencia_id;
+						datosRclv.anoNacim = rclv.anoNacim;
+						if (!rclv.rolIglesia_id.startsWith("NN")) {
+							datosRclv.rolIglesiaNombre = rclv.rolIglesia.nombre;
+							if (!rclv.canon_id.startsWith("NN")) datosRclv.canonNombre = rclv.canon.nombre;
 						}
 					}
 					if (entidad == "hechos") {
-						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datosRclv.anoComienzo = n.anoComienzo;
+						datosRclv.epocaOcurrenciaNombre = rclv.epocaOcurrencia.consulta;
+						datosRclv.epocaOcurrencia_id = rclv.epocaOcurrencia_id;
+						datosRclv.anoComienzo = rclv.anoComienzo;
 					}
 
 					// Fin
