@@ -57,16 +57,9 @@ let resultados = {
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
 			if (v.opcionBD.boton) return;
-			// Contador para 'listado-altaRevisadaEn'
-			else if (v.opcionBD.codigo == "altaRevisadaEn") {
-				// Variables
-				const parcial = Math.min(v.opcionBD.cantidad, total);
 
-				// Actualiza el contador
-				DOM.contadorDeProds.innerHTML = parcial;
-			}
 			// Contador para 'Todos los productos'
-			else DOM.contadorDeProds.innerHTML = total;
+			DOM.contadorDeProds.innerHTML = total;
 		}
 		// Contador para RCLVs
 		else {
@@ -151,9 +144,6 @@ let resultados = {
 
 			// Rutina por registro
 			v.resultados.forEach((registro, indice) => {
-				// Para algunas opciones, muestra sólo las primeras
-				if (indice == v.opcionBD.cantidad) return;
-
 				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
