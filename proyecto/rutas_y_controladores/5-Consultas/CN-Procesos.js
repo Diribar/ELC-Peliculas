@@ -259,7 +259,6 @@ module.exports = {
 			},
 			porFechaDelAno: async (configCons) => {
 				// Variables
-				console.log(262,configCons);
 				const {entidad, dia, mes} = configCons;
 				const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
 				const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
@@ -309,6 +308,12 @@ module.exports = {
 						rclvs.splice(0, indice - 1);
 						rclvs.push(...pasados);
 					}
+
+					// Elimina los registros con el nombre repetido
+					if (rclvs.length > 1)
+						for (let i = rclvs.length - 2; i > 0; i--)
+							if (rclvs[i].nombre == rclvs[i + 1].nombre) rclvs.splice(i + 1, 1);
+
 				}
 
 				// Fin
