@@ -383,8 +383,8 @@ let auxiliares = {
 		const opcion = v.opcionBD.codigo;
 		let titulo;
 
-		// Casos
-		if (!titulo && opcion.startsWith("fechaDelAno")) {
+		// Casos particulares
+		if (opcion.startsWith("fechaDelAno")) {
 			// Variables
 			const diaAnt = registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
@@ -404,7 +404,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-		if (!titulo && opcion == "nombre") {
+		if (opcion == "nombre") {
 			// Variables
 			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
@@ -423,7 +423,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo = prefijo + titulo;
 		}
-		if (!titulo && opcion == "anoHistorico") {
+		if (opcion == "anoHistorico") {
 			// Variables
 			const epocaAnt = registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
@@ -458,10 +458,9 @@ let auxiliares = {
 				if (titulo) titulo = registroAct.epocaOcurrenciaNombre + " " + titulo;
 			}
 		}
-		if (!titulo && opcion == "altaRevisadaEn") {
-			titulo = !indice ? "Últimas ingresadas" : "";
-		}
-		if (!titulo && opcion == "misPrefs") {
+
+		// Cambio de grupo
+		if (opcion == "misPrefs") {
 			// Variables
 			const nombreAnt = registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;
@@ -469,17 +468,20 @@ let auxiliares = {
 			// Resultado
 			titulo = nombreAnt != nombreActual ? nombreActual : "";
 		}
-		if (!titulo && opcion == "calificacion") {
-			titulo = !indice ? "Mejor calificadas" : "";
+		if (opcion == "anoEstreno") {
+			// Variables
+			const nombreAnt = registroAnt.epocaEstreno;
+			const nombreActual = registroAct.epocaEstreno;
+
+			// Resultado
+			titulo = nombreAnt != nombreActual ? nombreActual : "";
 		}
-		if (!titulo && opcion == "misCalificadas") {
-			titulo = !indice ? "Mis calificadas" : "";
-		}
-		if (!titulo && opcion == "misConsultas") {
-			titulo = !indice ? "Mis consultas" : "";
-		}
-		if (!titulo && opcion == "anoEstreno") {
-		}
+
+		// Una sola tabla
+		if (opcion == "calificacion") titulo = !indice ? "Mejor calificadas" : "";
+		if (opcion == "misCalificadas") titulo = !indice ? "Mis calificadas" : "";
+		if (opcion == "misConsultas") titulo = !indice ? "Mis consultas" : "";
+		if (opcion == "altaRevisadaEn") titulo = !indice ? "Últimas ingresadas" : "";
 
 		// Fin
 		return titulo;
