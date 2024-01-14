@@ -615,7 +615,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.opcionBD.boton;
+		const agregarRCLV = v.entidad == "productos";
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
