@@ -140,7 +140,7 @@ let resultados = {
 		listados: () => {
 			// Variables
 			v.productos = [];
-			let registroAnt = {};
+			v.registroAnt = {};
 
 			// Rutina por registro
 			v.resultados.forEach((registro, indice) => {
@@ -148,8 +148,8 @@ let resultados = {
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
-				const titulo = auxiliares.titulo(registro, registroAnt, indice);
-				registroAnt = registro;
+				const titulo = auxiliares.titulo(registro, indice);
+				v.registroAnt = registro;
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
@@ -318,7 +318,7 @@ let auxiliares = {
 			if (rclv.canonNombre && rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += " - ";
 			if (rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += rclv.rolIglesiaNombre;
 		}
-		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno.nombre;
+		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno;
 
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
@@ -368,7 +368,7 @@ let auxiliares = {
 		// Fin
 		return false;
 	},
-	titulo: (registroAct, registroAnt, indice) => {
+	titulo: (registroAct, indice) => {
 		// Variables
 		const opcion = v.opcionBD.codigo;
 		let titulo;
@@ -376,7 +376,7 @@ let auxiliares = {
 		// Casos particulares
 		if (opcion.startsWith("fechaDelAno")) {
 			// Variables
-			const diaAnt = registroAnt.fechaDelAno_id;
+			const diaAnt = v.registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
 
 			// Resultado
@@ -396,7 +396,7 @@ let auxiliares = {
 		}
 		if (opcion == "nombre") {
 			// Variables
-			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
+			const nombreAnt = v.registroAnt.nombre ? v.registroAnt.nombre : v.registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
 			const prefijo = "Rango ";
 
@@ -415,9 +415,9 @@ let auxiliares = {
 		}
 		if (opcion == "anoHistorico") {
 			// Variables
-			const epocaAnt = registroAnt.epocaOcurrencia_id;
+			const epocaAnt = v.registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
-			const anoAnt = registroAnt.anoNacim ? registroAnt.anoNacim : registroAnt.anoComienzo;
+			const anoAnt = v.registroAnt.anoNacim ? v.registroAnt.anoNacim : v.registroAnt.anoComienzo;
 			const anoActual = registroAct.anoNacim ? registroAct.anoNacim : registroAct.anoComienzo;
 
 			// Resultado
@@ -452,7 +452,7 @@ let auxiliares = {
 		// Cambio de grupo
 		if (opcion == "misPrefs") {
 			// Variables
-			const nombreAnt = registroAnt.pppNombre;
+			const nombreAnt = v.registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;
 
 			// Resultado
@@ -460,8 +460,16 @@ let auxiliares = {
 		}
 		if (opcion == "anoEstreno") {
 			// Variables
-			const nombreAnt = registroAnt.epocaEstreno;
+			const nombreAnt = v.registroAnt.epocaEstreno;
 			const nombreActual = registroAct.epocaEstreno;
+
+			// Resultado
+			titulo = nombreAnt != nombreActual ? nombreActual : "";
+		}
+		if (opcion == "anoOcurrencia") {
+			// Variables
+			const nombreAnt = v.registroAnt.epocaOcurrencia;
+			const nombreActual = registroAct.epocaOcurrencia;
 
 			// Resultado
 			titulo = nombreAnt != nombreActual ? nombreActual : "";
@@ -590,7 +598,7 @@ let creaUnaCelda = {
 		const span = document.createElement("span");
 
 		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
-		else if (VF_diaDelAno) span.innerHTML += " (" + rclv.fechaDelAno.nombre + ")"; // Día del Año
+		else if (VF_diaDelAno) span.innerHTML += " (" + rclv.fechaDelAno + ")"; // Día del Año
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 
