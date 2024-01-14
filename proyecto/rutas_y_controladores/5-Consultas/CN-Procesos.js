@@ -76,11 +76,44 @@ module.exports = {
 		},
 		obtieneRclvs: async function (configCons) {
 			// Interrumpe la función
-			const {entidad} = configCons;
-			if (entidad == "productos") return null;
+			if (configCons.entidad == "productos") return null;
 
-			// Obtiene los include
-			let include = [...variables.entidades.prods, "fechaDelAno"];
+			// Variables
+			const {entidad} = configCons;
+			let rclvs = [];
+
+			// Obtiene los RCLVs
+			if (entidad == "rclvs") {
+				// Variables
+				let aux = [];
+
+				// Rutina por RCLV
+				for (let rclvEnt of variables.entidades.rclvs) {
+					// Obtiene los registros
+					const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, configCons);
+					aux.push(
+						BD_genericas.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
+							.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
+							.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
+					);
+				}
+				await Promise.all(aux).then((n) => n.map((m) => rclvs.push(...m)));
+			}
+
+			// Rutina por RCLV
+			else {
+				const {condiciones, include} = this.obtieneIncludeCondics(entidad, configCons);
+				rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+					.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
+					.then((n) => n.map((m) => ({...m, entidad})));
+			}
+
+			// Fin
+			return rclvs;
+		},
+		obtieneIncludeCondics: function (entidad, configCons) {
+			// Include
+			let include = [...variables.entidades.prods];
 			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
@@ -88,17 +121,8 @@ module.exports = {
 			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs(configCons) : null;
 			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
-			// Obtiene los RCLVs
-			let rclvs;
-			if (entidad == "rclvs") {
-				// for (let rclvEnt of variables.)
-			} else
-				rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
-					n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
-				);
-
 			// Fin
-			return rclvs;
+			return {include, condiciones};
 		},
 		obtienePorFechaDelAno: async (configCons) => {
 			// Variables
@@ -471,10 +495,8 @@ module.exports = {
 					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
 					rclvs[i].productos = prods.filter((n) => n[campo_id] == rclv.id);
 
-					// Si el rclv no tiene productos, lo elimina
-					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
 					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos las tienen, elimina el rclv
-					else if (palabrasClave && !rclv.palsClave && !rclv.productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
+					if (palabrasClave && !rclv.palsClave && !rclv.productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
 						// Si el usuario busca por 'palabrasClave' y el rclv no las tiene, deja solamente los productos que las tienen
