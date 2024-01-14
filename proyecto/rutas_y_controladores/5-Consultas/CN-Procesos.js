@@ -43,10 +43,15 @@ module.exports = {
 			// Variables
 			const {entidad, opcion} = configCons;
 			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = !opcion.codigo.startsWith("fechaDelAno") ? variables.asocs.rclvs : "";
 			const entsProd = opcion.caps ? ["peliculas", "colecciones", "capitulos"] : ["peliculas", "colecciones"];
 			let productos = [];
 			let resultados = [];
+
+			// Includes
+			let include = [];
+			if (!opcion.codigo.startsWith("fechaDelAno")) include.push(...variables.asocs.rclvs);
+			if (opcion.codigo == "anoEstreno") include.push("epocaEstreno");
+			if (opcion.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
@@ -84,9 +89,13 @@ module.exports = {
 			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
 			// Obtiene los RCLVs
-			const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
-				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
-			);
+			let rclvs;
+			if (entidad == "rclvs") {
+				// for (let rclvEnt of variables.)
+			} else
+				rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
+					n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
+				);
 
 			// Fin
 			return rclvs;
@@ -614,10 +623,11 @@ module.exports = {
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
+					const {direccion, anoEstreno, avatar, cfc} = prod;
 					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
-					if (calificacion) datosProd.calificacion = calificacion;
+					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
+					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
