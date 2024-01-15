@@ -455,7 +455,7 @@ CREATE TABLE `cn_entidades` (
   `codigo` varchar(20) NOT NULL,
   `bhrSeguro` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Nombre_único` (`nombre`)
+  UNIQUE KEY `nombres` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -471,10 +471,10 @@ CREATE TABLE `cn_ents_por_opc` (
   `entidad_id` tinyint(1) unsigned DEFAULT NULL,
   `nombre` varchar(40) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `cn_ordenes_por_ent_FK` (`entidad_id`),
-  KEY `cn_ordenes_por_ent_FK_1` (`opcion_id`),
-  CONSTRAINT `cn_ordenes_por_ent_FK` FOREIGN KEY (`entidad_id`) REFERENCES `cn_entidades` (`id`),
-  CONSTRAINT `cn_ordenes_por_ent_FK_1` FOREIGN KEY (`opcion_id`) REFERENCES `cn_opciones` (`id`)
+  KEY `FK_entidad` (`entidad_id`),
+  KEY `FK_opcion` (`opcion_id`),
+  CONSTRAINT `FK_entidad` FOREIGN KEY (`entidad_id`) REFERENCES `cn_entidades` (`id`),
+  CONSTRAINT `FK_opcion` FOREIGN KEY (`opcion_id`) REFERENCES `cn_opciones` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1741,4 +1741,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15  1:06:43
+-- Dump completed on 2024-01-15 14:38:24
