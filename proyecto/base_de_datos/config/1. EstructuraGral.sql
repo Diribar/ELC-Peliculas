@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: c19353_elc
+-- Host: localhost    Database: elc_web
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.4.22-MariaDB
 
@@ -1729,7 +1729,7 @@ CREATE TABLE `usuarios` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'c19353_elc'
+-- Dumping routines for database 'elc_web'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -1741,4 +1741,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15 15:23:31
+-- Dump completed on 2024-01-15 16:30:17
