@@ -70,8 +70,8 @@ router.get("/ingreso-manual", dataEntry, vista.IM.form);
 router.post("/ingreso-manual", dataEntry, vista.IM.guardar);
 
 // Vistas - Ingreso FA
-router.get("/ingreso-fa", dataEntryMasFA, vista.copiarFA.form);
-router.post("/ingreso-fa", dataEntryMasFA, vista.copiarFA.guardar);
+router.get("/ingreso-fa", dataEntryMasFA, vista.FA.form);
+router.post("/ingreso-fa", dataEntryMasFA, vista.FA.guardar);
 
 // Fin
 module.exports = router;
