@@ -14,9 +14,9 @@ module.exports = {
 		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
 
 		// Productos
-		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
-		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.TC.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(userID).then((n) => procesosRE.TC.procesaCampos.prods(n));
+		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.procesaCampos.prods(n));
+		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.procesaCampos.rclvs(n));
+		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(userID).then((n) => procesosRE.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
