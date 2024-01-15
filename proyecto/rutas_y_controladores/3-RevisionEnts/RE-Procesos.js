@@ -262,57 +262,6 @@ module.exports = {
 			// Fin
 			return {ED: rclvs};
 		},
-		procesaCampos: {
-			prods: (productos) => {
-				// Variables
-				const anchoMax = 35;
-
-				// Reconvierte los elementos
-				for (let rubro in productos)
-					productos[rubro] = productos[rubro].map((n) => {
-						let nombre =
-							(n.nombreCastellano.length > anchoMax
-								? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
-								: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
-						let datos = {
-							id: n.id,
-							entidad: n.entidad,
-							nombre,
-							abrev: n.entidad.slice(0, 3).toUpperCase(),
-							fechaRef: n.fechaRef,
-							fechaRefTexto: n.fechaRefTexto,
-							links: n.linksGral || n.linksTrailer,
-						};
-						if (rubro == "ED") datos.edicID = n.edicID;
-						return datos;
-					});
-
-				// Fin
-				return productos;
-			},
-			rclvs: (rclvs) => {
-				// Procesar los registros
-				let anchoMax = 35;
-
-				// Reconvierte los elementos
-				for (let rubro in rclvs)
-					rclvs[rubro] = rclvs[rubro].map((n) => {
-						let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-						let datos = {
-							id: n.id,
-							entidad: n.entidad,
-							nombre,
-							abrev: n.entidad.slice(0, 3).toUpperCase(),
-							fechaRefTexto: n.fechaRefTexto,
-						};
-						if (rubro == "ED") datos.edicID = n.edicID;
-						return datos;
-					});
-
-				// Fin
-				return rclvs;
-			},
-		},
 	},
 
 	// Alta
@@ -771,9 +720,9 @@ module.exports = {
 		let sigProd = [];
 		await this.TC.obtieneProds_Links(revID)
 			.then((n) => n.productos) // Obtiene los productos
-			.then((n) => this.TC.procesaCampos.prods(n)) // transforma los datos de cada producto
+			.then((n) => this.procesaCampos.prods(n)) // transforma los datos de cada producto
 			.then((n) => {
-				Object.keys(n).forEach((m) => (n[m] = n[m].slice(0, 2)));
+				for (let m in n) n[m].splice(2);
 				return n;
 			}) // deja un máximo de 2 valores por método
 			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))) // agrupa los productos en una sola array
@@ -816,6 +765,57 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	procesaCampos: {
+		prods: (productos) => {
+			// Variables
+			const anchoMax = 35;
+
+			// Reconvierte los elementos
+			for (let rubro in productos)
+				productos[rubro] = productos[rubro].map((n) => {
+					let nombre =
+						(n.nombreCastellano.length > anchoMax
+							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
+					let datos = {
+						id: n.id,
+						entidad: n.entidad,
+						nombre,
+						abrev: n.entidad.slice(0, 3).toUpperCase(),
+						fechaRef: n.fechaRef,
+						fechaRefTexto: n.fechaRefTexto,
+						links: n.linksGral || n.linksTrailer,
+					};
+					if (rubro == "ED") datos.edicID = n.edicID;
+					return datos;
+				});
+
+			// Fin
+			return productos;
+		},
+		rclvs: (rclvs) => {
+			// Procesar los registros
+			let anchoMax = 35;
+
+			// Reconvierte los elementos
+			for (let rubro in rclvs)
+				rclvs[rubro] = rclvs[rubro].map((n) => {
+					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+					let datos = {
+						id: n.id,
+						entidad: n.entidad,
+						nombre,
+						abrev: n.entidad.slice(0, 3).toUpperCase(),
+						fechaRefTexto: n.fechaRefTexto,
+					};
+					if (rubro == "ED") datos.edicID = n.edicID;
+					return datos;
+				});
+
+			// Fin
+			return rclvs;
+		},
 	},
 };
 
