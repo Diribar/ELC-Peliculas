@@ -468,7 +468,7 @@ CREATE TABLE `cn_entidades` (
 CREATE TABLE `cn_ents_por_opc` (
   `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `opcion_id` tinyint(1) unsigned NOT NULL,
-  `entidad_id` tinyint(1) unsigned DEFAULT NULL,
+  `entidad_id` tinyint(1) unsigned NOT NULL,
   `nombre` varchar(40) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_entidad` (`entidad_id`),
@@ -1741,4 +1741,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15 14:38:24
+-- Dump completed on 2024-01-15 15:23:31
