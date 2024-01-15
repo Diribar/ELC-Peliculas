@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	// Notifica al contador de logins y actualiza session, cookie y locals
 	usuario = procesos.actualizaElContadorDeLogins(usuario);
 	req.session.usuario = usuario;
-	res.cookie("email", usuario.email, {maxAge: unDia});
+	res.cookie("email", usuario.email, {maxAge: unDia * 30});
 	res.locals.usuario = usuario;
 
 	// Acciones si cambió la versión
