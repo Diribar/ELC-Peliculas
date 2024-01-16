@@ -20,4 +20,4 @@ button #informacion {justify-content: space-between; height: 100%; padding: 6px 
 button #informacion .infoFormato {padding: 0 15px;}
 button #informacion .infoFormato .interlineadoChico:not(:first-child) {margin-top: 5px;}
 button #informacion .infoFormato :is(#nombreCastellano, #nombre) {font-weight: bold; font-style: italic;}
-button:hover #informacion #infoPeli i#ppp {color: inherit;}
+button:hover #informacion #infoSup i#ppp {color: inherit;}
