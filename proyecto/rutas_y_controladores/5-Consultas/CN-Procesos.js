@@ -668,8 +668,10 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, avatar, cfc} = prod;
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre,  avatar, cfc} = prod;
+					let {direccion,anoEstreno} = prod;
+					if (!direccion) direccion = "desconocido";
+					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
 					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
