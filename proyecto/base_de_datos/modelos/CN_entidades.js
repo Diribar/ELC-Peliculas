@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		bhrSeguro: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "cn_entidades",
+		tableName: "1cn_entidades",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		ayuda: {type: dt.STRING(60)},
 	};
 	const config = {
-		tableName: "cn_opciones",
+		tableName: "1cn_opciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
