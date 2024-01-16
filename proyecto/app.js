@@ -20,7 +20,7 @@ global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
-global.configConsDefault_id = 35; // El 'default' es "Sorprendeme"
+global.configConsDefault_id = 4; // El 'default' es "Sorprendeme"
 global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 
 // Con 'require'
