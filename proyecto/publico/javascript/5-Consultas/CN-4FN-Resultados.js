@@ -249,7 +249,7 @@ let auxiliares = {
 		return li;
 	},
 	datosProducto: function ({informacion, producto}) {
-		// Crea infoPeli
+		// Crea la infoSup
 		const infoSup = document.createElement("div");
 		infoSup.id = "infoSup";
 		infoSup.className = "infoFormato";
