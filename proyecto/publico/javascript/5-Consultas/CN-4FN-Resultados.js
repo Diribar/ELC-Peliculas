@@ -591,8 +591,8 @@ let creaUnaCelda = {
 		const segundaLinea = document.createElement("p");
 		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
 		else if (rclv.anoOcurrencia)
-			segundaLinea.innerHTML += (rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia;
-		// Año de Nacimiento o Comienzo
+			segundaLinea.innerHTML +=
+				(rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia; // Año de Nacimiento o Comienzo
 		else if (rclv.epocaOcurrencia) segundaLinea.innerHTML += rclv.epocaOcurrencia;
 
 		// Genera la información - 2a línea - Otros datos del personaje
