@@ -16,7 +16,7 @@ module.exports = {
 		};
 		const configsConsCampos = procesos.configs.campos();
 
-		// Obtiene el ID de la configCons del usuario
+		// Si la configuración está en la url, toma el valor y redirige para eliminarlo de la url
 		const configConsUrl_id = Number(req.query.configCons_id);
 		const existe = configConsUrl_id ? configs.find((n) => n.id == configConsUrl_id) : null;
 		if (existe) {
@@ -32,6 +32,7 @@ module.exports = {
 			return res.redirect(ruta);
 		}
 
+		// Obtiene el ID de la configCons del usuario
 		let configCons_id =
 			usuario && usuario.configCons_id
 				? usuario.configCons_id // El guardado en el usuario
