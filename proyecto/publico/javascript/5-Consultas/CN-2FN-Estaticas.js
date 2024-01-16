@@ -44,12 +44,49 @@ let actualiza = {
 		v.opcion_id && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? titulo.nuevo
+			: !v.userID
+			? "Necesitamos que estés logueado para crear una configuración"
 			: !v.opcion_id
 			? "No está permitido crear una configuración cuando hay un error en los filtros"
 			: claseEdicion
 			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
+			: "";
+
+		// Ícono Deshacer - clase
+		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && v.configCons_id
+			? DOM.deshacer.classList.remove("inactivo")
+			: DOM.deshacer.classList.add("inactivo");
+		// Ícono Deshacer - ayuda
+		DOM.deshacer.title = !DOM.deshacer.className.includes("inactivo")
+			? titulo.deshacer
+			: claseNuevo || claseEdicion
+			? "No está permitido deshacer cuando se está cambiando el nombre"
+			: !v.hayCambiosDeCampo
+			? "No hay nada que deshacer cuando no se hicieron cambios en la configuración"
+			: !v.configCons_id
+			? "Tenés que elegir un filtro guardado, para poder deshacer los cambios"
+			: "";
+
+		// Ícono Guardar
+		v.opcion_id && (v.nuevo || v.edicion || v.propio) && v.userID
+			? DOM.guardar.classList.remove("inactivo")
+			: DOM.guardar.classList.add("inactivo");
+		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
+			? titulo.guardar
 			: !v.userID
-			? "Necesitamos que estés logueado para crear una configuración"
+			? "Necesitamos que estés logueado para guardar una configuración"
+			: !v.opcion_id
+			? "No está permitido guardar una configuración si no se eligió una opción"
+			: (claseNuevo || claseEdicion) && !v.nombreOK
+			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
+			: claseEdicion && !v.filtroPropio
+			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
+			: !claseNuevo && !claseEdicion
+			? !v.hayCambiosDeCampo
+				? "No hay cambios que guardar"
+				: !v.filtroPropio
+				? "No está permitido guardar cambios en las configuraciones provistas por nuestro sitio"
+				: ""
 			: "";
 
 		// Ícono Edición
@@ -68,18 +105,6 @@ let actualiza = {
 			? "No está permitido editar una configuración si no se eligió una opción"
 			: "";
 
-		// Ícono Deshacer
-		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo
-			? DOM.deshacer.classList.remove("inactivo")
-			: DOM.deshacer.classList.add("inactivo");
-		DOM.deshacer.title = !DOM.deshacer.className.includes("inactivo")
-			? titulo.deshacer
-			: claseNuevo || claseEdicion
-			? "No está permitido deshacer cuando se está cambiando el nombre"
-			: !v.hayCambiosDeCampo
-			? "No hay nada que deshacer cuando no se hicieron cambios en la configuración"
-			: "";
-
 		// Ícono Eliminar
 		!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambiosDeCampo
 			? DOM.eliminar.classList.remove("inactivo")
@@ -92,26 +117,6 @@ let actualiza = {
 			? "No está permitido eliminar las configuraciones provistas por nuestro sitio"
 			: v.hayCambiosDeCampo
 			? "No está permitido eliminar cuando se hicieron cambios en la configuración"
-			: "";
-
-		// Ícono Guardar
-		v.opcion_id && (v.nuevo || v.edicion || v.propio)
-			? DOM.guardar.classList.remove("inactivo")
-			: DOM.guardar.classList.add("inactivo");
-		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
-			? titulo.guardar
-			: !v.opcion_id
-			? "No está permitido guardar una configuración si no se eligió una opción"
-			: (claseNuevo || claseEdicion) && !v.nombreOK
-			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
-			: claseEdicion && !v.filtroPropio
-			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
-			: !claseNuevo && !claseEdicion
-			? !v.hayCambiosDeCampo
-				? "No hay cambios que guardar"
-				: !v.filtroPropio
-				? "No está permitido guardar cambios en las configuraciones provistas por nuestro sitio"
-				: ""
 			: "";
 
 		// Fin
@@ -149,7 +154,7 @@ let actualiza = {
 		return;
 	},
 	toggleFiltrosIndivs: () => {
-		actualizaMuestraFiltros()
+		actualizaMuestraFiltros();
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
