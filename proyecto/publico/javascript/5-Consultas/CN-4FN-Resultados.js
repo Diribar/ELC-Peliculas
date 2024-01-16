@@ -228,7 +228,9 @@ let auxiliares = {
 		const avatar = document.createElement("img");
 		const carpeta = esUnProducto ? "2-Productos" : "3-RCLVs";
 		avatar.className = "imagenChica";
-		avatar.src = (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar;
+		avatar.src = registro.avatar
+			? (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar
+			: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 		avatar.alt = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		avatar.title = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		button.appendChild(avatar);
@@ -589,8 +591,8 @@ let creaUnaCelda = {
 		const segundaLinea = document.createElement("p");
 		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
 		else if (rclv.anoOcurrencia)
-			segundaLinea.innerHTML +=
-				(rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia; // Año de Nacimiento o Comienzo
+			segundaLinea.innerHTML += (rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia;
+		// Año de Nacimiento o Comienzo
 		else if (rclv.epocaOcurrencia) segundaLinea.innerHTML += rclv.epocaOcurrencia;
 
 		// Genera la información - 2a línea - Otros datos del personaje
