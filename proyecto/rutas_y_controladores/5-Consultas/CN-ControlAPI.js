@@ -145,10 +145,7 @@ module.exports = {
 
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...configCons, opcion});
-		let rclvs =
-			opcion.codigo.startsWith("fechaDelAno")
-				? procesos.resultados.obtieneRclvs.porFechaDelAno(configCons)
-				: procesos.resultados.obtieneRclvs.comun({...configCons, opcion});
+		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...configCons, opcion});
 		let pppRegistros = usuario_id
 			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
 			: [];
