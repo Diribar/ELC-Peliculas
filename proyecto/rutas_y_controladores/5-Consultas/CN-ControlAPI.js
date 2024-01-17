@@ -139,6 +139,8 @@ module.exports = {
 		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.opcionPorEnt_id);
 		const opcion = cn_opciones.find((n) => n.id == opcionPorEnt.opcion_id);
 		const {palabrasClave} = configCons;
+
+		// Pule la variable 'configCons'
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
 
 		// Obtiene los registros ppp del usuario
@@ -154,13 +156,13 @@ module.exports = {
 		}
 
 		// Obtiene los registros de productos y rclvs
-		let prods = procesos.resultados.prods({entidad, opcion, configCons});
+		let prods = procesos.resultados.obtieneProds({entidad, opcion, configCons});
 		let rclvs =
 			entidad == "productos"
 				? opcion.codigo == "fechaDelAno_id"
 					? procesos.resultados.prodsDiaDelAno_id({dia, mes})
 					: null // Si el usuario no eligió 'Momento del Año'
-				: procesos.resultados.rclvs({entidad, configCons, opcion});
+				: procesos.resultados.obtieneRclvs({entidad, configCons, opcion});
 
 		// Espera hasta completar las lecturas
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
@@ -174,6 +176,7 @@ module.exports = {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
 			prods = procesos.resultados.orden.prods({prods, opcion, configCons}); // Ordena los productos
+			prods = procesos.resultados.botonesListado({resultados: prods, opcionPorEnt, opcion, configCons});
 			prods = procesos.resultados.camposNecesarios.prods(prods, opcion); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
