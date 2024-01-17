@@ -142,8 +142,10 @@ app.set("views", [
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
 
 		// Consultas
-		cn_entidades: BD_genericas.obtieneTodos("cn_entidades",),
-		cn_opciones: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opciones", {activo: true}, "entidades"),
+		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
+		cn_opciones: BD_genericas.obtieneTodosPorCondicionConInclude("cn_opciones", {activo: true}, "entidades").then((n) =>
+			n.sort((a, b) => a.orden - b.orden)
+		),
 		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús
@@ -225,10 +227,9 @@ app.set("views", [
 	global.vistasInstitucs = variables.vistasInstitucs;
 
 	// Filtros con 'default'
-	const camposConsultas = variables.camposConsultas;
 	global.filtrosConDefault = {};
-	for (let filtro in camposConsultas)
-		if (camposConsultas[filtro].default) filtrosConDefault[filtro] = camposConsultas[filtro].default;
+	for (let filtro in variables.camposConsultas)
+		if (variables.camposConsultas[filtro].default) filtrosConDefault[filtro] = variables.camposConsultas[filtro].default;
 
 	// Procesos que dependen de la variable 'global'
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");

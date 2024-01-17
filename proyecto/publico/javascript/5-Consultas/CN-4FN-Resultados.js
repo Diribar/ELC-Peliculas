@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.obtener) return;
+		if (!v.opcion_id) return;
 
 		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
@@ -32,9 +32,9 @@ let resultados = {
 		// Busca la información en el BE
 		v.ahora = new Date();
 		const datos =
-			v.opcionBD.codigo == "fechaDelAno_id"
-				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-				: {configCons, entidad: v.entidad};
+			v.opcionBD.codigo.startsWith("fechaDelAno")
+				? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
+				: configCons;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
@@ -44,7 +44,8 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		if (v.resultados && !v.opcionPorEntBD.boton) this.contador();
+		console.log(v.opcionBD.boton);
+		if (v.resultados && !v.opcionBD.boton) this.contador();
 
 		// Fin
 		return;

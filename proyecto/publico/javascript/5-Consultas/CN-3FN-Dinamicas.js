@@ -6,7 +6,7 @@ let actualizaConfigCons = {
 		configCons = {};
 
 		// Obtiene configCons y muestra/oculta campos
-		this.entidad();
+		this.opcion();
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
 		actualiza.toggleFiltrosIndivs();
@@ -16,65 +16,37 @@ let actualizaConfigCons = {
 	},
 
 	// Encabezado
-	opcion: {
-		asignaUno: function () {
-			// Averigua si hay una opción elegida
-			v.opcionPorEnt_id = DOM.opcionPorEnt_id.value;
-			v.opcionEnEntidad = false;
-
-			// Si hay una entidad elegida, se fija si la opción está vinculada a ella
-			if (v.opcionPorEnt_id) v.opcionEnEntidad = v.opcionesPorEstaEnt_id.includes(Number(v.opcionPorEnt_id));
-
-			// Acciones si la opción no pertenece a la  entidad
-			if (!v.opcionEnEntidad) {
-				// Si la opción existe en la entidad,la elige
-				v.opcionPorEntBD = v.opcsPorEstaEntBD.find((n) => n.id == v.opcionPorEnt_id);
-
-				// Asigna el nuevo valor
-				v.opcionPorEnt_id = v.opcionPorEntBD
-					? v.opcionPorEntBD.id // análogo
-					: v.opcsPorEstaEntBD.find((n) => n.opcionDefault).id; // default
-			}
-
-			// Actualiza variables
-			DOM.opcionPorEnt_id.value = v.opcionPorEnt_id;
-			configCons.opcionPorEnt_id = v.opcionPorEnt_id;
-			v.opcionPorEntBD = v.opcionesPorEntBD.find((n) => n.id == v.opcionPorEnt_id);
-			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcionPorEntBD.opcion_id);
-
-			// Redirige a la siguiente instancia
-			this.muestraOcultaOpciones();
-
-			// Fin
-			return;
-		},
-		muestraOcultaOpciones: () => {
-			// Oculta/Muestra las opciones según la entidad elegida
-			for (let opcion of DOM.opcionesPorEnt) {
-				v.opcionesPorEstaEnt_id.includes(Number(opcion.value))
-					? opcion.classList.remove("ocultar") // Muestra las opciones que corresponden a la entidad
-					: opcion.classList.add("ocultar"); // Oculta las opciones que no corresponden a la entidad
-			}
-
-			// Si corresponde, actualiza 'bhr'
-			if (v.entidad.bhrSeguro) configCons.bhr = "1";
-
-			// Muestra/Oculta sectores
-			actualizaConfigCons.muestraOcultaBloqueDeFiltros();
-
-			// Redirige a la siguiente instancia
-			if (v.obtener) actualizaConfigCons.presenciaEstable();
-
-			// Fin
-			return;
-		},
-	},
-	muestraOcultaBloqueDeFiltros: () => {
+	opcion: function () {
 		// Variables
-		v.obtener = !!configCons.entidad_id && !!configCons.opcionPorEnt_id;
+		v.opcion_id = DOM.opcion_id.value;
 
+		// Obtiene los valores completos de la opción elegida
+		if (v.opcion_id) {
+			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcion_id);
+			if (!v.opcionBD) v.opcion_id = null;
+		}
+
+		// Actualiza variables
+		if (v.opcion_id) {
+			configCons.opcion_id = v.opcion_id;
+			const asignaEnt = !v.opcionBD.entidades || !DOM.entidades || !DOM.entidades.value;
+			v.entidadBD = asignaEnt ? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id) : {};
+			v.entidad = v.entidadBD.codigo;
+			if (v.entidad) configCons.entidad = v.entidad;
+		}
+
+		// Muestra/Oculta los bloques de filtros
+		this.muestraOcultaBloques();
+
+		// Redirige a la siguiente instancia
+		if (v.opcion_id) this.presenciaEstable();
+
+		// Fin
+		return;
+	},
+	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
-		if (v.obtener) {
+		if (v.opcion_id) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltrosIndivs.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
@@ -109,42 +81,20 @@ let actualizaConfigCons = {
 		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
 
 		// Fin
-		this.pppOpciones();
+		this.entidad();
 		return;
 	},
 
 	// Presencia eventual
 	entidad: function () {
-		// Variables
-		v.entidad_id = DOM.entidad_id.value;
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !!v.opcionBD.entidades; // sólo si la opción acepta más de una entidad
 
-		// Acciones si existe un valor de entidad
-		if (v.entidad_id) {
-			// Actualiza 'configCons.entidad_id'
-			configCons.entidad_id = v.entidad_id;
-			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
-
-			// Obtiene los órdenes posibles
-			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
-			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-
-			// Actualiza los ayudas
-			for (let ayuda of DOM.ayudas)
-				ayuda.className.includes("ent" + DOM.entidad_id.value)
-					? ayuda.classList.remove("ocultar")
-					: ayuda.classList.add("ocultar");
-
-			// Continúa la rutina
-			this.opcion.asignaUno();
-		}
-
-		// Acciones si no existe la entidad
-		else {
-			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
-			this.muestraOcultaBloqueDeFiltros();
-		}
+		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		//muestraOcultaActualizaPref(seMuestra, "entidad_id");
 
 		// Fin
+		this.pppOpciones();
 		return;
 	},
 	pppOpciones: function () {
