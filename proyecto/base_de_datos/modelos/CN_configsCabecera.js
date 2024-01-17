@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "cn_config_cabecera",
+		tableName: "1cn_config_cabecera",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

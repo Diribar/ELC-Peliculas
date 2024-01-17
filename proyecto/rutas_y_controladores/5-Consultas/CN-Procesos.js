@@ -161,6 +161,11 @@ module.exports = {
 			},
 		},
 		obtieneRclvs: {
+			consolidado: function (configCons) {
+				return configCons.opcion.codigo.startsWith("fechaDelAno")
+					? this.porFechaDelAno(configCons)
+					: this.comun(configCons);
+			},
 			comun: async function (configCons) {
 				// Interrumpe la función
 				if (configCons.entidad == "productos") return null;
@@ -301,19 +306,20 @@ module.exports = {
 						.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
 						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
 
-					// Mueve los pasados al futuro
-					const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
-					if (indice > 0) {
-						const pasados = rclvs.slice(0, indice - 1);
-						rclvs.splice(0, indice - 1);
-						rclvs.push(...pasados);
+					// Para los botones, mueve los pasados al futuro
+					if (configCons.opcion.codigo == "fechaDelAnoBoton") {
+						const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
+						if (indice > 0) {
+							const pasados = rclvs.slice(0, indice - 1);
+							rclvs.splice(0, indice - 1);
+							rclvs.push(...pasados);
+						}
 					}
 
 					// Elimina los registros con el nombre repetido
 					if (rclvs.length > 1)
 						for (let i = rclvs.length - 2; i > 0; i--)
 							if (rclvs[i].nombre == rclvs[i + 1].nombre) rclvs.splice(i + 1, 1);
-
 				}
 
 				// Fin
@@ -662,8 +668,10 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, avatar, cfc} = prod;
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre,  avatar, cfc} = prod;
+					let {direccion,anoEstreno} = prod;
+					if (!direccion) direccion = "desconocido";
+					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
 					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
