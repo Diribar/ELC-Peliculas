@@ -1,1 +1,40 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Mié. 17/ene","HoraUTC":"14:56","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Lun. 15/ene","HoraSemUTC":"2:16","semanaUTC":3,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["ProdAprobEnLink","LinksEnProd","FeedbackParaUsers","ProdsEnRCLV","ProductosAlAzar"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","EliminaLinksInactivos":"SI","LinksPorProv":"SI","FeedbackParaRevisores":"SI","EliminaCalifsSinPPP":"SI","LoginsAcums":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","LinksVencidos":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialAntiguo":"SI","EliminaHistorialDeRegsEliminados":"SI","IDdeTablas":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"15-ene-24":{"titulo":"ELC - Películas"},"16-ene-24":{"titulo":"ELC - Películas"},"17-ene-24":{"titulo":"San Antonio abad","entidad":"personajes","id":209},"18-ene-24":{"titulo":"ELC - Películas"},"19-ene-24":{"titulo":"ELC - Películas"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Mié. 17/ene",
+	"HoraUTC": "14:56",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Lun. 15/ene",
+	"HoraSemUTC": "2:16",
+	"semanaUTC": 3,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"PaisesConMasProductos": "SI",
+		"EliminaLinksInactivos": "SI",
+		"LinksPorProv": "SI",
+		"FeedbackParaRevisores": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI"
+	},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"LinksVencidos": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"IDdeTablas": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"15-ene-24": {"titulo": "ELC - Películas"},
+		"16-ene-24": {"titulo": "ELC - Películas"},
+		"17-ene-24": {"titulo": "San Antonio abad", "entidad": "personajes", "id": 209},
+		"18-ene-24": {"titulo": "ELC - Películas"},
+		"19-ene-24": {"titulo": "ELC - Películas"}
+	}
+}
