@@ -222,6 +222,7 @@ let auxiliares = {
 		const button = document.createElement("button");
 		button.type = "text";
 		button.className = "flexRow pointer";
+		if (registro.cfc) button.className += " cfc";
 		anchor.appendChild(button);
 
 		// Crea la imagen
@@ -343,7 +344,7 @@ let auxiliares = {
 		// Contenido escrito
 		if (auxInf.epocaOcurrencia) auxInf.epocaOcurrencia.innerHTML = rclv.epocaOcurrencia;
 		if (rclv.anoOcurrencia)
-			auxInf.anoOcurrencia.innerHTML = (rclv.entidad == "personajes" ? "nacim.: " : "comienzo: ") + rclv.anoOcurrencia;
+			auxInf.anoOcurrencia.innerHTML = (rclv.entidad == "personajes" ? "Nacimiento: " : "Comienzo: ") + rclv.anoOcurrencia;
 		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
 
 		// Fin
@@ -591,8 +592,8 @@ let creaUnaCelda = {
 		const segundaLinea = document.createElement("p");
 		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
 		else if (rclv.anoOcurrencia)
-			segundaLinea.innerHTML +=
-				(rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia; // Año de Nacimiento o Comienzo
+			segundaLinea.innerHTML += (rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia;
+		// Año de Nacimiento o Comienzo
 		else if (rclv.epocaOcurrencia) segundaLinea.innerHTML += rclv.epocaOcurrencia;
 
 		// Genera la información - 2a línea - Otros datos del personaje

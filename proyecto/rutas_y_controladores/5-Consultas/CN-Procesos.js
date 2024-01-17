@@ -668,8 +668,8 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre,  avatar, cfc} = prod;
-					let {direccion,anoEstreno} = prod;
+					const {entidad, id, nombreCastellano, pppIcono, pppNombre, avatar, cfc} = prod;
+					let {direccion, anoEstreno} = prod;
 					if (!direccion) direccion = "desconocido";
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
@@ -721,6 +721,7 @@ module.exports = {
 					// Arma el resultado
 					const {entidad, id, nombre, productos, avatar} = rclv; // necesarios
 					const {fechaDelAno_id, fechaDelAno, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia} = rclv; // eventuales
+					const {categoria_id, soloCfc} = rclv; // eventuales
 					let datosRclv = {entidad, id, nombre, productos, avatar};
 
 					// Casos especiales
@@ -728,6 +729,7 @@ module.exports = {
 					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
 					if (epocaOcurrencia)
 						datosRclv = {...datosRclv, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
+					if (categoria_id == "CFC" || soloCfc) datosRclv.cfc = true;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes" && !rclv.rolIglesia_id.startsWith("NN")) {
