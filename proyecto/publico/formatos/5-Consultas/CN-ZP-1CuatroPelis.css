@@ -17,7 +17,7 @@
 /* Partes del resultado */
 button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}
 button #informacion {justify-content: space-between; height: 100%; padding: 6px 0;}
-button #informacion :is(#infoPeli, #infoRCLV) {padding: 0 15px;}
-button #informacion :is(#infoPeli, #infoRCLV) .interlineadoChico:not(:first-child) {margin-top: 5px;}
-button #informacion #infoPeli #nombreCastellano {font-weight: bold; font-style: italic;}
+button #informacion .infoFormato {padding: 0 15px;}
+button #informacion .infoFormato .interlineadoChico:not(:first-child) {margin-top: 5px;}
+button #informacion .infoFormato :is(#nombreCastellano, #nombre) {font-weight: bold; font-style: italic;}
 button:hover #informacion #infoPeli i#ppp {color: inherit;}

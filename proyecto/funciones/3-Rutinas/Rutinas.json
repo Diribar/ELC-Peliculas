@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 10/ene",
-	"HoraUTC": "11:21",
+	"FechaUTC": "Vie. 12/ene",
+	"HoraUTC": "1:53",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 8/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-ene-24": {"titulo": "ELC - Películas"},
-		"09-ene-24": {"titulo": "ELC - Películas"},
 		"10-ene-24": {"titulo": "ELC - Películas"},
 		"11-ene-24": {"titulo": "ELC - Películas"},
-		"12-ene-24": {"titulo": "ELC - Películas"}
+		"12-ene-24": {"titulo": "ELC - Películas"},
+		"13-ene-24": {"titulo": "San Hilario de Poitiers", "entidad": "personajes", "id": 208},
+		"14-ene-24": {"titulo": "ELC - Películas"}
 	}
 }

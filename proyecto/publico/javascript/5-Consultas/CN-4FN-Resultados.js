@@ -32,7 +32,7 @@ let resultados = {
 		// Busca la información en el BE
 		v.ahora = new Date();
 		const datos =
-			v.entidad == "productos" && v.opcionBD.codigo == "fechaDelAno_id"
+			v.opcionBD.codigo == "fechaDelAno_id"
 				? {configCons, entidad: v.entidad, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 				: {configCons, entidad: v.entidad};
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -127,15 +127,17 @@ let resultados = {
 			return;
 		},
 		botones: () => {
-			// Agrega el producto al botón
-			for (let producto of v.resultados) {
-				const boton = auxiliares.boton(producto);
+			// Agrega el resultado al botón
+			for (let resultado of v.resultados) {
+				const boton = auxiliares.boton(resultado);
 				DOM.botones.append(boton);
 			}
 
 			// Genera las variables 'ppp'
-			DOM.ppps = DOM.botones.querySelectorAll(".producto #ppp");
-			v.ppps = Array.from(DOM.ppps);
+			if (v.opcionBD.codigo == "azar") {
+				DOM.ppps = DOM.botones.querySelectorAll(".registro #ppp");
+				v.ppps = Array.from(DOM.ppps);
+			}
 
 			// Foco en el primer botón
 			DOM.botones.querySelector("button").focus();
@@ -210,15 +212,19 @@ let resultados = {
 };
 
 let auxiliares = {
-	boton: function (producto) {
-		// Crea el elemento 'li' que engloba todo el producto
+	boton: function (registro) {
+		// Variables
+		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
+		const esUnProducto = familia == "producto";
+
+		// Crea el elemento 'li' que engloba todo el registro
 		const li = document.createElement("li");
-		li.className = "producto";
+		li.className = "registro";
 		li.tabIndex = "-1";
 
 		// Crea el anchor
 		const anchor = document.createElement("a");
-		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
+		anchor.href = "/" + familia + "/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
 		anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 		li.appendChild(anchor);
@@ -231,10 +237,11 @@ let auxiliares = {
 
 		// Crea la imagen
 		const avatar = document.createElement("img");
+		const carpeta = esUnProducto ? "2-Productos" : "3-RCLVs";
 		avatar.className = "imagenChica";
-		avatar.src = (!producto.avatar.includes("/") ? "/Externa/2-Productos/Final/" : "") + producto.avatar;
-		avatar.alt = producto.nombreCastellano;
-		avatar.title = producto.nombreCastellano;
+		avatar.src = (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar;
+		avatar.alt = esUnProducto ? registro.nombreCastellano : registro.nombre;
+		avatar.title = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		button.appendChild(avatar);
 
 		// Crea el sector de informacion
@@ -243,19 +250,28 @@ let auxiliares = {
 		informacion.className = "flexCol";
 		button.appendChild(informacion);
 
-		// Crea infoPeli
-		const infoPeli = document.createElement("div");
-		infoPeli.id = "infoPeli";
-		informacion.appendChild(infoPeli);
+		// Datos de un producto o rclv
+		if (esUnProducto) this.datosProducto({informacion, producto: registro});
+		if (!esUnProducto) this.datosRclv({informacion, rclv: registro});
 
-		// Crea nombreCastellano, anoEstreno, direccion
-		let elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
+		// Fin
+		return li;
+	},
+	datosProducto: function ({informacion, producto}) {
+		// Crea infoPeli
+		const infoSup = document.createElement("div");
+		infoSup.id = "infoSup";
+		infoSup.className = "infoFormato";
+		informacion.appendChild(infoSup);
+
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		const elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
 		let aux = {};
 		for (let elemento of elementos) {
 			aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
 			aux[elemento].id = elemento;
 			aux[elemento].className = "interlineadoChico";
-			infoPeli.appendChild(aux[elemento]);
+			infoSup.appendChild(aux[elemento]);
 		}
 
 		// Particularidades
@@ -271,17 +287,97 @@ let auxiliares = {
 		aux.direccion.innerHTML = "Dirección: ";
 		aux.direccion.appendChild(em);
 
-		// Crea infoRCLV
-		const infoRCLV = document.createElement("div");
-		infoRCLV.id = "infoRCLV";
-		informacion.appendChild(infoRCLV);
+		// Crea la infoInf
+		const infoInf = document.createElement("div");
+		infoInf.id = "infoInf";
+		infoInf.className = "infoFormato";
+		informacion.appendChild(infoInf);
 
-		// Agrega el rclv en infoRCLV
+		// Agrega el rclv en infoInf
 		const rclv = this.obtieneElRCLV(producto);
-		if (rclv) infoRCLV.appendChild(rclv);
+		if (rclv) infoInf.appendChild(rclv);
 
 		// Fin
-		return li;
+		return;
+	},
+	datosRclv: function ({informacion, rclv}) {
+		// Variables
+		let elementos;
+
+		// Crea la infoSup
+		const infoSup = document.createElement("div");
+		infoSup.id = "infoSup";
+		infoSup.className = "infoFormato";
+		informacion.appendChild(infoSup);
+
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		elementos = ["nombre", "canonRol", "fechaDelAno"];
+		let auxSup = {};
+		for (let elemento of elementos) {
+			if (elemento == "canonRol" && !rclv.canonNombre && !rclv.rolIglesiaNombre) continue;
+			auxSup[elemento] = document.createElement("p");
+			auxSup[elemento].id = elemento;
+			auxSup[elemento].className = "interlineadoChico";
+			infoSup.appendChild(auxSup[elemento]);
+		}
+
+		// Otras particularidades
+		auxSup.nombre.innerHTML = rclv.nombre;
+		if (rclv.canonNombre || rclv.rolIglesiaNombre) {
+			auxSup.canonRol.innerHTML = "";
+			if (rclv.canonNombre) auxSup.canonRol.innerHTML += rclv.canonNombre;
+			if (rclv.canonNombre && rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += " - ";
+			if (rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += rclv.rolIglesiaNombre;
+		}
+		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno.nombre;
+
+		// Crea la infoInf
+		const infoInf = document.createElement("div");
+		infoInf.id = "infoInf";
+		infoInf.className = "infoFormato";
+		informacion.appendChild(infoInf);
+
+		// Crea nombreCastellano, anoEstreno, direccion, ppp
+		elementos = ["epocaOcurrenciaNombre", "anoNacim", "anoComienzo", "productos"];
+		let auxInf = {};
+		for (let elemento of elementos) {
+			if (!rclv[elemento]) continue;
+			if (elemento == "epocaOcurrenciaNombre" && (rclv.anoNacim || rclv.anoComienzo)) continue;
+			auxInf[elemento] = document.createElement("p");
+			auxInf[elemento].id = elemento;
+			auxInf[elemento].className = "interlineadoChico";
+			infoInf.appendChild(auxInf[elemento]);
+		}
+
+		// Otras particularidades
+		if(auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
+		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacim.: " + rclv.anoNacim;
+		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
+		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
+
+		// Fin
+		return;
+	},
+	obtieneElRCLV: (producto) => {
+		for (let rclvNombre of v.rclvsNombre)
+			if (producto[rclvNombre]) {
+				// Crea el rclv con sus características
+				const rclv = document.createElement("p");
+				rclv.className = "interlineadoChico rclv";
+				rclv.innerHTML = rclvNombre + ": ";
+
+				// Crea el em
+				const em = document.createElement("em");
+				const fechaDelAno = producto.fechaDelAno;
+				em.innerHTML = producto[rclvNombre] + (fechaDelAno ? " (" + fechaDelAno + ")" : "");
+				rclv.appendChild(em);
+
+				// Fin
+				return rclv;
+			}
+
+		// Fin
+		return false;
 	},
 	titulo: (registroAct, registroAnt, indice) => {
 		// Variables
@@ -473,27 +569,6 @@ let auxiliares = {
 
 		// Fin
 		return filas;
-	},
-	obtieneElRCLV: (producto) => {
-		for (let rclvNombre of v.rclvsNombre)
-			if (producto[rclvNombre]) {
-				// Crea el rclv con sus características
-				const rclv = document.createElement("p");
-				rclv.className = "interlineadoChico rclv";
-				rclv.innerHTML = rclvNombre + ": ";
-
-				// Crea el em
-				const em = document.createElement("em");
-				const fechaDelAno = producto.fechaDelAno;
-				em.innerHTML = producto[rclvNombre] + (fechaDelAno ? " (" + fechaDelAno + ")" : "");
-				rclv.appendChild(em);
-
-				// Fin
-				return rclv;
-			}
-
-		// Fin
-		return false;
 	},
 };
 

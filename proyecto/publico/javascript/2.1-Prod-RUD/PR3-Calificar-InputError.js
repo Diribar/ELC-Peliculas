@@ -55,7 +55,6 @@ window.addEventListener("load", async () => {
 				const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
 				const valor = atributoCalif.valor;
 				resultado += (valor * ponderacion) / 100;
-				// console.log({campo_id, campo, ID, valor, ponderacion, resultado});
 			}
 			resultado = Math.round(resultado);
 			DOM.resultado.innerHTML = resultado + "%";
