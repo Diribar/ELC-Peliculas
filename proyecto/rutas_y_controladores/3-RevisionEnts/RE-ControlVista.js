@@ -38,8 +38,8 @@ module.exports = {
 		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Procesa los campos de las 2 familias de entidades
-		prods = procesos.TC.procesaCampos.prods(prods);
-		rclvs = procesos.TC.procesaCampos.rclvs(rclvs);
+		prods = procesos.procesaCampos.prods(prods);
+		rclvs = procesos.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
@@ -268,19 +268,18 @@ module.exports = {
 			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
-			// Agrega un registro en el histStatus
-			// A. Genera la información
+			// Agrega un registro en el histStatus - A. Genera la información
 			let datosHist = {
 				...{entidad, entidad_id: id},
 				...{sugeridoPor_id: userID, sugeridoEn: original.statusSugeridoEn, statusOriginal_id},
 				...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
 				...{aprobado: aprob, motivo_id, comentario},
 			};
-			// B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
+			// Agrega un registro en el histStatus - Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 			const motivo =
 				codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 			if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac);
-			// C. Guarda los datos históricos
+			// Agrega un registro en el histStatus - Guarda los datos históricos
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
 			// Aumenta el valor de aprob/rech en el registro del usuario
@@ -294,7 +293,7 @@ module.exports = {
 			// Elimina las ediciones que tenga
 			if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
-			// Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
+			// Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 			if (producto)
 				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 

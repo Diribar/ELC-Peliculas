@@ -131,8 +131,7 @@ module.exports = {
 			comentario += " - " + aux + comentUs;
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
-			// CONSECUENCIAS
-			// 1. Actualiza el status en el registro original
+			// CONSECUENCIAS - Actualiza el status en el registro original
 			let datos = {
 				statusSugeridoPor_id: userID,
 				statusSugeridoEn: ahora,
@@ -141,15 +140,29 @@ module.exports = {
 			if (codigo == "inactivar") datos.motivo_id = motivo_id;
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
-			// 2. Si es una colección, actualiza sus capítulos con el mismo status
-			if (entidad == "colecciones")
-				BD_genericas.actualizaTodosPorCondicion(
+			// CONSECUENCIAS - Actualiza en los links el campo 'prodAprob'
+			const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
+			const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {coleccion_id: id}, asoc);
+			comp.prodAprobEnLink(links);
+
+			// CONSECUENCIAS - Acciones si es una colección
+			if (entidad == "colecciones") {
+				// Actualiza sus capítulos con el mismo status
+				await BD_genericas.actualizaTodosPorCondicion(
 					"capitulos",
 					{coleccion_id: id},
 					{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 				);
 
-			// 3. Agrega un registro en el histStatus
+				// Actualiza en los links el campo 'prodAprob'
+				const ids = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: id}).then((n) =>
+					n.map((m) => m.id)
+				);
+				const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo");
+				comp.prodAprobEnLink(links);
+			}
+
+			// CONSECUENCIAS - Agrega un registro en el histStatus
 			let datosHist = {
 				...{entidad, entidad_id: id},
 				...{sugeridoPor_id: original.statusSugeridoPor_id, sugeridoEn: original.statusSugeridoEn},
@@ -160,13 +173,12 @@ module.exports = {
 			datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
-			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
+			// CONSECUENCIAS - Actualiza los RCLV, en el campo 'prodsAprob'
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			if (familia == "producto") procesos.revisiones.accionesPorCambioDeStatus(entidad, original);
 
-			// 5. Regresa a la vista de detalle
+			// Fin
 			const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
-
 			return res.redirect(destino);
 		},
 	},

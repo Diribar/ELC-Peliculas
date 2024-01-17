@@ -466,7 +466,7 @@ module.exports = {
 			return res.redirect(baseUrl + sigPaso.url);
 		},
 	},
-	copiarFA: {
+	FA: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "prodAgregar";
@@ -535,6 +535,9 @@ let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	const coleccion = await BD_genericas.obtienePorId("colecciones", datos.coleccion_id);
 	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))
 		await BD_genericas.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
+
+	// Si no existe 'nombreCastellano', le asigna uno
+	if (!datos.nombreCastellano) datos.nombreCastellano = "Capítulo " + datos.capitulo;
 
 	// Guarda el registro original
 	const id = await BD_genericas.agregaRegistro("capitulos", datos).then((n) => n.id);

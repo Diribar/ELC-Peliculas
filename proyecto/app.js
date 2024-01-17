@@ -9,7 +9,7 @@ global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.vidaPrimRevision = unaSemana * 4;
 global.vidaUtilLinks = unaSemana * 26;
 global.sinLinks = 0;
-global.talVez = 1;
+global.linksTalVez = 1;
 global.conLinks = 2;
 
 // Variable 'global' - Otras

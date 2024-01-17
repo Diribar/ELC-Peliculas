@@ -77,7 +77,7 @@ module.exports = {
 				? variables.inputVacio
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
-				: datos.duracion > 300
+				: datos.duracion > 600
 				? "Debe ser un número menor"
 				: "";
 		if (campos.includes("paises_id"))
