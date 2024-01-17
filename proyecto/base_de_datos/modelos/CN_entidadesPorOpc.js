@@ -1,18 +1,12 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_opcionesPorEnt";
+	const alias = "cn_entsPorOpcion";
 	const columns = {
-		orden: {type: dt.INTEGER},
-		entidad_id: {type: dt.INTEGER},
 		opcion_id: {type: dt.INTEGER},
+		entidad_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
-		boton: {type: dt.INTEGER},
-		cantidad: {type: dt.INTEGER},
-		opcionDefault: {type: dt.BOOLEAN},
-		activo: {type: dt.BOOLEAN},
-		ayuda: {type: dt.STRING(60)},
 	};
 	const config = {
-		tableName: "cn_opcs_por_ent",
+		tableName: "cn_ents_por_opc",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

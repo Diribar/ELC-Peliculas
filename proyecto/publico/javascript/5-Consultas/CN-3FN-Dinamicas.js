@@ -16,39 +16,6 @@ let actualizaConfigCons = {
 	},
 
 	// Encabezado
-	entidad: function () {
-		// Variables
-		v.entidad_id = DOM.entidad_id.value;
-
-		// Acciones si existe un valor de entidad
-		if (v.entidad_id) {
-			// Actualiza 'configCons.entidad_id'
-			configCons.entidad_id = v.entidad_id;
-			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
-
-			// Obtiene los órdenes posibles
-			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
-			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
-
-			// Actualiza los ayudas
-			for (let ayuda of DOM.ayudas)
-				ayuda.className.includes("ent" + DOM.entidad_id.value)
-					? ayuda.classList.remove("ocultar")
-					: ayuda.classList.add("ocultar");
-
-			// Continúa la rutina
-			this.opcion.asignaUno();
-		}
-
-		// Acciones si no existe la entidad
-		else {
-			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
-			this.muestraOcultaBloqueDeFiltros();
-		}
-
-		// Fin
-		return;
-	},
 	opcion: {
 		asignaUno: function () {
 			// Averigua si hay una opción elegida
@@ -147,6 +114,39 @@ let actualizaConfigCons = {
 	},
 
 	// Presencia eventual
+	entidad: function () {
+		// Variables
+		v.entidad_id = DOM.entidad_id.value;
+
+		// Acciones si existe un valor de entidad
+		if (v.entidad_id) {
+			// Actualiza 'configCons.entidad_id'
+			configCons.entidad_id = v.entidad_id;
+			v.entidad = v.entidadesBD.find((n) => n.id == v.entidad_id).codigo;
+
+			// Obtiene los órdenes posibles
+			v.opcsPorEstaEntBD = v.opcionesPorEntBD.filter((n) => n.entidad_id == v.entidad_id);
+			v.opcionesPorEstaEnt_id = v.opcsPorEstaEntBD.map((n) => n.id);
+
+			// Actualiza los ayudas
+			for (let ayuda of DOM.ayudas)
+				ayuda.className.includes("ent" + DOM.entidad_id.value)
+					? ayuda.classList.remove("ocultar")
+					: ayuda.classList.add("ocultar");
+
+			// Continúa la rutina
+			this.opcion.asignaUno();
+		}
+
+		// Acciones si no existe la entidad
+		else {
+			for (let ayuda of DOM.ayudas) ayuda.classList.add("ocultar");
+			this.muestraOcultaBloqueDeFiltros();
+		}
+
+		// Fin
+		return;
+	},
 	pppOpciones: function () {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
 		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.cfc();

@@ -24,10 +24,7 @@ window.addEventListener("load", async () => {
 
 		// Encabezado
 		muestraFiltrosGlobal: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
-		entidad_id: DOM.tituloPrincipal.querySelector("select[name='entidad_id']"),
-		opcionPorEnt_id: DOM.tituloPrincipal.querySelector("select[name='opcionPorEnt_id']"),
-		opcionesPorEnt: DOM.tituloPrincipal.querySelectorAll("select[name='opcionPorEnt_id'] option"),
-		ayudas: DOM.tituloPrincipal.querySelectorAll("#ayudaOrden ul li"),
+		opcion_id: DOM.tituloPrincipal.querySelector("select[name='opcion_id']"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),

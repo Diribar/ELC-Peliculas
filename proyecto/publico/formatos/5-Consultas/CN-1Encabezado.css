@@ -4,15 +4,11 @@
 #tituloPrincipal #toggleFiltrosGlobal {width: 25px; height: 25px; margin: auto 5px;}
 
 /* Orden y Entidad */
-#tituloPrincipal #entidadOrden {display: flex; flex-wrap: wrap;}
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
-#tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px;}
+#tituloPrincipal select {background: var(--rojo-oscuro); padding: 3px 6px; border-bottom-right-radius: 7px;}
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
-#tituloPrincipal select[name=opcionPorEnt_id] {border-bottom-right-radius: 7px;}
 #tituloPrincipal select optgroup {background: var(--azul-frances);}
-#tituloPrincipal select optgroup:not(:has(:not(.ocultar))) {display: none;}
-#tituloPrincipal select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
-#tituloPrincipal select option.inactivo {background: var(--gris-intermedio); color: var(--gris-oscuro);}
+#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Ayuda y Actualizar */
 #tituloPrincipal #ayudaOrden {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}

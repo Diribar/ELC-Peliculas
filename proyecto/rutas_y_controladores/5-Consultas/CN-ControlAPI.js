@@ -41,7 +41,7 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				...{entidadesBD: cn_entidades, opcionesPorEntBD: cn_opcionesPorEnt, opcionesBD: cn_opciones}, // Órdenes y Entidades
+				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
 				...{pppOpciones, pppOpcionesSimples},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				...{filtrosConDefault, epocasEstreno, unDia},
@@ -136,9 +136,8 @@ module.exports = {
 		// Variables
 		const {dia, mes, configCons, entidad} = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const opcionPorEnt = cn_opcionesPorEnt.find((n) => n.id == configCons.opcionPorEnt_id);
-		const cantResults = opcionPorEnt.cantidad;
-		const opcion = cn_opciones.find((n) => n.id == opcionPorEnt.opcion_id);
+		const opcion = cn_opciones.find((n) => n.id == configCons.opcion_id);
+		const cantResults = opcion.cantidad;
 		const {palabrasClave} = configCons;
 
 		// Pule la variable 'configCons'
