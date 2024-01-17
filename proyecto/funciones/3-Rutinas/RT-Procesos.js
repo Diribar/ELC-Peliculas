@@ -733,11 +733,14 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 
 	// Obtiene los RCLV de las primeras cuatro entidades
 	for (let entidad of variables.entidades.rclvs) {
-		// Salteo de la rutina para 'epocasDelAno'
-		if (entidad == "epocasDelAno") continue;
+		// Condicion estándar: RCLVs en status aprobado y con avatar
+		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 
-		// Condicion estandar: RCLVs del dia y en status aprobado
-		const condicion = {fechaDelAno_id: fechaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
+		// Condición personalizada: fecha del año del día y que no sea "ninguno"
+		condicion =
+			entidad != "epocasDelAno"
+				? {...condicion, fechaDelAno_id: fechaDelAno.id}
+				: {...condicion, id: {[Op.and]: [fechaDelAno.epocaDelAno_id, {[Op.ne]: 1}]}};
 
 		// Obtiene los RCLVs
 		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
@@ -748,21 +751,6 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		);
 		rclvs.push(registros);
 	}
-
-	// Busca el registro de 'epocaDelAno'
-	if (fechaDelAno.epocaDelAno_id != 1) {
-		const condicion = {id: fechaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
-		const entidad = "epocasDelAno";
-		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
-			n.map((m) => {
-				if (m.peliculas.length || m.colecciones.length || m.capitulos.length) m.entidad = entidad;
-				return m;
-			})
-		);
-		rclvs.push(registros);
-	}
-
-	// Espera y consolida la informacion
 	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
 
 	// Fin
