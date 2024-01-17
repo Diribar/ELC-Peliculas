@@ -144,13 +144,13 @@ module.exports = {
 		entsPERL = ["prodsEdicion", "rclvsEdicion"];
 		include = {prodsEdicion: variables.asocs.prods, rclvsEdicion: variables.asocs.rclvs};
 		let edicsPERL = [];
-		for (let entidad of entsPERL) {
-			let registros = await BD_genericas.obtieneTodosConInclude(entidad, ["editadoPor", ...include[entidad]])
+		for (let entPERL of entsPERL) {
+			let registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
 						const asociacion = comp.obtieneDesdeEdicion.asociacion(edic);
-						const entidad = comp.obtieneDesdeEdicion.entidad(edic);
+						const entidad = comp.obtieneDesdeEdicion.entidad(edic, entPERL);
 						const familia = comp.obtieneDesdeEntidad.familia(entidad);
 						return {...edic[asociacion], entidad, familia};
 					})
