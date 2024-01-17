@@ -39,8 +39,9 @@ module.exports = {
 		},
 	},
 	resultados: {
-		obtieneProds: async function ({entidad, configCons, opcion}) {
+		obtieneProds: async function (configCons) {
 			// Variables
+			const {entidad, opcion} = configCons;
 			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 			const include = opcion.codigo != "fechaDelAno_id" ? variables.asocs.rclvs : "";
 			let productos = [];
@@ -73,8 +74,9 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRclvs: async function ({entidad, configCons, opcion}) {
+		obtieneRclvs: async function (configCons) {
 			// Interrumpe la función
+			const {entidad} = configCons;
 			if (entidad == "productos") return null;
 
 			// Obtiene los include
@@ -83,7 +85,7 @@ module.exports = {
 			if (entidad == "personajes") include.push("rolIglesia", "canon");
 
 			// Obtiene las condiciones
-			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs({configCons, entidad, opcion}) : null;
+			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs(configCons) : null;
 			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
 
 			// Obtiene los RCLVs
@@ -94,8 +96,9 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		obtienePorFechaDelAno: async ({entidad, dia, mes}) => {
+		obtienePorFechaDelAno: async (configCons) => {
 			// Variables
+			const {entidad, dia, mes} = configCons;
 			const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
 			const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
 			const inclStd = ["fechaDelAno"];
@@ -233,8 +236,9 @@ module.exports = {
 				// Fin
 				return resultados;
 			},
-			rclvs: ({configCons, entidad, opcion}) => {
+			rclvs: (configCons) => {
 				// Variables
+				const {entidad, opcion} = configCons;
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
@@ -326,7 +330,7 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConPalsClave: ({prods, palabrasClave, entidad}) => {
+			prodsConPalsClave: ({entidad, prods, palabrasClave}) => {
 				if (!prods.length) return [];
 				if (!palabrasClave) return prods;
 
@@ -482,20 +486,20 @@ module.exports = {
 						rclvs[i].productos = rclvs[i].productos.map((n) => {
 							// Obtiene campos simples
 							let {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno} = n;
-							let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno};
+							let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno};
 
 							// Achica el campo dirección
 							if (direccion && direccion.indexOf(",") > 0)
-								datos.direccion = direccion.slice(0, direccion.indexOf(","));
+								datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
 
 							// Obtiene el nombre de la entidad
-							datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+							datosProd.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 							// Si es una colección, agrega el campo 'anoFin'
-							if (n.entidad == "colecciones") datos.anoFin = n.anoFin;
+							if (n.entidad == "colecciones") datosProd.anoFin = n.anoFin;
 
 							// Fin
-							return datos;
+							return datosProd;
 						});
 
 						// Aumenta el índice para analizar el siguiente registro
@@ -617,15 +621,15 @@ module.exports = {
 					// Obtiene campos simples
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
 					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
-					let datos = {entidad, id, nombreCastellano, pppIcono, pppNombre};
-					datos = {...datos, direccion, anoEstreno, avatar, cfc};
-					if (calificacion) datos.calificacion = calificacion;
+					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
+					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
+					if (calificacion) datosProd.calificacion = calificacion;
 
 					// Achica el campo dirección
-					if (direccion && direccion.indexOf(",") > 0) datos.direccion = direccion.slice(0, direccion.indexOf(","));
+					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
 
 					// Obtiene el nombre de la entidad
-					datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+					datosProd.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 					// Obtiene los RCLV
 					for (let entRclv of variables.entidades.rclvs) {
@@ -639,18 +643,18 @@ module.exports = {
 							prod[campo_id] > 10 && // el id es de un registro válido
 							(opcion.codigo != "fechaDelAno_id" || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
-							datos[entidadNombre] = prod[asociacion].nombre;
+							datosProd[entidadNombre] = prod[asociacion].nombre;
 							if (opcion.codigo == "fechaDelAno_id" && entRclv != "epocasDelAno")
-								datos.fechaDelAno = prod[asociacion].fechaDelAno;
+								datosProd.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
 					}
 
 					// Si es una colección, agrega el campo 'anoFin'
-					if (prod.entidad == "colecciones") datos.anoFin = prod.anoFin;
+					if (prod.entidad == "colecciones") datosProd.anoFin = prod.anoFin;
 
 					// Fin
-					return datos;
+					return datosProd;
 				});
 
 				// Fin
@@ -664,29 +668,29 @@ module.exports = {
 				rclvs = rclvs.map((n) => {
 					// Arma el resultado
 					const {entidad, id, nombre, productos, avatar, fechaDelAno_id, fechaDelAno} = n;
-					let datos = {entidad, id, nombre, productos, avatar};
+					let datosRclv = {entidad, id, nombre, productos, avatar};
 					if (opcion.codigo == "fechaDelAno_id")
-						datos = {...datos, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
-					else if (n.apodo) datos.apodo = n.apodo;
+						datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
+					else if (n.apodo) datosRclv.apodo = n.apodo;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes") {
-						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datos.anoNacim = n.anoNacim;
+						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
+						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
+						datosRclv.anoNacim = n.anoNacim;
 						if (!n.rolIglesia_id.startsWith("NN")) {
-							datos.rolIglesiaNombre = n.rolIglesia.nombre;
-							if (!n.canon_id.startsWith("NN")) datos.canonNombre = n.canon.nombre;
+							datosRclv.rolIglesiaNombre = n.rolIglesia.nombre;
+							if (!n.canon_id.startsWith("NN")) datosRclv.canonNombre = n.canon.nombre;
 						}
 					}
 					if (entidad == "hechos") {
-						datos.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datos.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datos.anoComienzo = n.anoComienzo;
+						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
+						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
+						datosRclv.anoComienzo = n.anoComienzo;
 					}
 
 					// Fin
-					return datos;
+					return datosRclv;
 				});
 
 				// Fin
