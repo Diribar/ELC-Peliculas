@@ -42,14 +42,14 @@ module.exports = {
 		obtieneProds: async function ({entidad, configCons, opcion}) {
 			// Variables
 			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = variables.asocs.rclvs;
-			let {apMar, rolesIgl, canons, configProd} = configCons;
-			if (entidad == "productos") configProd = {...configProd, apMar, rolesIgl, canons};
-			let entsProd = ["peliculas", "colecciones"];
-			if (["fechaDelAno_id", "calificacion", "misCalificadas"].includes(opcion.codigo) || entidad != "productos")
-				entsProd.push("capitulos"); // Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			const include = opcion.codigo != "fechaDelAno_id" ? variables.asocs.rclvs : "";
 			let productos = [];
 			let resultados = [];
+
+			// Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
+			let entsProd = ["peliculas", "colecciones"];
+			if (["fechaDelAno_id", "calificacion", "misCalificadas"].includes(opcion.codigo) || entidad != "productos")
+				entsProd.push("capitulos");
 
 			// Condiciones
 			const prefs = this.prefs.prods(configCons);
@@ -96,56 +96,51 @@ module.exports = {
 		},
 		obtienePorFechaDelAno: async ({entidad, dia, mes}) => {
 			// Variables
-			entidad = "rclvs";
 			const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
-			const diaInicial_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
-			const inclStd = [...variables.entidades.prods, "fechaDelAno"];
+			const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
+			const inclStd = ["fechaDelAno"];
 			const inclHec = [...inclStd, "epocaOcurrencia"];
 			const inclPers = [...inclHec, "rolIglesia", "canon"];
 			let registros = [];
 			let rclvs = [];
-			let condicion;
 
 			// Rutina para obtener los RCLVs
-			for (let dia = 0; dia < 366; dia++) {
+			for (let entidadRCLV of entidadesRCLV) {
 				// Variables
-				let fechaDelAno_id = diaInicial_id + dia;
-				if (fechaDelAno_id > 366) fechaDelAno_id -= 366;
-				const epocaDelAno_id = fechasDelAno.find((n) => n.id == fechaDelAno_id).epocaDelAno_id;
+				const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
+				const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
 
-				// Obtiene los RCLV, a excepción de la familia 'epocaDelAno'
-				for (let entidad of entidadesRCLV) {
-					// Variables
-					condicion =
-						entidad != "epocasDelAno"
-							? {id: {[Op.gt]: 10}, statusRegistro_id: aprobado_id, fechaDelAno_id}
-							: {id: epocaDelAno_id, statusRegistro_id: aprobado_id}; // hay varias fechas para cada época del año
-					const includes = entidad == "hechos" ? inclHec : entidad == "personajes" ? inclPers : inclStd;
-
-					// Obtiene los registros
-					if (entidad == "epocasDelAno" && epocaDelAno_id == 1) continue;
-					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, includes)
-							// Les agrega su entidad y el dia (para ordenarlos)
-							.then((n) => n.map((m) => ({...m, entidad, dia})))
-					);
-				}
+				// Obtiene los registros y les agrega la entidadRCLV
+				registros.push(
+					BD_genericas.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
+						n.map((m) => ({...m, entidad: entidadRCLV}))
+					)
+				);
 			}
-
-			// Espera y consolida la informacion
 			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 
-			// Elimina las 'epocasDelAno' repetidas
-			if (rclvs.length)
-				for (let i = rclvs.length - 1; i >= 0; i--) {
-					let rclv = rclvs[i];
-					if (i != rclvs.findIndex((n) => n.id == rclv.id && n.entidad == rclv.entidad)) rclvs.splice(i, 1);
-					else if (rclv.entidad != "epocasDelAno") break;
-				}
+			// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
+			const epocaDelAno_id = diaHoy.epocaDelAno_id;
+			if (epocaDelAno_id != 1) {
+				const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
+				rclvs[indice].fechaDelAno_id = diaHoy.id;
+			}
 
-			// Los ordena
-			if (rclvs.length) rclvs.sort((a, b) => b.prioridad - a.prioridad); // Prioridad descendente
-			if (rclvs.length) rclvs.sort((a, b) => a.dia - b.dia); // Día ascendente
+			// Acciones si hay resultados
+			if (rclvs.length) {
+				// Ordena los registros
+				rclvs
+					.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
+					.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
+
+				// Mueve los pasados al futuro
+				const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
+				if (indice > 0) {
+					const pasados = rclvs.slice(0, indice - 1);
+					rclvs.splice(0, indice - 1);
+					rclvs.push(...pasados);
+				}
+			}
 
 			// Fin
 			return rclvs;
@@ -461,32 +456,15 @@ module.exports = {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
-				// Rutina por RCLV
+				// Tareas por RCLV
 				let i = 0;
 				while (i < rclvs.length && (cantResults ? i < cantResults : true)) {
 					// Variables
-					rclvs[i].productos = [];
 					let rclv = rclvs[i];
 
 					// Agrupa los productos en el método 'productos'
-					for (let entProd of variables.entidades.prods) {
-						let prodsRCLV = rclv[entProd];
-
-						// Rutina por productos de cada entProd
-						for (let j = prodsRCLV.length - 1; j >= 0; j--) {
-							// Rutina por producto
-							const prodRCLV = prodsRCLV[j];
-
-							// Averigua si existe la intersección
-							const existe = prods.find((n) => n.entidad == entProd && n.id == prodRCLV.id);
-							if (!existe) rclvs[i][entProd].splice(j, 1); // Si no existe, lo elimina
-							else rclvs[i][entProd][j] = existe; // Reemplaza la información del producto por otra más completa
-						}
-
-						// Acciones finales
-						rclvs[i].productos.push(...rclvs[i][entProd]); // Agrupa los productos en el método 'productos'
-						delete rclvs[i][entProd]; // Elimina la familia
-					}
+					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
+					rclvs[i].productos = prods.filter((n) => n[campo_id] == rclv.id);
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
