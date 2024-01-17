@@ -86,7 +86,6 @@ window.addEventListener("load", async () => {
 		conLinksHD: "conLinksHD",
 		enCast: "enCast",
 		muestraFiltros: false,
-		cantListadoBreve: 20,
 		contadorDeMostrarResults: 0,
 	};
 	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;

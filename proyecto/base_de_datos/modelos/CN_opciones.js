@@ -7,8 +7,9 @@ module.exports = (sequelize, dt) => {
 		entDefault_id: {type: dt.BOOLEAN},
 		cantidad: {type: dt.INTEGER},
 		ascDes: {type: dt.STRING(6)},
-		loginNeces: {type: dt.BOOLEAN},
 		boton: {type: dt.INTEGER},
+		loginNeces: {type: dt.BOOLEAN},
+		caps: {type: dt.BOOLEAN},
 		activo: {type: dt.BOOLEAN},
 		ayuda: {type: dt.STRING(60)},
 	};

@@ -39,117 +39,43 @@ module.exports = {
 		},
 	},
 	resultados: {
-		obtieneProds: async function (configCons) {
-			// Variables
-			const {entidad, opcion} = configCons;
-			const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-			const include = opcion.codigo != "fechaDelAno_id" ? variables.asocs.rclvs : "";
-			let productos = [];
-			let resultados = [];
-
-			// Para la opción 'fechaDelAno_id' o layout 'Listados por', agrega la entidad 'capitulos'
-			let entsProd = ["peliculas", "colecciones"];
-			if (["fechaDelAno_id", "calificacion", "misCalificadas"].includes(opcion.codigo) || entidad != "productos")
-				entsProd.push("capitulos");
-
-			// Condiciones
-			const prefs = this.prefs.prods(configCons);
-			let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
-			if (["calificacion", "misCalificadas"].includes(opcion.codigo))
-				condiciones = {...condiciones, calificacion: {[Op.ne]: null}}; // Para la opción 'calificación', agrega pautas en las condiciones
-			if (campo_id) condiciones = {...condiciones, [campo_id]: {[Op.ne]: 1}}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
-
-			// Obtiene los productos
-			for (let entProd of entsProd)
-				productos.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
-						n.map((m) => ({...m, entidad: entProd}))
-					)
-				);
-			await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
-
-			// Aplica otros filtros
-			if (resultados.length) resultados = this.prefs.otrosFiltros({resultados, configCons});
-
-			// Fin
-			return resultados;
-		},
-		obtieneRclvs: async function (configCons) {
-			// Interrumpe la función
-			const {entidad} = configCons;
-			if (entidad == "productos") return null;
-
-			// Obtiene los include
-			let include = [...variables.entidades.prods, "fechaDelAno"];
-			if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
-			if (entidad == "personajes") include.push("rolIglesia", "canon");
-
-			// Obtiene las condiciones
-			const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs.rclvs(configCons) : null;
-			const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
-
-			// Obtiene los RCLVs
-			const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include).then((n) =>
-				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length)
-			);
-
-			// Fin
-			return rclvs;
-		},
-		obtienePorFechaDelAno: async (configCons) => {
-			// Variables
-			const {entidad, dia, mes} = configCons;
-			const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
-			const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
-			const inclStd = ["fechaDelAno"];
-			const inclHec = [...inclStd, "epocaOcurrencia"];
-			const inclPers = [...inclHec, "rolIglesia", "canon"];
-			let registros = [];
-			let rclvs = [];
-
-			// Rutina para obtener los RCLVs
-			for (let entidadRCLV of entidadesRCLV) {
+		obtieneProds: {
+			comun: async function (configCons) {
 				// Variables
-				const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
-				const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
+				const {entidad, opcion} = configCons;
+				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
+				const entsProd = opcion.caps ? ["peliculas", "colecciones", "capitulos"] : ["peliculas", "colecciones"];
+				let productos = [];
+				let resultados = [];
 
-				// Obtiene los registros y les agrega la entidadRCLV
-				registros.push(
-					BD_genericas.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
-						n.map((m) => ({...m, entidad: entidadRCLV}))
-					)
-				);
-			}
-			await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
+				// Includes
+				let include = [];
+				if (!opcion.codigo.startsWith("fechaDelAno")) include.push(...variables.asocs.rclvs);
+				if (opcion.codigo == "anoEstreno") include.push("epocaEstreno");
+				if (opcion.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
 
-			// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
-			const epocaDelAno_id = diaHoy.epocaDelAno_id;
-			if (epocaDelAno_id != 1) {
-				const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
-				rclvs[indice].fechaDelAno_id = diaHoy.id;
-			}
+				// Condiciones
+				const prefs = this.prefs(configCons);
+				let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
+				if (["calificacion", "misCalificadas"].includes(opcion.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
-			// Acciones si hay resultados
-			if (rclvs.length) {
-				// Ordena los registros
-				rclvs
-					.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
-					.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
+				// Obtiene los productos
+				for (let entProd of entsProd)
+					productos.push(
+						BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+							n.map((m) => ({...m, entidad: entProd}))
+						)
+					);
+				await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
-				// Mueve los pasados al futuro
-				const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
-				if (indice > 0) {
-					const pasados = rclvs.slice(0, indice - 1);
-					rclvs.splice(0, indice - 1);
-					rclvs.push(...pasados);
-				}
-			}
+				// Aplica otros filtros
+				if (resultados.length) resultados = this.otrosFiltros({resultados, configCons, campo_id});
 
-			// Fin
-			return rclvs;
-		},
-		prefs: {
-			prods: (configCons) => {
+				// Fin
+				return resultados;
+			},
+			prefs: (configCons) => {
 				// Variables
 				const camposConsultas = variables.camposConsultas;
 				const {idioma} = camposConsultas;
@@ -177,82 +103,142 @@ module.exports = {
 				// Fin
 				return prefs;
 			},
-			otrosFiltros: ({resultados, configCons}) => {
+			otrosFiltros: ({resultados, configCons, campo_id}) => {
 				// Variables
 				const {apMar, rolesIgl, canons, entidad} = configCons;
 
 				// Filtra por apMar
-				if (apMar) {
-					if (apMar == "SI")
-						resultados = resultados.filter(
-							(n) => (n.personaje_id > 10 && n.personaje.apMar_id != 10) || (n.hecho_id > 10 && n.hecho.ama == 1)
-						);
-					if (apMar == "NO")
-						resultados = resultados.filter(
-							(n) => (n.personaje_id > 10 && n.personaje.apMar_id == 10) || (n.hecho_id > 10 && n.hecho.ama == 0)
-						);
-				}
+				if (apMar)
+					resultados =
+						apMar == "SI"
+							? resultados.filter(
+									(n) =>
+										(n.personaje_id > 10 && n.personaje.apMar_id != 10) ||
+										(n.hecho_id > 10 && n.hecho.ama == 1)
+							  )
+							: resultados.filter(
+									(n) =>
+										(n.personaje_id > 10 && n.personaje.apMar_id == 10) ||
+										(n.hecho_id > 10 && n.hecho.ama == 0)
+							  );
 
 				// Filtra por rolesIgl
-				if (rolesIgl) {
-					if (rolesIgl == "RS")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
-						);
-					else
-						resultados = resultados.filter(
-							(n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl)
-						);
-				}
+				if (rolesIgl)
+					resultados =
+						rolesIgl == "RS"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
+							  )
+							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl));
 
 				// Filtra por canons
-				if (canons) {
-					// Santos y Beatos
-					if (canons == "SB")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
-						);
-					// Venerables y Siervos de Dios
-					else if (canons == "VS")
-						resultados = resultados.filter(
-							(n) =>
-								n.personaje_id > 10 &&
-								(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
-						);
-					// Todos (Santos a Siervos)
-					else if (canons == "TD")
-						resultados = resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN"));
-					// Sin proceso de canonización
-					else resultados = resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN"));
-				}
+
+				if (canons)
+					resultados =
+						canons == "SB"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
+							  ) // Santos y Beatos
+							: canons == "VS"
+							? resultados.filter(
+									(n) =>
+										n.personaje_id > 10 &&
+										(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
+							  ) // Venerables y Siervos de Dios
+							: canons == "TD"
+							? resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
+							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
 
 				// Filtra por entidad
-				if (entidad) resultados = resultados.filter((n) => n.entidad == entidad);
+				if (campo_id) resultados = resultados.filter((n) => n.entidad == entidad);
 
 				// Fin
 				return resultados;
 			},
-			rclvs: (configCons) => {
+		},
+		obtieneRclvs: {
+			comun: async function (configCons) {
+				// Interrumpe la función
+				if (configCons.entidad == "productos") return null;
+
 				// Variables
 				const {entidad, opcion} = configCons;
+				let rclvs = [];
+
+				// Obtiene los RCLVs
+				if (entidad == "rclvs") {
+					// Variables para todos los 'rclvs'
+					const entidadesRCLV =
+						opcion.codigo == "anoOcurrencia"
+							? ["personajes", "hechos"] // son las únicas entidades que tienen el año histórico en que ocurrió
+							: [...variables.entidades.rclvs];
+					let aux = [];
+
+					// Rutina por RCLV
+					for (let rclvEnt of entidadesRCLV) {
+						// Obtiene los registros
+						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, configCons);
+						aux.push(
+							BD_genericas.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
+								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
+								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
+						);
+					}
+					await Promise.all(aux).then((n) => n.map((m) => rclvs.push(...m)));
+				}
+
+				// Rutina para un sólo RCLV
+				else {
+					const {condiciones, include} = obtieneIncludeCondics(entidad, configCons);
+					rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
+						.then((n) => n.map((m) => ({...m, entidad})));
+				}
+
+				// Para la opción 'Año de Ocurrencia' estandariza el campo
+				if (opcion.codigo == "anoOcurrencia")
+					rclvs = rclvs.map((n) => ({
+						...n,
+						anoOcurrencia: n.anoNacim ? n.anoNacim : n.anoComienzo ? n.anoComienzo : null,
+					}));
+
+				// Fin
+				return rclvs;
+			},
+			obtieneIncludeCondics: function (entidad, configCons) {
+				// Include
+				let include = [...variables.entidades.prods];
+				if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
+				if (entidad == "personajes") include.push("rolIglesia", "canon");
+
+				// Obtiene las condiciones
+				const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs(entidad, configCons) : null;
+				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
+
+				// Fin
+				return {include, condiciones};
+			},
+			prefs: (entidad, configCons) => {
+				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
+				const {opcion} = configCons;
 				const {apMar, rolesIgl, canons} = variables.camposConsultas;
 				let prefs = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'
-				if (opcion.codigo == "fechaDelAno_id") prefs.fechaDelAno_id = {[Op.lt]: 400};
+				if (opcion.codigo.startsWith("fechaDelAno")) prefs.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
 				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
 
-				// Relación con la Iglesia Católica
-				if (configCons.cfc)
-					entidad == "personajes"
-						? (prefs.rolIglesia_id = configCons.cfc == 1 ? {[Op.notLike]: "NN%"} : {[Op.like]: "NN%"})
-						: (prefs.soloCfc = configCons.cfc);
+				// Relación con la Iglesia Católica - no se usa, sino que se filtra por las películas
+				// if (configCons.cfc&&opcion.codigo!="")
+				// 	entidad == "personajes"
+				// 		? (prefs.categoria_id = configCons.cfc == "1" ? "CFC" : "VPC")
+				// 		: (prefs.soloCfc = configCons.cfc);
 
 				// Aparición mariana
 				if (configCons.apMar) {
@@ -270,6 +256,63 @@ module.exports = {
 
 				// Fin
 				return prefs;
+			},
+			porFechaDelAno: async (configCons) => {
+				// Variables
+				console.log(262,configCons);
+				const {entidad, dia, mes} = configCons;
+				const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
+				const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
+				const inclStd = ["fechaDelAno"];
+				const inclHec = [...inclStd, "epocaOcurrencia"];
+				const inclPers = [...inclHec, "rolIglesia", "canon"];
+				let registros = [];
+				let rclvs = [];
+
+				// Rutina para obtener los RCLVs
+				for (let entidadRCLV of entidadesRCLV) {
+					// Variables
+					const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
+					const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
+
+					// Obtiene los registros y les agrega la entidadRCLV
+					registros.push(
+						BD_genericas.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
+							n.map((m) => ({
+								...m,
+								entidad: entidadRCLV,
+								anoOcurrencia: m.anoNacim ? m.anoNacim : m.anoComienzo ? m.anoComienzo : null,
+							}))
+						)
+					);
+				}
+				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
+
+				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
+				const epocaDelAno_id = diaHoy.epocaDelAno_id;
+				if (epocaDelAno_id != 1) {
+					const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
+					rclvs[indice].fechaDelAno_id = diaHoy.id;
+				}
+
+				// Acciones si hay resultados
+				if (rclvs.length) {
+					// Ordena los registros
+					rclvs
+						.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
+						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
+
+					// Mueve los pasados al futuro
+					const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
+					if (indice > 0) {
+						const pasados = rclvs.slice(0, indice - 1);
+						rclvs.splice(0, indice - 1);
+						rclvs.push(...pasados);
+					}
+				}
+
+				// Fin
+				return rclvs;
 			},
 		},
 		cruce: {
@@ -472,7 +515,7 @@ module.exports = {
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
-					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos las tienen, elimina el rclv
+					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos la tienen, elimina el rclv
 					else if (palabrasClave && !rclv.palsClave && !rclv.productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
@@ -480,7 +523,7 @@ module.exports = {
 						if (palabrasClave && !rclv.palsClave) rclvs[i].productos = rclv.productos.filter((n) => n.palsClave);
 
 						// Ordena los productos por su año de estreno
-						rclvs[i].productos.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+						rclvs[i].productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 						// Deja solamente los campos necesarios
 						rclvs[i].productos = rclvs[i].productos.map((n) => {
@@ -528,6 +571,8 @@ module.exports = {
 					? "calificacion"
 					: opcion.codigo == "misConsultas"
 					? "fechaConsulta"
+					: opcion.codigo.startsWith("fechaDelAno")
+					? "fechaDelAno_id"
 					: opcion.codigo;
 
 				// Ordena
@@ -562,19 +607,12 @@ module.exports = {
 			},
 			rclvs: ({rclvs, opcion, entidad}) => {
 				// Si no corresponde ordenar, interrumpe la función
-				if (rclvs.length <= 1 || opcion.codigo == "fechaDelAno_id") return rclvs;
+				if (rclvs.length <= 1 || opcion.codigo.startsWith("fechaDelAno")) return rclvs;
 
-				// Si la opción es por año, los ordena adicionalmente por su época, porque algunos registros tienen su año en 'null'
-				if (opcion.codigo == "anoHistorico") {
-					const campo = entidad == "personajes" ? "anoNacim" : entidad == "hechos" ? "anoComienzo" : "";
-
-					opcion.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a[campo] < b[campo] ? -1 : 1))
-						: rclvs.sort((a, b) => (a[campo] > b[campo] ? -1 : 1));
-
-					opcion.ascDes == "ASC"
-						? rclvs.sort((a, b) => (a.epocaOcurrencia.orden < b.epocaOcurrencia.orden ? -1 : 1))
-						: rclvs.sort((a, b) => (a.epocaOcurrencia.orden > b.epocaOcurrencia.orden ? -1 : 1));
+				// Particularidad para el Año de Ocurrencia
+				if (opcion.codigo == "anoOcurrencia") {
+					rclvs.sort((a, b) => b.anoOcurrencia - a.anoOcurrencia);
+					rclvs.sort((a, b) => b.epocaOcurrencia.orden - a.epocaOcurrencia.orden);
 				}
 				// En los demás casos, ordena por su campo
 				else
@@ -600,9 +638,9 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		botonesListado: ({resultados, opcionPorEnt, opcion, configCons}) => {
+		botonesListado: ({resultados, opcion, configCons}) => {
 			// Variables
-			const cantResults = opcionPorEnt.cantidad;
+			const cantResults = opcion.cantidad;
 
 			// Botones
 			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
@@ -620,10 +658,11 @@ module.exports = {
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
 					const {entidad, id, nombreCastellano, pppIcono, pppNombre} = prod;
-					const {direccion, anoEstreno, avatar, cfc, calificacion} = prod;
+					const {direccion, anoEstreno, avatar, cfc} = prod;
 					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
-					if (calificacion) datosProd.calificacion = calificacion;
+					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
+					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
@@ -641,10 +680,10 @@ module.exports = {
 						// RCLV nombre
 						if (
 							prod[campo_id] > 10 && // el id es de un registro válido
-							(opcion.codigo != "fechaDelAno_id" || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
+							(!opcion.codigo.includes("fechaDelAno_id") || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
 							datosProd[entidadNombre] = prod[asociacion].nombre;
-							if (opcion.codigo == "fechaDelAno_id" && entRclv != "epocasDelAno")
+							if (opcion.codigo.startsWith("fechaDelAno") && entRclv != "epocasDelAno")
 								datosProd.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
@@ -665,28 +704,22 @@ module.exports = {
 				if (!rclvs.length) return [];
 
 				// Deja solamente los campos necesarios
-				rclvs = rclvs.map((n) => {
+				rclvs = rclvs.map((rclv) => {
 					// Arma el resultado
-					const {entidad, id, nombre, productos, avatar, fechaDelAno_id, fechaDelAno} = n;
+					const {entidad, id, nombre, productos, avatar} = rclv; // necesarios
+					const {fechaDelAno_id, fechaDelAno, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia} = rclv; // eventuales
 					let datosRclv = {entidad, id, nombre, productos, avatar};
-					if (opcion.codigo == "fechaDelAno_id")
-						datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno}; // hace falta la 'fechaDelAno_id' en el Front-End
-					else if (n.apodo) datosRclv.apodo = n.apodo;
+
+					// Casos especiales
+					if (rclv.apodo) datosRclv.apodo = rclv.apodo;
+					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
+					if (epocaOcurrencia)
+						datosRclv = {...datosRclv, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
 
 					// Obtiene campos en función de la entidad
-					if (entidad == "personajes") {
-						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datosRclv.anoNacim = n.anoNacim;
-						if (!n.rolIglesia_id.startsWith("NN")) {
-							datosRclv.rolIglesiaNombre = n.rolIglesia.nombre;
-							if (!n.canon_id.startsWith("NN")) datosRclv.canonNombre = n.canon.nombre;
-						}
-					}
-					if (entidad == "hechos") {
-						datosRclv.epocaOcurrenciaNombre = n.epocaOcurrencia.consulta;
-						datosRclv.epocaOcurrencia_id = n.epocaOcurrencia_id;
-						datosRclv.anoComienzo = n.anoComienzo;
+					if (entidad == "personajes" && !rclv.rolIglesia_id.startsWith("NN")) {
+						datosRclv.rolIglesiaNombre = rclv.rolIglesia.nombre;
+						if (!rclv.canon_id.startsWith("NN")) datosRclv.canonNombre = rclv.canon.nombre;
 					}
 
 					// Fin

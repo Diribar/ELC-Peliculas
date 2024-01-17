@@ -195,59 +195,80 @@ window.addEventListener("load", async () => {
 		},
 		// Otros
 		accionesPorCambioDeVersion: async function () {
-			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
-			(() => {
-				// Variables
-				v.estamosEnEdicNueva = v.versionActual == "edicN";
-				// Rutina para cada campo
-				for (let input of DOM.inputsTodos) {
-					// Reemplaza los valores que no sean el avatar
-					if (input.name != "avatar") {
-						if (input.type != "radio")
-							input.value =
-								version[v.versionActual][input.name] !== undefined &&
-								version[v.versionActual][input.name] !== null
-									? version[v.versionActual][input.name]
-									: "";
-						else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
-					}
-					// Oculta y muestra los avatar que correspondan
-					else
-						DOM.imgsAvatar.forEach((imgAvatar, indice) => {
-							v.versiones[indice] == v.versionActual
-								? imgAvatar.classList.remove("ocultar")
-								: imgAvatar.classList.add("ocultar");
-						});
-					// Impide/permite que el usuario haga cambios según la versión
-					input.disabled = !v.estamosEnEdicNueva && !input.checked;
-					if (input.name == "paises_id") {
-						DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
-						DOM.paisesSelect.disabled = !v.estamosEnEdicNueva;
-					}
+			// Funciones
+			this.reemplazaInputs(); // Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
+			this.actualizaPaisesNombre(); // Actualiza los nombres de país
+			this.muestraOcultaIconosRclv(); // Muestra/oculta los íconos de RCLV, ayuda y error
+			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
+			await this.averiguaMuestraLosErrores(); // Muestra los errores
+
+			// Fin
+			return;
+		},
+		reemplazaInputs: () => {
+			// Variables
+			v.estamosEnEdicNueva = v.versionActual == "edicN";
+
+			// Rutina para cada campo
+			for (let input of DOM.inputsTodos) {
+				// Reemplaza los valores que no sean el avatar
+				if (input.name != "avatar") {
+					if (input.type != "radio")
+						input.value =
+							version[v.versionActual][input.name] !== undefined && version[v.versionActual][input.name] !== null
+								? version[v.versionActual][input.name]
+								: "";
+					else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
 				}
-				// Fin
-				return;
-			})();
-			// Actualiza los nombres de país
-			this.actualizaPaisesNombre();
-			// Muestra/oculta los íconos de RCLV, ayuda y error
-			(() => {
-				// Muestra/oculta los íconos de RCLV
-				for (let link of DOM.linksRCLV)
-					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
-				// Muestra/oculta los íconos de ayuda
-				for (let iconoAyuda of DOM.iconosAyuda)
-					v.estamosEnEdicNueva ? iconoAyuda.classList.remove("inactivo") : iconoAyuda.classList.add("inactivo");
-				// Muestra/oculta los íconos de error
-				for (let iconoError of DOM.iconosError)
-					v.estamosEnEdicNueva ? iconoError.classList.remove("inactivo") : iconoError.classList.add("inactivo");
-				// Fin
-				return;
-			})();
-			// Señala las diferencias con la versión original
-			this.senalaLasDiferencias();
-			// Muestra los errores
-			await this.averiguaMuestraLosErrores();
+
+				// Oculta y muestra los avatar que correspondan
+				else
+					DOM.imgsAvatar.forEach((imgAvatar, indice) => {
+						v.versiones[indice] == v.versionActual
+							? imgAvatar.classList.remove("ocultar")
+							: imgAvatar.classList.add("ocultar");
+					});
+
+				// Impide/permite que el usuario haga cambios según la versión
+				input.disabled = !v.estamosEnEdicNueva && !input.checked;
+				if (input.name == "paises_id") {
+					DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
+					DOM.paisesSelect.disabled = !v.estamosEnEdicNueva;
+				}
+			}
+
+			// Fin
+			return;
+		},
+		actualizaPaisesNombre: () => {
+			// Actualiza los países a mostrar
+			let paisesNombre = [];
+			// Convertir 'IDs' en 'nombres'
+			if (DOM.paisesID.value) {
+				let paises_idArray = DOM.paisesID.value.split(" ");
+				paises_idArray.forEach((pais_id) => {
+					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
+					if (paisNombre) paisesNombre.push(paisNombre);
+				});
+			}
+			// Convertir array en string
+			DOM.paisesMostrar.value = paisesNombre.join(", ");
+			// Fin
+			return;
+		},
+		muestraOcultaIconosRclv: () => {
+			// Muestra/oculta los íconos de RCLV
+			for (let link of DOM.linksRCLV)
+				v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+
+			// Muestra/oculta los íconos de ayuda
+			for (let iconoAyuda of DOM.iconosAyuda)
+				v.estamosEnEdicNueva ? iconoAyuda.classList.remove("inactivo") : iconoAyuda.classList.add("inactivo");
+
+			// Muestra/oculta los íconos de error
+			for (let iconoError of DOM.iconosError)
+				v.estamosEnEdicNueva ? iconoError.classList.remove("inactivo") : iconoError.classList.add("inactivo");
+
 			// Fin
 			return;
 		},
@@ -267,22 +288,6 @@ window.addEventListener("load", async () => {
 			if (agregar) aux.push(paisID); // Agrega el país
 			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
 			DOM.paisesID.value = aux.join(" "); // Actualiza el input
-			// Fin
-			return;
-		},
-		actualizaPaisesNombre: () => {
-			// Actualiza los países a mostrar
-			let paisesNombre = [];
-			// Convertir 'IDs' en 'nombres'
-			if (DOM.paisesID.value) {
-				let paises_idArray = DOM.paisesID.value.split(" ");
-				paises_idArray.forEach((pais_id) => {
-					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
-					if (paisNombre) paisesNombre.push(paisNombre);
-				});
-			}
-			// Convertir array en string
-			DOM.paisesMostrar.value = paisesNombre.join(", ");
 			// Fin
 			return;
 		},

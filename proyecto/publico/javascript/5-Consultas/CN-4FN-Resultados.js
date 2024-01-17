@@ -31,10 +31,9 @@ let resultados = {
 
 		// Busca la información en el BE
 		v.ahora = new Date();
-		const datos =
-			v.opcionBD.codigo.startsWith("fechaDelAno")
-				? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-				: configCons;
+		const datos = v.opcionBD.codigo.startsWith("fechaDelAno")
+			? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
+			: configCons;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
@@ -44,7 +43,6 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		console.log(v.opcionBD.boton);
 		if (v.resultados && !v.opcionBD.boton) this.contador();
 
 		// Fin
@@ -58,17 +56,10 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.opcionPorEntBD.boton) return;
-			// Contador para 'listado-altaRevisadaEn'
-			else if (v.opcionBD.codigo == "altaRevisadaEn") {
-				// Variables
-				const parcial = Math.min(v.cantListadoBreve, total);
+			if (v.opcionBD.boton) return;
 
-				// Actualiza el contador
-				DOM.contadorDeProds.innerHTML = parcial;
-			}
 			// Contador para 'Todos los productos'
-			else DOM.contadorDeProds.innerHTML = total;
+			DOM.contadorDeProds.innerHTML = total;
 		}
 		// Contador para RCLVs
 		else {
@@ -105,7 +96,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.opcionPorEntBD.boton ? this.botones() : this.listados();
+			v.opcionBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
@@ -149,19 +140,16 @@ let resultados = {
 		listados: () => {
 			// Variables
 			v.productos = [];
-			let registroAnt = {};
+			v.registroAnt = {};
 
 			// Rutina por registro
 			v.resultados.forEach((registro, indice) => {
-				// Para algunas opciones, muestra sólo las primeras
-				if (["altaRevisadaEn", "calificacion"].includes(v.opcionBD.codigo) && indice >= v.cantListadoBreve) return;
-
 				// Acumula los productos
 				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
 
 				// Averigua si hay un cambio de agrupamiento
-				const titulo = auxiliares.titulo(registro, registroAnt, indice);
-				registroAnt = registro;
+				const titulo = auxiliares.titulo(registro, indice);
+				v.registroAnt = registro;
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
@@ -330,7 +318,7 @@ let auxiliares = {
 			if (rclv.canonNombre && rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += " - ";
 			if (rclv.rolIglesiaNombre) auxSup.canonRol.innerHTML += rclv.rolIglesiaNombre;
 		}
-		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno.nombre;
+		auxSup.fechaDelAno.innerHTML = "Fecha: " + rclv.fechaDelAno;
 
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
@@ -339,21 +327,21 @@ let auxiliares = {
 		informacion.appendChild(infoInf);
 
 		// Crea nombreCastellano, anoEstreno, direccion, ppp
-		elementos = ["epocaOcurrenciaNombre", "anoNacim", "anoComienzo", "productos"];
+		elementos = ["epocaOcurrencia", "anoOcurrencia", "productos"];
 		let auxInf = {};
 		for (let elemento of elementos) {
 			if (!rclv[elemento]) continue;
-			if (elemento == "epocaOcurrenciaNombre" && (rclv.anoNacim || rclv.anoComienzo)) continue;
+			if (elemento == "epocaOcurrencia" && rclv.anoOcurrencia) continue; // si existe el año de ocurrencia, omite la época de ocurrencia
 			auxInf[elemento] = document.createElement("p");
 			auxInf[elemento].id = elemento;
 			auxInf[elemento].className = "interlineadoChico";
 			infoInf.appendChild(auxInf[elemento]);
 		}
 
-		// Otras particularidades
-		if(auxInf.epocaOcurrenciaNombre) auxInf.epocaOcurrenciaNombre.innerHTML = rclv.epocaOcurrenciaNombre;
-		if (rclv.anoNacim) auxInf.anoNacim.innerHTML = "Año de nacim.: " + rclv.anoNacim;
-		if (rclv.anoComienzo) auxInf.anoComienzo.innerHTML = "Año de comienzo: " + rclv.anoComienzo;
+		// Contenido escrito
+		if (auxInf.epocaOcurrencia) auxInf.epocaOcurrencia.innerHTML = rclv.epocaOcurrencia;
+		if (rclv.anoOcurrencia)
+			auxInf.anoOcurrencia.innerHTML = (rclv.entidad == "personajes" ? "nacim.: " : "comienzo: ") + rclv.anoOcurrencia;
 		auxInf.productos.innerHTML = "Películas: " + rclv.productos.length;
 
 		// Fin
@@ -380,15 +368,15 @@ let auxiliares = {
 		// Fin
 		return false;
 	},
-	titulo: (registroAct, registroAnt, indice) => {
+	titulo: (registroAct, indice) => {
 		// Variables
 		const opcion = v.opcionBD.codigo;
 		let titulo;
 
-		// Casos
-		if (!titulo && opcion == "fechaDelAno_id") {
+		// Casos particulares
+		if (opcion.startsWith("fechaDelAno")) {
 			// Variables
-			const diaAnt = registroAnt.fechaDelAno_id;
+			const diaAnt = v.registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
 
 			// Resultado
@@ -406,9 +394,9 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-		if (!titulo && opcion == "nombre") {
+		if (opcion == "nombre") {
 			// Variables
-			const nombreAnt = registroAnt.nombre ? registroAnt.nombre : registroAnt.nombreCastellano;
+			const nombreAnt = v.registroAnt.nombre ? v.registroAnt.nombre : v.registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
 			const prefijo = "Rango ";
 
@@ -425,23 +413,22 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo = prefijo + titulo;
 		}
-		if (!titulo && opcion == "anoHistorico") {
+		if (opcion == "anoOcurrencia") {
 			// Variables
-			const epocaAnt = registroAnt.epocaOcurrencia_id;
+			const epocaAnt = v.registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
-			const anoAnt = registroAnt.anoNacim ? registroAnt.anoNacim : registroAnt.anoComienzo;
-			const anoActual = registroAct.anoNacim ? registroAct.anoNacim : registroAct.anoComienzo;
+			const anoAnt = v.registroAnt.anoOcurrencia;
+			const anoActual = registroAct.anoOcurrencia;
 
 			// Resultado
-			if (epocaActual != "pst" && epocaAnt != epocaActual) titulo = registroAct.epocaOcurrenciaNombre;
 			if (epocaActual == "pst") {
 				// Variables
-				const mayor1800 = "(año 1.801 en adelante)";
-				const mayor1000 = "(años 1.001 al 1.800)";
-				const menorIgual1000 = "(años 34 al 1.000)";
+				const mayor1800 = "Año 1.801 en adelante";
+				const mayor1000 = "Años 1.001 al 1.800";
+				const menorIgual1000 = "Años 34 al 1.000";
 
 				titulo =
-					!anoAnt || anoAnt < anoActual //Ascendente
+					!anoAnt || anoAnt < anoActual // ascendente
 						? (!anoAnt || anoAnt <= 1800) && anoActual > 1800
 							? mayor1800
 							: (!anoAnt || anoAnt <= 1000) && anoActual > 1000
@@ -449,37 +436,39 @@ let auxiliares = {
 							: !anoAnt
 							? menorIgual1000
 							: ""
-						: //Descendente
-						anoActual <= 1000 && anoAnt > 1000
+						: anoActual <= 1000 && anoAnt > 1000 // descendente
 						? menorIgual1000
 						: anoActual <= 1800 && anoAnt > 1800
 						? mayor1000
 						: "";
-
-				// Título para la vista
-				if (titulo) titulo = registroAct.epocaOcurrenciaNombre + " " + titulo;
 			}
+			// Épocas anteriores
+			else if (epocaAnt != epocaActual) titulo = registroAct.epocaOcurrencia;
 		}
-		if (!titulo && opcion == "altaRevisadaEn") {
-			titulo = !indice ? "Últimas ingresadas" : "";
-		}
-		if (!titulo && opcion == "misPrefs") {
+
+		// Cambio de grupo
+		if (opcion == "misPrefs") {
 			// Variables
-			const nombreAnt = registroAnt.pppNombre;
+			const nombreAnt = v.registroAnt.pppNombre;
 			const nombreActual = registroAct.pppNombre;
 
 			// Resultado
 			titulo = nombreAnt != nombreActual ? nombreActual : "";
 		}
-		if (!titulo && opcion == "calificacion") {
-			titulo = !indice ? "Mejor calificadas" : "";
+		if (opcion == "anoEstreno") {
+			// Variables
+			const nombreAnt = v.registroAnt.epocaEstreno;
+			const nombreActual = registroAct.epocaEstreno;
+
+			// Resultado
+			titulo = nombreAnt != nombreActual ? nombreActual : "";
 		}
-		if (!titulo && opcion == "misCalificadas") {
-			titulo = !indice ? "Mis calificadas" : "";
-		}
-		if (!titulo && opcion == "misConsultas") {
-			titulo = !indice ? "Mis consultas" : "";
-		}
+
+		// Una sola tabla
+		if (opcion == "calificacion") titulo = !indice ? "Mejor calificadas" : "";
+		if (opcion == "misCalificadas") titulo = !indice ? "Mis calificadas" : "";
+		if (opcion == "misConsultas") titulo = !indice ? "Mis consultas" : "";
+		if (opcion == "altaRevisadaEn") titulo = !indice ? "Últimas ingresadas" : "";
 
 		// Fin
 		return titulo;
@@ -577,12 +566,7 @@ let creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
 		const cantProds = rclv.productos.length;
-		const VF_apodo = !!rclv.apodo;
 		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
-		const VF_epoca =
-			!v.opcionBD.codigo.startsWith("ano") && !rclv.anoNacim && !rclv.anoComienzo && rclv.epocaOcurrenciaNombre;
-		const VF_canon = rclv.canonNombre;
-		const VF_rolIglesia = rclv.rolIglesiaNombre;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id;
@@ -597,17 +581,21 @@ let creaUnaCelda = {
 		primeraLinea.innerHTML = rclv.nombre; // Nombre
 		const span = document.createElement("span");
 
-		if (VF_apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
-		else if (VF_diaDelAno) span.innerHTML += " (" + rclv.fechaDelAno.nombre + ")"; // Día del Año
+		if (rclv.apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 
-		// Genera la información - 2a línea
+		// Genera la información - 2a línea - Fechas
 		const segundaLinea = document.createElement("p");
-		if (VF_epoca) segundaLinea.innerHTML += rclv.epocaOcurrenciaNombre;
-		segundaLinea.innerHTML += rclv.anoNacim ? rclv.anoNacim : rclv.anoComienzo ? rclv.anoComienzo : ""; // Año de Nacimiento o Comienzo
-		if (VF_canon) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.canonNombre; // Proceso de canonización
-		if (VF_rolIglesia) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
+		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
+		else if (rclv.anoOcurrencia)
+			segundaLinea.innerHTML +=
+				(rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia; // Año de Nacimiento o Comienzo
+		else if (rclv.epocaOcurrencia) segundaLinea.innerHTML += rclv.epocaOcurrencia;
+
+		// Genera la información - 2a línea - Otros datos del personaje
+		if (rclv.canonNombre) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.canonNombre; // Proceso de canonización
+		if (rclv.rolIglesiaNombre) segundaLinea.innerHTML += (segundaLinea.innerHTML ? " - " : "") + rclv.rolIglesiaNombre; // Rol en la Iglesia
 		anchor.appendChild(segundaLinea);
 
 		// Fin
@@ -623,7 +611,7 @@ let creaUnaCelda = {
 		let span;
 
 		// Obtiene el rclv
-		const agregarRCLV = v.entidad == "productos" && !v.opcionPorEntBD.boton;
+		const agregarRCLV = v.entidad == "productos";
 		if (agregarRCLV) {
 			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {

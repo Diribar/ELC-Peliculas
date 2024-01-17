@@ -6,8 +6,7 @@ module.exports = async (req, res, next) => {
 	if (!usuario_id) return next();
 
 	// Otras variables
-	const entidad = req.query.entidad;
-	const entidad_id = req.query.id;
+	const {entidad, id: entidad_id} = req.query;
 	const condicion = {usuario_id, entidad, entidad_id};
 
 	// Elimina el registro que tenga el usuario para el producto
