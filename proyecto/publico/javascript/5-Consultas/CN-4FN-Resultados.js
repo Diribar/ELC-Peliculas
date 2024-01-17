@@ -228,7 +228,9 @@ let auxiliares = {
 		const avatar = document.createElement("img");
 		const carpeta = esUnProducto ? "2-Productos" : "3-RCLVs";
 		avatar.className = "imagenChica";
-		avatar.src = (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar;
+		avatar.src = registro.avatar
+			? (!registro.avatar.includes("/") ? "/Externa/" + carpeta + "/Final/" : "") + registro.avatar
+			: "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 		avatar.alt = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		avatar.title = esUnProducto ? registro.nombreCastellano : registro.nombre;
 		button.appendChild(avatar);
@@ -247,7 +249,7 @@ let auxiliares = {
 		return li;
 	},
 	datosProducto: function ({informacion, producto}) {
-		// Crea infoPeli
+		// Crea la infoSup
 		const infoSup = document.createElement("div");
 		infoSup.id = "infoSup";
 		infoSup.className = "infoFormato";

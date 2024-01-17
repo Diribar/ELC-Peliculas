@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 16/ene",
-	"HoraUTC": "14:35",
+	"FechaUTC": "Mié. 17/ene",
+	"HoraUTC": "14:56",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 15/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"14-ene-24": {"titulo": "ELC - Películas"},
 		"15-ene-24": {"titulo": "ELC - Películas"},
 		"16-ene-24": {"titulo": "ELC - Películas"},
 		"17-ene-24": {"titulo": "San Antonio abad", "entidad": "personajes", "id": 209},
-		"18-ene-24": {"titulo": "ELC - Películas"}
+		"18-ene-24": {"titulo": "ELC - Películas"},
+		"19-ene-24": {"titulo": "ELC - Películas"}
 	}
 }

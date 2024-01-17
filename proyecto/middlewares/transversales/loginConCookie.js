@@ -40,11 +40,11 @@ module.exports = async (req, res, next) => {
 		}
 
 		// Obtiene las novedades
-		let novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
+		const novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
 		for (let novedad of novedades)
 			for (let rol of roles)
 				if (novedad[rol]) {
-					mensajes.push(comp.fechaHora.diaMesAno(novedad.fecha) + " - " + novedad.comentario);
+					mensajes.push(novedad.comentario);
 					break;
 				}
 

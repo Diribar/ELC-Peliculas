@@ -130,7 +130,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Preferencia por producto
-		if (nombre == "ppp" && (padre.id == "infoPeli" || padre.tagName == "TD")) {
+		if (nombre == "ppp" && (padre.id == "infoSup" || padre.tagName == "TD")) {
 			e.preventDefault(); // Previene el efecto del anchor
 			await cambiosEnBD.ppp(elemento); // Actualiza la 'ppp'
 			return;
