@@ -727,6 +727,7 @@ let nombres = async (reg, familia) => {
 };
 let obtieneLosRCLV = async (fechaDelAno) => {
 	// Variables
+	const include = variables.entidades.prods;
 	let rclvs = [];
 	let resultados = [];
 
@@ -739,16 +740,26 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		const condicion = {fechaDelAno_id: fechaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 
 		// Obtiene los RCLVs
-		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
-		rclvs.push(registros.then((n) => n.map((m) => ({...m, entidad}))));
+		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
+			n.map((m) => {
+				if (m.peliculas.length || m.colecciones.length || m.capitulos.length) m.entidad = entidad;
+				return m;
+			})
+		);
+		rclvs.push(registros);
 	}
 
 	// Busca el registro de 'epocaDelAno'
 	if (fechaDelAno.epocaDelAno_id != 1) {
-		const condicion = {id: fechaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
+		const condicion = {id: fechaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 		const entidad = "epocasDelAno";
-		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
-		rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
+		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
+			n.map((m) => {
+				if (m.peliculas.length || m.colecciones.length || m.capitulos.length) m.entidad = entidad;
+				return m;
+			})
+		);
+		rclvs.push(registros);
 	}
 
 	// Espera y consolida la informacion
