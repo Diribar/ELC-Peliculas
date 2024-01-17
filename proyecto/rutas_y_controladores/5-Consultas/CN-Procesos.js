@@ -39,43 +39,6 @@ module.exports = {
 		},
 	},
 	resultados: {
-		misConsultas: async (usuario_id, pppRegistros) => {
-			if (!usuario_id) return [];
-
-			// Obtiene los registros del usuario
-			let registros = await BD_genericas.obtieneTodosPorCondicion("misConsultas", {usuario_id});
-			if (!registros.length) return [];
-			else registros.reverse();
-
-			// Deja solamente los últimos 20 registros
-			if (registros.length > 20) registros.splice(20);
-
-			// Obtiene los productos
-			const include = variables.asocs.rclvs;
-			let prods = [];
-			for (let registro of registros)
-				prods.push(
-					BD_genericas.obtienePorIdConInclude(registro.entidad, registro.entidad_id, include).then((n) => ({
-						...n,
-						entidad: registro.entidad,
-					}))
-				);
-			prods = await Promise.all(prods);
-			[pppRegistros] = await Promise.all([pppRegistros]);
-
-			// Rutina por producto
-			for (let prod of prods) {
-				// Averigua si el producto tiene un registro de preferencia del usuario
-				const pppRegistro = pppRegistros.find((n) => n.entidad == prod.entidad && n.entidad_id == prod.id);
-
-				// Le agrega a los productos la ppp del usuario
-				prod.pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPref.icono;
-				prod.pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPref.nombre;
-			}
-
-			// Fin
-			return prods;
-		},
 		obtieneProds: async function ({entidad, opcion, configCons}) {
 			// Variables
 			const campo_id = entidad != "productos" ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
@@ -431,10 +394,11 @@ module.exports = {
 				return prodsCruzadosConRCLVs;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, opcion}) => {
+				// Interrupciones de la función
 				if (opcion.codigo != "misCalificadas") return prods;
 				if (!prods.length || !usuario_id) return [];
 
-				// Variables
+				// Obtiene los registros del usuario
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
 				if (!misCalificadas.length) return [];
 
@@ -443,6 +407,26 @@ module.exports = {
 					const calificacion = misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
 					if (!calificacion) prods.splice(i, 1);
 					else prods[i].calificacion = calificacion.resultado;
+				}
+
+				// Fin
+				return prods;
+			},
+			prodsConMisConsultas: async ({prods, usuario_id, opcion}) => {
+				// Interrupciones de la función
+				if (opcion.codigo != "misConsultas") return prods;
+				if (!prods.length || !usuario_id) return [];
+
+				// Obtiene los registros del usuario
+				let misConsultas = await BD_genericas.obtieneTodosPorCondicion("misConsultas", {usuario_id});
+				if (!misConsultas.length) return [];
+				misConsultas.reverse();
+
+				// Elimina los productos no consultados
+				for (let i = prods.length - 1; i >= 0; i--) {
+					const consulta = misConsultas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					if (!consulta) prods.splice(i, 1);
+					else prods[i].fechaConsulta = consulta.visitadaEn;
 				}
 
 				// Fin
@@ -556,6 +540,8 @@ module.exports = {
 					? "nombreCastellano"
 					: opcion.codigo == "misCalificadas"
 					? "calificacion"
+					: opcion.codigo == "misConsultas"
+					? "fechaConsulta"
 					: opcion.codigo;
 
 				// Ordena

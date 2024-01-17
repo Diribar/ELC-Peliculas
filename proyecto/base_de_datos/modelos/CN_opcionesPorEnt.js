@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		opcion_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
 		boton: {type: dt.INTEGER},
+		cantidad: {type: dt.INTEGER},
 		opcionDefault: {type: dt.BOOLEAN},
 		activo: {type: dt.BOOLEAN},
 		ayuda: {type: dt.STRING(60)},
