@@ -126,7 +126,6 @@ module.exports = {
 							: resultados.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
 
 				// Filtra por canons
-				//console.log(137,n);
 				if (canons)
 					resultados =
 						canons == "SB"
