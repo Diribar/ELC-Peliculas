@@ -55,8 +55,8 @@ module.exports = {
 			// Obtiene los registros que cumplen las condiciones
 			aux.push(
 				dato.original
-					? BD_especificas.quickSearchRegistros(condiciones, dato)
-					: BD_especificas.quickSearchEdiciones(condiciones, dato)
+					? BD_especificas.quickSearch.registros(condiciones, dato)
+					: BD_especificas.quickSearch.ediciones(condiciones, dato)
 			);
 		}
 		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
@@ -71,7 +71,7 @@ module.exports = {
 			for (let i = resultados.length - 2; i >= 0; i--) {
 				const {entidad: entidad1, id: id1, nombre: nombre1, anoEstreno: anoEstreno1} = resultados[i];
 				const {entidad: entidad2, id: id2, nombre: nombre2, anoEstreno: anoEstreno2} = resultados[i + 1];
-				if ((entidad1 == entidad2 && id1 == id2 && nombre1 == nombre2, anoEstreno1 == anoEstreno2))
+				if (entidad1 == entidad2 && id1 == id2 && nombre1 == nombre2 && anoEstreno1 == anoEstreno2)
 					resultados.splice(i + 1, 1);
 			}
 		}
