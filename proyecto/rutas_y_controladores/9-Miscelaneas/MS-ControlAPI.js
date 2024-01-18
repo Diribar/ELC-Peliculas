@@ -26,9 +26,7 @@ module.exports = {
 		const palabras = req.query.palabras;
 		const userID = req.session.usuario ? req.session.usuario.id : 0;
 		const entidadesProd = variables.entidades.prods;
-		const asocsProds = variables.asocs.prods;
 		const entidadesRCLV = variables.entidades.rclvs;
-		const asocsRCLVs = variables.asocs.rclvs;
 		const camposProds = ["nombreCastellano", "nombreOriginal"];
 		const camposPers = ["nombre", "apodo"];
 		const original = true;
@@ -37,21 +35,17 @@ module.exports = {
 		let resultados = [];
 
 		// Armado de la variable 'datos' para productos originales
-		entidadesProd.forEach((entidad, i) => {
-			const asoc = asocsProds[i];
-			datos.push({familia: "producto", entidad, asoc, campos: camposProds, original});
-		});
+		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos: camposProds, original});
 
 		// Armado de la variable 'datos' para rclvs originales
-		entidadesRCLV.forEach((entidad, i) => {
-			const asoc = asocsRCLVs[i];
+		for (let entidad of entidadesRCLV) {
 			const campos = entidad == "personajes" ? camposPers : ["nombre"];
-			datos.push({familia: "rclv", entidad, asoc, campos, original});
-		});
+			datos.push({familia: "rclv", entidad, campos, original});
+		}
 
 		// Armado de la variable 'datos' para ediciones
-		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds, include: asocsProds}); // productos
-		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers, include: asocsRCLVs}); // rclvs
+		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds, include: variables.asocs.prods}); // productos
+		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers, include: variables.asocs.rclvs}); // rclvs
 
 		// Rutina
 		for (let dato of datos) {
@@ -62,7 +56,7 @@ module.exports = {
 			aux.push(
 				dato.original
 					? BD_especificas.quickSearchRegistros(condiciones, dato)
-					: BD_especificas.quickSearchEdiciones(condiciones, dato, dato.include)
+					: BD_especificas.quickSearchEdiciones(condiciones, dato)
 			);
 		}
 		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
