@@ -17,7 +17,8 @@
 		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
 		"EliminaCalifsSinPPP": "SI",
-		"LoginsAcums": "SI"
+		"LoginsAcums": "SI",
+		"IDdeTablas": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
@@ -26,8 +27,7 @@
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
-		"EliminaHistorialDeRegsEliminados": "SI",
-		"IDdeTablas": "SI"
+		"EliminaHistorialDeRegsEliminados": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
