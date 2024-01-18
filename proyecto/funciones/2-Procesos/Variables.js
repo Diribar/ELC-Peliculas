@@ -51,7 +51,7 @@ module.exports = {
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
 				{id: "6", nombre: "Peliculas que me interesan"},
-				{id: "todos", nombre: "Todas las preferencias"},
+				{id: "todos", nombre: "Todas las preferencias", sinCondics: true},
 			],
 		},
 		idioma: {
@@ -523,7 +523,7 @@ module.exports = {
 	selectVacio: "Necesitamos que elijas una opción",
 	radioVacio: "Necesitamos que elijas una opción",
 	urlDesconocida: "No tenemos esa dirección de url en nuestro sistema",
-	rclvSinElegir:"Necesitamos que respondas alguna de las opciones",
+	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
