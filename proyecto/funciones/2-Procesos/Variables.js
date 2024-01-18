@@ -51,7 +51,7 @@ module.exports = {
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
 				{id: "6", nombre: "Peliculas que me interesan"},
-				{id: "todos", nombre: "Todas las preferencias", sinCondics: true},
+				{id: "todos", nombre: "Todas las preferencias"},
 			],
 		},
 		idioma: {
