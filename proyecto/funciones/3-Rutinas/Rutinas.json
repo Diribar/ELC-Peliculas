@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 17/ene",
-	"HoraUTC": "15:29",
+	"FechaUTC": "Jue. 18/ene",
+	"HoraUTC": "11:34",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 15/ene",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-ene-24": {"titulo": "ELC - Películas"},
 		"16-ene-24": {"titulo": "ELC - Películas"},
 		"17-ene-24": {"titulo": "San Antonio abad"},
 		"18-ene-24": {"titulo": "ELC - Películas"},
-		"19-ene-24": {"titulo": "ELC - Películas"}
+		"19-ene-24": {"titulo": "ELC - Películas"},
+		"20-ene-24": {"titulo": "ELC - Películas"}
 	}
 }
