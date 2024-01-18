@@ -23,7 +23,8 @@ window.addEventListener("load", () => {
 			// Crea las filas y celdas
 			for (let registro of registros) {
 				// Variables
-				const {familia, entidad, id, nombre, anoEstreno} = registro;
+				const {familia, entidad, id, anoEstreno} = registro;
+				let {nombre} = registro;
 				const entidadCorta = entidad.slice(0, -1);
 
 				// Crea una fila y el anchor del registro
