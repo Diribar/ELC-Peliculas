@@ -13,7 +13,7 @@
 /* Ayuda y Actualizar */
 #tituloPrincipal #ayudaOpciones {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
 #tituloPrincipal #ayudaOpciones i.ayudaClick {font-size: 1.2rem;}
-#tituloPrincipal #ayudaOpciones ul li span {color: var(--amarillo-claro); text-decoration: underline; font-variant: small-caps}
+#tituloPrincipal #ayudaOpciones ul li span {color: var(--amarillo-claro); font-variant: small-caps}
 
 /* Contador */
 #derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
