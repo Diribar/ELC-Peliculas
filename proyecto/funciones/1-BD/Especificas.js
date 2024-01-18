@@ -33,10 +33,8 @@ module.exports = {
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
-					asoc: dato.asoc,
-					// Específicos para PA-Desambiguar
-					avatar: m.avatar,
-					nombreOriginal: m.nombreOriginal,
+					avatar: m.avatar, // específicos para PA-Desambiguar
+					nombreOriginal: m.nombreOriginal, // específicos para PA-Desambiguar
 				}))
 			);
 	},
@@ -53,7 +51,6 @@ module.exports = {
 						id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
 						anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
 						nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
-						asoc,
 						familia: dato.familia,
 					};
 				})
