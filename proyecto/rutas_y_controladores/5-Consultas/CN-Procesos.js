@@ -53,6 +53,8 @@ module.exports = {
 				if (!opcion.codigo.startsWith("fechaDelAno")) include.push(...variables.asocs.rclvs);
 				if (opcion.codigo == "anoEstreno") include.push("epocaEstreno");
 				if (opcion.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
+				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(configCons).includes(n))) include.push("personaje");
+				if (opcion.codigo == "apMar") include.push("hecho");
 
 				// Condiciones
 				const prefs = this.prefs(configCons);
