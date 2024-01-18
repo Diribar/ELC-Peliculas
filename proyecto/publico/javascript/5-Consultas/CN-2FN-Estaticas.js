@@ -223,7 +223,7 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		// Variables
 		let campos = {...configCons, id: v.configCons_id};
-		if (!v.opcionBD.entidades.length) delete campos.entidad; // si la opción sólo tiene una entidad, elimina el campo
+		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda los cambios
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
