@@ -150,12 +150,17 @@ module.exports = {
 					: this.comun(configCons);
 			},
 			comun: async function (configCons) {
-				// Interrumpe la función
-				if (configCons.entidad == "productos") return null;
-
 				// Variables
-				const {entidad, opcion} = configCons;
+				const {rolesIgl, canons, opcion} = configCons;
+				let {entidad} = configCons;
 				let rclvs = [];
+
+				// Interrumpe la función o cambia la entidad
+				if (rolesIgl || canons) {
+					if (entidad == "rclvs") entidad = "personajes";
+					if (entidad != "personajes") return [];
+				}
+				if (entidad == "productos") return null;
 
 				// Obtiene los RCLVs
 				if (entidad == "rclvs") {
