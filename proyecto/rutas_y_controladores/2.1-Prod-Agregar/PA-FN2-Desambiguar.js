@@ -204,7 +204,7 @@ module.exports = {
 			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await BD_especificas.quickSearchRegistros(condiciones, datos);
+			const resultadoPorEntidad = await BD_especificas.quickSearch.registros(condiciones, datos);
 			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
 		}
 
