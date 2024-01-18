@@ -175,7 +175,7 @@ let actualizaConfigCons = {
 	canons: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			["productos", "personajes"].includes(v.entidad) && // la entidad es 'productos' o 'personajes'
+			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
@@ -189,7 +189,7 @@ let actualizaConfigCons = {
 	rolesIglesia: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			["productos", "personajes"].includes(v.entidad) && // la entidad es 'productos' o 'personajes'
+			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
 			configCons.bhr !== "0" && // no se eligió 'sin bhr'
 			configCons.cfc !== "0"; // no se eligió 'sin cfc'
 
