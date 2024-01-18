@@ -140,9 +140,6 @@ module.exports = {
 		const cantResults = opcion.cantidad;
 		const {entidad, palabrasClave} = configCons;
 
-		// Pule la variable 'configCons'
-		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
-
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...configCons, opcion});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...configCons, opcion});
