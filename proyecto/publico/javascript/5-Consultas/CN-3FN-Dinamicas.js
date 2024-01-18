@@ -11,6 +11,9 @@ let actualizaConfigCons = {
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
 		actualiza.toggleFiltrosIndivs();
 
+		// Pule la variable 'configCons'
+		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
+
 		// Fin
 		return;
 	},
@@ -26,16 +29,8 @@ let actualizaConfigCons = {
 			if (!v.opcionBD) v.opcion_id = null;
 		}
 
-		// Actualiza variables
-		if (v.opcion_id) {
-			configCons.opcion_id = v.opcion_id;
-			const asignaEnt = !v.opcionBD.entidades.length || !DOM.entidades || !DOM.entidades.value;
-			v.entidadBD = asignaEnt
-				? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id)
-				: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
-			v.entidad = v.entidadBD.codigo;
-			if (v.entidad) configCons.entidad = v.entidad;
-		}
+		// Actualiza variable
+		if (v.opcion_id) configCons.opcion_id = v.opcion_id;
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
@@ -90,7 +85,15 @@ let actualizaConfigCons = {
 	// Presencia eventual
 	entidad: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !!v.opcionBD.entidades; // sólo si la opción acepta más de una entidad
+		const seMuestra = !!v.opcionBD.entidades.length; // sólo si la opción acepta más de una entidad
+
+		// Obtiene la entidad
+		const asignaEnt = !seMuestra || !DOM.entidades || !DOM.entidades.value;
+		v.entidadBD = asignaEnt
+			? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id)
+			: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
+		v.entidad = v.entidadBD.codigo;
+		if (v.entidad) configCons.entidad = v.entidad;
 
 		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
 		//muestraOcultaActualizaPref(seMuestra, "entidad_id");
