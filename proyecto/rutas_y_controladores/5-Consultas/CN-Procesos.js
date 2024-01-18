@@ -107,51 +107,34 @@ module.exports = {
 				// Variables
 				const {apMar, rolesIgl, canons, entidad} = configCons;
 
+				// Filtros generales
+				if (rolesIgl || canons) resultados = resultados.filter((n) => n.personaje_id > 10);
+				if (apMar) resultados = resultados.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+
 				// Filtra por apMar
 				if (apMar)
 					resultados =
 						apMar == "SI"
-							? resultados.filter(
-									(n) =>
-										(n.personaje_id > 10 && n.personaje.apMar_id != 10) ||
-										(n.hecho_id > 10 && n.hecho.ama == 1)
-							  )
-							: resultados.filter(
-									(n) =>
-										(n.personaje_id > 10 && n.personaje.apMar_id == 10) ||
-										(n.hecho_id > 10 && n.hecho.ama == 0)
-							  );
+							? resultados.filter((n) => n.personaje.apMar_id != 10 || n.hecho.ama == 1)
+							: resultados.filter((n) => n.personaje.apMar_id == 10 || n.hecho.ama == 0);
 
 				// Filtra por rolesIgl
 				if (rolesIgl)
 					resultados =
 						rolesIgl == "RS"
-							? resultados.filter(
-									(n) =>
-										n.personaje_id > 10 &&
-										(n.personaje.rolIglesia_id.startsWith("RE") || n.personaje.rolIglesia_id.startsWith("SC"))
-							  )
-							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.rolIglesia_id.startsWith(rolesIgl));
+							? resultados.filter((n) => ["RE", "SC"].some((m) => n.personaje.rolIglesia_id.startsWith(m)))
+							: resultados.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
 
 				// Filtra por canons
-
 				if (canons)
 					resultados =
 						canons == "SB"
-							? resultados.filter(
-									(n) =>
-										n.personaje_id > 10 &&
-										(n.personaje.canon_id.startsWith("ST") || n.personaje.canon_id.startsWith("BT"))
-							  ) // Santos y Beatos
+							? resultados.filter((n) => ["ST", "BT"].some((m) => n.personaje.canon_id.startsWith(m))) // Santos y Beatos
 							: canons == "VS"
-							? resultados.filter(
-									(n) =>
-										n.personaje_id > 10 &&
-										(n.personaje.canon_id.startsWith("VN") || n.personaje.canon_id.startsWith("SD"))
-							  ) // Venerables y Siervos de Dios
+							? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
 							: canons == "TD"
-							? resultados.filter((n) => n.personaje_id > 10 && !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
-							: resultados.filter((n) => n.personaje_id > 10 && n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
+							? resultados.filter((n) => !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
+							: resultados.filter((n) => n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
 
 				// Filtra por entidad
 				if (campo_id) resultados = resultados.filter((n) => n.entidad == entidad);
@@ -167,12 +150,17 @@ module.exports = {
 					: this.comun(configCons);
 			},
 			comun: async function (configCons) {
-				// Interrumpe la función
-				if (configCons.entidad == "productos") return null;
-
 				// Variables
-				const {entidad, opcion} = configCons;
+				const {rolesIgl, canons, opcion} = configCons;
+				let {entidad} = configCons;
 				let rclvs = [];
+
+				// Interrumpe la función o cambia la entidad
+				if (rolesIgl || canons) {
+					if (entidad == "rclvs") entidad = "personajes";
+					if (entidad != "personajes") return [];
+				}
+				if (entidad == "productos") return null;
 
 				// Obtiene los RCLVs
 				if (entidad == "rclvs") {
@@ -198,7 +186,7 @@ module.exports = {
 
 				// Rutina para un sólo RCLV
 				else {
-					const {condiciones, include} = obtieneIncludeCondics(entidad, configCons);
+					const {condiciones, include} = this.obtieneIncludeCondics(entidad, configCons);
 					rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
