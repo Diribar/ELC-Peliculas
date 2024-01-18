@@ -30,7 +30,9 @@ let actualizaConfigCons = {
 		if (v.opcion_id) {
 			configCons.opcion_id = v.opcion_id;
 			const asignaEnt = !v.opcionBD.entidades.length || !DOM.entidades || !DOM.entidades.value;
-			v.entidadBD = asignaEnt ? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id) : {};
+			v.entidadBD = asignaEnt
+				? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id)
+				: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
 			v.entidad = v.entidadBD.codigo;
 			if (v.entidad) configCons.entidad = v.entidad;
 		}
