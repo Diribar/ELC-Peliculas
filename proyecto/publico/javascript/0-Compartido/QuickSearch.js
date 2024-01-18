@@ -23,22 +23,26 @@ window.addEventListener("load", () => {
 			// Crea las filas y celdas
 			for (let registro of registros) {
 				// Variables
-				let {familia, entidad, asoc, id, anoEstreno, nombre} = registro;
+				const {familia, entidad, id, nombre, anoEstreno} = registro;
+				const entidadCorta = entidad.slice(0, -1);
+
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				fila.classList.add(familia.slice(0, 4));
 				const anchor = document.createElement("a");
 				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
-				// Prepara las variables de la fila
-				// 1. Procesa el nombre
+
+				// Procesa el nombre
 				let anchoMax = 40;
 				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
 				if (familia == "producto" && anoEstreno) nombre += " (" + anoEstreno + ")";
-				// 2. Procesa la asociación
-				let ent = asoc.slice(0, 5);
+
+				// Procesa la asociación
+				let ent = entidadCorta.slice(0, 5);
 				if (ent == "perso") ent = "pers";
-				if (ent != asoc && ent != "epoca") ent += ".";
+				if (ent != entidadCorta && ent != "epoca") ent += ".";
 				let datos = [nombre, ent];
+
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
 					const celda = document.createElement("td");

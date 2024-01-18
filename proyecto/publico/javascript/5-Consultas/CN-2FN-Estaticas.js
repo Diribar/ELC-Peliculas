@@ -222,11 +222,12 @@ let cambiosEnBD = {
 	},
 	guardaUnaConfiguracion: async () => {
 		// Variables
-		configCons.id = v.configCons_id;
+		let campos = {...configCons, id: v.configCons_id};
+		if (!v.opcionBD.entidades.length) delete campos.entidad; // si la opción sólo tiene una entidad, elimina el campo
 
 		// Guarda los cambios
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
-		await fetch(rutaCompleta + JSON.stringify(configCons));
+		await fetch(rutaCompleta + JSON.stringify(campos));
 
 		// Cambia el texto en el select
 		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;

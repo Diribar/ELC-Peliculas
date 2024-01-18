@@ -33,26 +33,24 @@ module.exports = {
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
-					asoc: dato.asoc,
-					// Específicos para PA-Desambiguar
-					avatar: m.avatar,
-					nombreOriginal: m.nombreOriginal,
+					avatar: m.avatar, // específicos para PA-Desambiguar
+					nombreOriginal: m.nombreOriginal, // específicos para PA-Desambiguar
 				}))
 			);
 	},
 	quickSearchEdiciones: (condiciones, dato) => {
 		return db[dato.entidad]
-			.findAll({where: condiciones, limit: 10})
+			.findAll({where: condiciones, limit: 10, include: dato.include})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
 				n.map((m) => {
 					const entidad = comp.obtieneDesdeEdicion.entidad(m, dato.entidad);
+					const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
 					return {
 						entidad,
 						id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
-						anoEstreno: m.anoEstreno,
+						anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
 						nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
-						asoc: comp.obtieneDesdeEntidad.asociacion(entidad),
 						familia: dato.familia,
 					};
 				})
