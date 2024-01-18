@@ -114,7 +114,7 @@ let actualizaConfigCons = {
 			muestraOcultaActualizaPref(true, "pppOpciones");
 
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			if (configCons.pppOpciones != "sinFiltro") {
+			if (configCons.pppOpciones != "todos") {
 				const id = configCons.pppOpciones;
 				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
