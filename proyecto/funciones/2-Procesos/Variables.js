@@ -42,7 +42,7 @@ module.exports = {
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
 				{id: "conLinksHD", nombre: "Con links HD", condic: {HD_Gral: conLinks}},
-				{id: "sinFiltro", nombre: "Con y sin links"},
+				{id: "todos", nombre: "Con y sin links"},
 			],
 		},
 		pppOpciones: {
@@ -51,7 +51,7 @@ module.exports = {
 				{id: "2", nombre: "Películas marcadas para ver"},
 				{id: "3", nombre: "Películas sin marcar"},
 				{id: "6", nombre: "Peliculas que me interesan"},
-				{id: "sinFiltro", nombre: "Todas las preferencias"},
+				{id: "todos", nombre: "Todas las preferencias"},
 			],
 		},
 		idioma: {
@@ -73,14 +73,14 @@ module.exports = {
 						conLinksHD: {[Op.or]: [{HD_Cast: conLinks}, {HD_Subt: conLinks}]},
 					},
 				},
-				{id: "sinFiltro", nombre: "En cualquier idioma"},
+				{id: "todos", nombre: "En cualquier idioma"},
 			],
 		},
 		publicos: {
 			//titulo: "Público Recomendado",
 			default: "MC",
 			opciones: [
-				{id: "sinFiltro", nombre: "Todos los públicos"},
+				{id: "todos", nombre: "Todos los públicos"},
 				{id: "MC", nombre: "Mayores o sin clasificar", condic: {publico_id: {[Op.or]: [null, mayores_ids]}}},
 				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
 				{id: "FM", nombre: "Familia", condic: {publico_id: familia_id}},
@@ -523,7 +523,7 @@ module.exports = {
 	selectVacio: "Necesitamos que elijas una opción",
 	radioVacio: "Necesitamos que elijas una opción",
 	urlDesconocida: "No tenemos esa dirección de url en nuestro sistema",
-	rclvSinElegir:"Necesitamos que respondas alguna de las opciones",
+	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},

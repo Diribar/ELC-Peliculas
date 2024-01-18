@@ -26,7 +26,6 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		//actualizaLaEpocaDeEstreno();
 
 		// Fin
 		console.log();
@@ -56,7 +55,7 @@ module.exports = {
 		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
 
 		// Actualiza su valor
-		comp.prodAprobEnLink(links)
+		comp.prodAprobEnLink(links);
 
 		// Fin
 		return;
@@ -443,6 +442,29 @@ module.exports = {
 		// Fin
 		return;
 	},
+	IDdeTablas: async () => {
+		// Variables
+		const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "configsConsCampos"];
+
+		// Actualiza los valores de ID
+		for (let tabla of tablas) {
+			// Variables
+			const registros = await BD_genericas.obtieneTodos(tabla);
+			let id = 1;
+
+			// Actualiza los IDs
+			for (let registro of registros) {
+				await BD_genericas.actualizaPorId(tabla, registro.id, {id});
+				id++;
+			}
+
+			// Reduce el próximo valor de ID
+			//BD_genericas.reduceElProximoValorDeID(tabla);
+		}
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
@@ -681,29 +703,6 @@ module.exports = {
 				)
 					// Si no lo encuentra en ambas tablas, elimina el registro
 					BD_genericas.eliminaPorId(tabla.nombre, registro.id);
-		}
-
-		// Fin
-		return;
-	},
-	IDdeTablas: async () => {
-		// Variables
-		const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas"];
-
-		// Actualiza los valores de ID
-		for (let tabla of tablas) {
-			// Variables
-			const registros = await BD_genericas.obtieneTodos(tabla);
-			let id = 1;
-
-			// Actualiza los IDs
-			for (let registro of registros) {
-				await BD_genericas.actualizaPorId(tabla, registro.id, {id});
-				id++;
-			}
-
-			// Reduce el próximo valor de ID
-			//BD_genericas.reduceElProximoValorDeID(tabla);
 		}
 
 		// Fin
