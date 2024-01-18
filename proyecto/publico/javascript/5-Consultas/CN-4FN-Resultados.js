@@ -568,11 +568,11 @@ let auxiliares = {
 let creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
+		console.log(rclv);
 		const cantProds = rclv.productos.length;
-		const VF_diaDelAno = rclv.fechaDelAno_id && rclv.fechaDelAno_id < 400;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/rclv/detalle/?entidad=" + v.entidad + "&id=" + rclv.id;
+		anchor.href = "/rclv/detalle/?entidad=" + rclv.entidad + "&id=" + rclv.id;
 		anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 
