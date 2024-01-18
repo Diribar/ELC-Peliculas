@@ -568,7 +568,6 @@ let auxiliares = {
 let creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
-		console.log(rclv);
 		const cantProds = rclv.productos.length;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
