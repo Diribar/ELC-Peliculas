@@ -322,13 +322,13 @@ module.exports = {
 				if (!usuario_id) return opcion.codigo != "misPrefs" ? prods : [];
 
 				// Variables
-				const {pppOpciones} = configCons;
+				const {pppOpciones: pppOpcion} = configCons;
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
-					pppOpciones && // se eligieron 'pppOpciones'
-					pppOpciones != "todos" && // no se eligió la opción "Todas las preferencias"
-					!pppOpciones.includes(String(sinPref.id)) && // la opción elegida no incluye a 'sinPref'
+					pppOpcion && // se eligió una opción
+					pppOpcion != "todos" && // no se eligió la opción "Todas las preferencias"
+					!pppOpcion.includes(String(sinPref.id)) && // la opción elegida no incluye a 'sinPref'
 					!pppRegistros.length // no hay registros 'ppp'
 				)
 					return [];
@@ -339,20 +339,20 @@ module.exports = {
 					const pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
 
 					// Acciones si se eligió un tipo de preferencia
-					if (pppOpciones && pppOpciones != "todos") {
+					if (pppOpcion && pppOpcion != "todos") {
 						// Elimina los registros que correspondan
 						if (
-							(pppRegistro && !pppOpciones.includes(String(pppRegistro.opcion_id))) || // tiene alguna preferencia que no es la que se había elegido
-							(!pppRegistro && !pppOpciones.includes(String(sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
+							(pppRegistro && !pppOpcion.includes(String(pppRegistro.opcion_id))) || // tiene alguna preferencia que no es la que se había elegido
+							(!pppRegistro && !pppOpcion.includes(String(sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
 						)
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la 'ppp' del usuario
 						else {
 							// Variable
 							const pppOpcionElegida =
-								pppOpciones == sinPref.id || !pppRegistro
-									? sinPref
-									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id);
+								pppOpcion == sinPref.id || !pppRegistro
+									? sinPref // si se eligió 'sin preferencia' o no hay un registro
+									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
 							prods[i].pppIcono = pppOpcionElegida.icono;
