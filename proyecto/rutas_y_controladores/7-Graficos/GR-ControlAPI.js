@@ -71,7 +71,7 @@ module.exports = {
 
 	linksVencim: async (req, res) => {
 		// Variables
-		if (!semanaUTC) procsRutinas.variablesSemanales(); // Para asegurarse de tener la 'primerLunesDelAno' y la 'semanaUTC'
+		if (!semanaUTC) comp.variablesSemanales(); // Para asegurarse de tener la 'primerLunesDelAno' y la 'semanaUTC'
 		const prodAprob = true;
 		const sinPrimRev = {};
 		const conPrimRev = {};
