@@ -751,6 +751,42 @@ module.exports = {
 		// Fin
 		return;
 	},
+	fechaVencimLinks: async (links) => {
+		// Variables
+		const include = variables.entidades.asocProds;
+		const anoActual = new Date().getFullYear();
+		const condicion = {statusRegistro_id: aprobado_id};
+
+		// Obtiene todos los links con sus vínculos de prods
+		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+
+		// Rutina por link
+		let i = 0;
+		for (let link of links) {
+			// Obtiene el anoEstreno
+			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+			const producto = link[asocProd];
+			const anoEstreno = producto.anoEstreno;
+
+			// Averigua si es un linkReciente y sin primRev
+			const anoReciente = anoActual - linkAnoReciente;
+			const linkReciente = !link.anoEstreno || link.anoEstreno > anoReciente;
+			const linkPrimRev = !link.yaTuvoPrimRev;
+
+			// Calcula la fechaVencim - primRev o reciente o null, 4 sems
+			const desde = link.statusSugeridoEn.getTime();
+			const fechaVencimNum = desde + (linkPrimRev || linkReciente ? linksPrimRev : linksVidaUtil);
+			const fechaVencim = new Date(fechaVencimNum);
+
+			// Se actualiza el link con el anoEstreno y la fechaVencim
+			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim});
+			// if (!i) console.log(799, anoEstreno, fechaVencim, link);
+			i++;
+		}
+
+		// Fin
+		return;
+	},
 
 	// Usuarios
 	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
