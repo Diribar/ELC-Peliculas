@@ -761,7 +761,6 @@ module.exports = {
 		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 		// Rutina por link
-		let i = 0;
 		for (let link of links) {
 			// Obtiene el anoEstreno
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
@@ -769,23 +768,54 @@ module.exports = {
 			const anoEstreno = producto.anoEstreno;
 
 			// Averigua si es un linkReciente y sin primRev
+			const sinPrimRev = !link.yaTuvoPrimRev;
 			const anoReciente = anoActual - linkAnoReciente;
-			const linkReciente = !link.anoEstreno || link.anoEstreno > anoReciente;
-			const linkPrimRev = !link.yaTuvoPrimRev;
+			const linkReciente = !anoEstreno || anoEstreno > anoReciente;
 
 			// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 			const desde = link.statusSugeridoEn.getTime();
-			const fechaVencimNum = desde + (linkPrimRev || linkReciente ? linksPrimRev : linksVidaUtil);
+			const fechaVencimNum = desde + (sinPrimRev || linkReciente ? linksPrimRev : linksVidaUtil);
 			const fechaVencim = new Date(fechaVencimNum);
 
 			// Se actualiza el link con el anoEstreno y la fechaVencim
-			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim});
-			// if (!i) console.log(799, anoEstreno, fechaVencim, link);
-			i++;
+			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente});
 		}
 
 		// Fin
 		return;
+	},
+	cantLinksVencPorSem: async (req, res) => {
+		// Variables
+		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
+		const prodAprob = true;
+		const links = {};
+
+		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
+		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
+		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
+		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
+
+		// Obtiene la cantidad de 'creadoAprobs'
+		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
+		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana);
+		sinPrimRev[semanaUTC] = recientes.filter((n) => !n.yaTuvoPrimRev).length;
+		conPrimRev[semanaUTC] = recientes.filter((n) => n.yaTuvoPrimRev).length;
+
+		// Obtiene la cantidad por semana de los 'aprobados'
+		for (let link of aprobados) {
+			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? linksVidaUtil : linksPrimRev);
+			const semVencim = parseInt((diaVencim - primerLunesDelAno) / unaSemana) + 1;
+			link.yaTuvoPrimRev
+				? conPrimRev[semVencim]
+					? conPrimRev[semVencim]++
+					: (conPrimRev[semVencim] = 1)
+				: sinPrimRev[semVencim]
+				? sinPrimRev[semVencim]++
+				: (sinPrimRev[semVencim] = 1);
+		}
+
+		// Fin
+		return res.json({antiguos, sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana});
 	},
 
 	// Usuarios
