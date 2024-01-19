@@ -149,8 +149,8 @@ module.exports = {
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
-						const asociacion = comp.obtieneDesdeEdicion.asociacion(edic);
-						const entidad = comp.obtieneDesdeEdicion.entidad(edic, entPERL);
+						const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
+						const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
 						const familia = comp.obtieneDesdeEntidad.familia(entidad);
 						return {...edic[asociacion], entidad, familia};
 					})
@@ -166,8 +166,8 @@ module.exports = {
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+					const asociacion = comp.obtieneDesdeCampo_id.asocProd(link);
+					const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 					return {...link[asociacion], entidad, familia: "links"};
 				})
 			)
@@ -179,8 +179,8 @@ module.exports = {
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
-					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
+					const asociacion = comp.obtieneDesdeCampo_id.asocProd(edic);
+					const entidad = comp.obtieneDesdeCampo_id.entidadProd(edic);
 					return {...edic[asociacion], entidad, familia: "links"};
 				})
 			)
@@ -716,7 +716,7 @@ let nombres = async (reg, familia) => {
 		if (!regEntidad.id) return {};
 
 		// Obtiene los nombres
-		const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEntidad);
 		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
 		nombreVisual =
 			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";

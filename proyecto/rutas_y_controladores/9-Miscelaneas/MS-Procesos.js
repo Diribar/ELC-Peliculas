@@ -115,7 +115,7 @@ let obtieneProdsDeLinks = function (links, userID) {
 	// Obtiene los prods
 	for (let link of links) {
 		// Variables
-		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		let fechaRef = link.statusSugeridoEn;
 		let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);

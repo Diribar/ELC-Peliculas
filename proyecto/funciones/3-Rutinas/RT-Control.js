@@ -778,11 +778,16 @@ let fechaVencimLinks=async()=>{
 	// Obtiene todos los links con sus vínculos de prods
 	const links=await BD_genericas.obtieneTodosConInclude("links",include)
 
-	// Obtiene el anoEstreno de c/u
+	// Rutina por link
+	for (let link of links) {
+		// Obtiene el anoEstreno de c/u
+		const campo_id=comp.obtieneDesdeEdicion
 
-	// Se calcula la fechaVencim - primRev o reciente o null, 4 sems
+		// Se calcula la fechaVencim - primRev o reciente o null, 4 sems
 
-	// Se actualiza el link con el anoEstreno y la fechaVencim
+		// Se actualiza el link con el anoEstreno y la fechaVencim
+
+	}
 
 
 }

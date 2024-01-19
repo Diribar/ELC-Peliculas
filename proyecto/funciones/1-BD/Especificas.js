@@ -49,7 +49,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) =>
 					n.map((m) => {
-						const entidad = comp.obtieneDesdeEdicion.entidad(m, dato.entidad);
+						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
 						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
 						return {
 							entidad,

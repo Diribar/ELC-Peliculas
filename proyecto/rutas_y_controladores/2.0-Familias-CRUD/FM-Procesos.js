@@ -64,7 +64,7 @@ module.exports = {
 
 				// 2. producto_id (links)
 				if (entidad == "links") {
-					let producto_id = comp.obtieneDesdeEdicion.campo_idProd(original);
+					let producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
 				}
 
@@ -413,8 +413,8 @@ module.exports = {
 			// linksEnProds
 			if (familias == "links") {
 				// Obtiene los datos identificatorios del producto
-				const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
-				const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
+				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+				const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
 				const prodID = registro[campo_id];
 
 				// Actualiza el producto
@@ -807,8 +807,8 @@ let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
 	// Revisa si tiene que eliminar alguna edición
 	for (let edicion of ediciones) {
 		// Variables
-		const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(edicion);
-		const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(edicion);
+		const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(edicion);
+		const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(edicion);
 		const prodID = edicion[campo_idProd];
 
 		// Obtiene el producto original
