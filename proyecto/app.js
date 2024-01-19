@@ -11,6 +11,7 @@ global.vidaUtilLinks = unaSemana * 26;
 global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
+global.linkReciente = 3; // cantidad de años
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'
