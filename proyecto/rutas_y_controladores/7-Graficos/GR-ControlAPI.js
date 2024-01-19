@@ -89,7 +89,7 @@ module.exports = {
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
-			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? vidaUtilLinks : vidaPrimRevision);
+			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? linksVidaUtil : linksPrimRev);
 			const semVencim = parseInt((diaVencim - primerLunesDelAno) / unaSemana) + 1;
 			link.yaTuvoPrimRev
 				? conPrimRev[semVencim]

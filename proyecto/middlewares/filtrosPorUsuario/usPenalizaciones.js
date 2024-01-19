@@ -20,15 +20,15 @@ module.exports = async (req, res, next) => {
 
 		// Si la penalización es de 1 día y es un usuario con buen desempeño, se lo perdona
 		if (diasPenalizacion == 1) {
-			let desempeno = 1 - usuario.edicsRech / (usuario.edicsRech + usuario.edicsAprob);
+			const desempeno = 1 - usuario.edicsRech / (usuario.edicsRech + usuario.edicsAprob);
 			if (desempeno >= 0.9) diasPenalizacion--;
 		}
 
 		if (diasPenalizacion) {
 			// Variables
-			let ahora = comp.fechaHora.ahora().setHours(0, 0, 0);
+			const ahora = comp.fechaHora.ahora().setHours(0, 0, 0);
 			// Agregar valores en datos
-			let penalizadoDesde = Math.max(ahora, usuario.penalizadoHasta);
+			const penalizadoDesde = Math.max(ahora, usuario.penalizadoHasta);
 			datos.penalizadoHasta = penalizadoDesde + diasPenalizacion * unDia;
 
 			// Si el usuario no tenía una penalización vigente, se actualiza la fecha 'penalizadoEn'

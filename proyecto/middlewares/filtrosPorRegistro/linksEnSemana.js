@@ -4,7 +4,7 @@ const procesos = require("../../rutas_y_controladores/3-RevisionEnts/RE-Procesos
 module.exports = async (req, res, next) => {
 	// Variables
 	const {cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts} = await procesos.TC.obtieneLinks();
-	const semanas = vidaUtilLinks / unaSemana; // vida útil en semanas
+	const semanas = linksVidaUtil / unaSemana; // vida útil en semanas
 	const promSemanal = cantLinksTotal / semanas;
 
 	// Averigua si se pueden aprobar más links
