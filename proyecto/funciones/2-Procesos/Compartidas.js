@@ -784,39 +784,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	cantLinksVencPorSem: async (req, res) => {
-		// Variables
-		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-		const prodAprob = true;
-		const links = {};
-
-		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
-		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
-		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
-		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
-
-		// Obtiene la cantidad de 'creadoAprobs'
-		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
-		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana);
-		sinPrimRev[semanaUTC] = recientes.filter((n) => !n.yaTuvoPrimRev).length;
-		conPrimRev[semanaUTC] = recientes.filter((n) => n.yaTuvoPrimRev).length;
-
-		// Obtiene la cantidad por semana de los 'aprobados'
-		for (let link of aprobados) {
-			const diaVencim = link.statusSugeridoEn.getTime() + (link.yaTuvoPrimRev ? linksVidaUtil : linksPrimRev);
-			const semVencim = parseInt((diaVencim - primerLunesDelAno) / unaSemana) + 1;
-			link.yaTuvoPrimRev
-				? conPrimRev[semVencim]
-					? conPrimRev[semVencim]++
-					: (conPrimRev[semVencim] = 1)
-				: sinPrimRev[semVencim]
-				? sinPrimRev[semVencim]++
-				: (sinPrimRev[semVencim] = 1);
-		}
-
-		// Fin
-		return res.json({antiguos, sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana});
-	},
 
 	// Usuarios
 	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
