@@ -753,9 +753,9 @@ module.exports = {
 	},
 	fechaVencimLinks: async (links) => {
 		// Variables
-		const include = variables.entidades.asocProds;
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
+		const include = variables.entidades.asocProds;
 
 		// Obtiene todos los links con sus vínculos de prods
 		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
