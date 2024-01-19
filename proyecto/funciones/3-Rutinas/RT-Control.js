@@ -26,7 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		//this.LinksVencidos();
+		//comp.cantLinksVencPorSem();
 
 		// Fin
 		console.log();
@@ -543,14 +543,11 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const fechaDeCorte = new Date(lunesDeEstaSemana);
+		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 		const ahora = new Date();
 
 		// Condiciones y nuevo status
-		const condiciones = [
-			{fechaVencim: {[Op.lt]: fechaDeCorte}},
-			{statusRegistro_id: aprobado_id},
-		];
+		const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
 		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
