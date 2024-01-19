@@ -26,7 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		// comp.fechaVencimLinks();
+		//this.LinksVencidos();
 
 		// Fin
 		console.log();
@@ -543,19 +543,13 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - linksPrimRev);
-		const fechaVidaUtil = new Date(lunesDeEstaSemana - linksVidaUtil);
+		const fechaDeCorte = new Date(lunesDeEstaSemana);
 		const ahora = new Date();
 
 		// Condiciones y nuevo status
 		const condiciones = [
+			{fechaVencim: {[Op.lt]: fechaDeCorte}},
 			{statusRegistro_id: aprobado_id},
-			{
-				[Op.or]: [
-					{statusSugeridoEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
-					{statusSugeridoEn: {[Op.lt]: fechaVidaUtil}, yaTuvoPrimRev: true}, // Concluyó su vida útil
-				],
-			},
 		];
 		const status = {
 			statusSugeridoPor_id: usAutom_id,
