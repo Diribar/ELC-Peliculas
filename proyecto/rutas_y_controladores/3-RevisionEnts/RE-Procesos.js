@@ -9,7 +9,7 @@ module.exports = {
 	TC: {
 		obtieneProdsConEdic: async (revID) => {
 			// Variables
-			let include = [...variables.asocs.prods, ...variables.asocs.rclvs];
+			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
 			let productos = [];
 
 			// Obtiene todas las ediciones
@@ -18,7 +18,7 @@ module.exports = {
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
 				(edicion) =>
-					!variables.asocs.rclvs.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
+					!variables.entidades.asocRclvs.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
 			);
 
 			// Obtiene los productos
@@ -225,7 +225,7 @@ module.exports = {
 		},
 		obtieneRCLVsConEdic: async function (revID) {
 			// 1. Variables
-			let include = variables.asocs.rclvs;
+			let include = variables.entidades.asocRclvs;
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas

@@ -94,7 +94,7 @@ module.exports = {
 	},
 	obtieneLinksInactivos: async (userID) => {
 		// Variables
-		let include = variables.asocs.prods;
+		let include = variables.entidades.asocProds;
 		let condicion = {statusRegistro_id: inactivo_id};
 
 		// Obtiene los links 'a revisar'

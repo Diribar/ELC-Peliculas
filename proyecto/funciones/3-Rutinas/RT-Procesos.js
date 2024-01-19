@@ -142,7 +142,7 @@ module.exports = {
 
 		// edicsPERL
 		entsPERL = ["prodsEdicion", "rclvsEdicion"];
-		include = {prodsEdicion: variables.asocs.prods, rclvsEdicion: variables.asocs.rclvs};
+		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
 			let registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
@@ -161,7 +161,7 @@ module.exports = {
 
 		// regsLinks
 		condiciones = {...condiciones, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.asocs.prods];
+		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
 		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
@@ -174,7 +174,7 @@ module.exports = {
 			.then((prods) => eliminaRepetidos(prods));
 
 		// edicsLinks
-		include = ["editadoPor", ...variables.asocs.prods];
+		include = ["editadoPor", ...variables.entidades.asocProds];
 		const edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
@@ -711,7 +711,7 @@ let nombres = async (reg, familia) => {
 			"</a>";
 	} else {
 		// Obtiene el registro
-		const asocs = variables.asocs.prods;
+		const asocs = variables.entidades.asocProds;
 		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asocs);
 		if (!regEntidad.id) return {};
 

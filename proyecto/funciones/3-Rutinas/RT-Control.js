@@ -52,7 +52,7 @@ module.exports = {
 	},
 	ProdAprobEnLink: async () => {
 		// Obtiene todos los links con su producto asociado
-		const links = await BD_genericas.obtieneTodosConInclude("links", variables.asocs.prods);
+		const links = await BD_genericas.obtieneTodosConInclude("links", variables.entidades.asocProds);
 
 		// Actualiza su valor
 		comp.prodAprobEnLink(links);
@@ -771,3 +771,18 @@ let eliminaHistorialQueNoCorresponde = async () => {
 	// Fin
 	return;
 };
+let fechaVencimLinks=async()=>{
+	// Variables
+	const include=variables.entidades.asocProds
+
+	// Obtiene todos los links con sus vínculos de prods
+	const links=await BD_genericas.obtieneTodosConInclude("links",include)
+
+	// Obtiene el anoEstreno de c/u
+
+	// Se calcula la fechaVencim - primRev o reciente o null, 4 sems
+
+	// Se actualiza el link con el anoEstreno y la fechaVencim
+
+
+}

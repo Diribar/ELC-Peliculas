@@ -121,7 +121,7 @@ module.exports = {
 		},
 		obtieneLinks: async () => {
 			// Variables
-			const include = variables.asocs.prods;
+			const include = variables.entidades.asocProds;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {

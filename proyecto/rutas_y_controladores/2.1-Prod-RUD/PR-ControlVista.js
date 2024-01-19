@@ -39,7 +39,7 @@ module.exports = {
 			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
 		}));
 		const rclvs_id = variables.entidades.rclvs_id;
-		const asocs = variables.asocs.rclvs;
+		const asocs = variables.entidades.asocRclvs;
 		for (let i = 0; i < asocs.length; i++)
 			if (prodComb[rclvs_id[i]] != 1)
 				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
