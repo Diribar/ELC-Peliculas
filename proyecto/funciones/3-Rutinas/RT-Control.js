@@ -26,7 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		//fechaVencimLinks();
+		// comp.fechaVencimLinks();
 
 		// Fin
 		console.log();
