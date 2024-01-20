@@ -803,7 +803,7 @@ module.exports = {
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
 			const fechaVencim = new Date(link.fechaVencim).getTime();
-			const semVencim = parseInt((fechaVencim - primerLunesDelAno) / unaSemana) + 1;
+			const semVencim = parseInt((fechaVencim - primerLunesDelAno) / unaSemana) + 1; // se le suma '1', porque la primera semana del año es '1'
 			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
 		}
 
