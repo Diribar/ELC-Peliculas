@@ -807,6 +807,11 @@ module.exports = {
 			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
 		}
 
+		// Se asegura de que haya un valor para cada semana en el eje horizontal
+		const minX = Math.min(...Object.keys(cantLinksVencPorSem));
+		const maxX = Math.max(...Object.keys(cantLinksVencPorSem));
+		for (let i = minX; i <= maxX; i++) if (!cantLinksVencPorSem[i]) cantLinksVencPorSem[i] = 0;
+
 		// Fin
 		return;
 	},
