@@ -37,8 +37,6 @@ window.addEventListener("load", async () => {
 			const recientes = valorX == minX ? cantLinks[valorX].recientes : 0;
 			const todos = valorX > minX ? cantLinks[valorX] : 0;
 			total += antiguos + recientes + todos;
-
-			//console.log(antiguos,recientes,total);
 			resultado.push([valorX, antiguos, recientes, todos, ""]);
 		}
 
