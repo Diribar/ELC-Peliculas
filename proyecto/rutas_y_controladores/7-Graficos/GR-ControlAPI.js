@@ -68,12 +68,8 @@ module.exports = {
 		// Fin
 		return res.json({cfc, vpc});
 	},
-
 	linksVencim: async (req, res) => {
-		// Variables
 		if (!cantLinksVencPorSem) await comp.cantLinksVencPorSem()
-
-		// Fin
 		return res.json({cantLinksVencPorSem, primerLunesDelAno, unaSemana});
 	},
 	linksPorProv: async (req, res) => {
