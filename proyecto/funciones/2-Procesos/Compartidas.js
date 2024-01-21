@@ -784,7 +784,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	cantLinksVencPorSem: async (req, res) => {
+	cantLinksVencPorSem: async () => {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
 		const semsVidaUtil = linksVidaUtil / unaSemana;
