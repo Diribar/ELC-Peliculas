@@ -700,6 +700,10 @@ module.exports = {
 		// Fin
 		return;
 	},
+	CantLinksVencPorSem: async () => {
+		await comp.cantLinksVencPorSem();
+		return;
+	},
 };
 
 // Variables
