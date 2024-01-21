@@ -27,14 +27,14 @@ module.exports = {
 		// Espera a que se actualicen todos los resultados
 		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
 
-		// Consolida los productos
+		// Consolida las altas
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
-		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 		delete prods1.AL_conEdicion;
 		delete prods2.AL_sinEdicion;
-		let prods = {...prods1, ...prods2, ...links.productos, AL};
+		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 
-		// Consolida los RCLVs
+		// Consolida los productos y RCLVs
+		let prods = {...prods1, ...prods2, AL};
 		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Procesa los campos de las 2 familias de entidades
@@ -43,7 +43,6 @@ module.exports = {
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
-		const {cantLinksEstaSem, cantLinksTotal} = links;
 
 		// Va a la vista
 		// return res.send(prods.AL)
