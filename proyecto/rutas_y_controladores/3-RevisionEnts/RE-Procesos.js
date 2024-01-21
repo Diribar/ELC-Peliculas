@@ -119,8 +119,8 @@ module.exports = {
 			const cantAprobs = Object.values(cantLinksVencPorSem)
 				.slice(1)
 				.reduce((acum, i) => acum + i);
-			const cantUtiles = cantAprobs + cantPends;
-			const cantPromedio = Math.ceil(cantUtiles / linksSemsVidaUtil);
+			const cantLinksTotal = cantAprobs + cantPends;
+			const cantPromedio = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
 
 			// posiblesParaProcesar
 			let pelisColecsPosibles = 0;
@@ -138,67 +138,31 @@ module.exports = {
 			const cantParaProcesar = pelisColecsParaProcesar + capsParaProcesar;
 
 			// Obtiene próximo link a procesar
-
+			const linkSig = await this.obtieneLinkSig();
 
 			// Fin
-			return {cantUtiles, cantParaProcesar};
+			return {cantLinksTotal, cantParaProcesar, linkSig};
 		},
-		obtieneProds_LinksViejo: async function (revID) {
-			// Variables
-			const {linksRevisar, cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts} = await this.obtieneLinks();
-			let productos = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
+		obtieneLinkSig: async () => {
+			// Obtiene los links 'a revisar'
+			let links = await BD_especificas.TC.obtieneLinks();
 
-			// Obtiene los productos
-			if (linksRevisar.length) {
+			// Ediciones
+			if (links.ediciones.length) {
 				// Variables
-				const promSemanal = cantLinksTotal / linksSemsVidaUtil;
-				const aprobsPerms =
-					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
-					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
-						cantLinksEstaSem < 1.05 * promSemanal); // si se aprobaron menos que el promedio más la tolerancia
+				const link = links.ediciones[0];
+				const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+				const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(link);
+				const id = link[campo_id];
 
-				// Procesa los links
-				PR_VN_OT({links: linksRevisar, aprobsPerms, productos});
-				puleLosResultados({productos, revID});
+				// Fin
+				return {entidad, id};
 			}
 
-			// Fin
-			return {productos, cantLinksEstaSem, cantLinksTotal};
-		},
-		obtieneLinks: async () => {
-			// En caso de que no exista la variable global, la obtiene con la FN
-			if (!primerLunesDelAno) comp.primerLunesDelAno();
 
-			// Obtiene los links 'a revisar'
-			let linksRevisar = BD_especificas.TC.obtieneLinks();
-
-			// Averigua la cantidad de links aprobados en esta semana
-			let cantLinksEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
-				prodAprob: true,
-				yaTuvoPrimRev: true,
-				statusSugeridoEn: {[Op.and]: [{[Op.gt]: lunesDeEstaSemana}, {[Op.lt]: lunesDeEstaSemana + unaSemana}]},
-				statusRegistro_id: aprobado_id,
-			}).then((n) => n.length);
-
-			// Averigua la cantidad de links aprobados en total
-			let cantLinksTotal = BD_genericas.obtieneTodosPorCondicion("links", {
-				prodAprob: true,
-				statusRegistro_id: aprobados_ids,
-			}).then((n) => n.length);
-
-			// Espera a que se actualicen los valores
-			[linksRevisar, cantLinksEstaSem, cantLinksTotal] = await Promise.all([
-				linksRevisar,
-				cantLinksEstaSem,
-				cantLinksTotal,
-			]);
-
-			// Depura los links a revisar
-			const linksVencidos = linksRevisar.filter((n) => n.statusRegistro_id == creadoAprob_id);
-			const cantVencsAnts = linksVencidos.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 
 			// Fin
-			return {linksRevisar, cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts};
+			return null;
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
