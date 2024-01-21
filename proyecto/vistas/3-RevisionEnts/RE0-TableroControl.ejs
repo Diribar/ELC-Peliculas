@@ -108,9 +108,10 @@
 					<div class="temas">
 						<% let rl = "revision/links" %>
 						<% DE = dataEntry[familias] %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Primera Revisión", regs: prods.PR, url: rl}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Vencidos", regs: prods.VN, url: rl}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "ABM", regs: prods.OT, url: rl}) %>
+						<div id="cuadro" class="bordeConSombra">
+							<div id="grafico"></div>
+							<div id="algunosDatos"></div>
+						</div>
 					</div>
 				</div>
 			<% } %>
