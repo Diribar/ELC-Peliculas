@@ -864,7 +864,7 @@ let FN_links = {
 	},
 	puleLosResultados: ({productos, revID}) => {
 		// Deja solamente los registros sin problemas de captura
-				if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
+		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
 
 		if (productos.length > 1) {
 			// Elimina los repetidos dentro del grupo
