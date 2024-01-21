@@ -26,7 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		//comp.obtieneLinksVencPorSem();
+		//comp.actualizaLinksVencPorSem();
 
 		// Fin
 		console.log();
@@ -701,7 +701,7 @@ module.exports = {
 		return;
 	},
 	CantLinksVencPorSem: async () => {
-		await comp.obtieneLinksVencPorSem();
+		await comp.actualizaLinksVencPorSem();
 		return;
 	},
 };
