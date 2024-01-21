@@ -784,15 +784,14 @@ module.exports = {
 		// Fin
 		return;
 	},
-	cantLinksVencPorSem: async () => {
+	actualizaLinksVencPorSem: async () => {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-		const semsVidaUtil = linksVidaUtil / unaSemana;
 		const prodAprob = true;
 		cantLinksVencPorSem = {};
 
 		// Crea las semanas dentro de la variable
-		for (let i = 0; i <= semsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
+		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
 		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
@@ -802,7 +801,8 @@ module.exports = {
 		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
-		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes};
+		const capitulos = creadoAprobs.filter((n) => n.capitulo_id).length;
+		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes, capitulos};
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
