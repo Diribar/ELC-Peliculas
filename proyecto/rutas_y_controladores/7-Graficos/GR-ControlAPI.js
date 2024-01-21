@@ -69,7 +69,7 @@ module.exports = {
 		return res.json({cfc, vpc});
 	},
 	linksVencim: async (req, res) => {
-		if (!cantLinksVencPorSem) await comp.obtieneLinksVencPorSem();
+		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 		return res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana});
 	},
 	linksPorProv: async (req, res) => {
