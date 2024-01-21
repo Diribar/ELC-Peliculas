@@ -677,9 +677,6 @@ module.exports = {
 		// Variables
 		let resultado = [];
 
-		// Ordena los productos por su fecha más antigua primero
-		prods.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
 		// Agrega los nuevos
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
 
