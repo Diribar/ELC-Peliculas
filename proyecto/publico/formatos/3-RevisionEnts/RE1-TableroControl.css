@@ -1,0 +1,4 @@
+/* Bloques - Título */
+#segundaColumna .temas:has(#grafico) {margin-top: 10px; padding: 0;}
+#segundaColumna .temas #cuadro {border-radius: 15px; overflow: hidden;}
+#segundaColumna .temas #cuadro #algunosDatos {text-align: center;}
