@@ -27,7 +27,8 @@ module.exports = {
 		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
-		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
+		[prods1, prods2, rclvs1, rclvs2, links] = await Promise.all([prods1, prods2, rclvs1, rclvs2, links]);
+		//return res.send(links)
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
