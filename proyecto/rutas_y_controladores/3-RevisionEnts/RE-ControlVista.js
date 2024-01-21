@@ -265,7 +265,7 @@ module.exports = {
 			}
 
 			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-			if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+			if (rclv && subcodigo == "alta" && aprob) procesos.rlcv.edicAprobRech(entidad, original, revID);
 
 			// Agrega un registro en el histStatus - A. Genera la información
 			let datosHist = {
