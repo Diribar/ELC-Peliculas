@@ -787,12 +787,11 @@ module.exports = {
 	cantLinksVencPorSem: async (req, res) => {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-		const cantSemanas = linksVidaUtil / unaSemana;
 		const prodAprob = true;
 		cantLinksVencPorSem = {};
 
 		// Crea las semanas dentro de la variable
-		for (let i = 0; i <= cantSemanas; i++) cantLinksVencPorSem[i] = 0;
+		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
 		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
