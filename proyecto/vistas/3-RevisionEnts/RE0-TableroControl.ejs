@@ -88,7 +88,7 @@
 			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
-					<% const {cantLinksTotal, cantParaProcesar, linkSig} = links %>
+					<% const {cantLinksTotal, cantParaProcesar, prodSig} = links %>
 					<!-- Título y ayuda -->
 					<div class="tituloSecundario">
 						<!-- Título -->
@@ -109,10 +109,10 @@
 					<div class="temas">
 						<% DE = dataEntry[familias] %>
 						<div id="cuadro" class="bordeConSombra">
-							<% if (linkSig) %><a href="/revision/links/?entidad=<%= linkSig.entidad %>&id=<%= linkSig.id %>"><% { %>
+							<% if (prodSig) %><a href="/revision/links/?entidad=<%= prodSig.entidad %>&id=<%= prodSig.id %>"><% { %>
 								<div id="grafico"></div>
 								<div id="algunosDatos"></div>
-							<% if (linkSig) %></a><% } %>
+							<% if (prodSig) %></a><% } %>
 						</div>
 					</div>
 				</div>
