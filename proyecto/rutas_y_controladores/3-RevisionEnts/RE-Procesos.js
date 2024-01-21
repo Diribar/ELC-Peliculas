@@ -138,28 +138,27 @@ module.exports = {
 			const cantParaProcesar = pelisColecsParaProcesar + capsParaProcesar;
 
 			// Obtiene próximo link a procesar
-			const linkSig = await this.obtieneLinkSig();
+			const prodSig = await this.obtieneSigProd();
 
 			// Fin
-			return {cantLinksTotal, cantParaProcesar, linkSig};
+			return {cantLinksTotal, cantParaProcesar, prodSig};
 		},
-		obtieneLinkSig: async () => {
+		obtieneSigProd: async (revID) => {
 			// Obtiene los links 'a revisar'
 			let links = await BD_especificas.TC.obtieneLinks();
 
 			// Ediciones
 			if (links.ediciones.length) {
-				// Variables
-				const link = links.ediciones[0];
-				const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(link);
-				const id = link[campo_id];
+				// Obtiene los productos y pule los resultados
+				let productos = FN_links.obtieneLosProds(links.ediciones);
+				productos = FN_links.puleLosResultados({productos, revID});
 
 				// Fin
-				return {entidad, id};
+				if (productos.length) {
+					const {entidad, id} = productos[0];
+					return {entidad, id};
+				}
 			}
-
-
 
 			// Fin
 			return null;
@@ -194,7 +193,7 @@ module.exports = {
 
 						// Actualiza el original con la edición
 						if (edicion) {
-							edicion = purgaEdicion(edicion, original.entidad);
+							edicion = purgaEdicionRclv(edicion, original.entidad);
 							original = {...original, ...edicion};
 						}
 
@@ -261,9 +260,9 @@ module.exports = {
 	},
 
 	// Alta
-	alta: {
+	rclv: {
 		// Alta Guardar
-		rclvEdicAprobRech: async (entidad, original, revID) => {
+		edicAprobRech: async function (entidad, original, revID) {
 			// Variables
 			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
@@ -297,7 +296,7 @@ module.exports = {
 				if (campo == "prioridad_id") continue;
 
 				// Valores a comparar
-				const {valorAprob, valorDesc} = valoresComparar(original, RCLV_actual, relacInclude, campo);
+				const {valorAprob, valorDesc} = this.valoresComparar(original, RCLV_actual, relacInclude, campo);
 
 				// Si ninguna de las variables tiene un valor, saltea la rutina
 				if (!valorAprob && !valorDesc) continue;
@@ -332,6 +331,24 @@ module.exports = {
 
 			// Fin
 			return;
+		},
+		valoresComparar: (original, RCLV_actual, relacInclude, campo) => {
+			// Valores a comparar
+			let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
+			let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
+
+			// Casos especiales
+			if (["soloCfc", "ama"].includes(campo)) {
+				valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+				valorDesc = original[campo] == 1 ? "SI" : "NO";
+			}
+			if (campo == "epocaOcurrencia_id") {
+				valorAprob = RCLV_actual[relacInclude].nombre_pers;
+				valorDesc = original[relacInclude].nombre_pers;
+			}
+
+			// Fin
+			return {valorAprob, valorDesc};
 		},
 	},
 
@@ -696,55 +713,49 @@ module.exports = {
 	},
 
 	// Links - Vista
-	problemasProd: (producto, urlAnterior) => {
-		// Variables
-		let informacion;
-		const vistaAnterior = variables.vistaAnterior(urlAnterior);
-		const vistaTablero = variables.vistaTablero;
+	links: {
+		problemasProd: (producto, urlAnterior) => {
+			// Variables
+			let informacion;
+			const vistaAnterior = variables.vistaAnterior(urlAnterior);
+			const vistaTablero = variables.vistaTablero;
 
-		// El producto no posee links
-		if (!informacion && !producto.links.length)
-			informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
-		// Agrega los íconos
-		if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
+			// El producto no posee links
+			if (!informacion && !producto.links.length)
+				informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
+			// Agrega los íconos
+			if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
 
-		// Fin
-		return informacion;
-	},
-	sigProd: async function ({producto, entidad, revID}) {
-		// Obtiene los productos
-		let sigProd = [];
-		await this.TC.obtieneProds_Links(revID)
-			.then((n) => n.productos) // Obtiene los productos
-			.then((n) => this.procesaCampos.prods(n)) // transforma los datos de cada producto
-			.then((n) => {
-				for (let m in n) n[m].splice(2);
-				return n;
-			}) // deja un máximo de 2 valores por método
-			.then((n) => Object.values(n).forEach((m) => sigProd.push(...m))) // agrupa los productos en una sola array
-			.then(() => (sigProd = sigProd.filter((n) => n.entidad != entidad || n.id != producto.id))); // quita el producto vigente
+			// Fin
+			return informacion;
+		},
+		obtieneSigProdDistinto: async function ({entidad, id, revID}) {
+			// Obtiene los links 'a revisar'
+			let links = await BD_especificas.TC.obtieneLinks();
 
-		// Obtiene el producto más antiguo
-		if (sigProd.length) {
-			sigProd.sort((a, b) => (a.fechaRef < b.fechaRef ? -1 : a.fechaRef > b.fechaRef ? 1 : 0)); // ordena los productos por fecha
-			sigProd = sigProd[0];
-		} else sigProd = null;
+			// Obtiene los productos y pule los resultados
+			let productos = FN_links.obtieneLosProds(links.ediciones);
+			productos = FN_links.puleLosResultados({productos, revID});
 
-		// Genera el link
-		const link = sigProd
-			? "/inactivar-captura/?entidad=" +
-			  entidad +
-			  "&id=" +
-			  producto.id +
-			  "&prodEntidad=" +
-			  sigProd.entidad +
-			  "&prodID=" +
-			  sigProd.id +
-			  "&origen=RLK"
-			: "";
+			// Elije un producto distinto al producto vigente
+			const sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
 
-		// Fin
-		return link;
+			// Genera el link
+			const link = sigProd
+				? "/inactivar-captura/?entidad=" +
+				  entidad +
+				  "&id=" +
+				  id +
+				  "&prodEntidad=" +
+				  sigProd.entidad +
+				  "&prodID=" +
+				  sigProd.id +
+				  "&origen=RLK"
+				: "";
+
+			// Fin
+			return link;
+		},
 	},
 
 	// Varios
@@ -816,6 +827,62 @@ module.exports = {
 };
 
 // Funciones
+let purgaEdicionRclv = (edicion, entidad) => {
+	// Quita de edición los campos 'null'
+	for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
+
+	// Quita de edición los campos que no se comparan
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
+	for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+
+	// Fin
+	return edicion;
+};
+let FN_links = {
+	obtieneLosProds: (links) => {
+		// Variables
+		let productos = [];
+
+		// Obtiene los productos
+		for (let link of links) {
+			// Variables
+			const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+			const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+			const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
+			const fechaRef = link[campoFecha];
+
+			// Acumula los productos
+			productos.push({...link[asociacion], entidad, fechaRef});
+		}
+
+		// Ordena los productos por su fecha, ascendente
+		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+
+		// Fin
+		return productos;
+	},
+	puleLosResultados: ({productos, revID}) => {
+		// Deja solamente los registros sin problemas de captura
+		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
+
+		if (productos.length > 1) {
+			// Elimina los repetidos dentro del grupo
+			productos = comp.eliminaRepetidos(productos);
+
+			// Ordena los productos
+			productos
+				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
+				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
+				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
+				.sort((a, b) => a.fechaRef - b.fechaRef); // por fecha más antigua
+		}
+
+		// Fin
+		return productos;
+	},
+};
 let obtieneRegs = async (campos) => {
 	// Variables
 	let lecturas = [];
@@ -838,51 +905,6 @@ let obtieneRegs = async (campos) => {
 
 	// Fin
 	return resultados;
-};
-// VISTA-prod_edicForm/avatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
-let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
-	// Variables
-	const avatarOrig = original.avatar;
-	const url = avatarOrig && avatarOrig.includes("/");
-	const avatarEdic = edicion.avatar;
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
-
-	// Reemplazo
-	if (aprob) {
-		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		const rutaFinal = carpetaExterna + carpeta + "/Final/";
-		if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
-			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
-
-		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
-	}
-
-	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar/", avatarEdic);
-
-	// Fin
-	return;
-};
-// Otras
-let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
-	// Valores a comparar
-	let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
-	let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
-
-	// Casos especiales
-	if (["soloCfc", "ama"].includes(campo)) {
-		valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-		valorDesc = original[campo] == 1 ? "SI" : "NO";
-	}
-	if (campo == "epocaOcurrencia_id") {
-		valorAprob = RCLV_actual[relacInclude].nombre_pers;
-		valorDesc = original[relacInclude].nombre_pers;
-	}
-
-	// Fin
-	return {valorAprob, valorDesc};
 };
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion) => {
 	// Variables
@@ -913,71 +935,28 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Fin
 	return resultado;
 };
-let PR_VN_OT = ({links, aprobsPerms, productos}) => {
-	// Separa entre PR, VN y OT
-	for (let link of links) {
-		// Variables
-		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-		const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
-		const fechaRef = link[campoFecha];
-		const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
+	// Variables
+	const avatarOrig = original.avatar;
+	const url = avatarOrig && avatarOrig.includes("/");
+	const avatarEdic = edicion.avatar;
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 
-		// Separa en PR y VN
-		if (link.statusRegistro_id == creadoAprob_id && aprobsPerms)
-			link.yaTuvoPrimRev
-				? productos.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
-				: productos.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-		// Grupo OT
-		else if (link.statusRegistro_id != creadoAprob_id)
-			productos.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+	// Reemplazo
+	if (aprob) {
+		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+		const rutaFinal = carpetaExterna + carpeta + "/Final/";
+		if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
+			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
+
+		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+		comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
 	}
 
-	// Fin
-	return;
-};
-let puleLosResultados = ({productos, revID}) => {
-	// Variables
-	const metodos = Object.keys(productos); // PR, VN, OT
-
-	// Rutina por método
-	metodos.forEach((metodo, i) => {
-		// Deja solamente los registros sin problemas de captura
-		if (productos[metodo].length) productos[metodo] = comp.sinProblemasDeCaptura(productos[metodo], revID);
-
-		// Elimina los repetidos dentro del grupo
-		productos[metodo] = comp.eliminaRepetidos(productos[metodo]);
-
-		// Elimina los repetidos entre grupos - si está en el método actual, elimina de los siguientes
-		for (let j = i + 1; j < metodos.length; j++) {
-			const metodoEliminar = metodos[j];
-			productos[metodoEliminar] = productos[metodoEliminar].filter(
-				(n) => !productos[metodo].some((m) => n.id == m.id && n.entidad == m.entidad)
-			);
-		}
-
-		// Ordena los productos
-		if (productos[metodo].length > 1)
-			productos[metodo]
-				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
-				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
-				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
-				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
-				.sort((a, b) => a.fechaRef - b.fechaRef); // por fecha más antigua
-	});
+	// Rechazo - Elimina el archivo de edicion
+	else if (!aprob) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;
-};
-let purgaEdicion = (edicion, entidad) => {
-	// Quita de edición los campos 'null'
-	for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-
-	// Quita de edición los campos que no se comparan
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
-	for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
-
-	// Fin
-	return edicion;
 };
