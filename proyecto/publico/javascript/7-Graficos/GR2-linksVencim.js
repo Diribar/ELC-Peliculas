@@ -1,8 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const algunosDatos = document.querySelector("#zonaDeGraficos #cuadro #algunosDatos");
-	const grafico = document.querySelector("#zonaDeGraficos #cuadro #grafico");
+	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
+	const grafico = document.querySelector("#cuadro #grafico");
+	const revision = location.pathname.includes("/revision");
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
@@ -44,7 +45,7 @@ window.addEventListener("load", async () => {
 		const data = google.visualization.arrayToDataTable(resultado);
 
 		// Opciones del gráfico
-		const options = {
+		let options = {
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
 			animation: {
@@ -56,19 +57,22 @@ window.addEventListener("load", async () => {
 			colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
 			legend: "none",
 			hAxis: {
-				format: "decimal",
 				scaleType: "number",
-				title: "Semana",
+				format: "decimal",
+				baselineColor: "none", // para que desaparezca el eje vertical
 				ticks,
-				baselineColor:"transparent",
 			},
 			vAxis: {
 				fontSize: 20,
-				title: "Cantidad de links que vencen",
 				viewWindow: {min: 0},
 			},
 			isStacked: true, // columnas apiladas
 		};
+		if (revision) options.hAxis.textColor = "none";
+		else {
+			options.vAxis.title = "Cantidad de links vencidos";
+			options.hAxis.title = "Semana";
+		}
 
 		// Hace visible el gráfico
 		const imagenDelGrafico = new google.visualization.ColumnChart(grafico);
