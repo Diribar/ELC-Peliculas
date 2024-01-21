@@ -28,8 +28,6 @@ module.exports = {
 
 		// Espera a que se actualicen todos los resultados
 		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
-		console.log(31,links);
-		return
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
@@ -50,8 +48,8 @@ module.exports = {
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{prods, rclvs, origen: "TR"},
-			...{dataEntry, cantLinksEstaSem, cantLinksTotal},
+			...{prods, rclvs, links, origen: "TR"},
+			...{dataEntry},
 		});
 	},
 
