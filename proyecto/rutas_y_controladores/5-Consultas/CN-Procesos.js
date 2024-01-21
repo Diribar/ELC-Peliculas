@@ -814,11 +814,11 @@ let alAzar = {
 
 		// Obtiene los productos de esa época de estreno
 		v.resultado = v.resultados.filter((n) => n.epocaEstreno_id == epocaID);
-		if (v.seDebeEquilibrar) {
+		if (v.resultado.length && v.seDebeEquilibrar) {
 			// Si se debe equilibrar entre 'cfc' y 'vpc', descarta los que correspondan
 			const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
 			const cfc = contraparte ? (contraparte.cfc ? false : true) : null;
-			if (v.resultado.length && cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
+			if (cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
 		}
 
 		// Agrega un botón
