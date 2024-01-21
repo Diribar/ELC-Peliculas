@@ -88,12 +88,13 @@
 			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
+					<% const {cantLinksTotal, cantParaProcesar, linkSig} = links %>
 					<!-- Título y ayuda -->
 					<div class="tituloSecundario">
 						<!-- Título -->
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<div id="porcentajeLinksAprobsEstaSem"><%= cantLinksEstaSem + "/" + cantLinksTotal + " = " + (Math.ceil((cantLinksEstaSem / cantLinksTotal) * 1000) / 10).toFixed(1) %>%</div>
+						<div id="porcentajeLinksAprobsEstaSem"><%= cantParaProcesar + "/" + cantLinksTotal + " = " + (Math.ceil((cantParaProcesar / cantLinksTotal) * 1000) / 10).toFixed(1) %>%</div>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -106,13 +107,12 @@
 						</div>
 					</div>
 					<div class="temas">
-						<% let rl = "revision/links" %>
 						<% DE = dataEntry[familias] %>
 						<div id="cuadro" class="bordeConSombra">
-							<a href="">
+							<% if (linkSig) %><a href="/revision/links/?entidad=<%= linkSig.entidad %>&id=<%= linkSig.id %>"><% { %>
 								<div id="grafico"></div>
 								<div id="algunosDatos"></div>
-							</a>
+							<% if (linkSig) %></a><% } %>
 						</div>
 					</div>
 				</div>
