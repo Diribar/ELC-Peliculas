@@ -134,7 +134,7 @@ module.exports = {
 			const ediciones = db.linksEdicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
 
 			// Los consolida
-			const links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
+			const links = await Promise.all([originales, ediciones]).then(([originales, ediciones]) => ({originales, ediciones}));
 
 			// Fin
 			return links;
