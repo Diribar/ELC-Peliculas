@@ -112,14 +112,46 @@ module.exports = {
 		},
 		obtieneProds_Links: async function (revID) {
 			// Variables
+			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
+			const cantPends = cantLinksVencPorSem[0].total;
+
+			// Averigua los links totales 'aprobados_ids'
+			const cantAprobs = Object.values(cantLinksVencPorSem)
+				.slice(1)
+				.reduce((acum, i) => acum + i);
+			const cantUtiles = cantAprobs + cantPends;
+			const cantPromedio = Math.ceil(cantUtiles / linksSemsVidaUtil);
+
+			// posiblesParaProcesar
+			let pelisColecsPosibles = 0;
+			for (let i = 5; i <= linksSemsVidaUtil - 1; i++)
+				pelisColecsPosibles += Math.max(0, cantPromedio - cantLinksVencPorSem[i]);
+			const capsPosibles = Math.max(0, cantPromedio - cantLinksVencPorSem[linksSemsVidaUtil]);
+
+			// pendientesProcesar
+			const capsPends = cantLinksVencPorSem[0].capitulos;
+			const pelisColecsPends = cantLinksVencPorSem[0].total - capsPends;
+
+			// linksParaProcesar
+			const pelisColecsParaProcesar = Math.min(pelisColecsPosibles, pelisColecsPends);
+			const capsParaProcesar = Math.min(capsPosibles, capsPends);
+			const cantParaProcesar = pelisColecsParaProcesar + capsParaProcesar;
+
+			// Obtiene próximo link a procesar
+
+
+			// Fin
+			return {cantUtiles, cantParaProcesar};
+		},
+		obtieneProds_LinksViejo: async function (revID) {
+			// Variables
 			const {linksRevisar, cantLinksEstaSem, cantLinksTotal, linksVencidos, cantVencsAnts} = await this.obtieneLinks();
 			let productos = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
 			// Obtiene los productos
 			if (linksRevisar.length) {
 				// Variables
-				const semanas = linksVidaUtil / unaSemana; // vida útil en semanas
-				const promSemanal = cantLinksTotal / semanas;
+				const promSemanal = cantLinksTotal / linksSemsVidaUtil;
 				const aprobsPerms =
 					cantLinksEstaSem < promSemanal || // si se aprobaron menos que el promedio semanal
 					((linksVencidos.length > promSemanal || cantVencsAnts) && // si hay más vencidos que el promedio o quedan vencidos de la semana anterior
