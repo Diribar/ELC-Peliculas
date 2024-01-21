@@ -60,6 +60,8 @@ window.addEventListener("load", async () => {
 				scaleType: "number",
 				title: "Semana",
 				ticks,
+				// gridlines: {color: 'transparent'}
+				baselineColor:"transparent",
 			},
 			vAxis: {
 				fontSize: 20,
@@ -67,6 +69,7 @@ window.addEventListener("load", async () => {
 				viewWindow: {min: 0},
 			},
 			isStacked: true, // columnas apiladas
+
 		};
 
 		// Hace visible el gráfico
