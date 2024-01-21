@@ -6,7 +6,8 @@ window.addEventListener("load", async () => {
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
-	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, unaSemana} = datos;
+	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana} = datos;
+	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -23,21 +24,20 @@ window.addEventListener("load", async () => {
 		let total = 0;
 
 		// Consolida el resultado
-		const minX = Number(Object.keys(cantLinks).shift());
-		const maxX = Number(Object.keys(cantLinks).pop());
-
-		for (let valorX = minX; valorX <= maxX; valorX++) {
+		const semanas = Number(Object.keys(cantLinks).pop());
+		for (let ejeX = 0; ejeX <= semanas; ejeX++) {
 			// Agrega los valores X
-			if (valorX == 53 && ano52Sems) restar = 52;
-			if (valorX == 54 && !restar) restar = 53;
-			ticks.push({v: valorX, f: String(valorX - restar)});
+			const semana = ejeX + semanaActual;
+			if (semana == 53 && ano52Sems) restar = 52;
+			if (semana == 54 && !restar) restar = 53;
+			ticks.push({v: ejeX, f: String(semana - restar)});
 
 			// Agrega los valores Y
-			const antiguos = valorX == minX ? cantLinks[valorX].antiguos : 0;
-			const recientes = valorX == minX ? cantLinks[valorX].recientes : 0;
-			const todos = valorX > minX ? cantLinks[valorX] : 0;
+			const antiguos = !ejeX ? cantLinks[ejeX].antiguos : 0;
+			const recientes = !ejeX ? cantLinks[ejeX].recientes : 0;
+			const todos = ejeX ? cantLinks[ejeX] : 0;
 			total += antiguos + recientes + todos;
-			resultado.push([valorX, antiguos, recientes, todos, ""]);
+			resultado.push([ejeX, antiguos, recientes, todos, ""]);
 		}
 
 		// Especifica la información
@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 		imagenDelGrafico.draw(data, options);
 
 		// Agrega algunos datos relevantes
-		const promedio = parseInt((total / (maxX - minX)) * 10) / 10;
+		const promedio = parseInt((total / semanas) * 10) / 10;
 		algunosDatos.innerHTML = "Prom. Semanal: " + promedio;
 	}
 });
