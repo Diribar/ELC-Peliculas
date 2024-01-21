@@ -138,7 +138,7 @@ module.exports = {
 			const cantParaProcesar = pelisColecsParaProcesar + capsParaProcesar;
 
 			// Obtiene próximo link a procesar
-			const prodSig = await this.obtieneSigProd();
+			const prodSig = await this.obtieneSigProd(revID);
 
 			// Fin
 			return {cantLinksTotal, cantParaProcesar, prodSig};
@@ -864,7 +864,7 @@ let FN_links = {
 	},
 	puleLosResultados: ({productos, revID}) => {
 		// Deja solamente los registros sin problemas de captura
-		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
+				if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
 
 		if (productos.length > 1) {
 			// Elimina los repetidos dentro del grupo
