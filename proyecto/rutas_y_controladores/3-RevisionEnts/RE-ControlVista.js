@@ -509,7 +509,7 @@ module.exports = {
 		const producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		const informacion = procesos.problemasProd(producto, req.session.urlAnterior);
+		const informacion = procesos.links.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Obtiene todos los links
