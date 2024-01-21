@@ -171,7 +171,7 @@ module.exports = {
 					return {...link[asociacion], entidad, familia: "links"};
 				})
 			)
-			.then((prods) => eliminaRepetidos(prods));
+			.then((prods) => comp.eliminaRepetidos(prods));
 
 		// edicsLinks
 		include = ["editadoPor", ...variables.entidades.asocProds];
@@ -184,7 +184,7 @@ module.exports = {
 					return {...edic[asociacion], entidad, familia: "links"};
 				})
 			)
-			.then((prods) => eliminaRepetidos(prods));
+			.then((prods) => comp.eliminaRepetidos(prods));
 
 		// Fin
 		return {regs: {perl: regsPERL, links: regsLinks}, edics: {perl: edicsPERL, links: edicsLinks}};
@@ -839,20 +839,4 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Fin
 	return;
-};
-let eliminaRepetidos = (prods) => {
-	// Rutina
-	for (let i = prods.length - 1; i > 0; i--) {
-		const repetido = prods[i];
-		for (let j = 0; j < i; j++) {
-			const original = prods[j];
-			if (repetido.id == original.id && repetido.entidad == original.entidad) {
-				prods.splice(i, 1);
-				break;
-			}
-		}
-	}
-
-	// Fin
-	return prods;
 };
