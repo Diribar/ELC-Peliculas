@@ -796,10 +796,19 @@ let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
 		const links = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
+		const {originales, ediciones} = links;
 		let respuesta;
 
+		// Si no hay links, interrumpe la función
+		if (!ediciones.length && !originales.length) return;
+
 		// Ediciones
-		if (links.ediciones.length) respuesta = this.obtieneProdLink({links: links.ediciones, datos});
+		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
+		if (respuesta) return respuesta;
+
+		// Altas
+		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
+		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
