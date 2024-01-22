@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
-	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana,linksSemsVidaUtil} = datos;
+	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 
 	// Aspectos de la imagen de Google
