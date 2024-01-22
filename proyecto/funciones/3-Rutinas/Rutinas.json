@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 21/ene",
-	"HoraUTC": "9:13",
+	"FechaUTC": "Lun. 22/ene",
+	"HoraUTC": "15:59",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 15/ene",
-	"HoraSemUTC": "2:16",
-	"semanaUTC": 3,
+	"FechaSemUTC": "Lun. 22/ene",
+	"HoraSemUTC": "15:59",
+	"semanaUTC": 4,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -28,14 +28,14 @@
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-		"CantLinksVencPorSem": "NO"
+		"CantLinksVencPorSem": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-ene-24": {"titulo": "ELC - Películas"},
 		"20-ene-24": {"titulo": "ELC - Películas"},
 		"21-ene-24": {"titulo": "ELC - Películas"},
 		"22-ene-24": {"titulo": "Beata Laura Vicuña", "entidad": "personajes", "id": 119},
-		"23-ene-24": {"titulo": "ELC - Películas"}
+		"23-ene-24": {"titulo": "ELC - Películas"},
+		"24-ene-24": {"titulo": "San Francisco de Sales", "entidad": "personajes", "id": 147}
 	}
 }
