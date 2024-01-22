@@ -524,7 +524,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		if (origen == "TR") sigProd = await procesos.links.obtieneSigProdDistinto({producto, entidad, revID});
+		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
