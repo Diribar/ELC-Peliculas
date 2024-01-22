@@ -1,20 +1,14 @@
-<!-- Tablero -->
 <% if (codigo == "tableroControl") { %><%- include("RE0-TableroControl") %><% } %>
 
-<!-- Altas -->
 <% if (codigo == "producto/alta") { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
-<!-- Otros Cambios de Status -->
 <% if (codigo == "rechazo") { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo == "inactivar-o-recuperar") { %><%- include("FM-Detalle") %><% } %>
 
-<!-- Edición -->
 <% if (codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo.endsWith("/edicion/avatar")) { %><%- include("RE9-EdicionAvatar") %><% } %>
 
-<!-- Solapamiento -->
 <% if (codigo == "rclv/solapamiento") { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
-<!-- Links -->
 <% if (codigo == "abmLinks") { %><%- include("LK1-ABM") %><% } %>

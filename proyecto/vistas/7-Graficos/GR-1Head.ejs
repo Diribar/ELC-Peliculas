@@ -2,6 +2,7 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="/publico/formatos/7-Graficos/GR-Graficos.css">
 
+<!-- Productos -->
 <% if (codigo == "pelisCfcVpc") { %>
     <script src="/publico/javascript/7-Graficos/GR1-pelis-CFC-VPC.js"></script>
 <% } %>
@@ -12,13 +13,15 @@
     <script src="/publico/javascript/7-Graficos/GR1-pelisEpocaEstreno.js"></script>
 <% } %>
 
+<!-- RCLVs -->
+<% if (codigo == "rangosSinEfs") { %>
+    <script src="/publico/javascript/7-Graficos/GR3-rangosSinEfs.js"></script>
+<% } %>
+
+<!-- Links -->
 <% if (codigo == "linksVencim") { %>
     <script src="/publico/javascript/7-Graficos/GR2-linksVencim.js"></script>
 <% } %>
 <% if (codigo == "linksPorProv") { %>
     <script src="/publico/javascript/7-Graficos/GR2-linksPorProv.js"></script>
-<% } %>
-
-<% if (codigo == "rangosSinEfs") { %>
-    <script src="/publico/javascript/7-Graficos/GR3-rangosSinEfs.js"></script>
 <% } %>

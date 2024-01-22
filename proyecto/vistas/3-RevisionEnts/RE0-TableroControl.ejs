@@ -88,12 +88,13 @@
 			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
+					<% const {cantLinksTotal, cantParaProcesar, prodSig} = links %>
 					<!-- Título y ayuda -->
 					<div class="tituloSecundario">
 						<!-- Título -->
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<div id="porcentajeLinksAprobsEstaSem"><%= cantLinksEstaSem + "/" + cantLinksTotal + " = " + (Math.ceil((cantLinksEstaSem / cantLinksTotal) * 1000) / 10).toFixed(1) %>%</div>
+						<div id="porcentajeLinksAprobsEstaSem"><%= cantParaProcesar + "/" + cantLinksTotal + " = " + (Math.ceil((cantParaProcesar / cantLinksTotal) * 1000) / 10).toFixed(1) %>%</div>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -106,11 +107,13 @@
 						</div>
 					</div>
 					<div class="temas">
-						<% let rl = "revision/links" %>
 						<% DE = dataEntry[familias] %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Primera Revisión", regs: prods.PR, url: rl}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Vencidos", regs: prods.VN, url: rl}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "ABM", regs: prods.OT, url: rl}) %>
+						<div id="cuadro" class="bordeConSombra">
+							<% if (prodSig) %><a href="/revision/links/?entidad=<%= prodSig.entidad %>&id=<%= prodSig.id %>"><% { %>
+								<div id="grafico"></div>
+								<div id="algunosDatos"></div>
+							<% if (prodSig) %></a><% } %>
+						</div>
 					</div>
 				</div>
 			<% } %>

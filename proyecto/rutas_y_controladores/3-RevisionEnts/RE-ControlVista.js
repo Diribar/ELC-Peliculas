@@ -15,42 +15,41 @@ module.exports = {
 		const codigo = "tableroControl";
 		const revID = req.session.usuario.id;
 
-		// Productos, Ediciones y Links
+		// Productos y Ediciones
 		let prods1 = procesos.TC.obtieneProdsConEdic(revID); // Altas y Ediciones
 		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // creadoSinEdición, creadoAprobSinEdición, Inactivar y Recuperar
-		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// RCLV
 		let rclvs1 = procesos.TC.obtieneRCLVs(revID);
 		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
 
-		// Espera a que se actualicen todos los resultados
-		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
+		// Links
+		let links = procesos.TC.obtieneProds_Links(revID);
 
-		// Consolida los productos
+		// Espera a que se actualicen todos los resultados
+		[prods1, prods2, rclvs1, rclvs2, links] = await Promise.all([prods1, prods2, rclvs1, rclvs2, links]);
+
+		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
-		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 		delete prods1.AL_conEdicion;
 		delete prods2.AL_sinEdicion;
-		let prods = {...prods1, ...prods2, ...links.productos, AL};
+		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 
-		// Consolida los RCLVs
-		let rclvs = {...rclvs1, ...rclvs2};
-
-		// Procesa los campos de las 2 familias de entidades
+		// Consolida y procesa los productos y RCLVs
+		let prods = {...prods1, ...prods2, AL};
 		prods = procesos.procesaCampos.prods(prods);
+		let rclvs = {...rclvs1, ...rclvs2};
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
-		const {cantLinksEstaSem, cantLinksTotal} = links;
 
 		// Va a la vista
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{prods, rclvs, origen: "TR"},
-			...{dataEntry, cantLinksEstaSem, cantLinksTotal},
+			...{prods, rclvs, links, origen: "TR"},
+			...{dataEntry},
 		});
 	},
 
@@ -266,7 +265,7 @@ module.exports = {
 			}
 
 			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-			if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+			if (rclv && subcodigo == "alta" && aprob) procesos.rlcv.edicAprobRech(entidad, original, revID);
 
 			// Agrega un registro en el histStatus - A. Genera la información
 			let datosHist = {
@@ -510,7 +509,7 @@ module.exports = {
 		const producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		const informacion = procesos.problemasProd(producto, req.session.urlAnterior);
+		const informacion = procesos.links.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Obtiene todos los links
@@ -525,7 +524,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		if (origen == "TR") sigProd = await procesos.sigProd({producto, entidad, revID});
+		if (origen == "TR") sigProd = await procesos.links.obtieneSigProdDistinto({producto, entidad, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar

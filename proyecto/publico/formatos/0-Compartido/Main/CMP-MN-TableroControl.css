@@ -20,7 +20,7 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Scroll */
 #primeraColumna .temas {max-height: 60vh; overflow-y: auto;}
-#segundaColumna .temas {max-height: 30vh; overflow-y: auto;}
+#segundaColumna .temas:not(:has(#grafico)) {max-height: 30vh; overflow-y: auto;}
 #segundaColumna:has(#linksHD) .temas {max-height: 20vh;}
 
 /* Particulares */

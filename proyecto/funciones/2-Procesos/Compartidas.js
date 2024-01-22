@@ -130,38 +130,38 @@ module.exports = {
 		},
 	},
 	obtieneDesdeCampo_id: {
-		entidadProd: (edicion) => {
-			return edicion.pelicula_id
+		entidadProd: (registro) => {
+			return registro.pelicula_id
 				? "peliculas"
-				: edicion.coleccion_id
+				: registro.coleccion_id
 				? "colecciones"
-				: edicion.capitulo_id
+				: registro.capitulo_id
 				? "capitulos"
 				: "";
 		},
-		entidadRCLV: (edicion) => {
-			return edicion.personaje_id
+		entidadRCLV: (registro) => {
+			return registro.personaje_id
 				? "personajes"
-				: edicion.hecho_id
+				: registro.hecho_id
 				? "hechos"
-				: edicion.tema_id
+				: registro.tema_id
 				? "temas"
-				: edicion.evento_id
+				: registro.evento_id
 				? "eventos"
-				: edicion.epocaDelAno_id
+				: registro.epocaDelAno_id
 				? "epocasDelAno"
 				: "";
 		},
-		entidad: function (edicion, familiaEdic) {
-			const producto = this.entidadProd(edicion);
-			const RCLV = this.entidadRCLV(edicion);
+		entidad: function (registro, familiaEdic) {
+			const producto = this.entidadProd(registro);
+			const RCLV = this.entidadRCLV(registro);
 
 			// Fin
 			return familiaEdic == "prodsEdicion"
 				? producto
 				: familiaEdic == "rclvsEdicion"
 				? RCLV
-				: edicion.link_id
+				: registro.link_id
 				? "links"
 				: RCLV
 				? RCLV
@@ -169,53 +169,53 @@ module.exports = {
 				? producto
 				: "";
 		},
-		campo_idProd: (edicion) => {
-			return edicion.pelicula_id
+		campo_idProd: (registro) => {
+			return registro.pelicula_id
 				? "pelicula_id"
-				: edicion.coleccion_id
+				: registro.coleccion_id
 				? "coleccion_id"
-				: edicion.capitulo_id
+				: registro.capitulo_id
 				? "capitulo_id"
 				: "";
 		},
-		campo_idRCLV: (edicion) => {
-			return edicion.personaje_id
+		campo_idRCLV: (registro) => {
+			return registro.personaje_id
 				? "personaje_id"
-				: edicion.hecho_id
+				: registro.hecho_id
 				? "hecho_id"
-				: edicion.tema_id
+				: registro.tema_id
 				? "tema_id"
-				: edicion.evento_id
+				: registro.evento_id
 				? "evento_id"
-				: edicion.epocaDelAno_id
+				: registro.epocaDelAno_id
 				? "epocaDelAno_id"
 				: "";
 		},
-		campo_id: function (edicion) {
-			const producto = this.campo_idProd(edicion);
-			const RCLV = this.campo_idRCLV(edicion);
-			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+		campo_id: function (registro) {
+			const producto = this.campo_idProd(registro);
+			const RCLV = this.campo_idRCLV(registro);
+			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
 		},
-		asocProd: (edicion) => {
-			return edicion.pelicula_id ? "pelicula" : edicion.coleccion_id ? "coleccion" : edicion.capitulo_id ? "capitulo" : "";
+		asocProd: (registro) => {
+			return registro.pelicula_id ? "pelicula" : registro.coleccion_id ? "coleccion" : registro.capitulo_id ? "capitulo" : "";
 		},
-		asocRCLV: (edicion) => {
-			return edicion.personaje_id
+		asocRCLV: (registro) => {
+			return registro.personaje_id
 				? "personaje"
-				: edicion.hecho_id
+				: registro.hecho_id
 				? "hecho"
-				: edicion.tema_id
+				: registro.tema_id
 				? "tema"
-				: edicion.evento_id
+				: registro.evento_id
 				? "evento"
-				: edicion.epocaDelAno_id
+				: registro.epocaDelAno_id
 				? "epocaDelAno"
 				: "";
 		},
-		asociacion: function (edicion) {
-			const producto = this.asocProd(edicion);
-			const RCLV = this.asocRCLV(edicion);
-			return edicion.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+		asociacion: function (registro) {
+			const producto = this.asocProd(registro);
+			const RCLV = this.asocRCLV(registro);
+			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
 		},
 	},
 	convierteLetras: {
@@ -677,9 +677,6 @@ module.exports = {
 		// Variables
 		let resultado = [];
 
-		// Ordena los productos por su fecha más antigua primero
-		prods.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
 		// Agrega los nuevos
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
 
@@ -784,15 +781,14 @@ module.exports = {
 		// Fin
 		return;
 	},
-	cantLinksVencPorSem: async () => {
+	actualizaLinksVencPorSem: async () => {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-		const semsVidaUtil = linksVidaUtil / unaSemana;
 		const prodAprob = true;
 		cantLinksVencPorSem = {};
 
 		// Crea las semanas dentro de la variable
-		for (let i = 0; i <= semsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
+		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
 		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
@@ -802,7 +798,8 @@ module.exports = {
 		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
-		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes};
+		const capitulos = creadoAprobs.filter((n) => n.capitulo_id).length;
+		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes, capitulos};
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
