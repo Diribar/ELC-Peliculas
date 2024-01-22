@@ -668,8 +668,8 @@ window.addEventListener("load", async () => {
 
 				// Menor o igual que el año actual
 				if (valor) {
-					let anoIngresado = parseInt(valor);
-					let anoActual = new Date().getFullYear();
+					const anoIngresado = parseInt(valor);
+					const anoActual = new Date().getFullYear();
 					valor = Math.min(anoIngresado, anoActual);
 				}
 

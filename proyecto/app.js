@@ -6,11 +6,12 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 // Variable 'global' - Links
-global.vidaPrimRevision = unaSemana * 4;
-global.vidaUtilLinks = unaSemana * 26;
+global.linksPrimRev = unaSemana * 4;
+global.linksVidaUtil = unaSemana * 26;
 global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
+global.linkAnoReciente = 3; // cantidad de años
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'

@@ -26,6 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
+		// comp.fechaVencimLinks();
 
 		// Fin
 		console.log();
@@ -542,8 +543,8 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - vidaPrimRevision);
-		const fechaVidaUtil = new Date(lunesDeEstaSemana - vidaUtilLinks);
+		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - linksPrimRev);
+		const fechaVidaUtil = new Date(lunesDeEstaSemana - linksVidaUtil);
 		const ahora = new Date();
 
 		// Condiciones y nuevo status
@@ -771,23 +772,3 @@ let eliminaHistorialQueNoCorresponde = async () => {
 	// Fin
 	return;
 };
-let fechaVencimLinks=async()=>{
-	// Variables
-	const include=variables.entidades.asocProds
-
-	// Obtiene todos los links con sus vínculos de prods
-	const links=await BD_genericas.obtieneTodosConInclude("links",include)
-
-	// Rutina por link
-	for (let link of links) {
-		// Obtiene el anoEstreno de c/u
-		const campo_id=comp.obtieneDesdeEdicion
-
-		// Se calcula la fechaVencim - primRev o reciente o null, 4 sems
-
-		// Se actualiza el link con el anoEstreno y la fechaVencim
-
-	}
-
-
-}
