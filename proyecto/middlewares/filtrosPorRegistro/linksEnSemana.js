@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
-	// Averigua si registros para procesar
+	// Averigua si hay registros para procesar
 	const entidad = req.query == "capitulos" ? "capsParaProc" : "pelisColesParaProc";
 	const hayRegistros = cantLinksVencPorSem[entidad];
 
