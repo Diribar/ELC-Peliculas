@@ -70,7 +70,7 @@ module.exports = {
 	},
 	linksVencim: async (req, res) => {
 		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
-		return res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana});
+		return res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil});
 	},
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
