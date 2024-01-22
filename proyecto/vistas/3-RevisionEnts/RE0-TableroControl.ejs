@@ -88,13 +88,13 @@
 			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
-					<% const {cantLinksTotal, cantParaProcesar, prodSig} = links %>
+					<% const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem %>
 					<!-- Título y ayuda -->
 					<div class="tituloSecundario">
 						<!-- Título -->
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<div id="porcentajeLinksAprobsEstaSem"><%= cantParaProcesar + "/" + cantLinksTotal + " = " + (Math.ceil((cantParaProcesar / cantLinksTotal) * 1000) / 10).toFixed(1) %>%</div>
+						<div id="porcentajeLinksAprobsEstaSem">Pends: <%= pelisColesParaProc + capsParaProc %></div>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">

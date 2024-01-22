@@ -839,7 +839,7 @@ module.exports = {
 
 		// pendientesProcesar
 		const capsPends = cantLinksVencPorSem.capitulos;
-		delete cantLinksVencPorSem.capitulos
+		delete cantLinksVencPorSem.capitulos;
 		const pelisColecsPends = cantPends - capsPends;
 
 		// linksParaProcesar

@@ -76,6 +76,7 @@ module.exports = {
 		// Variables
 		const {url, IN, aprob, motivo_id} = req.query;
 		const entidad = "links";
+		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 		// PROBLEMAS
 		// Averigua si existe el dato del 'url'
