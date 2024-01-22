@@ -197,7 +197,13 @@ module.exports = {
 			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
 		},
 		asocProd: (registro) => {
-			return registro.pelicula_id ? "pelicula" : registro.coleccion_id ? "coleccion" : registro.capitulo_id ? "capitulo" : "";
+			return registro.pelicula_id
+				? "pelicula"
+				: registro.coleccion_id
+				? "coleccion"
+				: registro.capitulo_id
+				? "capitulo"
+				: "";
 		},
 		asocRCLV: (registro) => {
 			return registro.personaje_id
@@ -354,6 +360,8 @@ module.exports = {
 	},
 	gestionArchivos: {
 		existe: (rutaNombre) => {
+			//console.log(357,rutaNombre);
+			console.log(358, rutaNombre, fs.existsSync(rutaNombre));
 			return rutaNombre && fs.existsSync(rutaNombre);
 		},
 		carpetaProvisorio: function () {
