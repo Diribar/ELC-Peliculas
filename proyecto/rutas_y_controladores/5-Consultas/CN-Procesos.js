@@ -149,6 +149,7 @@ module.exports = {
 		},
 		obtieneRclvs: {
 			consolidado: function (configCons) {
+				if (configCons.entidad == "productos") return null;
 				return configCons.opcion.codigo.startsWith("fechaDelAno")
 					? this.porFechaDelAno(configCons)
 					: this.comun(configCons);
@@ -164,7 +165,6 @@ module.exports = {
 					if (entidad == "rclvs") entidad = "personajes";
 					if (entidad != "personajes") return [];
 				}
-				if (entidad == "productos") return null;
 
 				// Obtiene los RCLVs
 				if (entidad == "rclvs") {
@@ -651,7 +651,7 @@ module.exports = {
 			const cantResults = opcion.cantidad;
 
 			// Botones
-			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, opcion, configCons});
+			if (opcion.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, configCons});
 			else if (cantResults) resultados.splice(cantResults);
 
 			// Fin
@@ -747,7 +747,7 @@ module.exports = {
 
 // Funciones
 let alAzar = {
-	consolidado: function ({resultados, cantResults, opcion, configCons}) {
+	consolidado: function ({resultados, cantResults, configCons}) {
 		// Variables
 		let v = {
 			resultados,
@@ -761,17 +761,14 @@ let alAzar = {
 
 		// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 		v.seDebeEquilibrar =
-			opcion.codigo == "azar" &&
 			!configCons.cfc && // 'cfc' no está contestado
 			!configCons.apMar && // 'apMar' no está contestado
 			(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
 			!configCons.rolesIgl; // 'rolesIgl' no está contestado
 
 		// Elije los productos
-		if (opcion.codigo == "azar") {
-			this.porAltaUltimosDias(v);
-			for (let epocaEstreno of epocasEstreno) this.porEpocaDeEstreno({epocaEstreno, v});
-		}
+		this.porAltaUltimosDias(v);
+		for (let epocaEstreno of epocasEstreno) this.porEpocaDeEstreno({epocaEstreno, v});
 
 		// Agrega registros hasta llegar a cuatro
 		let indice = 0;
@@ -786,7 +783,7 @@ let alAzar = {
 		}
 
 		// Si corresponde, ordena los resultados
-		if (opcion.codigo == "azar") v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
+		v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 		// Fin
 		return v.productos;
@@ -814,12 +811,15 @@ let alAzar = {
 		if (v.productos.find((n) => n.epocaEstreno_id == epocaID)) return;
 
 		// Obtiene cfc/vpc
-		const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
-		const cfc = v.seDebeEquilibrar && contraparte ? (contraparte.cfc ? false : true) : null;
 
 		// Obtiene los productos de esa época de estreno
 		v.resultado = v.resultados.filter((n) => n.epocaEstreno_id == epocaID);
-		if (v.resultado.length && cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
+		if (v.resultado.length && v.seDebeEquilibrar) {
+			// Si se debe equilibrar entre 'cfc' y 'vpc', descarta los que correspondan
+			const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
+			const cfc = contraparte ? (contraparte.cfc ? false : true) : null;
+			if (cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
+		}
 
 		// Agrega un botón
 		if (v.resultado.length) {

@@ -784,33 +784,32 @@ module.exports = {
 		// Fin
 		return;
 	},
-	cantLinksVencPorSem: async (req, res) => {
+	cantLinksVencPorSem: async () => {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
+		const semsVidaUtil = linksVidaUtil / unaSemana;
 		const prodAprob = true;
 		cantLinksVencPorSem = {};
+
+		// Crea las semanas dentro de la variable
+		for (let i = 0; i <= semsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
 		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
 		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
 		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
 
-		// Obtiene la cantidad de 'creadoAprobs'
+		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
-		cantLinksVencPorSem[semanaUTC] = {antiguos, recientes, total: antiguos + recientes};
+		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes};
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
 			const fechaVencim = new Date(link.fechaVencim).getTime();
-			const semVencim = parseInt((fechaVencim - primerLunesDelAno) / unaSemana) + 1; // se le suma '1', porque la primera semana del año es '1'
+			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
 			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
 		}
-
-		// Se asegura de que haya un valor para cada semana en el eje horizontal
-		const minX = Math.min(...Object.keys(cantLinksVencPorSem));
-		const maxX = Math.max(...Object.keys(cantLinksVencPorSem));
-		for (let i = minX; i <= maxX; i++) if (!cantLinksVencPorSem[i]) cantLinksVencPorSem[i] = 0;
 
 		// Fin
 		return;

@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 20/ene",
-	"HoraUTC": "15:07",
+	"FechaUTC": "Dom. 21/ene",
+	"HoraUTC": "9:13",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 15/ene",
@@ -27,14 +27,15 @@
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
-		"EliminaHistorialDeRegsEliminados": "SI"
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"CantLinksVencPorSem": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"18-ene-24": {"titulo": "ELC - Películas"},
 		"19-ene-24": {"titulo": "ELC - Películas"},
 		"20-ene-24": {"titulo": "ELC - Películas"},
 		"21-ene-24": {"titulo": "ELC - Películas"},
-		"22-ene-24": {"titulo": "Beata Laura Vicuña", "entidad": "personajes", "id": 119}
+		"22-ene-24": {"titulo": "Beata Laura Vicuña", "entidad": "personajes", "id": 119},
+		"23-ene-24": {"titulo": "ELC - Películas"}
 	}
 }
