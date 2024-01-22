@@ -814,6 +814,7 @@ let FN_links = {
 		productos = this.obtieneProds(links);
 		productos = this.puleLosResultados({productos, revID});
 
+		// Devuelve un producto o link
 		if (productos.length) {
 			if (entidad && id) {
 				const link = this.prodDistintoAlActual({productos, entidad, id});
@@ -821,6 +822,7 @@ let FN_links = {
 			} else return {entidad: productos[0].entidad, id: productos[0].id};
 		}
 
+		// Fin
 		return;
 	},
 	obtieneProds: (links) => {
