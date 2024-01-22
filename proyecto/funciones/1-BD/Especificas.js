@@ -49,7 +49,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) =>
 					n.map((m) => {
-						const entidad = comp.obtieneDesdeEdicion.entidad(m, dato.entidad);
+						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
 						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
 						return {
 							entidad,
@@ -121,7 +121,7 @@ module.exports = {
 		},
 		obtieneLinks: async () => {
 			// Variables
-			const include = variables.asocs.prods;
+			const include = variables.entidades.asocProds;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {

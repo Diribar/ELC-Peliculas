@@ -44,7 +44,7 @@ module.exports = {
 					// Obtiene los productos de esas ediciones
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
-						let entProd = comp.obtieneDesdeEdicion.entidadProd(edicion);
+						let entProd = comp.obtieneDesdeCampo_id.entidadProd(edicion);
 						let campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
 						let entID = edicion[campo_id];
 						// Obtiene los registros del producto original y su edición por el usuario

@@ -94,7 +94,7 @@ module.exports = {
 	},
 	obtieneLinksInactivos: async (userID) => {
 		// Variables
-		let include = variables.asocs.prods;
+		let include = variables.entidades.asocProds;
 		let condicion = {statusRegistro_id: inactivo_id};
 
 		// Obtiene los links 'a revisar'
@@ -115,7 +115,7 @@ let obtieneProdsDeLinks = function (links, userID) {
 	// Obtiene los prods
 	for (let link of links) {
 		// Variables
-		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		let fechaRef = link.statusSugeridoEn;
 		let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);

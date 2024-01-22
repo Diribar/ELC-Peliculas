@@ -142,15 +142,15 @@ module.exports = {
 
 		// edicsPERL
 		entsPERL = ["prodsEdicion", "rclvsEdicion"];
-		include = {prodsEdicion: variables.asocs.prods, rclvsEdicion: variables.asocs.rclvs};
+		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
 			let registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
-						const asociacion = comp.obtieneDesdeEdicion.asociacion(edic);
-						const entidad = comp.obtieneDesdeEdicion.entidad(edic, entPERL);
+						const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
+						const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
 						const familia = comp.obtieneDesdeEntidad.familia(entidad);
 						return {...edic[asociacion], entidad, familia};
 					})
@@ -161,26 +161,26 @@ module.exports = {
 
 		// regsLinks
 		condiciones = {...condiciones, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.asocs.prods];
+		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
 		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(link);
-					const entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+					const asociacion = comp.obtieneDesdeCampo_id.asocProd(link);
+					const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 					return {...link[asociacion], entidad, familia: "links"};
 				})
 			)
 			.then((prods) => eliminaRepetidos(prods));
 
 		// edicsLinks
-		include = ["editadoPor", ...variables.asocs.prods];
+		include = ["editadoPor", ...variables.entidades.asocProds];
 		const edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
-					const asociacion = comp.obtieneDesdeEdicion.asocProd(edic);
-					const entidad = comp.obtieneDesdeEdicion.entidadProd(edic);
+					const asociacion = comp.obtieneDesdeCampo_id.asocProd(edic);
+					const entidad = comp.obtieneDesdeCampo_id.entidadProd(edic);
 					return {...edic[asociacion], entidad, familia: "links"};
 				})
 			)
@@ -711,12 +711,12 @@ let nombres = async (reg, familia) => {
 			"</a>";
 	} else {
 		// Obtiene el registro
-		const asocs = variables.asocs.prods;
+		const asocs = variables.entidades.asocProds;
 		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asocs);
 		if (!regEntidad.id) return {};
 
 		// Obtiene los nombres
-		const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEntidad);
 		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
 		nombreVisual =
 			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";

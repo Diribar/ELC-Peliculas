@@ -68,8 +68,8 @@ module.exports = {
 		// Obtiene el link
 		const link = await BD_genericas.obtienePorId("links", linkID); // link
 		const provLink = linksProvs.find((n) => n.id == link.prov_id); // provLink
-		const entidad = comp.obtieneDesdeEdicion.entidadProd(link); // entidad del producto
-		const id = link[comp.obtieneDesdeEdicion.campo_idProd(link)]; // id del producto
+		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link); // entidad del producto
+		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)]; // id del producto
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);

@@ -50,7 +50,7 @@ module.exports = {
 
 				// Includes
 				let include = [];
-				if (!opcion.codigo.startsWith("fechaDelAno")) include.push(...variables.asocs.rclvs);
+				if (!opcion.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
 				if (opcion.codigo == "anoEstreno") include.push("epocaEstreno");
 				if (opcion.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
 				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(configCons).includes(n))) include.push("personaje");
@@ -388,7 +388,7 @@ module.exports = {
 				// Variables
 				let campos = ["nombreOriginal", "nombreCastellano", "sinopsis"];
 				campos.push("direccion", "guion", "musica", "actores", "produccion");
-				const camposInclude = variables.asocs.rclvs;
+				const camposInclude = variables.entidades.asocRclvs;
 				palabrasClave = palabrasClave.toLowerCase();
 
 				// Rutina por producto

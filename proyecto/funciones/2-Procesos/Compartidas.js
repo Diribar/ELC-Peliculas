@@ -129,7 +129,7 @@ module.exports = {
 				: "";
 		},
 	},
-	obtieneDesdeEdicion: {
+	obtieneDesdeCampo_id: {
 		entidadProd: (edicion) => {
 			return edicion.pelicula_id
 				? "peliculas"
