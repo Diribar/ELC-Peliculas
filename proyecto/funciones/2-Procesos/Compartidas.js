@@ -848,7 +848,6 @@ module.exports = {
 
 		// Agrega la información
 		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc};
-		console.log(847, cantLinksVencPorSem);
 
 		// Fin
 		return;
