@@ -1,21 +1,12 @@
 "use strict";
 window.addEventListener("load", async () => {
+	// Variables
+	const algunosDatos = document.querySelector("#zonaDeGraficos #cuadro #algunosDatos");
+	const grafico = document.querySelector("#zonaDeGraficos #cuadro #grafico");
+
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
-	const {sinPrimRev, conPrimRev, primerLunesDelAno, unaSemana} = datos;
-	let {antiguos} = datos;
-
-	// Eje horizontal
-	const sinPrimRevX = Object.keys(sinPrimRev).map((n) => Number(n));
-	const conPrimRevX = Object.keys(conPrimRev).map((n) => Number(n));
-	const minX = Math.min(...sinPrimRevX, ...conPrimRevX);
-	const maxX = Math.max(...sinPrimRevX, ...conPrimRevX);
-
-	// Se asegura de que haya un valorY para cada semana
-	for (let i = minX; i <= maxX; i++) {
-		if (!sinPrimRev[i]) sinPrimRev[i] = 0;
-		if (!conPrimRev[i]) conPrimRev[i] = 0;
-	}
+	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, unaSemana} = datos;
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -25,21 +16,28 @@ window.addEventListener("load", async () => {
 	function drawGraphic() {
 		// Variables
 		const resultado = [["Semana", "Ant.", "Venc.", "Nuevos", {role: "annotation"}]];
-		const ano52Sems =
-			new Date(primerLunesDelAno + unaSemana * 53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
+		const lunesSemana53 = primerLunesDelAno + unaSemana * 53;
+		const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
 		let restar = 0;
 		let ticks = [];
+		let total = 0;
 
 		// Consolida el resultado
+		const minX = Number(Object.keys(cantLinks).shift());
+		const maxX = Number(Object.keys(cantLinks).pop());
+
 		for (let valorX = minX; valorX <= maxX; valorX++) {
-			// Averigua si cambia el año
+			// Agrega los valores X
 			if (valorX == 53 && ano52Sems) restar = 52;
 			if (valorX == 54 && !restar) restar = 53;
-
-			// Agrega los valores
-			resultado.push([valorX, antiguos, conPrimRev[valorX], sinPrimRev[valorX], ""]);
 			ticks.push({v: valorX, f: String(valorX - restar)});
-			if (antiguos) antiguos = 0;
+
+			// Agrega los valores Y
+			const antiguos = valorX == minX ? cantLinks[valorX].antiguos : 0;
+			const recientes = valorX == minX ? cantLinks[valorX].recientes : 0;
+			const todos = valorX > minX ? cantLinks[valorX] : 0;
+			total += antiguos + recientes + todos;
+			resultado.push([valorX, antiguos, recientes, todos, ""]);
 		}
 
 		// Especifica la información
@@ -72,7 +70,11 @@ window.addEventListener("load", async () => {
 		};
 
 		// Hace visible el gráfico
-		const grafico = new google.visualization.ColumnChart(document.querySelector("#grafico"));
-		grafico.draw(data, options);
+		const imagenDelGrafico = new google.visualization.ColumnChart(grafico);
+		imagenDelGrafico.draw(data, options);
+
+		// Agrega algunos datos relevantes
+		const promedio = parseInt((total / (maxX - minX)) * 10) / 10;
+		algunosDatos.innerHTML = "Prom. Semanal: " + promedio;
 	}
 });

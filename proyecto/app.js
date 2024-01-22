@@ -12,6 +12,7 @@ global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
 global.linkAnoReciente = 3; // cantidad de años
+global.cantLinksVencPorSem = null;
 
 // Variable 'global' - Otras
 global.usAutom_id = 2; // usuario 'automático'

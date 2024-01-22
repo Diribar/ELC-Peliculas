@@ -761,7 +761,6 @@ module.exports = {
 		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 		// Rutina por link
-		let i = 0;
 		for (let link of links) {
 			// Obtiene el anoEstreno
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
@@ -769,20 +768,49 @@ module.exports = {
 			const anoEstreno = producto.anoEstreno;
 
 			// Averigua si es un linkReciente y sin primRev
+			const sinPrimRev = !link.yaTuvoPrimRev;
 			const anoReciente = anoActual - linkAnoReciente;
-			const linkReciente = !link.anoEstreno || link.anoEstreno > anoReciente;
-			const linkPrimRev = !link.yaTuvoPrimRev;
+			const linkReciente = !anoEstreno || anoEstreno > anoReciente;
 
 			// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 			const desde = link.statusSugeridoEn.getTime();
-			const fechaVencimNum = desde + (linkPrimRev || linkReciente ? linksPrimRev : linksVidaUtil);
+			const fechaVencimNum = desde + (sinPrimRev || linkReciente ? linksPrimRev : linksVidaUtil);
 			const fechaVencim = new Date(fechaVencimNum);
 
 			// Se actualiza el link con el anoEstreno y la fechaVencim
-			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim});
-			// if (!i) console.log(799, anoEstreno, fechaVencim, link);
-			i++;
+			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente});
 		}
+
+		// Fin
+		return;
+	},
+	cantLinksVencPorSem: async (req, res) => {
+		// Variables
+		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
+		const prodAprob = true;
+		cantLinksVencPorSem = {};
+
+		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
+		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
+		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
+		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
+
+		// Obtiene la cantidad de 'creadoAprobs'
+		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
+		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
+		cantLinksVencPorSem[semanaUTC] = {antiguos, recientes, total: antiguos + recientes};
+
+		// Obtiene la cantidad por semana de los 'aprobados'
+		for (let link of aprobados) {
+			const fechaVencim = new Date(link.fechaVencim).getTime();
+			const semVencim = parseInt((fechaVencim - primerLunesDelAno) / unaSemana) + 1; // se le suma '1', porque la primera semana del año es '1'
+			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
+		}
+
+		// Se asegura de que haya un valor para cada semana en el eje horizontal
+		const minX = Math.min(...Object.keys(cantLinksVencPorSem));
+		const maxX = Math.max(...Object.keys(cantLinksVencPorSem));
+		for (let i = minX; i <= maxX; i++) if (!cantLinksVencPorSem[i]) cantLinksVencPorSem[i] = 0;
 
 		// Fin
 		return;
@@ -873,6 +901,34 @@ module.exports = {
 			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 			link.href = provEmbeded ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
 		}
+	},
+	variablesSemanales: function () {
+		this.primerLunesDelAno();
+
+		// Otras variables
+		semanaUTC = parseInt((Date.now() - primerLunesDelAno) / unDia / 7) + 1;
+		lunesDeEstaSemana = primerLunesDelAno + (semanaUTC - 1) * unaSemana;
+
+		// Fin
+		return;
+	},
+	primerLunesDelAno: function (fecha) {
+		// Obtiene el primer día del año
+		fecha = fecha ? new Date(fecha) : new Date();
+		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
+		const comienzoAnoUTC = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria;
+
+		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado: 6)
+		const diaSemComienzoAnoUTC = new Date(comienzoAnoUTC).getUTCDay();
+
+		// Obtiene el primer lunes del año
+		let diasAdicsPorLunes = 1 - diaSemComienzoAnoUTC;
+		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
+		primerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
+
+		// Fin
+		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
+		return;
 	},
 };
 

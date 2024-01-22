@@ -10,7 +10,7 @@ module.exports = {
 	startupMasConfiguracion: async function () {
 		// Variables
 		this.variablesDiarias();
-		this.variablesSemanales();
+		comp.variablesSemanales();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -26,7 +26,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		// comp.fechaVencimLinks();
+		//comp.cantLinksVencPorSem();
 
 		// Fin
 		console.log();
@@ -469,7 +469,7 @@ module.exports = {
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
-		this.variablesSemanales();
+		comp.variablesSemanales();
 
 		// Obtiene la información del archivo JSON
 		let info = {...rutinasJSON};
@@ -543,20 +543,11 @@ module.exports = {
 	},
 	LinksVencidos: async function () {
 		// Variables
-		const fechaPrimeraRevision = new Date(lunesDeEstaSemana - linksPrimRev);
-		const fechaVidaUtil = new Date(lunesDeEstaSemana - linksVidaUtil);
+		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 		const ahora = new Date();
 
 		// Condiciones y nuevo status
-		const condiciones = [
-			{statusRegistro_id: aprobado_id},
-			{
-				[Op.or]: [
-					{statusSugeridoEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
-					{statusSugeridoEn: {[Op.lt]: fechaVidaUtil}, yaTuvoPrimRev: true}, // Concluyó su vida útil
-				],
-			},
-		];
+		const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
 		const status = {
 			statusSugeridoPor_id: usAutom_id,
 			statusRegistro_id: creadoAprob_id,
@@ -707,34 +698,6 @@ module.exports = {
 		}
 
 		// Fin
-		return;
-	},
-	variablesSemanales: function () {
-		this.PrimerLunesDelAno();
-
-		// Otras variables
-		semanaUTC = parseInt((Date.now() - primerLunesDelAno) / unDia / 7) + 1;
-		lunesDeEstaSemana = primerLunesDelAno + (semanaUTC - 1) * unaSemana;
-
-		// Fin
-		return;
-	},
-	PrimerLunesDelAno: function (fecha) {
-		// Obtiene el primer día del año
-		fecha = fecha ? new Date(fecha) : new Date();
-		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
-		const comienzoAnoUTC = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria;
-
-		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado: 6)
-		const diaSemComienzoAnoUTC = new Date(comienzoAnoUTC).getUTCDay();
-
-		// Obtiene el primer lunes del año
-		let diasAdicsPorLunes = 1 - diaSemComienzoAnoUTC;
-		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
-		primerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
-
-		// Fin
-		if (primerLunesDelAno > fecha.getTime()) this.PrimerLunesDelAno(fecha.getTime() - unaSemana);
 		return;
 	},
 };
