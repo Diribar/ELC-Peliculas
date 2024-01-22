@@ -109,10 +109,10 @@
 					<div class="temas">
 						<% DE = dataEntry[familias] %>
 						<div id="cuadro" class="bordeConSombra">
-							<% if (prodSig) %><a href="/revision/links/?entidad=<%= prodSig.entidad %>&id=<%= prodSig.id %>"><% { %>
+							<% if (prodSig) { %><a href="/revision/links/?entidad=<%= prodSig.entidad %>&id=<%= prodSig.id %>"><% } %>
 								<div id="grafico"></div>
 								<div id="algunosDatos"></div>
-							<% if (prodSig) %></a><% } %>
+							<% if (prodSig) { %></a><% } %>
 						</div>
 					</div>
 				</div>

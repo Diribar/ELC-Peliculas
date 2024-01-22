@@ -1,6 +1,5 @@
 "use strict";
 // Variables
-const procsRutinas = require("../../funciones/3-Rutinas/RT-Control");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
@@ -137,31 +136,11 @@ module.exports = {
 			const capsParaProcesar = Math.min(capsPosibles, capsPends);
 			const cantParaProcesar = pelisColecsParaProcesar + capsParaProcesar;
 
-			// Obtiene próximo link a procesar
-			const prodSig = await this.obtieneSigProd(revID);
+			// Obtiene el producto con el próximo link a procesar
+			const prodSig = await FN_links.obtieneSigProd({revID});
 
 			// Fin
 			return {cantLinksTotal, cantParaProcesar, prodSig};
-		},
-		obtieneSigProd: async (revID) => {
-			// Obtiene los links 'a revisar'
-			let links = await BD_especificas.TC.obtieneLinks();
-
-			// Ediciones
-			if (links.ediciones.length) {
-				// Obtiene los productos y pule los resultados
-				let productos = FN_links.obtieneLosProds(links.ediciones);
-				productos = FN_links.puleLosResultados({productos, revID});
-
-				// Fin
-				if (productos.length) {
-					const {entidad, id} = productos[0];
-					return {entidad, id};
-				}
-			}
-
-			// Fin
-			return null;
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
@@ -712,7 +691,7 @@ module.exports = {
 		},
 	},
 
-	// Links - Vista
+	// Links
 	links: {
 		problemasProd: (producto, urlAnterior) => {
 			// Variables
@@ -729,33 +708,7 @@ module.exports = {
 			// Fin
 			return informacion;
 		},
-		obtieneSigProdDistinto: async function ({entidad, id, revID}) {
-			// Obtiene los links 'a revisar'
-			let links = await BD_especificas.TC.obtieneLinks();
-
-			// Obtiene los productos y pule los resultados
-			let productos = FN_links.obtieneLosProds(links.ediciones);
-			productos = FN_links.puleLosResultados({productos, revID});
-
-			// Elije un producto distinto al producto vigente
-			const sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
-
-			// Genera el link
-			const link = sigProd
-				? "/inactivar-captura/?entidad=" +
-				  entidad +
-				  "&id=" +
-				  id +
-				  "&prodEntidad=" +
-				  sigProd.entidad +
-				  "&prodID=" +
-				  sigProd.id +
-				  "&origen=RLK"
-				: "";
-
-			// Fin
-			return link;
-		},
+		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
 	},
 
 	// Varios
@@ -840,7 +793,39 @@ let purgaEdicionRclv = (edicion, entidad) => {
 	return edicion;
 };
 let FN_links = {
-	obtieneLosProds: (links) => {
+	obtieneSigProd: async function (datos) {
+		// Variables
+		const links = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
+		let respuesta;
+
+		// Ediciones
+		if (links.ediciones.length) respuesta = this.obtieneProdLink({links: links.ediciones, datos});
+		if (respuesta) return respuesta;
+
+		// Fin
+		return null;
+	},
+	obtieneProdLink: function ({links, datos}) {
+		// Variables
+		const {entidad, id, revID} = datos;
+		let productos;
+
+		// Obtiene los productos
+		productos = this.obtieneProds(links);
+		productos = this.puleLosResultados({productos, revID});
+
+		// Devuelve un producto o link
+		if (productos.length) {
+			if (entidad && id) {
+				const link = this.prodDistintoAlActual({productos, entidad, id});
+				if (link) return link;
+			} else return {entidad: productos[0].entidad, id: productos[0].id};
+		}
+
+		// Fin
+		return;
+	},
+	obtieneProds: (links) => {
 		// Variables
 		let productos = [];
 
@@ -866,6 +851,7 @@ let FN_links = {
 		// Deja solamente los registros sin problemas de captura
 		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
 
+		// Acciones si hay más de un producto
 		if (productos.length > 1) {
 			// Elimina los repetidos dentro del grupo
 			productos = comp.eliminaRepetidos(productos);
@@ -881,6 +867,26 @@ let FN_links = {
 
 		// Fin
 		return productos;
+	},
+	prodDistintoAlActual: ({productos, entidad, id}) => {
+		// Elije un producto distinto al vigente
+		const sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
+
+		// Genera el link
+		const link = sigProd
+			? "/inactivar-captura/?entidad=" +
+			  entidad +
+			  "&id=" +
+			  id +
+			  "&prodEntidad=" +
+			  sigProd.entidad +
+			  "&prodID=" +
+			  sigProd.id +
+			  "&origen=RLK"
+			: null;
+
+		// Fin
+		return link;
 	},
 };
 let obtieneRegs = async (campos) => {
