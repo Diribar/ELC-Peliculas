@@ -24,4 +24,4 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 #segundaColumna:has(#linksHD) .temas {max-height: 20vh;}
 
 /* Particulares */
-#porcentajeLinksAprobsEstaSem {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}
+#linksPends {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}
