@@ -3,11 +3,14 @@ const procesos = require("../../rutas_y_controladores/3-RevisionEnts/RE-Procesos
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const revID = req.session.usuario.id;
-	const prodSig = await procesos.links.obtieneSigProd({revID});
+	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
-	// Obtiene los links y si no hay alguno en algún status esperado, redirige al tablero
-	if (!prodSig) return res.redirect("/revision/tablero-de-control")
+	// Averigua si registros para procesar
+	const entidad = req.query == "capitulos" ? "capsParaProc" : "pelisColesParaProc";
+	const hayRegistros = cantLinksVencPorSem[entidad];
+
+	// Si no hay registros a procesar, redirige al tablero
+	if (!hayRegistros) return res.redirect("/revision/tablero-de-control");
 
 	// Fin
 	return next();
