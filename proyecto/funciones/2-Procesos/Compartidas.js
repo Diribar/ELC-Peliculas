@@ -360,8 +360,6 @@ module.exports = {
 	},
 	gestionArchivos: {
 		existe: (rutaNombre) => {
-			//console.log(357,rutaNombre);
-			console.log(358, rutaNombre, fs.existsSync(rutaNombre));
 			return rutaNombre && fs.existsSync(rutaNombre);
 		},
 		carpetaProvisorio: function () {
