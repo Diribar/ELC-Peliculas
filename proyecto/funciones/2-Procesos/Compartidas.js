@@ -847,7 +847,7 @@ module.exports = {
 		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Agrega la información
-		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc, cantPromedio};
 
 		// Fin
 		return;
