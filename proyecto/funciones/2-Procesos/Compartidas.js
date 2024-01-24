@@ -759,6 +759,7 @@ module.exports = {
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
 		const include = variables.entidades.asocProds;
+		let espera = [];
 
 		// Obtiene todos los links con sus vínculos de prods
 		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
@@ -781,8 +782,9 @@ module.exports = {
 			const fechaVencim = new Date(fechaVencimNum);
 
 			// Se actualiza el link con el anoEstreno y la fechaVencim
-			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente});
+			espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente}));
 		}
+		await Promise.all(espera);
 
 		// Fin
 		return;
