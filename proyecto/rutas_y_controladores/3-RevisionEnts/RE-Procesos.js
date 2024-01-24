@@ -796,8 +796,8 @@ let FN_links = {
 		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
 		if (respuesta) return respuesta;
 
-		// 3. Sin restricción - Recientes
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente);
+		// 3. Sin restricción - Recientes no trailers
+		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
