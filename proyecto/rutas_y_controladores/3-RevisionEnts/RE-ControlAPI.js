@@ -76,6 +76,7 @@ module.exports = {
 		// Variables
 		const {url, IN, aprob, motivo_id} = req.query;
 		const entidad = "links";
+		const ahora = comp.fechaHora.ahora();
 		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 		// PROBLEMAS
@@ -85,29 +86,35 @@ module.exports = {
 		if (original.statusRegistro.estables) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 
 		// Semana de vencimiento
-		const semMinima = linksPrimRev / unaSemana;
-		for (var semana = linksSemsVidaUtil - 1; semana > semMinima; semana--)
-			if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
-		console.log(103, semana);
-		if (semana == semMinima) return res.json("En esta semana ya no se puede revisar este link");
+		if (IN == "SI") {
+			const semMinima = linksPrimRev / unaSemana;
+			for (var semana = linksSemsVidaUtil - 1; semana > semMinima; semana--)
+				if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
+			if (semana == semMinima) return res.json("En esta semana ya no se puede revisar este link");
+		}
 
 		// Fecha de vencimiento
+		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
 		const noTrailer = original.tipo_id != linkTrailer_id;
+		const ahoraTiempo = ahora.getTime();
+		const statusCreado = original.statusRegistro_id == creado_id;
 		const fechaVencim =
-			creado || !original.anoEstreno || (original.anoEstreno > anoReciente && noTrailer) // si está recién creado o es reciente y no es un trailer
+			IN != "SI"
+				? null
+				: statusCreado || // si está recién creado
+				  !original.anoEstreno || // si se desconoce su año de estreno
+				  (original.anoEstreno > anoReciente && noTrailer) // si es reciente y no es un trailer
 				? new Date(ahoraTiempo + linksPrimRev)
 				: original.capitulo_id && noTrailer // si es un capitulo y no es un trailer
 				? new Date(ahoraTiempo + linksVidaUtil)
 				: new Date(ahoraTiempo + semana * unaSemana);
+		console.log(113, fechaVencim);
 
 		// Más variables
 		const id = original.id;
-		const creado = original.statusRegistro_id == creado_id;
 		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
-		const ahora = comp.fechaHora.ahora();
-		const ahoraTiempo = ahora.getTime();
 		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
 		const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
@@ -120,7 +127,7 @@ module.exports = {
 			statusRegistro_id,
 			motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : original.motivo_id) : null,
 		};
-		if (creado) {
+		if (statusCreado) {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
@@ -138,7 +145,7 @@ module.exports = {
 				entidad_id: id,
 				entidad,
 				sugeridoPor_id,
-				sugeridoEn: creado ? original.creadoEn : original.statusSugeridoEn,
+				sugeridoEn: statusCreado ? original.creadoEn : original.statusSugeridoEn,
 				revisadoPor_id: revID,
 				revisadoEn: ahora,
 				statusOriginal_id: original.statusRegistro_id,
@@ -165,6 +172,6 @@ module.exports = {
 		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
 
 		// Se recarga la vista
-		return res.json();
+		return res.json("");
 	},
 };
