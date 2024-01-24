@@ -94,8 +94,8 @@ module.exports = {
 
 		// Fecha de vencimiento
 		const anoActual = new Date().getFullYear();
-		const producto = comp.obtieneDesdeCampo_id.asocProd(link);
-		const anoEstreno = link[producto].anoEstreno;
+		const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+		const anoEstreno = link[asocProd].anoEstreno;
 		const anoReciente = anoActual - linkAnoReciente;
 		const noTrailer = link.tipo_id != linkTrailer_id;
 		const ahoraTiempo = ahora.getTime();

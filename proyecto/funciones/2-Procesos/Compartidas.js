@@ -772,8 +772,7 @@ module.exports = {
 
 			// Obtiene el anoEstreno
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const producto = link[asocProd];
-			const anoEstreno = producto.anoEstreno;
+			const anoEstreno = link[asocProd].anoEstreno;
 
 			// Averigua si es un linkReciente y sin primRev
 			const sinPrimRev = !link.yaTuvoPrimRev;
