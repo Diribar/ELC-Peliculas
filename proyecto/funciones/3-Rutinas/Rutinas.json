@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 23/ene",
-	"HoraUTC": "11:54",
+	"FechaUTC": "Mié. 24/ene",
+	"HoraUTC": "8:23",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 22/ene",
@@ -32,10 +32,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-ene-24": {"titulo": "ELC - Películas"},
 		"22-ene-24": {"titulo": "Beata Laura Vicuña", "entidad": "personajes", "id": 119},
 		"23-ene-24": {"titulo": "ELC - Películas"},
 		"24-ene-24": {"titulo": "San Francisco de Sales", "entidad": "personajes", "id": 147},
-		"25-ene-24": {"titulo": "Conversión de San Pablo"}
+		"25-ene-24": {"titulo": "Conversión de San Pablo"},
+		"26-ene-24": {"titulo": "ELC - Películas"}
 	}
 }
