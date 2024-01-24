@@ -97,7 +97,7 @@
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-check revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
-				<i class="ocultar revision fuera"></i>
+				<i class="ocultar revision fuera"></i> <!-- sólo para cumplir con el trío -->
 			<% } else if (link.cond.inactivar) { // && !link.cond.inactivarPropio %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left revision in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
@@ -108,10 +108,6 @@
 				<i class="fa-solid fa-circle-left revision fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="fa-solid fa-circle-right revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="ocultar out"></i>
-			<% } else { %>
-				<i class="ocultar revision in"></i>
-				<i class="ocultar out"></i>
-				<i class="ocultar revision fuera"></i>
 			<% } %>
 		<% } %>
 
