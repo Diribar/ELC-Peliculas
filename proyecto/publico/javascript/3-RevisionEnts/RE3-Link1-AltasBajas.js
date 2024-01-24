@@ -20,8 +20,6 @@ window.addEventListener("load", () => {
 		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
 	};
 	console.log(DOM.iconosRevision);
-	console.log(DOM.iconosIN);
-	console.log(DOM.iconosFuera);
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
@@ -31,14 +29,19 @@ window.addEventListener("load", () => {
 	// Decisión tomada
 	DOM.iconosRevision.forEach((icono, indice) => {
 		const fila = parseInt(indice / 2);
-		icono.addEventListener("click", async () => {
-			// Variables
+				icono.addEventListener("click", async () => {
+						// Variables
 			let url = v.condiciones;
-			// Completar el url
+
+			// Completa el url
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
 			url += "&IN=" + (icono.className.includes("in") ? "SI" : "NO");
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
+
+			// Envía la acción
 			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+
+			// Consecuencias a partir de la respuesta
 			if (respuesta) location.reload();
 			else if (!icono.className.includes("in"))DOM.yaExistentes[fila].classList.add("ocultar");
 			else {
