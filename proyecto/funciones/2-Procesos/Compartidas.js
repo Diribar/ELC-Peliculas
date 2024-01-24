@@ -759,13 +759,17 @@ module.exports = {
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
 		const include = variables.entidades.asocProds;
+		const soloLinksSinFecha = !links;
 		let espera = [];
 
 		// Obtiene todos los links con sus vínculos de prods
-		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+		if (soloLinksSinFecha) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 		// Rutina por link
 		for (let link of links) {
+			// Revisa si se debe saltear la rutina
+			if (soloLinksSinFecha && link.fechaVencim) continue;
+
 			// Obtiene el anoEstreno
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const producto = link[asocProd];
@@ -774,7 +778,7 @@ module.exports = {
 			// Averigua si es un linkReciente y sin primRev
 			const sinPrimRev = !link.yaTuvoPrimRev;
 			const anoReciente = anoActual - linkAnoReciente;
-			const linkReciente = !anoEstreno || anoEstreno > anoReciente;
+			const linkReciente = (!anoEstreno || anoEstreno > anoReciente) && link.tipo_id != linkTrailer_id;
 
 			// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 			const desde = link.statusSugeridoEn.getTime();
