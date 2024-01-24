@@ -19,7 +19,6 @@ window.addEventListener("load", () => {
 		linksUrl: document.querySelectorAll(".yaExistentes input[name='url'"),
 		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
 	};
-	console.log(DOM.iconosRevision);
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
@@ -29,8 +28,8 @@ window.addEventListener("load", () => {
 	// Decisión tomada
 	DOM.iconosRevision.forEach((icono, indice) => {
 		const fila = parseInt(indice / 2);
-				icono.addEventListener("click", async () => {
-						// Variables
+		icono.addEventListener("click", async () => {
+			// Variables
 			let url = v.condiciones;
 
 			// Completa el url
@@ -43,10 +42,10 @@ window.addEventListener("load", () => {
 
 			// Consecuencias a partir de la respuesta
 			if (respuesta) location.reload();
-			else if (!icono.className.includes("in"))DOM.yaExistentes[fila].classList.add("ocultar");
+			else if (!icono.className.includes("in")) DOM.yaExistentes[fila].classList.add("ocultar");
 			else {
 				// Oculta objetos
-				icono.classList.add("ocultar");
+				DOM.iconosIN[fila].classList.add("ocultar");
 				DOM.iconosOut[fila].classList.add("ocultar");
 				DOM.iconosFuera[fila].classList.add("ocultar");
 				DOM.motivos[fila].classList.add("ocultar");
