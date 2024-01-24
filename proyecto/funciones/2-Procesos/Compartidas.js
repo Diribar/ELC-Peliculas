@@ -754,7 +754,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	fechaVencimLinks: async (links) => {
+	actualizaFechaVencimLinks: async function (links) {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
@@ -786,11 +786,32 @@ module.exports = {
 			const fechaVencim = new Date(fechaVencimNum);
 
 			// Se actualiza el link con el anoEstreno y la fechaVencim
-			espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente}));
+			espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 		}
 		await Promise.all(espera);
 
 		// Fin
+		await this.actualizaStatusVencidoDeLinks();
+		return;
+	},
+	actualizaStatusVencidoDeLinks: async function()  {
+		// Variables
+		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
+		const ahora = new Date();
+
+		// Condiciones y nuevo status
+		const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
+		const status = {
+			statusSugeridoPor_id: usAutom_id,
+			statusRegistro_id: creadoAprob_id,
+			statusSugeridoEn: ahora,
+		};
+
+		// Actualiza el status de los links
+		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
+
+		// Fin
+		await this.actualizaLinksVencPorSem()
 		return;
 	},
 	actualizaLinksVencPorSem: async function () {
@@ -803,9 +824,9 @@ module.exports = {
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
-		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
-		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
-		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
+		const links = await BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobados_ids, prodAprob});
+		const creadoAprobs = links.filter((n) => n.statusRegistro_id == creadoAprob_id);
+		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
 		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
