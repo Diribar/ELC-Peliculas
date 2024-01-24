@@ -109,7 +109,6 @@ module.exports = {
 				: original.capitulo_id && noTrailer // si es un capitulo y no es un trailer
 				? new Date(ahoraTiempo + linksVidaUtil)
 				: new Date(ahoraTiempo + semana * unaSemana);
-		console.log(113, fechaVencim);
 
 		// Más variables
 		const id = original.id;
