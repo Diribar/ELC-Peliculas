@@ -26,10 +26,10 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		//comp.actualizaLinksVencPorSem();
 
 		// Fin
 		console.log();
+		//this.CantLinksVencPorSem();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
@@ -541,25 +541,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	LinksVencidos: async function () {
-		// Variables
-		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
-		const ahora = new Date();
-
-		// Condiciones y nuevo status
-		const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
-		const status = {
-			statusSugeridoPor_id: usAutom_id,
-			statusRegistro_id: creadoAprob_id,
-			statusSugeridoEn: ahora,
-		};
-
-		// Actualiza el status de los links
-		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
-
-		// Fin
-		return;
-	},
 	RCLV_idEnCapitulos: async () => {
 		// Variables
 		const rclvs_id = variables.entidades.rclvs_id;
@@ -702,6 +683,7 @@ module.exports = {
 	},
 	CantLinksVencPorSem: async () => {
 		await comp.fechaVencimLinks();
+		await linksVencidos()
 		await comp.actualizaLinksVencPorSem();
 		return;
 	},
@@ -736,6 +718,25 @@ let eliminaHistorialQueNoCorresponde = async () => {
 		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id);
 		if (!producto) BD_genericas.eliminaPorId("calRegistros", registro.id);
 	}
+
+	// Fin
+	return;
+};
+let linksVencidos = async function () {
+	// Variables
+	const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
+	const ahora = new Date();
+
+	// Condiciones y nuevo status
+	const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
+	const status = {
+		statusSugeridoPor_id: usAutom_id,
+		statusRegistro_id: creadoAprob_id,
+		statusSugeridoEn: ahora,
+	};
+
+	// Actualiza el status de los links
+	await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 	// Fin
 	return;
