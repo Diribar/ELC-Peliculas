@@ -33,8 +33,9 @@ window.addEventListener("load", () => {
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
 			url += "&IN=SI";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta.reload) {
+			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			if (respuesta) location.reload();
+			else {
 				// Oculta objetos
 				icono.classList.add("ocultar");
 				DOM.iconosOut[fila].classList.add("ocultar");
@@ -59,8 +60,9 @@ window.addEventListener("load", () => {
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
 			url += "&IN=NO";
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-			let respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta.reload) DOM.yaExistentes[fila].classList.add("ocultar");
+			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			if (respuesta) location.reload();
+			else DOM.yaExistentes[fila].classList.add("ocultar");
 		});
 	});
 });
