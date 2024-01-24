@@ -75,13 +75,12 @@ module.exports = {
 	linkAltaBaja: async (req, res) => {
 		// Variables
 		const {url, IN, aprob, motivo_id} = req.query;
-		const entidad = "links";
 		const ahora = comp.fechaHora.ahora();
 		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 		// PROBLEMAS
 		if (!url) return res.json("Falta el 'url' del link"); // Averigua si existe el dato del 'url'
-		const original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, "statusRegistro"); // Se obtiene el status original del link
+		const original = await BD_genericas.obtienePorCondicionConInclude("links", {url}, "statusRegistro"); // Se obtiene el status original del link
 		if (!original) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
 		if (original.statusRegistro.estables) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 
@@ -132,8 +131,9 @@ module.exports = {
 		} else datos.yaTuvoPrimRev = true;
 
 		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original
-		await BD_genericas.actualizaPorId(entidad, id, datos);
+		// 1. Actualiza el status en el registro original y actualiza la variable de links vencidos
+		await BD_genericas.actualizaPorId("links", id, datos);
+		comp.actualizaLinksVencPorSem();
 
 		// Acciones salvo que sea links sugerido por 'automático'
 		const sugeridoPor_id = original.statusSugeridoPor_id;
@@ -141,7 +141,7 @@ module.exports = {
 			// 2. Agrega un registro en el histStatus
 			let datosHist = {
 				entidad_id: id,
-				entidad,
+				entidad:"links",
 				sugeridoPor_id,
 				sugeridoEn: statusCreado ? original.creadoEn : original.statusSugeridoEn,
 				revisadoPor_id: revID,
@@ -167,7 +167,7 @@ module.exports = {
 		}
 
 		// 5. Actualiza los productos en los campos de 'links'
-		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
+		procsCRUD.revisiones.accionesPorCambioDeStatus("links", {...original, statusRegistro_id});
 
 		// Se recarga la vista
 		return res.json("");
