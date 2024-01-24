@@ -104,7 +104,7 @@ module.exports = {
 			IN != "SI"
 				? null
 				: statusCreado || // si está recién creado
-				  ((!anoEstreno || anoEstreno > anoReciente) && noTrailer) // si si se desconoce su año de estreno o es reciente, y no es un trailer
+				  ((!anoEstreno || anoEstreno > anoReciente) && noTrailer) // si se desconoce su año de estreno o es reciente, y no es un trailer
 				? new Date(ahoraTiempo + linksPrimRev)
 				: link.capitulo_id && noTrailer // si es un capitulo y no es un trailer
 				? new Date(ahoraTiempo + linksVidaUtil)
