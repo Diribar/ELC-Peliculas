@@ -174,6 +174,7 @@ app.set("views", [
 	global.inactivo_id = statusRegistros.find((n) => n.codigo == "inactivo").id;
 	global.creados_ids = statusRegistros.filter((n) => n.creados).map((n) => n.id);
 	global.aprobados_ids = statusRegistros.filter((n) => n.aprobados).map((n) => n.id);
+	global.estables_ids = statusRegistros.filter((n) => n.estables).map((n) => n.id);
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.codigo == "anime").id;
