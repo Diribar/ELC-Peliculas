@@ -10,7 +10,7 @@
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
-		<a <% if (link.href) { %>href="<%= link.href %>"<% } %> target="_blank">
+		<a <% if (link.href) { %>href="<%= link.href %>" target="_blank"<% } else { %>class="pointer"<% } %>>
 			<img
 				src="/Externa/6-LogosProvs/<%= link.prov.avatar %>"
 				alt="<%= link.prov.nombre %>"
