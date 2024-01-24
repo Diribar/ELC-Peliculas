@@ -3,38 +3,40 @@ window.addEventListener("load", async () => {
 	// Variables
 	const cuerpoFooter = document.querySelector("#cuerpoFooter");
 	const linksHref = document.querySelectorAll(".yaExistentes .url a:not([href])");
+	const logosLink= document.querySelectorAll(".yaExistentes .url a:not([href]) img")
 	const linksUrl = document.querySelectorAll(".yaExistentes .url:not(:has(a[href])) > input[name='url']");
-	let linksEmbeded = [];
-
-	// linksHref
-	for (let link_href of linksHref) if (!link_href.href) link_href.classList.add("pointer");
+	const rutaEmbeded = "/links/api/obtiene-embeded-link/?linkUrl=";
+	let contsIframe = [];
 
 	// Obtiene los linksEmbeded
-	if (linksUrl && linksUrl.length)
-		for (let linkUrl of linksUrl)
-			linksEmbeded.push(
-				linkUrl.value ? fetch("/links/api/obtiene-embeded-link/?linkUrl=" + linkUrl.value).then((n) => n.json()) : ""
-			);
-	else return;
-	linksEmbeded = await Promise.all(linksEmbeded);
+	if (linksUrl && linksUrl.length) {
+		// Crea cada iframe
+		for (let linkUrl of linksUrl) {
+			// Agrega el entorno del iframe
+			const div = document.createElement("div");
+			div.id = "contIframe";
+			div.className = "absoluteCentro ocultar";
+			cuerpoFooter.appendChild(div);
 
-	// Agrega el entorno del iframe
-	const div = document.createElement("div");
-	div.id = "videoDetPeli";
-	div.className = "absoluteCentro";
-	cuerpoFooter.appendChild(div);
+			// Agrega el iframe
+			const iframe = document.createElement("iframe");
+			if (linkUrl.value) iframe.src = await fetch(rutaEmbeded + linkUrl.value).then((n) => n.json());
+			// iframe.allow = "autoplay";
+			iframe.setAttribute("allowFullScreen", "");
+			div.appendChild(iframe);
+		}
 
-	// Agrega el iframe
-	const iframe = document.createElement("iframe");
-	iframe.src = "";
-	iframe.allow = "autoplay";
-	iframe.setAttribute("allowFullScreen", "");
-	div.appendChild(iframe);
+		// Obtiene los DOMs
+		contsIframe = cuerpoFooter.querySelectorAll("#contIframe");
+	} else return;
 
 	// Eventos
-	linksHref.forEach((linkHref, i) => linkHref.addEventListener("click", () => (iframe.src = linksEmbeded[i])));
 	window.addEventListener("click", (e) => {
-		if (!e.target.className.includes("imgProvLink")) iframe.src = "";
+		logosLink.forEach((logoLink, i) => {
+			// Muestra/Oculta el iframe, según corresponda
+			if (logoLink == e.target) contsIframe[i].classList.remove("ocultar");
+			else if (!contsIframe[i].className.includes("ocultar")) contsIframe[i].classList.add("ocultar");
+		});
 	});
 
 	// Fin
