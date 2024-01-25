@@ -134,14 +134,14 @@ module.exports = {
 		} else datos.yaTuvoPrimRev = true;
 
 		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original y actualiza la variable de links vencidos
+		// Actualiza el status en el registro original y actualiza la variable de links vencidos
 		await BD_genericas.actualizaPorId("links", id, datos);
 		comp.actualizaLinksVencPorSem();
 
 		// Acciones salvo que sea links sugerido por 'automático'
 		const sugeridoPor_id = link.statusSugeridoPor_id;
 		if (sugeridoPor_id != usAutom_id) {
-			// 2. Agrega un registro en el histStatus
+			// Agrega un registro en el histStatus
 			let datosHist = {
 				entidad_id: id,
 				entidad: "links",
@@ -162,17 +162,26 @@ module.exports = {
 			}
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
-			// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
+			// Aumenta el valor de linksAprob/rech en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
 
-			// 4. Penaliza al usuario si corresponde
+			// Penaliza al usuario si corresponde
 			if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
 		}
 
-		// 5. Actualiza los productos en los campos de 'links'
+		// Actualiza los productos en los campos de 'links'
 		procsCRUD.revisiones.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
 
+		// Averigua si todos los links del producto están en status estables
+		const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+		const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(link);
+		const prodID = link[campo_id];
+		const links = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, "links").then((n) => n.links);
+		let prodSig = true;
+		for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) prodSig = "";
+		if (prodSig) prodSig = await procesos.TC.obtieneProds_Links(revID);
+
 		// Se recarga la vista
-		return res.json("");
+		return res.json(prodSig);
 	},
 };

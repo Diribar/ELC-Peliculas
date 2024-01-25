@@ -4,9 +4,6 @@ window.addEventListener("load", () => {
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
 	let DOM = {
-		// Todas las imágenes de logos de proveedores
-		logosLink: document.querySelectorAll(".yaExistentes .url a img"),
-
 		// Íconos addEventListeners
 		iconosRevision: document.querySelectorAll(".yaExistentes .revision"),
 		iconosIN: document.querySelectorAll(".yaExistentes .in"),
@@ -65,7 +62,7 @@ window.addEventListener("load", () => {
 			}
 
 			// Respuesta exitosa - si la API devuelve un objeto literal, redirecciona
-			if (respuesta && DOM.logosLink.length == 1) {
+			if (respuesta) {
 				const destino =
 					"/inactivar-captura/" +
 					("?entidad=" + prodEntidad + "&id=" + prodID) +
