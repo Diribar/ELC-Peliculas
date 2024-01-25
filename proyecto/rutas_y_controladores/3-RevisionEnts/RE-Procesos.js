@@ -686,6 +686,35 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
+		variables:  ({link, ahora, req}) =>{
+			const {IN, aprob, motivo_id} = req.query;
+			const id = link.id;
+			const revID = req.session.usuario.id;
+			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
+			const decisAprob = aprob == "SI";
+			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
+			const statusCreado = link.statusRegistro_id == creado_id;
+			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+			const anoEstreno = link[asocProd].anoEstreno;
+			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, statusCreado});
+
+			// Arma los datos
+			let datos = {
+				fechaVencim,
+				anoEstreno,
+				statusSugeridoPor_id: revID,
+				statusSugeridoEn: ahora,
+				statusRegistro_id,
+				motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : link.motivo_id) : null,
+			};
+			if (statusCreado) {
+				datos.altaRevisadaPor_id = revID;
+				datos.altaRevisadaEn = ahora;
+				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
+			} else datos.yaTuvoPrimRev = true;
+
+			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id};
+		},
 	},
 
 	// Varios
@@ -914,6 +943,24 @@ let FN_links = {
 
 		// Fin
 		return link;
+	},
+	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado}) => {
+		const anoActual = new Date().getFullYear();
+		const anoReciente = anoActual - linkAnoReciente;
+		const noTrailer = link.tipo_id != linkTrailer_id;
+		const ahoraTiempo = ahora.getTime();
+		const fechaVencim =
+			IN != "SI"
+				? null
+				: statusCreado || // si está recién creado
+				  ((!anoEstreno || anoEstreno > anoReciente) && noTrailer) // si se desconoce su año de estreno o es reciente, y no es un trailer
+				? new Date(ahoraTiempo + linksPrimRev)
+				: link.capitulo_id && noTrailer // si es un capitulo y no es un trailer
+				? new Date(ahoraTiempo + linksVidaUtil)
+				: new Date(ahoraTiempo + semana * unaSemana);
+
+		// Fin
+		return fechaVencim;
 	},
 };
 let obtieneRegs = async (campos) => {
