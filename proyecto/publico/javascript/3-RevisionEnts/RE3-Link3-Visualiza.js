@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 
 			// Agrega el iframe
 			const iframe = document.createElement("iframe");
-			if (linkUrl.value) iframe.src = await fetch(rutaEmbeded + linkUrl.value).then((n) => n.json());
+			if (linkUrl.value) iframe.src = await fetch(rutaEmbeded + encodeURIComponent(linkUrl.value)).then((n) => n.json());
 			// iframe.allow = "autoplay";
 			iframe.setAttribute("allowFullScreen", "");
 			div.appendChild(iframe);
