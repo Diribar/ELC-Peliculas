@@ -4,6 +4,9 @@ window.addEventListener("load", () => {
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
 	let DOM = {
+		// Todas las imágenes de logos de proveedores
+		logosLink: document.querySelectorAll(".yaExistentes .url a img"),
+
 		// Íconos addEventListeners
 		iconosRevision: document.querySelectorAll(".yaExistentes .revision"),
 		iconosIN: document.querySelectorAll(".yaExistentes .in"),
@@ -22,7 +25,7 @@ window.addEventListener("load", () => {
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
-		ruta: "/revision/api/link/alta-baja/",
+		rutaFetch: "/revision/api/link/alta-baja/",
 	};
 
 	// Decisión tomada
@@ -38,11 +41,13 @@ window.addEventListener("load", () => {
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 
 			// Envía la acción
-			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			const respuesta = await fetch(v.rutaFetch + url).then((n) => n.json());
 
 			// Consecuencias a partir de la respuesta
-			if (respuesta) location.reload();
+			if (respuesta && typeof respuesta == "string") return location.reload();
+			// Respuesta exitosa - Altas
 			else if (!icono.className.includes("in")) DOM.yaExistentes[fila].classList.add("ocultar");
+			// Respuesta exitosa - Bajas
 			else {
 				// Oculta objetos
 				DOM.iconosIN[fila].classList.add("ocultar");
@@ -58,6 +63,19 @@ window.addEventListener("load", () => {
 				DOM.yaExistentes[fila].classList.replace("oscuro_false", "oscuro_true");
 				DOM.ancho_status[fila].innerHTML = "Aprobado";
 			}
+
+			// Respuesta exitosa - si la API devuelve un objeto literal, redirecciona
+			if (respuesta && DOM.logosLink.length == 1) {
+				const destino =
+					"/inactivar-captura/" +
+					("?entidad=" + prodEntidad + "&id=" + prodID) +
+					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
+					"&origen=RLK";
+				location.href = destino;
+			}
 		});
 	});
+
+	// Fin
+	return;
 });
