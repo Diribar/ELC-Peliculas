@@ -22,8 +22,10 @@ window.addEventListener("load", () => {
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
-		rutaFetch: "/revision/api/link/alta-baja/",
+		rutaAltaBaja: "/revision/api/link/alta-baja/",
+		rutaSigProd: "/revision/api/link/siguiente-producto/",
 	};
+	let respuesta;
 
 	// Decisión tomada
 	DOM.iconosRevision.forEach((icono, indice) => {
@@ -37,11 +39,11 @@ window.addEventListener("load", () => {
 			url += "&IN=" + (icono.className.includes("in") ? "SI" : "NO");
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 
-			// Envía la acción
-			const respuesta = await fetch(v.rutaFetch + url).then((n) => n.json());
+			// Envía la decisión
+			respuesta = await fetch(v.rutaAltaBaja + url).then((n) => n.json());
 
 			// Consecuencias a partir de la respuesta
-			if (respuesta && typeof respuesta == "string") return location.reload();
+			if (respuesta) return location.reload();
 			// Respuesta exitosa - Altas
 			else if (!icono.className.includes("in")) DOM.yaExistentes[fila].classList.add("ocultar");
 			// Respuesta exitosa - Bajas
@@ -61,11 +63,15 @@ window.addEventListener("load", () => {
 				DOM.ancho_status[fila].innerHTML = "Aprobado";
 			}
 
-			// Respuesta exitosa - si la API devuelve un objeto literal, redirecciona
+			// Averigua si ya no hay más nada más para revisar sobre este producto
+			url = "?entidad=" + prodEntidad + "&id=" + prodID;
+			respuesta = await fetch(v.rutaSigProd + url).then((n) => n.json());
+
+			// Si la API devuelve una respuesta, redirecciona
 			if (respuesta)
 				location.href =
 					"/inactivar-captura/" +
-					("?entidad=" + prodEntidad + "&id=" + prodID) +
+					url +
 					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
 					"&origen=RLK";
 		});
