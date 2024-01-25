@@ -97,12 +97,8 @@ module.exports = {
 			}
 
 			// Más variables
-			const {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id} = procesos.links.variables({
-				link,
-				ahora,
-				req,
-				semana,
-			});
+			const {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} =
+				procesos.links.variables({link, ahora, req, semana});
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
