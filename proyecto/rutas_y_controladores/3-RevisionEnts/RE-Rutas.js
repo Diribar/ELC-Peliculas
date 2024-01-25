@@ -43,6 +43,7 @@ router.get("/api/edicion/aprob-rech", API.edicAprobRech);
 router.get("/api/link/alta-baja", API.links.altaBaja);
 router.get("/api/link/eliminar", API.links.altaBaja);
 router.get("/api/link/edicion", API.edicAprobRech);
+router.get("/api/link/siguiente-producto", API.links.sigProd);
 
 // Vistas - Tablero de Control
 router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);
