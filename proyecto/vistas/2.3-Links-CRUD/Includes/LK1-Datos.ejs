@@ -64,8 +64,8 @@
 	<!-- 11. Acción -->
 	<td class="ancho_accion">
 		<% let ocultar, mostrar %>
-		<!-- Sólo para RUD -->
 		<% if (link.cond.rud) { %>
+			<!-- Sólo para RUD -->
 			<!-- Status creado y propio, o status aprobado -> EDICION -->
 			<% mostrar = link.cond.creadoPropio || link.cond.aprobado %>
 			<i class="fa-solid fa-pen edicion <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
@@ -91,23 +91,28 @@
 			<% } %>
 		<% } %>
 
-		<!-- Sólo para Revisión -->
 		<% if (link.cond.revision) { %>
-			<% if (link.cond.grCreado) { // && !link.cond.creadoPropio %>
+			<!-- Sólo para Revisión -->
+			<% if (link.cond.grCreado) { %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-check revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar revision fuera"></i> <!-- sólo para cumplir con el trío -->
-			<% } else if (link.cond.inactivar) { // && !link.cond.inactivarPropio %>
+			<% } else if (link.cond.inactivar) { %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left revision in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-right revision fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar out"></i>
-			<% } else if (link.cond.recuperar) { // && !link.cond.recuperarPropio %>
+			<% } else if (link.cond.recuperar) { %>
 				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left revision fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="fa-solid fa-circle-right revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="ocultar out"></i>
+			<% } else { %>
+				<!-- Para cuando el link está en un status estable -->
+				<i class="ocultar revision in"></i>
+				<i class="ocultar out"></i>
+				<i class="ocultar revision fuera"></i>
 			<% } %>
 		<% } %>
 
