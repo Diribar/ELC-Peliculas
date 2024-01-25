@@ -686,7 +686,7 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables:  ({link, ahora, req}) =>{
+		variables: ({link, ahora, req, semana}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
@@ -696,7 +696,7 @@ module.exports = {
 			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
-			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, statusCreado});
+			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, statusCreado, semana});
 
 			// Arma los datos
 			let datos = {
@@ -944,7 +944,7 @@ let FN_links = {
 		// Fin
 		return link;
 	},
-	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado}) => {
+	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado, semana}) => {
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
 		const noTrailer = link.tipo_id != linkTrailer_id;
