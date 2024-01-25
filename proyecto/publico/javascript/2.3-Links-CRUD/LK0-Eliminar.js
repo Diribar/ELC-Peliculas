@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
 				url += "&aprob=NO";
 
 				// Envía la decisión
-				respuesta = await fetch(rutaEliminar + url).then((n) => n.json());
+				respuesta = await fetch(v.rutaEliminar + url).then((n) => n.json());
 
 				// Consecuencias a partir de la respuesta
 				if (respuesta) location.reload();
