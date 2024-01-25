@@ -62,14 +62,12 @@ window.addEventListener("load", () => {
 			}
 
 			// Respuesta exitosa - si la API devuelve un objeto literal, redirecciona
-			if (respuesta) {
-				const destino =
+			if (respuesta)
+				location.href =
 					"/inactivar-captura/" +
 					("?entidad=" + prodEntidad + "&id=" + prodID) +
 					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
 					"&origen=RLK";
-				location.href = destino;
-			}
 		});
 	});
 
