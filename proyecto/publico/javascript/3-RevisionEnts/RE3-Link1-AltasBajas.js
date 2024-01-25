@@ -60,17 +60,4 @@ window.addEventListener("load", () => {
 			}
 		});
 	});
-	// DOM.iconosFuera.forEach((icono, fila) => {
-	// 	icono.addEventListener("click", async () => {
-	// 		// Variables
-	// 		let url = v.condiciones;
-	// 		// Completar el url
-	// 		url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
-	// 		url += "&IN=NO";
-	// 		url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-	// 		const respuesta = await fetch(v.ruta + url).then((n) => n.json());
-	// 		if (respuesta) location.reload();
-	// 		else DOM.yaExistentes[fila].classList.add("ocultar");
-	// 	});
-	// });
 });
