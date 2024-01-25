@@ -42,5 +42,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	if (DOM.logosLink.length == 1) contsIframe[0].classList.remove("ocultar");
+	if (DOM.logosLink.length) contsIframe[0].classList.remove("ocultar");
 });
