@@ -24,7 +24,7 @@ module.exports = {
 		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
 
 		// Links
-		let prodSig = procesos.TC.obtieneProds_Links(revID);
+		let prodSig = procesos.TC.obtieneSigProd_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
 		[prods1, prods2, rclvs1, rclvs2, prodSig] = await Promise.all([prods1, prods2, rclvs1, rclvs2, prodSig]);

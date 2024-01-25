@@ -109,7 +109,7 @@ module.exports = {
 			// Fin
 			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
 		},
-		obtieneProds_Links: async function (revID) {
+		obtieneSigProd_Links: async function (revID) {
 			// Variables
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
