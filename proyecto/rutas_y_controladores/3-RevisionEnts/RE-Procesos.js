@@ -713,7 +713,8 @@ module.exports = {
 				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
 			} else datos.yaTuvoPrimRev = true;
 
-			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id};
+			// Fin
+			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
 		},
 	},
 
