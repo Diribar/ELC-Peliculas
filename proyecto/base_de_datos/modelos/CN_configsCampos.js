@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		valor: {type: dt.STRING(15)},
 	};
 	const config = {
-		tableName: "1cn_config_campos",
+		tableName: "cn_config_campos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
