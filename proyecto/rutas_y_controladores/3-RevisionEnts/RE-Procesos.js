@@ -787,21 +787,21 @@ let FN_links = {
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
 
-		// Sin restricción - Ediciones
+		// 1. Sin restricción - Ediciones
 		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Altas
+		// 2. Sin restricción - Altas
 		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
 		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Recientes
+		// 3. Sin restricción - Recientes
 		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente);
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Capítulos
+		// 4. Con restricción - Capítulos
 		if (capsParaProc) {
 			let capitulos;
 			//Primera revisión
@@ -815,7 +815,7 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
-		// Con restricción - Películas y Colecciones
+		// 5. Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
 			//Primera revisión

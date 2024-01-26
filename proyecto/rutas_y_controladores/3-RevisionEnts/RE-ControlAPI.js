@@ -76,43 +76,61 @@ module.exports = {
 		// Variables
 		const {url, IN, aprob, motivo_id} = req.query;
 		const entidad = "links";
+		const ahora = comp.fechaHora.ahora();
 		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 		// PROBLEMAS
-		// Averigua si existe el dato del 'url'
-		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
+		if (!url) return res.json("Falta el 'url' del link"); // Averigua si existe el dato del 'url'
+		const original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, "statusRegistro"); // Se obtiene el status original del link
+		if (!original) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
+		if (original.statusRegistro.estables) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 
-		// Se obtiene el status original del link
-		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["statusRegistro", "tipo"]);
+		// Semana de vencimiento
+		if (IN == "SI") {
+			const semMinima = linksPrimRev / unaSemana;
+			for (var semana = linksSemsVidaUtil - 1; semana > semMinima; semana--)
+				if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
+			if (semana == semMinima) return res.json("En esta semana ya no se puede revisar este link");
+		}
 
-		// El link no existe en la BD
-		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
-
-		// El link existe y tiene un status 'estable'
-		if (original.statusRegistro.estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		// Fecha de vencimiento
+		const anoActual = new Date().getFullYear();
+		const anoReciente = anoActual - linkAnoReciente;
+		const noTrailer = original.tipo_id != linkTrailer_id;
+		const ahoraTiempo = ahora.getTime();
+		const statusCreado = original.statusRegistro_id == creado_id;
+		const fechaVencim =
+			IN != "SI"
+				? null
+				: statusCreado || // si está recién creado
+				  !original.anoEstreno || // si se desconoce su año de estreno
+				  (original.anoEstreno > anoReciente && noTrailer) // si es reciente y no es un trailer
+				? new Date(ahoraTiempo + linksPrimRev)
+				: original.capitulo_id && noTrailer // si es un capitulo y no es un trailer
+				? new Date(ahoraTiempo + linksVidaUtil)
+				: new Date(ahoraTiempo + semana * unaSemana);
 
 		// Más variables
 		const id = original.id;
-		const creado = original.statusRegistro_id == creado_id;
 		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
-		const ahora = comp.fechaHora.ahora();
 		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
 		const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 
 		// Arma los datos
 		let datos = {
+			fechaVencim,
 			statusSugeridoPor_id: revID,
 			statusSugeridoEn: ahora,
 			statusRegistro_id,
+			motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : original.motivo_id) : null,
 		};
-		if (creado) {
+		if (statusCreado) {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		} else datos.yaTuvoPrimRev = true;
-		datos.motivo_id = statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : original.motivo_id) : null;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -126,14 +144,14 @@ module.exports = {
 				entidad_id: id,
 				entidad,
 				sugeridoPor_id,
-				sugeridoEn: creado ? original.creadoEn : original.statusSugeridoEn,
+				sugeridoEn: statusCreado ? original.creadoEn : original.statusSugeridoEn,
 				revisadoPor_id: revID,
 				revisadoEn: ahora,
 				statusOriginal_id: original.statusRegistro_id,
 				statusFinal_id: statusRegistro_id,
 				aprobado: decisAprob,
+				comentario: statusRegistros.find((n) => n.id == statusRegistro_id).nombre,
 			};
-			datosHist.comentario = statusRegistros.find((n) => n.id == statusRegistro_id).nombre;
 			if (datos.motivo_id) {
 				datosHist.motivo_id = datos.motivo_id;
 				datosHist.motivo = motivosStatus.find((n) => n.id == datos.motivo_id);
@@ -153,6 +171,6 @@ module.exports = {
 		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
 
 		// Se recarga la vista
-		return res.json({mensaje: "Status actualizado", reload: true});
+		return res.json("");
 	},
 };
