@@ -114,10 +114,10 @@ module.exports = {
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 			// Obtiene el producto con el próximo link a procesar
-			const prodSig = await FN_links.obtieneSigProd({revID});
+			const sigProd = await FN_links.obtieneSigProd({revID});
 
 			// Fin
-			return prodSig;
+			return sigProd;
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
