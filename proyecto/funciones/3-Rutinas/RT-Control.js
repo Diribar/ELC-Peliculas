@@ -701,6 +701,7 @@ module.exports = {
 		return;
 	},
 	CantLinksVencPorSem: async () => {
+		await comp.fechaVencimLinks();
 		await comp.actualizaLinksVencPorSem();
 		return;
 	},

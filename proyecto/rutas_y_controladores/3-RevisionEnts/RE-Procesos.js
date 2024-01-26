@@ -815,7 +815,7 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
-		// Con restricción
+		// Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
 			//Primera revisión

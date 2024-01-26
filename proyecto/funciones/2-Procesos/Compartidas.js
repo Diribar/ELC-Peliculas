@@ -813,7 +813,7 @@ module.exports = {
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
 			if (semVencim < 1) continue;
-			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
+			cantLinksVencPorSem[semVencim]++;
 		}
 
 		// Fin
@@ -847,7 +847,7 @@ module.exports = {
 		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Agrega la información
-		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc, cantPromedio};
 
 		// Fin
 		return;
