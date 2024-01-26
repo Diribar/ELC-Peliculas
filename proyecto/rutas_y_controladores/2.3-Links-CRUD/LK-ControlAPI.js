@@ -193,7 +193,7 @@ module.exports = {
 
 		// Acciones si es embeded
 		let url = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
-		if (url.includes("youtube.com")) url += "?autoplay=1&mute=1";
+		//if (url.includes("youtube.com")) url += "?autoplay=1&mute=1";
 
 		// Fin
 		return res.json(url);

@@ -78,7 +78,6 @@ window.addEventListener("load", async () => {
 		imagenDelGrafico.draw(data, options);
 
 		// Agrega algunos datos relevantes
-		const promedio = parseInt((total / linksSemsVidaUtil) * 10) / 10;
-		algunosDatos.innerHTML = "Prom. Semanal: " + promedio;
+		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.cantPromedio;
 	}
 });

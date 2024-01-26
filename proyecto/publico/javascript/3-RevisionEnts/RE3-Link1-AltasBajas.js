@@ -22,8 +22,10 @@ window.addEventListener("load", () => {
 	let v = {
 		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
-		ruta: "/revision/api/link/alta-baja/",
+		rutaAltaBaja: "/revision/api/link/alta-baja/",
+		rutaSigProd: "/revision/api/link/siguiente-producto/",
 	};
+	let respuesta;
 
 	// Decisión tomada
 	DOM.iconosRevision.forEach((icono, indice) => {
@@ -37,12 +39,14 @@ window.addEventListener("load", () => {
 			url += "&IN=" + (icono.className.includes("in") ? "SI" : "NO");
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 
-			// Envía la acción
-			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+			// Envía la decisión
+			respuesta = await fetch(v.rutaAltaBaja + url).then((n) => n.json());
 
 			// Consecuencias a partir de la respuesta
-			if (respuesta) location.reload();
+			if (respuesta) return location.reload();
+			// Respuesta exitosa - Altas
 			else if (!icono.className.includes("in")) DOM.yaExistentes[fila].classList.add("ocultar");
+			// Respuesta exitosa - Bajas
 			else {
 				// Oculta objetos
 				DOM.iconosIN[fila].classList.add("ocultar");
@@ -58,19 +62,21 @@ window.addEventListener("load", () => {
 				DOM.yaExistentes[fila].classList.replace("oscuro_false", "oscuro_true");
 				DOM.ancho_status[fila].innerHTML = "Aprobado";
 			}
+
+			// Averigua si ya no hay más nada más para revisar sobre este producto
+			url = "?entidad=" + prodEntidad + "&id=" + prodID;
+			respuesta = await fetch(v.rutaSigProd + url).then((n) => n.json());
+
+			// Si la API devuelve una respuesta, redirecciona
+			if (respuesta)
+				location.href =
+					"/inactivar-captura/" +
+					url +
+					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
+					"&origen=RLK";
 		});
 	});
-	// DOM.iconosFuera.forEach((icono, fila) => {
-	// 	icono.addEventListener("click", async () => {
-	// 		// Variables
-	// 		let url = v.condiciones;
-	// 		// Completar el url
-	// 		url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
-	// 		url += "&IN=NO";
-	// 		url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-	// 		const respuesta = await fetch(v.ruta + url).then((n) => n.json());
-	// 		if (respuesta) location.reload();
-	// 		else DOM.yaExistentes[fila].classList.add("ocultar");
-	// 	});
-	// });
+
+	// Fin
+	return;
 });
