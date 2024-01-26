@@ -112,35 +112,12 @@ module.exports = {
 		obtieneProds_Links: async function (revID) {
 			// Variables
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
-			const cantPends = cantLinksVencPorSem[0].total;
-
-			// Averigua los links totales 'aprobados_ids'
-			const cantAprobs = Object.values(cantLinksVencPorSem)
-				.slice(1)
-				.reduce((acum, i) => acum + i);
-			const cantLinksTotal = cantAprobs + cantPends;
-			const cantPromedio = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
-
-			// posiblesParaProcesar
-			let pelisColecsPosibles = 0;
-			for (let i = 5; i <= linksSemsVidaUtil - 1; i++)
-				pelisColecsPosibles += Math.max(0, cantPromedio - cantLinksVencPorSem[i]);
-			const capsPosibles = Math.max(0, cantPromedio - cantLinksVencPorSem[linksSemsVidaUtil]);
-
-			// pendientesProcesar
-			const capsPends = cantLinksVencPorSem[0].capitulos;
-			const pelisColecsPends = cantLinksVencPorSem[0].total - capsPends;
-
-			// linksParaProcesar
-			const pelisColesParaProc = Math.min(pelisColecsPosibles, pelisColecsPends);
-			const capsParaProc = Math.min(capsPosibles, capsPends);
-			const cantParaProcesar = pelisColesParaProc + capsParaProc;
 
 			// Obtiene el producto con el próximo link a procesar
-			const prodSig = await FN_links.obtieneSigProd({revID, pelisColesParaProc, capsParaProc});
+			const prodSig = await FN_links.obtieneSigProd({revID});
 
 			// Fin
-			return {cantLinksTotal, cantParaProcesar, prodSig};
+			return prodSig;
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
@@ -797,12 +774,14 @@ let FN_links = {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
+		const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem;
 		let respuesta;
 
 		// Obtiene los links a revisar
 		const links = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
 		const {originales, ediciones} = links;
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
+		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs.filter((n) => n.yaTuvoPrimRev);
 
 		// Si no hay links, interrumpe la función
@@ -822,23 +801,30 @@ let FN_links = {
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Primera revisión
-		if (pelisColesParaProc) {
-			const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
-			if (primRev.length) respuesta = this.obtieneProdLink({links: primRev, datos});
-			if (respuesta) return respuesta;
-		}
-
 		// Con restricción - Capítulos
 		if (capsParaProc) {
-			const capitulos = yaTuvoPrimRev.filter((n) => n.capitulo_id);
+			let capitulos;
+			//Primera revisión
+			capitulos = primRev.filter((n) => n.capitulo_id);
+			if (capitulos.length) respuesta = this.obtieneProdLink({links: capitulos, datos});
+			if (respuesta) return respuesta;
+
+			// Capítulos
+			capitulos = yaTuvoPrimRev.filter((n) => n.capitulo_id);
 			if (capitulos.length) respuesta = this.obtieneProdLink({links: capitulos, datos});
 			if (respuesta) return respuesta;
 		}
 
-		// Con restricción - Películas y Colecciones
+		// Con restricción
 		if (pelisColesParaProc) {
-			const pelisColes = yaTuvoPrimRev.filter((n) => !n.capitulo_id);
+			let pelisColes;
+			//Primera revisión
+			pelisColes = primRev.filter((n) => !n.capitulo_id);
+			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
+			if (respuesta) return respuesta;
+
+			// Películas y Colecciones
+			pelisColes = yaTuvoPrimRev.filter((n) => !n.capitulo_id);
 			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
 			if (respuesta) return respuesta;
 		}

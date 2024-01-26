@@ -24,10 +24,10 @@ module.exports = {
 		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
 
 		// Links
-		let links = procesos.TC.obtieneProds_Links(revID);
+		let prodSig = procesos.TC.obtieneProds_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
-		[prods1, prods2, rclvs1, rclvs2, links] = await Promise.all([prods1, prods2, rclvs1, rclvs2, links]);
+		[prods1, prods2, rclvs1, rclvs2, prodSig] = await Promise.all([prods1, prods2, rclvs1, rclvs2, prodSig]);
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
@@ -48,7 +48,7 @@ module.exports = {
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{prods, rclvs, links, origen: "TR"},
+			...{prods, rclvs, prodSig, origen: "TR"},
 			...{dataEntry},
 		});
 	},

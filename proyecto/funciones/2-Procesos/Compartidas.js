@@ -787,7 +787,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaLinksVencPorSem: async () => {
+	actualizaLinksVencPorSem: async function () {
 		// Variables
 		if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
 		const prodAprob = true;
@@ -805,14 +805,49 @@ module.exports = {
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
 		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
 		const capitulos = creadoAprobs.filter((n) => n.capitulo_id).length;
-		cantLinksVencPorSem["0"] = {antiguos, recientes, total: antiguos + recientes, capitulos};
+		cantLinksVencPorSem["0"] = {antiguos, recientes};
+		cantLinksVencPorSem.capitulos = capitulos;
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
+			if (semVencim < 1) continue;
 			cantLinksVencPorSem[semVencim] ? cantLinksVencPorSem[semVencim]++ : (cantLinksVencPorSem[semVencim] = 1);
 		}
+
+		// Fin
+		this.paramsLinksVencPorSem();
+		return;
+	},
+	paramsLinksVencPorSem: () => {
+		// Averigua la cantidad total de pendientes
+		const {antiguos, recientes} = cantLinksVencPorSem[0];
+		const cantPends = antiguos + recientes;
+
+		// Averigua los links totales 'aprobados_ids'
+		let cantAprobs = 0;
+		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i];
+		const cantLinksTotal = cantAprobs + cantPends;
+		const cantPromedio = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
+
+		// posiblesParaProcesar
+		let pelisColecsPosibles = 0;
+		for (let i = 5; i <= linksSemsVidaUtil - 1; i++)
+			pelisColecsPosibles += Math.max(0, cantPromedio - cantLinksVencPorSem[i]);
+		const capsPosibles = Math.max(0, cantPromedio - cantLinksVencPorSem[linksSemsVidaUtil]);
+
+		// pendientesProcesar
+		const capsPends = cantLinksVencPorSem.capitulos;
+		delete cantLinksVencPorSem.capitulos;
+		const pelisColecsPends = cantPends - capsPends;
+
+		// linksParaProcesar
+		const pelisColesParaProc = Math.min(pelisColecsPosibles, pelisColecsPends);
+		const capsParaProc = Math.min(capsPosibles, capsPends);
+
+		// Agrega la información
+		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc};
 
 		// Fin
 		return;
