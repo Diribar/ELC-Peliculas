@@ -813,6 +813,7 @@ let FN_links = {
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs.filter((n) => n.yaTuvoPrimRev);
+		console.log(814, creadoAprobs.length, pelisColesParaProc);
 
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
@@ -848,7 +849,7 @@ let FN_links = {
 		// 5. Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
-			//Primera revisión
+			// Primera revisión
 			pelisColes = primRev.filter((n) => !n.capitulo_id);
 			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
 			if (respuesta) return respuesta;
@@ -869,7 +870,9 @@ let FN_links = {
 
 		// Obtiene los productos
 		productos = this.obtieneProds(links);
+		console.log(873,productos.map(n=>n.nombreCastellano),links.length);
 		productos = this.puleLosResultados({productos, revID});
+		console.log(875,productos.map(n=>n.nombreCastellano),links.length);
 
 		// Devuelve un producto o link
 		if (productos.length) {
