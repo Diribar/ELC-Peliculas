@@ -40,8 +40,8 @@ window.addEventListener("load", () => {
 				url += "&IN=NO";
 				url += "&aprob=NO";
 				let respuesta = await fetch(rutas.eliminar + url).then((n) => n.json());
-				if (respuesta.ocultar) DOM.yaExistentes[fila].classList.add("ocultar");
-				if (respuesta.reload) location.reload();
+				if (respuesta) location.reload();
+				else DOM.yaExistentes[fila].classList.add("ocultar");
 			}
 			// Inactiva
 			else {
@@ -49,8 +49,7 @@ window.addEventListener("load", () => {
 				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
 
 				// Reemplaza por el tacho
-				botonOut.classList.remove("fa-circle-xmark");
-				botonOut.classList.add("fa-trash-can");
+				botonOut.classList.replace("fa-circle-xmark", "fa-trash-can");
 				botonOut.classList.add("inactivo");
 
 				// Oculta los 6 campos

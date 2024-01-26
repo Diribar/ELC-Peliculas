@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
 	const prodID = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Íconos addEventListeners
+		iconosRevision: document.querySelectorAll(".yaExistentes .revision"),
 		iconosIN: document.querySelectorAll(".yaExistentes .in"),
 		iconosFuera: document.querySelectorAll(".yaExistentes .fuera"),
 
@@ -25,19 +26,26 @@ window.addEventListener("load", () => {
 	};
 
 	// Decisión tomada
-	DOM.iconosIN.forEach((icono, fila) => {
+	DOM.iconosRevision.forEach((icono, indice) => {
+		const fila = parseInt(indice / 2);
 		icono.addEventListener("click", async () => {
 			// Variables
 			let url = v.condiciones;
-			// Completar el url
+
+			// Completa el url
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
-			url += "&IN=SI";
+			url += "&IN=" + (icono.className.includes("in") ? "SI" : "NO");
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
+
+			// Envía la acción
 			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+
+			// Consecuencias a partir de la respuesta
 			if (respuesta) location.reload();
+			else if (!icono.className.includes("in")) DOM.yaExistentes[fila].classList.add("ocultar");
 			else {
 				// Oculta objetos
-				icono.classList.add("ocultar");
+				DOM.iconosIN[fila].classList.add("ocultar");
 				DOM.iconosOut[fila].classList.add("ocultar");
 				DOM.iconosFuera[fila].classList.add("ocultar");
 				DOM.motivos[fila].classList.add("ocultar");
@@ -52,17 +60,17 @@ window.addEventListener("load", () => {
 			}
 		});
 	});
-	DOM.iconosFuera.forEach((icono, fila) => {
-		icono.addEventListener("click", async () => {
-			// Variables
-			let url = v.condiciones;
-			// Completar el url
-			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
-			url += "&IN=NO";
-			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
-			const respuesta = await fetch(v.ruta + url).then((n) => n.json());
-			if (respuesta) location.reload();
-			else DOM.yaExistentes[fila].classList.add("ocultar");
-		});
-	});
+	// DOM.iconosFuera.forEach((icono, fila) => {
+	// 	icono.addEventListener("click", async () => {
+	// 		// Variables
+	// 		let url = v.condiciones;
+	// 		// Completar el url
+	// 		url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
+	// 		url += "&IN=NO";
+	// 		url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
+	// 		const respuesta = await fetch(v.ruta + url).then((n) => n.json());
+	// 		if (respuesta) location.reload();
+	// 		else DOM.yaExistentes[fila].classList.add("ocultar");
+	// 	});
+	// });
 });

@@ -10,7 +10,7 @@
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
-		<a <% if (link.href) { %>href="<%= link.href %>"<% } %> target="_blank">
+		<a <% if (link.href) { %>href="<%= link.href %>" target="_blank"<% } else { %>class="pointer"<% } %>>
 			<img
 				src="/Externa/6-LogosProvs/<%= link.prov.avatar %>"
 				alt="<%= link.prov.nombre %>"
@@ -95,23 +95,19 @@
 		<% if (link.cond.revision) { %>
 			<% if (link.cond.grCreado) { // && !link.cond.creadoPropio %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
-				<i class="fa-solid fa-circle-check in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="fa-solid fa-circle-check revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
-				<i class="ocultar fuera"></i>
+				<i class="ocultar revision fuera"></i> <!-- sólo para cumplir con el trío -->
 			<% } else if (link.cond.inactivar) { // && !link.cond.inactivarPropio %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
-				<i class="fa-solid fa-circle-left in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
-				<i class="fa-solid fa-circle-right fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="fa-solid fa-circle-left revision in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="fa-solid fa-circle-right revision fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar out"></i>
 			<% } else if (link.cond.recuperar) { // && !link.cond.recuperarPropio %>
 				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
-				<i class="fa-solid fa-circle-left fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
-				<i class="fa-solid fa-circle-right in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="fa-solid fa-circle-left revision fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="fa-solid fa-circle-right revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="ocultar out"></i>
-			<% } else { %>
-				<i class="ocultar in"></i>
-				<i class="ocultar out"></i>
-				<i class="ocultar fuera"></i>
 			<% } %>
 		<% } %>
 

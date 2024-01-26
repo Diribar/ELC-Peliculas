@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 	let motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
 
 	// Decisión tomada
-	ediciones.forEach((edicion, indice) => {
+	for (let indice = 0; indice < ediciones.length; indice++) {
 		// Variables
 		let url = condiciones;
 		url += "&edicID=" + edicsID[indice].innerHTML;
@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 			url += "&motivo_id=" + motivoGenerico_id;
 			await resultado(url);
 		});
-	});
+	}
 });
 
 // Fórmulas

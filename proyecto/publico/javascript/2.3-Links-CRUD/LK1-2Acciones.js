@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
-			if (respuesta.activos) DOM.activos.innerHTML = "* Activos";
+			//if (respuesta.activos) DOM.activos.innerHTML = "* Activos";
 		});
 	});
 	DOM.botonesDeshacer.forEach((botonDeshacer, fila) => {
