@@ -495,7 +495,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "TR";
+		const origen = req.query.origen ? req.query.origen : "RL";
 		let sigProd;
 
 		// Configura el título
@@ -524,7 +524,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
+		if (origen == "RL") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
