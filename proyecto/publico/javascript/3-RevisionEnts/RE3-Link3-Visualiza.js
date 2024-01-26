@@ -4,43 +4,63 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		cuerpoFooter: document.querySelector("#cuerpoFooter"),
 		logosLink: document.querySelectorAll(".yaExistentes .url a img"),
-		logosLinkEmbeded: document.querySelectorAll(".yaExistentes .url a:not([href]) img"),
-		linksUrl: document.querySelectorAll(".yaExistentes .url:not(:has(a[href])) > input[name='url']"),
+
+		// Activos
+		logosActivos: document.querySelectorAll(".yaExistentes.inactivo_false .url a:not([href]) img"),
+		linksActivos: document.querySelectorAll(".yaExistentes.inactivo_false .url:not(:has(a[href])) > input[name='url']"),
+
+		// Inactivos
+		logosInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url a:not([href]) img"),
+		linksInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url:not(:has(a[href])) > input[name='url']"),
 	};
 	const rutaEmbeded = "/links/api/obtiene-embeded-link/?linkUrl=";
-	let contsIframe = [];
+	let iframesActivos, iframesInactivos;
 
-	// Obtiene los linksEmbeded
-	if (DOM.linksUrl && DOM.linksUrl.length) {
-		// Crea cada iframe
-		for (let linkUrl of DOM.linksUrl) {
+	// Funciones
+	let creaLosIframes = async (links, activoInactivo) => {
+		// Rutina para crear todos los iframes
+		for (let link of links) {
 			// Agrega el entorno del iframe
 			const div = document.createElement("div");
 			div.id = "contIframe";
-			div.className = "absoluteCentro ocultar";
+			div.className = "absoluteCentro ocultar " + activoInactivo;
 			DOM.cuerpoFooter.appendChild(div);
 
 			// Agrega el iframe
 			const iframe = document.createElement("iframe");
-			if (linkUrl.value) iframe.src = await fetch(rutaEmbeded + encodeURIComponent(linkUrl.value)).then((n) => n.json());
+			if (link.value) iframe.src = await fetch(rutaEmbeded + encodeURIComponent(link.value)).then((n) => n.json());
 			// iframe.allow = "autoplay";
 			iframe.setAttribute("allowFullScreen", "");
 			div.appendChild(iframe);
 		}
+		// Fin
+		return;
+	};
 
-		// Obtiene los DOMs
-		contsIframe = DOM.cuerpoFooter.querySelectorAll("#contIframe");
-	} else return;
+	// Crea los iframes activos
+	if (DOM.linksActivos) await creaLosIframes(DOM.linksActivos, "activo");
+	iframesActivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.activo");
+
+	// Crea los iframes inactivos
+	if (DOM.linksInactivos) await creaLosIframes(DOM.linksInactivos, "inactivo");
+	iframesInactivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.inactivo");
 
 	// Eventos
 	window.addEventListener("click", (e) => {
-		DOM.logosLinkEmbeded.forEach((logoLink, i) => {
+		DOM.logosActivos.forEach((logoLink, i) => {
 			// Muestra/Oculta el iframe, según corresponda
-			if (logoLink == e.target) contsIframe[i].classList.remove("ocultar");
-			else if (!contsIframe[i].className.includes("ocultar")) contsIframe[i].classList.add("ocultar");
+			if (logoLink == e.target) iframesActivos[i].classList.remove("ocultar");
+			else if (!iframesActivos[i].className.includes("ocultar")) iframesActivos[i].classList.add("ocultar");
+		});
+		DOM.logosInactivos.forEach((logoLink, i) => {
+			// Muestra/Oculta el iframe, según corresponda
+			if (logoLink == e.target) iframesInactivos[i].classList.remove("ocultar");
+			else if (!iframesInactivos[i].className.includes("ocultar")) iframesInactivos[i].classList.add("ocultar");
 		});
 	});
 
 	// Start-up
-	if (DOM.logosLink.length) contsIframe[0].classList.remove("ocultar");
+	const soloLinksEmbeded = DOM.logosLink.length == DOM.logosActivos.length + DOM.logosInactivos.length;
+	if (iframesActivos.length && soloLinksEmbeded) iframesActivos[0].classList.remove("ocultar");
+	return;
 });
