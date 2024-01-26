@@ -24,10 +24,10 @@ module.exports = {
 		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
 
 		// Links
-		let prodSig = procesos.TC.obtieneSigProd_Links(revID);
+		let sigProd = procesos.TC.obtieneSigProd_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
-		[prods1, prods2, rclvs1, rclvs2, prodSig] = await Promise.all([prods1, prods2, rclvs1, rclvs2, prodSig]);
+		[prods1, prods2, rclvs1, rclvs2, sigProd] = await Promise.all([prods1, prods2, rclvs1, rclvs2, sigProd]);
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
@@ -48,7 +48,7 @@ module.exports = {
 		// return res.send(prods.AL)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{prods, rclvs, prodSig, origen: "TR"},
+			...{prods, rclvs, sigProd, origen: "TR"},
 			...{dataEntry},
 		});
 	},
@@ -495,7 +495,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "RL";
+		const origen = req.query.origen ? req.query.origen : "TR";
 		let sigProd;
 
 		// Configura el título
@@ -524,7 +524,7 @@ module.exports = {
 		}
 
 		// Averigua cuál es el próximo producto
-		if (origen == "RL") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
+		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
 
 		// Información para la vista
 		const avatar = producto.avatar
