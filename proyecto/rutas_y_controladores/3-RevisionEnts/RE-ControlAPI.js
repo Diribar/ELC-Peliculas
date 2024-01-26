@@ -148,20 +148,20 @@ module.exports = {
 			const {entidad, id} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const revID = req.session.usuario.id;
-			let prodSig = true;
+			let sigProd = true;
 
 			// Averigua si todos los links del producto están en status estables
 			const links = await BD_genericas.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
-			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) prodSig = "";
+			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = "";
 
 			// Averigua si quedan ediciones de links del producto
-			if (prodSig) prodSig = !(await BD_genericas.obtienePorCondicion("prodsEdicion", {[campo_id]: id}));
+			if (sigProd) sigProd = !(await BD_genericas.obtienePorCondicion("prodsEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente
-			if (prodSig) prodSig = await procesos.TC.obtieneSigProd_Links(revID);
+			if (sigProd) sigProd = await procesos.TC.obtieneSigProd_Links(revID);
 
 			// Fin
-			return res.json(prodSig);
+			return res.json(sigProd);
 		},
 	},
 };
