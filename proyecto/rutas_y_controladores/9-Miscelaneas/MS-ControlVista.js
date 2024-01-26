@@ -74,7 +74,7 @@ module.exports = {
 				  (prodID ? prodID : id) +
 				  (origen == "LKM" ? "&origen=TM" : "") +
 				  (grupo ? "&grupo=inactivo" : "")
-				: origen == "RLK"
+				: origen == "RL"
 				? "/revision/links/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
 				: "";
 
