@@ -50,6 +50,9 @@ module.exports = {
 			if (mensaje) mensaje = "Edición guardada";
 		}
 
+		// Actualiza la variable de links vencidos
+		comp.actualizaLinksVencPorSem();
+
 		// Fin
 		return res.json(mensaje);
 	},
@@ -98,6 +101,9 @@ module.exports = {
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 		}
 
+		// Actualiza la variable de links vencidos
+		comp.actualizaLinksVencPorSem();
+
 		// Fin
 		return res.json(respuesta);
 	},
@@ -124,13 +130,17 @@ module.exports = {
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
+
+		// Actualiza la variable de links vencidos
+		comp.actualizaLinksVencPorSem();
+
 		// Fin
 		return res.json(respuesta);
 	},
 	deshace: async (req, res) => {
 		// Variables
-		let datos = req.query;
-		let userID = req.session.usuario.id;
+		const datos = req.query;
+		const userID = req.session.usuario.id;
 		let respuesta = {};
 
 		// Obtiene el link
@@ -150,19 +160,23 @@ module.exports = {
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos =
+			const nuevosDatos =
 				link.statusRegistro_id == inactivar_id
 					? {statusRegistro_id: aprobado_id, motivo_id: null}
 					: {statusRegistro_id: inactivo_id};
-			await BD_genericas.actualizaPorId("links", link.id, datos);
+			await BD_genericas.actualizaPorId("links", link.id, nuevosDatos);
 
 			// Actualiza los campos del producto asociado
-			link = {...link, ...datos};
+			link = {...link, ...nuevosDatos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 
 			// Fin
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 		}
+
+		// Actualiza la variable de links vencidos
+		comp.actualizaLinksVencPorSem();
+
 		// Fin
 		return res.json(respuesta);
 	},

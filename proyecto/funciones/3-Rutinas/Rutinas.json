@@ -22,13 +22,12 @@
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
-		"LinksVencidos": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-		"CantLinksVencPorSem": "SI"
+		"ActualizaLinksVencPorSem": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {

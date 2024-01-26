@@ -754,17 +754,22 @@ module.exports = {
 		// Fin
 		return;
 	},
-	fechaVencimLinks: async (links) => {
+	actualizaFechaVencimLinks: async function (links) {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
 		const include = variables.entidades.asocProds;
+		const soloLinksSinFecha = !links;
+		let espera = [];
 
 		// Obtiene todos los links con sus vínculos de prods
-		if (!links) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+		if (soloLinksSinFecha) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 		// Rutina por link
 		for (let link of links) {
+			// Revisa si se debe saltear la rutina
+			if (soloLinksSinFecha && link.fechaVencim) continue;
+
 			// Obtiene el anoEstreno
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const producto = link[asocProd];
@@ -773,7 +778,7 @@ module.exports = {
 			// Averigua si es un linkReciente y sin primRev
 			const sinPrimRev = !link.yaTuvoPrimRev;
 			const anoReciente = anoActual - linkAnoReciente;
-			const linkReciente = !anoEstreno || anoEstreno > anoReciente;
+			const linkReciente = (!anoEstreno || anoEstreno > anoReciente) && link.tipo_id != linkTrailer_id;
 
 			// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 			const desde = link.statusSugeridoEn.getTime();
@@ -781,10 +786,32 @@ module.exports = {
 			const fechaVencim = new Date(fechaVencimNum);
 
 			// Se actualiza el link con el anoEstreno y la fechaVencim
-			BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, anoReciente});
+			espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 		}
+		await Promise.all(espera);
 
 		// Fin
+		await this.actualizaStatusVencidoDeLinks();
+		return;
+	},
+	actualizaStatusVencidoDeLinks: async function()  {
+		// Variables
+		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
+		const ahora = new Date();
+
+		// Condiciones y nuevo status
+		const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
+		const status = {
+			statusSugeridoPor_id: usAutom_id,
+			statusRegistro_id: creadoAprob_id,
+			statusSugeridoEn: ahora,
+		};
+
+		// Actualiza el status de los links
+		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
+
+		// Fin
+		await this.actualizaLinksVencPorSem()
 		return;
 	},
 	actualizaLinksVencPorSem: async function () {
@@ -797,9 +824,9 @@ module.exports = {
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
 		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
-		let creadoAprobs = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: creadoAprob_id, prodAprob});
-		let aprobados = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id, prodAprob});
-		[creadoAprobs, aprobados] = await Promise.all([creadoAprobs, aprobados]);
+		const links = await BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobados_ids, prodAprob});
+		const creadoAprobs = links.filter((n) => n.statusRegistro_id == creadoAprob_id);
+		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
 		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
 		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
