@@ -44,21 +44,6 @@ window.addEventListener("load", () => {
 				// Consecuencias a partir de la respuesta
 				if (respuesta) location.reload();
 				else DOM.yaExistentes[fila].classList.add("ocultar");
-
-				// Acciones para revisión
-				if (revision) {
-					// Averigua si ya no hay más nada más para revisar sobre este producto
-					url = "?entidad=" + prodEntidad + "&id=" + prodID;
-					respuesta = await fetch(v.rutaSigProd + url).then((n) => n.json());
-
-					// Si la API devuelve una respuesta, redirecciona
-					if (respuesta)
-						location.href =
-							"/inactivar-captura/" +
-							url +
-							("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
-							"&origen=RLK";
-				}
 			}
 			// Inactiva
 			else {

@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
 					"/inactivar-captura/" +
 					url +
 					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
-					"&origen=RLK";
+					"&origen=RL";
 		});
 	});
 
