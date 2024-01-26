@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 		: codigo == "links/abm"
 		? "LK"
 		: codigo == "revision/links"
-		? "RLK"
+		? "RL"
 		: "";
 	let ruta;
 

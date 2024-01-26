@@ -939,7 +939,7 @@ let FN_links = {
 			  sigProd.entidad +
 			  "&prodID=" +
 			  sigProd.id +
-			  "&origen=RLK"
+			  "&origen=RL"
 			: null;
 
 		// Fin
