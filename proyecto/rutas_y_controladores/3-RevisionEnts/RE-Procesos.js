@@ -114,10 +114,10 @@ module.exports = {
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 			// Obtiene el producto con el próximo link a procesar
-			const prodSig = await FN_links.obtieneSigProd({revID});
+			const sigProd = await FN_links.obtieneSigProd({revID});
 
 			// Fin
-			return prodSig;
+			return sigProd;
 		},
 		obtieneRCLVs: async (revID) => {
 			// Variables
@@ -848,7 +848,7 @@ let FN_links = {
 		// 5. Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
-			//Primera revisión
+			// Primera revisión
 			pelisColes = primRev.filter((n) => !n.capitulo_id);
 			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
 			if (respuesta) return respuesta;

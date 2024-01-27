@@ -24,6 +24,7 @@ module.exports = {
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
+		prodsNombre: ["Película", "Colección", "Capítulo de una colección"],
 		asocProds:["pelicula", "coleccion", "capitulo"],
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],

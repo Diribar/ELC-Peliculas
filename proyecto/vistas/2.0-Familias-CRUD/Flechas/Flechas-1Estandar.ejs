@@ -40,13 +40,15 @@
 			<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 		<% } %>
 	<% } %>
-	<% if (codigo == "abmLinks" && locals.sigProd) { %>
+	<% if (codigo == "abmLinks") { %>
 		<!-- Link para Revisión/Mantenimiento de Links -->
-		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>">
+		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (ORIGEN_DIF_DT.includes("TR") ? ORIGEN_DIF_DT.replace("TR","RL") : ORIGEN_DIF_DT) %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
-		<a href="<%= sigProd %>">
-			<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
-		</a>
+		<% if (locals.sigProd) { %>
+			<a href="<%= sigProd %>">
+				<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
+			</a>
+		<% } %>
 	<% } %>
 </div>

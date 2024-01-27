@@ -385,11 +385,9 @@ module.exports = {
 			// Variables
 			const tema = "prodAgregar";
 			const codigo = "IM";
-			const entidades = [
-				{codigo: "peliculas", nombre: "Película"},
-				{codigo: "colecciones", nombre: "Colección"},
-				{codigo: "capitulos", nombre: "Capítulo de una colección"},
-			];
+			const prodsNombre = variables.entidades.prodsNombre;
+			let entidades = [];
+			variables.entidades.prods.forEach((prod, i) => entidades.push({codigo: prod, nombre: prodsNombre[i]}));
 
 			// Obtiene el Data Entry de session y cookies
 			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
