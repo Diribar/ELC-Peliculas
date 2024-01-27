@@ -39,9 +39,7 @@ module.exports = {
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			if (!req.session.desambiguar) req.session.desambiguar = {};
-			if (!req.session.desambiguar.palabrasClave)
-				req.session.desambiguar.palabrasClave = req.cookies.desambiguar.palabrasClave;
+			if (!req.session.desambiguar) req.session.desambiguar = {palabrasClave: req.cookies.desambiguar.palabrasClave};
 			const {palabrasClave} = req.session.desambiguar;
 
 			// Obtiene los productos y los conserva en session
@@ -106,7 +104,6 @@ module.exports = {
 
 			// Conserva la información en session para no tener que procesarla de nuevo
 			req.session.desambiguar.productos.prodsYaEnBD = prodsYaEnBD;
-
 
 			// Fin
 			return res.json(req.session.desambiguar.productos);
