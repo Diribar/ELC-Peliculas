@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 27/ene",
-	"HoraUTC": "1:12",
+	"FechaUTC": "Vie. 2/feb",
+	"HoraUTC": "10:45",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 22/ene",
-	"HoraSemUTC": "15:59",
-	"semanaUTC": 4,
+	"FechaSemUTC": "Vie. 2/feb",
+	"HoraSemUTC": "10:45",
+	"semanaUTC": 5,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-ene-24": {"titulo": "Conversión de San Pablo"},
-		"26-ene-24": {"titulo": "ELC - Películas"},
-		"27-ene-24": {"titulo": "ELC - Películas"},
-		"28-ene-24": {"titulo": "ELC - Películas"},
-		"29-ene-24": {"titulo": "ELC - Películas"}
+		"31-ene-24": {"titulo": "San Juan Bosco", "entidad": "personajes", "id": 23},
+		"01-feb-24": {"titulo": "ELC - Películas"},
+		"02-feb-24": {"titulo": "ELC - Películas"},
+		"03-feb-24": {"titulo": "ELC - Películas"},
+		"04-feb-24": {"titulo": "ELC - Películas"}
 	}
 }
