@@ -915,11 +915,11 @@ let FN_links = {
 
 			// Ordena los productos
 			productos
+				.sort((a, b) => a.fechaRef - b.fechaRef) // por fecha más antigua
 				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
 				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
-				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
-				.sort((a, b) => a.fechaRef - b.fechaRef); // por fecha más antigua
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)); // por entidad
 		}
 
 		// Fin

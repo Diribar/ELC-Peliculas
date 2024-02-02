@@ -86,14 +86,14 @@ module.exports = {
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 			if (IN == "SI") {
 				// Variables
-				const semMinima = linksPrimRev / unaSemana;
+				const semPrimRev = linksPrimRev / unaSemana;
 
-				// Resta 1 porque empieza a fijarse por la penúltima semana
-				for (var semana = linksSemsVidaUtil - 1; semana > semMinima; semana--)
+				// Empieza a fijarse por la semana siguiente a la de Primera Revisión
+				for (var semana = semPrimRev + 1; semana <= linksSemsVidaUtil; semana++)
 					if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
 
 				// Si no se encontró "capacidad", envía una mensaje de error
-				if (semana == semMinima) return res.json("En esta semana ya no se puede revisar este link");
+				if (semana > linksSemsVidaUtil) return res.json("En esta semana ya no se puede revisar este link");
 			}
 
 			// Más variables
