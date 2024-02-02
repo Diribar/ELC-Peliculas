@@ -285,11 +285,7 @@ module.exports = {
 			// Recorre los capítulos
 			await coleccion.capsTMDB_id.forEach(async (capTMDB_id, indice) => {
 				// Si algún capítulo es nuevo, lo agrega
-				if (
-					!coleccion.capitulosID_ELC.includes(String(capTMDB_id)) && // el TMDB_id no existe entre los capítulos de la colección
-					!(await BD_genericas.obtienePorCondicion("capitulos", {TMDB_id: capTMDB_id}))&& // el TMDB_id no existe en la tabla de capítulos
-					!(await BD_genericas.obtienePorCondicion("peliculas", {TMDB_id: capTMDB_id})) // el TMDB_id no existe en la tabla de películas
-				)
+				if (!coleccion.capitulosID_ELC.includes(String(capTMDB_id)))
 					await procesos.confirma.agregaUnCap_Colec(coleccion, capTMDB_id, indice);
 			});
 			// Fin
