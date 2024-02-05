@@ -1,1 +1,40 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Lun. 5/feb","HoraUTC":"13:16","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Lun. 5/feb","HoraSemUTC":"13:16","semanaUTC":6,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["ProdAprobEnLink","LinksEnProd","FeedbackParaUsers","ProdsEnRCLV","ProductosAlAzar"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","EliminaLinksInactivos":"SI","LinksPorProv":"SI","FeedbackParaRevisores":"SI","EliminaCalifsSinPPP":"SI","LoginsAcums":"SI","IDdeTablas":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialAntiguo":"SI","EliminaHistorialDeRegsEliminados":"SI","ActualizaLinksVencPorSem":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"03-feb-24":{"titulo":"ELC - Películas"},"04-feb-24":{"titulo":"ELC - Películas"},"05-feb-24":{"titulo":"San Felipe de Jesús","entidad":"personajes","id":205},"06-feb-24":{"titulo":"ELC - Películas"},"07-feb-24":{"titulo":"ELC - Películas"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Lun. 5/feb",
+	"HoraUTC": "13:16",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Lun. 5/feb",
+	"HoraSemUTC": "13:16",
+	"semanaUTC": 6,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"PaisesConMasProductos": "SI",
+		"EliminaLinksInactivos": "SI",
+		"LinksPorProv": "SI",
+		"FeedbackParaRevisores": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI",
+		"IDdeTablas": "SI"
+	},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"ActualizaLinksVencPorSem": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"03-feb-24": {"titulo": "ELC - Películas"},
+		"04-feb-24": {"titulo": "ELC - Películas"},
+		"05-feb-24": {"titulo": "San Felipe de Jesús", "entidad": "personajes", "id": 205},
+		"06-feb-24": {"titulo": "ELC - Películas"},
+		"07-feb-24": {"titulo": "ELC - Películas"}
+	}
+}
