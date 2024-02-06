@@ -38,7 +38,7 @@
 						<% } %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
-					<%- tema != "revisionEnts" ? include("LK2-Alta", {fila: links.length}) : "" %>
+					<% if (tema != "revisionEnts") { %><%- include("LK2-Alta", {fila: links.length}) %><% } %>
 				</tbody>
 			</table>
 		</form>

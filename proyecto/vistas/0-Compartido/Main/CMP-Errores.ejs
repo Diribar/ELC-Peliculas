@@ -8,10 +8,12 @@
 		<span class="mensajeError"><%- locals.errores && locals.nombre && errores[nombre] ? errores[nombre] : "" %></span>
 	</i>
 
-	<!-- Advertencia -->
-	<i class="fa-solid fa-triangle-exclamation ocultar">
-		<span class="mensajeError"></span>
-	</i>
+	<% if (tema == "prodRud" && codigo == "edicion") { %>
+		<!-- Advertencia -->
+		<i class="fa-solid fa-triangle-exclamation ocultar">
+			<span class="mensajeError"></span>
+		</i>
+	<% } %>
 
 	<!-- OK -->
 	<i
