@@ -27,31 +27,31 @@
 		</select>
 	</td>
 	<!-- 2. Calidad -->
-	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n=>n.calidad && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n => n.calidad && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%= link.calidad %>
 	</td>
 	<!-- 3. Castellano -->
-	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n=>n.castellano!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n => n.castellano!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.castellano ? "SI" : "NO" %>
 	</td>
 	<!-- 4. Subtitulos -->
-	<td class="ancho_subtitulos taparMotivo <%- link.ediciones.find(n=>n.subtitulos!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_subtitulos taparMotivo <%- link.ediciones.find(n => n.subtitulos!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.subtitulos===null ? "-" : link.subtitulos ? "SI" : "NO" %>
 	</td>
 	<!-- 5. Gratuito -->
-	<td class="ancho_gratuito taparMotivo <%- link.ediciones.find(n=>n.gratuito!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_gratuito taparMotivo <%- link.ediciones.find(n => n.gratuito!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.gratuito ? "SI" : "NO" %>
 	</td>
 	<!-- 6. Tipo -->
-	<td class="ancho_tipo_id taparMotivo <%- link.ediciones.find(n=>n.tipo_id && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_tipo_id taparMotivo <%- link.ediciones.find(n => n.tipo_id && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.tipo_id==1 ? "Trailer" : "Película" %>
 	</td>
 	<!-- 7. Completo -->
-	<td class="ancho_completo taparMotivo <%- link.ediciones.find(n=>n.completo!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_completo taparMotivo <%- link.ediciones.find(n => n.completo!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.completo==1 ? "SI" : "NO" %>
 	</td>
 	<!-- 8. Parte -->
-	<td class="ancho_parte taparMotivo <%- link.ediciones.find(n=>n.parte && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_parte taparMotivo <%- link.ediciones.find(n => n.parte && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
 		<%- link.parte %>
 	</td>
 	<!-- 9. Status -->
