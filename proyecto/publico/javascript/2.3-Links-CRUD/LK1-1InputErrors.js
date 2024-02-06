@@ -1,9 +1,8 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let v = {
+	let DOM={
 		// Generales
-		colecciones: new URL(location.href).searchParams.get("entidad") == "colecciones",
 		form: document.querySelector("#datos form"),
 		guardar: document.querySelectorAll("tbody tr button"),
 
@@ -12,7 +11,7 @@ window.addEventListener("load", async () => {
 
 		// Inputs
 		inputs: document.querySelectorAll("tbody .inputError .input"),
-		camposInput: Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name),
+		camposInput: document.querySelectorAll("tbody .alta .input"),
 		urlInputs: document.querySelectorAll(".inputError input[name='url'"),
 		calidadInputs: document.querySelectorAll(".calidad .inputError .input"),
 		castellanoInputs: document.querySelectorAll(".castellano .inputError .input"),
@@ -28,12 +27,18 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+	}
+	let v = {
+		// Generales
+		colecciones: new URL(location.href).searchParams.get("entidad") == "colecciones",
+		camposInput: Array.from(DOM.camposInput).map((n) => n.name),
+
 		// Rutas
 		rutaValidar: "/links/api/valida/?",
 		rutaObtieneProvs: "/links/api/obtiene-provs-links",
 	};
-	let columnas = v.camposInput.length;
-	let filas = v.inputs.length / columnas;
+	let columnas = DOM.camposInput.length;
+	let filas = DOM.inputs.length / columnas;
 	let filaAlta = filas - 1;
 	let provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
 	let prov, col, sinErrores;
@@ -45,12 +50,12 @@ window.addEventListener("load", async () => {
 			let campo = e.target.name;
 			// Obtiene la columna y fila del input
 			let columna = v.camposInput.indexOf(campo);
-			for (var fila = 0; fila < filas; fila++) if (e.target === v.inputs[fila * columnas + columna]) break;
+			for (var fila = 0; fila < filas; fila++) if (e.target === DOM.inputs[fila * columnas + columna]) break;
 			return [fila, columna];
 		},
 		depuraUrl: () => {
 			// Obtiene el valor actual
-			let valor = v.urlInputs[filaAlta].value;
+			let valor = DOM.urlInputs[filaAlta].value;
 			// Obtiene ambos índices
 			let indice1 = valor.indexOf("www.");
 			let indice2 = valor.indexOf("//");
@@ -65,7 +70,7 @@ window.addEventListener("load", async () => {
 				url = url.slice(0, url.indexOf("?"));
 
 			// Conclusiones
-			v.urlInputs[filaAlta].value = url;
+			DOM.urlInputs[filaAlta].value = url;
 			return url;
 		},
 		controlesEnUrl: async (fila) => {
@@ -77,7 +82,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el proveedor
 			if (sinErrores) {
 				// Obtiene el url
-				let url = v.urlInputs[fila].value;
+				let url = DOM.urlInputs[fila].value;
 				// Intenta reconocer al proveedor
 				prov = provs.find((n) => !n.generico && url.includes(n.urlDistintivo));
 				// Si no lo reconoce, se asume el 'desconocido'
@@ -86,11 +91,11 @@ window.addEventListener("load", async () => {
 				if (fila == filaAlta) {
 					// Muestra el ícono de genérico o de OK
 					prov.generico
-						? v.provsDesconocido[filaAlta].classList.remove("prov_id")
-						: v.provsDesconocido[filaAlta].classList.add("prov_id");
+						? DOM.provsDesconocido[filaAlta].classList.remove("prov_id")
+						: DOM.provsDesconocido[filaAlta].classList.add("prov_id");
 					!prov.generico
-						? v.provsConocido[filaAlta].classList.remove("prov_id")
-						: v.provsConocido[filaAlta].classList.add("prov_id");
+						? DOM.provsConocido[filaAlta].classList.remove("prov_id")
+						: DOM.provsConocido[filaAlta].classList.add("prov_id");
 				}
 			} else prov = null;
 
@@ -100,8 +105,8 @@ window.addEventListener("load", async () => {
 		controlesEnCalidad: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = !!prov.calidad;
-			if (condicion) v.calidadInputs[fila].value = prov.calidad;
-			if (fila == filaAlta) v.calidadInputs[fila].disabled = condicion;
+			if (condicion) DOM.calidadInputs[fila].value = prov.calidad;
+			if (fila == filaAlta) DOM.calidadInputs[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencias
 			let error = await mensajeDeError(fila, "calidad");
@@ -114,8 +119,8 @@ window.addEventListener("load", async () => {
 		controlesEnCastellano: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = prov.siempre_castellano == 1;
-			if (condicion) v.castellanoInputs[fila].value = "1";
-			if (fila == filaAlta) v.castellanoInputs[fila].disabled = condicion;
+			if (condicion) DOM.castellanoInputs[fila].value = "1";
+			if (fila == filaAlta) DOM.castellanoInputs[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "castellano");
@@ -127,9 +132,9 @@ window.addEventListener("load", async () => {
 		},
 		controlesEnSubtitulosCastellano: async (fila) => {
 			// Si el resultado es conocido --> ponerlo
-			let condicion = v.castellanoInputs[fila].value == "1";
-			if (condicion) v.subtitulos[fila].value = "-";
-			v.subtitulos[fila].disabled = condicion;
+			let condicion = DOM.castellanoInputs[fila].value == "1";
+			if (condicion) DOM.subtitulos[fila].value = "-";
+			DOM.subtitulos[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "subtitulos");
@@ -143,9 +148,9 @@ window.addEventListener("load", async () => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion1 = prov.siempreGratuito == 1;
 			let condicion2 = prov.siemprePago;
-			if (condicion1) v.gratuitoInputs[fila].value = "1";
-			else if (condicion2) v.gratuitoInputs[fila].value = "0";
-			if (fila == filaAlta) v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
+			if (condicion1) DOM.gratuitoInputs[fila].value = "1";
+			else if (condicion2) DOM.gratuitoInputs[fila].value = "0";
+			if (fila == filaAlta) DOM.gratuitoInputs[fila].disabled = condicion1 || condicion2;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "gratuito");
@@ -158,8 +163,8 @@ window.addEventListener("load", async () => {
 		controlesEnTipo: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = !prov.trailer || !prov.pelicula || v.colecciones;
-			if (condicion) v.tipoInputs[fila].value = !prov.pelicula || v.colecciones ? 1 : 2;
-			if (fila == filaAlta) v.tipoInputs[fila].disabled = condicion;
+			if (condicion) DOM.tipoInputs[fila].value = !prov.pelicula || v.colecciones ? 1 : 2;
+			if (fila == filaAlta) DOM.tipoInputs[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "tipo_id");
@@ -172,9 +177,9 @@ window.addEventListener("load", async () => {
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion =
-				(prov.trailer && !prov.pelicula) || prov.siempreCompleta || v.colecciones || v.tipoInputs[fila].value == 1;
-			if (condicion) v.completoInputs[fila].value = "1";
-			v.completoInputs[fila].disabled = condicion;
+				(prov.trailer && !prov.pelicula) || prov.siempreCompleta || v.colecciones || DOM.tipoInputs[fila].value == 1;
+			if (condicion) DOM.completoInputs[fila].value = "1";
+			DOM.completoInputs[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "completo");
@@ -186,11 +191,11 @@ window.addEventListener("load", async () => {
 		},
 		controlesEnParte: async (fila) => {
 			// Eliminar los caracteres que no sean '-' o un número
-			v.parteInputs[fila].value = v.parteInputs[fila].value.replace(/[^-\d]/g, "");
+			DOM.parteInputs[fila].value = DOM.parteInputs[fila].value.replace(/[^-\d]/g, "");
 			// Si el resultado es conocido --> ponerlo
-			let condicion = v.completoInputs[fila].value == "1";
-			if (condicion) v.parteInputs[fila].value = "-";
-			v.parteInputs[fila].disabled = condicion;
+			let condicion = DOM.completoInputs[fila].value == "1";
+			if (condicion) DOM.parteInputs[fila].value = "-";
+			DOM.parteInputs[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "parte");
@@ -207,16 +212,16 @@ window.addEventListener("load", async () => {
 				// Obtiene el índice
 				indice = fila * columnas + col;
 				// Acciones si el campo tiene un valor y está aprobado
-				if (v.inputs[indice].value && !v.iconosOK[indice].classList.contains("ocultar")) {
+				if (DOM.inputs[indice].value && !DOM.iconosOK[indice].classList.contains("ocultar")) {
 					// Mostrar el campo siguiente
-					v.campos[indice + 1].classList.remove("desperdicio");
-					v.inputs[indice + 1].classList.remove("ocultar");
+					DOM.campos[indice + 1].classList.remove("desperdicio");
+					DOM.inputs[indice + 1].classList.remove("ocultar");
 				} else {
 					for (let nuevaCol = col; nuevaCol < columnas - 1; nuevaCol++) {
 						let nuevoIndice = fila * columnas + nuevaCol;
-						v.campos[nuevoIndice + 1].classList.add("desperdicio");
-						v.inputs[nuevoIndice + 1].classList.add("ocultar");
-						v.iconosError[nuevoIndice + 1].classList.add("ocultar");
+						DOM.campos[nuevoIndice + 1].classList.add("desperdicio");
+						DOM.inputs[nuevoIndice + 1].classList.add("ocultar");
+						DOM.iconosError[nuevoIndice + 1].classList.add("ocultar");
 					}
 					break;
 				}
@@ -224,16 +229,16 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		activaInactivaBotonGuardar: (fila) => {
-			let OK = Array.from(v.iconosOK)
+			let OK = Array.from(DOM.iconosOK)
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
 				.every((n) => !n.includes("ocultar"));
-			let error = Array.from(v.iconosError)
+			let error = Array.from(DOM.iconosError)
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
 				.every((n) => n.includes("ocultar"));
-			OK && error ? v.guardar[fila].classList.remove("inactivo") : v.guardar[fila].classList.add("inactivo");
-			OK && error ? v.guardar[fila].setAttribute("tabindex", "0") : v.guardar[fila].setAttribute("tabindex", "-1");
+			OK && error ? DOM.guardar[fila].classList.remove("inactivo") : DOM.guardar[fila].classList.add("inactivo");
+			OK && error ? DOM.guardar[fila].setAttribute("tabindex", "0") : DOM.guardar[fila].setAttribute("tabindex", "-1");
 		},
 	};
 	// Sub-funciones ------------------------------------------------------------
@@ -255,39 +260,42 @@ window.addEventListener("load", async () => {
 		fn.activaInactivaBotonGuardar(fila);
 		// Pone el foco en el input a resolver o en el botón guardar
 		let celda = fila * columnas + col;
-		if (col < columnas) v.inputs[celda].focus();
-		else if (!v.guardar[fila].classList.contains("inactivo")) v.guardar[fila].focus();
+		if (col < columnas) DOM.inputs[celda].focus();
+		else if (!DOM.guardar[fila].classList.contains("inactivo")) DOM.guardar[fila].focus();
 		// Fin
 		return;
 	};
 	let mensajeDeError = async (fila, campo) => {
-		// Obtiene la columna
+		// Obtiene la columna, el índice y el valor
 		let columna = v.camposInput.indexOf(campo);
-		// Obtiene el índice
 		let indice = fila * columnas + columna;
-		// Casos en los que se necesita considerar el campo anterior
+		let valor = encodeURIComponent(DOM.inputs[indice].value);
+
+		// Obtiene el campo y valor anterior
 		let [campoAnt, valorAnt] =
 			campo == "subtitulos" || campo == "completo" || campo == "parte"
-				? [v.inputs[indice - 1].name + "=", v.inputs[indice - 1].value + "&"]
+				? [DOM.inputs[indice - 1].name + "=", DOM.inputs[indice - 1].value + "&"]
 				: ["", ""];
-		// Obtiene los datos de campo y valor
-		let valor = encodeURIComponent(v.inputs[indice].value);
-		// Consolida la información
+
+		// Consolida la información y averigua si hay algún error
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
-		// Averigua si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
-		// Guarda el mensaje de error
-		let mensaje = error[campo];
+
 		// Reemplaza el mensaje
-		v.mensajesError[indice].innerHTML = mensaje;
+		let mensaje = error[campo];
+		DOM.mensajesError[indice].innerHTML = mensaje;
+		if (campo == "url") console.log(DOM.mensajesError,indice,DOM.mensajesError.length);
+
 		// Acciones en función de si hay o no mensajes de error
-		mensaje ? v.iconosError[indice].classList.remove("ocultar") : v.iconosError[indice].classList.add("ocultar");
-		!mensaje ? v.iconosOK[indice].classList.remove("ocultar") : v.iconosOK[indice].classList.add("ocultar");
+		mensaje ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
+		!mensaje ? DOM.iconosOK[indice].classList.remove("ocultar") : DOM.iconosOK[indice].classList.add("ocultar");
+
+		// Fin
 		return error;
 	};
 
 	// Event Listeners
-	v.form.addEventListener("input", async (e) => {
+	DOM.form.addEventListener("input", async (e) => {
 		// Obtiene la fila y columna
 		let [fila, columna] = fn.obtieneFilaColumna(e);
 		// Si hubo un error (fila=filas), interrumpe
@@ -297,7 +305,6 @@ window.addEventListener("load", async () => {
 		controlesDataEntry(fila, columna);
 	});
 
-	// Startup
-	// Revisa las ediciones y el alta
+	// Startup - revisa las ediciones y el alta
 	for (let fila = 0; fila < filas - 1; fila++) await controlesDataEntry(fila, 0);
 });
