@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM={
+	let DOM = {
 		// Generales
 		form: document.querySelector("#datos form"),
 		guardar: document.querySelectorAll("tbody tr button"),
@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-	}
+	};
 	let v = {
 		// Generales
 		colecciones: new URL(location.href).searchParams.get("entidad") == "colecciones",
@@ -284,7 +284,6 @@ window.addEventListener("load", async () => {
 		// Reemplaza el mensaje
 		let mensaje = error[campo];
 		DOM.mensajesError[indice].innerHTML = mensaje;
-		if (campo == "url") console.log(DOM.mensajesError,indice,DOM.mensajesError.length);
 
 		// Acciones en función de si hay o no mensajes de error
 		mensaje ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
