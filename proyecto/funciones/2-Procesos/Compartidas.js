@@ -820,7 +820,7 @@ module.exports = {
 		cantLinksVencPorSem = {};
 
 		// Crea las semanas dentro de la variable
-		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
+		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0, prods: 0};
 
 		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
 		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
@@ -831,18 +831,24 @@ module.exports = {
 		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
 		// Abre los 'revisar' entre 'antiguos' y 'recientes'
-		const antiguos = revisar.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
-		const recientes = revisar.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
-		const capitulos = revisar.filter((n) => n.capitulo_id).length;
-		cantLinksVencPorSem["0"] = {antiguos, recientes};
-		cantLinksVencPorSem.capitulos = capitulos;
+		const prods = revisar.length;
+		const pelisColes = revisar.filter((n) => !n.capitulo_id).length;
+		const capitulos = prods - pelisColes;
+		cantLinksVencPorSem["0"] = {pelisColes, capitulos, prods};
 
 		// Obtiene la cantidad por semana de los 'aprobados'
 		for (let link of aprobados) {
+			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
 			if (semVencim < 1) continue;
-			cantLinksVencPorSem[semVencim]++;
+
+			// Obtiene la entidad
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
+
+			// Agrega al conteo
+			cantLinksVencPorSem[semVencim][entidad]++;
+			cantLinksVencPorSem[semVencim].prods++;
 		}
 
 		// Fin
@@ -851,32 +857,28 @@ module.exports = {
 	},
 	paramsLinksVencPorSem: () => {
 		// Averigua la cantidad total de pendientes
-		const {antiguos, recientes} = cantLinksVencPorSem[0];
-		const cantPends = antiguos + recientes;
+		const {pelisColes: pelisColesPends, capitulos: capsPends, prods: cantPends} = cantLinksVencPorSem[0];
 
 		// Averigua los links totales 'aprobados_ids'
 		let cantAprobs = 0;
-		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i];
-		const cantLinksTotal = cantAprobs + cantPends;
-		const cantPromedio = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
+		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
+		const cantLinksTotal = cantPends + cantAprobs;
+		const cantPromSem = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
 
 		// posiblesParaProcesar
-		let pelisColecsPosibles = 0;
-		for (let i = 5; i <= linksSemsVidaUtil - 1; i++)
-			pelisColecsPosibles += Math.max(0, cantPromedio - cantLinksVencPorSem[i]);
-		const capsPosibles = Math.max(0, cantPromedio - cantLinksVencPorSem[linksSemsVidaUtil]);
-
-		// pendientesProcesar
-		const capsPends = cantLinksVencPorSem.capitulos;
-		delete cantLinksVencPorSem.capitulos;
-		const pelisColecsPends = cantPends - capsPends;
+		const semPrimRev = linksPrimRev / unaSemana;
+		let pelisColesPosibles = 0;
+		for (let i = semPrimRev + 1; i <= linksSemsVidaUtil - 1; i++)
+			pelisColesPosibles += Math.max(0, cantPromSem - cantLinksVencPorSem[i].prods);
+		const capsPosibles = Math.max(0, cantPromSem - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// linksParaProcesar
-		const pelisColesParaProc = Math.min(pelisColecsPosibles, pelisColecsPends);
+		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 		const capsParaProc = Math.min(capsPosibles, capsPends);
+		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc};
 
 		// Agrega la información
-		cantLinksVencPorSem = {...cantLinksVencPorSem, pelisColesParaProc, capsParaProc, cantPromedio};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
 
 		// Fin
 		return;
