@@ -6,8 +6,8 @@ module.exports = async (req, res, next) => {
 	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 	// Averigua si hay registros para procesar
-	const entidad = req.query == "capitulos" ? "capsParaProc" : "pelisColesParaProc";
-	const hayRegistros = cantLinksVencPorSem[entidad];
+	const entidad = req.query == "capitulos" ? "capitulos" : "pelisColes";
+	const hayRegistros = cantLinksVencPorSem.paraProc[entidad];
 
 	// Si no hay registros a procesar, redirige al tablero
 	if (!hayRegistros) return res.redirect("/revision/tablero-de-control");
