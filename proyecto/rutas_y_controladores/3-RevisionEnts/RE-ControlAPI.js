@@ -90,7 +90,7 @@ module.exports = {
 
 				// Empieza a fijarse por la semana siguiente a la de Primera Revisión
 				for (var semana = semPrimRev + 1; semana <= linksSemsVidaUtil; semana++)
-					if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
+					if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
 
 				// Si no se encontró "capacidad", envía una mensaje de error
 				if (semana > linksSemsVidaUtil) return res.json("En esta semana ya no se puede revisar este link");
