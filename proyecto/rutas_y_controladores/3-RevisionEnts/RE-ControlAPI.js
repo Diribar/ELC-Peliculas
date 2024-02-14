@@ -106,7 +106,7 @@ module.exports = {
 			// CONSECUENCIAS - Actualiza la variable de links vencidos
 			comp.actualizaLinksVencPorSem();
 
-			// CONSECUENCIAS - Acciones salvo que sea links sugerido por 'automático'
+			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
 			const sugeridoPor_id = link.statusSugeridoPor_id;
 			if (sugeridoPor_id != usAutom_id) {
 				// Agrega un registro en el histStatus
