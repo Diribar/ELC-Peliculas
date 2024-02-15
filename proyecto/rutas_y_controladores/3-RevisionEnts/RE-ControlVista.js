@@ -131,21 +131,21 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen} = req.query;
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const revID = req.session.usuario.id;
+			const ahora = comp.fechaHora.ahora();
+			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const {baseUrl} = comp.reqBasePathUrl(req);
+
+			// Otras variables
 			let datos = await procesos.guardar.obtieneDatos(req);
 			const {original, statusOriginal_id, statusFinal_id} = datos;
 			const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
+			datos = {}; // limpia la variable 'datos'
 			const producto = !rclv;
 			const userID = original.statusSugeridoPor_id;
-			const revID = req.session.usuario.id;
-			const ahora = comp.fechaHora.ahora();
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
-			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
-			const {baseUrl} = comp.reqBasePathUrl(req);
 			let destino;
-
-			// Limpia la variable 'datos'
-			datos = {};
 
 			// Acciones si es un RCLV
 			if (rclv) {
