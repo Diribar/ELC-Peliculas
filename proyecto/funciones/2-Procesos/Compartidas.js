@@ -759,7 +759,7 @@ module.exports = {
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
 		const include = variables.entidades.asocProds;
-		const soloLinksSinFecha = !links;
+		const soloLinksSinFecha = !links; // si no se especifican links, sólo se actualizan los que no tienen fecha
 		let espera = [];
 
 		// Obtiene todos los links con sus vínculos de prods
