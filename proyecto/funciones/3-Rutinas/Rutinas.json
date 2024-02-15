@@ -1,1 +1,40 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Jue. 15/feb","HoraUTC":"11:24","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Mié. 14/feb","HoraSemUTC":"13:08","semanaUTC":7,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["ProdAprobEnLink","LinksEnProd","FeedbackParaUsers","ProdsEnRCLV","ProductosAlAzar"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI","EliminaLinksInactivos":"SI","LinksPorProv":"SI","FeedbackParaRevisores":"SI","EliminaCalifsSinPPP":"SI","LoginsAcums":"SI","IDdeTablas":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialAntiguo":"SI","EliminaHistorialDeRegsEliminados":"SI","ActualizaLinksVencPorSem":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"13-feb-24":{"titulo":"ELC - Películas"},"14-feb-24":{"titulo":"Miércoles de Cenizas"},"15-feb-24":{"titulo":"Cuaresma"},"16-feb-24":{"titulo":"Venerable Camila Rolón","entidad":"personajes","id":180},"17-feb-24":{"titulo":"Cuaresma"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Jue. 15/feb",
+	"HoraUTC": "11:24",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Mié. 14/feb",
+	"HoraSemUTC": "13:08",
+	"semanaUTC": 7,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"PaisesConMasProductos": "SI",
+		"EliminaLinksInactivos": "SI",
+		"LinksPorProv": "SI",
+		"FeedbackParaRevisores": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"LoginsAcums": "SI",
+		"IDdeTablas": "SI"
+	},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"ActualizaLinksVencPorSem": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"13-feb-24": {"titulo": "ELC - Películas"},
+		"14-feb-24": {"titulo": "Miércoles de Cenizas"},
+		"15-feb-24": {"titulo": "Cuaresma"},
+		"16-feb-24": {"titulo": "Venerable Camila Rolón", "entidad": "personajes", "id": 180},
+		"17-feb-24": {"titulo": "Cuaresma"}
+	}
+}
