@@ -88,7 +88,7 @@ module.exports = {
 					!anoFM || !Number(anoFM) || Number(anoFM) < anoHoy || Number(anoFM) > anoHoy + 1
 						? cartelAnoIncorrecto
 						: anoFM == anoHoy && fechaDelAno_id < fechaDelAnoHoy_id
-						? cartelAnoProximo
+						? cartelFechaFutura
 						: "";
 
 				// Valida si existe un comentario adecuado para la fecha móvil
@@ -208,7 +208,7 @@ module.exports = {
 const cartelFaltaElDatoSobre = "Falta el dato sobre ";
 const cartelMesDiaIncompatibles = "El número de día y el mes elegidos son incompatibles";
 const cartelAnoIncorrecto = "El año debe ser el actual o el próximo";
-const cartelAnoProximo = "El año debe ser el próximo";
+const cartelFechaFutura = "La fecha debe ser en el futuro";
 const cartelCriterioSobre = "Necesitamos saber el criterio sobre ";
 const cartelRegistroDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
