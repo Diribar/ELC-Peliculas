@@ -92,7 +92,7 @@ module.exports = {
 		// El link existe, tiene status 'aprobado' y motivo
 		else {
 			// Inactivar
-			let datos = {
+			const datos = {
 				statusSugeridoPor_id: userID,
 				statusSugeridoEn: ahora,
 				motivo_id,
