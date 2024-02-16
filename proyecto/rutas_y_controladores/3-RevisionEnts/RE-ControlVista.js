@@ -17,7 +17,8 @@ module.exports = {
 
 		// Productos y Ediciones
 		let prods1 = procesos.TC.obtieneProdsConEdic(revID); // Altas y Ediciones
-		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // creadoSinEdición, creadoAprobSinEdición, Inactivar y Recuperar
+		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
+		let prods3 = procesos.TC.obtieneProdsRepetidos(); // películas y colecciones repetidas
 
 		// RCLV
 		let rclvs1 = procesos.TC.obtieneRCLVs(revID);
@@ -27,7 +28,7 @@ module.exports = {
 		let sigProd = procesos.TC.obtieneSigProd_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
-		[prods1, prods2, rclvs1, rclvs2, sigProd] = await Promise.all([prods1, prods2, rclvs1, rclvs2, sigProd]);
+		[prods1, prods2, prods3, rclvs1, rclvs2, sigProd] = await Promise.all([prods1, prods2, prods3, rclvs1, rclvs2, sigProd]);
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
@@ -36,7 +37,7 @@ module.exports = {
 		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 
 		// Consolida y procesa los productos y RCLVs
-		let prods = {...prods1, ...prods2, AL};
+		let prods = {...prods1, ...prods2, AL, ...prods3};
 		prods = procesos.procesaCampos.prods(prods);
 		let rclvs = {...rclvs1, ...rclvs2};
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
@@ -45,7 +46,7 @@ module.exports = {
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
 
 		// Va a la vista
-		// return res.send(prods.AL)
+		return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, sigProd, origen: "TR"},
