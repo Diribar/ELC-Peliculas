@@ -53,7 +53,7 @@ window.addEventListener("load", async () => {
 				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
 
 				// Si el 'await' sigue pendiente, pierde tiempo
-				if (pendiente) await espera(pausa);
+				if (pendiente) await pierdeTiempo(pausa);
 			}
 
 			// Se asegura de haber recibido la información
