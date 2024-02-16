@@ -547,7 +547,7 @@ module.exports = {
 	},
 	eliminar: {
 		eliminaDependientes: async (entidad, id, original) => {
-			// Obtiene las ediciones
+			// Variables
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
