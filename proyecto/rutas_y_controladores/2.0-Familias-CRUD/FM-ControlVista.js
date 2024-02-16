@@ -193,11 +193,8 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
 
-		// Elimina las ediciones con su 'campo_id', y sus archivos avatar
-		espera.push(procesos.eliminar.eliminaAvatarMasEdics(entidad, id, original));
-
-		// Si es un producto, elimina sus links y si corresponde, sus capítulos
-		if (familia == "producto") espera.push(procesos.eliminar.eliminaDependsProds(entidad, id));
+		// Elimina sus archivos avatar y ediciones, y si es un producto, también sus links y capítulos
+		espera.push(procesos.eliminar.eliminaDependientes(entidad, id, original));
 
 		// Acciones si es un RCLV
 		if (familia == "rclv") {
