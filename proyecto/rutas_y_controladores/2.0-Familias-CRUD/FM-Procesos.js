@@ -546,8 +546,8 @@ module.exports = {
 		},
 	},
 	eliminar: {
-		eliminaAvatarMasEdics: async (entidad, id) => {
-			// Obtiene la edicion
+		eliminaDependientes: async (entidad, id, original) => {
+			// Obtiene las ediciones
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
@@ -555,34 +555,26 @@ module.exports = {
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 
-			if (ediciones.length) {
-				// 1. Elimina el archivo avatar de las ediciones
-				for (let edicion of ediciones)
-					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
-
-				// 2. Elimina las ediciones
-				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+			// Elimina el archivo avatar del original
+			if (original.avatar && !original.avatar.includes("/")) {
+				comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Final", original.avatar);
+				comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", original.avatar);
 			}
 
-			//Fin
-			return true;
-		},
-		eliminaDependsMasEdics: async ({entidadPadre, padreID, entidadHijo}) => {
-			// Variables
-			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);
-			const campoHijo_id = comp.obtieneDesdeEntidad.campo_id(entidadHijo);
-			const edicHijo = comp.obtieneDesdeEntidad.entidadEdic(entidadHijo);
-			let esperar = [];
-
-			// Obtiene los hijos
-			const hijos = await BD_genericas.obtieneTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+			// Elimina el archivo avatar de las ediciones
+			for (let edicion of ediciones)
+				if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 			// Elimina las ediciones
-			for (let hijo of hijos) esperar.push(BD_genericas.eliminaTodosPorCondicion(edicHijo, {[campoHijo_id]: hijo.id}));
-			await Promise.all(esperar);
+			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+			if (familia != "producto") return true
 
-			// Elimina los hijos
-			await BD_genericas.eliminaTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+			// Elimina los links
+			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
+			await BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id});
+
+			// Si es una colección, elimina sus capítulos
+			if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
 
 			// Fin
 			return true;
