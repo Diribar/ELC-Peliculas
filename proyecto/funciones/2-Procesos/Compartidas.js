@@ -197,9 +197,7 @@ module.exports = {
 			const rclv_id = this.campo_idRCLV(registro);
 
 			// Fin
-			return false
-				? false
-				: registro.link_id // debe ir antes de los productos por sus ediciones
+			return registro.link_id // debe ir antes de los productos por sus ediciones
 				? "link_id"
 				: producto_id // debe ir antes de los rclv_id por sus ediciones
 				? producto_id
