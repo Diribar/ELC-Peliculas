@@ -174,7 +174,7 @@ module.exports = {
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 
 			// Actualiza la variable de links vencidos
-			comp.actualizaLinksVencPorSem();
+			if (nuevosDatos.statusRegistro_id == aprobado_id) comp.actualizaLinksVencPorSem();
 		}
 
 		// Fin
