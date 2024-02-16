@@ -109,7 +109,7 @@ module.exports = {
 			});
 
 			// Fin
-			return resultados;
+			return;
 		};
 		let eliminaDuplicados = () => {
 			// Variables
@@ -119,7 +119,8 @@ module.exports = {
 					productos.push(producto);
 
 			// Fin
-			return productos;
+			resultados.productos = productos;
+			return;
 		};
 		let agregaInfo = async () => {
 			// Variables
@@ -150,8 +151,9 @@ module.exports = {
 					}
 				}
 			});
+
 			// Fin
-			return resultados;
+			return;
 		};
 
 		// Revisa y reemplaza las películas por su colección
