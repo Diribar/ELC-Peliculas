@@ -823,10 +823,16 @@ module.exports = {
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
-		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
-			statusRegistro_id: [creado_id, ...aprobados_ids],
-			prodAprob,
-		});
+		const [links, linksEdicion] = await Promise.all([
+			BD_genericas.obtieneTodosPorCondicion("links", {
+				statusRegistro_id: [creado_id, ...aprobados_ids],
+				prodAprob,
+			}),
+			BD_genericas.obtieneTodos("linksEdicion"),
+		]);
+		cantLinksVencPorSem = {ediciones: linksEdicion.length};
+
+		// Agrupa por semana 0 y demás
 		const revisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
 		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
@@ -841,12 +847,10 @@ module.exports = {
 			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
-			if (semVencim < 1) continue;
-
-			// Obtiene la entidad
-			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
+			if (semVencim < 1 || semVencim > linksSemsVidaUtil) continue; // saltea la semana actual y las que tengan un error
 
 			// Agrega al conteo
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 			cantLinksVencPorSem[semVencim][entidad]++;
 			cantLinksVencPorSem[semVencim].prods++;
 		}
