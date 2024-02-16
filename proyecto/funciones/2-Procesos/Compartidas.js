@@ -153,20 +153,20 @@ module.exports = {
 				: "";
 		},
 		entidad: function (registro, familiaEdic) {
-			const producto = this.entidadProd(registro);
-			const RCLV = this.entidadRCLV(registro);
+			const entProd = this.entidadProd(registro);
+			const entRCLV = this.entidadRCLV(registro);
 
 			// Fin
 			return familiaEdic == "prodsEdicion"
-				? producto
+				? entProd
 				: familiaEdic == "rclvsEdicion"
-				? RCLV
+				? entRCLV
 				: registro.link_id
 				? "links"
-				: producto // debe ir antes de los RCLV por sus ediciones
-				? producto
-				: RCLV
-				? RCLV
+				: entProd // debe ir antes de los entRCLV por sus ediciones
+				? entProd
+				: entRCLV
+				? entRCLV
 				: "";
 		},
 		campo_idProd: (registro) => {
@@ -193,18 +193,18 @@ module.exports = {
 		},
 		campo_id: function (registro) {
 			// Variables
-			const producto = this.campo_idProd(registro);
-			const RCLV = this.campo_idRCLV(registro);
+			const producto_id = this.campo_idProd(registro);
+			const rclv_id = this.campo_idRCLV(registro);
 
 			// Fin
 			return false
 				? false
 				: registro.link_id // debe ir antes de los productos por sus ediciones
 				? "link_id"
-				: producto // debe ir antes de los RCLV por sus ediciones
-				? producto
-				: RCLV
-				? RCLV
+				: producto_id // debe ir antes de los rclv_id por sus ediciones
+				? producto_id
+				: rclv_id
+				? rclv_id
 				: "";
 		},
 		asocProd: (registro) => {
@@ -230,14 +230,14 @@ module.exports = {
 				: "";
 		},
 		asociacion: function (registro) {
-			const producto = this.asocProd(registro);
-			const RCLV = this.asocRCLV(registro);
+			const producto_id = this.asocProd(registro);
+			const rclv_id = this.asocRCLV(registro);
 			return registro.link_id
 				? "link_id"
-				: producto // debe ir antes de los RCLV por sus ediciones
-				? producto
-				: RCLV
-				? RCLV
+				: producto_id // debe ir antes de los rclv_id por sus ediciones
+				? producto_id
+				: rclv_id
+				? rclv_id
 				: "";
 		},
 	},
