@@ -257,7 +257,7 @@ module.exports = {
 			// 2. Actualización condicional por campo
 			const cond1 = campo == "tipoActuacion_id";
 			const cond21 = variables.entidades.rclvs_id.includes(campo);
-			const cond22 = cond21 && edicion[campo] != 2; // Particularidad para rclv_id
+			const cond22 = cond21 && edicion[campo] != 2; // particularidad para rclv_id
 			const cond31 = campo == "epocaOcurrencia_id";
 			const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
 			const novedad = {[campo]: edicion[campo]};
