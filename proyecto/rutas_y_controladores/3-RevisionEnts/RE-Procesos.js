@@ -109,6 +109,43 @@ module.exports = {
 			// Fin
 			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
 		},
+		obtieneProdsRepetidos: async () => {
+			// Obtiene los datos clave de los registros
+			const statusRegistro_id = [...creados_ids, aprobado_id];
+			let registros = await Promise.all([
+				BD_genericas.obtieneTodosPorCondicion("peliculas", {statusRegistro_id}),
+				BD_genericas.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
+			])
+				.then((n) => [
+					...n[0].map((m) => ({entidad: "peliculas", ...m})),
+					...n[1].map((m) => ({entidad: "capitulos", ...m})),
+				])
+				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id));
+
+			// Obtiene los repetidos
+			let repetidos = [];
+			while (registros.length > 1) {
+				// Obtiene el primer registro y lo elimina
+				const registro = registros[0];
+				registros.splice(0, 1);
+
+				// Acciones si se encuentra un repetido
+				let indice = registros.findIndex(
+					(n) =>
+						n.entidad == registro.entidad &&
+						((n.TMDB_id && n.TMDB_id == registro.TMDB_id) ||
+							(n.IMDB_id && n.IMDB_id == registro.IMDB_id) ||
+							(n.FA_id && n.FA_id == registro.FA_id))
+				);
+				if (indice > -1) {
+					repetidos.push(registro, registros[indice]);
+					registros.splice(indice, 1);
+				}
+			}
+
+			// Fin
+			return {RP: repetidos};
+		},
 		obtieneSigProd_Links: async function (revID) {
 			// Variables
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
