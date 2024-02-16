@@ -77,6 +77,7 @@ module.exports = {
 			// Variables
 			const {url, IN} = req.query;
 			const ahora = comp.fechaHora.ahora();
+			let semana = 0;
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 			// PROBLEMAS
@@ -84,16 +85,16 @@ module.exports = {
 			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds); // Se obtiene el status original del link
 			if (!link) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
-			if (IN == "SI") {
+			if (IN == "SI" && link.statusRegistro_id == creadoAprob_id) {
 				// Variables
 				const semPrimRev = linksPrimRev / unaSemana;
 
 				// Empieza a fijarse por la semana siguiente a la de Primera Revisión
-				for (var semana = semPrimRev + 1; semana <= linksSemsVidaUtil; semana++)
-					if (cantLinksVencPorSem[semana] < cantLinksVencPorSem.cantPromedio) break;
+				for (semana = linksSemsVidaUtil; semana > semPrimRev; semana--)
+					if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
 
 				// Si no se encontró "capacidad", envía una mensaje de error
-				if (semana > linksSemsVidaUtil) return res.json("En esta semana ya no se puede revisar este link");
+				if (semana == semPrimRev) return res.json("En esta semana ya no se puede revisar este link");
 			}
 
 			// Más variables
@@ -106,7 +107,7 @@ module.exports = {
 			// CONSECUENCIAS - Actualiza la variable de links vencidos
 			comp.actualizaLinksVencPorSem();
 
-			// CONSECUENCIAS - Acciones salvo que sea links sugerido por 'automático'
+			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
 			const sugeridoPor_id = link.statusSugeridoPor_id;
 			if (sugeridoPor_id != usAutom_id) {
 				// Agrega un registro en el histStatus

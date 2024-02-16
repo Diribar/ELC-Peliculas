@@ -804,7 +804,7 @@ let FN_links = {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
-		const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem;
+		const {pelisColes: pelisColesParaProc, capitulos: capsParaProc} = cantLinksVencPorSem.paraProc;
 		let respuesta;
 
 		// Obtiene los links a revisar
@@ -960,7 +960,7 @@ let FN_links = {
 				? new Date(ahoraTiempo + linksPrimRev)
 				: link.capitulo_id && noTrailer // si es un capitulo y no es un trailer
 				? new Date(ahoraTiempo + linksVidaUtil)
-				: new Date(ahoraTiempo + semana * unaSemana);
+				: new Date(ahoraTiempo + semana * unaSemana); // en la semana disponible
 
 		// Fin
 		return fechaVencim;

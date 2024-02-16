@@ -17,12 +17,11 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Variables
-		const resultado = [["Semana", "Ant.", "Venc.", "Nuevos", {role: "annotation"}]];
 		const lunesSemana53 = primerLunesDelAno + unaSemana * 53;
 		const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
+		let resultado = [["Semana", "Caps.", "PelisColes.", {role: "annotation"}]];
 		let restar = 0;
 		let ticks = [];
-		let total = 0;
 
 		// Consolida el resultado
 		for (let ejeX = 0; ejeX <= linksSemsVidaUtil; ejeX++) {
@@ -33,11 +32,9 @@ window.addEventListener("load", async () => {
 			ticks.push({v: ejeX, f: String(semana - restar)});
 
 			// Agrega los valores Y
-			const antiguos = !ejeX ? cantLinks[ejeX].antiguos : 0;
-			const recientes = !ejeX ? cantLinks[ejeX].recientes : 0;
-			const todos = ejeX ? cantLinks[ejeX] : 0;
-			total += antiguos + recientes + todos;
-			resultado.push([ejeX, antiguos, recientes, todos, ""]);
+			const capitulos = cantLinks[ejeX].capitulos;
+			const pelisColes = cantLinks[ejeX].pelisColes;
+			resultado.push([ejeX, capitulos, pelisColes, ""]);
 		}
 
 		// Especifica la información
@@ -53,7 +50,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
+			colors: ["rgb(37,64,97)", "rgb(31,73,125)"],
 			legend: "none",
 			hAxis: {
 				scaleType: "number",
@@ -78,6 +75,6 @@ window.addEventListener("load", async () => {
 		imagenDelGrafico.draw(data, options);
 
 		// Agrega algunos datos relevantes
-		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.cantPromedio;
+		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.cantPromSem;
 	}
 });
