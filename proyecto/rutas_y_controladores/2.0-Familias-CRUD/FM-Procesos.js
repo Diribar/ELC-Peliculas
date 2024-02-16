@@ -567,7 +567,7 @@ module.exports = {
 
 			// Elimina las ediciones
 			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
-			if (familia != "producto") return true
+			if (familias != "productos") return true
 
 			// Elimina los links
 			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
