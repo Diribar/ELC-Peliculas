@@ -132,10 +132,9 @@ module.exports = {
 				// Acciones si se encuentra un repetido
 				let indice = registros.findIndex(
 					(n) =>
-						n.entidad == registro.entidad &&
-						((n.TMDB_id && n.TMDB_id == registro.TMDB_id) ||
-							(n.IMDB_id && n.IMDB_id == registro.IMDB_id) ||
-							(n.FA_id && n.FA_id == registro.FA_id))
+						(n.TMDB_id && n.TMDB_id == registro.TMDB_id) ||
+						(n.IMDB_id && n.IMDB_id == registro.IMDB_id) ||
+						(n.FA_id && n.FA_id == registro.FA_id)
 				);
 				if (indice > -1) {
 					repetidos.push(registro, registros[indice]);
