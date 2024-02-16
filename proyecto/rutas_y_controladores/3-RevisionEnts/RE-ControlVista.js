@@ -287,11 +287,6 @@ module.exports = {
 			// Penaliza al usuario si corresponde
 			if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-			// Acciones si es un registro que se mueve a 'inactivo'
-			// Elimina el archivo de avatar de las ediciones
-			// Elimina las ediciones que tenga
-			if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
-
 			// Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 			if (producto)
 				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
