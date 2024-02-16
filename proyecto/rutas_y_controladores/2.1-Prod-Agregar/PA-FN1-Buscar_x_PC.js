@@ -176,7 +176,7 @@ module.exports = {
 
 			// Obtiene las colecciones/series que se necesitan
 			for (let prod of resultados.productos)
-				colecciones.push(prod.TMDB_entidad != "movie" ? APIsTMDB.details(prod.TMDB_entidad, prod.TMDB_id) : "");
+				colecciones.push(prod.TMDB_entidad != "movie" ? APIsTMDB.details(prod.TMDB_entidad, prod.TMDB_id) : null);
 
 			colecciones = await Promise.all(colecciones);
 
@@ -224,7 +224,13 @@ module.exports = {
 					if (coleccion.episode_run_time && coleccion.episode_run_time.length == 1)
 						resultados.productos[indice].duracion = coleccion.episode_run_time[0];
 				}
+
+				// Si no existen detalles, limpia el producto (puede pasar, ejs de ids: 1107666, 499356)
+				else resultados.productos[indice] = null;
 			});
+
+			// Elimina los productos sin información
+			resultados.productos = resultados.productos.filter((n) => !!n);
 
 			// Fin
 			return;
