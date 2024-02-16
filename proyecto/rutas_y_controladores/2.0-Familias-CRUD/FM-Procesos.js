@@ -50,22 +50,24 @@ module.exports = {
 		// Quita la info que no agrega valor
 		edicion = await puleEdicion(entidad, original, edicion);
 
-		// Acciones si existe la edición
+		// Acciones si quedaron datos para actualizar
 		if (edicion) {
-			// Si existe la edición y su 'ID' --> actualiza el registro
-			if (edicion.id) BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
+			// Si existe el registro, lo actualiza
+			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
 
-			// Si existe la edición pero no su 'ID' --> se agrega el registro
+			// Si no existe el registro, lo agrega
 			if (!edicion.id) {
 				// 1. campo_id, editadoPor_id
-				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
+				if (campo_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				edicion.editadoPor_id = userID;
 
 				// 2. producto_id (links)
 				if (entidad == "links") {
-					let producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
+					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
+					if (producto_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				}
 
 				// Se agrega el registro
