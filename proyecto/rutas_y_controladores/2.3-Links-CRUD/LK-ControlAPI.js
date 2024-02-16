@@ -127,15 +127,11 @@ module.exports = {
 			? {mensaje: "El link no está en status 'inactivo'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			// Actualiza el status
 			datos = {statusSugeridoEn: ahora, statusSugeridoPor_id: userID, statusRegistro_id: recuperar_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
-
-			// Actualiza la variable de links vencidos
-			comp.actualizaLinksVencPorSem();
 		}
 
 		// Fin
