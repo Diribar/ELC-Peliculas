@@ -232,7 +232,13 @@ module.exports = {
 		asociacion: function (registro) {
 			const producto = this.asocProd(registro);
 			const RCLV = this.asocRCLV(registro);
-			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+			return registro.link_id
+				? "link_id"
+				: producto // debe ir antes de los RCLV por sus ediciones
+				? producto
+				: RCLV
+				? RCLV
+				: "";
 		},
 	},
 	convierteLetras: {
