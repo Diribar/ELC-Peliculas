@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 	// Averigua si hay registros para procesar
-	const entidad = req.query == "capitulos" ? "capitulos" : "pelisColes";
+	const entidad = req.query.entidad == "capitulos" ? "capitulos" : "pelisColes";
 	const hayRegistros = cantLinksVencPorSem.paraProc[entidad];
 
 	// Si no hay registros a procesar, redirige al tablero
