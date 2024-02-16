@@ -812,7 +812,9 @@ let FN_links = {
 		const {originales, ediciones} = links;
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
-		const yaTuvoPrimRev = creadoAprobs.filter((n) => n.yaTuvoPrimRev);
+		const yaTuvoPrimRev = creadoAprobs
+			.filter((n) => n.yaTuvoPrimRev)
+			.filter((n) => n.anoEstreno <= anoReciente || n.tipo_id == linkTrailer_id);
 
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
@@ -826,12 +828,7 @@ let FN_links = {
 		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
 		if (respuesta) return respuesta;
 
-		// 3. Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
-		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
-		if (respuesta) return respuesta;
-
-		// 4. Con restricción - Capítulos
+		// 3. Con restricción - Capítulos
 		if (capsParaProc) {
 			let capitulos;
 			//Primera revisión
@@ -845,7 +842,7 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
-		// 5. Con restricción - Películas y Colecciones
+		// 4. Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
 			// Primera revisión
@@ -858,6 +855,11 @@ let FN_links = {
 			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
 			if (respuesta) return respuesta;
 		}
+
+		// 5. Sin restricción - Recientes no trailers
+		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
+		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
+		if (respuesta) return respuesta;
 
 		// Fin
 		return null;
@@ -915,11 +917,11 @@ let FN_links = {
 
 			// Ordena los productos
 			productos
+				.sort((a, b) => a.fechaRef - b.fechaRef) // por fecha más antigua
 				.sort((a, b) => (a.capitulo && b.capitulo ? a.capitulo - b.capitulo : a.capitulo ? -1 : 0)) // por capítulo
 				.sort((a, b) => (a.temporada && b.temporada ? a.temporada - b.temporada : a.temporada ? -1 : 0)) // por temporada
 				.sort((a, b) => (a.coleccion_id && b.coleccion_id ? a.coleccion_id - b.coleccion_id : a.coleccion_id ? -1 : 0)) // por colección
-				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)) // por entidad
-				.sort((a, b) => a.fechaRef - b.fechaRef); // por fecha más antigua
+				.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0)); // por entidad
 		}
 
 		// Fin

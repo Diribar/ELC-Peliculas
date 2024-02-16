@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 27/ene",
-	"HoraUTC": "1:12",
+	"FechaUTC": "Mié. 14/feb",
+	"HoraUTC": "13:08",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 22/ene",
-	"HoraSemUTC": "15:59",
-	"semanaUTC": 4,
+	"FechaSemUTC": "Mié. 14/feb",
+	"HoraSemUTC": "13:08",
+	"semanaUTC": 7,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-ene-24": {"titulo": "Conversión de San Pablo"},
-		"26-ene-24": {"titulo": "ELC - Películas"},
-		"27-ene-24": {"titulo": "ELC - Películas"},
-		"28-ene-24": {"titulo": "ELC - Películas"},
-		"29-ene-24": {"titulo": "ELC - Películas"}
+		"12-feb-24": {"titulo": "ELC - Películas"},
+		"13-feb-24": {"titulo": "ELC - Películas"},
+		"14-feb-24": {"titulo": "Miércoles de Cenizas"},
+		"15-feb-24": {"titulo": "Cuaresma"},
+		"16-feb-24": {"titulo": "Venerable Camila Rolón", "entidad": "personajes", "id": 180}
 	}
 }

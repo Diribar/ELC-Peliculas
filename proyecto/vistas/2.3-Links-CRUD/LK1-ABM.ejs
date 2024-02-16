@@ -29,7 +29,7 @@
 					<!-- Filas para links existentes -->
 					<% links.forEach((link, fila)=> { %>
 						<%- include("LK1-Datos", {link, fila}) %>
-						<% if (tema=="revisionEnts") { %>
+						<% if (tema == "revisionEnts") { %>
 							<% for (let edicion of link.ediciones) { %>
 								<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %>
 							<% } %>
@@ -38,7 +38,7 @@
 						<% } %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
-					<%- tema != "revisionEnts" ? include("LK2-Alta", {fila: links.length}) : "" %>
+					<% if (tema != "revisionEnts") { %><%- include("LK2-Alta", {fila: links.length}) %><% } %>
 				</tbody>
 			</table>
 		</form>

@@ -15,7 +15,7 @@
 	<!-- Calidad -->
 	<td class="ancho_calidad calidad campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.calidad&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.calidad&&n.editadoPor_id!=userID) %>
 			<select name="calidad" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
@@ -28,7 +28,7 @@
 	<!-- Castellano -->
 	<td class="ancho_castellano castellano campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.castellano!==null&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.castellano!==null&&n.editadoPor_id!=userID) %>
 			<select name="castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.castellano ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.castellano ? "selected" : "" %>>NO</option>
@@ -39,7 +39,7 @@
 	<!-- Sub-Títulos -->
 	<td class="ancho_subtitulos subtitulos campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.subtitulos!==null&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.subtitulos!==null&&n.editadoPor_id!=userID) %>
 			<select name="subtitulos" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.subtitulos ? "selected" : "" %>>SI</option>
 				<option value="0" <%- link.subtitulos === false ? "selected" : "" %>>NO</option>
@@ -51,7 +51,7 @@
 	<!-- Gratuito -->
 	<td class="ancho_gratuito gratuito campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.gratuito!==null&&n.editadoPor_id!=userID) %>
 			<select name="gratuito" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.gratuito ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.gratuito ? "selected" : "" %>>NO</option>
@@ -62,7 +62,7 @@
 	<!-- Tipo -->
 	<td class="ancho_tipo_id tipo_id campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.tipo_id&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.tipo_id&&n.editadoPor_id!=userID) %>
 			<select name="tipo_id" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="<%= linksTipos[0].id %>" <%- link.tipo_id==linksTipos[0].id ? "selected" : "" %>><%= linksTipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
@@ -75,7 +75,7 @@
 	<!-- Completo -->
 	<td class="ancho_completo completo campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.completo!==null&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.completo!==null&&n.editadoPor_id!=userID) %>
 			<select name="completo" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.completo ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.completo ? "selected" : "" %>>NO</option>
@@ -86,7 +86,7 @@
 	<!-- Parte -->
 	<td class="ancho_parte parte campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.parte&&n.editadoPor_id!=userID) %>
+			<% aux = link.ediciones.find(n => n.parte&&n.editadoPor_id!=userID) %>
 			<input name="parte" type="text" class="input <%- aux ? 'rojo' : '' %>" value="<%= link.parte %>" <% if (aux) { %>disabled<% } %>>
 			<%- include("CMP-Errores", {z_index: 1, display: true}) %>
 		</div>

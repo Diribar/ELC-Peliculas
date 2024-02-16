@@ -274,8 +274,8 @@ module.exports = {
 			// Chequea que sea una colección, y que la cantidad de capítulos sea diferente entre TMDB y ELC - no hace falta el 'await'
 			for (let coleccion of resultados.prodsYaEnBD)
 				if (coleccion.capitulos && coleccion.capitulos != coleccion.capitulosELC) {
-					if (coleccion.TMDB_entidad == "collection") agregaCapitulosCollection(coleccion);
-					if (coleccion.TMDB_entidad == "tv") agregaCapitulosTV(coleccion);
+					if (coleccion.TMDB_entidad == "collection") agregaCapitulosCollection(coleccion); // sin 'await'
+					if (coleccion.TMDB_entidad == "tv") agregaCapitulosTV(coleccion); // sin 'await'
 				}
 
 			// Fin
@@ -283,12 +283,10 @@ module.exports = {
 		};
 		let agregaCapitulosCollection = async (coleccion) => {
 			// Recorre los capítulos
-			await coleccion.capsTMDB_id.forEach(async (capituloID_TMDB, indice) => {
-				// Averigua si algún capítulo es nuevo
-				if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
-					// Si es nuevo, lo agrega
-					await procesos.confirma.agregaUnCap_Colec(coleccion, capituloID_TMDB, indice);
-				}
+			await coleccion.capsTMDB_id.forEach(async (capTMDB_id, indice) => {
+				// Si algún capítulo es nuevo, lo agrega
+				if (!coleccion.capitulosID_ELC.includes(String(capTMDB_id)))
+					await procesos.confirma.agregaUnCap_Colec(coleccion, capTMDB_id, indice);
 			});
 			// Fin
 			return;

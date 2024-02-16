@@ -793,7 +793,7 @@ module.exports = {
 		await this.actualizaStatusVencidoDeLinks();
 		return;
 	},
-	actualizaStatusVencidoDeLinks: async function()  {
+	actualizaStatusVencidoDeLinks: async function () {
 		// Variables
 		const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 		const ahora = new Date();
@@ -810,7 +810,7 @@ module.exports = {
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
 
 		// Fin
-		await this.actualizaLinksVencPorSem()
+		await this.actualizaLinksVencPorSem();
 		return;
 	},
 	actualizaLinksVencPorSem: async function () {
@@ -822,15 +822,18 @@ module.exports = {
 		// Crea las semanas dentro de la variable
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = 0;
 
-		// Obtiene todos los links en status 'creadoAprob' y 'aprobados'
-		const links = await BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobados_ids, prodAprob});
-		const creadoAprobs = links.filter((n) => n.statusRegistro_id == creadoAprob_id);
+		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
+		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
+			statusRegistro_id: [creado_id, ...aprobados_ids],
+			prodAprob,
+		});
+		const revisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
 		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
-		// Abre los 'creadoAprobs' entre 'antiguos' y 'recientes'
-		const antiguos = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
-		const recientes = creadoAprobs.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
-		const capitulos = creadoAprobs.filter((n) => n.capitulo_id).length;
+		// Abre los 'revisar' entre 'antiguos' y 'recientes'
+		const antiguos = revisar.filter((n) => n.statusSugeridoEn.getTime() < lunesDeEstaSemana).length;
+		const recientes = revisar.filter((n) => n.statusSugeridoEn.getTime() >= lunesDeEstaSemana).length;
+		const capitulos = revisar.filter((n) => n.capitulo_id).length;
 		cantLinksVencPorSem["0"] = {antiguos, recientes};
 		cantLinksVencPorSem.capitulos = capitulos;
 
