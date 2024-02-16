@@ -35,6 +35,9 @@ module.exports = {
 			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
@@ -49,9 +52,6 @@ module.exports = {
 			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
 			if (mensaje) mensaje = "Edición guardada";
 		}
-
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
 
 		// Fin
 		return res.json(mensaje);
@@ -80,6 +80,9 @@ module.exports = {
 			link.statusRegistro_id = inactivo_id;
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 		}
 		// El link existe y no tiene status 'aprobado'
 		else if (!aprobados_ids.includes(link.statusRegistro_id))
@@ -99,10 +102,10 @@ module.exports = {
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
-		}
 
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
+		}
 
 		// Fin
 		return res.json(respuesta);
@@ -124,15 +127,16 @@ module.exports = {
 			? {mensaje: "El link no está en status 'inactivo'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
+			// Actualiza el status
 			datos = {statusSugeridoEn: ahora, statusSugeridoPor_id: userID, statusRegistro_id: recuperar_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
-		}
 
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
+		}
 
 		// Fin
 		return res.json(respuesta);
@@ -172,10 +176,10 @@ module.exports = {
 
 			// Fin
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
-		}
 
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
+		}
 
 		// Fin
 		return res.json(respuesta);
