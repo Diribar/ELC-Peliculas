@@ -273,15 +273,13 @@ module.exports = {
 			return;
 		};
 		let agregaCapitulos = () => {
-			// Si no hay productosYaEnBD, saltea la rutina
-			if (!resultados.prodsYaEnBD.length) return;
-
 			// Si no hay productosYaEnBD de colecciones, saltea la rutina
-			if (!resultados.prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
+			const {prodsYaEnBD} = resultados;
+			if (!prodsYaEnBD.length || !prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
 
 			// Chequea que sea una colección, y que la cantidad de capítulos sea diferente entre TMDB y ELC - no hace falta el 'await'
-			for (let coleccion of resultados.prodsYaEnBD)
-				if (coleccion.capitulos && coleccion.capitulos != coleccion.capitulosELC) {
+			for (let coleccion of prodsYaEnBD)
+				if (coleccion.capitulos && coleccion.capitulos > coleccion.capitulosELC) {
 					if (coleccion.TMDB_entidad == "collection") agregaCapitulosCollection(coleccion); // sin 'await'
 					if (coleccion.TMDB_entidad == "tv") agregaCapitulosTV(coleccion); // sin 'await'
 				}
@@ -296,6 +294,7 @@ module.exports = {
 				if (!coleccion.capitulosID_ELC.includes(String(capTMDB_id)))
 					await procesos.confirma.agregaUnCap_Colec(coleccion, capTMDB_id, indice);
 			});
+
 			// Fin
 			return;
 		};
