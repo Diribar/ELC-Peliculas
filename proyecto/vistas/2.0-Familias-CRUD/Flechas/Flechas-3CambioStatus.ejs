@@ -3,13 +3,14 @@
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div id="flechasCambioStatus" class="flechas">
 		<% if (locals.status_id == creado_id && locals.usuario) { %>
-			<% if (usuario.id == locals.creadoPor_id) { %>
-				<!-- Eliminar -->
+			<!-- Solo para status creado y usuario logueado -->
+			<% if (locals.creadoPor_id == usuario.id) { %>
+				<!-- Si fue creado por el usuario -> Eliminarlo definitivamente -->
 				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
-			<% } else if (locals.creadoPor_id == usAutom_id && entidad == "capitulos") { %>
-				<!-- Revisar un capitulo -->
+			<% } else if (locals.creadoPor_id == usAutom_id) { %>
+				<!-- Si fue creado automáticamente -> Revisarlo -->
 				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
 				</a>
