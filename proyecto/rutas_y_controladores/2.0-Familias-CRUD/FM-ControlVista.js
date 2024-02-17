@@ -219,8 +219,7 @@ module.exports = {
 
 		// Guarda la información para la próxima vista
 		const nombre = comp.nombresPosibles(original);
-		let objeto = {entidad, nombre};
-		const cola = "/?entidad=" + entidad + "&nombre=" + encodeURIComponent(nombre);
+		let cola = "/?entidad=" + entidad + "&nombre=" + encodeURIComponent(nombre);
 		if (origen) cola += "&origen=" + origen;
 
 		// Fin
