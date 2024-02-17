@@ -839,7 +839,7 @@ module.exports = {
 
 		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
 		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
-			statusRegistro_id: [creado_id, ...aprobados_ids],
+			statusRegistro_id: activos_ids,
 			prodAprob,
 		});
 		const revisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
