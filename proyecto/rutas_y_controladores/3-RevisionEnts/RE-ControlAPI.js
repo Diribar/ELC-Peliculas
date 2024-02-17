@@ -104,9 +104,6 @@ module.exports = {
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
 
-			// CONSECUENCIAS - Actualiza la variable de links vencidos
-			comp.actualizaLinksVencPorSem();
-
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
 			const sugeridoPor_id = link.statusSugeridoPor_id;
 			if (sugeridoPor_id != usAutom_id) {
@@ -139,7 +136,7 @@ module.exports = {
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
-			procsCRUD.revisiones.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
+			await procsCRUD.revisiones.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
 
 			// Fin
 			return res.json("");

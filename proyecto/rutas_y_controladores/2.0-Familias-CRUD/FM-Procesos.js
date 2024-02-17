@@ -432,7 +432,7 @@ module.exports = {
 			}
 
 			// Actualiza la variable de links vencidos
-			comp.actualizaLinksVencPorSem();
+			await comp.actualizaLinksVencPorSem();
 
 			// Fin
 			return;

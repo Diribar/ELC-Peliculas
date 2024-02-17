@@ -27,7 +27,7 @@
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-		"ActualizaLinksVencPorSem": "SI"
+		"ActualizaFechaVencimLinks": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {

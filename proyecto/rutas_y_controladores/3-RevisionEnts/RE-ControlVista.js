@@ -272,7 +272,7 @@ module.exports = {
 
 			// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 			if (producto)
-				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+				await procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 			// CONSECUENCIAS - Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))

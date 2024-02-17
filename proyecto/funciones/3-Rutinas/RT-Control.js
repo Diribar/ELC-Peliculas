@@ -683,8 +683,9 @@ module.exports = {
 		// Fin
 		return;
 	},
-	ActualizaLinksVencPorSem: async () => {
-		await comp.actualizaFechaVencimLinks(); // actualiza solamente la fecha de los links sin fecha
+	ActualizaFechaVencimLinks: async () => {
+		// actualiza solamente la fecha de los links sin fecha
+		await comp.actualizaFechaVencimLinks();
 		return;
 	},
 };
@@ -738,6 +739,19 @@ let agregaColeccion_id = async () => {
 			const {coleccion_id} = registro.capitulo;
 			BD_genericas.actualizaPorId(entidad, registro.id, {coleccion_id});
 		}
+	}
+
+	// Fin
+	return;
+};
+let corrigeStatusColeccion_id = async () => {
+	// Variables
+	const registros = await BD_genericas.obtieneTodosConInclude("capitulos", "coleccion");
+
+	// Rutina por registro
+	for (let registro of registros) {
+		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
+		BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
 	}
 
 	// Fin
