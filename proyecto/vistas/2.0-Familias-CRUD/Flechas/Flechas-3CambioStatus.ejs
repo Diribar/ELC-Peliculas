@@ -1,6 +1,4 @@
 <% if (locals.userPerenne && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
-	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
-	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div id="flechasCambioStatus" class="flechas">
 		<% if (locals.status_id == creado_id && locals.usuario) { %>
 			<!-- Solo para status creado y usuario logueado -->
@@ -10,7 +8,7 @@
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
 			<% } else if (locals.creadoPor_id == usAutom_id) { %>
-				<!-- Si fue creado automáticamente -> Revisarlo -->
+				<!-- Capítulos creados automáticamente con 'colecAprob' -> Revisarlo -->
 				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
 				</a>
