@@ -171,44 +171,59 @@ module.exports = {
 	},
 
 	// Otros
-	MT_obtieneRegs: ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
+	MT_obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 		const idMin = petitFamilias == "rclvs" ? 10 : 0;
 
-		// Fin
-		return db[entidad]
-			.findAll({
-				where: {
-					// Con status según parámetro
-					statusRegistro_id: status_id,
-					// Que cumpla alguno de los siguientes sobre la 'captura':
-					[Op.or]: [
-						// Que no esté capturado
-						{capturadoEn: null},
-						// Que esté capturado hace más de dos horas
-						{capturadoEn: {[Op.lt]: haceDosHoras}},
-						// Que la captura haya sido por otro usuario y hace más de una hora
-						{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
-						// Que la captura haya sido por otro usuario y esté inactiva
-						{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
-						// Que esté capturado por este usuario hace menos de una hora
-						{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
-					],
-					// Si es un rclv, que su id > 10
-					id: {[Op.gt]: idMin},
-				},
-				include,
-			})
-			.then((n) => n.map((m) => m.toJSON()))
+		// Condiciones
+		const condiciones = {
+			// Con status según parámetro
+			statusRegistro_id: status_id,
+			// Que cumpla alguno de los siguientes sobre la 'captura':
+			[Op.or]: [
+				// Que no esté capturado
+				{capturadoEn: null},
+				// Que esté capturado hace más de dos horas
+				{capturadoEn: {[Op.lt]: haceDosHoras}},
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+				// Que la captura haya sido por otro usuario y esté inactiva
+				{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
+				// Que esté capturado por este usuario hace menos de una hora
+				{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
+			],
+			// Si es un rclv, que su id > 10
+			id: {[Op.gt]: idMin},
+		};
+
+		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+			// Agrega las fechaRef
+			// Actualiza el original con la edición
 			.then((n) =>
 				n.map((m) => {
+					// Variables
 					const fechaRef = m[campoFecha];
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+
+					// Obtiene la edición del usuario
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condiciones.userID);
+					delete m.ediciones;
+
+					// Actualiza el original con la edición
+					if (edicion) {
+						edicion = purgaEdicion(edicion, entidad);
+						m = {...m, ...edicion};
+					}
+
+					// Fin
 					return {...m, entidad, fechaRef, fechaRefTexto};
 				})
 			);
+
+		// Fin
+		return registros;
 	},
 	nombresDeAvatarEnBD: ({entidad, status_id, campoAvatar}) => {
 		// Variables
