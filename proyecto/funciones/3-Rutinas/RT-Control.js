@@ -27,6 +27,7 @@ module.exports = {
 		// Start-up
 		await this.FechaHoraUTC();
 		// await agregaColeccion_id();
+		// await corrigeStatusColeccion_id();
 
 		// Comunica el fin de las rutinas
 		console.log();
