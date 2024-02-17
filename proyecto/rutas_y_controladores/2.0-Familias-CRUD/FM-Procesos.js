@@ -403,7 +403,6 @@ module.exports = {
 					let espera = [];
 					for (let link of registro.links) espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
 					await Promise.all(espera);
-					comp.actualizaLinksVencPorSem();
 				}
 
 				// Rutina por entidad RCLV
@@ -431,6 +430,9 @@ module.exports = {
 					this.linksEnColec(colID);
 				}
 			}
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 
 			// Fin
 			return;
