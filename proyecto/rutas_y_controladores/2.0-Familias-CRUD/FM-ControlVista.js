@@ -218,17 +218,19 @@ module.exports = {
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Guarda la información para la próxima vista
-		const nombre = comp.nombresPosibles(original);
-		let cola = "/?entidad=" + entidad + "&nombre=" + encodeURIComponent(nombre);
-		if (origen) cola += "&origen=" + origen;
+		const nombre = encodeURIComponent(comp.nombresPosibles(original));
+		let objeto = {entidad, nombre};
+		if (origen) objeto.origen = origen;
+		res.cookie("eliminado", objeto, {maxAge: 5000});
 
 		// Fin
 		return res.redirect("/" + familia + "/eliminado" + cola);
 	},
 	eliminado: (req, res) => {
 		// Variables
-		const {entidad, nombre, origen} = req.query;
+		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
 		if (!entidad) return res.redirect("/");
+		else res.clearCookie("eliminado");
 
 		// Más variables
 		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
