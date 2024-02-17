@@ -88,7 +88,7 @@ module.exports = {
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
 			let SE = obtieneRegs(campos)
-				.then((n) => n.filter((m) => m.entidad != "capitulos")) // Deja solamente las películas, colecciones
+				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
 			// IN: En staus 'inactivar'
