@@ -220,15 +220,15 @@ module.exports = {
 		// Guarda la información para la próxima vista
 		const nombre = comp.nombresPosibles(original);
 		let objeto = {entidad, nombre};
-		if (origen == "TM") objeto.origen = "TM";
-		res.cookie("eliminado", objeto, {maxAge: 5000});
+		const cola = "/?entidad=" + entidad + "&nombre=" + encodeURIComponent(nombre);
+		if (origen) cola += "&origen=" + origen;
 
 		// Fin
-		return res.redirect("/" + familia + "/eliminado");
+		return res.redirect("/" + familia + "/eliminado" + cola);
 	},
 	eliminado: (req, res) => {
 		// Variables
-		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
+		const {entidad, nombre, origen} = req.query;
 		if (!entidad) return res.redirect("/");
 
 		// Más variables
