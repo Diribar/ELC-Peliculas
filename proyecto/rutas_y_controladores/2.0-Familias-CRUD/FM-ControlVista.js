@@ -224,7 +224,7 @@ module.exports = {
 		res.cookie("eliminado", objeto, {maxAge: 5000});
 
 		// Fin
-		return res.redirect("/" + familia + "/eliminado" + cola);
+		return res.redirect("/" + familia + "/eliminado");
 	},
 	eliminado: (req, res) => {
 		// Variables
