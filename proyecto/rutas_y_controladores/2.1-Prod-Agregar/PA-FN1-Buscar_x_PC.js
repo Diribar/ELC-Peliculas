@@ -149,15 +149,9 @@ module.exports = {
 
 				// Específicos para colecciones
 				if (resultados.productos[indice].entidad == "colecciones") {
-					// Variables
-					const statusColeccion_id = prod.statusRegistro_id;
-					const cantCapsELC = prod.capitulos.length;
-					const TMDB_ids_vELC = prod.capitulos.map((n) => n.TMDB_id);
-
-					resultados.productos[indice] = {
-						...resultados.productos[indice],
-						...{statusColeccion_id, cantCapsELC, TMDB_ids_vELC},
-					};
+					resultados.productos[indice].statusColeccion_id = prod.statusRegistro_id;
+					resultados.productos[indice].cantCapsELC = prod.capitulos.length;
+					resultados.productos[indice].TMDB_ids_vELC = prod.capitulos.map((n) => n.TMDB_id);
 				}
 			});
 
