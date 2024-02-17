@@ -143,7 +143,7 @@ let obtieneProdsDeLinks = function (links, userID) {
 };
 let obtienePorEntidad = async ({...condiciones}) => {
 	// Variables
-	const petitFamilias = condiciones.petitFamilias;
+	const {petitFamilias} = condiciones;
 	const entidades = variables.entidades[petitFamilias];
 	condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = "ediciones");
 
@@ -151,28 +151,10 @@ let obtienePorEntidad = async ({...condiciones}) => {
 	let resultados2 = [];
 
 	// Rutina
-	for (let entidad of entidades)
-		resultados1.push(
-			BD_especificas.MT_obtieneRegs({entidad, ...condiciones}).then((n) =>
-				n.map((m) => {
-					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condiciones.userID);
-					delete m.ediciones;
-
-					// Actualiza el original con la edición
-					if (edicion) {
-						edicion = purgaEdicion(edicion, entidad);
-						m = {...m, ...edicion};
-					}
-
-					// Fin
-					return m;
-				})
-			)
-		);
+	for (let entidad of entidades) resultados1.push(BD_especificas.MT_obtieneRegs({entidad, ...condiciones}));
 
 	// Espera hasta tener todos los resultados
-	await Promise.all(resultados1).then((resultados) => resultados.map((n) => resultados2.push(...n)));
+	await Promise.all(resultados1).then((n) => n.map((m) => resultados2.push(...m)));
 
 	// Ordena
 	resultados2.sort((a, b) => b.fechaRef - a.fechaRef);
