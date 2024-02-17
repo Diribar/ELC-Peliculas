@@ -149,9 +149,15 @@ module.exports = {
 
 				// Específicos para colecciones
 				if (resultados.productos[indice].entidad == "colecciones") {
-					resultados.productos[indice].statusColeccion_id = prod.statusRegistro_id;
-					resultados.productos[indice].cantCapsELC = prod.capitulos.length;
-					resultados.productos[indice].TMDB_ids_vELC = prod.capitulos.map((n) => n.TMDB_id);
+					// Variables
+					const statusColeccion_id = prod.statusRegistro_id;
+					const cantCapsELC = prod.capitulos.length;
+					const TMDB_ids_vELC = prod.capitulos.map((n) => n.TMDB_id);
+
+					resultados.productos[indice] = {
+						...resultados.productos[indice],
+						...{statusColeccion_id, cantCapsELC, TMDB_ids_vELC},
+					};
 				}
 			});
 
@@ -211,7 +217,7 @@ module.exports = {
 				// Acciones si es una serie de TV
 				else if (coleccion.seasons) {
 					// Obtiene la cantidad de temporadas
-					const cantTemps = coleccion.seasons.filter((n) => n.season_number).length; // mayor a cero
+					const cantTemps = coleccion.seasons.filter((n) => n.season_number).length; // temporada mayor a cero
 
 					// Obtiene la cantidad de capítulos
 					const cantCapsTMDB = coleccion.seasons
@@ -282,7 +288,7 @@ module.exports = {
 			const {prodsYaEnBD} = resultados;
 			if (!prodsYaEnBD.length || !prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
 
-			// Chequea que sea una colección, y que la cantidad de capítulos sea diferente entre TMDB y ELC - no hace falta el 'await'
+			// Chequea si la cantidad de capítulos es diferente entre TMDB y ELC - no hace falta el 'await'
 			for (let coleccion of prodsYaEnBD)
 				if (coleccion.cantCapsTMDB && coleccion.cantCapsTMDB != coleccion.cantCapsELC) {
 					if (coleccion.TMDB_entidad == "collection") agregaQuitaCapsCollection(coleccion); // sin 'await'
@@ -298,8 +304,8 @@ module.exports = {
 
 			// Recorre los capítulos ELC y si algún capítulo no existe en TMDB y está inactivo en ELC, lo elimina
 			for (let capituloELC of capitulosELC)
-				if (!coleccion.TMDB_ids_vTMDB.includes(capituloELC.TMDB_id) && capituloELC.statusRegistro_id == inactivo_id){
-					await procsCRUD.eliminar.eliminaDependientes("capitulos", capituloELC.id, capituloELC)
+				if (!coleccion.TMDB_ids_vTMDB.includes(capituloELC.TMDB_id) && capituloELC.statusRegistro_id == inactivo_id) {
+					await procsCRUD.eliminar.eliminaDependientes("capitulos", capituloELC.id, capituloELC);
 					BD_genericas.eliminaPorId("capitulos", capituloELC.id);
 				}
 
