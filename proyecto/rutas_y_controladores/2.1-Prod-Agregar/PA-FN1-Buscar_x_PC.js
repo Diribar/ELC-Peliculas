@@ -150,7 +150,6 @@ module.exports = {
 				// Específicos para colecciones
 				if (resultados.productos[indice].entidad == "colecciones") {
 					resultados.productos[indice].statusColeccion_id = prod.statusRegistro_id;
-					resultados.productos[indice].cantCapsELC = prod.capitulos.length;
 					resultados.productos[indice].TMDB_ids_vELC = prod.capitulos.map((n) => n.TMDB_id);
 				}
 			});
@@ -203,7 +202,6 @@ module.exports = {
 						...resultados.productos[indice],
 						anoEstreno: anoEstreno != "-" ? parseInt(anoEstreno.slice(0, 4)) : "-",
 						anoFin: anoFin != "-" ? parseInt(anoFin.slice(0, 4)) : "-",
-						cantCapsTMDB: coleccion.parts.length,
 						TMDB_ids_vTMDB,
 					};
 				}
@@ -213,17 +211,10 @@ module.exports = {
 					// Obtiene la cantidad de temporadas
 					const cantTemps = coleccion.seasons.filter((n) => n.season_number).length; // temporada mayor a cero
 
-					// Obtiene la cantidad de capítulos
-					const cantCapsTMDB = coleccion.seasons
-						.filter((n) => n.season_number) // mayor a cero
-						.map((n) => n.episode_count)
-						.reduce((a, b) => a + b, 0);
-
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
 						anoFin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
-						cantCapsTMDB,
 						cantTemps,
 					};
 					if (coleccion.episode_run_time && coleccion.episode_run_time.length == 1)
@@ -283,11 +274,22 @@ module.exports = {
 			if (!prodsYaEnBD.length || !prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
 
 			// Chequea si la cantidad de capítulos es diferente entre TMDB y ELC - no hace falta el 'await'
-			for (let coleccion of prodsYaEnBD)
-				if (coleccion.cantCapsTMDB && coleccion.cantCapsTMDB != coleccion.cantCapsELC) {
+			for (let coleccion of prodsYaEnBD) {
+				// Si no es una colección, saltea la rutina
+				if (coleccion.entidad != "colecciones") continue;
+
+				// Averigua si los capítulos son los mismos
+				let {TMDB_ids_vTMDB, TMDB_ids_vELC} = coleccion;
+				TMDB_ids_vTMDB.sort((a, b) => (a < b ? -1 : 1));
+				TMDB_ids_vELC.sort((a, b) => (a < b ? -1 : 1));
+				const sonLosMismos = JSON.stringify(TMDB_ids_vTMDB) == JSON.stringify(TMDB_ids_vELC);
+
+				// Si son distintos, los actualiza en la BD de ELC
+				if (!sonLosMismos) {
 					if (coleccion.TMDB_entidad == "collection") agregaQuitaCapsCollection(coleccion); // sin 'await'
 					if (coleccion.TMDB_entidad == "tv") agregaCapsTV(coleccion); // sin 'await'
 				}
+			}
 
 			// Fin
 			return;
