@@ -106,7 +106,9 @@ module.exports = {
 			if (campoFecha) {
 				// Que esté propuesto por el usuario o hace más de una hora
 				if (campoRevID)
-					condiciones[Op.and].push({[Op.or]: [{[campoRevID]: revID}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]});
+					condiciones[Op.and].push({
+						[Op.or]: [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}],
+					});
 				// Que esté propuesto hace más de una hora
 				else condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
 			}
