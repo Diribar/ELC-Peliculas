@@ -25,7 +25,7 @@ module.exports = {
 
 		// Prepara la respuesta
 		let cantProds = resultado.productos.length;
-		let cantProdsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id).length;
+		let cantProdsNuevos = resultado.productos.filter((n) => !n.id).length;
 		let hayMas = resultado.hayMas;
 
 		// Fin

@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 			let boton = li.querySelector("a button");
 
 			// Información a enviar al BE
-			li.querySelector("a").href += prod.entidad + "&id=" + prod.yaEnBD_id;
+			li.querySelector("a").href += prod.entidad + "&id=" + prod.id;
 
 			// Imagen
 			let avatar = !prod.avatar
