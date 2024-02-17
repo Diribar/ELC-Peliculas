@@ -1,4 +1,4 @@
-<% if (locals.userPerenne && locals.registro && registro.colecAprob) { %>
+<% if (locals.userPerenne && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
 	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div id="flechasCambioStatus" class="flechas">
