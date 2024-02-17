@@ -5,9 +5,16 @@ module.exports = async (req, res, next) => {
 	// Variables
 	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
-	// Averigua si hay registros para procesar
-	const entidad = req.query == "capitulos" ? "capitulos" : "pelisColes";
+	// Averigua si hay links para procesar
+	const entidad = req.query.entidad == "capitulos" ? "capitulos" : "pelisColes";
 	const hayRegistros = cantLinksVencPorSem.paraProc[entidad];
+
+	// Averigua si hay linksEdicion para procesar
+	if (!hayRegistros) {
+		const campo_id = comp.obtieneDesdeCampo_id.entidadProd(req.query.entidad);
+		const id = req.query.id;
+		hayRegistros = await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id});
+	}
 
 	// Si no hay registros a procesar, redirige al tablero
 	if (!hayRegistros) return res.redirect("/revision/tablero-de-control");

@@ -759,7 +759,7 @@ module.exports = {
 		const anoActual = new Date().getFullYear();
 		const condicion = {statusRegistro_id: aprobado_id};
 		const include = variables.entidades.asocProds;
-		const soloLinksSinFecha = !links;
+		const soloLinksSinFecha = !links; // si no se especifican links, sólo se actualizan los que no tienen fecha
 		let espera = [];
 
 		// Obtiene todos los links con sus vínculos de prods
@@ -841,12 +841,10 @@ module.exports = {
 			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
-			if (semVencim < 1) continue;
-
-			// Obtiene la entidad
-			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
+			if (semVencim < 1 || semVencim > linksSemsVidaUtil) continue; // saltea la semana actual y las que tengan un error
 
 			// Agrega al conteo
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 			cantLinksVencPorSem[semVencim][entidad]++;
 			cantLinksVencPorSem[semVencim].prods++;
 		}

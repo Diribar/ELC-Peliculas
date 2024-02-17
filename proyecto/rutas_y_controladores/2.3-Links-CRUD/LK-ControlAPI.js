@@ -35,6 +35,9 @@ module.exports = {
 			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
@@ -49,9 +52,6 @@ module.exports = {
 			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
 			if (mensaje) mensaje = "Edición guardada";
 		}
-
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
 
 		// Fin
 		return res.json(mensaje);
@@ -80,6 +80,9 @@ module.exports = {
 			link.statusRegistro_id = inactivo_id;
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 		}
 		// El link existe y no tiene status 'aprobado'
 		else if (!aprobados_ids.includes(link.statusRegistro_id))
@@ -89,7 +92,7 @@ module.exports = {
 		// El link existe, tiene status 'aprobado' y motivo
 		else {
 			// Inactivar
-			let datos = {
+			const datos = {
 				statusSugeridoPor_id: userID,
 				statusSugeridoEn: ahora,
 				motivo_id,
@@ -99,10 +102,10 @@ module.exports = {
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
-		}
 
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
+		}
 
 		// Fin
 		return res.json(respuesta);
@@ -130,9 +133,6 @@ module.exports = {
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
-
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
 
 		// Fin
 		return res.json(respuesta);
@@ -172,10 +172,10 @@ module.exports = {
 
 			// Fin
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
-		}
 
-		// Actualiza la variable de links vencidos
-		comp.actualizaLinksVencPorSem();
+			// Actualiza la variable de links vencidos
+			if (nuevosDatos.statusRegistro_id == aprobado_id) comp.actualizaLinksVencPorSem();
+		}
 
 		// Fin
 		return res.json(respuesta);
