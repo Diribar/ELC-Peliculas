@@ -117,8 +117,8 @@ module.exports = {
 				BD_genericas.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
 			])
 				.then((n) => [
-					...n[0].map((m) => ({entidad: "peliculas", ...m})),
-					...n[1].map((m) => ({entidad: "capitulos", ...m})),
+					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
+					...n[1].map((m) => ({entidad: "capitulos", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
 				])
 				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id));
 
