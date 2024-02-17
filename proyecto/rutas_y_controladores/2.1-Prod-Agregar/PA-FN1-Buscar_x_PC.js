@@ -280,9 +280,21 @@ module.exports = {
 
 				// Averigua si los capítulos son los mismos
 				let {TMDB_ids_vTMDB, TMDB_ids_vELC} = coleccion;
-				TMDB_ids_vTMDB.sort((a, b) => (a < b ? -1 : 1));
-				TMDB_ids_vELC.sort((a, b) => (a < b ? -1 : 1));
-				const sonLosMismos = JSON.stringify(TMDB_ids_vTMDB) == JSON.stringify(TMDB_ids_vELC);
+				let sonLosMismos = TMDB_ids_vTMDB.length == TMDB_ids_vELC.length;
+
+				if (sonLosMismos) {
+					// Ordena los ids
+					TMDB_ids_vTMDB.sort((a, b) => (a < b ? -1 : 1));
+					TMDB_ids_vELC.sort((a, b) => (a < b ? -1 : 1));
+
+					// Compara cada elemento
+					var i = TMDB_ids_vTMDB.length;
+					while (i--)
+						if (TMDB_ids_vTMDB[i] !== TMDB_ids_vELC[i]) {
+							sonLosMismos = false;
+							return;
+						}
+				}
 
 				// Si son distintos, los actualiza en la BD de ELC
 				if (!sonLosMismos) {
