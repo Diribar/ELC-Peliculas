@@ -284,9 +284,9 @@ module.exports = {
 
 			// Acciones si existen ediciones
 			if (ediciones.length) {
-				let esperar = [];
-				for (let edic of ediciones) esperar.push(puleEdicion(entidad, original, edic));
-				await Promise.all(esperar);
+				let espera = [];
+				for (let edic of ediciones) espera.push(puleEdicion(entidad, original, edic));
+				await Promise.all(espera);
 			}
 
 			// Fin
@@ -355,7 +355,7 @@ module.exports = {
 		capsAprobs: async (colID) => {
 			// Variables
 			const ahora = comp.fechaHora.ahora();
-			let esperar = [];
+			let espera = [];
 			let datos;
 
 			// Prepara los datos
@@ -380,11 +380,11 @@ module.exports = {
 				datos = errores.impideAprobado
 					? {...datosFijos, statusRegistro_id: creadoAprob_id}
 					: {...datosFijos, ...datosSugeridos, ...datosTerm};
-				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+				espera.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
 
 			// Espera hasta que se revisen todos los capítulos
-			await Promise.all(esperar);
+			await Promise.all(espera);
 
 			// Fin
 			return;
@@ -609,7 +609,7 @@ module.exports = {
 			const entidades = variables.entidades.prods;
 			let prodsPorEnts = [];
 			let prods = [];
-			let esperar = [];
+			let espera = [];
 
 			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
@@ -625,14 +625,14 @@ module.exports = {
 			if (prods.length) {
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)
-					esperar.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
+					espera.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
 				siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
-			await Promise.all(esperar);
+			await Promise.all(espera);
 
 			// Fin
 			return;
