@@ -218,7 +218,7 @@ module.exports = {
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Guarda la información para la próxima vista
-		const nombre = encodeURIComponent(comp.nombresPosibles(original));
+		const nombre = comp.nombresPosibles(original);
 		let objeto = {entidad, nombre};
 		if (origen) objeto.origen = origen;
 		res.cookie("eliminado", objeto, {maxAge: 5000});
