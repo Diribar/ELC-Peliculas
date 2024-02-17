@@ -46,7 +46,7 @@ module.exports = {
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
 
 		// Va a la vista
-		return res.send(prods.RP);
+		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, sigProd, origen: "TR"},
@@ -65,26 +65,12 @@ module.exports = {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
-			// Excluye los capítulos
-			if (entidad == "capitulos")
-				res.render("CMP-0Estructura", {
-					informacion: {
-						mensajes: ["Sólo se aprueban/rechazan películas y colecciones"],
-						iconos: [
-							{
-								nombre: "fa-spell-check ",
-								link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
-								titulo: "Regresar al Tablero de Control",
-							},
-						],
-					},
-				});
-
 			// Obtiene el registro original
 			let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 			include.push("statusRegistro", "creadoPor", "statusSugeridoPor");
 			if (entidad == "colecciones") include.push("capitulos");
-			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+			if (entidad == "capitulos") include.push("coleccion");
+			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 			// Obtiene avatar original
 			let imgDerPers = original.avatar;
