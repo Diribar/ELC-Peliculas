@@ -30,13 +30,13 @@ module.exports = {
 	},
 	datosLink: async (datos) => {
 		// Datos del producto
+		const regProd = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID);
+		datos.prodAprob = aprobados_ids.includes(regProd.statusRegistro_id);
+
+		// campo_id
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
 		datos[campo_id] = datos.prodID;
-
-		// Obtiene el status del producto
-		datos.prodAprob = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID).then((n) =>
-			aprobados_ids.includes(n.statusRegistro_id)
-		);
+		if (campo_id == "capitulo_id") datos.coleccion_id = regProd.coleccion_id;
 
 		// Obtiene el proveedor
 		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.includes(n.urlDistintivo));

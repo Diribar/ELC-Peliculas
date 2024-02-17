@@ -21,7 +21,8 @@ module.exports = {
 			"&page=" +
 			page +
 			"&include_adult=false";
-		// BUSCAR LA INFO
+
+		// Busca la info
 		let resultado = await fetch(url).then((n) => n.json());
 		if (resultado.hasOwnProperty("success") && !resultado.success) {
 			console.log("searchTMDB_fetch", url, resultado);
@@ -35,20 +36,21 @@ module.exports = {
 		return resultado;
 	},
 	details: async (TMDB_entidad, TMDB_id) => {
+		// Se usa "details", porque mejora el resultado de la API
 		// PARTES DEL URL
 		// https://api.themoviedb.org/3/movie/    218275?api_key=&language=es&append_to_response=credits
 		// https://api.themoviedb.org/3/collection/97919?api_key=&language=es
 		// https://api.themoviedb.org/3/tv/        61865?api_key=&language=es
 		// https://api.themoviedb.org/3/tv/		   61865/season/0?api_key=&language=es
 
-		// Generar el agregado para consultar una temporada de TV
+		// Genera el agregado para consultar una temporada de TV
 		let season;
 		if (typeof TMDB_entidad == "number") {
 			season = "/season/" + TMDB_entidad;
 			TMDB_entidad = "tv";
 		} else season = "";
 
-		// Generar la url de consulta
+		// Genera la url de consulta
 		let url =
 			"https://api.themoviedb.org/3/" +
 			TMDB_entidad +
@@ -59,22 +61,22 @@ module.exports = {
 			API_key +
 			"&language=es-ES" +
 			(TMDB_entidad == "movie" ? "&append_to_response=credits" : "");
-		// Se usa "credits", porque mejora el resultado de la API
-		// BUSCAR LA INFO
+
+		// Busca la información
 		let resultado = await fetch(url).then((n) => n.json());
-		if (resultado.hasOwnProperty("success") && !resultado.success) {
-			console.log("detailsTMDB_fetch", url, resultado);
-			resultado = {
-				page: 1,
-				results: [],
-				total_pages: 1,
-				total_results: 0,
-			};
+
+		// Adecuaciones según el éxito/fracaso
+		if (resultado.status_message) {
+			console.log("detailsTMDB_fetch:", resultado.status_message);
+			console.log(url);
+			resultado = {};
 		}
-		if (resultado.credits) delete resultado.credits;
+
+		// Fin
 		return resultado;
 	},
 	credits: async (TMDB_entidad, TMDB_id) => {
+		// Se usa "credits", porque mejora el resultado de la API
 		// PARTES DEL URL
 		// https://api.themoviedb.org/3/movie/38516/credits?api_key=&language=es-ES
 		// https://api.themoviedb.org/3/tv/1781/credits?api_key=&language=es
@@ -98,15 +100,13 @@ module.exports = {
 			"&language=es-ES";
 		// BUSCAR LA INFO
 		let resultado = await fetch(url).then((n) => n.json());
-		if (resultado.hasOwnProperty("success") && !resultado.success) {
-			console.log("creditsTMDB_fetch", url, resultado);
-			resultado = {
-				page: 1,
-				results: [],
-				total_pages: 1,
-				total_results: 0,
-			};
+		if (resultado.status_message) {
+			console.log("creditsTMDB_fetch:", resultado.status_message);
+			console.log(url);
+			resultado = {};
 		}
+
+		// Fin
 		return resultado;
 	},
 };

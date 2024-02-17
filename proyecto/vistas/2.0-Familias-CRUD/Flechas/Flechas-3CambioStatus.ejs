@@ -1,12 +1,18 @@
-<% if (locals.userPerenne && (locals.registro && !registro.colecDesaprob)) { %>
-	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
-	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
+<% if (locals.userPerenne && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
 	<div id="flechasCambioStatus" class="flechas">
-		<% if (locals.status_id == creado_id && locals.usuario && usuario.id == locals.creadoPor_id) { %>
-			<!-- Eliminar -->
-			<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
-			</a>
+		<% if (locals.status_id == creado_id && locals.usuario) { %>
+			<!-- Solo para status creado y usuario logueado -->
+			<% if (locals.creadoPor_id == usuario.id) { %>
+				<!-- Si fue creado por el usuario -> Eliminarlo definitivamente -->
+				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+				</a>
+			<% } else if (locals.creadoPor_id == usAutom_id) { %>
+				<!-- Capítulos creados automáticamente con 'colecAprob' -> Revisarlo -->
+				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
+				</a>
+			<% } %>
 		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->

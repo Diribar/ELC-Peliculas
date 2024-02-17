@@ -109,6 +109,42 @@ module.exports = {
 			// Fin
 			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
 		},
+		obtieneProdsRepetidos: async () => {
+			// Obtiene los datos clave de los registros
+			const statusRegistro_id = [...creados_ids, aprobado_id];
+			let registros = await Promise.all([
+				BD_genericas.obtieneTodosPorCondicion("peliculas", {statusRegistro_id}),
+				BD_genericas.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
+			])
+				.then((n) => [
+					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
+					...n[1].map((m) => ({entidad: "capitulos", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
+				])
+				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id));
+
+			// Obtiene los repetidos
+			let repetidos = [];
+			while (registros.length > 1) {
+				// Obtiene el primer registro y lo elimina
+				const registro = registros[0];
+				registros.splice(0, 1);
+
+				// Acciones si se encuentra un repetido
+				let indice = registros.findIndex(
+					(n) =>
+						(n.TMDB_id && n.TMDB_id == registro.TMDB_id) ||
+						(n.IMDB_id && n.IMDB_id == registro.IMDB_id) ||
+						(n.FA_id && n.FA_id == registro.FA_id)
+				);
+				if (indice > -1) {
+					repetidos.push(registro, registros[indice]);
+					registros.splice(indice, 1);
+				}
+			}
+
+			// Fin
+			return {RP: repetidos};
+		},
 		obtieneSigProd_Links: async function (revID) {
 			// Variables
 			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
@@ -819,18 +855,22 @@ let FN_links = {
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
 
-		// 1. Sin restricción - Ediciones
+		// Sin restricción - Ediciones
 		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// 2. Sin restricción - Altas
-		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
-		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
-		if (respuesta) return respuesta;
+		// Con restricción - Altas
+		if (pelisColesParaProc + capsParaProc) {
+			const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
+			if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
+			if (respuesta) return respuesta;
+		}
 
-		// 3. Con restricción - Capítulos
+		// Con restricción - Capítulos
 		if (capsParaProc) {
+			// Variables
 			let capitulos;
+
 			//Primera revisión
 			capitulos = primRev.filter((n) => n.capitulo_id);
 			if (capitulos.length) respuesta = this.obtieneProdLink({links: capitulos, datos});
@@ -842,7 +882,7 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
-		// 4. Con restricción - Películas y Colecciones
+		// Con restricción - Películas y Colecciones
 		if (pelisColesParaProc) {
 			let pelisColes;
 			// Primera revisión
@@ -856,7 +896,7 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
-		// 5. Sin restricción - Recientes no trailers
+		// Sin restricción - Recientes no trailers
 		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;

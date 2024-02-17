@@ -50,22 +50,24 @@ module.exports = {
 		// Quita la info que no agrega valor
 		edicion = await puleEdicion(entidad, original, edicion);
 
-		// Acciones si existe la edición
+		// Acciones si quedaron datos para actualizar
 		if (edicion) {
-			// Si existe la edición y su 'ID' --> actualiza el registro
-			if (edicion.id) BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
+			// Si existe el registro, lo actualiza
+			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
 
-			// Si existe la edición pero no su 'ID' --> se agrega el registro
+			// Si no existe el registro, lo agrega
 			if (!edicion.id) {
 				// 1. campo_id, editadoPor_id
-				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
+				if (campo_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				edicion.editadoPor_id = userID;
 
 				// 2. producto_id (links)
 				if (entidad == "links") {
-					let producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
+					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
+					if (producto_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				}
 
 				// Se agrega el registro
@@ -257,7 +259,7 @@ module.exports = {
 			// 2. Actualización condicional por campo
 			const cond1 = campo == "tipoActuacion_id";
 			const cond21 = variables.entidades.rclvs_id.includes(campo);
-			const cond22 = cond21 && edicion[campo] != 2; // Particularidad para rclv_id
+			const cond22 = cond21 && edicion[campo] != 2; // particularidad para rclv_id
 			const cond31 = campo == "epocaOcurrencia_id";
 			const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
 			const novedad = {[campo]: edicion[campo]};
@@ -397,7 +399,11 @@ module.exports = {
 				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
 
 				// Actualiza prodAprob en sus links
-				if (registro.links) for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+				if (registro.links) {
+					let espera = [];
+					for (let link of registro.links) espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
+					await Promise.all(espera);
+				}
 
 				// Rutina por entidad RCLV
 				const entidadesRCLV = variables.entidades.rclvs;
@@ -424,6 +430,9 @@ module.exports = {
 					this.linksEnColec(colID);
 				}
 			}
+
+			// Actualiza la variable de links vencidos
+			comp.actualizaLinksVencPorSem();
 
 			// Fin
 			return;
@@ -544,8 +553,8 @@ module.exports = {
 		},
 	},
 	eliminar: {
-		eliminaAvatarMasEdics: async (entidad, id) => {
-			// Obtiene la edicion
+		eliminaDependientes: async (entidad, id, original) => {
+			// Variables
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
@@ -553,34 +562,26 @@ module.exports = {
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
 
-			if (ediciones.length) {
-				// 1. Elimina el archivo avatar de las ediciones
-				for (let edicion of ediciones)
-					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
-
-				// 2. Elimina las ediciones
-				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+			// Elimina el archivo avatar del original
+			if (original.avatar && !original.avatar.includes("/")) {
+				comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Final", original.avatar);
+				comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", original.avatar);
 			}
 
-			//Fin
-			return true;
-		},
-		eliminaDependsMasEdics: async ({entidadPadre, padreID, entidadHijo}) => {
-			// Variables
-			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);
-			const campoHijo_id = comp.obtieneDesdeEntidad.campo_id(entidadHijo);
-			const edicHijo = comp.obtieneDesdeEntidad.entidadEdic(entidadHijo);
-			let esperar = [];
-
-			// Obtiene los hijos
-			const hijos = await BD_genericas.obtieneTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+			// Elimina el archivo avatar de las ediciones
+			for (let edicion of ediciones)
+				if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 			// Elimina las ediciones
-			for (let hijo of hijos) esperar.push(BD_genericas.eliminaTodosPorCondicion(edicHijo, {[campoHijo_id]: hijo.id}));
-			await Promise.all(esperar);
+			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+			if (familias != "productos") return true;
 
-			// Elimina los hijos
-			await BD_genericas.eliminaTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+			// Elimina los links
+			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
+			await BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id});
+
+			// Si es una colección, elimina sus capítulos
+			if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
 
 			// Fin
 			return true;

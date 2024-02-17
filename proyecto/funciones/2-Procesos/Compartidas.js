@@ -133,10 +133,10 @@ module.exports = {
 		entidadProd: (registro) => {
 			return registro.pelicula_id
 				? "peliculas"
+				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+				? "capitulos"
 				: registro.coleccion_id
 				? "colecciones"
-				: registro.capitulo_id
-				? "capitulos"
 				: "";
 		},
 		entidadRCLV: (registro) => {
@@ -153,29 +153,29 @@ module.exports = {
 				: "";
 		},
 		entidad: function (registro, familiaEdic) {
-			const producto = this.entidadProd(registro);
-			const RCLV = this.entidadRCLV(registro);
+			const entProd = this.entidadProd(registro);
+			const entRCLV = this.entidadRCLV(registro);
 
 			// Fin
 			return familiaEdic == "prodsEdicion"
-				? producto
+				? entProd
 				: familiaEdic == "rclvsEdicion"
-				? RCLV
+				? entRCLV
 				: registro.link_id
 				? "links"
-				: RCLV
-				? RCLV
-				: producto
-				? producto
+				: entProd // debe ir antes de los entRCLV por sus ediciones
+				? entProd
+				: entRCLV
+				? entRCLV
 				: "";
 		},
 		campo_idProd: (registro) => {
 			return registro.pelicula_id
 				? "pelicula_id"
+				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+				? "capitulo_id"
 				: registro.coleccion_id
 				? "coleccion_id"
-				: registro.capitulo_id
-				? "capitulo_id"
 				: "";
 		},
 		campo_idRCLV: (registro) => {
@@ -192,17 +192,26 @@ module.exports = {
 				: "";
 		},
 		campo_id: function (registro) {
-			const producto = this.campo_idProd(registro);
-			const RCLV = this.campo_idRCLV(registro);
-			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+			// Variables
+			const producto_id = this.campo_idProd(registro);
+			const rclv_id = this.campo_idRCLV(registro);
+
+			// Fin
+			return registro.link_id // debe ir antes de los productos por sus ediciones
+				? "link_id"
+				: producto_id // debe ir antes de los rclv_id por sus ediciones
+				? producto_id
+				: rclv_id
+				? rclv_id
+				: "";
 		},
 		asocProd: (registro) => {
 			return registro.pelicula_id
 				? "pelicula"
+				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+				? "capitulo"
 				: registro.coleccion_id
 				? "coleccion"
-				: registro.capitulo_id
-				? "capitulo"
 				: "";
 		},
 		asocRCLV: (registro) => {
@@ -219,9 +228,15 @@ module.exports = {
 				: "";
 		},
 		asociacion: function (registro) {
-			const producto = this.asocProd(registro);
-			const RCLV = this.asocRCLV(registro);
-			return registro.link_id ? "link_id" : RCLV ? RCLV : producto ? producto : "";
+			const producto_id = this.asocProd(registro);
+			const rclv_id = this.asocRCLV(registro);
+			return registro.link_id
+				? "link_id"
+				: producto_id // debe ir antes de los rclv_id por sus ediciones
+				? producto_id
+				: rclv_id
+				? rclv_id
+				: "";
 		},
 	},
 	convierteLetras: {

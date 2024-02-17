@@ -107,12 +107,12 @@ window.addEventListener("load", () => {
 		for (let repeticion = 0; repeticion < parseInt(tiempoEstimado / pausa); repeticion++) {
 			duracionAcum += pausa;
 			DOM.progreso.style.width = parseInt((duracionAcum / tiempoEstimado) * 100) + "%";
-			if (v.pendiente) await espera(pausa);
+			if (v.pendiente) await pierdeTiempo(pausa);
 		}
 		DOM.progreso.style.width = "100%";
 
 		// Oculta el cartelProgreso
-		await espera(pausa);
+		await pierdeTiempo(pausa);
 		DOM.cartelProgreso.classList.remove("aumenta");
 		DOM.cartelProgreso.classList.add("disminuye");
 

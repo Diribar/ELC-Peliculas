@@ -9,52 +9,53 @@ module.exports = {
 			entidad == "colecciones"
 				? await BD_genericas.obtienePorCondicion("capitulos", objeto).then((n) => n.id)
 				: await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
+
+		// Fin
 		return res.json(ID);
 	},
 	obtieneCapAntPostID: async (req, res) => {
+		// Variables
 		let {id} = req.query;
-		// Obtiene la coleccion_id, la temporada y el capítulo
 		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtienePorId("capitulos", id);
-		// Averigua los datos del capítulo anterior **********************
-		// Obtiene los datos del capítulo anterior (temporada y capítulo)
+
+		// Obtiene la temporada y capítulo anteriores
 		let tempAnt = temporada;
 		let capAnt = 0;
-		if (temporada == 1 && capitulo == 1) capAnt = false;
+		if (temporada == 1 && capitulo == 1) capAnt = null;
 		else if (capitulo > 1) capAnt = capitulo - 1;
 		else {
-			tempAnt = temporada - 1;
 			// Obtiene el último número de capítulo de la temporada anterior
-			let objeto = {coleccion_id, temporada: tempAnt};
+			tempAnt = temporada - 1;
+			const objeto = {coleccion_id, temporada: tempAnt};
 			capAnt = await BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo");
 		}
-		// Averigua los datos del capítulo posterior ********************
-		// Obtiene datos de la colección y el capítulo
+
+		// Obtiene la temporada y capítulo posteriores
 		let objeto = {coleccion_id, temporada};
 		let [ultCap, ultTemp] = await Promise.all([
-			// Obtiene el último número de capítulo de la temporada actual
-			BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo"),
-			// Obtiene el último número de temporada de la colección
-			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps),
+			BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo"), // Último número de capítulo de la temporada actual
+			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps), // Último número de temporada de la colección
 		]);
-		// Obtiene los datos del capítulo posterior (temporada y capítulo)
 		let tempPost = temporada;
 		let capPost = 0;
-		if (temporada == ultTemp && capitulo == ultCap) capPost = false;
+		if (temporada == ultTemp && capitulo == ultCap) capPost = null;
 		else if (capitulo < ultCap) capPost = capitulo + 1;
 		else {
 			tempPost = temporada + 1;
 			capPost = 1;
 		}
+
 		// Obtiene los ID
 		let objetoAnt = {coleccion_id, temporada: tempAnt, capitulo: capAnt};
 		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
-		let [capAntID, capPostID] = await Promise.all([
+		let [capAnt_id, capPost_id] = await Promise.all([
 			// Obtiene el ID del capítulo anterior
-			capAnt ? BD_genericas.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : false,
-			capPost ? BD_genericas.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : false,
+			capAnt ? BD_genericas.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : null,
+			capPost ? BD_genericas.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : null,
 		]);
-		// // Enviar el resultado
-		return res.json([capAntID, capPostID]);
+
+		// Envia el resultado
+		return res.json([capAnt_id, capPost_id]);
 	},
 	obtieneCapID: async (req, res) => {
 		// Variables
