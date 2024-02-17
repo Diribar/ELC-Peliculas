@@ -153,10 +153,10 @@ module.exports = {
 
 			// Averigua si todos los links del producto están en status estables
 			const links = await BD_genericas.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
-			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = "";
+			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
-			// Averigua si quedan ediciones de links del producto
-			if (sigProd) sigProd = !(await BD_genericas.obtienePorCondicion("prodsEdicion", {[campo_id]: id}));
+			// Averigua si queda alguna edición de link del producto
+			if (sigProd) sigProd = !(await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente
 			if (sigProd) sigProd = await procesos.TC.obtieneSigProd_Links(revID);
