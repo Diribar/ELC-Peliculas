@@ -52,8 +52,8 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") {
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			prodComb.colecDesaprob = BD_genericas.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
-				!aprobados_ids.includes(n.coleccion.statusRegistro_id)
+			prodComb.colecAprob = BD_genericas.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
+				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
 		}
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
@@ -61,8 +61,9 @@ module.exports = {
 		let yaCalificada = userID
 			? BD_genericas.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
-		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
+		[prodComb.capitulos, prodComb.colecAprob, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
+			prodComb.colecAprob,
 			links,
 			interesDelUsuario,
 			yaCalificada,
