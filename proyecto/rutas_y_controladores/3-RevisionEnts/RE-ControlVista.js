@@ -212,9 +212,7 @@ module.exports = {
 				}
 			}
 
-			// CONSECUENCIAS
-			// Actualiza el status en el registro original
-			// A. Datos que se necesitan con seguridad
+			// Datos que se necesitan con seguridad
 			datos = {
 				...datos,
 				motivo_id,
@@ -223,20 +221,20 @@ module.exports = {
 				statusSugeridoEn: ahora,
 			};
 
-			// B. Datos sólo si es un alta/rechazo
+			// Datos sólo si es un alta/rechazo
 			if (!original.altaRevisadaEn) {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 			}
 
-			// C. Datos sólo si es un producto
+			// Datos sólo si es un producto
 			if (!rclv) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
 
-			// D. Actualiza el registro original --> es crítico el uso del 'await'
+			// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
 			await BD_genericas.actualizaPorId(entidad, id, datos);
 
-			// Acciones si es una colección
+			// CONSECUENCIAS - Acciones si es una colección
 			if (entidad == "colecciones") {
 				// Actualiza el status de los capítulos
 				statusFinal_id == aprobado_id
@@ -251,34 +249,32 @@ module.exports = {
 				procesos.guardar.prodAprobEnLink(id, statusFinal_id);
 			}
 
-			// Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-			if (rclv && subcodigo == "alta" && aprob) procesos.rlcv.edicAprobRech(entidad, original, revID);
+			// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+			if (rclv && subcodigo == "alta" && aprob) procesos.rclv.edicAprobRech(entidad, original, revID);
 
-			// Agrega un registro en el histStatus - A. Genera la información
+			// CONSECUENCIAS - Agrega un registro en el histStatus
 			let datosHist = {
 				...{entidad, entidad_id: id},
 				...{sugeridoPor_id: userID, sugeridoEn: original.statusSugeridoEn, statusOriginal_id},
 				...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
 				...{aprobado: aprob, motivo_id, comentario},
 			};
-			// Agrega un registro en el histStatus - Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 			const motivo =
 				codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
-			if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac);
-			// Agrega un registro en el histStatus - Guarda los datos históricos
-			BD_genericas.agregaRegistro("histStatus", datosHist);
+			if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
+			BD_genericas.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
 
-			// Aumenta el valor de aprob/rech en el registro del usuario
+			// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
-			// Penaliza al usuario si corresponde
+			// CONSECUENCIAS - Penaliza al usuario si corresponde
 			if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-			// Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
+			// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 			if (producto)
 				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
-			// Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
+			// CONSECUENCIAS - Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 				procesos.descargaAvatarOriginal(original, entidad);
 
