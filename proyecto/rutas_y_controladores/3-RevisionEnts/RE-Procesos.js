@@ -386,10 +386,10 @@ module.exports = {
 					? inactivo_id
 					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
 					? aprobado_id // si es un RCLV, se aprueba
-					: entidad == "capitulos"
-					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
 					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
 					? creadoAprob_id
+					: entidad == "capitulos"
+					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
 					: aprobado_id;
 
 			// Obtiene el motivo_id
