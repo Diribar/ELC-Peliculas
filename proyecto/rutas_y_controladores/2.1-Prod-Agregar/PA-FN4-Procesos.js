@@ -92,24 +92,23 @@ module.exports = {
 		},
 		agregaUnCap_Colec: async function (datosCol, capTMDB_id, indice) {
 			// Toma los datos de la colección
-			const {paises_id, idiomaOriginal_id} = datosCol;
+			const {id: coleccion_id, paises_id, idiomaOriginal_id} = datosCol;
 			const {direccion, guion, musica, actores, produccion} = datosCol;
+			const statusColeccion_id = datosCol.statusColeccion_id ? datosCol.statusColeccion_id : creado_id;
 
 			// Genera la información a guardar - los datos adicionales se completan en la revisión
 			const datosCap = {
-				...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
+				...{coleccion_id, temporada: 1, capitulo: indice},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
-				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
+				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id, statusColeccion_id},
 			};
 
-			// Obtiene los datos del capítulo
+			// Guarda los datos del capítulo
 			await procsComp
-				.obtieneInfoDeMovie({TMDB_id: capTMDB_id})
-				// Le agrega los datos de cabecera
-				.then((n) => (n = {...datosCap, ...n}))
-				// Guarda los datos del capítulo
-				.then(async (n) => BD_genericas.agregaRegistro("capitulos", n));
+				.obtieneInfoDeMovie({TMDB_id: capTMDB_id}) // Obtiene los datos del capítulo
+				.then((n) => (n = {...datosCap, ...n})) // Le agrega los datos de cabecera
+				.then(async (n) => await BD_genericas.agregaRegistro("capitulos", n));
 
 			// Fin
 			return;
