@@ -220,7 +220,7 @@ module.exports = {
 		// Guarda la información para la próxima vista
 		const nombre = comp.nombresPosibles(original);
 		let objeto = {entidad, nombre};
-		if (origen == "TM") objeto.origen = "TM";
+		if (origen) objeto.origen = origen;
 		res.cookie("eliminado", objeto, {maxAge: 5000});
 
 		// Fin
@@ -230,6 +230,7 @@ module.exports = {
 		// Variables
 		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
 		if (!entidad) return res.redirect("/");
+		else res.clearCookie("eliminado");
 
 		// Más variables
 		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";

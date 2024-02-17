@@ -57,7 +57,11 @@ module.exports = {
 			}
 
 			// Separa entre altas y ediciones
-			const AL_conEdicion = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
+			const AL_conEdicion = productos.filter(
+				(n) =>
+					n.statusRegistro_id == creado_id && // status creado_id
+					(n.entidad != "capitulos" || aprobados_ids.includes(n.statusColeccion_id)) // películas y colecciones, y capítulos con su colección aprobada
+			);
 			const ED = productos.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 			// Fin
@@ -78,7 +82,7 @@ module.exports = {
 				include: "ediciones",
 			};
 			let AL_sinEdicion = obtieneRegs(campos)
-				.then((n) => n.filter((m) => m.entidad != "capitulos")) // Deja solamente las películas y colecciones
+				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
@@ -384,6 +388,8 @@ module.exports = {
 					? aprobado_id // si es un RCLV, se aprueba
 					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
 					? creadoAprob_id
+					: entidad == "capitulos"
+					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
 					: aprobado_id;
 
 			// Obtiene el motivo_id

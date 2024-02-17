@@ -26,11 +26,13 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
+		// await agregaColeccion_id();
+
+		// Comunica el fin de las rutinas
+		console.log();
+		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
-		console.log();
-		//this.ActualizaLinksVencPorSem();
-		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 		return;
 	},
 
@@ -715,6 +717,27 @@ let eliminaHistorialQueNoCorresponde = async () => {
 		// Si el producto no existe, elimina el registro
 		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id);
 		if (!producto) BD_genericas.eliminaPorId("calRegistros", registro.id);
+	}
+
+	// Fin
+	return;
+};
+let agregaColeccion_id = async () => {
+	// Variables
+	const entidades = ["prodsEdicion", "links", "linksEdicion"];
+	const condicion = {capitulo_id: {[Op.ne]: null}};
+
+	// Rutina por entidad
+	for (let entidad of entidades) {
+		// Variables
+		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "capitulo");
+		if (!registros.length) continue;
+
+		// Rutina por registro
+		for (let registro of registros) {
+			const {coleccion_id} = registro.capitulo;
+			BD_genericas.actualizaPorId(entidad, registro.id, {coleccion_id});
+		}
 	}
 
 	// Fin

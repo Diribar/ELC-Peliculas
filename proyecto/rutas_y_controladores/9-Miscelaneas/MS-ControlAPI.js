@@ -69,10 +69,9 @@ module.exports = {
 
 			// Elimina duplicados
 			for (let i = resultados.length - 2; i >= 0; i--) {
-				const {entidad: entidad1, id: id1, nombre: nombre1, anoEstreno: anoEstreno1} = resultados[i];
-				const {entidad: entidad2, id: id2, nombre: nombre2, anoEstreno: anoEstreno2} = resultados[i + 1];
-				if (entidad1 == entidad2 && id1 == id2 && nombre1 == nombre2 && anoEstreno1 == anoEstreno2)
-					resultados.splice(i + 1, 1);
+				const {entidad: entidad1, id: id1} = resultados[i];
+				const {entidad: entidad2, id: id2} = resultados[i + 1];
+				if (entidad1 == entidad2 && id1 == id2) resultados.splice(i + 1, 1);
 			}
 		}
 
