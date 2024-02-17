@@ -140,15 +140,17 @@ module.exports = {
 
 			// Agrega info de la BD
 			productos.forEach((prod, indice) => {
+				if (!prod) return;
+
 				// Le asigna valores de nuestra BD
-				if (prod) {
-					resultados.productos[indice].id = prod.id;
-					resultados.productos[indice].yaEnBD_id = prod.id;
-					resultados.productos[indice].avatar = prod.avatar;
-					if (resultados.productos[indice].entidad == "colecciones") {
-						resultados.productos[indice].capitulosELC = prod.capitulos.length;
-						resultados.productos[indice].capitulosID_ELC = prod.capitulos.map((n) => n.TMDB_id);
-					}
+				resultados.productos[indice].id = prod.id;
+				resultados.productos[indice].avatar = prod.avatar;
+
+				// Específicos para colecciones
+				if (resultados.productos[indice].entidad == "colecciones") {
+					resultados.productos[indice].statusColeccion_id = prod.statusRegistro_id;
+					resultados.productos[indice].cantCapsELC = prod.capitulos.length;
+					resultados.productos[indice].TMDB_ids_versionELC = prod.capitulos.map((n) => n.TMDB_id);
 				}
 			});
 
@@ -200,25 +202,27 @@ module.exports = {
 						...resultados.productos[indice],
 						anoEstreno: anoEstreno != "-" ? parseInt(anoEstreno.slice(0, 4)) : "-",
 						anoFin: anoFin != "-" ? parseInt(anoFin.slice(0, 4)) : "-",
-						capitulos: anosEstreno.length,
+						cantCapsTMDB: coleccion.parts.length,
 						capsTMDB_id,
 					};
 				}
 
 				// Acciones si es una serie de TV
 				else if (coleccion.seasons) {
-					// OBtiene la cantidad de temporadas
+					// Obtiene la cantidad de temporadas
 					const cantTemps = coleccion.seasons.filter((n) => n.season_number).length; // mayor a cero
-					// Obtiene los capítulos
-					const capitulos = coleccion.seasons
+
+					// Obtiene la cantidad de capítulos
+					const cantCapsTMDB = coleccion.seasons
 						.filter((n) => n.season_number) // mayor a cero
 						.map((n) => n.episode_count)
 						.reduce((a, b) => a + b, 0);
+
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
 						anoFin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
-						capitulos,
+						cantCapsTMDB,
 						cantTemps,
 					};
 					if (coleccion.episode_run_time && coleccion.episode_run_time.length == 1)
@@ -248,8 +252,8 @@ module.exports = {
 		};
 		let agrupaPorNuevosYaEnBD = () => {
 			// Variables
-			const prodsNuevos = resultados.productos.filter((n) => !n.yaEnBD_id);
-			const prodsYaEnBD = resultados.productos.filter((n) => n.yaEnBD_id);
+			const prodsNuevos = resultados.productos.filter((n) => !n.id);
+			const prodsYaEnBD = resultados.productos.filter((n) => n.id);
 			const coincidencias = resultados.productos.length;
 			const cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 			const hayMas = resultados.hayMas;
@@ -279,7 +283,7 @@ module.exports = {
 
 			// Chequea que sea una colección, y que la cantidad de capítulos sea diferente entre TMDB y ELC - no hace falta el 'await'
 			for (let coleccion of prodsYaEnBD)
-				if (coleccion.capitulos && coleccion.capitulos > coleccion.capitulosELC) {
+				if (coleccion.cantCapsTMDB && coleccion.cantCapsTMDB > coleccion.cantCapsELC) {
 					if (coleccion.TMDB_entidad == "collection") agregaCapitulosCollection(coleccion); // sin 'await'
 					if (coleccion.TMDB_entidad == "tv") agregaCapitulosTV(coleccion); // sin 'await'
 				}
@@ -291,7 +295,7 @@ module.exports = {
 			// Recorre los capítulos
 			await coleccion.capsTMDB_id.forEach(async (capTMDB_id, indice) => {
 				// Si algún capítulo es nuevo, lo agrega
-				if (!coleccion.capitulosID_ELC.includes(String(capTMDB_id)))
+				if (!coleccion.TMDB_ids_versionELC.includes(String(capTMDB_id)))
 					await procesos.confirma.agregaUnCap_Colec(coleccion, capTMDB_id, indice);
 			});
 
@@ -309,19 +313,18 @@ module.exports = {
 				coleccion.capsTMDB_id = datosTemp.episodes.map((m) => m.id);
 
 				// Acciones si algún capítulo es nuevo
-				for (let capituloID_TMDB of coleccion.capsTMDB_id)
-					if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
+				for (let TMDB_id_versionTMDB of coleccion.capsTMDB_id)
+					if (!coleccion.TMDB_ids_versionELC.includes(String(TMDB_id_versionTMDB))) {
 						// Procesa la información
 						datosTemp = {...datosTemp, ...(await APIsTMDB.credits(numTemp, coleccion.TMDB_id))};
-						const episodio = datosTemp.episodes.find((n) => n.id == capituloID_TMDB);
+						const episodio = datosTemp.episodes.find((n) => n.id == TMDB_id_versionTMDB);
 
 						// Completa los datos
 						const datosCap = {
 							...procesos.confirma.datosCap(coleccion, datosTemp, episodio),
-							altaRevisadaPor_id: coleccion.altaRevisadaPor_id,
-							altaRevisadaEn: coleccion.altaRevisadaEn,
-							statusRegistro_id: coleccion.statusRegistro_id,
+							statusColeccion_id: coleccion.statusRegistro_id ? coleccion.statusRegistro_id : creado_id,
 						};
+
 						// Guarda el registro
 						await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 					}
