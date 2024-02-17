@@ -399,7 +399,12 @@ module.exports = {
 				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
 
 				// Actualiza prodAprob en sus links
-				if (registro.links) for (let link of registro.links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+				if (registro.links) {
+					let espera = [];
+					for (let link of registro.links) espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
+					await Promise.all(espera);
+					comp.actualizaLinksVencPorSem();
+				}
 
 				// Rutina por entidad RCLV
 				const entidadesRCLV = variables.entidades.rclvs;
@@ -567,7 +572,7 @@ module.exports = {
 
 			// Elimina las ediciones
 			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
-			if (familias != "productos") return true
+			if (familias != "productos") return true;
 
 			// Elimina los links
 			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
