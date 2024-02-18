@@ -31,6 +31,8 @@ module.exports = {
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic) : "";
 		[original, edicion] = await Promise.all([original, edicion]);
+		if (includesOrig.includes("capitulos"))
+			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Pule la edición
@@ -432,7 +434,7 @@ module.exports = {
 			}
 
 			// Actualiza la variable de links vencidos
-			comp.actualizaLinksVencPorSem();
+			await comp.actualizaLinksVencPorSem();
 
 			// Fin
 			return;

@@ -115,7 +115,7 @@ module.exports = {
 		},
 		obtieneProdsRepetidos: async () => {
 			// Obtiene los datos clave de los registros
-			const statusRegistro_id = [...creados_ids, aprobado_id];
+			const statusRegistro_id = activos_ids;
 			let registros = await Promise.all([
 				BD_genericas.obtieneTodosPorCondicion("peliculas", {statusRegistro_id}),
 				BD_genericas.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),

@@ -1,8 +1,12 @@
 /* Ancho */
-@media (width <= 1267px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (width <= 1267px) {
+	#cuerpoFooterImgDer #imgDerecha img {display: none;}
+	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
+}
 
 /* Alto */
 @media (height <= 450px) {
+	#cuerpo #tituloPrincipal {display: none;}
 	section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
 	#contenido .flechas {display: flex;}
 }

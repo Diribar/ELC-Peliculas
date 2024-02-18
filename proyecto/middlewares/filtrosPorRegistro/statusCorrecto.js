@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
 let FN_statusEsperados_id = (baseUrl, ruta) => {
 	return baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
 		? ruta == "/edicion/"
-			? [creado_id, ...aprobados_ids]
+			? activos_ids
 			: ruta == "/inactivar/"
 			? aprobados_ids
 			: ruta == "/recuperar/" || ruta == "/eliminar/"
@@ -57,10 +57,10 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta == "/eliminadoPorCreador/"
 			? [creado_id]
 			: ruta == "/calificar/"
-			? [creado_id, ...aprobados_ids]
+			? activos_ids
 			: [99]
 		: baseUrl == "/links" && ruta == "/abm/" // Preguntas para 'Links'
-		? [creado_id, ...aprobados_ids]
+		? activos_ids
 		: baseUrl == "/revision" // Preguntas para 'Revisión'
 		? ruta.includes("/alta/") // para 'producto' y 'rclv'
 			? [creado_id]
@@ -73,7 +73,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta.includes("/rechazo/")
 			? [creado_id]
 			: ruta.includes("/solapamiento/")
-			? [creado_id, ...aprobados_ids]
+			? activos_ids
 			: [99]
 		: [99];
 };
