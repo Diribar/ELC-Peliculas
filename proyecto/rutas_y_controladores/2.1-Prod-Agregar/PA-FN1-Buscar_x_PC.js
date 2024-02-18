@@ -285,9 +285,8 @@ module.exports = {
 				// Si no es una colección, saltea la rutina
 				if (coleccion.entidad != "colecciones") continue;
 
-				const sonLosMismos = FN.sonLosMismosCaps[coleccion.TMDB_entidad](coleccion);
-
 				// Si son distintos, los actualiza en la BD de ELC
+				const sonLosMismos = FN.sonLosMismosCaps[coleccion.TMDB_entidad](coleccion);
 				if (!sonLosMismos) {
 					if (coleccion.TMDB_entidad == "collection") agregaQuitaCapsCollection(coleccion); // sin 'await'
 					if (coleccion.TMDB_entidad == "tv") agregaCapsTV(coleccion); // sin 'await'
