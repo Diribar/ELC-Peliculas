@@ -14,14 +14,14 @@
 #cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 #cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
 
-/* Miscelaneas */
-mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
-#cuerpo #cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;} /* Flechas en 'cuadro de texto' */
+/* Flechas */
+#cuadroDeTexto > .flechas {margin: 30px 0 10px; padding-right: 15px;} /* Flechas en 'cuadro de texto' */
 #contenido .flechas {margin: 20px 0 0; display: none;} /* Flechas dentro de 'contenido' */
-#cuadroDeTexto .flechas {flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todas las flechas */
+#cuadroDeTexto .flechas {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todas las flechas */
 #cuadroDeTexto .flechas i {font-size: 2rem;}
 
-/* Responsive */
+/* Miscelaneas */
+mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
 #cuerpo #cuadroDeTexto {max-height: 90%;}
 #cuadroDeTexto > div::-webkit-scrollbar {outline: transparent;}
 #cuadroDeTexto > div::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
