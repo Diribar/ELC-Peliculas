@@ -23,7 +23,7 @@ module.exports = {
 			for (let TMDB_entidad of entidadesTMDB)
 				if (pagina == 1 || pagina <= resultados.cantPaginasAPI[TMDB_entidad]) {
 					const prodsPorEnt = APIsTMDB.search(palabrasClave, TMDB_entidad, pagina).then((n) =>
-						procesaInfoDeAPI(n, TMDB_entidad, palabrasClave)
+						FN.procesaInfoDeAPI(n, TMDB_entidad, palabrasClave)
 					);
 					prodsPorEnts.push(prodsPorEnt);
 				}
@@ -211,10 +211,17 @@ module.exports = {
 					// Obtiene la cantidad de temporadas
 					const cantTemps = coleccion.seasons.filter((n) => n.season_number).length; // temporada mayor a cero
 
+					// Obtiene la cantidad de capítulos
+					const cantCaps_vTMDB = coleccion.seasons
+						.filter((n) => n.season_number) // mayor a cero
+						.map((n) => n.episode_count)
+						.reduce((a, b) => a + b, 0);
+
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
 						anoFin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
+						cantCaps_vTMDB,
 						cantTemps,
 					};
 					if (coleccion.episode_run_time && coleccion.episode_run_time.length == 1)
@@ -278,23 +285,7 @@ module.exports = {
 				// Si no es una colección, saltea la rutina
 				if (coleccion.entidad != "colecciones") continue;
 
-				// Averigua si los capítulos son los mismos
-				let {TMDB_ids_vTMDB, TMDB_ids_vELC} = coleccion;
-				let sonLosMismos = TMDB_ids_vTMDB.length == TMDB_ids_vELC.length;
-
-				if (sonLosMismos) {
-					// Ordena los ids
-					TMDB_ids_vTMDB.sort((a, b) => (a < b ? -1 : 1));
-					TMDB_ids_vELC.sort((a, b) => (a < b ? -1 : 1));
-
-					// Compara cada elemento
-					var i = TMDB_ids_vTMDB.length;
-					while (i--)
-						if (TMDB_ids_vTMDB[i] !== TMDB_ids_vELC[i]) {
-							sonLosMismos = false;
-							return;
-						}
-				}
+				const sonLosMismos = FN.sonLosMismosCaps[coleccion.TMDB_entidad](coleccion);
 
 				// Si son distintos, los actualiza en la BD de ELC
 				if (!sonLosMismos) {
@@ -376,126 +367,160 @@ module.exports = {
 };
 
 // Funciones
-let procesaInfoDeAPI = (prodsPorEnt, TMDB_entidad, palabrasClave) => {
-	// Funciones
-	let descartaRegistrosIncompletos = () => {
-		// Variables
-		let productos = [];
-		for (let producto of prodsPorEnt.results) {
-			const poster = producto.poster_path;
-			const lanzam =
-				(producto.first_air_date && producto.first_air_date > "1900") ||
-				(producto.release_date && producto.release_date > "1900");
-			if (poster && (TMDB_entidad == "collection" || lanzam)) productos.push(producto);
-		}
-
-		// Consolida la información
-		prodsPorEnt = {
-			productos,
-			cantPaginasAPI: Math.min(prodsPorEnt.total_pages, prodsPorEnt.total_results),
-		};
-
-		// Fin
-		return;
-	};
-	let estandarizaNombres = () => {
-		// Variables
-		let productos = [];
-
-		// Estandariza nombres y deja sólo algunos campos
-		for (let producto of prodsPorEnt.productos) {
+let FN = {
+	procesaInfoDeAPI: (prodsPorEnt, TMDB_entidad, palabrasClave) => {
+		// Funciones
+		let descartaRegistrosIncompletos = () => {
 			// Variables
-			let entidadNombre, entidad, nombreOriginal, nombreCastellano, idiomaOriginal_id;
-			let anoEstreno = "";
-			let anoFin = "";
-
-			// Películas
-			if (TMDB_entidad == "movie") {
-				entidadNombre = "Película";
-				entidad = "peliculas";
-				nombreOriginal = producto.original_title;
-				nombreCastellano = producto.title;
-				idiomaOriginal_id = producto.original_language;
-				anoEstreno = anoFin = parseInt(producto.release_date.slice(0, 4));
+			let productos = [];
+			for (let producto of prodsPorEnt.results) {
+				const poster = producto.poster_path;
+				const lanzam =
+					(producto.first_air_date && producto.first_air_date > "1900") ||
+					(producto.release_date && producto.release_date > "1900");
+				if (poster && (TMDB_entidad == "collection" || lanzam)) productos.push(producto);
 			}
 
-			// Colecciones
-			else if (TMDB_entidad == "collection") {
-				entidadNombre = "Colección";
-				entidad = "colecciones";
-				nombreOriginal = producto.original_name;
-				nombreCastellano = producto.name;
-				idiomaOriginal_id = producto.original_language;
-			}
-
-			// TV
-			else if (TMDB_entidad == "tv") {
-				entidadNombre = "Colección";
-				entidad = "colecciones";
-				nombreOriginal = producto.original_name;
-				nombreCastellano = producto.name;
-				idiomaOriginal_id = producto.original_language;
-				anoEstreno = parseInt(producto.first_air_date.slice(0, 4));
-			}
-
-			// Define el título sin "distractores", para encontrar duplicados
-			let desempate1 = comp.convierteLetras.alIngles(nombreOriginal).replace(/ /g, "").replace(/'/g, "");
-			let desempate2 = comp.convierteLetras.alIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
-
-			// Deja sólo algunos campos
-			if (idiomaOriginal_id) idiomaOriginal_id = idiomaOriginal_id.toUpperCase();
-			const resultado = {
-				...{entidad, entidadNombre, TMDB_entidad, TMDB_id: producto.id, desempate1, desempate2},
-				...{nombreOriginal, nombreCastellano, idiomaOriginal_id, anoEstreno, anoFin},
-				...{avatar: producto.poster_path},
+			// Consolida la información
+			prodsPorEnt = {
+				productos,
+				cantPaginasAPI: Math.min(prodsPorEnt.total_pages, prodsPorEnt.total_results),
 			};
-			productos.push(resultado);
-		}
 
-		// Fin
-		prodsPorEnt.productos = productos;
-		return;
-	};
-	let descartaProdsSinPalabraClave = () => {
-		// Variables
-		let palabras = palabrasClave.split(" ");
-		let productos = [];
+			// Fin
+			return;
+		};
+		let estandarizaNombres = () => {
+			// Variables
+			let productos = [];
 
-		// Conserva los productos con al menos una palabra clave
-		for (let producto of prodsPorEnt.productos) {
-			for (let palabra of palabras) {
+			// Estandariza nombres y deja sólo algunos campos
+			for (let producto of prodsPorEnt.productos) {
 				// Variables
-				let nombreOriginal = producto.nombreOriginal;
-				let nombreCastellano = producto.nombreCastellano;
-				let sinopsis = producto.sinopsis;
+				let entidadNombre, entidad, nombreOriginal, nombreCastellano, idiomaOriginal_id;
+				let anoEstreno = "";
+				let anoFin = "";
 
-				// Averigua si alguno tiene la palabra clave
-				nombreOriginal = nombreOriginal && comp.convierteLetras.alIngles(nombreOriginal).includes(palabra);
-				nombreCastellano = nombreCastellano && comp.convierteLetras.alIngles(nombreCastellano).includes(palabra);
-				sinopsis = sinopsis && comp.convierteLetras.alIngles(sinopsis).includes(palabra);
+				// Películas
+				if (TMDB_entidad == "movie") {
+					entidadNombre = "Película";
+					entidad = "peliculas";
+					nombreOriginal = producto.original_title;
+					nombreCastellano = producto.title;
+					idiomaOriginal_id = producto.original_language;
+					anoEstreno = anoFin = parseInt(producto.release_date.slice(0, 4));
+				}
 
-				// Conserva el producto si se cumple alguna condición
-				if (nombreOriginal || nombreCastellano || sinopsis) {
-					productos.push(producto);
-					break;
+				// Colecciones
+				else if (TMDB_entidad == "collection") {
+					entidadNombre = "Colección";
+					entidad = "colecciones";
+					nombreOriginal = producto.original_name;
+					nombreCastellano = producto.name;
+					idiomaOriginal_id = producto.original_language;
+				}
+
+				// TV
+				else if (TMDB_entidad == "tv") {
+					entidadNombre = "Colección";
+					entidad = "colecciones";
+					nombreOriginal = producto.original_name;
+					nombreCastellano = producto.name;
+					idiomaOriginal_id = producto.original_language;
+					anoEstreno = parseInt(producto.first_air_date.slice(0, 4));
+				}
+
+				// Define el título sin "distractores", para encontrar duplicados
+				let desempate1 = comp.convierteLetras.alIngles(nombreOriginal).replace(/ /g, "").replace(/'/g, "");
+				let desempate2 = comp.convierteLetras.alIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
+
+				// Deja sólo algunos campos
+				if (idiomaOriginal_id) idiomaOriginal_id = idiomaOriginal_id.toUpperCase();
+				const resultado = {
+					...{entidad, entidadNombre, TMDB_entidad, TMDB_id: producto.id, desempate1, desempate2},
+					...{nombreOriginal, nombreCastellano, idiomaOriginal_id, anoEstreno, anoFin},
+					...{avatar: producto.poster_path},
+				};
+				productos.push(resultado);
+			}
+
+			// Fin
+			prodsPorEnt.productos = productos;
+			return;
+		};
+		let descartaProdsSinPalabraClave = () => {
+			// Variables
+			let palabras = palabrasClave.split(" ");
+			let productos = [];
+
+			// Conserva los productos con al menos una palabra clave
+			for (let producto of prodsPorEnt.productos) {
+				for (let palabra of palabras) {
+					// Variables
+					let nombreOriginal = producto.nombreOriginal;
+					let nombreCastellano = producto.nombreCastellano;
+					let sinopsis = producto.sinopsis;
+
+					// Averigua si alguno tiene la palabra clave
+					nombreOriginal = nombreOriginal && comp.convierteLetras.alIngles(nombreOriginal).includes(palabra);
+					nombreCastellano = nombreCastellano && comp.convierteLetras.alIngles(nombreCastellano).includes(palabra);
+					sinopsis = sinopsis && comp.convierteLetras.alIngles(sinopsis).includes(palabra);
+
+					// Conserva el producto si se cumple alguna condición
+					if (nombreOriginal || nombreCastellano || sinopsis) {
+						productos.push(producto);
+						break;
+					}
 				}
 			}
-		}
+
+			// Fin
+			prodsPorEnt.productos = productos;
+			return;
+		};
+
+		// Descarta registros con información incompleta
+		descartaRegistrosIncompletos();
+
+		// Estandariza nombres
+		estandarizaNombres();
+
+		// Descarta los productos que no tienen ninguna palabra clave
+		descartaProdsSinPalabraClave();
 
 		// Fin
-		prodsPorEnt.productos = productos;
-		return;
-	};
+		return prodsPorEnt;
+	},
+	sonLosMismosCaps: {
+		collection: (coleccion) => {
+			// Variables
+			let {TMDB_ids_vTMDB, TMDB_ids_vELC} = coleccion;
+			let sonLosMismos = TMDB_ids_vTMDB.length == TMDB_ids_vELC.length;
 
-	// Descarta registros con información incompleta
-	descartaRegistrosIncompletos();
+			if (sonLosMismos) {
+				// Ordena los ids
+				TMDB_ids_vTMDB.sort((a, b) => (a < b ? -1 : 1));
+				TMDB_ids_vELC.sort((a, b) => (a < b ? -1 : 1));
 
-	// Estandariza nombres
-	estandarizaNombres();
+				// Compara cada elemento
+				var i = TMDB_ids_vTMDB.length;
+				while (i--)
+					if (TMDB_ids_vTMDB[i] !== TMDB_ids_vELC[i]) {
+						sonLosMismos = false;
+						return;
+					}
+			}
 
-	// Descarta los productos que no tienen ninguna palabra clave
-	descartaProdsSinPalabraClave();
+			// Fin
+			return sonLosMismos;
+		},
+		tv: (coleccion) => {
+			// Variables
+			const {cantCaps_vTMDB, TMDB_ids_vELC} = coleccion;
+			const cantCaps_vELC = TMDB_ids_vELC.length;
 
-	// Fin
-	return prodsPorEnt;
+			// Fin
+			return cantCaps_vTMDB == cantCaps_vELC;
+		},
+	},
 };
