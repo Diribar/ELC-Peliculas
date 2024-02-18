@@ -196,6 +196,7 @@ module.exports = {
 						: "-";
 					const anoFin = anosEstreno.length ? anosEstreno.reduce((a, b) => (a > b ? a : b)) : "-";
 					const TMDB_ids_vTMDB = coleccion.parts.map((n) => String(n.id));
+					const cantCaps_vTMDB = coleccion.parts.length;
 
 					// Agrega información
 					resultados.productos[indice] = {
@@ -203,6 +204,7 @@ module.exports = {
 						anoEstreno: anoEstreno != "-" ? parseInt(anoEstreno.slice(0, 4)) : "-",
 						anoFin: anoFin != "-" ? parseInt(anoFin.slice(0, 4)) : "-",
 						TMDB_ids_vTMDB,
+						cantCaps_vTMDB,
 					};
 				}
 

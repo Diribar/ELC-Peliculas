@@ -102,7 +102,7 @@ window.addEventListener("load", async () => {
 			infoPeli.querySelector("#anoEstreno").innerHTML = anos + " - " + prod.entidadNombre;
 
 			// Si es una colección, agrega la cantidad de capítulos
-			if (prod.entidad == "colecciones") infoPeli.querySelector("#capitulos").innerHTML = "Capítulos: " + prod.capitulos;
+			if (prod.entidad == "colecciones") infoPeli.querySelector("#capitulos").innerHTML = "Capítulos: " + prod.cantCaps_vTMDB;
 			else infoPeli.querySelector("#capitulos").remove();
 
 			// Quita la clase 'ocultar'
