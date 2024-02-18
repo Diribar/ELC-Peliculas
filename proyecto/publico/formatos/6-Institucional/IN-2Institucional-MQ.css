@@ -1,5 +1,8 @@
 /* Ancho */
-@media (width <= 1267px) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (width <= 1267px) {
+	#cuerpoFooterImgDer #imgDerecha img {display: none;}
+	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
+}
 
 /* Alto */
 @media (height <= 450px) {
