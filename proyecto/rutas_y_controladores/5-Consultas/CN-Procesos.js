@@ -109,7 +109,7 @@ module.exports = {
 			},
 			otrosFiltros: ({resultados, configCons, campo_id}) => {
 				// Variables
-				const {apMar, rolesIgl, canons, entidad} = configCons;
+				const {apMar, rolesIgl, canons, entidad, cfc} = configCons;
 
 				// Filtros generales
 				if (rolesIgl || canons) resultados = resultados.filter((n) => n.personaje_id > 10);
@@ -139,6 +139,9 @@ module.exports = {
 							: canons == "TD"
 							? resultados.filter((n) => !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
 							: resultados.filter((n) => n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
+
+				// cfc / vpc
+				if (cfc) resultados = resultados.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
 
 				// Filtra por entidad
 				if (campo_id) resultados = resultados.filter((n) => n.entidad == entidad);
@@ -818,7 +821,7 @@ let alAzar = {
 			const seDebeElegirCfcVpc = v.productos.find((n) => n.epocaEstreno_id == suma - epoca_id);
 			if (seDebeElegirCfcVpc) {
 				const seDebeElegirCfc = seDebeElegirCfcVpc.cfc ? false : true;
-				v.resultado = v.resultado.filter((n) => n.cfc == seDebeElegirCfc);
+				v.resultado = v.resultado.filter((n) => (seDebeElegirCfc ? n.cfc : !n.cfc)); // se debe escribir así para que se incluyan los null
 			}
 		}
 

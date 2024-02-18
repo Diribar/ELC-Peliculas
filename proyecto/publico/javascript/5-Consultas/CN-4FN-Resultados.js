@@ -38,6 +38,7 @@ let resultados = {
 		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
+		if (configCons.entidad == "productos") v.productos = v.resultados;
 		if (!v.resultados || !v.resultados.length)
 			DOM.noTenemos.classList.remove("ocultar"); // si no hay resultados, muestra el cartel 'noTenemos'
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
@@ -145,7 +146,9 @@ let resultados = {
 			// Rutina por registro
 			v.resultados.forEach((registro, indice) => {
 				// Acumula los productos
-				v.entidad == "productos" ? v.productos.push(registro) : v.productos.push(...registro.productos);
+				v.entidad == "productos"
+					? v.productos.push(registro) // productos
+					: v.productos.push(...registro.productos); // rclvs
 
 				// Averigua si hay un cambio de agrupamiento
 				const titulo = auxiliares.titulo(registro, indice);

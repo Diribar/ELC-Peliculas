@@ -3,7 +3,9 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
-		grupo: {type: dt.STRING(15)},
+		mayores: {type: dt.BOOLEAN},
+		familia: {type: dt.BOOLEAN},
+		menores: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "prod_publicos",
