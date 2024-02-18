@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 17/feb",
-	"HoraUTC": "0:48",
+	"FechaUTC": "Dom. 18/feb",
+	"HoraUTC": "13:33",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mié. 14/feb",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-feb-24": {"titulo": "Cuaresma"},
 		"16-feb-24": {"titulo": "Venerable Camila Rolón", "entidad": "personajes", "id": 180},
 		"17-feb-24": {"titulo": "Cuaresma"},
 		"18-feb-24": {"titulo": "Cuaresma"},
-		"19-feb-24": {"titulo": "Cuaresma"}
+		"19-feb-24": {"titulo": "Cuaresma"},
+		"20-feb-24": {"titulo": "Santos Pastorcitos de Fátima", "entidad": "personajes", "id": 27}
 	}
 }
