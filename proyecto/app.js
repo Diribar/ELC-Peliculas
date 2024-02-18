@@ -196,9 +196,9 @@ app.set("views", [
 	global.perennes_id = statusRegistrosUs.find((n) => n.codigo == "perennes").id;
 
 	// 4. Públicos
-	global.mayores_ids = publicos.filter((n) => n.grupo == "mayores").map((n) => n.id);
-	global.familia_id = publicos.find((n) => n.grupo == "familia").id;
-	global.menores_ids = publicos.filter((n) => n.grupo == "menores").map((n) => n.id);
+	global.mayores_ids = publicos.filter((n) => n.mayores).map((n) => n.id);
+	global.familia_ids = publicos.find((n) => n.familia).id;
+	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
 
 	// Preferencias por producto
 	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
