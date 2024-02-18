@@ -99,7 +99,6 @@ module.exports = {
 
 		cfc: {
 			titulo: "Relación con la Fe Católica",
-			// campoFiltro: "cfc",
 			opciones: [
 				{id: "1", nombre: "Con relac. c/Fe Católica"},
 				{id: "0", nombre: "Sin relac. c/Fe Católica"},
