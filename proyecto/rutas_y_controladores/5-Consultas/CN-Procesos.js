@@ -804,21 +804,22 @@ let alAzar = {
 	},
 	porEpocaDeEstreno: function ({epocaEstreno, v}) {
 		// Variables
-		const epocaID = epocaEstreno.id;
-		const suma = [1, 2].includes(epocaID) ? 3 : 7; // la suma de los IDs posibles
+		const epoca_id = epocaEstreno.id;
+		const suma = epoca_id < 3 ? 3 : 7; // la suma de los IDs posibles
 
 		// Si ya existe un producto para esa epoca de estreno, termina la función
-		if (v.productos.find((n) => n.epocaEstreno_id == epocaID)) return;
-
-		// Obtiene cfc/vpc
+		if (v.productos.find((n) => n.epocaEstreno_id == epoca_id)) return;
 
 		// Obtiene los productos de esa época de estreno
-		v.resultado = v.resultados.filter((n) => n.epocaEstreno_id == epocaID);
+		v.resultado = v.resultados.filter((n) => n.epocaEstreno_id == epoca_id);
+
+		// Si se debe equilibrar entre 'cfc' y 'vpc', se queda con los resultados que correspondan
 		if (v.resultado.length && v.seDebeEquilibrar) {
-			// Si se debe equilibrar entre 'cfc' y 'vpc', descarta los que correspondan
-			const contraparte = v.productos.find((n) => n.epocaEstreno_id == suma - epocaID);
-			const cfc = contraparte ? (contraparte.cfc ? false : true) : null;
-			if (cfc !== null) v.resultado = v.resultado.filter((n) => n.cfc === cfc);
+			const seDebeElegirCfcVpc = v.productos.find((n) => n.epocaEstreno_id == suma - epoca_id);
+			if (seDebeElegirCfcVpc) {
+				const seDebeElegirCfc = seDebeElegirCfcVpc.cfc ? false : true;
+				v.resultado = v.resultado.filter((n) => n.cfc == seDebeElegirCfc);
+			}
 		}
 
 		// Agrega un botón
