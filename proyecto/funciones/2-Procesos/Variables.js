@@ -80,8 +80,7 @@ module.exports = {
 			default: "MC",
 			opciones: [
 				{id: "todos", nombre: "Todos los públicos"},
-				{id: "MC", nombre: "Mayores o sin clasificar", condic: {publico_id: {[Op.or]: [null, mayores_ids]}}},
-				{id: "MY", nombre: "Mayores", condic: {publico_id: mayores_ids}},
+				{id: "MC", nombre: "Mayores o sin clasificar", condic: {publico_id: [null, ...mayores_ids]}},
 				{id: "FM", nombre: "Familia", condic: {publico_id: familia_ids}},
 				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
 			],
