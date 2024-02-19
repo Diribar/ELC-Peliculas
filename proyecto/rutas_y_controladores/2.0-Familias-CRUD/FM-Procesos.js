@@ -68,13 +68,13 @@ module.exports = {
 				if (entidad == "links") {
 					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
-					if (producto_id != "pelicula_id") edicion.borrarCol_id = original.borrarCol_id;// para ediciones de links
+					if (producto_id != "pelicula_id") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
 				}
 
 				// borrarCol_id
-				if (entidad == "colecciones") edicion.borrarCol_id = original.id;// para ediciones de colección
-				if (entidad == "capitulos") edicion.borrarCol_id = original.coleccion_id;// para ediciones de capítulos
-				if (entidad == "links") edicion.borrarCol_id = original.borrarCol_id;// para ediciones de links
+				if (entidad == "colecciones") edicion.borrarCol_id = original.id; // para ediciones de colección
+				if (entidad == "capitulos") edicion.borrarCol_id = original.coleccion_id; // para ediciones de capítulos
+				if (entidad == "links") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
 
 				// Se agrega el registro
 				await BD_genericas.agregaRegistro(entidadEdic, edicion);
