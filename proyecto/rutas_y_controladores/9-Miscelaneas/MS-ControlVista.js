@@ -29,7 +29,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Mantenimiento", origen: "TM"},
+			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
 			...{prods, rclvs, omnipotente},
 			dataEntry,
 		});
