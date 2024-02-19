@@ -17,6 +17,7 @@ const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const linksEnSemana = require("../../middlewares/filtrosPorRegistro/linksEnSemana");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
@@ -66,7 +67,7 @@ router.get("/:familia/edicion", aptoEdicion, capturaActivar, vista.edic.form);
 router.post("/:familia/edicion", aptoEdicion, motivoOpcional, capturaInactivar, vista.edic.avatar);
 
 // Vistas - Links
-router.get("/links", aptoCRUD, usRolRevLinks, capturaActivar, vista.links);
+router.get("/links", aptoCRUD, linksEnSemana, usRolRevLinks, capturaActivar, vista.links);
 
 // Fin
 module.exports = router;
