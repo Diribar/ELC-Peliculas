@@ -296,18 +296,36 @@ module.exports = {
 
 			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
 			resultados.map((n) => {
+				// Variables
+				const altaAprob = statusInicial.id == creado_id && aprobados_ids.includes(statusFinal.id);
+
+				// Crea el mensaje
 				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
-				mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
-				mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
-				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				if (!altaAprob) {
+					// Mensaje adicional
+					mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
+					mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
+
+					// Mensaje adicional si hay un motivo
+					if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				}
+
+				// Le asigna un color
 				color = n.aprobado ? "green" : "firebrick";
 				mensaje = formatos.li(mensaje, color);
-				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+
+				// Agrega el mensaje
+				n.aprobado // aprobados
+					? altaAprob
+						? (mensajesAltas += mensaje)
+						: (mensajesAprob += mensaje)
+					: (mensajesRech += mensaje); // rechazados
 			});
 
 			// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
-			if (mensajesAprob) mensajesAcum += formatos.h2("Cambios de Status - APROBADOS") + formatos.ol(mensajesAprob);
-			if (mensajesRech) mensajesAcum += formatos.h2("Cambios de Status - RECHAZADOS") + formatos.ol(mensajesRech);
+			if (mensajesAltas) mensajesAcum += formatos.h2("Altas APROBADAS") + formatos.ol(mensajesAltas);
+			if (mensajesAprob) mensajesAcum += formatos.h2("Status - Cambios APROBADOS") + formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesAcum += formatos.h2("Status - Cambios RECHAZADOS") + formatos.ol(mensajesRech);
 			const mensajeGlobal = mensajesAcum;
 
 			// Fin
@@ -370,7 +388,7 @@ module.exports = {
 					? n.valorAprob && n.valorDesc
 						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
 						: n.valorAprob
-						? "<em><b>" + n.valorAprob + "</b></em> fue aceptado"
+						? "<em><b>" + n.valorAprob + "</b></em>"
 						: "<em><b>" + n.valorDesc + "</b></em> fue rechazado"
 					: "se mantuvo <em><b>" +
 					  (n.valorAprob ? n.valorAprob : "(vacío)") +
