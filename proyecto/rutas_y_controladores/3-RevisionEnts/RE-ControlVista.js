@@ -504,15 +504,8 @@ module.exports = {
 		// Genera el link del próximo producto
 		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
 		const linkSigProd = sigProd
-			? "/inactivar-captura/?entidad=" +
-			  entidad +
-			  "&id=" +
-			  id +
-			  "&prodEntidad=" +
-			  sigProd.entidad +
-			  "&prodID=" +
-			  sigProd.id +
-			  "&origen=RL"
+			? "/inactivar-captura/?entidad=".concat(entidad, "&id=", id) +
+			  "&prodEntidad=".concat(sigProd.entidad, "&prodID=", sigProd.id, "&origen=RL")
 			: null;
 
 		// Información para la vista
