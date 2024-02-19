@@ -72,6 +72,7 @@ module.exports = {
 		// Obtiene datos para la vista
 		const status_id = original.statusRegistro_id;
 		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const revisorPERL = usuario && usuario.statusRegistro.revisorPERL;
 		const creadoPor_id = prodComb.creadoPor_id;
 		const ayudasTitulo = links.PL.length
 			? ["Eligiendo " + (links.PL.length == 1 ? "el link" : "uno de los links") + ", podés ver la película"]
@@ -79,7 +80,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, userPerenne},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, userPerenne, revisorPERL},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},

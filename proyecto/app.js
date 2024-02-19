@@ -165,17 +165,19 @@ app.set("views", [
 	Object.keys(datos).forEach((campo, i) => (global[campo] = valores[i]));
 
 	// Variables que dependen de las lecturas de BD
-	// 1. Status de productos
+	// 1. Status de productos - Simples
 	global.creado_id = statusRegistros.find((n) => n.codigo == "creado").id;
 	global.creadoAprob_id = statusRegistros.find((n) => n.codigo == "creadoAprob").id;
 	global.aprobado_id = statusRegistros.find((n) => n.codigo == "aprobado").id;
 	global.inactivar_id = statusRegistros.find((n) => n.codigo == "inactivar").id;
 	global.recuperar_id = statusRegistros.find((n) => n.codigo == "recuperar").id;
 	global.inactivo_id = statusRegistros.find((n) => n.codigo == "inactivo").id;
-	global.creados_ids = statusRegistros.filter((n) => n.creados).map((n) => n.id);
-	global.aprobados_ids = statusRegistros.filter((n) => n.aprobados).map((n) => n.id);
-	global.estables_ids = statusRegistros.filter((n) => n.estables).map((n) => n.id);
-	global.activos_ids = [...creados_ids, aprobado_id];
+	// 1. Status de productos - Combinados
+	global.creados_ids = [creado_id, creadoAprob_id];
+	global.aprobados_ids = [creadoAprob_id, aprobado_id];
+	global.estables_ids = [aprobado_id, inactivo_id];
+	global.provisorios_ids = [inactivar_id, recuperar_id];
+	global.activos_ids = [creado_id, creadoAprob_id, aprobado_id];
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.codigo == "anime").id;
