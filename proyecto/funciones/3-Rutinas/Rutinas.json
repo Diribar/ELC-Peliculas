@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 18/feb",
-	"HoraUTC": "13:33",
+	"FechaUTC": "Lun. 19/feb",
+	"HoraUTC": "1:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Mié. 14/feb",
-	"HoraSemUTC": "13:08",
-	"semanaUTC": 7,
+	"FechaSemUTC": "Lun. 19/feb",
+	"HoraSemUTC": "1:44",
+	"semanaUTC": 8,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-feb-24": {"titulo": "Venerable Camila Rolón", "entidad": "personajes", "id": 180},
 		"17-feb-24": {"titulo": "Cuaresma"},
 		"18-feb-24": {"titulo": "Cuaresma"},
 		"19-feb-24": {"titulo": "Cuaresma"},
-		"20-feb-24": {"titulo": "Santos Pastorcitos de Fátima", "entidad": "personajes", "id": 27}
+		"20-feb-24": {"titulo": "Santos Pastorcitos de Fátima", "entidad": "personajes", "id": 27},
+		"21-feb-24": {"titulo": "Eric Liddell", "entidad": "personajes", "id": 194}
 	}
 }
