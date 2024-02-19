@@ -78,7 +78,6 @@ module.exports = {
 			const {url, IN} = req.query;
 			const ahora = comp.fechaHora.ahora();
 			let semana = 0;
-			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
 
 			// PROBLEMAS
 			if (!url) return res.json("Falta el 'url' del link"); // Averigua si existe el dato del 'url'
