@@ -501,8 +501,19 @@ module.exports = {
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}
 
-		// Averigua cuál es el próximo producto
+		// Genera el link del próximo producto
 		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({entidad, id, revID});
+		const linkSigProd = sigProd
+			? "/inactivar-captura/?entidad=" +
+			  entidad +
+			  "&id=" +
+			  id +
+			  "&prodEntidad=" +
+			  sigProd.entidad +
+			  "&prodID=" +
+			  sigProd.id +
+			  "&origen=RL"
+			: null;
 
 		// Información para la vista
 		const avatar = producto.avatar
@@ -520,7 +531,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers, cartelGenerico: true, sigProd},
+			...{imgDerPers, cartelGenerico: true, linkSigProd},
 		});
 	},
 };

@@ -45,8 +45,8 @@
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (ORIGEN_DIF_DT.includes("TR") ? ORIGEN_DIF_DT.replace("TR","RL") : ORIGEN_DIF_DT) %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
-		<% if (locals.sigProd) { %>
-			<a href="<%= sigProd %>">
+		<% if (locals.linkSigProd) { %>
+			<a href="<%= linkSigProd %>">
 				<i class="fa-solid fa-circle-right" tabindex="-1" title="Para ver la siguiente"></i>
 			</a>
 		<% } %>

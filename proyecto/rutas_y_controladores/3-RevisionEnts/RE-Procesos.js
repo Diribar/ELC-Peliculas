@@ -910,8 +910,8 @@ let FN_links = {
 		// Devuelve un producto o link
 		if (productos.length) {
 			if (entidad && id) {
-				const link = this.prodDistintoAlActual({productos, entidad, id});
-				if (link) return link;
+				const sigProd = this.prodDistintoAlActual({productos, entidad, id});
+				if (sigProd) return sigProd;
 			} else return {entidad: productos[0].entidad, id: productos[0].id};
 		}
 
@@ -959,24 +959,13 @@ let FN_links = {
 		return productos;
 	},
 	prodDistintoAlActual: ({productos, entidad, id}) => {
-		// Elije un producto distinto al vigente
-		const sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
+		// Elije un producto distinto al actual
+		let sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
+		if (sigProd) sigProd = {entidad: sigProd.entidad, id: sigProd.id};
 
-		// Genera el link
-		const link = sigProd
-			? "/inactivar-captura/?entidad=" +
-			  entidad +
-			  "&id=" +
-			  id +
-			  "&prodEntidad=" +
-			  sigProd.entidad +
-			  "&prodID=" +
-			  sigProd.id +
-			  "&origen=RL"
-			: null;
 
 		// Fin
-		return link;
+		return sigProd
 	},
 	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado, semana}) => {
 		const anoActual = new Date().getFullYear();
