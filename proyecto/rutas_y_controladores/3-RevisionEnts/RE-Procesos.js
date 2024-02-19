@@ -903,7 +903,9 @@ let FN_links = {
 		}
 
 		// Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
+		const recientes = creadoAprobs
+			.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id)
+			.filter((n) => (capsParaProc ? true : !n.capitulo_id));
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
