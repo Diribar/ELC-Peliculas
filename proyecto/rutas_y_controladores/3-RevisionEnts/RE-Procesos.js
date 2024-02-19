@@ -946,9 +946,6 @@ let FN_links = {
 			productos.push({...link[asociacion], entidad, fechaRef});
 		}
 
-		// Ordena los productos por su fecha, ascendente
-		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-
 		// Fin
 		return productos;
 	},
