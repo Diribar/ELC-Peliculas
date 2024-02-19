@@ -865,12 +865,10 @@ let FN_links = {
 		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Altas
-		if (pelisColesParaProc + capsParaProc) {
-			const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
-			if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
-			if (respuesta) return respuesta;
-		}
+		// Sin restricción - Altas
+		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
+		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
+		if (respuesta) return respuesta;
 
 		// Con restricción - Capítulos
 		if (capsParaProc) {
@@ -903,9 +901,7 @@ let FN_links = {
 		}
 
 		// Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs
-			.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id)
-			.filter((n) => (capsParaProc ? true : !n.capitulo_id));
+		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id); // si es trailer, es normal que tenga larga vida
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
