@@ -476,6 +476,11 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "TR";
 		let sigProd;
 
+		// Valida si es el producto correcto
+		if (origen == "TR") sigProd = await procesos.links.obtieneSigProd({revID});
+		if (entidad != sigProd.entidad || id != sigProd.id)
+			res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TR");
+
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
