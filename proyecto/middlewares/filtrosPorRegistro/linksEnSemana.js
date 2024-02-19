@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
 	if (!hayRegistros) {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(req.query.entidad);
 		const id = req.query.id;
-		console.log(15,{campo_id});
 		// hayRegistros = await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id});
 	}
 
