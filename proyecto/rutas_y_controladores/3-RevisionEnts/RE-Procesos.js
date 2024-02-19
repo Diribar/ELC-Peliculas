@@ -149,16 +149,7 @@ module.exports = {
 			// Fin
 			return {RP: repetidos};
 		},
-		obtieneSigProd_Links: async function (revID) {
-			// Variables
-			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
-
-			// Obtiene el producto con el próximo link a procesar
-			const sigProd = await FN_links.obtieneSigProd({revID});
-
-			// Fin
-			return sigProd;
-		},
+		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
 		obtieneRCLVs: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
@@ -850,8 +841,7 @@ let FN_links = {
 		let respuesta;
 
 		// Obtiene los links a revisar
-		const links = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
-		const {originales, ediciones} = links;
+		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs
