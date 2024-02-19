@@ -559,6 +559,7 @@ module.exports = {
 			// Variables
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const borrar_id = entidad == "colecciones" ? "borrarCol_id" : campo_id;
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -575,14 +576,14 @@ module.exports = {
 				if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 			// Elimina las ediciones
-			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[borrar_id]: id});
 			if (familias != "productos") return true;
 
-			// Elimina los links
-			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
-			await BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id});
+			// Productos - Elimina los links
+			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[borrar_id]: id});
+			await BD_genericas.eliminaTodosPorCondicion("links", {[borrar_id]: id});
 
-			// Si es una colección, elimina sus capítulos
+			// Colección - elimina sus capítulos
 			if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
 
 			// Fin
