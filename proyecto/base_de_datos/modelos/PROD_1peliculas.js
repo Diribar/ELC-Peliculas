@@ -5,8 +5,9 @@ module.exports = (sequelize, dt) => {
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
-		nombreOriginal: {type: dt.STRING(70)},
+
 		nombreCastellano: {type: dt.STRING(70)},
+		nombreOriginal: {type: dt.STRING(70)},
 		anoEstreno: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 		paises_id: {type: dt.STRING(14)},
