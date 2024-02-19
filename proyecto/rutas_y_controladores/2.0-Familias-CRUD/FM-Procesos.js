@@ -59,18 +59,22 @@ module.exports = {
 
 			// Si no existe el registro, lo agrega
 			if (!edicion.id) {
-				// 1. campo_id, editadoPor_id
+				// campo_id, editadoPor_id
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
-				if (campo_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				edicion.editadoPor_id = userID;
 
-				// 2. producto_id (links)
+				// producto_id
 				if (entidad == "links") {
 					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
-					if (producto_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
+					if (producto_id != "pelicula_id") edicion.borrarCol_id = original.borrarCol_id;// para ediciones de links
 				}
+
+				// borrarCol_id
+				if (entidad == "colecciones") edicion.borrarCol_id = original.id;// para ediciones de colección
+				if (entidad == "capitulos") edicion.borrarCol_id = original.coleccion_id;// para ediciones de capítulos
+				if (entidad == "links") edicion.borrarCol_id = original.borrarCol_id;// para ediciones de links
 
 				// Se agrega el registro
 				await BD_genericas.agregaRegistro(entidadEdic, edicion);
