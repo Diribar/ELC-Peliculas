@@ -11,9 +11,10 @@ module.exports = async (req, res, next) => {
 
 	// Averigua si hay linksEdicion para procesar
 	if (!hayRegistros) {
-		const campo_id = comp.obtieneDesdeCampo_id.entidadProd(req.query.entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(req.query.entidad);
 		const id = req.query.id;
-		hayRegistros = await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id});
+		console.log(15,{campo_id});
+		// hayRegistros = await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id});
 	}
 
 	// Si no hay registros a procesar, redirige al tablero
