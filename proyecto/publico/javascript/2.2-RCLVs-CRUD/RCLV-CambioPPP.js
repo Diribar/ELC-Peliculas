@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 
 	// Variables varias
 	const rutas = {
-		obtieneVariables: "/rclv/api/obtiene-variables",
+		obtieneVariables: "/rclv/api/detalle/obtiene-variables",
 		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario",
 	};
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
