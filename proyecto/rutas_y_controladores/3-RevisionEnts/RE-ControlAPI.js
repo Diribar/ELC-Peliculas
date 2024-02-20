@@ -88,8 +88,8 @@ module.exports = {
 				// Variables
 				const semPrimRev = linksPrimRev / unaSemana;
 
-				// Empieza a fijarse por la semana siguiente a la de Primera Revisión
-				for (semana = linksSemsVidaUtil; semana > semPrimRev; semana--)
+				// Busca la semana a la cual agregarle una fecha de vencimiento - 'semPrimRev': nuevos, '+1': recientes
+				for (semana = linksSemsVidaUtil; semana > semPrimRev + 1; semana--)
 					if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
 
 				// Si no se encontró "capacidad", envía una mensaje de error
