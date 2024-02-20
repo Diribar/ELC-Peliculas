@@ -208,7 +208,7 @@ app.set("views", [
 
 	// Otros - Productos
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
-	global.pppOpcionesSimples = pppOpcsArray.filter((n) => !n.combo);
+	global.pppOpcsSimples = pppOpcsArray.filter((n) => !n.combo);
 	global.hablaHispana = paises.filter((n) => n.idioma_id == "ES");
 	global.hablaNoHispana = paises.filter((n) => n.idioma_id != "ES");
 
