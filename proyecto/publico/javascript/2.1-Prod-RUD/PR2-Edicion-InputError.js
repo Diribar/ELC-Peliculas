@@ -68,10 +68,6 @@ window.addEventListener("load", async () => {
 	};
 	v = {...v, ...(await fetch(rutas.variablesBE).then((n) => n.json()))};
 
-	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
-	let version = await versiones(rutas.versiones);
-	const statusRegistro_id = version.orig.statusRegistro_id;
-
 	// Funciones Data-Entry
 	let FN = {
 		// Grupo "Novedades de Data Entry"
@@ -194,6 +190,20 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		// Otros
+		versiones: async (rutaVersiones) => {
+			// Obtiene las versiones original y de edición
+			let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
+
+			// Procesa la versión de edición guardada
+			let edicG_existe = !!edicG.id;
+			edicG = {...orig, ...edicG};
+
+			// Averigua si el original está pendiente de ser aprobado
+			let origPendAprobar = v.creados_ids.includes(orig.statusRegistro_id);
+
+			// Fin
+			return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
+		},
 		accionesPorCambioDeVersion: async function () {
 			// Funciones
 			this.reemplazaInputs(); // Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
@@ -386,24 +396,12 @@ window.addEventListener("load", async () => {
 		});
 	});
 
-	// Startup
+	// Startup - Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
+	let version = await FN.versiones(rutas.versiones);
+	const statusRegistro_id = version.orig.statusRegistro_id;
+
+	// Startup - Otras
 	FN.obtieneLosValoresEdicN();
 	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
 	FN.actualizaBotones();
 });
-
-// Estas funciones deben estar afuera, para estar disponibles para las variables
-let versiones = async (rutaVersiones) => {
-	// Obtiene las versiones original y de edición
-	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
-
-	// Procesa la versión de edición guardada
-	let edicG_existe = !!edicG.id;
-	edicG = {...orig, ...edicG};
-
-	// Averigua si el original está pendiente de ser aprobado
-	let origPendAprobar = creados_ids.includes(orig.statusRegistro_id);
-
-	// Fin
-	return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
-};
