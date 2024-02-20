@@ -42,7 +42,7 @@ module.exports = {
 			// Variables
 			const datos = {
 				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
-				...{pppOpcsArray, pppOpcionesSimples, pppOpcsObj},
+				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				...{filtrosConDefault, epocasEstreno, unDia},
 			};
