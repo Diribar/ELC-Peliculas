@@ -19,10 +19,8 @@ module.exports = {
 		// Obtiene RCLV con productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let rclv = {...original, ...edicion, id};
-
-		// Productos del RCLV
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
-		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID); // Productos del RCLV
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
