@@ -1,18 +1,24 @@
-<% if (locals.userPerenne && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
+<% if (locals.usuario && locals.usuario.statusRegistro_id == perennes_id && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
 	<div id="flechasCambioStatus" class="flechas">
-		<% if (locals.status_id == creado_id && locals.usuario) { %>
+		<% if (locals.status_id == creado_id) { %>
 			<!-- Solo para status creado y usuario logueado -->
 			<% if (locals.creadoPor_id == usuario.id) { %>
 				<!-- Si fue creado por el usuario -> Eliminarlo definitivamente -->
 				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
-			<% } else if (locals.creadoPor_id == usAutom_id) { %>
+			<% } else if (locals.creadoPor_id == usAutom_id && locals.revisorPERL) { %>
 				<!-- Capítulos creados automáticamente con 'colecAprob' -> Revisarlo -->
 				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
 				</a>
 			<% } %>
+		<% } %>
+		<% if (provisorios_ids.includes(locals.status_id) && locals.revisorPERL) { %>
+			<!-- Inactivar -->
+			<a href="<%= '/revision/' + familia + '/inactivar-o-recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
 		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->

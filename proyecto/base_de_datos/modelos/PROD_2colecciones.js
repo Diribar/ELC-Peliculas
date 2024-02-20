@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		FA_id: {type: dt.STRING(10)},
 		TMDB_entidad: {type: dt.STRING(10)},
 		fuente: {type: dt.STRING(5)},
+
 		nombreCastellano: {type: dt.STRING(70)},
 		nombreOriginal: {type: dt.STRING(70)},
 		paises_id: {type: dt.STRING(14)},
@@ -103,6 +104,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturadoPor", foreignKey: "capturadoPor_id"});
 
+		// Dependientes
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.prodsEdicion, {as: "ediciones", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links, {as: "links", foreignKey: "coleccion_id"});

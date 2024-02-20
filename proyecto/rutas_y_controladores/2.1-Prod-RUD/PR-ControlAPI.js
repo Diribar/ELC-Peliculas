@@ -98,6 +98,7 @@ module.exports = {
 			const datos = {
 				...{anime_id, documental_id, actuada_id},
 				...{inputVacio, selectVacio, rclvSinElegir},
+				creados_ids,
 			};
 			if (entidad == "capitulos")
 				datos.coleccion_id = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
@@ -121,8 +122,9 @@ module.exports = {
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
-			// No se puede eliminar la edición de un producto con status "creados" y fue creado por el usuario
-			const condicion = !prodOrig.statusRegistro.creados || prodOrig.creadoPor_id != userID;
+
+			// Sólo se puede eliminar la edición si el producto no tiene status "creados_ids" o fue creado por otro usuario
+			const condicion = !creados_ids.includes(prodOrig.statusRegistro_id) || prodOrig.creadoPor_id != userID;
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", prodEdic.avatar);

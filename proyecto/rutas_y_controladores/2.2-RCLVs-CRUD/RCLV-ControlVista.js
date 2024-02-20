@@ -42,17 +42,16 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
-		const userPerenne = usuario && usuario.statusRegistro_id == perennes_id;
+		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
 		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre; // título de la vista
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{tema, codigo, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, canonNombre, RCLVnombre},
-			userPerenne,
 		});
 	},
 	altaEdic: {

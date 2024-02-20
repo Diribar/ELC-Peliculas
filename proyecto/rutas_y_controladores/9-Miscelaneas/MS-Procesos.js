@@ -12,7 +12,7 @@ module.exports = {
 
 		// Productos Aprobados
 		condiciones = {...condiciones, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-		let aprobados = obtienePorEntidad(condiciones);
+		let prodsAprob = obtienePorEntidad(condiciones);
 
 		// Productos Sin Edición (en status creadoAprob)
 		let SE_pel = obtieneSinEdicion("peliculas");
@@ -24,16 +24,16 @@ module.exports = {
 		let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, opcion_id: yaLaVi.id});
 
 		// Espera las lecturas
-		[inactivos, aprobados, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
+		[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
 			inactivos,
-			aprobados,
+			prodsAprob,
 			SE_pel,
 			SE_col,
 			SE_cap,
 			cal,
 			ppp,
 		]);
-		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
+		const pelisColes = prodsAprob.filter((m) => m.entidad != "capitulos");
 		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
 
 		// Resultados
@@ -41,21 +41,21 @@ module.exports = {
 			// Productos
 			SE: [...SE_pel, ...SE_col, ...SE_cap], // sin edición
 			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // películas y colecciones inactivas, y capítulos con su colección aprobada
-			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // Aprobados - Sin calificar
-			ST: pelisColes.filter((n) => n.tema_id == 1), // Aprobados - Sin tema
+			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // prodsAprob - Sin calificar
+			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
 
 			// Links - sin links
 			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
-			SL_caps: aprobados.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
-			SL_HD: aprobados.filter((n) => n.linksGral && !n.HD_Gral), // con Links pero sin HD
+			SL_caps: prodsAprob.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
+			SL_HD: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral), // con Links pero sin HD
 
 			// Links Basicos
-			SLG_basico: aprobados.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
-			SLC_basico: aprobados.filter((n) => n.linksGral && !n.HD_Gral && !n.linksCast && !n.linksSubt), // sin links en castellano
+			SLG_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
+			SLC_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksCast && !n.linksSubt), // sin links en castellano
 
 			// Links HD
-			SLG_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
-			SLC_HD: aprobados.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
+			SLG_HD: prodsAprob.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
+			SLC_HD: prodsAprob.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
 		};
 
 		// Fin
@@ -73,19 +73,19 @@ module.exports = {
 
 		// Aprobados
 		condiciones = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-		let aprobados = obtienePorEntidad({...condiciones, include});
+		let rclvsAprob = obtienePorEntidad({...condiciones, include});
 
 		// Await
-		[IN, aprobados] = await Promise.all([IN, aprobados]);
+		[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
 
 		// Sin Avatar
-		const SA = aprobados.filter((m) => !m.avatar && m.id > 10);
+		const SA = rclvsAprob.filter((m) => !m.avatar && m.id > 10);
 
 		// Con solapamiento de fechas
-		const SF = aprobados.filter((m) => m.solapam_fechas);
+		const SF = rclvsAprob.filter((m) => m.solapam_fechas);
 
 		// Sin producto
-		const SP = aprobados.filter(
+		const SP = rclvsAprob.filter(
 			(m) => !m.peliculas.length && !m.colecciones.length && !m.capitulos.length && !m.prodsEdiciones.length
 		);
 

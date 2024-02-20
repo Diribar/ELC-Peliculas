@@ -842,17 +842,17 @@ module.exports = {
 			statusRegistro_id: activos_ids,
 			prodAprob,
 		});
-		const revisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
-		const aprobados = links.filter((n) => n.statusRegistro_id == aprobado_id);
+		const linksRevisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
+		const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
-		// Abre los 'revisar' entre 'antiguos' y 'recientes'
-		const prods = revisar.length;
-		const pelisColes = revisar.filter((n) => !n.capitulo_id).length;
+		// Abre los 'linksRevisar' entre 'antiguos' y 'recientes'
+		const prods = linksRevisar.length;
+		const pelisColes = linksRevisar.filter((n) => !n.capitulo_id).length;
 		const capitulos = prods - pelisColes;
 		cantLinksVencPorSem["0"] = {pelisColes, capitulos, prods};
 
-		// Obtiene la cantidad por semana de los 'aprobados'
-		for (let link of aprobados) {
+		// Obtiene la cantidad por semana de los 'linksAprob'
+		for (let link of linksAprob) {
 			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual

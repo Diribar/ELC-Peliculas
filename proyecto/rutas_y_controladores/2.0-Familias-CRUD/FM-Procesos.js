@@ -59,18 +59,22 @@ module.exports = {
 
 			// Si no existe el registro, lo agrega
 			if (!edicion.id) {
-				// 1. campo_id, editadoPor_id
+				// campo_id, editadoPor_id
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
-				if (campo_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
 				edicion.editadoPor_id = userID;
 
-				// 2. producto_id (links)
+				// producto_id
 				if (entidad == "links") {
 					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
-					if (producto_id == "capitulo_id") edicion.coleccion_id = original.coleccion_id;
+					if (producto_id != "pelicula_id") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
 				}
+
+				// borrarCol_id
+				if (entidad == "colecciones") edicion.borrarCol_id = original.id; // para ediciones de colección
+				if (entidad == "capitulos") edicion.borrarCol_id = original.coleccion_id; // para ediciones de capítulos
+				if (entidad == "links") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
 
 				// Se agrega el registro
 				await BD_genericas.agregaRegistro(entidadEdic, edicion);
@@ -557,12 +561,11 @@ module.exports = {
 	eliminar: {
 		eliminaDependientes: async (entidad, id, original) => {
 			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[campo_id]: id};
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
+			const condicion = entidad == "colecciones" ? {borrarCol_id: id} : {[campo_id]: id};
 
 			// Elimina el archivo avatar del original
 			if (original.avatar && !original.avatar.includes("/")) {
@@ -570,20 +573,26 @@ module.exports = {
 				comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", original.avatar);
 			}
 
-			// Elimina el archivo avatar de las ediciones
-			for (let edicion of ediciones)
-				if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
+			// Acciones para las ediciones
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
+			if (ediciones.length) {
+				// Elimina el archivo avatar de las ediciones
+				for (let edicion of ediciones)
+					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
-			// Elimina las ediciones
-			if (ediciones.length) await BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
-			if (familias != "productos") return true;
+				// Elimina las ediciones
+				await BD_genericas.eliminaTodosPorCondicion(entidadEdic, condicion);
+			}
 
-			// Elimina los links
-			await BD_genericas.eliminaTodosPorCondicion("linksEdicion", {[campo_id]: id});
-			await BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id});
+			// Productos
+			if (familias == "productos") {
+				// Elimina los links
+				await BD_genericas.eliminaTodosPorCondicion("linksEdicion", condicion);
+				await BD_genericas.eliminaTodosPorCondicion("links", condicion);
 
-			// Si es una colección, elimina sus capítulos
-			if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
+				// Colección - elimina sus capítulos
+				if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
+			}
 
 			// Fin
 			return true;
