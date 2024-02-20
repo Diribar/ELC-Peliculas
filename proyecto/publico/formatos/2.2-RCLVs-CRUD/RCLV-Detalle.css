@@ -12,6 +12,7 @@
 
 /* Productos */
 #listado #prodsNuevos {padding: 0 15px;}
+#prodsNuevos #infoPeli i {font-size: 1.25rem;}
 
 /* Flechas */
 #contenido #botones {margin: 20px;}

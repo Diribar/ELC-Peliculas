@@ -29,28 +29,32 @@ module.exports = {
 		},
 		prodsDelRCLV: async function (RCLV, userID) {
 			// Variables
+			const pppRegs = await BD_genericas.obtieneTodosPorCondicionConInclude(
+				"pppRegistros",
+				{usuario_id: userID},
+				"detalle"
+			);
 			for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 			// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
-			if (userID) {
-				// Obtiene las ediciones
-				let ediciones = RCLV.prodsEdiciones ? RCLV.prodsEdiciones : [];
-
+			if (userID && RCLV.prodsEdiciones) {
 				// Obtiene las ediciones propias
-				let edicionesPropias = ediciones ? ediciones.filter((n) => n.editadoPor_id == userID) : [];
+				const edicionesPropias = RCLV.prodsEdiciones.filter((n) => n.editadoPor_id == userID);
 
-				// Acciones si hay ediciones propias
+				// Obtiene los productos de las ediciones propias
 				if (edicionesPropias.length)
-					// Obtiene los productos de esas ediciones
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
 						let entProd = comp.obtieneDesdeCampo_id.entidadProd(edicion);
 						let campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
 						let entID = edicion[campo_id];
+
 						// Obtiene los registros del producto original y su edición por el usuario
 						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
+
 						// Actualiza la variable del registro original
 						let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
+
 						// Fin
 						RCLV[entProd].push(producto);
 					}
@@ -60,15 +64,19 @@ module.exports = {
 			let prodsDelRCLV = [];
 			for (let entidad of variables.entidades.prods) {
 				// Completa la información de cada producto dentro del tipo de producto
-				const aux = RCLV[entidad].map((registro) => {
+				const prodsPorEnt = RCLV[entidad].map((registro) => {
 					// Variables
 					const avatar = procsCRUD.obtieneAvatar(registro).edic;
 					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+					const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
+					const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
 
 					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, entidadNombre};
+					return {...registro, entidad, avatar, entidadNombre, ppp};
 				});
-				prodsDelRCLV.push(...aux);
+
+				// Consolida la información
+				prodsDelRCLV.push(...prodsPorEnt);
 			}
 
 			// Separa entre capitulos y resto
