@@ -6,6 +6,7 @@ header .menuMostrar.menuFondo {padding: 4px 0; border-radius: 10px; background: 
 /* Opciones */
 header .menuMostrar .menuOpcion {display: flex; flex-direction: row; align-items: center;}
 header .menuMostrar .menuOpcion {padding: 4px 16px;}
+header .menuMostrar.menuFondo .menuOpcion:hover {background: var(--gris-intermedio);}
 
 /* Íconos que acompañan al menú */
 header .menuMostrar .menuOpcion .icono {width: 18px; margin-right: 10px; font-weight: bold;}
