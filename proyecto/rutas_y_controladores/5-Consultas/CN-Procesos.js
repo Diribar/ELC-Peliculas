@@ -335,7 +335,7 @@ module.exports = {
 				if (
 					pppOpcion && // se eligió una opción
 					pppOpcion != "todos" && // no se eligió la opción "Todas las preferencias"
-					!pppOpcion.includes(String(pppOpcs.sinPref.id)) && // la opción elegida no incluye a 'sinPref'
+					!pppOpcion.includes(String(pppOpcsObj.sinPref.id)) && // la opción elegida no incluye a 'sinPref'
 					!pppRegistros.length // no hay registros 'ppp'
 				)
 					return [];
@@ -350,16 +350,16 @@ module.exports = {
 						// Elimina los registros que correspondan
 						if (
 							(pppRegistro && !pppOpcion.includes(String(pppRegistro.opcion_id))) || // tiene alguna preferencia que no es la que se había elegido
-							(!pppRegistro && !pppOpcion.includes(String(pppOpcs.sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
+							(!pppRegistro && !pppOpcion.includes(String(pppOpcsObj.sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
 						)
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la 'ppp' del usuario
 						else {
 							// Variable
 							const pppOpcionElegida =
-								pppOpcion == pppOpcs.sinPref.id || !pppRegistro
-									? pppOpcs.sinPref // si se eligió 'sin preferencia' o no hay un registro
-									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
+								pppOpcion == pppOpcsObj.sinPref.id || !pppRegistro
+									? pppOpcsObj.sinPref // si se eligió 'sin preferencia' o no hay un registro
+									: pppOpcsArray.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
 							prods[i].ppp.icono = pppOpcionElegida.icono;
@@ -369,13 +369,13 @@ module.exports = {
 							if (opcion.codigo == "misPrefs") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].misPrefs = pppRegistro.creadoEn;
-								prods[i].yaLaVi = pppOpcionElegida.codigo == pppOpcs.yaLaVi.codigo;
-								prods[i].laQuieroVer = pppOpcionElegida.codigo == pppOpcs.laQuieroVer.codigo;
+								prods[i].yaLaVi = pppOpcionElegida.codigo == pppOpcsObj.yaLaVi.codigo;
+								prods[i].laQuieroVer = pppOpcionElegida.codigo == pppOpcsObj.laQuieroVer.codigo;
 							}
 						}
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
-					else prods[i].ppp = pppRegistro ? pppRegistro.detalle : pppOpcs.sinPref;
+					else prods[i].ppp = pppRegistro ? pppRegistro.detalle : pppOpcsObj.sinPref;
 				}
 
 				// Fin

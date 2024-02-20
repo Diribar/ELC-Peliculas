@@ -21,7 +21,7 @@ module.exports = {
 
 		// Calificaciones de productos y Preferencia por productos
 		let cal = BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
-		let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, opcion_id: pppOpcs.yaLaVi.id});
+		let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, opcion_id: pppOpcsObj.yaLaVi.id});
 
 		// Espera las lecturas
 		[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([

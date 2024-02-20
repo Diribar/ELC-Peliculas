@@ -107,7 +107,7 @@ let actualizaConfigCons = {
 		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.cfc();
 
 		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
-		if (v.opcionBD.codigo == "misPrefs") configCons.pppOpciones = v.pppOpcs.misPreferencias.combo.split(",");
+		if (v.opcionBD.codigo == "misPrefs") configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
 		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
@@ -116,7 +116,7 @@ let actualizaConfigCons = {
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
 			if (configCons.pppOpciones != "todos") {
 				const id = configCons.pppOpciones;
-				const pppOpcion = v.pppOpciones.find((n) => n.id == id);
+				const pppOpcion = v.pppOpcsArray.find((n) => n.id == id);
 				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
 			}
 		}

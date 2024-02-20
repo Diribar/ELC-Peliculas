@@ -154,7 +154,7 @@ module.exports = {
 			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
 
 			// Si la opción no es Sin preferencia personal, agrega el registro
-			if (opcion_id != pppOpcs.sinPref.id) {
+			if (opcion_id != pppOpcsObj.sinPref.id) {
 				const datos = {entidad, entidad_id, opcion_id, usuario_id};
 				BD_genericas.agregaRegistro("pppRegistros", datos);
 			}

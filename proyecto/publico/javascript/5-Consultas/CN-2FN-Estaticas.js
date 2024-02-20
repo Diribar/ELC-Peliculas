@@ -272,12 +272,12 @@ let cambiosEnBD = {
 	ppp: async (elemento) => {
 		// Opción actual
 		const indice = v.ppps.findIndex((n) => n == elemento);
-		const opcionActual = v.pppOpciones.find((n) => v.ppps[indice].className.endsWith(n.icono));
+		const opcionActual = v.pppOpcsArray.find((n) => v.ppps[indice].className.endsWith(n.icono));
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
 		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpcionesSimples.length;
-		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
+		const opcionPropuesta = v.pppOpcsArray.find((n) => n.id == idPropuesta);
 
 		// Actualiza el ícono y el título
 		DOM.ppps[indice].classList.remove(...opcionActual.icono.split(" "));

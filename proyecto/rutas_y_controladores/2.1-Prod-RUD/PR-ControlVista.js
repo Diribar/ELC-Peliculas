@@ -303,9 +303,9 @@ module.exports = {
 
 			// Ayuda para el título
 			const ayudasTitulo = [];
-			if ([pppOpcs.sinPref.id, pppOpcs.laQuieroVer.id].includes(interesDelUsuario.id))
+			if ([pppOpcsObj.sinPref.id, pppOpcsObj.laQuieroVer.id].includes(interesDelUsuario.id))
 				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
-			if (interesDelUsuario.id == pppOpcs.sinPref.id) ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
+			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
@@ -354,7 +354,7 @@ module.exports = {
 			// Actualiza la ppp
 			condics = {usuario_id: userID, entidad, entidad_id};
 			const interesDelUsuario = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
-			const novedades = {usuario_id: userID, entidad, entidad_id, opcion_id: pppOpcs.yaLaVi.id};
+			const novedades = {usuario_id: userID, entidad, entidad_id, opcion_id: pppOpcsObj.yaLaVi.id};
 			interesDelUsuario
 				? await BD_genericas.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
 				: await BD_genericas.agregaRegistro("pppRegistros", novedades);
