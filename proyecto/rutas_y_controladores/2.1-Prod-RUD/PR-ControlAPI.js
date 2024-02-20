@@ -142,7 +142,7 @@ module.exports = {
 	},
 
 	prefsDeCampo: {
-		obtieneOpciones: (req, res) => res.json(pppOpcionesSimples),
+		obtieneOpciones: (req, res) => res.json(pppOpcsSimples),
 		guardaLaPreferencia: async (req, res) => {
 			// Variables
 			const {entidad, entidad_id, opcion_id} = req.query;
@@ -153,9 +153,9 @@ module.exports = {
 			const registro = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
 			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
 
-			// Si la opción no es Sin preferencia personal, agrega el registro
+			// Si la opción no es sinPref, agrega el registro
 			if (opcion_id != pppOpcsObj.sinPref.id) {
-				const datos = {entidad, entidad_id, opcion_id, usuario_id};
+				const datos = {entidad, entidad_id, usuario_id, opcion_id};
 				BD_genericas.agregaRegistro("pppRegistros", datos);
 			}
 
