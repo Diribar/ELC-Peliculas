@@ -335,7 +335,7 @@ module.exports = {
 				if (
 					pppOpcion && // se eligió una opción
 					pppOpcion != "todos" && // no se eligió la opción "Todas las preferencias"
-					!pppOpcion.includes(String(sinPref.id)) && // la opción elegida no incluye a 'sinPref'
+					!pppOpcion.includes(String(pppOpcs.sinPref.id)) && // la opción elegida no incluye a 'sinPref'
 					!pppRegistros.length // no hay registros 'ppp'
 				)
 					return [];
@@ -350,35 +350,32 @@ module.exports = {
 						// Elimina los registros que correspondan
 						if (
 							(pppRegistro && !pppOpcion.includes(String(pppRegistro.opcion_id))) || // tiene alguna preferencia que no es la que se había elegido
-							(!pppRegistro && !pppOpcion.includes(String(sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
+							(!pppRegistro && !pppOpcion.includes(String(pppOpcs.sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
 						)
 							prods.splice(i, 1);
 						// Si no se eliminó, le agrega a los productos la 'ppp' del usuario
 						else {
 							// Variable
 							const pppOpcionElegida =
-								pppOpcion == sinPref.id || !pppRegistro
-									? sinPref // si se eligió 'sin preferencia' o no hay un registro
+								pppOpcion == pppOpcs.sinPref.id || !pppRegistro
+									? pppOpcs.sinPref // si se eligió 'sin preferencia' o no hay un registro
 									: pppOpciones.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
-							prods[i].pppIcono = pppOpcionElegida.icono;
-							prods[i].pppNombre = pppOpcionElegida.nombre;
+							prods[i].ppp.icono = pppOpcionElegida.icono;
+							prods[i].ppp.nombre = pppOpcionElegida.nombre;
 
 							// Le agrega datos adicionales si se eligió la opción 'misPrefs'
 							if (opcion.codigo == "misPrefs") {
 								prods[i].ppp_id = pppOpcionElegida.id;
 								prods[i].misPrefs = pppRegistro.creadoEn;
-								prods[i].yaLaVi = pppOpcionElegida.codigo == "yaLaVi";
-								prods[i].laQuieroVer = pppOpcionElegida.codigo == "laQuieroVer";
+								prods[i].yaLaVi = pppOpcionElegida.codigo == pppOpcs.yaLaVi.codigo;
+								prods[i].laQuieroVer = pppOpcionElegida.codigo == pppOpcs.laQuieroVer.codigo;
 							}
 						}
 					}
 					// Si no se eligió un tipo de preferencia, le agrega a los productos la ppp del usuario
-					else {
-						prods[i].pppIcono = pppRegistro ? pppRegistro.detalle.icono : sinPref.icono;
-						prods[i].pppNombre = pppRegistro ? pppRegistro.detalle.nombre : sinPref.nombre;
-					}
+					else prods[i].ppp = pppRegistro ? pppRegistro.detalle : pppOpcs.sinPref;
 				}
 
 				// Fin
@@ -539,8 +536,8 @@ module.exports = {
 						// Deja solamente los campos necesarios
 						rclvs[i].productos = rclvs[i].productos.map((n) => {
 							// Obtiene campos simples
-							let {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno} = n;
-							let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre, direccion, anoEstreno};
+							let {entidad, id, nombreCastellano, ppp, direccion, anoEstreno} = n;
+							let datosProd = {entidad, id, nombreCastellano, ppp, direccion, anoEstreno};
 
 							// Achica el campo dirección
 							if (direccion && direccion.indexOf(",") > 0)
@@ -668,11 +665,11 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, pppIcono, pppNombre, avatar, cfc} = prod;
+					const {entidad, id, nombreCastellano, ppp, avatar, cfc} = prod;
 					let {direccion, anoEstreno} = prod;
 					if (!direccion) direccion = "desconocido";
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
-					let datosProd = {entidad, id, nombreCastellano, pppIcono, pppNombre};
+					let datosProd = {entidad, id, nombreCastellano, ppp};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
 					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
 					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
