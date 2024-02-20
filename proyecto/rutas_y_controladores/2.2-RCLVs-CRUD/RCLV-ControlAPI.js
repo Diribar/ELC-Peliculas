@@ -27,4 +27,5 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
+	obtieneVariables: (req, res) => res.json({pppOpcsArray, pppOpcsSimples}),
 };
