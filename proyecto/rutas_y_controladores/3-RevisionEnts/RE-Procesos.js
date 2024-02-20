@@ -963,9 +963,8 @@ let FN_links = {
 		let sigProd = productos.find((n) => n.entidad != entidad || n.id != id);
 		if (sigProd) sigProd = {entidad: sigProd.entidad, id: sigProd.id};
 
-
 		// Fin
-		return sigProd
+		return sigProd;
 	},
 	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado, semana}) => {
 		const anoActual = new Date().getFullYear();
@@ -975,9 +974,10 @@ let FN_links = {
 		const fechaVencim =
 			IN != "SI"
 				? null
-				: statusCreado || // si está recién creado
-				  ((!anoEstreno || anoEstreno > anoReciente) && noTrailer) // si se desconoce su año de estreno o es reciente, y no es un trailer
+				: statusCreado // si está recién creado
 				? new Date(ahoraTiempo + linksPrimRev)
+				: (!anoEstreno || anoEstreno > anoReciente) && noTrailer // si se desconoce su año de estreno o es reciente, y no es un trailer
+				? new Date(ahoraTiempo + linksPrimRev + unaSemana)
 				: link.capitulo_id && noTrailer // si es un capitulo y no es un trailer
 				? new Date(ahoraTiempo + linksVidaUtil)
 				: new Date(ahoraTiempo + semana * unaSemana); // en la semana disponible
