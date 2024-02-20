@@ -203,8 +203,8 @@ app.set("views", [
 	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
 
 	// Preferencias por producto
-	global.pppOpcs={}
-	for (let pppOcion of pppOpciones) global.pppOpcs[pppOcion.codigo]= pppOpciones.find((n) => n.codigo == pppOcion.codigo);
+	global.pppOpcs = {};
+	for (let pppOcion of pppOpciones) global.pppOpcs[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
 
 	// Otros - Productos
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
