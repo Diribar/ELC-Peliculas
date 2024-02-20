@@ -147,7 +147,7 @@ module.exports = {
 			const revID = req.session.usuario.id;
 			let sigProd = true;
 
-			// Averigua si todos los links del producto están en status estables
+			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
 			const links = await BD_genericas.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
 			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
