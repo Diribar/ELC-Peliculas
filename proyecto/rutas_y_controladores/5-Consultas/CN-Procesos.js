@@ -362,13 +362,12 @@ module.exports = {
 									: pppOpcsArray.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
-							prods[i].ppp.icono = pppOpcionElegida.icono;
-							prods[i].ppp.nombre = pppOpcionElegida.nombre;
+							prods[i].ppp = pppOpcionElegida;
 
 							// Le agrega datos adicionales si se eligió la opción 'misPrefs'
 							if (opcion.codigo == "misPrefs") {
 								prods[i].ppp_id = pppOpcionElegida.id;
-								prods[i].misPrefs = pppRegistro.creadoEn;
+								//prods[i].misPrefs = pppRegistro.creadoEn;
 								prods[i].yaLaVi = pppOpcionElegida.codigo == pppOpcsObj.yaLaVi.codigo;
 								prods[i].laQuieroVer = pppOpcionElegida.codigo == pppOpcsObj.laQuieroVer.codigo;
 							}
