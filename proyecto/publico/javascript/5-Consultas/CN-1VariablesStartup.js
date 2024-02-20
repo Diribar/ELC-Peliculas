@@ -88,7 +88,6 @@ window.addEventListener("load", async () => {
 		muestraFiltros: false,
 		contadorDeMostrarResults: 0,
 	};
-	for (let pppOcion of v.pppOpciones) v[pppOcion.codigo] = pppOcion;
 
 	// Start-up
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
