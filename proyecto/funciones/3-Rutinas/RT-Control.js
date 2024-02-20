@@ -11,6 +11,7 @@ module.exports = {
 		// Variables
 		this.variablesDiarias();
 		comp.variablesSemanales();
+		await comp.actualizaLinksVencPorSem();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -27,7 +28,6 @@ module.exports = {
 		// Start-up
 		await this.FechaHoraUTC();
 		// await agregaColeccion_id();
-		// await corrigeStatusColeccion_id();
 
 		// Comunica el fin de las rutinas
 		console.log();

@@ -68,10 +68,8 @@ module.exports = {
 		// Fin
 		return res.json({cfc, vpc});
 	},
-	linksVencim: async (req, res) => {
-		if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
-		return res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil});
-	},
+	linksVencim: async (req, res) =>
+		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil}),
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
 		let provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links");

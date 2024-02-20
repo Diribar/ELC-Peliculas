@@ -149,16 +149,7 @@ module.exports = {
 			// Fin
 			return {RP: repetidos};
 		},
-		obtieneSigProd_Links: async function (revID) {
-			// Variables
-			if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
-
-			// Obtiene el producto con el próximo link a procesar
-			const sigProd = await FN_links.obtieneSigProd({revID});
-
-			// Fin
-			return sigProd;
-		},
+		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
 		obtieneRCLVs: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
@@ -850,8 +841,7 @@ let FN_links = {
 		let respuesta;
 
 		// Obtiene los links a revisar
-		const links = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
-		const {originales, ediciones} = links;
+		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs
@@ -865,12 +855,10 @@ let FN_links = {
 		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Altas
-		if (pelisColesParaProc + capsParaProc) {
-			const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
-			if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
-			if (respuesta) return respuesta;
-		}
+		// Sin restricción - Altas
+		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
+		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
+		if (respuesta) return respuesta;
 
 		// Con restricción - Capítulos
 		if (capsParaProc) {
@@ -903,7 +891,7 @@ let FN_links = {
 		}
 
 		// Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id);
+		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id); // si es trailer, es normal que tenga larga vida
 		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
 		if (respuesta) return respuesta;
 
@@ -945,9 +933,6 @@ let FN_links = {
 			// Acumula los productos
 			productos.push({...link[asociacion], entidad, fechaRef});
 		}
-
-		// Ordena los productos por su fecha, ascendente
-		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 
 		// Fin
 		return productos;

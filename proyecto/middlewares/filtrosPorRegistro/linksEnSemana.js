@@ -3,21 +3,16 @@ const procesos = require("../../rutas_y_controladores/3-RevisionEnts/RE-Procesos
 
 module.exports = async (req, res, next) => {
 	// Variables
-	if (!cantLinksVencPorSem) await comp.actualizaLinksVencPorSem();
+	const {entidad, id} = req.query;
+	const origen = req.query.origen ? req.query.origen : "TR";
+	const revID = req.session.usuario.id;
 
-	// Averigua si hay links para procesar
-	const entidad = req.query.entidad == "capitulos" ? "capitulos" : "pelisColes";
-	const hayRegistros = cantLinksVencPorSem.paraProc[entidad];
-
-	// Averigua si hay linksEdicion para procesar
-	if (!hayRegistros) {
-		const campo_id = comp.obtieneDesdeCampo_id.entidadProd(req.query.entidad);
-		const id = req.query.id;
-		hayRegistros = await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id});
+	// Valida si es el producto correcto
+	if (origen == "TR") {
+		const sigProd = await procesos.links.obtieneSigProd({revID});
+		if (entidad != sigProd.entidad || id != sigProd.id)
+			return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TR");
 	}
-
-	// Si no hay registros a procesar, redirige al tablero
-	if (!hayRegistros) return res.redirect("/revision/tablero-de-control");
 
 	// Fin
 	return next();
