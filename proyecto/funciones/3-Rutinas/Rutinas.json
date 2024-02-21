@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 19/feb",
-	"HoraUTC": "1:44",
+	"FechaUTC": "Mar. 20/feb",
+	"HoraUTC": "10:59",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 19/feb",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-feb-24": {"titulo": "Cuaresma"},
 		"18-feb-24": {"titulo": "Cuaresma"},
 		"19-feb-24": {"titulo": "Cuaresma"},
 		"20-feb-24": {"titulo": "Santos Pastorcitos de Fátima", "entidad": "personajes", "id": 27},
-		"21-feb-24": {"titulo": "Eric Liddell", "entidad": "personajes", "id": 194}
+		"21-feb-24": {"titulo": "Eric Liddell", "entidad": "personajes", "id": 194},
+		"22-feb-24": {"titulo": "Cuaresma"}
 	}
 }

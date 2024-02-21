@@ -88,8 +88,8 @@ module.exports = {
 				// Variables
 				const semPrimRev = linksPrimRev / unaSemana;
 
-				// Empieza a fijarse por la semana siguiente a la de Primera Revisión
-				for (semana = linksSemsVidaUtil; semana > semPrimRev; semana--)
+				// Busca la semana a la cual agregarle una fecha de vencimiento - 'semPrimRev': nuevos, '+1': recientes
+				for (semana = linksSemsVidaUtil; semana > semPrimRev + 1; semana--)
 					if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
 
 				// Si no se encontró "capacidad", envía una mensaje de error
@@ -147,7 +147,7 @@ module.exports = {
 			const revID = req.session.usuario.id;
 			let sigProd = true;
 
-			// Averigua si todos los links del producto están en status estables
+			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
 			const links = await BD_genericas.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
 			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 

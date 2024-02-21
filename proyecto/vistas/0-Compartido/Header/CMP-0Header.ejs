@@ -4,7 +4,7 @@
 		<!-- Menú para Mobile -->
 		<div id="mostrarMenuMobile" class="grupos">
 			<i class="fa-solid fa-bars desplClick iconoHeader"></i>
-			<%- include("CMP-7Mobile") %>
+			<%- include("CMP-4MenuMobile") %>
 		</div>
 		<!-- Menú de Home -->
 		<div class="grupos ocultoMobile_parcial">
@@ -20,7 +20,7 @@
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
 			<i class="fa-solid fa-magnifying-glass scale desplClick iconoHeader ocultoMobile_total" title="Búsqueda rápida"></i>
-			<%- include("CMP-2MenuBusqueda") %>
+			<%- include("CMP-BusqRapida") %>
 		</div>
 		<!-- Agregar un Producto -->
 		<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoMobile_parcial">
@@ -39,7 +39,7 @@
 		<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
 			<div class="grupos ocultoMobile_parcial">
 				<i class="fa-solid fa-user-graduate scale desplClick iconoHeader revision" title="Tableros para Revisores"></i>
-				<%- include("CMP-5MenuRevisores") %>
+				<%- include("CMP-2MenuRevisores") %>
 			</div>
 		<% } %>
 		<!-- Gráficos -->
@@ -63,8 +63,8 @@
 		</div>
 		<!-- Usuario -->
 		<div class="grupos">
-			<%- include("CMP-4IconoUsuario") %>
-			<%- include("CMP-4MenuUsuario") %>
+			<%- include("CMP-IconoUsuario") %>
+			<%- include("CMP-5MenuUsuario") %>
 		</div>
 	</section>
 </header>

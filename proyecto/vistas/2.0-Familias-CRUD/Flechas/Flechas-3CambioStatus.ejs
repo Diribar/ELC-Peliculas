@@ -60,7 +60,7 @@
 		</button>
 	</div>
 <% } %>
-<% condic1 = tema == "crud" && codigo != "eliminar" %>
+<% condic1 = tema == "fmCrud" && codigo != "eliminar" %>
 <% condic2 = tema == "revisionEnts" && codigo == "rechazo" %>
 <% if (condic1 || condic2) {  %>
 	<!-- VISTAS CRUD     - INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
@@ -71,7 +71,7 @@
 	</button>
 <% } %>
 <!-- VISTAS CRUD - ELIMINAR -->
-<% if (tema == "crud" && codigo == "eliminar") {  %>
+<% if (tema == "fmCrud" && codigo == "eliminar") {  %>
 	<!-- Elimina definitivamente -->
 	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>

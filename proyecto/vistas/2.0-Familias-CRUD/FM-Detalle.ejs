@@ -8,8 +8,7 @@
 			</div>
 
 			<!-- Contenido apertura (Form o Div) -->
-			<% let operacCRUD = tema == "crud" || tema == "revisionEnts" %>
-			<% if (operacCRUD) { %>
+			<% if (tema == "fmCrud" || tema == "revisionEnts") { %>
 				<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Eliminar o Revisión de Inactivar o Recuperar) -->
 				<form method="POST" id="contenido" class="flexCol grow">
 					<%- include("FM-Informacion") %>
