@@ -21,7 +21,7 @@ module.exports = {
 
 		// Calificaciones de productos y Preferencia por productos
 		let cal = BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
-		let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, opcion_id: yaLaVi.id});
+		let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, opcion_id: pppOpcsObj.yaLaVi.id});
 
 		// Espera las lecturas
 		[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -34,14 +34,14 @@ module.exports = {
 			ppp,
 		]);
 		const pelisColes = prodsAprob.filter((m) => m.entidad != "capitulos");
-		ppp = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
+		const pppSinCal = ppp.filter((n) => !cal.some((m) => m.entidad == n.entidad && m.entidad_id == n.entidad_id));
 
 		// Resultados
 		let resultados = {
 			// Productos
 			SE: [...SE_pel, ...SE_col, ...SE_cap], // sin edición
 			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // películas y colecciones inactivas, y capítulos con su colección aprobada
-			SC: pelisColes.filter((n) => ppp.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // prodsAprob - Sin calificar
+			SC: pelisColes.filter((n) => pppSinCal.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // prodsAprob - Sin calificar
 			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
 
 			// Links - sin links

@@ -42,7 +42,7 @@ module.exports = {
 			// Variables
 			const datos = {
 				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
-				...{pppOpciones, pppOpcionesSimples},
+				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				...{filtrosConDefault, epocasEstreno, unDia},
 			};
@@ -95,8 +95,8 @@ module.exports = {
 
 			// Acciones si el 'ppp' es un array
 			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones))
-				configCons.pppOpciones.toString() == meInteresan.combo // se fija si el array es del combo de 'meInteresan'
-					? (configCons.pppOpciones = meInteresan.id) // le asigna el id de 'meInteresan'
+				configCons.pppOpciones.toString() == pppOpcsObj.meInteresan.combo // se fija si el array es del combo de 'meInteresan'
+					? (configCons.pppOpciones = pppOpcsObj.meInteresan.id) // le asigna el id de 'meInteresan'
 					: delete configCons.pppOpciones; // elimina el ppp del combo
 
 			// Quita los campos con valor 'default'

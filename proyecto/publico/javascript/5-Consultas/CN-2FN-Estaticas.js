@@ -272,12 +272,12 @@ let cambiosEnBD = {
 	ppp: async (elemento) => {
 		// Opción actual
 		const indice = v.ppps.findIndex((n) => n == elemento);
-		const opcionActual = v.pppOpciones.find((n) => v.ppps[indice].className.endsWith(n.icono));
+		const opcionActual = v.pppOpcsArray.find((n) => v.ppps[indice].className.endsWith(n.icono));
 		const idActual = opcionActual.id;
 
 		// Opción propuesta
-		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpcionesSimples.length;
-		const opcionPropuesta = v.pppOpciones.find((n) => n.id == idPropuesta);
+		const idPropuesta = idActual > 1 ? idActual - 1 : v.pppOpcsSimples.length;
+		const opcionPropuesta = v.pppOpcsArray.find((n) => n.id == idPropuesta);
 
 		// Actualiza el ícono y el título
 		DOM.ppps[indice].classList.remove(...opcionActual.icono.split(" "));
@@ -287,7 +287,7 @@ let cambiosEnBD = {
 		// Actualiza la preferencia
 		const producto = v.productos[indice];
 		DOM.ppps[indice].classList.add("inactivo");
-		await fetch(v.pppRrutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
+		await fetch(v.pppRutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
 		DOM.ppps[indice].classList.remove("inactivo");
 
 		// Aumenta o disminuye la cantidad de PPP del usuario

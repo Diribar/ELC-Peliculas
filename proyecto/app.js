@@ -149,7 +149,7 @@ app.set("views", [
 		cn_opciones: BD_genericas.obtieneTodosConInclude("cn_opciones", "entidades")
 			.then((n) => n.filter((m) => m.activo))
 			.then((n) => n.sort((a, b) => a.orden - b.orden)),
-		pppOpciones: BD_genericas.obtieneTodos("pppOpciones"),
+		pppOpcsArray: BD_genericas.obtieneTodos("pppOpciones"),
 
 		// Menús
 		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
@@ -203,11 +203,12 @@ app.set("views", [
 	global.menores_ids = publicos.filter((n) => n.menores).map((n) => n.id);
 
 	// Preferencias por producto
-	for (let pppOcion of pppOpciones) global[pppOcion.codigo] = pppOpciones.find((n) => n.codigo == pppOcion.codigo);
+	global.pppOpcsObj = {};
+	for (let pppOcion of pppOpcsArray) global.pppOpcsObj[pppOcion.codigo] = pppOpcsArray.find((n) => n.codigo == pppOcion.codigo);
 
 	// Otros - Productos
 	global.atributosCalific = {feValores, entretiene, calidadTecnica};
-	global.pppOpcionesSimples = pppOpciones.filter((n) => !n.combo);
+	global.pppOpcsSimples = pppOpcsArray.filter((n) => !n.combo);
 	global.hablaHispana = paises.filter((n) => n.idioma_id == "ES");
 	global.hablaNoHispana = paises.filter((n) => n.idioma_id != "ES");
 

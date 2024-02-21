@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 	let rutas = {
 		validar: "/producto/api/valida/?",
 		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodID,
-		variablesBE: "/producto/api/obtiene-variables-del-back-end/?entidad=" + v.entidad + "&id=" + v.prodID,
+		variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + v.entidad + "&id=" + v.prodID,
 	};
 	v = {...v, ...(await fetch(rutas.variablesBE).then((n) => n.json()))};
 
