@@ -27,51 +27,53 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-	olvidoContrasena: async (datos) => {
-		// Variables
-		const usuario = datos.usuario;
-		let errores = {}; // Necesitamos que sea un objeto
+	olvidoContrasena: {
+		contrasena: async (datos) => {
+			// Variables
+			const usuario = datos.usuario;
+			let errores = {}; // Necesitamos que sea un objeto
 
-		// Verifica si el usuario existe en la BD
-		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
-		else {
-			// Detecta si ya se envió un mail en las últimas 24hs
-			const ahora = comp.fechaHora.ahora();
-			const fechaContrasena = usuario.fechaContrasena;
-			const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
-			if (diferencia < 24)
-				errores = {
-					email:
-						"Ya enviamos un mail con la contraseña el día " +
-						comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
-						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
-				};
-			// Si el usuario tiene status 'perenne_id', valida sus demás datos
-			else if (usuario.statusRegistro_id == perennes_id) {
-				let {paisNacim_id} = this.perennes(datos);
-				errores = {paisNacim_id};
+			// Verifica si el usuario existe en la BD
+			if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
+			else {
+				// Detecta si ya se envió un mail en las últimas 24hs
+				const ahora = comp.fechaHora.ahora();
+				const fechaContrasena = usuario.fechaContrasena;
+				const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
+				if (diferencia < 24)
+					errores = {
+						email:
+							"Ya enviamos un mail con la contraseña el día " +
+							comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
+							". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
+					};
+				// Si el usuario tiene status 'perenne_id', valida sus demás datos
+				else if (usuario.statusRegistro_id == perennes_id) {
+					let {paisNacim_id} = this.olvidoContrasena.perennes(datos);
+					errores = {paisNacim_id};
 
-				// Obtiene el consolidado
-				errores.credenciales = errores.paisNacim_id ? "Algún dato no coincide con el de nuestra base de datos" : "";
+					// Obtiene el consolidado
+					errores.credenciales = errores.paisNacim_id ? "Algún dato no coincide con el de nuestra base de datos" : "";
+				}
 			}
-		}
 
-		// Fin
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
-	},
-	perennes: (datos) => {
-		let errores = {
-			paisNacim_id: !datos.paisNacim_id
-				? "Necesitamos que elijas un país"
-				: datos.paisNacim_id != datos.usuario.paisNacim_id
-				? "El país no coincide con el de nuestra base de datos"
-				: "",
-		};
+			// Fin
+			errores.hay = Object.values(errores).some((n) => !!n);
+			return errores;
+		},
+		perennes: (datos) => {
+			let errores = {
+				paisNacim_id: !datos.paisNacim_id
+					? "Necesitamos que elijas un país"
+					: datos.paisNacim_id != datos.usuario.paisNacim_id
+					? "El país no coincide con el de nuestra base de datos"
+					: "",
+			};
 
-		// Fin
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
+			// Fin
+			errores.hay = Object.values(errores).some((n) => !!n);
+			return errores;
+		},
 	},
 	login: async function (datos) {
 		// Variables
