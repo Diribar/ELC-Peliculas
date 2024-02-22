@@ -80,4 +80,8 @@
 			</div>
 		</div>
 	</div>
+	<div type="text" id="credenciales" class="errores" >
+		<button class="mensajeError"><%- locals.errores && errores.credenciales ? errores.credenciales : "" %></button>
+		<i class="fa-solid fa-circle-check<%- (locals.errores && errores.credenciales) ? ' ocultar' : '' %>" style="display: none;"></i>
+	</div>
 </section>
