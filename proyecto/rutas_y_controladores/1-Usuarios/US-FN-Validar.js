@@ -52,7 +52,7 @@ module.exports = {
 				errores = {paisNacim_id};
 
 				// Obtiene el consolidado
-				errores.perennes = errores.paisNacim_id
+				errores.credenciales = errores.paisNacim_id
 					? "Algún dato no coincide con el de nuestra base de datos"
 					: "";
 			}
