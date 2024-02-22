@@ -12,9 +12,9 @@ window.addEventListener("load", () => {
 		inputs: document.querySelectorAll(".inputError .input"),
 
 		// Errores
-		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
-		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+		iconosError: document.querySelectorAll(":is(.errores .fa-circle-xmark, #credenciales.errores .mensajeError)"),
+		iconosOK: document.querySelectorAll(".errores .fa-circle-check"),
+		mensajesError: document.querySelectorAll(".errores .mensajeError"),
 
 		// Cartel progreso
 		cartelProgreso: document.querySelector("#cartelProgreso"),
@@ -32,6 +32,7 @@ window.addEventListener("load", () => {
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
 	};
+	console.log(DOM.iconosError, DOM.iconosOK, DOM.mensajesError);
 
 	// Variables
 	const rutaInicio = "/usuarios/api/" + v.codigo;
@@ -85,7 +86,7 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let consecuencias = () => {
-				// Acciones si hubo errores en el data-entry
+		// Acciones si hubo errores en el data-entry
 		if (v.errores.hay) {
 			// Si el error es porque no existen los campos 'perennes', se recarga la página
 			if (v.errores.faltanCampos) location.reload();
