@@ -68,55 +68,44 @@ window.addEventListener("load", () => {
 
 		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 	};
-	let enviaMail = async () => {
-		// Prepara la info para el BE
-		const email = DOM.email.value;
-		const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
-		const datos = {email, paisNacim_id};
-		const ruta = "/usuarios/api/alta-mail/?email=";
+	let validaMail = {
+		altaMail: async function () {
+			// Prepara la info para el BE
+			const email = DOM.email.value;
+			const ruta = "/usuarios/api/alta-mail/?email=";
 
-		// Envía la información al BE
-		const resultado = await fetch(ruta + email)
-			.then((n) => n.json())
-			.then((n) => {
-				v.pendiente = false;
-				return n;
-			});
+			// Averigua si hay errores, y en caso negativo envía el mail
+			v.errores = await fetch(ruta + email).then((n) => n.json());
+			if (!errores.hay) await enviaMail({email});
 
-		// Fin
-		return resultado;
-	};
-	let olvidoContrasena = {
-		validaMail: async function () {
+			// Fin
+			return;
+		},
+		olvidoContrasena: async function () {
 			// Prepara la info para el BE
 			const email = DOM.email.value;
 			const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
 			const datos = {email, paisNacim_id};
 			const ruta = "/usuarios/api/olvido-contrasena/valida-mail/";
 
-			// Envía la información al BE, y si no hay errores, envía el mail
+			// Averigua si hay errores, y en caso negativo envía el mail
 			v.errores = await fetch(ruta + "?datos=" + JSON.stringify(datos)).then((n) => n.json());
-			if (!errores.hay) await this.enviaMail();
+			if (!errores.hay) await this.enviaMail(datos);
 
 			// Fin
 			return;
 		},
-		enviaMail: async () => {
-			// Cartel mientras se recibe la respuesta
-			cartelProgreso();
+	};
+	let enviaMail = async (datos) => {
+		// Cartel mientras se recibe la respuesta
+		cartelProgreso();
 
-			// Variables
-			const email = DOM.email.value;
-			const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
-			const datos = {email, paisNacim_id};
-			const ruta = "/usuarios/api/olvido-contrasena/envio-de-mail/?datos=";
+		// Envía la información al BE
+		const ruta = "/usuarios/api/" + v.codigo + "/envio-de-mail/?datos=";
+		v.mailEnviado = await fetch(ruta + JSON.stringify(datos)).then((n) => n.json());
 
-			// Envía la información al BE
-			v.mailEnviado = await fetch(ruta + JSON.stringify(datos)).then((n) => n.json());
-
-			// Fin
-			return;
-		},
+		// Fin
+		return;
 	};
 	let cartelProgreso = async () => {
 		// Muestra el cartel
@@ -168,8 +157,7 @@ window.addEventListener("load", () => {
 		let valor = e.target.value;
 
 		// Averigua si hay errores
-		if (campo == "email")
-			v.errores.email = !valor ? cartelMailVacio : !formato.test(valor) ? cartelMailFormato : "";
+		if (campo == "email") v.errores.email = !valor ? cartelMailVacio : !formato.test(valor) ? cartelMailFormato : "";
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Actualiza los errores
@@ -177,7 +165,7 @@ window.addEventListener("load", () => {
 		muestraErrores();
 
 		// Fin
-		return
+		return;
 	});
 
 	// Submit
@@ -189,8 +177,8 @@ window.addEventListener("load", () => {
 		else DOM.button.classList.add("inactivo"); // de lo contrario lo inactiva
 
 		// Envía la información al BE y obtiene los valores recibidos
-		if (v.codigo == "alta-mail") await enviaMail();
-		if (v.codigo == "olvido-contrasena") await olvidoContrasena.validaMail();
+		if (v.codigo == "alta-mail") await validaMail.altaMail();
+		if (v.codigo == "olvido-contrasena") await validaMail.olvidoContrasena();
 
 		// Consecuencias
 		consecuencias();
