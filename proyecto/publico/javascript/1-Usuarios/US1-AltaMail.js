@@ -3,6 +3,7 @@ window.addEventListener("load", () => {
 	// Variables
 	const pathname = location.pathname;
 	const indice = pathname.lastIndexOf("/");
+	const codigo = pathname.slice(indice + 1); // código de la vista
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -28,15 +29,14 @@ window.addEventListener("load", () => {
 		errores: {},
 
 		// Envío de mail
-		codigo: pathname.slice(indice + 1), // código de la vista
-		urlExitoso: pathname + "/envio-exitoso-de-mail",
-		urlFallido: pathname + "/envio-fallido-de-mail",
+		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail",
+		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
 	};
 	if (v.inputs.length < DOM.mensajesError.length) v.inputs.push("credenciales");
 
 	// Variables
-	const rutaInicio = "/usuarios/api/" + v.codigo;
+	const rutaInicio = "/usuarios/api/" + codigo;
 	const rutaValida = rutaInicio + "/valida-mail/?datos=";
 	const rutaEnvia = rutaInicio + "/envio-de-mail/?email=";
 
@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
 	let validaEnviaMail = async () => {
 		// Prepara la info para el BE
 		let datos = {email: DOM.email.value};
-		if (v.codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
+		if (codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
