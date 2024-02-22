@@ -14,3 +14,8 @@ form #informacion {display: flex; flex-direction: column; width: 100%;}
 #informacion .labelInput .ayudaMostrar {top: auto; bottom: -5px; translate: 0 100%; right: -50px;}
 #informacion .labelInput .ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
 #informacion .labelInput .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; right: 52px; transform: none;}
+
+/* Credenciales inválidas */
+#credenciales.errores .mensajeError {display: block; position: static; translate: none;}
+#credenciales.errores .mensajeError {margin: 10px auto 0; text-align: center; width: 200px;}
+#credenciales.errores .mensajeError::before {content: none;}
