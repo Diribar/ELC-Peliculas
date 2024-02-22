@@ -9,7 +9,7 @@
 		<%- include("US1-Mail") %>
 
 		<!--Número de Documento y País-->
-		<% if (errores.documento) { %>
+		<% if (faltanCampos) { %>
 			<%- include("US1-Docum") %>
 		<% } %>
 
