@@ -50,7 +50,7 @@ module.exports = {
 			let condicion = {};
 			for (let campo of ["email", ...camposPerennes]) condicion[campo] = datos[campo];
 			const usuario = await BD_genericas.obtienePorCondicion("usuarios", condicion);
-			if (!usuario) return {credenciales: "Algún dato no coincide con el de nuestra base de datos", hay: true};
+			errores.credenciales = !usuario ? "Algún dato no coincide con el de nuestra base de datos" : "";
 		}
 
 		// Fin
