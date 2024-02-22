@@ -29,29 +29,23 @@ module.exports = async (req, res, next) => {
 	res.locals.usuario = usuario;
 
 	// Acciones si cambió la versión
-	let mensajes = [];
 	let informacion;
 	if (usuario.versionElcUltimoLogin != versionELC) {
-		// Obtiene los roles del usuario
-		let roles = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
-		for (let i = roles.length - 1; i >= 0; i--) {
-			let rol = roles[i];
-			if (!usuario.rolUsuario[rol]) roles.splice(i, 1);
-		}
-
-		// Obtiene las novedades
-		const novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
-		for (let novedad of novedades)
-			for (let rol of roles)
-				if (novedad[rol]) {
-					mensajes.push(novedad.comentario);
+		// Variables
+		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
+		let novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
+		for (let i = novedades.length - 1; i >= 0; i--)
+			// Si la novedad especifica un permiso que el usuario no tiene, se la descarta
+			for (let permiso of permisos)
+				if (novedades[i][permiso] && !usuario.rolUsuario[permiso]) {
+					novedades.splice(i, 1);
 					break;
 				}
 
 		// Si hubieron novedades, genera la información
-		if (mensajes.length)
+		if (novedades.length)
 			informacion = {
-				mensajes,
+				mensajes: novedades,
 				iconos: [variables.vistaEntendido(req.originalUrl)],
 				titulo: "Novedades del sitio",
 				check: true,
