@@ -481,14 +481,6 @@ module.exports = {
 			{nombre: "completo", titulo: "Completo", links: true},
 			{nombre: "parte", titulo: "Parte", links: true},
 		],
-		usuarios: [
-			{titulo: "País de Expedición", nombre: "documPais_id"},
-			{titulo: "Apellido", nombre: "apellido"},
-			{titulo: "Nombre", nombre: "nombre"},
-			{titulo: "Sexo", nombre: "sexo_id"},
-			{titulo: "Fecha de Nacim.", nombre: "fechaNacim"},
-			{titulo: "N° de Documento", nombre: "documNumero"},
-		],
 	},
 	avatarsExternos: (nombre) => {
 		return [
