@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let codigo = location.pathname;
-	const indice = codigo.lastIndexOf("/");
+	const pathname = location.pathname;
+	const indice = pathname.lastIndexOf("/");
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -28,9 +28,9 @@ window.addEventListener("load", () => {
 		errores: {},
 
 		// Envío de mail
-		codigo: codigo.slice(indice + 1), // código de la vista
-		urlExitoso: codigo.slice(0, indice) + "/envio-exitoso-de-mail",
-		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
+		codigo: pathname.slice(indice + 1), // código de la vista
+		urlExitoso: pathname + "/envio-exitoso-de-mail",
+		urlFallido: pathname + "/envio-fallido-de-mail",
 		pendiente: true,
 	};
 	if (v.inputs.length < DOM.mensajesError.length) v.inputs.push("credenciales");
@@ -127,15 +127,17 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let botonSubmit = () => {
+		// Variables
 		let OK = Array.from(DOM.iconosOK)
 			.map((n) => n.className)
 			.every((n) => !n.includes("ocultar"));
-
 		let error = Array.from(DOM.iconosError)
 			.map((n) => n.className)
 			.some((n) => !n.includes("ocultar"));
 
+		// Fin
 		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
+		return;
 	};
 
 	// Acciones 'input'
