@@ -31,11 +31,11 @@ module.exports = {
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 
-			// Errores y datos
+			// Genera info para la vista
 			const datosSession = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
-			const errores = datosSession.errores ? datosSession.errores : null;
+			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
-			const mostrarCampos = errores && (errores.faltanCampos || errores.credenciales);
+			const mostrarCampos = errores.faltanCampos || errores.credenciales;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -158,13 +158,12 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "perennes";
-			const usuario = req.session.usuario;
 
-			// Genera la info para la vista
-			const errores = req.session.errores ? req.session.errores : false;
-			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+			// Genera info para la vista
+			const errores = req.session.errores ? req.session.errores : {};
+			const dataEntry = req.session.dataEntry ? req.session.dataEntry : {};
 
-			// Va a la vista
+			// Vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, dataEntry, errores, hablaHispana, hablaNoHispana},
 				titulo: "Alta de Usuario - Datos Perennes",
