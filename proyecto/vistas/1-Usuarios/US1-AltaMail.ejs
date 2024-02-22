@@ -9,12 +9,7 @@
 		<%- include("US1-Mail") %>
 
 		<!--Campos para usuarios con datos perennes-->
-		<% if (mostrarCampos) { %>
-			<%- include("US1-Nombre") %>
-			<%- include("US1-Apellido") %>
-			<%- include("US1-FechaNacim") %>
-			<%- include("US1-PaisNacim") %>
-		<% } %>
+		<% if (mostrarCampos) { %><%- include("US1-DatosPerennes") %><% } %>
 
 		<!--Flechas-->
 		<section class="flechas">
