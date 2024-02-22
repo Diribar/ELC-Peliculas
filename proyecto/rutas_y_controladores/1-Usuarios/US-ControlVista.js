@@ -30,9 +30,12 @@ module.exports = {
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
-			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
-			const errores = dataEntry.errores ? dataEntry.errores : false;
-			const mostrarCampos = errores.faltanCampos || errores.credenciales;
+
+			// Errores y datos
+			const datosSession = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
+			const errores = datosSession.errores ? datosSession.errores : null;
+			const dataEntry = datosSession.datos ? datosSession.datos : {};
+			const mostrarCampos = errores && (errores.faltanCampos || errores.credenciales);
 
 			// Vista
 			return res.render("CMP-0Estructura", {
