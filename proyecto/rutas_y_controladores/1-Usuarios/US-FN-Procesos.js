@@ -81,9 +81,9 @@ module.exports = {
 		// Fin
 		return {
 			mensajes: [
-				"El ingreso de información pública requiere responsabilidad.",
-				"Te pedimos que cuides la reputación de tu usuario.",
-				"Podés iniciar el trámite con la flecha hacia la derecha.",
+				"El ingreso de información a compartir requiere responsabilidad.",
+				"Te pedimos que cuides nuestra reputación ante nuestros usuarios.",
+				"Podés gestionar el permiso con la flecha hacia la derecha.",
 			],
 			iconos: [
 				{

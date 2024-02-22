@@ -29,7 +29,7 @@ module.exports = {
 			const tema = "usuario";
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1);
-			const titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
+			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
 			const errores = dataEntry.errores ? dataEntry.errores : false;
 
@@ -95,7 +95,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
-				titulo: "Datos Editables",
+				titulo: "Alta de Usuario - Datos Editables",
 				dataEntry,
 				errores,
 				sexos: sexos.filter((m) => m.letra_final),
@@ -177,7 +177,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
-				titulo: "Solicitud de Autorización de Inputs",
+				titulo: "Alta de Usuario - Datos Perennes",
 				dataEntry,
 				errores,
 				hablaHispana,

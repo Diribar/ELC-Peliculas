@@ -53,7 +53,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes,
 				iconos: [variables.vistaEntendido(req.originalUrl)],
-				titulo: "Novedades del sitio:",
+				titulo: "Novedades del sitio",
 				check: true,
 			};
 

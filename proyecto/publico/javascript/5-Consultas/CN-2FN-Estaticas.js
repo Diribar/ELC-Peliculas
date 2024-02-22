@@ -6,7 +6,7 @@ let obtiene = {
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	obtieneVariablesDelBE: () => {
-		const rutaCompleta = ruta + "obtiene-variables-del-back-end/";
+		const rutaCompleta = ruta + "obtiene-variables/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	configCabecera: () => {
