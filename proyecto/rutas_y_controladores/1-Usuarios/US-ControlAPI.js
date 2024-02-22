@@ -25,7 +25,7 @@ module.exports = {
 	altaMail: {
 		validaMail: async (req, res) => {
 			// Variables
-			const {email} = req.query;
+			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
 
 			// Fin
@@ -66,7 +66,7 @@ module.exports = {
 		},
 		envioDeMail: async (req, res) => {
 			// Variables
-			const {email} = req.query
+			const {email} = req.query;
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Envía el mensaje con la contraseña
