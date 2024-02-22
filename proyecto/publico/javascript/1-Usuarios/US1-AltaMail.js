@@ -32,7 +32,6 @@ window.addEventListener("load", () => {
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
 	};
-	console.log(DOM.iconosError, DOM.iconosOK, DOM.mensajesError);
 
 	// Variables
 	const rutaInicio = "/usuarios/api/" + v.codigo;
