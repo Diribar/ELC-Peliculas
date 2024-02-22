@@ -46,14 +46,27 @@ module.exports = {
 		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
 		envioExitoso: (req, res) => {
 			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
 			const informacion = {
-				mensajes: [
-					"Hemos generado tu usuario con tu dirección de mail.",
-					"Te hemos enviado por mail la contraseña.",
-					"Con el ícono de abajo accedés al Login.",
-				],
+				mensajes: altaMail
+					? [
+							"Hemos generado tu usuario con tu dirección de mail.",
+							"Te hemos enviado por mail la contraseña.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: olvidoContrasena
+					? [
+							"Hemos generado una nueva contraseña para tu usuario.",
+							"Te la hemos enviado por mail.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: [],
 				iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-				titulo: "Alta exitosa de Usuario",
+				titulo: altaMail ? "Alta exitosa de Usuario" : olvidoContrasena ? "Actualización exitosa de Contraseña" : "",
 				check: true,
 			};
 
@@ -61,7 +74,11 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 		envioFallido: (req, res) => {
-			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
 			const informacion = {
 				mensajes: [
 					"No pudimos enviarte un mail con la contraseña.",
@@ -69,7 +86,7 @@ module.exports = {
 					"Con el ícono de abajo regresás a la vista anterior.",
 				],
 				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-				titulo: "Alta de Usuario fallida",
+				titulo: altaMail ? "Alta de Usuario fallida" : olvidoContrasena ? "Actualización de Contraseña fallida" : "",
 			};
 
 			// Vista
