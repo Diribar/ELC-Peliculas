@@ -2,7 +2,7 @@
 form .labelInput {justify-content: center; margin: 0; margin-top: 20px; width: min(100%, 260px)}
 .labelInput .inputError {width: 100%; display: flex; flex-direction: row; justify-content: center;}
 .inputError .input {width: 100%}
-.inputError .input[name="paisNacim_id"] {width: 160px;}
+/* .inputError .input[name="paisNacim_id"] {width: 160px;} */
 
 form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
 form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
