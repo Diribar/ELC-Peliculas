@@ -25,7 +25,6 @@ window.addEventListener("load", () => {
 	let v = {
 		// Inputs
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
-		formatoMail: /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
 		errores: {},
 
 		// Envío de mail
@@ -44,11 +43,11 @@ window.addEventListener("load", () => {
 	let validaEnviaMail = async () => {
 		// Prepara la info para el BE
 		let datos = {email: DOM.email.value};
-		if (v.codigo == "olvido-contrasena") for (let campo of camposPerennes) datos[campo] = DOM[campo].value;
+		if (v.codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
-		if (errores.hay) return;
+		if (v.errores.hay) return;
 
 		// Cartel mientras se recibe la respuesta
 		cartelProgreso();
@@ -141,11 +140,11 @@ window.addEventListener("load", () => {
 		let valor = e.target.value;
 
 		// Averigua si hay errores
-		if (campo == "email") v.errores.email = !valor ? cartelMailVacio : !formato.test(valor) ? cartelMailFormato : "";
+		if (campo == "email") v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Actualiza los errores
-		errores.hay = Object.values(errores).some((n) => !!n);
+		v.errores.hay = Object.values(v.errores).some((n) => !!n);
 		muestraErrores();
 
 		// Fin
@@ -179,3 +178,4 @@ const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
+const formatoMail = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
