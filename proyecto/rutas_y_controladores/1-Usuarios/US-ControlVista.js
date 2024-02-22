@@ -82,26 +82,20 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "editables";
-			let usuario = req.session.usuario;
-			let errores = req.session.errores ? req.session.errores : false;
+			const usuario = req.session.usuario;
+			const errores = req.session.errores ? req.session.errores : false;
 
 			// Generar la info para la vista
-			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
-			let avatar = usuario.avatar
+			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+			const avatar = usuario.avatar
 				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Alta de Usuario - Datos Editables",
-				dataEntry,
-				errores,
+				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
+				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, rolesIgl},
 				sexos: sexos.filter((m) => m.letra_final),
-				hablaHispana,
-				hablaNoHispana,
-				avatar,
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -167,7 +161,6 @@ module.exports = {
 			const tema = "usuario";
 			const codigo = "perennes";
 			const usuario = req.session.usuario;
-			const rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
 
 			// Genera la info para la vista
 			const errores = req.session.errores ? req.session.errores : false;
