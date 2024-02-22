@@ -140,7 +140,9 @@ window.addEventListener("load", () => {
 		let valor = e.target.value;
 
 		if (campo == "email")
-			v.errores.email = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
+			v.errores.email = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor)
+				.then((n) => n.json())
+				.then((n) => n.email);
 
 		// if (campo == "documNumero") {
 		// 	e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
@@ -155,11 +157,11 @@ window.addEventListener("load", () => {
 
 	// Submit
 	DOM.form.addEventListener("submit", async (e) => {
-		// Si el botón está inactivo interrumpe la función
 		e.preventDefault();
+
+		// Si el botón está inactivo interrumpe la función
 		if (DOM.button.className.includes("inactivo")) return;
-		// De lo contrario lo inactiva
-		else DOM.button.classList.add("inactivo");
+		else DOM.button.classList.add("inactivo"); // de lo contrario lo inactiva
 
 		// Cartel mientras se recibe la respuesta
 		cartelProgreso();
