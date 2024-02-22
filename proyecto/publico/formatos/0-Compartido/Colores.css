@@ -6,7 +6,7 @@ body {
 	--gris-claro: rgb(242,242,242);
 	--rojo-claro: rgb(252,233,220);
 	--verde-claro: rgb(217, 223, 205);
-	
+
 	--gris-intermedio: rgb(200,200,200);
 	--verde-intermedio: rgb(188, 199, 167);
 
@@ -19,6 +19,7 @@ body {
 	--verde-oscuro:rgb(79,98,40);
 	--verde-ingles: #009879;
 	--marron: rgb(102,51,0);
+	--usuarios: #757575;
 
 	/* Colores por Tema */
 	--colorAyuda: white;
