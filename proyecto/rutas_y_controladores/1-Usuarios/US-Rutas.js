@@ -29,6 +29,7 @@ router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
 router.get("/alta-mail", visitas, vista.altaMail.form);
 router.get("/olvido-contrasena", visitas, vista.altaMail.form);
+router.post("/olvido-contrasena", visitas, vista.altaMail.guardar);
 router.get("/envio-exitoso-de-mail", visitas, vista.altaMail.envioExitoso);
 router.get("/envio-fallido-de-mail", visitas, vista.altaMail.envioFallido);
 
