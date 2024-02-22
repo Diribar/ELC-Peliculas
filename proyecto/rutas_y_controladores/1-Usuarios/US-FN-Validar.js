@@ -1,7 +1,6 @@
 "use strict";
 // Definir variables
 const bcryptjs = require("bcryptjs");
-const procesos = require("./US-FN-Procesos");
 
 module.exports = {
 	formatoMail: (email) => formatoMail(email),
@@ -110,9 +109,12 @@ module.exports = {
 };
 
 // Variables y Funciones
-let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
-let cartelMailFormato = "Debes escribir un formato de correo válido";
-let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
+const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
+const cartelMailFormato = "Debes escribir un formato de correo válido";
+const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
+const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
+
+// Funciones
 let formatoMail = (email) => {
 	// Variables
 	const formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -202,4 +204,3 @@ let perennesBE = async (datos) => {
 	// Fin
 	return errores;
 };
-const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
