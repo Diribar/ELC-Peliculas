@@ -238,7 +238,6 @@ module.exports = {
 
 			// 3. Variables para la vista
 			let errores = await valida.login(dataEntry);
-			console.log(241, errores);
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
