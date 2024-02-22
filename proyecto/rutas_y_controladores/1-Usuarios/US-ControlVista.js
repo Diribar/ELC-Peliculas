@@ -175,9 +175,8 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const usuario = req.session.usuario;
-			const datos = {...req.body, id: usuario.id};
-			const errores = await valida.perenneBE(datos);
+			const datos = req.body;
+			const errores = await valida.perennesBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
@@ -186,9 +185,11 @@ module.exports = {
 				return res.redirect("/usuarios/perennes");
 			}
 
-			// Actualiza el rol del usuario
-			const rolUsuario_id = rolPermInputs_id; // Le sube el rol a permInputs
-			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", {...datos, rolUsuario_id});
+			// Actualiza el rol y status del usuario
+			const novedades = {...datos, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // Le sube el rol a permInputs
+			const usuario = req.session.usuario;
+			BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
+			req.session.usuario = {...usuario, ...novedades};
 
 			// Redirecciona
 			return res.redirect("/usuarios/perennes-bienvenido");
