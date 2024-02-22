@@ -12,8 +12,7 @@
 		</div>
 	</div>
 	<div class="inputError">
-		<% nombre = dataEntry ? dataEntry.nombre : "" %>
-		<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre Civil" value="<%= nombre %>">
+		<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre Civil" value="<%= dataEntry.nombre %>">
 		<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
 	</div>
 </div>
