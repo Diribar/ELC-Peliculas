@@ -1,6 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
+	let codigo = location.pathname;
+	const indice = codigo.lastIndexOf("/");
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -8,8 +10,6 @@ window.addEventListener("load", () => {
 
 		// Inputs del formulario
 		inputs: document.querySelectorAll(".inputError .input"),
-		email: document.querySelector(".inputError .input[name='email']"),
-		paisNacim_id: document.querySelector(".inputError .input#paisNacim_id"),
 
 		// Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -20,8 +20,8 @@ window.addEventListener("load", () => {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
-	let codigo = location.pathname;
-	const indice = codigo.lastIndexOf("/");
+	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
+	console.log(DOM);
 	let v = {
 		// Inputs
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
@@ -44,6 +44,7 @@ window.addEventListener("load", () => {
 		// Prepara la info para el BE
 		let datos = {email: DOM.email.value};
 		if (v.codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
+		console.log(datos);
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
@@ -86,6 +87,7 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let consecuencias = () => {
+		console.log(v.errores);
 		// Acciones si hubo errores en el data-entry
 		if (v.errores.hay) {
 			// Si el error es porque no existen los campos 'perennes', se recarga la página
@@ -168,6 +170,8 @@ window.addEventListener("load", () => {
 
 		// Envía la información al BE y eventualmente el mail al usuario
 		await validaEnviaMail();
+		console.log(v.errores);
+		return;
 
 		// Consecuencias
 		consecuencias();
