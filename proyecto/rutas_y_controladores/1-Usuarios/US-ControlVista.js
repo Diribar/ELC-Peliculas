@@ -198,12 +198,12 @@ module.exports = {
 			let usuario = req.session.usuario;
 			let letra = usuario.sexo_id == "M" ? "a " : "o ";
 			let informacion = {
+				titulo: "Permiso otorgado",
 				mensajes: [
 					"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
-					"Ya podés ingresarnos información para compartir con el público.",
+					"Ya podés ingresar información para compartir con el público.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-				titulo: "Validación en Proceso",
 				check: true,
 			};
 			// Fin
