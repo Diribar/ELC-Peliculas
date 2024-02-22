@@ -24,35 +24,37 @@ module.exports = {
 
 		// 2. Verifica si el mail existe en la BD
 		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-		if (!usuario) {
-			errores = {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true};
-			return errores;
-		}
+		if (!usuario) return {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true};
 
 		// 3. Detecta si ya se le envió un mail en las últimas 24hs
 		const ahora = comp.fechaHora.ahora();
 		const fechaContrasena = usuario.fechaContrasena;
 		const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
-		if (diferencia < 24) {
-			errores = {
+		if (diferencia < 24)
+			return {
 				email:
 					"Ya enviamos un mail con la contraseña el día " +
 					comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
 					". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				hay: true,
 			};
-			return errores;
-		}
 
 		// 4. Si el usuario tiene status 'perenne_id', valida sus demás datos
 		if (usuario.statusRegistro_id == perennes_id) {
+			// 4.A Si fija si los datos tienen la info de los campos perennes
+			const campos = Object.keys(datos);
+			for (let campo of camposPerennes) if (!campos.includes(campo)) errores.faltanCampos = true;
+			if (errores.faltanCampos) return {...errores, hay: true};
+
+			// 4.B Se fija si el usuario existe en la BD
 			let condicion = {};
 			for (let campo of ["email", ...camposPerennes]) condicion[campo] = datos[campo];
 			const usuario = await BD_genericas.obtienePorCondicion("usuarios", condicion);
-			if (!usuario) errores = {credenciales: "Algún dato no coincide con el de nuestra base de datos", hay: true};
+			if (!usuario) return {credenciales: "Algún dato no coincide con el de nuestra base de datos", hay: true};
 		}
 
 		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 	login: async function (datos) {
