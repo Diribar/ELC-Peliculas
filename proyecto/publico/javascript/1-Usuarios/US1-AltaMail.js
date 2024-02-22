@@ -15,6 +15,7 @@ window.addEventListener("load", () => {
 		iconosError: document.querySelectorAll(":is(.errores .fa-circle-xmark, #credenciales.errores .mensajeError)"),
 		iconosOK: document.querySelectorAll(".errores .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".errores .mensajeError"),
+		mensajeErrorCreds: document.querySelector("#credenciales.errores .mensajeError"),
 
 		// Cartel progreso
 		cartelProgreso: document.querySelector("#cartelProgreso"),
@@ -32,6 +33,7 @@ window.addEventListener("load", () => {
 		urlFallido: codigo.slice(0, indice) + "/envio-fallido-de-mail",
 		pendiente: true,
 	};
+	if (v.inputs.length < DOM.mensajesError.length) v.inputs.push("credenciales");
 
 	// Variables
 	const rutaInicio = "/usuarios/api/" + v.codigo;
@@ -100,6 +102,9 @@ window.addEventListener("load", () => {
 	};
 	let muestraErrores = () => {
 		v.inputs.forEach((campo, indice) => {
+			// Si no se revisó el campo, interrumpe la función
+			if (!Object.keys(v.errores).includes(campo)) return;
+
 			// Actualiza el mensaje de error
 			DOM.mensajesError[indice].innerHTML = v.errores[campo];
 
@@ -109,7 +114,7 @@ window.addEventListener("load", () => {
 				DOM.iconosOK[indice].classList.add("ocultar");
 			}
 			// Muestra los íconos de OK sólo si fueron revisados
-			else if (Object.keys(v.errores).includes(campo)) {
+			else {
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.remove("ocultar");
 			}
@@ -148,6 +153,9 @@ window.addEventListener("load", () => {
 			v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
 		}
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
+
+		// Limpia las credenciales
+		if (DOM.mensajeErrorCreds) v.errores.credenciales = "";
 
 		// Actualiza los errores
 		v.errores.hay = Object.values(v.errores).some((n) => !!n);
