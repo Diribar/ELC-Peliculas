@@ -14,11 +14,6 @@ form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
 #tituloPrincipal .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; right: 10px; transform: none;}
 #tituloPrincipal .ayudaMostrar * {background: transparent;}
 
-/* Ayuda de nombre y apellido */
-#informacion .ayudaMostrar {top: auto; bottom: -5px; transform: none; translate: 0 100%; right: -50px;}
-#informacion .ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
-#informacion .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; right: 52px; transform: none;}
-
 /* Información */
 form #informacion {display: flex; flex-direction: column; align-items: center;}
 #informacion .filas {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
