@@ -89,7 +89,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
-				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, rolesIgl},
+				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana},
 				sexos: sexos.filter((m) => m.letra_final),
 				urlSalir: req.session.urlSinLogin,
 			});
@@ -229,17 +229,16 @@ module.exports = {
 			// 1. Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
-			let dataEntry = {}; // es necesario que sea un array para que dé error si está vacío
 
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
-			if (req.session.email || req.session.contrasena) {
-				dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
-				delete req.session.email;
-				delete req.session.contrasena;
-			}
+			const dataEntry =
+				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {}; // es necesario que sea un array para que dé error si está vacío
+			delete req.session.email;
+			delete req.session.contrasena;
 
 			// 3. Variables para la vista
 			let errores = await valida.login(dataEntry);
+			console.log(241, errores);
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
@@ -247,13 +246,8 @@ module.exports = {
 
 			// 4. Render del formulario
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Login",
-				dataEntry,
-				errores,
+				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
-				variables,
 			});
 		},
 		guardar: async (req, res) => {
