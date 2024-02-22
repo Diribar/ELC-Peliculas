@@ -104,11 +104,13 @@ window.addEventListener("load", () => {
 			// Actualiza el mensaje de error
 			DOM.mensajesError[indice].innerHTML = v.errores[campo];
 
-			// Muestra / Oculta los íconos de OK y Error
+			// Muestra los íconos de Error
 			if (v.errores[campo]) {
 				DOM.iconosError[indice].classList.remove("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
-			} else {
+			}
+			// Muestra los íconos de OK sólo si fueron revisados
+			else if(Object.keys(v.errores).includes(campo)) {
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.remove("ocultar");
 			}
