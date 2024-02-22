@@ -56,7 +56,7 @@ module.exports = {
 		validaMail: async (req, res) => {
 			// Variables
 			const {datos} = JSON.parse(req.query);
-			const errores = await valida.olvidoContrasena.validaMail(datos);
+			const errores = await valida.olvidoContrasena(datos);
 
 			// Acciones si hay un error
 			if (errores.hay) req.session["olvido-contrasena"] = errores;
@@ -69,24 +69,21 @@ module.exports = {
 			const {email} = req.query
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
-
-			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
+			// Envía el mensaje con la contraseña
 			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
-			// Si no hubo errores con el envío del mensaje, actualiza la contraseña del usuario
+			// Si no hubo errores con el envío del email, actualiza la contraseña del usuario
 			if (mailEnviado)
 				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 					contrasena,
 					fechaContrasena: ahora,
 				});
 
-			// Guarda el mail en 'session'
+			// Guarda el mail en 'session' y borra los errores
 			req.session.email = email;
-
-			// Borra los errores
 			delete req.session["olvido-contrasena"];
 
-			// Devuelve la info
+			// Fin
 			return res.json({errores, mailEnviado});
 		},
 	},
