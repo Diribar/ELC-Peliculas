@@ -110,7 +110,7 @@ window.addEventListener("load", () => {
 				DOM.iconosOK[indice].classList.add("ocultar");
 			}
 			// Muestra los íconos de OK sólo si fueron revisados
-			else if(Object.keys(v.errores).includes(campo)) {
+			else if (Object.keys(v.errores).includes(campo)) {
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.remove("ocultar");
 			}
@@ -137,12 +137,17 @@ window.addEventListener("load", () => {
 	// Acciones 'input'
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
-		e.target.value = e.target.value.toLowerCase();
 		const campo = e.target.name;
 		let valor = e.target.value;
 
 		// Averigua si hay errores
-		if (campo == "email") v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
+		if (campo == "email") {
+			const posicCursor = e.target.selectionStart;
+			valor = valor.toLowerCase();
+			e.target.value = valor;
+			e.target.selectionEnd = posicCursor;
+			v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
+		}
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Actualiza los errores
