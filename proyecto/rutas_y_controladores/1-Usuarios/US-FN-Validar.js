@@ -52,9 +52,7 @@ module.exports = {
 				errores = {paisNacim_id};
 
 				// Obtiene el consolidado
-				errores.credenciales = errores.paisNacim_id
-					? "Algún dato no coincide con el de nuestra base de datos"
-					: "";
+				errores.credenciales = errores.paisNacim_id ? "Algún dato no coincide con el de nuestra base de datos" : "";
 			}
 		}
 
@@ -164,7 +162,6 @@ module.exports = {
 				: fechaRazonable(datos.fechaNacim)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
-		if (campos.includes("rolIglesia_id")) errores.rolIglesia_id = !datos.rolIglesia_id ? variables.selectVacio : "";
 		if (campos.includes("paisNacim_id")) errores.paisNacim_id = !datos.paisNacim_id ? variables.selectVacio : "";
 
 		// Fin
@@ -173,16 +170,22 @@ module.exports = {
 	},
 	perenneBE: async function (datos) {
 		// Averigua los errores
+		const campos = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
+		for (let campo of campos) if (!datos[campo]) datos[campo] = "";
 		let errores = await this.perennesFE(datos);
+
 		// Acciones si no hay errores
 		if (!errores.hay) {
+			// Variables
+			let condicion = {};
+			for (let campo of campos) condicion[campo] = datos[campo];
+
 			// Verifica que el usuario no exista ya en la base de datos
-			let paisNacim_id = datos.paisNacim_id;
-			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {paisNacim_id});
+			let averigua = await BD_genericas.obtienePorCondicion("usuarios", condicion);
 			if (averigua && averigua.id != datos.id) errores.perennes = true;
 
 			// Resumen
-			errores.hay = errores.perennes;
+			errores.hay = !!errores.perennes;
 		}
 		// Fin
 		return errores;
