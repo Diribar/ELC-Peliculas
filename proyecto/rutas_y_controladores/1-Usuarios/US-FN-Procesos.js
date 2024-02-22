@@ -81,8 +81,8 @@ module.exports = {
 		// Fin
 		return {
 			mensajes: [
-				"El ingreso de información a compartir requiere responsabilidad.",
-				"Te pedimos que cuides nuestra reputación ante nuestros usuarios.",
+				"El ingreso de información a compartir con nuestros usuarios, requiere responsabilidad y será revisada por nuestro equipo de revisores.",
+				"Te pedimos que cuides nuestra reputación.",
 				"Podés gestionar el permiso con la flecha hacia la derecha.",
 			],
 			iconos: [
