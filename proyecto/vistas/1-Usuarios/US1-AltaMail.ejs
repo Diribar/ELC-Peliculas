@@ -9,8 +9,11 @@
 		<%- include("US1-Mail") %>
 
 		<!--Número de Documento y País-->
-		<% if (faltanCampos) { %>
-			<%- include("US1-Docum") %>
+		<% if (mostrarCampos) { %>
+			<%- include("US1-Nombre") %>
+			<%- include("US1-Apellido") %>
+			<%- include("US1-FechaNacim") %>
+			<%- include("US1-PaisNacim") %>
 		<% } %>
 
 		<!--Flechas-->
