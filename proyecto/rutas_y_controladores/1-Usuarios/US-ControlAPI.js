@@ -59,7 +59,7 @@ module.exports = {
 			const errores = await valida.olvidoContrasena(datos);
 
 			// Acciones si hay un error
-			if (errores.hay) req.session["olvido-contrasena"] = {errores, datos};
+			req.session["olvido-contrasena"] = errores.hay ? {errores, datos} : {};
 
 			// Devuelve la info
 			return res.json(errores);
