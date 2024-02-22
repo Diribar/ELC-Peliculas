@@ -168,14 +168,8 @@ module.exports = {
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
+				...{tema, codigo, dataEntry, errores, hablaHispana, hablaNoHispana},
 				titulo: "Alta de Usuario - Datos Perennes",
-				dataEntry,
-				errores,
-				hablaHispana,
-				hablaNoHispana,
-				rolesIgl,
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
