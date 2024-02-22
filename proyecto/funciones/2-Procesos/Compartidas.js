@@ -516,8 +516,8 @@ module.exports = {
 		},
 		avatar: (datos) => {
 			// Variables
-			const {avatarUrl, documAvatar, tamano, esImagen, imgOpcional} = datos;
-			const avatar = datos.avatar ? datos.avatar : avatarUrl ? avatarUrl : documAvatar ? documAvatar : "";
+			const {avatarUrl, tamano, esImagen, imgOpcional} = datos;
+			const avatar = datos.avatar ? datos.avatar : avatarUrl ? avatarUrl : "";
 			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 
 			// Respuesta
