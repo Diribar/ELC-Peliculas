@@ -55,7 +55,7 @@ module.exports = {
 	olvidoContrasena: {
 		validaMail: async (req, res) => {
 			// Variables
-			const {datos} = JSON.parse(req.query);
+			const datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContrasena(datos);
 
 			// Acciones si hay un error
