@@ -32,16 +32,11 @@ module.exports = {
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
 			const errores = dataEntry.errores ? dataEntry.errores : false;
+			const mostrarCampos = errores.faltanCampos || errores.credenciales;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo,
-				dataEntry, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
-				errores,
-				hablaHispana,
-				hablaNoHispana,
+				...{tema, codigo, titulo, dataEntry, errores, hablaHispana, hablaNoHispana, mostrarCampos},
 				urlSalir: "/usuarios/login",
 			});
 		},
