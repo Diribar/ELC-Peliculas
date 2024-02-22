@@ -236,8 +236,11 @@ module.exports = {
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			const dataEntry =
 				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {}; // es necesario que sea un array para que dé error si está vacío
+
+			// Propiedades a eliminar
 			delete req.session.email;
 			delete req.session.contrasena;
+			delete req.session["olvido-contrasena"];
 
 			// 3. Variables para la vista
 			let errores = await valida.login(dataEntry);
