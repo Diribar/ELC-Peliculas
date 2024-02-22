@@ -29,8 +29,8 @@ window.addEventListener("load", () => {
 		errores: {},
 
 		// Envío de mail
-		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail",
-		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail",
+		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail/?codigo=" + codigo,
+		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
 		pendiente: true,
 	};
 	if (v.inputs.length < DOM.mensajesError.length) v.inputs.push("credenciales");
