@@ -61,16 +61,15 @@ module.exports = {
 		// Variables
 		const {email, contrasena} = datos;
 		const largoContr = contrasena ? largoContrasena(contrasena) : null;
-		let errores = {};
 
 		// Verifica errores
-		errores.email = this.formatoMail(email);
+		let errores = this.formatoMail(email);
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
 		// Verifica credenciales
 		if (!errores.hay) {
-			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+			const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 			errores.credenciales =
 				!usuario || // credenciales inválidas si el usuario no existe
 				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // credenciales inválidas si la contraseña no es válida
