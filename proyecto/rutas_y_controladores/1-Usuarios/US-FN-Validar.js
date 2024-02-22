@@ -71,8 +71,8 @@ module.exports = {
 		if (!errores.hay) {
 			const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 			errores.credenciales =
-				!usuario || // credenciales inválidas si el usuario no existe
-				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // credenciales inválidas si la contraseña no es válida
+				!usuario || // el usuario no existe
+				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // contraseña inválida
 			errores.hay = !!errores.credenciales;
 		}
 
