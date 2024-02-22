@@ -21,7 +21,6 @@ window.addEventListener("load", () => {
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
 	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
-	console.log(DOM);
 	let v = {
 		// Inputs
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
@@ -44,7 +43,6 @@ window.addEventListener("load", () => {
 		// Prepara la info para el BE
 		let datos = {email: DOM.email.value};
 		if (v.codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
-		console.log(datos);
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
@@ -87,8 +85,7 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let consecuencias = () => {
-		console.log(v.errores);
-		// Acciones si hubo errores en el data-entry
+				// Acciones si hubo errores en el data-entry
 		if (v.errores.hay) {
 			// Si el error es porque no existen los campos 'perennes', se recarga la página
 			if (v.errores.faltanCampos) location.reload();
@@ -170,8 +167,6 @@ window.addEventListener("load", () => {
 
 		// Envía la información al BE y eventualmente el mail al usuario
 		await validaEnviaMail();
-		console.log(v.errores);
-		return;
 
 		// Consecuencias
 		consecuencias();
