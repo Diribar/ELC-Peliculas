@@ -25,6 +25,7 @@ window.addEventListener("load", () => {
 	let v = {
 		// Inputs
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
+		formatoMail: /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
 		errores: {},
 
 		// Envío de mail
@@ -35,7 +36,7 @@ window.addEventListener("load", () => {
 	};
 
 	// Funciones -----------------------------
-	let mostrarErrores = () => {
+	let muestraErrores = () => {
 		v.inputs.forEach((campo, indice) => {
 			// Actualiza el mensaje de error
 			DOM.mensajesError[indice].innerHTML = v.errores[campo];
@@ -72,15 +73,10 @@ window.addEventListener("load", () => {
 		const email = DOM.email.value;
 		const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
 		const datos = {email, paisNacim_id};
-		const ruta =
-			v.codigo == "alta-mail"
-				? "alta-mail/?email=" + email
-				: v.codigo == "olvido-contrasena"
-				? "olvido-contrasena/?datos=" + JSON.stringify(datos)
-				: "";
+		const ruta = "/usuarios/api/alta-mail/?email=";
 
 		// Envía la información al BE
-		const resultado = await fetch("/usuarios/api/" + ruta)
+		const resultado = await fetch(ruta + email)
 			.then((n) => n.json())
 			.then((n) => {
 				v.pendiente = false;
@@ -89,6 +85,38 @@ window.addEventListener("load", () => {
 
 		// Fin
 		return resultado;
+	};
+	let olvidoContrasena = {
+		validaMail: async function () {
+			// Prepara la info para el BE
+			const email = DOM.email.value;
+			const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
+			const datos = {email, paisNacim_id};
+			const ruta = "/usuarios/api/olvido-contrasena/valida-mail/";
+
+			// Envía la información al BE, y si no hay errores, envía el mail
+			v.errores = await fetch(ruta + "?datos=" + JSON.stringify(datos)).then((n) => n.json());
+			if (!errores.hay) await this.enviaMail();
+
+			// Fin
+			return;
+		},
+		enviaMail: async () => {
+			// Cartel mientras se recibe la respuesta
+			cartelProgreso();
+
+			// Variables
+			const email = DOM.email.value;
+			const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
+			const datos = {email, paisNacim_id};
+			const ruta = "/usuarios/api/olvido-contrasena/envio-de-mail/?datos=";
+
+			// Envía la información al BE
+			v.mailEnviado = await fetch(ruta + JSON.stringify(datos)).then((n) => n.json());
+
+			// Fin
+			return;
+		},
 	};
 	let cartelProgreso = async () => {
 		// Muestra el cartel
@@ -123,7 +151,7 @@ window.addEventListener("load", () => {
 			// Si el error es de documento y no exiten esos campos, se recarga la página
 			if (v.errores.documento) location.reload();
 			// De lo contrario, se muestran los errores
-			else mostrarErrores();
+			else muestraErrores();
 		}
 		// Acciones si no hubo errores en el data-entry
 		else location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
@@ -139,20 +167,17 @@ window.addEventListener("load", () => {
 		const campo = e.target.name;
 		let valor = e.target.value;
 
+		// Averigua si hay errores
 		if (campo == "email")
-			v.errores.email = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor)
-				.then((n) => n.json())
-				.then((n) => n.email);
-
-		// if (campo == "documNumero") {
-		// 	e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
-		// 	v.errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
-		// }
-
-		if (campo == "paisNacim_id") v.errores.paisNacim_id = !valor ? "Necesitamos que elijas un país" : "";
+			v.errores.email = !valor ? cartelMailVacio : !formato.test(valor) ? cartelMailFormato : "";
+		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Actualiza los errores
-		mostrarErrores();
+		errores.hay = Object.values(errores).some((n) => !!n);
+		muestraErrores();
+
+		// Fin
+		return
 	});
 
 	// Submit
@@ -163,12 +188,9 @@ window.addEventListener("load", () => {
 		if (DOM.button.className.includes("inactivo")) return;
 		else DOM.button.classList.add("inactivo"); // de lo contrario lo inactiva
 
-		// Cartel mientras se recibe la respuesta
-		cartelProgreso();
-
 		// Envía la información al BE y obtiene los valores recibidos
-		const {errores, mailEnviado} = await enviaMail();
-		v = {...v, errores, mailEnviado};
+		if (v.codigo == "alta-mail") await enviaMail();
+		if (v.codigo == "olvido-contrasena") await olvidoContrasena.validaMail();
 
 		// Consecuencias
 		consecuencias();
@@ -180,3 +202,9 @@ window.addEventListener("load", () => {
 	// Start-up: anula 'submit' si hay algún error
 	botonSubmit();
 });
+
+// Variables
+const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
+const cartelMailFormato = "Debes escribir un formato de correo válido";
+const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
+const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
