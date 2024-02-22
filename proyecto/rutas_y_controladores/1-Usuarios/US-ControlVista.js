@@ -177,18 +177,16 @@ module.exports = {
 			// Variables
 			const usuario = req.session.usuario;
 			let datos = {...req.body, id: usuario.id};
-
-			// Averigua si hay errores de validación
-			let errores = await valida.perenneBE(datos);
+			const errores = await valida.perenneBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				req.session.dataEntry = req.body; // No guarda el documAvatar
+				req.session.dataEntry = req.body;
 				req.session.errores = errores;
 				return res.redirect("/usuarios/perennes");
 			}
 
-			// Actualiza el usuario
+			// Actualiza el rol del usuario
 			datos.rolUsuario_id = rolPermInputs_id; // Le sube el rol a permInputs
 			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", datos);
 
