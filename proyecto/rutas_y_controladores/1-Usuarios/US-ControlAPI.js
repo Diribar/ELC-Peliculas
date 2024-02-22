@@ -59,7 +59,7 @@ module.exports = {
 			const errores = await valida.olvidoContrasena(datos);
 
 			// Acciones si hay un error
-			if (errores.hay) req.session["olvido-contrasena"] = {errores};
+			if (errores.hay) req.session["olvido-contrasena"] = {errores, datos};
 
 			// Devuelve la info
 			return res.json(errores);
@@ -84,7 +84,7 @@ module.exports = {
 			delete req.session["olvido-contrasena"];
 
 			// Fin
-			return res.json({errores, mailEnviado});
+			return res.json(mailEnviado);
 		},
 	},
 	videoConsVisto: async (req, res) => {
