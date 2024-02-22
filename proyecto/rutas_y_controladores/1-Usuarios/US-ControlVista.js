@@ -43,6 +43,7 @@ module.exports = {
 				urlSalir: "/usuarios/login",
 			});
 		},
+		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
 		envioExitoso: (req, res) => {
 			// Variables
 			const informacion = {
