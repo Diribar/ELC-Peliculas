@@ -1,0 +1,19 @@
+<!--Apellido-->
+<div class="labelInput">
+	<div class="relative margenInf">
+		<label for="apellido">Apellido</label>
+		<!-- Ayuda -->
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+					<li>Como figura en tu documento</li>
+				</ul>
+			</i>
+		</div>
+	</div>
+	<div class="inputError">
+		<% apellido = dataEntry ? dataEntry.apellido : "" %>
+		<input id="apellido" type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
+		<%- include("CMP-Errores", {nombre: "apellido", display: true}) %>
+	</div>
+</div>

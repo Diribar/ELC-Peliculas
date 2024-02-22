@@ -1,0 +1,31 @@
+<!--País de nacimiento-->
+<div class="labelInput">
+	<label for="paisNacim_id" class="margenInf">País de Nacimiento</label>
+	<div class="inputError">
+		<select id="paisNacim_id" name="paisNacim_id" class="input">
+			<option value="" <% if (dataEntry.paisNacim_id=="") { %>selected<% } %>>País de nacimiento</option>
+			<optgroup label="América (habla hispana)">
+				<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
+					<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+						<%= pais.nombre %>
+					</option>
+				<% } %>
+			</optgroup>
+			<optgroup label="Europa/África (habla hispana)">
+				<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
+					<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+						<%= pais.nombre %>
+					</option>
+				<% } %>
+			</optgroup>
+			<optgroup label="Países de habla no hispana">
+				<% for (let pais of hablaNoHispana) { %>
+					<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+						<%= pais.nombre %>
+					</option>
+				<% } %>
+			</optgroup>
+		</select>
+		<%- include("CMP-Errores", {nombre: "paisNacim_id", display: true}) %>
+	</div>
+</div>
