@@ -287,6 +287,8 @@ module.exports = {
 				res.cookie("login", {datos, errores}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
+			// De lo contrario, limpia el cookie de Login
+			else res.clearCookie("login");
 
 			// Obtiene el usuario con los include
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
