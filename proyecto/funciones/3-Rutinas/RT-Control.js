@@ -689,6 +689,13 @@ module.exports = {
 		await comp.actualizaFechaVencimLinks();
 		return;
 	},
+	RutinasEnUsuario: async () => {
+		// Lleva a cero el valor del campo 'intentosRecupContr'
+		await BD_genericas.actualizaTodos("usuarios", {intentosRecupContr: 0});
+
+		// Fin
+		return;
+	},
 };
 
 // Variables
