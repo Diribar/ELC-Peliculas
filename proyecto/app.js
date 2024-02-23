@@ -42,8 +42,8 @@ global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno")
 const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
 global.anoELC = 2024;
-global.versionELC = "1.03";
-global.carpetaGit = "2.88";
+global.versionELC = "1.04";
+global.carpetaGit = "2.91";
 
 // Para usar propiedades de express
 global.express = require("express");
