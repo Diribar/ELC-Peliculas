@@ -254,25 +254,19 @@ module.exports = {
 			const tema = "usuario";
 			const codigo = "login";
 
-			// Cookies de login
+			// Datos cargados
 			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
-
-			// Genera info para la vista
 			const dataEntry = datosCookies.datos ? datosCookies.datos : {};
 			const errores = datosCookies.errores ? datosCookies.errores : {};
+			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) return res.redirect("/usuarios/olvido-contrasena");
 
-			// Propiedades a eliminar
-			delete req.session.email;
-			delete req.session.contrasena;
-
-			// 3. Variables para la vista
-			let variables = [
+			// Variables para la vista
+			const variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
-			return res.send(dataEntry);
 
-			// 4. Render del formulario
+			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
@@ -280,7 +274,8 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const intentosLogin = req.cookies && req.cookies.intentosLogin ? req.cookies.intentosLogin : 0;
+			const intentosLogin =
+				req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intentosLogin : 0;
 			const datos = {...req.body, intentosLogin};
 
 			// Averigua si hay errores de data-entry
