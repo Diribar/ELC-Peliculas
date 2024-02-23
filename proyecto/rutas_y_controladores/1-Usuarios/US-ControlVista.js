@@ -178,8 +178,9 @@ module.exports = {
 			const codigo = "perennes";
 
 			// Genera info para la vista
-			const errores = req.session.errores ? req.session.errores : {};
-			const dataEntry = req.session.dataEntry ? req.session.dataEntry : {};
+			const {perennes} = req.session;
+			const dataEntry = perennes && perennes.dataEntry ? perennes.dataEntry : {};
+			const errores = perennes && perennes.errores ? perennes.errores : {};
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -190,18 +191,18 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const datos = req.body;
-			const errores = await valida.perennesBE(datos);
+			const dataEntry = req.body;
+			const errores = await valida.perennesBE(dataEntry);
+			return res.send(errores);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				req.session.dataEntry = req.body;
-				req.session.errores = errores;
+				req.session.perennes = {dataEntry, errores};
 				return res.redirect("/usuarios/perennes");
 			}
 
 			// Actualiza el rol y status del usuario
-			const novedades = {...datos, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // Le sube el rol a permInputs
+			const novedades = {...dataEntry, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // le sube el rol y el status
 			const usuario = req.session.usuario;
 			BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
 			req.session.usuario = {...usuario, ...novedades};
