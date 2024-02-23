@@ -9,8 +9,7 @@ window.addEventListener("load", () => {
 		// Inputs del formulario
 		inputs: document.querySelectorAll(".inputError .input"),
 		email: document.querySelector(".inputError .input[name='email']"),
-		documNumero: document.querySelector(".inputError .input#documNumero"),
-		documPais_id: document.querySelector(".inputError .input#documPais_id"),
+		paisNacim_id: document.querySelector(".inputError .input#paisNacim_id"),
 
 		// Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -71,9 +70,8 @@ window.addEventListener("load", () => {
 	let enviaMail = async () => {
 		// Prepara la info para el BE
 		const email = DOM.email.value;
-		const documNumero = DOM.documNumero ? DOM.documNumero.value : "";
-		const documPais_id = DOM.documPais_id ? DOM.documPais_id.value : "";
-		const datos = {email, documNumero, documPais_id};
+		const paisNacim_id = DOM.paisNacim_id ? DOM.paisNacim_id.value : "";
+		const datos = {email, paisNacim_id};
 		const ruta =
 			v.codigo == "alta-mail"
 				? "alta-mail/?email=" + email
@@ -144,12 +142,12 @@ window.addEventListener("load", () => {
 		if (campo == "email")
 			v.errores.email = await fetch("/usuarios/api/valida-formato-mail/?email=" + valor).then((n) => n.json());
 
-		if (campo == "documNumero") {
-			e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
-			v.errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
-		}
+		// if (campo == "documNumero") {
+		// 	e.target.value = valor.toUpperCase().replace(/[^A-Z\d]/g, "");
+		// 	v.errores.documNumero = !e.target.value ? "Necesitamos que completes este campo" : "";
+		// }
 
-		if (campo == "documPais_id") v.errores.documPais_id = !valor ? "Necesitamos que elijas un país" : "";
+		if (campo == "paisNacim_id") v.errores.paisNacim_id = !valor ? "Necesitamos que elijas un país" : "";
 
 		// Actualiza los errores
 		mostrarErrores();

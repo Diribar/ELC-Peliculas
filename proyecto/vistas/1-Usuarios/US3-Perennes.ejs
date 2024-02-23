@@ -7,99 +7,97 @@
 			<!-- Ayuda -->
 			<div class="ayuda">
 				<i class="fa-solid fa-circle-question ayudaClick desplClick">
-					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-						<li>Por favor brindanos datos fieles a tu identidad.</li>
-						<li>Algunos de estos datos se te pueden pedir en el futuro para validar tu identidad.</li>
-						<li>El único dato que vas a poder editar en el futuro es tu Rol en la Iglesia.</li>
+					<ul type="dots" class="ayudaMostrar desplMostrar">
+						<li>Por favor brindanos datos fieles de tu identidad, como figuran en tu documento.</li>
+						<li>Cuando sea necesario, te pediremos estos datos para validar que seas vos.</li>
+						<li>Una vez enviado el formulario, los datos no podrán ser editados.</li>
 					</ul>
 				</i>
 			</div>
 		</div>
 		<!-- Datos -->
 		<section id="informacion">
-			<!-- Varios -->
-			<div id="columna1">
+			<!-- Nombre y Apellido -->
+			<div class="filas">
 				<!--Nombre-->
 				<div class="labelInput">
-					<label for="nombre">Nombre</label>
+					<div class="relative margenInf">
+						<label for="nombre">Nombre Civil</label>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+									<li>Como figura en tu documento</li>
+								</ul>
+							</i>
+						</div>
+					</div>
 					<div class="inputError">
 						<% nombre = dataEntry ? dataEntry.nombre : "" %>
-						<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
+						<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre Civil" value="<%= nombre %>">
 						<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
 					</div>
 				</div>
 				<!--Apellido-->
 				<div class="labelInput">
-					<label for="apellido">Apellido</label>
+					<div class="relative margenInf">
+						<label for="apellido">Apellido</label>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+									<li>Como figura en tu documento</li>
+								</ul>
+							</i>
+						</div>
+					</div>
 					<div class="inputError">
 						<% apellido = dataEntry ? dataEntry.apellido : "" %>
 						<input id="apellido" type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
 						<%- include("CMP-Errores", {nombre: "apellido", display: true}) %>
 					</div>
 				</div>
+			</div>
+			<!-- Nacimiento -->
+			<div class="filas">
 				<!--Fecha de Nacimiento-->
 				<div class="labelInput">
-					<label for="fechaNacim">Fecha de Nacimiento</label>
+					<label for="fechaNacim" class="margenInf">Fecha de Nacimiento</label>
 					<div class="inputError">
 						<% fechaNacim = dataEntry ? dataEntry.fechaNacim : "" %>
 						<input id="fechaNacim" type="date" name="fechaNacim" class="input" value="<%= fechaNacim %>">
 						<%- include("CMP-Errores", {nombre: "fechaNacim", display: true}) %>
 					</div>
 				</div>
-			</div>
-			<!-- Documento -->
-			<div id="columna2">
-				<!--Número de Documento-->
+				<!--País de nacimiento-->
 				<div class="labelInput">
-					<label for="documNumero">Número de Documento</label>
+					<label for="paisNacim_id" class="margenInf">País de Nacimiento</label>
 					<div class="inputError">
-						<input type="text" id="documNumero" class="input" name="documNumero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.documNumero : "" %>">
-						<%- include("CMP-Errores", {nombre: "documNumero", display: true}) %>
-					</div>
-				</div>
-				<!--Expedido en qué país-->
-				<div class="labelInput">
-					<label for="documPais_id">Expedido en qué país</label>
-					<div class="inputError">
-						<select id="documPais_id" name="documPais_id" class="input">
-							<option value="" <% if (dataEntry.documPais_id=="") {%>selected <%}%>>Elejí un país</option>
+						<select id="paisNacim_id" name="paisNacim_id" class="input">
+							<option value="" <% if (dataEntry.paisNacim_id=="") { %>selected<% } %>>País de nacimiento</option>
 							<optgroup label="América (habla hispana)">
 								<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
-									<option value="<%= pais.id %>" <% if (dataEntry.documPais_id==pais.id) { %>selected <% } %>>
+									<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
 										<%= pais.nombre %>
 									</option>
 								<% } %>
 							</optgroup>
 							<optgroup label="Europa/África (habla hispana)">
 								<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
-									<option value="<%= pais.id %>" <% if (dataEntry.documPais_id==pais.id) { %>selected <% } %>>
+									<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
 										<%= pais.nombre %>
 									</option>
 								<% } %>
 							</optgroup>
 							<optgroup label="Países de habla no hispana">
 								<% for (let pais of hablaNoHispana) { %>
-									<option value="<%= pais.id %>" <% if (dataEntry.documPais_id==pais.id) { %>selected <% } %>>
+									<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
 										<%= pais.nombre %>
 									</option>
 								<% } %>
 							</optgroup>
 						</select>
-						<%- include("CMP-Errores", {nombre: "documPais_id", display: true}) %>
-					</div>
-				</div>
-				<!--Rol en la iglesia-->
-				<div class="labelInput">
-					<label for="rolIglesia_id">Rol en la Iglesia Católica</label>
-					<div class="inputError">
-						<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
-						<select id="rolIglesia_id" name="rolIglesia_id" class="input">
-							<option value="" <% if (!rolIglesia_id) { %>selected<% } %>>Elejí una opción</option>
-							<% for (let rolIglesia of rolesIgl) { %>
-								<option value="<%= rolIglesia.id %>" <% if (rolIglesia_id == rolIglesia.id) { %>selected<% } %>><%= rolIglesia.nombre %></option>
-							<% } %>
-						</select>
-						<%- include("CMP-Errores", {nombre: "rolIglesia_id", display: true}) %>
+						<%- include("CMP-Errores", {nombre: "paisNacim_id", display: true}) %>
 					</div>
 				</div>
 			</div>

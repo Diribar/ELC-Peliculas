@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 21/feb",
-	"HoraUTC": "11:20",
+	"FechaUTC": "Jue. 22/feb",
+	"HoraUTC": "0:50",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 19/feb",
@@ -31,10 +31,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-feb-24": {"titulo": "Cuaresma"},
 		"20-feb-24": {"titulo": "Santos Pastorcitos de Fátima", "entidad": "personajes", "id": 27},
 		"21-feb-24": {"titulo": "Eric Liddell", "entidad": "personajes", "id": 194},
 		"22-feb-24": {"titulo": "Cuaresma"},
-		"23-feb-24": {"titulo": "San Policarpo de Esmirna", "entidad": "personajes", "id": 114}
+		"23-feb-24": {"titulo": "San Policarpo de Esmirna", "entidad": "personajes", "id": 114},
+		"24-feb-24": {"titulo": "Cuaresma"}
 	}
 }

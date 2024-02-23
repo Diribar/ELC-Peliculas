@@ -46,23 +46,15 @@ module.exports = {
 						comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
 						". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
 				};
-			// Si el usuario tiene status 'perenne_id' valida su n° de documento
+			// Si el usuario tiene status 'perenne_id', valida sus demás datos
 			else if (usuario.statusRegistro_id == perennes_id) {
-				let {documNumero, documPais_id} = this.documento(datos);
-				errores = {documNumero, documPais_id};
-
-				// Si ninguno está vacío, valida si alguno tiene un desvío
-				if (
-					!errores.documNumero &&
-					!errores.documPais_id &&
-					(datos.documNumero != usuario.documNumero || datos.documPais_id != usuario.documPais_id)
-				) {
-					errores.documNumero = "El número de documento y/o el país, no coinciden con el de nuestra Base de Datos";
-					errores.documPais_id = errores.documNumero;
-				}
+				let {paisNacim_id} = this.perennes(datos);
+				errores = {paisNacim_id};
 
 				// Obtiene el consolidado
-				errores.documento = !!errores.documNumero || !!errores.documPais_id;
+				errores.credenciales = errores.paisNacim_id
+					? "Algún dato no coincide con el de nuestra base de datos"
+					: "";
 			}
 		}
 
@@ -70,16 +62,13 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	documento: (datos) => {
-		let formatoDocumNumero = /^[\d]+$/;
-
+	perennes: (datos) => {
 		let errores = {
-			documNumero: !datos.documNumero
-				? variables.inputVacio
-				: !formatoDocumNumero.test(datos.documNumero)
-				? "Sólo se admiten números"
+			paisNacim_id: !datos.paisNacim_id
+				? "Necesitamos que elijas un país"
+				: datos.paisNacim_id != datos.usuario.paisNacim_id
+				? "El país no coincide con el de nuestra base de datos"
 				: "",
-			documPais_id: !datos.documPais_id ? "Necesitamos que elijas un país" : "",
 		};
 
 		// Fin
@@ -176,19 +165,7 @@ module.exports = {
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
 		if (campos.includes("rolIglesia_id")) errores.rolIglesia_id = !datos.rolIglesia_id ? variables.selectVacio : "";
-		if (campos.includes("documNumero")) {
-			// Variables
-			let dato = datos.documNumero;
-			let respuesta = "";
-
-			// Validaciones
-			if (!dato) respuesta = variables.inputVacio;
-			if (!respuesta) respuesta = comp.validacs.longitud(dato, 4, 15);
-
-			// Fin
-			errores.documNumero = respuesta;
-		}
-		if (campos.includes("documPais_id")) errores.documPais_id = !datos.documPais_id ? variables.selectVacio : "";
+		if (campos.includes("paisNacim_id")) errores.paisNacim_id = !datos.paisNacim_id ? variables.selectVacio : "";
 
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -199,14 +176,13 @@ module.exports = {
 		let errores = await this.perennesFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			// Verifica que el documento no exista ya en la Base de Datos
-			let documNumero = datos.documNumero;
-			let documPais_id = datos.documPais_id;
-			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {documNumero, documPais_id});
-			if (averigua && averigua.id != datos.id) errores.credenciales = true;
+			// Verifica que el usuario no exista ya en la base de datos
+			let paisNacim_id = datos.paisNacim_id;
+			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {paisNacim_id});
+			if (averigua && averigua.id != datos.id) errores.perennes = true;
 
 			// Resumen
-			errores.hay = errores.credenciales
+			errores.hay = errores.perennes;
 		}
 		// Fin
 		return errores;
