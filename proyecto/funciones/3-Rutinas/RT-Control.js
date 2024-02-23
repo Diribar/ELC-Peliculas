@@ -27,10 +27,10 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		// await agregaColeccion_id();
 
 		// Comunica el fin de las rutinas
 		console.log();
+		// await this.RutinasEnUsuario();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -470,8 +470,13 @@ module.exports = {
 		return;
 	},
 	RutinasEnUsuario: async () => {
-		// Lleva a cero el valor del campo 'intsValidarPerenne'
-		await BD_genericas.actualizaTodos("usuarios", {intsValidarPerenne: 0});
+		// Lleva a cero el valor del campo 'intsValPerenne'
+		await BD_genericas.actualizaTodos("usuarios", {intsValPerenne: 0});
+
+		// Elimina usuarios antiguos que no confirmaron su contraseña
+		const fechaDeCorte = new Date(new Date().getTime() - unDia);
+		const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
+		await BD_genericas.eliminaTodosPorCondicion("usuarios", condicion);
 
 		// Fin
 		return;
