@@ -193,13 +193,13 @@ module.exports = {
 			// Variables
 			const dataEntry = req.body;
 			const errores = await valida.perennesBE(dataEntry);
-			return res.send(errores);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
 				req.session.perennes = {dataEntry, errores};
 				return res.redirect("/usuarios/perennes");
 			}
+			return res.send(errores);
 
 			// Actualiza el rol y status del usuario
 			const novedades = {...dataEntry, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // le sube el rol y el status
@@ -300,7 +300,7 @@ module.exports = {
 	},
 	logout: (req, res) => {
 		// Borra los datos del usuario, de session y cookie
-		delete req.session.usuario;
+		req.session = {};
 		res.clearCookie("email");
 
 		// Fin
