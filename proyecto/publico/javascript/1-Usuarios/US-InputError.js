@@ -12,7 +12,7 @@ window.addEventListener("load", () => {
 		ocultaOK_imagen: form.querySelector(".inputError .fa-circle-check.ocultaOK_imagen"),
 		iconosError: form.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: form.querySelectorAll(".inputError .mensajeError"),
-		credencialesInvalidas: form.querySelector("#credencialesInvalidas"),
+		credenciales: form.querySelector("#credenciales"),
 
 		// Temas de avatar
 		imgAvatar: form.querySelector(".inputError label img"),
@@ -110,7 +110,7 @@ window.addEventListener("load", () => {
 			const posicCursor = input.selectionStart;
 
 			// Desactiva el cartel de 'credenciales inválidas'
-			if (DOM.credencialesInvalidas) DOM.credencialesInvalidas.classList.add("ocultar");
+			if (DOM.credenciales) DOM.credenciales.classList.add("ocultar");
 
 			// Primera letra en mayúscula
 			if (tarea != "login" && input.localName == "input" && input.type == "text") {
