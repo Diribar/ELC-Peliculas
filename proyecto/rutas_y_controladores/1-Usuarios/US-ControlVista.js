@@ -31,8 +31,11 @@ module.exports = {
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 
+			// Session de olvidoContrasena - 'altaMail' no usa session
+			const datosSession = req.session.olvidoContrasena ? req.session.olvidoContrasena : {};
+			delete req.session.olvidoContrasena;
+
 			// Genera info para la vista
-			const datosSession = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
 			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
 			const mostrarCampos = errores.faltanCampos || errores.credenciales;
@@ -253,15 +256,14 @@ module.exports = {
 
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
 			const dataEntry =
-				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {}; // es necesario que sea un array para que dé error si está vacío
+				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {};
 
 			// Propiedades a eliminar
 			delete req.session.email;
 			delete req.session.contrasena;
-			delete req.session["olvido-contrasena"];
 
-			// 3. Variables para la vista
 			let errores = await valida.login(dataEntry);
+			// 3. Variables para la vista
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
