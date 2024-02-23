@@ -110,8 +110,7 @@ window.addEventListener("load", () => {
 			const posicCursor = input.selectionStart;
 
 			// Desactiva el cartel de 'credenciales inválidas'
-			if (tarea == "login" || (campo == "paisNacim_id" && DOM.credencialesInvalidas))
-				DOM.credencialesInvalidas.classList.add("ocultar");
+			if (DOM.credencialesInvalidas) DOM.credencialesInvalidas.classList.add("ocultar");
 
 			// Primera letra en mayúscula
 			if (tarea != "login" && input.localName == "input" && input.type == "text") {
