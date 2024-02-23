@@ -39,7 +39,7 @@ module.exports = {
 				hay: true,
 			};
 
-		// 4. Verifica si se superaron la cantidad de intentos fallidos aceptados
+		// 4. Verifica si se superó la cantidad de intentos fallidos tolerados
 		if (usuario.intentosRecupContr > 2) return {email: intentosRecupContr, hay: true};
 
 		// 5. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
@@ -57,10 +57,10 @@ module.exports = {
 			errores.credenciales = errores.credenciales ? usuarioInexistente : ""; // convierte el error en una frase
 			if (errores.credenciales) {
 				// Aumenta la cantidad de intentos para recuperar la contraseña
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intentosRecupContr", 1);
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intentosRecupContr");
 				usuario.intentosRecupContr++;
 
-				// Verifica nuevamente si se superaron la cantidad de intentos fallidos aceptados
+				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
 				if (usuario.intentosRecupContr > 2) errores.email = intentosRecupContr;
 			}
 		}
@@ -83,12 +83,13 @@ module.exports = {
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
-		// Verifica credenciales
+		// Revisa las credenciales
 		if (!errores.hay) {
 			const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 			errores.credenciales =
 				!usuario || // el usuario no existe
 				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // contraseña inválida
+			errores.credenciales = errores.credenciales ? "Credenciales inválidas" : "";
 			errores.hay = !!errores.credenciales;
 		}
 
