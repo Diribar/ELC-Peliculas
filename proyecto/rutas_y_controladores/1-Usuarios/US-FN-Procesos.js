@@ -53,7 +53,7 @@ module.exports = {
 		let comentario = "";
 		comentario += "<br>" + "¡Hola!";
 		comentario += "<br>" + "Ya tenés tu usuario para usar en nuestro sitio.";
-		comentario += "<br>" + "La contraseña es: <bold><u>" + contrasena +"</u></bold>"
+		comentario += "<br>" + "La contraseña es: <bold><u>" + contrasena + "</u></bold>";
 		comentario += "<br>" + "Necesitamos que la uses antes de que transcurran 24hs.";
 		comentario += "<br>" + "Si no se usa dentro de ese plazo, se dará de baja el usuario.";
 
@@ -109,4 +109,8 @@ module.exports = {
 			trabajando: true,
 		};
 	},
+	intsLogin:
+		"Debido a los intentos fallidos de login, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	intsValPerenne:
+		"Debido a los intentos fallidos para validar tus datos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
 };
