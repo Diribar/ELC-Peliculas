@@ -59,7 +59,7 @@ module.exports = {
 			const errores = await valida.olvidoContrasena(datos);
 
 			// Acciones si hay un error
-			req.session["olvido-contrasena"] = errores.hay ? {errores, datos} : {};
+			req.session.olvidoContrasena = errores.hay ? {errores, datos} : {};
 
 			// Devuelve la info
 			return res.json(errores);
@@ -81,7 +81,7 @@ module.exports = {
 
 			// Guarda el mail en 'session' y borra los errores
 			req.session.email = email;
-			delete req.session["olvido-contrasena"];
+			delete req.session.olvidoContrasena;
 
 			// Fin
 			return res.json(mailEnviado);

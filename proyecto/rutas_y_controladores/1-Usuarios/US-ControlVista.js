@@ -31,8 +31,11 @@ module.exports = {
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 
+			// Session de olvidoContrasena - 'altaMail' no usa session
+			const datosSession = req.session.olvidoContrasena ? req.session.olvidoContrasena : {};
+			delete req.session.olvidoContrasena;
+
 			// Genera info para la vista
-			const datosSession = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
 			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
 			const mostrarCampos = errores.faltanCampos || errores.credenciales;
@@ -178,8 +181,9 @@ module.exports = {
 			const codigo = "perennes";
 
 			// Genera info para la vista
-			const errores = req.session.errores ? req.session.errores : {};
-			const dataEntry = req.session.dataEntry ? req.session.dataEntry : {};
+			const {perennes} = req.session;
+			const dataEntry = perennes && perennes.dataEntry ? perennes.dataEntry : {};
+			const errores = perennes && perennes.errores ? perennes.errores : {};
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -190,18 +194,18 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const datos = req.body;
-			const errores = await valida.perennesBE(datos);
+			const dataEntry = req.body;
+			const errores = await valida.perennesBE(dataEntry);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				req.session.dataEntry = req.body;
-				req.session.errores = errores;
+				req.session.perennes = {dataEntry, errores};
 				return res.redirect("/usuarios/perennes");
 			}
+			return res.send(errores);
 
 			// Actualiza el rol y status del usuario
-			const novedades = {...datos, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // Le sube el rol a permInputs
+			const novedades = {...dataEntry, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // le sube el rol y el status
 			const usuario = req.session.usuario;
 			BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
 			req.session.usuario = {...usuario, ...novedades};
@@ -246,42 +250,50 @@ module.exports = {
 	// Login
 	login: {
 		form: async (req, res) => {
-			// 1. Tema y Código
+			// Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
 
-			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
-			const dataEntry =
-				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {}; // es necesario que sea un array para que dé error si está vacío
+			// Datos cargados
+			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
+			const dataEntry = datosCookies.datos ? datosCookies.datos : req.session.email ? {email: req.session.email} : {};
+			const errores = datosCookies.errores ? datosCookies.errores : {};
 
-			// Propiedades a eliminar
-			delete req.session.email;
-			delete req.session.contrasena;
-			delete req.session["olvido-contrasena"];
+			// Si se superó la cantidad de intentos, redirige a "Olvido de contraseña"
+			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) {
+				req.session.olvidoContrasena = {datos: {email: dataEntry.email}};
+				return res.redirect("/usuarios/olvido-contrasena");
+			}
 
-			// 3. Variables para la vista
-			let errores = await valida.login(dataEntry);
-			let variables = [
+			// Variables para la vista
+			const variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
 
-			// 4. Render del formulario
+			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
 		guardar: async (req, res) => {
-			// Averigua si hay errores de data-entry
-			let errores = await valida.login(req.body);
+			// Variables
+			const intentosLogin =
+				req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intentosLogin : 0;
+			const datos = {...req.body, intentosLogin};
 
-			// Si hay errores de validación, redirecciona
+			// Averigua si hay errores de data-entry
+			let errores = await valida.login(datos);
+
+			// Si hay errores de validación, regresa al form
 			if (errores.hay) {
-				req.session.email = req.body.email;
-				req.session.contrasena = req.body.contrasena;
+				datos.intentosLogin++;
+				res.cookie("login", {datos, errores}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
+			// De lo contrario, limpia el cookie de Login
+			else res.clearCookie("login");
 
 			// Obtiene el usuario con los include
 			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
@@ -298,8 +310,8 @@ module.exports = {
 		},
 	},
 	logout: (req, res) => {
-		// Borra los datos del usuario, de session y cookie
-		delete req.session.usuario;
+		// Borra los datos de session y cookie
+		for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
 		res.clearCookie("email");
 
 		// Fin
