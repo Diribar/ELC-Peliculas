@@ -39,7 +39,6 @@ module.exports = {
 			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
 			const mostrarCampos = errores.faltanCampos || errores.credenciales;
-			console.log(42,mostrarCampos,errores);
 
 			// Vista
 			return res.render("CMP-0Estructura", {
