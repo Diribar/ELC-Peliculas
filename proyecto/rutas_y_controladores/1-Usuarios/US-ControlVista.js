@@ -38,7 +38,7 @@ module.exports = {
 			// Genera info para la vista
 			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
-			const mostrarCampos = errores.faltanCampos || errores.credenciales;
+			const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsValidarPerenne;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -314,7 +314,7 @@ module.exports = {
 			// Feedback
 			const informacion = {
 				mensajes: [
-					"Debido a los intentos fallidos de login, por seguridad te pedimosque esperes hasta 24hs para volver a intentarlo.",
+					"Debido a los intentos fallidos de login, por seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
 					"Con el ícono de la izquierda salís a la vista de inicio.",
 				],
 				iconos: [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}],
