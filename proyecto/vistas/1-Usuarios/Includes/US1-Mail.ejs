@@ -2,12 +2,15 @@
 	<div class="inputError">
 		<input
 			type="text"
-			class="input"
+			class="input <% if (mostrarCampos) { %>ocultar<% } %>"
 			name="email"
 			placeholder="Ingresá tu dirección de Correo Electrónico"
 			<% if (codigo != "alta-mail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
 			autofocus
 		>
+		<% if (mostrarCampos) { %>
+			<p><%= dataEntry.email %></p>
+		<% } %>
 		<%- include("CMP-Errores", {nombre: "email", display: true}) %>
 	</div>
 </section>

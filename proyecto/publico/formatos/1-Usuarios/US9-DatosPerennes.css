@@ -5,7 +5,7 @@
 form #informacion {display: flex; flex-direction: column; width: 100%;}
 #informacion .filas {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
 #informacion .labelInput {margin: 10px 0; display: flex; flex-direction: column;}
-#informacion .labelInput .inputError .input {width: 170px;}
+#informacion .labelInput .inputError .input {width: 170px; text-align: center;}
 #informacion .labelInput .inputError .mensajeError {max-width: 200px;}
 #informacion .labelInput label {margin-right: 0;}
 #informacion .labelInput .margenInf {margin-bottom: 3px;}

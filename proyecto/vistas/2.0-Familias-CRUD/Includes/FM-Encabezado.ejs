@@ -31,7 +31,7 @@
 						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
 						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
 					</div>
-					<select id="temporada" <% if (tema != "prodRud") { %> readonly <% } %> <% if (registro.coleccion.cantTemps == 1) { %>class="ocultar"<% } %>>
+					<select id="temporada" <% if (tema != "prodRud") { %>readonly <% } %> <% if (registro.coleccion.cantTemps == 1) { %>class="ocultar"<% } %>>
 						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
 							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 						<% } %>
