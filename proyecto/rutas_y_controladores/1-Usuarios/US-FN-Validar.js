@@ -17,16 +17,16 @@ module.exports = {
 		return errores;
 	},
 	olvidoContrasena: async function (datos) {
-		// 1. Averigua si hay errores básicos de email
+		// 1. Mail - Averigua si hay errores básicos
 		const {email} = datos;
 		let errores = formatoMail(email);
 		if (errores.hay) return errores;
 
-		// 2. Verifica si el mail existe en la BD
+		// 2. Mail - Verifica si existe en la BD
 		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 		if (!usuario) return {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true};
 
-		// 3. Detecta si ya se le envió un mail en las últimas 24hs
+		// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
 		const ahora = comp.fechaHora.ahora();
 		const fechaContrasena = usuario.fechaContrasena;
 		const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
@@ -39,14 +39,17 @@ module.exports = {
 				hay: true,
 			};
 
-		// 4. Si el usuario tiene status 'perenne_id', valida sus demás datos
+		// 4. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
 		if (usuario.statusRegistro_id == perennes_id) {
 			// 4.A Si fija si los datos tienen la info de los campos perennes
 			const campos = Object.keys(datos);
-			for (let campo of camposPerennes) if (!campos.includes(campo)) errores.faltanCampos = true;
-			if (errores.faltanCampos) return {...errores, hay: true};
+			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
 
-			// 4.B Revisa las credenciales
+			// 4.B Revisa el formato superficial de los valores
+			errores = perennesFE(datos);
+			if (errores.hay) return errores;
+
+			// 4.C Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
 			errores.credenciales = errores.credenciales ? "Algún dato no coincide con el de nuestra base de datos" : "";
 			if (errores.credenciales) {
@@ -65,7 +68,11 @@ module.exports = {
 	login: async function (datos) {
 		// Variables
 		const {email, contrasena} = datos;
-		const largoContr = contrasena ? largoContrasena(contrasena) : null;
+		const largoContr = contrasena
+			? contrasena.length < 6 || contrasena.length > 12
+				? "La contraseña debe tener entre 6 y 12 caracteres"
+				: ""
+			: null;
 
 		// Verifica errores
 		let errores = this.formatoMail(email);
@@ -135,23 +142,21 @@ let formatoMail = (email) => {
 	// Fin
 	return errores;
 };
-
-let largoContrasena = (dato) => {
-	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
-};
-let fechaRazonable = (dato) => {
-	// Verificar que la fecha sea razonable
-	let fecha = new Date(dato);
-	let max = comp.fechaHora.ahora();
-	let min = comp.fechaHora.ahora();
-	max.setFullYear(max.getFullYear() - 5);
-	min.setFullYear(min.getFullYear() - 100);
-	return fecha > max || fecha < min ? true : false;
-};
 let perennesFE = (datos) => {
 	// Variables
 	let errores = {};
 	let campos = Object.keys(datos);
+
+	// Funciones
+	let fechaRazonable = (dato) => {
+		// Verificar que la fecha sea razonable
+		let fecha = new Date(dato);
+		let max = comp.fechaHora.ahora();
+		let min = comp.fechaHora.ahora();
+		max.setFullYear(max.getFullYear() - 5);
+		min.setFullYear(min.getFullYear() - 100);
+		return fecha > max || fecha < min ? true : false;
+	};
 
 	// Validaciones
 	if (campos.includes("nombre")) {
@@ -199,7 +204,7 @@ let perennesBE = async (datos) => {
 	for (let campo of camposPerennes) if (!datos[campo]) datos[campo] = "";
 	let errores = await perennesFE(datos);
 
-	// Averigua si ya existe un usuario con esa credenciales
+	// Averigua si ya existe un usuario con esas credenciales
 	if (!errores.hay) {
 		// Variables
 		let condicion = {};
