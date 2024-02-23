@@ -22,10 +22,11 @@ module.exports = {
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
-	actualizaPorId: (entidad, id, datos) => db[entidad].update(datos, {where: {id}}).then(() => true),
+	actualizaTodos: (entidad, datos) => db[entidad].update(datos).then(() => true),
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}).then(() => true),
-	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
+	actualizaPorId: (entidad, id, datos) => db[entidad].update(datos, {where: {id}}).then(() => true),
 	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}).then(() => true),
+	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) =>
 		db[entidad].increment(campo, {by: aumento ? aumento : 1, where: {id}}),
 	//reduceElProximoValorDeID: (entidad) => queryInterface.sequelize.query("ALTER TABLE " + entidad + " AUTO_INCREMENT = 1;"),
