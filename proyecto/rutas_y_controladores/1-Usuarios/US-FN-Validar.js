@@ -89,7 +89,9 @@ module.exports = {
 			errores.credenciales =
 				!usuario || // el usuario no existe
 				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // contraseña inválida
-			errores.credenciales = errores.credenciales ? "Credenciales inválidas" : "";
+			errores.credenciales = errores.credenciales
+				? "Credenciales inválidas.<br>Intento " + (datos.intentosLogin + 1) + " de 3"
+				: "";
 			errores.hay = !!errores.credenciales;
 		}
 
