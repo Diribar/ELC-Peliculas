@@ -49,6 +49,7 @@ router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guarda
 
 // Vistas -Login
 router.get("/login", vista.login.form);
+router.get("/login/suspendido", vista.login.loginSuspendido);
 router.post("/login", visitas, vista.login.guardar);
 router.get("/logout", statusCorrecto, vista.logout);
 
