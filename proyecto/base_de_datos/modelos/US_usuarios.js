@@ -5,11 +5,12 @@ module.exports = (sequelize, dt) => {
 		contrasena: {type: dt.STRING(50)},
 		nombre: {type: dt.STRING(30)},
 		apellido: {type: dt.STRING(30)},
-		apodo: {type: dt.STRING(30)},
-		avatar: {type: dt.STRING(100)},
 		fechaNacim: {type: dt.STRING(10)}, // debe ser string, para poderlo comparar con datos de formularios
+		paisNacim_id: {type: dt.STRING(2)},
+		apodo: {type: dt.STRING(30)},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
+		avatar: {type: dt.STRING(100)},
 		rolUsuario_id: {type: dt.INTEGER},
 
 		cartelResp_prods: {type: dt.BOOLEAN},
@@ -18,7 +19,6 @@ module.exports = (sequelize, dt) => {
 		cartelFinPenaliz: {type: dt.BOOLEAN},
 
 		autorizadoFA: {type: dt.BOOLEAN},
-		paisNacim_id: {type: dt.STRING(2)},
 
 		diasLogin: {type: dt.INTEGER},
 		versionElcUltimoLogin: {type: dt.STRING(4)},
