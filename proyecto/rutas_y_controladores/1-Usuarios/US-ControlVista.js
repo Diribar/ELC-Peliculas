@@ -256,9 +256,14 @@ module.exports = {
 
 			// Datos cargados
 			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
-			const dataEntry = datosCookies.datos ? datosCookies.datos : {};
+			const dataEntry = datosCookies.datos ? datosCookies.datos : req.session.email ? {email: req.session.email} : {};
 			const errores = datosCookies.errores ? datosCookies.errores : {};
-			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) return res.redirect("/usuarios/olvido-contrasena");
+
+			// Si se superó la cantidad de intentos, redirige a "Olvido de contraseña"
+			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) {
+				req.session.olvidoContrasena = {datos: {email: dataEntry.email}};
+				return res.redirect("/usuarios/olvido-contrasena");
+			}
 
 			// Variables para la vista
 			const variables = [
