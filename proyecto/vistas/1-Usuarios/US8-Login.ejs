@@ -25,10 +25,10 @@
 				</div>
 			<% } %>
 		</section>
+
 		<!--Credenciales Inválidas-->
-		<div class="flexCol">
-			<p id="credenciales" class="<%- !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
-		</div>
+		<%- include("US9-CredencsInvs") %>
+
 		<!--Flechas-->
 		<div class="flexRow">
 			<div class="flechas">
