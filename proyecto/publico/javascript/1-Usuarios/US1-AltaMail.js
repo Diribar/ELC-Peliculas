@@ -47,6 +47,10 @@ window.addEventListener("load", () => {
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
+
+		// Si se necesitan los campos 'perennes', se recarga la página
+		if (v.errores.faltanCampos || (v.errores.intsValidarPerenne && v.inputs.length == 1)) return location.reload();
+
 		if (v.errores.hay) return;
 
 		// Cartel mientras se recibe la respuesta
@@ -86,15 +90,10 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let consecuencias = () => {
-		// Acciones si hubo errores en el data-entry
-		if (v.errores.hay) {
-			// Si el error es porque no existen los campos 'perennes', se recarga la página
-			if (v.errores.faltanCampos) location.reload();
-			// De lo contrario, se muestran los errores
-			else muestraErrores();
-		}
-		// Acciones si no hubo errores en el data-entry
-		else location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+		// Acciones
+		v.errores.hay
+			? muestraErrores() // se muestran los errores
+			: (location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido); // De lo contrario redirige
 
 		// Fin
 		return;
