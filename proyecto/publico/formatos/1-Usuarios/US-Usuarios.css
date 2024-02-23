@@ -28,7 +28,12 @@ form select {text-align: left;}
 form .flechas {margin: 15px auto 5px;}
 
 /* Credenciales inválidas*/
-form #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}
-form #credencialesInvalidas {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
-form #credencialesInvalidas, form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
-form #credencialesInvalidas p {margin: 0;}
+/* form #credenciales {display: flex; flex-direction: row; justify-content: center; align-items: center;}
+form #credenciales {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
+form #credenciales, form #credenciales p {background: var(--rojo-oscuro); color: var(--gris-claro);}
+form #credenciales p {margin: 0;} */
+
+/* Credenciales inválidas */
+#credenciales.errores .mensajeError {display: block; position: static; translate: none;}
+#credenciales.errores .mensajeError {margin: 10px auto 0; text-align: center; width: 200px;}
+#credenciales.errores .mensajeError::before {content: none;}
