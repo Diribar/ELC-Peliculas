@@ -39,27 +39,31 @@ module.exports = {
 				hay: true,
 			};
 
-		// 4. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
+		// 4. Verifica si se superaron la cantidad de intentos fallidos aceptados
+		if (usuario.intentosRecupContr > 2) return {email: intentosRecupContr, hay: true};
+
+		// 5. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
 		if (usuario.statusRegistro_id == perennes_id) {
-			// 4.A Si fija si los datos tienen la info de los campos perennes
+			// 5.A Si fija si los datos tienen la info de los campos perennes
 			const campos = Object.keys(datos);
 			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
 
-			// 4.B Revisa el formato superficial de los valores
+			// 5.B Revisa el formato superficial de los valores
 			errores = perennesFE(datos);
 			if (errores.hay) return errores;
 
-			// 4.C Revisa las credenciales
+			// 5.C Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
-			errores.credenciales = errores.credenciales ? "Algún dato no coincide con el de nuestra base de datos" : "";
+			errores.credenciales = errores.credenciales ? usuarioInexistente : ""; // convierte el error en una frase
 			if (errores.credenciales) {
+				// Aumenta la cantidad de intentos para recuperar la contraseña
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intentosRecupContr", 1);
 				usuario.intentosRecupContr++;
+
+				// Verifica nuevamente si se superaron la cantidad de intentos fallidos aceptados
+				if (usuario.intentosRecupContr > 2) errores.email = intentosRecupContr;
 			}
 		}
-
-		// 5. Verifica si se superaron la cantidad de intentos fallidos aceptados
-		if (usuario.intentosRecupContr > 2) errores.email = intentosRecupContr;
 
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -128,6 +132,7 @@ const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const intentosRecupContr =
 	"Debido a los intentos fallidos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.";
+const usuarioInexistente = "Algún dato no coincide con el de nuestra base de datos";
 const usuarioYaExiste =
 	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
 
@@ -213,10 +218,11 @@ let perennesBE = async (datos) => {
 		for (let campo of camposPerennes) condicion[campo] = datos[campo];
 
 		// Averigua si el usuario existe en la base de datos
-		errores.usuarioYaExiste = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
-		errores.usuarioYaExiste = errores.usuarioYaExiste ? usuarioYaExiste : "";
-		errores.hay = errores.usuarioYaExiste;
+		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
+		errores.credenciales = errores.credenciales ? usuarioYaExiste : ""; // convierte el error en una frase
+		errores.hay = !!errores.credenciales;
 	}
+
 	// Fin
 	return errores;
 };
