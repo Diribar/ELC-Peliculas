@@ -18,7 +18,8 @@
 		"FeedbackParaRevisores": "SI",
 		"EliminaCalifsSinPPP": "SI",
 		"LoginsAcums": "SI",
-		"IDdeTablas": "SI"
+		"IDdeTablas": "SI",
+		"RutinasEnUsuario": ""
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
