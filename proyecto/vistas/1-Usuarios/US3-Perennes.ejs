@@ -7,7 +7,7 @@
 			<!-- Ayuda -->
 			<div class="ayuda">
 				<i class="fa-solid fa-circle-question ayudaClick desplClick">
-					<ul type="dots" class="ayudaMostrar desplMostrar">
+					<ul type="dots" class="ayudaMostrar desplMostrar <% if (errores.credenciales) { %>ocultar<% } %>">
 						<li>Por favor brindanos los datos de tu identidad, como figuran en tu documento.</li>
 						<li>Cuando sea necesario, te pediremos estos datos para validar que seas vos.</li>
 						<li>Una vez enviado el formulario, los datos no podrán ser editados.</li>
