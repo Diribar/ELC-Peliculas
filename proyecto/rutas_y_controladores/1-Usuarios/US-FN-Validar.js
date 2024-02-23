@@ -49,7 +49,14 @@ module.exports = {
 			// 4.B Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
 			errores.credenciales = errores.credenciales ? "Algún dato no coincide con el de nuestra base de datos" : "";
+			if (errores.credenciales) {
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intentosRecupContr", 1);
+				usuario.intentosRecupContr++;
+			}
 		}
+
+		// 5. Verifica si se superaron la cantidad de intentos fallidos aceptados
+		if (usuario.intentosRecupContr > 2) errores.email = intentosRecupContr;
 
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -112,6 +119,8 @@ const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
+const intentosRecupContr =
+	"Debido a los intentos fallidos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.";
 
 // Funciones
 let formatoMail = (email) => {
