@@ -22,16 +22,8 @@ module.exports = (sequelize, dt) => {
 
 		diasLogin: {type: dt.INTEGER},
 		versionElcUltimoLogin: {type: dt.STRING(4)},
-
-		fechaUltimoLogin: {type: dt.DATE},
-		fechaContrasena: {type: dt.DATE},
-		fechaRevisores: {type: dt.DATE},
 		configCons_id: {type: dt.INTEGER},
 		videoConsVisto: {type: dt.BOOLEAN},
-
-		creadoEn: {type: dt.DATE},
-		completadoEn: {type: dt.DATE},
-		editadoEn: {type: dt.DATE},
 
 		prodsAprob: {type: dt.INTEGER},
 		prodsRech: {type: dt.INTEGER},
@@ -42,9 +34,18 @@ module.exports = (sequelize, dt) => {
 		edicsAprob: {type: dt.INTEGER},
 		edicsRech: {type: dt.INTEGER},
 
+		intentosRecupContr: {type: dt.INTEGER},
 		penalizacAcum: {type: dt.DECIMAL},
 		penalizadoEn: {type: dt.DATE},
 		penalizadoHasta: {type: dt.DATE},
+
+		fechaUltimoLogin: {type: dt.DATE},
+		fechaContrasena: {type: dt.DATE},
+		fechaRevisores: {type: dt.DATE},
+
+		creadoEn: {type: dt.DATE},
+		completadoEn: {type: dt.DATE},
+		editadoEn: {type: dt.DATE},
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
