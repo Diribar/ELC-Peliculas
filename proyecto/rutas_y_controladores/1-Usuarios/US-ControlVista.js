@@ -250,24 +250,27 @@ module.exports = {
 	// Login
 	login: {
 		form: async (req, res) => {
-			// 1. Tema y Código
+			// Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
 
-			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
-			const dataEntry =
-				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {};
+			// Cookies de login
+			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
+
+			// Genera info para la vista
+			const dataEntry = datosCookies.datos ? datosCookies.datos : {};
+			const errores = datosCookies.errores ? datosCookies.errores : {};
 
 			// Propiedades a eliminar
 			delete req.session.email;
 			delete req.session.contrasena;
 
-			let errores = await valida.login(dataEntry);
 			// 3. Variables para la vista
 			let variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
+			return res.send(dataEntry);
 
 			// 4. Render del formulario
 			return res.render("CMP-0Estructura", {
@@ -276,13 +279,17 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// Averigua si hay errores de data-entry
-			let errores = await valida.login(req.body);
+			// Variables
+			const intentosLogin = req.cookies && req.cookies.intentosLogin ? req.cookies.intentosLogin : 0;
+			const datos = {...req.body, intentosLogin};
 
-			// Si hay errores de validación, redirecciona
+			// Averigua si hay errores de data-entry
+			let errores = await valida.login(datos);
+
+			// Si hay errores de validación, regresa al form
 			if (errores.hay) {
-				req.session.email = req.body.email;
-				req.session.contrasena = req.body.contrasena;
+				datos.intentosLogin++;
+				res.cookie("login", {datos, errores}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
 
@@ -301,8 +308,8 @@ module.exports = {
 		},
 	},
 	logout: (req, res) => {
-		// Borra los datos del usuario, de session y cookie
-		req.session = {};
+		// Borra los datos de session y cookie
+		for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
 		res.clearCookie("email");
 
 		// Fin
