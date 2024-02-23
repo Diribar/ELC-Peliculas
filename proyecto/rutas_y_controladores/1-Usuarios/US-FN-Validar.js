@@ -128,6 +128,8 @@ const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const intentosRecupContr =
 	"Debido a los intentos fallidos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.";
+const usuarioYaExiste =
+	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
 
 // Funciones
 let formatoMail = (email) => {
@@ -211,8 +213,9 @@ let perennesBE = async (datos) => {
 		for (let campo of camposPerennes) condicion[campo] = datos[campo];
 
 		// Averigua si el usuario existe en la base de datos
-		errores.usuarioExiste = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
-		errores.hay = errores.usuarioExiste;
+		errores.usuarioYaExiste = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
+		errores.usuarioYaExiste = errores.usuarioYaExiste ? usuarioYaExiste : "";
+		errores.hay = errores.usuarioYaExiste;
 	}
 	// Fin
 	return errores;
