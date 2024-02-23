@@ -22,7 +22,7 @@ module.exports = {
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
-	actualizaTodos: (entidad, datos) => db[entidad].update(datos).then(() => true),
+	actualizaTodos: (entidad, datos) => db[entidad].update(datos, {where: {}}).then(() => true),
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}).then(() => true),
 	actualizaPorId: (entidad, id, datos) => db[entidad].update(datos, {where: {id}}).then(() => true),
 	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}).then(() => true),
