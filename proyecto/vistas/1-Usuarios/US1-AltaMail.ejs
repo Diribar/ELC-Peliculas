@@ -1,6 +1,6 @@
 <div id="tapaElFondo"></div>
 <div id="dataEntry" class="encimaDelFondo">
-	<form>
+	<form method="POST">
 		<!-- Cartel de progreso -->
 		<%- include('CMP-CartelProgreso', {tarea: "Enviando el mail"}) %>
 		<h1><%= titulo %> </h1>
@@ -8,10 +8,8 @@
 		<!--E-Mail-->
 		<%- include("US1-Mail") %>
 
-		<!--Número de Documento y País-->
-		<% if (errores.documento) { %>
-			<%- include("US1-Docum") %>
-		<% } %>
+		<!--Campos para usuarios con datos perennes-->
+		<% if (mostrarCampos) { %><%- include("US9-DatosPerennes") %><% } %>
 
 		<!--Flechas-->
 		<section class="flechas">

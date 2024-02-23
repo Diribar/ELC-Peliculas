@@ -270,15 +270,17 @@ window.addEventListener("load", async () => {
 				let sexo_id = opcionElegida(DOM.sexos_id);
 
 				// Función para dejar solamente las opciones con ese sexo
-				let FN = (select, opciones) => {
+				let opcsVisibles = (select, opciones) => {
 					select.innerHTML = "";
 					for (let opcion of opciones)
 						if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2) select.appendChild(opcion);
 				};
+
 				// Opciones de 'Rol en la Iglesia'
-				FN(DOM.rolIglesia_id, DOM.opcionesRolIglesia);
+				opcsVisibles(DOM.rolIglesia_id, DOM.opcionesRolIglesia);
+
 				// Opciones de 'Proceso de Canonización'
-				FN(DOM.canon_id, DOM.opcionesProceso);
+				opcsVisibles(DOM.canon_id, DOM.opcionesProceso);
 
 				// Fin
 				return;

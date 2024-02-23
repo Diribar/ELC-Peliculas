@@ -5,7 +5,7 @@
 		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
 	>
-		<span class="mensajeError"><%- locals.errores && locals.nombre && errores[nombre] ? errores[nombre] : "" %></span>
+		<span class="mensajeError"><%- locals.nombre && locals.errores && errores[nombre] ? errores[nombre] : "" %></span>
 	</i>
 
 	<% if (tema == "prodRud" && codigo == "edicion") { %>

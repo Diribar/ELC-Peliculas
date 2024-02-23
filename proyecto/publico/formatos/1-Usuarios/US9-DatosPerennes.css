@@ -1,0 +1,21 @@
+/* General */
+#cuerpo form:has(#informacion) {width: 440px; padding: 30px 0;}
+
+/* Información */
+form #informacion {display: flex; flex-direction: column; width: 100%;}
+#informacion .filas {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
+#informacion .labelInput {margin: 10px 0; display: flex; flex-direction: column;}
+#informacion .labelInput .inputError .input {width: 170px;}
+#informacion .labelInput .inputError .mensajeError {max-width: 200px;}
+#informacion .labelInput label {margin-right: 0;}
+#informacion .labelInput .margenInf {margin-bottom: 3px;}
+
+/* Ayuda de nombre y apellido */
+#informacion .labelInput .ayudaMostrar {top: auto; bottom: -5px; translate: 0 100%; right: -50px;}
+#informacion .labelInput .ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
+#informacion .labelInput .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; right: 52px; transform: none;}
+
+/* Credenciales inválidas */
+#credenciales.errores .mensajeError {display: block; position: static; translate: none;}
+#credenciales.errores .mensajeError {margin: 10px auto 0; text-align: center; width: 200px;}
+#credenciales.errores .mensajeError::before {content: none;}

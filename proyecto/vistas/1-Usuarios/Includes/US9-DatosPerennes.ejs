@@ -1,0 +1,87 @@
+<section id="informacion">
+	<!-- Nombre y Apellido -->
+	<div class="filas">
+		<!--Nombre-->
+		<div class="labelInput">
+			<div class="relative margenInf">
+				<label for="nombre">Nombre Civil</label>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+							<li>Como figura en tu documento</li>
+						</ul>
+					</i>
+				</div>
+			</div>
+			<div class="inputError">
+				<input id="nombre" type="text" class="input" name="nombre" placeholder="Nombre Civil" value="<%= dataEntry.nombre %>">
+				<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
+			</div>
+		</div>
+		<!--Apellido-->
+		<div class="labelInput">
+			<div class="relative margenInf">
+				<label for="apellido">Apellido</label>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+							<li>Como figura en tu documento</li>
+						</ul>
+					</i>
+				</div>
+			</div>
+			<div class="inputError">
+				<input id="apellido" type="text" class="input" name="apellido" placeholder="Apellido" value="<%= dataEntry.apellido %>">
+				<%- include("CMP-Errores", {nombre: "apellido", display: true}) %>
+			</div>
+		</div>
+	</div>
+	<!-- Nacimiento -->
+	<div class="filas">
+		<!--Fecha de Nacimiento-->
+		<div class="labelInput">
+			<label for="fechaNacim" class="margenInf">Fecha de Nacimiento</label>
+			<div class="inputError">
+				<input id="fechaNacim" type="date" name="fechaNacim" class="input" value="<%= dataEntry.fechaNacim %>">
+				<%- include("CMP-Errores", {nombre: "fechaNacim", display: true}) %>
+			</div>
+		</div>
+		<!--País de nacimiento-->
+		<div class="labelInput">
+			<label for="paisNacim_id" class="margenInf">País de Nacimiento</label>
+			<div class="inputError">
+				<select id="paisNacim_id" name="paisNacim_id" class="input">
+					<option value="" <% if (dataEntry.paisNacim_id=="") { %>selected<% } %>>País de nacimiento</option>
+					<optgroup label="América (habla hispana)">
+						<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
+							<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+					<optgroup label="Europa/África (habla hispana)">
+						<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
+							<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+					<optgroup label="Países de habla no hispana">
+						<% for (let pais of hablaNoHispana) { %>
+							<option value="<%= pais.id %>" <% if (dataEntry.paisNacim_id == pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+				</select>
+				<%- include("CMP-Errores", {nombre: "paisNacim_id", display: true}) %>
+			</div>
+		</div>
+	</div>
+	<div type="text" id="credenciales" class="errores" >
+		<button class="mensajeError<%- (locals.errores && !errores.credenciales) ? ' ocultar' : '' %>"><%- locals.errores && errores.credenciales ? errores.credenciales : "" %></button>
+		<i class="fa-solid fa-circle-check<%- (locals.errores && errores.credenciales) ? ' ocultar' : '' %>" style="display: none;"></i>
+	</div>
+</section>

@@ -6,8 +6,8 @@ const procesos = require("./US-FN-Procesos");
 module.exports = {
 	valida: {
 		formatoMail: (req, res) => {
-			let error = valida.formatoMail(req.query.email);
-			return res.json(error);
+			let errores = valida.formatoMail(req.query.email);
+			return res.json(errores);
 		},
 		login: async (req, res) => {
 			const errores = await valida.login(req.query);
@@ -22,18 +22,18 @@ module.exports = {
 			return res.json(errores);
 		},
 	},
-	fin: {
-		altaMail: async (req, res) => {
+	altaMail: {
+		validaMail: async (req, res) => {
 			// Variables
-			const email = req.query.email;
-
-			// Validaciones
+			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
 
-			// Si error => return errores
-			if (errores.hay) return res.json({errores});
-
-			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
+			// Fin
+			return res.json(errores);
+		},
+		envioDeMail: async (req, res) => {
+			// Envía el mail con la contraseña
+			const {email} = req.query;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
@@ -49,42 +49,42 @@ module.exports = {
 			req.session.email = email;
 
 			// Devuelve la info
-			return res.json({errores, mailEnviado});
+			return res.json(mailEnviado);
 		},
-		olvidoContrasena: async (req, res) => {
+	},
+	olvidoContrasena: {
+		validaMail: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const email = datos.email;
-			const usuario = datos.email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
+			const errores = await valida.olvidoContrasena(datos);
 
-			// Validaciones
-			const errores = await valida.olvidoContrasena.contrasena({...datos, usuario});
+			// Acciones si hay un error
+			req.session["olvido-contrasena"] = errores.hay ? {errores, datos} : {};
 
-			// Acciones si hay error
-			if (errores.hay) {
-				datos.errores = errores;
-				req.session["olvido-contrasena"] = datos;
-				return res.json({errores});
-			}
+			// Devuelve la info
+			return res.json(errores);
+		},
+		envioDeMail: async (req, res) => {
+			// Variables
+			const {email} = req.query;
+			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
-			// Si no hubo errores con el valor del email, envía el mensaje con la contraseña
+			// Envía el mensaje con la contraseña
 			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
-			// Si no hubo errores con el envío del mensaje, actualiza la contraseña del usuario
+			// Si no hubo errores con el envío del email, actualiza la contraseña del usuario
 			if (mailEnviado)
 				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 					contrasena,
 					fechaContrasena: ahora,
 				});
 
-			// Guarda el mail en 'session'
+			// Guarda el mail en 'session' y borra los errores
 			req.session.email = email;
-
-			// Borra los errores
 			delete req.session["olvido-contrasena"];
 
-			// Devuelve la info
-			return res.json({errores, mailEnviado});
+			// Fin
+			return res.json(mailEnviado);
 		},
 	},
 	videoConsVisto: async (req, res) => {

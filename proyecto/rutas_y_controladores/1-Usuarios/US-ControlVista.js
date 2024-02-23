@@ -30,31 +30,43 @@ module.exports = {
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = ruta.slice(1);
 			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
-			const dataEntry = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
-			const errores = dataEntry.errores ? dataEntry.errores : false;
+
+			// Genera info para la vista
+			const datosSession = req.session["olvido-contrasena"] ? req.session["olvido-contrasena"] : {};
+			const errores = datosSession.errores ? datosSession.errores : {};
+			const dataEntry = datosSession.datos ? datosSession.datos : {};
+			const mostrarCampos = errores.faltanCampos || errores.credenciales;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo,
-				dataEntry, // debe ser un objeto para ocultar los íconos de OK/Error en el start-up de la vista
-				errores,
-				hablaHispana,
-				hablaNoHispana,
+				...{tema, codigo, titulo, dataEntry, errores, hablaHispana, hablaNoHispana, mostrarCampos},
 				urlSalir: "/usuarios/login",
 			});
 		},
+		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
 		envioExitoso: (req, res) => {
 			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
 			const informacion = {
-				mensajes: [
-					"Hemos generado tu usuario con tu dirección de mail.",
-					"Te hemos enviado por mail la contraseña.",
-					"Con el ícono de abajo accedés al Login.",
-				],
+				mensajes: altaMail
+					? [
+							"Hemos generado tu usuario con tu dirección de mail.",
+							"Te hemos enviado por mail la contraseña.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: olvidoContrasena
+					? [
+							"Hemos generado una nueva contraseña para tu usuario.",
+							"Te la hemos enviado por mail.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: [],
 				iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-				titulo: "Alta exitosa de Usuario",
+				titulo: altaMail ? "Alta exitosa de Usuario" : olvidoContrasena ? "Actualización exitosa de Contraseña" : "",
 				check: true,
 			};
 
@@ -62,7 +74,11 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 		envioFallido: (req, res) => {
-			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
 			const informacion = {
 				mensajes: [
 					"No pudimos enviarte un mail con la contraseña.",
@@ -70,7 +86,7 @@ module.exports = {
 					"Con el ícono de abajo regresás a la vista anterior.",
 				],
 				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-				titulo: "Alta de Usuario fallida",
+				titulo: altaMail ? "Alta de Usuario fallida" : olvidoContrasena ? "Actualización de Contraseña fallida" : "",
 			};
 
 			// Vista
@@ -82,26 +98,20 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "editables";
-			let usuario = req.session.usuario;
-			let errores = req.session.errores ? req.session.errores : false;
+			const usuario = req.session.usuario;
+			const errores = req.session.errores ? req.session.errores : false;
 
 			// Generar la info para la vista
-			let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
-			let avatar = usuario.avatar
+			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+			const avatar = usuario.avatar
 				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Alta de Usuario - Datos Editables",
-				dataEntry,
-				errores,
+				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
+				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana},
 				sexos: sexos.filter((m) => m.letra_final),
-				hablaHispana,
-				hablaNoHispana,
-				avatar,
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -166,44 +176,35 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "perennes";
-			const usuario = req.session.usuario;
-			const rolesIgl = rolesIglesia.filter((n) => n.usuario && n.id.slice(-1) == usuario.sexo_id);
 
-			// Genera la info para la vista
-			const errores = req.session.errores ? req.session.errores : false;
-			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+			// Genera info para la vista
+			const errores = req.session.errores ? req.session.errores : {};
+			const dataEntry = req.session.dataEntry ? req.session.dataEntry : {};
 
-			// Va a la vista
+			// Vista
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
+				...{tema, codigo, dataEntry, errores, hablaHispana, hablaNoHispana},
 				titulo: "Alta de Usuario - Datos Perennes",
-				dataEntry,
-				errores,
-				hablaHispana,
-				hablaNoHispana,
-				rolesIgl,
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const usuario = req.session.usuario;
-			let datos = {...req.body, id: usuario.id};
-
-			// Averigua si hay errores de validación
-			let errores = await valida.perenneBE(datos);
+			const datos = req.body;
+			const errores = await valida.perennesBE(datos);
 
 			// Redirecciona si hubo algún error de validación
 			if (errores.hay) {
-				req.session.dataEntry = req.body; // No guarda el documAvatar
+				req.session.dataEntry = req.body;
 				req.session.errores = errores;
 				return res.redirect("/usuarios/perennes");
 			}
 
-			// Actualiza el usuario
-			datos.rolUsuario_id = rolPermInputs_id; // Le sube el rol a permInputs
-			req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "perennes", datos);
+			// Actualiza el rol y status del usuario
+			const novedades = {...datos, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // Le sube el rol a permInputs
+			const usuario = req.session.usuario;
+			BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
+			req.session.usuario = {...usuario, ...novedades};
 
 			// Redirecciona
 			return res.redirect("/usuarios/perennes-bienvenido");
@@ -213,12 +214,12 @@ module.exports = {
 			let usuario = req.session.usuario;
 			let letra = usuario.sexo_id == "M" ? "a " : "o ";
 			let informacion = {
+				titulo: "Permiso otorgado",
 				mensajes: [
 					"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
-					"Ya podés ingresarnos información para compartir con el público.",
+					"Ya podés ingresar información para compartir con el público.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-				titulo: "Validación en Proceso",
 				check: true,
 			};
 			// Fin
@@ -248,14 +249,15 @@ module.exports = {
 			// 1. Tema y Código
 			const tema = "usuario";
 			const codigo = "login";
-			let dataEntry = {}; // es necesario que sea un array para que dé error si está vacío
 
 			// 2. Obtiene el Data Entry procesado en 'loginGuardar'
-			if (req.session.email || req.session.contrasena) {
-				dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
-				delete req.session.email;
-				delete req.session.contrasena;
-			}
+			const dataEntry =
+				req.session.email || req.session.contrasena ? {email: req.session.email, contrasena: req.session.contrasena} : {}; // es necesario que sea un array para que dé error si está vacío
+
+			// Propiedades a eliminar
+			delete req.session.email;
+			delete req.session.contrasena;
+			delete req.session["olvido-contrasena"];
 
 			// 3. Variables para la vista
 			let errores = await valida.login(dataEntry);
@@ -266,13 +268,8 @@ module.exports = {
 
 			// 4. Render del formulario
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Login",
-				dataEntry,
-				errores,
+				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
-				variables,
 			});
 		},
 		guardar: async (req, res) => {
