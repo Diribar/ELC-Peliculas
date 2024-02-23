@@ -923,8 +923,12 @@ module.exports = {
 	nombreApellido: (usuario) => {
 		return usuario.nombre + " " + usuario.apellido;
 	},
+	intsLogin:
+		"Debido a los intentos fallidos de login, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	intsValPerenne:
+		"Debido a los intentos fallidos para validar tus datos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
 
-	// Internet
+	// Varias
 	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
 		const transporter = nodemailer.createTransport({
@@ -958,8 +962,6 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-
-	// Varias
 	reqBasePathUrl: (req) => {
 		// Obtiene los resultados
 		const baseUrl = req.baseUrl
