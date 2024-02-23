@@ -1,6 +1,7 @@
 "use strict";
 // Definir variables
 const bcryptjs = require("bcryptjs");
+const procesos = require("./US-FN-Procesos");
 
 module.exports = {
 	formatoMail: (email) => formatoMail(email),
@@ -147,8 +148,8 @@ const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
-const intsLogin = comp.intsLogin;
-const intsValPerenne = comp.intsValPerenne;
+const intsLogin = procesos.intsLogin;
+const intsValPerenne = procesos.intsValPerenne;
 const usuarioInexistente = "Algún dato no coincide con el de nuestra base de datos.";
 const usuarioYaExiste =
 	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
