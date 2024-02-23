@@ -1,9 +1,18 @@
 /* General */
 #cuerpo #dataEntry {min-width: min(90%, 360px); }
-#cuerpo form {align-items: center; width: 100%; }
+#cuerpo form {align-items: center; width: 100%; padding-left: 30px; padding-right: 30px;}
+#cuerpo form:has(#informacion) {background: var(--usuarios);}
 
 /* Input del mail */
-form > .labelInput {margin: 10px 0; width: min(100%, 260px); justify-content: center;}
+form > .labelInput {margin: 0; margin-top: 20px; width: min(100%, 260px); justify-content: center;}
+form > .labelInput :is(.inputError, .inputError .input) {width: 100%; text-align: center;}
+form:has(#informacion) > .labelInput {margin: 10px 0;}
+form > .labelInput .inputError p {background: var(--gris-intermedio); border-radius: 15px; padding: 5px 10px;}
+form > .labelInput .inputError p {font-weight: bold; text-align: center;}
+
+/* Comentarios sobre la política del uso del mail */
+form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
+form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
 
 /* Media Query - Ancho */
 @media (width <= 400px) {#cuerpo form {min-width: min-content; max-width: 90vw;}}

@@ -70,13 +70,13 @@ module.exports = {
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Envía el mensaje con la contraseña
-			const {ahora, contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
+			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
 
 			// Si no hubo errores con el envío del email, actualiza la contraseña del usuario
 			if (mailEnviado)
 				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 					contrasena,
-					fechaContrasena: ahora,
+					fechaContrasena: new Date().toISOString(),
 				});
 
 			// Guarda el mail en 'session' y borra los errores

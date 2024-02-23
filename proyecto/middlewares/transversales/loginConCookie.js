@@ -45,7 +45,7 @@ module.exports = async (req, res, next) => {
 		// Si hubieron novedades, genera la información
 		if (novedades.length)
 			informacion = {
-				mensajes: novedades,
+				mensajes: novedades.map((n) => n.comentario),
 				iconos: [variables.vistaEntendido(req.originalUrl)],
 				titulo: "Novedades del sitio",
 				check: true,

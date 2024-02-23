@@ -1,4 +1,5 @@
 /* Título principal */
+#cuerpo form {background: var(--usuarios);}
 form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
 #tituloPrincipal h1 {margin: 0;}
 
