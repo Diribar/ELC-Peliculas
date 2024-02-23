@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 		inputs: document.querySelectorAll(".inputError .input"),
 
 		// Errores
-		iconosError: document.querySelectorAll(":is(.errores .fa-circle-xmark, #credenciales.errores .mensajeError)"),
+		iconosError: document.querySelectorAll(".errores .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".errores .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".errores .mensajeError"),
 		mensajeErrorCreds: document.querySelector("#credenciales.errores .mensajeError"),
