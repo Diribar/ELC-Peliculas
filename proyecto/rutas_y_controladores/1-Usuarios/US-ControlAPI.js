@@ -58,7 +58,7 @@ module.exports = {
 			const usuario = datos.email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Validaciones
-			const errores = await valida.olvidoContrasena({...datos, usuario});
+			const errores = await valida.olvidoContrasena.contrasena({...datos, usuario});
 
 			// Acciones si hay error
 			if (errores.hay) {
