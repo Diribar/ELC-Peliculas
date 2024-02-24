@@ -206,18 +206,18 @@ module.exports = {
 			const {errores, usuario} = await valida.login(datos);
 			let intentos_Login;
 
-			// Acciones si hay errores de validación
-			if (errores.hay) {
+			// Acciones si hay errores de credenciales
+			if (errores.credenciales) {
 				// intentos_Login - cookie
 				if (errores.email_BD || errores.contr_BD) {
 					intentos_Login = req.cookies && req.cookies.intentos_Login ? req.cookies.intentos_Login + 1 : 1;
-					if (intentos_Login <= intentos_Cookies + 1) res.cookie("intentos_Login", intentos_Login, {maxAge: unDia});
+					if (intentos_Login <= intentos_Cookies) res.cookie("intentos_Login", intentos_Login, {maxAge: unDia});
 				}
 
 				// intentos_Login - usuario
 				if (!errores.email_BD && errores.contr_BD) {
 					intentos_Login = usuario.intentos_Login + 1;
-					if (intentos_Login <= intentos_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_Login});
+					if (intentos_Login <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_Login});
 				}
 
 				// cookie - guarda la info
