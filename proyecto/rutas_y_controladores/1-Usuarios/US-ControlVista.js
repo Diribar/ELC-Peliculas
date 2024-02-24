@@ -211,13 +211,13 @@ module.exports = {
 				// intsLogin - cookie
 				if (errores.email_BD || errores.contr_BD) {
 					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
-					if (intsLogin <= intsLogins_PC + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+					if (intsLogin <= intentosCookies + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
 				}
 
 				// intsLogin - usuario
 				if (!errores.email_BD && errores.contr_BD) {
 					intsLogin = usuario.intsLogin + 1;
-					if (intsLogin <= instLogins_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+					if (intsLogin <= intsBD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
 				}
 
 				// cookie - guarda la info

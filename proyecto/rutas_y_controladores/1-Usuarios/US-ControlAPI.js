@@ -63,7 +63,7 @@ module.exports = {
 			if (errores.credenciales) {
 				// intsDatosPer - cookie
 				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
-				if (intsDatosPer <= intsDatosPer_PC + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+				if (intsDatosPer <= intentosCookies + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
 
 				// intsDatosPer - usuario
 				intsDatosPer = usuario.intsDatosPer + 1;
