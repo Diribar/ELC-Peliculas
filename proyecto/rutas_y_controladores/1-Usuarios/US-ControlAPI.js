@@ -27,12 +27,11 @@ module.exports = {
 			// Variables
 			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
-			let intentos_AM;
 
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
 				// intentos_AM - cookie
-				intentos_AM = req.cookies && req.cookies.intentos_AM ? req.cookies.intentos_AM + 1 : 1;
+				const intentos_AM = req.cookies && req.cookies.intentos_AM ? req.cookies.intentos_AM + 1 : 1;
 				if (intentos_AM <= intentos_Cookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
 				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_AM);
 
