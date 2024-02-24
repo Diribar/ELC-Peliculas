@@ -10,6 +10,8 @@ const statusCorrecto = require("../../middlewares/filtrosPorUsuario/usStatusCorr
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
+const usIntsLogin = require("../../middlewares/filtrosPorUsuario/usIntsLogin");
+const usIntsDatosPer = require("../../middlewares/filtrosPorUsuario/usIntsDatosPer");
 
 // Middlewares - Consolidados
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
@@ -28,7 +30,7 @@ router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
 router.get("/alta-mail", visitas, vista.altaMail_olvidoContr);
-router.get("/olvido-contrasena", visitas, vista.altaMail_olvidoContr);
+router.get("/olvido-contrasena", usIntsLogin, usIntsDatosPer, visitas, vista.altaMail_olvidoContr);
 
 // Vistas - Editables
 router.get("/editables", statusCorrecto, vista.editables.form);
@@ -45,11 +47,11 @@ router.get("/edicion", usAltaTerm, vista.edicion.form);
 router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);
 
 // Vistas - Login
-router.get("/login", vista.login.form);
-router.post("/login", visitas, vista.login.guardar);
-router.get("/logout", statusCorrecto, vista.login.logout);
+router.get("/login", usIntsLogin, vista.login.form);
+router.post("/login", usIntsLogin, visitas, vista.login.guardar);
 router.post("/login/olvido-contrasena", visitas, vista.login.olvidoContr); // obtiene datos para redireccionar
 router.post("/login/alta-mail", visitas, vista.login.altaMail); // obtiene datos para redireccionar
+router.get("/logout", statusCorrecto, vista.login.logout);
 
 // Vista - Miscelaneas
 router.get("/:id/suspendido", visitas, vista.miscelaneas.accesosSuspendidos);
