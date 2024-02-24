@@ -27,13 +27,19 @@ module.exports = {
 			// Variables
 			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
-			let intsAltaMail;
+			let intentos_AM;
 
-			// Si hubieron errores de credenciales - intsAltaMail - cookie
+			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				intsAltaMail = req.cookies && req.cookies.intsAltaMail ? req.cookies.intsAltaMail + 1 : 1;
-				if (intsAltaMail <= intentos_Cookies + 1) res.cookie("intsAltaMail", intsAltaMail, {maxAge: unDia});
-			}
+				// intentos_AM - cookie
+				intentos_AM = req.cookies && req.cookies.intentos_AM ? req.cookies.intentos_AM + 1 : 1;
+				if (intentos_AM <= intentos_Cookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
+				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_AM);
+
+				// Convierte el resultado en texto
+				errores.credenciales =
+					procesos.comentario("para dar de alta tu mail") + "<br>Intentos disponibles: " + intentosPends_Cookie;
+			} else errores.credenciales = "";
 
 			// cookie - guarda la info
 			datos =
