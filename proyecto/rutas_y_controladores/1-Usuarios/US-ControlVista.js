@@ -229,34 +229,38 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			let intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
-			const datos = {...req.body, intsLogin};
+			const datos = req.body;
 			const {errores, usuario} = await valida.login(datos);
+			let intsLogin;
 
 			// Acciones si hay errores de validación
 			if (errores.hay) {
-				// Si es un error de contraseña vs la de la BD, aumenta 'intsLogin' hasta su techo
-				if (!errores.emailOculto && errores.contrOculta) {
-					// Actualiza la cookie - el techo es 3
-					if (intsLogin <= 3) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
-
-					// Actualiza la BD y session - el techo es 4
-					instLogin = usuario.intsLogin + 1;
-					if (intsLogin <= 4) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+				// intsLogin - cookie
+				if (errores.email_BD || errores.contr_BD) {
+					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
+					if (intsLogin <= 3) res.cookie("intsLogin", intsLogin, {maxAge: unDia}); // el techo es 3
 				}
 
-				// Guarda la info y redirecciona
+				// intsLogin - usuario
+				if (!errores.email_BD && errores.contr_BD) {
+					instLogin = usuario.intsLogin + 1;
+					if (intsLogin <= 4) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});// el techo es 4
+				}
+
+				// cookie - guarda la info
 				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
+
+				// Redirecciona
 				return res.redirect("/usuarios/login");
 			}
+
+			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
+			res.cookie("email", req.body.email, {maxAge: unDia});
+			res.clearCookie("login");
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
-
-			// Actualiza cookies - no se debe actualizar 'session'', para que se ejecute el middleware 'loginConCookie'
-			res.cookie("email", req.body.email, {maxAge: unDia});
-			res.clearCookie("login");
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
