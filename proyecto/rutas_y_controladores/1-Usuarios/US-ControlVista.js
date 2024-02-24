@@ -258,10 +258,12 @@ module.exports = {
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
-	},
-	logout: (req, res) => {
-		logout(req, res);
-		return res.redirect("/usuarios/login");
+		logout: (req, res) => {
+			logout(req, res);
+			return res.redirect("/usuarios/login");
+		},
+		olvidoContr: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
+		altaMail: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
 	},
 	miscelaneas: {
 		accesosSuspendidos: (req, res) => {
@@ -277,7 +279,6 @@ module.exports = {
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
 		},
-		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
 		envioExitoso: (req, res) => {
 			// Variables
 			const {codigo} = req.query;
