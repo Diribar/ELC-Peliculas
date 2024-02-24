@@ -322,7 +322,7 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookieInts = altaMail ? "intsAltaMail" : olvidoContr ? "intentos_DP" : "";
+			const cookieInts = altaMail ? "intentos_AM" : olvidoContr ? "intentos_DP" : "";
 			res.clearCookie(cookieInts);
 
 			// Elimina la cookie de los datos y errores
