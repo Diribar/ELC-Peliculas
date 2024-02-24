@@ -53,10 +53,10 @@ module.exports = {
 		},
 	},
 	olvidoContr: {
-		validaDatos: async (req, res) => {
+		validaDatosPer: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const {errores, usuario} = await valida.olvidoContr(datos);
+			const {errores, usuario} = await valida.olvidoContr.datosPer(datos);
 
 			// Acciones si hay un error
 			if (errores.hay) {
