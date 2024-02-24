@@ -4,88 +4,6 @@ const procesos = require("./US-FN-Procesos");
 const valida = require("./US-FN-Validar");
 
 module.exports = {
-	loginCompleto: async (req, res) => {
-		// Envía a Login si no está logueado
-		if (!req.session.usuario) return res.redirect("/usuarios/login");
-
-		// Variables
-		const statusUsuario_id = req.session.usuario.statusRegistro_id;
-		const url =
-			statusUsuario_id == mailPendValidar_id
-				? "/usuarios/login"
-				: statusUsuario_id == mailValidado_id
-				? "/usuarios/editables"
-				: req.session.urlFueraDeUsuarios
-				? req.session.urlFueraDeUsuarios
-				: "/";
-
-		// Redirecciona
-		return res.redirect(url);
-	},
-	login: {
-		form: async (req, res) => {
-			// Variables
-			const tema = "usuario";
-			const codigo = "login";
-			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
-
-			// Info para la vista
-			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
-			const errores = datosGrales.errores ? datosGrales.errores : {};
-			const campos = [
-				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
-				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
-			];
-
-			// Render del formulario
-			return res.render("CMP-0Estructura", {
-				...{tema, codigo, dataEntry, errores, campos, titulo: "Login"},
-				urlSalir: req.session.urlSinLogin,
-			});
-		},
-		guardar: async (req, res) => {
-			// Variables
-			const datos = req.body;
-			const {errores, usuario} = await valida.login(datos);
-			let intsLogin;
-
-			// Acciones si hay errores de validación
-			if (errores.hay) {
-				// intsLogin - cookie
-				if (errores.email_BD || errores.contr_BD) {
-					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
-					if (intsLogin <= intsLogins_PC + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
-				}
-
-				// intsLogin - usuario
-				if (!errores.email_BD && errores.contr_BD) {
-					intsLogin = usuario.intsLogin + 1;
-					if (intsLogin <= instLogins_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
-				}
-
-				// cookie - guarda la info
-				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
-
-				// Redirecciona
-				return res.redirect("/usuarios/login");
-			}
-
-			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
-			res.cookie("email", req.body.email, {maxAge: unDia});
-			res.clearCookie("login");
-
-			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro_id == mailPendValidar_id)
-				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
-
-			// Redirecciona
-			return res.redirect("/usuarios/garantiza-login-y-completo");
-		},
-		logout: (req, res) => {
-			procesos.logout(req, res);
-			return res.redirect("/usuarios/login");
-		},
-	},
 	// Circuito de alta de usuario
 	altaMail_olvidoContr: async (req, res) => {
 		// Variables
@@ -108,7 +26,6 @@ module.exports = {
 			urlSalir: "/usuarios/login",
 		});
 	},
-
 	editables: {
 		form: async (req, res) => {
 			// Variables
@@ -243,7 +160,89 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-	// Edición
+	// Varios
+	loginCompleto: async (req, res) => {
+		// Envía a Login si no está logueado
+		if (!req.session.usuario) return res.redirect("/usuarios/login");
+
+		// Variables
+		const statusUsuario_id = req.session.usuario.statusRegistro_id;
+		const url =
+			statusUsuario_id == mailPendValidar_id
+				? "/usuarios/login"
+				: statusUsuario_id == mailValidado_id
+				? "/usuarios/editables"
+				: req.session.urlFueraDeUsuarios
+				? req.session.urlFueraDeUsuarios
+				: "/";
+
+		// Redirecciona
+		return res.redirect(url);
+	},
+	login: {
+		form: async (req, res) => {
+			// Variables
+			const tema = "usuario";
+			const codigo = "login";
+			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
+
+			// Info para la vista
+			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
+			const errores = datosGrales.errores ? datosGrales.errores : {};
+			const campos = [
+				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
+				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
+			];
+
+			// Render del formulario
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo, dataEntry, errores, campos, titulo: "Login"},
+				urlSalir: req.session.urlSinLogin,
+			});
+		},
+		guardar: async (req, res) => {
+			// Variables
+			const datos = req.body;
+			const {errores, usuario} = await valida.login(datos);
+			let intsLogin;
+
+			// Acciones si hay errores de validación
+			if (errores.hay) {
+				// intsLogin - cookie
+				if (errores.email_BD || errores.contr_BD) {
+					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
+					if (intsLogin <= intsLogins_PC + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+				}
+
+				// intsLogin - usuario
+				if (!errores.email_BD && errores.contr_BD) {
+					intsLogin = usuario.intsLogin + 1;
+					if (intsLogin <= instLogins_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+				}
+
+				// cookie - guarda la info
+				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
+
+				// Redirecciona
+				return res.redirect("/usuarios/login");
+			}
+
+			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
+			res.cookie("email", req.body.email, {maxAge: unDia});
+			res.clearCookie("login");
+
+			// Si corresponde, le cambia el status a 'mailValidado'
+			if (usuario.statusRegistro_id == mailPendValidar_id)
+				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
+
+			// Redirecciona
+			return res.redirect("/usuarios/garantiza-login-y-completo");
+		},
+		logout: (req, res) => {
+			procesos.logout(req, res);
+			return res.redirect("/usuarios/login");
+		},
+	},
 	edicion: {
 		form: async (req, res) => {
 			const tema = "usuario";
