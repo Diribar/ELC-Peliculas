@@ -111,6 +111,6 @@ module.exports = {
 	},
 	intsLogin:
 		"Debido a los intentos fallidos de login, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
-	intsValPerenne:
+	intsDatosPerenne:
 		"Debido a los intentos fallidos para validar tus datos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
 };
