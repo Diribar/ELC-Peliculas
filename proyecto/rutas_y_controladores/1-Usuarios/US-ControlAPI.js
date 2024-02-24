@@ -56,11 +56,7 @@ module.exports = {
 		validaDatosPer: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const {errores, usuario} = await valida.olvidoContr.datosPer(datos);
-
-			// Acciones si hay un error
-			if (errores.hay) {
-			}
+			const errores = await valida.olvidoContr.datosPer(datos);
 
 			// Devuelve la info
 			return res.json(errores);
