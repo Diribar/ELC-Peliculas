@@ -42,10 +42,10 @@ module.exports = {
 
 			// cookie - guarda la info
 			datos =
-				req.cookies && req.cookies.altaMail && req.cookies.altaMail.datos
-					? {...req.cookies.altaMail.datos, ...datos}
+				req.session && req.session.altaMail && req.session.altaMail.datos
+					? {...req.session.altaMail.datos, ...datos}
 					: datos;
-			const cookie = req.cookies && req.cookies.altaMail ? {...req.cookies.altaMail, datos, errores} : {datos};
+			const cookie = req.session && req.session.altaMail ? {...req.session.altaMail, datos, errores} : {datos};
 			res.cookie("altaMail", cookie, {maxAge: unDia});
 
 			// Devuelve la info
@@ -99,10 +99,10 @@ module.exports = {
 
 			// cookie - guarda la info
 			datos =
-				req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
-					? {...req.cookies.olvidoContr.datos, ...datos}
+				req.session && req.session.olvidoContr && req.session.olvidoContr.datos
+					? {...req.session.olvidoContr.datos, ...datos}
 					: datos;
-			const cookie = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, datos, errores} : {datos};
+			const cookie = req.session && req.session.olvidoContr ? {...req.session.olvidoContr, datos, errores} : {datos};
 			res.cookie("olvidoContr", cookie, {maxAge: unDia});
 
 			// Devuelve la info

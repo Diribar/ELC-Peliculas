@@ -13,7 +13,7 @@ module.exports = {
 		const altaMail = codigo == "alta-mail";
 		const olvidoContr = codigo == "olvido-contrasena";
 		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
-		const datosGrales = altaMail ? req.cookies.altaMail : olvidoContr ? req.cookies.olvidoContr : {};
+		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
 		const dataEntry = datosGrales.datos ? datosGrales.datos : {};
@@ -184,7 +184,7 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "login";
-			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
+			const datosGrales = req.session && req.session.login ? req.session.login : {};
 
 			// Info para la vista
 			const dataEntry = datosGrales.datos ? datosGrales.datos : {};

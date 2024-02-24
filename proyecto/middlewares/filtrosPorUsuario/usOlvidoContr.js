@@ -13,8 +13,8 @@ module.exports = async (req, res, next) => {
 	if (errores.hay) {
 		// Obtiene la cookie
 		const cookie =
-			req.cookies && req.cookies.login
-				? {...req.cookies.login, datos: {...req.cookies.login.datos, email}, errores}
+			req.session && req.session.login
+				? {...req.session.login, datos: {...req.session.login.datos, email}, errores}
 				: {datos: {email}, errores};
 
 		// Guarda la cookie y redirecciona
@@ -30,8 +30,8 @@ module.exports = async (req, res, next) => {
 	// Crea la cookie
 	const mostrarCampos = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
 	const datos =
-		req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
-			? {...req.cookies.olvidoContr.datos, email}
+		req.session && req.session.olvidoContr && req.session.olvidoContr.datos
+			? {...req.session.olvidoContr.datos, email}
 			: {email};
 	res.cookie("olvidoContr", {datos, errores, usuario, mostrarCampos}, {maxAge: unDia});
 
