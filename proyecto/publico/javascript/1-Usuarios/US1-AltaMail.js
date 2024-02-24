@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	// Variables
 	const pathname = location.pathname;
 	const indice = 1 + pathname.slice(1).indexOf("/");
-	const codigo = pathname.slice(indice + 1, -1); // código de la vista
+	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena"; // código de la vista
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
