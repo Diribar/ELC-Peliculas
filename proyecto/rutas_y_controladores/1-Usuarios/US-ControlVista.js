@@ -264,27 +264,36 @@ module.exports = {
 			const mensajeCola = "Con el ícono de entendido salís a la vista de inicio.";
 
 			// Feedback
-			const mensajes =
-				codigo == "login"
-					? [procesos.intentos_Login, mensajeCola]
-					: codigo == "olvido-contrasena"
-					? [procesos.intentos_DP, mensajeCola]
-					: [];
-			const titulo =
-				codigo == "login"
-					? "Login suspendido hasta 24hs"
-					: codigo == "olvido-contrasena"
-					? "Olvido de Contraseña suspendido hasta 24hs"
-					: "";
-			const iconos =
-				codigo == "login"
-					? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
-					: codigo == "olvido-contrasena"
-					? [
-							{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"},
-							{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"},
-					  ]
-					: "";
+			const mensajes = false
+				? false
+				: codigo == "altaMail"
+				? [procesos.comentario("para dar de alta tu mail"), mensajeCola]
+				: codigo == "login"
+				? [procesos.comentario("para realizar el login"), mensajeCola]
+				: codigo == "olvido-contrasena"
+				? [procesos.comentario("para validar tus datos"), mensajeCola]
+				: [];
+			const titulo = false
+				? false
+				: codigo == "altaMail"
+				? "Alta de Mail suspendida hasta 24hs"
+				: codigo == "login"
+				? "Login suspendido hasta 24hs"
+				: codigo == "olvido-contrasena"
+				? "Olvido de Contraseña suspendido hasta 24hs"
+				: "";
+			const iconos = false
+				? false
+				: codigo == "altaMail"
+				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
+				: codigo == "login"
+				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
+				: codigo == "olvido-contrasena"
+				? [
+						{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"},
+						{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"},
+				  ]
+				: "";
 			const informacion = {mensajes, iconos, titulo};
 
 			// Logout
