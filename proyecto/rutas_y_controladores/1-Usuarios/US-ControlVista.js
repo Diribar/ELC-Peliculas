@@ -262,7 +262,7 @@ module.exports = {
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 		logout: (req, res) => {
-			logout(req, res);
+			procesos.logout(req, res);
 			return res.redirect("/usuarios/login");
 		},
 		olvidoContr: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
