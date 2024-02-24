@@ -30,7 +30,7 @@ router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
 router.get("/alta-mail", usIntsLogin, visitas, vista.altaMail_olvidoContr);
-router.get("/olvido-contrasena", usIntsLogin, usIntsDatosPer, visitas, vista.altaMail_olvidoContr);
+router.get("/olvido-contrasena", usIntsDatosPer, visitas, vista.altaMail_olvidoContr);
 
 // Vistas - Editables
 router.get("/editables", statusCorrecto, vista.editables.form);
