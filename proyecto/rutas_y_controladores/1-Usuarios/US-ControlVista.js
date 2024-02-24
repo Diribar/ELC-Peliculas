@@ -188,7 +188,6 @@ module.exports = {
 			const tema = "usuario";
 			const codigo = "login";
 			const datosGrales = req.session && req.session.login ? req.session.login : {};
-			console.log(188, datosGrales);
 
 			// Info para la vista
 			const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
