@@ -2,8 +2,8 @@
 window.addEventListener("load", () => {
 	// Variables
 	const pathname = location.pathname;
-	const indice = pathname.lastIndexOf("/");
-	const codigo = pathname.slice(indice + 1); // código de la vista
+	const indice = 1 + pathname.slice(1).indexOf("/");
+	const codigo = pathname.slice(indice + 1, -1); // código de la vista
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 	const rutaEnvia = rutaInicio + "/envio-de-mail/?email=";
 
 	// Funciones -----------------------------
-	let validaEnviaMail = async () => {
+	let validaEnviaMail = async (soloErrores) => {
 		// Prepara la info para el BE
 		let datos = {email: DOM.email.value};
 		if (codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
@@ -51,7 +51,7 @@ window.addEventListener("load", () => {
 		// Si se necesitan los campos 'perennes', se recarga la página
 		if (v.errores.faltanCampos || (v.errores.intentos_DP && v.inputs.length == 1)) return location.reload();
 
-		if (v.errores.hay) return;
+		if (v.errores.hay || soloErrores) return;
 
 		// Cartel mientras se recibe la respuesta
 		cartelProgreso();
@@ -178,9 +178,14 @@ window.addEventListener("load", () => {
 	DOM.form.addEventListener("submit", async (e) => {
 		e.preventDefault();
 
-		// Si el botón está inactivo interrumpe la función
-		if (DOM.button.className.includes("inactivo")) return;
-		else DOM.button.classList.add("inactivo"); // de lo contrario lo inactiva
+		// Si el botón está inactivo, muestra los errores e interrumpe la función
+		if (DOM.button.className.includes("inactivo")) {
+			await validaEnviaMail(true);
+			muestraErrores();
+			return;
+		}
+		// De lo contrario lo inactiva
+		else DOM.button.classList.add("inactivo");
 
 		// Envía la información al BE y eventualmente el mail al usuario
 		await validaEnviaMail();
