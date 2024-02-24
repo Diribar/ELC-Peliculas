@@ -24,22 +24,14 @@ module.exports = {
 	},
 	login: {
 		form: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "usuario";
 			const codigo = "login";
+			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
 
-			// Datos cargados
-			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
-			const dataEntry = datosCookies.datos ? datosCookies.datos : {};
-			const errores = datosCookies.errores ? datosCookies.errores : {};
-
-			// Si se superó la cantidad de intentos de login, redirige a "Olvido de contraseña"
-			if (dataEntry.intsLogin && dataEntry.intsLogin > 2) {
-				req.session.olvidoContr = {datos: {email: dataEntry.email}};
-				return res.redirect("login/suspendido");
-			}
-
-			// Variables para la vista
+			// Info para la vista
+			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
+			const errores = datosGrales.errores ? datosGrales.errores : {};
 			const variables = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
