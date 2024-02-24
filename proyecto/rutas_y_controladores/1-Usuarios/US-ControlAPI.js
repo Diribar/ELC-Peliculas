@@ -38,7 +38,7 @@ module.exports = {
 
 				// Convierte el resultado en texto
 				errores.credenciales =
-					procesos.comentario("para dar de alta tu mail") + "<br>Intentos disponibles: " + intentosPends_Cookie;
+					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPends_Cookie;
 			} else errores.credenciales = "";
 
 			// cookie - guarda la info
@@ -95,7 +95,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
 				errores.credenciales =
-					procesos.comentario("para validar tus datos") + "<br>Intentos disponibles: " + intentosPends_Cons;
+				procesos.comentarios.credsInvalidas.datosPerennes + "<br>Intentos disponibles: " + intentosPends_Cons;
 			} else errores.credenciales = "";
 
 			// cookie - guarda la info
