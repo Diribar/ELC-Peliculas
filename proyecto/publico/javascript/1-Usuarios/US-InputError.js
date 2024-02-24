@@ -127,13 +127,23 @@ window.addEventListener("load", () => {
 			input.selectionEnd = posicCursor;
 
 			// Le agrega el mail al href para olvido de contraseña
-			DOM.olvidoContr.href = v.olvidoContrHref + valor;
+			DOM.olvidoContr.href = v.olvidoContrHref + "/?email=" + valor;
 		}
 
 		// Acciones si se cambió el avatar
 		if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
 		// Acciones para los demás campos
 		else if (indice > -1) await FN.actualizaVarios(indice);
+	});
+
+	// Redirige a 'olvido-contrasena'
+	DOM.olvidoContr.addEventListener("click", (e) => {
+		e.preventDefault();
+		const valor = DOM.inputs[0].value;
+		if (valor) {
+			DOM.olvidoContr.href = v.olvidoContrHref + "/?email=" + valor;
+			location.href = v.olvidoContrHref + "/?email=" + valor;
+		}
 	});
 
 	form.addEventListener("submit", async (e) => {
