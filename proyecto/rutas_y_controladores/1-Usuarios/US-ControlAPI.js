@@ -1,5 +1,5 @@
 "use strict";
-// Definir variables
+// Variables
 const valida = require("./US-FN-Validar");
 const procesos = require("./US-FN-Procesos");
 
@@ -52,14 +52,15 @@ module.exports = {
 			return res.json(mailEnviado);
 		},
 	},
-	olvidoContrasena: {
+	olvidoContr: {
 		validaMail: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const errores = await valida.olvidoContrasena(datos);
+			const {errores, usuario} = await valida.olvidoContr(datos);
 
 			// Acciones si hay un error
-			req.session.olvidoContrasena = errores.hay ? {errores, datos} : {};
+			if (errores.hay) {
+			}
 
 			// Devuelve la info
 			return res.json(errores);
@@ -81,7 +82,7 @@ module.exports = {
 
 			// Guarda el mail en 'session' y borra los errores
 			req.session.email = email;
-			delete req.session.olvidoContrasena;
+			delete req.session.olvidoContr;
 
 			// Fin
 			return res.json(mailEnviado);
