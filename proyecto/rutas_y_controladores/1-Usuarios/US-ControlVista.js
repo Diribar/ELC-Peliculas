@@ -229,23 +229,26 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const intsLogin = req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intsLogin : 0;
+			let intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
 			const datos = {...req.body, intsLogin};
+			const {errores, usuario} = await valida.login(datos);
 
-			// Averigua si hay errores de data-entry
-			let errores = await valida.login(datos);
-
-			// Si hay errores de validación, regresa al form
+			// Acciones si hay errores de validación
 			if (errores.hay) {
-				datos.intsLogin++;
-				res.cookie("login", {datos, errores}, {maxAge: unDia});
+				// Si es un error de contraseña vs la de la BD, aumenta 'intsLogin' hasta su techo
+				if (!errores.emailOculto && errores.contrOculta) {
+					// Actualiza la cookie - el techo es 3
+					if (intsLogin <= 3) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+
+					// Actualiza la BD y session - el techo es 4
+					instLogin = usuario.intsLogin + 1;
+					if (intsLogin <= 4) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+				}
+
+				// Guarda la info y redirecciona
+				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
-			// De lo contrario, limpia el cookie de Login
-			else res.clearCookie("login");
-
-			// Obtiene el usuario con los include
-			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
