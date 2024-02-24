@@ -224,7 +224,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
 				errores.credenciales =
-				procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
+					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
 
 				// cookie - guarda la info
 				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
