@@ -204,20 +204,20 @@ module.exports = {
 			// Variables
 			const datos = req.body;
 			const {errores, usuario} = await valida.login(datos);
-			let intsLogin;
+			let intentos_Login;
 
 			// Acciones si hay errores de validación
 			if (errores.hay) {
-				// intsLogin - cookie
+				// intentos_Login - cookie
 				if (errores.email_BD || errores.contr_BD) {
-					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
-					if (intsLogin <= intentos_Cookies + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+					intentos_Login = req.cookies && req.cookies.intentos_Login ? req.cookies.intentos_Login + 1 : 1;
+					if (intentos_Login <= intentos_Cookies + 1) res.cookie("intentos_Login", intentos_Login, {maxAge: unDia});
 				}
 
-				// intsLogin - usuario
+				// intentos_Login - usuario
 				if (!errores.email_BD && errores.contr_BD) {
-					intsLogin = usuario.intsLogin + 1;
-					if (intsLogin <= intentos_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+					intentos_Login = usuario.intentos_Login + 1;
+					if (intentos_Login <= intentos_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_Login});
 				}
 
 				// cookie - guarda la info
@@ -229,7 +229,7 @@ module.exports = {
 
 			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
 			res.cookie("email", req.body.email, {maxAge: unDia});
-			res.clearCookie("intsLogin");
+			res.clearCookie("intentos_Login");
 			res.clearCookie("login");
 
 			// Si corresponde, le cambia el status a 'mailValidado'
@@ -268,7 +268,7 @@ module.exports = {
 			// Feedback
 			const mensajes =
 				codigo == "login"
-					? [procesos.intsLogin, mensajeCola]
+					? [procesos.intentos_Login, mensajeCola]
 					: codigo == "olvido-contrasena"
 					? [procesos.intentos_DP, mensajeCola]
 					: [];
