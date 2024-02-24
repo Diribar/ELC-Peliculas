@@ -55,8 +55,16 @@ module.exports = {
 	olvidoContr: {
 		validaDatosPer: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
+			let datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContr.datosPer(datos);
+
+			// cookie - guarda la info
+			datos =
+				req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
+					? {...req.cookies.olvidoContr.datos, ...datos}
+					: datos;
+			const cookie = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, datos} : {datos};
+			res.cookie("olvidoContr", cookie, {maxAge: unDia});
 
 			// Devuelve la info
 			return res.json(errores);
