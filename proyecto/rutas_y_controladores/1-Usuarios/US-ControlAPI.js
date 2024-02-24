@@ -40,13 +40,9 @@ module.exports = {
 					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPends_Cookie;
 			} else errores.credenciales = "";
 
-			// cookie - guarda la info
-			datos =
-				req.session && req.session.altaMail && req.session.altaMail.datos
-					? {...req.session.altaMail.datos, ...datos}
-					: datos;
-			const cookie = req.session && req.session.altaMail ? {...req.session.altaMail, datos, errores} : {datos};
-			res.cookie("altaMail", cookie, {maxAge: unDia});
+			// session - guarda la info
+			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, ...datos} : datos;
+			req.session.altaMail = {...req.session.altaMail, datos, errores};
 
 			// Devuelve la info
 			return res.json(errores);
@@ -97,13 +93,10 @@ module.exports = {
 					procesos.comentarios.credsInvalidas.olvidoContr + "<br>Intentos disponibles: " + intentosPends_Cons;
 			} else errores.credenciales = "";
 
-			// cookie - guarda la info
+			// session - guarda la info
 			datos =
-				req.session && req.session.olvidoContr && req.session.olvidoContr.datos
-					? {...req.session.olvidoContr.datos, ...datos}
-					: datos;
-			const cookie = req.session && req.session.olvidoContr ? {...req.session.olvidoContr, datos, errores} : {datos};
-			res.cookie("olvidoContr", cookie, {maxAge: unDia});
+				req.session.olvidoContr && req.session.olvidoContr.datos ? {...req.session.olvidoContr.datos, ...datos} : datos;
+			req.session.olvidoContr = {...req.session.olvidoContr, datos, errores};
 
 			// Devuelve la info
 			return res.json(errores);
