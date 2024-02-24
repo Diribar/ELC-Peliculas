@@ -75,47 +75,36 @@ module.exports = {
 	login: async function (datos) {
 		// Variables
 		const {email, contrasena} = datos;
-		const largoContr = contrasena
-			? contrasena.length < 6 || contrasena.length > 12
-				? "La contraseña debe tener entre 6 y 12 caracteres"
-				: ""
-			: null;
+		let usuario;
 
 		// Verifica errores
 		let errores = this.formatoMail(email);
-		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
+		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr(contrasena) ? largoContr(contrasena) : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
 		// Revisa las credenciales
 		if (!errores.hay) {
-			// Obtiene el usuario
-			const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
+			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
+			if (usuario.intsLogin > 3) return {errores: {hay: true}, usuarios};
 
-			// Verifica si se superó la cantidad de intentos fallidos tolerados
-			if (usuario.intsLogin > 2) return {...errores, email: intsLogin, intsLogin, hay: true};
+			// Valida el mail y la contraseña
+			errores.emailOculto = !usuario ? "El mail no existe en nuestra base de datos" : "";
+			errores.contrOculta =
+				usuario && !bcryptjs.compareSync(datos.contrasena, usuario.contrasena) ? "Contraseña incorrecta" : "";
 
 			// Valida las credenciales
-			errores.credenciales =
-				!usuario || // el usuario no existe
-				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // contraseña inválida
+			errores.credenciales = errores.emailOculto || errores.contrOculta;
 			errores.credenciales = errores.credenciales
 				? "Credenciales inválidas.<br>Intento " + (datos.intsLogin + 1) + " de 3"
 				: "";
 
-			// Si el usuario existe, aumenta su valor 'intsLogin'
-			if (errores.credenciales && usuario) {
-				// Aumenta la cantidad de intentos de login
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsLogin");
-				usuario.intsLogin++;
-
-				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
-				if (usuario.intsLogin > 2) errores = {...errores, email: intsLogin, intsLogin};
-			}
+			// Fin
+			errores.hay = !!errores.credenciales;
 		}
 
 		// Fin
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
+		return {errores, usuario};
 	},
 	editables: (datos) => {
 		// Variables
@@ -247,4 +236,9 @@ let perennesBE = async (datos) => {
 
 	// Fin
 	return errores;
+};
+let largoContr = (contrasena) => {
+	return contrasena && (contrasena.length < 6 || contrasena.length > 12)
+		? "La contraseña debe tener entre 6 y 12 caracteres"
+		: "";
 };
