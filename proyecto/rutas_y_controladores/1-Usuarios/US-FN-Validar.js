@@ -21,11 +21,11 @@ module.exports = {
 		// 1. Mail - Averigua si hay errores básicos
 		const {email} = datos;
 		let errores = formatoMail(email);
-		if (errores.hay) return errores;
+		if (errores.hay) return {errores};
 
 		// 2. Mail - Verifica si existe en la BD
 		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-		if (!usuario) return {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true};
+		if (!usuario) return {errores: {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true}};
 
 		// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
 		const ahora = comp.fechaHora.ahora();
@@ -86,7 +86,7 @@ module.exports = {
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
 			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-			if (usuario.intsLogin > 3) return {errores: {hay: true}, usuario};
+			if (usuario.intsLogin > instLogins_BD) return {errores: {hay: true}, usuario};
 
 			// Valida el mail y la contraseña
 			errores.email_BD = !usuario ? "El mail no existe en nuestra base de datos" : "";
