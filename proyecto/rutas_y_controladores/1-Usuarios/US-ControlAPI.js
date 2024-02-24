@@ -53,7 +53,7 @@ module.exports = {
 		},
 	},
 	olvidoContr: {
-		validaMail: async (req, res) => {
+		validaDatos: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
 			const {errores, usuario} = await valida.olvidoContr(datos);
