@@ -86,7 +86,7 @@ module.exports = {
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
 			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-			if (usuario.intsLogin > 3) return {errores: {hay: true}, usuarios};
+			if (usuario.intsLogin > 3) return {errores: {hay: true}, usuario};
 
 			// Valida el mail y la contraseña
 			errores.emailOculto = !usuario ? "El mail no existe en nuestra base de datos" : "";
