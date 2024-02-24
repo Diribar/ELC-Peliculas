@@ -17,8 +17,8 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-	olvidoContrasena: {
-		mail: async function (email) {
+	olvidoContr: {
+		email: async function (email) {
 			// 1. Mail - Averigua si hay errores básicos
 			let errores = formatoMail(email);
 			if (errores.hay) return {errores};
