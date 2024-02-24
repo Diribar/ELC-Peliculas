@@ -20,6 +20,9 @@ module.exports = async (req, res, next) => {
 	if (usuario && usuario.intsLogin > instLogins_BD) return res.redirect("/usuario/login/suspendido");
 	if (usuario.intsDatosPer > intsDatosPer_BD) return res.redirect("/usuario/olvido-contrasena/suspendido");
 
+	// Crea la cookie
+	res.cookie("olvidoContr", {email, errores, usuario}, {maxAge: unDia});
+
 	// Fin
 	next();
 };
