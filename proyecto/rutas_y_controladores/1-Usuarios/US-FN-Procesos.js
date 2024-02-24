@@ -117,6 +117,15 @@ module.exports = {
 		// Fin
 		return;
 	},
-	comentarioUsuario: (tema) =>
-		"Por motivos de seguridad debido a los intentos fallidos "+tema+", te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	comentarios: {
+		credsInvalidas: {
+			altaMail: "Esa dirección de email ya existe en nuestra base de datos",
+			login: "Credenciales inválidas",
+			datosPerennes: "Algún dato no coincide con el de nuestra base de datos.",
+		},
+		accesoSuspendido: (tema) =>
+			"Por motivos de seguridad debido a los intentos fallidos " +
+			tema +
+			", te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	},
 };
