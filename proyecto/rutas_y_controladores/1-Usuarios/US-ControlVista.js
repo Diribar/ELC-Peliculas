@@ -16,9 +16,9 @@ module.exports = {
 		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
-		const dataEntry = datosGrales.datos ? datosGrales.datos : {};
-		const errores = datosGrales.errores ? datosGrales.errores : {};
-		const mostrarCampos = datosGrales.mostrarCampos ? datosGrales.mostrarCampos : null;
+		const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
+		const errores = datosGrales && datosGrales.errores ? datosGrales.errores : {};
+		const mostrarCampos = datosGrales && datosGrales.mostrarCampos ? datosGrales.mostrarCampos : null;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
@@ -32,10 +32,11 @@ module.exports = {
 			const tema = "usuario";
 			const codigo = "editables";
 			const usuario = req.session.usuario;
-			const errores = req.session.errores ? req.session.errores : false;
+			const {editables} = req.session;
 
 			// Generar la info para la vista
-			const dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+			const dataEntry = editables && editables.datos ? editables.datos : {};
+			const errores = editables && editables.errores ? editables.errores : {};
 			const avatar = usuario.avatar
 				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
@@ -61,8 +62,7 @@ module.exports = {
 			let errores = await valida.editables(datos);
 			if (errores.hay) {
 				if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
-				req.session.dataEntry = req.body; // No guarda el avatar
-				req.session.errores = errores;
+				req.session.editables = {datos: req.body, errores};
 				return res.redirect("/usuarios/garantiza-login-y-completo");
 			}
 
@@ -80,8 +80,11 @@ module.exports = {
 
 			// Actualiza el usuario
 			req.body.completadoEn = comp.fechaHora.ahora();
-			await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
-			req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
+			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
+
+			// Actualización de session
+			req.session.usuario = usuario;
+			delete req.session.editables;
 
 			// Redirecciona
 			return res.redirect("/usuarios/editables-bienvenido");
@@ -185,10 +188,11 @@ module.exports = {
 			const tema = "usuario";
 			const codigo = "login";
 			const datosGrales = req.session && req.session.login ? req.session.login : {};
+			console.log(188, datosGrales);
 
 			// Info para la vista
-			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
-			const errores = datosGrales.errores ? datosGrales.errores : {};
+			const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
+			const errores = datosGrales && datosGrales.errores ? datosGrales.errores : {};
 			const campos = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
