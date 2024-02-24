@@ -229,6 +229,7 @@ module.exports = {
 
 			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
 			res.cookie("email", req.body.email, {maxAge: unDia});
+			res.clearCookie("intsLogin");
 			res.clearCookie("login");
 
 			// Si corresponde, le cambia el status a 'mailValidado'
@@ -320,9 +321,13 @@ module.exports = {
 				check: true,
 			};
 
-			// Elimina la cookie
-			const cookie = altaMail ? "altaMail" : olvidoContr ? "olvidoCorntr" : "";
-			res.clearCookie(cookie);
+			// Elimina la cookie de intenciones
+			const cookieInts = altaMail ? "intsAltaMail" : olvidoContr ? "intsDatosPer" : "";
+			res.clearCookie(cookieInts);
+
+			// Elimina la cookie de los datos y errores
+			const cookieDatos = altaMail ? "altaMail" : olvidoContr ? "olvidoContr" : "";
+			res.clearCookie(cookieDatos);
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
