@@ -78,12 +78,19 @@ module.exports = {
 			if (errores.credenciales) {
 				// intsDatosPer - cookie
 				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
-				if (intsDatosPer <= intentosCookies + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+				if (intsDatosPer <= intentosCookies) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+				const intsPendsCookie = Math.max(0, intentosCookies - intsDatosPer);
 
 				// intsDatosPer - usuario
 				intsDatosPer = usuario.intsDatosPer + 1;
-				if (intsDatosPer <= intsLogin_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
-			}
+				if (intsDatosPer <= intentosBD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
+				const intsPendsBD = Math.max(0, intentosBD - intsDatosPer);
+
+				// Convierte el resultado en texto
+				const intsPendsCons = Math.min(intsPendsCookie, intsPendsBD);
+				errores.credenciales =
+					procesos.comentario("para validar tus datos") + "<br>Intentos disponibles: " + intsPendsCons;
+			} else errores.credenciales = "";
 
 			// cookie - guarda la info
 			datos =
