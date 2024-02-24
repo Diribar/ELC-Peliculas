@@ -9,7 +9,7 @@ module.exports = {
 		// Variables
 		const tema = "usuario";
 		const {ruta} = comp.reqBasePathUrl(req);
-		const codigo = ruta.slice(1);
+		const codigo = ruta.slice(1, -1);
 		const altaMail = codigo == "alta-mail";
 		const olvidoContr = codigo == "olvido-contrasena";
 		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
