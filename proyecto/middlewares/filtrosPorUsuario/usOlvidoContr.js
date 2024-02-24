@@ -22,7 +22,10 @@ module.exports = async (req, res, next) => {
 
 	// Crea la cookie
 	const mostrarCampos = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
-	const datos = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, email} : {email};
+	const datos =
+		req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
+			? {...req.cookies.olvidoContr.datos, email}
+			: {email};
 	res.cookie("olvidoContr", {datos, errores, usuario, mostrarCampos}, {maxAge: unDia});
 
 	// Fin
