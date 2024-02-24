@@ -57,6 +57,18 @@ module.exports = {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContr.datosPer(datos);
+			let intsDatosPer;
+
+			// Acciones si hubieron errores de credenciales
+			if (errores.credenciales) {
+				// intsDatosPer - cookie
+				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
+				if (intsDatosPer <= intsDatosPer_PC + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+
+				// intsDatosPer - usuario
+				intsDatosPer = usuario.intsDatosPer + 1;
+				if (intsDatosPer <= intsLogin_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
+			}
 
 			// cookie - guarda la info
 			datos =
