@@ -21,7 +21,9 @@ module.exports = async (req, res, next) => {
 	if (usuario.intsDatosPer > intsDatosPer_BD) return res.redirect("/usuario/olvido-contrasena/suspendido");
 
 	// Crea la cookie
-	res.cookie("olvidoContr", {email, errores, usuario}, {maxAge: unDia});
+	const mostrarCampos = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
+	const datos = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, email} : {email};
+	res.cookie("olvidoContr", {datos, errores, usuario, mostrarCampos}, {maxAge: unDia});
 
 	// Fin
 	next();
