@@ -32,14 +32,14 @@ module.exports = {
 			// Info para la vista
 			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
 			const errores = datosGrales.errores ? datosGrales.errores : {};
-			const variables = [
+			const campos = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
+				...{tema, codigo, dataEntry, errores, campos, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
