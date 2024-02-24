@@ -41,7 +41,7 @@ module.exports = {
 			};
 
 		// 4. Verifica si se superó la cantidad de intentos fallidos tolerados
-		if (usuario.intsValPerenne > 2) return {email: intsValPerenne, intsValPerenne, hay: true};
+		if (usuario.intsDatosPerenne > 2) return {email: intsDatosPerenne, intsDatosPerenne, hay: true};
 
 		// 5. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
 		if (usuario.statusRegistro_id == perennes_id) {
@@ -56,15 +56,15 @@ module.exports = {
 			// 5.C Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
 			errores.credenciales = errores.credenciales
-				? usuarioInexistente + "<br>Intento " + (usuario.intsValPerenne + 1) + " de 3."
+				? usuarioInexistente + "<br>Intento " + (usuario.intsDatosPerenne + 1) + " de 3."
 				: ""; // convierte el error en una frase
 			if (errores.credenciales) {
 				// Aumenta la cantidad de intentos para validar los datos perennes
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsValPerenne");
-				usuario.intsValPerenne++;
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsDatosPerenne");
+				usuario.intsDatosPerenne++;
 
 				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
-				if (usuario.intsValPerenne > 2) errores = {...errores, email: intsValPerenne, intsValPerenne};
+				if (usuario.intsDatosPerenne > 2) errores = {...errores, email: intsDatosPerenne, intsDatosPerenne};
 			}
 		}
 
@@ -88,29 +88,33 @@ module.exports = {
 
 		// Revisa las credenciales
 		if (!errores.hay) {
+			// Obtiene el usuario
 			const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
+
+			// Verifica si se superó la cantidad de intentos fallidos tolerados
+			if (usuario.intsLogin > 2) return {...errores, email: intsLogin, intsLogin, hay: true};
+
+			// Valida las credenciales
 			errores.credenciales =
 				!usuario || // el usuario no existe
 				!bcryptjs.compareSync(datos.contrasena, usuario.contrasena); // contraseña inválida
-
-			// Emprolija los errores
 			errores.credenciales = errores.credenciales
-				? "Credenciales inválidas.<br>Intento " + (datos.intentosLogin + 1) + " de 3"
+				? "Credenciales inválidas.<br>Intento " + (datos.intsLogin + 1) + " de 3"
 				: "";
-			errores.hay = !!errores.credenciales;
 
 			// Si el usuario existe, aumenta su valor 'intsLogin'
-			if (usuario) {
+			if (errores.credenciales && usuario) {
 				// Aumenta la cantidad de intentos de login
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsLogin");
 				usuario.intsLogin++;
 
-				// Verifica si se superó la cantidad de intentos fallidos tolerados
+				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
 				if (usuario.intsLogin > 2) errores = {...errores, email: intsLogin, intsLogin};
 			}
 		}
 
 		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 	editables: (datos) => {
@@ -149,7 +153,7 @@ const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const intsLogin = procesos.intsLogin;
-const intsValPerenne = procesos.intsValPerenne;
+const intsDatosPerenne = procesos.intsDatosPerenne;
 const usuarioInexistente = "Algún dato no coincide con el de nuestra base de datos.";
 const usuarioYaExiste =
 	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
