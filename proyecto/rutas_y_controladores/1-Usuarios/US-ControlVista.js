@@ -211,12 +211,20 @@ module.exports = {
 				// intentos_Login - cookie
 				intentos_Login = req.cookies && req.cookies.intentos_Login ? req.cookies.intentos_Login + 1 : 1;
 				if (intentos_Login <= intentos_Cookies) res.cookie("intentos_Login", intentos_Login, {maxAge: unDia});
+				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_Login);
 
 				// intentos_Login - usuario
-				if (!errores.email_BD && errores.contr_BD) {
+				let intentosPends_BD = intentos_BD;
+				if (usuario && errores.contr_BD) {
 					intentos_Login = usuario.intentos_Login + 1;
 					if (intentos_Login <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_Login});
+					intentosPends_BD = Math.max(0, intentos_BD - intentos_Login);
 				}
+
+				// Convierte el resultado en texto
+				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
+				errores.credenciales =
+				procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
 
 				// cookie - guarda la info
 				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
