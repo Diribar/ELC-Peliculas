@@ -470,7 +470,7 @@ module.exports = {
 		return;
 	},
 	RutinasEnUsuario: async () => {
-		// Lleva a cero el valor del campo 'intsDatosPer'
+		// Lleva a cero el valor de algunos campos
 		await BD_genericas.actualizaTodos("usuarios", {intsLogin: 0, intsDatosPer: 0});
 
 		// Elimina usuarios antiguos que no confirmaron su contraseña
