@@ -217,7 +217,7 @@ module.exports = {
 				// intsLogin - usuario
 				if (!errores.email_BD && errores.contr_BD) {
 					intsLogin = usuario.intsLogin + 1;
-					if (intsLogin <= intsBD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+					if (intsLogin <= intentosBD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
 				}
 
 				// cookie - guarda la info
