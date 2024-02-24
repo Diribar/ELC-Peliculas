@@ -9,9 +9,16 @@ module.exports = async (req, res, next) => {
 
 	// Redirecciona por errores con el mail
 	const {email} = req.query;
-	let {errores, usuario} = valida.olvido.Contr.mail(email);
+	let {errores, usuario} = valida.olvidoContr.email(email);
 	if (errores.hay) {
-		res.cookie("login", {datos: {email}, errores}, {maxAge: unDia}); // cookie - guarda la info
+		// Obtiene la cookie
+		const cookie =
+			req.cookies && req.cookies.login
+				? {...req.cookies.login, datos: {...req.cookies.login.datos, email}, errores}
+				: {datos: {email}, errores};
+
+		// Guarda la cookie y redirecciona
+		res.cookie("login", cookie, {maxAge: unDia});
 		return res.redirect("/usuario/login");
 	}
 
