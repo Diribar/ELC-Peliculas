@@ -32,7 +32,7 @@ module.exports = {
 			// Si hubieron errores de credenciales - intsAltaMail - cookie
 			if (errores.credenciales) {
 				intsAltaMail = req.cookies && req.cookies.intsAltaMail ? req.cookies.intsAltaMail + 1 : 1;
-				if (intsAltaMail <= intentosCookies + 1) res.cookie("intsAltaMail", intsAltaMail, {maxAge: unDia});
+				if (intsAltaMail <= intentos_Cookies + 1) res.cookie("intsAltaMail", intsAltaMail, {maxAge: unDia});
 			}
 
 			// cookie - guarda la info
@@ -72,24 +72,24 @@ module.exports = {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContr.datosPer(datos);
-			let intsDatosPer;
+			let intentos_DP;
 
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				// intsDatosPer - cookie
-				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
-				if (intsDatosPer <= intentosCookies) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
-				const intsPendsCookie = Math.max(0, intentosCookies - intsDatosPer);
+				// intentos_DP - cookie
+				intentos_DP = req.cookies && req.cookies.intentos_DP ? req.cookies.intentos_DP + 1 : 1;
+				if (intentos_DP <= intentos_Cookies) res.cookie("intentos_DP", intentos_DP, {maxAge: unDia});
+				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_DP);
 
-				// intsDatosPer - usuario
-				intsDatosPer = usuario.intsDatosPer + 1;
-				if (intsDatosPer <= intentosBD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
-				const intsPendsBD = Math.max(0, intentosBD - intsDatosPer);
+				// intentos_DP - usuario
+				intentos_DP = usuario.intentos_DP + 1;
+				if (intentos_DP <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_DP});
+				const intentosPends_BD = Math.max(0, intentos_BD - intentos_DP);
 
 				// Convierte el resultado en texto
-				const intsPendsCons = Math.min(intsPendsCookie, intsPendsBD);
+				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
 				errores.credenciales =
-					procesos.comentario("para validar tus datos") + "<br>Intentos disponibles: " + intsPendsCons;
+					procesos.comentario("para validar tus datos") + "<br>Intentos disponibles: " + intentosPends_Cons;
 			} else errores.credenciales = "";
 
 			// cookie - guarda la info

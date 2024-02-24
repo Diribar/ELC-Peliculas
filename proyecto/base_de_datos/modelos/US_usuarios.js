@@ -35,8 +35,8 @@ module.exports = (sequelize, dt) => {
 		edicsAprob: {type: dt.INTEGER},
 		edicsRech: {type: dt.INTEGER},
 
-		intsLogin: {type: dt.INTEGER},
-		intsDatosPer: {type: dt.INTEGER},
+		intentos_Login: {type: dt.INTEGER},
+		intentos_DP: {type: dt.INTEGER},
 		penalizacAcum: {type: dt.DECIMAL},
 		penalizadoEn: {type: dt.DATE},
 		penalizadoHasta: {type: dt.DATE},

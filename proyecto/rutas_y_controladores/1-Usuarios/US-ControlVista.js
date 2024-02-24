@@ -211,13 +211,13 @@ module.exports = {
 				// intsLogin - cookie
 				if (errores.email_BD || errores.contr_BD) {
 					intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
-					if (intsLogin <= intentosCookies + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+					if (intsLogin <= intentos_Cookies + 1) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
 				}
 
 				// intsLogin - usuario
 				if (!errores.email_BD && errores.contr_BD) {
 					intsLogin = usuario.intsLogin + 1;
-					if (intsLogin <= intentosBD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+					if (intsLogin <= intentos_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
 				}
 
 				// cookie - guarda la info
@@ -270,7 +270,7 @@ module.exports = {
 				codigo == "login"
 					? [procesos.intsLogin, mensajeCola]
 					: codigo == "olvido-contrasena"
-					? [procesos.intsDatosPer, mensajeCola]
+					? [procesos.intentos_DP, mensajeCola]
 					: [];
 			const titulo =
 				codigo == "login"
@@ -322,7 +322,7 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookieInts = altaMail ? "intsAltaMail" : olvidoContr ? "intsDatosPer" : "";
+			const cookieInts = altaMail ? "intsAltaMail" : olvidoContr ? "intentos_DP" : "";
 			res.clearCookie(cookieInts);
 
 			// Elimina la cookie de los datos y errores

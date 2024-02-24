@@ -117,8 +117,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	intsLogin:
-		"Por motivos de seguridad debido a los intentos fallidos de login, te pedimos que esperes hasta 24hs para volver a intentarlo.",
-	intsDatosPer:
-		"Por motivos de seguridad debido a los intentos fallidos para validar tus datos, te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	comentarioUsuario: (tema) =>
+		"Por motivos de seguridad debido a los intentos fallidos "+tema+", te pedimos que esperes hasta 24hs para volver a intentarlo.",
 };
