@@ -49,7 +49,7 @@ window.addEventListener("load", () => {
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
 
 		// Si se necesitan los campos 'perennes', se recarga la página
-		if (v.errores.faltanCampos || (v.errores.intsValPerenne && v.inputs.length == 1)) return location.reload();
+		if (v.errores.faltanCampos || (v.errores.intsDatosPerenne && v.inputs.length == 1)) return location.reload();
 
 		if (v.errores.hay) return;
 
