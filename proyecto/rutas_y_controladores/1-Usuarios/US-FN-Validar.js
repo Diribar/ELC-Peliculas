@@ -126,8 +126,6 @@ const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
-const usuarioYaExiste =
-	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
 
 // Funciones
 let formatoMail = (email) => {
@@ -212,8 +210,7 @@ let perennesBE = async (datos) => {
 
 		// Averigua si el usuario existe en la base de datos
 		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
-		errores.credenciales = errores.credenciales ? usuarioYaExiste : ""; // convierte el error en una frase
-		errores.hay = !!errores.credenciales;
+		errores.hay = errores.credenciales;
 	}
 
 	// Fin

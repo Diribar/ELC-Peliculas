@@ -121,7 +121,8 @@ module.exports = {
 		credsInvalidas: {
 			altaMail: "Esa dirección de email ya existe en nuestra base de datos.",
 			login: "Credenciales inválidas.",
-			datosPerennes: "Algún dato no coincide con el de nuestra base de datos.",
+			olvidoContr: "Algún dato no coincide con el de nuestra base de datos.",
+			datosPer: "Ya existe un usuario con esas credenciales. De ser necesario, comunicate con nosotros.",
 		},
 		accesoSuspendido: (tema) =>
 			"Por motivos de seguridad debido a los intentos fallidos " +
