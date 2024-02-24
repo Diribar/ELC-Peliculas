@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 23/feb",
-	"HoraUTC": "1:02",
+	"FechaUTC": "Sáb. 24/feb",
+	"HoraUTC": "1:27",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 19/feb",
@@ -19,7 +19,7 @@
 		"EliminaCalifsSinPPP": "SI",
 		"LoginsAcums": "SI",
 		"IDdeTablas": "SI",
-		"RutinasEnUsuario": ""
+		"RutinasEnUsuario": "SI"
 	},
 	"RutinasSemanales": {
 		"AprobadoConAvatarLink": "SI",
@@ -32,10 +32,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-feb-24": {"titulo": "Eric Liddell", "entidad": "personajes", "id": 194},
 		"22-feb-24": {"titulo": "Cuaresma"},
 		"23-feb-24": {"titulo": "San Policarpo de Esmirna", "entidad": "personajes", "id": 114},
 		"24-feb-24": {"titulo": "Cuaresma"},
-		"25-feb-24": {"titulo": "Cuaresma"}
+		"25-feb-24": {"titulo": "Cuaresma"},
+		"26-feb-24": {"titulo": "Cuaresma"}
 	}
 }
