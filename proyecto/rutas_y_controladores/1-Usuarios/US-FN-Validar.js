@@ -41,7 +41,7 @@ module.exports = {
 			};
 
 		// 4. Verifica si se superó la cantidad de intentos fallidos tolerados
-		if (usuario.intsDatosPerenne > 2) return {email: intsDatosPerenne, intsDatosPerenne, hay: true};
+		if (usuario.intsDatosPer > 2) return {email: intsDatosPer, intsDatosPer, hay: true};
 
 		// 5. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
 		if (usuario.statusRegistro_id == perennes_id) {
@@ -56,15 +56,15 @@ module.exports = {
 			// 5.C Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
 			errores.credenciales = errores.credenciales
-				? usuarioInexistente + "<br>Intento " + (usuario.intsDatosPerenne + 1) + " de 3."
+				? usuarioInexistente + "<br>Intento " + (usuario.intsDatosPer + 1) + " de 3."
 				: ""; // convierte el error en una frase
 			if (errores.credenciales) {
 				// Aumenta la cantidad de intentos para validar los datos perennes
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsDatosPerenne");
-				usuario.intsDatosPerenne++;
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsDatosPer");
+				usuario.intsDatosPer++;
 
 				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
-				if (usuario.intsDatosPerenne > 2) errores = {...errores, email: intsDatosPerenne, intsDatosPerenne};
+				if (usuario.intsDatosPer > 2) errores = {...errores, email: intsDatosPer, intsDatosPer};
 			}
 		}
 
@@ -153,7 +153,7 @@ const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const intsLogin = procesos.intsLogin;
-const intsDatosPerenne = procesos.intsDatosPerenne;
+const intsDatosPer = procesos.intsDatosPer;
 const usuarioInexistente = "Algún dato no coincide con el de nuestra base de datos.";
 const usuarioYaExiste =
 	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
