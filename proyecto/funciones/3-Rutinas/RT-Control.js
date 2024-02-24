@@ -470,8 +470,8 @@ module.exports = {
 		return;
 	},
 	RutinasEnUsuario: async () => {
-		// Lleva a cero el valor del campo 'intsValPerenne'
-		await BD_genericas.actualizaTodos("usuarios", {intsValPerenne: 0});
+		// Lleva a cero el valor del campo 'intsDatosPerenne'
+		await BD_genericas.actualizaTodos("usuarios", {intsDatosPerenne: 0});
 
 		// Elimina usuarios antiguos que no confirmaron su contraseña
 		const fechaDeCorte = new Date(new Date().getTime() - unDia);
