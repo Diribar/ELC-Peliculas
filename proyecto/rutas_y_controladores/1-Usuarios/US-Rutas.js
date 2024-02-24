@@ -47,10 +47,11 @@ router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guarda
 // Vistas - Login
 router.get("/login", vista.login.form);
 router.post("/login", visitas, vista.login.guardar);
-router.get("/logout", statusCorrecto, vista.logout);
+router.get("/logout", statusCorrecto, vista.login.logout);
+router.post("/login/olvido-contrasena", visitas, vista.login.olvidoContr); // obtiene datos para redireccionar
+router.post("/login/alta-mail", visitas, vista.login.altaMail); // obtiene datos para redireccionar
 
 // Vista - Miscelaneas
-router.post("/olvido-contrasena", visitas, vista.miscelaneas.guardar);
 router.get("/:id/suspendido", visitas, vista.miscelaneas.accesosSuspendidos);
 router.get("/envio-exitoso-de-mail", visitas, vista.miscelaneas.envioExitoso);
 router.get("/envio-fallido-de-mail", visitas, vista.miscelaneas.envioFallido);
