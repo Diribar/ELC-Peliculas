@@ -226,8 +226,8 @@ module.exports = {
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
 
-				// cookie - guarda la info
-				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
+				// session - guarda la info
+				req.session.login = {datos, errores, usuario};
 
 				// Redirecciona
 				return res.redirect("/usuarios/login");
