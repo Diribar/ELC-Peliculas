@@ -89,12 +89,12 @@ module.exports = {
 			if (usuario.intsLogin > 3) return {errores: {hay: true}, usuario};
 
 			// Valida el mail y la contraseña
-			errores.emailOculto = !usuario ? "El mail no existe en nuestra base de datos" : "";
+			errores.email_BD = !usuario ? "El mail no existe en nuestra base de datos" : "";
 			errores.contrOculta =
 				usuario && !bcryptjs.compareSync(datos.contrasena, usuario.contrasena) ? "Contraseña incorrecta" : "";
 
 			// Valida las credenciales
-			errores.credenciales = errores.emailOculto || errores.contrOculta;
+			errores.credenciales = errores.email_BD || errores.contrOculta;
 			errores.credenciales = errores.credenciales
 				? "Credenciales inválidas.<br>Intento " + (datos.intsLogin + 1) + " de 3"
 				: "";
