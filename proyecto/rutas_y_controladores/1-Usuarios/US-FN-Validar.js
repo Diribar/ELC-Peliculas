@@ -54,7 +54,7 @@ module.exports = {
 			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
 
 			// 2. Revisa el formato superficial de los valores
-			errores = perennesFE(datos);
+			let errores = perennesFE(datos);
 			if (errores.hay) return errores;
 
 			// 3. Revisa las credenciales
