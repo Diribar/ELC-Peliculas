@@ -27,11 +27,8 @@ router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
-router.get("/alta-mail", visitas, vista.altaMail.form);
-router.get("/olvido-contrasena", visitas, vista.altaMail.form);
-router.post("/olvido-contrasena", visitas, vista.altaMail.guardar);
-router.get("/envio-exitoso-de-mail", visitas, vista.altaMail.envioExitoso);
-router.get("/envio-fallido-de-mail", visitas, vista.altaMail.envioFallido);
+router.get("/alta-mail", visitas, vista.altaMail_olvidoContr);
+router.get("/olvido-contrasena", visitas, vista.altaMail_olvidoContr);
 
 // Vistas - Editables
 router.get("/editables", statusCorrecto, vista.editables.form);
@@ -47,11 +44,16 @@ router.get("/perennes-bienvenido", validarIdentidad, vista.perennes.bienvenido);
 router.get("/edicion", usAltaTerm, vista.edicion.form);
 router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);
 
-// Vistas -Login
+// Vistas - Login
 router.get("/login", vista.login.form);
-router.get("/login/suspendido", vista.login.loginSuspendido);
 router.post("/login", visitas, vista.login.guardar);
 router.get("/logout", statusCorrecto, vista.logout);
+
+// Vista - Miscelaneas
+router.post("/olvido-contrasena", visitas, vista.miscelaneas.guardar);
+router.get("/:id/suspendido", visitas, vista.miscelaneas.accesosSuspendidos);
+router.get("/envio-exitoso-de-mail", visitas, vista.miscelaneas.envioExitoso);
+router.get("/envio-fallido-de-mail", visitas, vista.miscelaneas.envioFallido);
 
 // Fin
 module.exports = router;
