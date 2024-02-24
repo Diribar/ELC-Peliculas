@@ -58,7 +58,7 @@ module.exports = {
 			if (errores.hay) return errores;
 
 			// 3. Revisa las credenciales
-			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
+			errores.credenciales = camposPerennes.some((n) => usuario[n] != datos[n]);
 			errores.hay = !!errores.credenciales;
 			return errores;
 		},
