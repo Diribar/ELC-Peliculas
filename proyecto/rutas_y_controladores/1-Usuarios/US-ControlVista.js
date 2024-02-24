@@ -37,7 +37,7 @@ module.exports = {
 		// Genera info para la vista
 		const errores = datosSession.errores ? datosSession.errores : {};
 		const dataEntry = datosSession.datos ? datosSession.datos : {};
-		const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsDatosPerenne;
+		const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsDatosPer;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
@@ -267,14 +267,36 @@ module.exports = {
 	},
 	miscelaneas: {
 		accesosSuspendidos: (req, res) => {
+			// Variables
+			const codigo = req.params.id;
+			const mensajeCola = "Con el ícono de entendido salís a la vista de inicio.";
+
 			// Feedback
-			const informacion = {
-				mensajes: [procesos.intsLogin, "Con el ícono de la izquierda salís a la vista de inicio."],
-				iconos: [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}],
-				titulo: "Login suspendido hasta 24hs",
-			};
+			const mensajes =
+				codigo == "login"
+					? [procesos.intsLogin, mensajeCola]
+					: codigo == "olvido-contrasena"
+					? [procesos.intsDatosPer, mensajeCola]
+					: [];
+			const titulo =
+				codigo == "login"
+					? "Login suspendido hasta 24hs"
+					: codigo == "olvido-contrasena"
+					? "Olvido de Contraseña suspendido hasta 24hs"
+					: "";
+			const iconos =
+				codigo == "login"
+					? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
+					: codigo == "olvido-contrasena"
+					? [
+							{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"},
+							{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"},
+					  ]
+					: "";
+			const informacion = {mensajes, iconos, titulo};
 
 			// Logout
+			procesos.logout(req, res);
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
@@ -329,14 +351,4 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-};
-
-// Funciones
-let logout = (req, res) => {
-	// Borra los datos de session y cookie
-	for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
-	res.clearCookie("email");
-
-	// Fin
-	return;
 };
