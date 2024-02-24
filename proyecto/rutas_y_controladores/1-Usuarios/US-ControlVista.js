@@ -320,6 +320,10 @@ module.exports = {
 				check: true,
 			};
 
+			// Elimina la cookie
+			const cookie = altaMail ? "altaMail" : olvidoContr ? "olvidoCorntr" : "";
+			res.clearCookie(cookie);
+
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
 		},
