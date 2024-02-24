@@ -17,60 +17,53 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-	olvidoContrasena: async function (datos) {
-		// 1. Mail - Averigua si hay errores básicos
-		const {email} = datos;
-		let errores = formatoMail(email);
-		if (errores.hay) return {errores};
+	olvidoContrasena: {
+		mail: async function (email) {
+			// 1. Mail - Averigua si hay errores básicos
+			let errores = formatoMail(email);
+			if (errores.hay) return {errores};
 
-		// 2. Mail - Verifica si existe en la BD
-		const usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
-		if (!usuario) return {errores: {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true}};
+			// 2. Mail - Verifica si existe en la BD
+			const usuario = await BD_especificas.obtieneUsuarioPorMail(email);
+			if (!usuario) return {errores: {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true}};
 
-		// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
-		const ahora = comp.fechaHora.ahora();
-		const fechaContrasena = usuario.fechaContrasena;
-		const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
-		if (diferencia < 24)
-			return {
-				email:
-					"Ya enviamos un mail con la contraseña el día " +
-					comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
-					". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
-				hay: true,
-			};
+			// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
+			const ahora = comp.fechaHora.ahora();
+			const fechaContrasena = usuario.fechaContrasena;
+			const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
+			if (diferencia < 24)
+				return {
+					errores: {
+						email:
+							"Ya enviamos un mail con la contraseña el día " +
+							comp.fechaHora.fechaHorario(usuario.fechaContrasena) +
+							". Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
+						hay: true,
+					},
+					usuario,
+				};
 
-		// 4. Verifica si se superó la cantidad de intentos fallidos tolerados
-		if (usuario.intsDatosPer > 2) return {email: intsDatosPer, intsDatosPer, hay: true};
-
-		// 5. Datos Perennes - Si el usuario tiene status 'perenne_id', valida sus demás datos
-		if (usuario.statusRegistro_id == perennes_id) {
-			// 5.A Se fija si los datos tienen la info de los campos perennes
+			// Fin
+			errores.hay = Object.values(errores).some((n) => !!n);
+			return {errores, usuario};
+		},
+		datosPer: async function ({datos, usuario}) {
+			// 1. Revisa si los datos tienen la info de los campos perennes
 			const campos = Object.keys(datos);
 			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
 
-			// 5.B Revisa el formato superficial de los valores
+			// 2. Revisa el formato superficial de los valores
 			errores = perennesFE(datos);
 			if (errores.hay) return errores;
 
-			// 5.C Revisa las credenciales
+			// 3. Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
 			errores.credenciales = errores.credenciales
 				? usuarioInexistente + "<br>Intento " + (usuario.intsDatosPer + 1) + " de 3."
-				: ""; // convierte el error en una frase
-			if (errores.credenciales) {
-				// Aumenta la cantidad de intentos para validar los datos perennes
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "intsDatosPer");
-				usuario.intsDatosPer++;
-
-				// Verifica nuevamente si se superó la cantidad de intentos fallidos tolerados
-				if (usuario.intsDatosPer > 2) errores = {...errores, email: intsDatosPer, intsDatosPer};
-			}
-		}
-
-		// Fin
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
+				: "";
+			errores.hay = !!errores.credenciales;
+			return errores;
+		},
 	},
 	login: async function (datos) {
 		// Variables
