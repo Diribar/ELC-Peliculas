@@ -10,8 +10,8 @@ const statusCorrecto = require("../../middlewares/filtrosPorUsuario/usStatusCorr
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
-const usIntsLogin = require("../../middlewares/filtrosPorUsuario/usIntsLogin");
-const usIntsDatosPer = require("../../middlewares/filtrosPorUsuario/usIntsDatosPer");
+const usLogin = require("../../middlewares/filtrosPorUsuario/usLogin");
+const usOlvidoContr = require("../../middlewares/filtrosPorUsuario/usOlvidoContr");
 
 // Middlewares - Consolidados
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
@@ -23,14 +23,14 @@ router.get("/api/valida-editables", API.valida.editables);
 router.get("/api/valida-perennes", API.valida.perennes);
 router.get("/api/alta-mail/valida-mail", API.altaMail.validaMail);
 router.get("/api/alta-mail/envio-de-mail", API.altaMail.envioDeMail);
-router.get("/api/olvido-contrasena/valida-mail", API.olvidoContrasena.validaMail);
-router.get("/api/olvido-contrasena/envio-de-mail", API.olvidoContrasena.envioDeMail);
+router.get("/api/olvido-contrasena/valida-mail", API.olvidoContr.validaMail);
+router.get("/api/olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMail);
 router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
-router.get("/alta-mail", usIntsLogin, visitas, vista.altaMail_olvidoContr);
-router.get("/olvido-contrasena", usIntsDatosPer, visitas, vista.altaMail_olvidoContr);
+router.get("/alta-mail", usLogin, visitas, vista.altaMail_olvidoContr);
+router.get("/olvido-contrasena", usOlvidoContr, visitas, vista.altaMail_olvidoContr);
 
 // Vistas - Editables
 router.get("/editables", statusCorrecto, vista.editables.form);
@@ -47,8 +47,8 @@ router.get("/edicion", usAltaTerm, vista.edicion.form);
 router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);
 
 // Vistas - Login
-router.get("/login", usIntsLogin, vista.login.form);
-router.post("/login", usIntsLogin, visitas, vista.login.guardar);
+router.get("/login", usLogin, vista.login.form);
+router.post("/login", usLogin, visitas, vista.login.guardar);
 router.post("/login/olvido-contrasena", visitas, vista.login.olvidoContr); // obtiene datos para redireccionar
 router.post("/login/alta-mail", visitas, vista.login.altaMail); // obtiene datos para redireccionar
 router.get("/logout", statusCorrecto, vista.login.logout);
