@@ -4,23 +4,23 @@
 		<h1>Login</h1>
 		<!-- Datos -->
 		<section id="datos">
-			<% for (let variable of variables) { %>
+			<% for (let campo of campos) { %>
 				<div class="labelInput flexRow">
-					<label><%= variable.titulo %></label>
+					<label><%= campo.titulo %></label>
 					<div class="inputError">
 						<!-- Input -->
 						<input class="input"
-							value="<%= dataEntry[variable.name] %>"
-							type="<%= variable.type %>"
-							name="<%= variable.name %>"
-							placeholder="<%= variable.placeholder %>"
-							<% if (dataEntry[variable.name]) { %>autocomplete='new-password'<% } %>
+							value="<%= dataEntry[campo.name] %>"
+							type="<%= campo.type %>"
+							name="<%= campo.name %>"
+							placeholder="<%= campo.placeholder %>"
+							<% if (dataEntry[campo.name]) { %>autocomplete='new-password'<% } %>
 						>
 						<!-- El autocomplete = 'new-password' es para prevenir el 'autocomplete' -->
 						<!-- Ojito contraseña -->
-						<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
+						<% if (campo.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 						<!-- Error/OK -->
-						<%- include("CMP-Errores", {nombre: variable.name, display: true}) %>
+						<%- include("CMP-Errores", {nombre: campo.name, display: true}) %>
 					</div>
 				</div>
 			<% } %>

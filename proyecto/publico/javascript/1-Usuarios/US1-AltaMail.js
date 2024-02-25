@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
 
 	// Variables
 	const rutaInicio = "/usuarios/api/" + codigo;
-	const rutaValida = rutaInicio + "/valida-mail/?datos=";
+	const rutaValida = rutaInicio + "/validaciones/?datos=";
 	const rutaEnvia = rutaInicio + "/envio-de-mail/?email=";
 
 	// Funciones -----------------------------

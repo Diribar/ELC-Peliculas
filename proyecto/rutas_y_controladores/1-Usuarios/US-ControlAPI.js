@@ -53,14 +53,30 @@ module.exports = {
 		},
 	},
 	olvidoContr: {
-		validaMail: async (req, res) => {
+		validaDatosPer: async (req, res) => {
 			// Variables
-			const datos = JSON.parse(req.query.datos);
-			const {errores, usuario} = await valida.olvidoContr(datos);
+			let datos = JSON.parse(req.query.datos);
+			const errores = await valida.olvidoContr.datosPer(datos);
+			let intsDatosPer;
 
-			// Acciones si hay un error
-			if (errores.hay) {
+			// Acciones si hubieron errores de credenciales
+			if (errores.credenciales) {
+				// intsDatosPer - cookie
+				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
+				if (intsDatosPer <= intsDatosPer_PC + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+
+				// intsDatosPer - usuario
+				intsDatosPer = usuario.intsDatosPer + 1;
+				if (intsDatosPer <= intsLogin_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
 			}
+
+			// cookie - guarda la info
+			datos =
+				req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
+					? {...req.cookies.olvidoContr.datos, ...datos}
+					: datos;
+			const cookie = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, datos} : {datos};
+			res.cookie("olvidoContr", cookie, {maxAge: unDia});
 
 			// Devuelve la info
 			return res.json(errores);

@@ -24,30 +24,22 @@ module.exports = {
 	},
 	login: {
 		form: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "usuario";
 			const codigo = "login";
+			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
 
-			// Datos cargados
-			const datosCookies = req.cookies && req.cookies.login ? req.cookies.login : {};
-			const dataEntry = datosCookies.datos ? datosCookies.datos : {};
-			const errores = datosCookies.errores ? datosCookies.errores : {};
-
-			// Si se superó la cantidad de intentos de login, redirige a "Olvido de contraseña"
-			if (dataEntry.intsLogin && dataEntry.intsLogin > 2) {
-				req.session.olvidoContr = {datos: {email: dataEntry.email}};
-				return res.redirect("login/suspendido");
-			}
-
-			// Variables para la vista
-			const variables = [
+			// Info para la vista
+			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
+			const errores = datosGrales.errores ? datosGrales.errores : {};
+			const campos = [
 				{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 				{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 			];
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, dataEntry, errores, variables, titulo: "Login"},
+				...{tema, codigo, dataEntry, errores, campos, titulo: "Login"},
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -67,7 +59,7 @@ module.exports = {
 
 				// intsLogin - usuario
 				if (!errores.email_BD && errores.contr_BD) {
-					instLogin = usuario.intsLogin + 1;
+					intsLogin = usuario.intsLogin + 1;
 					if (intsLogin <= instLogins_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
 				}
 
