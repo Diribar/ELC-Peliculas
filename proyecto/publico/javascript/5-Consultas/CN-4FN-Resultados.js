@@ -272,9 +272,11 @@ let auxiliares = {
 		// Particularidades
 		aux.nombreCastellano.innerHTML = producto.nombreCastellano;
 		aux.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-		aux.ppp.className += " scale " + producto.ppp.icono;
-		aux.ppp.tabIndex = "-1";
-		aux.ppp.title = producto.ppp.nombre;
+		if (producto.ppp) {
+			aux.ppp.className += " scale " + producto.ppp.icono;
+			aux.ppp.tabIndex = "-1";
+			aux.ppp.title = producto.ppp.nombre;
+		}
 
 		// Particularidades de Dirección
 		const em = document.createElement("em");
