@@ -924,7 +924,7 @@ module.exports = {
 		return usuario.nombre + " " + usuario.apellido;
 	},
 
-	// Internet
+	// Varias
 	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
 		const transporter = nodemailer.createTransport({
@@ -958,8 +958,6 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-
-	// Varias
 	reqBasePathUrl: (req) => {
 		// Obtiene los resultados
 		const baseUrl = req.baseUrl

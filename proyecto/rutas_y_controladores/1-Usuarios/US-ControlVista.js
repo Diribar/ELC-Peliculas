@@ -23,80 +23,29 @@ module.exports = {
 		return res.redirect(url);
 	},
 	// Circuito de alta de usuario
-	altaMail: {
-		form: async (req, res) => {
-			// Variables
-			const tema = "usuario";
-			const {ruta} = comp.reqBasePathUrl(req);
-			const codigo = ruta.slice(1);
-			const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
+	altaMail_olvidoContr: async (req, res) => {
+		// Variables
+		const tema = "usuario";
+		const {ruta} = comp.reqBasePathUrl(req);
+		const codigo = ruta.slice(1);
+		const titulo = codigo == "alta-mail" ? "Alta de Usuario - Mail" : "Olvido de Contraseña";
 
-			// Session de olvidoContrasena - 'altaMail' no usa session
-			const datosSession = req.session.olvidoContrasena ? req.session.olvidoContrasena : {};
-			delete req.session.olvidoContrasena;
+		// Session de olvidoContrasena - 'altaMail' no usa session
+		const datosSession = req.session.olvidoContrasena ? req.session.olvidoContrasena : {};
+		delete req.session.olvidoContrasena;
 
-			// Genera info para la vista
-			const errores = datosSession.errores ? datosSession.errores : {};
-			const dataEntry = datosSession.datos ? datosSession.datos : {};
-			const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsValidarPerenne;
+		// Genera info para la vista
+		const errores = datosSession.errores ? datosSession.errores : {};
+		const dataEntry = datosSession.datos ? datosSession.datos : {};
+		const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsDatosPerenne;
 
-			// Vista
-			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, dataEntry, errores, hablaHispana, hablaNoHispana, mostrarCampos},
-				urlSalir: "/usuarios/login",
-			});
-		},
-		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
-		envioExitoso: (req, res) => {
-			// Variables
-			const {codigo} = req.query;
-			const altaMail = codigo == "alta-mail";
-			const olvidoContrasena = codigo == "olvido-contrasena";
-
-			// Feedback
-			const informacion = {
-				mensajes: altaMail
-					? [
-							"Hemos generado tu usuario con tu dirección de mail.",
-							"Te hemos enviado por mail la contraseña.",
-							"Con el ícono de abajo accedés al Login.",
-					  ]
-					: olvidoContrasena
-					? [
-							"Hemos generado una nueva contraseña para tu usuario.",
-							"Te la hemos enviado por mail.",
-							"Con el ícono de abajo accedés al Login.",
-					  ]
-					: [],
-				iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-				titulo: altaMail ? "Alta exitosa de Usuario" : olvidoContrasena ? "Actualización exitosa de Contraseña" : "",
-				check: true,
-			};
-
-			// Vista
-			return res.render("CMP-0Estructura", {informacion});
-		},
-		envioFallido: (req, res) => {
-			// Variables
-			const {codigo} = req.query;
-			const altaMail = codigo == "alta-mail";
-			const olvidoContrasena = codigo == "olvido-contrasena";
-
-			// Feedback
-			const informacion = {
-				mensajes: [
-					"No pudimos enviarte un mail con la contraseña.",
-					"Revisá tu conexión a internet y volvé a intentarlo.",
-					"Con el ícono de abajo regresás a la vista anterior.",
-				],
-				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-				titulo: altaMail ? "Alta de Usuario fallida" : olvidoContrasena ? "Actualización de Contraseña fallida" : "",
-			};
-
-			// Vista
-			return res.render("CMP-0Estructura", {informacion});
-		},
+		// Vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo, dataEntry, errores, hablaHispana, hablaNoHispana, mostrarCampos},
+			urlSalir: "/usuarios/login",
+		});
 	},
+
 	editables: {
 		form: async (req, res) => {
 			// Variables
@@ -261,7 +210,7 @@ module.exports = {
 			const errores = datosCookies.errores ? datosCookies.errores : {};
 
 			// Si se superó la cantidad de intentos de login, redirige a "Olvido de contraseña"
-			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) {
+			if (dataEntry.intsLogin && dataEntry.intsLogin > 2) {
 				req.session.olvidoContrasena = {datos: {email: dataEntry.email}};
 				return res.redirect("login/suspendido");
 			}
@@ -280,16 +229,15 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const intentosLogin =
-				req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intentosLogin : 0;
-			const datos = {...req.body, intentosLogin};
+			const intsLogin = req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intsLogin : 0;
+			const datos = {...req.body, intsLogin};
 
 			// Averigua si hay errores de data-entry
 			let errores = await valida.login(datos);
 
 			// Si hay errores de validación, regresa al form
 			if (errores.hay) {
-				datos.intentosLogin++;
+				datos.intsLogin++;
 				res.cookie("login", {datos, errores}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
@@ -310,36 +258,84 @@ module.exports = {
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
-		loginSuspendido: (req, res) => {
+	},
+	logout: (req, res) => {
+		logout(req, res);
+		return res.redirect("/usuarios/login");
+	},
+	miscelaneas: {
+		accesosSuspendidos: (req, res) => {
 			// Feedback
 			const informacion = {
-				mensajes: [
-					"Debido a los intentos fallidos de login, por seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
-					"Con el ícono de la izquierda salís a la vista de inicio.",
-				],
+				mensajes: [procesos.intsLogin, "Con el ícono de la izquierda salís a la vista de inicio."],
 				iconos: [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}],
 				titulo: "Login suspendido hasta 24hs",
 			};
-			if (!req.session.email) {
-				informacion.mensajes.push(
-					"Si necesitás que te asignemos una nueva contraseña, podés elegir el botón de la derecha"
-				);
-				informacion.iconos.push({
-					...variables.vistaSiguiente("/usuarios/olvido-contrasena"),
-					titulo: "Entendido e ir a la vista de 'Olvido de Contraseña'",
-				});
-			}
+
+			// Logout
+
+			// Vista
+			return res.render("CMP-0Estructura", {informacion});
+		},
+		guardar: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
+		envioExitoso: (req, res) => {
+			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
+			const informacion = {
+				mensajes: altaMail
+					? [
+							"Hemos generado tu usuario con tu dirección de mail.",
+							"Te hemos enviado por mail la contraseña.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: olvidoContrasena
+					? [
+							"Hemos generado una nueva contraseña para tu usuario.",
+							"Te la hemos enviado por mail.",
+							"Con el ícono de abajo accedés al Login.",
+					  ]
+					: [],
+				iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
+				titulo: altaMail ? "Alta exitosa de Usuario" : olvidoContrasena ? "Actualización exitosa de Contraseña" : "",
+				check: true,
+			};
+
+			// Vista
+			return res.render("CMP-0Estructura", {informacion});
+		},
+		envioFallido: (req, res) => {
+			// Variables
+			const {codigo} = req.query;
+			const altaMail = codigo == "alta-mail";
+			const olvidoContrasena = codigo == "olvido-contrasena";
+
+			// Feedback
+			const informacion = {
+				mensajes: [
+					"No pudimos enviarte un mail con la contraseña.",
+					"Revisá tu conexión a internet y volvé a intentarlo.",
+					"Con el ícono de abajo regresás a la vista anterior.",
+				],
+				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
+				titulo: altaMail ? "Alta de Usuario fallida" : olvidoContrasena ? "Actualización de Contraseña fallida" : "",
+			};
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-	logout: (req, res) => {
-		// Borra los datos de session y cookie
-		for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
-		res.clearCookie("email");
+};
 
-		// Fin
-		return res.redirect("/usuarios/login");
-	},
+// Funciones
+let logout = (req, res) => {
+	// Borra los datos de session y cookie
+	for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
+	res.clearCookie("email");
+
+	// Fin
+	return;
 };
