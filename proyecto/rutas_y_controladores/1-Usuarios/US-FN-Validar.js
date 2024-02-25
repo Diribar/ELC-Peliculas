@@ -10,7 +10,7 @@ module.exports = {
 		let errores = formatoMail(email);
 
 		// Se fija si el mail ya existe
-		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email}))){
+		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email}))) {
 			errores.credenciales = "Esta dirección de email ya figura en nuestra base de datos";
 			errores.hay = !!errores.credenciales;
 		}
@@ -24,7 +24,7 @@ module.exports = {
 			let errores = formatoMail(email);
 			if (errores.hay) return {errores};
 
-			// 2. Mail - Verifica si existe en la BD
+			// 2. Mail - Verifica si no existe en la BD
 			const usuario = await BD_especificas.obtieneUsuarioPorMail(email);
 			if (!usuario) return {errores: {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true}};
 
@@ -59,9 +59,6 @@ module.exports = {
 
 			// 3. Revisa las credenciales
 			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
-			errores.credenciales = errores.credenciales
-				? usuarioInexistente + "<br>Intento " + (usuario.intsDatosPer + 1) + " de 3."
-				: "";
 			errores.hay = !!errores.credenciales;
 			return errores;
 		},
@@ -76,25 +73,19 @@ module.exports = {
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr(contrasena) ? largoContr(contrasena) : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
-		// Revisa las credenciales
+		// Sólo si no hay algún error previo, revisa las credenciales
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
 			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-			if (usuario.intsLogin > intentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
+			if (usuario.intentos_Login == intentos_BD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
 
 			// Valida el mail y la contraseña
-			errores.email_BD = !usuario ? "El mail no existe en nuestra base de datos" : "";
-			errores.contr_BD =
-				usuario && !bcryptjs.compareSync(datos.contrasena, usuario.contrasena) ? "Contraseña incorrecta" : "";
+			errores.email_BD = !usuario;
+			errores.contr_BD = usuario && !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
 
 			// Valida las credenciales
 			errores.credenciales = errores.email_BD || errores.contr_BD;
-			errores.credenciales = errores.credenciales
-				? "Credenciales inválidas.<br>Intento " + (datos.intsLogin + 1) + " de 3"
-				: "";
-
-			// Fin
-			errores.hay = !!errores.credenciales;
+			errores.hay = errores.credenciales;
 		}
 
 		// Fin
@@ -135,11 +126,6 @@ const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
-const intsLogin = procesos.intsLogin;
-const intsDatosPer = procesos.intsDatosPer;
-const usuarioInexistente = "Algún dato no coincide con el de nuestra base de datos.";
-const usuarioYaExiste =
-	"Ya existe un usuario con esas credenciales en nuestra base de datos. De ser necesario, comunicate con nosotros.";
 
 // Funciones
 let formatoMail = (email) => {
@@ -224,8 +210,7 @@ let perennesBE = async (datos) => {
 
 		// Averigua si el usuario existe en la base de datos
 		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
-		errores.credenciales = errores.credenciales ? usuarioYaExiste : ""; // convierte el error en una frase
-		errores.hay = !!errores.credenciales;
+		errores.hay = errores.credenciales;
 	}
 
 	// Fin

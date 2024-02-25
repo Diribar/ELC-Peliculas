@@ -27,13 +27,18 @@ module.exports = {
 			// Variables
 			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
-			let intsAltaMail;
 
-			// Si hubieron errores de credenciales - intsAltaMail - cookie
+			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				intsAltaMail = req.cookies && req.cookies.intsAltaMail ? req.cookies.intsAltaMail + 1 : 1;
-				if (intsAltaMail <= intentosCookies + 1) res.cookie("intsAltaMail", intsAltaMail, {maxAge: unDia});
-			}
+				// intentos_AM - cookie
+				const intentos_AM = req.cookies && req.cookies.intentos_AM ? req.cookies.intentos_AM + 1 : 1;
+				if (intentos_AM <= intentos_Cookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
+				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_AM);
+
+				// Convierte el resultado en texto
+				errores.credenciales =
+					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPends_Cookie;
+			} else errores.credenciales = "";
 
 			// cookie - guarda la info
 			datos =
@@ -72,18 +77,25 @@ module.exports = {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContr.datosPer(datos);
-			let intsDatosPer;
+			let intentos_DP;
 
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				// intsDatosPer - cookie
-				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
-				if (intsDatosPer <= intentosCookies + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+				// intentos_DP - cookie
+				intentos_DP = req.cookies && req.cookies.intentos_DP ? req.cookies.intentos_DP + 1 : 1;
+				if (intentos_DP <= intentos_Cookies) res.cookie("intentos_DP", intentos_DP, {maxAge: unDia});
+				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_DP);
 
-				// intsDatosPer - usuario
-				intsDatosPer = usuario.intsDatosPer + 1;
-				if (intsDatosPer <= intsLogin_BD + 1) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsDatosPer});
-			}
+				// intentos_DP - usuario
+				intentos_DP = usuario.intentos_DP + 1;
+				if (intentos_DP <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_DP});
+				const intentosPends_BD = Math.max(0, intentos_BD - intentos_DP);
+
+				// Convierte el resultado en texto
+				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
+				errores.credenciales =
+					procesos.comentarios.credsInvalidas.olvidoContr + "<br>Intentos disponibles: " + intentosPends_Cons;
+			} else errores.credenciales = "";
 
 			// cookie - guarda la info
 			datos =

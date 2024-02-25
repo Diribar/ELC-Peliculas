@@ -117,8 +117,16 @@ module.exports = {
 		// Fin
 		return;
 	},
-	intsLogin:
-		"Por motivos de seguridad debido a los intentos fallidos de login, te pedimos que esperes hasta 24hs para volver a intentarlo.",
-	intsDatosPer:
-		"Por motivos de seguridad debido a los intentos fallidos para validar tus datos, te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	comentarios: {
+		credsInvalidas: {
+			altaMail: "Esa dirección de email ya existe en nuestra base de datos.",
+			login: "Credenciales inválidas.",
+			olvidoContr: "Algún dato no coincide con el de nuestra base de datos.",
+			datosPer: "Ya existe un usuario con esas credenciales. De ser necesario, comunicate con nosotros.",
+		},
+		accesoSuspendido: (tema) =>
+			"Por motivos de seguridad debido a los intentos fallidos " +
+			tema +
+			", te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	},
 };
