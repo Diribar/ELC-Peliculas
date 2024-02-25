@@ -109,8 +109,16 @@ module.exports = {
 			trabajando: true,
 		};
 	},
+	logout: (req, res) => {
+		// Borra los datos de session y cookie
+		for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
+		res.clearCookie("email");
+
+		// Fin
+		return;
+	},
 	intsLogin:
-		"Debido a los intentos fallidos de login, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
-	intsDatosPerenne:
-		"Debido a los intentos fallidos para validar tus datos, por motivos de seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
+		"Por motivos de seguridad debido a los intentos fallidos de login, te pedimos que esperes hasta 24hs para volver a intentarlo.",
+	intsDatosPer:
+		"Por motivos de seguridad debido a los intentos fallidos para validar tus datos, te pedimos que esperes hasta 24hs para volver a intentarlo.",
 };

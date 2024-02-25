@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 	if (req.cookies && req.cookies.intsLogin > 2) return res.redirect("/usuario/login/suspendido");
 
 	// Reenvíos x BD
-	if (req.session && req.session.login) login = req.session.login;
+	if (req.cookies && req.cookies.login) login = req.cookies.login;
 	if (login && login.usuario) usuario = login.usuario;
 	if (usuario && usuario.intsLogin && usuario.intsLogin > 3) return res.redirect("/usuario/login/suspendido");
 

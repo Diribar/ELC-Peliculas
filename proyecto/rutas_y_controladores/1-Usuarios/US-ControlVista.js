@@ -37,7 +37,7 @@ module.exports = {
 		// Genera info para la vista
 		const errores = datosSession.errores ? datosSession.errores : {};
 		const dataEntry = datosSession.datos ? datosSession.datos : {};
-		const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsDatosPerenne;
+		const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsDatosPer;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
@@ -229,23 +229,26 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const intsLogin = req.cookies && req.cookies.login && req.cookies.login.datos ? req.cookies.login.datos.intsLogin : 0;
+			let intsLogin = req.cookies && req.cookies.intsLogin ? req.cookies.intsLogin + 1 : 1;
 			const datos = {...req.body, intsLogin};
+			const {errores, usuario} = await valida.login(datos);
 
-			// Averigua si hay errores de data-entry
-			let errores = await valida.login(datos);
-
-			// Si hay errores de validación, regresa al form
+			// Acciones si hay errores de validación
 			if (errores.hay) {
-				datos.intsLogin++;
-				res.cookie("login", {datos, errores}, {maxAge: unDia});
+				// Si es un error de contraseña vs la de la BD, aumenta 'intsLogin' hasta su techo
+				if (!errores.emailOculto && errores.contrOculta) {
+					// Actualiza la cookie - el techo es 3
+					if (intsLogin <= 3) res.cookie("intsLogin", intsLogin, {maxAge: unDia});
+
+					// Actualiza la BD y session - el techo es 4
+					instLogin = usuario.intsLogin + 1;
+					if (intsLogin <= 4) BD_genericas.actualizaPorId("usuarios", usuario.id, {intsLogin});
+				}
+
+				// Guarda la info y redirecciona
+				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
 				return res.redirect("/usuarios/login");
 			}
-			// De lo contrario, limpia el cookie de Login
-			else res.clearCookie("login");
-
-			// Obtiene el usuario con los include
-			let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
@@ -259,7 +262,7 @@ module.exports = {
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 		logout: (req, res) => {
-			logout(req, res);
+			procesos.logout(req, res);
 			return res.redirect("/usuarios/login");
 		},
 		olvidoContr: (req, res) => res.redirect("/usuarios/olvido-contrasena"),
@@ -267,14 +270,36 @@ module.exports = {
 	},
 	miscelaneas: {
 		accesosSuspendidos: (req, res) => {
+			// Variables
+			const codigo = req.params.id;
+			const mensajeCola = "Con el ícono de entendido salís a la vista de inicio.";
+
 			// Feedback
-			const informacion = {
-				mensajes: [procesos.intsLogin, "Con el ícono de la izquierda salís a la vista de inicio."],
-				iconos: [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}],
-				titulo: "Login suspendido hasta 24hs",
-			};
+			const mensajes =
+				codigo == "login"
+					? [procesos.intsLogin, mensajeCola]
+					: codigo == "olvido-contrasena"
+					? [procesos.intsDatosPer, mensajeCola]
+					: [];
+			const titulo =
+				codigo == "login"
+					? "Login suspendido hasta 24hs"
+					: codigo == "olvido-contrasena"
+					? "Olvido de Contraseña suspendido hasta 24hs"
+					: "";
+			const iconos =
+				codigo == "login"
+					? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
+					: codigo == "olvido-contrasena"
+					? [
+							{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"},
+							{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"},
+					  ]
+					: "";
+			const informacion = {mensajes, iconos, titulo};
 
 			// Logout
+			procesos.logout(req, res);
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
@@ -329,14 +354,4 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
-};
-
-// Funciones
-let logout = (req, res) => {
-	// Borra los datos de session y cookie
-	for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
-	res.clearCookie("email");
-
-	// Fin
-	return;
 };
