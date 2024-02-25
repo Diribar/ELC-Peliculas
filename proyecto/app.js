@@ -45,7 +45,7 @@ const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
 global.anoELC = 2024;
 global.versionELC = "1.04";
-global.carpetaGit = "2.92";
+global.carpetaGit = "3.05";
 
 // Para usar propiedades de express
 global.express = require("express");
