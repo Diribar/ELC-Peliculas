@@ -21,12 +21,15 @@ window.addEventListener("load", () => {
 		// Varios
 		button: form.querySelector("button[type='submit']"),
 		inputs: form.querySelectorAll(".inputError .input"),
+		olvidoContr: form.querySelector(".flechas a:has(i.fa-key)"),
 	};
 	let v = {
+		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		avatarInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
 		esImagen: false,
 		imgOpcional: tarea == "editables",
 		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
+		olvidoContrHref: DOM.olvidoContr.href,
 	};
 
 	// Funciones
@@ -103,30 +106,44 @@ window.addEventListener("load", () => {
 	};
 
 	// Eventos
-	DOM.inputs.forEach((input, indice) => {
-		input.addEventListener("input", async () => {
-			// Variables
-			const campo = input.name;
-			const posicCursor = input.selectionStart;
+	form.addEventListener("input", async (e) => {
+		// Variables
+		const input = e.target;
+		const campo = input.name;
+		const valor = input.value;
+		const indice = v.inputs.indexOf(campo);
+		const posicCursor = input.selectionStart;
 
-			// Desactiva el cartel de 'credenciales inválidas'
-			if (DOM.credenciales) DOM.credenciales.classList.add("ocultar");
+		// Desactiva el cartel de 'credenciales inválidas'
+		if (DOM.credenciales) DOM.credenciales.classList.add("ocultar");
 
-			// Primera letra en mayúscula
-			if (tarea != "login" && input.localName == "input" && input.type == "text") {
-				let aux = input.value;
-				input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
-				input.selectionEnd = posicCursor;
-			} else if (tarea == "login" && campo == "email") {
-				input.value = input.value.toLowerCase();
-				input.selectionEnd = posicCursor;
-			}
+		// Primera letra en mayúscula
+		if (tarea != "login" && input.localName == "input" && input.type == "text") {
+			input.value = valor.slice(0, 1).toUpperCase() + aux.slice(1);
+			input.selectionEnd = posicCursor;
+		} else if (tarea == "login" && campo == "email") {
+			// e-mail en minúscula
+			input.value = input.value.toLowerCase();
+			input.selectionEnd = posicCursor;
 
-			// Acciones si se cambió el avatar
-			if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
-			// Acciones para los demás campos
-			else await FN.actualizaVarios(indice);
-		});
+			// Le agrega el mail al href para olvido de contraseña
+			DOM.olvidoContr.href = v.olvidoContrHref + "/?email=" + valor;
+		}
+
+		// Acciones si se cambió el avatar
+		if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
+		// Acciones para los demás campos
+		else if (indice > -1) await FN.actualizaVarios(indice);
+	});
+
+	// Redirige a 'olvido-contrasena'
+	DOM.olvidoContr.addEventListener("click", (e) => {
+		e.preventDefault();
+		const valor = DOM.inputs[0].value;
+		if (valor) {
+			DOM.olvidoContr.href = v.olvidoContrHref + "/?email=" + valor;
+			location.href = v.olvidoContrHref + "/?email=" + valor;
+		}
 	});
 
 	form.addEventListener("submit", async (e) => {

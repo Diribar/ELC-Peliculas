@@ -54,11 +54,11 @@ module.exports = {
 			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
 
 			// 2. Revisa el formato superficial de los valores
-			errores = perennesFE(datos);
+			let errores = perennesFE(datos);
 			if (errores.hay) return errores;
 
 			// 3. Revisa las credenciales
-			for (let campo of camposPerennes) if (!errores.credenciales) errores.credenciales = usuario[campo] != datos[campo];
+			errores.credenciales = camposPerennes.some((n) => usuario[n] != datos[n]);
 			errores.hay = !!errores.credenciales;
 			return errores;
 		},

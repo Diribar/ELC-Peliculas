@@ -72,7 +72,8 @@ module.exports = {
 		validaDatosPer: async (req, res) => {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
-			const errores = await valida.olvidoContr.datosPer(datos);
+			const {usuario} = req.session.olvidoContr;
+			const errores = await valida.olvidoContr.datosPer({datos, usuario});
 			let intentos_DP;
 
 			// Acciones si hubieron errores de credenciales
@@ -94,8 +95,7 @@ module.exports = {
 			} else errores.credenciales = "";
 
 			// session - guarda la info
-			datos =
-				req.session.olvidoContr && req.session.olvidoContr.datos ? {...req.session.olvidoContr.datos, ...datos} : datos;
+			datos = req.session.olvidoContr ? {...req.session.olvidoContr.datos, ...datos} : datos;
 			req.session.olvidoContr = {...req.session.olvidoContr, datos, errores};
 
 			// Devuelve la info
