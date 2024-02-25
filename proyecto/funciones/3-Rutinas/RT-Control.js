@@ -470,8 +470,8 @@ module.exports = {
 		return;
 	},
 	RutinasEnUsuario: async () => {
-		// Lleva a cero el valor del campo 'intentosRecupContr'
-		await BD_genericas.actualizaTodos("usuarios", {intentosRecupContr: 0});
+		// Lleva a cero el valor del campo 'intsValidarPerenne'
+		await BD_genericas.actualizaTodos("usuarios", {intsValidarPerenne: 0});
 
 		// Fin
 		return;

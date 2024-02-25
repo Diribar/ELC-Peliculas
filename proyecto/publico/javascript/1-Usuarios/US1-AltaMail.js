@@ -33,7 +33,6 @@ window.addEventListener("load", () => {
 		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
 		pendiente: true,
 	};
-	if (v.inputs.length < DOM.mensajesError.length) v.inputs.push("credenciales");
 
 	// Variables
 	const rutaInicio = "/usuarios/api/" + codigo;
@@ -48,6 +47,10 @@ window.addEventListener("load", () => {
 
 		// Averigua si hay errores, y en caso negativo envía el mail
 		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
+
+		// Si se necesitan los campos 'perennes', se recarga la página
+		if (v.errores.faltanCampos || (v.errores.intsValidarPerenne && v.inputs.length == 1)) return location.reload();
+
 		if (v.errores.hay) return;
 
 		// Cartel mientras se recibe la respuesta
@@ -87,20 +90,16 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let consecuencias = () => {
-		// Acciones si hubo errores en el data-entry
-		if (v.errores.hay) {
-			// Si el error es porque no existen los campos 'perennes', se recarga la página
-			if (v.errores.faltanCampos) location.reload();
-			// De lo contrario, se muestran los errores
-			else muestraErrores();
-		}
-		// Acciones si no hubo errores en el data-entry
-		else location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+		// Acciones
+		v.errores.hay
+			? muestraErrores() // se muestran los errores
+			: (location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido); // De lo contrario redirige
 
 		// Fin
 		return;
 	};
 	let muestraErrores = () => {
+		// Campos con 'fa-solid'
 		v.inputs.forEach((campo, indice) => {
 			// Si no se revisó el campo, interrumpe la función
 			if (!Object.keys(v.errores).includes(campo)) return;
@@ -119,6 +118,14 @@ window.addEventListener("load", () => {
 				DOM.iconosOK[indice].classList.remove("ocultar");
 			}
 		});
+
+		// Credenciales
+		if (Object.keys(v.errores).includes("credenciales")) {
+			DOM.mensajeErrorCreds.innerHTML = v.errores.credenciales;
+			v.errores.credenciales
+				? DOM.mensajeErrorCreds.classList.remove("ocultar")
+				: DOM.mensajeErrorCreds.classList.add("ocultar");
+		}
 
 		// Botón Submit
 		botonSubmit();

@@ -516,11 +516,14 @@ module.exports = {
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
+	vistaAnterior: (url) => {
+		return {nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"};
+	},
 	vistaActual: (req) => {
 		return {nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"};
 	},
-	vistaAnterior: (url) => {
-		return {nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"};
+	vistaSiguiente: (url) => {
+		return {nombre: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"};
 	},
 	vistaInactivar: (req) => {
 		return req.originalUrl.startsWith("/revision/")

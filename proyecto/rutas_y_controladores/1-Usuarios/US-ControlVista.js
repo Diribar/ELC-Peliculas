@@ -38,7 +38,7 @@ module.exports = {
 			// Genera info para la vista
 			const errores = datosSession.errores ? datosSession.errores : {};
 			const dataEntry = datosSession.datos ? datosSession.datos : {};
-			const mostrarCampos = errores.faltanCampos || errores.credenciales;
+			const mostrarCampos = errores.faltanCampos || errores.credenciales || errores.intsValidarPerenne;
 
 			// Vista
 			return res.render("CMP-0Estructura", {
@@ -77,6 +77,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 		envioFallido: (req, res) => {
+			// Variables
 			const {codigo} = req.query;
 			const altaMail = codigo == "alta-mail";
 			const olvidoContrasena = codigo == "olvido-contrasena";
@@ -259,10 +260,10 @@ module.exports = {
 			const dataEntry = datosCookies.datos ? datosCookies.datos : req.session.email ? {email: req.session.email} : {};
 			const errores = datosCookies.errores ? datosCookies.errores : {};
 
-			// Si se superó la cantidad de intentos, redirige a "Olvido de contraseña"
+			// Si se superó la cantidad de intentos de login, redirige a "Olvido de contraseña"
 			if (dataEntry.intentosLogin && dataEntry.intentosLogin > 2) {
 				req.session.olvidoContrasena = {datos: {email: dataEntry.email}};
-				return res.redirect("/usuarios/olvido-contrasena");
+				return res.redirect("login/suspendido");
 			}
 
 			// Variables para la vista
@@ -302,11 +303,35 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
-			// Guarda el mail en cookies
+			// Actualiza cookies - no se debe actualizar 'session'', para que se ejecute el middleware 'loginConCookie'
 			res.cookie("email", req.body.email, {maxAge: unDia});
+			res.clearCookie("login");
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
+		},
+		loginSuspendido: (req, res) => {
+			// Feedback
+			const informacion = {
+				mensajes: [
+					"Debido a los intentos fallidos de login, por seguridad te pedimos que esperes hasta 24hs para volver a intentarlo.",
+					"Con el ícono de la izquierda salís a la vista de inicio.",
+				],
+				iconos: [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}],
+				titulo: "Login suspendido hasta 24hs",
+			};
+			if (!req.session.email) {
+				informacion.mensajes.push(
+					"Si necesitás que te asignemos una nueva contraseña, podés elegir el botón de la derecha"
+				);
+				informacion.iconos.push({
+					...variables.vistaSiguiente("/usuarios/olvido-contrasena"),
+					titulo: "Entendido e ir a la vista de 'Olvido de Contraseña'",
+				});
+			}
+
+			// Vista
+			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
 	logout: (req, res) => {
