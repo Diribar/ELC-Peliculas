@@ -13,7 +13,7 @@ module.exports = {
 		const altaMail = codigo == "alta-mail";
 		const olvidoContr = codigo == "olvido-contrasena";
 		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
-		const datosGrales = altaMail ? req.cookies.altaMail : olvidoContr ? req.cookies.olvidoContr : {};
+		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
 		const dataEntry = datosGrales.datos ? datosGrales.datos : {};
@@ -184,7 +184,7 @@ module.exports = {
 			// Variables
 			const tema = "usuario";
 			const codigo = "login";
-			const datosGrales = req.cookies && req.cookies.login ? req.cookies.login : {};
+			const datosGrales = req.session && req.session.login ? req.session.login : {};
 
 			// Info para la vista
 			const dataEntry = datosGrales.datos ? datosGrales.datos : {};
@@ -226,8 +226,8 @@ module.exports = {
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
 
-				// cookie - guarda la info
-				res.cookie("login", {datos, errores, usuario}, {maxAge: unDia});
+				// session - guarda la info
+				req.session.login = {datos, errores, usuario};
 
 				// Redirecciona
 				return res.redirect("/usuarios/login");
@@ -236,7 +236,7 @@ module.exports = {
 			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
 			res.cookie("email", req.body.email, {maxAge: unDia});
 			res.clearCookie("intentos_Login");
-			res.clearCookie("login");
+			delete req.session.login;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
@@ -337,12 +337,12 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookieInts = altaMail ? "intentos_AM" : olvidoContr ? "intentos_DP" : "";
-			res.clearCookie(cookieInts);
+			const cookie = altaMail ? "intentos_AM" : olvidoContr ? "intentos_DP" : "";
+			res.clearCookie(cookie);
 
 			// Elimina la cookie de los datos y errores
-			const cookieDatos = altaMail ? "altaMail" : olvidoContr ? "olvidoContr" : "";
-			res.clearCookie(cookieDatos);
+			const session = altaMail ? "altaMail" : olvidoContr ? "olvidoContr" : "";
+			delete req.session[session];
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
