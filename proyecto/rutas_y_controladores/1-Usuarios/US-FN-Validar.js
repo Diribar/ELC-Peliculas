@@ -10,11 +10,12 @@ module.exports = {
 		let errores = formatoMail(email);
 
 		// Se fija si el mail ya existe
-		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email})))
-			errores.email = "Esta dirección de email ya figura en nuestra base de datos";
+		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email}))){
+			errores.credenciales = "Esta dirección de email ya figura en nuestra base de datos";
+			errores.hay = !!errores.credenciales;
+		}
 
 		// Fin
-		errores.hay = !!errores.email;
 		return errores;
 	},
 	olvidoContr: {
@@ -79,7 +80,7 @@ module.exports = {
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
 			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-			if (usuario.intsLogin > instLogins_BD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
+			if (usuario.intsLogin > intentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
 
 			// Valida el mail y la contraseña
 			errores.email_BD = !usuario ? "El mail no existe en nuestra base de datos" : "";

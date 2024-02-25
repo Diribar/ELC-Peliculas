@@ -10,6 +10,7 @@ const statusCorrecto = require("../../middlewares/filtrosPorUsuario/usStatusCorr
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
+const usAltaMail = require("../../middlewares/filtrosPorUsuario/usAltaMail");
 const usLogin = require("../../middlewares/filtrosPorUsuario/usLogin");
 const usOlvidoContr = require("../../middlewares/filtrosPorUsuario/usOlvidoContr");
 
@@ -29,7 +30,7 @@ router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);
-router.get("/alta-mail", usLogin, visitas, vista.altaMail_olvidoContr);
+router.get("/alta-mail", usAltaMail, visitas, vista.altaMail_olvidoContr);
 router.get("/olvido-contrasena", usOlvidoContr, visitas, vista.altaMail_olvidoContr);
 
 // Vistas - Editables

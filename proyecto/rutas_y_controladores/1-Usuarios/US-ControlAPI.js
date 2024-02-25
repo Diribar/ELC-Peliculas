@@ -27,8 +27,23 @@ module.exports = {
 			// Variables
 			const {email} = JSON.parse(req.query.datos);
 			const errores = await valida.altaMail(email);
+			let intsAltaMail;
 
-			// Fin
+			// Si hubieron errores de credenciales - intsAltaMail - cookie
+			if (errores.credenciales) {
+				intsAltaMail = req.cookies && req.cookies.intsAltaMail ? req.cookies.intsAltaMail + 1 : 1;
+				if (intsAltaMail <= intentosCookies + 1) res.cookie("intsAltaMail", intsAltaMail, {maxAge: unDia});
+			}
+
+			// cookie - guarda la info
+			datos =
+				req.cookies && req.cookies.altaMail && req.cookies.altaMail.datos
+					? {...req.cookies.altaMail.datos, ...datos}
+					: datos;
+			const cookie = req.cookies && req.cookies.altaMail ? {...req.cookies.altaMail, datos, errores} : {datos};
+			res.cookie("altaMail", cookie, {maxAge: unDia});
+
+			// Devuelve la info
 			return res.json(errores);
 		},
 		envioDeMail: async (req, res) => {
@@ -63,7 +78,7 @@ module.exports = {
 			if (errores.credenciales) {
 				// intsDatosPer - cookie
 				intsDatosPer = req.cookies && req.cookies.intsDatosPer ? req.cookies.intsDatosPer + 1 : 1;
-				if (intsDatosPer <= intsDatosPer_PC + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
+				if (intsDatosPer <= intentosCookies + 1) res.cookie("intsDatosPer", intsDatosPer, {maxAge: unDia});
 
 				// intsDatosPer - usuario
 				intsDatosPer = usuario.intsDatosPer + 1;
@@ -75,7 +90,7 @@ module.exports = {
 				req.cookies && req.cookies.olvidoContr && req.cookies.olvidoContr.datos
 					? {...req.cookies.olvidoContr.datos, ...datos}
 					: datos;
-			const cookie = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, datos} : {datos};
+			const cookie = req.cookies && req.cookies.olvidoContr ? {...req.cookies.olvidoContr, datos, errores} : {datos};
 			res.cookie("olvidoContr", cookie, {maxAge: unDia});
 
 			// Devuelve la info
