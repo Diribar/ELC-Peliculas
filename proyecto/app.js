@@ -16,6 +16,10 @@ global.linkAnoReciente = 3; // cantidad de años
 global.cantLinksVencPorSem = null;
 
 // Variable 'global' - Otras
+global.intsLogins_PC = 2; // cantidad que se tolera
+global.instLogins_BD = 3; // cantidad que se tolera
+global.intsDatosPer_PC = 2; // cantidad que se tolera
+global.intsDatosPer_BD = 3; // cantidad que se tolera
 global.usAutom_id = 2; // usuario 'automático'
 global.primerLunesDelAno = null;
 global.semanaUTC = null;
