@@ -16,7 +16,10 @@
 		<%- include("US1-Mail") %>
 
 		<!--Campos para usuarios con datos perennes-->
-		<% if (mostrarCampos) { %><%- include("US13-DatosPerennes") %><% } %>
+		<% if (mostrarCampos) { %>
+			<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
+			<%- include("US13-DatosPerennes") %>
+		<% } %>
 
 		<!--Flechas-->
 		<section class="flexRow">
