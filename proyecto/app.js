@@ -28,26 +28,25 @@ global.tamMaxImagen = 1000000; // 1Mb
 global.configConsDefault_id = 4; // El 'default' es "Sorprendeme"
 global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 
-// Con 'require'
-require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-global.fetch = require("node-fetch");
-global.nodeEnv = process.env.NODE_ENV; // obtiene si es 'development' o 'production'
-global.urlHost = nodeEnv == "development" ? "http://localhost" : "https://elc.lat";
-global.db = require("./base_de_datos/modelos");
-global.Op = db.Sequelize.Op;
+// Require 'path'
 global.path = require("path");
-global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
-global.fs = require("fs");
-global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
-
-// Obtiene la versión y el año
-const {exec} = require("child_process");
 const carpeta = path.basename(path.resolve());
+global.urlHost = carpeta == "Proyecto" ? "http://localhost" : "https://elc.lat";
+global.nodeEnv = carpeta == "Proyecto" ? "development" : "produccion";
+
+// Variables que toman valores de '.env'
+require("dotenv").config();
+global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
 global.versionELC = process.env.versionELC;
 global.carpetaGit = process.env.carpetaGit;
+global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 
-// Para usar propiedades de express
+// Otros requires
+global.db = require("./base_de_datos/modelos");
+global.Op = db.Sequelize.Op;
+global.fs = require("fs");
+global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
 global.express = require("express");
 const app = express();
 
