@@ -9,17 +9,17 @@ module.exports = {
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = usuario ? usuario.id : null;
-		const configs = await procesos.configs.cabecera(userID); // Se necesita esa función también para la API
+		const configsConsCabs = await procesos.configs.cabecera(userID); // Se necesita esa función también para la API
 		const configCons_cabeceras = {
-			propios: configs.filter((n) => userID && n.usuario_id == userID),
-			predeterms: configs.filter((n) => n.usuario_id == 1),
+			propios: configsConsCabs.filter((n) => userID && n.usuario_id == userID),
+			predeterms: configsConsCabs.filter((n) => n.usuario_id == 1),
 		};
 		const configCons_campos = procesos.configs.campos();
 
 		// Obtiene las configuraciones
 		// if (configCons_url) ...;
 		const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
-		const configCons_BD = await procesos.configs.obtieneConfigCons_BD(usuario);
+		const configCons_BD = await procesos.configs.obtieneConfigCons_BD({usuario});
 		const configCons = configCons_SC ? configCons_SC : configCons_BD;
 
 		// Va a la vista
