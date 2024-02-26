@@ -193,9 +193,9 @@ let actualiza = {
 	},
 };
 let cambiosEnBD = {
-	configCons_id: () => {
+	actualizaEnUsuarioConfigCons_id: () => {
 		if (!v.userID) return;
-		const rutaCompleta = ruta + "actualiza-configCons_id-en-usuario/?configCons_id=";
+		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
 		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
 
 		// Fin
