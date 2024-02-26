@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 				DOM.configNuevaNombre.focus();
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeVariables();
-				await actualiza.statusInicialCampos();
+				await actualiza.statusInicialCampos("deshacer");
 				await cambioDeCampos();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
