@@ -40,7 +40,7 @@ let obtieneConfigCons_BD = async (usuario) => {
 			: configConsDefault_id;
 
 	// Obtiene la cabecera
-	const configCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
+	const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
 
 	// Obtiene las preferencias
 	let preferencias = {};
