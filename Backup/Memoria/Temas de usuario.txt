@@ -1,0 +1,45 @@
+Login
+OK- Bloqueado por intsLogin en middleware
+OK- KPIs: se aumentan en guardar si credencs 
+
+Alta de usuario
+OK- Bloqueado por intsAltaMail en middleware
+OK- KPIs: se aumentan en API si credencs 
+
+Olvido de contraseña
+OK- Bloqueado por intsDatosPer en middleware
+OK- KPIs: se aumentan en API si credencs 
+- Sólo se accede mediante mail en query
+- En la vista, el mail sólo se muestra
+
+_________________________ 
+
+intsLogin y intsDatosPer
+- BD: 
+   - Mayor a 3
+   - Registro hasta la noche
+   - Se borra cuando se loguea
+- PC: 
+   - Mayor a 2
+   - Cookie x 24hs
+
+_________________________ 
+
+Session login = {
+    datos: {email, contrasena}
+    errores: {...}
+    usuario: {intsLogin,intsDatosPer}
+    }
+_________________________ 
+
+Session olvidoContr = {
+    datos: {email, ...}
+    errores: {...
+    usuario: {intsLogin,intsDatosPer}
+    }
+Cookie intsLogin
+Cookie intsDatosPer
+
+alta usuario
+olvido contraseña --> mail en query
+
