@@ -138,6 +138,9 @@ let actualiza = {
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
 
+		// Si session está activa, lo informa
+		if (configCampos.cambios) v.hayCambiosDeCampo = true;
+
 		// Fin
 		return;
 	},
