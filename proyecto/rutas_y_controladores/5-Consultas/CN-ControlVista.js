@@ -18,9 +18,9 @@ module.exports = {
 
 		// Obtiene las configuraciones
 		// if (configCons_url) ...;
-		const configCons_BD = await procesos.configs.obtieneConfigCons_BD(usuario);
 		const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
-		const configCons = {...configCons_BD, ...configCons_SC};
+		const configCons_BD = await procesos.configs.obtieneConfigCons_BD(usuario);
+		const configCons = configCons_SC ? configCons_SC : configCons_BD;
 
 		// Va a la vista
 		//return res.send({configCons_BD, configCons_SC, configCons});
