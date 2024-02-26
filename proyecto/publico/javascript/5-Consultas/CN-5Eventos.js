@@ -254,7 +254,7 @@ let guardarBotonera = async () => {
 let cambioDeConfig_id = async () => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	cambiosEnBD.configCons_id();
+	cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.toggleFiltrosIndivs();
 
