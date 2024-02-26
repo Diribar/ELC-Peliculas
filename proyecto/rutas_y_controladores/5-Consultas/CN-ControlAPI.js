@@ -11,17 +11,27 @@ module.exports = {
 			// Obtiene la cabecera
 			const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
 
+			// Elimina session y cookie
+			delete req.session.prefsCons;
+			res.clearCookie("prefsCons");
+
 			// Fin
 			return res.json(configCabecera);
 		},
 		configCampos: async (req, res) => {
 			// Variables
-			const {configCons_id} = req.query;
+			const {texto, configCons_id} = req.query;
+
+			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
+			if (texto == "deshacer") {
+				delete req.session.prefsCons;
+				res.clearCookie("prefsCons");
+			}
 
 			// Obtiene las preferencias
-			const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
+			const configCons_SC = req.session.prefsCons ? req.session.prefsCons : req.cookies.prefsCons ? req.cookies.prefsCons : null;
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
-			const configCons = configCons_SC ? configCons_SC : configCons_BD;
+			const configCons = configCons_SC ? {configCons_SC, undo: true} : configCons_BD;
 
 			// Fin
 			return res.json(configCons);
@@ -135,19 +145,19 @@ module.exports = {
 	miscelaneas: {
 		guardaFiltrosActuales: (req, res) => {
 			// Variables
-			const filtros = JSON.parse(req.query.filtros);
+			const prefsCons = JSON.parse(req.query.prefsCons);
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (filtros.pppOpciones && Array.isArray(filtros.pppOpciones)) {
-				const combo = filtros.pppOpciones.toString();
+			if (prefsCons.pppOpciones && Array.isArray(prefsCons.pppOpciones)) {
+				const combo = prefsCons.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) filtros.pppOpcion_id = pppOpcion.id;
-				delete filtros.pppOpciones; // elimina el ppp del combo
+				if (pppOpcion) prefsCons.pppOpciones = pppOpcion.id;
+				else delete prefsCons.pppOpciones; // si no lo encuentra, lo elimina
 			}
 
 			// Guarda la configuración
-			req.session.filtros = filtros;
-			res.cookie("filtros", filtros, {maxAge: unDia});
+			req.session.prefsCons = prefsCons;
+			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
 
 			// Fin
 			return res.json();
