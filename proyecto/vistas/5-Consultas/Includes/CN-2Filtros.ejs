@@ -6,21 +6,21 @@
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
 		<!-- Configuraciones personales -->
-		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsDeCabecera.propios.length ? 'ocultar' : '' %>">
-			<% for (let configDeCabecera of configsDeCabecera.propios) { %>
+		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configCons_cabeceras.propios.length ? 'ocultar' : '' %>">
+			<% for (let configDeCabecera of configCons_cabeceras.propios) { %>
 				<option
 					value="<%= configDeCabecera.id %>"
-					<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
+					<% if (configDeCabecera.id == configCons.id) { %>selected<% } %>
 				><%= configDeCabecera.nombre %></option>
 			<% } %>
 		</optgroup>
 		<!-- Configuraciones predeterminadas -->
 		<% if (userID != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
-				<% for (let configDeCabecera of configsDeCabecera.predeterms) { %>
+				<% for (let configDeCabecera of configCons_cabeceras.predeterms) { %>
 					<option
 						value="<%= configDeCabecera.id %>"
-						<% if (configDeCabecera.id == configCons_id) { %>selected<% } %>
+						<% if (configDeCabecera.id == configCons.id) { %>selected<% } %>
 					><%= configDeCabecera.nombre %></option>
 				<% } %>
 			</optgroup>
@@ -40,37 +40,37 @@
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<!-- Tipos de Link -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.tipoLink}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.tipoLink}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {campos: configsConsCampos.pppOpciones, eventual: true}) %>
+			<%- include('CN-FL-Selects', {campos: configCons_campos.pppOpciones, eventual: true}) %>
 		<% } %>
 		<!-- Idioma -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.idioma}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.idioma}) %>
 		<!-- Público Recomendado -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.publicos}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.publicos}) %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.cfc, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.cfc, eventual: true, color: 'cfc'}) %>
 		<!-- Proceso de Canonización -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.canons, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.canons, eventual: true, color: 'cfc'}) %>
 		<!-- Roles Iglesia -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.rolesIgl, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.rolesIgl, eventual: true, color: 'cfc'}) %>
 		<!-- Aparición Mariana -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.apMar, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.apMar, eventual: true, color: 'cfc'}) %>
 
 		<!-- HECHOS REALES -->
 		<!-- Basado en Hechos Reales -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.bhr, eventual: true, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.bhr, eventual: true, color: 'bhr'}) %>
 		<!-- Epoca de Ocurrencia -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.epocasOcurrencia, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.epocasOcurrencia, color: 'bhr'}) %>
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
 		<!-- Época de Estreno -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.epocasEstreno}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.epocasEstreno}) %>
 		<!-- Tipo de Actuación -->
-		<%- include('CN-FL-Selects', {campos: configsConsCampos.tiposActuacion}) %>
+		<%- include('CN-FL-Selects', {campos: configCons_campos.tiposActuacion}) %>
 		<!-- Películas o Colecciones -->
 
 		<!-- Palabras Clave -->
