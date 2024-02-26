@@ -11,7 +11,7 @@ router.get("/api/obtiene-las-configs-posibles-para-el-usuario", API.obtiene.conf
 router.get("/api/obtiene-variables", API.obtiene.variables);
 
 // API - Cambios en BD
-router.get("/api/actualiza-configCons_id-en-usuario", API.cambiosEnBD.configCons_id);
+router.get("/api/actualiza-en-usuario-configCons_id", API.cambiosEnBD.actualizaEnUsuarioConfigCons_id);
 router.get("/api/crea-una-configuracion", API.cambiosEnBD.creaConfig);
 router.get("/api/guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
 router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfigCons);

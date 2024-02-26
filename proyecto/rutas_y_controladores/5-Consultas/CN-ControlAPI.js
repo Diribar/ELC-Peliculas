@@ -11,25 +11,28 @@ module.exports = {
 			// Obtiene la cabecera
 			const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
 
-			// Elimina session y cookie
-			delete req.session.prefsCons;
-			res.clearCookie("prefsCons");
-
 			// Fin
 			return res.json(configCabecera);
 		},
 		configCampos: async (req, res) => {
 			// Variables
 			const {texto, configCons_id} = req.query;
+			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") {
 				delete req.session.prefsCons;
 				res.clearCookie("prefsCons");
 			}
+			// De lo contrario, toma sus datos
+			else
+				configCons_SC = req.session.prefsCons
+					? req.session.prefsCons
+					: req.cookies.prefsCons
+					? req.cookies.prefsCons
+					: null;
 
 			// Obtiene las preferencias
-			const configCons_SC = req.session.prefsCons ? req.session.prefsCons : req.cookies.prefsCons ? req.cookies.prefsCons : null;
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
 			const configCons = configCons_SC ? {configCons_SC, undo: true} : configCons_BD;
 
@@ -69,7 +72,7 @@ module.exports = {
 		},
 	},
 	cambiosEnBD: {
-		configCons_id: (req, res) => {
+		actualizaEnUsuarioConfigCons_id: (req, res) => {
 			// Variables
 			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
@@ -79,6 +82,10 @@ module.exports = {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
+
+			// Si se cambia de configuración, se eliminan session y cookie
+			delete req.session.prefsCons;
+			res.clearCookie("prefsCons");
 
 			// Fin
 			return res.json();
@@ -116,7 +123,11 @@ module.exports = {
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
-				// Elimina la información guardada
+				// Si se guardan cambios, se eliminan session y cookie
+				delete req.session.prefsCons;
+				res.clearCookie("prefsCons");
+
+				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id: id});
 
 				// Guarda la nueva información
