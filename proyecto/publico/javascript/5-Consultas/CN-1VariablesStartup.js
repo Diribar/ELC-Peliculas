@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 	// Variables - General
 	v = {
 		...(await obtiene.obtieneVariablesDelBE()),
-		configsDeCabecera: await obtiene.configsDeCabecera(),
+		configCons_cabeceras: await obtiene.configCons_cabeceras(),
 		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		conLinksHD: "conLinksHD",
 		enCast: "enCast",
