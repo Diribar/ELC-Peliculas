@@ -18,10 +18,9 @@ module.exports = {
 
 		// Obtiene la cabecera_id
 		// if (configCons_url) ...;
-		const cabecera_id = await procesos.configs.obtieneConfigCons_BD({usuario}).cabecera_id;
+		const cabecera_id = await procesos.configs.obtieneConfigCons_BD({usuario}).then((n) => n.cabecera_id);
 
 		// Va a la vista
-		//return res.send({configCons_BD, configCons_SC, configCons});
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo, userID, cabecera_id},
 			...{configCons_cabeceras, configCons_campos},
