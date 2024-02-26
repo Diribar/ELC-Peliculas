@@ -17,16 +17,14 @@ module.exports = {
 		configCampos: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
-			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
-
-			// Convierte el array en objeto literal
-			for (let registro of registros) preferencias[registro.campo] = registro.valor;
+			const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
+			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
+			const configCons = configCons_SC ? configCons_SC : configCons_BD;
 
 			// Fin
-			return res.json(preferencias);
+			return res.json(configCons);
 		},
 		configsDeCabecera: async (req, res) => {
 			// Variables
