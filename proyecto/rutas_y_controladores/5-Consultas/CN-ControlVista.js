@@ -17,7 +17,6 @@ module.exports = {
 		const configCons_campos = procesos.configs.campos();
 
 		// Obtiene la cabecera_id
-		// if (configCons_url) ...;
 		const cabecera_id = await procesos.configs.obtieneConfigCons_BD({usuario}).then((n) => n.cabecera_id);
 
 		// Va a la vista
@@ -31,7 +30,7 @@ module.exports = {
 
 let configCons_url = (req) => {
 	// Si la configuración está en la url, toma el valor y redirige para eliminarlo de la url
-	const configCons = Number(req.query.filtros);
+	const configCons = Number(req.query.prefsCons);
 	const existe = configConsUrl_id ? configs.find((n) => n.id == configCons.id) : null;
 	if (existe) {
 		// Actualiza el usuario
@@ -39,7 +38,7 @@ let configCons_url = (req) => {
 			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id: configCons.id});
 			req.session.usuario = {...usuario, configCons_id};
 		}
-		req.session.filtros = res.clearCookie("filtros");
+		req.session.prefsCons = res.clearCookie("prefsCons");
 
 		// Redirecciona quitando los parámetros del 'url'
 		const ruta = req.baseUrl + req.path;
