@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.configsCons, {as: "configCons", foreignKey: "configCons_id"});
+		entidad.belongsTo(n.configsConsCabeceras, {as: "configCons", foreignKey: "configCons_id"});
 	};
 	return entidad;
 };
