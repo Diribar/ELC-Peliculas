@@ -9,7 +9,7 @@ module.exports = {
 			const {configCons_id} = req.query;
 
 			// Obtiene la cabecera
-			const configCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
+			const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
 
 			// Fin
 			return res.json(configCabecera);
@@ -82,7 +82,7 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configCons.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsCons", objeto);
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsConsCabeceras", objeto);
 
 			// Fin
 			return res.json(configCons_id);
@@ -105,7 +105,7 @@ module.exports = {
 			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
+			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada
@@ -128,7 +128,7 @@ module.exports = {
 			await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id});
 
 			// Se elimina el registro de cabecera de la configuración
-			await BD_genericas.eliminaPorId("configsCons", configCons_id);
+			await BD_genericas.eliminaPorId("configsConsCabeceras", configCons_id);
 
 			// Fin
 			return res.json();
