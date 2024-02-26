@@ -181,7 +181,7 @@ let actualiza = {
 	},
 	guardaFiltrosActuales: () => {
 		// Variables
-		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?filtros=";
+		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
 		let campos = {...configCons};
 		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 

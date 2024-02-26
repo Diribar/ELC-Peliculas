@@ -34,7 +34,7 @@ module.exports = {
 
 			// Obtiene las preferencias
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
-			const configCons = configCons_SC ? {configCons_SC, undo: true} : configCons_BD;
+			const configCons = configCons_SC ? {configCons_SC, cambios: true} : configCons_BD;
 
 			// Fin
 			return res.json(configCons);
