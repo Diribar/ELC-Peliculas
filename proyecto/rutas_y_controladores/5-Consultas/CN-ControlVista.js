@@ -18,7 +18,7 @@ module.exports = {
 
 		// Obtiene las configuraciones
 		// if (configCons_url) ...;
-		const configCons_BD = await obtieneConfigCons_BD(usuario);
+		const configCons_BD = await procesos.configs.obtieneConfigCons_BD(usuario);
 		const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
 		const configCons = {...configCons_BD, ...configCons_SC};
 
@@ -32,24 +32,6 @@ module.exports = {
 	},
 };
 
-let obtieneConfigCons_BD = async (usuario) => {
-	// Obtiene el ID de la configCons del usuario
-	const configCons_id =
-		usuario && usuario.configCons_id
-			? usuario.configCons_id // El guardado en el usuario
-			: configConsDefault_id;
-
-	// Obtiene la cabecera
-	const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
-
-	// Obtiene las preferencias
-	let preferencias = {};
-	const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
-	for (let registro of registros) preferencias[registro.campo] = registro.valor; // Convierte el array en objeto literal
-
-	// Fin
-	return {...configCabecera, ...preferencias};
-};
 let configCons_url = (req) => {
 	// Si la configuración está en la url, toma el valor y redirige para eliminarlo de la url
 	const configCons = Number(req.query.filtros);
