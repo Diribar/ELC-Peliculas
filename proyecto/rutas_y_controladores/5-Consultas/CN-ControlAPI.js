@@ -91,10 +91,12 @@ module.exports = {
 			delete configCons.id;
 
 			// Acciones si el 'ppp' es un array
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones))
-				configCons.pppOpciones.toString() == pppOpcsObj.meInteresan.combo // se fija si el array es del combo de 'meInteresan'
-					? (configCons.pppOpciones = pppOpcsObj.meInteresan.id) // le asigna el id de 'meInteresan'
-					: delete configCons.pppOpciones; // elimina el ppp del combo
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configCons.pppOpcion_id = pppOpcion.id;
+				delete configCons.pppOpciones; // elimina el ppp del combo
+			}
 
 			// Quita los campos con valor 'default'
 			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
@@ -124,6 +126,27 @@ module.exports = {
 
 			// Se elimina el registro de cabecera de la configuración
 			await BD_genericas.eliminaPorId("configsCons", configCons_id);
+
+			// Fin
+			return res.json();
+		},
+	},
+	miscelaneas: {
+		guardaFiltrosActuales: (req, res) => {
+			// Variables
+			const filtros = JSON.parse(req.query.filtros);
+
+			// Si el 'ppp' es un array, lo convierte en un 'id'
+			if (filtros.pppOpciones && Array.isArray(filtros.pppOpciones)) {
+				const combo = filtros.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) filtros.pppOpcion_id = pppOpcion.id;
+				delete filtros.pppOpciones; // elimina el ppp del combo
+			}
+
+			// Guarda la configuración
+			req.session.filtros = filtros;
+			res.cookie("filtros", filtros, {maxAge: unDia});
 
 			// Fin
 			return res.json();
