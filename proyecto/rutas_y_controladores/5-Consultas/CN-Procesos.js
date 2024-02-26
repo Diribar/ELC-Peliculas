@@ -6,13 +6,11 @@ module.exports = {
 		cabecera: async (userID) => {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
-			const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
-
-			// Los ordena alfabéticamente
-			configsDeCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+			const configCons_cabeceras = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
+			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));// Los ordena alfabéticamente
 
 			// Fin
-			return configsDeCabecera;
+			return configCons_cabeceras;
 		},
 		campos: function () {
 			// Variable 'filtros'
