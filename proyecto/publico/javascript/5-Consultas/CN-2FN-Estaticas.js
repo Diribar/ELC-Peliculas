@@ -13,8 +13,9 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configCampos: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
+	configCampos: (texto) => {
+		if (!texto) texto = "";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?texto=" + texto + "&configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
@@ -122,9 +123,9 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	statusInicialCampos: async () => {
+	statusInicialCampos: async (texto) => {
 		// Variables
-		const configCampos = await obtiene.configCampos();
+		const configCampos = await obtiene.configCampos(texto);
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
