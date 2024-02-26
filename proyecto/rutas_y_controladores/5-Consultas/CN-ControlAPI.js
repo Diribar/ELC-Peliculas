@@ -28,7 +28,7 @@ module.exports = {
 			// Fin
 			return res.json(preferencias);
 		},
-		configCons_cabeceras: async (req, res) => {
+		configsDeCabecera: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 

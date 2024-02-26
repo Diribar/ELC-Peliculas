@@ -7,7 +7,7 @@ const vista = require("./CN-ControlVista");
 // API - Obtiene
 router.get("/api/obtiene-la-configuracion-de-cabecera", API.obtiene.configCabecera);
 router.get("/api/obtiene-la-configuracion-de-campos", API.obtiene.configCampos);
-router.get("/api/obtiene-las-configs-posibles-para-el-usuario", API.obtiene.configCons_cabeceras);
+router.get("/api/obtiene-las-configs-posibles-para-el-usuario", API.obtiene.configsDeCabecera);
 router.get("/api/obtiene-variables", API.obtiene.variables);
 
 // API - Cambios en BD

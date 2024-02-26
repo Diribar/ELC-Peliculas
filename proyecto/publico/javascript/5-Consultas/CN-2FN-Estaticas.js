@@ -1,7 +1,7 @@
 "use strict";
 
 let obtiene = {
-	configCons_cabeceras: () => {
+	configsDeCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-las-configs-posibles-para-el-usuario";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
@@ -212,7 +212,7 @@ let cambiosEnBD = {
 		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 
 		// Actualiza las configCons_cabeceras posibles para el usuario
-		v.configCons_cabeceras = await obtiene.configCons_cabeceras();
+		v.configCons_cabeceras = await obtiene.configsDeCabecera();
 
 		// Actualiza configCons_id en cookie, session y usuario
 		this.configCons_id();
@@ -266,7 +266,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + configCons_id);
 
 		// Actualiza la variable
-		v.configCons_cabeceras = await obtiene.configCons_cabeceras();
+		v.configCons_cabeceras = await obtiene.configsDeCabecera();
 
 		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
