@@ -7,7 +7,7 @@ module.exports = {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
 			const configCons_cabeceras = await BD_genericas.obtieneTodosPorCondicion("configsConsCabeceras", {usuario_id});
-			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));// Los ordena alfabéticamente
+			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
 			// Fin
 			return configCons_cabeceras;
@@ -34,6 +34,21 @@ module.exports = {
 
 			// Fin
 			return campos;
+		},
+		obtieneConfigCons_BD: async (usuario) => {
+			// Obtiene el ID de la configCons del usuario
+			const configCons_id =
+				usuario && usuario.configCons_id
+					? usuario.configCons_id // El guardado en el usuario
+					: configConsDefault_id;
+
+			// Obtiene las preferencias
+			let preferencias = {};
+			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
+			for (let registro of registros) preferencias[registro.campo] = registro.valor; // Convierte el array en objeto literal
+
+			// Fin
+			return {cabecera_id: configCons_id, ...preferencias};
 		},
 	},
 	resultados: {
