@@ -10,7 +10,7 @@
 			<% for (let configDeCabecera of configCons_cabeceras.propios) { %>
 				<option
 					value="<%= configDeCabecera.id %>"
-					<% if (configDeCabecera.id == configCons.cabecera_id) { %>selected<% } %>
+					<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
 				><%= configDeCabecera.nombre %></option>
 			<% } %>
 		</optgroup>
@@ -20,7 +20,7 @@
 				<% for (let configDeCabecera of configCons_cabeceras.predeterms) { %>
 					<option
 						value="<%= configDeCabecera.id %>"
-						<% if (configDeCabecera.id == configCons.cabecera_id) { %>selected<% } %>
+						<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
 					><%= configDeCabecera.nombre %></option>
 				<% } %>
 			</optgroup>
