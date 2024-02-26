@@ -28,15 +28,15 @@ module.exports = {
 			// Fin
 			return res.json(preferencias);
 		},
-		configsDeCabecera: async (req, res) => {
+		configCons_cabeceras: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene las opciones de configuracion
-			const configsDeCabecera = await procesos.configs.cabecera(userID);
+			const configCons_cabeceras = await procesos.configs.cabecera(userID);
 
 			// Fin
-			return res.json(configsDeCabecera);
+			return res.json(configCons_cabeceras);
 		},
 		variables: async (req, res) => {
 			// Variables
@@ -67,7 +67,10 @@ module.exports = {
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Si está logueado, actualiza el usuario en la BD
-			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+			if (userID) {
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				req.session.usuario = {...req.session.usuario, configCons_id};
+			}
 
 			// Fin
 			return res.json();
