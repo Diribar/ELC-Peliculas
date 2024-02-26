@@ -35,12 +35,13 @@ module.exports = {
 			// Fin
 			return campos;
 		},
-		obtieneConfigCons_BD: async (usuario) => {
+		obtieneConfigCons_BD: async ({usuario, configCons_id}) => {
 			// Obtiene el ID de la configCons del usuario
-			const configCons_id =
-				usuario && usuario.configCons_id
-					? usuario.configCons_id // El guardado en el usuario
-					: configConsDefault_id;
+			if (!configCons_id)
+				configCons_id =
+					usuario && usuario.configCons_id
+						? usuario.configCons_id // el guardado en el usuario
+						: configConsDefault_id; // si el usuario no está logueado o no guardó una elección, toma el default
 
 			// Obtiene las preferencias
 			let preferencias = {};
