@@ -38,7 +38,6 @@ let configCons_url = (req) => {
 			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id: configCons.id});
 			req.session.usuario = {...usuario, configCons_id};
 		}
-		req.session.prefsCons = res.clearCookie("prefsCons");
 
 		// Redirecciona quitando los parámetros del 'url'
 		const ruta = req.baseUrl + req.path;
