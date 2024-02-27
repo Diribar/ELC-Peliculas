@@ -182,7 +182,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	guardaFiltrosActuales: () => {
+	guardaPrefsEnSessionCookie: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
 		let campos = {...configCons};
@@ -197,6 +197,7 @@ let actualiza = {
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
+		// Además, se eliminan session y cookies
 		if (!v.userID) return;
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
 		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
