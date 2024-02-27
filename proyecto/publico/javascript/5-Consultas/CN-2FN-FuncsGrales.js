@@ -157,8 +157,8 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	toggleFiltrosIndivs: () => {
-		actualizaMuestraFiltros();
+	toggleFiltrosIndivs: function () {
+		this.actualizaMuestraFiltros();
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
@@ -181,6 +181,11 @@ let actualiza = {
 
 		// Fin
 		return;
+	},
+	actualizaMuestraFiltros: () => {
+		v.muestraFiltros =
+			window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
+			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
 	guardaPrefsEnSessionCookie: () => {
 		// Variables
@@ -323,4 +328,30 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
+};
+let cambioDeConfig_id = async (texto) => {
+	// Funciones
+	await actualiza.valoresInicialesDeVariables();
+	if (texto != "start-up") cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	await actualiza.statusInicialCampos();
+	actualiza.toggleFiltrosIndivs();
+
+	// Fin
+	return;
+};
+let cambioDeCampos = async () => {
+	// Cambio de clases
+	DOM.configNuevaNombre.classList.remove("nuevo");
+	DOM.configNuevaNombre.classList.remove("edicion");
+
+	// Funciones
+	actualizaConfigCons.consolidado(); // obtiene los resultados
+	actualiza.botoneraActivaInactiva(); // actualiza la botonera
+	if (v.opcion_id) {
+		await resultados.obtiene(); // obtiene los resultados
+		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
+	}
+
+	// Fin
+	return;
 };

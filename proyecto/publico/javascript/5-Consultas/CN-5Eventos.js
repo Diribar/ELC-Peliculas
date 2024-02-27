@@ -256,32 +256,6 @@ let guardarBotonera = async () => {
 	// Fin
 	return;
 };
-let cambioDeConfig_id = async () => {
-	// Funciones
-	await actualiza.valoresInicialesDeVariables();
-	cambiosEnBD.actualizaEnUsuarioConfigCons_id();
-	await actualiza.statusInicialCampos();
-	actualiza.toggleFiltrosIndivs();
-
-	// Fin
-	return;
-};
-let cambioDeCampos = async () => {
-	// Cambio de clases
-	DOM.configNuevaNombre.classList.remove("nuevo");
-	DOM.configNuevaNombre.classList.remove("edicion");
-
-	// Funciones
-	actualizaConfigCons.consolidado(); // obtiene los resultados
-	actualiza.botoneraActivaInactiva(); // actualiza la botonera
-	if (v.opcion_id) {
-		await resultados.obtiene(); // obtiene los resultados
-		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
-	}
-
-	// Fin
-	return;
-};
 let verificaConfigCons_id = async () => {
 	// Variables
 	const configCons_id = Number(DOM.configCons_id.value);

@@ -32,14 +32,13 @@ global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 global.path = require("path");
 const carpeta = path.basename(path.resolve());
 global.urlHost = carpeta == "Proyecto" ? "http://localhost" : "https://elc.lat";
-global.nodeEnv = carpeta == "Proyecto" ? "development" : "produccion";
+global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
 global.versionELC = process.env.versionELC;
-global.carpetaGit = process.env.carpetaGit;
 global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 
 // Otros requires
