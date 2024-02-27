@@ -1,10 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
+
+	// Obtiene información del backend
 	const {aprob, pend} = await fetch("/graficos/api/peliculas-cfc-vpc").then((n) => n.json());
 
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
+	const suma = ejeY.reduce((acum, n) =>  acum + n);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
@@ -36,5 +40,8 @@ window.addEventListener("load", async () => {
 		// Hace visible el gráfico
 		const grafico = new google.visualization.PieChart(document.querySelector("#grafico"));
 		grafico.draw(data, options);
+
+		// Agrega algunos datos relevantes
+		algunosDatos.innerHTML = "Total: " + suma;
 	}
 });
