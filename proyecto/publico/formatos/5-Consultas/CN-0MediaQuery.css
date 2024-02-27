@@ -19,8 +19,8 @@
 	#tituloPrincipal .ayudaMostrar::before {top: 0; left: auto; transform: none; translate: 0 -100%; border-color: transparent transparent var(--backAyuda) transparent;}
 }
 @media (width <= 415px) {
-	#tituloPrincipal .ayudaMostrar {translate: -50% 0; left: calc(-233px + 50vw); max-width: min(350px, calc(100vw - 10px));}
-	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 233px + 3px);}
+	#tituloPrincipal .ayudaMostrar {translate: -50% 0; left: calc(-240px + 50vw); max-width: min(350px, calc(100vw - 10px));}
+	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 240px + 3px);}
 }
 @media (415px < width <= 740px) {
 	#tituloPrincipal .ayudaMostrar {right: 0;}
