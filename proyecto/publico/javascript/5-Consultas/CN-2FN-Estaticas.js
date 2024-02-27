@@ -219,8 +219,8 @@ let cambiosEnBD = {
 		// Actualiza las configCons_cabeceras posibles para el usuario
 		v.configCons_cabeceras = await obtiene.configsDeCabecera();
 
-		// Actualiza configCons_id en cookie, session y usuario
-		this.configCons_id();
+		// Actualiza configCons_id en usuario
+		this.actualizaEnUsuarioConfigCons_id();
 
 		// Crea una opción
 		const newOption = new Option(nombre, v.configCons_id);
