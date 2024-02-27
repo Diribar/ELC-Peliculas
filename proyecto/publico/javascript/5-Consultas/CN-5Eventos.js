@@ -65,7 +65,6 @@ window.addEventListener("load", async () => {
 				// Guarda los filtros en session y cookie
 				actualiza.guardaPrefsEnSessionCookie();
 			}
-
 		}
 
 		// Fin
@@ -98,7 +97,7 @@ window.addEventListener("load", async () => {
 		if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
-				v.nombreOK = false;
+				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
 
 				// Valor en el input
 				DOM.configNuevaNombre.value =
