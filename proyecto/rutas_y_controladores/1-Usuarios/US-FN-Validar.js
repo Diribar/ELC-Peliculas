@@ -48,7 +48,7 @@ module.exports = {
 			errores.hay = Object.values(errores).some((n) => !!n);
 			return {errores, usuario};
 		},
-		datosPer: async function ({datos, usuario}) {
+		datosPer: async function (datos) {
 			// 1. Revisa si los datos tienen la info de los campos perennes
 			const campos = Object.keys(datos);
 			for (let campo of camposPerennes) if (!campos.includes(campo)) return {faltanCampos: true, hay: true};
@@ -58,7 +58,7 @@ module.exports = {
 			if (errores.hay) return errores;
 
 			// 3. Revisa las credenciales
-			errores.credenciales = camposPerennes.some((n) => usuario[n] != datos[n]);
+			errores.credenciales = camposPerennes.some((n) => datos.usuario[n] != datos[n]);
 			errores.hay = !!errores.credenciales;
 			return errores;
 		},
