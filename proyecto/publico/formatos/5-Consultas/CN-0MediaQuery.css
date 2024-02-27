@@ -19,7 +19,7 @@
 	#tituloPrincipal .ayudaMostrar {left: calc(-257px + 18px + 50vw - 15px); max-width: min(350px, calc(100vw - 10px));} /* '15px' es un 'factor de corrección' */
 	#tituloPrincipal .ayudaMostrar::before {top: 0; right: auto; translate: 0 -100%;}
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 257px - 18px + 3px - 15px);}
+	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 257px - 18px + 3px - 15px);} /* '15px' es un 'factor de corrección' */
 }
 
 /* Alto */
