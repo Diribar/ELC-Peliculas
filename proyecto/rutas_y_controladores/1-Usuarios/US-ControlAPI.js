@@ -99,13 +99,11 @@ module.exports = {
 			req.session.olvidoContr = {...req.session.olvidoContr, datos, errores};
 
 			// Devuelve la info
-			console.log(104, errores);
-			return res.json(errores);
+						return res.json(errores);
 		},
 		envioDeMail: async (req, res) => {
 			// Variables
-			console.log(108,req.query);
-			const {email} = req.query;
+						const {email} = req.query;
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Envía el mensaje con la contraseña
