@@ -55,13 +55,17 @@ window.addEventListener("load", async () => {
 			}
 			// Para reemplazar 'quitar' por el 'placeholder'
 			else {
+				// Reemplaza entre las opciones sin valor
 				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
+
+				// Cambios de campo
+				v.hayCambiosDeCampo = true;
 				await cambioDeCampos();
-				actualiza.guardaPrefsEnSessionCookie(); // guarda los filtros en session y cookie
+
+				// Guarda los filtros en session y cookie
+				actualiza.guardaPrefsEnSessionCookie();
 			}
 
-			// Cambios de campo
-			v.hayCambiosDeCampo = true;
 		}
 
 		// Fin
