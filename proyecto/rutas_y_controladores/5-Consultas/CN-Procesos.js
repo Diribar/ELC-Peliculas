@@ -630,7 +630,6 @@ module.exports = {
 						? -1
 						: 1
 				);
-				console.log(634, prods[prods.length - 1]);
 
 				// Orden adicional para "misPrefs"
 				if (opcion.codigo == "misPrefs") {
