@@ -12,6 +12,7 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
+			await cambioDeCampos();
 		}
 		// Acciones en los demás casos
 		else {
@@ -53,14 +54,15 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			// Para reemplazar 'quitar' por el 'placeholder'
-			else if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
+			else if (e.target.tagName == "SELECT" && !e.target.value) {
+				e.target.value = "";
+				await cambioDeCampos();
+				actualiza.guardaPrefsEnSessionCookie(); // guarda los filtros en session y cookie
+			}
 
 			// Cambios de campo
 			v.hayCambiosDeCampo = true;
 		}
-
-		// Funciones
-		await cambioDeCampos();
 
 		// Fin
 		return;
@@ -273,7 +275,6 @@ let cambioDeCampos = async () => {
 		await resultados.obtiene(); // obtiene los resultados
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
-	actualiza.guardaFiltrosActuales(); // guarda los filtros en session y cookie
 
 	// Fin
 	return;
