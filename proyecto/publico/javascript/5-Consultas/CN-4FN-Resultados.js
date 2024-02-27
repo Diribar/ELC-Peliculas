@@ -379,7 +379,7 @@ let auxiliares = {
 	titulo: (registroAct, indice) => {
 		// Variables
 		const opcion = v.opcionBD.codigo;
-		let titulo;
+		let titulo = "";
 
 		// Casos particulares
 		if (opcion.startsWith("fechaDelAno")) {
@@ -453,7 +453,12 @@ let auxiliares = {
 			// Épocas anteriores
 			else if (epocaAnt != epocaActual) titulo = registroAct.epocaOcurrencia;
 		}
-
+		if (opcion == "misCalificadas") {
+			const califAnt = v.registroAnt.calificacion;
+			const califActual = registroAct.calificacion;
+			if (!califActual && (califAnt || !Object.keys(v.registroAnt))) titulo = "Vistas sin calificar";
+			else if (!indice) titulo = "Mis calificadas";
+		}
 		// Cambio de grupo
 		if (opcion == "misPrefs") {
 			// Variables
@@ -461,7 +466,7 @@ let auxiliares = {
 			const nombreActual = registroAct.ppp.nombre;
 
 			// Resultado
-			titulo = nombreAnt != nombreActual ? nombreActual : "";
+			if (nombreAnt != nombreActual) titulo = nombreActual;
 		}
 		if (opcion == "anoEstreno") {
 			// Variables
@@ -469,14 +474,13 @@ let auxiliares = {
 			const nombreActual = registroAct.epocaEstreno;
 
 			// Resultado
-			titulo = nombreAnt != nombreActual ? nombreActual : "";
+			if (nombreAnt != nombreActual) titulo = nombreActual;
 		}
 
 		// Una sola tabla
-		if (opcion == "calificacion") titulo = !indice ? "Mejor calificadas" : "";
-		if (opcion == "misCalificadas") titulo = !indice ? "Mis calificadas" : "";
-		if (opcion == "misConsultas") titulo = !indice ? "Mis consultas" : "";
-		if (opcion == "altaRevisadaEn") titulo = !indice ? "Últimas ingresadas" : "";
+		if (opcion == "calificacion" && !indice) titulo = "Mejor calificadas";
+		if (opcion == "misConsultas" && !indice) titulo = "Mis consultas";
+		if (opcion == "altaRevisadaEn" && !indice) titulo = "Últimas ingresadas";
 
 		// Fin
 		return titulo;
