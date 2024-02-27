@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 				v.hayCambiosDeCampo = true;
 				await cambioDeCampos();
 
-				// Guarda los filtros en session y cookie
+				// Guarda las preferencias en session y cookie
 				actualiza.guardaPrefsEnSessionCookie();
 			}
 		}
