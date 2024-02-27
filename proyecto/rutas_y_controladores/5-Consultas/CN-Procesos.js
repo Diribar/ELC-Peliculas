@@ -51,6 +51,20 @@ module.exports = {
 			// Fin
 			return {cabecera_id: configCons_id, ...preferencias};
 		},
+		ayudas: () => {
+			// Variables
+			let resultado = [];
+
+			// Obtiene las ayudas sin repetir
+			cn_opciones
+				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
+				.map((n) => {
+					if (!resultado.find((m) => m.comentario == n.comentario)) resultado.push(n);
+				});
+
+			// Fin
+			return resultado;
+		},
 	},
 	resultados: {
 		obtieneProds: {
