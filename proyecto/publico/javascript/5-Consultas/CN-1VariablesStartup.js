@@ -91,7 +91,7 @@ window.addEventListener("load", async () => {
 
 	// Start-up
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
-	await cambioDeConfig_id();
+	await cambioDeConfig_id("start-up");
 	actualiza.cartelQuieroVerVisible();
 	await cambioDeCampos();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
@@ -100,10 +100,3 @@ window.addEventListener("load", async () => {
 // Variables
 const ruta = "/consultas/api/";
 let DOM, v, configCons, titulo;
-
-// Funciones
-let actualizaMuestraFiltros = () => {
-	v.muestraFiltros =
-		window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
-		window.getComputedStyle(DOM.muestraFiltros).display == "none";
-};
