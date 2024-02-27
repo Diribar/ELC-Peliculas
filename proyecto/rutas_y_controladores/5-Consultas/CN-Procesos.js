@@ -6,13 +6,11 @@ module.exports = {
 		cabecera: async (userID) => {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
-			const configsDeCabecera = await BD_genericas.obtieneTodosPorCondicion("configsCons", {usuario_id});
-
-			// Los ordena alfabéticamente
-			configsDeCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+			const configCons_cabeceras = await BD_genericas.obtieneTodosPorCondicion("configsConsCabeceras", {usuario_id});
+			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
 			// Fin
-			return configsDeCabecera;
+			return configCons_cabeceras;
 		},
 		campos: function () {
 			// Variable 'filtros'
@@ -36,6 +34,22 @@ module.exports = {
 
 			// Fin
 			return campos;
+		},
+		obtieneConfigCons_BD: async ({usuario, configCons_id}) => {
+			// Obtiene el ID de la configCons del usuario
+			if (!configCons_id)
+				configCons_id =
+					usuario && usuario.configCons_id
+						? usuario.configCons_id // el guardado en el usuario
+						: configConsDefault_id; // si el usuario no está logueado o no guardó una elección, toma el default
+
+			// Obtiene las preferencias
+			let preferencias = {};
+			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
+			for (let registro of registros) preferencias[registro.campo] = registro.valor; // convierte el array en objeto literal
+
+			// Fin
+			return {cabecera_id: configCons_id, ...preferencias};
 		},
 	},
 	resultados: {

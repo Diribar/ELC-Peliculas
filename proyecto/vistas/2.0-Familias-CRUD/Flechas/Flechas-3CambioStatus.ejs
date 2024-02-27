@@ -26,7 +26,7 @@
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
-		<% if (locals.status_id == inactivo_id) { %>
+		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
 			<!-- Recuperar -->
 			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>

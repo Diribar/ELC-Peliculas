@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "configsCons";
+	const alias = "configsConsCabeceras";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},

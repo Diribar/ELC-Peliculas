@@ -38,21 +38,21 @@ router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.motivosRechAltas);
 router.get("/crud/api/actualiza-visibles", API.actualizarVisibles);
 
-// Vistas - CRUD: Inactivar, Recuperar, Eliminar, Eliminado
-router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecup.form);
-router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
-router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecup.form);
-router.get("/:familia/eliminado", vista.eliminado);
-router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminar);
+// Vistas - CRUD: Inactivar, Recuperar
+router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecupGuardar);
+router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.post("/:familia/recuperar", aptoCRUD, capturaInactivar, vista.inacRecupGuardar);
 
-// Vistas -  CRUD: Inactivar, Recuperar, Eliminar
-router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup.guardar);
-router.post("/:familia/recuperar", aptoCRUD, capturaInactivar, vista.inacRecup.guardar);
-router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.eliminar);
+// Vistas -  CRUD: Eliminar, Eliminado
+router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecupElimForm);
+router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.eliminaGuardar);
+router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminaGuardar);
+router.get("/:familia/eliminado", vista.eliminado);
 
 // Vistas - Revisión
-router.get("/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecup.form);
-router.get("/:familia/rechazo", aptoCRUD, capturaActivar, vista.inacRecup.form);
+router.get("/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.get("/:familia/rechazo", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
 
 // Fin
 module.exports = router;

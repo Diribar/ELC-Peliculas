@@ -9,7 +9,7 @@ module.exports = {
 			const {configCons_id} = req.query;
 
 			// Obtiene la cabecera
-			const configCabecera = await BD_genericas.obtienePorId("configsCons", configCons_id);
+			const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
 
 			// Fin
 			return res.json(configCabecera);
@@ -17,26 +17,24 @@ module.exports = {
 		configCampos: async (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
-			let preferencias = {};
 
 			// Obtiene las preferencias
-			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
-
-			// Convierte el array en objeto literal
-			for (let registro of registros) preferencias[registro.campo] = registro.valor;
+			const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
+			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
+			const configCons = configCons_SC ? configCons_SC : configCons_BD;
 
 			// Fin
-			return res.json(preferencias);
+			return res.json(configCons);
 		},
 		configsDeCabecera: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene las opciones de configuracion
-			const configsDeCabecera = await procesos.configs.cabecera(userID);
+			const configCons_cabeceras = await procesos.configs.cabecera(userID);
 
 			// Fin
-			return res.json(configsDeCabecera);
+			return res.json(configCons_cabeceras);
 		},
 		variables: async (req, res) => {
 			// Variables
@@ -67,7 +65,10 @@ module.exports = {
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Si está logueado, actualiza el usuario en la BD
-			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+			if (userID) {
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				req.session.usuario = {...req.session.usuario, configCons_id};
+			}
 
 			// Fin
 			return res.json();
@@ -79,7 +80,7 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configCons.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsCons", objeto);
+			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsConsCabeceras", objeto);
 
 			// Fin
 			return res.json(configCons_id);
@@ -91,16 +92,18 @@ module.exports = {
 			delete configCons.id;
 
 			// Acciones si el 'ppp' es un array
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones))
-				configCons.pppOpciones.toString() == pppOpcsObj.meInteresan.combo // se fija si el array es del combo de 'meInteresan'
-					? (configCons.pppOpciones = pppOpcsObj.meInteresan.id) // le asigna el id de 'meInteresan'
-					: delete configCons.pppOpciones; // elimina el ppp del combo
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configCons.pppOpcion_id = pppOpcion.id;
+				delete configCons.pppOpciones; // elimina el ppp del combo
+			}
 
 			// Quita los campos con valor 'default'
 			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("configsCons", id, {nombre: configCons.nombre});
+			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Elimina la información guardada
@@ -123,7 +126,28 @@ module.exports = {
 			await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id});
 
 			// Se elimina el registro de cabecera de la configuración
-			await BD_genericas.eliminaPorId("configsCons", configCons_id);
+			await BD_genericas.eliminaPorId("configsConsCabeceras", configCons_id);
+
+			// Fin
+			return res.json();
+		},
+	},
+	miscelaneas: {
+		guardaFiltrosActuales: (req, res) => {
+			// Variables
+			const filtros = JSON.parse(req.query.filtros);
+
+			// Si el 'ppp' es un array, lo convierte en un 'id'
+			if (filtros.pppOpciones && Array.isArray(filtros.pppOpciones)) {
+				const combo = filtros.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) filtros.pppOpcion_id = pppOpcion.id;
+				delete filtros.pppOpciones; // elimina el ppp del combo
+			}
+
+			// Guarda la configuración
+			req.session.filtros = filtros;
+			res.cookie("filtros", filtros, {maxAge: unDia});
 
 			// Fin
 			return res.json();
