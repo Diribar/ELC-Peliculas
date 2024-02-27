@@ -13,8 +13,9 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configCampos: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?configCons_id=";
+	configCampos: (texto) => {
+		if (!texto) texto = "";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?texto=" + texto + "&configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
@@ -122,9 +123,9 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	statusInicialCampos: async () => {
+	statusInicialCampos: async (texto) => {
 		// Variables
-		const configCampos = await obtiene.configCampos();
+		const configCampos = await obtiene.configCampos(texto);
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
@@ -136,6 +137,9 @@ let actualiza = {
 
 		// Actualiza ícono Palabras Clave
 		DOM.palClaveAprob.classList.add("inactivo");
+
+		// Si session está activa, lo informa
+		if (configCampos.cambios) v.hayCambiosDeCampo = true;
 
 		// Fin
 		return;
@@ -178,9 +182,9 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	guardaFiltrosActuales: () => {
+	guardaPrefsEnSessionCookie: () => {
 		// Variables
-		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?filtros=";
+		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
 		let campos = {...configCons};
 		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 
@@ -192,9 +196,10 @@ let actualiza = {
 	},
 };
 let cambiosEnBD = {
-	configCons_id: () => {
+	actualizaEnUsuarioConfigCons_id: () => {
+		// Además, se eliminan session y cookies
 		if (!v.userID) return;
-		const rutaCompleta = ruta + "actualiza-configCons_id-en-usuario/?configCons_id=";
+		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
 		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
 
 		// Fin
@@ -214,8 +219,8 @@ let cambiosEnBD = {
 		// Actualiza las configCons_cabeceras posibles para el usuario
 		v.configCons_cabeceras = await obtiene.configsDeCabecera();
 
-		// Actualiza configCons_id en cookie, session y usuario
-		this.configCons_id();
+		// Actualiza configCons_id en usuario
+		this.actualizaEnUsuarioConfigCons_id();
 
 		// Crea una opción
 		const newOption = new Option(nombre, v.configCons_id);

@@ -12,6 +12,7 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
+			await cambioDeCampos();
 		}
 		// Acciones en los demás casos
 		else {
@@ -53,14 +54,18 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			// Para reemplazar 'quitar' por el 'placeholder'
-			else if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
+			else {
+				// Reemplaza entre las opciones sin valor
+				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 
-			// Cambios de campo
-			v.hayCambiosDeCampo = true;
+				// Cambios de campo
+				v.hayCambiosDeCampo = true;
+				await cambioDeCampos();
+
+				// Guarda las preferencias en session y cookie
+				actualiza.guardaPrefsEnSessionCookie();
+			}
 		}
-
-		// Funciones
-		await cambioDeCampos();
 
 		// Fin
 		return;
@@ -92,7 +97,7 @@ window.addEventListener("load", async () => {
 		if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
-				v.nombreOK = false;
+				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
 
 				// Valor en el input
 				DOM.configNuevaNombre.value =
@@ -108,7 +113,7 @@ window.addEventListener("load", async () => {
 				DOM.configNuevaNombre.focus();
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeVariables();
-				await actualiza.statusInicialCampos();
+				await actualiza.statusInicialCampos("deshacer");
 				await cambioDeCampos();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
@@ -254,7 +259,7 @@ let guardarBotonera = async () => {
 let cambioDeConfig_id = async () => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	cambiosEnBD.configCons_id();
+	cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	await actualiza.statusInicialCampos();
 	actualiza.toggleFiltrosIndivs();
 
@@ -273,7 +278,6 @@ let cambioDeCampos = async () => {
 		await resultados.obtiene(); // obtiene los resultados
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
-	actualiza.guardaFiltrosActuales(); // guarda los filtros en session y cookie
 
 	// Fin
 	return;

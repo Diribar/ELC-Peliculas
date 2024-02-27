@@ -16,12 +16,25 @@ module.exports = {
 		},
 		configCampos: async (req, res) => {
 			// Variables
-			const {configCons_id} = req.query;
+			const {texto, configCons_id} = req.query;
+			let configCons_SC;
+
+			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
+			if (texto == "deshacer") {
+				delete req.session.prefsCons;
+				res.clearCookie("prefsCons");
+			}
+			// De lo contrario, toma sus datos
+			else
+				configCons_SC = req.session.prefsCons
+					? req.session.prefsCons
+					: req.cookies.prefsCons
+					? req.cookies.prefsCons
+					: null;
 
 			// Obtiene las preferencias
-			const configCons_SC = req.session.filtros ? req.session.filtros : req.cookies.filtros ? req.cookies.filtros : null;
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
-			const configCons = configCons_SC ? configCons_SC : configCons_BD;
+			const configCons = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
 
 			// Fin
 			return res.json(configCons);
@@ -59,7 +72,7 @@ module.exports = {
 		},
 	},
 	cambiosEnBD: {
-		configCons_id: (req, res) => {
+		actualizaEnUsuarioConfigCons_id: (req, res) => {
 			// Variables
 			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
@@ -69,6 +82,10 @@ module.exports = {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
+
+			// Si se cambia de configuración, se eliminan session y cookie
+			delete req.session.prefsCons;
+			res.clearCookie("prefsCons");
 
 			// Fin
 			return res.json();
@@ -106,7 +123,11 @@ module.exports = {
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
-				// Elimina la información guardada
+				// Si se guardan cambios, se eliminan session y cookie
+				delete req.session.prefsCons;
+				res.clearCookie("prefsCons");
+
+				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id: id});
 
 				// Guarda la nueva información
@@ -133,21 +154,21 @@ module.exports = {
 		},
 	},
 	miscelaneas: {
-		guardaFiltrosActuales: (req, res) => {
+		guardaPrefsEnSessionCookie: (req, res) => {
 			// Variables
-			const filtros = JSON.parse(req.query.filtros);
+			const prefsCons = JSON.parse(req.query.prefsCons);
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (filtros.pppOpciones && Array.isArray(filtros.pppOpciones)) {
-				const combo = filtros.pppOpciones.toString();
+			if (prefsCons.pppOpciones && Array.isArray(prefsCons.pppOpciones)) {
+				const combo = prefsCons.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) filtros.pppOpcion_id = pppOpcion.id;
-				delete filtros.pppOpciones; // elimina el ppp del combo
+				if (pppOpcion) prefsCons.pppOpciones = pppOpcion.id;
+				else delete prefsCons.pppOpciones; // si no lo encuentra, lo elimina
 			}
 
 			// Guarda la configuración
-			req.session.filtros = filtros;
-			res.cookie("filtros", filtros, {maxAge: unDia});
+			req.session.prefsCons = prefsCons;
+			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
 
 			// Fin
 			return res.json();
