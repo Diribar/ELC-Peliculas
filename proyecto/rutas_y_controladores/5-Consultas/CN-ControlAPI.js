@@ -154,7 +154,7 @@ module.exports = {
 		},
 	},
 	miscelaneas: {
-		guardaFiltrosActuales: (req, res) => {
+		guardaPrefsEnSessionCookie: (req, res) => {
 			// Variables
 			const prefsCons = JSON.parse(req.query.prefsCons);
 
