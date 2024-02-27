@@ -470,13 +470,23 @@ module.exports = {
 
 				// Obtiene los registros del usuario
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
-				if (!misCalificadas.length) return [];
+				const yaVistas = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
+					usuario_id,
+					opcion_id: pppOpcsObj.yaLaVi.id,
+				});
 
-				// Elimina los productos no calificados
+				// Elimina los productos no calificados ni vistos
 				for (let i = prods.length - 1; i >= 0; i--) {
-					const calificacion = misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
-					if (!calificacion) prods.splice(i, 1);
-					else prods[i].calificacion = calificacion.resultado;
+					// Averigua si fue calificada y vista
+					const calificada = misCalificadas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					const yaVista = yaVistas.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+
+					// Si no fue calificada ni vista, elimina el producto
+					if (!calificada && !yaVista) prods.splice(i, 1);
+					// Si fue calificada, agrega el resultado
+					else if (calificada) prods[i].calificacion = calificada.resultado;
+					// Si no fue calificada, le pone 'cero' como calificación
+					else prods[i].calificacion = 0;
 				}
 
 				// Fin
@@ -688,7 +698,7 @@ module.exports = {
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, ppp};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
-					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
+					if (Object.keys(prod).includes("calificacion")) datosProd.calificacion = prod.calificacion;
 					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
 
 					// Achica el campo dirección
