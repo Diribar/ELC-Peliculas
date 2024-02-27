@@ -15,16 +15,11 @@
 
 /* Ayuda */
 @media (width <= 740px) {
-	#tituloPrincipal .ayudaMostrar {top: 21px; transform: none;}
-	#tituloPrincipal .ayudaMostrar::before {top: 0; left: auto; transform: none; translate: 0 -100%; border-color: transparent transparent var(--backAyuda) transparent;}
-}
-@media (width <= 415px) {
-	#tituloPrincipal .ayudaMostrar {translate: -50% 0; left: calc(-233px + 50vw); max-width: min(350px, calc(100vw - 10px));}
-	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 233px + 3px);}
-}
-@media (415px < width <= 740px) {
-	#tituloPrincipal .ayudaMostrar {right: 0;}
-	#tituloPrincipal .ayudaMostrar::before {right: 3px;}
+	#tituloPrincipal .ayudaMostrar {top: 21px; right: auto; transform: none; translate: -50% 0;}
+	#tituloPrincipal .ayudaMostrar {left: calc(-257px + 18px + 50vw - 15px); max-width: min(350px, calc(100vw - 10px));} /* '15px' es un 'factor de corrección' */
+	#tituloPrincipal .ayudaMostrar::before {top: 0; right: auto; translate: 0 -100%;}
+	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
+	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 257px - 18px + 3px - 15px);} /* '15px' es un 'factor de corrección' */
 }
 
 /* Alto */
