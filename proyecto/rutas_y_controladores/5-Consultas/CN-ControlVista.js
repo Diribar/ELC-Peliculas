@@ -36,7 +36,11 @@ module.exports = {
 		let configCons_id =
 			usuario && usuario.configCons_id
 				? usuario.configCons_id // El guardado en el usuario
-				: req.session.configCons_id; // El guardado en la session
+				: req.session.configCons_id
+				? req.session.configCons_id // El guardado en la session
+				: req.cookies.configCons_id
+				? req.cookies.configCons_id // El guardado en la cookie
+				: null;
 
 		if (!configCons_id || !configs.find((n) => n.id == configCons_id)) {
 			configCons_id = configConsDefault_id;

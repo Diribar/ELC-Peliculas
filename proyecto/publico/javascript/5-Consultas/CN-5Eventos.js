@@ -267,12 +267,13 @@ let cambioDeCampos = async () => {
 	DOM.configNuevaNombre.classList.remove("edicion");
 
 	// Funciones
-	actualizaConfigCons.consolidado();
-	actualiza.botoneraActivaInactiva();
+	actualizaConfigCons.consolidado(); // obtiene los resultados
+	actualiza.botoneraActivaInactiva(); // actualiza la botonera
 	if (v.opcion_id) {
-		await resultados.obtiene();
-		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
+		await resultados.obtiene(); // obtiene los resultados
+		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
+	actualiza.guardaFiltrosActuales(); // guarda los filtros en session y cookie
 
 	// Fin
 	return;

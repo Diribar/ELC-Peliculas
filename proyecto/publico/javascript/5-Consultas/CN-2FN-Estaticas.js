@@ -178,16 +178,31 @@ let actualiza = {
 		// Fin
 		return;
 	},
+	guardaFiltrosActuales: () => {
+		// Variables
+		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?filtros=";
+		let campos = {...configCons};
+		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
+
+		// Guarda
+		fetch(rutaCompleta + JSON.stringify(campos));
+
+		// Fin
+		return;
+	},
 };
 let cambiosEnBD = {
 	configCons_id: () => {
-		const rutaCompleta = ruta + "actualiza-configCons_id-en-cookie-session-y-usuario/?configCons_id=";
+		if (!v.userID) return;
+		const rutaCompleta = ruta + "actualiza-configCons_id-en-usuario/?configCons_id=";
 		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
 
 		// Fin
 		return;
 	},
 	creaUnaConfiguracion: async function () {
+		if (!v.userID) return;
+
 		// Variables
 		const nombre = configCons.nombre;
 		const opciones = DOM.configsConsPropios.children;
@@ -221,6 +236,8 @@ let cambiosEnBD = {
 		return;
 	},
 	guardaUnaConfiguracion: async () => {
+		if (!v.userID) return;
+
 		// Variables
 		let campos = {...configCons, id: v.configCons_id};
 		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
@@ -241,6 +258,8 @@ let cambiosEnBD = {
 		return;
 	},
 	eliminaConfigCons: async () => {
+		if (!v.userID) return;
+
 		// Elimina la configuración
 		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?configCons_id=";
 		let configCons_id = DOM.configCons_id.value;
@@ -270,6 +289,8 @@ let cambiosEnBD = {
 		return;
 	},
 	ppp: async (elemento) => {
+		if (!v.userID) return;
+
 		// Opción actual
 		const indice = v.ppps.findIndex((n) => n == elemento);
 		const opcionActual = v.pppOpcsArray.find((n) => v.ppps[indice].className.endsWith(n.icono));

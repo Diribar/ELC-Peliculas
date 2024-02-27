@@ -66,11 +66,8 @@ module.exports = {
 			const configCons_id = req.query.configCons_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
-			// Si está logueado, actualiza session y el usuario en la BD
-			if (userID) {
-				req.session.usuario.configCons_id = configCons_id;
-				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
-			}
+			// Si está logueado, actualiza el usuario en la BD
+			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 
 			// Fin
 			return res.json();
