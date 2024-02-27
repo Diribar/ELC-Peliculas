@@ -54,8 +54,8 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			// Para reemplazar 'quitar' por el 'placeholder'
-			else if (e.target.tagName == "SELECT" && !e.target.value) {
-				e.target.value = "";
+			else {
+				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 				await cambioDeCampos();
 				actualiza.guardaPrefsEnSessionCookie(); // guarda los filtros en session y cookie
 			}
