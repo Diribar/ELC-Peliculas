@@ -525,7 +525,7 @@ let auxiliares = {
 		fila.appendChild(celda);
 
 		// Si se eligió una opción de 'calificadas', crea la celda correspondiente
-		if (["calificacion", "misCalificadas"].includes(v.opcionBD.codigo)) {
+		if (["calificacion", "misCalificadas"].includes(v.opcionBD.codigo) && producto.calificacion) {
 			celda = creaUnaCelda.calificacion(producto);
 			fila.appendChild(celda);
 		}
