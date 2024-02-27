@@ -133,8 +133,12 @@ module.exports = {
 				if (apMar)
 					resultados =
 						apMar == "SI"
-							? resultados.filter((n) => n.personaje.apMar_id != 10 || n.hecho.ama == 1)
-							: resultados.filter((n) => n.personaje.apMar_id == 10 || n.hecho.ama == 0);
+							? resultados.filter(
+									(n) => (n.personaje && n.personaje.apMar_id != 10) || (n.hecho && n.hecho.ama == 1)
+							  )
+							: resultados.filter(
+									(n) => (n.personaje && n.personaje.apMar_id == 10) || (n.hecho && n.hecho.ama == 0)
+							  );
 
 				// Filtra por rolesIgl
 				if (rolesIgl)
