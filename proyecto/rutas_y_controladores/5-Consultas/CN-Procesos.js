@@ -485,7 +485,8 @@ module.exports = {
 					if (!calificada && !yaVista) prods.splice(i, 1);
 					// Si fue calificada, agrega el resultado
 					else if (calificada) prods[i].calificacion = calificada.resultado;
-					else delete prods[i].calificacion
+					// Si no fue calificada, le pone 'cero' como calificación
+					else prods[i].calificacion = 0;
 				}
 
 				// Fin
@@ -629,6 +630,7 @@ module.exports = {
 						? -1
 						: 1
 				);
+				console.log(634, prods[prods.length - 1]);
 
 				// Orden adicional para "misPrefs"
 				if (opcion.codigo == "misPrefs") {
@@ -697,7 +699,7 @@ module.exports = {
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, ppp};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
-					if (prod.calificacion) datosProd.calificacion = prod.calificacion;
+					if (Object.keys(prod).includes("calificacion")) datosProd.calificacion = prod.calificacion;
 					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
 
 					// Achica el campo dirección
