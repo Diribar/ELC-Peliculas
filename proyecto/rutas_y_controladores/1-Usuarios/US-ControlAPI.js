@@ -69,11 +69,11 @@ module.exports = {
 		},
 	},
 	olvidoContr: {
+		datosDeSession: (req, res) => res.json(req.session.olvidoContr),
 		validaDatosPer: async (req, res) => {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
-			const {usuario} = req.session.olvidoContr;
-			const errores = await valida.olvidoContr.datosPer({datos, usuario});
+			const errores = await valida.olvidoContr.datosPer(datos);
 			let intentos_DP;
 
 			// Acciones si hubieron errores de credenciales
@@ -84,8 +84,8 @@ module.exports = {
 				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_DP);
 
 				// intentos_DP - usuario
-				intentos_DP = usuario.intentos_DP + 1;
-				if (intentos_DP <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_DP});
+				intentos_DP = datos.usuario.intentos_DP + 1;
+				if (intentos_DP <= intentos_BD) BD_genericas.actualizaPorId("usuarios", datos.usuario.id, {intentos_DP});
 				const intentosPends_BD = Math.max(0, intentos_BD - intentos_DP);
 
 				// Convierte el resultado en texto
@@ -99,10 +99,12 @@ module.exports = {
 			req.session.olvidoContr = {...req.session.olvidoContr, datos, errores};
 
 			// Devuelve la info
+			console.log(104, errores);
 			return res.json(errores);
 		},
 		envioDeMail: async (req, res) => {
 			// Variables
+			console.log(108,req.query);
 			const {email} = req.query;
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
