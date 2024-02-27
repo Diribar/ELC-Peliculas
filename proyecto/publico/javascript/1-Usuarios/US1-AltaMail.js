@@ -1,9 +1,16 @@
 "use strict";
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Variables
 	const pathname = location.pathname;
 	const indice = 1 + pathname.slice(1).indexOf("/");
 	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena"; // código de la vista
+	const rutaInicio = "/usuarios/api/" + codigo;
+	let rutas = {
+		datosDeSession: rutaInicio + "/datosDeSession",
+		valida: rutaInicio + "/validaciones/?datos=",
+		envia: rutaInicio + "/envio-de-mail/?email=",
+	};
+
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -24,40 +31,41 @@ window.addEventListener("load", () => {
 	};
 	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
 	let v = {
-		// Inputs
-		inputs: Array.from(DOM.inputs).map((n) => n.name),
-		errores: {},
-
 		// Envío de mail
 		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail/?codigo=" + codigo,
 		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
 		pendiente: true,
-	};
 
-	// Variables
-	const rutaInicio = "/usuarios/api/" + codigo;
-	const rutaValida = rutaInicio + "/validaciones/?datos=";
-	const rutaEnvia = rutaInicio + "/envio-de-mail/?email=";
+		// Varios
+		olvidoContr: await fetch(rutas.datosDeSession).then((n) => n.json()),
+		inputs: Array.from(DOM.inputs).map((n) => n.name),
+		errores: {},
+	};
 
 	// Funciones -----------------------------
 	let validaEnviaMail = async (soloErrores) => {
-		// Prepara la info para el BE
+		// Variables
 		let datos = {email: DOM.email.value};
-		if (codigo == "olvido-contrasena") for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
 
-		// Averigua si hay errores, y en caso negativo envía el mail
-		v.errores = await fetch(rutaValida + JSON.stringify(datos)).then((n) => n.json());
+		// Si es un alta de mail o si se deben validar los datos perennes, averigua si hay errores
+		if (codigo == "alta-mail" || v.olvidoContr.mostrarCampos) {
+			// Obtiene la información de los datos perennes
+			if (codigo == "olvido-contrasena" && v.olvidoContr.mostrarCampos) {
+				for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
+				datos.usuario = v.olvidoContr.usuario;
+			}
 
-		// Si se necesitan los campos 'perennes', se recarga la página
-		if (v.errores.faltanCampos || (v.errores.intentos_DP && v.inputs.length == 1)) return location.reload();
+			// Averigua los errores
+			v.errores = await fetch(rutas.valida + JSON.stringify(datos)).then((n) => n.json());
 
-		if (v.errores.hay || soloErrores) return;
+			// Si se necesitan los campos 'perennes', se recarga la página
+			if (v.errores.faltanCampos) return location.reload();
+		}
 
-		// Cartel mientras se recibe la respuesta
-		cartelProgreso();
-
-		// Envía la información al BE
-		v.mailEnviado = await fetch(rutaEnvia + datos.email).then((n) => n.json());
+		// Sector de envío de email
+		if ((v.errores && v.errores.hay) || soloErrores) return;
+		cartelProgreso(); // Cartel mientras se recibe la respuesta
+		v.mailEnviado = await fetch(rutas.envia + datos.email).then((n) => n.json()); // Envía la información al BE
 
 		// Fin
 		return;
@@ -197,8 +205,9 @@ window.addEventListener("load", () => {
 		return;
 	});
 
-	// Start-up: anula 'submit' si hay algún error
-	botonSubmit();
+	// Start-up
+	if (codigo == "olvido-contrasena" && !v.olvidoContr) location.reload(); // si corresponde, recarga la página
+	botonSubmit(); // anula 'submit' si hay algún error
 });
 
 // Variables
