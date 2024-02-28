@@ -397,7 +397,7 @@ module.exports = {
 		},
 		accionesPorCambioDeStatus: async function (entidad, registro) {
 			// Variables
-			let familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			// prodsEnRCLV
 			if (familias == "productos") {
@@ -405,10 +405,9 @@ module.exports = {
 				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
 
 				// Actualiza prodAprob en sus links
-				if (registro.links) {
-					let espera = [];
-					for (let link of registro.links) espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
-					await Promise.all(espera);
+				if (registro.links && registro.links.length) {
+					const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
+					await BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
 				}
 
 				// Rutina por entidad RCLV
