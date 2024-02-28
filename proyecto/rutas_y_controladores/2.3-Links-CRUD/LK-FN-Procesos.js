@@ -37,9 +37,9 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
 		datos[campo_id] = regProd.id;
 
-		// borrarCol_id
-		if (datos.prodEntidad == "colecciones") datos.borrarCol_id = regProd.id;
-		if (datos.prodEntidad == "capitulos") datos.borrarCol_id = regProd.coleccion_id;
+		// grupoCol_id
+		if (datos.prodEntidad == "colecciones") datos.grupoCol_id = regProd.id;
+		if (datos.prodEntidad == "capitulos") datos.grupoCol_id = regProd.coleccion_id;
 
 		// Obtiene el proveedor
 		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.includes(n.urlDistintivo));
