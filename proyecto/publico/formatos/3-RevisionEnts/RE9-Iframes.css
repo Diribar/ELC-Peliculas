@@ -9,7 +9,7 @@
 	--altoMax: calc((var(--altoDisp)) * 0.9);
 	--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
 	--anchoMax: min(calc(var(--anchoDisp) * 0.9), 650px);
-	width: min(calc(var(--altMax) * var(--relacion)), var(--anchoMax)); /* el menor entre la restricción por altura y la restricción por ancho */
+	width: min(calc(var(--altoMax) * var(--relacion)), var(--anchoMax)); /* el menor entre la restricción por altura y la restricción por ancho */
 	height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax)); /* el menor entre la restricción por ancho y la restricción por altura */
 }
 #cuerpo #contIframe:has(iframe[src=""]) {display: none;}

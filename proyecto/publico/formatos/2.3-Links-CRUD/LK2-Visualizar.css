@@ -14,14 +14,18 @@
 		--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
 		--anchoMax: calc(var(--anchoDisp) * 0.9);
 	}
-	#contIframe {width: min(calc(var(--altMax) * var(--relacion)), var(--anchoMax));} /* el menor entre la restricción por altura y la restricción por ancho */
+	#contIframe {width: min(calc(var(--altoMax) * var(--relacion)), var(--anchoMax));} /* el menor entre la restricción por altura y la restricción por ancho */
 	#contIframe {height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax));} /* el menor entre la restricción por ancho y la restricción por altura */
 	#contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
 }
 
 /* limita el ancho mínimo al de la pantalla */
 @media (width <= 1200px) {
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-	#cuerpoFooter {min-width: 100vw;}
-	#cuerpo #contIframe {--anchoDisp: 100vw;}
+	#cuerpoFooterImgDer {
+		#cuerpoFooter {
+			min-width: 100vw;
+			#cuerpo #contIframe {--anchoDisp: 100vw;}
+		}
+		#imgDerecha img {max-width: 100vw;}
+	}
 }
