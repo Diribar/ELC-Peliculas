@@ -5,7 +5,8 @@ body {
 	--altHeader: max(52px, min(8vh, 60px));
 	--altMain: calc(100vh - var(--altHeader));
 	--altFooter: 23.6px;
-	--altCuerpo: calc(var(var(--altMain)) - var(var(--altFooter)))
+	--altCuerpo: calc(var(--altMain) - var(--altFooter));
+	--anchoCuerpo: calc(100vw - 32vw);
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}
