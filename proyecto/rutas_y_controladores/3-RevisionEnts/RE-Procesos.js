@@ -838,10 +838,11 @@ let FN_links = {
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
 		const {pelisColes: pelisColesParaProc, capitulos: capsParaProc} = cantLinksVencPorSem.paraProc;
-		let respuesta;
+				let respuesta;
 
 		// Obtiene los links a revisar
 		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
+		const creados = originales.filter((n) => n.statusRegistro_id == creado_id);
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs
@@ -856,8 +857,7 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Sin restricción - Altas
-		const altas = originales.filter((n) => n.statusRegistro_id == creado_id);
-		if (altas.length) respuesta = this.obtieneProdLink({links: altas, datos});
+		if (creados.length) respuesta = this.obtieneProdLink({links: creados, datos});
 		if (respuesta) return respuesta;
 
 		// Con restricción - Capítulos
