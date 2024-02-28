@@ -708,7 +708,7 @@ module.exports = {
 	fichaDelUsuario: async function (userID, petitFamilias) {
 		// Variables
 		const ahora = comp.fechaHora.ahora();
-		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
+		const usuario = await BD_genericas.obtienePorId("usuarios", userID);
 		let bloque = [];
 
 		// Nombre
