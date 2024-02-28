@@ -5,7 +5,7 @@
 
 	/* Ancho y alto */
 	--relacion: calc(16 / 9);
-	--altoDisp: var(--altCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
+	--altoDisp: var(--altoCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
 	--altoMax: calc((var(--altoDisp)) * 0.9);
 	--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
 	--anchoMax: min(calc(var(--anchoDisp) * 0.9), 650px);
