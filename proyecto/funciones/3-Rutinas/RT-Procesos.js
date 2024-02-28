@@ -262,6 +262,7 @@ module.exports = {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
+			let mensajesAltas = "";
 			let mensajesAprob = "";
 			let mensajesRech = "";
 			let color;
@@ -272,23 +273,28 @@ module.exports = {
 				const aprobado = regStatus.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
-				const statusFinal = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
 				const statusInicial = statusRegistros.find((n) => n.id == regStatus.statusOriginal_id);
+				const statusFinal = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
 				const motivo = regStatus.comentario && !aprobado ? regStatus.comentario : "";
 				const {nombreOrden, nombreVisual} = await nombres(regStatus, familia);
 				if (!nombreOrden) continue;
 
-				// Alimenta el resultado
-				resultados.push({
-					familia,
-					entidadNombre,
-					nombreOrden,
-					nombreVisual,
-					statusInicial,
-					statusFinal,
-					aprobado,
-					motivo,
-				});
+				// Alimenta el resultado, salvo los prods que pasan de creadoAprob_id a aprobado_id
+				if (
+					familia != "productos" ||
+					regStatus.statusOriginal_id != creadoAprob_id ||
+					regStatus.statusFinal_id != aprobado_id
+				)
+					resultados.push({
+						familia,
+						entidadNombre,
+						nombreOrden,
+						nombreVisual,
+						statusInicial,
+						statusFinal,
+						aprobado,
+						motivo,
+					});
 			}
 
 			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
@@ -297,7 +303,7 @@ module.exports = {
 			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
 			resultados.map((n) => {
 				// Variables
-				const altaAprob = statusInicial.id == creado_id && aprobados_ids.includes(statusFinal.id);
+				const altaAprob = n.statusInicial.id == creado_id && aprobados_ids.includes(n.statusFinal.id);
 
 				// Crea el mensaje
 				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
