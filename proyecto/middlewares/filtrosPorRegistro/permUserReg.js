@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
-	const {baseUrl, url} = comp.reqBasePathUrl(req);
+	const {baseUrl} = comp.reqBasePathUrl(req);
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
@@ -90,12 +90,12 @@ module.exports = async (req, res, next) => {
 			],
 			iconos: [v.vistaAnterior],
 		};
-	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
+	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta es de producto
 	else if (
 		v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 		v.registro.statusRegistro_id == creado_id && // en status creado
 		!creadoPorElUsuario && // otro usuario quiere acceder
-		baseUrl != "/revision" // la ruta no es de revisión
+		baseUrl == "/producto" // la ruta no es de revisión
 	) {
 		let nombre = comp.nombresPosibles(v.registro);
 		if (nombre) nombre = "'" + nombre + "'";
