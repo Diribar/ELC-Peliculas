@@ -1,25 +1,19 @@
-/* General */
-#cuerpoFooter #cuerpo {
-	flex-direction: column; justify-content: space-between; align-items: center;
-	#tituloPrincipal {flex-grow: 3;}
-	#botones {flex-grow: 3;}
-	#botones {align-items: center;}
+/* Iframe - General */
+#cuerpo #contIframe {
+	aspect-ratio: 16 / 9;
+	z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px;
 
-	/* Contenedor del Iframe */
-	#contIframe {z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px;}
-	#contIframe {--relacion: calc(16 / 9);}
-	#contIframe {
-		--altoDisp: var(--altCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
-		--altoMax: calc((var(--altoDisp)) * 0.9);
-		--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
-		--anchoMax: calc(var(--anchoDisp) * 0.9);
-	}
-	#contIframe {width: min(calc(var(--altMax) * var(--relacion)), var(--anchoMax));} /* el menor entre la restricción por altura y la restricción por ancho */
-	#contIframe {height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax));} /* el menor entre la restricción por ancho y la restricción por altura */
-
-	/* Iframe */
-	#contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
+	/* Ancho y alto */
+	--relacion: calc(16 / 9);
+	--altoDisp: var(--altCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
+	--altoMax: calc((var(--altoDisp)) * 0.9);
+	--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
+	--anchoMax: min(calc(var(--anchoDisp) * 0.9), 650px);
+	width: min(calc(var(--altMax) * var(--relacion)), var(--anchoMax)); /* el menor entre la restricción por altura y la restricción por ancho */
+	height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax)); /* el menor entre la restricción por ancho y la restricción por altura */
 }
+#cuerpo #contIframe:has(iframe[src=""]) {display: none;}
+#cuerpo #contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
 
 /* limita el ancho mínimo al de la pantalla */
 @media (width <= 1200px) {
