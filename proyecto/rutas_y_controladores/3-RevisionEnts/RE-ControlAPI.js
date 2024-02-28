@@ -160,5 +160,22 @@ module.exports = {
 			// Fin
 			return res.json(sigProd);
 		},
+		obtieneEmbededLink: async (req, res) => {
+			// Variables
+			const {linkID, linkUrl} = req.query;
+
+			// Obtiene el link y el proveedor
+			const link = linkID
+				? await BD_genericas.obtienePorId("links", linkID)
+				: await BD_genericas.obtienePorCondicion("links", {url: linkUrl});
+			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+
+			// Acciones si es embeded
+			let url = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
+			//if (url.includes("youtube.com")) url += "?autoplay=1&mute=1";
+
+			// Fin
+			return res.json(url);
+		},
 	},
 };
