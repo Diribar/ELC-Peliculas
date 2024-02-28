@@ -1,6 +1,6 @@
 body {position: relative;}
 body #contIframe {z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px;}
-body #contIframe {aspect-ratio: 16 / 9; width: max(700px, 80%); }
+body #contIframe {aspect-ratio: 16 / 9; width: max(700px, 70%); max-height: 80%;}
 body #contIframe iframe {border: none; display: block;}
 body #contIframe iframe {width: 100%; height: 100%;}
 body #contIframe:has(iframe[src=""]) {display: none;}
@@ -9,5 +9,8 @@ body #contIframe:has(iframe[src=""]) {display: none;}
 @media (width <= 1200px) {
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 	#cuerpoFooter {min-width: 100vw;}
-	body #contIframe {max-width: calc(100vw - 20px);}
+	body #contIframe {max-width: calc(100vw - 50px);}
+}
+@media (width <= 500px) {
+	body #contIframe {max-width: calc(100vw - 10px);}
 }
