@@ -35,9 +35,6 @@ router.get("/api/inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
-// APIs - Visualiza
-router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
-
 // Vistas
 router.get("/abm", aptoABM, capturaActivar, vista.abm);
 router.get("/visualizacion", vista.visualizacion);
