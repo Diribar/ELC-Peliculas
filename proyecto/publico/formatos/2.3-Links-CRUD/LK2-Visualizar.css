@@ -1,4 +1,6 @@
 body {position: relative;}
+
+/* Iframe */
 body #contIframe {z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px;}
 body #contIframe {aspect-ratio: 16 / 9; width: max(700px, 60%); max-height: 80%;}
 body #contIframe iframe {border: none; display: block;}
