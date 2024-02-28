@@ -21,7 +21,7 @@ module.exports = {
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
-		comp.reemplUrlPorVisualizEmbeded(links)
+		comp.reemplUrlPorVisualizEmbeded(links);
 		for (let link of links) {
 			link.cond = procesos.condiciones(link, userID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
@@ -65,26 +65,27 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : "";
 
-		// Obtiene el link
-		const link = await BD_genericas.obtienePorId("links", linkID); // link
-		const provLink = linksProvs.find((n) => n.id == link.prov_id); // provLink
-		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link); // entidad del producto
-		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)]; // id del producto
+		// Obtiene el link y su proveedor
+		const link = await BD_genericas.obtienePorId("links", linkID);
+		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
 		// Obtiene el producto 'Original' y 'Editado'
+		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		const tituloDetalle = nombre + " (" + provLink.nombre + ")";
+		const tituloDetalle = nombre + " (" + provEmbeded.nombre + ")";
 		const titulo = nombre;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo},
-			...{entidad, id, familia: "producto", registro: prodComb},
+			...{entidad, id, familia: "producto", registro: prodComb, link},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 		});
 	},
