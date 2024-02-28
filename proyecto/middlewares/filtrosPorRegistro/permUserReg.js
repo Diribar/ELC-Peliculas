@@ -90,12 +90,12 @@ module.exports = async (req, res, next) => {
 			],
 			iconos: [v.vistaAnterior],
 		};
-	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta es de producto
+	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
 	else if (
 		v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 		v.registro.statusRegistro_id == creado_id && // en status creado
 		!creadoPorElUsuario && // otro usuario quiere acceder
-		baseUrl == "/producto" // la ruta no es de revisión
+		baseUrl != "/revision" // la ruta no es de revisión
 	) {
 		let nombre = comp.nombresPosibles(v.registro);
 		if (nombre) nombre = "'" + nombre + "'";
