@@ -84,22 +84,32 @@ module.exports = {
 			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds); // Se obtiene el status original del link
 			if (!link) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
-			if (IN == "SI" && link.statusRegistro_id == creadoAprob_id) {
+			if (IN == "SI" && link.statusRegistro_id != creado_id) {
 				// Si no hay más links para procesar, interrumpe la función
 				if (!cantLinksVencPorSem.paraProc.prods) return res.json("En esta semana ya no se puede revisar este link");
 
-				// Variables
-				const semPrimRev = linksPrimRev / unaSemana;
-				const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> recientes
+				// Acciones si es un link de capítulo y no es un trailer
+				if (link.capitulo_id && link.tipo_id != linkTrailer_id) {
+					// Si queda lugar en la ultima semana, la asigna
+					if (cantLinksVencPorSem[linksSemsVidaUtil].prods < cantLinksVencPorSem.cantPromSem)
+						semana = linksSemsVidaUtil;
+					// De lo contrario, interrumpe la función
+					else return res.json("En esta semana ya no se puede revisar este link");
+				}
 
-				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
-				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-					.slice(corte + 1, -2)
-					.map((n) => n.prods);
-				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
-				if (cantMin == cantLinksVencPorSem.cantPromSem)
-					return res.json("En esta semana ya no se puede revisar este link");
-				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + corte + 1;
+				// Si no se cumple la condición anterior, averigua la semana
+				else {
+					// Variables
+					const semPrimRev = linksPrimRev / unaSemana;
+					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> recientes
+
+					// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+					const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+						.slice(corte + 1, -2)
+						.map((n) => n.prods);
+					const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
+					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + corte + 1;
+				}
 
 				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'rebalse')
 				// for (semana = linksSemsVidaUtil; semana > corte; semana--)
