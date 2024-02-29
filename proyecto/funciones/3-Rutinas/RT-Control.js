@@ -351,52 +351,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		PaisesConMasProductos: async () => {
-			// Variables
-			const condicion = {statusRegistro_id: aprobado_id};
-			const entidades = ["peliculas", "colecciones"];
-			let paisesID = {};
-
-			// Obtiene la frecuencia por país
-			for (let entidad of entidades) {
-				// Obtiene todos los registros de la entidad
-				await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) => n.filter((m) => m.paises_id))
-					.then((n) =>
-						n.map((m) => {
-							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
-						})
-					);
-			}
-
-			// Actualiza la frecuencia por país
-			paises.forEach((pais, i) => {
-				const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds = cantProds;
-				BD_genericas.actualizaPorId("paises", pais.id, {cantProds});
-			});
-
-			// Fin
-			return;
-		},
-		EliminaLinksInactivos: async () => {
-			const condicion = {statusRegistro_id: inactivo_id};
-			await BD_genericas.eliminaTodosPorCondicion("links", condicion);
-			return;
-		},
-		LinksPorProv: async () => {
-			// Obtiene todos los links
-			const linksTotales = await BD_genericas.obtieneTodos("links");
-
-			// Links por proveedor
-			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
-				let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				BD_genericas.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
-			}
-
-			// Fin
-			return;
-		},
 		FeedbackParaRevisores: async () => {
 			// Variables
 			const asunto = {
@@ -428,21 +382,6 @@ module.exports = {
 
 			// Avisa que está procesando el envío de los mails
 			await Promise.all(mailsEnviados);
-
-			// Fin
-			return;
-		},
-		EliminaCalifsSinPPP: async () => {
-			// Variables
-			const calRegistros = await BD_genericas.obtieneTodos("calRegistros");
-			const pppRegistros = await BD_genericas.obtieneTodos("pppRegistros");
-
-			// Si una calificación no tiene ppp, la elimina
-			for (let calRegistro of calRegistros) {
-				const {usuario_id, entidad, entidad_id} = calRegistro;
-				if (!pppRegistros.find((n) => n.usuario_id == usuario_id && n.entidad == entidad && n.entidad_id == entidad_id))
-					await BD_genericas.eliminaPorId("calRegistros", calRegistro.id);
-			}
 
 			// Fin
 			return;
@@ -482,29 +421,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		IDdeTablas: async () => {
-			// Variables
-			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "configsConsCampos"];
-
-			// Actualiza los valores de ID
-			for (let tabla of tablas) {
-				// Variables
-				const registros = await BD_genericas.obtieneTodos(tabla);
-				let id = 1;
-
-				// Actualiza los IDs
-				for (let registro of registros) {
-					await BD_genericas.actualizaPorId(tabla, registro.id, {id});
-					id++;
-				}
-
-				// Reduce el próximo valor de ID
-				//BD_genericas.reduceElProximoValorDeID(tabla);
-			}
-
-			// Fin
-			return;
-		},
 		RutinasEnUsuario: async () => {
 			// Lleva a cero el valor de algunos campos
 			await BD_genericas.actualizaTodos("usuarios", {intentos_Login: 0, intentos_DP: 0});
@@ -517,8 +433,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	rutinasSemanales: {
 		AprobadoConAvatarLink: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
@@ -547,6 +461,155 @@ module.exports = {
 			// Fin
 			return;
 		},
+		IDdeTablas: async () => {
+			// Variables
+			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "configsConsCampos"];
+
+			// Actualiza los valores de ID
+			for (let tabla of tablas) {
+				// Variables
+				const registros = await BD_genericas.obtieneTodos(tabla);
+				let id = 1;
+
+				// Actualiza los IDs
+				for (let registro of registros) {
+					await BD_genericas.actualizaPorId(tabla, registro.id, {id});
+					id++;
+				}
+
+				// Reduce el próximo valor de ID
+				//BD_genericas.reduceElProximoValorDeID(tabla);
+			}
+
+			// Fin
+			return;
+		},
+		EliminaLinksInactivos: async () => {
+			const condicion = {statusRegistro_id: inactivo_id};
+			await BD_genericas.eliminaTodosPorCondicion("links", condicion);
+			return;
+		},
+		EliminaCalifsSinPPP: async () => {
+			// Variables
+			const calRegistros = await BD_genericas.obtieneTodos("calRegistros");
+			const pppRegistros = await BD_genericas.obtieneTodos("pppRegistros");
+
+			// Si una calificación no tiene ppp, la elimina
+			for (let calRegistro of calRegistros) {
+				const {usuario_id, entidad, entidad_id} = calRegistro;
+				if (!pppRegistros.find((n) => n.usuario_id == usuario_id && n.entidad == entidad && n.entidad_id == entidad_id))
+					await BD_genericas.eliminaPorId("calRegistros", calRegistro.id);
+			}
+
+			// Fin
+			return;
+		},
+		EliminaImagenesSinRegistro: async () => {
+			// Variables
+			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+			const statusCualquiera_id = {[Op.ne]: null};
+
+			const objetos = [
+				// Carpetas REVISAR
+				{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+
+				// Carpetas FINAL
+				{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
+				{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
+
+				// Carpetas USUARIOS
+				{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
+			];
+
+			// Elimina las imágenes de las carpetas "Revisar" y "Final"
+			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+			// Elimina las imágenes de "Provisorio"
+			procesos.eliminaImagenesProvisorio();
+
+			// Fin
+			return;
+		},
+		EliminaHistorialDeRegsEliminados: async () => {
+			// Variables
+			const tablas = [
+				{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
+				{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
+				{nombre: "misConsultas", campoUsuario: "usuario_id"},
+			];
+			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
+			let available = {};
+			let datos = [];
+
+			// Agrega los registros de las entidades
+			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+
+			// Consolida la información
+			datos = await Promise.all(datos);
+			entidades.forEach((entidad, i) => (available[entidad] = datos[i]));
+
+			// Elimina historial
+			for (let tabla of tablas) {
+				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
+				const registros = await BD_genericas.obtieneTodos(tabla.nombre);
+
+				// Revisa que esté presente la entidad y el ususario del registro
+				for (let registro of registros)
+					if (
+						!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
+						!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
+					)
+						// Si no lo encuentra en ambas tablas, elimina el registro
+						BD_genericas.eliminaPorId(tabla.nombre, registro.id);
+			}
+
+			// Fin
+			return;
+		},
+		PaisesConMasProductos: async () => {
+			// Variables
+			const condicion = {statusRegistro_id: aprobado_id};
+			const entidades = ["peliculas", "colecciones"];
+			let paisesID = {};
+
+			// Obtiene la frecuencia por país
+			for (let entidad of entidades) {
+				// Obtiene todos los registros de la entidad
+				await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) => n.filter((m) => m.paises_id))
+					.then((n) =>
+						n.map((m) => {
+							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
+						})
+					);
+			}
+
+			// Actualiza la frecuencia por país
+			paises.forEach((pais, i) => {
+				const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
+				paises[i].cantProds = cantProds;
+				BD_genericas.actualizaPorId("paises", pais.id, {cantProds});
+			});
+
+			// Fin
+			return;
+		},
+		LinksPorProv: async () => {
+			// Obtiene todos los links
+			const linksTotales = await BD_genericas.obtieneTodos("links");
+
+			// Links por proveedor
+			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
+				let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
+				BD_genericas.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
+			}
+
+			// Fin
+			return;
+		},
+	},
+	rutinasSemanales: {
 		RCLV_idEnCapitulos: async () => {
 			// Variables
 			const rclvs_id = variables.entidades.rclvs_id;
@@ -593,33 +656,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaImagenesSinRegistro: async () => {
-			// Variables
-			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-			const statusCualquiera_id = {[Op.ne]: null};
-
-			const objetos = [
-				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
-
-				// Carpetas FINAL
-				{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
-				{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
-
-				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
-			];
-
-			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
-
-			// Elimina las imágenes de "Provisorio"
-			procesos.eliminaImagenesProvisorio();
-
-			// Fin
-			return;
-		},
 		EliminaHistorialAntiguo: async () => {
 			// Variables
 			const ahora = Date.now();
@@ -648,42 +684,6 @@ module.exports = {
 
 				// Elimina los registros del usuario de la lectura
 				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
-			}
-
-			// Fin
-			return;
-		},
-		EliminaHistorialDeRegsEliminados: async () => {
-			// Variables
-			const tablas = [
-				{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
-				{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
-				{nombre: "misConsultas", campoUsuario: "usuario_id"},
-			];
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
-			let available = {};
-			let datos = [];
-
-			// Agrega los registros de las entidades
-			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-
-			// Consolida la información
-			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (available[entidad] = datos[i]));
-
-			// Elimina historial
-			for (let tabla of tablas) {
-				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const registros = await BD_genericas.obtieneTodos(tabla.nombre);
-
-				// Revisa que esté presente la entidad y el ususario del registro
-				for (let registro of registros)
-					if (
-						!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
-						!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
-					)
-						// Si no lo encuentra en ambas tablas, elimina el registro
-						BD_genericas.eliminaPorId(tabla.nombre, registro.id);
 			}
 
 			// Fin
