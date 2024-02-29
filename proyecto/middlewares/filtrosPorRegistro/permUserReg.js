@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
-	const {baseUrl, url} = comp.reqBasePathUrl(req);
+	const {baseUrl} = comp.reqBasePathUrl(req);
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),

@@ -68,13 +68,13 @@ module.exports = {
 				if (entidad == "links") {
 					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
-					if (producto_id != "pelicula_id") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
+					if (producto_id != "pelicula_id") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
 				}
 
-				// borrarCol_id
-				if (entidad == "colecciones") edicion.borrarCol_id = original.id; // para ediciones de colección
-				if (entidad == "capitulos") edicion.borrarCol_id = original.coleccion_id; // para ediciones de capítulos
-				if (entidad == "links") edicion.borrarCol_id = original.borrarCol_id; // para ediciones de links
+				// grupoCol_id
+				if (entidad == "colecciones") edicion.grupoCol_id = original.id; // para ediciones de colección
+				if (entidad == "capitulos") edicion.grupoCol_id = original.coleccion_id; // para ediciones de capítulos
+				if (entidad == "links") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
 
 				// Se agrega el registro
 				await BD_genericas.agregaRegistro(entidadEdic, edicion);
@@ -397,7 +397,7 @@ module.exports = {
 		},
 		accionesPorCambioDeStatus: async function (entidad, registro) {
 			// Variables
-			let familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			// prodsEnRCLV
 			if (familias == "productos") {
@@ -405,10 +405,9 @@ module.exports = {
 				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
 
 				// Actualiza prodAprob en sus links
-				if (registro.links) {
-					let espera = [];
-					for (let link of registro.links) espera.push(BD_genericas.actualizaPorId("links", link.id, {prodAprob}));
-					await Promise.all(espera);
+				if (registro.links && registro.links.length) {
+					const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
+					await BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
 				}
 
 				// Rutina por entidad RCLV
@@ -565,7 +564,7 @@ module.exports = {
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
-			const condicion = entidad == "colecciones" ? {borrarCol_id: id} : {[campo_id]: id};
+			const condicion = entidad == "colecciones" ? {grupoCol_id: id} : {[campo_id]: id};
 
 			// Elimina el archivo avatar del original
 			if (original.avatar && !original.avatar.includes("/")) {
