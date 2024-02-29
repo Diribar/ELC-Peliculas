@@ -1,13 +1,11 @@
 body {
-	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg");
-	background-size: cover;
-	background-attachment: fixed;
-
-	width: 100vw;
-	height: 100vh;
+	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
+	width: 100vw; height: 100vh;
 
 	--altHeader: max(52px, min(8vh, 60px));
 	--altMain: calc(100vh - var(--altHeader));
+	--altFooter: 23.6px;
+	--altCuerpo: calc(var(var(--altMain)) - var(var(--altFooter)))
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}

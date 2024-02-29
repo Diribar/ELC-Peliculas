@@ -1,3 +1,9 @@
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
 </div>
+<div id="contIframe">
+	<iframe src="<%= link.url %>" allow="autoplay" allowfullscreen></iframe>
+</div>
+<div id="botones">
+    <%- include("Flechas-1Estandar") %>
+</div>

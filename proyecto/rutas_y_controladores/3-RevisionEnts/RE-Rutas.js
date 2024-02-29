@@ -44,6 +44,7 @@ router.get("/api/link/alta-baja", API.links.altaBaja);
 router.get("/api/link/eliminar", API.links.altaBaja);
 router.get("/api/link/edicion", API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
+router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
 router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);

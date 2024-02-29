@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		logosInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url a:not([href]) img"),
 		linksInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url:not(:has(a[href])) > input[name='url']"),
 	};
-	const rutaEmbeded = "/links/api/obtiene-embeded-link/?linkUrl=";
+	const rutaEmbeded = "/revision/api/link/obtiene-embeded-link/?linkUrl=";
 
 	// Funciones
 	let creaLosIframes = async (links, activoInactivo) => {
