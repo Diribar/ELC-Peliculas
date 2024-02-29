@@ -85,15 +85,28 @@ module.exports = {
 			if (!link) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 			if (IN == "SI" && link.statusRegistro_id == creadoAprob_id) {
+				// Si no hay más links para procesar, interrumpe la función
+				if (!cantLinksVencPorSem.paraProc.prods) return res.json("En esta semana ya no se puede revisar este link");
+
 				// Variables
 				const semPrimRev = linksPrimRev / unaSemana;
+				const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> recientes
 
-				// Busca la semana a la cual agregarle una fecha de vencimiento - 'semPrimRev': nuevos, '+1': recientes
-				for (semana = linksSemsVidaUtil; semana > semPrimRev + 1; semana--)
-					if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
+				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+					.slice(corte + 1, -2)
+					.map((n) => n.prods);
+				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
+				if (cantMin == cantLinksVencPorSem.cantPromSem)
+					return res.json("En esta semana ya no se puede revisar este link");
+				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + corte + 1;
 
-				// Si no se encontró "capacidad", envía una mensaje de error
-				if (semana == semPrimRev) return res.json("En esta semana ya no se puede revisar este link");
+				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'rebalse')
+				// for (semana = linksSemsVidaUtil; semana > corte; semana--)
+				// 	if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
+
+				// // Si no se encontró "capacidad", envía una mensaje de error
+				// if (semana == semPrimRev) return res.json("En esta semana ya no se puede revisar este link");
 			}
 
 			// Más variables
