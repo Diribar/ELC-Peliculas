@@ -21,8 +21,8 @@ module.exports = {
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
-		comp.reemplUrlPorVisualizEmbeded(links);
 		for (let link of links) {
+			if (!link.prov.embededPoner) link.href = "//" + link.url;
 			link.cond = procesos.condiciones(link, userID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}
