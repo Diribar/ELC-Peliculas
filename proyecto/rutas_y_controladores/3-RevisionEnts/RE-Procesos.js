@@ -189,14 +189,26 @@ module.exports = {
 					})
 				) // fusiona el original con su edición
 				.then((n) =>
-					n.filter((m) => !m.anoFM || m.anoFM < anoHoy || (m.anoFM == anoHoy && m.fechaDelAno_id < fechaDelAnoHoy_id))
+					n.filter((m) => {
+						let fechaFin_id = m.fechaDelAno_id + (m.diasDeDuracion ? m.diasDeDuracion : 0);
+						if (fechaFin_id > 366) fechaFin_id -= 366;
+						return (
+							!m.anoFM || // no tiene año
+							m.anoFM < anoHoy - 1 || // el año es menor que el año pasado
+							(m.anoFM < anoHoy && fechaFin_id < fechaDelAnoHoy_id) || // comenzó el año pasado y ya terminó
+							(m.anoFM == anoHoy && // comienza este año
+								m.fechaDelAno_id < fechaDelAnoHoy_id && // ya comenzó
+								m.fechaDelAno_id <= fechaFin_id && // termina este año
+								fechaFin_id < fechaDelAnoHoy_id) // ya terminó
+						);
+					})
 				) // sin año, año menor al actual, con fecha menor
 				.then((originales) =>
 					originales.map((original) => {
 						const fechaRefTexto = fechasDelAno.find((n) => n.id == original.fechaDelAno_id).nombre;
 						return {...original, fechaRefTexto};
 					})
-				)
+				) // Les agrega la fecha de ref
 				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
