@@ -610,6 +610,44 @@ module.exports = {
 		},
 	},
 	rutinasSemanales: {
+		ActualizaFechaVencimLinks: async () => {
+			// actualiza solamente la fecha de los links sin fecha
+			await comp.actualizaFechaVencimLinks();
+			return;
+		},
+		EliminaHistorialAntiguo: async () => {
+			// Variables
+			const ahora = Date.now();
+			const tablas = [
+				{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
+				{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
+			];
+
+			// Elimina historial antiguo
+			for (let tabla of tablas) {
+				const fechaDeCorte = new Date(ahora - tabla.antiguedad);
+				BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
+			}
+
+			// Elimina misConsultas > límite
+			let misConsultas = await BD_genericas.obtieneTodos("misConsultas").then((n) => n.reverse());
+			const limite = 20;
+			while (misConsultas.length) {
+				// Obtiene los registros del primer usuario
+				const usuario_id = misConsultas[0].usuario_id;
+				const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
+
+				// Elimina los registros sobrantes en la BD
+				if (registros.length > limite)
+					for (let i = limite; i < registros.length; i++) BD_genericas.eliminaPorId("misConsultas", registros[i].id);
+
+				// Elimina los registros del usuario de la lectura
+				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
+			}
+
+			// Fin
+			return;
+		},
 		RCLV_idEnCapitulos: async () => {
 			// Variables
 			const rclvs_id = variables.entidades.rclvs_id;
@@ -654,44 +692,6 @@ module.exports = {
 			await Promise.all(verificador);
 
 			// Fin
-			return;
-		},
-		EliminaHistorialAntiguo: async () => {
-			// Variables
-			const ahora = Date.now();
-			const tablas = [
-				{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
-				{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
-			];
-
-			// Elimina historial antiguo
-			for (let tabla of tablas) {
-				const fechaDeCorte = new Date(ahora - tabla.antiguedad);
-				BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
-			}
-
-			// Elimina misConsultas > límite
-			let misConsultas = await BD_genericas.obtieneTodos("misConsultas").then((n) => n.reverse());
-			const limite = 20;
-			while (misConsultas.length) {
-				// Obtiene los registros del primer usuario
-				const usuario_id = misConsultas[0].usuario_id;
-				const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
-
-				// Elimina los registros sobrantes en la BD
-				if (registros.length > limite)
-					for (let i = limite; i < registros.length; i++) BD_genericas.eliminaPorId("misConsultas", registros[i].id);
-
-				// Elimina los registros del usuario de la lectura
-				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
-			}
-
-			// Fin
-			return;
-		},
-		ActualizaFechaVencimLinks: async () => {
-			// actualiza solamente la fecha de los links sin fecha
-			await comp.actualizaFechaVencimLinks();
 			return;
 		},
 	},
