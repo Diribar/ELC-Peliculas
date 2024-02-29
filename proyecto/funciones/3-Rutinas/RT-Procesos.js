@@ -281,7 +281,7 @@ module.exports = {
 
 				// Alimenta el resultado, salvo los prods que pasan de creadoAprob_id a aprobado_id
 				if (
-					familia != "productos" ||
+					familia != "producto" ||
 					regStatus.statusOriginal_id != creadoAprob_id ||
 					regStatus.statusFinal_id != aprobado_id
 				)
