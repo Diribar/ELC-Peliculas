@@ -123,7 +123,7 @@ module.exports = {
 			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
 			produccion = camposInput.find((n) => n.nombre == "produccion");
 			// Datos Duros - Bases de Datos
-			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
+			paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 
