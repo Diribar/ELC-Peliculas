@@ -175,12 +175,6 @@ window.addEventListener("load", async () => {
 		},
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
-			console.log(
-				DOM.tipoInputs[fila].value == 1, // es un trailer
-				prov.trailer && !prov.pelicula, // es un trailer
-				v.colecciones, // es una colección
-				prov.siempreCompleta
-			);
 			const condicion =
 				DOM.tipoInputs[fila].value == 1 || // es un trailer
 				(prov.trailer && !prov.pelicula) || // es un trailer
