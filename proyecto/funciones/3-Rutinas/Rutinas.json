@@ -21,13 +21,11 @@
 		"LoginsAcums": "SI",
 		"RutinasEnUsuario": "SI",
 		"AprobadoConAvatarLink": "SI",
-
 		"IDdeTablas": "SI",
 		"EliminaLinksInactivos": "SI",
 		"EliminaCalifsSinPPP": "SI",
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI"
 	},
@@ -36,9 +34,7 @@
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
 		"ActualizaFechaVencimLinks": "SI",
-
 		"EliminaHistorialAntiguo": "SI",
-
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
