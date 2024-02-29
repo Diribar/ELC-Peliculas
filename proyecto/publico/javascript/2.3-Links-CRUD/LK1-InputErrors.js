@@ -141,9 +141,8 @@ window.addEventListener("load", async () => {
 		},
 		controlesEnGratuito: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
-			let cond1 = prov.siempreGratuito;
-			let cond2 = prov.siemprePago;
-			console.log(cond1, cond2);
+			const cond1 = prov.siempreGratuito;
+			const cond2 = prov.siemprePago;
 			if (cond1) DOM.gratuitoInputs[fila].value = "1";
 			else if (cond2) DOM.gratuitoInputs[fila].value = "0";
 			DOM.gratuitoInputs[fila].disabled = cond1 || cond2;
@@ -239,7 +238,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		activaInactivaBotonGuardar: (fila) => {
-			let OK = Array.from(DOM.iconosOK)
+			const OK = Array.from(DOM.iconosOK)
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
 				.every((n) => !n.includes("ocultar"));
