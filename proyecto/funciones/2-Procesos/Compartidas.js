@@ -888,7 +888,7 @@ module.exports = {
 		// linksParaProcesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 		const capsParaProc = Math.min(capsPosibles, capsPends);
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc};
+		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
 
 		// Agrega la información
 		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
