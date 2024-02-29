@@ -59,8 +59,9 @@ main #cuerpo {flex-direction: column;}
 #datos table tbody tr td.calidad option {text-align: center; }
 
 /* Formato del desperdicio */
-#datos table .desperdicio {background: var(--verde-intermedio);}
-#datos table .desperdicio .inputError .fa-circle-check {display: none;}
+#datos table :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
+#datos table :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
+#datos table td:has(*:disabled) * {background: transparent; border-color: transparent;}
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
 #datos table .alta select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
