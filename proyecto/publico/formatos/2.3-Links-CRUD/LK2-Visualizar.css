@@ -1,31 +1,28 @@
-#cuerpoFooter #cuerpo {
-	/* General */
-	flex-direction: column; justify-content: space-between; align-items: center;
-	#tituloPrincipal {flex-grow: 3;}
-	#botones {flex-grow: 3;}
-	#botones {align-items: center;}
+/* General */
+#cuerpoFooter #cuerpo {flex-direction: column; justify-content: space-between; align-items: center;}
+#cuerpo #tituloPrincipal {flex-grow: 3;}
+#cuerpo #botones {flex-grow: 3; align-items: center;}
 
-	/* Contenedor del Iframe */
-	#contIframe {z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px; aspect-ratio: 16 / 9;}
-	#contIframe {
-		--relacion: calc(16 / 9);
-		--altoDisp: var(--altoCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
-		--altoMax: calc((var(--altoDisp)) * 0.9);
-		--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
-		--anchoMax: calc(var(--anchoDisp) * 0.9);
-	}
-	#contIframe {width: min(calc(var(--altoMax) * var(--relacion)), var(--anchoMax));} /* el menor entre la restricción por altura y la restricción por ancho */
-	#contIframe {height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax));} /* el menor entre la restricción por ancho y la restricción por altura */
-	#contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
+/* Contenedor del Iframe */
+#contIframe {
+	z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px; aspect-ratio: 16 / 9;
+
+	/* Ancho y alto */
+	--relacion: calc(16 / 9);
+	--altoDisp: var(--altoCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
+	--altoMax: calc((var(--altoDisp)) * 0.9);
+	--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
+	--anchoMax: calc(var(--anchoDisp) * 0.9);
+	width: min(calc(var(--altoMax) * var(--relacion)), var(--anchoMax)); /* el menor entre la restricción por altura y la restricción por ancho */
+	height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax)); /* el menor entre la restricción por ancho y la restricción por altura */
 }
+
+#contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
+
 
 /* limita el ancho mínimo al de la pantalla */
 @media (width <= 1200px) {
-	#cuerpoFooterImgDer {
-		#cuerpoFooter {
-			min-width: 100vw;
-			#cuerpo #contIframe {--anchoDisp: 100vw;}
-		}
-		#imgDerecha img {max-width: 100vw;}
-	}
+	#cuerpoFooterImgDer #cuerpoFooter {min-width: 100vw;}
+	#cuerpo #contIframe {--anchoDisp: 100vw;}
+	#imgDerecha img {max-width: 100vw;}
 }
