@@ -9,7 +9,7 @@
 	#cuerpo form label {display: none;}
 }
 @media (width <= calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
-@media (width > calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {max-width: calc(0.7 * var(--altMain));}}
+@media (width > calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {max-width: calc(0.7 * var(--altoMain));}}
 
 /* Media Query - Alto */
 @media (height < 335px) {

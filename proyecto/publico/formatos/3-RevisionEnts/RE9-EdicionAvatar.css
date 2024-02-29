@@ -5,7 +5,7 @@
 /* Secciones de Imagen */
 #cuerpo .imagenes {position: relative;}
 #cuerpo .imagenes {display: flex; flex-direction: column; justify-content: center;}
-#cuerpo .imagenes img {max-width: var(--anchoImgDer); max-height: var(--altMain);}
+#cuerpo .imagenes img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
 #cuerpo .imagenes .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
 #cuerpo .imagenes .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
 #cuerpo .imagenes .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}

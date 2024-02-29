@@ -1,5 +1,5 @@
 /* Configuración general */
-header {width: 100vw; height: var(--altHeader); position: relative;}
+header {width: 100vw; height: var(--altoHeader); position: relative;}
 header {background: var(--azul-oscuro); justify-content: space-between;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}

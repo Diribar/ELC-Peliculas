@@ -1,0 +1,23 @@
+/* Iframe - General */
+#cuerpo #contIframe {
+	aspect-ratio: 16 / 9;
+	z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px;
+
+	/* Ancho y alto */
+	--relacion: calc(16 / 9);
+	--altoDisp: var(--altoCuerpo) - 37px - 38px; /* la altura del cuerpo, menos las alturas del título y la flecha */
+	--altoMax: calc((var(--altoDisp)) * 0.9);
+	--anchoDisp: var(--anchoCuerpo); /* toma en cuenta el ancho de imagen derecha */
+	--anchoMax: min(calc(var(--anchoDisp) * 0.9), 650px);
+	width: min(calc(var(--altoMax) * var(--relacion)), var(--anchoMax)); /* el menor entre la restricción por altura y la restricción por ancho */
+	height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax)); /* el menor entre la restricción por ancho y la restricción por altura */
+}
+#cuerpo #contIframe:has(iframe[src=""]) {display: none;}
+#cuerpo #contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
+
+/* limita el ancho mínimo al de la pantalla */
+@media (width <= 1200px) {
+	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+	#cuerpoFooter {min-width: 100vw;}
+	#cuerpo #contIframe {--anchoDisp: 100vw;}
+}

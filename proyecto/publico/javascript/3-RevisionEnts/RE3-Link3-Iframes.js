@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
-		cuerpoFooter: document.querySelector("#cuerpoFooter"),
+		cuerpo: document.querySelector("#cuerpoFooter #cuerpo"),
 		logosLink: document.querySelectorAll(".yaExistentes .url a img"),
 
 		// Activos
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 			const div = document.createElement("div");
 			div.id = "contIframe";
 			div.className = "absoluteCentro ocultar " + activoInactivo;
-			DOM.cuerpoFooter.appendChild(div);
+			DOM.cuerpo.appendChild(div);
 
 			// Agrega el iframe
 			const iframe = document.createElement("iframe");
@@ -37,13 +37,13 @@ window.addEventListener("load", async () => {
 
 	// Crea los iframes activos
 	if (DOM.linksActivos) await creaLosIframes(DOM.linksActivos, "activo");
-	const contIframesActivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.activo");
-	const iframesActivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.activo iframe");
+	const contIframesActivos = DOM.cuerpo.querySelectorAll("#contIframe.activo");
+	const iframesActivos = DOM.cuerpo.querySelectorAll("#contIframe.activo iframe");
 
 	// Crea los iframes inactivos
 	if (DOM.linksInactivos) await creaLosIframes(DOM.linksInactivos, "inactivo");
-	const contIframesInactivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.inactivo");
-	const iframesInactivos = DOM.cuerpoFooter.querySelectorAll("#contIframe.inactivo iframe");
+	const contIframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo");
+	const iframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo iframe");
 
 	// Eventos
 	window.addEventListener("click", (e) => {
