@@ -162,7 +162,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnProd: async function () {
+		LinksEnProd: async () => {
 			// Variables
 			let esperar = [];
 
@@ -187,7 +187,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProdsEnRCLV: async function () {
+		ProdsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 
