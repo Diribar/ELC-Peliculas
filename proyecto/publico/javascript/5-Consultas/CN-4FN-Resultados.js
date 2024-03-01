@@ -462,7 +462,7 @@ let auxiliares = {
 		// Cambio de grupo
 		if (opcion == "misPrefs") {
 			// Variables
-			const nombreAnt = v.registroAnt.ppp.nombre;
+			const nombreAnt = v.registroAnt.ppp ? v.registroAnt.ppp.nombre : "";
 			const nombreActual = registroAct.ppp.nombre;
 
 			// Resultado
