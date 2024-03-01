@@ -305,6 +305,7 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocasDelAno" ? " la " : "l ";
+			const userID = req.session.usuario.id;
 			let avatarExterno, avatarsExternos, avatar, imgDerPers;
 			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
 
@@ -363,7 +364,7 @@ module.exports = {
 				}
 
 				// Variables
-				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
+				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original, userID).then((n) => n.length);
 				bloqueDer = [procsCRUD.bloqueRegistro({...original, entidad})];
 				bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 				imgDerPers = procsCRUD.obtieneAvatar(original).orig;
