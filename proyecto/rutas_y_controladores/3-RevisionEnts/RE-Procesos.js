@@ -741,7 +741,7 @@ module.exports = {
 			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
-			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, statusCreado, semana});
+			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, semana});
 
 			// Arma los datos
 			let datos = {
@@ -978,7 +978,7 @@ let FN_links = {
 		// Fin
 		return sigProd;
 	},
-	fechaVencim: ({link, anoEstreno, IN, ahora, statusCreado, semana}) => {
+	fechaVencim: ({link, anoEstreno, IN, ahora, semana}) => {
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
 		const noTrailer = link.tipo_id != linkTrailer_id;
@@ -986,12 +986,10 @@ let FN_links = {
 		const fechaVencim =
 			IN != "SI"
 				? null
-				: statusCreado // si está recién creado
+				: link.statusRegistro_id == creado_id // si está recién creado
 				? new Date(ahoraTiempo + linksPrimRev)
 				: (!anoEstreno || anoEstreno > anoReciente) && noTrailer // si se desconoce su año de estreno o es reciente, y no es un trailer
 				? new Date(ahoraTiempo + linksPrimRev + unaSemana)
-				: link.capitulo_id && noTrailer // si es un capitulo y no es un trailer
-				? new Date(ahoraTiempo + linksVidaUtil)
 				: new Date(ahoraTiempo + semana * unaSemana); // en la semana disponible
 
 		// Fin
