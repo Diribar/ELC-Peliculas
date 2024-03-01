@@ -306,10 +306,10 @@ module.exports = {
 				const altaAprob = n.statusInicial.id == creado_id && aprobados_ids.includes(n.statusFinal.id);
 
 				// Crea el mensaje
-				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
+				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>";
 				if (!altaAprob) {
 					// Mensaje adicional
-					mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
+					mensaje += ", de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
 					mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
 
 					// Mensaje adicional si hay un motivo
