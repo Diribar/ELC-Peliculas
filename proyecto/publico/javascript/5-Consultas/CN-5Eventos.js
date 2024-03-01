@@ -80,14 +80,19 @@ window.addEventListener("load", async () => {
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
 		// Toggle filtros para celular parado
-		if (nombre == "toggleFiltrosGlobal" || (nombre == "zonaDisponible" && DOM.configCons.className.includes("aumentaX"))) {
-			const startUp = !DOM.muestraFiltrosGlobal.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
+		if (
+			nombre == "toggleFiltrosGlobal" ||
+			(DOM.configCons.className.includes("aumentaX") &&
+				["zonaDisponible", "telonFondo", "contadorDeProds", "quieroVer","vistaDeResults",""].includes(nombre))
+		) {
+			// Averigua si será la primera
+			const startUp = !DOM.iconoParaMostrarPrefs.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
 			if (startUp) {
-				DOM.muestraFiltrosGlobal.classList.add("flechaIzq");
+				DOM.iconoParaMostrarPrefs.classList.add("flechaIzq");
 				DOM.configCons.classList.add("aumentaX");
 			} else {
-				DOM.muestraFiltrosGlobal.classList.toggle("flechaDer");
-				DOM.muestraFiltrosGlobal.classList.toggle("flechaIzq");
+				DOM.iconoParaMostrarPrefs.classList.toggle("flechaDer");
+				DOM.iconoParaMostrarPrefs.classList.toggle("flechaIzq");
 				DOM.configCons.classList.toggle("aumentaX");
 				DOM.configCons.classList.toggle("disminuyeX");
 			}

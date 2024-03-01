@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		muestraFiltrosGlobal: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
+		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		opcion_id: DOM.tituloPrincipal.querySelector("select[name='opcion_id']"),
 
 		// Configuración de Cabecera - Botonera
