@@ -15,14 +15,14 @@ main #cuerpo {flex-direction: column;}
 #datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos table thead * {font-size: 1.1rem;}
 #datos table .fa-solid {font-size: 1rem;}
-#datos table thead tr th, #datos table tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
-#datos table thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
-#datos table tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
-#datos table tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
-#datos table tbody tr.oscuro_true {background: var(--gris-intermedio);}
+thead tr th, tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
+thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
+tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
+tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
+tbody tr.oscuro_true {background: var(--gris-intermedio);}
 
 /* Campos con input */
-#datos table tbody tr td .inputError .input {width: 100%;}
+tbody tr td .inputError .input {width: 100%;}
 
 /* Tablas - Barra de desplazamiento vertical */
 #datos table thead {padding-right: 18px;}
@@ -31,55 +31,56 @@ main #cuerpo {flex-direction: column;}
 #datos table tbody {padding-top: 15px; padding-bottom: 15px;}
 
 /* Temas de altas y edición */
-#datos table tbody tr .inputError .errores {right: 5px;}
+tbody tr .inputError .errores {right: 5px;}
 
 /* Temas de edición */
-#datos table tbody tr {height: 30px;}
-#datos table tbody tr td {padding: 1px 5px;}
-#datos table tbody tr input, #datos table tbody tr select {text-align: center; border-radius: 5px; border-width: 1px;}
-#datos table tbody tr input, #datos table tbody tr select {padding: 0 5px 2px; line-height: 1; height: 22px;}
-#datos table tbody tr input, #datos table tbody tr select {max-width: 100%;}
+tbody tr {height: 30px;}
+tbody tr td {padding: 1px 5px;}
+tbody tr input, tbody tr select {text-align: center; border-radius: 5px; border-width: 1px;}
+tbody tr input, tbody tr select {padding: 0 5px 2px; line-height: 1; height: 22px;}
+tbody tr input, tbody tr select {max-width: 100%;}
 
 /* Tablas - Anchos */
-#datos table .ancho_url {width: 140px;}
-#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulos {width: 70px;}
-#datos table .ancho_gratuito {width: 64px;}
-#datos table .ancho_tipo_id {width: 90px;}
-#datos table .ancho_completo {width: 73px;}
-#datos table .ancho_parte {width: 60px;}
-#datos table .ancho_status {width: 75px;}
-#datos table .ancho_propio {width: 53px;}
-#datos table .ancho_accion {width: 70px;}
+table .ancho_url {width: 140px;}
+table .ancho_calidad, table .ancho_castellano, table .ancho_subtitulos {width: 70px;}
+table .ancho_gratuito {width: 64px;}
+table .ancho_tipo_id {width: 90px;}
+table .ancho_completo {width: 73px;}
+table .ancho_parte {width: 60px;}
+table .ancho_status {width: 75px;}
+table .ancho_propio {width: 53px;}
+table .ancho_accion {width: 70px;}
 .ancho_motivo {width: 497px;}
 
 
 /* Tablas - Columnas específicas */
-#datos table tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
-#datos table tbody tr td.url .inputError .prov_id {display: none;}
-#datos table tbody tr td.calidad option {text-align: center; }
+tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
+tbody tr td.url .inputError .prov_id {display: none;}
+tbody tr td.calidad option {text-align: center; }
 
 /* Formato del desperdicio */
-#datos table :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
-#datos table :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
-#datos table td:has(*:disabled) * {background: transparent; border-color: transparent;}
+tbody :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
+tbody#linksCRUD :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
+tbody#revisionEnts :is(td:has(*:disabled)) .inputError .fa-circle-check {cursor: pointer;}
+tbody td:has(*:disabled) * {background: transparent; border-color: transparent;}
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
-#datos table .alta select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
-#datos table .alta select, #datos table .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+tbody .alta select::-ms-expand, tbody .edicion select::-ms-expand {display: none;}
+tbody .alta select, tbody .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
-#datos .inputError {padding-left: 10px; padding-right: 10px;}
+tbody .inputError {padding-left: 10px; padding-right: 10px;}
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
 /* #datos table .inputError input[type='number']::-webkit-outer-spin-button, #datos table .inputError input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} */
 /* Quitar flechas del input - Firefox */
 /* #datos table .inputError input[type=number] {-moz-appearance: textfield;} */
 
 /* Íconos en la tabla */
-#datos tbody tr td button {border: none; border-radius: 10px; padding: 3px 4px;}
-#datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
-#datos tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
-#datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
-#datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
+tbody tr td button {border: none; border-radius: 10px; padding: 3px 4px;}
+tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
+tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
+tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
+tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
+tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
 
 /* Comandos - Particularidades */
 #cuerpo .flechas.img {padding-left: 5px; padding-right: 5px;}
@@ -87,7 +88,7 @@ main #cuerpo {flex-direction: column;}
 #cuerpo .flechas a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
 
 /* Colores de los bordes de logos */
-tr td a img {border: solid 4px; box-sizing: content-box;}
-tr td a img.enCast {border-color: var(--verde-oscuro);}
-tr td a img.subtCast {border-color: gold;}
-tr td a img.otroIdioma {border-color: var(--rojo-oscuro);}
+tbody td a img {border: solid 4px; box-sizing: content-box;}
+tbody td a img.enCast {border-color: var(--verde-oscuro);}
+tbody td a img.subtCast {border-color: gold;}
+tbody td a img.otroIdioma {border-color: var(--rojo-oscuro);}

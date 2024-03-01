@@ -232,7 +232,7 @@ let nombreApodo = async ({datos, campo}) => {
 
 		// Prefijo y longitud
 		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
-		if (!mensaje) mensaje = comp.validacs.longitud(dato, 4, 35);
+		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, 35);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && ama == 1 && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";

@@ -25,7 +25,7 @@
 			<table>
 				<!-- Títulos (11 columnas) -->
 				<%- include("LK0-TituloTabla") %>
-				<tbody>
+				<tbody id="<%= tema %>">
 					<!-- Filas para links existentes -->
 					<% links.forEach((link, fila)=> { %>
 						<%- include("LK1-Datos", {link, fila}) %>

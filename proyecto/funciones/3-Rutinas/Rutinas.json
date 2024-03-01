@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 29/feb",
-	"HoraUTC": "11:43",
+	"FechaUTC": "Vie. 1/mar",
+	"HoraUTC": "2:14",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 26/feb",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"27-feb-24": {"titulo": "San Gabriel de la Dolorosa", "entidad": "personajes", "id": 174},
 		"28-feb-24": {"titulo": "Beato Carlos Gnocchi", "entidad": "personajes", "id": 137},
 		"29-feb-24": {"titulo": "Cuaresma"},
 		"01-mar-24": {"titulo": "Sierva de Dios María Cecilia Perrín de Buide"},
-		"02-mar-24": {"titulo": "Cuaresma"}
+		"02-mar-24": {"titulo": "Cuaresma"},
+		"03-mar-24": {"titulo": "Cuaresma"}
 	}
 }
