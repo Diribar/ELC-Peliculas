@@ -976,31 +976,13 @@ module.exports = {
 		return {baseUrl, ruta, url};
 	},
 	variablesSemanales: function () {
-		this.primerLunesDelAno();
+		FN.primerLunesDelAno();
 
 		// Otras variables
 		semanaUTC = parseInt((Date.now() - primerLunesDelAno) / unDia / 7) + 1;
 		lunesDeEstaSemana = primerLunesDelAno + (semanaUTC - 1) * unaSemana;
 
 		// Fin
-		return;
-	},
-	primerLunesDelAno: function (fecha) {
-		// Obtiene el primer día del año
-		fecha = fecha ? new Date(fecha) : new Date();
-		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
-		const comienzoAnoUTC = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria;
-
-		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado: 6)
-		const diaSemComienzoAnoUTC = new Date(comienzoAnoUTC).getUTCDay();
-
-		// Obtiene el primer lunes del año
-		let diasAdicsPorLunes = 1 - diaSemComienzoAnoUTC;
-		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
-		primerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
-
-		// Fin
-		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
 		return;
 	},
 };
@@ -1047,5 +1029,23 @@ let FN = {
 			: ["links", "linksEdicion"].includes(entidad)
 			? "link"
 			: "";
+	},
+	primerLunesDelAno: function (fecha) {
+		// Obtiene el primer día del año
+		fecha = fecha ? new Date(fecha) : new Date();
+		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
+		const comienzoAnoUTC = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria;
+
+		// Obtiene el dia de semana del primer día del año (domingo: 0, sábado: 6)
+		const diaSemComienzoAnoUTC = new Date(comienzoAnoUTC).getUTCDay();
+
+		// Obtiene el primer lunes del año
+		let diasAdicsPorLunes = 1 - diaSemComienzoAnoUTC;
+		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
+		primerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
+
+		// Fin
+		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
+		return;
 	},
 };

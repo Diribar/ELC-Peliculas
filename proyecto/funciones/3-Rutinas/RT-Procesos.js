@@ -558,6 +558,16 @@ module.exports = {
 	},
 
 	// Funciones - Otras
+	variablesDiarias: () => {
+		// Startup
+		anoHoy = new Date().getUTCFullYear();
+		const dia = new Date().getUTCDate();
+		const mes = new Date().getUTCMonth() + 1;
+		fechaDelAnoHoy_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).id;
+
+		// Fin
+		return;
+	},
 	fechaHoraUTC: () => {
 		// Obtiene la fecha y la hora y las procesa
 		const ahora = new Date();
