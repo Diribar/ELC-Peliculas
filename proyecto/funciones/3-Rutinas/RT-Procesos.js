@@ -734,7 +734,7 @@ let nombres = async (reg, familia) => {
 		nombreVisual =
 			"<a href='" +
 			urlHost +
-			+"/" +
+			"/" +
 			familia +
 			"/detalle/?entidad=" +
 			reg.entidad +
