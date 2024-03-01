@@ -88,8 +88,8 @@ window.addEventListener("load", () => {
 			if (palabras.filter((n) => n == palabras[i]).length > 1 || !palabras[i]) palabras.splice(i, 1);
 		let pasaNoPasa = palabras.join("");
 
-		// Acciones si la palabra tiene menos de 4 caracteres significativos
-		if (pasaNoPasa.length < 4) {
+		// Acciones si la palabra tiene menos de 3 caracteres significativos
+		if (pasaNoPasa.length < 3) {
 			// Oculta el sector de muestraResultados
 			DOM.muestraResultados.classList.add("ocultar");
 			// Muestra el cartel de "escribí más"
