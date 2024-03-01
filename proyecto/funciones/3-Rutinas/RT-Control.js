@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		//await this.RutinasHorarias();
+		// await this.RutinasSemanales();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -38,7 +38,6 @@ module.exports = {
 	},
 
 	// Consolidados
-
 	RutinasHorarias: async function () {
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
@@ -63,7 +62,7 @@ module.exports = {
 
 		// Actualiza todas las rutinas diarias
 		for (let rutinaDiaria in rutinasDiarias) {
-			await this[rutinaDiaria](); // ejecuta la rutina
+			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
 			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias"); // actualiza el archivo JSON
 		}
 
@@ -77,7 +76,7 @@ module.exports = {
 
 		// Actualiza las rutinasSemanales
 		for (let rutinaSemanal in rutinasSemanales) {
-			await this[rutinaSemanal]();
+			await this.rutinasSemanales[rutinaSemanal]();
 			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales");
 		}
 
@@ -151,7 +150,7 @@ module.exports = {
 		return;
 	},
 
-	// 1. Rutinas
+	// Rutinas
 	rutinasHorarias: {
 		ProdAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
@@ -163,7 +162,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnProd: async function () {
+		LinksEnProd: async () => {
 			// Variables
 			let esperar = [];
 
@@ -188,7 +187,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProdsEnRCLV: async function () {
+		ProdsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 
