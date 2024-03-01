@@ -1,7 +1,7 @@
 /* Mostrar filtros */
-#tituloPrincipal #toggleFiltrosGlobal {display: none; justify-content: center; align-items: center; border-radius: 50%;}
+#tituloPrincipal #toggleFiltrosGlobal {width: 25px; height: 25px; justify-content: center; align-items: center; border-radius: 50%;}
 #tituloPrincipal #toggleFiltrosGlobal {border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--verde-oscuro);}
-#tituloPrincipal #toggleFiltrosGlobal {width: 25px; height: 25px; margin: auto 5px;}
+#tituloPrincipal #toggleFiltrosGlobal {position: absolute; translate: 0 100%; bottom: -15px; left: 5px; display: none;}
 
 /* Orden y Entidad */
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px 6px; border-bottom-right-radius: 7px;}

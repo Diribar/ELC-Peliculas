@@ -1,42 +1,46 @@
 <!-- Layout, Orden, Ascendente / Descendente -->
 <!-- El id debe ser 'tituloPrincipal' por formato compartido -->
-<section id="tituloPrincipal" class="flexRow">
-	<!-- Mostrar filtros -->
-	<div id="toggleFiltrosGlobal">
-		<i class="fa-solid fa-chevron-right"></i>
-	</div>
-
-	<!-- Opciones -->
-	<select name="opcion_id" class="prefSimple" required>
-		<optgroup id="cuatroPelis" label="Cuatro Películas">
-			<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
-			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
-			<% } %>
-		</optgroup>
-		<optgroup label="Listados">
-			<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.loginNeces)) { %>
-			<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
-			<% } %>
-		</optgroup>
-		<% if (locals.usuario) { %>
+<section id="tituloPrincipal" class="flexCol">
+	<div class="flexRow">
+		<!-- Opciones -->
+		<select name="opcion_id" class="prefSimple" required>
+			<optgroup id="cuatroPelis" label="Cuatro Películas">
+				<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% } %>
+			</optgroup>
+			<optgroup label="Listados">
+				<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.loginNeces)) { %>
+				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% } %>
+			</optgroup>
+			<% if (locals.usuario) { %>
 			<optgroup label="Mis listados">
 				<% for (let opcion of cn_opciones.filter(n => !n.boton && n.loginNeces)) { %>
 				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
 				<% } %>
 			</optgroup>
-		<% } %>
-	</select>
+			<% } %>
+		</select>
 
-	<!-- Ayuda -->
-	<div id="ayudaOpciones">
-		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<li>Para las opciones de <em>Cuatro Películas</em>, los resultados con fondo amarillo tiene relación con la <b>Iglesia Católica</b>.</li>
-				<% for (let ayuda of ayudas) { %>
+		<!-- Ayuda -->
+		<div id="ayudaOpciones">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+					<li>
+						Para las opciones de <em>Cuatro Películas</em>, los resultados con fondo amarillo tiene relación con la
+						<b>Iglesia Católica</b>.
+					</li>
+					<% for (let ayuda of ayudas) { %>
 					<li><span><%= ayuda.nombre %></span>: <%= ayuda.comentario %>.</li>
-				<% } %>
-			</ul>
-		</i>
+					<% } %>
+				</ul>
+			</i>
+		</div>
+	</div>
+	<!-- Mostrar filtros -->
+	<div id="toggleFiltrosGlobal">
+		<i class="fa-solid fa-chevron-right"></i>
 	</div>
 </section>
 
