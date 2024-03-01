@@ -975,12 +975,6 @@ module.exports = {
 		// Fin
 		return {baseUrl, ruta, url};
 	},
-	reemplUrlPorVisualizEmbeded: (links) => {
-		for (let link of links) {
-			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
-			link.href = provEmbeded ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
-		}
-	},
 	variablesSemanales: function () {
 		this.primerLunesDelAno();
 

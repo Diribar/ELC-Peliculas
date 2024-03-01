@@ -15,15 +15,19 @@
 <form method="POST" class="marco flexColAlign">
 	<div id="calificaciones">
 		<div id="individuales" class="flexColAlign">
-			<% let i = 0 %>
-			<% for (let atributo in atributosCalific) { %>
+			<% const atributos = Object.keys(atributosCalific) %>
+			<% atributos.forEach(function(atributo, i) { %>
 				<% const atributo_id = atributo + "_id" %>
 				<div>
 					<h4>
-						<% if (!i) { %>
+						<% if (!i || i==atributos.length-1) { %>
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<p>Se refiere a si deja un impacto positivo en el espectador en su <em>Fe Católica</em> y/o sus <em>Valores</em>.</p>
+									<% if (!i) { %>
+										<p>Se refiere a si deja un impacto positivo en el espectador en su <em>Fe Católica</em> y/o sus <em>Valores</em>.</p>
+									<% } else { %>
+										<p>Se refiere a la calidad del sonido, de la imagen, de la escenografía.</p>
+									<% } %>
 								</ul>
 							</i>
 						<% } %>
@@ -36,8 +40,7 @@
 						<% } %>
 					</select>
 				</div>
-				<% i++ %>
-			<% } %>
+			<% }) %>
 		</div>
 		<div id="consolidado">
 			<div id="resultado">Resultado</div>

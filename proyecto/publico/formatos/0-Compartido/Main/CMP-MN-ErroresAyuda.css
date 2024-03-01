@@ -53,7 +53,7 @@
 .resultadoInvalido {background: var(--rojo-oscuro);}
 .resultadoEnEspera {background: var(--gris-oscuro);}
 .ayudaClick {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
-.ayudaMostrar, .ayudaMostrar * {background: var(--backAyuda); color: var(--colorAyuda);}
+.ayudaMostrar, .ayudaMostrar * {background: var(--backAyuda); color: var(--colorAyuda); text-wrap: wrap;}
 .ayudaMostrar {border-color: var(--bordeAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
 .link {background: var(--gris-oscuro); color: var(--gris-claro);}

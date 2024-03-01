@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 28/feb",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Jue. 29/feb",
+	"HoraUTC": "11:43",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 26/feb",
@@ -9,33 +9,45 @@
 	"semanaUTC": 9,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
-	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "FeedbackParaUsers", "ProdsEnRCLV", "ProductosAlAzar"],
+	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
+	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "ProdsEnRCLV", "FeedbackParaUsers", "ProductosAlAzar"],
+	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
+	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
+	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
-		"PaisesConMasProductos": "SI",
-		"EliminaLinksInactivos": "SI",
-		"LinksPorProv": "SI",
 		"FeedbackParaRevisores": "SI",
-		"EliminaCalifsSinPPP": "SI",
 		"LoginsAcums": "SI",
-		"IDdeTablas": "SI",
-		"RutinasEnUsuario": "SI"
-	},
-	"RutinasSemanales": {
+		"RutinasEnUsuario": "SI",
 		"AprobadoConAvatarLink": "SI",
-		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI",
+
+		"IDdeTablas": "SI",
+		"EliminaLinksInactivos": "SI",
+		"EliminaCalifsSinPPP": "SI",
 		"EliminaImagenesSinRegistro": "SI",
-		"EliminaHistorialAntiguo": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
-		"ActualizaFechaVencimLinks": "SI"
+
+		"PaisesConMasProductos": "SI",
+		"LinksPorProv": "SI"
+	},
+	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
+	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
+	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
+	"RutinasSemanales": {
+		"ActualizaFechaVencimLinks": "SI",
+
+		"EliminaHistorialAntiguo": "SI",
+
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-feb-24": {"titulo": "Cuaresma"},
 		"27-feb-24": {"titulo": "San Gabriel de la Dolorosa", "entidad": "personajes", "id": 174},
 		"28-feb-24": {"titulo": "Beato Carlos Gnocchi", "entidad": "personajes", "id": 137},
 		"29-feb-24": {"titulo": "Cuaresma"},
-		"01-mar-24": {"titulo": "Sierva de Dios María Cecilia Perrín de Buide"}
+		"01-mar-24": {"titulo": "Sierva de Dios María Cecilia Perrín de Buide"},
+		"02-mar-24": {"titulo": "Cuaresma"}
 	}
 }

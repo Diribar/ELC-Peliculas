@@ -45,16 +45,14 @@ window.addEventListener("load", async () => {
 	const contIframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo");
 	const iframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo iframe");
 
-	// Eventos
+	// Muestra el iframe si se hace click sobre él, y en caso contrario lo oculta
 	window.addEventListener("click", (e) => {
 		DOM.logosActivos.forEach((logoLink, i) => {
-			// Muestra/Oculta el iframe, según corresponda
 			if (logoLink == e.target) contIframesActivos[i].classList.remove("ocultar");
 			else if (!contIframesActivos[i].className.includes("ocultar")) contIframesActivos[i].classList.add("ocultar");
 			iframesActivos[i].src = iframesActivos[i].src;
 		});
 		DOM.logosInactivos.forEach((logoLink, i) => {
-			// Muestra/Oculta el iframe, según corresponda
 			if (logoLink == e.target) contIframesInactivos[i].classList.remove("ocultar");
 			else if (!contIframesInactivos[i].className.includes("ocultar")) contIframesInactivos[i].classList.add("ocultar");
 			iframesInactivos[i].src = iframesInactivos[i].src;
@@ -62,7 +60,14 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	const soloLinksEmbeded = DOM.logosLink.length == DOM.logosActivos.length + DOM.logosInactivos.length;
-	if (contIframesActivos.length && soloLinksEmbeded) contIframesActivos[0].classList.remove("ocultar");
+	const soloLinksEmbededActivos = DOM.logosLink.length == DOM.logosActivos.length;
+	if (
+		location.pathname.startsWith("/revision") && // es una vista de revisión
+		contIframesActivos.length &&
+		soloLinksEmbededActivos // sólo existen links embeded
+	)
+		contIframesActivos[0].classList.remove("ocultar");
+
+	// Fin
 	return;
 });

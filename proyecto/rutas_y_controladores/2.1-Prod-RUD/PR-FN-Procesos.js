@@ -62,26 +62,19 @@ module.exports = {
 
 		// Procesos si hay links
 		if (links.length) {
-			// Los ordena por url
-			links.sort((a, b) => (a.url < b.url ? -1 : 1));
-
-			// Los ordena por calidad
-			links.sort((a, b) => b.calidad - a.calidad);
-
-			// Los ordena por partes
-			links.sort((a, b) => a.parte - b.parte);
-
-			// Los ordena por completo
-			links.sort((a, b) => b.completo - a.completo);
-
-			// Los ordena por idioma
-			links.sort((a, b) => b.castellano - a.castellano);
+			// Los ordena
+			links.sort((a, b) => (a.url < b.url ? -1 : 1)); // por url
+			links.sort((a, b) => b.calidad - a.calidad); // por calidad
+			links.sort((a, b) => a.parte - b.parte); // por partes
+			links.sort((a, b) => b.completo - a.completo); // por completo
+			links.sort((a, b) => b.castellano - a.castellano); // por idioma
 
 			// Les asigna un color en función del idioma
 			for (let link of links) link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 
-			// Reemplaza los url
-			comp.reemplUrlPorVisualizEmbeded(links)
+			// Asigna los url de visualización
+			for (let link of links)
+				link.href = link.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
 
 			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
