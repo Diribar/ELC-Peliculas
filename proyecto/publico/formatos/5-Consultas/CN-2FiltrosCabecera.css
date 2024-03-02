@@ -1,6 +1,6 @@
 /* General */
 #cuerpo #configCons nav * {font-size: 1rem;}
-#cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
+#cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px; cursor: pointer;}
 
 /* Filtros Cabecera */
 #configCons #configCabecera {background: var(--gris-oscuro); padding: 20px 20px 15px; display: flex; flex-direction: column;}
