@@ -40,9 +40,9 @@ window.addEventListener("load", async () => {
 		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
 
 		// Muestra / Oculta filtros
-		toggleFiltrosIndivs: DOM.configCons.querySelector("#toggleFiltrosIndivs"),
-		muestraFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #muestraFiltros"),
-		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultaFiltros"),
+		togglePrefsIndivs: DOM.configCons.querySelector("#togglePrefsIndivs"),
+		muestraFiltros: DOM.configCons.querySelector("#togglePrefsIndivs #muestraFiltros"),
+		ocultaFiltros: DOM.configCons.querySelector("#togglePrefsIndivs #ocultaFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),

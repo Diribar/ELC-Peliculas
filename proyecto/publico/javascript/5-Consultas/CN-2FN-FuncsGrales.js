@@ -157,7 +157,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	toggleFiltrosIndivs: function () {
+	togglePrefsIndivs: function () {
 		this.actualizaMuestraFiltros();
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
@@ -184,7 +184,7 @@ let actualiza = {
 	},
 	actualizaMuestraFiltros: () => {
 		v.muestraFiltros =
-			window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
+			window.getComputedStyle(DOM.togglePrefsIndivs).display == "none" ||
 			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
 	guardaPrefsEnSessionCookie: () => {
@@ -334,7 +334,7 @@ let cambioDeConfig_id = async (texto) => {
 	await actualiza.valoresInicialesDeVariables();
 	if (texto != "start-up") cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	await actualiza.statusInicialCampos();
-	actualiza.toggleFiltrosIndivs();
+	actualiza.togglePrefsIndivs();
 
 	// Fin
 	return;

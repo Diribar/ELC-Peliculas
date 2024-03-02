@@ -9,7 +9,7 @@ let actualizaConfigCons = {
 		this.opcion();
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
-		actualiza.toggleFiltrosIndivs();
+		actualiza.togglePrefsIndivs();
 
 		// Pule la variable 'configCons'
 		for (let campo in configCons) if (configCons[campo] == "sinFiltro") delete configCons[campo];
@@ -46,7 +46,7 @@ let actualizaConfigCons = {
 		if (v.opcion_id) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
-			DOM.toggleFiltrosIndivs.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
+			DOM.togglePrefsIndivs.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
 			if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
 
 			// Oculta sectores
@@ -61,7 +61,7 @@ let actualizaConfigCons = {
 
 			// Oculta sectores
 			DOM.nav.classList.add("ocultar");
-			DOM.toggleFiltrosIndivs.classList.add("ocultar"); // oculta el botón "mostrar/ocultar filtros"
+			DOM.togglePrefsIndivs.classList.add("ocultar"); // oculta el botón "mostrar/ocultar filtros"
 			DOM.quieroVer.classList.add("ocultar");
 
 			// Muestra un mensaje de error
