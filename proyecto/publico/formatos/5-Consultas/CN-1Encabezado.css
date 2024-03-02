@@ -5,12 +5,12 @@
 #tituloPrincipal #iconosDelTitulo div#toggleFiltrosGlobal {display: none;}
 
 /* Orden y Entidad */
-#tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px 6px; border-bottom-right-radius: 7px;}
+#tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px 6px; border-bottom-right-radius: 7px; cursor: pointer;}
 #tituloPrincipal select {color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
 #tituloPrincipal select:not(:valid) {background: var(--rojo-oscuro);}
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
 #tituloPrincipal select optgroup {background: var(--azul-frances);}
-#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
+#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal; cursor: pointer;}
 
 /* Ayuda y Actualizar */
 #tituloPrincipal #ayudaOpciones {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
