@@ -1,6 +1,6 @@
 <div class="desplMostrar menuMostrar menuFondo ocultar">
 	<% for (let prop in vistasInstitucs) { %>
-		<a href="/institucional/<%= campo %>" class="menuOpcion">
+		<a href="/institucional/<%= prop %>" class="menuOpcion">
 			<i class="fa-solid icono <%= vistasInstitucs[prop].icono %>"></i>
 			<span><%= vistasInstitucs[prop].titulo %></span>
 		</a>
