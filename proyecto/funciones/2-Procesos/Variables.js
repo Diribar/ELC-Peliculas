@@ -34,7 +34,7 @@ module.exports = {
 	},
 
 	// Consulta de Productos
-	camposConsultas: {
+	filtrosConsultas: {
 		// Con una opción elegida siempre
 		tiposLink: {
 			default: "conLinks",
