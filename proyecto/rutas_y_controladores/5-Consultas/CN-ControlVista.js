@@ -17,7 +17,7 @@ module.exports = {
 				propios: configsConsCabs.filter((n) => userID && n.usuario_id == userID),
 				predeterms: configsConsCabs.filter((n) => n.usuario_id == 1),
 			},
-			prefs: procesos.configs.prefs(),
+			filtros: procesos.configs.filtros(),
 		};
 
 		// Si la configuración está en la url, toma el valor y redirige para eliminarlo de la url
@@ -34,8 +34,8 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, titulo, userID, cabecera_id},
-			...{configsCons, ayudas},
+			...{tema, titulo, userID},
+			...{cabecera_id, configsCons, ayudas},
 			omitirFooter: true,
 		});
 	},
