@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "configsConsCabeceras";
+	const alias = "consRegsCabecera";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		activo: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "cn_config_cabecera",
+		tableName: "cn_regs_cabecera",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
