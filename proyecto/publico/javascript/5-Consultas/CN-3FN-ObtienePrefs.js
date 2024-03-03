@@ -21,29 +21,29 @@ let actualizaConfigCons = {
 	// Encabezado
 	opcion: function () {
 		// Variables
-		v.opcion_id = DOM.opcion_id.value;
+		v.layout_id = DOM.layout_id.value;
 
 		// Obtiene los valores completos de la opción elegida
-		if (v.opcion_id) {
-			v.layoutBD = v.layoutsBD.find((n) => n.id == v.opcion_id);
-			if (!v.layoutBD) v.opcion_id = null;
+		if (v.layout_id) {
+			v.layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
+			if (!v.layoutBD) v.layout_id = null;
 		}
 
 		// Actualiza variable
-		if (v.opcion_id) configCons.opcion_id = v.opcion_id;
+		if (v.layout_id) configCons.opcion_id = v.layout_id;
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.opcion_id) this.presenciaEstable();
+		if (v.layout_id) this.presenciaEstable();
 
 		// Fin
 		return;
 	},
 	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
-		if (v.opcion_id) {
+		if (v.layout_id) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltros.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
