@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_opciones";
+	const alias = "cn_layouts";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
@@ -14,12 +14,12 @@ module.exports = (sequelize, dt) => {
 		ayuda: {type: dt.STRING(60)},
 	};
 	const config = {
-		tableName: "cn_opciones",
+		tableName: "cn_layouts",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_entsPorOpcion, {as: "entidades", foreignKey: "opcion_id"});
+		entidad.hasMany(n.cn_entsPorLayout, {as: "entidades", foreignKey: "layout_id"});
 	};
 	return entidad;
 };
