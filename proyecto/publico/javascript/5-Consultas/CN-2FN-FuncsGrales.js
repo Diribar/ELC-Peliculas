@@ -131,8 +131,8 @@ let actualiza = {
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configCampos[prefSimple.name]
 				? configCampos[prefSimple.name]
-				: v.filtrosConDefault[prefSimple.name]
-				? v.filtrosConDefault[prefSimple.name]
+				: v.prefsConDefault[prefSimple.name]
+				? v.prefsConDefault[prefSimple.name]
 				: "";
 
 		// Actualiza ícono Palabras Clave
