@@ -55,7 +55,7 @@ module.exports = {
 				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
-				...{filtrosConDefault, epocasEstreno, unDia},
+				...{prefsConDefault, epocasEstreno, unDia},
 			};
 
 			// Datos del usuario
@@ -112,12 +112,12 @@ module.exports = {
 			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
 				const combo = configCons.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpcion_id = pppOpcion.id;
-				delete configCons.pppOpciones; // elimina el ppp del combo
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
 			}
 
 			// Quita los campos con valor 'default'
-			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
+			for (let campo in configCons) if (configCons[campo] == prefsConDefault[campo]) delete configCons[campo];
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
