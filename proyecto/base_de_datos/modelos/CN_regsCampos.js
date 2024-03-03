@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "consRegsCampos";
 	const columns = {
-		configCons_id: {type: dt.INTEGER},
+		cabecera_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
 		valor: {type: dt.STRING(15)},
 	};
@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.consRegsCabecera, {as: "regCabecera", foreignKey: "configCons_id"});
+		entidad.belongsTo(n.consRegsCabecera, {as: "regCabecera", foreignKey: "cabecera_id"});
 	};
 	return entidad;
 };
