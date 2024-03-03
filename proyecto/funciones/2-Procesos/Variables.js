@@ -36,7 +36,7 @@ module.exports = {
 	// Consulta de Productos
 	camposConsultas: {
 		// Con una opción elegida siempre
-		tipoLink: {
+		tiposLink: {
 			default: "conLinks",
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
