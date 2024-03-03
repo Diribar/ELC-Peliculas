@@ -129,12 +129,12 @@ module.exports = {
 				res.clearCookie("prefsCons");
 
 				// Si no es nuevo, elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {cabecera_id: id});
+				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
 				for (let prop in configCons) {
 					const objeto = {cabecera_id: id, campo: prop, valor: configCons[prop]};
-					BD_genericas.agregaRegistro("consRegsCampos", objeto);
+					BD_genericas.agregaRegistro("consRegsPrefs", objeto);
 				}
 			}
 
@@ -145,7 +145,7 @@ module.exports = {
 			const {configCons_id: cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
-			await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {cabecera_id});
+			await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
 
 			// Se elimina el registro de cabecera de la configuración
 			await BD_genericas.eliminaPorId("consRegsCabecera", cabecera_id);
