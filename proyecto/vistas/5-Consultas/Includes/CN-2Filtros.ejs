@@ -40,37 +40,37 @@
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<!-- Tipos de Link -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.tiposLink}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.tiposLink}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {campos: configsCons.prefs.pppOpciones, eventual: true}) %>
+			<%- include('CN-FL-Selects', {campos: configsCons.filtros.pppOpciones, eventual: true}) %>
 		<% } %>
 		<!-- Idioma -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.idiomas}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.idiomas}) %>
 		<!-- Público Recomendado -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.publicos}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.publicos}) %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.cfc, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.cfc, eventual: true, color: 'cfc'}) %>
 		<!-- Proceso de Canonización -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.canons, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.canons, eventual: true, color: 'cfc'}) %>
 		<!-- Roles Iglesia -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.rolesIgl, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.rolesIgl, eventual: true, color: 'cfc'}) %>
 		<!-- Aparición Mariana -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.apMar, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.apMar, eventual: true, color: 'cfc'}) %>
 
 		<!-- HECHOS REALES -->
 		<!-- Basado en Hechos Reales -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.bhr, eventual: true, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.bhr, eventual: true, color: 'bhr'}) %>
 		<!-- Epoca de Ocurrencia -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.epocasOcurrencia, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.epocasOcurrencia, color: 'bhr'}) %>
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
 		<!-- Época de Estreno -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.epocasEstreno}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.epocasEstreno}) %>
 		<!-- Tipo de Actuación -->
-		<%- include('CN-FL-Selects', {campos: configsCons.prefs.tiposActuacion}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.tiposActuacion}) %>
 		<!-- Películas o Colecciones -->
 
 		<!-- Palabras Clave -->
