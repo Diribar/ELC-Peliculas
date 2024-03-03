@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.consRegsCampos, {as: "campos", foreignKey: "configCons_id"});
+		entidad.hasMany(n.consRegsCampos, {as: "campos", foreignKey: "cabecera_id"});
 	};
 	return entidad;
 };
