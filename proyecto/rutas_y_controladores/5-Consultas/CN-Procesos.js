@@ -6,34 +6,34 @@ module.exports = {
 		cabecera: async (userID) => {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
-			const configCons_cabeceras = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
-			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
+			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
+			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
 			// Fin
-			return configCons_cabeceras;
+			return regsCabecera;
 		},
-		campos: function () {
+		prefs: function () {
 			// Variable 'filtros'
-			let campos = {...variables.camposConsultas};
+			let prefs = {...variables.camposConsultas};
 
-			// Agrega los campos de código y opciones
-			for (let campo in campos) {
+			// Agrega los prefs de código y opciones
+			for (let campo in prefs) {
 				// Le agrega el nombre del campo a cada método
-				campos[campo].codigo = campo;
+				prefs[campo].codigo = campo;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!campos[campo].opciones) {
+				if (!prefs[campo].opciones) {
 					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
 					if (campo == "epocasOcurrencia")
-						campos.epocasOcurrencia.opciones = epocasOcurrencia
+						prefs.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else campos[campo].opciones = global[campo];
+					else prefs[campo].opciones = global[campo];
 				}
 			}
 
 			// Fin
-			return campos;
+			return prefs;
 		},
 		obtieneConfigCons_BD: async ({usuario, configCons_id}) => {
 			// Obtiene el ID de la configCons del usuario
@@ -64,6 +64,27 @@ module.exports = {
 
 			// Fin
 			return resultado;
+		},
+		configCons_url: (req) => {
+			// Variables
+			const prefsCons = req.query;
+			const camposConsultas = variables.camposConsultas;
+
+			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
+
+			// Guarda las prefs en cookies y session
+			req.session.prefsCons = prefsCons;
+			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
+
+			// Guarda las prefs en el usuario
+			if (req.session.usuario) {
+				const configCons_id = prefsCons.configCons_id;
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				req.session.usuario = {...usuario, configCons_id};
+			}
+
+			// Fin
+			return;
 		},
 	},
 	resultados: {
