@@ -147,7 +147,7 @@ app.set("views", [
 
 		// Consultas
 		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
-		cn_opciones: BD_genericas.obtieneTodosConInclude("cn_opciones", "entidades")
+		cn_layouts: BD_genericas.obtieneTodosConInclude("cn_layouts", "entidades")
 			.then((n) => n.filter((m) => m.activo))
 			.then((n) => n.sort((a, b) => a.orden - b.orden)),
 		pppOpcsArray: BD_genericas.obtieneTodos("pppOpciones"),
