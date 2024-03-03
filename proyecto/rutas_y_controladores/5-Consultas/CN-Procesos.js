@@ -108,7 +108,7 @@ module.exports = {
 			prefs: (configCons) => {
 				// Variables
 				const camposConsultas = variables.camposConsultas;
-				const {idioma} = camposConsultas;
+				const {idiomas} = camposConsultas;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
@@ -116,9 +116,9 @@ module.exports = {
 					if (camposConsultas[campo] && camposConsultas[campo].campoFiltro)
 						prefs[camposConsultas[campo].campoFiltro] = configCons[campo];
 
-				// Conversión de 'idioma'
-				if (configCons.idioma) {
-					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic;
+				// Conversión de 'idiomas'
+				if (configCons.idiomas) {
+					const aux = idiomas.opciones.find((n) => n.id == configCons.idiomas).condic;
 					if (aux) {
 						const tiposLink = configCons.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
 						prefs = {...prefs, ...aux[tiposLink]};
