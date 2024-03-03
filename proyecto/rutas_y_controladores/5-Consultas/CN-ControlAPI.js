@@ -117,8 +117,7 @@ module.exports = {
 			}
 
 			// Quita los campos con valor 'default'
-			for (let prop in configCons)
-				if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
+			for (let prop in configCons) if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
