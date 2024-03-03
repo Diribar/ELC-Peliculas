@@ -55,7 +55,7 @@ module.exports = {
 				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
-				...{prefsConDefault, epocasEstreno, unDia},
+				...{filtrosConDefault, epocasEstreno, unDia},
 			};
 
 			// Datos del usuario
@@ -118,7 +118,7 @@ module.exports = {
 
 			// Quita los campos con valor 'default'
 			for (let prop in configCons)
-				if (configCons[prop] == prefsConDefault[prop]) delete configCons[prop];
+				if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
