@@ -45,7 +45,7 @@ module.exports = {
 
 			// Obtiene las preferencias
 			let preferencias = {};
-			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("consRegsCampos", {configCons_id});
 			for (let registro of registros) preferencias[registro.campo] = registro.valor; // convierte el array en objeto literal
 
 			// Fin
