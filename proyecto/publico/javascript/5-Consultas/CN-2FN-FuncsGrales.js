@@ -42,12 +42,12 @@ let actualiza = {
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Ícono Nuevo
-		v.opcion_id && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.layout_id && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? titulo.nuevo
 			: !v.userID
 			? "Necesitamos que estés logueado para crear una configuración"
-			: !v.opcion_id
+			: !v.layout_id
 			? "No está permitido crear una configuración cuando hay un error en los filtros"
 			: claseEdicion
 			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
@@ -69,14 +69,14 @@ let actualiza = {
 			: "";
 
 		// Ícono Guardar
-		v.opcion_id && (v.nuevo || v.edicion || v.propio) && v.userID
+		v.layout_id && (v.nuevo || v.edicion || v.propio) && v.userID
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
 			? titulo.guardar
 			: !v.userID
 			? "Necesitamos que estés logueado para guardar una configuración"
-			: !v.opcion_id
+			: !v.layout_id
 			? "No está permitido guardar una configuración si no se eligió una opción"
 			: (claseNuevo || claseEdicion) && !v.nombreOK
 			? "No está permitido guardar un nuevo nombre de configuración si tiene errores"
@@ -91,7 +91,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Edición
-		!claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo && v.opcion_id
+		!claseNuevo && v.filtroPropio && !v.hayCambiosDeCampo && v.layout_id
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 		DOM.edicion.title = !DOM.edicion.className.includes("inactivo")
@@ -102,7 +102,7 @@ let actualiza = {
 			? "No está permitido editar el nombre de las configuraciones provistas por nuestro sitio"
 			: v.hayCambiosDeCampo
 			? "No está permitido editar el nombre de una configuración cuando se le hicieron cambios"
-			: !v.opcion_id
+			: !v.layout_id
 			? "No está permitido editar una configuración si no se eligió una opción"
 			: "";
 
@@ -347,7 +347,7 @@ let cambioDePrefs = async () => {
 	// Funciones
 	actualizaConfigCons.consolidado(); // obtiene los resultados
 	actualiza.botoneraActivaInactiva(); // actualiza la botonera
-	if (v.opcion_id) {
+	if (v.layout_id) {
 		await resultados.obtiene(); // obtiene los resultados
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
