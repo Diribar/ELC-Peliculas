@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		usuario_id: {type: dt.INTEGER},
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
-		opcion_id: {type: dt.INTEGER},
+		ppp_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {
