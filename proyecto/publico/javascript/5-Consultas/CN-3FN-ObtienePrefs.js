@@ -108,7 +108,7 @@ let actualizaConfigCons = {
 
 		// Acciones si la opción elegida es "Mis preferencias"
 		if (v.opcionBD.codigo == "misPrefs") {
-			configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(","); // le asigna ese valor a 'pppOpciones'
+			configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
 			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
 		}
 		// Acciones si la opción elegida es otra
