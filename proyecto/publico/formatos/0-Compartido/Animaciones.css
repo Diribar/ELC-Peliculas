@@ -27,7 +27,8 @@
 .agrandaAchica {animation: agrandaAchica .7s 6 alternate;}
 
 /* Animación - Estilos */
-.aparece, .desaparece, .aumenta, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq {animation-timing-function: ease-in; animation-fill-mode: forwards;}
+.aparece, .desaparece, .aumenta, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq
+	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
 .flechas button, .flechas i, #cuerpo a, #flechasCartel a, .scale {transition: 300ms;}
