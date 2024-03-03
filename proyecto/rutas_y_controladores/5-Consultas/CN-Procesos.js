@@ -412,7 +412,7 @@ module.exports = {
 							const pppOpcionElegida =
 								pppOpcion == pppOpcsObj.sinPref.id || !pppRegistro
 									? pppOpcsObj.sinPref // si se eligió 'sin preferencia' o no hay un registro
-									: pppOpcsArray.find((n) => n.id == pppRegistro.ppp_id); // elige la opción del producto que copincide con la elegida
+									: pppOpcsArray.find((n) => n.id == pppRegistro.ppp_id); // elige la opción del producto que coincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
 							prods[i].ppp = pppOpcionElegida;
