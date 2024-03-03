@@ -12,28 +12,28 @@ module.exports = {
 			// Fin
 			return regsCabecera;
 		},
-		prefs: function () {
+		filtros: function () {
 			// Variable 'filtros'
-			let prefs = {...variables.filtrosCons};
+			let filtros = {...variables.filtrosCons};
 
-			// Agrega los prefs de código y opciones
-			for (let prop in prefs) {
+			// Agrega los filtros de código y opciones
+			for (let prop in filtros) {
 				// Le agrega el nombre del campo a cada método
-				prefs[prop].codigo = prop;
+				filtros[prop].codigo = prop;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!prefs[prop].opciones) {
+				if (!filtros[prop].opciones) {
 					// Si es el prop 'epocasOcurrencia', quita la opción 'varias'
 					if (prop == "epocasOcurrencia")
-						prefs.epocasOcurrencia.opciones = epocasOcurrencia
+						filtros.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else prefs[prop].opciones = global[prop];
+					else filtros[prop].opciones = global[prop];
 				}
 			}
 
 			// Fin
-			return prefs;
+			return filtros;
 		},
 		obtieneConfigCons_BD: async ({usuario, configCons_id}) => {
 			// Obtiene el ID de la configCons del usuario
