@@ -163,7 +163,7 @@ window.addEventListener("load", async () => {
 				if (pppOpcion) configConsComp.pppOpciones = pppOpcion.id;
 				else delete configConsComp.pppOpciones;
 			}
-			if (v.entidadBD.id == v.opcionBD.entDefault_id) delete configConsComp.entidad; // si la entidad es la estándar, elimina el campo
+			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configConsComp.entidad; // si la entidad es la estándar, elimina el campo
 
 			// Obtiene los 'camposUrl'
 			let camposUrl = "";
