@@ -14,7 +14,7 @@ module.exports = {
 		},
 		prefs: function () {
 			// Variable 'filtros'
-			let prefs = {...variables.filtrosConsultas};
+			let prefs = {...variables.filtrosCons};
 
 			// Agrega los prefs de código y opciones
 			for (let prop in prefs) {
@@ -68,7 +68,7 @@ module.exports = {
 		configCons_url: (req) => {
 			// Variables
 			const prefsCons = req.query;
-			const filtrosConsultas = variables.filtrosConsultas;
+			const filtrosCons = variables.filtrosCons;
 
 			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
 
@@ -128,14 +128,14 @@ module.exports = {
 			},
 			prefs: (configCons) => {
 				// Variables
-				const filtrosConsultas = variables.filtrosConsultas;
-				const {idiomas} = filtrosConsultas;
+				const filtrosCons = variables.filtrosCons;
+				const {idiomas} = filtrosCons;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let prop in configCons)
-					if (filtrosConsultas[prop] && filtrosConsultas[prop].campoFiltro)
-						prefs[filtrosConsultas[prop].campoFiltro] = configCons[prop];
+					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro)
+						prefs[filtrosCons[prop].campoFiltro] = configCons[prop];
 
 				// Conversión de 'idiomas'
 				if (configCons.idiomas) {
@@ -149,7 +149,7 @@ module.exports = {
 				// Conversión de campos similares
 				for (let campo of ["tiposLink", "publicos"])
 					if (configCons[campo]) {
-						const aux = filtrosConsultas[campo].opciones.find((n) => n.id == configCons[campo]).condic;
+						const aux = filtrosCons[campo].opciones.find((n) => n.id == configCons[campo]).condic;
 						if (aux) prefs = {...prefs, ...aux};
 					}
 
@@ -278,7 +278,7 @@ module.exports = {
 			prefs: (entidad, configCons) => {
 				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
 				const {opcion} = configCons;
-				const {apMar, rolesIgl, canons} = variables.filtrosConsultas;
+				const {apMar, rolesIgl, canons} = variables.filtrosCons;
 				let prefs = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'
