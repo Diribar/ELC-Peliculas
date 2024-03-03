@@ -206,9 +206,9 @@ module.exports = {
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave, cantResults}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
-			rclvs = procesos.resultados.orden.rclvs({rclvs, layout, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.orden.rclvs({rclvs, layout}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.botonesListado({resultados: rclvs, layout, configCons});
-			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, layout}); // Deja sólo los campos necesarios
+			rclvs = procesos.resultados.camposNecesarios.rclvs(rclvs); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}
 	},
