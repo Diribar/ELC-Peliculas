@@ -74,7 +74,7 @@ module.exports = {
 	cambiosEnBD: {
 		actualizaEnUsuarioConfigCons_id: (req, res) => {
 			// Variables
-			const configCons_id = req.query.configCons_id;
+			const {configCons_id} = req.query;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Si está logueado, actualiza el usuario en la BD
@@ -97,10 +97,10 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configCons.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
+			const {id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
 
 			// Fin
-			return res.json(configCons_id);
+			return res.json(id);
 		},
 		guardaConfig: async (req, res) => {
 			// Variables
@@ -128,11 +128,11 @@ module.exports = {
 				res.clearCookie("prefsCons");
 
 				// Si no es nuevo, elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {configCons_id: id});
+				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {cabecera_id: id});
 
 				// Guarda la nueva información
 				for (let campo in configCons) {
-					const objeto = {configCons_id: id, campo, valor: configCons[campo]};
+					const objeto = {cabecera_id: id, campo, valor: configCons[campo]};
 					BD_genericas.agregaRegistro("consRegsCampos", objeto);
 				}
 			}
@@ -141,13 +141,13 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfigCons: async (req, res) => {
-			const {configCons_id} = req.query;
+			const {configCons_id: cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
-			await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {configCons_id});
+			await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {cabecera_id});
 
 			// Se elimina el registro de cabecera de la configuración
-			await BD_genericas.eliminaPorId("consRegsCabecera", configCons_id);
+			await BD_genericas.eliminaPorId("consRegsCabecera", cabecera_id);
 
 			// Fin
 			return res.json();
