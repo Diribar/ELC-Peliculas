@@ -1,10 +1,18 @@
-/* Mostrar filtros */
+/* Compartir y mostrar preferencias */
 #tituloPrincipal #iconosDelTitulo {position: absolute; translate: 0 100%; bottom: -15px;}
-#tituloPrincipal #iconosDelTitulo > div {margin-left: 15px; width: 25px; height: 25px; justify-content: center; align-items: center; border-radius: 50%;}
+#tituloPrincipal #iconosDelTitulo > div {margin-left: 15px; width: 25px; height: 25px; border-radius: 50%;}
+#tituloPrincipal #iconosDelTitulo > div {justify-content: center; align-items: center; z-index: 1;}
 #tituloPrincipal #iconosDelTitulo > div {border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--verde-oscuro);}
-#tituloPrincipal #iconosDelTitulo div#toggleFiltrosGlobal {display: none;}
 
-/* Orden y Entidad */
+/* Compartir */
+#iconosDelTitulo p {bottom: -2px; left: 15px; padding: 2px 5px; display: non;}
+#iconosDelTitulo p {translate: 0 100%; text-wrap: nowrap; border-radius: 10px;}
+#iconosDelTitulo p {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
+
+/* Mostrar preferencias */
+#iconosDelTitulo div#toggleFiltrosGlobal {display: none;}
+
+/* Layout */
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px 6px; border-bottom-right-radius: 7px; cursor: pointer;}
 #tituloPrincipal select {color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro);}
 #tituloPrincipal select:not(:valid) {background: var(--rojo-oscuro);}
