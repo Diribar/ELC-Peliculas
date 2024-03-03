@@ -106,8 +106,11 @@ let actualizaConfigCons = {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
 		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.cfc();
 
-		// Si la opción elegida es "Mis preferencias", le asigna ese valor a 'pppOpciones'
-		if (v.opcionBD.codigo == "misPrefs") configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
+		// Acciones si la opción elegida es "Mis preferencias"
+		if (v.opcionBD.codigo == "misPrefs") {
+			configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(","); // le asigna ese valor a 'pppOpciones'
+			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
+		}
 		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
