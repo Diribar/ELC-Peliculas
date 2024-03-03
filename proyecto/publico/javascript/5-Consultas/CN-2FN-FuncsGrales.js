@@ -318,7 +318,7 @@ let cambiosEnBD = {
 		// Actualiza la preferencia
 		const producto = v.productos[indice];
 		DOM.ppps[indice].classList.add("inactivo");
-		await fetch(v.pppRutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&opcion_id=" + idPropuesta);
+		await fetch(v.pppRutaGuardar + producto.entidad + "&entidad_id=" + producto.id + "&ppp_id=" + idPropuesta);
 		DOM.ppps[indice].classList.remove("inactivo");
 
 		// Aumenta o disminuye la cantidad de PPP del usuario

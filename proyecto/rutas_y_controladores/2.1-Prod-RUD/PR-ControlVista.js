@@ -355,7 +355,7 @@ module.exports = {
 			// Actualiza la ppp
 			condics = {usuario_id: userID, entidad, entidad_id};
 			const interesDelUsuario = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
-			const novedades = {usuario_id: userID, entidad, entidad_id, opcion_id: pppOpcsObj.yaLaVi.id};
+			const novedades = {usuario_id: userID, entidad, entidad_id, ppp_id: pppOpcsObj.yaLaVi.id};
 			interesDelUsuario
 				? await BD_genericas.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
 				: await BD_genericas.agregaRegistro("pppRegistros", novedades);

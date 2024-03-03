@@ -178,7 +178,7 @@ module.exports = {
 		// Variables
 		const configCons = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const layout = cn_layouts.find((n) => n.id == configCons.opcion_id);
+		const layout = cn_layouts.find((n) => n.id == configCons.layout_id);
 		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = configCons;
 

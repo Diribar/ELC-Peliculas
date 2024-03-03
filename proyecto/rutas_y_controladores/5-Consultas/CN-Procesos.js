@@ -402,7 +402,7 @@ module.exports = {
 					if (pppOpcion && pppOpcion != "todos") {
 						// Elimina los registros que correspondan
 						if (
-							(pppRegistro && !pppOpcion.includes(String(pppRegistro.opcion_id))) || // tiene alguna preferencia que no es la que se había elegido
+							(pppRegistro && !pppOpcion.includes(String(pppRegistro.ppp_id))) || // tiene alguna preferencia que no es la que se había elegido
 							(!pppRegistro && !pppOpcion.includes(String(pppOpcsObj.sinPref.id))) // no tiene una preferencia y no se eligió 'sinPref'
 						)
 							prods.splice(i, 1);
@@ -412,7 +412,7 @@ module.exports = {
 							const pppOpcionElegida =
 								pppOpcion == pppOpcsObj.sinPref.id || !pppRegistro
 									? pppOpcsObj.sinPref // si se eligió 'sin preferencia' o no hay un registro
-									: pppOpcsArray.find((n) => n.id == pppRegistro.opcion_id); // elige la opción del producto que copincide con la elegida
+									: pppOpcsArray.find((n) => n.id == pppRegistro.ppp_id); // elige la opción del producto que copincide con la elegida
 
 							// Le agrega a los productos la 'ppp' del usuario
 							prods[i].ppp = pppOpcionElegida;
@@ -507,7 +507,7 @@ module.exports = {
 				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
 				const yaVistas = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
 					usuario_id,
-					opcion_id: pppOpcsObj.yaLaVi.id,
+					ppp_id: pppOpcsObj.yaLaVi.id,
 				});
 
 				// Elimina los productos no calificados ni vistos

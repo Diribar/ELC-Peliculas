@@ -30,7 +30,7 @@ let actualizaConfigCons = {
 		}
 
 		// Actualiza variable
-		if (v.layout_id) configCons.opcion_id = v.layout_id;
+		if (v.layout_id) configCons.layout_id = v.layout_id;
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
