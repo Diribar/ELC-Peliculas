@@ -54,7 +54,7 @@ module.exports = {
 			const datos = {
 				...{layoutsBD: cn_layouts, entidadesBD: cn_entidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
-				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
+				...{rclvsNombre: variables.entidades.rclvsNombre},
 				...{filtrosConDefault, epocasEstreno, unDia},
 			};
 
