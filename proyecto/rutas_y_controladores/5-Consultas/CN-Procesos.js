@@ -17,18 +17,18 @@ module.exports = {
 			let prefs = {...variables.camposConsultas};
 
 			// Agrega los prefs de código y opciones
-			for (let campo in prefs) {
+			for (let prop in prefs) {
 				// Le agrega el nombre del campo a cada método
-				prefs[campo].codigo = campo;
+				prefs[prop].codigo = prop;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!prefs[campo].opciones) {
-					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
-					if (campo == "epocasOcurrencia")
+				if (!prefs[prop].opciones) {
+					// Si es el prop 'epocasOcurrencia', quita la opción 'varias'
+					if (prop == "epocasOcurrencia")
 						prefs.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else prefs[campo].opciones = global[campo];
+					else prefs[prop].opciones = global[prop];
 				}
 			}
 
@@ -133,9 +133,9 @@ module.exports = {
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let campo in configCons)
-					if (camposConsultas[campo] && camposConsultas[campo].campoFiltro)
-						prefs[camposConsultas[campo].campoFiltro] = configCons[campo];
+				for (let prop in configCons)
+					if (camposConsultas[prop] && camposConsultas[prop].campoFiltro)
+						prefs[camposConsultas[prop].campoFiltro] = configCons[prop];
 
 				// Conversión de 'idiomas'
 				if (configCons.idiomas) {

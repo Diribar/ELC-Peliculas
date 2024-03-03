@@ -451,7 +451,7 @@ module.exports = {
 
 			// Procesa los datos del Data Entry
 			datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
-			for (let campo in datos) if (datos[campo] === null) delete datos[campo];
+			for (let prop in datos) if (datos[prop] === null) delete datos[prop];
 
 			// Actualiza los fechasDelAno
 			const desde = datos.fechaDelAno_id;

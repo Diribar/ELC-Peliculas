@@ -20,8 +20,8 @@ module.exports = {
 			if (link.ediciones.length) {
 				let edicion = link.ediciones.find((n) => n.editadoPor_id == userID);
 				if (edicion)
-					for (let campo in edicion)
-						if (edicion[campo] !== null && camposARevisar.includes(campo)) links[i][campo] = edicion[campo];
+					for (let prop in edicion)
+						if (edicion[prop] !== null && camposARevisar.includes(prop)) links[i][prop] = edicion[prop];
 			}
 		});
 

@@ -14,7 +14,7 @@ module.exports = {
 			// Fin
 			return res.json(configCabecera);
 		},
-		configCampos: async (req, res) => {
+		configPrefs: async (req, res) => {
 			// Variables
 			const {texto, configCons_id} = req.query;
 			let configCons_SC;
@@ -117,7 +117,8 @@ module.exports = {
 			}
 
 			// Quita los campos con valor 'default'
-			for (let campo in configCons) if (configCons[campo] == prefsConDefault[campo]) delete configCons[campo];
+			for (let prop in configCons)
+				if (configCons[prop] == prefsConDefault[prop]) delete configCons[prop];
 
 			// Acciones para edición
 			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
@@ -131,8 +132,8 @@ module.exports = {
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsCampos", {cabecera_id: id});
 
 				// Guarda la nueva información
-				for (let campo in configCons) {
-					const objeto = {cabecera_id: id, campo, valor: configCons[campo]};
+				for (let prop in configCons) {
+					const objeto = {cabecera_id: id, campo: prop, valor: configCons[prop]};
 					BD_genericas.agregaRegistro("consRegsCampos", objeto);
 				}
 			}
