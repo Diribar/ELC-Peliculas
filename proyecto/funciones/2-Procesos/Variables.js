@@ -53,7 +53,7 @@ module.exports = {
 				{id: "todos", nombre: "Todas las preferencias"},
 			],
 		},
-		idioma: {
+		idiomas: {
 			default: "enCast",
 			opciones: [
 				{
