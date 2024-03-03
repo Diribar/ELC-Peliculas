@@ -462,7 +462,7 @@ module.exports = {
 		},
 		IDdeTablas: async () => {
 			// Variables
-			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "configsConsCampos"];
+			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "consRegsCampos"];
 
 			// Actualiza los valores de ID
 			for (let tabla of tablas) {
