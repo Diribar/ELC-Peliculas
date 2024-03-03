@@ -120,13 +120,13 @@ module.exports = {
 				if (configCons.idioma) {
 					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic;
 					if (aux) {
-						const tipoLink = configCons.tipoLink == "conLinksHD" ? "conLinksHD" : "conLinks";
-						prefs = {...prefs, ...aux[tipoLink]};
+						const tiposLink = configCons.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
+						prefs = {...prefs, ...aux[tiposLink]};
 					}
 				}
 
 				// Conversión de campos similares
-				for (let campo of ["tipoLink", "publicos"])
+				for (let campo of ["tiposLink", "publicos"])
 					if (configCons[campo]) {
 						const aux = camposConsultas[campo].opciones.find((n) => n.id == configCons[campo]).condic;
 						if (aux) prefs = {...prefs, ...aux};
