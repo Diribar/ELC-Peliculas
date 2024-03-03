@@ -191,7 +191,7 @@ let actualiza = {
 		// Variables
 		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
 		let campos = {...configCons};
-		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
 		fetch(rutaCompleta + JSON.stringify(campos));
@@ -250,7 +250,7 @@ let cambiosEnBD = {
 
 		// Variables
 		let campos = {...configCons, id: v.configCons_id};
-		if (v.entidadBD.id == v.opcionBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda los cambios
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
