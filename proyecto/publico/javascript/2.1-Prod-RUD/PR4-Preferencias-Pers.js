@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 
 			// Actualiza la preferencia
 			guardado = false;
-			await fetch(rutaGuardar + "&opcion_id=" + idPropuesta);
+			await fetch(rutaGuardar + "&ppp_id=" + idPropuesta);
 			guardado = true;
 		});
 });
