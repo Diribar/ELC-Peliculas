@@ -7,7 +7,7 @@
 @media (width <= 950px) {
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;}
 	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);}
-	#configCons #togglePrefsIndivs {display: none;} /* oculta el botón muestra/oculta */
+	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta */
 
 	#vistaDeResults #actualizar {display: none;}
 }
