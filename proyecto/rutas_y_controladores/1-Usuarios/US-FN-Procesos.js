@@ -111,7 +111,7 @@ module.exports = {
 	},
 	logout: (req, res) => {
 		// Borra los datos de session y cookie
-		for (let campo in req.session) if (campo != "cookie") delete req.session[campo];
+		for (let prop in req.session) if (prop != "cookie") delete req.session[prop];
 		res.clearCookie("email");
 
 		// Fin

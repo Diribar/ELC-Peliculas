@@ -22,8 +22,9 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
-			for (let campo in req.body) req.body[campo] = req.body[campo].trim();
+			for (let prop in req.body)
+				if (!req.body[prop]) delete req.body[prop];
+				else req.body[prop] = req.body[prop].trim();
 
 			// Obtiene el Data Entry
 			const palabrasClave = req.body.palabrasClave;
@@ -132,8 +133,9 @@ module.exports = {
 			datosDuros = {...datosDuros, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in datosDuros) if (!datosDuros[campo]) delete datosDuros[campo];
-			for (let campo in datosDuros) if (typeof datosDuros[campo] == "string") datosDuros[campo] = datosDuros[campo].trim();
+			for (let prop in datosDuros)
+				if (!datosDuros[prop]) delete datosDuros[prop];
+				else if (typeof datosDuros[prop] == "string") datosDuros[prop] = datosDuros[prop].trim();
 
 			// Acciones si se ingresó un archivo de imagen (IM)
 			if (req.file) {
@@ -213,11 +215,11 @@ module.exports = {
 			datosAdics = {...datosAdics, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in datosAdics)
-				!datosAdics[campo]
-					? delete datosAdics[campo] // elimina los campos vacíos
-					: typeof datosAdics[campo] == "string"
-					? (datosAdics[campo] = datosAdics[campo].trim()) // pule los espacios innecesarios
+			for (let prop in datosAdics)
+				!datosAdics[prop]
+					? delete datosAdics[prop] // elimina los campos vacíos
+					: typeof datosAdics[prop] == "string"
+					? (datosAdics[prop] = datosAdics[prop].trim()) // pule los espacios innecesarios
 					: null;
 
 			// Procesa algunos datos
@@ -487,8 +489,9 @@ module.exports = {
 			FA = {...FA, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in FA) if (!FA[campo]) delete FA[campo];
-			for (let campo in FA) if (typeof FA[campo] == "string") FA[campo] = FA[campo].trim();
+			for (let prop in FA)
+				if (!FA[prop]) delete FA[prop];
+				else if (typeof FA[prop] == "string") FA[prop] = FA[prop].trim();
 
 			// Actualiza Session y Cookies FA
 			req.session.FA = FA;

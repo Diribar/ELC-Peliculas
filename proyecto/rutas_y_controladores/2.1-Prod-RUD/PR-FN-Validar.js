@@ -24,12 +24,12 @@ module.exports = {
 		errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
 
 		// Lleva los errores a su mínima expresión
-		for (let campo in errores) if (!errores[campo]) delete errores[campo];
+		for (let prop in errores) if (!errores[prop]) delete errores[prop];
 
 		// Obtiene errores 'sensible'
 		delete errores.hay;
-		for (let campo in errores)
-			if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[campo]))
+		for (let prop in errores)
+			if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[prop]))
 				errores.sensible = true;
 
 		// Resumen de errores
