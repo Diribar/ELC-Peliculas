@@ -236,9 +236,9 @@ app.set("views", [
 	global.vistasInstitucs = variables.vistasInstitucs;
 
 	// Filtros con 'default'
-	global.filtrosConDefault = {};
-	for (let filtro in variables.camposConsultas)
-		if (variables.camposConsultas[filtro].default) filtrosConDefault[filtro] = variables.camposConsultas[filtro].default;
+	global.prefsConDefault = {};
+	for (let pref in variables.camposConsultas)
+		if (variables.camposConsultas[pref].default) prefsConDefault[pref] = variables.camposConsultas[pref].default;
 
 	// Procesos que dependen de la variable 'global'
 	const rutinas = require("./funciones/3-Rutinas/RT-Control");
