@@ -23,8 +23,9 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		opcion_id: DOM.tituloPrincipal.querySelector("select[name='opcion_id']"),
+		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
+		consCopiada: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #consCopiada"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
