@@ -3,7 +3,7 @@
 <section id="tituloPrincipal" class="flexCol">
 	<div class="flexRow">
 		<!-- Opciones -->
-		<select name="opcion_id" class="prefSimple" required>
+		<select name="layout_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
 				<% for (let layout of cn_layouts.filter(n => n.boton)) { %>
 				<option value="<%= layout.id %>"><%= layout.nombre %></option>
