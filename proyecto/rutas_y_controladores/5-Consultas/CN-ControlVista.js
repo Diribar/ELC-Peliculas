@@ -38,7 +38,8 @@ let configCons_url = (req) => {
 	if (existe) {
 		// Actualiza el usuario
 		if (usuario) {
-			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id: configCons.id});
+			const configCons_id = configCons.id;
+			BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 			req.session.usuario = {...usuario, configCons_id};
 		}
 
