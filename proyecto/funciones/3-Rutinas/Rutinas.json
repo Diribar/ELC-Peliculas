@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 3/mar",
-	"HoraUTC": "9:27",
+	"FechaUTC": "Lun. 4/mar",
+	"HoraUTC": "13:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 26/feb",
-	"HoraSemUTC": "0:50",
-	"semanaUTC": 9,
+	"FechaSemUTC": "Lun. 4/mar",
+	"HoraSemUTC": "13:45",
+	"semanaUTC": 10,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-mar-24": {"titulo": "Sierva de Dios María Cecilia Perrín de Buide"},
 		"02-mar-24": {"titulo": "Cuaresma"},
 		"03-mar-24": {"titulo": "Cuaresma"},
 		"04-mar-24": {"titulo": "Cuaresma"},
-		"05-mar-24": {"titulo": "Cuaresma"}
+		"05-mar-24": {"titulo": "Cuaresma"},
+		"06-mar-24": {"titulo": "Cuaresma"}
 	}
 }
