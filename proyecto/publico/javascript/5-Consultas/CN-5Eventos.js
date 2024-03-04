@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 
-		// Preferencias - Botonera
+		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
@@ -114,13 +114,13 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Preferencias - 'palabrasClave'
+		// Filtros - 'palabrasClave'
 		else if (nombre == "palabrasClave") {
 			palabrasClave();
 			return;
 		}
 
-		// Preferencias - Cartel 'muestraPrefs'
+		// Filtros - Cartel 'muestraFiltros'
 		else if ([padre.id, padre.parentNode.id].includes("toggleFiltros")) {
 			// Cambia el status de los botones
 			DOM.muestraFiltros.classList.toggle("ocultaFiltros");
@@ -154,6 +154,7 @@ window.addEventListener("load", async () => {
 			}
 		}
 
+		// Encabezado - Compartir las preferencias
 		else if (nombre == "compartirPrefs") {
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
 			let configConsComp = {...configCons};
