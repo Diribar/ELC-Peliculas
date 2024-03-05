@@ -127,7 +127,7 @@ let actualiza = {
 		// Variables
 		const configPrefs = await obtiene.configPrefs(texto);
 
-		// Actualiza las preferencias simples (Encabezado + Filtros)
+		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configPrefs[prefSimple.name]
 				? configPrefs[prefSimple.name]
@@ -187,14 +187,14 @@ let actualiza = {
 			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
 			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
-	guardaPrefsEnSessionCookie: () => {
+	guardaConfigEnSessionCookie: () => {
 		// Variables
-		const rutaCompleta = ruta + "guarda-prefs-en-cookie-y-session/?configCons=";
-		let campos = {...configCons};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
+		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
+		let configCons_SC = {id: v.configCons_id, ...configCons};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons_SC.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
-		fetch(rutaCompleta + JSON.stringify(campos));
+		fetch(rutaCompleta + JSON.stringify(configCons_SC));
 
 		// Fin
 		return;
