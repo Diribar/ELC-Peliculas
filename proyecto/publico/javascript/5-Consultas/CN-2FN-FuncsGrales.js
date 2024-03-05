@@ -190,11 +190,11 @@ let actualiza = {
 	guardaConfigEnSessionCookie: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
-		let configCons_SC = {...configCons};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons_SC.entidad; // si la entidad es la estándar, elimina el campo
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
-		fetch(rutaCompleta + JSON.stringify(configCons_SC));
+		fetch(rutaCompleta + JSON.stringify(configCons));
 
 		// Fin
 		return;
@@ -214,12 +214,13 @@ let cambiosEnBD = {
 		if (!v.userID) return;
 
 		// Variables
-		const nombre = configCons.nombre;
+		const nombre = cabecera.nombre;
 		const opciones = DOM.configsConsPropios.children;
 
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		const configCons = {...cabecera, ...prefs};
+		cabecera.id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 
 		// Actualiza las configCons_cabeceras posibles para el usuario
 		v.configCons_cabeceras = await obtiene.configsDeCabecera();
