@@ -62,15 +62,13 @@ module.exports = {
 			return resultado;
 		},
 		configCons_url: (req) => {
-			// Variables
-			const configCons = req.query;
-			const configCons_id = configCons.id;
-
 			// Guarda la configuracion en cookies y session
+			const configCons = req.query;
 			req.session.configCons = configCons;
 			res.cookie("configCons", configCons, {maxAge: unDia});
 
 			// Guarda la 'configCons_id' en el usuario
+			const configCons_id = configCons.id;
 			if (req.session.usuario && configCons_id) {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...usuario, configCons_id};
