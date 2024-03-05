@@ -4,7 +4,7 @@
 module.exports = {
 	configs: {
 		cabeceras: async (userID) => {
-			// Obtiene los filtros personalizados propios y los provistos por ELC
+			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
 			const usuario_id = userID ? [1, userID] : 1;
 			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
@@ -66,13 +66,11 @@ module.exports = {
 			const configCons = req.query;
 			const configCons_id = configCons.id;
 
-			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
-
-			// Guarda las prefs en cookies y session
+			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
 			res.cookie("configCons", configCons, {maxAge: unDia});
 
-			// Guarda las prefs en el usuario
+			// Guarda la 'configCons_id' en el usuario
 			if (req.session.usuario && configCons_id) {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...usuario, configCons_id};
