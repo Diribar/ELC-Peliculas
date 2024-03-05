@@ -249,21 +249,15 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		if (!v.userID) return;
 
-		// Variables
-		let campos = {...configCons, id: v.configCons_id};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
-
 		// Guarda los cambios
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
-		await fetch(rutaCompleta + JSON.stringify(campos));
+		await fetch(rutaCompleta + JSON.stringify(configCons));
 
-		// Cambia el texto en el select
-		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
-
-		// Limpia
-		delete configCons.edicion;
-		delete configCons.nombre;
-		delete configCons.id;
+		// Cambia el texto en el select y limpia la cabecera
+		if (cabecera.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = cabecera.nombre;
+		delete cabecera.edicion;
 
 		// Fin
 		return;

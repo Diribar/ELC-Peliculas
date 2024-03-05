@@ -3,23 +3,23 @@
 let actualizaConfigCons = {
 	consolidado: function () {
 		// Borra la información anterior
-		configCons = {};
+		prefs = {};
 
-		// Obtiene configCons y muestra/oculta campos
-		this.opcion();
+		// Obtiene el layout y muestra/oculta campos
+		this.layout();
 
 		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
 		actualiza.toggleFiltros();
 
-		// Pule la variable 'configCons'
-		for (let prop in configCons) if (configCons[prop] == "sinFiltro") delete configCons[prop];
+		// Pule la variable 'prefs'
+		for (let prop in prefs) if (prefs[prop] == "sinFiltro") delete prefs[prop];
 
 		// Fin
 		return;
 	},
 
 	// Encabezado
-	opcion: function () {
+	layout: function () {
 		// Variables
 		v.layout_id = DOM.layout_id.value;
 
@@ -30,7 +30,7 @@ let actualizaConfigCons = {
 		}
 
 		// Actualiza variable
-		if (v.layout_id) configCons.layout_id = v.layout_id;
+		if (v.layout_id) prefs.layout_id = v.layout_id;
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
@@ -74,8 +74,8 @@ let actualizaConfigCons = {
 
 	// Presencia estable
 	presenciaEstable: function () {
-		// Impacto en configCons: todos los campos con presencia estable
-		for (let campo of DOM.camposPresenciaEstable) if (campo.value) configCons[campo.name] = campo.value;
+		// Impacto en prefs: todos los campos con presencia estable
+		for (let filtro of DOM.camposPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
 		// Fin
 		this.entidad();
@@ -93,10 +93,7 @@ let actualizaConfigCons = {
 			? v.entidadesBD.find((n) => n.id == v.layoutBD.entDefault_id)
 			: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
 		v.entidad = v.entidadBD.codigo;
-		if (v.entidad) configCons.entidad = v.entidad;
-
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
-		//muestraOcultaActualizaPref(seMuestra, "entidad_id");
+		if (v.entidad) prefs.entidad = v.entidad;
 
 		// Fin
 		this.pppOpciones();
@@ -108,19 +105,19 @@ let actualizaConfigCons = {
 
 		// Acciones si la opción elegida es "Mis preferencias"
 		if (v.layoutBD.codigo == "misPrefs") {
-			configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
+			prefs.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
 			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
 		}
 		// Acciones si la opción elegida es otra
 		else {
-			// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+			// Muestra/Oculta el sector y actualiza el valor del filtro
 			muestraOcultaActualizaPref(true, "pppOpciones");
 
 			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			if (configCons.pppOpciones && configCons.pppOpciones != "todos") {
-				const id = configCons.pppOpciones;
+			if (prefs.pppOpciones && prefs.pppOpciones != "todos") {
+				const id = prefs.pppOpciones;
 				const pppOpcion = v.pppOpcsArray.find((n) => n.id == id);
-				if (pppOpcion.combo) configCons.pppOpciones = pppOpcion.combo.split(",");
+				if (pppOpcion.combo) prefs.pppOpciones = pppOpcion.combo.split(",");
 			}
 		}
 
@@ -131,12 +128,12 @@ let actualizaConfigCons = {
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
-			!configCons.cfc && // 'cfc' no está contestado
+			!prefs.cfc && // 'cfc' no está contestado
 			!DOM.apMar.value && // 'apMar' no está contestado
 			(!DOM.canons.value || DOM.canons.value == "NN") && // 'canon' no está contestado
 			!DOM.rolesIgl.value; // 'rolesIgl' no está contestado
 
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		// Muestra/Oculta el sector y actualiza el valor del filtro
 		muestraOcultaActualizaPref(seMuestra, "cfc");
 
 		// Fin
@@ -146,11 +143,11 @@ let actualizaConfigCons = {
 	bhr: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			!configCons.bhr && // si no está contestado
+			!prefs.bhr && // si no está contestado
 			!DOM.canons.value && // el procCanon no está contestado
 			!DOM.rolesIgl.value; // el rolIglesia no está contestado
 
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		// Muestra/Oculta el sector y actualiza el valor del filtro
 		muestraOcultaActualizaPref(seMuestra, "bhr");
 
 		// Fin
@@ -158,21 +155,19 @@ let actualizaConfigCons = {
 		return;
 	},
 	apMar: function () {
-		// Impacto en configCons: apMar
-
 		// Sólo se muestra el sector si se cumplen ciertas condiciones
 		const seMuestra =
-			configCons.bhr !== "0" && // No es ficticio
-			configCons.cfc !== "0" && // No es ajeno a la Iglesia
-			(!configCons.epocasOcurrencia || configCons.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
+			prefs.bhr !== "0" && // No es ficticio
+			prefs.cfc !== "0" && // No es ajeno a la Iglesia
+			(!prefs.epocasOcurrencia || prefs.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
 			v.entidad != "temas"; // La entidad es distinta de 'temas'
 
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		// Muestra/Oculta el sector y actualiza el valor del filtro
 		muestraOcultaActualizaPref(seMuestra, "apMar");
 
 		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
-		if (configCons.apMar == "SI") {
-			delete configCons.epocasOcurrencia;
+		if (prefs.apMar == "SI") {
+			delete prefs.epocasOcurrencia;
 			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
 		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
 
@@ -184,10 +179,10 @@ let actualizaConfigCons = {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
 			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
-			configCons.bhr !== "0" && // no se eligió 'sin bhr'
-			configCons.cfc !== "0"; // no se eligió 'sin cfc'
+			prefs.bhr !== "0" && // no se eligió 'sin bhr'
+			prefs.cfc !== "0"; // no se eligió 'sin cfc'
 
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		// Muestra/Oculta el sector y actualiza el valor del filtro
 		muestraOcultaActualizaPref(seMuestra, "canons");
 
 		// Fin
@@ -198,10 +193,10 @@ let actualizaConfigCons = {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
 			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
-			configCons.bhr !== "0" && // no se eligió 'sin bhr'
-			configCons.cfc !== "0"; // no se eligió 'sin cfc'
+			prefs.bhr !== "0" && // no se eligió 'sin bhr'
+			prefs.cfc !== "0"; // no se eligió 'sin cfc'
 
-		// Muestra/Oculta el sector y actualiza el valor del campo 'configCons'
+		// Muestra/Oculta el sector y actualiza el valor del filtro
 		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
 
 		// Fin
@@ -210,7 +205,7 @@ let actualizaConfigCons = {
 	},
 	palabrasClave: function () {
 		// Actualiza el valor de 'palabrasClave'
-		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) configCons.palabrasClave = DOM.palClave.value;
+		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) prefs.palabrasClave = DOM.palClave.value;
 
 		// Fin
 		return;
@@ -225,8 +220,8 @@ let muestraOcultaActualizaPref = (seMuestra, elemento) => {
 			: DOM[elemento].parentNode.classList.replace("ocultar", "ocultaFiltro")
 		: DOM[elemento].parentNode.classList.add("ocultar");
 
-	// Actualiza el valor de 'configCons'
-	if (seMuestra && DOM[elemento].value) configCons[elemento] = DOM[elemento].value;
+	// Actualiza el valor de 'prefs'
+	if (seMuestra && DOM[elemento].value) prefs[elemento] = DOM[elemento].value;
 
 	// Fin
 	return;
