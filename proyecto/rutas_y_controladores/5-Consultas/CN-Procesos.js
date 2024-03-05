@@ -99,8 +99,8 @@ module.exports = {
 				if (layout.codigo == "apMar") include.push("hecho");
 
 				// Condiciones
-				const prefs = this.prefs(configCons);
-				let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
+				const filtros = this.filtros(configCons);
+				let condiciones = {statusRegistro_id: aprobados_ids, ...filtros};
 				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 				if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
@@ -119,23 +119,23 @@ module.exports = {
 				// Fin
 				return resultados;
 			},
-			prefs: (configCons) => {
+			filtros: (configCons) => {
 				// Variables
 				const filtrosCons = variables.filtrosCons;
 				const {idiomas} = filtrosCons;
-				let prefs = {};
+				let filtros = {};
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let prop in configCons)
 					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro)
-						prefs[filtrosCons[prop].campoFiltro] = configCons[prop];
+						filtros[filtrosCons[prop].campoFiltro] = configCons[prop];
 
 				// Conversión de 'idiomas'
 				if (configCons.idiomas) {
 					const aux = idiomas.opciones.find((n) => n.id == configCons.idiomas).condic;
 					if (aux) {
 						const tiposLink = configCons.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
-						prefs = {...prefs, ...aux[tiposLink]};
+						filtros = {...filtros, ...aux[tiposLink]};
 					}
 				}
 
@@ -143,11 +143,11 @@ module.exports = {
 				for (let campo of ["tiposLink", "publicos"])
 					if (configCons[campo]) {
 						const aux = filtrosCons[campo].opciones.find((n) => n.id == configCons[campo]).condic;
-						if (aux) prefs = {...prefs, ...aux};
+						if (aux) filtros = {...filtros, ...aux};
 					}
 
 				// Fin
-				return prefs;
+				return filtros;
 			},
 			otrosFiltros: ({resultados, configCons, campo_id}) => {
 				// Variables
@@ -262,46 +262,40 @@ module.exports = {
 				if (entidad == "personajes") include.push("rolIglesia", "canon");
 
 				// Obtiene las condiciones
-				const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs(entidad, configCons) : null;
-				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
+				const filtros = ["personajes", "hechos"].includes(entidad) ? this.filtros(entidad, configCons) : null;
+				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
 
 				// Fin
 				return {include, condiciones};
 			},
-			prefs: (entidad, configCons) => {
+			filtros: (entidad, configCons) => {
 				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
 				const {layout} = configCons;
 				const {apMar, rolesIgl, canons} = variables.filtrosCons;
-				let prefs = {};
+				let filtros = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'
-				if (layout.codigo.startsWith("fechaDelAno")) prefs.fechaDelAno_id = {[Op.lt]: 400};
+				if (layout.codigo.startsWith("fechaDelAno")) filtros.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
-				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
-
-				// Relación con la Iglesia Católica - no se usa, sino que se filtra por las películas
-				// if (configCons.cfc&&layout.codigo!="")
-				// 	entidad == "personajes"
-				// 		? (prefs.categoria_id = configCons.cfc == "1" ? "CFC" : "VPC")
-				// 		: (prefs.soloCfc = configCons.cfc);
+				if (configCons.epocasOcurrencia) filtros.epocaOcurrencia_id = configCons.epocasOcurrencia;
 
 				// Aparición mariana
 				if (configCons.apMar) {
 					const condicion = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
-					entidad == "personajes" ? (prefs.apMar_id = condicion.pers) : (prefs.ama = condicion.hec);
+					entidad == "personajes" ? (filtros.apMar_id = condicion.pers) : (filtros.ama = condicion.hec);
 				}
 
 				// Roles en la Iglesia
 				if (entidad == "personajes" && configCons.rolesIgl)
-					prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
+					filtros.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
 
 				// Canonización
 				if (entidad == "personajes" && configCons.canons)
-					prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
+					filtros.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
 
 				// Fin
-				return prefs;
+				return filtros;
 			},
 			porFechaDelAno: async (configCons) => {
 				// Variables
