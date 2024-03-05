@@ -189,7 +189,7 @@ let actualiza = {
 	},
 	guardaPrefsEnSessionCookie: () => {
 		// Variables
-		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
+		const rutaCompleta = ruta + "guarda-prefs-en-cookie-y-session/?prefsCons=";
 		let campos = {...configCons};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
 
