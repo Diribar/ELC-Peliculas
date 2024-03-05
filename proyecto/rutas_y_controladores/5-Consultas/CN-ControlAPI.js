@@ -32,13 +32,13 @@ module.exports = {
 					? req.cookies.configCons
 					: null; // debe ser null
 
-			// Obtiene las preferencias
+			// Obtiene las preferencias a partir de la 'cabecera_id'
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({cabecera_id});
-			const configCons = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
-			if (configCons.id) delete configCons.id
+			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
+			if (prefs && prefs.id) delete prefs.id;
 
 			// Fin
-			return res.json(configCons);
+			return res.json(prefs);
 		},
 		configsDeCabecera: async (req, res) => {
 			// Variables
