@@ -60,8 +60,8 @@ window.addEventListener("load", async () => {
 			v.hayCambiosDeCampo = true;
 			await cambioDePrefs();
 
-			// Guarda las preferencias en session y cookie
-			actualiza.guardaPrefsEnSessionCookie();
+			// Guarda la configuración en session y cookie
+			actualiza.guardaConfigEnSessionCookie();
 		}
 
 		// Fin
