@@ -11,12 +11,12 @@ let obtiene = {
 	},
 	configCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
-		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + DOM.configCons_id.value).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
-		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + cabecera.id).then((n) => n.json());
 	},
 };
 let actualiza = {
@@ -24,8 +24,7 @@ let actualiza = {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
-		v.configCons_id = DOM.configCons_id.value;
-		v.configCabecera = await obtiene.configCabecera(DOM.configCons_id.value);
+		cabecera = await obtiene.configCabecera();
 
 		// Variables que dependen de otras variables 'v'
 		v.filtroPropio = v.configCabecera.usuario_id == v.userID;
@@ -54,7 +53,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Deshacer - clase
-		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && v.configCons_id
+		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && cabecera.id
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 		// Ícono Deshacer - ayuda
@@ -64,8 +63,8 @@ let actualiza = {
 			? "No está permitido deshacer cuando se está cambiando el nombre"
 			: !v.hayCambiosDeCampo
 			? "No hay nada que deshacer cuando no se hicieron cambios en la configuración"
-			: !v.configCons_id
-			? "Tenés que elegir un filtro guardado, para poder deshacer los cambios"
+			: !cabecera.id
+			? "Tenés que elegir una configuración guardada, para poder deshacer los cambios"
 			: "";
 
 		// Ícono Guardar
@@ -203,19 +202,15 @@ let actualiza = {
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
 		// Además, se eliminan session y cookies
-		if (!v.userID) return;
+		if (!v.userID || !cabecera.id) return;
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
-		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
+		fetch(rutaCompleta + cabecera.id);
 
 		// Fin
 		return;
 	},
 	creaUnaConfiguracion: async function () {
 		if (!v.userID) return;
-
-		// Variables
-		const nombre = cabecera.nombre;
-		const opciones = DOM.configsConsPropios.children;
 
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
@@ -229,7 +224,9 @@ let cambiosEnBD = {
 		this.actualizaEnUsuarioConfigCons_id();
 
 		// Crea una opción
-		const newOption = new Option(nombre, v.configCons_id);
+		const nombre = cabecera.nombre;
+		const opciones = DOM.configsConsPropios.children;
+		const newOption = new Option(nombre, cabecera.id);
 		// Obtiene el índice donde ubicarla
 		const nombres = [...Array.from(opciones).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
