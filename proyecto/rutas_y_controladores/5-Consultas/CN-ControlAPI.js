@@ -26,10 +26,10 @@ module.exports = {
 			}
 			// De lo contrario, toma sus datos
 			else
-				configCons_SC = req.session.prefsCons
-					? req.session.prefsCons
-					: req.cookies.prefsCons
-					? req.cookies.prefsCons
+				configCons_SC = req.session.configCons
+					? req.session.configCons
+					: req.cookies.configCons
+					? req.cookies.configCons
 					: null; // debe ser null
 
 			// Obtiene las preferencias
@@ -43,8 +43,8 @@ module.exports = {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
-			// Obtiene las opciones de configuracion
-			const configCons_cabeceras = await procesos.configs.cabecera(userID);
+			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
+			const configCons_cabeceras = await procesos.configs.cabeceras(userID);
 
 			// Fin
 			return res.json(configCons_cabeceras);
@@ -83,9 +83,9 @@ module.exports = {
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
-			// Si se cambia de configuración, se eliminan session y cookie
-			delete req.session.prefsCons;
-			res.clearCookie("prefsCons");
+			// Se eliminan session y cookie
+			delete req.session.configCons;
+			res.clearCookie("configCons");
 
 			// Fin
 			return res.json();
@@ -155,19 +155,19 @@ module.exports = {
 	},
 	guardaPrefsEnSessionCookie: (req, res) => {
 		// Variables
-		const prefsCons = JSON.parse(req.query.prefsCons);
+		const configCons = JSON.parse(req.query.configCons);
 
 		// Si el 'ppp' es un array, lo convierte en un 'id'
-		if (prefsCons.pppOpciones && Array.isArray(prefsCons.pppOpciones)) {
-			const combo = prefsCons.pppOpciones.toString();
+		if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+			const combo = configCons.pppOpciones.toString();
 			const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-			if (pppOpcion) prefsCons.pppOpciones = pppOpcion.id;
-			else delete prefsCons.pppOpciones; // si no lo encuentra, lo elimina
+			if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+			else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
 		}
 
 		// Guarda la configuración
-		req.session.prefsCons = prefsCons;
-		res.cookie("prefsCons", prefsCons, {maxAge: unDia});
+		req.session.configCons = configCons;
+		res.cookie("configCons", configCons, {maxAge: unDia});
 
 		// Fin
 		return res.json();
