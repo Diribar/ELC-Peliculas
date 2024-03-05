@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 4/mar",
-	"HoraUTC": "13:44",
+	"FechaUTC": "Mar. 5/mar",
+	"HoraUTC": "10:23",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-mar-24": {"titulo": "Cuaresma"},
 		"03-mar-24": {"titulo": "Cuaresma"},
 		"04-mar-24": {"titulo": "Cuaresma"},
 		"05-mar-24": {"titulo": "Cuaresma"},
-		"06-mar-24": {"titulo": "Cuaresma"}
+		"06-mar-24": {"titulo": "Cuaresma"},
+		"07-mar-24": {"titulo": "Santa María Antonia de Paz y Figueroa", "entidad": "personajes", "id": 151}
 	}
 }
