@@ -190,7 +190,7 @@ let actualiza = {
 	guardaConfigEnSessionCookie: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
-		let configCons_SC = {id: v.configCons_id, ...configCons};
+		let configCons_SC = {...configCons};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons_SC.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
