@@ -153,7 +153,7 @@ window.addEventListener("load", async () => {
 		// Encabezado - Compartir las preferencias
 		else if (nombre == "compartirCons") {
 			// Variables
-			let configConsComp = {id: v.configCons_id, ...prefs};
+			let configConsComp = {...cabecera, ...prefs};
 
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
 			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
@@ -259,13 +259,13 @@ let palabrasClave = async () => {
 let guardarBotonera = async () => {
 	if (v.nuevo || v.edicion) {
 		// Obtiene el nuevo nombre
-		configCons.nombre = DOM.configNuevaNombre.value;
+		cabecera.nombre = DOM.configNuevaNombre.value;
 
 		// Si es una configuración nueva, agrega la cabecera
 		if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
 
 		// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
-		if (v.edicion) configCons.edicion = true;
+		if (v.edicion) cabecera.edicion = true;
 
 		// Quita la clase
 		const clase = v.nuevo ? "nuevo" : "edicion";
@@ -297,7 +297,7 @@ let verificaConfigCons_id = async () => {
 	const existe = configsCons_id.includes(configCons_id);
 
 	// Si no existe, devuelve a su configuración anterior
-	if (!existe) DOM.configCons_id.value = v.configCons_id;
+	if (!existe) DOM.configCons_id.value = cabecera.id;
 
 	// Fin
 	return existe;
