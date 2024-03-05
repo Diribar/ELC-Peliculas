@@ -3,7 +3,7 @@
 
 module.exports = {
 	configs: {
-		cabecera: async (userID) => {
+		cabeceras: async (userID) => {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
 			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
