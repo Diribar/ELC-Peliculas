@@ -486,7 +486,7 @@ module.exports = {
 		if (entidad == "colecciones") include.push("capitulos");
 		const producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
-		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
+		// Errores del producto a verificar
 		const informacion = procesos.links.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
