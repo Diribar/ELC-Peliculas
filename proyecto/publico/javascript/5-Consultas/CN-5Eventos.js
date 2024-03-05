@@ -153,7 +153,7 @@ window.addEventListener("load", async () => {
 		// Encabezado - Compartir las preferencias
 		else if (nombre == "compartirCons") {
 			// Variables
-			let configConsComp = {...configCons};
+			let configConsComp = {id: v.configCons_id, ...prefs};
 
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
 			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
