@@ -63,18 +63,17 @@ module.exports = {
 		},
 		configCons_url: (req) => {
 			// Variables
-			const prefsCons = req.query;
-			const filtrosCons = variables.filtrosCons;
+			const configCons = req.query;
+			const configCons_id = configCons.id;
 
 			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
 
 			// Guarda las prefs en cookies y session
-			req.session.prefsCons = prefsCons;
-			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
+			req.session.configCons = configCons;
+			res.cookie("configCons", configCons, {maxAge: unDia});
 
 			// Guarda las prefs en el usuario
-			if (req.session.usuario) {
-				const configCons_id = prefsCons.configCons_id;
+			if (req.session.usuario && configCons_id) {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...usuario, configCons_id};
 			}
