@@ -14,57 +14,54 @@ window.addEventListener("load", async () => {
 			await cambioDeConfig_id();
 			await cambioDePrefs();
 		}
-		// Acciones en los demás casos
+		// Nombre de configuración
+		else if (nombre == "nombreNuevo") {
+			// Restringe el uso de caracteres a los aceptados
+			basico.restringeCaracteres(e);
+
+			// Restringe el largo del nombre
+			const nombre = DOM.configNuevaNombre.value.slice(0, 30);
+			DOM.configNuevaNombre.value = nombre;
+
+			// Averigua si el nombre está OK
+			const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+			v.nombreOK =
+				nombre.length && // que tenga algún caracter
+				!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
+				!nombres.includes(nombre); // que no se repita con un nombre anterior
+
+			// Muestra/Oculta el ícono de confirmación
+			actualiza.botoneraActivaInactiva();
+
+			// Fin
+			return;
+		}
+		// Palabras clave
+		else if (nombre == "palabrasClave") {
+			// Restringe el uso de caracteres a los aceptados
+			basico.restringeCaracteres(e, true);
+
+			// Valida los caracteres ingresados
+			const nombre = DOM.palClave.value;
+			const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
+
+			// Activa/Inactiva el ícono de confirmación
+			errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
+
+			// Fin
+			return;
+		}
+		// Reemplaza 'quitar la opción elegida' por el 'placeholder'
 		else {
-			// Nombre de configuración
-			if (nombre == "nombreNuevo") {
-				// Restringe el uso de caracteres a los aceptados
-				basico.restringeCaracteres(e);
+			// Reemplaza entre las opciones sin valor
+			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 
-				// Restringe el largo del nombre
-				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
-				DOM.configNuevaNombre.value = nombre;
+			// Cambios de campo
+			v.hayCambiosDeCampo = true;
+			await cambioDePrefs();
 
-				// Averigua si el nombre está OK
-				const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
-				v.nombreOK =
-					nombre.length && // que tenga algún caracter
-					!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
-					!nombres.includes(nombre); // que no se repita con un nombre anterior
-
-				// Muestra/Oculta el ícono de confirmación
-				actualiza.botoneraActivaInactiva();
-
-				// Fin
-				return;
-			}
-			// Palabras clave
-			else if (nombre == "palabrasClave") {
-				// Restringe el uso de caracteres a los aceptados
-				basico.restringeCaracteres(e, true);
-
-				// Valida los caracteres ingresados
-				const nombre = DOM.palClave.value;
-				const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
-
-				// Activa/Inactiva el ícono de confirmación
-				errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
-
-				// Fin
-				return;
-			}
-			// Reemplaza 'quitar la opción elegida' por el 'placeholder'
-			else {
-				// Reemplaza entre las opciones sin valor
-				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
-
-				// Cambios de campo
-				v.hayCambiosDeCampo = true;
-				await cambioDePrefs();
-
-				// Guarda las preferencias en session y cookie
-				actualiza.guardaPrefsEnSessionCookie();
-			}
+			// Guarda las preferencias en session y cookie
+			actualiza.guardaPrefsEnSessionCookie();
 		}
 
 		// Fin
@@ -78,7 +75,6 @@ window.addEventListener("load", async () => {
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
-
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -181,7 +177,6 @@ window.addEventListener("load", async () => {
 			// Muestra la leyenda 'Consulta copiada'
 			DOM.consCopiada.classList.remove("ocultar");
 			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 2000);
-
 		}
 
 		// Mostrar resultados - Preferencia por producto
