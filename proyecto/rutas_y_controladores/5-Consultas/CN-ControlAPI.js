@@ -30,7 +30,7 @@ module.exports = {
 					? req.session.prefsCons
 					: req.cookies.prefsCons
 					? req.cookies.prefsCons
-					: null;
+					: null; // debe ser null
 
 			// Obtiene las preferencias
 			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({cabecera_id});
