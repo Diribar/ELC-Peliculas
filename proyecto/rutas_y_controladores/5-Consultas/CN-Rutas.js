@@ -17,7 +17,7 @@ router.get("/api/guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
 router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfigCons);
 
 // API - Miscelaneas
-router.get("/api/guarda-filtros-actuales-en-cookie-y-session", API.miscelaneas.guardaPrefsEnSessionCookie);
+router.get("/api/guarda-prefs-en-cookie-y-session", API.guardaPrefsEnSessionCookie);
 
 // API - Resultados
 router.get("/api/obtiene-los-resultados", API.resultados);

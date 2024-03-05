@@ -153,26 +153,24 @@ module.exports = {
 			return res.json();
 		},
 	},
-	miscelaneas: {
-		guardaPrefsEnSessionCookie: (req, res) => {
-			// Variables
-			const prefsCons = JSON.parse(req.query.prefsCons);
+	guardaPrefsEnSessionCookie: (req, res) => {
+		// Variables
+		const prefsCons = JSON.parse(req.query.prefsCons);
 
-			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (prefsCons.pppOpciones && Array.isArray(prefsCons.pppOpciones)) {
-				const combo = prefsCons.pppOpciones.toString();
-				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) prefsCons.pppOpciones = pppOpcion.id;
-				else delete prefsCons.pppOpciones; // si no lo encuentra, lo elimina
-			}
+		// Si el 'ppp' es un array, lo convierte en un 'id'
+		if (prefsCons.pppOpciones && Array.isArray(prefsCons.pppOpciones)) {
+			const combo = prefsCons.pppOpciones.toString();
+			const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+			if (pppOpcion) prefsCons.pppOpciones = pppOpcion.id;
+			else delete prefsCons.pppOpciones; // si no lo encuentra, lo elimina
+		}
 
-			// Guarda la configuración
-			req.session.prefsCons = prefsCons;
-			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
+		// Guarda la configuración
+		req.session.prefsCons = prefsCons;
+		res.cookie("prefsCons", prefsCons, {maxAge: unDia});
 
-			// Fin
-			return res.json();
-		},
+		// Fin
+		return res.json();
 	},
 	resultados: async (req, res) => {
 		// Variables
