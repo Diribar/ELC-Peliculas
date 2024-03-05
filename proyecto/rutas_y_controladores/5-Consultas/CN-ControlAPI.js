@@ -153,7 +153,7 @@ module.exports = {
 			return res.json();
 		},
 	},
-	guardaPrefsEnSessionCookie: (req, res) => {
+	guardaConfigEnSessionCookie: (req, res) => {
 		// Variables
 		const configCons = JSON.parse(req.query.configCons);
 
