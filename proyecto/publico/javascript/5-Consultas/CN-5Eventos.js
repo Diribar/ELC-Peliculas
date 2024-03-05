@@ -151,9 +151,11 @@ window.addEventListener("load", async () => {
 		}
 
 		// Encabezado - Compartir las preferencias
-		else if (nombre == "compartirPrefs") {
-			// Si el 'ppp' es un combo, lo convierte a su 'id'
+		else if (nombre == "compartirCons") {
+			// Variables
 			let configConsComp = {...configCons};
+
+			// Si el 'ppp' es un combo, lo convierte a su 'id'
 			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
 				const combo = configConsComp.pppOpciones.toString();
 				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
@@ -164,13 +166,11 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los 'camposUrl'
 			let camposUrl = "";
-			for (let prop in configConsComp)
-				if (configConsComp[prop] == v.filtrosConDefault[prop]) delete configConsComp[prop];
-				else camposUrl += prop + "=" + configConsComp[prop] + "&";
+			for (let prop in configConsComp) camposUrl += prop + "=" + configConsComp[prop] + "&";
 			if (!camposUrl.length) return;
+			else camposUrl = camposUrl.slice(0, -1);
 
 			// Obtiene el 'url' y lo lleva al clipboard
-			camposUrl = camposUrl.slice(0, -1);
 			const url = location.href + "/?" + camposUrl;
 			navigator.clipboard.writeText(url);
 
