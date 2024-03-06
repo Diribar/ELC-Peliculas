@@ -234,7 +234,8 @@ window.addEventListener("load", async () => {
 			return;
 		}
 	});
-	DOM.cuerpo.addEventListener("keypress", (e) => {
+	DOM.cuerpo.addEventListener("keydown", (e) => {
+		// Enter
 		if (e.key == "Enter") {
 			// Variables
 			const elemento = e.target;
@@ -245,6 +246,9 @@ window.addEventListener("load", async () => {
 			if (nombre == "palabrasClave") palabrasClave();
 			else if (nombre == "configNueva") guardarBotonera();
 		}
+		// Escape
+		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n)))
+			DOM.configNuevaNombre.classList.remove("nuevo", "edicion");
 	});
 });
 // Funciones
