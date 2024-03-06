@@ -26,12 +26,12 @@ module.exports = {
 			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
-			if (texto == "deshacer") eliminaSessionCookie(req, res);
+			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
 			else configCons_SC = req.session.configCons ? req.session.configCons : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const configCons_BD = cabecera_id ? await procesos.configs.obtieneConfigCons_BD({cabecera_id}) : null;
+			const configCons_BD = cabecera_id ? await procesos.varios.obtieneConfigCons_BD({cabecera_id}) : null;
 			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
 
 			// Correcciones
@@ -46,7 +46,7 @@ module.exports = {
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const configCons_cabeceras = await procesos.configs.cabeceras(userID);
+			const configCons_cabeceras = await procesos.varios.cabeceras(userID);
 
 			// Fin
 			return res.json(configCons_cabeceras);
@@ -122,7 +122,7 @@ module.exports = {
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
-				eliminaSessionCookie(req, res);
+				procesos.varios.eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
@@ -171,7 +171,7 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfig: (req, res) => {
-			eliminaSessionCookie(req, res);
+			procesos.varios.eliminaSessionCookie(req, res);
 			return res.json();
 		},
 	},
@@ -213,9 +213,4 @@ module.exports = {
 			return res.json(rclvs);
 		}
 	},
-};
-let eliminaSessionCookie = (req, res) => {
-	delete req.session.configCons;
-	res.clearCookie("configCons");
-	return;
 };
