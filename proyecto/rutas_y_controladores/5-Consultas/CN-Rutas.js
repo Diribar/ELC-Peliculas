@@ -17,7 +17,7 @@ router.get("/api/obtiene-variables", API.obtiene.variables);
 router.get("/api/actualiza-en-usuario-configCons_id", API.cambiosEnBD.actualizaEnUsuarioConfigCons_id);
 router.get("/api/crea-una-configuracion", API.cambiosEnBD.creaConfig);
 router.get("/api/guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
-router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfigCons);
+router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfig);
 
 // API - Session y Cookie
 router.get("/api/guarda-la-configuracion-en-session-y-cookie", API.sessionCookie.guardaConfig);

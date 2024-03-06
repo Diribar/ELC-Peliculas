@@ -137,7 +137,7 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
-		eliminaConfigCons: async (req, res) => {
+		eliminaConfig: async (req, res) => {
 			const {configCons_id: cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
