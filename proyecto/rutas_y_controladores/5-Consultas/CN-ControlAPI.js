@@ -6,10 +6,16 @@ module.exports = {
 	obtiene: {
 		configCabecera: async (req, res) => {
 			// Variables
-			const {configCons_id} = req.query;
+			const id = req.query
+				? req.query.id
+				: req.session.configCons
+				? req.session.configCons.id
+				: req.cookies.configCons
+				? req.cookies.configCons.id
+				: null; // debe ser null
 
 			// Obtiene la cabecera
-			const configCabecera = await BD_genericas.obtienePorId("consRegsCabecera", configCons_id);
+			const configCabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
 
 			// Fin
 			return res.json(configCabecera);
@@ -30,12 +36,15 @@ module.exports = {
 					? req.session.configCons
 					: req.cookies.configCons
 					? req.cookies.configCons
-					: null; // debe ser null
+					: null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({cabecera_id});
+			const configCons_BD = cabecera_id ? await procesos.configs.obtieneConfigCons_BD({cabecera_id}) : null;
 			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
+
+			// Correcciones
 			if (prefs && prefs.id) delete prefs.id;
+			if (!prefs) prefs = {layout_id: layoutDefault_id};
 
 			// Fin
 			return res.json(prefs);
