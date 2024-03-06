@@ -158,8 +158,12 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	toggleFiltros: function () {
-		this.actualizaMuestraFiltros();
+	toggleBotonFiltros: function () {
+		// Variables
+		v.muestraFiltros =
+			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
+			window.getComputedStyle(DOM.muestraFiltros).display == "none";
+
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
@@ -182,11 +186,6 @@ let actualiza = {
 
 		// Fin
 		return;
-	},
-	actualizaMuestraFiltros: () => {
-		v.muestraFiltros =
-			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
-			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
 };
 let cambiosEnBD = {
@@ -339,7 +338,7 @@ let cambioDeConfig_id = async (texto) => {
 	if (cabecera.id && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	if (texto != "start-up") await sessionCookie.eliminaConfig();
 	await actualiza.statusInicialCampos();
-	actualiza.toggleFiltros();
+	actualiza.toggleBotonFiltros();
 
 	// Fin
 	return;
