@@ -55,13 +55,7 @@ window.addEventListener("load", async () => {
 		else {
 			// Reemplaza entre las opciones sin valor
 			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
-
-			// Cambios de campo
-			v.hayCambiosDeCampo = true;
-			await cambioDePrefs();
-
-			// Guarda la configuración en session y cookie
-			sessionCookie.guardaConfig();
+			await estandarParaInputs();
 		}
 
 		// Fin
@@ -75,7 +69,6 @@ window.addEventListener("load", async () => {
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
-
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -115,7 +108,10 @@ window.addEventListener("load", async () => {
 
 		// Filtros - 'palabrasClave'
 		else if (nombre == "palabrasClave") {
-			palabrasClave();
+			DOM.palClaveAprob.classList.add("inactivo");
+			await estandarParaInputs()
+
+			// Fin
 			return;
 		}
 
@@ -258,14 +254,6 @@ window.addEventListener("load", async () => {
 	});
 });
 // Funciones
-let palabrasClave = async () => {
-	DOM.palClaveAprob.classList.add("inactivo");
-	v.hayCambiosDeCampo = true;
-	await cambioDePrefs();
-
-	// Fin
-	return;
-};
 let guardarBotonera = async () => {
 	if (v.nuevo || v.edicion) {
 		// Obtiene el nuevo nombre
@@ -311,4 +299,15 @@ let verificaConfigCons_id = async () => {
 
 	// Fin
 	return existe;
+};
+let estandarParaInputs = async () => {
+	// Cambios de campo
+	v.hayCambiosDeCampo = true;
+	await cambioDePrefs();
+
+	// Guarda la configuración en session y cookie
+	sessionCookie.guardaConfig();
+
+	// Fin
+	return;
 };
