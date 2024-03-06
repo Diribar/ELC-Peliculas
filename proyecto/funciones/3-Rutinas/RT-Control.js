@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.RutinasSemanales();
+		// await this.rutinasDiarias.LoginsAcums();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -389,33 +389,43 @@ module.exports = {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
-			// Obtiene los logins diarios y acumulados
-			const loginsDiarios = await BD_genericas.obtieneTodos("loginsDelDia");
-			let ultFecha = await BD_genericas.obtieneTodos("loginsAcums")
-				.then((n) =>
-					n.length
-						? n[n.length - 1].fecha
-						: loginsDiarios.length
-						? new Date(new Date(loginsDiarios[0].fecha).getTime() - unDia).toISOString().slice(0, 10)
-						: hoy
-				)
-				.then((n) => new Date(new Date(n).getTime() + unDia).toISOString().slice(0, 10));
+			// Logins diarios
+			const loginsDiarios = await BD_genericas.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
+			const fechaLoginsDiarios = loginsDiarios.length
+				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
+				: null;
+			let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
+
+			// Logins acums
+			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+			let agregarFecha = loginsAcums.length // condición si hay logins acums
+				? sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
+				? fechaLoginsDiarios // la fecha del primer registro
+				: hoy; // la fecha de hoy
+
+			// Si hay una inconsistencia, termina
+			if (loginsAcums.length && loginsDiarios.length && fechaLoginsDiarios < agregarFecha) {
+				console.log(410, "Inconsistencia:", "Fecha Diaria", fechaLoginsDiarios, "/ Agrega Fecha", agregarFecha);
+				return;
+			}
 
 			// Loop mientras el día sea menor al actual
-			while (ultFecha < hoy) {
+			while (agregarFecha < hoy) {
 				// Variables
-				const diaSem = diasSemana[new Date(ultFecha).getUTCDay()];
-				const anoMes = ultFecha.slice(0, 7);
-				const cantLogins = loginsDiarios.filter((n) => n.fecha == ultFecha).length;
+				const diaSem = diasSemana[new Date(agregarFecha).getUTCDay()];
+				const anoMes = agregarFecha.slice(0, 7);
+				const cantLogins = loginsDiarios.filter((n) => n.fecha == agregarFecha).length;
 
 				// Agrega la cantidad de logins
-				await BD_genericas.agregaRegistro("loginsAcums", {fecha: ultFecha, diaSem, anoMes, cantLogins});
+				await BD_genericas.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				ultFecha = new Date(new Date(ultFecha).getTime() + unDia).toISOString().slice(0, 10);
+				agregarFecha = sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
+			BD_genericas.eliminaTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
