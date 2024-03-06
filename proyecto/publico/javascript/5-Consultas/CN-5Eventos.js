@@ -179,7 +179,7 @@ window.addEventListener("load", async () => {
 
 			// Muestra la leyenda 'Consulta copiada'
 			DOM.consCopiada.classList.remove("ocultar");
-			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 2000);
+			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 1500);
 		}
 
 		// Mostrar resultados - Preferencia por producto
