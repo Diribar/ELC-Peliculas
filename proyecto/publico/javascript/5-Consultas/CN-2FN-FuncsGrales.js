@@ -16,7 +16,7 @@ let obtiene = {
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "cabecera_id=";
 		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
 	},
 };
