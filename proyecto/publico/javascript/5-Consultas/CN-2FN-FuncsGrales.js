@@ -11,7 +11,8 @@ let obtiene = {
 	},
 	configCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?id=";
-		return fetch(rutaCompleta + DOM.configCons_id.value).then((n) => n.json());
+		const id = DOM.configCons_id.value;
+		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
