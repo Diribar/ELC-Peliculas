@@ -26,10 +26,10 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.configCabecera();
-		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
+				if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = cabecera.usuario_id == v.userID;
+		v.filtroPropio = v.userID && cabecera.usuario_id == v.userID;
 
 		// Fin
 		return;
@@ -329,7 +329,7 @@ let sessionCookie = {
 	},
 	eliminaConfig: async () => {
 		const rutaCompleta = ruta + "elimina-la-configuracion-en-session-y-cookie";
-		await fetch(rutaCompleta + JSON.stringify(configCons));
+		await fetch(rutaCompleta);
 		return;
 	},
 };
