@@ -548,29 +548,27 @@ module.exports = {
 				{nombre: "misConsultas", campoUsuario: "usuario_id"},
 			];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
-			let available = {};
+			let regsVinculados = {};
 			let datos = [];
 
-			// Agrega los registros de las entidades
+			// Obtiene los registros por entidad
 			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-
-			// Consolida la información
 			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (available[entidad] = datos[i]));
+			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i]));
 
 			// Elimina historial
 			for (let tabla of tablas) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const registros = await BD_genericas.obtieneTodos(tabla.nombre);
+				const regsHistorial = await BD_genericas.obtieneTodos(tabla.nombre);
 
 				// Revisa que esté presente la entidad y el ususario del registro
-				for (let registro of registros)
+				for (let regHistorial of regsHistorial)
 					if (
-						!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
-						!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
+						!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id) || // Lo busca en su entidad vinculada
+						!regsVinculados.usuarios.includes(regHistorial[tabla.campoUsuario]) // Busca su usuario
 					)
-						// Si no lo encuentra en ambas tablas, elimina el registro
-						BD_genericas.eliminaPorId(tabla.nombre, registro.id);
+						// Si no lo encuentra en ambas tablas, elimina el regHistorial
+						BD_genericas.eliminaPorId(tabla.nombre, regHistorial.id);
 			}
 
 			// Fin
