@@ -239,8 +239,8 @@ let cambiosEnBD = {
 		if (!v.userID) return;
 
 		// Guarda los cambios
-		let configCons = {...cabecera, ...prefs};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
+		let configCons = {cabecera, prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.prefs.entidad; // si la entidad es la estándar, elimina el campo
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
 
