@@ -198,7 +198,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	creaUnaConfiguracion: async function () {
+	creaConfig: async function () {
 		if (!v.userID) return;
 
 		// Crea la nueva configuración
@@ -235,7 +235,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	guardaUnaConfiguracion: async () => {
+	guardaConfig: async () => {
 		if (!v.userID) return;
 
 		// Guarda los cambios
@@ -251,7 +251,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	eliminaConfigCons: async () => {
+	eliminaConfig: async () => {
 		if (!v.userID) return;
 
 		// Elimina la configuración

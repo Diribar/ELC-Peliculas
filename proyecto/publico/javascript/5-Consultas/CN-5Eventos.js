@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
 				if (!existe || !v.filtroPropio) return;
 
 				// Acciones si existe
-				await cambiosEnBD.eliminaConfigCons();
+				await cambiosEnBD.eliminaConfig();
 				await cambioDeConfig_id();
 				await cambioDePrefs();
 			} else if (nombre == "guardar") guardarBotonera();
@@ -260,7 +260,7 @@ let guardarBotonera = async () => {
 		cabecera.nombre = DOM.configNuevaNombre.value;
 
 		// Si es una configuración nueva, agrega la cabecera
-		if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
+		if (v.nuevo) await cambiosEnBD.creaConfig();
 
 		// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
 		if (v.edicion) cabecera.edicion = true;
@@ -271,7 +271,7 @@ let guardarBotonera = async () => {
 	}
 
 	// Guarda la información en la base de datos
-	await cambiosEnBD.guardaUnaConfiguracion();
+	await cambiosEnBD.guardaConfig();
 
 	// Acciones particulares
 	if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
