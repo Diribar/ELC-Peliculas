@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 			// Muestra u oculta los filtros vacíos
 			v.muestraFiltros = DOM.muestraFiltros.className.includes("ocultaFiltros");
 			if (v.muestraFiltros) DOM.nav.classList.remove("startUp");
-			actualiza.toggleFiltros();
+			actualiza.toggleBotonFiltros();
 
 			// Fin
 			return;
