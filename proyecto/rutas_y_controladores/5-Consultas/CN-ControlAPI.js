@@ -9,7 +9,7 @@ module.exports = {
 			const id = req.query.id
 				? req.query.id
 				: req.session.configCons
-				? req.session.configCons.id
+				? req.session.configCons.cabecera.id
 				: req.session.usuario
 				? req.session.usuario.configCons_id
 				: null;
@@ -23,16 +23,16 @@ module.exports = {
 		configPrefs: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
-			let configCons_SC;
+			let prefs_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else configCons_SC = req.session.configCons ? req.session.configCons : null;
+			else prefs_SC = req.session.configCons ? req.session.configCons.prefs : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const configCons_BD = cabecera_id ? await procesos.varios.obtieneConfigCons_BD({cabecera_id}) : null;
-			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
+			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
+			let prefs = prefs_SC ? {...prefs_SC, cambios: true} : prefs_BD;
 
 			// Correcciones
 			if (prefs && prefs.id) delete prefs.id;
@@ -106,7 +106,7 @@ module.exports = {
 			let {cabecera, prefs} = configCons;
 			const {id, nombre} = cabecera;
 
-			// Acciones si el 'ppp' es un array
+			// Si el 'ppp' es un array, lo convierte en un 'id'
 			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
 				const combo = prefs.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
@@ -154,18 +154,20 @@ module.exports = {
 		guardaConfig: (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
+			let {cabecera, prefs} = configCons;
+
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-				const combo = configCons.pppOpciones.toString();
+			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
+				const combo = prefs.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-				else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
+				if (pppOpcion) prefs.pppOpciones = pppOpcion.id;
+				else delete prefs.pppOpciones;
 			}
 
 			// Guarda la configuración
-			req.session.configCons = configCons;
-			res.cookie("configCons", configCons, {maxAge: unDia});
+			req.session.configCons = {cabecera, prefs};
+			res.cookie("configCons", {cabecera, prefs}, {maxAge: unDia});
 
 			// Fin
 			return res.json();
