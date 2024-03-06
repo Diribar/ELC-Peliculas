@@ -103,33 +103,33 @@ module.exports = {
 		guardaConfig: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			const {id} = configCons;
-			delete configCons.id;
+			let {cabecera, prefs} = configCons;
+			const {id, nombre} = cabecera;
 
 			// Acciones si el 'ppp' es un array
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-				const combo = configCons.pppOpciones.toString();
+			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
+				const combo = prefs.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-				else delete configCons.pppOpciones;
+				if (pppOpcion) prefs.pppOpciones = pppOpcion.id;
+				else delete prefs.pppOpciones;
 			}
 
 			// Quita los campos con valor 'default'
-			for (let prop in configCons) if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
+			for (let prop in prefs) if (prefs[prop] == filtrosConDefault[prop]) delete prefs[prop];
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
+			if (cabecera.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
 				procesos.varios.eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
+				if (!cabecera.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
-				for (let prop in configCons) {
-					const objeto = {cabecera_id: id, campo: prop, valor: configCons[prop]};
+				for (let prop in prefs) {
+					const objeto = {cabecera_id: id, campo: prop, valor: prefs[prop]};
 					BD_genericas.agregaRegistro("consRegsPrefs", objeto);
 				}
 			}
