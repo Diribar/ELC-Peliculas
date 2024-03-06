@@ -12,7 +12,7 @@ module.exports = {
 				? req.session.configCons.id
 				: req.cookies.configCons
 				? req.cookies.configCons.id
-				: null; // debe ser null
+				: null;
 
 			// Obtiene la cabecera
 			const configCabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
