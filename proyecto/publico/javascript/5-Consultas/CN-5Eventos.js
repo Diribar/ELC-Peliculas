@@ -75,13 +75,14 @@ window.addEventListener("load", async () => {
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
+
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
 
-				// Valor en el input
+				// Valor inicial en el input, para la edición
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
 
@@ -107,6 +108,8 @@ window.addEventListener("load", async () => {
 				await cambioDeConfig_id();
 				await cambioDePrefs();
 			} else if (nombre == "guardar") guardarBotonera();
+
+			// Fin
 			return;
 		}
 
@@ -247,8 +250,11 @@ window.addEventListener("load", async () => {
 			else if (nombre == "configNueva") guardarBotonera();
 		}
 		// Escape
-		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n)))
-			DOM.configNuevaNombre.classList.remove("nuevo", "edicion");
+		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n))) {
+			DOM.configNuevaNombre.classList.remove("nuevo", "edicion"); // Oculta el input
+			v.nombreOK = false; // Variables
+			actualiza.botoneraActivaInactiva(); // Actualiza la botonera
+		}
 	});
 });
 // Funciones
