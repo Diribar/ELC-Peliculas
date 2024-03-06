@@ -10,11 +10,12 @@ let obtiene = {
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	configCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?id=";
 		return fetch(rutaCompleta + DOM.configCons_id.value).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
+		console.log(texto);
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
 		return fetch(rutaCompleta + cabecera.id).then((n) => n.json());
 	},
@@ -25,9 +26,10 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.configCabecera();
+		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = v.configCabecera.usuario_id == v.userID;
+		v.filtroPropio = cabecera.usuario_id == v.userID;
 
 		// Fin
 		return;
@@ -125,6 +127,8 @@ let actualiza = {
 	statusInicialCampos: async (texto) => {
 		// Variables
 		const configPrefs = await obtiene.configPrefs(texto);
+		console.log(configPrefs);
+		return
 
 		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
@@ -338,6 +342,7 @@ let cambioDePrefs = async () => {
 
 	// Funciones
 	actualizaConfigCons.consolidado(); // obtiene los resultados
+	console.log(prefs);
 	actualiza.botoneraActivaInactiva(); // actualiza la botonera
 	if (v.layout_id) {
 		await resultados.obtiene(); // obtiene los resultados
