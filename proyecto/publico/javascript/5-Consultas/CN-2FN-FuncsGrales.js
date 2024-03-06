@@ -188,18 +188,6 @@ let actualiza = {
 			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
 			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
-	guardaConfigEnSessionCookie: () => {
-		// Variables
-		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
-		let configCons = {...cabecera, ...prefs};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
-
-		// Guarda
-		fetch(rutaCompleta + JSON.stringify(configCons));
-
-		// Fin
-		return;
-	},
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
@@ -225,18 +213,21 @@ let cambiosEnBD = {
 		// Actualiza configCons_id en usuario
 		this.actualizaEnUsuarioConfigCons_id();
 
-		// Crea una opción
+		// Elimina session y cookie
+		await sessionCookie.eliminaConfig();
+
+		// Crea una configuración en el DOM
 		const nombre = cabecera.nombre;
-		const opciones = DOM.configsConsPropios.children;
-		const newOption = new Option(nombre, cabecera.id);
+		const configs = DOM.configsConsPropios.children;
+		const nuevaConfig = new Option(nombre, cabecera.id);
 		// Obtiene el índice donde ubicarla
-		const nombres = [...Array.from(opciones).map((n) => n.text), nombre];
+		const nombres = [...Array.from(configs).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
 		const indice = nombres.indexOf(nombre);
 		// Agrega la opción
-		indice < opciones.length
-			? DOM.configsConsPropios.insertBefore(newOption, opciones[indice])
-			: DOM.configsConsPropios.appendChild(newOption);
+		indice < configs.length
+			? DOM.configsConsPropios.insertBefore(nuevaConfig, configs[indice])
+			: DOM.configsConsPropios.appendChild(nuevaConfig);
 
 		// La pone como 'selected'
 		DOM.configsConsPropios.children[indice].selected = true;
@@ -323,10 +314,30 @@ let cambiosEnBD = {
 		return;
 	},
 };
+let sessionCookie = {
+	guardaConfig: () => {
+		// Variables
+		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
+
+		// Guarda
+		fetch(rutaCompleta + JSON.stringify(configCons));
+
+		// Fin
+		return;
+	},
+	eliminaConfig: async () => {
+		const rutaCompleta = ruta + "elimina-la-configuracion-en-session-y-cookie";
+		await fetch(rutaCompleta + JSON.stringify(configCons));
+		return;
+	},
+};
 let cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	if (texto != "start-up" && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (cabecera.id && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (texto != "start-up") await sessionCookie.eliminaConfig();
 	await actualiza.statusInicialCampos();
 	actualiza.toggleFiltros();
 
