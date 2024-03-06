@@ -6,13 +6,7 @@ module.exports = {
 	obtiene: {
 		configCabecera: async (req, res) => {
 			// Variables
-			const id = req.query
-				? req.query.id
-				: req.session.configCons
-				? req.session.configCons.id
-				: req.cookies.configCons
-				? req.cookies.configCons.id
-				: null;
+			const id = req.query.id ? req.query.id : req.session.configCons ? req.session.configCons.id : null;
 
 			// Obtiene la cabecera
 			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
@@ -22,7 +16,7 @@ module.exports = {
 		},
 		configPrefs: async (req, res) => {
 			// Variables
-			const {texto, configCons_id: cabecera_id} = req.query;
+			const {texto, cabecera_id} = req.query;
 			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
@@ -31,12 +25,7 @@ module.exports = {
 				res.clearCookie("prefsCons");
 			}
 			// De lo contrario, toma sus datos
-			else
-				configCons_SC = req.session.configCons
-					? req.session.configCons
-					: req.cookies.configCons
-					? req.cookies.configCons
-					: null;
+			else configCons_SC = req.session.configCons ? req.session.configCons : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
 			const configCons_BD = cabecera_id ? await procesos.configs.obtieneConfigCons_BD({cabecera_id}) : null;
