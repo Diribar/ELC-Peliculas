@@ -85,9 +85,6 @@ module.exports = {
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
-			// Se eliminan session y cookie
-			eliminaSessionCookie(req, res);
-
 			// Fin
 			return res.json();
 		},
@@ -125,7 +122,7 @@ module.exports = {
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
-				eliminaSessionCookie(req,res)
+				eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
@@ -174,7 +171,8 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfig: (req, res) => {
-			eliminaSessionCookie(req,res)
+			eliminaSessionCookie(req, res);
+			console.log(175, {reqSession: req.session.configCons});
 			return res.json();
 		},
 	},
@@ -220,5 +218,5 @@ module.exports = {
 let eliminaSessionCookie = (req, res) => {
 	delete req.session.configCons;
 	res.clearCookie("configCons");
-	return
+	return;
 };
