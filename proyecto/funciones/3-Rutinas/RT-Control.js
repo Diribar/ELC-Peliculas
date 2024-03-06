@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.LoginsAcums();
+		// await this.rutinasDiarias.IDdeTablas();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -472,7 +472,16 @@ module.exports = {
 		},
 		IDdeTablas: async () => {
 			// Variables
-			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "consRegsPrefs"];
+			const tablas = [
+				"pppRegistros",
+				"calRegistros",
+				"prodsEdicion",
+				"rclvsEdicion",
+				"misConsultas",
+				"consRegsPrefs",
+				"histEdics",
+				"histStatus",
+			];
 
 			// Actualiza los valores de ID
 			for (let tabla of tablas) {
