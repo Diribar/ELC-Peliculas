@@ -35,7 +35,7 @@ module.exports = {
 			// Fin
 			return filtros;
 		},
-		obtieneConfigCons_BD: async ({usuario, cabecera_id}) => {
+		prefs_BD: async ({usuario, cabecera_id}) => {
 			// Obtiene el configCons_id del usuario
 			if (!cabecera_id) cabecera_id = usuario && usuario.configCons_id ? usuario.configCons_id : "";
 
