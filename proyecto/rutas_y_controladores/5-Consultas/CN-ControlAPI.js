@@ -172,7 +172,6 @@ module.exports = {
 		},
 		eliminaConfig: (req, res) => {
 			eliminaSessionCookie(req, res);
-			console.log(175, {reqSession: req.session.configCons});
 			return res.json();
 		},
 	},
