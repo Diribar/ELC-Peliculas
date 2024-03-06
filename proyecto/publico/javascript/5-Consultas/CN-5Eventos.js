@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 			await cambioDePrefs();
 
 			// Guarda la configuración en session y cookie
-			actualiza.guardaConfigEnSessionCookie();
+			sessionCookie.guardaConfig();
 		}
 
 		// Fin
