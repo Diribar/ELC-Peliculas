@@ -26,7 +26,7 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.configCabecera();
-				if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
+		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
 		v.filtroPropio = v.userID && cabecera.usuario_id == v.userID;
@@ -317,7 +317,7 @@ let sessionCookie = {
 	guardaConfig: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
-		let configCons = {...cabecera, ...prefs};
+		let configCons = {cabecera, prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
