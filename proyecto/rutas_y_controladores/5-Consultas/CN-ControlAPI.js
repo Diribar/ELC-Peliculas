@@ -15,10 +15,10 @@ module.exports = {
 				: null;
 
 			// Obtiene la cabecera
-			const configCabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
+			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
 
 			// Fin
-			return res.json(configCabecera);
+			return res.json(cabecera);
 		},
 		configPrefs: async (req, res) => {
 			// Variables
