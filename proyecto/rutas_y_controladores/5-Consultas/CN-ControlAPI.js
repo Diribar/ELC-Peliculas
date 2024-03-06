@@ -6,7 +6,13 @@ module.exports = {
 	obtiene: {
 		configCabecera: async (req, res) => {
 			// Variables
-			const id = req.query.id ? req.query.id : req.session.configCons ? req.session.configCons.id : null;
+			const id = req.query.id
+				? req.query.id
+				: req.session.configCons
+				? req.session.configCons.id
+				: req.session.usuario
+				? req.session.usuario.configCons_id
+				: null;
 
 			// Obtiene la cabecera
 			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
@@ -20,10 +26,7 @@ module.exports = {
 			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
-			if (texto == "deshacer") {
-				delete req.session.prefsCons;
-				res.clearCookie("prefsCons");
-			}
+			if (texto == "deshacer") eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
 			else configCons_SC = req.session.configCons ? req.session.configCons : null;
 
@@ -83,8 +86,7 @@ module.exports = {
 			}
 
 			// Se eliminan session y cookie
-			delete req.session.configCons;
-			res.clearCookie("configCons");
+			eliminaSessionCookie(req, res);
 
 			// Fin
 			return res.json();
@@ -123,8 +125,7 @@ module.exports = {
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
-				delete req.session.prefsCons;
-				res.clearCookie("prefsCons");
+				eliminaSessionCookie(req,res)
 
 				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
@@ -152,24 +153,30 @@ module.exports = {
 			return res.json();
 		},
 	},
-	guardaConfigEnSessionCookie: (req, res) => {
-		// Variables
-		const configCons = JSON.parse(req.query.configCons);
+	sessionCookie: {
+		guardaConfig: (req, res) => {
+			// Variables
+			const configCons = JSON.parse(req.query.configCons);
 
-		// Si el 'ppp' es un array, lo convierte en un 'id'
-		if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-			const combo = configCons.pppOpciones.toString();
-			const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-			if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-			else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
-		}
+			// Si el 'ppp' es un array, lo convierte en un 'id'
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
+			}
 
-		// Guarda la configuración
-		req.session.configCons = configCons;
-		res.cookie("configCons", configCons, {maxAge: unDia});
+			// Guarda la configuración
+			req.session.configCons = configCons;
+			res.cookie("configCons", configCons, {maxAge: unDia});
 
-		// Fin
-		return res.json();
+			// Fin
+			return res.json();
+		},
+		eliminaConfig: (req, res) => {
+			eliminaSessionCookie(req,res)
+			return res.json();
+		},
 	},
 	resultados: async (req, res) => {
 		// Variables
@@ -209,4 +216,9 @@ module.exports = {
 			return res.json(rclvs);
 		}
 	},
+};
+let eliminaSessionCookie = (req, res) => {
+	delete req.session.configCons;
+	res.clearCookie("configCons");
+	return
 };
