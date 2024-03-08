@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
 		// Filtros - 'palabrasClave'
 		else if (nombre == "palabrasClave") {
 			DOM.palClaveAprob.classList.add("inactivo");
-			await estandarParaInputs()
+			await estandarParaInputs();
 
 			// Fin
 			return;
@@ -152,20 +152,20 @@ window.addEventListener("load", async () => {
 		// Encabezado - Compartir las preferencias
 		else if (nombre == "compartirCons") {
 			// Variables
-			let configConsComp = {...cabecera, ...prefs};
+			let configCons = {id: cabecera.id, ...prefs};
 
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
-			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
-				const combo = configConsComp.pppOpciones.toString();
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
 				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configConsComp.pppOpciones = pppOpcion.id;
-				else delete configConsComp.pppOpciones;
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
 			}
-			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configConsComp.entidad; // si la entidad es la estándar, elimina el campo
+			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 			// Obtiene los 'camposUrl'
 			let camposUrl = "";
-			for (let prop in configConsComp) camposUrl += prop + "=" + configConsComp[prop] + "&";
+			for (let prop in configCons) camposUrl += prop + "=" + configCons[prop] + "&";
 			if (!camposUrl.length) return;
 			else camposUrl = camposUrl.slice(0, -1);
 
