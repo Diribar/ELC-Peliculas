@@ -3,7 +3,7 @@
 let obtiene = {
 	cabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-cabecera/?id=";
-		const id = DOM.configCons_id.value;
+		const id = DOM.cabecera_id.value;
 		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
 	prefsDeCabecera: (texto) => {
