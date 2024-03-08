@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		const nombre = e.target.name;
 
 		// Acciones si se cambia la configuración
-		if (nombre == "configCons_id") {
+		if (nombre == "cabecera_id") {
 			// Averigua si hay un error y en caso afirmativo, interrumpe la función
 			const existe = await verificaConfigCons_id();
 			if (!existe) return;
@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 
 				// Valor inicial en el input, para la edición
 				DOM.configNuevaNombre.value =
-					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
+					nombre == "edicion" ? DOM.cabecera_id.options[DOM.cabecera_id.selectedIndex].text : "";
 
 				// Alterna la clase 'nuevo' o 'edicion' en el input
 				DOM.configNuevaNombre.classList.toggle(nombre);
@@ -286,16 +286,16 @@ let guardarBotonera = async () => {
 };
 let verificaConfigCons_id = async () => {
 	// Variables
-	const configCons_id = Number(DOM.configCons_id.value);
+	const cabecera_id = Number(DOM.cabecera_id.value);
 
 	// Obtiene los registros posibles de configuración para el usuario
-	const configsCons_id = v.cabeceras.map((m) => m.id);
+	const cabeceras_id = v.cabeceras.map((m) => m.id);
 
 	// Averigua si el valor está entre los valores posibles
-	const existe = configsCons_id.includes(configCons_id);
+	const existe = cabeceras_id.includes(cabecera_id);
 
 	// Si no existe, devuelve a su configuración anterior
-	if (!existe) DOM.configCons_id.value = cabecera.id;
+	if (!existe) DOM.cabecera_id.value = cabecera.id;
 
 	// Fin
 	return existe;
