@@ -796,7 +796,12 @@ let reduceRCLVs = (rclvs) => {
 
 	if (rclvs.length > 1) {
 		// Ordena por prioridad_id decreciente
-		rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
+		rclvs.sort(
+			(a, b) =>
+				b.prioridad_id === a.prioridad_id
+					? [-1, 1][Math.min(1, Math.random().toFixed(0))] // si son de igual prioridad, desempata al azar
+					: b.prioridad_id - a.prioridad_id // prevalece la de mayor prioridad
+		);
 
 		// Filtra por los que tienen la máxima prioridad_id
 		const prioridad_id = rclvs[0].prioridad_id;
