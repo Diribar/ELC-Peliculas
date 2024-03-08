@@ -256,10 +256,13 @@ let cambiosEnBD = {
 	eliminaConfig: async () => {
 		if (!v.userID) return;
 
+		// Variables
+		let cabecera_id
+
 		// Elimina la configuración
-		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?configCons_id=";
-		let configCons_id = DOM.configCons_id.value;
-		await fetch(rutaCompleta + configCons_id);
+		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?cabecera_id=";
+		cabecera_id = DOM.configCons_id.value;
+		await fetch(rutaCompleta + cabecera_id);
 
 		// Actualiza la variable
 		v.cabeceras = await obtiene.cabecerasPosibles();
@@ -267,7 +270,7 @@ let cambiosEnBD = {
 		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
 		opciones.forEach((opcion, i) => {
-			if (opcion.value == configCons_id) DOM.configCons_id.remove(i);
+			if (opcion.value == cabecera_id) DOM.configCons_id.remove(i);
 		});
 
 		// Si corresponde, oculta el 'optgroup' de 'propios'
@@ -276,10 +279,10 @@ let cambiosEnBD = {
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const cabeceras = [...v.cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
 		const propios = cabeceras.filter((n) => n.usuario_id == v.userID);
-		configCons_id = propios.length ? propios[0].id : "";
+		cabecera_id = propios.length ? propios[0].id : "";
 
 		// Actualiza el select con el id
-		DOM.configCons_id.value = configCons_id;
+		DOM.configCons_id.value = cabecera_id;
 
 		// Fin
 		return;
