@@ -217,22 +217,22 @@ let cambiosEnBD = {
 
 		// Crea una configuración en el DOM
 		const nombre = cabecera.nombre;
-		const configs = DOM.configsConsPropios.children;
+		const cabsPropias = DOM.cabsPropias.children;
 		const nuevaConfig = new Option(nombre, cabecera.id);
 
 		// Obtiene el índice donde ubicarla
-		const nombres = [...Array.from(configs).map((n) => n.text), nombre];
+		const nombres = [...Array.from(cabsPropias).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
 		const indice = nombres.indexOf(nombre);
 
 		// Agrega la opción
-		indice < configs.length
-			? DOM.configsConsPropios.insertBefore(nuevaConfig, configs[indice])
-			: DOM.configsConsPropios.appendChild(nuevaConfig);
+		indice < cabsPropias.length
+			? DOM.cabsPropias.insertBefore(nuevaConfig, cabsPropias[indice])
+			: DOM.cabsPropias.appendChild(nuevaConfig);
 
 		// La pone como 'selected'
-		DOM.configsConsPropios.children[indice].selected = true;
-		if (DOM.configsConsPropios.className.includes("ocultar")) DOM.configsConsPropios.classList.remove("ocultar");
+		DOM.cabsPropias.children[indice].selected = true;
+		if (DOM.cabsPropias.className.includes("ocultar")) DOM.cabsPropias.classList.remove("ocultar");
 
 		// Fin
 		return;
@@ -270,11 +270,11 @@ let cambiosEnBD = {
 		// Elimina la opción del select
 		const opciones = DOM.cabecera_id.querySelectorAll("option");
 		opciones.forEach((opcion, i) => {
-			if (opcion.value == cabecera_id) DOM.configCons_id.remove(i);
+			if (opcion.value == cabecera_id) DOM.cabecera_id.remove(i);
 		});
 
 		// Si corresponde, oculta el 'optgroup' de 'propios'
-		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar");
+		if (!DOM.cabsPropias.children.length) DOM.cabsPropias.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const cabeceras = [...v.cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
