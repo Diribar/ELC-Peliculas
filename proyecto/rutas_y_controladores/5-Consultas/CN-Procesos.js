@@ -62,16 +62,19 @@ module.exports = {
 			return resultado;
 		},
 		configCons_url: (req, res) => {
-			// Guarda la configuracion en cookies y session
+			// Variables
 			const configCons = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+
+			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
 			res.cookie("configCons", configCons, {maxAge: unDia});
 
 			// Guarda la 'configCons_id' en el usuario
 			const configCons_id = configCons.id;
-			if (req.session.usuario && configCons_id) {
+			if (configCons_id && userID) {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
-				req.session.usuario = {...usuario, configCons_id};
+				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
 			// Fin
