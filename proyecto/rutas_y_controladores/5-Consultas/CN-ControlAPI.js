@@ -100,11 +100,11 @@ module.exports = {
 		},
 		creaConfig: async (req, res) => {
 			// Variables
-			const configCons = JSON.parse(req.query.configCons);
+			const cabecera = JSON.parse(req.query.cabecera);
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: configCons.nombre};
+			const objeto = {usuario_id, nombre: cabecera.nombre};
 			const {id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
 
 			// Fin
