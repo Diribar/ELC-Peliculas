@@ -51,16 +51,6 @@ module.exports = {
 			// Fin
 			return res.json(prefs);
 		},
-		cabecerasPosibles: async (req, res) => {
-			// Variables
-			const userID = req.session.usuario ? req.session.usuario.id : null;
-
-			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const cabeceras = await procesos.varios.cabeceras(userID);
-
-			// Fin
-			return res.json(cabeceras);
-		},
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
@@ -81,6 +71,16 @@ module.exports = {
 
 			// Fin
 			return res.json(datos);
+		},
+		cabecerasPosibles: async (req, res) => {
+			// Variables
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+
+			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
+			const cabeceras = await procesos.varios.cabeceras(userID);
+
+			// Fin
+			return res.json(cabeceras);
 		},
 	},
 	cambiosEnBD: {
