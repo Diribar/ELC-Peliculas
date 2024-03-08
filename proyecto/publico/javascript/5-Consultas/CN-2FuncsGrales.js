@@ -26,7 +26,7 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.cabecera();
-		if (!DOM.cabecera_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
+		if (!DOM.cabecera_id.value) DOM.cabecera_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
 		v.filtroPropio = v.userID && cabecera.usuario_id == v.userID;
