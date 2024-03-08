@@ -26,7 +26,7 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.cabecera();
-		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
+		if (!DOM.cabecera_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
 		v.filtroPropio = v.userID && cabecera.usuario_id == v.userID;
@@ -247,7 +247,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + JSON.stringify(configCons));
 
 		// Cambia el texto en el select y limpia la cabecera
-		if (cabecera.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = cabecera.nombre;
+		if (cabecera.edicion) DOM.cabecera_id.options[DOM.configCons_id.selectedIndex].text = cabecera.nombre;
 		delete cabecera.edicion;
 
 		// Fin
