@@ -481,6 +481,8 @@ module.exports = {
 				"consRegsPrefs",
 				"histEdics",
 				"histStatus",
+				"loginsAcums",
+				"loginsDelDia",
 			];
 
 			// Actualiza los valores de ID
