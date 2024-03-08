@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 			DOM.configNuevaNombre.value = nombre;
 
 			// Averigua si el nombre está OK
-			const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+			const nombres = v.cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
 			v.nombreOK =
 				nombre.length && // que tenga algún caracter
 				!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
@@ -289,7 +289,7 @@ let verificaConfigCons_id = async () => {
 	const configCons_id = Number(DOM.configCons_id.value);
 
 	// Obtiene los registros posibles de configuración para el usuario
-	const configsCons_id = v.configCons_cabeceras.map((m) => m.id);
+	const configsCons_id = v.cabeceras.map((m) => m.id);
 
 	// Averigua si el valor está entre los valores posibles
 	const existe = configsCons_id.includes(configCons_id);
