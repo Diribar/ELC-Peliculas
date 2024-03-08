@@ -8,14 +8,24 @@ module.exports = {
 			// Variables
 			const id = req.query.id
 				? req.query.id
-				: req.session.configCons && req.session.configCons.cabecera
-				? req.session.configCons.cabecera.id
+				: req.session.configCons
+				? req.session.configCons.id
 				: req.session.usuario
 				? req.session.usuario.configCons_id
 				: null;
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+			let cabecera;
 
 			// Obtiene la cabecera
-			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
+			if (id && ["string", "number"].includes(typeof id)) {
+				cabecera = await BD_genericas.obtienePorId("consRegsCabecera", id);
+				if (
+					!cabecera || // no se encontró una cabecera
+					(!userID && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
+					(userID && [userID, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
+				)
+					cabecera = {};
+			} else cabecera = {};
 
 			// Fin
 			return res.json(cabecera);
@@ -28,7 +38,7 @@ module.exports = {
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else prefs_SC = req.session.configCons ? req.session.configCons.prefs : null;
+			else prefs_SC = req.session.configCons ? req.session.configCons : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
 			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
