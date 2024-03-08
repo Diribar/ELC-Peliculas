@@ -150,7 +150,6 @@ module.exports = {
 				for (let campo of ["tiposLink", "publicos"])
 					if (prefs[campo]) {
 						const aux = filtrosCons[campo].opciones.find((n) => n.id == prefs[campo]).condic;
-						console.log(153,campo,aux);
 						if (aux) filtros = {...filtros, ...aux};
 					}
 
