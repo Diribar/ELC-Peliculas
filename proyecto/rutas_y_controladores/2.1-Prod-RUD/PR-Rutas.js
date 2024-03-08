@@ -13,7 +13,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const misConsultas = require("../../middlewares/varios/misConsultas");
+const misDetalleProd = require("../../middlewares/varios/misDetalleProd");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 
@@ -50,7 +50,7 @@ router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
 router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);
 
 // Vistas
-router.get("/detalle", aptoDetalle, misConsultas, capturaInactivar, vista.detalle);
+router.get("/detalle", aptoDetalle, misDetalleProd, capturaInactivar, vista.detalle);
 router.get("/edicion", aptoEdicion, capturaActivar, vista.edicion.form);
 router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
 router.get("/calificar", aptoCalificar, vista.califica.form);
