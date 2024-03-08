@@ -25,7 +25,7 @@ module.exports = {
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
 		prodsNombre: ["Película", "Colección", "Capítulo de una colección"],
-		asocProds:["pelicula", "coleccion", "capitulo"],
+		asocProds: ["pelicula", "coleccion", "capitulo"],
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
@@ -80,7 +80,7 @@ module.exports = {
 			default: "MC",
 			opciones: [
 				{id: "todos", nombre: "Todos los públicos"},
-				{id: "MC", nombre: "Mayores o sin clasificar", condic: {publico_id: [null, ...mayores_ids]}},
+				{id: "MC", nombre: "Mayores o sin clasificar", condic: {publico_id: {[Op.or]: [null, ...mayores_ids]}}}, // se debe escribir así: {[Op.or]: [null, ...mayores_ids]}
 				{id: "FM", nombre: "Familia", condic: {publico_id: familia_ids}},
 				{id: "MN", nombre: "Menores", condic: {publico_id: menores_ids}},
 			],
