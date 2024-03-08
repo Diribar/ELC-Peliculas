@@ -11,7 +11,7 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?" + texto + "cabecera_id=";
 		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
 	},
-	obtieneVariablesDelBE: () => {
+	variablesDelBE: () => {
 		const rutaCompleta = ruta + "obtiene-variables/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
