@@ -483,6 +483,7 @@ module.exports = {
 				"histStatus",
 				"loginsAcums",
 				"loginsDelDia",
+				"linksEdicion"
 			];
 
 			// Actualiza los valores de ID
