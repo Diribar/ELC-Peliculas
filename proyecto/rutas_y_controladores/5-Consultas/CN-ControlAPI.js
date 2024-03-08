@@ -175,8 +175,8 @@ module.exports = {
 			}
 
 			// Guarda la configuración
-			req.session.configCons = {cabecera, prefs};
-			res.cookie("configCons", {cabecera, prefs}, {maxAge: unDia});
+			req.session.configCons = {id: cabecera.id, ...prefs};
+			res.cookie("configCons", req.session.configCons, {maxAge: unDia});
 
 			// Fin
 			return res.json();
