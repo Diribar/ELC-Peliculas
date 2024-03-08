@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.cabecera.querySelector("#configNueva input[name='nombreNuevo']"),
 		cabecera_id: DOM.cabecera.querySelector("select[name='cabecera_id']"),
-		configsConsPropios: DOM.cabecera.querySelector("select[name='cabecera_id'] optgroup#propios"),
+		cabsPropias: DOM.cabecera.querySelector("select[name='cabecera_id'] optgroup#propios"),
 		iconosBotonera: DOM.cabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos - Preferencias
