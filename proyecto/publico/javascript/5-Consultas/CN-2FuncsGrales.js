@@ -126,7 +126,7 @@ let actualiza = {
 	},
 	statusInicialCampos: async (texto) => {
 		// Variables
-		const prefsDeCabecera = await obtiprefsDeCabecerarefs(texto);
+		const configPrefs = await obtiene.configPrefs(texto);
 
 		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
