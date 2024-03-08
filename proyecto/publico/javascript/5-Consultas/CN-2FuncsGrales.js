@@ -274,7 +274,7 @@ let cambiosEnBD = {
 		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
-		const configCons_cabeceras = [...v.configCons_cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
+		const cabeceras = [...v.configCons_cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
 		const propios = configCons_cabeceras.filter((n) => n.usuario_id == v.userID);
 		configCons_id = propios.length ? propios[0].id : "";
 
