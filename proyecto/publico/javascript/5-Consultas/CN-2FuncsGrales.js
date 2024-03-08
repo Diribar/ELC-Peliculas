@@ -282,7 +282,7 @@ let cambiosEnBD = {
 		cabecera_id = propios.length ? propios[0].id : "";
 
 		// Actualiza el select con el id
-		DOM.configCons_id.value = cabecera_id;
+		DOM.cabecera_id.value = cabecera_id;
 
 		// Fin
 		return;
