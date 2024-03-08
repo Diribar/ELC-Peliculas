@@ -9,7 +9,7 @@ const consultas = require("../../middlewares/varios/consultas");
 
 // API - Obtiene
 router.get("/api/obtiene-la-cabecera", API.obtiene.cabecera);
-router.get("/api/obtiene-las-prefs-de-esa-cabecera", API.obtiene.prefsDeCabecera);
+router.get("/api/obtiene-las-prefs-de-la-cabecera", API.obtiene.prefsDeCabecera);
 router.get("/api/obtiene-las-cabeceras-posibles-para-el-usuario", API.obtiene.cabecerasPosibles);
 router.get("/api/obtiene-variables", API.obtiene.variables);
 
