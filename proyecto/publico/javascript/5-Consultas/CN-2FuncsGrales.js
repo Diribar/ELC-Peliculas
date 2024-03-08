@@ -268,7 +268,7 @@ let cambiosEnBD = {
 		v.cabeceras = await obtiene.cabecerasPosibles();
 
 		// Elimina la opción del select
-		const opciones = DOM.configCons_id.querySelectorAll("option");
+		const opciones = DOM.cabecera_id.querySelectorAll("option");
 		opciones.forEach((opcion, i) => {
 			if (opcion.value == cabecera_id) DOM.configCons_id.remove(i);
 		});
