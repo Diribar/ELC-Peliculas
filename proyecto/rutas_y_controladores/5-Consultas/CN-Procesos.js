@@ -132,8 +132,10 @@ module.exports = {
 				let filtros = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let prop in prefs)
-					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro) filtros[filtrosCons[prop].campoFiltro] = prefs[prop];
+				for (let prop in prefs) {
+					const campoFiltro = filtrosCons[prop] && filtrosCons[prop].campoFiltro ? filtrosCons[prop].campoFiltro : null;
+					if (campoFiltro) filtros[campoFiltro] = prefs[prop];
+				}
 
 				// Conversión de 'idiomas'
 				if (prefs.idiomas) {
@@ -148,6 +150,7 @@ module.exports = {
 				for (let campo of ["tiposLink", "publicos"])
 					if (prefs[campo]) {
 						const aux = filtrosCons[campo].opciones.find((n) => n.id == prefs[campo]).condic;
+						console.log(153,campo,aux);
 						if (aux) filtros = {...filtros, ...aux};
 					}
 
