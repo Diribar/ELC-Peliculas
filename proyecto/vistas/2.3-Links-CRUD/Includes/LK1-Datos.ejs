@@ -29,7 +29,7 @@
 	</td>
 	<!-- 2. Calidad -->
 	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n => n.calidad && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
-		<%= link.calidad %>
+		<%- link.calidad == 1081 ? "Sup." : link.calidad %>
 	</td>
 	<!-- 3. Castellano -->
 	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n => n.castellano!==null && n.editadoPor_id!=userID) ? 'rojo' : '' %>">
