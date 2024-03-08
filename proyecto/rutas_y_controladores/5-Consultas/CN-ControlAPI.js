@@ -56,10 +56,10 @@ module.exports = {
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const configCons_cabeceras = await procesos.varios.cabeceras(userID);
+			const cabeceras = await procesos.varios.cabeceras(userID);
 
 			// Fin
-			return res.json(configCons_cabeceras);
+			return res.json(cabeceras);
 		},
 		variables: async (req, res) => {
 			// Variables
