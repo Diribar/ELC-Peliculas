@@ -190,8 +190,9 @@ let actualiza = {
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
-		// Además, se eliminan session y cookies
 		if (!v.userID || !cabecera.id) return;
+
+		// Actualiza en el usuario
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
 		fetch(rutaCompleta + cabecera.id);
 
@@ -202,12 +203,11 @@ let cambiosEnBD = {
 		if (!v.userID) return;
 
 		// Crea la nueva configuración
-		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		const configCons = {...cabecera, ...prefs};
-		cabecera.id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		const rutaCompleta = ruta + "crea-una-configuracion/?cabecera=";
+		cabecera.id = await fetch(rutaCompleta + JSON.stringify(cabecera)).then((n) => n.json());
 
-		// Actualiza las configCons_cabeceras posibles para el usuario
-		v.configCons_cabeceras = await obtiene.configsDeCabecera();
+		// Actualiza las cabeceras posibles para el usuario
+		v.cabeceras = await obtiene.configsDeCabecera();
 
 		// Actualiza configCons_id en usuario
 		this.actualizaEnUsuarioConfigCons_id();
@@ -219,10 +219,12 @@ let cambiosEnBD = {
 		const nombre = cabecera.nombre;
 		const configs = DOM.configsConsPropios.children;
 		const nuevaConfig = new Option(nombre, cabecera.id);
+
 		// Obtiene el índice donde ubicarla
 		const nombres = [...Array.from(configs).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
 		const indice = nombres.indexOf(nombre);
+
 		// Agrega la opción
 		indice < configs.length
 			? DOM.configsConsPropios.insertBefore(nuevaConfig, configs[indice])
@@ -260,7 +262,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + configCons_id);
 
 		// Actualiza la variable
-		v.configCons_cabeceras = await obtiene.configsDeCabecera();
+		v.cabeceras = await obtiene.configsDeCabecera();
 
 		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
