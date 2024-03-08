@@ -148,7 +148,7 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfig: async (req, res) => {
-			const {configCons_id: cabecera_id} = req.query;
+			const {cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
 			await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
