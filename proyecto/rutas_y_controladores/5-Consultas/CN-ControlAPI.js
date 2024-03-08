@@ -8,7 +8,7 @@ module.exports = {
 			// Variables
 			const id = req.query.id
 				? req.query.id
-				: req.session.configCons
+				: req.session.configCons && req.session.configCons.cabecera
 				? req.session.configCons.cabecera.id
 				: req.session.usuario
 				? req.session.usuario.configCons_id
@@ -155,7 +155,6 @@ module.exports = {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
 			let {cabecera, prefs} = configCons;
-
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
 			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
