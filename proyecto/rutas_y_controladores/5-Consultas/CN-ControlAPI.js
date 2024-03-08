@@ -22,7 +22,7 @@ module.exports = {
 				if (
 					!cabecera || // no se encontró una cabecera
 					(!userID && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
-					(userID && [userID, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
+					(userID && ![userID, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
 				)
 					cabecera = {};
 			} else cabecera = {};
