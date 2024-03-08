@@ -3,12 +3,12 @@
 #cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px; cursor: pointer;}
 
 /* Filtros Cabecera */
-#configCons #configCabecera {background: var(--gris-oscuro); padding: 20px 20px 15px; display: flex; flex-direction: column;}
-#configCons #configCabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+#configCons #cabecera {background: var(--gris-oscuro); padding: 20px 20px 15px; display: flex; flex-direction: column;}
+#configCons #cabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 /* Filtros Cabecera - Nuevo Nombre */
-#configCabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
-#configCabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
+#cabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
+#cabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
 /* Filtros Cabecera - Nombre Actual */
-#configCabecera select {font-weight: bold;}
-#configCabecera #iconosBotonera {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;} /* overflow: hidden */
-#configCabecera #iconosBotonera i {cursor: pointer; color: snow;}
+#cabecera select {font-weight: bold;}
+#cabecera #iconosBotonera {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;} /* overflow: hidden */
+#cabecera #iconosBotonera i {cursor: pointer; color: snow;}

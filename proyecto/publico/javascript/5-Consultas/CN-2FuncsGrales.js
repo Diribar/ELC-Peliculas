@@ -1,22 +1,22 @@
 "use strict";
 
 let obtiene = {
-	configsDeCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-las-configs-posibles-para-el-usuario";
+	cabecerasPosibles: () => {
+		const rutaCompleta = ruta + "obtiene-las-cabeceras-posibles-para-el-usuario";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	obtieneVariablesDelBE: () => {
 		const rutaCompleta = ruta + "obtiene-variables/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	configCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?id=";
+	cabecera: () => {
+		const rutaCompleta = ruta + "obtiene-la-cabecera/?id=";
 		const id = DOM.configCons_id.value;
 		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "cabecera_id=";
+		const rutaCompleta = ruta + "obtiene-las-prefs-de-esa-cabecera/?" + texto + "cabecera_id=";
 		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
 	},
 };
@@ -25,7 +25,7 @@ let actualiza = {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
-		cabecera = await obtiene.configCabecera();
+		cabecera = await obtiene.cabecera();
 		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
@@ -207,7 +207,7 @@ let cambiosEnBD = {
 		cabecera.id = await fetch(rutaCompleta + JSON.stringify(cabecera)).then((n) => n.json());
 
 		// Actualiza las cabeceras posibles para el usuario
-		v.cabeceras = await obtiene.configsDeCabecera();
+		v.cabeceras = await obtiene.cabecerasPosibles();
 
 		// Actualiza configCons_id en usuario
 		this.actualizaEnUsuarioConfigCons_id();
@@ -262,7 +262,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + configCons_id);
 
 		// Actualiza la variable
-		v.cabeceras = await obtiene.configsDeCabecera();
+		v.cabeceras = await obtiene.cabecerasPosibles();
 
 		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");

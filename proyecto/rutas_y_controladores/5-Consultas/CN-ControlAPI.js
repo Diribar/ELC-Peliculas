@@ -4,7 +4,7 @@ const procesos = require("./CN-Procesos");
 
 module.exports = {
 	obtiene: {
-		configCabecera: async (req, res) => {
+		cabecera: async (req, res) => {
 			// Variables
 			const id = req.query.id
 				? req.query.id
@@ -30,7 +30,7 @@ module.exports = {
 			// Fin
 			return res.json(cabecera);
 		},
-		configPrefs: async (req, res) => {
+		prefsDeCabecera: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
 			let prefs_SC;
@@ -51,7 +51,7 @@ module.exports = {
 			// Fin
 			return res.json(prefs);
 		},
-		configsDeCabecera: async (req, res) => {
+		cabecerasPosibles: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
