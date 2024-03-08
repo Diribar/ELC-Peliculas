@@ -247,7 +247,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + JSON.stringify(configCons));
 
 		// Cambia el texto en el select y limpia la cabecera
-		if (cabecera.edicion) DOM.cabecera_id.options[DOM.configCons_id.selectedIndex].text = cabecera.nombre;
+		if (cabecera.edicion) DOM.cabecera_id.options[DOM.cabecera_id.selectedIndex].text = cabecera.nombre;
 		delete cabecera.edicion;
 
 		// Fin
@@ -261,7 +261,7 @@ let cambiosEnBD = {
 
 		// Elimina la configuración
 		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?cabecera_id=";
-		cabecera_id = DOM.configCons_id.value;
+		cabecera_id = DOM.cabecera_id.value;
 		await fetch(rutaCompleta + cabecera_id);
 
 		// Actualiza la variable
