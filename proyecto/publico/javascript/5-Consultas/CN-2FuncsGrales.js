@@ -126,12 +126,12 @@ let actualiza = {
 	},
 	statusInicialCampos: async (texto) => {
 		// Variables
-		const configPrefs = await obtiene.configPrefs(texto);
+		const prefsDeCabecera = await obtiprefsDeCabecerarefs(texto);
 
 		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configPrefs[prefSimple.name]
-				? configPrefs[prefSimple.name]
+			prefSimple.value = prefsDeCabecera[prefSimple.name]
+				? prefsDeCabecera[prefSimple.name]
 				: v.filtrosConDefault[prefSimple.name]
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
@@ -140,7 +140,7 @@ let actualiza = {
 		DOM.palClaveAprob.classList.add("inactivo");
 
 		// Si session está activa, lo informa
-		if (configPrefs.cambios) v.hayCambiosDeCampo = true;
+		if (prefsDeCabecera.cambios) v.hayCambiosDeCampo = true;
 
 		// Fin
 		return;
