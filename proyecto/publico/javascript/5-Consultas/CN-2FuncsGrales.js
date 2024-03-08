@@ -1,14 +1,6 @@
 "use strict";
 
 let obtiene = {
-	cabecerasPosibles: () => {
-		const rutaCompleta = ruta + "obtiene-las-cabeceras-posibles-para-el-usuario";
-		return fetch(rutaCompleta).then((n) => n.json());
-	},
-	obtieneVariablesDelBE: () => {
-		const rutaCompleta = ruta + "obtiene-variables/";
-		return fetch(rutaCompleta).then((n) => n.json());
-	},
 	cabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-cabecera/?id=";
 		const id = DOM.configCons_id.value;
@@ -18,6 +10,14 @@ let obtiene = {
 		texto = texto ? "texto=" + texto + "&" : "";
 		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?" + texto + "cabecera_id=";
 		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
+	},
+	obtieneVariablesDelBE: () => {
+		const rutaCompleta = ruta + "obtiene-variables/";
+		return fetch(rutaCompleta).then((n) => n.json());
+	},
+	cabecerasPosibles: () => {
+		const rutaCompleta = ruta + "obtiene-las-cabeceras-posibles-para-el-usuario";
+		return fetch(rutaCompleta).then((n) => n.json());
 	},
 };
 let actualiza = {
