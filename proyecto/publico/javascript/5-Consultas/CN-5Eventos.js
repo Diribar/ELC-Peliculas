@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 			DOM.configNuevaNombre.value = nombre;
 
 			// Averigua si el nombre está OK
-			const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+			const nombres = v.cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
 			v.nombreOK =
 				nombre.length && // que tenga algún caracter
 				!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
 		// Filtros - 'palabrasClave'
 		else if (nombre == "palabrasClave") {
 			DOM.palClaveAprob.classList.add("inactivo");
-			await estandarParaInputs()
+			await estandarParaInputs();
 
 			// Fin
 			return;
@@ -152,20 +152,20 @@ window.addEventListener("load", async () => {
 		// Encabezado - Compartir las preferencias
 		else if (nombre == "compartirCons") {
 			// Variables
-			let configConsComp = {...cabecera, ...prefs};
+			let configCons = {id: cabecera.id, ...prefs};
 
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
-			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
-				const combo = configConsComp.pppOpciones.toString();
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
 				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configConsComp.pppOpciones = pppOpcion.id;
-				else delete configConsComp.pppOpciones;
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
 			}
-			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configConsComp.entidad; // si la entidad es la estándar, elimina el campo
+			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 			// Obtiene los 'camposUrl'
 			let camposUrl = "";
-			for (let prop in configConsComp) camposUrl += prop + "=" + configConsComp[prop] + "&";
+			for (let prop in configCons) camposUrl += prop + "=" + configCons[prop] + "&";
 			if (!camposUrl.length) return;
 			else camposUrl = camposUrl.slice(0, -1);
 
@@ -289,7 +289,7 @@ let verificaConfigCons_id = async () => {
 	const configCons_id = Number(DOM.configCons_id.value);
 
 	// Obtiene los registros posibles de configuración para el usuario
-	const configsCons_id = v.configCons_cabeceras.map((m) => m.id);
+	const configsCons_id = v.cabeceras.map((m) => m.id);
 
 	// Averigua si el valor está entre los valores posibles
 	const existe = configsCons_id.includes(configCons_id);

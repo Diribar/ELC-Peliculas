@@ -1,22 +1,22 @@
 "use strict";
 
 let obtiene = {
-	configsDeCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-las-configs-posibles-para-el-usuario";
+	cabecerasPosibles: () => {
+		const rutaCompleta = ruta + "obtiene-las-cabeceras-posibles-para-el-usuario";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	obtieneVariablesDelBE: () => {
 		const rutaCompleta = ruta + "obtiene-variables/";
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
-	configCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?id=";
+	cabecera: () => {
+		const rutaCompleta = ruta + "obtiene-la-cabecera/?id=";
 		const id = DOM.configCons_id.value;
 		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
-	configPrefs: (texto) => {
+	prefsDeCabecera: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "cabecera_id=";
+		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?" + texto + "cabecera_id=";
 		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
 	},
 };
@@ -25,7 +25,7 @@ let actualiza = {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
-		cabecera = await obtiene.configCabecera();
+		cabecera = await obtiene.cabecera();
 		if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
@@ -126,12 +126,12 @@ let actualiza = {
 	},
 	statusInicialCampos: async (texto) => {
 		// Variables
-		const configPrefs = await obtiene.configPrefs(texto);
+		const prefsDeCabecera = await obtiene.prefsDeCabecera(texto);
 
 		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configPrefs[prefSimple.name]
-				? configPrefs[prefSimple.name]
+			prefSimple.value = prefsDeCabecera[prefSimple.name]
+				? prefsDeCabecera[prefSimple.name]
 				: v.filtrosConDefault[prefSimple.name]
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
@@ -140,7 +140,7 @@ let actualiza = {
 		DOM.palClaveAprob.classList.add("inactivo");
 
 		// Si session está activa, lo informa
-		if (configPrefs.cambios) v.hayCambiosDeCampo = true;
+		if (prefsDeCabecera.cambios) v.hayCambiosDeCampo = true;
 
 		// Fin
 		return;
@@ -190,8 +190,9 @@ let actualiza = {
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
-		// Además, se eliminan session y cookies
 		if (!v.userID || !cabecera.id) return;
+
+		// Actualiza en el usuario
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
 		fetch(rutaCompleta + cabecera.id);
 
@@ -202,12 +203,11 @@ let cambiosEnBD = {
 		if (!v.userID) return;
 
 		// Crea la nueva configuración
-		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		const configCons = {...cabecera, ...prefs};
-		cabecera.id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		const rutaCompleta = ruta + "crea-una-configuracion/?cabecera=";
+		cabecera.id = await fetch(rutaCompleta + JSON.stringify(cabecera)).then((n) => n.json());
 
-		// Actualiza las configCons_cabeceras posibles para el usuario
-		v.configCons_cabeceras = await obtiene.configsDeCabecera();
+		// Actualiza las cabeceras posibles para el usuario
+		v.cabeceras = await obtiene.cabecerasPosibles();
 
 		// Actualiza configCons_id en usuario
 		this.actualizaEnUsuarioConfigCons_id();
@@ -219,10 +219,12 @@ let cambiosEnBD = {
 		const nombre = cabecera.nombre;
 		const configs = DOM.configsConsPropios.children;
 		const nuevaConfig = new Option(nombre, cabecera.id);
+
 		// Obtiene el índice donde ubicarla
 		const nombres = [...Array.from(configs).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
 		const indice = nombres.indexOf(nombre);
+
 		// Agrega la opción
 		indice < configs.length
 			? DOM.configsConsPropios.insertBefore(nuevaConfig, configs[indice])
@@ -260,7 +262,7 @@ let cambiosEnBD = {
 		await fetch(rutaCompleta + configCons_id);
 
 		// Actualiza la variable
-		v.configCons_cabeceras = await obtiene.configsDeCabecera();
+		v.cabeceras = await obtiene.cabecerasPosibles();
 
 		// Elimina la opción del select
 		const opciones = DOM.configCons_id.querySelectorAll("option");
@@ -272,8 +274,8 @@ let cambiosEnBD = {
 		if (!DOM.configsConsPropios.children.length) DOM.configsConsPropios.classList.add("ocultar");
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
-		const configCons_cabeceras = [...v.configCons_cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
-		const propios = configCons_cabeceras.filter((n) => n.usuario_id == v.userID);
+		const cabeceras = [...v.cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
+		const propios = cabeceras.filter((n) => n.usuario_id == v.userID);
 		configCons_id = propios.length ? propios[0].id : "";
 
 		// Actualiza el select con el id

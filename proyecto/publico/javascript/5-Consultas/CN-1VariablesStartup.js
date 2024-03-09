@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configFiltros) .prefSimple"),
 
 		// Zona de Preferencias
-		configCabecera: document.querySelector("#cuerpo #configCons #configCabecera"),
+		cabecera: document.querySelector("#cuerpo #configCons #cabecera"),
 		configFiltros: document.querySelector("#cuerpo #configCons #configFiltros"),
 
 		// Encabezado
@@ -28,10 +28,10 @@ window.addEventListener("load", async () => {
 		consCopiada: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #consCopiada"),
 
 		// Configuración de Cabecera - Botonera
-		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
-		configCons_id: DOM.configCabecera.querySelector("select[name='configCons_id']"),
-		configsConsPropios: DOM.configCabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
-		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
+		configNuevaNombre: DOM.cabecera.querySelector("#configNueva input[name='nombreNuevo']"),
+		configCons_id: DOM.cabecera.querySelector("select[name='configCons_id']"),
+		configsConsPropios: DOM.cabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
+		iconosBotonera: DOM.cabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos - Preferencias
 		nav: DOM.configFiltros.querySelector("nav"),
@@ -82,7 +82,7 @@ window.addEventListener("load", async () => {
 	// Variables - General
 	v = {
 		...(await obtiene.obtieneVariablesDelBE()),
-		configCons_cabeceras: await obtiene.configsDeCabecera(),
+		cabeceras: await obtiene.cabecerasPosibles(),
 		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		conLinksHD: "conLinksHD",
 		enCast: "enCast",

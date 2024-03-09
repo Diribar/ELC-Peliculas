@@ -4,23 +4,33 @@ const procesos = require("./CN-Procesos");
 
 module.exports = {
 	obtiene: {
-		configCabecera: async (req, res) => {
+		cabecera: async (req, res) => {
 			// Variables
 			const id = req.query.id
 				? req.query.id
-				: req.session.configCons && req.session.configCons.cabecera
-				? req.session.configCons.cabecera.id
+				: req.session.configCons
+				? req.session.configCons.id
 				: req.session.usuario
 				? req.session.usuario.configCons_id
 				: null;
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+			let cabecera;
 
 			// Obtiene la cabecera
-			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
+			if (id && ["string", "number"].includes(typeof id)) {
+				cabecera = await BD_genericas.obtienePorId("consRegsCabecera", id);
+				if (
+					!cabecera || // no se encontró una cabecera
+					(!userID && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
+					(userID && ![userID, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
+				)
+					cabecera = {};
+			} else cabecera = {};
 
 			// Fin
 			return res.json(cabecera);
 		},
-		configPrefs: async (req, res) => {
+		prefsDeCabecera: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
 			let prefs_SC;
@@ -28,7 +38,7 @@ module.exports = {
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else prefs_SC = req.session.configCons ? req.session.configCons.prefs : null;
+			else prefs_SC = req.session.configCons ? req.session.configCons : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
 			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
@@ -41,15 +51,15 @@ module.exports = {
 			// Fin
 			return res.json(prefs);
 		},
-		configsDeCabecera: async (req, res) => {
+		cabecerasPosibles: async (req, res) => {
 			// Variables
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const configCons_cabeceras = await procesos.varios.cabeceras(userID);
+			const cabeceras = await procesos.varios.cabeceras(userID);
 
 			// Fin
-			return res.json(configCons_cabeceras);
+			return res.json(cabeceras);
 		},
 		variables: async (req, res) => {
 			// Variables
@@ -90,11 +100,11 @@ module.exports = {
 		},
 		creaConfig: async (req, res) => {
 			// Variables
-			const configCons = JSON.parse(req.query.configCons);
+			const cabecera = JSON.parse(req.query.cabecera);
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: configCons.nombre};
+			const objeto = {usuario_id, nombre: cabecera.nombre};
 			const {id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
 
 			// Fin
@@ -165,8 +175,8 @@ module.exports = {
 			}
 
 			// Guarda la configuración
-			req.session.configCons = {cabecera, prefs};
-			res.cookie("configCons", {cabecera, prefs}, {maxAge: unDia});
+			req.session.configCons = {id: cabecera.id, ...prefs};
+			res.cookie("configCons", req.session.configCons, {maxAge: unDia});
 
 			// Fin
 			return res.json();
