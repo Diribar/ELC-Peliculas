@@ -649,22 +649,6 @@ module.exports = {
 		},
 	},
 
-	// Varios
-	infoIncompleta: (datos) => {
-		// Variables
-		let {motivo_id, comentario, codigo} = datos;
-		let informacion;
-
-		// 1. Falta el motivo
-		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
-
-		// 2. Falta el comentario
-		if (!informacion && !comentario) informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
-
-		// Fin
-		return informacion;
-	},
-
 	// Bloques a mostrar
 	bloqueRegistro: function (registro) {
 		// Variable
