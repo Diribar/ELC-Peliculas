@@ -37,12 +37,9 @@ window.addEventListener("load", async () => {
 				const motivoRechAltas = motivosStatus.find((n) => n.id == motivo.value);
 
 				// Completa el comentario
-				DOM.comentario.value = motivoRechAltas.descripcion;
 				DOM.comentario.readOnly = !motivoRechAltas.agregarComent;
-				if (motivoRechAltas.agregarComent) {
-					DOM.comentario.value += ": ";
-					DOM.comentario.focus();
-				}
+				DOM.comentario.placeholder = motivoRechAltas.agregarComent ? "Agregá un comentario" : "";
+				if (motivoRechAltas.agregarComent) DOM.comentario.focus();
 
 				// Actualiza el contador y el botón submit
 				contador();
