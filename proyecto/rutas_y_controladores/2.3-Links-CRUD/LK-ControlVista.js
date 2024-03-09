@@ -64,6 +64,7 @@ module.exports = {
 		const linkID = req.query.link_id;
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : "";
+		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
 		const link = await BD_genericas.obtienePorId("links", linkID);
@@ -84,7 +85,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, tituloDetalle, titulo},
+			...{tema, codigo, tituloDetalle, titulo, origen},
 			...{entidad, id, familia: "producto", registro: prodComb, link},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 		});
