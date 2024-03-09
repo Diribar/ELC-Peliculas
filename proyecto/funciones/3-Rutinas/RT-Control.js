@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.IDdeTablas();
+		//await quitaStatusDeComentario();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -483,7 +483,7 @@ module.exports = {
 				"histStatus",
 				"loginsAcums",
 				"loginsDelDia",
-				"linksEdicion"
+				"linksEdicion",
 			];
 
 			// Actualiza los valores de ID
@@ -778,6 +778,32 @@ let corrigeStatusColeccion_id = async () => {
 	for (let registro of registros) {
 		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
 		BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+	}
+
+	// Fin
+	return;
+};
+let quitaStatusDeComentario = async () => {
+	// Obtiene todos los motivos
+	const motivos = statusRegistros.map((m) => m.nombre);
+	console.log(789, motivos);
+	const histStatus = await BD_genericas.obtieneTodos("histStatus");
+	console.log(histStatus[1]);
+
+	// Rutina
+	for (let hist of histStatus) {
+		// Variables
+		let {comentario} = hist;
+		const original = comentario;
+
+		// Les quita el motivo y el ' - '
+		for (let motivo of motivos) if (comentario.startsWith(motivo)) comentario = comentario.replace(motivo, "");
+		if (comentario.startsWith(" - ")) comentario = comentario.replace(" - ", "");
+		comentario = comentario.trim();
+		comentario = comp.convierteLetras.inicialMayus(comentario);
+
+		// Si hubo cambios, actualiza el comentario
+		if (original !== comentario) BD_genericas.actualizaPorId("histStatus", hist.id, {comentario});
 	}
 
 	// Fin
