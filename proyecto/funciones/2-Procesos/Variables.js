@@ -558,7 +558,7 @@ module.exports = {
 	},
 
 	// Varios
-	prefijoSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
+	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	origenes: [
 		// Productos
 		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
