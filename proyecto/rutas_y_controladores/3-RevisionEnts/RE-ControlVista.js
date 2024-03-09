@@ -61,7 +61,7 @@ module.exports = {
 			const tema = "revisionEnts";
 			const codigo = "producto/alta";
 			const {entidad, id} = req.query;
-			const origen = "RAP";
+			const origen = "RE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -100,7 +100,7 @@ module.exports = {
 			const statusRegistro_id = original.statusRegistro_id;
 			const statusCreado = statusRegistro_id == creado_id;
 			const statusLink_id = [creado_id, aprobado_id, recuperar_id];
-			const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen});
+			const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RAP"});
 			const status_id = statusRegistro_id;
 			const asocs = variables.entidades.asocRclvs;
 
