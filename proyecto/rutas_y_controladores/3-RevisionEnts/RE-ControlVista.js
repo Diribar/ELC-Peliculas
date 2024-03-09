@@ -61,7 +61,7 @@ module.exports = {
 			const tema = "revisionEnts";
 			const codigo = "producto/alta";
 			const {entidad, id} = req.query;
-			const origen = "RE";
+			const origen = "TR";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
