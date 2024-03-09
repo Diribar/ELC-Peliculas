@@ -336,8 +336,6 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
-	// Nombres que llevan el prefijo "Santo"
-	prefijoSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -558,6 +556,28 @@ module.exports = {
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
 	},
+
+	// Varios
+	prefijoSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
+	origenes: [
+		// Productos
+		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
+		{codigo: "DTP", url: "/producto/detalle"},
+		{codigo: "EDP", url: "/producto/edicion"},
+		{codigo: "CAL", url: "/producto/calificar"},
+		{codigo: "RAP", url: "/revision/producto/alta"},
+		{codigo: "REP", url: "/revision/producto/edicion"},
+		// RCLVs
+		{codigo: "DTR", url: "/rclv/detalle"},
+		// Links
+		{codigo: "RL", url: "/revision/links"},
+		// Usuarios
+		{codigo: "TU", url: "/revision/usuarios/tablero-de-control"},
+		// Tableros
+		{codigo: "TR", url: "/revision/tablero-de-control"},
+		{codigo: "TM", url: "/mantenimiento"},
+	],
+
 };
 
 let regsRCLV = async (entidades, userID) => {

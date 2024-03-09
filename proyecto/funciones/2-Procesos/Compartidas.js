@@ -739,7 +739,7 @@ module.exports = {
 				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
-				if (!variables.prefijoSanto.includes(nombre)) canonNombre = "San ";
+				if (!variables.prefijosSanto.includes(nombre)) canonNombre = "San ";
 			}
 		}
 
