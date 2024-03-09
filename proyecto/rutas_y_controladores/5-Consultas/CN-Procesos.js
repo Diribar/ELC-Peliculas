@@ -3,8 +3,8 @@
 
 module.exports = {
 	configs: {
-		cabecera: async (userID) => {
-			// Obtiene los filtros personalizados propios y los provistos por ELC
+		cabeceras: async (userID) => {
+			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
 			const usuario_id = userID ? [1, userID] : 1;
 			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
@@ -36,7 +36,7 @@ module.exports = {
 			return filtros;
 		},
 		obtieneConfigCons_BD: async ({usuario, cabecera_id}) => {
-			// Obtiene el ID de la configCons del usuario
+			// Obtiene el configCons_id del usuario
 			if (!cabecera_id) cabecera_id = usuario && usuario.configCons_id ? usuario.configCons_id : "";
 
 			// Obtiene las preferencias
@@ -62,19 +62,14 @@ module.exports = {
 			return resultado;
 		},
 		configCons_url: (req) => {
-			// Variables
-			const prefsCons = req.query;
-			const filtrosCons = variables.filtrosCons;
+			// Guarda la configuracion en cookies y session
+			const configCons = req.query;
+			req.session.configCons = configCons;
+			res.cookie("configCons", configCons, {maxAge: unDia});
 
-			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
-
-			// Guarda las prefs en cookies y session
-			req.session.prefsCons = prefsCons;
-			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
-
-			// Guarda las prefs en el usuario
-			if (req.session.usuario) {
-				const configCons_id = prefsCons.configCons_id;
+			// Guarda la 'configCons_id' en el usuario
+			const configCons_id = configCons.id;
+			if (req.session.usuario && configCons_id) {
 				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...usuario, configCons_id};
 			}
@@ -85,9 +80,9 @@ module.exports = {
 	},
 	resultados: {
 		obtieneProds: {
-			comun: async function (configCons) {
+			comun: async function (prefs) {
 				// Variables
-				const {entidad, layout} = configCons;
+				const {entidad, layout} = prefs;
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 				const entsProd = layout.caps ? ["peliculas", "colecciones", "capitulos"] : ["peliculas", "colecciones"];
 				let productos = [];
@@ -98,12 +93,12 @@ module.exports = {
 				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
 				if (layout.codigo == "anoEstreno") include.push("epocaEstreno");
 				if (layout.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
-				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(configCons).includes(n))) include.push("personaje");
+				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
 				if (layout.codigo == "apMar") include.push("hecho");
 
 				// Condiciones
-				const prefs = this.prefs(configCons);
-				let condiciones = {statusRegistro_id: aprobados_ids, ...prefs};
+				const filtros = this.filtros(prefs);
+				let condiciones = {statusRegistro_id: aprobados_ids, ...filtros};
 				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 				if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
@@ -117,44 +112,44 @@ module.exports = {
 				await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
 				// Aplica otros filtros
-				if (resultados.length) resultados = this.otrosFiltros({resultados, configCons, campo_id});
+				if (resultados.length) resultados = this.otrosFiltros({resultados, prefs, campo_id});
 
 				// Fin
 				return resultados;
 			},
-			prefs: (configCons) => {
+			filtros: (prefs) => {
 				// Variables
 				const filtrosCons = variables.filtrosCons;
 				const {idiomas} = filtrosCons;
-				let prefs = {};
+				let filtros = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let prop in configCons)
+				for (let prop in prefs)
 					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro)
-						prefs[filtrosCons[prop].campoFiltro] = configCons[prop];
+						filtros[filtrosCons[prop].campoFiltro] = prefs[prop];
 
 				// Conversión de 'idiomas'
-				if (configCons.idiomas) {
-					const aux = idiomas.opciones.find((n) => n.id == configCons.idiomas).condic;
+				if (prefs.idiomas) {
+					const aux = idiomas.opciones.find((n) => n.id == prefs.idiomas).condic;
 					if (aux) {
-						const tiposLink = configCons.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
-						prefs = {...prefs, ...aux[tiposLink]};
+						const tiposLink = prefs.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
+						filtros = {...filtros, ...aux[tiposLink]};
 					}
 				}
 
 				// Conversión de campos similares
 				for (let campo of ["tiposLink", "publicos"])
-					if (configCons[campo]) {
-						const aux = filtrosCons[campo].opciones.find((n) => n.id == configCons[campo]).condic;
-						if (aux) prefs = {...prefs, ...aux};
+					if (prefs[campo]) {
+						const aux = filtrosCons[campo].opciones.find((n) => n.id == prefs[campo]).condic;
+						if (aux) filtros = {...filtros, ...aux};
 					}
 
 				// Fin
-				return prefs;
+				return filtros;
 			},
-			otrosFiltros: ({resultados, configCons, campo_id}) => {
+			otrosFiltros: ({resultados, prefs, campo_id}) => {
 				// Variables
-				const {apMar, rolesIgl, canons, entidad, cfc} = configCons;
+				const {apMar, rolesIgl, canons, entidad, cfc} = prefs;
 
 				// Filtros generales
 				if (rolesIgl || canons) resultados = resultados.filter((n) => n.personaje_id > 10);
@@ -200,16 +195,16 @@ module.exports = {
 			},
 		},
 		obtieneRclvs: {
-			consolidado: function (configCons) {
-				if (configCons.entidad == "productos") return null;
-				return configCons.layout.codigo.startsWith("fechaDelAno")
-					? this.porFechaDelAno(configCons)
-					: this.comun(configCons);
+			consolidado: function (prefs) {
+				if (prefs.entidad == "productos") return null;
+				return prefs.layout.codigo.startsWith("fechaDelAno")
+					? this.porFechaDelAno(prefs)
+					: this.comun(prefs);
 			},
-			comun: async function (configCons) {
+			comun: async function (prefs) {
 				// Variables
-				const {rolesIgl, canons, layout} = configCons;
-				let {entidad} = configCons;
+				const {rolesIgl, canons, layout} = prefs;
+				let {entidad} = prefs;
 				let rclvs = [];
 
 				// Interrumpe la función o cambia la entidad
@@ -230,7 +225,7 @@ module.exports = {
 					// Rutina por RCLV
 					for (let rclvEnt of entidadesRCLV) {
 						// Obtiene los registros
-						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, configCons);
+						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
 						aux.push(
 							BD_genericas.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
@@ -242,7 +237,7 @@ module.exports = {
 
 				// Rutina para un sólo RCLV
 				else {
-					const {condiciones, include} = this.obtieneIncludeCondics(entidad, configCons);
+					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
 					rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
@@ -258,57 +253,51 @@ module.exports = {
 				// Fin
 				return rclvs;
 			},
-			obtieneIncludeCondics: function (entidad, configCons) {
+			obtieneIncludeCondics: function (entidad, prefs) {
 				// Include
 				let include = [...variables.entidades.prods];
 				if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 				if (entidad == "personajes") include.push("rolIglesia", "canon");
 
 				// Obtiene las condiciones
-				const prefs = ["personajes", "hechos"].includes(entidad) ? this.prefs(entidad, configCons) : null;
-				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...prefs}; // Status aprobado e ID mayor a 10
+				const filtros = ["personajes", "hechos"].includes(entidad) ? this.filtros(entidad, prefs) : null;
+				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
 
 				// Fin
 				return {include, condiciones};
 			},
-			prefs: (entidad, configCons) => {
+			filtros: (entidad, prefs) => {
 				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
-				const {layout} = configCons;
+				const {layout} = prefs;
 				const {apMar, rolesIgl, canons} = variables.filtrosCons;
-				let prefs = {};
+				let filtros = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'
-				if (layout.codigo.startsWith("fechaDelAno")) prefs.fechaDelAno_id = {[Op.lt]: 400};
+				if (layout.codigo.startsWith("fechaDelAno")) filtros.fechaDelAno_id = {[Op.lt]: 400};
 
 				// Época de ocurrencia
-				if (configCons.epocasOcurrencia) prefs.epocaOcurrencia_id = configCons.epocasOcurrencia;
-
-				// Relación con la Iglesia Católica - no se usa, sino que se filtra por las películas
-				// if (configCons.cfc&&layout.codigo!="")
-				// 	entidad == "personajes"
-				// 		? (prefs.categoria_id = configCons.cfc == "1" ? "CFC" : "VPC")
-				// 		: (prefs.soloCfc = configCons.cfc);
+				if (prefs.epocasOcurrencia) filtros.epocaOcurrencia_id = prefs.epocasOcurrencia;
 
 				// Aparición mariana
-				if (configCons.apMar) {
-					const condicion = apMar.opciones.find((n) => n.id == configCons.apMar).condic;
-					entidad == "personajes" ? (prefs.apMar_id = condicion.pers) : (prefs.ama = condicion.hec);
+				if (prefs.apMar) {
+					const condicion = apMar.opciones.find((n) => n.id == prefs.apMar).condic;
+					entidad == "personajes" ? (filtros.apMar_id = condicion.pers) : (filtros.ama = condicion.hec);
 				}
 
 				// Roles en la Iglesia
-				if (entidad == "personajes" && configCons.rolesIgl)
-					prefs.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == configCons.rolesIgl).condic;
+				if (entidad == "personajes" && prefs.rolesIgl)
+					filtros.rolIglesia_id = rolesIgl.opciones.find((n) => n.id == prefs.rolesIgl).condic;
 
 				// Canonización
-				if (entidad == "personajes" && configCons.canons)
-					prefs.canon_id = canons.opciones.find((n) => n.id == configCons.canons).condic;
+				if (entidad == "personajes" && prefs.canons)
+					filtros.canon_id = canons.opciones.find((n) => n.id == prefs.canons).condic;
 
 				// Fin
-				return prefs;
+				return filtros;
 			},
-			porFechaDelAno: async (configCons) => {
+			porFechaDelAno: async (prefs) => {
 				// Variables
-				const {entidad, dia, mes} = configCons;
+				const {entidad, dia, mes} = prefs;
 				const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
 				const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
 				const inclStd = ["fechaDelAno"];
@@ -351,7 +340,7 @@ module.exports = {
 						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
 
 					// Para los botones, mueve los pasados al futuro
-					if (configCons.layout.codigo == "fechaDelAnoBoton") {
+					if (prefs.layout.codigo == "fechaDelAnoBoton") {
 						const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
 						if (indice > 0) {
 							const pasados = rclvs.slice(0, indice - 1);
@@ -372,13 +361,13 @@ module.exports = {
 		},
 		cruce: {
 			// Productos
-			prodsConPPP: ({prods, pppRegistros, configCons, usuario_id, layout}) => {
+			prodsConPPP: ({prods, pppRegistros, prefs, usuario_id, layout}) => {
 				// Interrumpe la función
 				if (!prods.length) return [];
 				if (!usuario_id) return layout.codigo != "misPrefs" ? prods : [];
 
 				// Variables
-				const {pppOpciones: pppOpcion} = configCons;
+				const {pppOpciones: pppOpcion} = prefs;
 
 				// Si se cumple un conjunto de condiciones, se borran todos los productos y termina la función
 				if (
@@ -704,12 +693,12 @@ module.exports = {
 				return rclvs;
 			},
 		},
-		botonesListado: ({resultados, layout, configCons}) => {
+		botonesListado: ({resultados, layout, prefs}) => {
 			// Variables
 			const cantResults = layout.cantidad;
 
 			// Botones
-			if (layout.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, configCons});
+			if (layout.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, prefs});
 			else if (cantResults) resultados.splice(cantResults);
 
 			// Fin
@@ -805,7 +794,7 @@ module.exports = {
 
 // Funciones
 let alAzar = {
-	consolidado: function ({resultados, cantResults, configCons}) {
+	consolidado: function ({resultados, cantResults, prefs}) {
 		// Variables
 		let v = {
 			resultados,
@@ -819,10 +808,10 @@ let alAzar = {
 
 		// Averigua si se debe equilibrar entre 'cfc' y 'vpc'
 		v.seDebeEquilibrar =
-			!configCons.cfc && // 'cfc' no está contestado
-			!configCons.apMar && // 'apMar' no está contestado
-			(!configCons.canons || configCons.canons == "NN") && // 'canons' no está contestado
-			!configCons.rolesIgl; // 'rolesIgl' no está contestado
+			!prefs.cfc && // 'cfc' no está contestado
+			!prefs.apMar && // 'apMar' no está contestado
+			(!prefs.canons || prefs.canons == "NN") && // 'canons' no está contestado
+			!prefs.rolesIgl; // 'rolesIgl' no está contestado
 
 		// Elije los productos
 		this.porAltaUltimosDias(v);

@@ -18,10 +18,7 @@
 		<% if (userID != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
 				<% for (let configDeCabecera of configsCons.cabeceras.predeterms) { %>
-					<option
-						value="<%= configDeCabecera.id %>"
-						<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
-					><%= configDeCabecera.nombre %></option>
+					<option value="<%= configDeCabecera.id %>"><%= configDeCabecera.nombre %></option>
 				<% } %>
 			</optgroup>
 		<% } %>

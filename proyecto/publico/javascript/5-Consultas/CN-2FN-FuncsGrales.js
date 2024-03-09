@@ -11,12 +11,12 @@ let obtiene = {
 	},
 	configCabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
-		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + DOM.configCons_id.value).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
-		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
+		return fetch(rutaCompleta + cabecera.id).then((n) => n.json());
 	},
 };
 let actualiza = {
@@ -24,8 +24,7 @@ let actualiza = {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
-		v.configCons_id = DOM.configCons_id.value;
-		v.configCabecera = await obtiene.configCabecera(DOM.configCons_id.value);
+		cabecera = await obtiene.configCabecera();
 
 		// Variables que dependen de otras variables 'v'
 		v.filtroPropio = v.configCabecera.usuario_id == v.userID;
@@ -54,7 +53,7 @@ let actualiza = {
 			: "";
 
 		// Ícono Deshacer - clase
-		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && v.configCons_id
+		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && cabecera.id
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
 		// Ícono Deshacer - ayuda
@@ -64,8 +63,8 @@ let actualiza = {
 			? "No está permitido deshacer cuando se está cambiando el nombre"
 			: !v.hayCambiosDeCampo
 			? "No hay nada que deshacer cuando no se hicieron cambios en la configuración"
-			: !v.configCons_id
-			? "Tenés que elegir un filtro guardado, para poder deshacer los cambios"
+			: !cabecera.id
+			? "Tenés que elegir una configuración guardada, para poder deshacer los cambios"
 			: "";
 
 		// Ícono Guardar
@@ -127,7 +126,7 @@ let actualiza = {
 		// Variables
 		const configPrefs = await obtiene.configPrefs(texto);
 
-		// Actualiza las preferencias simples (Encabezado + Filtros)
+		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
 			prefSimple.value = configPrefs[prefSimple.name]
 				? configPrefs[prefSimple.name]
@@ -187,14 +186,14 @@ let actualiza = {
 			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
 			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
-	guardaPrefsEnSessionCookie: () => {
+	guardaConfigEnSessionCookie: () => {
 		// Variables
-		const rutaCompleta = ruta + "guarda-filtros-actuales-en-cookie-y-session/?prefsCons=";
-		let campos = {...configCons};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
+		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
-		fetch(rutaCompleta + JSON.stringify(campos));
+		fetch(rutaCompleta + JSON.stringify(configCons));
 
 		// Fin
 		return;
@@ -203,9 +202,9 @@ let actualiza = {
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
 		// Además, se eliminan session y cookies
-		if (!v.userID) return;
+		if (!v.userID || !cabecera.id) return;
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
-		if (v.configCons_id) fetch(rutaCompleta + v.configCons_id);
+		fetch(rutaCompleta + cabecera.id);
 
 		// Fin
 		return;
@@ -213,13 +212,10 @@ let cambiosEnBD = {
 	creaUnaConfiguracion: async function () {
 		if (!v.userID) return;
 
-		// Variables
-		const nombre = configCons.nombre;
-		const opciones = DOM.configsConsPropios.children;
-
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?configCons=";
-		v.configCons_id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
+		const configCons = {...cabecera, ...prefs};
+		cabecera.id = await fetch(rutaCompleta + JSON.stringify(configCons)).then((n) => n.json());
 
 		// Actualiza las configCons_cabeceras posibles para el usuario
 		v.configCons_cabeceras = await obtiene.configsDeCabecera();
@@ -228,7 +224,9 @@ let cambiosEnBD = {
 		this.actualizaEnUsuarioConfigCons_id();
 
 		// Crea una opción
-		const newOption = new Option(nombre, v.configCons_id);
+		const nombre = cabecera.nombre;
+		const opciones = DOM.configsConsPropios.children;
+		const newOption = new Option(nombre, cabecera.id);
 		// Obtiene el índice donde ubicarla
 		const nombres = [...Array.from(opciones).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
@@ -248,21 +246,15 @@ let cambiosEnBD = {
 	guardaUnaConfiguracion: async () => {
 		if (!v.userID) return;
 
-		// Variables
-		let campos = {...configCons, id: v.configCons_id};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete campos.entidad; // si la entidad es la estándar, elimina el campo
-
 		// Guarda los cambios
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
-		await fetch(rutaCompleta + JSON.stringify(campos));
+		await fetch(rutaCompleta + JSON.stringify(configCons));
 
-		// Cambia el texto en el select
-		if (configCons.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = configCons.nombre;
-
-		// Limpia
-		delete configCons.edicion;
-		delete configCons.nombre;
-		delete configCons.id;
+		// Cambia el texto en el select y limpia la cabecera
+		if (cabecera.edicion) DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text = cabecera.nombre;
+		delete cabecera.edicion;
 
 		// Fin
 		return;

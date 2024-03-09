@@ -14,57 +14,54 @@ window.addEventListener("load", async () => {
 			await cambioDeConfig_id();
 			await cambioDePrefs();
 		}
-		// Acciones en los demás casos
+		// Nombre de configuración
+		else if (nombre == "nombreNuevo") {
+			// Restringe el uso de caracteres a los aceptados
+			basico.restringeCaracteres(e);
+
+			// Restringe el largo del nombre
+			const nombre = DOM.configNuevaNombre.value.slice(0, 30);
+			DOM.configNuevaNombre.value = nombre;
+
+			// Averigua si el nombre está OK
+			const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
+			v.nombreOK =
+				nombre.length && // que tenga algún caracter
+				!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
+				!nombres.includes(nombre); // que no se repita con un nombre anterior
+
+			// Muestra/Oculta el ícono de confirmación
+			actualiza.botoneraActivaInactiva();
+
+			// Fin
+			return;
+		}
+		// Palabras clave
+		else if (nombre == "palabrasClave") {
+			// Restringe el uso de caracteres a los aceptados
+			basico.restringeCaracteres(e, true);
+
+			// Valida los caracteres ingresados
+			const nombre = DOM.palClave.value;
+			const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
+
+			// Activa/Inactiva el ícono de confirmación
+			errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
+
+			// Fin
+			return;
+		}
+		// Reemplaza 'quitar la opción elegida' por el 'placeholder'
 		else {
-			// Nombre de configuración
-			if (nombre == "nombreNuevo") {
-				// Restringe el uso de caracteres a los aceptados
-				basico.restringeCaracteres(e);
+			// Reemplaza entre las opciones sin valor
+			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 
-				// Restringe el largo del nombre
-				const nombre = DOM.configNuevaNombre.value.slice(0, 30);
-				DOM.configNuevaNombre.value = nombre;
+			// Cambios de campo
+			v.hayCambiosDeCampo = true;
+			await cambioDePrefs();
 
-				// Averigua si el nombre está OK
-				const nombres = v.configCons_cabeceras.filter((n) => n.usuario_id == v.userID).map((n) => n.nombre);
-				v.nombreOK =
-					nombre.length && // que tenga algún caracter
-					!basico.validaCaracteres(nombre) && // que sean caracteres aceptables
-					!nombres.includes(nombre); // que no se repita con un nombre anterior
-
-				// Muestra/Oculta el ícono de confirmación
-				actualiza.botoneraActivaInactiva();
-
-				// Fin
-				return;
-			}
-			// Palabras clave
-			else if (nombre == "palabrasClave") {
-				// Restringe el uso de caracteres a los aceptados
-				basico.restringeCaracteres(e, true);
-
-				// Valida los caracteres ingresados
-				const nombre = DOM.palClave.value;
-				const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
-
-				// Activa/Inactiva el ícono de confirmación
-				errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
-
-				// Fin
-				return;
-			}
-			// Reemplaza 'quitar la opción elegida' por el 'placeholder'
-			else {
-				// Reemplaza entre las opciones sin valor
-				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
-
-				// Cambios de campo
-				v.hayCambiosDeCampo = true;
-				await cambioDePrefs();
-
-				// Guarda las preferencias en session y cookie
-				actualiza.guardaPrefsEnSessionCookie();
-			}
+			// Guarda la configuración en session y cookie
+			actualiza.guardaConfigEnSessionCookie();
 		}
 
 		// Fin
@@ -78,7 +75,6 @@ window.addEventListener("load", async () => {
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
-
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (["nuevo", "edicion"].includes(nombre)) {
@@ -155,9 +151,11 @@ window.addEventListener("load", async () => {
 		}
 
 		// Encabezado - Compartir las preferencias
-		else if (nombre == "compartirPrefs") {
+		else if (nombre == "compartirCons") {
+			// Variables
+			let configConsComp = {...cabecera, ...prefs};
+
 			// Si el 'ppp' es un combo, lo convierte a su 'id'
-			let configConsComp = {...configCons};
 			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
 				const combo = configConsComp.pppOpciones.toString();
 				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
@@ -168,20 +166,17 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los 'camposUrl'
 			let camposUrl = "";
-			for (let prop in configConsComp)
-				if (configConsComp[prop] == v.filtrosConDefault[prop]) delete configConsComp[prop];
-				else camposUrl += prop + "=" + configConsComp[prop] + "&";
+			for (let prop in configConsComp) camposUrl += prop + "=" + configConsComp[prop] + "&";
 			if (!camposUrl.length) return;
+			else camposUrl = camposUrl.slice(0, -1);
 
 			// Obtiene el 'url' y lo lleva al clipboard
-			camposUrl = camposUrl.slice(0, -1);
 			const url = location.href + "/?" + camposUrl;
 			navigator.clipboard.writeText(url);
 
 			// Muestra la leyenda 'Consulta copiada'
 			DOM.consCopiada.classList.remove("ocultar");
 			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 2000);
-
 		}
 
 		// Mostrar resultados - Preferencia por producto
@@ -264,13 +259,13 @@ let palabrasClave = async () => {
 let guardarBotonera = async () => {
 	if (v.nuevo || v.edicion) {
 		// Obtiene el nuevo nombre
-		configCons.nombre = DOM.configNuevaNombre.value;
+		cabecera.nombre = DOM.configNuevaNombre.value;
 
 		// Si es una configuración nueva, agrega la cabecera
 		if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
 
 		// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
-		if (v.edicion) configCons.edicion = true;
+		if (v.edicion) cabecera.edicion = true;
 
 		// Quita la clase
 		const clase = v.nuevo ? "nuevo" : "edicion";
@@ -302,7 +297,7 @@ let verificaConfigCons_id = async () => {
 	const existe = configsCons_id.includes(configCons_id);
 
 	// Si no existe, devuelve a su configuración anterior
-	if (!existe) DOM.configCons_id.value = v.configCons_id;
+	if (!existe) DOM.configCons_id.value = cabecera.id;
 
 	// Fin
 	return existe;

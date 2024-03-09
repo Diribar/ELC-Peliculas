@@ -32,13 +32,13 @@ let resultados = {
 		// Busca la información en el BE
 		v.ahora = new Date();
 		const datos = v.layoutBD.codigo.startsWith("fechaDelAno")
-			? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-			: configCons;
+			? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
+			: prefs;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
-		if (configCons.entidad == "productos") v.productos = v.resultados;
+		if (prefs.entidad == "productos") v.productos = v.resultados;
 		if (!v.resultados || !v.resultados.length)
 			DOM.noTenemos.classList.remove("ocultar"); // si no hay resultados, muestra el cartel 'noTenemos'
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
