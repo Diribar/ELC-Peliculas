@@ -75,7 +75,7 @@ module.exports = {
 			// Asigna los url de visualización
 			for (let link of links)
 				link.href = link.prov.embededPoner
-					? urlHost + "/links/visualizacion/?link_id=" + link.id + "&origen=" + origen
+					? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
 					: "//" + link.url;
 
 			// Los separa entre Películas y Trailers
