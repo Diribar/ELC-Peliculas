@@ -163,19 +163,18 @@ module.exports = {
 	sessionCookie: {
 		guardaConfig: (req, res) => {
 			// Variables
-			const configCons = JSON.parse(req.query.configCons);
-			let {cabecera, prefs} = configCons;
+			let configCons = JSON.parse(req.query.configCons);
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
-				const combo = prefs.pppOpciones.toString();
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) prefs.pppOpciones = pppOpcion.id;
-				else delete prefs.pppOpciones;
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
 			}
 
 			// Guarda la configuración
-			req.session.configCons = {id: cabecera.id, ...prefs};
+			req.session.configCons = configCons;
 			res.cookie("configCons", req.session.configCons, {maxAge: unDia});
 
 			// Fin

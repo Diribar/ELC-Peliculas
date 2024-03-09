@@ -38,7 +38,7 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID, autTablEnts}) => {
+	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID, autTablEnts, origen}) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
@@ -74,7 +74,9 @@ module.exports = {
 
 			// Asigna los url de visualización
 			for (let link of links)
-				link.href = link.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
+				link.href = link.prov.embededPoner
+					? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
+					: "//" + link.url;
 
 			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);

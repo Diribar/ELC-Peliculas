@@ -7,7 +7,7 @@
 /* Sector de información */
 #recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
 #recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
-#informacion ul {padding-right: 10px;}
+#informacion ul {padding-right: 10px; max-width: 260px;}
 #informacion ul li {margin-top: 3px;}
 
 /* Textarea */

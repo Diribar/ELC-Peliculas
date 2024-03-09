@@ -80,9 +80,11 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			inactivarRecuperar || codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicion("histStatus", {entidad, entidad_id: id}).then((n) =>
-						n.map((m) => m.comentario)
-				  )
+				? await BD_genericas.obtieneTodosPorCondicionConInclude(
+						"histStatus",
+						{entidad, entidad_id: id},
+						"statusFinal"
+				  ).then((n) => n.map((m) => m.statusFinal.nombre + (m.comentario ? " - " + m.comentario : "")))
 				: [];
 
 		// Obtiene datos para la vista
@@ -110,13 +112,6 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Revisa errores
-		const informacion = procesos.infoIncompleta({motivo_id, comentario: comentUs, codigo});
-		if (informacion) {
-			informacion.iconos = [variables.vistaEntendido(req.session.urlAnterior)];
-			return res.render("CMP-0Estructura", {informacion});
-		}
 
 		// Comentario para la BD
 		let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;

@@ -649,22 +649,6 @@ module.exports = {
 		},
 	},
 
-	// Varios
-	infoIncompleta: (datos) => {
-		// Variables
-		let {motivo_id, comentario, codigo} = datos;
-		let informacion;
-
-		// 1. Falta el motivo
-		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
-
-		// 2. Falta el comentario
-		if (!informacion && !comentario) informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
-
-		// Fin
-		return informacion;
-	},
-
 	// Bloques a mostrar
 	bloqueRegistro: function (registro) {
 		// Variable
@@ -672,18 +656,21 @@ module.exports = {
 
 		// Datos CRUD
 		bloque.push(
-			registro.altaRevisadaEn
-				? {titulo: "Revisado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
-				: {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
+			!registro.altaRevisadaEn
+				? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
+				: {titulo: "Revisado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
 		);
 
 		// Status resumido
-		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
+		bloque.push({titulo: "Status", ...this.statusRegistro(registro)});
+
+		// Si el registro no está activo, le agrega el comentario
+		if (!activos_ids.includes(registro.statusRegistro_id)) bloque.push({titulo: "Motivo", valor: registro.motivo.descripcion});
 
 		// Fin
 		return bloque;
 	},
-	statusResumido: (registro) => {
+	statusRegistro: (registro) => {
 		// Variables
 		const {entidad, id} = registro;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);

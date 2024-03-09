@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 	if (!motivo_id) {
 		let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		informacion = {
-			mensajes: ["Se rechazó sin decirnos el motivo"],
+			mensajes: ["Necesitamos que nos digas el motivo"],
 			iconos: [variables.vistaEntendido(link)],
 		};
 	}
