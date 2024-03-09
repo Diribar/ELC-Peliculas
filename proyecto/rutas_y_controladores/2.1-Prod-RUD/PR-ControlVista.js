@@ -56,7 +56,7 @@ module.exports = {
 				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
 		}
-		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts});
+		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts, origen});
 		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
 			? BD_genericas.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
