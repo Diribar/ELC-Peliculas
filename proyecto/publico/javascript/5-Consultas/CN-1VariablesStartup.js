@@ -29,8 +29,8 @@ window.addEventListener("load", async () => {
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.cabecera.querySelector("#configNueva input[name='nombreNuevo']"),
-		configCons_id: DOM.cabecera.querySelector("select[name='configCons_id']"),
-		configsConsPropios: DOM.cabecera.querySelector("select[name='configCons_id'] optgroup#propios"),
+		cabecera_id: DOM.cabecera.querySelector("select[name='cabecera_id']"),
+		cabsPropias: DOM.cabecera.querySelector("select[name='cabecera_id'] optgroup#propios"),
 		iconosBotonera: DOM.cabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos - Preferencias
@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 
 	// Variables - General
 	v = {
-		...(await obtiene.obtieneVariablesDelBE()),
+		...(await obtiene.variablesDelBE()),
 		cabeceras: await obtiene.cabecerasPosibles(),
 		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 		conLinksHD: "conLinksHD",

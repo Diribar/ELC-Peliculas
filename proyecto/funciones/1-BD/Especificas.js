@@ -230,7 +230,7 @@ module.exports = {
 	nombresDeAvatarEnBD: ({entidad, status_id, campoAvatar}) => {
 		// Variables
 		campoAvatar = campoAvatar ? campoAvatar : "avatar";
-		const condiciones = {[campoAvatar]: {[Op.ne]: null}, [campoAvatar]: {[Op.notLike]: "%/%"}};
+		const condiciones = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
 		if (status_id) condiciones.statusRegistro_id = status_id;
 
 		// Fin

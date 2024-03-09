@@ -51,16 +51,6 @@ module.exports = {
 			// Fin
 			return res.json(prefs);
 		},
-		cabecerasPosibles: async (req, res) => {
-			// Variables
-			const userID = req.session.usuario ? req.session.usuario.id : null;
-
-			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const cabeceras = await procesos.varios.cabeceras(userID);
-
-			// Fin
-			return res.json(cabeceras);
-		},
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
@@ -81,6 +71,16 @@ module.exports = {
 
 			// Fin
 			return res.json(datos);
+		},
+		cabecerasPosibles: async (req, res) => {
+			// Variables
+			const userID = req.session.usuario ? req.session.usuario.id : null;
+
+			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
+			const cabeceras = await procesos.varios.cabeceras(userID);
+
+			// Fin
+			return res.json(cabeceras);
 		},
 	},
 	cambiosEnBD: {
@@ -148,7 +148,7 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfig: async (req, res) => {
-			const {configCons_id: cabecera_id} = req.query;
+			const {cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
 			await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
