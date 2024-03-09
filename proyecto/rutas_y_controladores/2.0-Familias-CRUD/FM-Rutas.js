@@ -41,9 +41,9 @@ router.get("/crud/api/actualiza-visibles", API.actualizarVisibles);
 
 // Vistas - CRUD: Inactivar, Recuperar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, comentarioNeces, capturaInactivar, vista.inacRecupGuardar);
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.post("/:familia/recuperar", aptoCRUD, capturaInactivar, vista.inacRecupGuardar);
+router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, comentarioNeces, capturaInactivar, vista.inacRecupGuardar);
+router.post("/:familia/recuperar", aptoCRUD, comentarioNeces, capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas -  CRUD: Eliminar, Eliminado
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecupElimForm);
