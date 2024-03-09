@@ -34,9 +34,9 @@ module.exports = {
 	},
 
 	// Consulta de Productos
-	camposConsultas: {
+	filtrosCons: {
 		// Con una opción elegida siempre
-		tipoLink: {
+		tiposLink: {
 			default: "conLinks",
 			opciones: [
 				{id: "conLinks", nombre: "Con links", condic: {linksGral: conLinks}},
@@ -53,7 +53,7 @@ module.exports = {
 				{id: "todos", nombre: "Todas las preferencias"},
 			],
 		},
-		idioma: {
+		idiomas: {
 			default: "enCast",
 			opciones: [
 				{

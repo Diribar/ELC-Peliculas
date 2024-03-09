@@ -6,34 +6,34 @@ module.exports = {
 		cabecera: async (userID) => {
 			// Obtiene los filtros personalizados propios y los provistos por ELC
 			const usuario_id = userID ? [1, userID] : 1;
-			const configCons_cabeceras = await BD_genericas.obtieneTodosPorCondicion("configsConsCabeceras", {usuario_id});
-			configCons_cabeceras.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
+			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
+			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
 			// Fin
-			return configCons_cabeceras;
+			return regsCabecera;
 		},
-		campos: function () {
+		filtros: function () {
 			// Variable 'filtros'
-			let campos = {...variables.camposConsultas};
+			let filtros = {...variables.filtrosCons};
 
-			// Agrega los campos de código y opciones
-			for (let campo in campos) {
+			// Agrega los filtros de código y opciones
+			for (let prop in filtros) {
 				// Le agrega el nombre del campo a cada método
-				campos[campo].codigo = campo;
+				filtros[prop].codigo = prop;
 
 				// Si no tiene opciones, le agrega las de la BD
-				if (!campos[campo].opciones) {
-					// Si es el campo 'epocasOcurrencia', quita la opción 'varias'
-					if (campo == "epocasOcurrencia")
-						campos.epocasOcurrencia.opciones = epocasOcurrencia
+				if (!filtros[prop].opciones) {
+					// Si es el prop 'epocasOcurrencia', quita la opción 'varias'
+					if (prop == "epocasOcurrencia")
+						filtros.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
-					else campos[campo].opciones = global[campo];
+					else filtros[prop].opciones = global[prop];
 				}
 			}
 
 			// Fin
-			return campos;
+			return filtros;
 		},
 		obtieneConfigCons_BD: async ({usuario, configCons_id}) => {
 			// Obtiene el ID de la configCons del usuario
@@ -45,7 +45,7 @@ module.exports = {
 
 			// Obtiene las preferencias
 			let preferencias = {};
-			const registros = await BD_genericas.obtieneTodosPorCondicion("configsConsCampos", {configCons_id});
+			const registros = await BD_genericas.obtieneTodosPorCondicion("consRegsPrefs", {cabecera_id: configCons_id});
 			for (let registro of registros) preferencias[registro.campo] = registro.valor; // convierte el array en objeto literal
 
 			// Fin
@@ -64,6 +64,27 @@ module.exports = {
 
 			// Fin
 			return resultado;
+		},
+		configCons_url: (req) => {
+			// Variables
+			const prefsCons = req.query;
+			const filtrosCons = variables.filtrosCons;
+
+			// Si alguna pref no es aceptada, la elimina. Si no queda ninguna pref, interrumpe la función
+
+			// Guarda las prefs en cookies y session
+			req.session.prefsCons = prefsCons;
+			res.cookie("prefsCons", prefsCons, {maxAge: unDia});
+
+			// Guarda las prefs en el usuario
+			if (req.session.usuario) {
+				const configCons_id = prefsCons.configCons_id;
+				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				req.session.usuario = {...usuario, configCons_id};
+			}
+
+			// Fin
+			return;
 		},
 	},
 	resultados: {
@@ -107,28 +128,28 @@ module.exports = {
 			},
 			prefs: (configCons) => {
 				// Variables
-				const camposConsultas = variables.camposConsultas;
-				const {idioma} = camposConsultas;
+				const filtrosCons = variables.filtrosCons;
+				const {idiomas} = filtrosCons;
 				let prefs = {};
 
 				// Transfiere las preferencias simples a las condiciones
-				for (let campo in configCons)
-					if (camposConsultas[campo] && camposConsultas[campo].campoFiltro)
-						prefs[camposConsultas[campo].campoFiltro] = configCons[campo];
+				for (let prop in configCons)
+					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro)
+						prefs[filtrosCons[prop].campoFiltro] = configCons[prop];
 
-				// Conversión de 'idioma'
-				if (configCons.idioma) {
-					const aux = idioma.opciones.find((n) => n.id == configCons.idioma).condic;
+				// Conversión de 'idiomas'
+				if (configCons.idiomas) {
+					const aux = idiomas.opciones.find((n) => n.id == configCons.idiomas).condic;
 					if (aux) {
-						const tipoLink = configCons.tipoLink == "conLinksHD" ? "conLinksHD" : "conLinks";
-						prefs = {...prefs, ...aux[tipoLink]};
+						const tiposLink = configCons.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
+						prefs = {...prefs, ...aux[tiposLink]};
 					}
 				}
 
 				// Conversión de campos similares
-				for (let campo of ["tipoLink", "publicos"])
+				for (let campo of ["tiposLink", "publicos"])
 					if (configCons[campo]) {
-						const aux = camposConsultas[campo].opciones.find((n) => n.id == configCons[campo]).condic;
+						const aux = filtrosCons[campo].opciones.find((n) => n.id == configCons[campo]).condic;
 						if (aux) prefs = {...prefs, ...aux};
 					}
 
@@ -257,7 +278,7 @@ module.exports = {
 			prefs: (entidad, configCons) => {
 				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
 				const {opcion} = configCons;
-				const {apMar, rolesIgl, canons} = variables.camposConsultas;
+				const {apMar, rolesIgl, canons} = variables.filtrosCons;
 				let prefs = {};
 
 				// Si la opción es 'Por fecha en que se lo recuerda'

@@ -18,6 +18,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "TR";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const userID = req.session.usuario.id;
 		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -47,7 +48,7 @@ module.exports = {
 
 		// Cantidad de productos asociados al RCLV
 		if (familia == "rclv") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
 			cantProds = prodsDelRCLV.length;
 			canonNombre = comp.canonNombre(original);
 			RCLVnombre = original.nombre;

@@ -255,9 +255,9 @@ module.exports = {
 		},
 		alCastellano: function (objeto) {
 			// Rutina por campo
-			for (let campo in objeto)
-				if (typeof objeto[campo] == "string") objeto[campo] = this.alCastellano_campo(objeto[campo]);
-				else if (objeto[campo] === undefined) delete objeto[campo];
+			for (let prop in objeto)
+				if (typeof objeto[prop] == "string") objeto[prop] = this.alCastellano_campo(objeto[prop]);
+				else if (objeto[prop] === undefined) delete objeto[prop];
 
 			// Fin
 			return objeto;

@@ -127,7 +127,7 @@ let obtieneEfemerides = async () => {
 			}
 
 		// Elimina info innecesaria
-		for (let campo in fecha) if (!["id", "nombre", "rclvs"].includes(campo)) delete fecha[campo];
+		for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
 		if (!fecha.rclvs.length) delete fecha.rclvs;
 	}
 

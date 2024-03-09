@@ -18,10 +18,10 @@ module.exports = {
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
-		for (let campo in datos) {
+		for (let prop in datos) {
 			// Variable
-			const datoNuevo = datos[campo];
-			const datoGuardado = info[campo];
+			const datoNuevo = datos[prop];
+			const datoGuardado = info[prop];
 
 			// Si los datos son iguales, saltea los controles posteriores
 			if (datoNuevo == datoGuardado) continue;

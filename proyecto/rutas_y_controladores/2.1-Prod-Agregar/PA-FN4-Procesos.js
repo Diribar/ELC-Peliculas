@@ -171,7 +171,7 @@ module.exports = {
 			datos.actores = procsComp.actores(actores);
 
 			// Limpia el resultado
-			for (let campo in datos) if (!datos[campo]) delete datos[campo];
+			for (let prop in datos) if (!datos[prop]) delete datos[prop];
 			datos = comp.convierteLetras.alCastellano(datos);
 
 			// Avatar

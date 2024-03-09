@@ -161,8 +161,9 @@ module.exports = {
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in req.body) if (!req.body[campo]) req.body[campo] = null;
-			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
+			for (let prop in req.body)
+				if (!req.body[prop]) req.body[prop] = null;
+				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim();
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
@@ -206,9 +207,9 @@ module.exports = {
 						let esperar = [];
 
 						// Rutina por campo - sin 'await' y solo para los campos editados
-						for (let campo in req.body)
-							if (original[campo] != req.body[campo])
-								esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body, campo));
+						for (let prop in req.body)
+							if (original[prop] != req.body[prop])
+								esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body, prop));
 
 						// Espera a que se corran todos los campos
 						await Promise.all(esperar);

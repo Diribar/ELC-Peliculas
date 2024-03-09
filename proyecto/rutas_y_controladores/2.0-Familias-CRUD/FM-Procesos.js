@@ -33,7 +33,7 @@ module.exports = {
 		[original, edicion] = await Promise.all([original, edicion]);
 		if (includesOrig.includes("capitulos"))
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
-		for (let campo in original) if (original[campo] === null) delete original[campo];
+		for (let prop in original) if (original[prop] === null) delete original[prop];
 
 		// Pule la edición
 		edicion = edicion
@@ -768,29 +768,29 @@ let puleEdicion = async (entidad, original, edicion) => {
 	}
 
 	// Quita de edición los campos que correspondan
-	for (let campo in edicion) {
+	for (let prop in edicion) {
 		// Quita de edición los campos que no se comparan o que sean 'null'
-		if (!camposRevisar.includes(campo) || edicion[campo] === null) {
-			delete edicion[campo];
+		if (!camposRevisar.includes(prop) || edicion[prop] === null) {
+			delete edicion[prop];
 			continue;
 		}
 
 		// Corrige errores de data-entry
-		if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
+		if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
 
 		// CONDICION 1: Los valores de original y edición son significativos e idénticos
 		const condic1 =
-			edicion[campo] === original[campo] || // son estrictamente iguales
-			(typeof original[campo] == "number" && edicion[campo] == original[campo]) || // coincide el número
-			(edicion[campo] === "1" && original[campo] === true) || // coincide el boolean
-			(edicion[campo] === "0" && original[campo] === false); // coincide el boolean
-		if (condic1) camposNull[campo] = null;
+			edicion[prop] === original[prop] || // son estrictamente iguales
+			(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
+			(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
+			(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
+		if (condic1) camposNull[prop] = null;
 
 		// CONDICION 2: El objeto vinculado tiene el mismo ID
-		const condic2 = !!edicion[campo] && !!edicion[campo].id && !!original[campo] && edicion[campo].id === original[campo].id;
+		const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
 
 		// Si se cumple alguna de las condiciones, se elimina ese método
-		if (condic1 || condic2) delete edicion[campo];
+		if (condic1 || condic2) delete edicion[prop];
 	}
 
 	// 3. Acciones en función de si quedan campos

@@ -145,8 +145,9 @@ module.exports = {
 			let errores;
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
-			for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
-			for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
+			for (let prop in req.body)
+				if (!req.body[prop]) delete req.body[prop];
+				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim();
 
 			// Obtiene los datos
 			let datos = {...req.body, ...req.query, imgOpcional: true};

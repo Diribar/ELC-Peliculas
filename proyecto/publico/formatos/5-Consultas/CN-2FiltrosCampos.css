@@ -1,39 +1,38 @@
 /* Carteles para mostrar/ocultar filtros */
-#configCons #toggleFiltrosIndivs {justify-content: center; align-items: center; height: 100px;}
-#configCons #toggleFiltrosIndivs {background: var(--celeste-claro);}
-#configCons #toggleFiltrosIndivs .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCons #toggleFiltrosIndivs #muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
-#configCons #toggleFiltrosIndivs #ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#configCons #toggleFiltrosIndivs span {font-weight: bold;}
+#configCons #toggleFiltros {justify-content: center; align-items: center; height: 100px;}
+#configCons #toggleFiltros {background: var(--celeste-claro);}
+#configCons #toggleFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
+#configCons #toggleFiltros #muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltros #ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#configCons #toggleFiltros span {font-weight: bold;}
 
 /* Filtros Campos */
-#configCons #configCampos {background: var(--gris-claro); flex-grow: 1;}
-#configCons #configCampos {position: relative; overflow-x: hidden;}
-#configCons #configCampos nav {position: absolute; width: 220px;}
-/* #configCons #configCampos .flexCol.ocultar {display: none;} */
+#configCons #configFiltros {background: var(--gris-claro); flex-grow: 1;}
+#configCons #configFiltros {position: relative; overflow-x: hidden;}
+#configCons #configFiltros nav {position: absolute; width: 220px;}
 
 /* Filtros Campos - Contenedor de Select e Input */
-#configCampos .pref {padding: 0 20px;}
-#configCampos .pref.cfc {background: var(--amarillo-oscuro);}
-#configCampos .pref.bhr {background: var(--verde-intermedio);}
+#configFiltros .pref {padding: 0 20px;}
+#configFiltros .pref.cfc {background: var(--amarillo-oscuro);}
+#configFiltros .pref.bhr {background: var(--verde-intermedio);}
 
 /* Filtros Campos - Select e Input */
-#configCampos .pref :is(select, input) {width: 100%;}
+#configFiltros .pref :is(select, input) {width: 100%;}
 
 /* Filtros Campos - Select */
-#configCampos .pref select {margin: 6px 0;}
-#configCampos .pref select option {background: snow; color: var(--azul-oscuro);}
-#configCampos .pref select option[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
-#configCampos .pref select option.sinFiltro {font-style: italic}
-#configCampos .pref select:not(:has(option[value=""]:checked)) option.sinFiltro {display: block;}
+#configFiltros .pref select {margin: 6px 0;}
+#configFiltros .pref select option {background: snow; color: var(--azul-oscuro);}
+#configFiltros .pref select option[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
+#configFiltros .pref select option.sinFiltro {font-style: italic}
+#configFiltros .pref select:not(:has(option[value=""]:checked)) option.sinFiltro {display: block;}
 
 /* Filtros - Búsqueda */
-#configCampos #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#configCampos #palabrasClave input {margin-top: 7.9px; margin-bottom: 7.9px; padding: 0px 4px;}
-#configCampos #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+#configFiltros #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
+#configFiltros #palabrasClave input {margin-top: 7.9px; margin-bottom: 7.9px; padding: 0px 4px;}
+#configFiltros #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
 /* Fondo verde a los sectores con elegibles elegidos */
-#configCampos :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
+#configFiltros :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
 /* Fondo verde a los elegibles elegidos */
-#configCampos .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: var(--amarillo-claro); border-color: transparent;}
+#configFiltros .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: var(--amarillo-claro); border-color: transparent;}

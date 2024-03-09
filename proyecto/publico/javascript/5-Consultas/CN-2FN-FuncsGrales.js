@@ -13,9 +13,9 @@ let obtiene = {
 		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
-	configCampos: (texto) => {
+	configPrefs: (texto) => {
 		if (!texto) texto = "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-campos/?texto=" + texto + "&configCons_id=";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?texto=" + texto + "&configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
@@ -125,12 +125,12 @@ let actualiza = {
 	},
 	statusInicialCampos: async (texto) => {
 		// Variables
-		const configCampos = await obtiene.configCampos(texto);
+		const configPrefs = await obtiene.configPrefs(texto);
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = configCampos[prefSimple.name]
-				? configCampos[prefSimple.name]
+			prefSimple.value = configPrefs[prefSimple.name]
+				? configPrefs[prefSimple.name]
 				: v.filtrosConDefault[prefSimple.name]
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
@@ -139,7 +139,7 @@ let actualiza = {
 		DOM.palClaveAprob.classList.add("inactivo");
 
 		// Si session está activa, lo informa
-		if (configCampos.cambios) v.hayCambiosDeCampo = true;
+		if (configPrefs.cambios) v.hayCambiosDeCampo = true;
 
 		// Fin
 		return;
@@ -157,7 +157,7 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	toggleFiltrosIndivs: function () {
+	toggleFiltros: function () {
 		this.actualizaMuestraFiltros();
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
@@ -184,7 +184,7 @@ let actualiza = {
 	},
 	actualizaMuestraFiltros: () => {
 		v.muestraFiltros =
-			window.getComputedStyle(DOM.toggleFiltrosIndivs).display == "none" ||
+			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
 			window.getComputedStyle(DOM.muestraFiltros).display == "none";
 	},
 	guardaPrefsEnSessionCookie: () => {
@@ -332,14 +332,14 @@ let cambiosEnBD = {
 let cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	if (texto != "start-up") cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (texto != "start-up" && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	await actualiza.statusInicialCampos();
-	actualiza.toggleFiltrosIndivs();
+	actualiza.toggleFiltros();
 
 	// Fin
 	return;
 };
-let cambioDeCampos = async () => {
+let cambioDePrefs = async () => {
 	// Cambio de clases
 	DOM.configNuevaNombre.classList.remove("nuevo");
 	DOM.configNuevaNombre.classList.remove("edicion");

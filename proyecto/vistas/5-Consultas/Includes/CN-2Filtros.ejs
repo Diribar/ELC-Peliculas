@@ -6,8 +6,8 @@
 	<select name="configCons_id">
 		<option value="">Filtros Guardados...</option>
 		<!-- Configuraciones personales -->
-		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configCons_cabeceras.propios.length ? 'ocultar' : '' %>">
-			<% for (let configDeCabecera of configCons_cabeceras.propios) { %>
+		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsCons.cabeceras.propios.length ? 'ocultar' : '' %>">
+			<% for (let configDeCabecera of configsCons.cabeceras.propios) { %>
 				<option
 					value="<%= configDeCabecera.id %>"
 					<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
@@ -17,7 +17,7 @@
 		<!-- Configuraciones predeterminadas -->
 		<% if (userID != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
-				<% for (let configDeCabecera of configCons_cabeceras.predeterms) { %>
+				<% for (let configDeCabecera of configsCons.cabeceras.predeterms) { %>
 					<option
 						value="<%= configDeCabecera.id %>"
 						<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
@@ -36,41 +36,41 @@
 </div>
 
 <!-- Campos -->
-<div id="configCampos" class="flexCol sectorConDesplV">
+<div id="configFiltros" class="flexCol sectorConDesplV">
 	<nav class="startUp flexCol ocultar">
 		<!-- PRIORITARIOS -->
 		<!-- Tipos de Link -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.tipoLink}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.tiposLink}) %>
 		<% if (locals.usuario) { %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {campos: configCons_campos.pppOpciones, eventual: true}) %>
+			<%- include('CN-FL-Selects', {campos: configsCons.filtros.pppOpciones, eventual: true}) %>
 		<% } %>
 		<!-- Idioma -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.idioma}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.idiomas}) %>
 		<!-- Público Recomendado -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.publicos}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.publicos}) %>
 
 		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
 		<!-- Relación con la Iglesia Católica -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.cfc, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.cfc, eventual: true, color: 'cfc'}) %>
 		<!-- Proceso de Canonización -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.canons, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.canons, eventual: true, color: 'cfc'}) %>
 		<!-- Roles Iglesia -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.rolesIgl, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.rolesIgl, eventual: true, color: 'cfc'}) %>
 		<!-- Aparición Mariana -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.apMar, eventual: true, color: 'cfc'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.apMar, eventual: true, color: 'cfc'}) %>
 
 		<!-- HECHOS REALES -->
 		<!-- Basado en Hechos Reales -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.bhr, eventual: true, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.bhr, eventual: true, color: 'bhr'}) %>
 		<!-- Epoca de Ocurrencia -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.epocasOcurrencia, color: 'bhr'}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.epocasOcurrencia, color: 'bhr'}) %>
 
 		<!-- ATRIBUTOS DE LA PELÍCULA -->
 		<!-- Época de Estreno -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.epocasEstreno}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.epocasEstreno}) %>
 		<!-- Tipo de Actuación -->
-		<%- include('CN-FL-Selects', {campos: configCons_campos.tiposActuacion}) %>
+		<%- include('CN-FL-Selects', {campos: configsCons.filtros.tiposActuacion}) %>
 		<!-- Películas o Colecciones -->
 
 		<!-- Palabras Clave -->
@@ -82,7 +82,7 @@
 </div>
 
 <!-- Muestra / Oculta filtros -->
-<div id="toggleFiltrosIndivs" class="flexCol">
+<div id="toggleFiltros" class="flexCol">
 	<div id="muestraFiltros" class="pointer scale">
 		<em>Click</em> para <span>ver</span><br>más filtros
 	</div>

@@ -9,12 +9,12 @@ module.exports = {
 			const {configCons_id} = req.query;
 
 			// Obtiene la cabecera
-			const configCabecera = await BD_genericas.obtienePorId("configsConsCabeceras", configCons_id);
+			const configCabecera = await BD_genericas.obtienePorId("consRegsCabecera", configCons_id);
 
 			// Fin
 			return res.json(configCabecera);
 		},
-		configCampos: async (req, res) => {
+		configPrefs: async (req, res) => {
 			// Variables
 			const {texto, configCons_id} = req.query;
 			let configCons_SC;
@@ -74,7 +74,7 @@ module.exports = {
 	cambiosEnBD: {
 		actualizaEnUsuarioConfigCons_id: (req, res) => {
 			// Variables
-			const configCons_id = req.query.configCons_id;
+			const {configCons_id} = req.query;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Si está logueado, actualiza el usuario en la BD
@@ -97,10 +97,10 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: configCons.nombre};
-			const {id: configCons_id} = await BD_genericas.agregaRegistro("configsConsCabeceras", objeto);
+			const {id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
 
 			// Fin
-			return res.json(configCons_id);
+			return res.json(id);
 		},
 		guardaConfig: async (req, res) => {
 			// Variables
@@ -112,15 +112,15 @@ module.exports = {
 			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
 				const combo = configCons.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpcion_id = pppOpcion.id;
-				delete configCons.pppOpciones; // elimina el ppp del combo
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
 			}
 
 			// Quita los campos con valor 'default'
-			for (let campo in configCons) if (configCons[campo] == filtrosConDefault[campo]) delete configCons[campo];
+			for (let prop in configCons) if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("configsConsCabeceras", id, {nombre: configCons.nombre});
+			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
@@ -128,12 +128,12 @@ module.exports = {
 				res.clearCookie("prefsCons");
 
 				// Si no es nuevo, elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id: id});
+				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
-				for (let campo in configCons) {
-					const objeto = {configCons_id: id, campo, valor: configCons[campo]};
-					BD_genericas.agregaRegistro("configsConsCampos", objeto);
+				for (let prop in configCons) {
+					const objeto = {cabecera_id: id, campo: prop, valor: configCons[prop]};
+					BD_genericas.agregaRegistro("consRegsPrefs", objeto);
 				}
 			}
 
@@ -141,13 +141,13 @@ module.exports = {
 			return res.json();
 		},
 		eliminaConfigCons: async (req, res) => {
-			const {configCons_id} = req.query;
+			const {configCons_id: cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
-			await BD_genericas.eliminaTodosPorCondicion("configsConsCampos", {configCons_id});
+			await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
 
 			// Se elimina el registro de cabecera de la configuración
-			await BD_genericas.eliminaPorId("configsConsCabeceras", configCons_id);
+			await BD_genericas.eliminaPorId("consRegsCabecera", cabecera_id);
 
 			// Fin
 			return res.json();

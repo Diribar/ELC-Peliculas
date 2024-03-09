@@ -6,11 +6,11 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		configCons: document.querySelector("#cuerpo #configCons"),
 		encabMasPelis: document.querySelector("#cuerpo #encabMasPelis"),
-		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configCampos) .prefSimple"),
+		prefsSimples: document.querySelectorAll("#cuerpo :is(#encabezado, #configFiltros) .prefSimple"),
 
 		// Zona de Preferencias
 		configCabecera: document.querySelector("#cuerpo #configCons #configCabecera"),
-		configCampos: document.querySelector("#cuerpo #configCons #configCampos"),
+		configFiltros: document.querySelector("#cuerpo #configCons #configFiltros"),
 
 		// Encabezado
 		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
@@ -23,8 +23,9 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		opcion_id: DOM.tituloPrincipal.querySelector("select[name='opcion_id']"),
+		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
+		consCopiada: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #consCopiada"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.configCabecera.querySelector("#configNueva input[name='nombreNuevo']"),
@@ -33,16 +34,16 @@ window.addEventListener("load", async () => {
 		iconosBotonera: DOM.configCabecera.querySelectorAll("#iconosBotonera i"),
 
 		// Configuración de Campos - Preferencias
-		nav: DOM.configCampos.querySelector("nav"),
-		camposPresenciaEstable: DOM.configCampos.querySelectorAll(".presenciaEstable"),
-		selects: DOM.configCampos.querySelectorAll("select"),
-		palClave: DOM.configCampos.querySelector("#palabrasClave input"),
-		palClaveAprob: DOM.configCampos.querySelector("#palabrasClave i"),
+		nav: DOM.configFiltros.querySelector("nav"),
+		camposPresenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
+		selects: DOM.configFiltros.querySelectorAll("select"),
+		palClave: DOM.configFiltros.querySelector("#palabrasClave input"),
+		palClaveAprob: DOM.configFiltros.querySelector("#palabrasClave i"),
 
 		// Muestra / Oculta filtros
-		toggleFiltrosIndivs: DOM.configCons.querySelector("#toggleFiltrosIndivs"),
-		muestraFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #muestraFiltros"),
-		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltrosIndivs #ocultaFiltros"),
+		toggleFiltros: DOM.configCons.querySelector("#toggleFiltros"),
+		muestraFiltros: DOM.configCons.querySelector("#toggleFiltros #muestraFiltros"),
+		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltros #ocultaFiltros"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
@@ -93,7 +94,7 @@ window.addEventListener("load", async () => {
 	DOM.encabMasPelis.classList.replace("ocultar", "aparece"); // Tiene que estar en primer lugar, para no demorar su ejecución
 	await cambioDeConfig_id("start-up");
 	actualiza.cartelQuieroVerVisible();
-	await cambioDeCampos();
+	await cambioDePrefs();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
 });
 

@@ -95,10 +95,10 @@ module.exports = {
 
 		// Si existen calificaciones, obtiene los promedios
 		if (califics.length)
-			for (let campo in datos)
-				datos[campo] =
-					campo != "calificacion"
-						? Math.round(califics.map((n) => n[campo].valor).reduce((acum, i) => acum + i) / califics.length)
+			for (let prop in datos)
+				datos[prop] =
+					prop != "calificacion"
+						? Math.round(califics.map((n) => n[prop].valor).reduce((acum, i) => acum + i) / califics.length)
 						: Math.round(califics.map((n) => n.resultado).reduce((acum, i) => acum + i) / califics.length);
 
 		// Actualiza la calificación en el producto
