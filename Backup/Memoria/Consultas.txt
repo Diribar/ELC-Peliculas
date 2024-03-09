@@ -1,0 +1,28 @@
+Configuracion
+    - Config_id
+    - Prefs
+	- Layout
+	- Filtros
+
+
+Controller API, obtiene cabecera:
+- Si existe session/cookie, toma su cabecera_id de ahí.
+- Else, obtiene su cabecera_id del usuario
+- Else, deja vacío el select de nombre. Place-holder: "Configuraciones". Botonera: "nuevo" solamene
+
+Controller API, obtiene prefs:
+- Si existe session/cookie, los toma de ahí.
+- Else, los toma de BD por su cabecera_id
+- Else si no existe cabecera_id, layout_id: al azar
+
+Cuando se cambia la configuración:
+- El layout y los filtros se actualizan con BD de la config elegida
+- Se guarda config_id en el usuario 
+- Se borran session/cookies
+
+Cuando se cambia una preferencia:
+- Se actualiza session/cookie (cabecera_id, prefs)
+
+Cuando se comparte una configuración, se comparten:
+- config_id
+- preferencias
