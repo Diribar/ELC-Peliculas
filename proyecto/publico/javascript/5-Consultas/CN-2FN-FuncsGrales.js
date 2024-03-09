@@ -14,8 +14,8 @@ let obtiene = {
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
-		if (!texto) texto = "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?texto=" + texto + "&configCons_id=";
+		texto = texto ? "texto=" + texto + "&" : "";
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
 		return fetch(rutaCompleta + v.configCons_id).then((n) => n.json());
 	},
 };
@@ -290,7 +290,7 @@ let cambiosEnBD = {
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const configCons_cabeceras = [...v.configCons_cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
 		const propios = configCons_cabeceras.filter((n) => n.usuario_id == v.userID);
-		configCons_id = propios.length ? propios[0].id : v.configConsDefault_id;
+		configCons_id = propios.length ? propios[0].id : "";
 
 		// Actualiza el select con el id
 		DOM.configCons_id.value = configCons_id;

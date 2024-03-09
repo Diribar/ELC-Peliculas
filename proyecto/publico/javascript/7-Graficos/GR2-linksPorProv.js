@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	google.charts.load("current", {packages: ["corechart"]});
 	google.charts.setOnLoadCallback(drawGraphic);
 
-	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
+	// https://developers.google.com/chart/interactive/docs/gallery/piechart
 	function drawGraphic() {
 		// Consolida el resultado
 		const resultado = [["Prov.", "Cant. de Links"]];
@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 			fontSize: 10,
 			chartArea: {height: "80%"},
 			pieSliceText: "value",
-			sliceVisibilityThreshold: 0.05,
+			sliceVisibilityThreshold: 0.05, // agrupa los que son menores al 5%
 			legend: {position: "labeled"},
 		};
 

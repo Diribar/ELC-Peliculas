@@ -37,11 +37,7 @@ module.exports = {
 		},
 		obtieneConfigCons_BD: async ({usuario, cabecera_id}) => {
 			// Obtiene el ID de la configCons del usuario
-			if (!cabecera_id)
-				cabecera_id =
-					usuario && usuario.configCons_id
-						? usuario.configCons_id // el guardado en el usuario
-						: configConsDefault_id; // si el usuario no está logueado o no guardó una elección, toma el default
+			if (!cabecera_id) cabecera_id = usuario && usuario.configCons_id ? usuario.configCons_id : "";
 
 			// Obtiene las preferencias
 			let prefs = {};
