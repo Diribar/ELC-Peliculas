@@ -16,6 +16,7 @@ const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 const creadoPorUsuario = require("../../middlewares/filtrosPorRegistro/creadoPorUsuario");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
+const comentarioNeces = require("../../middlewares/filtrosPorRegistro/comentarioNeces");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Middlewares - Temas de captura
@@ -40,7 +41,7 @@ router.get("/crud/api/actualiza-visibles", API.actualizarVisibles);
 
 // Vistas - CRUD: Inactivar, Recuperar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecupGuardar);
+router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, comentarioNeces, capturaInactivar, vista.inacRecupGuardar);
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
 router.post("/:familia/recuperar", aptoCRUD, capturaInactivar, vista.inacRecupGuardar);
 
