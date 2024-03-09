@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 		// Actualiza la preferencia
 		iconosPPP[indice].classList.add("inactivo");
 		await fetch(
-			rutas.pppRutaGuardar + "/?entidad=" + entidades[indice] + "&entidad_id=" + ids[indice] + "&opcion_id=" + pppProp_id
+			rutas.pppRutaGuardar + "/?entidad=" + entidades[indice] + "&entidad_id=" + ids[indice] + "&ppp_id=" + pppProp_id
 		);
 		iconosPPP[indice].classList.remove("inactivo");
 

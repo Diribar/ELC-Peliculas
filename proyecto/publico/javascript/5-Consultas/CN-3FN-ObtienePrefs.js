@@ -21,29 +21,29 @@ let actualizaConfigCons = {
 	// Encabezado
 	opcion: function () {
 		// Variables
-		v.opcion_id = DOM.opcion_id.value;
+		v.layout_id = DOM.layout_id.value;
 
 		// Obtiene los valores completos de la opción elegida
-		if (v.opcion_id) {
-			v.opcionBD = v.opcionesBD.find((n) => n.id == v.opcion_id);
-			if (!v.opcionBD) v.opcion_id = null;
+		if (v.layout_id) {
+			v.layoutBD = v.layoutsBD.find((n) => n.id == v.layout_id);
+			if (!v.layoutBD) v.layout_id = null;
 		}
 
 		// Actualiza variable
-		if (v.opcion_id) configCons.opcion_id = v.opcion_id;
+		if (v.layout_id) configCons.layout_id = v.layout_id;
 
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.opcion_id) this.presenciaEstable();
+		if (v.layout_id) this.presenciaEstable();
 
 		// Fin
 		return;
 	},
 	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
-		if (v.opcion_id) {
+		if (v.layout_id) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltros.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
@@ -85,12 +85,12 @@ let actualizaConfigCons = {
 	// Presencia eventual
 	entidad: function () {
 		// Averigua si el campo se debe mostrar
-		const seMuestra = !!v.opcionBD.entidades.length; // sólo si la opción acepta más de una entidad
+		const seMuestra = !!v.layoutBD.entidades.length; // sólo si la opción acepta más de una entidad
 
 		// Obtiene la entidad
 		const asignaEnt = !seMuestra || !DOM.entidades || !DOM.entidades.value;
 		v.entidadBD = asignaEnt
-			? v.entidadesBD.find((n) => n.id == v.opcionBD.entDefault_id)
+			? v.entidadesBD.find((n) => n.id == v.layoutBD.entDefault_id)
 			: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
 		v.entidad = v.entidadBD.codigo;
 		if (v.entidad) configCons.entidad = v.entidad;
@@ -104,10 +104,10 @@ let actualizaConfigCons = {
 	},
 	pppOpciones: function () {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
-		if (!v.userID || v.opcionBD.codigo == "misCalificadas") return this.cfc();
+		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.cfc();
 
 		// Acciones si la opción elegida es "Mis preferencias"
-		if (v.opcionBD.codigo == "misPrefs") {
+		if (v.layoutBD.codigo == "misPrefs") {
 			configCons.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
 			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
 		}

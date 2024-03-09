@@ -145,7 +145,7 @@ module.exports = {
 		obtieneOpciones: (req, res) => res.json(pppOpcsSimples),
 		guardaLaPreferencia: async (req, res) => {
 			// Variables
-			const {entidad, entidad_id, opcion_id} = req.query;
+			const {entidad, entidad_id, ppp_id} = req.query;
 			const usuario_id = req.session.usuario.id;
 
 			// Si existe el registro, lo elimina
@@ -154,8 +154,8 @@ module.exports = {
 			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
 
 			// Si la opción no es sinPref, agrega el registro
-			if (opcion_id != pppOpcsObj.sinPref.id) {
-				const datos = {entidad, entidad_id, usuario_id, opcion_id};
+			if (ppp_id != pppOpcsObj.sinPref.id) {
+				const datos = {entidad, entidad_id, usuario_id, ppp_id};
 				BD_genericas.agregaRegistro("pppRegistros", datos);
 			}
 

@@ -16,7 +16,7 @@ module.exports = {
 		},
 		configPrefs: async (req, res) => {
 			// Variables
-			const {texto, configCons_id} = req.query;
+			const {texto, configCons_id: cabecera_id} = req.query;
 			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
@@ -33,7 +33,7 @@ module.exports = {
 					: null;
 
 			// Obtiene las preferencias
-			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({configCons_id});
+			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({cabecera_id});
 			const configCons = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
 
 			// Fin
@@ -52,7 +52,7 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				...{opcionesBD: cn_opciones, entidadesBD: cn_entidades}, // Opciones y Entidades
+				...{layoutsBD: cn_layouts, entidadesBD: cn_entidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre, configConsDefault_id},
 				...{filtrosConDefault, epocasEstreno, unDia},
@@ -178,37 +178,37 @@ module.exports = {
 		// Variables
 		const configCons = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const opcion = cn_opciones.find((n) => n.id == configCons.opcion_id);
-		const cantResults = opcion.cantidad;
+		const layout = cn_layouts.find((n) => n.id == configCons.layout_id);
+		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = configCons;
 
 		// Obtiene los productos, rclvs y registros ppp del usuario
-		let prods = procesos.resultados.obtieneProds.comun({...configCons, opcion});
-		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...configCons, opcion});
+		let prods = procesos.resultados.obtieneProds.comun({...configCons, layout});
+		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...configCons, layout});
 		let pppRegistros = usuario_id
 			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
 			: [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Cruces que siempre se deben realizar
-		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, opcion});
+		prods = procesos.resultados.cruce.prodsConPPP({prods, pppRegistros, configCons, usuario_id, layout});
 
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
-			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, opcion});
-			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, opcion});
-			prods = procesos.resultados.orden.prods({prods, opcion}); // Ordena los productos
-			prods = procesos.resultados.botonesListado({resultados: prods, opcion, configCons});
-			prods = procesos.resultados.camposNecesarios.prods({prods, opcion}); // Deja sólo los campos necesarios
+			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, layout});
+			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, layout});
+			prods = procesos.resultados.orden.prods({prods, layout}); // Ordena los productos
+			prods = procesos.resultados.botonesListado({resultados: prods, layout, configCons});
+			prods = procesos.resultados.camposNecesarios.prods({prods, layout}); // Deja sólo los campos necesarios
 			return res.json(prods);
 		} else {
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave, cantResults}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
-			rclvs = procesos.resultados.orden.rclvs({rclvs, opcion, entidad}); // Si quedaron vigentes algunos RCLV, los ordena
-			rclvs = procesos.resultados.botonesListado({resultados: rclvs, opcion, configCons});
-			rclvs = procesos.resultados.camposNecesarios.rclvs({rclvs, opcion}); // Deja sólo los campos necesarios
+			rclvs = procesos.resultados.orden.rclvs({rclvs, layout}); // Si quedaron vigentes algunos RCLV, los ordena
+			rclvs = procesos.resultados.botonesListado({resultados: rclvs, layout, configCons});
+			rclvs = procesos.resultados.camposNecesarios.rclvs(rclvs); // Deja sólo los campos necesarios
 			return res.json(rclvs);
 		}
 	},

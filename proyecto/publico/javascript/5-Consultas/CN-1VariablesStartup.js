@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// Encabezado
-		opcion_id: DOM.tituloPrincipal.querySelector("select[name='opcion_id']"),
+		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
 		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 		consCopiada: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #consCopiada"),
 

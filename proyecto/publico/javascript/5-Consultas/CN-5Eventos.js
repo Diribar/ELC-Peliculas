@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
-			await cambioDeCampos();
+			await cambioDePrefs();
 		}
 		// Acciones en los demás casos
 		else {
@@ -53,14 +53,14 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			}
-			// Para reemplazar 'quitar' por el 'placeholder'
+			// Reemplaza 'quitar la opción elegida' por el 'placeholder'
 			else {
 				// Reemplaza entre las opciones sin valor
 				if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 
 				// Cambios de campo
 				v.hayCambiosDeCampo = true;
-				await cambioDeCampos();
+				await cambioDePrefs();
 
 				// Guarda las preferencias en session y cookie
 				actualiza.guardaPrefsEnSessionCookie();
@@ -75,7 +75,6 @@ window.addEventListener("load", async () => {
 		const elemento = e.target;
 		const padre = elemento.parentNode;
 		const nombre = elemento.id ? elemento.id : padre.id;
-		console.log(nombre);
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
@@ -101,7 +100,7 @@ window.addEventListener("load", async () => {
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeVariables();
 				await actualiza.statusInicialCampos("deshacer");
-				await cambioDeCampos();
+				await cambioDePrefs();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verificaConfigCons_id();
@@ -110,7 +109,7 @@ window.addEventListener("load", async () => {
 				// Acciones si existe
 				await cambiosEnBD.eliminaConfigCons();
 				await cambioDeConfig_id();
-				await cambioDeCampos();
+				await cambioDePrefs();
 			} else if (nombre == "guardar") guardarBotonera();
 			return;
 		}
@@ -122,7 +121,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Preferencias - Cartel 'muestraPrefs'
-		else if ([padre.id, padre.parentNode.id].includes("togglePrefsIndivs")) {
+		else if ([padre.id, padre.parentNode.id].includes("toggleFiltros")) {
 			// Cambia el status de los botones
 			DOM.muestraFiltros.classList.toggle("ocultaFiltros");
 			DOM.ocultaFiltros.classList.toggle("ocultaFiltros");
@@ -130,14 +129,14 @@ window.addEventListener("load", async () => {
 			// Muestra u oculta los filtros vacíos
 			v.muestraFiltros = DOM.muestraFiltros.className.includes("ocultaFiltros");
 			if (v.muestraFiltros) DOM.nav.classList.remove("startUp");
-			actualiza.togglePrefsIndivs();
+			actualiza.toggleFiltros();
 
 			// Fin
 			return;
 		}
 
 		// Encabezado - Toggle filtros para celular parado
-		if (
+		else if (
 			nombre == "toggleFiltrosGlobal" ||
 			(DOM.configCons.className.includes("aumentaX") &&
 				["zonaDisponible", "telonFondo", "contadorDeProds", "quieroVer", "vistaDeResults", ""].includes(nombre))
@@ -155,6 +154,35 @@ window.addEventListener("load", async () => {
 			}
 		}
 
+		else if (nombre == "compartirPrefs") {
+			// Si el 'ppp' es un combo, lo convierte a su 'id'
+			let configConsComp = {...configCons};
+			if (configConsComp.pppOpciones && Array.isArray(configConsComp.pppOpciones)) {
+				const combo = configConsComp.pppOpciones.toString();
+				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configConsComp.pppOpciones = pppOpcion.id;
+				else delete configConsComp.pppOpciones;
+			}
+			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configConsComp.entidad; // si la entidad es la estándar, elimina el campo
+
+			// Obtiene los 'camposUrl'
+			let camposUrl = "";
+			for (let prop in configConsComp)
+				if (configConsComp[prop] == v.filtrosConDefault[prop]) delete configConsComp[prop];
+				else camposUrl += prop + "=" + configConsComp[prop] + "&";
+			if (!camposUrl.length) return;
+
+			// Obtiene el 'url' y lo lleva al clipboard
+			camposUrl = camposUrl.slice(0, -1);
+			const url = location.href + "/?" + camposUrl;
+			navigator.clipboard.writeText(url);
+
+			// Muestra la leyenda 'Consulta copiada'
+			DOM.consCopiada.classList.remove("ocultar");
+			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 2000);
+
+		}
+
 		// Mostrar resultados - Preferencia por producto
 		else if (nombre == "ppp" && (padre.id == "infoSup" || padre.tagName == "TD")) {
 			e.preventDefault(); // Previene el efecto del anchor
@@ -164,7 +192,7 @@ window.addEventListener("load", async () => {
 
 		// Mostrar resultados - Actualizar resultados
 		else if (nombre == "actualizar") {
-			if (v.opcion_id) {
+			if (v.layout_id) {
 				await resultados.obtiene();
 				if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
 			}
@@ -198,7 +226,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Mostrar resultados - Botón 'quieroVer'
-		else if (padre.id == "carteles" && nombre == "quieroVer" && v.opcion_id) {
+		else if (padre.id == "carteles" && nombre == "quieroVer" && v.layout_id) {
 			resultados.muestra.generico();
 			return;
 		}
@@ -227,7 +255,7 @@ window.addEventListener("load", async () => {
 let palabrasClave = async () => {
 	DOM.palClaveAprob.classList.add("inactivo");
 	v.hayCambiosDeCampo = true;
-	await cambioDeCampos();
+	await cambioDePrefs();
 
 	// Fin
 	return;

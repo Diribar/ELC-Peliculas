@@ -3,7 +3,7 @@
 let resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
-		if (!v.opcion_id) return;
+		if (!v.layout_id) return;
 
 		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
@@ -16,14 +16,14 @@ let resultados = {
 		v.resultados = null;
 
 		// Acciones si el usuario no está logueado y es requerido
-		if (!v.userID && v.opcionBD.loginNeces) {
+		if (!v.userID && v.layoutBD.loginNeces) {
 			DOM.loginNecesario.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
 		}
 
 		// Si la opción es 'misPrefs' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
-		if (v.userID && v.opcionBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
+		if (v.userID && v.layoutBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
 			DOM.cartelOrdenPPP.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
@@ -31,7 +31,7 @@ let resultados = {
 
 		// Busca la información en el BE
 		v.ahora = new Date();
-		const datos = v.opcionBD.codigo.startsWith("fechaDelAno")
+		const datos = v.layoutBD.codigo.startsWith("fechaDelAno")
 			? {...configCons, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 			: configCons;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
@@ -44,7 +44,7 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		if (v.resultados && !v.opcionBD.boton) this.contador();
+		if (v.resultados && !v.layoutBD.boton) this.contador();
 
 		// Fin
 		return;
@@ -57,7 +57,7 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.opcionBD.boton) return;
+			if (v.layoutBD.boton) return;
 
 			// Contador para 'Todos los productos'
 			DOM.contadorDeProds.innerHTML = total;
@@ -97,7 +97,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.opcionBD.boton ? this.botones() : this.listados();
+			v.layoutBD.boton ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
@@ -127,7 +127,7 @@ let resultados = {
 			}
 
 			// Genera las variables 'ppp'
-			if (v.opcionBD.codigo == "azar") {
+			if (v.layoutBD.codigo == "azar") {
 				DOM.ppps = DOM.botones.querySelectorAll(".registro #ppp");
 				v.ppps = Array.from(DOM.ppps);
 			}
@@ -378,11 +378,11 @@ let auxiliares = {
 	},
 	titulo: (registroAct, indice) => {
 		// Variables
-		const opcion = v.opcionBD.codigo;
+		const layout = v.layoutBD.codigo;
 		let titulo = "";
 
 		// Casos particulares
-		if (opcion.startsWith("fechaDelAno")) {
+		if (layout.startsWith("fechaDelAno")) {
 			// Variables
 			const diaAnt = v.registroAnt.fechaDelAno_id;
 			const diaActual = registroAct.fechaDelAno_id;
@@ -402,7 +402,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-		if (opcion == "nombre") {
+		if (layout == "nombre") {
 			// Variables
 			const nombreAnt = v.registroAnt.nombre ? v.registroAnt.nombre : v.registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
@@ -421,7 +421,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo = prefijo + titulo;
 		}
-		if (opcion == "anoOcurrencia") {
+		if (layout == "anoOcurrencia") {
 			// Variables
 			const epocaAnt = v.registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
@@ -453,14 +453,14 @@ let auxiliares = {
 			// Épocas anteriores
 			else if (epocaAnt != epocaActual) titulo = registroAct.epocaOcurrencia;
 		}
-		if (opcion == "misCalificadas") {
+		if (layout == "misCalificadas") {
 			const califAnt = v.registroAnt.calificacion;
 			const califActual = registroAct.calificacion;
 			if (!califActual && (califAnt || !Object.keys(v.registroAnt))) titulo = "Vistas sin calificar";
 			else if (!indice) titulo = "Mis calificadas";
 		}
 		// Cambio de grupo
-		if (opcion == "misPrefs") {
+		if (layout == "misPrefs") {
 			// Variables
 			const nombreAnt = v.registroAnt.ppp ? v.registroAnt.ppp.nombre : "";
 			const nombreActual = registroAct.ppp.nombre;
@@ -468,7 +468,7 @@ let auxiliares = {
 			// Resultado
 			if (nombreAnt != nombreActual) titulo = nombreActual;
 		}
-		if (opcion == "anoEstreno") {
+		if (layout == "anoEstreno") {
 			// Variables
 			const nombreAnt = v.registroAnt.epocaEstreno;
 			const nombreActual = registroAct.epocaEstreno;
@@ -478,9 +478,9 @@ let auxiliares = {
 		}
 
 		// Una sola tabla
-		if (opcion == "calificacion" && !indice) titulo = "Mejor calificadas";
-		if (opcion == "misConsultas" && !indice) titulo = "Mis consultas";
-		if (opcion == "altaRevisadaEn" && !indice) titulo = "Últimas ingresadas";
+		if (layout == "calificacion" && !indice) titulo = "Mejor calificadas";
+		if (layout == "misConsultas" && !indice) titulo = "Mis consultas";
+		if (layout == "altaRevisadaEn" && !indice) titulo = "Últimas ingresadas";
 
 		// Fin
 		return titulo;
@@ -525,7 +525,7 @@ let auxiliares = {
 		fila.appendChild(celda);
 
 		// Si se eligió una opción de 'calificadas', crea la celda correspondiente
-		if (["calificacion", "misCalificadas"].includes(v.opcionBD.codigo) && producto.calificacion) {
+		if (["calificacion", "misCalificadas"].includes(v.layoutBD.codigo) && producto.calificacion) {
 			celda = creaUnaCelda.calificacion(producto);
 			fila.appendChild(celda);
 		}
@@ -598,7 +598,7 @@ let creaUnaCelda = {
 
 		// Genera la información - 2a línea - Fechas
 		const segundaLinea = document.createElement("p");
-		if (v.opcionBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
+		if (v.layoutBD.codigo == "fechaDelAnoListado") segundaLinea.innerHTML += rclv.fechaDelAno; // Día del Año
 		else if (rclv.anoOcurrencia)
 			segundaLinea.innerHTML += (rclv.entidad == "personajes" ? "Nacim.: " : "Comienzo: ") + rclv.anoOcurrencia;
 		// Año de Nacimiento o Comienzo

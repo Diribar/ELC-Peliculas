@@ -3,21 +3,21 @@
 <section id="tituloPrincipal" class="flexCol">
 	<div class="flexRow">
 		<!-- Opciones -->
-		<select name="opcion_id" class="prefSimple" required>
+		<select name="layout_id" class="prefSimple" required>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
-				<% for (let opcion of cn_opciones.filter(n => n.boton)) { %>
-				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% for (let layout of cn_layouts.filter(n => n.boton)) { %>
+				<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listados">
-				<% for (let opcion of cn_opciones.filter(n => !n.boton && !n.loginNeces)) { %>
-				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% for (let layout of cn_layouts.filter(n => !n.boton && !n.loginNeces)) { %>
+				<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<% if (locals.usuario) { %>
 			<optgroup label="Mis listados">
-				<% for (let opcion of cn_opciones.filter(n => !n.boton && n.loginNeces)) { %>
-				<option value="<%= opcion.id %>"><%= opcion.nombre %></option>
+				<% for (let layout of cn_layouts.filter(n => !n.boton && n.loginNeces)) { %>
+				<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<% } %>
