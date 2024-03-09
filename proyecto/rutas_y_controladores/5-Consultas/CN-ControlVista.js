@@ -4,14 +4,6 @@ const procesos = require("./CN-Procesos");
 
 module.exports = {
 	consultas: async (req, res) => {
-		// Si la configuración está en la url, toma el valor y redirige para eliminarla
-		const configCons = req.query;
-		if (Object.keys(configCons).length) {
-			procesos.configs.configCons_url(req);
-			const ruta = req.protocol + "://" + req.headers.host + req.baseUrl;
-			return res.redirect(ruta);
-		}
-
 		// Variables
 		const tema = "consultas";
 		const titulo = "Consulta de Películas";
@@ -39,4 +31,3 @@ module.exports = {
 		});
 	},
 };
-

@@ -61,7 +61,7 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		configCons_url: (req) => {
+		configCons_url: (req, res) => {
 			// Guarda la configuracion en cookies y session
 			const configCons = req.query;
 			req.session.configCons = configCons;
@@ -125,8 +125,7 @@ module.exports = {
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let prop in prefs)
-					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro)
-						filtros[filtrosCons[prop].campoFiltro] = prefs[prop];
+					if (filtrosCons[prop] && filtrosCons[prop].campoFiltro) filtros[filtrosCons[prop].campoFiltro] = prefs[prop];
 
 				// Conversión de 'idiomas'
 				if (prefs.idiomas) {
@@ -197,9 +196,7 @@ module.exports = {
 		obtieneRclvs: {
 			consolidado: function (prefs) {
 				if (prefs.entidad == "productos") return null;
-				return prefs.layout.codigo.startsWith("fechaDelAno")
-					? this.porFechaDelAno(prefs)
-					: this.comun(prefs);
+				return prefs.layout.codigo.startsWith("fechaDelAno") ? this.porFechaDelAno(prefs) : this.comun(prefs);
 			},
 			comun: async function (prefs) {
 				// Variables

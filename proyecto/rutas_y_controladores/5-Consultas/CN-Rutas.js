@@ -4,6 +4,9 @@ const router = express.Router();
 const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");
 
+// Middlewares - Específico de consultas
+const consultas = require("../../middlewares/varios/consultas");
+
 // API - Obtiene
 router.get("/api/obtiene-la-configuracion-de-cabecera", API.obtiene.configCabecera);
 router.get("/api/obtiene-la-configuracion-de-prefs", API.obtiene.configPrefs);
@@ -14,16 +17,17 @@ router.get("/api/obtiene-variables", API.obtiene.variables);
 router.get("/api/actualiza-en-usuario-configCons_id", API.cambiosEnBD.actualizaEnUsuarioConfigCons_id);
 router.get("/api/crea-una-configuracion", API.cambiosEnBD.creaConfig);
 router.get("/api/guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
-router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfigCons);
+router.get("/api/elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfig);
 
-// API - Miscelaneas
-router.get("/api/guarda-la-configuracion-en-cookie-y-session", API.guardaConfigEnSessionCookie);
+// API - Session y Cookie
+router.get("/api/guarda-la-configuracion-en-session-y-cookie", API.sessionCookie.guardaConfig);
+router.get("/api/elimina-la-configuracion-en-session-y-cookie", API.sessionCookie.eliminaConfig);
 
 // API - Resultados
 router.get("/api/obtiene-los-resultados", API.resultados);
 
 // Vistas
-router.get("/", vista.consultas);
+router.get("/", consultas, vista.consultas);
 
 // Fin
 module.exports = router;

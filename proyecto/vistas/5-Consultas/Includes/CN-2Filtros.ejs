@@ -8,10 +8,7 @@
 		<!-- Configuraciones personales -->
 		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsCons.cabeceras.propios.length ? 'ocultar' : '' %>">
 			<% for (let configDeCabecera of configsCons.cabeceras.propios) { %>
-				<option
-					value="<%= configDeCabecera.id %>"
-					<% if (configDeCabecera.id == cabecera_id) { %>selected<% } %>
-				><%= configDeCabecera.nombre %></option>
+				<option value="<%= configDeCabecera.id %>"><%= configDeCabecera.nombre %></option>
 			<% } %>
 		</optgroup>
 		<!-- Configuraciones predeterminadas -->

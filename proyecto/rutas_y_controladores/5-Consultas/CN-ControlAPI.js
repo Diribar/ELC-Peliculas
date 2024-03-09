@@ -6,36 +6,37 @@ module.exports = {
 	obtiene: {
 		configCabecera: async (req, res) => {
 			// Variables
-			const {configCons_id} = req.query;
+			const id = req.query.id
+				? req.query.id
+				: req.session.configCons
+				? req.session.configCons.id
+				: req.session.usuario
+				? req.session.usuario.configCons_id
+				: null;
 
 			// Obtiene la cabecera
-			const configCabecera = await BD_genericas.obtienePorId("consRegsCabecera", configCons_id);
+			const cabecera = id ? await BD_genericas.obtienePorId("consRegsCabecera", id) : {};
 
 			// Fin
-			return res.json(configCabecera);
+			return res.json(cabecera);
 		},
 		configPrefs: async (req, res) => {
 			// Variables
-			const {texto, configCons_id: cabecera_id} = req.query;
+			const {texto, cabecera_id} = req.query;
 			let configCons_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
-			if (texto == "deshacer") {
-				delete req.session.prefsCons;
-				res.clearCookie("prefsCons");
-			}
+			if (texto == "deshacer") eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else
-				configCons_SC = req.session.configCons
-					? req.session.configCons
-					: req.cookies.configCons
-					? req.cookies.configCons
-					: null; // debe ser null
+			else configCons_SC = req.session.configCons ? req.session.configCons : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const configCons_BD = await procesos.configs.obtieneConfigCons_BD({cabecera_id});
+			const configCons_BD = cabecera_id ? await procesos.configs.obtieneConfigCons_BD({cabecera_id}) : null;
 			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
+
+			// Correcciones
 			if (prefs && prefs.id) delete prefs.id;
+			if (!prefs) prefs = {layout_id: layoutDefault_id};
 
 			// Fin
 			return res.json(prefs);
@@ -84,10 +85,6 @@ module.exports = {
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
-			// Se eliminan session y cookie
-			delete req.session.configCons;
-			res.clearCookie("configCons");
-
 			// Fin
 			return res.json();
 		},
@@ -125,8 +122,7 @@ module.exports = {
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
-				delete req.session.prefsCons;
-				res.clearCookie("prefsCons");
+				eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
 				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
@@ -141,7 +137,7 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
-		eliminaConfigCons: async (req, res) => {
+		eliminaConfig: async (req, res) => {
 			const {configCons_id: cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
@@ -154,24 +150,30 @@ module.exports = {
 			return res.json();
 		},
 	},
-	guardaConfigEnSessionCookie: (req, res) => {
-		// Variables
-		const configCons = JSON.parse(req.query.configCons);
+	sessionCookie: {
+		guardaConfig: (req, res) => {
+			// Variables
+			const configCons = JSON.parse(req.query.configCons);
 
-		// Si el 'ppp' es un array, lo convierte en un 'id'
-		if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-			const combo = configCons.pppOpciones.toString();
-			const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-			if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-			else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
-		}
+			// Si el 'ppp' es un array, lo convierte en un 'id'
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
+				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
+			}
 
-		// Guarda la configuración
-		req.session.configCons = configCons;
-		res.cookie("configCons", configCons, {maxAge: unDia});
+			// Guarda la configuración
+			req.session.configCons = configCons;
+			res.cookie("configCons", configCons, {maxAge: unDia});
 
-		// Fin
-		return res.json();
+			// Fin
+			return res.json();
+		},
+		eliminaConfig: (req, res) => {
+			eliminaSessionCookie(req, res);
+			return res.json();
+		},
 	},
 	resultados: async (req, res) => {
 		// Variables
@@ -211,4 +213,9 @@ module.exports = {
 			return res.json(rclvs);
 		}
 	},
+};
+let eliminaSessionCookie = (req, res) => {
+	delete req.session.configCons;
+	res.clearCookie("configCons");
+	return;
 };

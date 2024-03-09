@@ -55,13 +55,7 @@ window.addEventListener("load", async () => {
 		else {
 			// Reemplaza entre las opciones sin valor
 			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
-
-			// Cambios de campo
-			v.hayCambiosDeCampo = true;
-			await cambioDePrefs();
-
-			// Guarda la configuración en session y cookie
-			actualiza.guardaConfigEnSessionCookie();
+			await estandarParaInputs();
 		}
 
 		// Fin
@@ -81,7 +75,7 @@ window.addEventListener("load", async () => {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
 
-				// Valor en el input
+				// Valor inicial en el input, para la edición
 				DOM.configNuevaNombre.value =
 					nombre == "edicion" ? DOM.configCons_id.options[DOM.configCons_id.selectedIndex].text : "";
 
@@ -103,16 +97,21 @@ window.addEventListener("load", async () => {
 				if (!existe || !v.filtroPropio) return;
 
 				// Acciones si existe
-				await cambiosEnBD.eliminaConfigCons();
+				await cambiosEnBD.eliminaConfig();
 				await cambioDeConfig_id();
 				await cambioDePrefs();
 			} else if (nombre == "guardar") guardarBotonera();
+
+			// Fin
 			return;
 		}
 
 		// Filtros - 'palabrasClave'
 		else if (nombre == "palabrasClave") {
-			palabrasClave();
+			DOM.palClaveAprob.classList.add("inactivo");
+			await estandarParaInputs()
+
+			// Fin
 			return;
 		}
 
@@ -125,7 +124,7 @@ window.addEventListener("load", async () => {
 			// Muestra u oculta los filtros vacíos
 			v.muestraFiltros = DOM.muestraFiltros.className.includes("ocultaFiltros");
 			if (v.muestraFiltros) DOM.nav.classList.remove("startUp");
-			actualiza.toggleFiltros();
+			actualiza.toggleBotonFiltros();
 
 			// Fin
 			return;
@@ -176,7 +175,7 @@ window.addEventListener("load", async () => {
 
 			// Muestra la leyenda 'Consulta copiada'
 			DOM.consCopiada.classList.remove("ocultar");
-			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 2000);
+			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 1500);
 		}
 
 		// Mostrar resultados - Preferencia por producto
@@ -234,7 +233,8 @@ window.addEventListener("load", async () => {
 			return;
 		}
 	});
-	DOM.cuerpo.addEventListener("keypress", (e) => {
+	DOM.cuerpo.addEventListener("keydown", (e) => {
+		// Enter
 		if (e.key == "Enter") {
 			// Variables
 			const elemento = e.target;
@@ -245,24 +245,22 @@ window.addEventListener("load", async () => {
 			if (nombre == "palabrasClave") palabrasClave();
 			else if (nombre == "configNueva") guardarBotonera();
 		}
+		// Escape
+		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n))) {
+			DOM.configNuevaNombre.classList.remove("nuevo", "edicion"); // Oculta el input
+			v.nombreOK = false; // Variables
+			actualiza.botoneraActivaInactiva(); // Actualiza la botonera
+		}
 	});
 });
 // Funciones
-let palabrasClave = async () => {
-	DOM.palClaveAprob.classList.add("inactivo");
-	v.hayCambiosDeCampo = true;
-	await cambioDePrefs();
-
-	// Fin
-	return;
-};
 let guardarBotonera = async () => {
 	if (v.nuevo || v.edicion) {
 		// Obtiene el nuevo nombre
 		cabecera.nombre = DOM.configNuevaNombre.value;
 
 		// Si es una configuración nueva, agrega la cabecera
-		if (v.nuevo) await cambiosEnBD.creaUnaConfiguracion();
+		if (v.nuevo) await cambiosEnBD.creaConfig();
 
 		// Si es una edición, lo avisa para que no guarde los datos de campo en la BD, ya que no cambiaron
 		if (v.edicion) cabecera.edicion = true;
@@ -273,7 +271,7 @@ let guardarBotonera = async () => {
 	}
 
 	// Guarda la información en la base de datos
-	await cambiosEnBD.guardaUnaConfiguracion();
+	await cambiosEnBD.guardaConfig();
 
 	// Acciones particulares
 	if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
@@ -301,4 +299,15 @@ let verificaConfigCons_id = async () => {
 
 	// Fin
 	return existe;
+};
+let estandarParaInputs = async () => {
+	// Cambios de campo
+	v.hayCambiosDeCampo = true;
+	await cambioDePrefs();
+
+	// Guarda la configuración en session y cookie
+	sessionCookie.guardaConfig();
+
+	// Fin
+	return;
 };

@@ -10,13 +10,14 @@ let obtiene = {
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	configCabecera: () => {
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?configCons_id=";
-		return fetch(rutaCompleta + DOM.configCons_id.value).then((n) => n.json());
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-cabecera/?id=";
+		const id = DOM.configCons_id.value;
+		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
 	configPrefs: (texto) => {
 		texto = texto ? "texto=" + texto + "&" : "";
-		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "configCons_id=";
-		return fetch(rutaCompleta + cabecera.id).then((n) => n.json());
+		const rutaCompleta = ruta + "obtiene-la-configuracion-de-prefs/?" + texto + "cabecera_id=";
+		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
 	},
 };
 let actualiza = {
@@ -25,9 +26,10 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.configCabecera();
+				if (!DOM.configCons_id.value) DOM.configCons_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = v.configCabecera.usuario_id == v.userID;
+		v.filtroPropio = v.userID && cabecera.usuario_id == v.userID;
 
 		// Fin
 		return;
@@ -156,8 +158,12 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	toggleFiltros: function () {
-		this.actualizaMuestraFiltros();
+	toggleBotonFiltros: function () {
+		// Variables
+		v.muestraFiltros =
+			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
+			window.getComputedStyle(DOM.muestraFiltros).display == "none";
+
 		// Muestra / Oculta los filtros
 		for (let campo of DOM.selects) {
 			// Sólo sirve para el start-up
@@ -181,23 +187,6 @@ let actualiza = {
 		// Fin
 		return;
 	},
-	actualizaMuestraFiltros: () => {
-		v.muestraFiltros =
-			window.getComputedStyle(DOM.toggleFiltros).display == "none" ||
-			window.getComputedStyle(DOM.muestraFiltros).display == "none";
-	},
-	guardaConfigEnSessionCookie: () => {
-		// Variables
-		const rutaCompleta = ruta + "guarda-la-configuracion-en-cookie-y-session/?configCons=";
-		let configCons = {...cabecera, ...prefs};
-		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
-
-		// Guarda
-		fetch(rutaCompleta + JSON.stringify(configCons));
-
-		// Fin
-		return;
-	},
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
@@ -209,7 +198,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	creaUnaConfiguracion: async function () {
+	creaConfig: async function () {
 		if (!v.userID) return;
 
 		// Crea la nueva configuración
@@ -223,18 +212,21 @@ let cambiosEnBD = {
 		// Actualiza configCons_id en usuario
 		this.actualizaEnUsuarioConfigCons_id();
 
-		// Crea una opción
+		// Elimina session y cookie
+		await sessionCookie.eliminaConfig();
+
+		// Crea una configuración en el DOM
 		const nombre = cabecera.nombre;
-		const opciones = DOM.configsConsPropios.children;
-		const newOption = new Option(nombre, cabecera.id);
+		const configs = DOM.configsConsPropios.children;
+		const nuevaConfig = new Option(nombre, cabecera.id);
 		// Obtiene el índice donde ubicarla
-		const nombres = [...Array.from(opciones).map((n) => n.text), nombre];
+		const nombres = [...Array.from(configs).map((n) => n.text), nombre];
 		nombres.sort((a, b) => (a < b ? -1 : 1));
 		const indice = nombres.indexOf(nombre);
 		// Agrega la opción
-		indice < opciones.length
-			? DOM.configsConsPropios.insertBefore(newOption, opciones[indice])
-			: DOM.configsConsPropios.appendChild(newOption);
+		indice < configs.length
+			? DOM.configsConsPropios.insertBefore(nuevaConfig, configs[indice])
+			: DOM.configsConsPropios.appendChild(nuevaConfig);
 
 		// La pone como 'selected'
 		DOM.configsConsPropios.children[indice].selected = true;
@@ -243,7 +235,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	guardaUnaConfiguracion: async () => {
+	guardaConfig: async () => {
 		if (!v.userID) return;
 
 		// Guarda los cambios
@@ -259,7 +251,7 @@ let cambiosEnBD = {
 		// Fin
 		return;
 	},
-	eliminaConfigCons: async () => {
+	eliminaConfig: async () => {
 		if (!v.userID) return;
 
 		// Elimina la configuración
@@ -321,12 +313,32 @@ let cambiosEnBD = {
 		return;
 	},
 };
+let sessionCookie = {
+	guardaConfig: () => {
+		// Variables
+		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
+		let configCons = {...cabecera, ...prefs};
+		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
+
+		// Guarda
+		fetch(rutaCompleta + JSON.stringify(configCons));
+
+		// Fin
+		return;
+	},
+	eliminaConfig: async () => {
+		const rutaCompleta = ruta + "elimina-la-configuracion-en-session-y-cookie";
+		await fetch(rutaCompleta);
+		return;
+	},
+};
 let cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	if (texto != "start-up" && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (cabecera.id && v.userID) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (texto != "start-up") await sessionCookie.eliminaConfig();
 	await actualiza.statusInicialCampos();
-	actualiza.toggleFiltros();
+	actualiza.toggleBotonFiltros();
 
 	// Fin
 	return;

@@ -8,8 +8,8 @@ let actualizaConfigCons = {
 		// Obtiene el layout y muestra/oculta campos
 		this.layout();
 
-		// Muestra / Oculta filtros dependiendo de si los campos tienen un valor o "botón mostrar filtros"
-		actualiza.toggleFiltros();
+		// Muestra filtros dependiendo de si tienen un valor o si está oculto el botón "mostrar filtros"
+		actualiza.toggleBotonFiltros();
 
 		// Pule la variable 'prefs'
 		for (let prop in prefs) if (prefs[prop] == "sinFiltro") delete prefs[prop];
