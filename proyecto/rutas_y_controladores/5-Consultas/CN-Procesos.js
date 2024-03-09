@@ -2,7 +2,7 @@
 // Variables
 
 module.exports = {
-	configs: {
+	varios: {
 		cabeceras: async (userID) => {
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
 			const usuario_id = userID ? [1, userID] : 1;
@@ -35,7 +35,7 @@ module.exports = {
 			// Fin
 			return filtros;
 		},
-		obtieneConfigCons_BD: async ({usuario, cabecera_id}) => {
+		prefs_BD: async ({usuario, cabecera_id}) => {
 			// Obtiene el configCons_id del usuario
 			if (!cabecera_id) cabecera_id = usuario && usuario.configCons_id ? usuario.configCons_id : "";
 
@@ -75,6 +75,11 @@ module.exports = {
 			}
 
 			// Fin
+			return;
+		},
+		eliminaSessionCookie: (req, res) => {
+			delete req.session.configCons;
+			res.clearCookie("configCons");
 			return;
 		},
 	},

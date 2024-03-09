@@ -795,11 +795,11 @@ let reduceRCLVs = (rclvs) => {
 	let resultado;
 
 	if (rclvs.length > 1) {
-		// Ordena por prioridad_id decreciente
-		rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
+		// Obtiene la máxima prioridad
+		const prioridades_id = rclvs.map((n) => n.prioridad_id);
+		const prioridad_id = Math.max(...prioridades_id);
 
 		// Filtra por los que tienen la máxima prioridad_id
-		const prioridad_id = rclvs[0].prioridad_id;
 		rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
 
 		// Prioriza por los de mayor avance de proceso de canonización

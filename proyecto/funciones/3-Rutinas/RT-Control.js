@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.RutinasSemanales();
+		// await this.rutinasDiarias.IDdeTablas();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -389,33 +389,43 @@ module.exports = {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
-			// Obtiene los logins diarios y acumulados
-			const loginsDiarios = await BD_genericas.obtieneTodos("loginsDelDia");
-			let ultFecha = await BD_genericas.obtieneTodos("loginsAcums")
-				.then((n) =>
-					n.length
-						? n[n.length - 1].fecha
-						: loginsDiarios.length
-						? new Date(new Date(loginsDiarios[0].fecha).getTime() - unDia).toISOString().slice(0, 10)
-						: hoy
-				)
-				.then((n) => new Date(new Date(n).getTime() + unDia).toISOString().slice(0, 10));
+			// Logins diarios
+			const loginsDiarios = await BD_genericas.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
+			const fechaLoginsDiarios = loginsDiarios.length
+				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
+				: null;
+			let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
+
+			// Logins acums
+			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+			let agregarFecha = loginsAcums.length // condición si hay logins acums
+				? sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
+				? fechaLoginsDiarios // la fecha del primer registro
+				: hoy; // la fecha de hoy
+
+			// Si hay una inconsistencia, termina
+			if (loginsAcums.length && loginsDiarios.length && fechaLoginsDiarios < agregarFecha) {
+				console.log(410, "Inconsistencia:", "Fecha Diaria", fechaLoginsDiarios, "/ Agrega Fecha", agregarFecha);
+				return;
+			}
 
 			// Loop mientras el día sea menor al actual
-			while (ultFecha < hoy) {
+			while (agregarFecha < hoy) {
 				// Variables
-				const diaSem = diasSemana[new Date(ultFecha).getUTCDay()];
-				const anoMes = ultFecha.slice(0, 7);
-				const cantLogins = loginsDiarios.filter((n) => n.fecha == ultFecha).length;
+				const diaSem = diasSemana[new Date(agregarFecha).getUTCDay()];
+				const anoMes = agregarFecha.slice(0, 7);
+				const cantLogins = loginsDiarios.filter((n) => n.fecha == agregarFecha).length;
 
 				// Agrega la cantidad de logins
-				await BD_genericas.agregaRegistro("loginsAcums", {fecha: ultFecha, diaSem, anoMes, cantLogins});
+				await BD_genericas.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				ultFecha = new Date(new Date(ultFecha).getTime() + unDia).toISOString().slice(0, 10);
+				agregarFecha = sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
+			BD_genericas.eliminaTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
@@ -462,7 +472,19 @@ module.exports = {
 		},
 		IDdeTablas: async () => {
 			// Variables
-			const tablas = ["pppRegistros", "calRegistros", "prodsEdicion", "rclvsEdicion", "misConsultas", "consRegsPrefs"];
+			const tablas = [
+				"pppRegistros",
+				"calRegistros",
+				"prodsEdicion",
+				"rclvsEdicion",
+				"misConsultas",
+				"consRegsPrefs",
+				"histEdics",
+				"histStatus",
+				"loginsAcums",
+				"loginsDelDia",
+				"linksEdicion"
+			];
 
 			// Actualiza los valores de ID
 			for (let tabla of tablas) {
@@ -538,29 +560,27 @@ module.exports = {
 				{nombre: "misConsultas", campoUsuario: "usuario_id"},
 			];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
-			let available = {};
+			let regsVinculados = {};
 			let datos = [];
 
-			// Agrega los registros de las entidades
+			// Obtiene los registros por entidad
 			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-
-			// Consolida la información
 			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (available[entidad] = datos[i]));
+			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i]));
 
 			// Elimina historial
 			for (let tabla of tablas) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const registros = await BD_genericas.obtieneTodos(tabla.nombre);
+				const regsHistorial = await BD_genericas.obtieneTodos(tabla.nombre);
 
 				// Revisa que esté presente la entidad y el ususario del registro
-				for (let registro of registros)
+				for (let regHistorial of regsHistorial)
 					if (
-						!available[registro.entidad].includes(registro.entidad_id) || // Lo busca en su entidad vinculada
-						!available.usuarios.includes(registro[tabla.campoUsuario]) // Busca su usuario
+						!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id) || // Lo busca en su entidad vinculada
+						!regsVinculados.usuarios.includes(regHistorial[tabla.campoUsuario]) // Busca su usuario
 					)
-						// Si no lo encuentra en ambas tablas, elimina el registro
-						BD_genericas.eliminaPorId(tabla.nombre, registro.id);
+						// Si no lo encuentra en ambas tablas, elimina el regHistorial
+						BD_genericas.eliminaPorId(tabla.nombre, regHistorial.id);
 			}
 
 			// Fin

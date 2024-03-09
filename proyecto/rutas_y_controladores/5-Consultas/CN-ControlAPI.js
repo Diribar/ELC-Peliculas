@@ -8,8 +8,8 @@ module.exports = {
 			// Variables
 			const id = req.query.id
 				? req.query.id
-				: req.session.configCons
-				? req.session.configCons.id
+				: req.session.configCons && req.session.configCons.cabecera
+				? req.session.configCons.cabecera.id
 				: req.session.usuario
 				? req.session.usuario.configCons_id
 				: null;
@@ -23,16 +23,16 @@ module.exports = {
 		configPrefs: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
-			let configCons_SC;
+			let prefs_SC;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
-			if (texto == "deshacer") eliminaSessionCookie(req, res);
+			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else configCons_SC = req.session.configCons ? req.session.configCons : null;
+			else prefs_SC = req.session.configCons ? req.session.configCons.prefs : null;
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const configCons_BD = cabecera_id ? await procesos.configs.obtieneConfigCons_BD({cabecera_id}) : null;
-			let prefs = configCons_SC ? {...configCons_SC, cambios: true} : configCons_BD;
+			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
+			let prefs = prefs_SC ? {...prefs_SC, cambios: true} : prefs_BD;
 
 			// Correcciones
 			if (prefs && prefs.id) delete prefs.id;
@@ -46,7 +46,7 @@ module.exports = {
 			const userID = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const configCons_cabeceras = await procesos.configs.cabeceras(userID);
+			const configCons_cabeceras = await procesos.varios.cabeceras(userID);
 
 			// Fin
 			return res.json(configCons_cabeceras);
@@ -103,33 +103,33 @@ module.exports = {
 		guardaConfig: async (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
-			const {id} = configCons;
-			delete configCons.id;
+			let {cabecera, prefs} = configCons;
+			const {id, nombre} = cabecera;
 
-			// Acciones si el 'ppp' es un array
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-				const combo = configCons.pppOpciones.toString();
+			// Si el 'ppp' es un array, lo convierte en un 'id'
+			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
+				const combo = prefs.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-				else delete configCons.pppOpciones;
+				if (pppOpcion) prefs.pppOpciones = pppOpcion.id;
+				else delete prefs.pppOpciones;
 			}
 
 			// Quita los campos con valor 'default'
-			for (let prop in configCons) if (configCons[prop] == filtrosConDefault[prop]) delete configCons[prop];
+			for (let prop in prefs) if (prefs[prop] == filtrosConDefault[prop]) delete prefs[prop];
 
 			// Acciones para edición
-			if (configCons.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre: configCons.nombre});
+			if (cabecera.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
-				eliminaSessionCookie(req, res);
+				procesos.varios.eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
-				if (!configCons.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
+				if (!cabecera.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
-				for (let prop in configCons) {
-					const objeto = {cabecera_id: id, campo: prop, valor: configCons[prop]};
+				for (let prop in prefs) {
+					const objeto = {cabecera_id: id, campo: prop, valor: prefs[prop]};
 					BD_genericas.agregaRegistro("consRegsPrefs", objeto);
 				}
 			}
@@ -154,24 +154,25 @@ module.exports = {
 		guardaConfig: (req, res) => {
 			// Variables
 			const configCons = JSON.parse(req.query.configCons);
+			let {cabecera, prefs} = configCons;
 
 			// Si el 'ppp' es un array, lo convierte en un 'id'
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-				const combo = configCons.pppOpciones.toString();
+			if (prefs.pppOpciones && Array.isArray(prefs.pppOpciones)) {
+				const combo = prefs.pppOpciones.toString();
 				const pppOpcion = pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-				else delete configCons.pppOpciones; // si no lo encuentra, lo elimina
+				if (pppOpcion) prefs.pppOpciones = pppOpcion.id;
+				else delete prefs.pppOpciones;
 			}
 
 			// Guarda la configuración
-			req.session.configCons = configCons;
-			res.cookie("configCons", configCons, {maxAge: unDia});
+			req.session.configCons = {cabecera, prefs};
+			res.cookie("configCons", {cabecera, prefs}, {maxAge: unDia});
 
 			// Fin
 			return res.json();
 		},
 		eliminaConfig: (req, res) => {
-			eliminaSessionCookie(req, res);
+			procesos.varios.eliminaSessionCookie(req, res);
 			return res.json();
 		},
 	},
@@ -213,9 +214,4 @@ module.exports = {
 			return res.json(rclvs);
 		}
 	},
-};
-let eliminaSessionCookie = (req, res) => {
-	delete req.session.configCons;
-	res.clearCookie("configCons");
-	return;
 };

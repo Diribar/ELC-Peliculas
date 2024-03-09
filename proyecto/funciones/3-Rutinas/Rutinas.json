@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 6/mar",
-	"HoraUTC": "9:12",
+	"FechaUTC": "Vie. 8/mar",
+	"HoraUTC": "18:57",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-mar-24": {"titulo": "Cuaresma"},
-		"05-mar-24": {"titulo": "Cuaresma"},
 		"06-mar-24": {"titulo": "Cuaresma"},
-		"07-mar-24": {"titulo": "Santa María Antonia de Paz y Figueroa", "entidad": "personajes", "id": 151},
-		"08-mar-24": {"titulo": "San Juan de Dios", "entidad": "personajes", "id": 123}
+		"07-mar-24": {"titulo": "Santa Perpetua", "entidad": "personajes", "id": 166},
+		"08-mar-24": {"titulo": "San Juan de Dios", "entidad": "personajes", "id": 123},
+		"09-mar-24": {"titulo": "Cuaresma"},
+		"10-mar-24": {"titulo": "Cuaresma"}
 	}
 }

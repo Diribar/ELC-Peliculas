@@ -11,17 +11,17 @@ module.exports = {
 		const userID = usuario ? usuario.id : null;
 
 		// Configuraciones de consulta
-		const configsConsCabs = await procesos.configs.cabeceras(userID); // Se necesita esa función también para la API
+		const configsConsCabs = await procesos.varios.cabeceras(userID); // Se necesita esa función también para la API
 		const configsCons = {
 			cabeceras: {
 				propios: configsConsCabs.filter((n) => userID && n.usuario_id == userID),
 				predeterms: configsConsCabs.filter((n) => n.usuario_id == 1),
 			},
-			filtros: procesos.configs.filtros(),
+			filtros: procesos.varios.filtros(),
 		};
 
 		// Variables para la vista
-		const ayudas = procesos.configs.ayudas();
+		const ayudas = procesos.varios.ayudas();
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
