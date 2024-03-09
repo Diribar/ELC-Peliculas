@@ -322,7 +322,7 @@ let sessionCookie = {
 	guardaConfig: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
-		let configCons = {cabecera, prefs};
+		let configCons = {id: cabecera.id, ...prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
