@@ -15,7 +15,6 @@ const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
-const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const rclvNoEditable = require("../../middlewares/filtrosPorRegistro/rclvNoEditable");
 
 // Middlewares - Temas de captura
@@ -32,7 +31,6 @@ const aptoAgregar = [entValida, ...aptoUsuario];
 const aptoDetalle = [entValida, IDvalido, capturaInactivar];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion, rclvNoEditable];
-const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 
 // APIs - Agregar/Editar
 router.get("/api/valida-sector", API.validaSector);
