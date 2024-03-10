@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 9/mar",
-	"HoraUTC": "8:06",
+	"FechaUTC": "Dom. 10/mar",
+	"HoraUTC": "1:42",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 4/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"07-mar-24": {"titulo": "Santa Perpetua", "entidad": "personajes", "id": 166},
 		"08-mar-24": {"titulo": "San Juan de Dios", "entidad": "personajes", "id": 123},
 		"09-mar-24": {"titulo": "Cuaresma"},
 		"10-mar-24": {"titulo": "Cuaresma"},
-		"11-mar-24": {"titulo": "Cuaresma"}
+		"11-mar-24": {"titulo": "Cuaresma"},
+		"12-mar-24": {"titulo": "Cuaresma"}
 	}
 }
