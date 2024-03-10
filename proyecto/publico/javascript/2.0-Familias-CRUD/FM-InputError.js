@@ -8,7 +8,14 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
-	const motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
+	const entidad = new URL(location.href).searchParams.get("entidad");
+	const petitFamilias = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "prods" : "rclvs";
+
+	// Busca los motivos
+	const motivosStatus = await fetch("/crud/api/motivos-status")
+		.then((n) => n.json())
+		.then((n) => n.filter((m) => m[petitFamilias]));
+	const motivosConComentario_id = motivosStatus.filter((n) => n.agregarComent).map((n) => n.id);
 
 	// Funciones
 	let contador = () => {
@@ -16,12 +23,15 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let botonSubmit = () => {
-		// Acciones
+		// Variables
 		const checked = document.querySelector("#motivos input:checked");
-		DOM.comentario.value &&
-		DOM.comentario.value.length > 4 &&
-		(!DOM.inputs.length || // Recuperar
-			checked) // Inactivar o Rechazar
+		const comentNeces = checked && motivosConComentario_id.includes(Number(checked.id));
+
+		(DOM.inputs.length &&
+			checked && // hay inputs y alguno está chequeado
+			((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || // el motivo requiere comentario y lo tiene
+				(!comentNeces && !DOM.comentario.value))) || // el motivo no requiere comentario y no lo tiene
+		!DOM.inputs.length // no hay inputs a chequear (para sacar de inactivar o recuperar)
 			? DOM.submit.classList.remove("inactivo")
 			: DOM.submit.classList.add("inactivo");
 
