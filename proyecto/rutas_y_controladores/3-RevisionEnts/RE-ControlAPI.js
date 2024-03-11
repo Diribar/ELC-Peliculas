@@ -110,13 +110,6 @@ module.exports = {
 					const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
 					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + corte + 1;
 				}
-
-				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'rebalse')
-				// for (semana = linksSemsVidaUtil; semana > corte; semana--)
-				// 	if (cantLinksVencPorSem[semana].prods < cantLinksVencPorSem.cantPromSem) break;
-
-				// // Si no se encontró "capacidad", envía una mensaje de error
-				// if (semana == semPrimRev) return res.json("En esta semana ya no se puede revisar este link");
 			}
 
 			// Más variables
