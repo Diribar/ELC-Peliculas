@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 10/mar",
-	"HoraUTC": "1:42",
+	"FechaUTC": "Lun. 11/mar",
+	"HoraUTC": "13:46",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 4/mar",
-	"HoraSemUTC": "13:45",
-	"semanaUTC": 10,
+	"FechaSemUTC": "Lun. 11/mar",
+	"HoraSemUTC": "13:46",
+	"semanaUTC": 11,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-mar-24": {"titulo": "San Juan de Dios", "entidad": "personajes", "id": 123},
 		"09-mar-24": {"titulo": "Cuaresma"},
 		"10-mar-24": {"titulo": "Cuaresma"},
 		"11-mar-24": {"titulo": "Cuaresma"},
-		"12-mar-24": {"titulo": "Cuaresma"}
+		"12-mar-24": {"titulo": "Cuaresma"},
+		"13-mar-24": {"titulo": "Cuaresma"}
 	}
 }
