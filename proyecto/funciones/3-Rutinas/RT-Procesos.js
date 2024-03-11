@@ -286,14 +286,8 @@ module.exports = {
 					regStatus.statusFinal_id != aprobado_id
 				)
 					resultados.push({
-						familia,
-						entidadNombre,
-						nombreOrden,
-						nombreVisual,
-						statusInicial,
-						statusFinal,
-						aprobado,
-						motivo,
+						...{familia, entidadNombre, nombreOrden, nombreVisual},
+						...{statusInicial, statusFinal, aprobado, motivo},
 					});
 			}
 
@@ -746,14 +740,18 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asocs);
+		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, prov]);
 		if (!regEntidad.id) return {};
 
-		// Obtiene los nombres
+		// Obtiene el nombreOrden
 		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEntidad);
 		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
-		nombreVisual =
-			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
+
+		// Obtiene el nombreVisual
+		regEntidad.href = regEntidad.prov.embededPoner
+			? urlHost + "/links/visualizacion/?link_id=" + regEntidad.id
+			: "//" + regEntidad.url;
+		nombreVisual = "<a href='" + regEntidad.href + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
 	}
 
 	// Fin
