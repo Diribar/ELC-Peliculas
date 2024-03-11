@@ -882,8 +882,8 @@ module.exports = {
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
 		for (let i = semPrimRev + 1; i <= linksSemsVidaUtil - 1; i++)
-			pelisColesPosibles += Math.max(0, cantPromSem - cantLinksVencPorSem[i].prods);
-		const capsPosibles = Math.max(0, cantPromSem - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
+		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// linksParaProcesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
