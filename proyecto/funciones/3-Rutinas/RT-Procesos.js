@@ -752,7 +752,6 @@ let nombres = async (reg, familia) => {
 			? urlHost + "/links/visualizacion/?link_id=" + regEntidad.id
 			: "//" + regEntidad.url;
 		nombreVisual = "<a href='" + regEntidad.href + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
-		console.log(755, nombreVisual, regEntidad.href);
 	}
 
 	// Fin
