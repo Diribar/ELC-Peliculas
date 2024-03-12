@@ -740,7 +740,7 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, prov]);
+		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, "prov"]);
 		if (!regEntidad.id) return {};
 
 		// Obtiene el nombreOrden
@@ -752,6 +752,7 @@ let nombres = async (reg, familia) => {
 			? urlHost + "/links/visualizacion/?link_id=" + regEntidad.id
 			: "//" + regEntidad.url;
 		nombreVisual = "<a href='" + regEntidad.href + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
+		console.log(755, nombreVisual, regEntidad.href);
 	}
 
 	// Fin
