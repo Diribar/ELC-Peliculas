@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		//await quitaStatusDeComentario();
+		await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -205,7 +205,7 @@ module.exports = {
 		},
 		FeedbackParaUsers: async () => {
 			// En 'development' interrumpe
-			if (nodeEnv == "development") return;
+			//if (nodeEnv == "development") return;
 
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -234,7 +234,7 @@ module.exports = {
 				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
 
 				// Si para el usuario no son las 0hs, lo saltea
-				if (new Date(ahoraUsuario).getUTCHours()) continue;
+				//if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
 				const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
