@@ -66,6 +66,7 @@ window.addEventListener("load", async () => {
 		const elemento = e.target;
 		const padre = elemento.parentNode;
 		const nombre = elemento.id ? elemento.id : padre.id;
+		let muestraFiltros;
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
@@ -232,7 +233,6 @@ window.addEventListener("load", async () => {
 		if (DOM.configCons.className.includes("aumentaX")) {
 			// Averigua si se deben mostrar los filtros
 			let pariente = elemento;
-			let muestraFiltros;
 
 			// Rutina para averiguar si el evento fue en la zona 'configCons'
 			while (true) {
