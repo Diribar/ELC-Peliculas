@@ -4,26 +4,21 @@
 	<div class="flexRow">
 		<!-- Opciones -->
 		<select name="layout_id" class="prefSimple" required>
+			<option value="" selected class="ocultar"></option>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
 				<% for (let layout of cn_layouts.filter(n => n.boton)) { %>
-				<option value="<%= layout.id %>"
-				<% if (layout.id == layoutDefault_id) { %>selected<% } %>
-				><%= layout.nombre %></option>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listados">
 				<% for (let layout of cn_layouts.filter(n => !n.boton && !n.loginNeces)) { %>
-				<option value="<%= layout.id %>"
-				<% if (layout.id == layoutDefault_id) { %>selected<% } %>
-				><%= layout.nombre %></option>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<% if (locals.usuario) { %>
 			<optgroup label="Mis listados">
 				<% for (let layout of cn_layouts.filter(n => !n.boton && n.loginNeces)) { %>
-				<option value="<%= layout.id %>"
-				<% if (layout.id == layoutDefault_id) { %>selected<% } %>
-				><%= layout.nombre %></option>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
 			</optgroup>
 			<% } %>
