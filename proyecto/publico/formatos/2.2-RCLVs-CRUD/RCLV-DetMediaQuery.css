@@ -1,5 +1,5 @@
 /* Ancho */
-@media (width < 732px) {
+@media (max-width: 732px) {
 	/* Cambia anchos */
 	#datos {min-width: 100vw;} /* ancho mínimo: la pantalla */
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
@@ -19,19 +19,19 @@
 	#tituloPrincipal .ayudaMostrar::before {top: 0px; left: 50%; translate: 3px -100%;}
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
-@media (width < 345px) {
+@media (max-width: 345px) {
 	#recuadro #contenido {--margenCostado: max(0px, min(20px, calc(100% - 290px)/2));}
 }
 
 /* Alto */
-@media (height <= 445px) {#recuadro #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
-@media (height <= 430px) {
+@media (max-height: 445px) {#recuadro #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
+@media (max-height: 430px) {
 	#cuerpo #recuadro #encabezado {display: none;} /* oculta el encabezado */
 	#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 13px - 24px)/2));} /* 52px: header, 200px: botones, 13px: borde, 24px: footer */
 	#listado li#prodsNuevos {padding-top: var(--altoLi); padding-bottom: var(--altoLi);}
 }
 
 /* Ancho y Alto */
-@media (width < 700px) or (height < 700) {
+@media (max-width: 700px) or (max-height: 700) {
 	#botones .flechas:has(i.fa-pen) {display: none;}
 }

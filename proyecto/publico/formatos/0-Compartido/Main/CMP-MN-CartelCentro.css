@@ -39,11 +39,11 @@ main .cartelCentro #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen
 #cartelProgreso #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
 
 /* Media Query */
-@media (height < 400px) or (width < 400px) {
+@media (max-height: 400px) or (max-width: 400px) {
 	main .cartelCentro .inicio {margin-bottom: 20px;}
 	main .cartelCentro #mensajes {margin-bottom: 20px;}
 }
-@media (height < 350px) {
+@media (max-height: 350px) {
 	main .cartelCentro .inicio {margin-bottom: 10px;}
 	main .cartelCentro #mensajes {margin-bottom: 10px;}
 }

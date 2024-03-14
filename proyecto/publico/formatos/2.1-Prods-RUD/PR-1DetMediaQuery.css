@@ -1,5 +1,5 @@
 /* Ancho */
-@media (width <= 675px) {
+@media (max-width: 675px) {
 	#datos {min-width: 100vw;} /* establece el ancho mínimo igual al de la pantalla */
 	#datos #datosLargos {margin: 0;} /* quita todos los márgenes */
 	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* limita el ancho máximo al de la pantalla */
@@ -10,8 +10,8 @@
 	#tituloPrincipal .ayudaMostrar::before {top: 0px; left: 50%; translate: 3px -100%;}
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
-@media (width <= 500px) {#recuadro #contenido {margin-left: 20px; margin-right: 20px;}}
-@media (width <= 390px) {
+@media (max-width: 500px) {#recuadro #contenido {margin-left: 20px; margin-right: 20px;}}
+@media (max-width: 390px) {
 	#datosDetalle .datosParcial#masInfo #infoGral {column-count: 1;}
 	#cuerpo #encabezado #colCap #tempCapI {flex-direction: column; align-items: center;}
 	#cuerpo #encabezado #colCap #tempCapS {justify-content: center;}
@@ -19,6 +19,6 @@
 }
 
 /* Ancho y Alto */
-@media (width < 700px) or (height < 700) {
+@media (max-width: 700px) or (max-height: 700) {
 	.flechas :is(a:has(i.fa-pen), a:has(i.fa-link)) {display: none;}
 }

@@ -16,7 +16,7 @@
 #cuerpo #contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
 
 /* limita el ancho mínimo al de la pantalla */
-@media (width <= 1200px) {
+@media (max-width: 1200px) {
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 	#cuerpoFooter {min-width: 100vw;}
 	#cuerpo #contIframe {--anchoDisp: 100vw;}

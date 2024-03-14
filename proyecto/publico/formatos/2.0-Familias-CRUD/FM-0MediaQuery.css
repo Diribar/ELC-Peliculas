@@ -1,5 +1,5 @@
 /* Ancho */
-@media (width <= 1450px) {
+@media (max-width: 1450px) {
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
 	#datos #datosBreves #recuadro {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
 
@@ -10,7 +10,7 @@
 }
 
 /* Alto */
-@media (height < 500px) {
+@media (max-height: 500px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
 	#recuadro #encabezado {padding-top: 10px; padding-bottom: 10px;}
