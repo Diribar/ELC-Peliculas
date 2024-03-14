@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 12/mar",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Jue. 14/mar",
+	"HoraUTC": "13:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-mar-24": {"titulo": "Cuaresma"},
-		"11-mar-24": {"titulo": "Cuaresma"},
 		"12-mar-24": {"titulo": "Cuaresma"},
 		"13-mar-24": {"titulo": "Cuaresma"},
-		"14-mar-24": {"titulo": "Sierva de Dios Chiara Lubich", "entidad": "personajes", "id": 113}
+		"14-mar-24": {"titulo": "Sierva de Dios Chiara Lubich", "entidad": "personajes", "id": 113},
+		"15-mar-24": {"titulo": "San Artémides Zatti", "entidad": "personajes", "id": 148},
+		"16-mar-24": {"titulo": "San José Gabriel Brochero", "entidad": "personajes", "id": 84}
 	}
 }
