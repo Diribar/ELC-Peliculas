@@ -28,7 +28,7 @@
 	#zonaDisponible #vistaDeResults #actualizar {display: none;}
 }
 @media (min-height: 365px) {
-	#zonaDisponible #vistaDeResults {max-height: 90%;}
+	#zonaDisponible #vistaDeResults {max-height: 95%;}
 	#zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding-top: 15px; padding-bottom: 15px;}
 }
 @media (max-height: 400px) {#encabMasPelis #encabezado {display: none;}} /* Oculta el encabezado */
