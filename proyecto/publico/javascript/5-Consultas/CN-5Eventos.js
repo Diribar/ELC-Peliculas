@@ -248,8 +248,11 @@ window.addEventListener("load", async () => {
 
 			// Acciones si se deben ocultar los filtros
 			if (!muestraFiltros) {
+				// Cambia la flecha
 				DOM.iconoParaMostrarPrefs.classList.remove("flechaIzq");
 				DOM.iconoParaMostrarPrefs.classList.add("flechaDer");
+
+				// Oculta los filtros
 				DOM.configCons.classList.remove("aumentaX");
 				DOM.configCons.classList.add("disminuyeX");
 			}
