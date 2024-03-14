@@ -35,6 +35,9 @@ const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...usuarioBase, usRolR
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
 
+// APIs - Tablero
+router.get("/api/actualiza-visibles", API.actualizaVisibles);
+
 // APIs - Producto y RCLV
 router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", API.edicAprobRech);

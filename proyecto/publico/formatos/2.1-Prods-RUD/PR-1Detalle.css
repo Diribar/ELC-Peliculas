@@ -43,6 +43,7 @@ nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
 #datosDetalle .datosParcial {flex-direction: column;}
 #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #datosDetalle .datosParcial#masInfo #infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
+#datosDetalle .datosParcial a {text-decoration: underline;}
 #datosDetalle .datosParcial b {color: var(--gris-oscuro);}
 #datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
 #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}

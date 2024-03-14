@@ -37,7 +37,6 @@ router.get("/crud/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/crud/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.motivosRechAltas);
-router.get("/crud/api/actualiza-visibles", API.actualizarVisibles);
 
 // Vistas - CRUD: Inactivar, Recuperar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);

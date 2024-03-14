@@ -3,16 +3,16 @@
 #cuerpo form #datos {margin-bottom: 15px;}
 
 /* Media Query - Ancho */
-@media (width <= 400px) {
+@media (max-width: 400px) {
 	#cuerpo form .labelInput {justify-content: center;}
 	#cuerpo form {min-width: min-content; width: 85vw;}
 	#cuerpo form label {display: none;}
 }
-@media (width <= calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
-@media (width > calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {max-width: calc(0.7 * var(--altoMain));}}
+@media (max-width: calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (min-width: calc(72vh + 400px) ) {#cuerpoFooterImgDer #imgDerecha img {max-width: calc(0.7 * var(--altoMain));}}
 
 /* Media Query - Alto */
-@media (height < 335px) {
+@media (max-height: 335px) {
 	#cuerpo #dataEntry {overflow: auto; max-height: 95%;}
 	#dataEntry form h1 {margin: 0;}
 	#dataEntry form .flechas {margin: 0 auto;}

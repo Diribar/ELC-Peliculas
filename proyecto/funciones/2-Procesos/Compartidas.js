@@ -876,7 +876,7 @@ module.exports = {
 		let cantAprobs = 0;
 		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
 		const cantLinksTotal = cantPends + cantAprobs;
-		const cantPromSem = (cantLinksTotal / linksSemsVidaUtil).toFixed(1);
+		const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // redondea "para arriba", a un decimal
 
 		// posiblesParaProcesar
 		const semPrimRev = linksPrimRev / unaSemana;

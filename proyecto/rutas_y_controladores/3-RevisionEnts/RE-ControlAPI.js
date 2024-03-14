@@ -71,6 +71,24 @@ module.exports = {
 		// Fin
 		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
 	},
+	actualizaVisibles: (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		const {circuito, familias, titulo, desplegar} = datos;
+
+		// Crea el objeto si no existe
+		if (!req.session) req.session = {};
+		if (!req.session.tableros) req.session.tableros = {};
+		if (!req.session.tableros[circuito]) req.session.tableros[circuito] = {};
+		if (!req.session.tableros[circuito][familias]) req.session.tableros[circuito][familias] = {};
+
+		// Guarda la session
+		req.session.tableros[circuito][familias][titulo] = desplegar;
+
+		// Fin
+		return res.json();
+	},
+
 	// Links
 	links: {
 		altaBaja: async (req, res) => {
