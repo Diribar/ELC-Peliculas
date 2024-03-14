@@ -1,11 +1,12 @@
 /* General */
 #cuerpoFooter #cuerpo {flex-direction: column; justify-content: space-between; align-items: center;}
 #cuerpo #tituloPrincipal {flex-grow: 3;}
+#cuerpo #medio {display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;}
 #cuerpo #botones {flex-grow: 3; align-items: center;}
 
 /* Contenedor del Iframe */
-#contIframe {
-	z-index: 11; border-radius: 25px; overflow: hidden; border: solid var(--gris-oscuro) 9px; aspect-ratio: 16 / 9;
+#medio #contIframe {
+	z-index: 11; aspect-ratio: 16 / 9;
 
 	/* Ancho y alto */
 	--relacion: calc(16 / 9);
@@ -17,12 +18,25 @@
 	height: min(calc(var(--anchoMax) / var(--relacion)), var(--altoMax)); /* el menor entre la restricción por ancho y la restricción por altura */
 }
 
-#contIframe iframe {border: none; display: block; width: 100%; height: 100%;}
+#contIframe iframe {display: block; width: 100%; height: 100%;}
+#contIframe iframe {border-radius: 25px; border: solid var(--gris-oscuro) 9px;}
 
 
 /* limita el ancho mínimo al de la pantalla */
 @media (max-width: 1200px) {
 	#cuerpoFooterImgDer #cuerpoFooter {min-width: 100vw;}
-	#cuerpo #contIframe {--anchoDisp: 100vw;}
+	#cuerpo #contIframe {
+		--anchoDisp: 100vw;
+		--anchoMax: calc(var(--anchoDisp) * 1);
+	}
 	#imgDerecha img {max-width: 100vw;}
+}
+@media (max-height: 400px) {
+	#cuerpo #tituloPrincipal {flex-grow: 0;}
+	#cuerpo #botones {display: none;}
+	#cuerpo #medio {flex-grow: 1;}
+	#cuerpo #contIframe {
+		--altoDisp: var(--altoCuerpo) - 37px; /* la altura del cuerpo, menos la altura del título */
+		--altoMax: calc((var(--altoDisp)) * 1);
+	}
 }
