@@ -10,7 +10,7 @@
 #iconosDelTitulo p {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
 
 /* Mostrar preferencias */
-#iconosDelTitulo div#toggleFiltrosGlobal {display: none;}
+#tituloPrincipal #toggleFiltrosGlobal {display: none;}
 
 /* Layout */
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px 6px; border-bottom-right-radius: 7px; cursor: pointer;}
