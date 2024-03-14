@@ -4,7 +4,7 @@ const procsMS = require("../9-Miscelaneas/MS-Procesos");
 
 module.exports = {
 	// Links - Controlador Vista
-	obtieneLinksActualizados: async (entidad, prodID, userID) => {
+	obtieneLinksConEdicion: async (entidad, prodID, userID) => {
 		// Variables
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];

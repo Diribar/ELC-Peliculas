@@ -739,7 +739,7 @@ module.exports = {
 				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
-				if (!variables.prefijoSanto.includes(nombre)) canonNombre = "San ";
+				if (!variables.prefijosSanto.includes(nombre)) canonNombre = "San ";
 			}
 		}
 
@@ -876,14 +876,14 @@ module.exports = {
 		let cantAprobs = 0;
 		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
 		const cantLinksTotal = cantPends + cantAprobs;
-		const cantPromSem = Math.ceil(cantLinksTotal / linksSemsVidaUtil);
+		const cantPromSem = (cantLinksTotal / linksSemsVidaUtil).toFixed(1);
 
 		// posiblesParaProcesar
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
 		for (let i = semPrimRev + 1; i <= linksSemsVidaUtil - 1; i++)
-			pelisColesPosibles += Math.max(0, cantPromSem - cantLinksVencPorSem[i].prods);
-		const capsPosibles = Math.max(0, cantPromSem - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
+		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// linksParaProcesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
