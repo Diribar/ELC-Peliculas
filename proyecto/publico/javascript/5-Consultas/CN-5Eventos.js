@@ -130,23 +130,18 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Encabezado - Toggle filtros para celular parado
-		else if (
-			nombre == "toggleFiltrosGlobal" ||
-			(DOM.configCons.className.includes("aumentaX") &&
-				["zonaDisponible", "telonFondo", "contadorDeProds", "quieroVer", "vistaDeResults", ""].includes(nombre))
-		) {
-			// Averigua si será la primera
-			const startUp = !DOM.iconoParaMostrarPrefs.className.split(" ").some((n) => ["flechaDer", "flechaIzq"].includes(n));
-			if (startUp) {
-				DOM.iconoParaMostrarPrefs.classList.add("flechaIzq");
-				DOM.configCons.classList.add("aumentaX");
-			} else {
-				DOM.iconoParaMostrarPrefs.classList.toggle("flechaDer");
-				DOM.iconoParaMostrarPrefs.classList.toggle("flechaIzq");
-				DOM.configCons.classList.toggle("aumentaX");
-				DOM.configCons.classList.toggle("disminuyeX");
-			}
+		// Encabezado - Muestra filtros para celular parado
+		else if (nombre == "toggleFiltrosGlobal") {
+			// Cambia la flecha
+			DOM.iconoParaMostrarPrefs.classList.remove("flechaDer");
+			DOM.iconoParaMostrarPrefs.classList.add("flechaIzq");
+
+			// Muestra los filtros
+			DOM.configCons.classList.remove("disminuyeX");
+			DOM.configCons.classList.add("aumentaX");
+
+			// Cambia la variable para que se muestren los filtros
+			muestraFiltros = true;
 		}
 
 		// Encabezado - Compartir las preferencias
@@ -175,7 +170,7 @@ window.addEventListener("load", async () => {
 
 			// Muestra la leyenda 'Consulta copiada'
 			DOM.consCopiada.classList.remove("ocultar");
-			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 1500);
+			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), 1000);
 		}
 
 		// Mostrar resultados - Preferencia por producto
@@ -231,6 +226,33 @@ window.addEventListener("load", async () => {
 			v.videoConsVisto = true;
 			DOM.cartelVerVideo.classList.add("ocultar");
 			return;
+		}
+
+		// Encabezado - Oculta filtros para celular parado
+		if (DOM.configCons.className.includes("aumentaX")) {
+			// Averigua si se deben mostrar los filtros
+			let pariente = elemento;
+			let muestraFiltros;
+
+			// Rutina para averiguar si el evento fue en la zona 'configCons'
+			while (true) {
+				// Acciones si el pariente es 'configCons'
+				if (pariente.id == "configCons") {
+					muestraFiltros = true; // actualiza 'muestraFiltros'
+					break; // interrumpe
+				}
+				// Si el elemento tiene padre, sube una generación, de lo contrario interrumpe
+				if (pariente.parentNode) pariente = pariente.parentNode;
+				else break;
+			}
+
+			// Acciones si se deben ocultar los filtros
+			if (!muestraFiltros) {
+				DOM.iconoParaMostrarPrefs.classList.remove("flechaIzq");
+				DOM.iconoParaMostrarPrefs.classList.add("flechaDer");
+				DOM.configCons.classList.remove("aumentaX");
+				DOM.configCons.classList.add("disminuyeX");
+			}
 		}
 	});
 	DOM.cuerpo.addEventListener("keydown", (e) => {
