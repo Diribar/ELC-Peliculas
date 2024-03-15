@@ -31,7 +31,8 @@ router.get("/", vista.redirecciona.inicio);
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);
 router.get("/cookies", vista.listados.cookies);
-router.get("/:id", entidadRclv, vista.listados.RCLVs);
+router.get("/listados/rclvs/:id", entidadRclv, vista.listados.rclvs);
+router.get("/listados/links", vista.listados.links);
 
 // Fin
 module.exports = router;
