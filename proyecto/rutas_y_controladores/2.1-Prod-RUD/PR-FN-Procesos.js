@@ -63,8 +63,8 @@ module.exports = {
 		// Procesos si hay links
 		if (links.length) {
 			// Los ordena
-			links.sort((a, b) => (a.url < b.url ? -1 : 1)); // por url
-			links.sort((a, b) => b.calidad - a.calidad); // por calidad
+			//links.sort((a, b) => (a.url < b.url ? -1 : 1)); // por url
+			//links.sort((a, b) => b.calidad - a.calidad); // por calidad
 			links.sort((a, b) => a.parte - b.parte); // por partes
 			links.sort((a, b) => b.completo - a.completo); // por completo
 			links.sort((a, b) => b.castellano - a.castellano); // por idioma
@@ -133,7 +133,7 @@ let FN = {
 
 		// Array con valores
 		let trailers = [];
-		links.forEach((link, i) => trailers.push({url: link.url, leyenda: "Trailer " + (i + 1)}));
+		links.forEach((link, i) => trailers.push({url: link.href, leyenda: "Trailer " + (i + 1)}));
 
 		// Fin
 		return trailers;
@@ -177,7 +177,7 @@ let FN = {
 
 		// Selecciona los de mejor calidad y deja la info indispensable
 		gratuitos = this.dejaLaMejorCalidad(gratuitos);
-		gratuitos = gratuitos.map((n) => ({url: n.url, leyenda: n.leyenda}));
+		gratuitos = gratuitos.map((n) => ({url: n.href, leyenda: n.leyenda}));
 
 		// Fin
 		return gratuitos;
@@ -230,7 +230,7 @@ let FN = {
 		for (let link of conCosto) link.leyenda = link.prov.nombre;
 
 		// Selecciona los de mejor calidad y deja la info indispensable
-		conCosto = conCosto.map((n) => ({url: n.url, leyenda: n.leyenda}));
+		conCosto = conCosto.map((n) => ({url: n.href, leyenda: n.leyenda}));
 
 		// Fin
 		return conCosto;
