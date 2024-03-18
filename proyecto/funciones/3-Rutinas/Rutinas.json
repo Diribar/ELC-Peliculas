@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 15/mar",
-	"HoraUTC": "11:06",
+	"FechaUTC": "Lun. 18/mar",
+	"HoraUTC": "17:50",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 11/mar",
-	"HoraSemUTC": "13:46",
-	"semanaUTC": 11,
+	"FechaSemUTC": "Lun. 18/mar",
+	"HoraSemUTC": "17:50",
+	"semanaUTC": 12,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-mar-24": {"titulo": "Cuaresma"},
-		"14-mar-24": {"titulo": "Sierva de Dios Chiara Lubich", "entidad": "personajes", "id": 113},
-		"15-mar-24": {"titulo": "San Artémides Zatti", "entidad": "personajes", "id": 148},
 		"16-mar-24": {"titulo": "San José Gabriel Brochero", "entidad": "personajes", "id": 84},
-		"17-mar-24": {"titulo": "San Patricio de Irlanda", "entidad": "personajes", "id": 115}
+		"17-mar-24": {"titulo": "San Patricio de Irlanda", "entidad": "personajes", "id": 115},
+		"18-mar-24": {"titulo": "Cuaresma"},
+		"19-mar-24": {"titulo": "San José, padre de Jesús", "entidad": "personajes", "id": 13},
+		"20-mar-24": {"titulo": "Santa María Josefa del Corazón de Jesús"}
 	}
 }
