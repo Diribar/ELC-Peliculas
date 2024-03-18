@@ -133,7 +133,7 @@ let FN = {
 
 		// Array con valores
 		let trailers = [];
-		links.forEach((link, i) => trailers.push({url: link.href, leyenda: "Trailer " + (i + 1)}));
+		links.forEach((link, i) => trailers.push({url: link.href, leyenda: "Trailer " + (i + 1), titulo: "Ver trailer"}));
 
 		// Fin
 		return trailers;
@@ -145,15 +145,14 @@ let FN = {
 		if (!gratuitos.length) return [];
 
 		// Variables
-		let completoParte, difsEnIdioma;
+		let hayPartes, difsEnIdioma;
 
 		// Averigua si algunos son completos y otros son partes
-		const completos = gratuitos.filter((n) => n.completo);
 		const partes = gratuitos.filter((n) => n.parte);
-		if (completos.length && partes.length) completoParte = true;
+		if (partes.length) hayPartes = true;
 
-		// Si no hay diferencias en completoParte, averigua si hay diferencias en el idioma
-		if (!completoParte) {
+		// Si no hay hayPartes, averigua si hay diferencias en el idioma
+		if (!hayPartes) {
 			const castellano = gratuitos.filter((n) => n.castellano);
 			const subTits = gratuitos.filter((n) => n.subtitulos);
 			const otroIdioma = gratuitos.filter((n) => n.subtitulos);
@@ -163,7 +162,7 @@ let FN = {
 
 		// Leyenda para diferenciarlos en la vista
 		for (let link of gratuitos)
-			link.leyenda = completoParte
+			link.leyenda = hayPartes
 				? link.completo
 					? "Completo"
 					: "Parte " + link.parte
@@ -177,7 +176,7 @@ let FN = {
 
 		// Selecciona los de mejor calidad y deja la info indispensable
 		gratuitos = this.dejaLaMejorCalidad(gratuitos);
-		gratuitos = gratuitos.map((n) => ({url: n.href, leyenda: n.leyenda}));
+		gratuitos = gratuitos.map((n) => ({url: n.href, leyenda: n.leyenda, titulo: "Ver gratis"}));
 
 		// Fin
 		return gratuitos;
@@ -218,7 +217,7 @@ let FN = {
 		let conCosto = links.filter((n) => !n.gratuito);
 		if (!conCosto.length) return [];
 
-		// Si no hay diferencias en completoParte, averigua si hay diferencias en el idioma
+		// Si no hay diferencias en hayPartes, averigua si hay diferencias en el idioma
 		let difsEnIdioma;
 		const castellano = conCosto.filter((n) => n.castellano);
 		const subTits = conCosto.filter((n) => n.subtitulos);
@@ -230,7 +229,7 @@ let FN = {
 		for (let link of conCosto) link.leyenda = link.prov.nombre;
 
 		// Selecciona los de mejor calidad y deja la info indispensable
-		conCosto = conCosto.map((n) => ({url: n.href, leyenda: n.leyenda}));
+		conCosto = conCosto.map((n) => ({url: n.href, leyenda: n.leyenda, titulo: "Ver c/costo"}));
 
 		// Fin
 		return conCosto;
