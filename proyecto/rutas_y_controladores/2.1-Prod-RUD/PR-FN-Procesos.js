@@ -88,7 +88,7 @@ module.exports = {
 		const CC = FN.conCosto(PL);
 
 		// Fin
-		return {TR, GR, CC};
+		return {GR, CC, TR};
 	},
 	actualizaCalifProd: async ({entidad, entidad_id}) => {
 		// Variables

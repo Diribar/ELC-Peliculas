@@ -79,6 +79,7 @@ module.exports = {
 				: [""];
 
 		// Va a la vista
+		//return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
