@@ -1,0 +1,5 @@
+/* Footer */
+#cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
+#cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
+#cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
+#cuerpoFooter footer p {line-height: 1;}
