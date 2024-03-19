@@ -27,11 +27,10 @@
 .marco#links nav select {padding: 0 4px; font-style: normal;}
 .marco#links nav a {padding: 0 9px;}
 .marco#links nav :is(a, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-.marco#links nav :is(a, select).subtCast {background: gold; color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+.marco#links nav :is(a, select).subtCast {background: var(--amarillo-intermedio); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 .marco#links nav :is(a, select).otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 .marco#links nav select.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
-subtCast
-otroIdioma
+
 /* Marco de Detalle */
 #marcoDetalle {margin-top: 20px; display: flex; flex-direction: column; width: fit-content;}
 /* Marco de Detalle - Etiqueta */
