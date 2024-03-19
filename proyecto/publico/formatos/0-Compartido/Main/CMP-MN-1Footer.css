@@ -1,5 +1,5 @@
 /* Footer */
-#cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
-#cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
-#cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
-#cuerpoFooter footer p {line-height: 1;}
+:is(#cuerpoFooter, #edicCuerpoFooter) footer {display: flex; flex-direction: row; justify-content: space-around;}
+:is(#cuerpoFooter, #edicCuerpoFooter) footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
+:is(#cuerpoFooter, #edicCuerpoFooter) footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
+:is(#cuerpoFooter, #edicCuerpoFooter) footer p {line-height: 1;}
