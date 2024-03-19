@@ -1,9 +1,17 @@
 <nav class="flexRowAlign">
+	<% let autofocus %>
 	<% for (let grupo in links) { %>
 		<% const link0 = links[grupo][0] %>
 		<% if (!links[grupo].length) {continue} %>
 		<% if (links[grupo].length == 1) { %>
-			<a href="<%= link0.url %>" class="flexRowAlign <%= link0.idioma %>">
+			<a
+				href="<%= link0.url %>"
+				class="flexRowAlign <%= link0.idioma %>"
+				<% if (!autofocus) { %>
+					autofocus
+					<% autofocus = true %>
+				<% } %>
+			>
 				<p><%= link0.titulo %></p>
 			</a>
 		<% } else { %>

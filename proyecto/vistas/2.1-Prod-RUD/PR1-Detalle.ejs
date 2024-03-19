@@ -14,8 +14,12 @@
 			</a>
 		<% } else if (!links.GR.length) { %>
 			<p>Sin links gratuitos</p>
+		<% } else { %>
+			<!-- Ayuda -->
+			<%- include("PR1-DetalleAyuda") %>
+			<!-- Links -->
+			<%- include("PR1-DetalleLinks") %>
 		<% } %>
-		<%- include("PR1-DetalleLinks") %>
 	</div>
 </div>
 <!-- Información -->
