@@ -1,6 +1,6 @@
 /* Temas generales */
+#edicCuerpoFooterImgDer {background: var(--gris-claro);}
 #edicCuerpoFooter #edicCuerpo {flex-direction: column;}
-#edicCuerpoFooter #edicCuerpo {background: var(--gris-claro);}
 
 .ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
 .ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
