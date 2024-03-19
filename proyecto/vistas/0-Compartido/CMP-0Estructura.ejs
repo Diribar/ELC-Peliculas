@@ -42,9 +42,9 @@
 					<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
 					<% } %>
 				</div>
-				<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
+				<% if (!locals.omitirFooter) { %><%- include('CMP-3Footer') %><% } %>
 			</div>
-			<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
+			<% if (!locals.omitirImagenDerecha) { %><%- include('CMP-ImagenDerecha') %><% } %>
 		</section>
 		<%- include('CMP-CartelGenerico') %>
 	</main>
