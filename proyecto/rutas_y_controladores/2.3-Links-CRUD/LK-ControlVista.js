@@ -22,7 +22,7 @@ module.exports = {
 		const links = await procesos.obtieneLinksConEdicion(entidad, id, userID);
 		links.sort((a, b) => a.tipo_id - b.tipo_id); // primero los links de trailer, luego la película
 		for (let link of links) {
-			if (!link.prov.embededPoner) link.href = "//" + link.url; // prepara el url para usarse en la web
+			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url; // prepara el url para usarse en la web
 			link.cond = procesos.condiciones(link, userID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}

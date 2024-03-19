@@ -8,7 +8,6 @@ const vista = require("./RCLV-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
 
 // Middlewares - Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
