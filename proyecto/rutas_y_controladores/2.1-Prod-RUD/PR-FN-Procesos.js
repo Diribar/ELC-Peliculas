@@ -74,7 +74,7 @@ module.exports = {
 
 			// Asigna los url de visualización
 			for (let link of links)
-				link.href = link.prov.embededPoner
+				link.href = link.prov.embededPoner && link.gratuito
 					? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
 					: "//" + link.url;
 

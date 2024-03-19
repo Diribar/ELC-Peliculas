@@ -496,7 +496,7 @@ module.exports = {
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
-			if (!link.prov.embededPoner) link.href = "//" + link.url;
+			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url;
 			link.cond = procsLinks.condiciones(link, revID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}

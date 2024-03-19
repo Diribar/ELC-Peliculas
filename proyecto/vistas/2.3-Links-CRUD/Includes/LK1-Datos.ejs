@@ -7,8 +7,8 @@
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
-		<!-- Si es un 'prov. embeded', se muestra en la misma página -->
-		<a <% if (!link.prov.embededPoner) { %>href="<%= link.href %>" target="_blank"<% } else { %>class="pointer"<% } %>>
+		<!-- Si no es un 'prov. embeded', se muestra en otra página -->
+		<a <% if (!link.prov.embededPoner || !link.gratuito) { %>href="<%= link.href %>" target="_blank"<% } else { %>class="pointer"<% } %>>
 			<img
 				src="/Externa/6-LogosProvs/<%= link.prov.avatar %>"
 				alt="<%= link.prov.nombre %>"
