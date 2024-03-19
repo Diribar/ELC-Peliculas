@@ -2,7 +2,7 @@
 main #todoElMain:has(video) {z-index: 14;}
 header {z-index: 13;}
 main :is(#cartelProgreso, .encimaDelFondo) {z-index: 12;}
-main #cuerpo #cartelRechazo {z-index: 12;}
+main :is(#cuerpo, #edicCuerpo) #cartelRechazo {z-index: 12;}
 main #todoElMain {z-index: 11;}
 
 /* Header */
@@ -13,16 +13,16 @@ header .iconoComb .adentro {z-index: 1;}
 main #todoElMain #cierraVideo {z-index: 1;}
 
 /* Cuerpo */
-main #cuerpo #tituloPrincipal {z-index: 9;}
-main #cuerpo #tituloSecundario {z-index: 8;}
-main #cuerpo #primeraColumna {z-index: 7;}
-main #cuerpo :is(.ayuda, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
+main :is(#cuerpo, #edicCuerpo) #tituloPrincipal {z-index: 9;}
+main :is(#cuerpo, #edicCuerpo) #tituloSecundario {z-index: 8;}
+main :is(#cuerpo, #edicCuerpo) #primeraColumna {z-index: 7;}
+main :is(#cuerpo, #edicCuerpo) :is(.ayuda, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
 
 /* Ayuda */
-main #cuerpo .inputError .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
-main #cuerpo .inputError .ayuda {z-index: 3;}
+main :is(#cuerpo, #edicCuerpo) .inputError .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
+main :is(#cuerpo, #edicCuerpo) .inputError .ayuda {z-index: 3;}
 
 /* Errores */
-main #cuerpo .errores .mensajeError {z-index: 7;}
-main #cuerpo .inputError .errores {z-index: 6}
-main #cuerpo form #imgDerecha .errores {z-index: 4;}
+main :is(#cuerpo, #edicCuerpo) .errores .mensajeError {z-index: 7;}
+main :is(#cuerpo, #edicCuerpo) .inputError .errores {z-index: 6}
+main :is(#cuerpo, #edicCuerpo) form #imgDerecha .errores {z-index: 4;}
