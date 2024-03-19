@@ -1,17 +1,15 @@
 <!-- Información -->
 <div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
-
-    <!-- PRODUCTO: Detalle y Revisión de Alta -->
-    <% if (familia == "producto" && ["detalle", "producto/alta"].includes(codigo)) { %><%- include("PR1-Detalle") %>
+    <% if (false) { %>
 
     <!-- PRODUCTO: Calificar -->
     <% } else if (codigo == "calificar") { %><%- include("PR3-Calificar") %>
 
-    <!-- RCLV: Detalle -->
-    <% } else if (tema == "rclvCrud") { %><%- include("RCLV-DT1-Largos") %>
+    <!-- PRODUCTO: Revisión de Alta -->
+    <% } else if (tema == "revisionEnts" && codigo == "producto/alta") { %><%- include("RE1-AltaProd") %>
 
-    <!-- RCLV: Revisión de Alta -->
-    <% } else if (tema == "revisionEnts" && codigo.endsWith("/alta")) { %><%- include("RCLV-DT1-Largos") %>
+    <!-- RCLV: Detalle y Revisión de Alta -->
+    <% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV-DT1-Largos") %>
 
     <!-- AMBOS: Revisión de Edición -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
