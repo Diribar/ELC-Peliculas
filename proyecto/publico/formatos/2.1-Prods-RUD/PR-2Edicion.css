@@ -1,18 +1,17 @@
 /* Temas generales */
-#cuerpoFooter #cuerpo {background: var(--gris-claro); max-height: 100%;}
+#edicCuerpoFooter #edicCuerpo {flex-direction: column;}
+#edicCuerpoFooter #edicCuerpo {background: var(--gris-claro);}
+
 .ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
 .ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
-#cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-form #edicCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow: 1; position: relative;}
-#edicCuerpoFooter #formCuerpo {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Zona del formulario */
-#formCuerpo #edicionForm {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
-#formCuerpo #edicionForm {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
-#formCuerpo #edicionForm .altoFila {height: 21px;}
+#edicCuerpo #edicDatos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
+#edicCuerpo #edicDatos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
+#edicCuerpo #edicDatos .altoFila {height: 21px;}
 
 /* Partes del formulario */
-#edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
+#edicDatos #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 .labelInput .inputError .input {width: 100%;}
 .errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
 
@@ -52,7 +51,7 @@ form #edicCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos #paises_id {align-items: center;}
 #datos #paises_id .inputError {width: 200px;}
 #datos #paises_id .inputError :is(input#mostrarPaises, select)
-{position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+	{position: absolute; top: 0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
@@ -71,10 +70,13 @@ form #edicCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Tipos de actuación */
 #datos #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
 
+/* Avatar */
+#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
+
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
 .inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
-form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
+#imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
 .flechas i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
