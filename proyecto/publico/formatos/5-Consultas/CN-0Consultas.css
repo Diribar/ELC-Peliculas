@@ -16,7 +16,7 @@
 #encabMasPelis #zonaDisponible {width: 100%; flex-grow: 1; position: relative;}
 
 /* Vista de Resultados */
-#zonaDisponible #vistaDeResults {position: absolute; min-height: min(250px, 90%);}
+#zonaDisponible #vistaDeResults {position: absolute; min-height: min(205px, 90%);}
 #zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
 #zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; background: var(--celeste-claro);}
 #zonaDisponible #vistaDeResults {min-width: min(400px, 100%); max-width: min(660px, 100%); }

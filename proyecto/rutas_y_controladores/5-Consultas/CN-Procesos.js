@@ -348,10 +348,10 @@ module.exports = {
 
 					// Para los botones, mueve los pasados al futuro
 					if (prefs.layout.codigo == "fechaDelAnoBoton") {
-						const indice = rclvs.findIndex((n) => n.fechaDelAno_id > diaHoy.id);
+						const indice = rclvs.findIndex((n) => n.fechaDelAno_id >= diaHoy.id);
 						if (indice > 0) {
-							const pasados = rclvs.slice(0, indice - 1);
-							rclvs.splice(0, indice - 1);
+							const pasados = rclvs.slice(0, indice);
+							rclvs.splice(0, indice);
 							rclvs.push(...pasados);
 						}
 					}

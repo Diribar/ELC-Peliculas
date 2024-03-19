@@ -7,14 +7,17 @@
 		<span class="mm_busquedaRapida">Búsqueda rápida</span>
 	</div>
 	<hr class=" soloAngosto">
-	<!-- Quiero elegir una película -->
-	<a href="/consultas" class="menuOpcion">
-		<div>
-			<img src="/publico/imagenes/Varios/Movie.jpg" height="20">
-		</div>
-		<span>Quiero elegir una película</span>
-	</a>
-	<hr>
+
+	<% if (locals.tema != "consultas") { %>
+		<!-- Quiero elegir una película -->
+		<a href="/consultas" class="menuOpcion">
+			<div>
+				<img src="/publico/imagenes/Varios/Movie.jpg" height="20">
+			</div>
+			<span>Quiero elegir una película</span>
+		</a>
+		<hr>
+	<% } %>
 	<!-- Demostración -->
 	<div class="menuOpcion mm_demo ocultar">
 		<div>
