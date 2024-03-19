@@ -21,13 +21,17 @@
 #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
 
 /* Links - Íconos */
-.marco#links nav a {margin-right: 10px;}
-nav a img {border: solid 4px; border-radius: 10px; box-sizing: content-box;}
-nav a img {max-width: 70px; max-height: 24px;}
-nav a img.enCast {border-color: var(--verde-oscuro);}
-nav a img.subtCast {border-color: gold;}
-nav a img.otroIdioma {border-color: var(--rojo-oscuro);}
-
+.marco#links nav {align-items: stretch; height: 28px;}
+.marco#links nav :is(a, select) {margin-right: 10px; font-weight: bold; box-sizing: content-box;}
+.marco#links nav :is(a, select) {border: 4px solid; border-radius: 13px;}
+.marco#links nav select {padding: 0 4px; font-style: normal;}
+.marco#links nav a {padding: 0 9px;}
+.marco#links nav :is(a, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+.marco#links nav :is(a, select).subtCast {background: gold; color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+.marco#links nav :is(a, select).otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+.marco#links nav select.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
+subtCast
+otroIdioma
 /* Marco de Detalle */
 #marcoDetalle {margin-top: 20px; display: flex; flex-direction: column; width: fit-content;}
 /* Marco de Detalle - Etiqueta */
