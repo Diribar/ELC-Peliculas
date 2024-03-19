@@ -1,16 +1,15 @@
 <nav class="flexRowAlign">
-    <% for (const link of linksProd) { %>
-        <!-- Variables -->
-        <% const castellano = link.castellano ? "En castellano" : link.subtitulos ? "Subtitulos en castellano" : "En otro idioma" %>
-        <% const gratuito = " - " + (link.gratuito ? 'Link gratuito' : 'Link pago') %>
-        <% const calidad = " - " + link.calidad + 'px' %>
-        <% const completoParte = link.completo ? " - Completo" : link.parte != '-' ? (' - Parte ' + link.parte) : '' %>
-        <a href="<%= link.href %>">
-            <img
-                src="/Externa/6-LogosProvs/<%= link.prov.avatar %>"
-                class="<%= link.idioma + (link.statusRegistro_id != aprobado_id && locals.usuario && link.creadoPor_id != usuario.id ? ' inactivo' : '') %>"
-                title="<%= castellano + gratuito + calidad + completoParte %>"
-            >
-        </a>
-    <% } %>
+	<% for (let grupo in links) { %>
+		<% if (!links[grupo].length) {continue} %>
+		<% if (links[grupo].length == 1) { %>
+			<p><%= links[grupo][0].leyenda %></p>
+		<% } else { %>
+			<select id="" onchange="location = this.options[this.selectedIndex].value">
+				<option value="" disabled selected><%= links[grupo][0].titulo %></option>
+				<% for (const link of links[grupo]) { %>
+					<option value="<%= link.url %>" class="<%= link.idioma %>"><%= link.leyenda %></option>
+				<% } %>
+			</select>
+		<% } %>
+	<% } %>
 </nav>

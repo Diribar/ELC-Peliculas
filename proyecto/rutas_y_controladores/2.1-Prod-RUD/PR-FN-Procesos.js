@@ -63,8 +63,8 @@ module.exports = {
 		// Procesos si hay links
 		if (links.length) {
 			// Los ordena
-			links.sort((a, b) => (a.url < b.url ? -1 : 1)); // por url
-			links.sort((a, b) => b.calidad - a.calidad); // por calidad
+			//links.sort((a, b) => (a.url < b.url ? -1 : 1)); // por url
+			//links.sort((a, b) => b.calidad - a.calidad); // por calidad
 			links.sort((a, b) => a.parte - b.parte); // por partes
 			links.sort((a, b) => b.completo - a.completo); // por completo
 			links.sort((a, b) => b.castellano - a.castellano); // por idioma
@@ -83,8 +83,12 @@ module.exports = {
 			TR = links.filter((n) => n.tipo && n.tipo.trailer);
 		}
 
+		TR = FN.trailer(TR);
+		const GR = FN.gratis(PL);
+		const CC = FN.conCosto(PL);
+
 		// Fin
-		return {PL, TR};
+		return {GR, CC, TR};
 	},
 	actualizaCalifProd: async ({entidad, entidad_id}) => {
 		// Variables
@@ -120,5 +124,114 @@ module.exports = {
 
 		// Fin
 		return interesDelUsuario;
+	},
+};
+let FN = {
+	trailer: (links) => {
+		// Array vacía
+		if (!links.length) return [];
+
+		// Array con valores
+		let trailers = [];
+		links.forEach((link, i) => trailers.push({url: link.href, leyenda: "Trailer " + (i + 1), titulo: "Ver trailer"}));
+
+		// Fin
+		return trailers;
+	},
+	gratis: function (links) {
+		// Array vacía
+		if (!links.length) return [];
+		let gratuitos = links.filter((n) => n.gratuito);
+		if (!gratuitos.length) return [];
+
+		// Variables
+		let hayPartes, difsEnIdioma;
+
+		// Averigua si algunos son completos y otros son partes
+		const partes = gratuitos.filter((n) => n.parte);
+		if (partes.length) hayPartes = true;
+
+		// Si no hay hayPartes, averigua si hay diferencias en el idioma
+		if (!hayPartes) {
+			const castellano = gratuitos.filter((n) => n.castellano);
+			const subTits = gratuitos.filter((n) => n.subtitulos);
+			const otroIdioma = gratuitos.filter((n) => n.subtitulos);
+			if ((castellano.length && (subTits.length || otroIdioma.length)) || (subTits.length && otroIdioma.length))
+				difsEnIdioma = true;
+		}
+
+		// Leyenda para diferenciarlos en la vista
+		for (let link of gratuitos)
+			link.leyenda = hayPartes
+				? link.completo
+					? "Completo"
+					: "Parte " + link.parte
+				: difsEnIdioma
+				? link.castellano
+					? "En castellano"
+					: link.subtitulos
+					? "Con subtit."
+					: "En otro idioma"
+				: "Ver gratis";
+
+		// Selecciona los de mejor calidad y deja la info indispensable
+		gratuitos = this.dejaLaMejorCalidad(gratuitos);
+		gratuitos = gratuitos.map((n) => ({url: n.href, leyenda: n.leyenda, titulo: "Ver gratis"}));
+
+		// Fin
+		return gratuitos;
+	},
+	dejaLaMejorCalidad: (links) => {
+		// Si no hay que desempatar, interrumpe la función
+		if (links.length < 2) return links;
+
+		// Rutina para dejar los links de mejor calidad
+		for (let i = links.length - 1; i >= 0; i--) {
+			// Variables
+			const link = links[i];
+			const {castellano, subtitulos, completo, parte} = link;
+
+			// Obtiene los similares
+			const linksSimilares = links.filter(
+				(n) => n.castellano == castellano && n.subtitulos == subtitulos && n.completo == completo && n.parte == parte
+			);
+
+			// Quita los similares
+			if (linksSimilares.length > 1) {
+				const maxCalidad = Math.max(...linksSimilares.map((n) => n.calidad));
+				const id = linksSimilares.find((n) => n.calidad == maxCalidad).id;
+				for (let linkSimilar of linksSimilares)
+					if (linkSimilar.id != id) {
+						links = links.filter((n) => n.id != linkSimilar.id);
+						i--;
+					}
+			}
+		}
+
+		// Fin
+		return links;
+	},
+	conCosto: (links) => {
+		// Array vacía
+		if (!links.length) return [];
+		let conCosto = links.filter((n) => !n.gratuito);
+		if (!conCosto.length) return [];
+
+		// Si no hay diferencias en hayPartes, averigua si hay diferencias en el idioma
+		let difsEnIdioma;
+		const castellano = conCosto.filter((n) => n.castellano);
+		const subTits = conCosto.filter((n) => n.subtitulos);
+		const otroIdioma = conCosto.filter((n) => n.subtitulos);
+		if ((castellano.length && (subTits.length || otroIdioma.length)) || (subTits.length && otroIdioma.length))
+			difsEnIdioma = true;
+
+		// Leyenda para diferenciarlos en la vista
+		for (let link of conCosto) link.leyenda = link.prov.nombre;
+
+		// Selecciona los de mejor calidad y deja la info indispensable
+		conCosto = conCosto.map((n) => ({url: n.href, leyenda: n.leyenda, titulo: "Ver c/costo"}));
+
+		// Fin
+		return conCosto;
 	},
 };

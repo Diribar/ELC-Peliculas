@@ -103,7 +103,7 @@ module.exports = {
 	listados: {
 		session: (req, res) => res.send(req.session), // session
 		cookies: (req, res) => res.send(req.cookies), // cookies
-		RCLVs: async (req, res) => {
+		rclvs: async (req, res) => {
 			// Variables
 			const {ruta} = comp.reqBasePathUrl(req);
 			const rclv = ruta.slice(1);
@@ -131,6 +131,38 @@ module.exports = {
 
 			// Fin
 			return res.send(resultado2);
+		},
+		links: async (req, res) => {
+			// Variables
+			const entidades = variables.entidades.prods;
+			let productos = [];
+			let TR, GR, CC, cantLinks;
+
+			// Busca las películas y filtra por las que tienen más de un link
+			for (let entidad of entidades)
+				productos.push(
+					...(await BD_genericas.obtieneTodosConInclude(entidad, "links").then((n) =>
+						n.filter((m) => m.links.length > 1)
+					))
+				);
+
+			// Separa entre links TR, GR y CC
+			for (let producto of productos) {
+				// Trailer
+				cantLinks = producto.links.filter((n) => n.tipo_id == 1).length;
+				if (!TR || TR.cantLinks < cantLinks) TR = {nombre: producto.nombreCastellano, cantLinks};
+
+				// Gratis
+				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && n.gratuito).length;
+				if (!GR || GR.cantLinks < cantLinks) GR = {nombre: producto.nombreCastellano, cantLinks};
+
+				// Gratis
+				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && !n.gratuito).length;
+				if (!CC || CC.cantLinks < cantLinks) CC = {nombre: producto.nombreCastellano, cantLinks};
+			}
+
+			// Devuelve la info
+			return res.send({TR, GR,CC});
 		},
 	},
 };

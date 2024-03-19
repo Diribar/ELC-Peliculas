@@ -73,11 +73,13 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = prodComb.creadoPor_id;
-		const ayudasTitulo = links.PL.length
-			? ["Eligiendo " + (links.PL.length == 1 ? "el link" : "uno de los links") + ", podés ver la película"]
-			: ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."];
+		const ayudasTitulo =
+			!links.GR.length && !links.CC.length
+				? ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."]
+				: [""];
 
 		// Va a la vista
+		//return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
