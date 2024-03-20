@@ -1,11 +1,25 @@
 <section id="detCuerpoFooterImgDer">
-	<!-- Cuerpo y Footer -->
 	<div id="detCuerpoFooter">
-		<!-- Cuerpo -->
 		<div id="detCuerpo">
-			<%- include("PR1-Detalle2-Datos") %>
+			<div id="tituloPrincipal">
+				<h1 id="titulo"><%= titulo %></h1>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+							<li>Recordá guardar los cambios para que queden efectivos</li>
+							<li>Para guardar los cambios, es necesario que no haya ningún error (<i class="fa-solid fa-circle-xmark"></i>).</li>
+							<li>Se pueden guardar los cambios, aunque no se hayan resuelto todas las advertencias (<i class="fa-solid fa-triangle-exclamation"></i>).</li>
+							<li>Si no tenés experiencia completando los campos que tienen ícono de ayuda, por favor consultalos.</li>
+						</ul>
+					</i>
+				</div>
+			</div>
+			<div id="datos">
+				<%- include("PR1-Detalle1-Datos") %>
+			</div>
 		</div>
 		<%- include('CMP-3Footer') %>
 	</div>
-	<%- include("PR1-Detalle1-Avatar") %>
+	<%- include("PR1-Detalle2-Avatar") %>
 </section>
