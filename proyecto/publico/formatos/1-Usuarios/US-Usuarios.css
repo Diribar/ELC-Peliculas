@@ -34,7 +34,7 @@ form select {text-align: left;}
 #cuerpo .inputError .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent transparent;}
 
 /* Flechas */
-form .flechas {margin: 15px auto 5px;}
+form .iconos {margin: 15px auto 5px;}
 
 /* Credenciales inválidas*/
 #credenciales.errores .mensajeError {display: block; position: static; translate: none;}

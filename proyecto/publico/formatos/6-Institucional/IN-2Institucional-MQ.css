@@ -8,9 +8,9 @@
 @media (max-height: 450px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
-	#contenido .flechas {display: flex;}
+	#contenido .iconos {display: flex;}
 }
-@media (min-height: 450px) {section #cuadroDeTexto > .flechas {display: flex;}}
+@media (min-height: 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
 
 /* Ancho y Alto */
 @media (min-width: 700px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}

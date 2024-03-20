@@ -5,7 +5,7 @@
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
-<div class="flechas">
+<div class="iconos">
 	<% if (locals.origen && origen != "DTR") { %><!-- Cuando tiene origen distinto a 'DTR' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>

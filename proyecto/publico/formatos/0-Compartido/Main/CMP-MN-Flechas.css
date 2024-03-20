@@ -1,18 +1,18 @@
 /* Botones */
 #botones {display: flex; flex-direction: row; justify-content: space-around;}
-#botones .flechas {margin: 0; display: flex; flex-direction: row; align-items: center;}
+#botones .iconos {margin: 0; display: flex; flex-direction: row; align-items: center;}
 
 /* Flechas */
 .flechas {display: flex; flex-direction: row;}
 .flechas {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
 .flechas {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
-.flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}
+.flechas i, .iconos img, .iconos a, .iconos button {font-size: 1.75rem; background: transparent; border: none;}
 .flechas :where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
 .flechas button :is(i) {margin: 0;}
 .flechas .pack :where(i, img, button) {margin: 0 5px;}
 .flechas .pack {margin: 0 5px; display: flex; flex-direction: row; align-items: center;}
-.flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
-.flechas button, .flechas a {display: flex; flex-direction: row; align-items: center; height: min-content;}
+.flechas .fa-circle-left, .iconos .fa-circle-right {color: var(--bordeFlechas); border: none;}
+.flechas button, .iconos a {display: flex; flex-direction: row; align-items: center; height: min-content;}
 
 /* Cambios de status */
 #flechasCambioStatus :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}

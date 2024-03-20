@@ -74,9 +74,9 @@ main #cuerpo {flex-direction: column;}
 #datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
 
 /* Comandos - Particularidades */
-#cuerpo .flechas.img {padding-left: 5px; padding-right: 5px;}
-#cuerpo .flechas.img a {display: flex; flex-direction: row; margin: 0;}
-#cuerpo .flechas a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
+#cuerpo .iconos.img {padding-left: 5px; padding-right: 5px;}
+#cuerpo .iconos.img a {display: flex; flex-direction: row; margin: 0;}
+#cuerpo .iconos a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
 
 /* Colores de los bordes de logos */
 #datos tbody td a img {border: solid 4px; box-sizing: content-box;}

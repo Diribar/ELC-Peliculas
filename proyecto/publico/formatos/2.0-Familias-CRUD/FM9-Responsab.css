@@ -14,6 +14,6 @@
 #dataEntry li {text-align: left;}
 
 /* Submit button */
-#dataEntry .flechas {margin: 20px auto 0;}
-#dataEntry .flechas i {font-size: 1.75rem; color: var(--amarillo-oscuro);}
-#dataEntry .flechas i {border-radius: 50%; padding: 5px;}
+#dataEntry .iconos {margin: 20px auto 0;}
+#dataEntry .iconos i {font-size: 1.75rem; color: var(--amarillo-oscuro);}
+#dataEntry .iconos i {border-radius: 50%; padding: 5px;}

@@ -109,5 +109,5 @@
 #dataEntry ul#ayudaNombrePers li span {font-variant: small-caps; text-decoration: underline;}
 
 /* Submit button */
-#dataEntry .flechas {margin: 20px 0 0;}
-#dataEntry .flechas label[for="eliminaEdicion"] {color: var(--rojo-oscuro);}
+#dataEntry .iconos {margin: 20px 0 0;}
+#dataEntry .iconos label[for="eliminaEdicion"] {color: var(--rojo-oscuro);}

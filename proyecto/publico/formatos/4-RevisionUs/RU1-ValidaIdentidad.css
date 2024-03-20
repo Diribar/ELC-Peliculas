@@ -18,15 +18,15 @@
 #subCuerpo #datos #documento img {height: 100%; width: 100%; object-fit: contain; position: absolute; }
 
 /* Íconos */
-#subCuerpo #datos .iconos {position: absolute; top: 50%; transform: translateY(-57%);}
-#subCuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#subCuerpo #datos .iconos {border-radius: 10px; left: -55px; width: 45px;}
-#subCuerpo #datos .iconos label:has(.sinDecision) {border-radius: 50%; border: 1px solid black;}
-#subCuerpo #datos .iconos .fa-solid {font-weight: bold; font-size: 1.15rem;}
-#subCuerpo #datos .iconos .fa-solid.sinDecision {font-size: 1rem; color: white; background: var(--gris-oscuro);}
+#subCuerpo #datos .aprobRech {position: absolute; top: 50%; transform: translateY(-57%);}
+#subCuerpo #datos .aprobRech {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#subCuerpo #datos .aprobRech {border-radius: 10px; left: -55px; width: 45px;}
+#subCuerpo #datos .aprobRech label:has(.sinDecision) {border-radius: 50%; border: 1px solid black;}
+#subCuerpo #datos .aprobRech .fa-solid {font-weight: bold; font-size: 1.15rem;}
+#subCuerpo #datos .aprobRech .fa-solid.sinDecision {font-size: 1rem; color: white; background: var(--gris-oscuro);}
 /* #subCuerpo #datos #motivo_rech_docum {} */
 
 /* Flechas */
-#subCuerpo .flechas button {border: none;}
+#subCuerpo .iconos button {border: none;}
 
 .bordeRojo {border: red 1px solid;}
