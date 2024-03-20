@@ -20,5 +20,6 @@
 #ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
 #ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
 #ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
+#ayudaLinks .ayudaMostrar i.elegi {color: var(--gris-oscuro);}
 #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
 
