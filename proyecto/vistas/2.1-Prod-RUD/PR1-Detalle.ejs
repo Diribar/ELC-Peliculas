@@ -1,25 +1,12 @@
-<section id="detCuerpoFooterImgDer">
-	<div id="detCuerpoFooter">
-		<div id="detCuerpo">
-			<div id="tituloPrincipal">
-				<h1 id="titulo"><%= titulo %></h1>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
-							<li>Recordá guardar los cambios para que queden efectivos</li>
-							<li>Para guardar los cambios, es necesario que no haya ningún error (<i class="fa-solid fa-circle-xmark"></i>).</li>
-							<li>Se pueden guardar los cambios, aunque no se hayan resuelto todas las advertencias (<i class="fa-solid fa-triangle-exclamation"></i>).</li>
-							<li>Si no tenés experiencia completando los campos que tienen ícono de ayuda, por favor consultalos.</li>
-						</ul>
-					</i>
-				</div>
-			</div>
-			<div id="datos">
-				<%- include("PR1-Detalle1-Datos") %>
-			</div>
+<section id="cuerpoFooterImgDer">
+	<div id="cuerpoFooter">
+		<div id="cuerpo">
+			<%- include("FM-Detalle") %>
 		</div>
 		<%- include('CMP-3Footer') %>
 	</div>
 	<%- include("PR1-Detalle2-Avatar") %>
 </section>
+<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
