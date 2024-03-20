@@ -1,9 +1,5 @@
-<form method="POST" enctype="multipart/form-data">
-	<%- include("RCLV1-AltaEdicion1-Avatar") %>
+<form id="edicCuerpoFooterImgDer" method="POST" enctype="multipart/form-data">
 	<section id="edicCuerpoFooter">
-		<%- include('CMP-3Footer', {mostrar: true}) %>
-		<!--**************************** CUERPO ************************-->
-
 		<div id="edicCuerpo">
 			<%- codigo != "agregar" ? include('CMP-TimerContador') : "" %>
 			<div id="tituloPrincipal">
@@ -28,6 +24,7 @@
 				<% } %>
 			</div>
 		</div>
-		<!--****************************** FIN *************************-->
+		<%- include('CMP-3Footer') %>
 	</section>
+	<%- include("RCLV1-AltaEdicion1-Avatar") %>
 </form>
