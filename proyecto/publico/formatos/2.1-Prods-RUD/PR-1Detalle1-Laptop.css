@@ -1,0 +1,34 @@
+/* General */
+#datos {--anchoRecuadro: 675px;}
+
+/* Links */
+.marco#links {display: flex; flex-direction: row; justify-content: flex-start;}
+.marco#links {padding: 5px 20px;}
+.marco#links > div {margin: 5px 0; min-height: 20px;}
+.marco#links button {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
+
+/* Links - Ayuda */
+.marco#links #ayudaLinks {margin-right: 10px;}
+#ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
+#ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
+#ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
+#ayudaLinks .ayudaMostrar ul {list-style-type: none;}
+#ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
+#ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
+#ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
+#ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
+
+/* Links laptop */
+.marco#links nav {flex-direction: row; height: 28px;}
+.marco#links nav :is(a, select) {margin-right: 10px; font-weight: bold; box-sizing: content-box;}
+.marco#links nav :is(a, select) {border: 4px solid; border-radius: 13px;}
+.marco#links nav select {padding: 0 4px; font-style: normal;}
+.marco#links nav a {padding: 0 9px;}
+.marco#links nav :is(a, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+.marco#links nav :is(a, select).subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
+.marco#links nav :is(a, select).otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+.marco#links nav select.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
+.marco#links nav select option {font-weight: bold;}
+.marco#links nav select option.enCast {background: var(--verde-oscuro); color: var(--gris-claro);}
+.marco#links nav select option.subtCast {background: gold; color: var(--gris-oscuro);}
+.marco#links nav select option.otroIdioma {background: var(--rojo-oscuro); color: var(--gris-claro);}
