@@ -1,3 +1,11 @@
+/* General */
 #imgDerecha #centro {position: relative;}
-#centro #links, #centro #links nav {flex-direction: column; }
-#centro nav {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
+
+/* Links */
+#centro #links, #centro #links nav {flex-direction: column;}
+#centro #links {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
+
+/* Links - Ayuda */
+#centro #links #ayudaLinks {margin-bottom: 10px;}
+#centro #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
+#centro #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
