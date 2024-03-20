@@ -1,5 +1,10 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
-
+	#cuerpoFooterImgDer #imgDerecha {justify-content: space-between;}
+	#imgDerecha .flexRowAlign {justify-content: space-evenly; margin-bottom: 20px;}
+	#imgDerecha .flexRowAlign .flechas {margin: 0;}
 }
 
+@media (orientation: landscape) {
+	#imgDerecha #tituloPrincipal {display: none;}
+}
