@@ -1,6 +1,6 @@
 <%- include("FM-TituloPrincipal") %>
 <section id="datos">
-	<section id="datosLargos">
+	<div id="datosLargos">
 		<div id="recuadro" class="bordeConSombra">
 			<!-- Encabezado -->
 			<div id="encabezado">
@@ -21,8 +21,8 @@
 				</div>
 			<% } %>
 		</div>
-	</section>
-	<section id="datosBreves">
+	</div>
+	<div id="datosBreves">
 		<!-- Revisión -->
 		<% if (tema == "revisionEnts") { %>
 			<%- include("RE0-Breves") %>
@@ -38,7 +38,7 @@
 				<%- include("RCLV-Breves") %>
 			<% } %>
 		<% } %>
-	</section>
+	</div>
 </section>
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
 <link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
