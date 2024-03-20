@@ -7,5 +7,7 @@
 
 /* Links - Ayuda */
 #centro #links #ayudaLinks {margin-bottom: 10px;}
-#centro #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
-#centro #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
+#centro #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
+#centro #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
+#centro #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
+#centro #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
