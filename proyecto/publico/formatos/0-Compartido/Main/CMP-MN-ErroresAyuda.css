@@ -1,9 +1,9 @@
 /* Contenedores */
-main :is(#cuerpo, #edicCuerpo) :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: relative;}
+main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: relative;}
 
 /* Formato común entre Ayuda y Errores */
-:is(#cuerpo, #edicCuerpo) .ayuda, .inputError .errores {line-height: 1rem; font-size: 1rem;}
-:is(#cuerpo, #edicCuerpo) .ayuda, .inputError .errores {position: absolute; right: -5px; top: 50%; translate: 100% -50%;}
+#cuerpo .ayuda, .inputError .errores {line-height: 1rem; font-size: 1rem;}
+#cuerpo .ayuda, .inputError .errores {position: absolute; right: -5px; top: 50%; translate: 100% -50%;}
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Bordes */

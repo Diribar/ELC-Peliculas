@@ -1,13 +1,13 @@
 /* Colores */
-:is(#cuerpo, #edicCuerpo) #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
+#cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
 
 /* Encabezado */
-:is(#cuerpo, #edicCuerpo) #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-:is(#cuerpo, #edicCuerpo) #encabezado {padding: 10px 20px; border-bottom: solid 1px var(--azul-oscuro);}
-:is(#cuerpo, #edicCuerpo) #encabezado {background: var(--celeste-claro);}
+#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #encabezado {padding: 10px 20px; border-bottom: solid 1px var(--azul-oscuro);}
+#cuerpo #encabezado {background: var(--celeste-claro);}
 
 /* Ancho, dependiendo de si tiene capítulos */
-:is(#cuerpo, #edicCuerpo) #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
+#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
 
 /* Otros */
 #encabezado #nombres h2 {margin: 0; }
