@@ -1,5 +1,6 @@
 /* Temas generales */
 #edicCuerpoFooterImgDer {background: var(--gris-claro);}
+#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
 #edicCuerpoFooter #edicCuerpo {flex-direction: column;}
 
 .ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
@@ -69,9 +70,6 @@
 
 /* Tipos de actuación */
 #info #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
-
-/* Avatar */
-#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
