@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 19/mar",
-	"HoraUTC": "1:17",
+	"FechaUTC": "Mié. 20/mar",
+	"HoraUTC": "15:57",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-mar-24": {"titulo": "San Patricio de Irlanda", "entidad": "personajes", "id": 115},
 		"18-mar-24": {"titulo": "Cuaresma"},
 		"19-mar-24": {"titulo": "San José, padre de Jesús", "entidad": "personajes", "id": 13},
 		"20-mar-24": {"titulo": "Santa María Josefa del Corazón de Jesús"},
-		"21-mar-24": {"titulo": "San Nicolas de Flüe"}
+		"21-mar-24": {"titulo": "San Nicolas de Flüe"},
+		"22-mar-24": {"titulo": "Cuaresma"}
 	}
 }
