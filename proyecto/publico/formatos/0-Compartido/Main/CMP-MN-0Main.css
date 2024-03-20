@@ -7,8 +7,8 @@ main,
 #cuerpoFooter, #edicCuerpoFooter,
 #cuerpo
 	{position: relative;}
-main :is(#cuerpoFooterImgDer, #edicCuerpoFooterImgDer),
-#cuerpoFooterImgDer #cuerpoFooter, #edicCuerpoFooterImgDer #edicCuerpoFooter,
+#cuerpoFooterImgDer, #edicCuerpoFooterImgDer,
+#cuerpoFooter, #edicCuerpoFooter,
 #cuerpoFooter #cuerpo, #edicCuerpoFooter #edicCuerpo
 	{display: flex; flex-grow: 1;}
 
