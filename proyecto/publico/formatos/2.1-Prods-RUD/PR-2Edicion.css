@@ -6,12 +6,12 @@
 .ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
 
 /* Zona del formulario */
-#edicCuerpo #edicDatos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
-#edicCuerpo #edicDatos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
-#edicCuerpo #edicDatos .altoFila {height: 21px;}
+#edicCuerpo #datos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
+#edicCuerpo #datos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
+#edicCuerpo #datos .altoFila {height: 21px;}
 
 /* Partes del formulario */
-#edicDatos #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
+#datos #info {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 .labelInput .inputError .input {width: 100%;}
 .errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
 
@@ -29,46 +29,46 @@
 #segundaColumna .labelInput .inputError :is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
 /* Partes específicas del formulario */
-#datos .columna {display: flex; flex-direction: column; justify-content: space-between;}
-#datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
-#datos .columna h3:first-child {margin-top: 0;}
-#datos .columna .labelInput:has(h3) {margin-top: 15px;}
+#info .columna {display: flex; flex-direction: column; justify-content: space-between;}
+#info .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
+#info .columna h3:first-child {margin-top: 0;}
+#info .columna .labelInput:has(h3) {margin-top: 15px;}
 
-#datos .labelInput {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;}
-#datos .labelInput label {margin-right: 20px; font-weight: bold;}
-#datos .labelInput .inputError {display: flex; flex-direction: row; margin-left: 5px;}
-#datos .labelInput .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
-#datos .labelInput .inputError .ayuda {right: -5px;}
-#datos .labelInput .inputError .input {align-self: center;}
-#datos .labelInput .inputError .input.numero {text-align: right;}
-#datos .labelInput .inputError input {padding: 0px 5px;}
-#datos .labelInput .inputError select {padding: 0;}
-/* #datos .labelInput .inputError .input:disabled, #datos .labelInput#paises_id */
-#datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
-#datos .flexRowAlign #siNoTitulo {width: 210px;}
+#info .labelInput {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;}
+#info .labelInput label {margin-right: 20px; font-weight: bold;}
+#info .labelInput .inputError {display: flex; flex-direction: row; margin-left: 5px;}
+#info .labelInput .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
+#info .labelInput .inputError .ayuda {right: -5px;}
+#info .labelInput .inputError .input {align-self: center;}
+#info .labelInput .inputError .input.numero {text-align: right;}
+#info .labelInput .inputError input {padding: 0px 5px;}
+#info .labelInput .inputError select {padding: 0;}
+/* #info .labelInput .inputError .input:disabled, #info .labelInput#paises_id */
+#info :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
+#info .flexRowAlign #siNoTitulo {width: 210px;}
 
 /* País */
-#datos #paises_id {align-items: center;}
-#datos #paises_id .inputError {width: 200px;}
-#datos #paises_id .inputError :is(input#mostrarPaises, select)
+#info #paises_id {align-items: center;}
+#info #paises_id .inputError {width: 200px;}
+#info #paises_id .inputError :is(input#mostrarPaises, select)
 	{position: absolute; top: 0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-#datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
-#datos #paises_id .inputError select {width: 100%; padding: 0;}
+#info #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
+#info #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* Sinopsis */
-#datos .labelInput#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
-#datos .labelInput#sinopsis .inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
-#datos #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%; min-height: 50px;}
-#datos #sinopsis textarea.input::-webkit-scrollbar {display: none;}
+#info .labelInput#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
+#info .labelInput#sinopsis .inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+#info #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%; min-height: 50px;}
+#info #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
 /* RCLV */
-#datos .labelInput .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-#datos .labelInput .inputError .linkRCLV {width: 15px; cursor: pointer;}
-#datos .labelInput .inputError #alta.linkRCLV {right: -40px;}
-#datos .labelInput .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
+#info .labelInput .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#info .labelInput .inputError .linkRCLV {width: 15px; cursor: pointer;}
+#info .labelInput .inputError #alta.linkRCLV {right: -40px;}
+#info .labelInput .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
 
 /* Tipos de actuación */
-#datos #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
+#info #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
 
 /* Avatar */
 #edicCuerpoFooterImgDer #imgDerecha {position: relative;}
