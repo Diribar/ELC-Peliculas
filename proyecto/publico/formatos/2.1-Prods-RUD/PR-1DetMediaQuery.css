@@ -1,10 +1,12 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
-	#cuerpoFooterImgDer #imgDerecha {justify-content: space-between;}
-	#imgDerecha .flexRowAlign {justify-content: space-evenly; margin-bottom: 20px;}
-	#imgDerecha .flexRowAlign .flechas {margin: 0;}
+	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch; border: 1px solid black;}
+	#imgDerecha :is(#tituloPrincipal, #conjuntoFlechas) {flex-grow: 2;}
+	#imgDerecha #conjuntoFlechas {justify-content: space-evenly;}
+	#imgDerecha #conjuntoFlechas .flechas {margin: 0;}
 }
 
 @media (orientation: landscape) {
 	#imgDerecha #tituloPrincipal {display: none;}
+	#imgDerecha #conjuntoFlechas {display: none;}
 }
