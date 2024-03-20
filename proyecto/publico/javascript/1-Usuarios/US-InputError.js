@@ -21,7 +21,7 @@ window.addEventListener("load", () => {
 		// Varios
 		button: form.querySelector("button[type='submit']"),
 		inputs: form.querySelectorAll(".inputError .input"),
-		olvidoContr: form.querySelector(".flechas a:has(i.fa-key)"),
+		olvidoContr: form.querySelector(".iconos a:has(i.fa-key)"),
 	};
 	let v = {
 		inputs: Array.from(DOM.inputs).map((n) => n.name),

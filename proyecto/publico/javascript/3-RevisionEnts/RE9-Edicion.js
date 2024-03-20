@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 			if (resultado.statusAprob) {
 				// Mensajes
 				let arrayMensajes = ["Se completó la revisión, muchas gracias."];
-				// Flechas
+				// Iconos
 				let icono = {
 					HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
 					link: "/inactivar-captura/" + cola,

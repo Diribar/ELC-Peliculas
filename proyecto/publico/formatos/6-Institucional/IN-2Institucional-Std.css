@@ -14,9 +14,9 @@
 #cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
 #cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
 
-/* Flechas */
-#cuadroDeTexto > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Flechas en 'cuadro de texto' */
-#contenido .iconos {margin: 20px 0 0; display: none;} /* Flechas dentro de 'contenido' */
+/* Iconos */
+#cuadroDeTexto > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Iconos en 'cuadro de texto' */
+#contenido .iconos {margin: 20px 0 0; display: none;} /* Iconos dentro de 'contenido' */
 #cuadroDeTexto .iconos {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todas las flechas */
 #cuadroDeTexto .iconos i {font-size: 2rem;}
 

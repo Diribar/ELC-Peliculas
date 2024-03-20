@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	let DOM = {
-		// Flechas
+		// Iconos
 		accesoAlCartelRechazo: document.querySelector("#mostrarMotivos"),
 
 		// Borrar

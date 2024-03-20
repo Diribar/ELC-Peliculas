@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
-		botonSubmit: document.querySelector(".flechas button[type='submit']"),
+		botonSubmit: document.querySelector(".iconos button[type='submit']"),
 		nombre: document.querySelector("form #sectorNombre #nombre"),
 
 		// Variables de errores

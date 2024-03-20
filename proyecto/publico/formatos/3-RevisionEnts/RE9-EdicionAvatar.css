@@ -39,5 +39,5 @@
 #centro #medio #fichaTecnica {background: var(--gris-claro); border: var(--gris-oscuro) 4px solid;}
 #centro #medio #fichaTecnica p {line-height: 1.5; font-size: 1.15rem;}
 
-/* Sección central - Flechas */
-.flechas {width: fit-content;}
+/* Sección central - Iconos */
+.iconos {width: fit-content;}
