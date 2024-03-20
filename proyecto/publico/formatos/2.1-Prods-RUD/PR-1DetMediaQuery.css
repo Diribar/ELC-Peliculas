@@ -1,12 +1,16 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
 	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch; border: 1px solid black;}
-	#imgDerecha :is(#tituloPrincipal, #conjuntoFlechas) {flex-grow: 2;}
-	#imgDerecha #conjuntoFlechas {justify-content: space-evenly;}
-	#imgDerecha #conjuntoFlechas .flechas {margin: 0;}
 }
 
 @media (orientation: landscape) {
 	#imgDerecha #tituloPrincipal {display: none;}
-	#imgDerecha #conjuntoFlechas {display: none;}
+}
+
+/* Alto */
+@media (orientation: landscape) and (min-height: 701px) {
+}
+@media (orientation: landscape) and (max-height: 700px) {
+	#datos #botones .flechas {display: none;}
+	#imgDerecha #conjuntoIconos {display: none;}
 }
