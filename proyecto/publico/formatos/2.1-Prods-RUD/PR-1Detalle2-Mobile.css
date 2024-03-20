@@ -1,4 +1,5 @@
 /* General */
+#imgDerecha :is(#tituloPrincipal, #conjuntoIconos) {flex-grow: 1;}
 #imgDerecha #centro {position: relative;}
 
 /* Links - Ayuda */
@@ -12,3 +13,7 @@
 #centro #links {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
 #centro #links nav {align-items: center;}
 #centro #links nav :is(a, select) {margin-top: 10px;}
+
+/* Conjunto de iconos */
+#imgDerecha #conjuntoIconos {justify-content: space-evenly;}
+#imgDerecha #conjuntoIconos .flechas {margin: 0;}
