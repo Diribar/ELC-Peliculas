@@ -1,6 +1,6 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
-	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch; border: 1px solid black;}
+	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch;}
 }
 
 @media (orientation: landscape) {
