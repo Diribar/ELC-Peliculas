@@ -1,10 +1,12 @@
 <div id="imgDerecha">
 	<%- include("FM-TituloPrincipal") %>
 
-	<!-- Muestra la Imagen -->
-	<img src="<%= imgDerPers %>">
+	<div id="centro">
+		<img src="<%= imgDerPers %>">
+		<%- include("PR1-DetalleLinks") %>
+	</div>
 
-	<div class="flexRowAlign">
+	<div id="conjuntoFlechas" class="flexRowAlign">
 		<%- include("Flechas-5MobileVert") %>
 	</div>
 </div>
