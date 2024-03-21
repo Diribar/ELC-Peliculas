@@ -14,7 +14,8 @@
 	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
 }
 @media (orientation: landscape) and (max-height: 600px) {
-	#datos #botones .iconos {display: none;}
+	#datos #datosLargos #botones .iconos {display: none;}
+	#datos #datosBreves.toggle {display: none;}
 	#imgDerecha #conjuntoIconos {position: absolute; translate: -50% 0; left: 50%; bottom: 10px; width: 100%;}
 	#imgDerecha #conjuntoIconos .iconos:has(#ppp) {display: none;}
 }
