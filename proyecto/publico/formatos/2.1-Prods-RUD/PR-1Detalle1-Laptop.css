@@ -1,0 +1,33 @@
+/* General */
+#cuerpo #datos {--anchoRecuadro: 675px;}
+
+/* Links */
+#datos #links, #datos #links nav {flex-direction: row; }
+#datos #links {justify-content: flex-start; padding: 10px 20px;}
+#datos #links nav :is(a, select) {margin-right: 10px;}
+#datos #links button#primerCap {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
+
+/* Links - Ayuda */
+#datos #links #ayudaLinks {margin-right: 10px;}
+#datos #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
+#datos #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
+
+/* Marco de Detalle */
+#marcoDetalle {margin-top: 20px; display: flex; flex-direction: column; width: fit-content;}
+/* Marco de Detalle - Etiqueta */
+#marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
+#marcoDetalle #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
+#marcoDetalle #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
+#marcoDetalle #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
+#marcoDetalle #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
+/* Marco de Detalle - Información */
+#marcoDetalle #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
+#marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
+#marcoDetalle #datosDetalle {min-width: 40vw;}
+#datosDetalle .datosParcial {flex-direction: column;}
+#datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
+#datosDetalle .datosParcial#masInfo #infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
+#datosDetalle .datosParcial a {text-decoration: underline;}
+#datosDetalle .datosParcial b {color: var(--gris-oscuro);}
+#datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
+#datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}

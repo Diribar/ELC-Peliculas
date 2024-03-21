@@ -9,13 +9,13 @@
 	<% if (locals.origen && origen != "DTR") { %><!-- Cuando tiene origen distinto a 'DTR' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
-		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID ? prodID : id)) : '' %>
+		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID || locals.id)) : '' %>
 		<a href="/inactivar-captura/?<%= ENTIDAD + ID + ORIGEN %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
 	<% if (ORIGEN_DIF_DT && !revLinks || !detalle && !locals.origen) { %>
-		<!-- Siempre que el origen sea distinto a 'Detalle' o no haya origen -->
+		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
@@ -36,8 +36,10 @@
 			<% } %>
 		<% } else { %>
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
-			<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<% if (familia == "producto") { %>
+				<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+				<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<% } %>
 		<% } %>
 	<% } %>
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>

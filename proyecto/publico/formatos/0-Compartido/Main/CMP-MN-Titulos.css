@@ -1,9 +1,9 @@
 /* Formato del título */
-#cuerpo #tituloPrincipal #titulo {background: var(--backTitulo); color: var(--colorTitulo);}
-#cuerpo #tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--bordeTitulo) var(--bordeTitulo) transparent}
-#cuerpo #tituloPrincipal #titulo {font-size: 1.25rem;font-family: var(--Arial); font-weight: bold;}
-#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1;}
-#cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
+#tituloPrincipal #titulo {background: var(--backTitulo); color: var(--colorTitulo);}
+#tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--bordeTitulo) var(--bordeTitulo) transparent}
+#tituloPrincipal #titulo {font-size: 1.25rem;font-family: var(--Arial); font-weight: bold;}
+#tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1;}
+#tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
 
 /* Formato del mensaje */
-#cuerpo :is(#tituloPrincipal, #tituloSecundario) {align-self: flex-start;}
+:is(#tituloPrincipal, #tituloSecundario) {align-self: flex-start;}

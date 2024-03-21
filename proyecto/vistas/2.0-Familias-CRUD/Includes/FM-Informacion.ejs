@@ -2,22 +2,17 @@
 <div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
     <% if (false) { %>
 
-    <!-- PRODUCTO: Calificar -->
-    <% } else if (codigo == "calificar") { %><%- include("PR3-Calificar") %>
-
-    <!-- PRODUCTO: Revisión de Alta -->
+    <!-- PRODUCTO -->
+    <% } else if (tema == "prodRud" && codigo == "detalle") { %><%- include("PR1-Detalle1-Datos") %>
+    <% } else if (tema == "prodRud" && codigo == "calificar") { %><%- include("PR3-Calificar") %>
     <% } else if (tema == "revisionEnts" && codigo == "producto/alta") { %><%- include("RE1-AltaProd") %>
 
-    <!-- RCLV: Detalle y Revisión de Alta -->
+    <!-- RCLV -->
     <% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV-DT1-Largos") %>
 
-    <!-- AMBOS: Revisión de Edición -->
+    <!-- AMBOS -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
-
-    <!-- AMBOS: Inactivar y Rechazo -->
     <% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM8-Inactivar") %>
-
-    <!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
     <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM8-Recuperar") %>
 
     <!-- Fin -->

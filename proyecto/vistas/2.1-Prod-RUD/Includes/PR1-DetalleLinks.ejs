@@ -1,27 +1,39 @@
-<nav class="flexRowAlign">
-	<% let autofocus %>
-	<% for (let grupo in links) { %>
-		<% const link0 = links[grupo][0] %>
-		<% if (!links[grupo].length) {continue} %>
-		<% if (links[grupo].length == 1) { %>
-			<a
-				href="<%= link0.url %>"
-				class="flexRowAlign <%= link0.idioma %>"
-				<% if (!autofocus) { %>
-					autofocus
-					<% autofocus = true %>
+<div id="links" class="marco">
+	<% if (entidad == "colecciones") { %>
+		<!-- Sólo colección -->
+		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origen=" + rutaCRUD; %>
+		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino) %>
+		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
+			<button id="primerCap" type="button" class="pointer scale">Ir al primer capítulo</button>
+		</a>
+	<% } else if (!links.GR.length) { %>
+		<p>Sin links gratuitos</p>
+	<% } else { %>
+		<!-- Ayuda -->
+		<%- include("PR1-DetalleAyuda") %>
+		<!-- Links -->
+		<nav>
+			<% let autofocus %>
+			<% for (let grupo in links) { %>
+				<% const link0 = links[grupo][0] %>
+				<% if (!links[grupo].length) {continue} %>
+				<% if (links[grupo].length == 1) { %>
+					<a href="<%= link0.url %>">
+						<button
+							class="<%= link0.idioma %>"
+							<% if (!autofocus) { %>autofocus<% autofocus = true %><% } %>
+						><%= link0.titulo %></button>
+					</a>
+				<% } else { %>
+					<% const color = links[grupo].every(n=> n.idioma == link0.idioma) ? link0.idioma : "varios" %>
+					<select class="<%= color %>" onchange="location = this.options[this.selectedIndex].value">
+						<option value="" disabled selected><%= link0.titulo %></option>
+						<% for (const link of links[grupo]) { %>
+							<option value="<%= link.url %>" class="<%= link.idioma %>"><%= link.leyenda %></option>
+						<% } %>
+					</select>
 				<% } %>
-			>
-				<p><%= link0.titulo %></p>
-			</a>
-		<% } else { %>
-			<% const color = links[grupo].every(n=> n.idioma == link0.idioma) ? link0.idioma : "varios" %>
-			<select class="<%= color %>" onchange="location = this.options[this.selectedIndex].value">
-				<option value="" disabled selected><%= link0.titulo %></option>
-				<% for (const link of links[grupo]) { %>
-					<option value="<%= link.url %>" class="<%= link.idioma %>"><%= link.leyenda %></option>
-				<% } %>
-			</select>
-		<% } %>
+			<% } %>
+		</nav>
 	<% } %>
-</nav>
+</div>

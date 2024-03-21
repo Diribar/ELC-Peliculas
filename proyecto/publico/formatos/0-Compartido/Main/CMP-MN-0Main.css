@@ -1,8 +1,8 @@
 /* General */
 main {height: var(--altoMain);}
-main {display: flex; flex-direction: row; overflow-y: hidden;}
+main {display: flex; flex-direction: row; overflow-y: hidden; position: relative;}
 main {--anchoImgDer: 32vw}
-main, #cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
+#cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Tapar el fondo */
 main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
