@@ -13,4 +13,4 @@
 #datos #ayudaLinks .ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
 
 /* Marco de Detalle */
-#datos #marcoDetalle {margin-top: 20px; display: flex;}
+#datos #marcoInfo {margin-top: 20px; display: flex;}

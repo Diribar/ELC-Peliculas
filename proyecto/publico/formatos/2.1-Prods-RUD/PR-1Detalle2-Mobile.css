@@ -17,6 +17,11 @@
 #centro #links nav :is(a, select) {margin-top: 10px;}
 #centro #links nav > *:first-child {margin-top: 0;}
 
+/* Marco de Detalle */
+#centro #marcoInfo {display: flex;}
+#centro #marcoInfo.toggle {display: none;}
+#centro #marcoInfo {position: absolute; translate: -50% 0; bottom: 0; left: 50%;}
+
 /* Conjunto de iconos */
 #imgDerecha #conjuntoIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
 #imgDerecha #conjuntoIconos .iconos {margin: 0;}

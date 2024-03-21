@@ -24,20 +24,20 @@
 #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
 
 /* Marco de Detalle - Etiquetas */
-#marcoDetalle {flex-direction: column; width: fit-content;}
-#marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
-#marcoDetalle #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
-#marcoDetalle #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
-#marcoDetalle #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
-#marcoDetalle #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
+#marcoInfo {flex-direction: column; width: max-content;}
+#marcoInfo #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
+#marcoInfo #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
+#marcoInfo #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
+#marcoInfo #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
+#marcoInfo #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
 /* Marco de Detalle - Información */
-#marcoDetalle #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
-#marcoDetalle #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
-#marcoDetalle #datosDetalle {min-width: 40vw;}
-#datosDetalle .datosParcial {flex-direction: column;}
-#datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
-#datosDetalle .datosParcial#masInfo #infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
-#datosDetalle .datosParcial a {text-decoration: underline;}
-#datosDetalle .datosParcial b {color: var(--gris-oscuro);}
-#datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
-#datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
+#marcoInfo #datosInfo {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
+#marcoInfo #datosInfo {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
+#marcoInfo #datosInfo {min-width: 40vw;}
+#datosInfo .datosParcial {flex-direction: column;}
+#datosInfo .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
+#datosInfo .datosParcial#masInfo #infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
+#datosInfo .datosParcial a {text-decoration: underline;}
+#datosInfo .datosParcial b {color: var(--gris-oscuro);}
+#datosInfo .datosParcial#actores {color: var(--gris-oscuro);}
+#datosInfo .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}

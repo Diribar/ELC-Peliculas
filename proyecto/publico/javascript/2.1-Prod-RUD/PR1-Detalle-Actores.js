@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let textoActores = document.querySelector("#datosDetalle #actores p");
+	let textoActores = document.querySelector("#datosInfo #actores p");
 	let consolidado = textoActores.innerHTML;
 	let contador = 0;
 	let texto = null;

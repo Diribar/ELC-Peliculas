@@ -1,12 +1,14 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
 	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch;}
+	#centro #marcoInfo {max-width: 85%;}
 }
 
 
 /* Celu acostado */
 @media (orientation: landscape) {
-	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, footer) {display: none;}
+	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, #centro #marcoInfo, footer) {display: none;}
+	#datos #marcoInfo {max-width: 100%;}
 }
 @media (orientation: landscape) and (min-height: 601px) {
 	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
