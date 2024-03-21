@@ -6,7 +6,7 @@
 	/* Achica márgenes y paddings */
 	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
 	#datos #datosLargos {margin-left: var(--margenes);}
-	#datos #datosBreves {padding: max(30px, var(--margenes));}
+	#datos #datosBreves {padding: 0 max(30px, var(--margenes));}
 }
 
 /* Alto */
@@ -14,5 +14,5 @@
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
 	#recuadro #encabezado {padding-top: 10px; padding-bottom: 10px;}
-	#contenido #informacion {margin-top: 12px; margin-bottom: 0;}
+	#contenido #informacion {margin: auto 0;}
 }
