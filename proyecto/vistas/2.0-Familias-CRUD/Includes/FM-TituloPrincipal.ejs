@@ -1,14 +1,16 @@
 <% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-TimerContador') %><% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
-	<!-- Ayuda -->
-	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick desplClick">
-			<ul class="ayudaMostrar ocultar desplMostrar" type="<%- ayudasTitulo.length > 1 ? 'dots' : 'none' %>">
-				<% for (let ayuda of ayudasTitulo) { %>
-					<li><%= ayuda %></li>
-				<% } %>
-			</ul>
-		</i>
-	</div>
+	<% if (locals.ayudasTitulo) { %>
+		<!-- Ayuda -->
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul class="ayudaMostrar ocultar desplMostrar" type="<%- ayudasTitulo.length > 1 ? 'dots' : 'none' %>">
+					<% for (let ayuda of ayudasTitulo) { %>
+						<li><%= ayuda %></li>
+					<% } %>
+				</ul>
+			</i>
+		</div>
+	<% } %>
 </div>

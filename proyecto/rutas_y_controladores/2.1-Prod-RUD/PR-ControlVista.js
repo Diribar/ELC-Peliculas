@@ -76,7 +76,7 @@ module.exports = {
 		const ayudasTitulo =
 			!links.GR.length && !links.CC.length
 				? ["No tenemos links de la película.", "Estás invitado a aportarnos alguno."]
-				: [""];
+				: null;
 
 		// Va a la vista
 		//return res.send(links);
@@ -86,7 +86,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			...{omitirImagenDerecha: true, omitirFooter: true}
+			...{omitirImagenDerecha: true, omitirFooter: true},
 		});
 	},
 	edicion: {

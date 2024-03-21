@@ -2,15 +2,7 @@
 main {height: var(--altoMain);}
 main {display: flex; flex-direction: row; overflow-y: hidden;}
 main {--anchoImgDer: 32vw}
-main,
-#cuerpoFooterImgDer, #edicCuerpoFooterImgDer,
-#cuerpoFooter, #edicCuerpoFooter,
-#cuerpo
-	{position: relative;}
-#cuerpoFooterImgDer, #edicCuerpoFooterImgDer,
-#cuerpoFooter, #edicCuerpoFooter,
-#cuerpoFooter #cuerpo, #edicCuerpoFooter #edicCuerpo
-	{display: flex; flex-grow: 1;}
+main, #cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Tapar el fondo */
 main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
@@ -18,12 +10,12 @@ main #tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el c
 main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
 /* Consolidado, Cuerpo y Footer */
-main :is(#cuerpoFooterImgDer, #edicCuerpoFooterImgDer) {flex-direction: row;}
-#cuerpoFooterImgDer #cuerpoFooter, #edicCuerpoFooterImgDer #edicCuerpoFooter {flex-direction: column;}
-#cuerpoFooter #cuerpo, #edicCuerpoFooter #edicCuerpo {max-height: var(--altoCuerpo);}
+main #cuerpoFooterImgDer {flex-direction: row;}
+#cuerpoFooterImgDer #cuerpoFooter {flex-direction: column;}
+#cuerpoFooter #cuerpo {max-height: var(--altoCuerpo);}
 
 /* Imagen Derecha */
-:is(#cuerpoFooterImgDer, #edicCuerpoFooterImgDer) #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
+#cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
 #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
 
 /* Media Queries para cuando el cuerpo no tiene contenido - 360px es el ancho mínimo del footer, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */

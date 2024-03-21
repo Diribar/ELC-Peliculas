@@ -1,15 +1,15 @@
 /* Temas generales */
-#edicCuerpoFooterImgDer {background: var(--gris-claro);}
-#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
-#edicCuerpoFooter #edicCuerpo {flex-direction: column;}
+#cuerpoFooterImgDer {background: var(--gris-claro);}
+#cuerpoFooterImgDer #imgDerecha {position: relative;}
+#cuerpoFooter #cuerpo {flex-direction: column;}
 
 .ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
 .ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
 
 /* Zona del formulario */
-#edicCuerpo #datos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
-#edicCuerpo #datos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
-#edicCuerpo #datos .altoFila {height: 21px;}
+#cuerpo #datos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
+#cuerpo #datos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
+#cuerpo #datos .altoFila {height: 21px;}
 
 /* Partes del formulario */
 #datos #info {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}

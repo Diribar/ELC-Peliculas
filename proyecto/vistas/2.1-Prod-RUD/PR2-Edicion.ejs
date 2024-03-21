@@ -1,6 +1,6 @@
-<form id="edicCuerpoFooterImgDer" method="POST" enctype="multipart/form-data">
-	<section id="edicCuerpoFooter">
-		<div id="edicCuerpo">
+<form id="cuerpoFooterImgDer" method="POST" enctype="multipart/form-data">
+	<section id="cuerpoFooter">
+		<div id="cuerpo">
 			<%- include('CMP-TimerContador') %>
 			<div id="tituloPrincipal">
 				<h1 id="titulo"><%= titulo %></h1>
@@ -12,15 +12,16 @@
 							<li>Para guardar los cambios, es necesario que no haya ningún error (<i class="fa-solid fa-circle-xmark"></i>).</li>
 							<li>Se pueden guardar los cambios, aunque no se hayan resuelto todas las advertencias (<i class="fa-solid fa-triangle-exclamation"></i>).</li>
 							<li>Si no tenés experiencia completando los campos que tienen ícono de ayuda, por favor consultalos.</li>
+							<li>Al terminar, te pedimos que vayas a la vista <em>Detalle</em> para liberarlo.</li>
 						</ul>
 					</i>
 				</div>
 			</div>
 			<div id="datos">
-				<%- include('PR2-Edicion2-Datos') %>
+				<%- include('PR2-Edicion1-Datos') %>
 			</div>
 		</div>
 		<%- include('CMP-3Footer') %>
 	</section>
-	<%- include("PR2-Edicion1-Avatar") %>
+	<%- include("PR2-Edicion2-Avatar") %>
 </form>

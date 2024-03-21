@@ -1,12 +1,12 @@
 /* Temas generales */
-#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
-#edicCuerpoFooter #edicCuerpo {background: transparent; flex-direction: column;}
+#cuerpoFooterImgDer #imgDerecha {position: relative;}
+#cuerpoFooter #cuerpo {background: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
-#edicCuerpo #datos {justify-content: space-evenly; align-items: center;}
-#edicCuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
-#edicCuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
-#edicCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
+#cuerpo #datos {justify-content: space-evenly; align-items: center;}
+#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
+#cuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
+#cuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
