@@ -417,11 +417,11 @@ module.exports = {
 			let resultado = await new Promise((resolve, reject) => {
 				writer.on("finish", () => {
 					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
-					if (output) console.log("Imagen '" + nombre + "' guardada");
+					if (output) console.log("Imagen '" + nombre + "' descargada");
 					resolve("OK");
 				});
 				writer.on("error", (error) => {
-					console.log(388, error);
+					console.log("Error en la descarga", error);
 					reject("Error");
 				});
 			});
