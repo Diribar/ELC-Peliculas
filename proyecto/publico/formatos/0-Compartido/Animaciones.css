@@ -1,8 +1,5 @@
 /* Desplazamiento - Desplazar el contenido*/
 .sectorConDesplV {overflow-y: auto;}
-/* Desplazamiento - Ocultar la 'side-bar' */
-/* .sectorConDesplV {scrollbar-width: none; Firefox} */
-/* .sectorConDesplV::-webkit-scrollbar {display: none; Safari and Chrome} */
 
 /* Animación - Estados */
 @keyframes aparece        {0% {opacity: 0}           100% {opacity: 1}}
@@ -30,15 +27,8 @@
 .aparece, .desaparece, .aumenta, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq
 	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
-/* Scale */
+/* Hover - scale */
 .iconos button, .iconos i, #cuerpo a, #flechasCartel a, .scale {transition: 300ms;}
-
-/* Hover - anchor */
-#cuerpo a:has(i, img):hover, #flechasCartel a:hover, .scale:hover {scale: 1.3;}
-/* Hover - button */
-.iconos button:hover {scale: 1.3;}
+#cuerpo a:has(i, img):hover, .iconos :is(button, i):hover, #flechasCartel a:hover, .scale:hover {scale: 1.3;}
 .iconos button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
-/* Hover - icon */
-.iconos i:hover {scale: 1.3;}
-.iconos button i:hover {scale: 1;}
-.iconos i.inactivoVersion:hover, .iconos i.inactivo:hover {scale: 1;}
+.iconos :is(i.inactivoVersion, i.inactivo, button i):hover {scale: 1;}
