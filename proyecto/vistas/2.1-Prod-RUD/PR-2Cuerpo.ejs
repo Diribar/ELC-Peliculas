@@ -1,2 +1,3 @@
-<% if (["detalle", "calificar"].includes(codigo)) { %><%- include('FM-Detalle') %><% } %>
+<% if (codigo == "calificar") { %><%- include('FM-Detalle') %><% } %>
+<% if (codigo == "detalle") { %><%- include('PR1-Detalle') %><% } %>
 <% if (codigo == "edicion") { %><%- include('PR2-Edicion') %><% } %>

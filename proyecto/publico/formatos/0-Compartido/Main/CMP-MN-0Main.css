@@ -2,28 +2,28 @@
 main {height: var(--altoMain);}
 main {display: flex; flex-direction: row; overflow-y: hidden;}
 main {--anchoImgDer: 32vw}
-main, #cuerpoFooterImgDer, #cuerpoFooter {position: relative;}
+main,
+#cuerpoFooterImgDer, #edicCuerpoFooterImgDer,
+#cuerpoFooter, #edicCuerpoFooter,
+#cuerpo
+	{position: relative;}
+#cuerpoFooterImgDer, #edicCuerpoFooterImgDer,
+#cuerpoFooter, #edicCuerpoFooter,
+#cuerpoFooter #cuerpo, #edicCuerpoFooter #edicCuerpo
+	{display: flex; flex-grow: 1;}
 
 /* Tapar el fondo */
 main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
 main #tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
 main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
-/* Cuerpo Footer */
-main #cuerpoFooterImgDer {display: flex; flex-direction: row; flex-grow: 1;}
-#cuerpoFooterImgDer #cuerpoFooter {display: flex; flex-direction: column; flex-grow: 1;}
-
-/* Cuerpo */
-#cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative; max-height: var(--altoCuerpo);}
-
-/* Footer */
-#cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
-#cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
-#cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
-#cuerpoFooter footer p {line-height: 1;}
+/* Consolidado, Cuerpo y Footer */
+main :is(#cuerpoFooterImgDer, #edicCuerpoFooterImgDer) {flex-direction: row;}
+#cuerpoFooterImgDer #cuerpoFooter, #edicCuerpoFooterImgDer #edicCuerpoFooter {flex-direction: column;}
+#cuerpoFooter #cuerpo, #edicCuerpoFooter #edicCuerpo {max-height: var(--altoCuerpo);}
 
 /* Imagen Derecha */
-#cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
+:is(#cuerpoFooterImgDer, #edicCuerpoFooterImgDer) #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
 #imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
 
 /* Media Queries para cuando el cuerpo no tiene contenido - 360px es el ancho mínimo del footer, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */

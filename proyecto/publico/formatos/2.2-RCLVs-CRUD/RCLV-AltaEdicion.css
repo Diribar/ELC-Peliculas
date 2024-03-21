@@ -1,14 +1,12 @@
 /* Temas generales */
-#cuerpoFooter #cuerpo {background: transparent; flex-direction: column; max-height: 100%;}
-#cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow: 1; position: relative;}
-#formCuerpoFooter #formCuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#edicCuerpoFooterImgDer #imgDerecha {position: relative;}
+#edicCuerpoFooter #edicCuerpo {background: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
-#formCuerpo #datos {justify-content: space-evenly; align-items: center;}
-#formCuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
-#formCuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
-#formCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
+#edicCuerpo #datos {justify-content: space-evenly; align-items: center;}
+#edicCuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
+#edicCuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
+#edicCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}

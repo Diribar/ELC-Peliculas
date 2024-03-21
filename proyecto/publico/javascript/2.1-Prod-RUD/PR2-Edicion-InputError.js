@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),
-		inputsTodos: document.querySelectorAll(".inputError .input, .inputError input[type='radio']"),
+		inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -25,12 +25,12 @@ window.addEventListener("load", async () => {
 		inputAvatar: document.querySelector("#imgDerecha.inputError #inputImagen.input"),
 
 		// Botones
-		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
-		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
-		botonesEliminar: document.querySelectorAll("#cuerpo .flechas .elimina"),
+		botonesActivarVersion: document.querySelectorAll("#edicCuerpo .flechas .activaVersion"),
+		botonGuardar: document.querySelector("#edicCuerpo .flechas #guardar"),
+		botonesEliminar: document.querySelectorAll("#edicCuerpo .flechas .elimina"),
 		botones: {
-			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
-			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
+			edicN: document.querySelectorAll("#edicCuerpo .flechas .edicN"),
+			edicG: document.querySelectorAll("#edicCuerpo .flechas .edicG"),
 		},
 
 		// Varios
