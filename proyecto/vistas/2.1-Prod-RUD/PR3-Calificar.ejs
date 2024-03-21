@@ -44,7 +44,7 @@
 		</div>
 		<div id="consolidado">
 			<div id="resultado">Resultado</div>
-			<div id="valor"><%= califUsuario.resultado ? (califUsuario.resultado + "%") : "-" %></div>
+			<div id="valor"><%= califUsuario ? (califUsuario.resultado + "%") : "-" %></div>
 		</div>
 	</div>
 	<!-- Guardar cambios -->
@@ -53,7 +53,7 @@
 		<button type="submit">
 			<i id="guardar" class="fa-solid fa-circle-check inactivo" title='Guardá tu calificación'></i>
 		</button>
-		<% if (califUsuario.resultado) { %>
+		<% if (califUsuario) { %>
 			<!-- Elimina tu calificación guardada -->
 			<i id="eliminar" class="fa solid fa-circle-xmark" tabindex="-1" title='Eliminá tu calificación guardada'></i>
 		<% } %>
