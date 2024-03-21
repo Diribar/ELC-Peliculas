@@ -36,8 +36,10 @@ window.addEventListener("load", () => {
 
 	// Event listeners - Toggles 'conjuntoIconos', 'centro links'
 	DOM.imagen.addEventListener("click", () => {
-		DOM.links.classList.toggle("ocultar");
-		DOM.conjuntoIconos.classList.toggle("invisible");
+		DOM.parado.info.classList.add("toggle"); // información
+		DOM.parado.calif.classList.add("toggle");// calificación
+		DOM.links.classList.toggle("ocultar"); // links de la película
+		DOM.conjuntoIconos.classList.toggle("invisible"); // íconos
 	});
 
 	// Event listeners - Muestra la info
