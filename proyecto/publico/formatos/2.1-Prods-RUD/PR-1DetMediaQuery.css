@@ -13,7 +13,9 @@
 /* Laptop */
 @media (orientation: landscape) and (min-height: 601px) {
 	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
-}
+	#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
+	#links nav :is(button, select) {height: 20px;}
+	}
 /* Celu acostado */
 @media (orientation: landscape) and (max-height: 600px) {
 	/* Adecua temas de laptop */

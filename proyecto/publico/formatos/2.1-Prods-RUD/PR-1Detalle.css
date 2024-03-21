@@ -1,7 +1,8 @@
 /* Links */
 #links, #links nav {display: flex;}
 #links {align-items: center;}
-#links nav :is(button, select) {font-weight: bold; height: 24px; font-size: 1.3rem;}
+#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
+#links nav :is(button, select) {font-weight: bold; height: 24px;}
 #links nav :is(button, select) {border: 4px solid; border-radius: 13px; box-sizing: content-box;}
 #links nav :is(button, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #links nav :is(button, select).subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
