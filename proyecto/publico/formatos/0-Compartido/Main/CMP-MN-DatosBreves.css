@@ -2,25 +2,25 @@
 #datosBreves {display: flex; flex-direction: column; justify-content: center; height: 100%;}
 
 /* Recuadro */
-#datosBreves #recuadro {display: flex; flex-direction: column; justify-content: flex-start;}
-#datosBreves #recuadro {border: var(--gris-oscuro) 3px solid; margin: 0;}
-#datosBreves #recuadro {padding: 20px; border-radius: 15px; background: snow;}
-#datosBreves #recuadro {max-width: 220px; width: max-content;}
-#datosBreves #recuadro {max-height: 80%;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro {display: flex; flex-direction: column; justify-content: flex-start;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro {border: var(--gris-oscuro) 3px solid; margin: 0;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro {padding: 20px; border-radius: 15px; background: snow;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro {max-width: 220px; width: max-content;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro {max-height: 80%;}
 
 /* Títulos */
-#datosBreves #recuadro h3 {background: var(--gris-oscuro); color: snow;}
-#datosBreves #recuadro h3 {padding: 3px; border-radius: 10px; text-align: center;}
-#datosBreves #recuadro h3:nth-child(n+2) {margin-top: 20px;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro h3 {background: var(--gris-oscuro); color: snow;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro h3 {padding: 3px; border-radius: 10px; text-align: center;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro h3:nth-child(n+2) {margin-top: 20px;}
 
 /* Gráfico */
-#datosBreves #recuadro #calificacionesResultados {text-align: center}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #calificacionesResultados {text-align: center}
 
 /* Texto */
-#datosBreves #recuadro #texto {margin: 0 5px;}
-#datosBreves #recuadro #texto p {margin-top: 10px;}
-#datosBreves #recuadro #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #recuadro #texto:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
-#datosBreves #recuadro #texto:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
-#datosBreves #recuadro #texto:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
-#datosBreves #recuadro #texto:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto {margin: 0 5px;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto p {margin-top: 10px;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
+:is(#datosBreves, #imgDerecha #centro) #recuadro #texto:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}
