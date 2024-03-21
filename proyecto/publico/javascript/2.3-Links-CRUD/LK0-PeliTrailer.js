@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 		if (filasExistentes.length)
 			filasExistentes.forEach((filaExistente, fila) => {
 				let filaDatos = Array.from(filaExistente.classList).find((n) => n.startsWith("fila"));
-				if (filaExistente.classList.contains(valor) || valor == "TD") {
+				if (filaExistente.className.includes(valor) || valor == "TD") {
 					// Mostrar filas de Datos
 					filasExistentes[fila].classList.remove("ocultaTipo");
 					// Mostrar filas de Edición - CRUD

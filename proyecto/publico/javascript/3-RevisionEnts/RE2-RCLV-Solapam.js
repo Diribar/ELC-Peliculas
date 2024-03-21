@@ -321,7 +321,7 @@ window.addEventListener("load", async () => {
 	// Botón submit
 	DOM.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
-		if (DOM.botonSubmit.classList.contains("inactivo")) {
+		if (DOM.botonSubmit.className.includes("inactivo")) {
 			e.preventDefault();
 			await startUp(true);
 		}

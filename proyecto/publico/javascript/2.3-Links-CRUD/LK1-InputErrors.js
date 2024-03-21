@@ -215,7 +215,7 @@ window.addEventListener("load", async () => {
 				// Obtiene el índice
 				indice = filaAlta * columnas + col;
 				// Acciones si el campo tiene un valor y está aprobado
-				if (DOM.inputs[indice].value && !DOM.iconosOK[indice].classList.contains("ocultar")) {
+				if (DOM.inputs[indice].value && !DOM.iconosOK[indice].className.includes("ocultar")) {
 					// Mostrar el campo siguiente
 					DOM.campos[indice + 1].classList.remove("desperdicio");
 					DOM.inputs[indice + 1].classList.remove("ocultar");
@@ -264,7 +264,7 @@ window.addEventListener("load", async () => {
 		// Pone el foco en el input a resolver o en el botón guardar
 		let celda = fila * columnas + col;
 		if (col < columnas) DOM.inputs[celda].focus();
-		else if (!DOM.guardar[fila].classList.contains("inactivo")) DOM.guardar[fila].focus();
+		else if (!DOM.guardar[fila].className.includes("inactivo")) DOM.guardar[fila].focus();
 		// Fin
 		return;
 	};

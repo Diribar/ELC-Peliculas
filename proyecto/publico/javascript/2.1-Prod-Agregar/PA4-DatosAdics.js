@@ -138,7 +138,7 @@ window.addEventListener("load", async () => {
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();
-		if (DOM.submit.classList.contains("inactivo")) statusInicial(true);
+		if (DOM.submit.className.includes("inactivo")) statusInicial(true);
 		else DOM.form.submit();
 	};
 	// RCLV

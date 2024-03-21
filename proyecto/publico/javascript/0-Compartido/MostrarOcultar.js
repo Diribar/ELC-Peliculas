@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
 		if (e.target != busquedaRapida_input)
 			for (let i = 0; i < clicks.length; i++)
 				if (e.target.parentElement != mostrar[i])
-					e.target == clicks[i] && !clicks[i].classList.contains("inactivo")
+					e.target == clicks[i] && !clicks[i].className.includes("inactivo")
 						? mostrar[i].classList.toggle("ocultar")
 						: mostrar[i].classList.add("ocultar");
 
@@ -22,6 +22,6 @@ window.addEventListener("load", () => {
 		if (e.target.className.includes("mm_busquedaRapida")) busquedaRapida_mostrar.classList.remove("ocultar");
 
 		// Foco en búsqueda rápida
-		if (!busquedaRapida_mostrar.classList.contains("ocultar")) busquedaRapida_input.focus();
+		if (!busquedaRapida_mostrar.className.includes("ocultar")) busquedaRapida_input.focus();
 	});
 });

@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (DOM.submit.classList.contains("inactivo")) await this.actualizaVarios();
+			if (DOM.submit.className.includes("inactivo")) await this.actualizaVarios();
 			else DOM.form.submit();
 			return;
 		},

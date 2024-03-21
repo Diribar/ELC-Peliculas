@@ -147,7 +147,7 @@ window.addEventListener("load", () => {
 	});
 
 	form.addEventListener("submit", async (e) => {
-		if (DOM.button.classList.contains("inactivo")) {
+		if (DOM.button.className.includes("inactivo")) {
 			e.preventDefault();
 			FN.startUp();
 		}
