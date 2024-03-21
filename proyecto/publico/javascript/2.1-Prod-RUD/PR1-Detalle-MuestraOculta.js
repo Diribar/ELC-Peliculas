@@ -26,8 +26,8 @@ window.addEventListener("load", () => {
 		infoMobileParado: centro.querySelector("#marcoInfo"),
 
 		// Íconos
-		mostrarInfo: DOM.conjuntoIconos.querySelector("#mostrarInfo"),
-		mostrarCalif: DOM.conjuntoIconos.querySelector("#mostrarCalif"),
+		muestraInfo: DOM.conjuntoIconos.querySelector("#muestraInfo"),
+		muestraCalif: DOM.conjuntoIconos.querySelector("#muestraCalif"),
 	};
 
 	// Event listeners - Toggles 'conjuntoIconos', 'centro links'
@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Event listeners - Muestra la info
-	DOM.mostrarInfo.addEventListener("click",()=>{
+	DOM.muestraInfo.addEventListener("click",()=>{
 		DOM.datosLargos.classList.toggle("ocultar")
 		DOM.infoMobileParado.classList.toggle("toggle")
 	})
