@@ -24,7 +24,7 @@
 #ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
 
 /* Marco de Detalle - Etiquetas */
-#marcoDetalle {flex-direction: column; width: fit-content;}
+#marcoDetalle {flex-direction: column; width: max-content;}
 #marcoDetalle #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
 #marcoDetalle #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
 #marcoDetalle #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
