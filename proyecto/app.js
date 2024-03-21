@@ -86,7 +86,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/1-Usuarios/Includes"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Flechas"),
+	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Iconos"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),

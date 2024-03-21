@@ -25,12 +25,12 @@ window.addEventListener("load", async () => {
 		inputAvatar: document.querySelector("#imgDerecha.inputError #inputImagen.input"),
 
 		// Botones
-		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
-		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
-		botonesEliminar: document.querySelectorAll("#cuerpo .flechas .elimina"),
+		botonesActivarVersion: document.querySelectorAll("#cuerpo .iconos .activaVersion"),
+		botonGuardar: document.querySelector("#cuerpo .iconos #guardar"),
+		botonesEliminar: document.querySelectorAll("#cuerpo .iconos .elimina"),
 		botones: {
-			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
-			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
+			edicN: document.querySelectorAll("#cuerpo .iconos .edicN"),
+			edicG: document.querySelectorAll("#cuerpo .iconos .edicG"),
 		},
 
 		// Varios

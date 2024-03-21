@@ -31,14 +31,14 @@
 	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
-.flechas button, .flechas i, #cuerpo a, #flechasCartel a, .scale {transition: 300ms;}
+.iconos button, .iconos i, #cuerpo a, #flechasCartel a, .scale {transition: 300ms;}
 
 /* Hover - anchor */
 #cuerpo a:has(i, img):hover, #flechasCartel a:hover, .scale:hover {scale: 1.3;}
 /* Hover - button */
-.flechas button:hover {scale: 1.3;}
-.flechas button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
+.iconos button:hover {scale: 1.3;}
+.iconos button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
 /* Hover - icon */
-.flechas i:hover {scale: 1.3;}
-.flechas button i:hover {scale: 1;}
-.flechas i.inactivoVersion:hover, .flechas i.inactivo:hover {scale: 1;}
+.iconos i:hover {scale: 1.3;}
+.iconos button i:hover {scale: 1;}
+.iconos i.inactivoVersion:hover, .iconos i.inactivo:hover {scale: 1;}

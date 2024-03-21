@@ -5,10 +5,10 @@ window.addEventListener("load", () => {
 	let texto = document.querySelector("form #texto");
 	let botonSubmit = document.querySelector("form #submit");
 	// Íconos
-	let iconos = document.querySelectorAll("#datos .iconos");
+	let iconos = document.querySelectorAll("#datos .aprobRech");
 	let cantCampos = iconos.length;
-	let iconosOK = document.querySelectorAll("#datos .iconos .fa-circle-check");
-	let iconosError = document.querySelectorAll("#datos .iconos .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll("#datos .aprobRech .fa-circle-check");
+	let iconosError = document.querySelectorAll("#datos .aprobRech .fa-circle-xmark");
 	// Variables del documento
 	let motivo_docum = document.querySelector("#datos select#motivo_docum");
 

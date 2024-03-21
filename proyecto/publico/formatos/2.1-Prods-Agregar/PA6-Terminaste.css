@@ -13,5 +13,5 @@
 #dataEntry #datos #capitulos {background: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
 #dataEntry #datos #capitulos span {color: var(--gris-claro);}
 
-/* Flechas */
-#dataEntry .flechas {margin-top: 30px;}
+/* Iconos */
+#dataEntry .iconos {margin-top: 30px;}

@@ -1,5 +1,5 @@
 <% if (locals.usuario && locals.usuario.statusRegistro_id == perennes_id && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
-	<div id="flechasCambioStatus" class="flechas">
+	<div id="flechasCambioStatus" class="iconos">
 		<% if (locals.status_id == creado_id) { %>
 			<!-- Solo para status creado y usuario logueado -->
 			<% if (locals.creadoPor_id == usuario.id) { %>
@@ -46,7 +46,7 @@
 <% if (condic1 || condic2) { %>
 	<!-- VISTA CRUD     - AGREGAR/EDICION/ELIMINAR EDICIÓN RCLV -->
 	<!-- VISTA REVISIÓN - SOLAPAMIENTO -->
-	<div class="flechas">
+	<div class="iconos">
 		<!-- Eliminar edición -->
 		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
 			<label for="eliminaEdicion" title="Eliminar la Edición">
@@ -81,7 +81,7 @@
 
 <% if (tema == "revisionEnts" && locals.statusCreado) { %>
 	<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
-	<div class="flechas">
+	<div class="iconos">
 		<!-- Aprobar -->
 		<button type="submit" autofocus>
 			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
@@ -95,7 +95,7 @@
 
 <% if (tema == "revisionEnts" && codigo == "inactivar-o-recuperar") {  %>
 	<!-- VISTAS REVISION INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a 'aprobado' o 'inactivo' -->
-	<div class="flechas">
+	<div class="iconos">
 
 		<!-- Rechaza el cambio de status -->
 		<label for="desaprueba" class="inactivo">

@@ -94,7 +94,7 @@ window.addEventListener("load", async () => {
 		cartelMensajes.innerHTML = "";
 		for (let mensaje of mensajes) cartelMensajes.innerHTML += "<li>" + mensaje + "</li>";
 
-		// Flechas
+		// Iconos
 		let icono = false
 			? false
 			: codigo.startsWith("/revision/usuarios")

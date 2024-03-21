@@ -4,7 +4,7 @@
 		#sectorLogos a.logos img {width: 30px; height: 30px; object-fit: contain;}
 		#sectorLogos a.logos.true img {border: 3px solid var(--verde-oscuro)}
 	</style>
-	<div id="sectorLogos" class="flechas">
+	<div id="sectorLogos" class="iconos">
 		<!-- TMDB -->
 		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank">

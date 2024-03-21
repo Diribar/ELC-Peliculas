@@ -8,5 +8,5 @@
 #dataEntry .inputError {display: flex;}
 
 /* Submit button */
-#dataEntry .flechas {margin-top: 20px; display: flex; justify-content: space-evenly; align-items: center;}
-#dataEntry .flechas button {background: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry .iconos {margin-top: 20px; display: flex; justify-content: space-evenly; align-items: center;}
+#dataEntry .iconos button {background: transparent; border: none; padding: 0; border-radius: 50%;}

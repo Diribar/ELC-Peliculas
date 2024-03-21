@@ -19,5 +19,5 @@ label#preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
 /* Media Query - Alto */
 @media (max-height: 560px) {
 	form h1 {margin: 0;}
-	form .flechas {margin-bottom: 0;}
+	form .iconos {margin-bottom: 0;}
 }

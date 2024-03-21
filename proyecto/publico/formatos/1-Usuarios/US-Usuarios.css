@@ -33,8 +33,8 @@ form select {text-align: left;}
 #cuerpo .inputError .mensajeError::before {left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;}
 #cuerpo .inputError .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent transparent;}
 
-/* Flechas */
-form .flechas {margin: 15px auto 5px;}
+/* Iconos */
+form .iconos {margin: 15px auto 5px;}
 
 /* Credenciales inválidas*/
 #credenciales.errores .mensajeError {display: block; position: static; translate: none;}

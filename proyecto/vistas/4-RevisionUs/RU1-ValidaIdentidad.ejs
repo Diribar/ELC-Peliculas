@@ -31,7 +31,7 @@
 				<% for (campo of campos) { %>
 					<div class="campos">
 						<!-- Aprobar y Rechazar -->
-						<div class="iconos">
+						<div class="aprobRech">
 							<label for="<%= campo.nombre %>-SI">
 								<i class="fa-solid sinDecision fa-circle-check"></i>
 							</label>
@@ -51,7 +51,7 @@
 			<img src="<%= documAvatar %>" alt="documento" title="Documento">
 		</div>
 	</section>
-	<section class="flechas">
+	<section class="iconos">
 		<a href="/inactivar-captura/?entidad=usuarios&id=<%= userID %>&origen=TU" target="_self">
 			<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Volver al Tablero"></i>
 		</a>

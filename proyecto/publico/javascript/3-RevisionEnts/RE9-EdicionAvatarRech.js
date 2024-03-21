@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	let DOM = {
-		// Flechas
+		// Iconos
 		accesoAlCartelRechazo: document.querySelector("#mostrarMotivos"),
 
 		// Borrar
@@ -9,8 +9,8 @@ window.addEventListener("load", () => {
 		tapaElFondo: document.querySelector("#tapaElFondo"),
 		cartelRechazo: document.querySelector("#cartelRechazo"),
 		motivoRechazo: document.querySelector("#cartelRechazo select"),
-		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
-		rechazar: document.querySelector("#cartelRechazo .flechas button"),
+		cancelar: document.querySelector("#cartelRechazo .iconos .fa-circle-left"),
+		rechazar: document.querySelector("#cartelRechazo .iconos button"),
 	};
 
 	// Muestra el menú "motivos para borrar"

@@ -3,5 +3,5 @@
 #cartelRechazo h2 {color: snow; margin-bottom: 10px;}
 #cartelRechazo p {color: var(--amarillo-claro); font-size: 1.2rem;}
 #cartelRechazo select {margin: 20px 0; border-radius: 10px; padding: 0 5px;}
-#cartelRechazo .flechas {width: 120px;}
-#cartelRechazo .flechas i.rechazar {color: var(--rojo-oscuro);}
+#cartelRechazo .iconos {width: 120px;}
+#cartelRechazo .iconos i.rechazar {color: var(--rojo-oscuro);}

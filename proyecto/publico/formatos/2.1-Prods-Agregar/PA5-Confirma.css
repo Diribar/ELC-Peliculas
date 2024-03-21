@@ -14,6 +14,6 @@
 #dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: column; max-width: 400px; align-self: center;}
 #dataEntry #datosProd p {margin: 3px;}
 
-#dataEntry .flechas {margin-top: 30px; display: flex; flex-direction: row; }
-#dataEntry .flechas button {background: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
-#dataEntry .flechas #llegada {height: 40px; margin: 0;}
+#dataEntry .iconos {margin-top: 30px; display: flex; flex-direction: row; }
+#dataEntry .iconos button {background: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
+#dataEntry .iconos #llegada {height: 40px; margin: 0;}

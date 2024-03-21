@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const prod_id = new URL(location.href).searchParams.get("id");
-	const domIcono = document.querySelector(".flechas #ppp");
+	const domIcono = document.querySelector(".iconos #ppp");
 	const opciones = await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json());
 	const rutaGuardar = "/producto/api/guarda-la-preferencia-del-usuario/?entidad=" + entidad + "&entidad_id=" + prod_id;
 	let guardado = true;

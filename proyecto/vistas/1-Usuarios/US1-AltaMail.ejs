@@ -21,16 +21,16 @@
 			<%- include("US13-DatosPerennes") %>
 		<% } %>
 
-		<!--Flechas-->
+		<!--Iconos-->
 		<section class="flexRow">
-			<div class="flechas">
+			<div class="iconos">
 				<!-- Salir -->
 				<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
 				<!-- Submit -->
 				<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
 			</div>
 			<% if (codigo == "olvido-contrasena" && !mostrarCampos) { %>
-				<div class="flechas">
+				<div class="iconos">
 					<!-- Nuevo usuario -->
 					<a href="/usuarios/alta-mail" tabindex="-1"  class="verde">
 						<i class="fa-solid fa-user-plus" title="Crear un usuario"></i>

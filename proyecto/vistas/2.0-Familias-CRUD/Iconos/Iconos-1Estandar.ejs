@@ -1,11 +1,11 @@
-<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Flechas.css">
+<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
 <% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
 <% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
-<div class="flechas">
+<div class="iconos">
 	<% if (locals.origen && origen != "DTR") { %><!-- Cuando tiene origen distinto a 'DTR' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>

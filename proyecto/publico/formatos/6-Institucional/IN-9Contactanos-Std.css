@@ -19,5 +19,5 @@
 .inputError p {text-align: right;}
 .inputError textarea {padding: 5px; resize: none; height: inherit;}
 
-/* Flechas */
-form .flechas {margin-top: 20px; display: flex;}
+/* Iconos */
+form .iconos {margin-top: 20px; display: flex;}

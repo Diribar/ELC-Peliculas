@@ -12,6 +12,6 @@
 	/* #imgDerecha #conjuntoIconos {display: none;} */
 }
 @media (orientation: landscape) and (max-height: 700px) {
-	#datos #botones .flechas {display: none;}
+	#datos #botones .iconos {display: none;}
 	/* #imgDerecha #conjuntoIconos {display: none;} */
 }

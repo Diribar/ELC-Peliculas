@@ -77,9 +77,9 @@
 #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
-.flechas i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
-.flechas i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.flechas i.activarVersion.activo {background: var(--verde-oscuro);}
+.iconos i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
+.iconos i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
+.iconos i.activarVersion.activo {background: var(--verde-oscuro);}
 /* Slash */
-.flechas div:has(> .fa-slash) {width: 15px; display: flex; flex-direction: row; justify-content: center;}
-.flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none; margin: 0;}
+.iconos div:has(> .fa-slash) {width: 15px; display: flex; flex-direction: row; justify-content: center;}
+.iconos i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none; margin: 0;}
