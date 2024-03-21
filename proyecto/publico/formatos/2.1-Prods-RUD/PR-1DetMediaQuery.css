@@ -6,12 +6,12 @@
 
 /* Celu acostado */
 @media (orientation: landscape) {
-	#imgDerecha :is(#tituloPrincipal, #ayudaLinks) {display: none;}
+	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, footer) {display: none;}
 }
-@media (orientation: landscape) and (min-height: 701px) {
+@media (orientation: landscape) and (min-height: 601px) {
 	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
 }
-@media (orientation: landscape) and (max-height: 700px) {
+@media (orientation: landscape) and (max-height: 600px) {
 	#datos #botones .iconos {display: none;}
 	#imgDerecha #conjuntoIconos {position: absolute; translate: -50% 0; left: 50%; bottom: 10px; width: 100%;}
 	#imgDerecha #conjuntoIconos .iconos:has(#ppp) {display: none;}

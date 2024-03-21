@@ -1,28 +1,3 @@
-<div id="tituloInfoDetalle" class="relative">
-	<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
-	<h3>Links para verl<%= oa %></h3>
-</div>
-<!-- Links -->
-<div id="links" class="marco">
-	<div class="flexRowAlign">
-		<% if (entidad == "colecciones") { %>
-			<!-- Sólo colección -->
-			<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origen=" + rutaCRUD; %>
-			<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino) %>
-			<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
-				<button type="button" class="pointer scale">Ir al primer capítulo</button>
-			</a>
-		<% } else if (!links.GR.length) { %>
-			<p>Sin links gratuitos</p>
-		<% } else { %>
-			<!-- Ayuda -->
-			<%- include("PR1-Detalle-1AyudaLinks") %>
-			<!-- Links -->
-			<%- include("PR1-Detalle-2Links") %>
-		<% } %>
-	</div>
-</div>
-<!-- Información -->
 <div id="marcoDetalle">
 	<div id="etiquetas" class="flexRow">
 		<p class="resaltar">Sinopsis</p>

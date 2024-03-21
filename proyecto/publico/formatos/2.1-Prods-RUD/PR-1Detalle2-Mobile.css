@@ -20,3 +20,4 @@
 /* Conjunto de iconos */
 #imgDerecha #conjuntoIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
 #imgDerecha #conjuntoIconos .iconos {margin: 0;}
+#imgDerecha #conjuntoIconos.invisible .iconos {color: transparent;}
