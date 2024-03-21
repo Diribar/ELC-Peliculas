@@ -2,13 +2,12 @@
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
 	#cuerpoFooterImgDer #imgDerecha {justify-content: stretch;}
 	#centro #marcoDetalle {max-width: 85%;}
-
 }
 
 
 /* Celu acostado */
 @media (orientation: landscape) {
-	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, footer) {display: none;}
+	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, #centro #marcoDetalle, footer) {display: none;}
 	#datos #marcoDetalle {max-width: 100%;}
 }
 @media (orientation: landscape) and (min-height: 601px) {
