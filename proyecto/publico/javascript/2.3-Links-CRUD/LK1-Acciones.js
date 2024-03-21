@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 	DOM.botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", async (e) => {
 			// Si está inactivo --> interrumpe la ejecución
-			if (botonGuardar.classList.contains("inactivo")) return;
+			if (botonGuardar.className.includes("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
 
 			// Obtiene los datos
@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
 	DOM.botonesRecuperar.forEach((botonRecuperar, fila) => {
 		botonRecuperar.addEventListener("click", async () => {
 			// Averigua si está inactivo --> return
-			if (botonRecuperar.classList.contains("inactivo")) return;
+			if (botonRecuperar.className.includes("inactivo")) return;
 			botonRecuperar.classList.add("inactivo");
 			// Obtiene los datos del link
 			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodID=" + v.prodID;
@@ -73,7 +73,7 @@ window.addEventListener("load", async () => {
 	DOM.botonesDeshacer.forEach((botonDeshacer, fila) => {
 		botonDeshacer.addEventListener("click", async () => {
 			// Averigua si está inactivo --> return
-			if (botonDeshacer.classList.contains("inactivo")) return;
+			if (botonDeshacer.className.includes("inactivo")) return;
 			botonDeshacer.classList.add("inactivo");
 			// Obtiene los datos del link
 			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodID=" + v.prodID;
@@ -83,8 +83,8 @@ window.addEventListener("load", async () => {
 			// location.reload();
 			if (respuesta.reload) location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
-			if (respuesta.activos && DOM.activos.classList.contains("traslucido")) DOM.activos.innerHTML = "* Activos";
-			if (respuesta.pasivos && DOM.pasivos.classList.contains("traslucido")) DOM.pasivos.innerHTML = "* Pasivos";
+			if (respuesta.activos && DOM.activos.className.includes("traslucido")) DOM.activos.innerHTML = "* Activos";
+			if (respuesta.pasivos && DOM.pasivos.className.includes("traslucido")) DOM.pasivos.innerHTML = "* Pasivos";
 		});
 	});
 });

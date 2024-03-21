@@ -128,8 +128,8 @@ window.addEventListener("load", async () => {
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (DOM.submit.classList.contains("fa-circle-question")) {
-				if (!DOM.submit.classList.contains("inactivo")) {
+			if (DOM.submit.className.includes("fa-circle-question")) {
+				if (!DOM.submit.className.includes("inactivo")) {
 					DOM.submit.classList.add("inactivo");
 					let ruta = FN.rutaObtieneCantProds(DOM.inputs[0].value);
 					let resultados = await fetch(ruta).then((n) => n.json());

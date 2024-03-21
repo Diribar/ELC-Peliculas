@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 			iconoOK[i].classList.remove("ocultar");
 			let sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar")
+				iconoOK[j].className.includes("ocultar")
 					? inputs[j].name != "en_coleccion"
 						? (sinErrores = false)
 						: inputs[0].value == "peliculas"
@@ -126,7 +126,7 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", async (e) => {
-		if (button.classList.contains("inactivo")) {
+		if (button.className.includes("inactivo")) {
 			e.preventDefault();
 			let errores = await validaDataEntry();
 			for (let i = 0; i < inputs.length; i++) {

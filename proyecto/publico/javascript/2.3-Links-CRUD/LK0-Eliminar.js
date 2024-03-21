@@ -26,10 +26,10 @@ window.addEventListener("load", () => {
 	DOM.botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
 			// Si el ícono está inactivo, interrumpe la función
-			if (botonOut.classList.contains("inactivo")) return;
+			if (botonOut.className.includes("inactivo")) return;
 
 			// Elimina permanentemente
-			if (botonOut.classList.contains("fa-trash-can")) {
+			if (botonOut.className.includes("fa-trash-can")) {
 				// Variables
 				let motivo_id = DOM.motivosSelect[fila].value;
 				let url = v.condiciones;
