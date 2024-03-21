@@ -9,13 +9,14 @@ window.addEventListener("load", () => {
 		...DOM,
 
 		// Sector Cuerpo
-		datosLargos: DOM.cuerpo.querySelector("#datosLargos"),
-		datosBreves: DOM.cuerpo.querySelector("#datosBreves"),
+		acostado: {
+			info: DOM.cuerpo.querySelector("#datosLargos"),
+			calif: DOM.cuerpo.querySelector("#datosBreves"),
+		},
 
 		// Sector Imagen Derecha
 		centro: DOM.imgDerecha.querySelector("#centro img"),
 		conjuntoIconos: DOM.imgDerecha.querySelector("#conjuntoIconos"),
-
 	};
 	DOM = {
 		...DOM,
@@ -23,7 +24,10 @@ window.addEventListener("load", () => {
 		// Centro
 		imagen: centro.querySelector("img"),
 		links: centro.querySelector("#links"),
-		infoMobileParado: centro.querySelector("#marcoInfo"),
+		parado: {
+			info: centro.querySelector("#marcoInfo"),
+			calif: centro.querySelector("#recuadro"),
+		},
 
 		// Íconos
 		muestraInfo: DOM.conjuntoIconos.querySelector("#muestraInfo"),
@@ -37,8 +41,28 @@ window.addEventListener("load", () => {
 	});
 
 	// Event listeners - Muestra la info
-	DOM.muestraInfo.addEventListener("click",()=>{
-		DOM.datosLargos.classList.toggle("ocultar")
-		DOM.infoMobileParado.classList.toggle("toggle")
-	})
+	DOM.muestraInfo.addEventListener("click", () => {
+		// Toggle 'info' para parado
+		DOM.parado.info.classList.toggle("toggle");
+
+		// Muestra 'info' para acostado
+		DOM.acostado.info.classList.remove("ocultar");
+
+		// Oculta 'calif'
+		DOM.acostado.calif.classList.add("toggle");
+		DOM.parado.calif.classList.add("toggle");
+	});
+
+	// Event listeners - Muestra la calificación
+	DOM.muestraCalif.addEventListener("click", () => {
+		// Toggle 'calif' para parado
+		DOM.parado.calif.classList.toggle("toggle");
+
+		// Muestra 'calif' para acostado
+		DOM.acostado.calif.classList.remove("toggle");
+
+		// Oculta 'info'
+		DOM.acostado.info.classList.add("ocultar");
+		DOM.parado.info.classList.add("toggle");
+	});
 });
