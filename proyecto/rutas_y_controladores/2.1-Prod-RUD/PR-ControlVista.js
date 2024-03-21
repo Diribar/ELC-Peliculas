@@ -86,6 +86,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+			...{omitirImagenDerecha: true, omitirFooter: true}
 		});
 	},
 	edicion: {
