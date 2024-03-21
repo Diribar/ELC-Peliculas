@@ -39,10 +39,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let activaInactivaBotonEliminar = () => {
-		califGuardada ? DOM.eliminar.classList.remove("inactivo") : DOM.eliminar.classList.add("inactivo");
-		return;
-	};
 	let actualizaResultado = () => {
 		if (v.incompleto) DOM.resultado.innerHTML = "-";
 		else {
@@ -67,21 +63,18 @@ window.addEventListener("load", async () => {
 		actualizaResultado();
 	});
 	DOM.form.addEventListener("submit", (e) => {
-		if (DOM.guardarCambios.classList.contains("inactivo")) e.preventDefault();
+		if (DOM.guardarCambios.className.includes("inactivo")) e.preventDefault();
 		return;
 	});
-	DOM.eliminar.addEventListener("click", async () => {
-		// Si no está activo, termina la función
-		if (DOM.eliminar.classList.contains("inactivo")) return;
+	if (DOM.eliminar)
+		DOM.eliminar.addEventListener("click", async () => {
+			// Elimina la calificación
+			await fetch(rutas.eliminaCalifPropia);
 
-		// Elimina la calificación
-		await fetch(rutas.eliminaCalifPropia);
-
-		// Recarga la vista
-		location.reload();
-	});
+			// Recarga la vista
+			location.reload();
+		});
 
 	// Fin
 	revisaErrores();
-	activaInactivaBotonEliminar();
 });
