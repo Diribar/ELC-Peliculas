@@ -30,11 +30,10 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.FeedbackParaUsers();
+		// await this.rutinasDiarias.IDdeTablas();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
-		await BD_especificas.actualizaElProximoValorDeID("histEdics")
 		return;
 	},
 
@@ -499,8 +498,8 @@ module.exports = {
 					id++;
 				}
 
-				// Reduce el próximo valor de ID
-				//BD_genericas.reduceElProximoValorDeID(tabla);
+				// Actualiza el próximo valor de ID
+				await BD_especificas.actualizaElProximoValorDeID(tabla)
 			}
 
 			// Fin
