@@ -131,7 +131,7 @@ app.set("views", [
 		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
-		criteriosCalif: BD_genericas.obtieneTodos("cal_criterio"),
+		calCriterios: BD_genericas.obtieneTodos("calCriterios"),
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
