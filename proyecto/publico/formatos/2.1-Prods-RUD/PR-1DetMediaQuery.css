@@ -7,7 +7,7 @@
 
 /* Acostado */
 @media (orientation: landscape) {
-	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, #centro :is(#marcoInfo, #recuadro), footer) {display: none !important;} /* oculta temas de portrait */
+	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, #centro :is(#marcoInfo, #recuadroDB), footer) {display: none !important;} /* oculta temas de portrait */
 	#datos #marcoInfo {max-width: 100%;} /* ancho de 'acostado' */
 }
 /* Laptop */
@@ -22,8 +22,8 @@
 	#datos #datosLargos :is(#encabezado, #informacion :is(#tituloInfoDetalle, #links), #botones) {display: none;}
 	#datos #datosBreves.toggle {display: none;}
 	#cuerpoFooter #cuerpo {max-height: none}
-	#datosLargos #recuadro {max-width: calc(100vw - 32vw - 2vw) !important;} /* 32vw: anchoImagen, 6vw: márgenes */
-	#recuadro #contenido {margin: 0 30px;}
+	#datosLargos #recuadroDL {max-width: calc(100vw - 32vw - 2vw) !important;} /* 32vw: anchoImagen, 6vw: márgenes */
+	#recuadroDL #contenido {margin: 0 30px;}
 	#datos #marcoInfo {margin: 5px 0;}
 
 	/* Adecua temas de celu parado */

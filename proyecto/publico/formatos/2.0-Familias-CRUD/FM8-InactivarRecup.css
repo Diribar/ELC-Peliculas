@@ -2,11 +2,11 @@
 #datos #datosLargos {width: 65%; max-width: 600px;}
 
 /* Colores */
-#datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}
+#datosLargos #recuadroDL #encabezado {border-bottom: none; color: snow;}
 
 /* Sector de información */
-#recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
-#recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
+#recuadroDL #informacion {display: flex; flex-direction: row; justify-content: space-between;}
+#recuadroDL #informacion {flex-grow: 1; margin: 30px 40px;}
 #informacion ul {padding-right: 10px; max-width: 260px;}
 #informacion ul li {margin-top: 3px;}
 
@@ -21,9 +21,9 @@
 #contenido #botones {margin: 10px 40px 30px;}
 
 /* Condicionales */
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
-#datosLargos #recuadro:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
-#datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
-#datosLargos #recuadro:has(.recuperar) {background: var(--verde-claro);}
-#datosLargos #recuadro:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
+#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
+#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
+#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+#datosLargos #recuadroDL:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
+#datosLargos #recuadroDL:has(.recuperar) {background: var(--verde-claro);}
+#datosLargos #recuadroDL:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}

@@ -1,7 +1,7 @@
 /* Ancho */
 @media (max-width: 1450px) {
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
-	#datos #datosBreves #recuadro {max-height: 100%; max-width: 99vw;} /* libera el ancho de 'datosBreves' */
+	#imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
+	#datosBreves #recuadroDB {max-height: 90%;} /* libera el ancho de 'datosBreves' */
 
 	/* Achica márgenes y paddings */
 	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
@@ -10,9 +10,9 @@
 }
 
 /* Alto */
-@media (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 600px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
-	#recuadro #encabezado {padding-top: 10px; padding-bottom: 10px;}
+	#recuadroDL #encabezado {padding-top: 10px; padding-bottom: 10px;}
 	#contenido #informacion {margin: auto 0;}
 }

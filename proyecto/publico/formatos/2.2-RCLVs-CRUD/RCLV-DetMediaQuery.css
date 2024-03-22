@@ -2,12 +2,12 @@
 @media (max-width: 732px) {
 	/* Cambia anchos */
 	#datos {min-width: 100vw;} /* ancho mínimo: la pantalla */
-	#datosLargos #recuadro {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
+	#datosLargos #recuadroDL {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
 
 	/* Cambia márgenes y padding */
-	#recuadro #encabezado {padding-left: 20px; padding-right: 20px;}
-	#recuadro #contenido {--margenCostado: max(0px, min(40px, calc(50vw - 8px - 305px)));} /* 8px es el ancho del borde, 305px es el ancho de cada botón  */
-	#recuadro #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
+	#recuadroDL #encabezado {padding-left: 20px; padding-right: 20px;}
+	#recuadroDL #contenido {--margenCostado: max(0px, min(40px, calc(50vw - 8px - 305px)));} /* 8px es el ancho del borde, 305px es el ancho de cada botón  */
+	#recuadroDL #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
 
@@ -20,13 +20,13 @@
 	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 }
 @media (max-width: 345px) {
-	#recuadro #contenido {--margenCostado: max(0px, min(20px, calc(100% - 290px)/2));}
+	#recuadroDL #contenido {--margenCostado: max(0px, min(20px, calc(100% - 290px)/2));}
 }
 
 /* Alto */
-@media (max-height: 445px) {#recuadro #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
+@media (max-height: 445px) {#recuadroDL #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
 @media (max-height: 430px) {
-	#cuerpo #recuadro #encabezado {display: none;} /* oculta el encabezado */
+	#cuerpo #recuadroDL #encabezado {display: none;} /* oculta el encabezado */
 	#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 13px - 24px)/2));} /* 52px: header, 200px: botones, 13px: borde, 24px: footer */
 	#listado li#prodsNuevos {padding-top: var(--altoLi); padding-bottom: var(--altoLi);}
 }

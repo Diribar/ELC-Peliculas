@@ -26,7 +26,7 @@ window.addEventListener("load", () => {
 		links: centro.querySelector("#links"),
 		parado: {
 			info: centro.querySelector("#marcoInfo"),
-			calif: centro.querySelector("#recuadro"),
+			calif: centro.querySelector("#recuadroDB"),
 		},
 
 		// Íconos
