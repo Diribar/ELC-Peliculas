@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/mar",
-	"HoraUTC": "5:25",
+	"FechaUTC": "Vie. 22/mar",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/mar",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-mar-24": {"titulo": "San José, padre de Jesús", "entidad": "personajes", "id": 13},
 		"20-mar-24": {"titulo": "Santa María Josefa del Corazón de Jesús"},
 		"21-mar-24": {"titulo": "San Nicolas de Flüe"},
 		"22-mar-24": {"titulo": "Cuaresma"},
-		"23-mar-24": {"titulo": "Cuaresma"}
+		"23-mar-24": {"titulo": "Cuaresma"},
+		"24-mar-24": {"titulo": "Sem. Santa 1 - Domingo de Ramos"}
 	}
 }
