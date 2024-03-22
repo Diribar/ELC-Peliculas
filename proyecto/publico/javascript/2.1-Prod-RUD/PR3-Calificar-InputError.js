@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 		eliminaCalifPropia: "/producto/api/elimina-calif-propia/?entidad=" + v.entidad + "&id=" + v.entID,
 	};
 
-	const {califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
+	const {califGuardada, atributosCalific, calCriterios} = await fetch(rutas.califGuardada).then((n) => n.json());
 
 	// Funciones
 	let revisaErrores = () => {
@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 		if (v.incompleto) DOM.resultado.innerHTML = "-";
 		else {
 			let resultado = 0;
-			for (let criterio of criteriosCalif) {
+			for (let criterio of calCriterios) {
 				const campo_id = criterio.atributo_id;
 				const campo = criterio.atributo;
 				const ponderacion = criterio.ponderacion;

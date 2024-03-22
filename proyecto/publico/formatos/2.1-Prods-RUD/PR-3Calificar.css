@@ -28,7 +28,7 @@ form.marco {padding: 25px; text-align: right;}
 .marco #guardarCambios {margin-top: 20px;}
 
 @media (max-width: 520px) {
-	#recuadro #contenido {margin: 0 min(40px, calc(100vw - 220px - 13px) / 2);}
+	#recuadroDL #contenido {margin: 0 min(40px, calc(100vw - 220px - 13px) / 2);}
 	.marco #calificaciones, #calificaciones #individuales > div {flex-direction: column;}
 	#calificaciones #individuales > div {align-items: flex-start; text-align: left;}
 	#calificaciones #consolidado {margin: 15px 0 5px;}

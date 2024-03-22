@@ -334,7 +334,7 @@ module.exports = {
 			// Obtiene el resultado
 			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
 			let resultado = 0;
-			for (let criterio of criteriosCalif) {
+			for (let criterio of calCriterios) {
 				const campo_id = criterio.atributo_id;
 				const campo = criterio.atributo;
 				const ponderacion = criterio.ponderacion;

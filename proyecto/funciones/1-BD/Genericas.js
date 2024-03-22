@@ -29,7 +29,6 @@ module.exports = {
 	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) =>
 		db[entidad].increment(campo, {by: aumento ? aumento : 1, where: {id}}),
-	//reduceElProximoValorDeID: (entidad) => queryInterface.sequelize.query("ALTER TABLE " + entidad + " AUTO_INCREMENT = 1;"),
 
 	// Lectura
 	contarCasos: (entidad, condicion) => db[entidad].count({where: condicion}),

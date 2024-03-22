@@ -42,10 +42,10 @@ global.versionELC = process.env.versionELC;
 global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 
 // Otros requires
-global.db = require("./base_de_datos/modelos");
-global.Op = db.Sequelize.Op;
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
+global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs'
+global.Op = db.Sequelize.Op;
 global.express = require("express");
 const app = express();
 
@@ -131,7 +131,7 @@ app.set("views", [
 		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
-		criteriosCalif: BD_genericas.obtieneTodos("cal_criterio"),
+		calCriterios: BD_genericas.obtieneTodos("calCriterios"),
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),

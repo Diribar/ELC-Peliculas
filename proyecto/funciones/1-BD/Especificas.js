@@ -247,6 +247,19 @@ module.exports = {
 				})
 			);
 	},
+	actualizaElProximoValorDeID: async (entidad) => {
+		// Variables
+		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
+		const Sequelize = require("sequelize");
+		const sequelize = new Sequelize(config.database, config.username, config.password, config);
+		const nuevoValor = await BD_genericas.maxValor(entidad, "id").then((n) => n + 1);
+
+		// Actualiza el autoincrement
+		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
+
+		// Fin
+		return;
+	},
 
 	// USUARIOS ---------------------------------------------------------
 	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login

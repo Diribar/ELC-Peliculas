@@ -2,9 +2,9 @@
 #datos {--anchoRecuadro: 732px;}
 
 /* Recuadro */
-#recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
-#recuadro #encabezado p {text-align: right;}
-#recuadro #contenido {margin: 0 40px;}
+#recuadroDL #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
+#recuadroDL #encabezado p {text-align: right;}
+#recuadroDL #contenido {margin: 0 40px;}
 
 /* Información */
 #contenido #informacion {margin: 30px 0 5px;}
