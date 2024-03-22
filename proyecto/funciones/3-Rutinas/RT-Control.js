@@ -34,6 +34,7 @@ module.exports = {
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
+		await BD_especificas.actualizaElProximoValorDeID("histEdics")
 		return;
 	},
 

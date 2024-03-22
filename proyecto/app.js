@@ -42,7 +42,7 @@ global.versionELC = process.env.versionELC;
 global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 
 // Otros requires
-global.db = require("./base_de_datos/modelos");
+global.db = require("./baseDeDatos/modelos");
 global.Op = db.Sequelize.Op;
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
