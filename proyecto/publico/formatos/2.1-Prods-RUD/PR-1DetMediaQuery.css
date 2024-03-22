@@ -1,9 +1,9 @@
+/* Parado */
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
 	#centro #marcoInfo {max-width: 85%;} /* ancho de 'parado' */
 	#marcoInfo #etiquetas p {width: min-content;} /* ajusta el ancho de las etiquetas al mínimo */
 }
-
 
 /* Acostado */
 @media (orientation: landscape) {
@@ -13,12 +13,15 @@
 /* Laptop */
 @media (orientation: landscape) and (min-height: 601px) {
 	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
-}
+	#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
+	#links nav :is(button, select) {height: 20px;}
+	}
 /* Celu acostado */
 @media (orientation: landscape) and (max-height: 600px) {
 	/* Adecua temas de laptop */
 	#datos #datosLargos :is(#encabezado, #informacion :is(#tituloInfoDetalle, #links), #botones) {display: none;}
 	#datos #datosBreves.toggle {display: none;}
+	#cuerpoFooter #cuerpo {max-height: none}
 	#datosLargos #recuadro {max-width: calc(100vw - 32vw - 2vw) !important;} /* 32vw: anchoImagen, 6vw: márgenes */
 	#recuadro #contenido {margin: 0 30px;}
 	#datos #marcoInfo {margin: 5px 0;}

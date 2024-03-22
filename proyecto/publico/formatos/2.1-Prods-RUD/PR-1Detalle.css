@@ -1,13 +1,14 @@
 /* Links */
 #links, #links nav {display: flex;}
 #links {align-items: center;}
-#links nav :is(button, select) {font-weight: bold; height: 20px;}
+#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
+#links nav :is(button, select) {font-weight: bold; height: 24px;}
 #links nav :is(button, select) {border: 4px solid; border-radius: 13px; box-sizing: content-box;}
 #links nav :is(button, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #links nav :is(button, select).subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
 #links nav :is(button, select).otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-#links nav button {padding: 0 9px;}
-#links nav select {padding: 0 4px; font-style: normal;}
+#links nav button {padding: 0px 9px; text-wrap: nowrap;}
+#links nav select {padding: 0px 4px; font-style: normal;}
 #links nav select.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
 #links nav select option {font-weight: bold;}
 #links nav select option.enCast {background: var(--verde-oscuro); color: var(--gris-claro);}
