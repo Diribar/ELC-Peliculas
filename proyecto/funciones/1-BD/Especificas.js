@@ -248,16 +248,14 @@ module.exports = {
 			);
 	},
 	actualizaElProximoValorDeID: async (entidad) => {
-		// Obtiene el ID máximo
-		const maxValor = await BD_genericas.maxValor(entidad, "id");
-		// entidad = db[entidad];
-		console.log(253, maxValor,db);
+		// Variables
+		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
+		const Sequelize = require("sequelize");
+		const sequelize = new Sequelize(config.database, config.username, config.password, config);
+		const nuevoValor = await BD_genericas.maxValor(entidad, "id").then((n) => n + 1);
 
 		// Actualiza el autoincrement
-		const Sequelize = require("sequelize");
-		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
-		const sequelize = new Sequelize(config.database, config.username, config.password, config);
-		sequelize.query("ALTER TABLE `cam_hist_edics` AUTO_INCREMENT = " + (maxValor + 1) + ";");
+		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin
 		return;
