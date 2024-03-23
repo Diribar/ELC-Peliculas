@@ -1,10 +1,8 @@
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
-<div class="iconos">
+<div id="mobileVert" class="iconos">
 	<i id="muestraInfo" class="fa-solid fa-circle-info" tabindex="-1" title="Ver su información"></i>
 	<i id="muestraCalif" class="fa-solid fa-chart-line" tabindex="-1"></i>
-</div>
-<% if (interesDelUsuario) { %>
-	<div class="iconos">
+	<% if (interesDelUsuario) { %>
 		<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>
-	</div>
-<% } %>
+	<% } %>
+</div>
