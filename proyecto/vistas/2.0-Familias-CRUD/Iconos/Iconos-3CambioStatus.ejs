@@ -1,5 +1,5 @@
 <% if (locals.usuario && locals.usuario.statusRegistro_id == perennes_id && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
-	<div id="flechasCambioStatus" class="iconos">
+	<div id="cambioStatus" class="iconos">
 		<% if (locals.status_id == creado_id) { %>
 			<!-- Solo para status creado y usuario logueado -->
 			<% if (locals.creadoPor_id == usuario.id) { %>
@@ -66,14 +66,14 @@
 	<!-- VISTAS CRUD     - INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
 	<!-- VISTAS REVISION - RECHAZO - Para completar el feedback y enviar a Revisión -->
 	<!-- Confirma el cambio de status -->
-	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
 	</button>
 <% } %>
 <!-- VISTAS CRUD - ELIMINAR -->
 <% if (tema == "fmCrud" && codigo == "eliminar") {  %>
 	<!-- Elimina definitivamente -->
-	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
 	</button>
 <% } %>
