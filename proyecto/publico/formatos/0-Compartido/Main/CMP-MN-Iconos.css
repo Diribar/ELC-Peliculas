@@ -15,5 +15,5 @@
 .iconos button, .iconos a {display: flex; flex-direction: row; align-items: center; height: min-content;}
 
 /* Cambios de status */
-#flechasCambioStatus :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}
-.iconos#flechasCambioStatus:not(:has(i)) {display: none}
+#cambioStatus :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}
+.iconos#cambioStatus:not(:has(i)) {display: none}
