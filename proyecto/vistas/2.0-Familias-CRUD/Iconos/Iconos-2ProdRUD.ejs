@@ -1,8 +1,6 @@
 <% if (tema == "prodRud") { %>
 	<div id="prodRud" class="iconos">
-		<% if (["detalle", "calificar"].includes(codigo) && interesDelUsuario && aprobados_ids.includes(registro.statusRegistro_id)) { %>
-			<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>
-		<% } else if (codigo == "edicion") { %>
+		<% if (codigo == "edicion") { %>
 			<!-- Versión editada 'edicN' -->
 			<div class="pack">
 				<!-- Muestra la nueva edición sin guardar -->
@@ -28,6 +26,9 @@
 			</div>
 			<!-- Muestra la versión original -->
 			<i class="fa-solid fa-house activaVersion" tabindex="-1" title='Muestra la versión original'></i>
+		<% } %>
+		<% if (interesDelUsuario) { %>
+			<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>
 		<% } %>
 	</div>
 <% } %>
