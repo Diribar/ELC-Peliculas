@@ -31,6 +31,7 @@
 #marcoInfo #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
 #marcoInfo #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
 #marcoInfo #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
+
 /* Marco de Detalle - Información */
 #marcoInfo #datosInfo {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #marcoInfo #datosInfo {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
