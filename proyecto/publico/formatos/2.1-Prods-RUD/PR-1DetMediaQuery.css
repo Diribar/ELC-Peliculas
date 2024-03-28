@@ -6,7 +6,6 @@
 
 	/* Información */
 	#informacion #marcoInfo {max-width: 85vw;}
-	#marcoInfo #etiquetas p {width: min-content;}
 
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
