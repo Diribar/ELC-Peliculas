@@ -1,27 +1,25 @@
 /* General */
 #imgDerecha {position: relative;}
-#imgDerecha :is(#tituloPrincipal, #conjuntoIconos) {flex-grow: 1;}
-#imgDerecha #centro {position: relative;}
-
-/* Links - Ayuda */
-#centro #ayudaLinks {margin-bottom: 10px;}
-#centro #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
-#centro #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
-#centro #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
-#centro #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
+#imgDerecha :is(#links, #sectorIconos) {position: absolute; left: 50%;}
 
 /* Links */
-#centro #links, #centro #links nav {flex-direction: column;}
-#centro #links {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
-#centro #links nav {align-items: center;}
-#centro #links nav :is(a, select) {margin-top: 10px;}
-#centro #links nav > *:first-child {margin-top: 0;}
+#imgDerecha #links {top: 50%; translate: -50% -50%;}
 
-/* Marco de Información y Datos Breves */
-#centro :is(#marcoInfo, #recuadroDB).toggle {display: none !important;}
-#centro :is(#marcoInfo, #recuadroDB) {position: absolute; translate: -50% -50%; top: 50%; left: 50%;}
+/* Links - Ayuda */
+#imgDerecha #ayudaLinks {margin-bottom: 10px;}
+#imgDerecha #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
+#imgDerecha #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
+#imgDerecha #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
+#imgDerecha #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
+
+/* Links */
+#imgDerecha :is(#links, #links nav) {flex-direction: column;}
+
+#imgDerecha #links nav {align-items: center;}
+#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
+#imgDerecha #links nav > *:first-child {margin-top: 0;}
 
 /* Conjunto de iconos */
-#imgDerecha #conjuntoIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
-#imgDerecha #conjuntoIconos .iconos {margin: 0;}
-#imgDerecha #conjuntoIconos.invisible .iconos {color: transparent;}
+#imgDerecha #sectorIconos {bottom: 10px; translate: -50% 0;}
+#imgDerecha #sectorIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; width: 100%;}
+#imgDerecha #sectorIconos .iconos {margin: 0;}
