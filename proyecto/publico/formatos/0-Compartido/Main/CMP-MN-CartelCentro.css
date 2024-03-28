@@ -19,16 +19,16 @@ main .cartelCentro #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscu
 main .cartelCentro #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
-main .cartelCentro #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
-main .cartelCentro #flechasCartel * {border-radius: 50%;}
-main .cartelCentro #flechasCartel *:focus {outline: none;}
-main .cartelCentro #flechasCartel a i {font-size: 2rem;}
+main .cartelCentro #iconosCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
+main .cartelCentro #iconosCartel * {border-radius: 50%;}
+main .cartelCentro #iconosCartel *:focus {outline: none;}
+main .cartelCentro #iconosCartel a i {font-size: 2rem;}
 /* Íconos de retroceder y avanzar */
-main .cartelCentro #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
-main .cartelCentro #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
+main .cartelCentro #iconosCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
+main .cartelCentro #iconosCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
 /* Íconos especiales */
-main .cartelCentro #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
-main .cartelCentro #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
+main .cartelCentro #iconosCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
+main .cartelCentro #iconosCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
 
 /* Particularidades de cartelGenerico */
 #cartelGenerico:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}

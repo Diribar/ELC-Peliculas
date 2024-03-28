@@ -75,7 +75,7 @@ window.addEventListener("load", async () => {
 		const tapaElFondo = todoElMain.querySelector("#tapaElFondo");
 		const cartelGenerico = todoElMain.querySelector("#cartelGenerico");
 		const cartelMensajes = cartelGenerico.querySelector("#mensajes");
-		const flechas = cartelGenerico.querySelector("#flechasCartel");
+		const iconos = cartelGenerico.querySelector("#iconosCartel");
 
 		// Mensajes
 		let horarioFinalTexto = fechaHorario(horarioFinal);
@@ -117,7 +117,7 @@ window.addEventListener("load", async () => {
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  };
 
-		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
+		iconos.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
 		todoElMain.classList.remove("ocultar");

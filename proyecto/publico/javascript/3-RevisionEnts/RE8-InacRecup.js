@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#datosLargos #recuadroDL form");
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
-	let desaprueba = document.querySelector("#botones label[for='desaprueba']");
+	let desaprueba = document.querySelector("#sectorIconos label[for='desaprueba']");
 
 	// Botón submit
 	let botonDesaprobar = () => {

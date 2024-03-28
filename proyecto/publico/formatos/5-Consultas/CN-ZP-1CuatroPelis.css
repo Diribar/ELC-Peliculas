@@ -1,17 +1,17 @@
 /* Resultados */
-#vistaDeResults:has(#scroll #botones li) {--anchoPaddEst: 20px; --anchoPaddDin: min(var(--anchoPaddEst), calc(50vw - 300px));}
-#vistaDeResults:has(#scroll #botones li) {padding-left: var(--anchoPaddDin); padding-right: var(--anchoPaddDin);}
-#vistaDeResults #scroll #botones {display: flex; flex-direction: row;}
+#vistaDeResults:has(#scroll #sectorIconos li) {--anchoPaddEst: 20px; --anchoPaddDin: min(var(--anchoPaddEst), calc(50vw - 300px));}
+#vistaDeResults:has(#scroll #sectorIconos li) {padding-left: var(--anchoPaddDin); padding-right: var(--anchoPaddDin);}
+#vistaDeResults #scroll #sectorIconos {display: flex; flex-direction: row;}
 
 /* Botones para productos */
-#botones li {list-style-type: none;}
-#botones li {--altoLi: min(15px, calc((100vh - 52px - 200px - 24px)/2)); margin: var(--altoLi) 10px;}
-#botones li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
-#botones li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
-#botones li button.cfc {background: var(--amarillo-claro);}
-#botones li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
-#botones li button.cfc:hover {background: var(--amarillo-oscuro); color: var(--azul-oscuro);}
-#botones li button:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
+#sectorIconos li {list-style-type: none;}
+#sectorIconos li {--altoLi: min(15px, calc((100vh - 52px - 200px - 24px)/2)); margin: var(--altoLi) 10px;}
+#sectorIconos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
+#sectorIconos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
+#sectorIconos li button.cfc {background: var(--amarillo-claro);}
+#sectorIconos li button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+#sectorIconos li button.cfc:hover {background: var(--amarillo-oscuro); color: var(--azul-oscuro);}
+#sectorIconos li button:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
 
 /* Partes del resultado */
 button .imagenChica {max-height: 100%; max-width: 140px; align-self: center}

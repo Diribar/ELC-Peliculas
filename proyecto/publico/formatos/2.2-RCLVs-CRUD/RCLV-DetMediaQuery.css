@@ -33,5 +33,5 @@
 
 /* Ancho y Alto */
 @media (max-width: 700px) or (max-height: 700) {
-	#botones .iconos:has(i.fa-pen) {display: none;}
+	#sectorIconos .iconos:has(i.fa-pen) {display: none;}
 }

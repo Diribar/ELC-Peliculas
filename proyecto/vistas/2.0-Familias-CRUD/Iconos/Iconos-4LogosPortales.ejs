@@ -1,10 +1,10 @@
-<!-- Logo de Portales de información de Películas -->
 <% if (tema == "revisionEnts" && (["producto/alta", "producto/edicion"].includes(codigo)) || (tema=="prodRud" && codigo=="edicion")) { %>
+	<!-- Logo de Portales de información de Películas -->
 	<style>
-		#sectorLogos a.logos img {width: 30px; height: 30px; object-fit: contain;}
-		#sectorLogos a.logos.true img {border: 3px solid var(--verde-oscuro)}
+		#logoPortales a.logos img {width: 30px; height: 30px; object-fit: contain;}
+		#logoPortales a.logos.true img {border: 3px solid var(--verde-oscuro)}
 	</style>
-	<div id="sectorLogos" class="iconos">
+	<div id="logoPortales" class="iconos">
 		<!-- TMDB -->
 		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank">

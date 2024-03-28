@@ -17,7 +17,7 @@
 /* Iconos */
 #cuadroDeTexto > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Iconos en 'cuadro de texto' */
 #contenido .iconos {margin: 20px 0 0; display: none;} /* Iconos dentro de 'contenido' */
-#cuadroDeTexto .iconos {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todas las flechas */
+#cuadroDeTexto .iconos {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todos los iconos */
 #cuadroDeTexto .iconos i {font-size: 2rem;}
 
 /* Miscelaneas */
