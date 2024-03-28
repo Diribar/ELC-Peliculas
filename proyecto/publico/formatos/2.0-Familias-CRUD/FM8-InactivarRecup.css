@@ -18,7 +18,7 @@
 #informacion #comentario textarea:read-only {background: var(--gris-intermedio);}
 
 /* Botones */
-#contenido #botones {margin: 10px 40px 30px;}
+#contenido #sectorIconos {margin: 10px 40px 30px;}
 
 /* Condicionales */
 #datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
