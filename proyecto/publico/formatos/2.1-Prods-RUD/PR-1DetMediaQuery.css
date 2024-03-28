@@ -1,8 +1,8 @@
 /* Parado */
 @media (orientation: portrait) {
 	/* Ancho, alto, posición */
-	#cuerpoFooter #cuerpo {position: absolute !important;}
-	#cuerpoFooter #cuerpo {width: 100vw !important; max-width: 100vw; height: 100% !important; max-height: 100%;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos {width: 100vw !important; max-width: 100vw; height: 100% !important; max-height: 100%;}
 
 	/* Información */
 	#informacion #marcoInfo {max-width: 85vw;}
@@ -56,6 +56,6 @@
 	#datosLargos :is(#encabezado, #informacion :is(#tituloInfoDetalle, #links), #sectorIconos) {display: none;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 	#datos #datosBreves.toggle {display: none;}
-	#datosLargos {display: none;}
-	#datosLargos.toggle {display: flex;}
+	#datos #datosLargos {display: none;}
+	#datos #datosLargos.toggle {display: flex;}
 }
