@@ -13,6 +13,12 @@
 <% } else { %>
 	<!-- Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
+		<!-- Compartido -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
+
+		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
 		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle.css">
 		<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
@@ -31,16 +37,33 @@
 
 	<!-- Rechazos -->
 	<% } else if (codigo == "rechazo") { %>
+		<!-- Compartido -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
+
+		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 		<script src="/publico/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
 
 	<!-- Revisión de Inactivar o Recuperar -->
 	<% } else if (codigo == "inactivar-o-recuperar") { %>
+		<!-- Compartido -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
+
+		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 		<script src="/publico/javascript/3-RevisionEnts/RE8-InacRecup.js"></script>
 
 	<!-- Ediciones -->
 	<% } else if (codigo.endsWith("/edicion")) { %>
+		<!-- Compartido -->
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
+
+		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/3-RevisionEnts/RE9-Edicion.css">
 		<script src="/publico/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
 
