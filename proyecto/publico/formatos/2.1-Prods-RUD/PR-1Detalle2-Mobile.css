@@ -20,6 +20,6 @@
 #imgDerecha #links nav > *:first-child {margin-top: 0;}
 
 /* Conjunto de iconos */
-#imgDerecha #sectorIconos {bottom: 10px; translate: -50% 0;}
-#imgDerecha #sectorIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; width: 100%;}
+#imgDerecha #sectorIconos {bottom: 10px; translate: -50% 0; width: 100%;}
+#imgDerecha #sectorIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
 #imgDerecha #sectorIconos .iconos {margin: 0;}
