@@ -2,25 +2,24 @@
 #datosBreves {display: flex; flex-direction: column; justify-content: center; height: 100%;}
 
 /* Recuadro */
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB {display: flex; flex-direction: column; justify-content: flex-start;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB {border: var(--gris-oscuro) 3px solid; margin: 0;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB {padding: 20px; border-radius: 15px; background: snow;}
+#datosBreves #recuadroDB {display: flex; flex-direction: column; justify-content: flex-start;}
+#datosBreves #recuadroDB {border: var(--gris-oscuro) 3px solid; margin: 0;}
+#datosBreves #recuadroDB {padding: 20px; border-radius: 15px; background: snow;}
 #datosBreves #recuadroDB {max-width: 220px; width: max-content; max-height: 80%;}
-#imgDerecha #centro #recuadroDB {max-width: 90vw; width: max-content; max-height: 90%;}
 
 /* Títulos */
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB h3 {background: var(--gris-oscuro); color: snow;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB h3 {padding: 3px; border-radius: 10px; text-align: center;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB h3:nth-child(n+2) {margin-top: 20px;}
+#datosBreves #recuadroDB h3 {background: var(--gris-oscuro); color: snow;}
+#datosBreves #recuadroDB h3 {padding: 3px; border-radius: 10px; text-align: center;}
+#datosBreves #recuadroDB h3:nth-child(n+2) {margin-top: 20px;}
 
 /* Gráfico */
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #calificacionesResultados {text-align: center}
+#datosBreves #recuadroDB #calificacionesResultados {text-align: center}
 
 /* Texto */
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto {margin: 0 5px;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto p {margin-top: 10px;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
-:is(#datosBreves, #imgDerecha #centro) #recuadroDB #texto:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}
+#datosBreves #recuadroDB #texto {margin: 0 5px;}
+#datosBreves #recuadroDB #texto p {margin-top: 10px;}
+#datosBreves #recuadroDB #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves #recuadroDB #texto:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
+#datosBreves #recuadroDB #texto:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
+#datosBreves #recuadroDB #texto:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
+#datosBreves #recuadroDB #texto:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}
