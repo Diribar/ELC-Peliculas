@@ -1,22 +1,36 @@
 /* Parado */
 @media (orientation: portrait) {
 	/* Ancho, alto, posición */
-	#cuerpoFooter #cuerpo {position: absolute !important; width: 100vw !important; height: 100% !important; max-width: 100vw; max-height: 100%;}
+	#cuerpoFooter #cuerpo {position: absolute !important;}
+	#cuerpoFooter #cuerpo {width: 100vw !important; max-width: 100vw; height: 100% !important; max-height: 100%;}
 
-
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
-	#marcoInfo #etiquetas p {width: min-content;} /* ajusta el ancho de las etiquetas al mínimo */
+	/* Información */
+	#informacion #marcoInfo {max-width: 85vw;}
+	#marcoInfo #etiquetas p {width: min-content;}
 
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
-
+	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 }
 
 /* Acostado */
 @media (orientation: landscape) {
-	#datos #marcoInfo {max-width: 100%;} /* ancho de 'acostado' */
+	/* Información */
+	#recuadroDL #contenido {margin: 0 40px; justify-content: space-around; align-items: center;}
 	#contenido #informacion {margin-top: 30px;}
-	#datos #marcoInfo {margin-top: 20px;}
+
+	/* tituloInfoDetalle */
+	#informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
+	#informacion #tituloInfoDetalle h3 {width: max-content;}
+	#informacion #tituloInfoDetalle ul p {margin-top: 3px;}
+	#informacion #tituloInfoDetalle ul b {color: snow;}
+
+	/* links y marcoInfo */
+	#informacion #links {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
+	#informacion #marcoInfo {margin-top: 20px;}
+
+	/* Íconos */
+	#contenido #sectorIconos {margin: 30px 0}
 }
 
 /* Acostado - Laptop */
