@@ -13,22 +13,19 @@ window.addEventListener("load", () => {
 		datosBreves: DOM.cuerpo.querySelector("#datosBreves"),
 
 		// Sector Imagen Derecha
-		centro: DOM.imgDerecha.querySelector("#centro"),
+		imagen: DOM.imgDerecha.querySelector("img"),
+		links: DOM.imgDerecha.querySelector("#links"),
 		sectorIconos: DOM.imgDerecha.querySelector("#sectorIconos"),
 	};
 	DOM = {
 		...DOM,
-
-		// Centro
-		imagen: centro.querySelector("img"),
-		links: centro.querySelector("#links"),
 
 		// Íconos
 		muestraDL: DOM.sectorIconos.querySelector("#muestraDL"),
 		muestraDB: DOM.sectorIconos.querySelector("#muestraDB"),
 	};
 
-	// Event listeners - Toggles 'sectorIconos', 'centro links'
+	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
 		DOM.links.classList.toggle("ocultar"); // inicialmente visibles siempre
 		DOM.sectorIconos.classList.toggle("ocultar"); // inicialmente visibles siempre
