@@ -1,25 +1,39 @@
 /* Parado */
 @media (orientation: portrait) {
-	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
-	#centro #marcoInfo {max-width: 85%;} /* ancho de 'parado' */
+	/* Ancho, alto, posición */
+	#cuerpoFooter #cuerpo {position: absolute !important; width: 100vw !important; height: 100% !important; max-width: 100vw; max-height: 100%;}
+
+
+	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#marcoInfo #etiquetas p {width: min-content;} /* ajusta el ancho de las etiquetas al mínimo */
+
+	/* Sectores a ocultar */
+	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
+
 }
 
 /* Acostado */
 @media (orientation: landscape) {
-	#imgDerecha :is(#tituloPrincipal, #ayudaLinks, #centro :is(#marcoInfo, #recuadroDB), footer) {display: none !important;} /* oculta temas de portrait */
 	#datos #marcoInfo {max-width: 100%;} /* ancho de 'acostado' */
+	#contenido #informacion {margin-top: 30px;}
+	#datos #marcoInfo {margin-top: 20px;}
 }
-/* Laptop */
+
+/* Acostado - Laptop */
 @media (orientation: landscape) and (min-height: 601px) {
-	#imgDerecha :is(#centro #links, #conjuntoIconos) {display: none;}
+	#imgDerecha :is(#links, #sectorIconos) {display: none;}
 	#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
 	#links nav :is(button, select) {height: 20px;}
-	}
-/* Celu acostado */
+}
+
+/* Acostado - Celu */
 @media (orientation: landscape) and (max-height: 600px) {
+	#marcoInfo #etiquetas p {width: min-content;} /* ajusta el ancho de las etiquetas al mínimo */
+
 	/* Adecua temas de laptop */
 	#datos #datosLargos :is(#encabezado, #informacion :is(#tituloInfoDetalle, #links), #botones) {display: none;}
+	#datosLargos {display: none;}
+	#datosLargos.toggle {display: flex;}
 	#datos #datosBreves.toggle {display: none;}
 	#cuerpoFooter #cuerpo {max-height: none}
 	#datosLargos #recuadroDL {max-width: calc(100vw - 32vw - 2vw) !important;} /* 32vw: anchoImagen, 6vw: márgenes */
@@ -27,7 +41,7 @@
 	#datos #marcoInfo {margin: 5px 0;}
 
 	/* Adecua temas de celu parado */
-	#imgDerecha #conjuntoIconos {position: absolute; translate: -50% 0; left: 50%; bottom: 10px; width: 100%;}
-	#imgDerecha #conjuntoIconos .iconos:has(#ppp) {display: none;}
+	#imgDerecha #sectorIconos {position: absolute; translate: -50% 0; left: 50%; bottom: 10px; width: 100%;}
+	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 
 }
