@@ -2,7 +2,7 @@
 #cuerpoFooter #cuerpo {flex-direction: column; justify-content: space-between; align-items: center;}
 #cuerpo #tituloPrincipal {flex-grow: 3;}
 #cuerpo #medio {display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;}
-#cuerpo #botones {flex-grow: 3; align-items: center;}
+#cuerpo #sectorIconos {flex-grow: 3; align-items: center;}
 
 /* Contenedor del Iframe */
 #medio #contIframe {
@@ -33,7 +33,7 @@
 }
 @media (max-height: 400px) {
 	#cuerpo #tituloPrincipal {flex-grow: 0;}
-	#cuerpo #botones {display: none;}
+	#cuerpo #sectorIconos {display: none;}
 	#cuerpo #medio {flex-grow: 1;}
 	#cuerpo #contIframe {
 		--altoDisp: var(--altoCuerpo) - 37px; /* la altura del cuerpo, menos la altura del título */

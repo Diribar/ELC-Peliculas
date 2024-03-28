@@ -19,16 +19,16 @@
 #cartelBienvenida p#menuCapacitac span {color: var(--amarillo-oscuro); font-variant: small-caps; font-weight: bold; text-decoration: underline;}
 
 /* Zona de Botones */
-#zonaDeBienvenida #botones {display: flex; justify-content: space-evenly; align-items: center; width: 100%;}
-#zonaDeBienvenida #botones a {border-radius: 50%; overflow: hidden;}
-#zonaDeBienvenida #botones a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
-#zonaDeBienvenida #botones a button {width: 200px; padding: 20px; border-radius: 50%; background: var(--gris-claro);}
+#zonaDeBienvenida #sectorIconos {display: flex; justify-content: space-evenly; align-items: center; width: 100%;}
+#zonaDeBienvenida #sectorIconos a {border-radius: 50%; overflow: hidden;}
+#zonaDeBienvenida #sectorIconos a {border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);}
+#zonaDeBienvenida #sectorIconos a button {width: 200px; padding: 20px; border-radius: 50%; background: var(--gris-claro);}
 
-#zonaDeBienvenida #botones a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
-#zonaDeBienvenida #botones a button p {font-size: 1.1rem;}
-#zonaDeBienvenida #botones a button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
+#zonaDeBienvenida #sectorIconos a button img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+#zonaDeBienvenida #sectorIconos a button p {font-size: 1.1rem;}
+#zonaDeBienvenida #sectorIconos a button p span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
 
-#zonaDeBienvenida #botones a button .iconoComb {position: relative; padding: 20px 0;}
-#zonaDeBienvenida #botones a button .iconoComb i {font-size: 5rem;}
-#zonaDeBienvenida #botones a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
-#zonaDeBienvenida #botones a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro);}
+#zonaDeBienvenida #sectorIconos a button .iconoComb {position: relative; padding: 20px 0;}
+#zonaDeBienvenida #sectorIconos a button .iconoComb i {font-size: 5rem;}
+#zonaDeBienvenida #sectorIconos a button .iconoComb i.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
+#zonaDeBienvenida #sectorIconos a button .iconoComb i.adentro {font-size: 2rem; color: var(--celeste-claro);}
