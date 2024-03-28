@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 23/mar",
-	"HoraUTC": "14:49",
+	"FechaUTC": "Jue. 28/mar",
+	"HoraUTC": "8:15",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 18/mar",
-	"HoraSemUTC": "17:50",
-	"semanaUTC": 12,
+	"FechaSemUTC": "Lun. 25/mar",
+	"HoraSemUTC": "7:50",
+	"semanaUTC": 13,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-mar-24": {"titulo": "San Nicolas de Flüe"},
-		"22-mar-24": {"titulo": "Cuaresma"},
-		"23-mar-24": {"titulo": "Cuaresma"},
-		"24-mar-24": {"titulo": "Sem. Santa 1 - Domingo de Ramos"},
-		"25-mar-24": {"titulo": "Sem. Santa 2 - Lunes"}
+		"26-mar-24": {"titulo": "Sem. Santa 3 - Martes"},
+		"27-mar-24": {"titulo": "Sem. Santa 4 - Miércoles"},
+		"28-mar-24": {"titulo": "Sem. Santa 5 - Jueves"},
+		"29-mar-24": {"titulo": "Sem. Santa 6 - Muerte del Señor", "entidad": "hechos", "id": 13},
+		"30-mar-24": {"titulo": "Semana Santa"}
 	}
 }
