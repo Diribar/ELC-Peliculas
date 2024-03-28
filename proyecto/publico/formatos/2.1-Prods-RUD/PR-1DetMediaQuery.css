@@ -1,13 +1,8 @@
 /* Parado */
 @media (orientation: portrait) {
-	/* #cuerpoFooterImgDer #cuerpoFooter {display: none;} */
+	#cuerpoFooterImgDer #cuerpoFooter {display: none;}
 	#centro #marcoInfo {max-width: 85%;} /* ancho de 'parado' */
 	#marcoInfo #etiquetas p {width: min-content;} /* ajusta el ancho de las etiquetas al mínimo */
-	#cuerpo :is(#datosBreves, #recuadroDB) {position: absolute;}
-	#datosBreves #recuadroDB {position: absolute; translate: -50% 0;}
-
-	/* Sectores a ocultar */
-	#cuerpoFooter :is(#encabezado, #tituloInfoDetalle, footer) {display: none !important;}
 }
 
 /* Acostado */
