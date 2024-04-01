@@ -24,28 +24,25 @@ window.addEventListener("load", () => {
 		muestraDL: DOM.sectorIconos.querySelector("#muestraDL"),
 		muestraDB: DOM.sectorIconos.querySelector("#muestraDB"),
 	};
+	if (window.matchMedia("(orientation: landscape)").matches) DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
 		DOM.links.classList.toggle("ocultar"); // inicialmente visibles siempre
 		DOM.sectorIconos.classList.toggle("ocultar"); // inicialmente visibles siempre
-		window.matchMedia("(orientation: portrait)").matches
-			? DOM.datosLargos.classList.add("toggle")
-			: DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
-		DOM.datosBreves.classList.add("toggle"); // inicialmente visibles en Laptop
+		DOM.datosLargos.classList.add("toggle"); // oculto
+		DOM.datosBreves.classList.add("toggle"); // oculto
 	});
 
 	// Event listeners - Muestra datosLargos
 	DOM.muestraDL.addEventListener("click", () => {
-		DOM.datosLargos.classList.toggle("toggle"); // inicialmente visibles en acostados
-		DOM.datosBreves.classList.add("toggle"); // inicialmente visibles en Laptop
+		DOM.datosLargos.classList.toggle("toggle");
+		DOM.datosBreves.classList.add("toggle"); // oculto
 	});
 
 	// Event listeners - Muestra datosBreves
 	DOM.muestraDB.addEventListener("click", () => {
-		DOM.datosBreves.classList.toggle("toggle"); // inicialmente visibles en Laptop
-		window.matchMedia("(orientation: portrait)").matches
-			? DOM.datosLargos.classList.add("toggle")
-			: DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
+		DOM.datosBreves.classList.toggle("toggle");
+		DOM.datosLargos.classList.add("toggle"); // oculto
 	});
 });
