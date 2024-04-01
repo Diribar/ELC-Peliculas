@@ -24,7 +24,6 @@ window.addEventListener("load", () => {
 		muestraDL: DOM.sectorIconos.querySelector("#muestraDL"),
 		muestraDB: DOM.sectorIconos.querySelector("#muestraDB"),
 	};
-	console.log(window.matchMedia("(orientation: portrait)"));
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
