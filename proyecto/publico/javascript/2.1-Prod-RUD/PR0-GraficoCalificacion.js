@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 		};
 
 		// Hace visible el gráfico
-		let grafico = new google.visualization.BarChart(document.getElementById("calificacionesGrafico"));
+		let grafico = new google.visualization.BarChart(document.getElementById("calificsGrafico"));
 		grafico.draw(data, options);
 	}
 });
