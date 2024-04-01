@@ -24,24 +24,29 @@ window.addEventListener("load", () => {
 		muestraDL: DOM.sectorIconos.querySelector("#muestraDL"),
 		muestraDB: DOM.sectorIconos.querySelector("#muestraDB"),
 	};
+	console.log(window.matchMedia("(orientation: portrait)"));
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
 		DOM.links.classList.toggle("ocultar"); // inicialmente visibles siempre
 		DOM.sectorIconos.classList.toggle("ocultar"); // inicialmente visibles siempre
-		DOM.datosLargos.classList.add("toggle"); // inicialmente visibles en acostados
+		window.matchMedia("(orientation: portrait)").matches
+			? DOM.datosLargos.classList.add("toggle")
+			: DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
 		DOM.datosBreves.classList.add("toggle"); // inicialmente visibles en Laptop
 	});
 
-	// Event listeners - Muestra la datosLargos
+	// Event listeners - Muestra datosLargos
 	DOM.muestraDL.addEventListener("click", () => {
 		DOM.datosLargos.classList.toggle("toggle"); // inicialmente visibles en acostados
 		DOM.datosBreves.classList.add("toggle"); // inicialmente visibles en Laptop
 	});
 
-	// Event listeners - Muestra la calificación
+	// Event listeners - Muestra datosBreves
 	DOM.muestraDB.addEventListener("click", () => {
-		DOM.datosLargos.classList.add("toggle"); // inicialmente visibles en acostados
 		DOM.datosBreves.classList.toggle("toggle"); // inicialmente visibles en Laptop
+		window.matchMedia("(orientation: portrait)").matches
+			? DOM.datosLargos.classList.add("toggle")
+			: DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
 	});
 });
