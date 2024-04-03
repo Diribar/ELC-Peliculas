@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 1/abr",
-	"HoraUTC": "17:32",
+	"FechaUTC": "Mié. 3/abr",
+	"HoraUTC": "11:43",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/abr",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"30-mar-24": {"titulo": "Semana Santa"},
-		"31-mar-24": {"titulo": "Sem. Santa 7 - Resurrección"},
 		"01-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"02-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"03-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"03-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"04-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"05-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
