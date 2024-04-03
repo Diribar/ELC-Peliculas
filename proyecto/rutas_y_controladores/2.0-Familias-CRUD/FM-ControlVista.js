@@ -109,20 +109,21 @@ module.exports = {
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 		const userID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
-		// Comentario para la BD
-		let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-
-		// Si es 'inactivar', se asegura de que esté la descripción del motivo
-		let aux = "";
+		// Comentario para la tabla 'histStatus'
+		let comentario = "";
 		if (codigo == "inactivar") {
-			const descripcion = motivosStatus.find((n) => n.id == motivo_id).descripcion;
-			if (!comentUs || !comentUs.startsWith(descripcion)) aux = descripcion + ": ";
+			comentario += motivosStatus.find((n) => n.id == motivo_id).descripcion;
+			if (comentUs) {
+				if (comentUs.startsWith(comentario)) comentUs = comentUs.replace(comentario, "");
+				comentario += ": ";
+			}
 		}
-		comentario += " - " + aux + comentUs;
+		if (comentUs) comentario += comentUs;
 		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
@@ -136,7 +137,7 @@ module.exports = {
 
 		// CONSECUENCIAS - Actualiza en los links el campo 'prodAprob'
 		const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {coleccion_id: id}, asoc);
+		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
 		comp.prodAprobEnLink(links);
 
 		// CONSECUENCIAS - Acciones si es una colección
