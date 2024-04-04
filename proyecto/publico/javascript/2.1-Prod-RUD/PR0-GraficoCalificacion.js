@@ -3,16 +3,21 @@ window.addEventListener("load", async () => {
 	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
+	let DOM = {
+		dondeUbicarLosResultados: document.querySelector("#calificacionesResultados"),
+		datosLargos: document.querySelector("#cuerpo #datos #datosLargos"),
+		datosBreves: document.querySelector("#cuerpo #datos #datosBreves"),
+		muestraDB:document.querySelector("#mobile #muestraDB")
+	};
 
 	// Obtiene las calificaciones
 	const ruta = "/producto/api/obtiene-calificaciones/";
 	const calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + prodID).then((n) => n.json());
 
 	// Resultados de la calificación
-	let dondeUbicarLosResultados = document.querySelector("#calificacionesResultados");
 	let resultados = "Gral.: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
 	if (calificaciones.length == 2) resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3]) + "%</span>";
-	dondeUbicarLosResultados.innerHTML = resultados;
+	DOM.dondeUbicarLosResultados.innerHTML = resultados;
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -72,4 +77,12 @@ window.addEventListener("load", async () => {
 		let grafico = new google.visualization.BarChart(document.getElementById("calificsGrafico"));
 		grafico.draw(data, options);
 	}
+
+	// Estética para el start-up
+	DOM.muestraDB.classList.add("inactivo")
+	DOM.datosBreves.classList.replace("toggle", "esconder"); // inicialmente visibles en acostados
+	setTimeout(() => {
+		DOM.muestraDB.classList.remove("inactivo")
+		DOM.datosBreves.classList.replace("esconder", "toggle"); // inicialmente oculto en acostados
+	}, 1000);
 });
