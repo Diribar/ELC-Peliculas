@@ -300,10 +300,10 @@ module.exports = {
 			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 			const status_id = original.statusRegistro_id;
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
-			const condics = {entidad, entidad_id: id, usuario_id: userID};
+			const condics = {usuario_id: userID, entidad, entidad_id: id};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
-			const interesDelUsuario = await procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id});
+			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
 
 			// Ayuda para el título
 			const ayudasTitulo = [];
