@@ -7,11 +7,6 @@
 	/* Información */
 	#informacion #marcoInfo {max-width: 85vw;}
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
-
-	/* Sectores a ocultar */
-	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
-	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 }
 
 /* Acostado */
@@ -20,29 +15,21 @@
 
 /* Acostado - Laptop */
 @media (orientation: landscape) and (min-height: 600px) {
-	/* Información */
-	#datosLargos #recuadroDL #contenido {margin: 0 40px; justify-content: space-around;}
-	#datosLargos #contenido #informacion {margin-top: 30px;}
-
 	/* tituloInfoDetalle */
-	#datosLargos #informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
-	#datosLargos #informacion #tituloInfoDetalle h3 {width: max-content;}
 	#datosLargos #informacion #tituloInfoDetalle ul p {margin-top: 3px;}
 	#datosLargos #informacion #tituloInfoDetalle ul b {color: snow;}
 
 	/* Links */
-	#datosLargos #links {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
 	#datosLargos #links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
 	#datosLargos #links :is(#ayudaLinks, nav :is(a, select)) {margin-right: 10px;}
 	#datosLargos #links nav :is(button, select) {height: 20px;}
 
-	/* MarcoInfo, íconos */
+	/* MarcoInfo */
 	#datosLargos #informacion #marcoInfo {margin-top: 20px;}
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: max-content;}
-	#datosLargos #contenido #sectorIconos {margin: 30px 0}
 
 	/* Sectores a ocultar */
-	#imgDerecha :is(#links, #sectorIconos) {display: none;}
+	#imgDerecha #links {display: none;}
 }
 
 /* Acostado - Celu */
@@ -54,7 +41,7 @@
 	#datos #marcoInfo {margin: 0;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
+	#cuerpoFooter #datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos) {display: none !important;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
