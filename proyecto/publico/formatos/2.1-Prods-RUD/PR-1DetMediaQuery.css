@@ -36,7 +36,7 @@
 	#datos #marcoInfo {margin: 0;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos) {display: none !important;}
+	#cuerpoFooter #datosLargos :is(#tituloInfoDetalle, #links) {display: none !important;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}

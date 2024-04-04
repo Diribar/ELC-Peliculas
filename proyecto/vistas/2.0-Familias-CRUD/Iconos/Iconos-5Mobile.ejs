@@ -1,9 +1,18 @@
 <div id="mobile" class="iconos">
-	<i id="muestraDL" class="fa-solid fa-circle-info" tabindex="-1" title="Ver su información"></i>
-	<i id="muestraDB" class="fa-solid fa-chart-line" tabindex="-1"></i>
-	<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id %>">
-		<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
-	</a>
+	<% if (codigo == "detalle") { %>
+		<i id="muestraDL" class="fa-solid fa-circle-info" tabindex="-1"></i>
+		<i id="muestraDB" class="fa-solid fa-chart-line" tabindex="-1"></i>
+		<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id %>">
+			<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
+		</a>
+	<% } %>
+	<% if (codigo == "calificar") { %>
+		<i id="muestraCL" class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
+		<i id="muestraDB" class="fa-solid fa-chart-line" tabindex="-1"></i>
+		<a href="<%= '/producto/detalle/?entidad=' + entidad + '&id=' + id %>">
+			<i class="fa-solid fa-circle-info" tabindex="-1"></i>
+		</a>
+	<% } %>
 </div>
 <% if (interesDelUsuario) { %>
 	<div class="iconos">

@@ -22,9 +22,6 @@
 	#datosLargos #informacion #tituloInfoDetalle {margin-bottom: 5px; width: min-content;}
 	#datosLargos #informacion #tituloInfoDetalle h3 {width: max-content;}
 
-	/* marco */
-	#datosLargos .marco {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
-
 	/* íconos */
 	#datosLargos #contenido #sectorIconos {margin: 30px 0}
 
@@ -35,7 +32,7 @@
 /* Acostado - Celu */
 @media (orientation: landscape) and (max-height: 600px) {
 	/* Sectores a ocultar */
-	#cuerpoFooter footer {display: none !important;}
+	#cuerpoFooter footer, #datosLargos :is(#encabezado, #sectorIconos) {display: none !important;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
