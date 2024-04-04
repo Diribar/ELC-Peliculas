@@ -85,19 +85,20 @@
 	<% } %>
 </div>
 
-<% condicCrudEliminar = tema == "fmCrud" && codigo != "eliminar" %>
+<% condicCrud = tema == "fmCrud" %>
+<% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
 <% condicRevRech = tema == "revisionEnts" && codigo == "rechazo" %>
-<% if (condicCrudEliminar || condicRevRech) {  %>
-	<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
-	<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
+<% if (condicCrud || condicRevRech) {  %>
 	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
-		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
-	</button>
-<% } %>
-<% if (tema == "fmCrud" && codigo == "eliminar") {  %>
-	<!-- Elimina definitivamente -->
-	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
-		<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
+		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>
+			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
+			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
+			<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+		<% } %>
+		<% if (condicCrudEliminar) {  %>
+			<!-- Elimina definitivamente -->
+			<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
+		<% } %>
 	</button>
 <% } %>
 
