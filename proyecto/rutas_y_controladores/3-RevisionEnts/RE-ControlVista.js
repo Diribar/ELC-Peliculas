@@ -304,7 +304,7 @@ module.exports = {
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
-			const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocasDelAno" ? " la " : "l ";
+			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
 			let avatarExterno, avatarsExternos, avatar, imgDerPers;
 			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
