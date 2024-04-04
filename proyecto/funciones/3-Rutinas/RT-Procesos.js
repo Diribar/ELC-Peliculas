@@ -586,8 +586,7 @@ module.exports = {
 	finRutinasHorarias: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		const mensaje = campo == "FeedbackParaUsers" && nodeEnv == "development" ? "En development no se envían mails" : campo;
-		console.log(FechaUTC, HoraUTC + "hs. -", mensaje);
+		if (campo != "FeedbackParaUsers" || nodeEnv != "development") console.log(FechaUTC, HoraUTC + "hs. -", campo);
 
 		// Fin
 		return;
