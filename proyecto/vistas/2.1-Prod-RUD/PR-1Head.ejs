@@ -7,6 +7,14 @@
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-DetalleNuevo.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQueryNuevo.css">
+	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-MuestraOculta.js"></script>
+	<% if (interesDelUsuario) { %>
+		<script src="/publico/javascript/2.1-Prod-RUD/PR4-Preferencias-Pers.js"></script>
+	<% } %>
+	<% if (registro.calificacion) { %>
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="/publico/javascript/2.1-Prod-RUD/PR0-GraficoCalificacion.js"></script>
+	<% } %>
 <% } %>
 
 <!-- Detalle -->
@@ -18,14 +26,6 @@
 	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1DetMediaQuery.css">
 	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
 	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
-	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-MuestraOculta.js"></script>
-	<% if (interesDelUsuario) { %>
-		<script src="/publico/javascript/2.1-Prod-RUD/PR4-Preferencias-Pers.js"></script>
-	<% } %>
-	<% if (registro.calificacion) { %>
-		<script src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="/publico/javascript/2.1-Prod-RUD/PR0-GraficoCalificacion.js"></script>
-	<% } %>
 <% } %>
 
 <!-- Edición -->
@@ -42,9 +42,4 @@
 	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
 	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar.css">
 	<script src="/publico/javascript/2.1-Prod-RUD/PR3-Calificar-InputError.js"></script>
-	<script src="/publico/javascript/2.1-Prod-RUD/PR4-Preferencias-Pers.js"></script>
-	<% if (registro.calificacion) { %>
-		<script src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="/publico/javascript/2.1-Prod-RUD/PR0-GraficoCalificacion.js"></script>
-	<% } %>
 <% } %>
