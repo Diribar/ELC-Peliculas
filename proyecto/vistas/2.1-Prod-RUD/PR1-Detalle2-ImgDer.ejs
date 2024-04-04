@@ -1,6 +1,6 @@
 <div id="imgDerecha">
 	<img src="<%= imgDerPers %>">
-	<%- include("PR1-Detalle-2Links") %>
+	<% if (codigo == "detalle") { %><%- include('PR1-Detalle-2Links') %><% } %>
 	<div id="sectorIconos">
 		<%- include("Iconos-5Mobile") %>
 	</div>
