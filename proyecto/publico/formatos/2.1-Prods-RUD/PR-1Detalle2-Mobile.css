@@ -1,9 +1,5 @@
-/* General */
-#imgDerecha {position: relative;}
-#imgDerecha :is(#links, #sectorIconos) {position: absolute; left: 50%;}
-
 /* Links */
-#imgDerecha #links {top: 50%; translate: -50% -50%;}
+#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
 
 /* Links - Ayuda */
 #imgDerecha #ayudaLinks {margin-bottom: 10px;}
@@ -18,8 +14,3 @@
 #imgDerecha #links nav {align-items: center;}
 #imgDerecha #links nav :is(a, select) {margin-top: 10px;}
 #imgDerecha #links nav > *:first-child {margin-top: 0;}
-
-/* Conjunto de iconos */
-#imgDerecha #sectorIconos {bottom: 10px; translate: -50% 0; width: 100%;}
-#imgDerecha #sectorIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
-#imgDerecha #sectorIconos .iconos {margin: 0;}

@@ -3,3 +3,11 @@
 
 /* Gráfico de Calificaciones */
 #datosBreves #calificsGrafico {width: 170px;}
+
+/* Sector Imagen Derecha */
+#imgDerecha {position: relative;}
+
+/* Conjunto de iconos */
+#imgDerecha #sectorIconos {position: absolute; left: 50%; translate: -50% 0; bottom: 10px;}
+#imgDerecha #sectorIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; width: 100%;}
+#imgDerecha #sectorIconos .iconos {margin: 0;}
