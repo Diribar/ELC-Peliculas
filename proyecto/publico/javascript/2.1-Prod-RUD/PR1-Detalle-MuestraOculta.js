@@ -42,6 +42,7 @@ window.addEventListener("load", () => {
 
 	// Event listeners - Muestra datosBreves
 	DOM.muestraDB.addEventListener("click", () => {
+		if (DOM.muestraDB.className.includes("inactivo")) return;
 		DOM.datosBreves.classList.toggle("toggle");
 		DOM.datosLargos.classList.add("toggle"); // oculto
 	});
