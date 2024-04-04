@@ -1,0 +1,23 @@
+/* General */
+#cuerpoFooterImgDer #cuerpoFooter {height: 100%;} /* position: relative;  */
+
+/* Cuerpo */
+#cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */
+#cuerpoFooter #cuerpo {flex-direction: column; background: transparent;}
+
+/* Datos */
+#cuerpo #datos {position: relative; height: calc(100% - 37px);} /* 37px: tituloPrincipal */
+#cuerpo #datos {display: flex; flex-direction: row; flex-grow: 1; justify-content: space-evenly; align-items: center;}
+
+/* Datos Largos */
+#datos #datosLargos {position: relative; height: 90%;}
+#datos #datosLargos {display: flex; flex-direction: column; justify-content: center; align-items: center;}
+
+/* Recuadro */
+#datosLargos #recuadroDL {display: flex; flex-direction: column; width: max-content;}
+#datosLargos #recuadroDL {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
+#datosLargos #recuadroDL {border-radius: 20px; overflow: auto;}
+#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(100vw - 32vw - 220px - 6vw));} /* 32vw: anchoImagen, 220px: datosBreves, 6vw: márgenes */
+
+/* Encabezado */
+#recuadroDL #encabezado {padding: 15px 25px;}
