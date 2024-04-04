@@ -30,7 +30,7 @@
 #marcoInfo #etiquetas .etiqueta {padding: 1px 3px; cursor: pointer; width: min-content;}
 #marcoInfo #etiquetas .etiqueta {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
 #marcoInfo #etiquetas .etiqueta {border-top-left-radius: 5px; border-top-right-radius: 5px;}
-#marcoInfo #etiquetas .etiqueta.resaltar {border-width: 2px; font-weight: bold; cursor: default;}
+#marcoInfo #etiquetas .etiqueta.resaltar {font-weight: bold; cursor: default;}
 #marcoInfo #etiquetas .etiqueta.resaltar {background: var(--azul-oscuro); color: var(--celeste-claro);}
 
 /* Marco de Detalle - Información */
