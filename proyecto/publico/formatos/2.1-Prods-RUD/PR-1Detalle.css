@@ -26,11 +26,11 @@
 
 /* Marco de Detalle - Etiquetas */
 #marcoInfo {display: flex; flex-direction: column;}
-#marcoInfo #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
-#marcoInfo #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer; width: min-content;}
-#marcoInfo #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
-#marcoInfo #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
-#marcoInfo #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
+#marcoInfo #etiquetas .etiqueta {border: 1px solid var(--gris-oscuro); border-bottom: none;}
+#marcoInfo #etiquetas .etiqueta {padding: 1px 3px; margin-right: 1px; cursor: pointer; width: min-content;}
+#marcoInfo #etiquetas .etiqueta {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
+#marcoInfo #etiquetas .etiqueta {border-top-left-radius: 5px; border-top-right-radius: 5px;}
+#marcoInfo #etiquetas .etiqueta.resaltar {border-width: 2px; background: var(--amarillo-claro); font-weight: bold; cursor: default;}
 
 /* Marco de Detalle - Información */
 #marcoInfo #datosInfo {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}

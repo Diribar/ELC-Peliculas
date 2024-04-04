@@ -37,7 +37,7 @@
 
 	/* MarcoInfo, íconos */
 	#datosLargos #informacion #marcoInfo {margin-top: 20px;}
-	#datosLargos #marcoInfo #etiquetas p {width: max-content;}
+	#datosLargos #marcoInfo #etiquetas .etiqueta {width: max-content;}
 	#datosLargos #contenido #sectorIconos {margin: 30px 0}
 
 	/* Sectores a ocultar */

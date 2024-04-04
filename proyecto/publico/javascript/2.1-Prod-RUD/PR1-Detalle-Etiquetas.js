@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let etiquetas = document.querySelectorAll("#etiquetas p");
+	let etiquetas = document.querySelectorAll("#etiquetas .etiqueta");
 	let datosParcial = document.querySelectorAll("#datosInfo .datosParcial");
 
 	// Eventos
