@@ -48,7 +48,7 @@
 @media (orientation: landscape) and (max-height: 600px) {
 	/* Adecua temas de laptop */
 	#cuerpoFooter #cuerpo {max-height: none}
-	#datosLargos #recuadroDL {max-width: calc(100vw - 32vw - 2vw) !important;} /* 32vw: anchoImagen, 6vw: márgenes */
+	#datosLargos #recuadroDL {max-width: calc(100vw - 30vw) !important;} /* 30vw: anchoImagen */
 	#recuadroDL #contenido {margin: 15px 20px;}
 	#datos #marcoInfo {margin: 0;}
 
