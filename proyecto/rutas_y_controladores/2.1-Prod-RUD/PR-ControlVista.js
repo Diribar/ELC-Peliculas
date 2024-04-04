@@ -319,6 +319,7 @@ module.exports = {
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
+				...{omitirImagenDerecha: true, omitirFooter: true},
 			});
 		},
 		guardar: async (req, res) => {
