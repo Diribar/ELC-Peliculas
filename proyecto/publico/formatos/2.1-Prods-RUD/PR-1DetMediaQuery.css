@@ -11,6 +11,7 @@
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
+	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 }
 
 /* Acostado */
@@ -55,5 +56,6 @@
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
+	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 }
