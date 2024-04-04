@@ -70,7 +70,6 @@ window.addEventListener("load", async () => {
 			},
 			vAxis: {textStyle: {fontSize: 12}},
 			chartArea: {top: "10%", left: 65, width: 90},
-			// width: 170,
 		};
 
 		// Hace visible el gráfico
