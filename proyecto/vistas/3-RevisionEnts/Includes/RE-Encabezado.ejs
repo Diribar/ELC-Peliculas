@@ -1,9 +1,8 @@
-<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 <%- include("FM-EncabIzq") %>
 <% if (entidad != "peliculas") { %>
 	<div id="colCap">
-		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
+			<!-- Cantidad de Temporadas y de Capítulos -->
 			<div id="colecciones">
 				<div>
 					<p><b>Cant. de Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin temporada" %></p>
@@ -13,8 +12,9 @@
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
+			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p><b>De la colección:</b>
+				<p><b>Colección:</b>
 					<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion.id %>">
 						<button class="scale pointer"><%= registro.coleccion.nombreCastellano %></button>
 					</a>
