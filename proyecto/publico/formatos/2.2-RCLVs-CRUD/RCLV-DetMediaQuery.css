@@ -5,7 +5,7 @@
 	#datosLargos #recuadroDL {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
 
 	/* Cambia márgenes y padding */
-	#recuadroDL #encabezado {padding-left: 20px; padding-right: 20px;}
+	#datosLargos #encabezado {padding-left: 20px; padding-right: 20px;}
 	#recuadroDL #contenido {--margenCostado: max(0px, min(40px, calc(50vw - 8px - 305px)));} /* 8px es el ancho del borde, 305px es el ancho de cada botón  */
 	#recuadroDL #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
 	#listado #prodsNuevos:first-child {padding-left: 0;}
@@ -26,7 +26,7 @@
 /* Alto */
 @media (max-height: 445px) {#recuadroDL #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
 @media (max-height: 430px) {
-	#cuerpo #recuadroDL #encabezado {display: none;} /* oculta el encabezado */
+	#cuerpo #datosLargos #encabezado {display: none;} /* oculta el encabezado */
 	#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 13px - 24px)/2));} /* 52px: header, 200px: botones, 13px: borde, 24px: footer */
 	#listado li#prodsNuevos {padding-top: var(--altoLi); padding-bottom: var(--altoLi);}
 }

@@ -2,7 +2,7 @@
 #datos {--anchoRecuadro: 732px;}
 
 /* Recuadro */
-#recuadroDL #encabezado p {text-align: right;}
+#datosLargos #encabezado p {text-align: right;}
 #recuadroDL #contenido {margin: 0 40px;}
 
 /* Información */
