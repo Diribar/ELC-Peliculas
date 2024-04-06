@@ -4,7 +4,7 @@ main #cuerpo {flex-direction: column;}
 /* Temas generales */
 #contenido {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
 #contenido {padding: 20px 40px 20px;}
-#datos {display: flex; flex-direction: column;}
+#cuerpo #datos {display: flex; flex-direction: column;}
 
 /* Filtros */
 #datos #filtros {margin: 15px 0;}
