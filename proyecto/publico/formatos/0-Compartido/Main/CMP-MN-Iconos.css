@@ -1,18 +1,19 @@
 /* sectorIconos */
 #sectorIconos {display: flex; flex-direction: row; justify-content: space-around;}
 
-/* Iconos */
+/* Comunes */
 #sectorIconos .iconos {display: flex; flex-direction: row; align-items: center;}
 #sectorIconos .iconos {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
 #sectorIconos .iconos {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+
+/* Grupos */
 #sectorIconos .iconos :is(i, img, a, button) {font-size: 1.75rem; background: transparent; border: none;}
 #sectorIconos .iconos :where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
-#sectorIconos .iconos button :is(i) {margin: 0;}
-#sectorIconos .iconos .pack :where(i, img, button) {margin: 0 5px;}
-#sectorIconos .iconos .pack {margin: 0 5px; display: flex; flex-direction: row; align-items: center;}
+#sectorIconos .iconos :is(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
 #sectorIconos .iconos :is(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
 #sectorIconos .iconos :is(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
+#sectorIconos .iconos:not(:has(i)) {display: none}
 
-/* Cambios de status */
-#sectorIconos .iconos#cambioStatus :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}
-#sectorIconos .iconos#cambioStatus:not(:has(i)) {display: none}
+/* Particularidades */
+#sectorIconos .iconos .pack {display: flex; flex-direction: row; align-items: center;}
+#sectorIconos .iconos button i {margin: 0;}
