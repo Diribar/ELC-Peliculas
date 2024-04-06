@@ -1,5 +1,5 @@
 <%- include("FM-EncabIzq") %>
-<% if (entidad != "peliculas") { %>
+<% if (familia == "producto" && entidad != "peliculas") { %>
 	<div id="colCap">
 		<% if (entidad == "colecciones") { %>
 			<!-- Cantidad de Temporadas y de Capítulos -->
@@ -22,14 +22,15 @@
 				</a>
 			</div>
 			<div id="tempCapS">
+				<!-- Avanza/Retrocede un capítulo -->
+				<script src="/publico/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
+				<div class="pack">
+					<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
+					<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
+				</div>
 				<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
+					<!-- Elige una temporada o capítulo -->
 					<script src="/publico/javascript/2.1-Prod-RUD/PR0-CambioTempCap.js"></script>
-					<script src="/publico/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
-					<!-- Cambia de capítulo -->
-					<div class="pack">
-						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
-						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
-					</div>
 					<select id="temporada" <% if (tema != "prodRud") { %>readonly <% } %> <% if (registro.coleccion.cantTemps == 1) { %>class="ocultar"<% } %>>
 						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
 							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
@@ -41,11 +42,14 @@
 						<% } %>
 					</select>
 				<% } else { %>
-					<!-- Temporada y Capítulo - no se cambia -->
+					<!-- Información de Temporada y Capítulo - no se cambia -->
 					<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
 					<p><b>Capítulo:</b> <%= registro.capitulo %></p>
 				<% } %>
 			</div>
 		<% } %>
 	</div>
+<% } %>
+<% if (familia == "rclv") { %>
+	<p>Películas vinculadas: <%= prodsDelRCLV.length %></p>
 <% } %>
