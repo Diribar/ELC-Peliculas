@@ -13,6 +13,6 @@
 @media (orientation: landscape) and (max-height: 600px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	#datos #datosLargos {height: 100%;}
-	#recuadroDL #encabezado {padding-top: 10px; padding-bottom: 10px;}
+	#datosLargos #encabezado {padding-top: 10px; padding-bottom: 10px;}
 	#contenido #informacion {margin: auto 0;}
 }
