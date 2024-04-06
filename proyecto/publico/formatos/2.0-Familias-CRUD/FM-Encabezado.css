@@ -1,13 +1,13 @@
 /* Colores */
-#cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
+#datosLargos #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
 
 /* Encabezado */
-#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro);}
-#cuerpo #encabezado {background: var(--celeste-claro);}
+#datosLargos #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#datosLargos #encabezado {border-bottom: solid 1px var(--azul-oscuro);}
+#datosLargos #encabezado {background: var(--celeste-claro);}
 
 /* Ancho, dependiendo de si tiene capítulos */
-#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
+#datosLargos #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
 
 /* Otros */
 #encabezado #nombres h2 {margin: 0; }
