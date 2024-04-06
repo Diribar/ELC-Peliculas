@@ -3,8 +3,7 @@ main {background: var(--gris-claro);}
 main #cuerpo {flex-direction: column;}
 #cuerpo #contenido {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
 #cuerpo #contenido {padding: 20px 40px 20px;}
-#contenido #datosLargos {display: flex; flex-direction: column;}
-#datosLargos {align-items: normal;}
+#cuerpo #datosLargos {display: flex; flex-direction: column; align-items: normal;}
 
 /* Filtros */
 #datosLargos #filtros {margin: 15px 0;}
