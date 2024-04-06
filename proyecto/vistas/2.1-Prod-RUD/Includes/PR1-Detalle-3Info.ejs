@@ -1,13 +1,13 @@
 <!-- Información -->
 <div id="marcoInfo" class="toggle">
 	<div id="etiquetas" class="flexRow">
-		<button class="etiqueta resaltar">Sinopsis</button>
-		<button class="etiqueta">Inform. General</button>
-		<button class="etiqueta">Actores</button>
+		<button type="button" class="etiqueta resaltar">Sinopsis</button>
+		<button type="button" class="etiqueta">Inform. General</button>
+		<button type="button" class="etiqueta">Actores</button>
 		<!-- RCLVs -->
 		<% for (let i=0; i < asocs.length; i++) { %>
 			<% if (bloqueIzq[asocs[i]]) { %>
-				<button class="etiqueta rclv"><%= rclvsNombre[i] %></button>
+				<button type="button" class="etiqueta rclv"><%= rclvsNombre[i] %></button>
 			<% } %>
 		<% } %>
 	</div>
