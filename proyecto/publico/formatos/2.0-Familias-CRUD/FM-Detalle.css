@@ -20,4 +20,4 @@
 #datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(100vw - 32vw - 220px - 6vw));} /* 32vw: anchoImagen, 220px: datosBreves, 6vw: márgenes */
 
 /* Encabezado */
-#recuadroDL #encabezado {padding: 15px 25px;}
+#datosLargos #encabezado {padding: 15px 25px;}
