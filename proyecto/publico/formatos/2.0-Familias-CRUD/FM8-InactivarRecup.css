@@ -2,7 +2,7 @@
 #datos #datosLargos {width: 65%; max-width: 600px;}
 
 /* Colores */
-#datosLargos #recuadroDL #encabezado {border-bottom: none; color: snow;}
+#datos #datosLargos #encabezado {border-bottom: none; color: snow;}
 
 /* Sector de información */
 #recuadroDL #informacion {display: flex; flex-direction: row; justify-content: space-between;}
