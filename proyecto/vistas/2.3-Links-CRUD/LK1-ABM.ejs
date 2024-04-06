@@ -1,54 +1,52 @@
 <%- include("FM-TituloPrincipal") %>
 <section id="contenido">
-	<div id="datos">
-		<div id="datosLargos">
-			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-			<div id="encabezado">
-				<%- include("FM-Encabezado") %>
-			</div>
-			<div id="filtros" class="flexRow spaceAround">
-				<!-- Película/Trailer -->
-				<select id="peliculaTrailer">
-					<option value="PL">Película</option>
-					<option value="TR">Trailer</option>
-					<option value="TD" selected>Películas y Trailers</option>
-				</select>
-				<!-- Activo/Inactivo -->
-				<% let url = "?entidad=" + entidad + "&id=" + id %>
-				<% if (locals.origen) {url += "&origen=" + origen} %>
-				<select id="activoInactivo" onchange="location = this.value;">
-					<option value="<%= url %>">Activos</option>
-					<option id="inactivos" value="<%= url + "&grupo=inactivos" %>">Inactivos</option>
-				</select>
-			</div>
-			<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
-				<!-- Tabla -->
-				<table>
-					<!-- Títulos (11 columnas) -->
-					<%- include("LK0-TituloTabla") %>
-					<tbody id="<%= tema %>">
-						<!-- Filas para links existentes -->
-						<% links.forEach((link, fila)=> { %>
-							<%- include("LK1-Datos", {link, fila}) %>
-							<% if (tema == "revisionEnts") { %>
-								<% for (let edicion of link.ediciones) { %>
-									<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %>
-								<% } %>
-							<% } else { %>
-								<%- include("LK2-Edicion", {link, fila}) %>
-							<% } %>
-						<% }) %>
-						<!-- Fila para nuevo link -->
-						<% if (tema != "revisionEnts") { %><%- include("LK2-Alta", {fila: links.length}) %><% } %>
-					</tbody>
-				</table>
-			</form>
+	<div id="datosLargos">
+		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+		<div id="encabezado">
+			<%- include("FM-Encabezado") %>
 		</div>
+		<div id="filtros" class="flexRow spaceAround">
+			<!-- Película/Trailer -->
+			<select id="peliculaTrailer">
+				<option value="PL">Película</option>
+				<option value="TR">Trailer</option>
+				<option value="TD" selected>Películas y Trailers</option>
+			</select>
+			<!-- Activo/Inactivo -->
+			<% let url = "?entidad=" + entidad + "&id=" + id %>
+			<% if (locals.origen) {url += "&origen=" + origen} %>
+			<select id="activoInactivo" onchange="location = this.value;">
+				<option value="<%= url %>">Activos</option>
+				<option id="inactivos" value="<%= url + "&grupo=inactivos" %>">Inactivos</option>
+			</select>
+		</div>
+		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
+			<!-- Tabla -->
+			<table>
+				<!-- Títulos (11 columnas) -->
+				<%- include("LK0-TituloTabla") %>
+				<tbody id="<%= tema %>">
+					<!-- Filas para links existentes -->
+					<% links.forEach((link, fila)=> { %>
+						<%- include("LK1-Datos", {link, fila}) %>
+						<% if (tema == "revisionEnts") { %>
+							<% for (let edicion of link.ediciones) { %>
+								<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %>
+							<% } %>
+						<% } else { %>
+							<%- include("LK2-Edicion", {link, fila}) %>
+						<% } %>
+					<% }) %>
+					<!-- Fila para nuevo link -->
+					<% if (tema != "revisionEnts") { %><%- include("LK2-Alta", {fila: links.length}) %><% } %>
+				</tbody>
+			</table>
+		</form>
 	</div>
 	<div id="sectorIconos">
 		<%- include("Iconos-1Estandar") %>
 		<!-- Específicos de links -->
-		<% if (tema!="revisionEnts") { %>
+		<% if (tema != "revisionEnts") { %>
 			<div class="iconos img">
 				<% for (let prov of linksProvs.filter(n => n.mostrarSiempre)) { %>
 					<a
