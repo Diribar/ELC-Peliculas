@@ -2,7 +2,6 @@
 #datos {--anchoRecuadro: 732px;}
 
 /* Recuadro */
-#recuadroDL #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
 #recuadroDL #encabezado p {text-align: right;}
 #recuadroDL #contenido {margin: 0 40px;}
 
