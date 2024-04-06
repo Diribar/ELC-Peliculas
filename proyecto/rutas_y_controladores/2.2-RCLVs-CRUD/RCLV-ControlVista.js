@@ -47,7 +47,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisorPERL},
-			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id},
+			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, canonNombre, RCLVnombre},
 		});
