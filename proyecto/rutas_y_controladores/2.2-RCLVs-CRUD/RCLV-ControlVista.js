@@ -25,7 +25,6 @@ module.exports = {
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Las películas son las que ya tenemos en nuestra BD.",
-			"Primero figuran las colecciones y luego las películas.",
 			"Están ordenadas desde la más reciente a las más antigua.",
 		];
 
@@ -42,7 +41,7 @@ module.exports = {
 		const RCLVnombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
-		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre; // título de la vista
+		const titulo = "Detalle de " + entidadNombre // título de la vista
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
