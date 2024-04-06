@@ -1,5 +1,5 @@
 /* General */
-#datos {--anchoRecuadro: 520px;}
+#cuerpo #datos {--anchoRecuadro: 520px;}
 
 /* Titulo principal */
 #tituloInfoDetalle .ayudaMostrar {max-width: min(195px, 75vw); translate: 100% 0; top: -2px;}
@@ -25,7 +25,7 @@ form.marco {padding: 25px; text-align: right;}
 #calificaciones #consolidado #valor {font-size: 2rem; background: white; padding: 2px;}
 
 /* Guardar cambios */
-.marco #guardarCambios {margin-top: 20px;}
+#datosLargos #informacion .marco #sectorIconos {margin: 20px 0 0;}
 
 @media (max-width: 520px) {
 	#recuadroDL #contenido {margin: 0 min(40px, calc(100vw - 220px - 13px) / 2);}

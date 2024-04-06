@@ -48,14 +48,16 @@
 		</div>
 	</div>
 	<!-- Guardar cambios -->
-	<div id="guardarCambios" class="iconos">
-		<!-- Guarda la calificación -->
-		<button type="submit">
-			<i id="guardar" class="fa-solid fa-circle-check inactivo" title='Guardá tu calificación'></i>
-		</button>
-		<% if (califUsuario) { %>
-			<!-- Elimina tu calificación guardada -->
-			<i id="eliminar" class="fa solid fa-circle-xmark" tabindex="-1" title='Eliminá tu calificación guardada'></i>
-		<% } %>
+	<div id="sectorIconos">
+		<div id="guardarCambios" class="iconos">
+			<!-- Guarda la calificación -->
+			<button type="submit">
+				<i id="guardar" class="fa-solid fa-circle-check inactivo" title='Guardá tu calificación'></i>
+			</button>
+			<% if (califUsuario) { %>
+				<!-- Elimina tu calificación guardada -->
+				<i id="eliminar" class="fa solid fa-circle-xmark" tabindex="-1" title='Eliminá tu calificación guardada'></i>
+			<% } %>
+		</div>
 	</div>
 </form>
