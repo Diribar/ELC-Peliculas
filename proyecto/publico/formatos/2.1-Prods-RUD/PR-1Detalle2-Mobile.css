@@ -22,7 +22,8 @@
 @media (orientation: portrait) {
 	/* Información */
 	#informacion #marcoInfo {max-width: 85vw;}
-	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}}
+	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
+}
 
 /* Acostado - Celu */
 @media (orientation: landscape) and (max-height: 600px) {
