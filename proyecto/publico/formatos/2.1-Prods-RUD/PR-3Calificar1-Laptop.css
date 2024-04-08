@@ -1,5 +1,12 @@
 @media (orientation: landscape) and (min-height: 600px) {
+	/* Información */
 	.marco #calificaciones {flex-direction: row;}
 	#calificaciones #individuales > div {flex-direction: row; align-items: center;}
 	#calificaciones #individuales div h4 {margin-right: 10px; white-space: nowrap;}
+
+	/* Botones submit */
+	#contenido .marco #sectorIconos {margin: 25px 0 0;}
+
+	/* Ocultar */
+	#calificaciones #sector2 #sectorIconos {display: none;}
 }

@@ -21,10 +21,9 @@ form.marco {padding: 25px;}
 #calificaciones #individuales div select {width: 100%; max-width: 170px; border-radius: 5px;}
 
 /* Marco - Consolidado */
-#calificaciones #consolidado {margin-left: 30px; margin-right: 5px;}
-#calificaciones #consolidado {text-align: center; border-radius: 5px; overflow: hidden; border: var(--azul-oscuro) solid 1px;}
+#calificaciones #sector2 {margin-left: 30px; margin-right: 5px;}
+#calificaciones #sector2 {display: flex; flex-direction: column; align-items: center;}
+#calificaciones #consolidado {text-align: center; min-width: max-content;}
+#calificaciones #consolidado {border-radius: 5px; border: var(--azul-oscuro) solid 1px; overflow: hidden;}
 #calificaciones #consolidado #resultado {background: var(--azul-oscuro); color: white; font-size: 1.1rem; padding: 2px 5px;}
 #calificaciones #consolidado #valor {font-size: 2rem; background: white; padding: 2px;}
-
-/* Guardar cambios */
-#datosLargos #informacion .marco #sectorIconos {margin: 20px 0 0;}
