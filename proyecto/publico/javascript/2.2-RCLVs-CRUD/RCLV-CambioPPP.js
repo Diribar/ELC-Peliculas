@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 		);
 		iconosPPP[indice].classList.remove("inactivo");
 
-		// Muestra la leyenda 'Consulta copiada'
+		// Muestra la leyenda 'ppp'
 		leyendaPPP[indice].classList.remove("ocultar");
 		setTimeout(() => leyendaPPP[indice].classList.add("ocultar"), v.setTimeOutStd);
 
