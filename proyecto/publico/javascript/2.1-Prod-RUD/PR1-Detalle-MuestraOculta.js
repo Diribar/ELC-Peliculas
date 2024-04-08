@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
-		DOM.links.classList.toggle("ocultar"); // inicialmente visibles siempre
+		if (DOM.links) DOM.links.classList.toggle("ocultar"); // inicialmente visibles siempre
 		DOM.sectorIconos.classList.toggle("ocultar"); // inicialmente visibles siempre
 		DOM.datosLargos.classList.add("toggle"); // oculto
 		DOM.datosBreves.classList.add("toggle"); // oculto
