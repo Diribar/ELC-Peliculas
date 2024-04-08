@@ -7,7 +7,7 @@
 	/* Información */
 	#datos #datosLargos {max-height: 90%;}
 	#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - 220px - 6vw));} /* 220px: datosBreves, 6vw: márgenes */
-	#datosLargos #recuadroDL #contenido {margin: 0 40px; justify-content: space-around;}
+	#datosLargos #recuadroDL #contenido {margin: 0 40px;}
 	#datosLargos #contenido #informacion {margin-top: 30px;}
 
 	/* tituloInfoDetalle */
