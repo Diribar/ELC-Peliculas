@@ -82,7 +82,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			...{omitirImagenDerecha: true, omitirFooter: true},
+			estructuraPersonalizada: true,
 		});
 	},
 	edicion: {
@@ -148,7 +148,7 @@ module.exports = {
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-				...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
+				...{estructuraPersonalizada: true, cartelGenerico: true},
 			});
 		},
 		guardar: async (req, res) => {
@@ -315,7 +315,7 @@ module.exports = {
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
-				...{omitirImagenDerecha: true, omitirFooter: true},
+				estructuraPersonalizada: true,
 			});
 		},
 		guardar: async (req, res) => {
