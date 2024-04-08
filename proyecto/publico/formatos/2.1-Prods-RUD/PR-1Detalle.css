@@ -1,7 +1,7 @@
 /* General */
 #cuerpo #datos {--anchoRecuadro: 675px;}
 
-	/* Links */
+/* Links */
 #links, #links nav {display: flex;}
 #links {align-items: center;}
 #links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
