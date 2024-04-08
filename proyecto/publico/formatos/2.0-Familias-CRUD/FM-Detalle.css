@@ -17,7 +17,7 @@
 #datosLargos #recuadroDL {display: flex; flex-direction: column; width: max-content;}
 #datosLargos #recuadroDL {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
 #datosLargos #recuadroDL {border-radius: 20px; overflow: auto;}
-#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(100vw - 32vw - 220px - 6vw));} /* 32vw: anchoImagen, 220px: datosBreves, 6vw: márgenes */
+#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - 220px - 6vw));} /* 220px: datosBreves, 6vw: márgenes */
 
 /* Encabezado */
 #datosLargos #encabezado {padding: 15px 25px;}
