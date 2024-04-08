@@ -1,0 +1,11 @@
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+}
+
+/* Parado */
+@media (orientation: portrait) {
+}
+
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
+}
