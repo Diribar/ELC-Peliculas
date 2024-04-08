@@ -6,7 +6,8 @@
 #tituloInfoDetalle .ayudaMostrar::before {left: 0; top: 4px; translate: -100% 0;}
 
 /* Marco */
-form.marco {padding: 25px; text-align: right;}
+form.marco {display: flex; flex-direction: column; align-items: center;}
+form.marco {padding: 25px;}
 
 /* Marco - Calificaciones */
 .marco #calificaciones {display: flex; align-items: center;}

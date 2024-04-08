@@ -5,6 +5,7 @@
 
 	#calificaciones #individuales > div {flex-direction: column; align-items: flex-start; text-align: left;}
 
+	#cuerpoFooter #sectorIconos:has(#guardarCambios) {display: flex !important;}
 }
 
 /* Parado */
@@ -15,8 +16,6 @@
 
 /* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
-	.marco #calificaciones {flex-direction: row;}
-
-	/* Sectores a ocultar */
-	#cuerpoFooter #datosLargos #tituloInfoDetalle {display: none !important;}
+	form.marco {flex-direction: row;} /* confirmar, a la derecha del resultado */
+	.marco #calificaciones {flex-direction: row;} /* resultado, a la derecha de las calificaciones */
 }

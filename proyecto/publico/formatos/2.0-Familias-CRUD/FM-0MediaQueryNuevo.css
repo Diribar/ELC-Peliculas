@@ -23,8 +23,9 @@
 
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
-	/* #cuerpoFooter #cuerpo {max-height: var(--altoMain);} */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
+	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
+	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 }
 
 /* Parado */
@@ -41,9 +42,7 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#imgDerecha #sectorIconos .iconos#mobile :is(a) {display: none;}
-	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
 }
 
 /* Acostado - Celu */
@@ -53,8 +52,6 @@
 	#datosBreves #recuadroDB {max-height: 95%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#tituloPrincipal, footer), #datosLargos :is(#encabezado, #sectorIconos) {display: none !important;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
-	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
+	#cuerpoFooter :is(#tituloPrincipal, footer), #datosLargos :is(#encabezado, #tituloInfoDetalle, #sectorIconos) {display: none !important;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 }
