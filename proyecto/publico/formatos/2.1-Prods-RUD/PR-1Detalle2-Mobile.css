@@ -1,4 +1,6 @@
-@media (orientation: portrait) or (orientation: landscape) and (max-height: 600px) {
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	#recuadroDL #contenido {margin: 15px 20px;}
+
 	/* Links */
 	#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
 
@@ -11,7 +13,6 @@
 
 	/* Links */
 	#imgDerecha :is(#links, #links nav) {flex-direction: column;}
-
 	#imgDerecha #links nav {align-items: center;}
 	#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
 	#imgDerecha #links nav > *:first-child {margin-top: 0;}
@@ -21,14 +22,13 @@
 @media (orientation: portrait) {
 	/* Información */
 	#informacion #marcoInfo {max-width: 85vw;}
-}
+	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}}
 
 /* Acostado - Celu */
 @media (orientation: landscape) and (max-height: 600px) {
 	/* Adecua temas de laptop */
 	#cuerpoFooter #cuerpo {max-height: none}
 	#datosLargos #recuadroDL {max-width: calc(100vw - 30vw) !important;} /* 30vw: anchoImagen */
-	#recuadroDL #contenido {margin: 15px 20px;}
 	#datos #marcoInfo {margin: 0;}
 
 	/* Sectores a ocultar */
