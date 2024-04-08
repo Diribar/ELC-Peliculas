@@ -2,16 +2,14 @@
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
 	/* Información */
 	#recuadroDL #contenido {margin: 20px;}
-
 	#calificaciones #individuales > div {flex-direction: column; align-items: flex-start; text-align: left;}
-
-	#cuerpoFooter #sectorIconos:has(#guardarCambios) {display: flex !important;}
+	#contenido #sector2 #sectorIconos {display: flex !important; margin: 25px 0 0;} /* debe tener 3 ids, por prioridades */
 }
 
 /* Parado */
 @media (orientation: portrait) {
 	.marco #calificaciones {flex-direction: column;}
-	#calificaciones #consolidado {margin: 25px 0 0;}
+	#calificaciones #sector2 {margin: 25px 0 0;}
 }
 
 /* Acostado */
