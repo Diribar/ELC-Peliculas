@@ -1,7 +1,6 @@
 /* General */
 main {height: var(--altoMain);}
 main {display: flex; flex-direction: row; overflow-y: hidden; position: relative;}
-main {--anchoImgDer: 32vw}
 #cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Tapar el fondo */
