@@ -14,13 +14,14 @@
 </div>
 <form method="POST" class="marco flexColAlign">
 	<div id="calificaciones">
-		<div id="individuales" class="flexColAlign">
+		<div id="individuales">
 			<% const atributos = Object.keys(atributosCalific) %>
 			<% atributos.forEach(function(atributo, i) { %>
 				<% const atributo_id = atributo + "_id" %>
 				<div>
 					<h4>
-						<% if (!i || i==atributos.length-1) { %>
+						<% if ([0, 2].includes(i)) { %>
+							<!-- Ayuda para 'Deja huella' y 'Calidad técnica' -->
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<% if (!i) { %>

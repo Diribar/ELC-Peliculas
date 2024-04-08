@@ -2,11 +2,10 @@
 #cuerpoFooterImgDer #cuerpoFooter {height: 100%;} /* position: relative;  */
 
 /* Cuerpo */
-#cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */
 #cuerpoFooter #cuerpo {flex-direction: column; background: transparent;}
 
 /* Datos */
-#cuerpo #datos {position: relative; height: calc(100% - 37px);} /* 37px: tituloPrincipal */
+#cuerpo #datos {position: relative;}
 #cuerpo #datos {display: flex; flex-direction: row; flex-grow: 1; justify-content: space-evenly; align-items: center;}
 
 /* Datos Largos */

@@ -9,12 +9,13 @@
 form.marco {padding: 25px; text-align: right;}
 
 /* Marco - Calificaciones */
-.marco #calificaciones, #calificaciones #individuales > div {display: flex; flex-direction: row; align-items: center;}
+.marco #calificaciones {display: flex; align-items: center;}
 
 /* Marco - Individuales */
+#calificaciones #individuales > div {display: flex;}
 #calificaciones #individuales > div {margin-bottom: 15px; min-height: 20px; width: 100%; justify-content: flex-end;}
 #calificaciones #individuales > div:last-child {margin-bottom: 0;}
-#calificaciones #individuales div h4 {margin-right: 10px; white-space: nowrap;}
+#calificaciones #individuales div h4 {margin-right: 10px;}
 #calificaciones #individuales div h4 i {font-size: 0.9rem;}
 #calificaciones #individuales div select {width: 100%; max-width: 170px; border-radius: 5px;}
 
@@ -26,10 +27,3 @@ form.marco {padding: 25px; text-align: right;}
 
 /* Guardar cambios */
 #datosLargos #informacion .marco #sectorIconos {margin: 20px 0 0;}
-
-@media (max-width: 520px) {
-	#recuadroDL #contenido {margin: 0 min(40px, calc(100vw - 220px - 13px) / 2);}
-	.marco #calificaciones, #calificaciones #individuales > div {flex-direction: column;}
-	#calificaciones #individuales > div {align-items: flex-start; text-align: left;}
-	#calificaciones #consolidado {margin: 15px 0 5px;}
-}

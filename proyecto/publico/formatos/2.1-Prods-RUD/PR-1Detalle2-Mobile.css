@@ -26,9 +26,6 @@
 	#informacion #marcoInfo {max-width: 85vw;}
 	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
-
-	/* Sectores a ocultar */
-	#imgDerecha #sectorIconos .iconos#mobile :is(a) {display: none;}
 }
 
 /* Acostado */

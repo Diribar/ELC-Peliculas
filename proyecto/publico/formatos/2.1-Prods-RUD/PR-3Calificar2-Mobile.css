@@ -1,11 +1,22 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
+	#recuadroDL #contenido {margin: 20px;}
+
+	#calificaciones #individuales > div {flex-direction: column; align-items: flex-start; text-align: left;}
+
 }
 
 /* Parado */
 @media (orientation: portrait) {
+	.marco #calificaciones {flex-direction: column;}
+	#calificaciones #consolidado {margin: 25px 0 0;}
 }
 
 /* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
+	.marco #calificaciones {flex-direction: row;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter #datosLargos #tituloInfoDetalle {display: none !important;}
 }

@@ -1,2 +1,5 @@
 @media (orientation: landscape) and (min-height: 600px) {
+	.marco #calificaciones {flex-direction: row;}
+	#calificaciones #individuales > div {flex-direction: row; align-items: center;}
+	#calificaciones #individuales div h4 {margin-right: 10px; white-space: nowrap;}
 }
