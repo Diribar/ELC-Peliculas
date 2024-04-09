@@ -1,9 +1,9 @@
 <%- include("FM-TituloPrincipal") %>
 <section id="contenido">
-	<div id="datos">
+	<div id="datosLargos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 		<div id="encabezado">
-			<%- include(tema == "revisionEnts" ? "RE-Encabezado" : "FM-Encabezado") %>
+			<%- include("FM-Encabezado") %>
 		</div>
 		<div id="filtros" class="flexRow spaceAround">
 			<!-- Película/Trailer -->
@@ -46,7 +46,7 @@
 	<div id="sectorIconos">
 		<%- include("Iconos-1Estandar") %>
 		<!-- Específicos de links -->
-		<% if (tema!="revisionEnts") { %>
+		<% if (tema != "revisionEnts") { %>
 			<div class="iconos img">
 				<% for (let prov of linksProvs.filter(n => n.mostrarSiempre)) { %>
 					<a

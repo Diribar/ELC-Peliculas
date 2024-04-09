@@ -25,7 +25,6 @@ module.exports = {
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Las películas son las que ya tenemos en nuestra BD.",
-			"Primero figuran las colecciones y luego las películas.",
 			"Están ordenadas desde la más reciente a las más antigua.",
 		];
 
@@ -42,14 +41,15 @@ module.exports = {
 		const RCLVnombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
-		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre; // título de la vista
+		const tituloDetalle = "Detalle de " + entidadNombre;
+		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, revisorPERL},
-			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id},
-			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, canonNombre, RCLVnombre},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
+			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
+			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
+			mobile: true,
 		});
 	},
 	altaEdic: {
@@ -132,7 +132,7 @@ module.exports = {
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				...{omitirImagenDerecha: true, omitirFooter: true},
+				estrucPers: true,
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision

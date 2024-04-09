@@ -1,7 +1,7 @@
 <div id="cambioStatus" class="iconos">
 	<% condicUsuario = locals.usuario && locals.usuario.statusRegistro_id == perennes_id %>
 	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
-	<% condicDetalle = ["prodCrud", "rclvCrud"].includes(tema) && codigo == "edicion" %>
+	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
 		<% if (locals.status_id == creado_id) { %>
 			<!-- Solo para status creado y usuario logueado -->
@@ -18,7 +18,7 @@
 			<% } %>
 		<% } %>
 		<% if (provisorios_ids.includes(locals.status_id) && locals.revisorPERL) { %>
-			<!-- Inactivar -->
+			<!-- Revisar -->
 			<a href="<%= '/revision/' + familia + '/inactivar-o-recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>

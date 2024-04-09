@@ -6,7 +6,8 @@ body {
 	--altoMain: calc(100vh - var(--altoHeader));
 	--altoFooter: 23.6px;
 	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
-	--anchoCuerpo: calc(100vw - 32vw);
+	--anchoImgDer: 32vw;
+	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
 }
 
 *, body {margin: 0px; padding: 0; box-sizing: border-box;}
