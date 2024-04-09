@@ -10,13 +10,13 @@
 			<!-- Contenido apertura (Form o Div) -->
 			<% if (tema == "fmCrud" || tema == "revisionEnts") { %>
 				<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Eliminar o Revisión de Inactivar o Recuperar) -->
-				<form method="POST" id="contenido" class="flexCol grow">
+				<form method="POST" id="contenido">
 					<%- include("FM-Informacion") %>
 				</form>
 
 			<% } else { %>
 				<!-- Las demás requieren que no sea form -->
-				<div id="contenido" class="flexCol grow">
+				<div id="contenido">
 					<%- include("FM-Informacion") %>
 				</div>
 			<% } %>

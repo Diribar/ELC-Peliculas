@@ -12,21 +12,22 @@
 		</i>
 	</div>
 </div>
-<form method="POST" class="marco flexColAlign">
+<form method="POST" class="marco">
 	<div id="calificaciones">
-		<div id="individuales" class="flexColAlign">
+		<div id="individuales">
 			<% const atributos = Object.keys(atributosCalific) %>
 			<% atributos.forEach(function(atributo, i) { %>
 				<% const atributo_id = atributo + "_id" %>
 				<div>
 					<h4>
-						<% if (!i || i==atributos.length-1) { %>
+						<% if ([0, 2].includes(i)) { %>
+							<!-- Ayuda para 'Deja huella' y 'Calidad técnica' -->
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<% if (!i) { %>
 										<p>Se refiere a si deja un impacto positivo en el espectador en su <em>Fe Católica</em> y/o sus <em>Valores</em>.</p>
 									<% } else { %>
-										<p>Se refiere a la calidad del sonido, de la imagen, de la escenografía.</p>
+										<p>Se refiere a la calidad del sonido, de la imagen, de la actuación.</p>
 									<% } %>
 								</ul>
 							</i>
@@ -42,22 +43,13 @@
 				</div>
 			<% }) %>
 		</div>
-		<div id="consolidado">
-			<div id="resultado">Resultado</div>
-			<div id="valor"><%= califUsuario ? (califUsuario.resultado + "%") : "-" %></div>
+		<div id="sector2">
+			<div id="consolidado">
+				<div id="resultado">Resultado</div>
+				<div id="valor"><%= califUsuario ? (califUsuario.resultado + "%") : "-" %></div>
+			</div>
+			<%- include("PR3-CalificarButtons") %>
 		</div>
 	</div>
-	<!-- Guardar cambios -->
-	<div id="sectorIconos">
-		<div id="guardarCambios" class="iconos">
-			<!-- Guarda la calificación -->
-			<button type="submit">
-				<i id="guardar" class="fa-solid fa-circle-check inactivo" title='Guardá tu calificación'></i>
-			</button>
-			<% if (califUsuario) { %>
-				<!-- Elimina tu calificación guardada -->
-				<i id="eliminar" class="fa solid fa-circle-xmark" tabindex="-1" title='Eliminá tu calificación guardada'></i>
-			<% } %>
-		</div>
-	</div>
+	<%- include("PR3-CalificarButtons") %>
 </form>
