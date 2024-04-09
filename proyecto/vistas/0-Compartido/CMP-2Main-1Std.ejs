@@ -4,7 +4,7 @@
 	<div id="cuerpoFooter">
 		<!-- Cuerpo -->
 		<div id="cuerpo">
-			<% if (false) { %>
+			<% if (!locals.tema) { %>
 			<% } else if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 			<% } else if (tema == "fmCrud") { %><%- include("FM-2Cuerpo") %>
 			<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
