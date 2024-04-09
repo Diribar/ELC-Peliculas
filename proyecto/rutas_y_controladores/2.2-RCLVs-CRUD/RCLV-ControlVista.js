@@ -46,10 +46,10 @@ module.exports = {
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, tituloDetalle,titulo, ayudasTitulo, origen, revisorPERL},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
-			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, canonNombre, RCLVnombre},
+			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
+			mobile: true,
 		});
 	},
 	altaEdic: {
@@ -132,7 +132,7 @@ module.exports = {
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				...{omitirImagenDerecha: true, omitirFooter: true},
+				estrucPers: true,
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision

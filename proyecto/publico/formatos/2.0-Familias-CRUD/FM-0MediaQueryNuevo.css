@@ -1,13 +1,13 @@
 /* Laptop */
 @media (orientation: landscape) and (min-height: 600px) {
 	/* General */
-	#cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */
+	#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
 	#cuerpo #datos {height: calc(100% - 37px);} /* 37px: tituloPrincipal */
 
 	/* Información */
 	#datos #datosLargos {max-height: 90%;}
 	#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - 220px - 6vw));} /* 220px: datosBreves, 6vw: márgenes */
-	#datosLargos #recuadroDL #contenido {margin: 0 40px; justify-content: space-around;}
+	#datosLargos #recuadroDL #contenido {margin: 0 40px;}
 	#datosLargos #contenido #informacion {margin-top: 30px;}
 
 	/* tituloInfoDetalle */
@@ -23,29 +23,41 @@
 
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
+
+	/* Sector Imagen Derecha */
+	#imgDerecha {position: relative;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos #tituloInfoDetalle {display: none !important;}
 }
 
 /* Parado */
 @media (orientation: portrait) {
+	body {--anchoImgDer: 100vw;}
+
 	/* Ancho, alto, posición */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos {width: 100vw !important; max-width: 100vw;}
 	#imgDerecha img {max-width: 100vw;}
 
+	/* Temas de ayuda */
+	#tituloPrincipal .ayuda {position: static; translate: none;}
+
 	/* Información */
 	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
-	#datosLargos #recuadroDL {max-width: calc(100vw - 2vw);} /* 6vw: márgenes */
+	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
+	#datosLargos #links {display: none !important;}
 	#imgDerecha #sectorIconos .iconos#mobile :is(a) {display: none;}
 }
 
-/* Acostado - Celu */
+/* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
 	body {--anchoImgDer: 26vw;}
 
@@ -55,6 +67,5 @@
 	#datosBreves #recuadroDB {max-height: 95%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#tituloPrincipal, footer), #datosLargos :is(#encabezado, #tituloInfoDetalle, #sectorIconos) {display: none !important;}
-	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
+	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
 }

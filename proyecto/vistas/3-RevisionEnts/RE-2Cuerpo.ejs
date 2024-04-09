@@ -1,14 +1,7 @@
 <% if (codigo == "tableroControl") { %><%- include("RE0-TableroControl") %><% } %>
 
-<% if (codigo == "producto/alta") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+<% if (["producto/alta", "rechazo", "inactivar-o-recuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
 
-<% if (codigo == "rechazo") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "inactivar-o-recuperar") { %><%- include("FM-Detalle") %><% } %>
-
-<% if (codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo.endsWith("/edicion/avatar")) { %><%- include("RE9-EdicionAvatar") %><% } %>
-
-<% if (codigo == "rclv/solapamiento") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+<% if (["rclv/alta", "rclv/solapamiento"].includes(codigo)) { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
 <% if (codigo == "abmLinks") { %><%- include("LK1-ABM") %><% } %>

@@ -1,18 +1,16 @@
 /* Datos */
 #datos {--anchoRecuadro: 732px;}
 
-/* Recuadro */
-#datosLargos #encabezado p {text-align: right;}
-#recuadroDL #contenido {margin: 0 40px;}
-
 /* Información */
-#contenido #informacion {margin: 30px 0 5px;}
 #contenido #informacion #cuadroDeResultados {position: relative;}
 
 /* Productos */
 #listado #prodsNuevos {padding: 0 15px;}
-#prodsNuevos #infoPeli i {font-size: 1.25rem;}
-#prodsNuevos button:hover #infoPeli i.fa-solid {color: inherit;}
+#prodsNuevos #infoPeli {display: flex; flex-direction: column; justify-content: space-between; height: 100%;}
 
-/* Iconos */
-#contenido #sectorIconos {margin: 20px;}
+/* ppp */
+#prodsNuevos #infoPeli #ppp i {font-size: 1.25rem;}
+#prodsNuevos button:hover #infoPeli #ppp i {color: inherit;}
+#ppp #texto {margin-left: 5px; text-wrap: nowrap; border-radius: 10px;}
+#ppp #texto {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
+#ppp #texto {padding: 0px 5px; line-height: 1.06;}
