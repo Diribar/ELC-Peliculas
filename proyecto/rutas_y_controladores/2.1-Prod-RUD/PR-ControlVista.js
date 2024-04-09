@@ -305,7 +305,7 @@ module.exports = {
 			const ayudasTitulo = [];
 			if ([pppOpcsObj.sinPref.id, pppOpcsObj.laQuieroVer.id].includes(interesDelUsuario.id))
 				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
-			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
+			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Si la calificás, cambiaremos tu preferencia como 'Ya vista'");
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
