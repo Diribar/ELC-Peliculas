@@ -3,35 +3,39 @@
 <head>
 	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
+
 	<!-- Heads personalizados -->
-	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
-	<% if (tema == "prodAgregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema == "prodRud") { %><%- include("PR-1Head") %><% } %>
-	<% if (tema == "rclvCrud") { %><%- include("RCLV-1Head") %><% } %>
-	<% if (tema == "linksCRUD") { %><%- include("LK-1Head") %><% } %>
-	<% if (tema == "responsabilidad" || tema == "fmCrud") { %><%- include("FM-1Head") %><% } %>
-	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
-	<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
-	<% if (tema == "mantenimiento") { %><%- include("MT-1Head") %><% } %>
-	<% if (tema == "consultas") { %><%- include("CN-1Head") %><% } %>
-	<% if (tema == "institucional") { %><%- include("IN-1Head") %><% } %>
-	<% if (tema == "gráficos") { %><%- include("GR-1Head") %><% } %>
+	<% if (locals.tema) { %>
+		<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
+		<% if (tema == "prodAgregar") { %><%- include("PA-1Head") %><% } %>
+		<% if (tema == "prodRud") { %><%- include("PR-1Head") %><% } %>
+		<% if (tema == "rclvCrud") { %><%- include("RCLV-1Head") %><% } %>
+		<% if (tema == "linksCRUD") { %><%- include("LK-1Head") %><% } %>
+		<% if (tema == "responsabilidad" || tema == "fmCrud") { %><%- include("FM-1Head") %><% } %>
+		<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
+		<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
+		<% if (tema == "mantenimiento") { %><%- include("MT-1Head") %><% } %>
+		<% if (tema == "consultas") { %><%- include("CN-1Head") %><% } %>
+		<% if (tema == "institucional") { %><%- include("IN-1Head") %><% } %>
+		<% if (tema == "gráficos") { %><%- include("GR-1Head") %><% } %>
+	<% } %>
 </head>
 <body>
 	<!-- Header genérico -->
 	<%- include('CMP-0Header') %>
 	<main>
-		<!-- Si cualquiera es falso, se muestra -->
 		<% if (!locals.estructuraPersonalizada) { %>
 			<%- include("CMP-2Main-1Std") %>
 		<% } else { %>
-			<% if (false) { %>
+			<% if (!locals.tema) { %>
 			<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
 			<% } else if (tema == "rclvCrud") { %><%- include("RCLV-2Cuerpo") %>
 			<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
 			<% } %>
 		<% } %>
-		<% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-CartelGenerico') %><% } %>
+		<% if (locals.informacion || locals.cartelGenerico || locals.cartelRechazo) { %>
+			<%- include('CMP-CartelGenerico') %>
+		<% } %>
 	</main>
 </body>
 </html>
