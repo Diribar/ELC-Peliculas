@@ -45,7 +45,9 @@
 	#imgDerecha img {max-width: 100vw;}
 
 	/* Temas de ayuda */
-	#tituloPrincipal .ayuda {position: static; translate: none;}
+	#tituloPrincipal .ayuda {position: static; translate: none; margin-top: 10px; margin-left: 10px;}
+	#tituloPrincipal .ayuda .ayudaMostrar {top: -2px; right: -5px; max-width: min(350px, 85vw);}
+	#tituloPrincipal .ayuda i {font-size: 1.5rem;}
 
 	/* Información */
 	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
