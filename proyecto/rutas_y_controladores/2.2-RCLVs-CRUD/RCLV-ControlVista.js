@@ -49,7 +49,7 @@ module.exports = {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
 			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
-			estructuraPersonalizada: true,
+			mobile: true,
 		});
 	},
 	altaEdic: {
@@ -132,7 +132,7 @@ module.exports = {
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				estructuraPersonalizada: true,
+				estrucPers: true,
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
