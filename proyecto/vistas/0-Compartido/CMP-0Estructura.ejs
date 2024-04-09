@@ -25,7 +25,7 @@
 	<%- include('CMP-0Header') %>
 	<main>
 		<% if (!locals.estructuraPersonalizada) { %>
-			<%- include("CMP-2Main-1Std") %>
+			<%- include("CMP-2Main") %>
 		<% } else { %>
 			<% if (!locals.tema) { %>
 			<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
