@@ -1,7 +1,7 @@
 <!-- Muestra la Imagen -->
 <div id="imgDerecha">
 	<%- include("CMP-ImgDer-Imagen") %>
-	<% if (tema == "prodRud" && codigo == "detalle") { %><%- include('PR1-Detalle-2Links') %><% } %>
+	<% if (locals.tema == "prodRud" && codigo == "detalle") { %><%- include('PR1-Detalle-2Links') %><% } %>
 	<% if (locals.mobile) { %>
 		<div id="sectorIconos">
 			<%- include("Iconos-5Mobile") %>
