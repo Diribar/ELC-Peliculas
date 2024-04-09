@@ -32,7 +32,7 @@
 	#imgDerecha {position: relative;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos :is(#encabezado, #tituloInfoDetalle) {display: none !important;}
+	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos #tituloInfoDetalle {display: none !important;}
 }
 
 /* Parado */
@@ -67,5 +67,5 @@
 	#datosBreves #recuadroDB {max-height: 95%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #tituloPrincipal {display: none !important;}
+	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
 }
