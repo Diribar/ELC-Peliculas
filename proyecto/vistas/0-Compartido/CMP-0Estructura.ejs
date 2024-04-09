@@ -31,7 +31,7 @@
 			<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
 			<% } %>
 		<% } %>
-		<%- include('CMP-CartelGenerico') %>
+		<% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-CartelGenerico') %><% } %>
 	</main>
 </body>
 </html>
