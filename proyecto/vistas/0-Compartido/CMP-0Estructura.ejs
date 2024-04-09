@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<% let tema = locals.tema %>
 	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
 	<!-- Heads personalizados -->
@@ -22,34 +21,10 @@
 	<!-- Header genérico -->
 	<%- include('CMP-0Header') %>
 	<main>
+		<% console.log(54,tema); %>
 		<!-- Si cualquiera es falso, se muestra -->
 		<% if (!locals.estructuraPersonalizada) { %>
-			<!-- CuerpoFooter e Imagen Derecha -->
-			<section id="cuerpoFooterImgDer">
-				<!-- Cuerpo y Footer -->
-				<div id="cuerpoFooter">
-					<!-- Cuerpo -->
-					<div id="cuerpo">
-						<% if (false) { %>
-						<% } else if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
-						<% } else if (tema == "fmCrud") { %><%- include("FM-2Cuerpo") %>
-						<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
-						<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
-						<% } else if (tema == "rclvCrud") { %><%- include("RCLV-2Cuerpo") %>
-						<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>
-						<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
-						<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
-						<% } else if (tema == "mantenimiento") { %><%- include("MT-2Cuerpo") %>
-						<% } else if (tema == "consultas") { %><%- include("CN-2Cuerpo") %>
-						<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
-						<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
-						<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
-						<% } %>
-					</div>
-					<% if (!locals.omitirFooter) { %><%- include('CMP-Footer') %><% } %>
-				</div>
-				<% if (!locals.omitirImagenDerecha) { %><%- include('CMP-ImagenDerecha') %><% } %>
-			</section>
+			<%- include("CMP-2Main-1Std") %>
 		<% } else { %>
 			<% if (false) { %>
 			<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
