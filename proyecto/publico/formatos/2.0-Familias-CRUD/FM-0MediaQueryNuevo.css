@@ -68,5 +68,4 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter #tituloPrincipal {display: none !important;}
-	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 }
