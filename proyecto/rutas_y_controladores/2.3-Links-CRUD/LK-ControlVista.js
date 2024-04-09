@@ -47,7 +47,7 @@ module.exports = {
 		];
 
 		// Va a la vista
-		//return res.send(links);
+		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},

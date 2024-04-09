@@ -75,7 +75,7 @@ module.exports = {
 		const creadoPor_id = prodComb.creadoPor_id;
 
 		// Va a la vista
-		//return res.send(links);
+		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
@@ -141,7 +141,7 @@ module.exports = {
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 
 			// Va a la vista
-			//return res.send(prodComb);
+			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
@@ -309,6 +309,7 @@ module.exports = {
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
+			// return res.send({tema})
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},

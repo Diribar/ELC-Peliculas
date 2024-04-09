@@ -523,7 +523,7 @@ module.exports = {
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
 
 		// Va a la vista
-		//return res.send(links)
+		// return res.send(links)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
