@@ -71,7 +71,7 @@ router.get("/:familia/edicion", aptoEdicion, capturaActivar, vista.edic.form);
 router.post("/:familia/edicion", aptoEdicion, motivoOpcional, capturaInactivar, vista.edic.avatar);
 
 // Vistas - Links
-router.get("/links", aptoCRUD, linksEnSemana, usRolRevLinks, capturaActivar, vista.links);
+router.get("/links", aptoCRUD, rutaCRUD_ID, linksEnSemana, usRolRevLinks, capturaActivar, vista.links);
 
 // Fin
 module.exports = router;

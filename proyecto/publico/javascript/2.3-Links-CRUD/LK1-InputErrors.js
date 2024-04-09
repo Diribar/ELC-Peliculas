@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Generales
-		form: document.querySelector("#datos form"),
+		form: document.querySelector("#datosLargos form"),
 		guardar: document.querySelectorAll("tbody tr button"),
 
 		// Variables de Edición y Alta

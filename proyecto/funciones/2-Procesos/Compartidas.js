@@ -838,10 +838,7 @@ module.exports = {
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
-		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
-			statusRegistro_id: activos_ids,
-			prodAprob,
-		});
+		const links = await BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: activos_ids, prodAprob});
 		const linksRevisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
 		const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
@@ -878,19 +875,20 @@ module.exports = {
 		const cantLinksTotal = cantPends + cantAprobs;
 		const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // redondea "para arriba", a un decimal
 
-		// posiblesParaProcesar
+		// Capítulos
+		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+		const capsParaProc = Math.min(capsPosibles, capsPends);
+
+		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
-		for (let i = semPrimRev + 1; i <= linksSemsVidaUtil - 1; i++)
+		for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
 			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
-		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
-
-		// linksParaProcesar
+		pelisColesPosibles += Math.max(0, capsPosibles - capsPends); // le suma la capacidad 'ociosa' de capítulos
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
-		const capsParaProc = Math.min(capsPosibles, capsPends);
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
 
 		// Agrega la información
+		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
 		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
 
 		// Fin
