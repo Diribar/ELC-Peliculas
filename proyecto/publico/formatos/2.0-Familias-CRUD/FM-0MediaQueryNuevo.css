@@ -1,21 +1,13 @@
-/* Parado */
-@media (orientation: portrait) {
-	/* Ancho, alto, posición */
-	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos {width: 100vw !important; max-width: 100vw; height: 100% !important; max-height: 100%;}
-
-	/* Información */
-	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
-
-	/* Sectores a ocultar */
-	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
-	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
-}
-
+/* Laptop */
 @media (orientation: landscape) and (min-height: 600px) {
+	/* General */
+	#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
+	#cuerpo #datos {height: calc(100% - 37px);} /* 37px: tituloPrincipal */
+
 	/* Información */
-	#datosLargos #recuadroDL #contenido {margin: 0 40px; justify-content: space-around;}
+	#datos #datosLargos {max-height: 90%;}
+	#datosLargos #recuadroDL {max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - 220px - 6vw));} /* 220px: datosBreves, 6vw: márgenes */
+	#datosLargos #recuadroDL #contenido {margin: 0 40px;}
 	#datosLargos #contenido #informacion {margin-top: 30px;}
 
 	/* tituloInfoDetalle */
@@ -23,35 +15,57 @@
 	#datosLargos #informacion #tituloInfoDetalle h3 {width: max-content;}
 
 	/* íconos */
-	#datosLargos #contenido #sectorIconos {margin: 30px 0}
+	#contenido #sectorIconos {margin: 30px 0}
 
 	/* Sectores a ocultar */
 	#imgDerecha #sectorIconos {display: none !important;}
 }
 
-/* Acostado - Celu */
-@media (orientation: landscape) and (max-height: 600px) {
-	/* Sectores a ocultar */
-	#cuerpoFooter footer, #datosLargos :is(#encabezado, #sectorIconos) {display: none !important;}
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
+	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
-	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
+
+	/* Sector Imagen Derecha */
+	#imgDerecha {position: relative;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos #tituloInfoDetalle {display: none !important;}
 }
 
-/* Ancho */
-@media (max-width: 1450px) {
-	#imgDerecha img {max-width: 100vw;} /* libera el ancho de la imagen derecha */
-	#datosBreves #recuadroDB {max-height: 95%;} /* libera el ancho de 'datosBreves' */
+/* Parado */
+@media (orientation: portrait) {
+	body {--anchoImgDer: 100vw;}
 
-	/* Achica márgenes y paddings */
-	#datos {--margenes: max(0px, min(2.5vw, calc(50vw - var(--anchoRecuadro)/2)))}
-	#datos #datosLargos {margin-left: var(--margenes);}
+	/* Ancho, alto, posición */
+	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos {width: 100vw !important; max-width: 100vw;}
+	#imgDerecha img {max-width: 100vw;}
+
+	/* Temas de ayuda */
+	#tituloPrincipal .ayuda {position: static; translate: none;}
+
+	/* Información */
+	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
+	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
+	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
+
+	/* Sectores a ocultar */
+	#datosLargos #links {display: none !important;}
+	#imgDerecha #sectorIconos .iconos#mobile :is(a) {display: none;}
 }
 
-/* Alto */
+/* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
-	#cuerpo #tituloPrincipal {display: none;}
-	#datos #datosLargos {height: 100%;}
-	#recuadroDL #encabezado {padding-top: 10px; padding-bottom: 10px;}
-	#contenido #informacion {margin: auto 0;}
+	body {--anchoImgDer: 26vw;}
+
+	/* Información */
+	#datos #datosLargos {max-height: 100%;}
+	#datosLargos #recuadroDL {max-width: calc(var(--anchoCuerpo) - 3vw);} /* 3vw: márgenes */
+	#datosBreves #recuadroDB {max-height: 95%;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
 }

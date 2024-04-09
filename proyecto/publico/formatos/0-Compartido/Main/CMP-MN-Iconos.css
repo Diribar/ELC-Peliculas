@@ -12,7 +12,7 @@
 #sectorIconos .iconos :is(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
 #sectorIconos .iconos :is(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
 #sectorIconos .iconos :is(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
-#sectorIconos .iconos:not(:has(i)) {display: none}
+#sectorIconos .iconos:not(:has(*)) {display: none}
 
 /* Particularidades */
 #sectorIconos .iconos .pack {display: flex; flex-direction: row; align-items: center;}

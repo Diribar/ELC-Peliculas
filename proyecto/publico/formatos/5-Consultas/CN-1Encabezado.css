@@ -5,9 +5,9 @@
 #tituloPrincipal #iconosDelTitulo > div {border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);}
 
 /* Compartir */
-#iconosDelTitulo p {bottom: -2px; left: 15px; padding: 2px 5px;}
-#iconosDelTitulo p {translate: 0 100%; text-wrap: nowrap; border-radius: 10px;}
-#iconosDelTitulo p {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
+#iconosDelTitulo #consCopiada {bottom: -2px; left: 15px; padding: 2px 5px;}
+#iconosDelTitulo #consCopiada {translate: 0 100%; text-wrap: nowrap; border-radius: 10px;}
+#iconosDelTitulo #consCopiada {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
 
 /* Mostrar preferencias */
 #tituloPrincipal #toggleFiltrosGlobal {display: none;}

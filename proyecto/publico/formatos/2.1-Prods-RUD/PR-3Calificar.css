@@ -6,30 +6,24 @@
 #tituloInfoDetalle .ayudaMostrar::before {left: 0; top: 4px; translate: -100% 0;}
 
 /* Marco */
-form.marco {padding: 25px; text-align: right;}
+form.marco {display: flex; flex-direction: column; align-items: center;}
+form.marco {padding: 25px;}
 
 /* Marco - Calificaciones */
-.marco #calificaciones, #calificaciones #individuales > div {display: flex; flex-direction: row; align-items: center;}
+.marco #calificaciones {display: flex; align-items: center;}
 
 /* Marco - Individuales */
+#calificaciones #individuales > div {display: flex;}
 #calificaciones #individuales > div {margin-bottom: 15px; min-height: 20px; width: 100%; justify-content: flex-end;}
 #calificaciones #individuales > div:last-child {margin-bottom: 0;}
-#calificaciones #individuales div h4 {margin-right: 10px; white-space: nowrap;}
+#calificaciones #individuales div h4 {margin-right: 10px;}
 #calificaciones #individuales div h4 i {font-size: 0.9rem;}
 #calificaciones #individuales div select {width: 100%; max-width: 170px; border-radius: 5px;}
 
 /* Marco - Consolidado */
-#calificaciones #consolidado {margin-left: 30px; margin-right: 5px;}
-#calificaciones #consolidado {text-align: center; border-radius: 5px; overflow: hidden; border: var(--azul-oscuro) solid 1px;}
+#calificaciones #sector2 {margin-left: 30px; margin-right: 5px;}
+#calificaciones #sector2 {display: flex; flex-direction: column; align-items: center;}
+#calificaciones #consolidado {text-align: center; min-width: max-content;}
+#calificaciones #consolidado {border-radius: 5px; border: var(--azul-oscuro) solid 1px; overflow: hidden;}
 #calificaciones #consolidado #resultado {background: var(--azul-oscuro); color: white; font-size: 1.1rem; padding: 2px 5px;}
 #calificaciones #consolidado #valor {font-size: 2rem; background: white; padding: 2px;}
-
-/* Guardar cambios */
-#datosLargos #informacion .marco #sectorIconos {margin: 20px 0 0;}
-
-@media (max-width: 520px) {
-	#recuadroDL #contenido {margin: 0 min(40px, calc(100vw - 220px - 13px) / 2);}
-	.marco #calificaciones, #calificaciones #individuales > div {flex-direction: column;}
-	#calificaciones #individuales > div {align-items: flex-start; text-align: left;}
-	#calificaciones #consolidado {margin: 15px 0 5px;}
-}

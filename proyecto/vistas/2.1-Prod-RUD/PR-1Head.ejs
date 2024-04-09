@@ -1,11 +1,11 @@
 <!-- General -->
 <link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 
 <!-- Detalle y Calificar -->
 <% if (["detalle", "calificar"].includes(codigo)) { %>
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-DetalleNuevo.css">
-	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQueryNuevo.css">
 	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
 	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-MuestraOculta.js"></script>
@@ -27,6 +27,14 @@
 	<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
 <% } %>
 
+<!-- Calificar -->
+<% if (codigo == "calificar") { %>
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar1-Laptop.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar2-Mobile.css">
+	<script src="/publico/javascript/2.1-Prod-RUD/PR3-Calificar-InputError.js"></script>
+<% } %>
+
 <!-- Edición -->
 <% if (codigo == "edicion") { %>
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
@@ -34,10 +42,4 @@
 	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-2Edicion.css">
 	<script src="/publico/javascript/2.1-Prod-RUD/PR2-Edicion-InputError.js"></script>
 	<script src="/publico/javascript/2.1-Prod-RUD/PR2-Edicion-RCLV.js"></script>
-<% } %>
-
-<!-- Calificar -->
-<% if (codigo == "calificar") { %>
-	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar.css">
-	<script src="/publico/javascript/2.1-Prod-RUD/PR3-Calificar-InputError.js"></script>
 <% } %>
