@@ -1,7 +1,11 @@
 <section id="cuerpoFooterImgDer">
 	<div id="cuerpoFooter">
 		<div id="cuerpo">
-			<%- include("FM-Detalle") %>
+			<% if (codigo == "visualizacion") { %>
+				<%- include("LK2-Visualizacion") %>
+			<% } else { %>
+				<%- include("FM-Detalle") %>
+			<% } %>
 		</div>
 		<%- include('CMP-4Footer') %>
 	</div>

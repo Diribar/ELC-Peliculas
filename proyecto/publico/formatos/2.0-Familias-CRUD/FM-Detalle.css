@@ -2,7 +2,7 @@
 #cuerpoFooterImgDer #cuerpoFooter {height: 100%;} /* position: relative;  */
 
 /* Cuerpo */
-#cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */
+#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
 #cuerpoFooter #cuerpo {flex-direction: column; background: transparent;}
 
 /* Datos */

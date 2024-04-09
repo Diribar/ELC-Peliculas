@@ -1,7 +1,7 @@
 /* Laptop */
 @media (orientation: landscape) and (min-height: 600px) {
 	/* General */
-	#cuerpoFooter #cuerpo {height: calc(100% - 24px);} /* 24px: footer */
+	#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
 	#cuerpo #datos {height: calc(100% - 37px);} /* 37px: tituloPrincipal */
 
 	/* Información */
@@ -15,7 +15,7 @@
 	#datosLargos #informacion #tituloInfoDetalle h3 {width: max-content;}
 
 	/* íconos */
-	#contenido #sectorIconos {margin: 30px 0}
+	#cuerpo #sectorIconos {margin: 30px 0}
 
 	/* Sectores a ocultar */
 	#imgDerecha #sectorIconos {display: none !important;}
@@ -62,6 +62,6 @@
 	#datosBreves #recuadroDB {max-height: 95%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#tituloPrincipal, footer), #datosLargos :is(#encabezado, #tituloInfoDetalle, #sectorIconos) {display: none !important;}
+	#cuerpoFooter :is(#tituloPrincipal, #sectorIconos, footer), #datosLargos :is(#encabezado, #tituloInfoDetalle) {display: none !important;}
 	#imgDerecha #sectorIconos .iconos:has(#ppp) {display: none;}
 }
