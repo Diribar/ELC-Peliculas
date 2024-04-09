@@ -658,7 +658,7 @@ module.exports = {
 		bloque.push(
 			!registro.altaRevisadaEn
 				? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
-				: {titulo: "Revisado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
+				: {titulo: "Ingresado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
 		);
 
 		// Status resumido
