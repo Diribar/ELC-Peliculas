@@ -23,9 +23,13 @@
 
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
 	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
+
+	/* Sector Imagen Derecha */
+	#imgDerecha {position: relative;}
 }
 
 /* Parado */
@@ -45,7 +49,7 @@
 	#imgDerecha #sectorIconos .iconos#mobile :is(a) {display: none;}
 }
 
-/* Acostado - Celu */
+/* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
 	body {--anchoImgDer: 26vw;}
 
