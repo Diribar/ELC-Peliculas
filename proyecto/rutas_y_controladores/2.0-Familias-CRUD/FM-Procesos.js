@@ -665,7 +665,8 @@ module.exports = {
 		bloque.push({titulo: "Status", ...this.statusRegistro(registro)});
 
 		// Si el registro no está activo, le agrega el comentario
-		if (!activos_ids.includes(registro.statusRegistro_id)) bloque.push({titulo: "Motivo", valor: registro.motivo.descripcion});
+		if (!activos_ids.includes(registro.statusRegistro_id))
+			bloque.push({titulo: "Motivo", valor: registro.motivo.descripcion});
 
 		// Fin
 		return bloque;

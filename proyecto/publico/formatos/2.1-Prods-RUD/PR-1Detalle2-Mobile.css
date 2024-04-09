@@ -1,27 +1,41 @@
-/* General */
-#imgDerecha {position: relative;}
-#imgDerecha :is(#tituloPrincipal, #conjuntoIconos) {flex-grow: 1;}
-#imgDerecha #centro {position: relative;}
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
+	#recuadroDL #contenido {margin: 15px 20px;}
 
-/* Links - Ayuda */
-#centro #ayudaLinks {margin-bottom: 10px;}
-#centro #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
-#centro #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
-#centro #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
-#centro #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
+	/* Links */
+	#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
 
-/* Links */
-#centro #links, #centro #links nav {flex-direction: column;}
-#centro #links {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
-#centro #links nav {align-items: center;}
-#centro #links nav :is(a, select) {margin-top: 10px;}
-#centro #links nav > *:first-child {margin-top: 0;}
+	/* Links - Ayuda */
+	#imgDerecha #ayudaLinks {margin-bottom: 10px;}
+	#imgDerecha #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
+	#imgDerecha #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
+	#imgDerecha #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
+	#imgDerecha #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
 
-/* Marco de Información y Datos Breves */
-#centro :is(#marcoInfo, #recuadroDB).toggle {display: none !important;}
-#centro :is(#marcoInfo, #recuadroDB) {position: absolute; translate: -50% -50%; top: 50%; left: 50%;}
+	/* Links */
+	#imgDerecha :is(#links, #links nav) {flex-direction: column;}
+	#imgDerecha #links nav {align-items: center;}
+	#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
+	#imgDerecha #links nav > *:first-child {margin-top: 0;}
+}
 
-/* Conjunto de iconos */
-#imgDerecha #conjuntoIconos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
-#imgDerecha #conjuntoIconos .iconos {margin: 0;}
-#imgDerecha #conjuntoIconos.invisible .iconos {color: transparent;}
+/* Parado */
+@media (orientation: portrait) {
+	/* Información */
+	#informacion #marcoInfo {max-width: 85vw;}
+	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
+	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
+	/* Adecua temas de laptop */
+	#cuerpoFooter #cuerpo {max-height: none}
+	#datosLargos #recuadroDL {max-width: calc(100vw - var(--anchoImgDer) - 2vw) !important;}
+	#datos #marcoInfo {margin: 0;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter #datosLargos #links {display: none !important;}
+	#imgDerecha #sectorIconos .iconos#href {display: none;}
+}
