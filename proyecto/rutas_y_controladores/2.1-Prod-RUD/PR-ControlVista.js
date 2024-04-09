@@ -148,7 +148,7 @@ module.exports = {
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-				...{estructuraPersonalizada: true, cartelGenerico: true},
+				...{estrucPers: true, cartelGenerico: true},
 			});
 		},
 		guardar: async (req, res) => {

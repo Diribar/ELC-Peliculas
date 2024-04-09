@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-	<%- include('CMP-1Head-Generico') %>
-	<%- include('CMP-1Head-Pers') %>
-</head>
-<body>
-	<!-- Header genérico -->
-	<%- include('CMP-0Header') %>
-	<main>
-		<% if (!locals.estructuraPersonalizada) { %>
-			<%- include("CMP-2Main") %>
-		<% } else { %>
-			<% if (!locals.tema) { %>
-			<% } else if (tema == "prodRud") { %><%- include("PR-2Cuerpo") %>
-			<% } else if (tema == "rclvCrud") { %><%- include("RCLV-2Cuerpo") %>
-			<% } %>
-		<% } %>
-		<% if (locals.informacion || locals.cartelGenerico || locals.cartelRechazo) { %>
-			<%- include('CMP-CartelGenerico') %>
-		<% } %>
-	</main>
-</body>
+	<head>
+		<%- include('CMP-1Head-Generico') %>
+		<%- include('CMP-1Head-Pers') %>
+	</head>
+	<body>
+		<header><%- include('CMP-0Header') %></header>
+		<main><%- include('CMP-2Main') %></main>
+	</body>
 </html>

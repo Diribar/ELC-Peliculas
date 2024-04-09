@@ -132,7 +132,7 @@ module.exports = {
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				estructuraPersonalizada: true,
+				estrucPers: true,
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
