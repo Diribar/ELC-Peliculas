@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
 	let [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
 	// Acción si se elije "capítulo anterior"
-	let botonCapAnt = document.querySelector("#cuerpo #encabezado .fa-circle-left");
+	let botonCapAnt = document.querySelector("#datosLargos #encabezado .fa-circle-left");
 	if (capAntID) {
 		botonCapAnt.classList.remove("inactivo");
 		botonCapAnt.addEventListener("click", () => {
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		});
 	} else botonCapAnt.classList.add("inactivo");
 	// Acción si se elije "capítulo posterior"
-	let botonCapPost = document.querySelector("#cuerpo #encabezado .fa-circle-right");
+	let botonCapPost = document.querySelector("#datosLargos #encabezado .fa-circle-right");
 	if (capPostID) {
 		botonCapPost.classList.remove("inactivo");
 		botonCapPost.addEventListener("click", () => {
