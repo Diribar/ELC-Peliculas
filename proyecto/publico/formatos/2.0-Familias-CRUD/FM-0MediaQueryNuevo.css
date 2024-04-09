@@ -38,7 +38,7 @@
 	/* Información */
 	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
-	#datosLargos #recuadroDL {max-width: calc(100vw - 2vw);} /* 6vw: márgenes */
+	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
 
 	/* Sectores a ocultar */
 	#cuerpoFooter :is(#datosLargos :is(#encabezado, #tituloInfoDetalle, #links, #sectorIconos), footer) {display: none !important;}
