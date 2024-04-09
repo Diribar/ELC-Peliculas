@@ -1,3 +1,4 @@
+/* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
@@ -9,7 +10,7 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	#recuadroDL #contenido {margin: 15px 0px;}
+	#recuadroDL #contenido {margin: 15px 5px;}
 }
 
 /* Acostado */

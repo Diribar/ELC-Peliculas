@@ -24,8 +24,8 @@ module.exports = {
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
-			"Las películas son las que ya tenemos en nuestra BD.",
-			"Están ordenadas desde la más reciente a las más antigua.",
+			"Las películas son solamente las que tenemos en nuestra base de datos.",
+			"Están ordenadas desde la más reciente a la más antigua.",
 		];
 
 		// Bloque de la derecha

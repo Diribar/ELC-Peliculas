@@ -1,5 +1,6 @@
-/* Datos */
+/* General */
 #datos {--anchoRecuadro: 732px;}
+#encabezado #vinculadas {text-align: right;}
 
 /* Información */
 #contenido #informacion #cuadroDeResultados {position: relative;}
