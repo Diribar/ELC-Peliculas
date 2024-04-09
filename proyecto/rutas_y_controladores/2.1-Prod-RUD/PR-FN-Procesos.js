@@ -74,9 +74,10 @@ module.exports = {
 
 			// Asigna los url de visualización
 			for (let link of links)
-				link.href = link.prov.embededPoner && link.gratuito
-					? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
-					: "//" + link.url;
+				link.href =
+					link.prov.embededPoner && link.gratuito
+						? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
+						: "//" + link.url;
 
 			// Los separa entre Películas y Trailers
 			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
@@ -86,9 +87,10 @@ module.exports = {
 		TR = FN.trailer(TR);
 		const GR = FN.gratis(PL);
 		const CC = FN.conCosto(PL);
+		const existen = !!(TR.length + GR.length + CC.length);
 
 		// Fin
-		return {GR, CC, TR};
+		return {GR, CC, TR, existen};
 	},
 	actualizaCalifProd: async ({entidad, entidad_id}) => {
 		// Variables

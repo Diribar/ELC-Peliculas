@@ -11,17 +11,20 @@
 	<script src="/publico/javascript/7-Graficos/GR2-linksVencim.js"></script>
 
 <% } else { %>
-	<!-- Prod-Altas -->
-	<% if (codigo == "producto/alta") { %>
+	<% if (["producto/alta", "rechazo", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
 		<!-- Compartido -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-DetalleNuevo.css">
 
+	<% } %>
+	<!-- Prod-Altas -->
+	<% if (codigo == "producto/alta") { %>
 		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
 		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle1-Laptop.css">
 		<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
 		<script src="/publico/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
 
@@ -38,35 +41,18 @@
 
 	<!-- Rechazos -->
 	<% } else if (codigo == "rechazo") { %>
-		<!-- Compartido -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
-
 		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 		<script src="/publico/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
 
 	<!-- Revisión de Inactivar o Recuperar -->
 	<% } else if (codigo == "inactivar-o-recuperar") { %>
-		<!-- Compartido -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
-
 		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 		<script src="/publico/javascript/3-RevisionEnts/RE8-InacRecup.js"></script>
 
 	<!-- Ediciones -->
 	<% } else if (codigo.endsWith("/edicion")) { %>
-		<!-- Compartido -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-Detalle.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
-
 		<!-- Particular -->
 		<link rel="stylesheet" href="/publico/formatos/3-RevisionEnts/RE9-Edicion.css">
 		<script src="/publico/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
@@ -87,6 +73,7 @@
 		<script src="/publico/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
 		<script src="/publico/javascript/2.3-Links-CRUD/LK0-Eliminar.js"></script>
 		<script src="/publico/javascript/2.3-Links-CRUD/LK1-Iframes.js"></script>
+
 		<!-- Específico -->
 		<script src="/publico/javascript/3-RevisionEnts/RE3-Link1-AltasBajas.js"></script>
 		<script src="/publico/javascript/3-RevisionEnts/RE3-Link2-Ediciones.js"></script>

@@ -1,16 +1,41 @@
-/* Links */
-#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
+	#recuadroDL #contenido {margin: 15px 20px;}
 
-/* Links - Ayuda */
-#imgDerecha #ayudaLinks {margin-bottom: 10px;}
-#imgDerecha #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
-#imgDerecha #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
-#imgDerecha #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
-#imgDerecha #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
+	/* Links */
+	#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
 
-/* Links */
-#imgDerecha :is(#links, #links nav) {flex-direction: column;}
+	/* Links - Ayuda */
+	#imgDerecha #ayudaLinks {margin-bottom: 10px;}
+	#imgDerecha #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
+	#imgDerecha #ayudaLinks .ayudaMostrar {max-width: min(275px, 75vw);}
+	#imgDerecha #ayudaLinks .ayudaMostrar::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
+	#imgDerecha #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
 
-#imgDerecha #links nav {align-items: center;}
-#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
-#imgDerecha #links nav > *:first-child {margin-top: 0;}
+	/* Links */
+	#imgDerecha :is(#links, #links nav) {flex-direction: column;}
+	#imgDerecha #links nav {align-items: center;}
+	#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
+	#imgDerecha #links nav > *:first-child {margin-top: 0;}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	/* Información */
+	#informacion #marcoInfo {max-width: 85vw;}
+	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
+	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
+	/* Adecua temas de laptop */
+	#cuerpoFooter #cuerpo {max-height: none}
+	#datosLargos #recuadroDL {max-width: calc(100vw - var(--anchoImgDer) - 2vw) !important;}
+	#datos #marcoInfo {margin: 0;}
+
+	/* Sectores a ocultar */
+	#cuerpoFooter #datosLargos #links {display: none !important;}
+	#imgDerecha #sectorIconos .iconos#href {display: none;}
+}

@@ -306,7 +306,7 @@ module.exports = {
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
-			let avatarExterno, avatarsExternos, avatar, imgDerPers;
+			let avatarExterno, avatarsExternos, avatar, imgDerPers, edicionAvatar;
 			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
 
 			// Obtiene la versión original con include
@@ -328,7 +328,7 @@ module.exports = {
 			// Acciones si el avatar está presente en la edición
 			if (edicion.avatar) {
 				// Averigua si se debe reemplazar el avatar en forma automática
-				let reemplAvatarAutomaticam =
+				const reemplAvatarAutomaticam =
 					edicion.avatar && // Que en la edición, el campo 'avatar' tenga un valor
 					original.avatar && // Que en el original, el campo 'avatar' tenga un valor
 					original.avatar == edicion.avatarUrl; // Mismo url para los campos 'original.avatar' y 'edicion.avatarUrl'
@@ -343,6 +343,7 @@ module.exports = {
 
 				// Reemplazo manual - Variables
 				codigo += "/avatar";
+				edicionAvatar = true;
 				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/Externa/");
@@ -392,8 +393,7 @@ module.exports = {
 				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternos, imgDerPers},
-				...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
-				...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
+				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},
 			});
 		},
 		avatar: async (req, res) => {
@@ -523,7 +523,7 @@ module.exports = {
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
 
 		// Va a la vista
-		//return res.send(links)
+		// return res.send(links)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},

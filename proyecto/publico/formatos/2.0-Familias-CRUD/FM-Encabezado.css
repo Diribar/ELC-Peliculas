@@ -3,11 +3,11 @@
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro);}
-#cuerpo #encabezado {background: var(--celeste-claro);}
+#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);}
+#cuerpo #encabezado {padding: 10px 20px;}
 
 /* Ancho, dependiendo de si tiene capítulos */
-#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
+#datosLargos #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
 
 /* Otros */
 #encabezado #nombres h2 {margin: 0; }
