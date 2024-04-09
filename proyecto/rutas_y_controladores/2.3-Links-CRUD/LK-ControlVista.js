@@ -47,7 +47,7 @@ module.exports = {
 		];
 
 		// Va a la vista
-		//return res.send(links);
+		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
@@ -80,7 +80,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		const tituloDetalle = nombre + " (" + provEmbeded.nombre + ")";
+		const tituloDetalle = nombre;
 		const titulo = nombre;
 
 		// Va a la vista
@@ -88,6 +88,7 @@ module.exports = {
 			...{tema, codigo, tituloDetalle, titulo, origen},
 			...{entidad, id, familia: "producto", registro: prodComb, link},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
+			mobile: true,
 		});
 	},
 };

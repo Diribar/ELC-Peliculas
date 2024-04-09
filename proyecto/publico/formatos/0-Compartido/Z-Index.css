@@ -13,7 +13,6 @@ header .iconoComb .adentro {z-index: 1;}
 main #todoElMain #cierraVideo {z-index: 1;}
 
 /* Cuerpo */
-main #cuerpoFooter {z-index: 1}
 main #cuerpo #tituloPrincipal {z-index: 9;}
 main #cuerpo #tituloSecundario {z-index: 8;}
 main #cuerpo #primeraColumna {z-index: 7;}

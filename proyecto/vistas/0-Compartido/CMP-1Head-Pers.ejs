@@ -1,0 +1,15 @@
+<!-- Heads personalizados -->
+<% if (!locals.tema) { %>
+<% } else if (tema == "usuario") { %><%- include("US-1Head") %>
+<% } else if (tema == "prodAgregar") { %><%- include("PA-1Head") %>
+<% } else if (tema == "prodRud") { %><%- include("PR-1Head") %>
+<% } else if (tema == "rclvCrud") { %><%- include("RCLV-1Head") %>
+<% } else if (tema == "linksCRUD") { %><%- include("LK-1Head") %>
+<% } else if (tema == "responsabilidad" || tema == "fmCrud") { %><%- include("FM-1Head") %>
+<% } else if (tema == "revisionEnts") { %><%- include("RE-1Head") %>
+<% } else if (tema == "revisionUs") { %><%- include("RU-1Head") %>
+<% } else if (tema == "mantenimiento") { %><%- include("MT-1Head") %>
+<% } else if (tema == "consultas") { %><%- include("CN-1Head") %>
+<% } else if (tema == "institucional") { %><%- include("IN-1Head") %>
+<% } else if (tema == "gráficos") { %><%- include("GR-1Head") %>
+<% } %>
