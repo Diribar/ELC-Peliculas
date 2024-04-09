@@ -1,3 +1,6 @@
+/* General */
+#cuerpo #datos {--anchoRecuadro: 675px;}
+
 /* Links */
 #links, #links nav {display: flex;}
 #links {align-items: center;}
@@ -27,7 +30,7 @@
 /* Marco de Detalle - Etiquetas */
 #marcoInfo {display: flex; flex-direction: column;}
 #marcoInfo #etiquetas .etiqueta {border: 1px solid var(--gris-oscuro); border-bottom: none;}
-#marcoInfo #etiquetas .etiqueta {padding: 1px 3px; cursor: pointer; width: min-content;}
+#marcoInfo #etiquetas .etiqueta {padding: 1px 3px; cursor: pointer; width: max-content;}
 #marcoInfo #etiquetas .etiqueta {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
 #marcoInfo #etiquetas .etiqueta {border-top-left-radius: 5px; border-top-right-radius: 5px;}
 #marcoInfo #etiquetas .etiqueta.resaltar {font-weight: bold; cursor: default;}

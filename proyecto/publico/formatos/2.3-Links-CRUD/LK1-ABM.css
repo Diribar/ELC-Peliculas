@@ -1,77 +1,76 @@
+/* Temas generales */
 main {background: var(--gris-claro);}
 main #cuerpo {flex-direction: column;}
-
-/* Temas generales */
-#contenido {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
-#contenido {padding: 20px 40px 20px;}
-#datos {display: flex; flex-direction: column;}
+#cuerpo #contenido {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
+#cuerpo #contenido {padding: 20px 40px 20px;}
+#cuerpo #datosLargos {display: flex; flex-direction: column; align-items: normal;}
 
 /* Filtros */
-#datos #filtros {margin: 15px 0;}
-#datos #filtros select {border-radius: 10px;}
+#datosLargos #filtros {margin: 15px 0;}
+#datosLargos #filtros select {border-radius: 10px;}
 
 /* Tablas - Temas generales */
-#datos form#tabla {align-self: center;}
-#datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
-#datos :is(thead, tbody) {display: block;}
-#datos :is(thead tr th, tbody tr td) {text-align: center; vertical-align: middle; line-height: 1;}
+#datosLargos form#tabla {align-self: center;}
+#datosLargos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
+#datosLargos :is(thead, tbody) {display: block;}
+#datosLargos :is(thead tr th, tbody tr td) {text-align: center; vertical-align: middle; line-height: 1;}
 
-#datos thead {padding-right: 18px;}
-#datos thead * {font-size: 1.1rem;}
-#datos thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
+#datosLargos thead {padding-right: 18px;}
+#datosLargos thead * {font-size: 1.1rem;}
+#datosLargos thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
 
-#datos tbody {max-height: 200px; overflow-y: auto; overflow-x: clip;} /* Tablas - Barra de desplazamiento vertical */
-#datos tbody {padding-top: 15px; padding-bottom: 15px;}
-#datos tbody tr {height: 30px;}
-#datos tbody tr td {padding: 1px 5px;}
-#datos tbody tr.oscuro_true {background: var(--gris-intermedio);}
-#datos tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
-#datos tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
-#datos tbody tr td .fa-solid {font-size: 1rem;}
-#datos tbody tr td .inputError .input {width: 100%;}
-#datos tbody tr td .inputError .errores {right: 5px;} /* Temas de altas y edición */
+#datosLargos tbody {max-height: 200px; overflow-y: auto; overflow-x: clip;} /* Tablas - Barra de desplazamiento vertical */
+#datosLargos tbody {padding-top: 15px; padding-bottom: 15px;}
+#datosLargos tbody tr {height: 30px;}
+#datosLargos tbody tr td {padding: 1px 5px;}
+#datosLargos tbody tr.oscuro_true {background: var(--gris-intermedio);}
+#datosLargos tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
+#datosLargos tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
+#datosLargos tbody tr td .fa-solid {font-size: 1rem;}
+#datosLargos tbody tr td .inputError .input {width: 100%;}
+#datosLargos tbody tr td .inputError .errores {right: 5px;} /* Temas de altas y edición */
 
 /* Temas de edición */
-#datos tbody tr :is(input, select) {text-align: center; border-radius: 5px; border-width: 1px;}
-#datos tbody tr :is(input, select) {padding: 0 5px 2px; line-height: 1; height: 22px;}
-#datos tbody tr :is(input, select) {max-width: 100%;}
+#datosLargos tbody tr :is(input, select) {text-align: center; border-radius: 5px; border-width: 1px;}
+#datosLargos tbody tr :is(input, select) {padding: 0 5px 2px; line-height: 1; height: 22px;}
+#datosLargos tbody tr :is(input, select) {max-width: 100%;}
 
 /* Tablas - Anchos */
-#datos table .ancho_url {width: 140px;}
-#datos table :is(.ancho_calidad, .ancho_castellano, .ancho_subtitulos) {width: 70px;}
-#datos table .ancho_gratuito {width: 64px;}
-#datos table .ancho_tipo_id {width: 90px;}
-#datos table .ancho_completo {width: 73px;}
-#datos table .ancho_parte {width: 60px;}
-#datos table .ancho_status {width: 75px;}
-#datos table .ancho_propio {width: 53px;}
-#datos table .ancho_accion {width: 70px;}
-#datos table .ancho_motivo {width: 497px;}
+#datosLargos table .ancho_url {width: 140px;}
+#datosLargos table :is(.ancho_calidad, .ancho_castellano, .ancho_subtitulos) {width: 70px;}
+#datosLargos table .ancho_gratuito {width: 64px;}
+#datosLargos table .ancho_tipo_id {width: 90px;}
+#datosLargos table .ancho_completo {width: 73px;}
+#datosLargos table .ancho_parte {width: 60px;}
+#datosLargos table .ancho_status {width: 75px;}
+#datosLargos table .ancho_propio {width: 53px;}
+#datosLargos table .ancho_accion {width: 70px;}
+#datosLargos table .ancho_motivo {width: 497px;}
 
 /* Tablas - Columnas específicas */
-#datos tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
-#datos tbody tr td.url .inputError .prov_id {display: none;}
-#datos tbody tr td.calidad option {text-align: center; }
+#datosLargos tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
+#datosLargos tbody tr td.url .inputError .prov_id {display: none;}
+#datosLargos tbody tr td.calidad option {text-align: center; }
 
 /* Formato del desperdicio */
-#datos tbody :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
-#datos tbody#linksCRUD :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
-#datos tbody#revisionEnts :is(td:has(*:disabled)) .inputError .fa-circle-check {cursor: pointer;}
-#datos tbody td:has(*:disabled) * {background: transparent; border-color: transparent;}
+#datosLargos tbody :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
+#datosLargos tbody#linksCRUD :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
+#datosLargos tbody#revisionEnts :is(td:has(*:disabled)) .inputError .fa-circle-check {cursor: pointer;}
+#datosLargos tbody td:has(*:disabled) * {background: transparent; border-color: transparent;}
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
-#datos tbody .alta select::-ms-expand, #datos tbody .edicion select::-ms-expand {display: none;}
-#datos tbody .alta select, #datos tbody .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+#datosLargos tbody .alta select::-ms-expand, #datosLargos tbody .edicion select::-ms-expand {display: none;}
+#datosLargos tbody .alta select, #datosLargos tbody .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
-#datos tbody .inputError {padding-left: 10px; padding-right: 10px;}
+#datosLargos tbody .inputError {padding-left: 10px; padding-right: 10px;}
 
 /* Íconos en la tabla */
-#datos tbody tr td button {border: none; border-radius: 10px; padding: 3px 4px;}
-#datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
-#datos tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
-#datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
-#datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
+#datosLargos tbody tr td button {border: none; border-radius: 10px; padding: 3px 4px;}
+#datosLargos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
+#datosLargos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
+#datosLargos tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
+#datosLargos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
+#datosLargos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
 
 /* Comandos - Particularidades */
 #cuerpo .iconos.img {padding-left: 5px; padding-right: 5px;}
@@ -79,7 +78,7 @@ main #cuerpo {flex-direction: column;}
 #cuerpo .iconos a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
 
 /* Colores de los bordes de logos */
-#datos tbody td a img {border: solid 4px; box-sizing: content-box;}
-#datos tbody td a img.enCast {border-color: var(--verde-oscuro);}
-#datos tbody td a img.subtCast {border-color: gold;}
-#datos tbody td a img.otroIdioma {border-color: var(--rojo-oscuro);}
+#datosLargos tbody td a img {border: solid 4px; box-sizing: content-box;}
+#datosLargos tbody td a img.enCast {border-color: var(--verde-oscuro);}
+#datosLargos tbody td a img.subtCast {border-color: gold;}
+#datosLargos tbody td a img.otroIdioma {border-color: var(--rojo-oscuro);}
