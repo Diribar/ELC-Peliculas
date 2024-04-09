@@ -15,7 +15,7 @@
 	#datosLargos #informacion #tituloInfoDetalle h3 {width: max-content;}
 
 	/* íconos */
-	#cuerpo #sectorIconos {margin: 30px 0}
+	#contenido #sectorIconos {margin: 30px 0}
 
 	/* Sectores a ocultar */
 	#imgDerecha #sectorIconos {display: none !important;}
