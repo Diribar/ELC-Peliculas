@@ -75,14 +75,14 @@ module.exports = {
 		const creadoPor_id = prodComb.creadoPor_id;
 
 		// Va a la vista
-		//return res.send(links);
+		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
 			...{entidad, id, familia: "producto", status_id, creadoPor_id},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			...{omitirImagenDerecha: true, omitirFooter: true},
+			mobile: true,
 		});
 	},
 	edicion: {
@@ -141,14 +141,14 @@ module.exports = {
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 
 			// Va a la vista
-			//return res.send(prodComb);
+			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-				...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
+				...{estrucPers: true, cartelGenerico: true},
 			});
 		},
 		guardar: async (req, res) => {
@@ -305,17 +305,18 @@ module.exports = {
 			const ayudasTitulo = [];
 			if ([pppOpcsObj.sinPref.id, pppOpcsObj.laQuieroVer.id].includes(interesDelUsuario.id))
 				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
-			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Cambiaremos tu preferencia como 'Ya vista'");
+			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Si la calificás, cambiaremos tu preferencia como 'Ya vista'");
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
+			// return res.send({tema})
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
-				...{omitirImagenDerecha: true, omitirFooter: true},
+				mobile: true,
 			});
 		},
 		guardar: async (req, res) => {

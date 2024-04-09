@@ -1,7 +1,4 @@
 @media (orientation: landscape) and (min-height: 600px) {
-	/* General */
-	#cuerpo #datos {--anchoRecuadro: 675px;}
-
 	/* Links */
 	#datosLargos :is(#links, #links nav) {flex-direction: row; }
 	#datosLargos #links {justify-content: flex-start; padding: 10px 20px;}
@@ -20,7 +17,6 @@
 
 	/* MarcoInfo */
 	#datosLargos #informacion #marcoInfo {margin-top: 20px;}
-	#datosLargos #marcoInfo #etiquetas .etiqueta {width: max-content;}
 
 	/* Sectores a ocultar */
 	#imgDerecha #links {display: none;}
