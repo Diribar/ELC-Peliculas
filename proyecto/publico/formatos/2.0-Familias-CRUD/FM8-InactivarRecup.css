@@ -2,7 +2,7 @@
 #datos #datosLargos {width: 65%; max-width: 600px;}
 
 /* Colores */
-#datosLargos #recuadroDL #encabezado {border-bottom: none; color: snow;}
+#cuerpo #datosLargos #encabezado {border-bottom: none; color: snow;}
 
 /* Sector de información */
 #recuadroDL #informacion {display: flex; flex-direction: row; justify-content: space-between;}
@@ -18,7 +18,7 @@
 #informacion #comentario textarea:read-only {background: var(--gris-intermedio);}
 
 /* Botones */
-#contenido #botones {margin: 10px 40px 30px;}
+#contenido #sectorIconos {margin: 10px 40px 30px;}
 
 /* Condicionales */
 #datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}

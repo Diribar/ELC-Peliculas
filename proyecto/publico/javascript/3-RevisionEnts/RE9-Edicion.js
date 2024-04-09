@@ -85,18 +85,18 @@ window.addEventListener("load", async () => {
 				let check = document.querySelector("#cartelGenerico #check");
 				let mensajes = document.querySelector("#cartelGenerico ul#mensajes");
 				mensajes.style.listStyle = "none";
-				let flechas = document.querySelector("#cartelGenerico #flechasCartel");
+				let iconos = document.querySelector("#cartelGenerico #iconosCartel");
 
 				// Formatos
 				cartelGenerico.style.backgroundColor = "var(--verde-oscuro)";
 				alerta.classList.add("ocultar");
 				check.classList.remove("ocultar");
 
-				// Cambia el contenido del mensaje y las flechas
+				// Cambia el contenido del mensaje y los iconos
 				mensajes.innerHTML = "";
 				for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-				flechas.innerHTML = "";
-				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
+				iconos.innerHTML = "";
+				iconos.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
 				// Muestra el cartel
 				DOM.todoElMain.classList.remove("ocultar");

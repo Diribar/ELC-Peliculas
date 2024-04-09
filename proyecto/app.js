@@ -27,11 +27,17 @@ global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.layoutDefault_id = 2; // El 'default' es "Al azar"
 global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
+global.setTimeOutStd = 1000;
 
 // Require 'path'
 global.path = require("path");
 const carpeta = path.basename(path.resolve());
-global.urlHost = carpeta == "Proyecto" ? "http://localhost" : "https://elc.lat";
+global.urlHost =
+	carpeta == "Proyecto"
+		? "http://localhost" // development
+		: carpeta.includes("Pruebas")
+		? "https://pruebas.elc.lat" // test
+		: "https://elc.lat"; // producción
 global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
 
 // Variables que toman valores de '.env'

@@ -3,9 +3,8 @@
     <% if (false) { %>
 
     <!-- PRODUCTO -->
-    <% } else if (tema == "prodRud" && codigo == "detalle") { %><%- include("PR1-Detalle1-Datos") %>
+    <% } else if (tema == "prodRud" && codigo == "detalle" || tema == "revisionEnts" && codigo == "producto/alta") { %><%- include("PR1-Detalle1-Datos") %>
     <% } else if (tema == "prodRud" && codigo == "calificar") { %><%- include("PR3-Calificar") %>
-    <% } else if (tema == "revisionEnts" && codigo == "producto/alta") { %><%- include("RE1-AltaProd") %>
 
     <!-- RCLV -->
     <% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV-DT1-Largos") %>
@@ -19,9 +18,9 @@
     <% } %>
 </div>
 <!-- Botones -->
-<div id="botones">
+<div id="sectorIconos">
     <%- include("Iconos-1Estandar") %>
     <%- include("Iconos-2ProdRUD") %>
     <%- include("Iconos-3CambioStatus") %>
-    <%- include("Iconos-4ProdsPortales") %>
+    <%- include("Iconos-4LogosPortales") %>
 </div>

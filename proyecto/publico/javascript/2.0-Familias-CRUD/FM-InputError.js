@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		inputs: document.querySelectorAll("#motivos input"),
 		comentario: document.querySelector("#comentario textarea"),
 		pendiente: document.querySelector("#comentario #pendiente"),
-		submit: document.querySelector("#botones button[type='submit']"),
+		submit: document.querySelector("#sectorIconos button[type='submit']"),
 	};
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const petitFamilias = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "prods" : "rclvs";

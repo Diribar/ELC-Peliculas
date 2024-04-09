@@ -11,7 +11,7 @@
 
 	#vistaDeResults #actualizar {display: none;}
 }
-@media (max-width: 620px) {#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */
+@media (max-width: 620px) {#vistaDeResults:has(#scroll #sectorIconos li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */
 
 /* Ayuda */
 @media (max-width: 740px) {
@@ -29,16 +29,16 @@
 }
 @media (min-height: 365px) {
 	#zonaDisponible #vistaDeResults {max-height: 95%;}
-	#zonaDisponible:has(#scroll #botones li) #vistaDeResults {padding-top: 15px; padding-bottom: 15px;}
+	#zonaDisponible:has(#scroll #sectorIconos li) #vistaDeResults {padding-top: 15px; padding-bottom: 15px;}
 }
 @media (max-height: 400px) {#encabMasPelis #encabezado {display: none;}} /* Oculta el encabezado */
 
 /* Alto y Ancho */
 @media (max-height: 650px) or (max-width: 640px) {
-	#vistaDeResults #scroll:has(#botones li) {overflow-x: auto;}
-	#botones li:first-child {margin-left: 0;}
-	#botones li:last-child {margin-right: 0;}
+	#vistaDeResults #scroll:has(#sectorIconos li) {overflow-x: auto;}
+	#sectorIconos li:first-child {margin-left: 0;}
+	#sectorIconos li:last-child {margin-right: 0;}
 }
 @media (min-height: 650px) and (min-width: 640px) {
-	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap;}
+	#vistaDeResults #scroll #sectorIconos:has(li) {flex-wrap: wrap;}
 }

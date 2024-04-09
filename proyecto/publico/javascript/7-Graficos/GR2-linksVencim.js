@@ -61,6 +61,7 @@ window.addEventListener("load", async () => {
 			vAxis: {
 				fontSize: 20,
 				viewWindow: {min: 0},
+				// gridlines: {count: 8},
 			},
 			isStacked: true, // columnas apiladas
 		};

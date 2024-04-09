@@ -1,37 +1,18 @@
-/* Ancho */
-@media (max-width: 732px) {
-	/* Cambia anchos */
-	#datos {min-width: 100vw;} /* ancho mínimo: la pantalla */
-	#datosLargos #recuadroDL {max-width: calc(100vw - 2px) !important} /* ancho máximo: la pantalla */
-
-	/* Cambia márgenes y padding */
-	#recuadroDL #encabezado {padding-left: 20px; padding-right: 20px;}
-	#recuadroDL #contenido {--margenCostado: max(0px, min(40px, calc(50vw - 8px - 305px)));} /* 8px es el ancho del borde, 305px es el ancho de cada botón  */
-	#recuadroDL #contenido {margin-left: var(--margenCostado); margin-right: var(--margenCostado);}
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
+	#listado #prodsNuevos {padding: 0 7.5px;}
 
 	/* oculta los triangulitos de desplazamiento */
 	#cuadroDeResultados i.mover {display: none;}
-
-	/* Temas de ayuda */
-	#tituloPrincipal .ayudaMostrar {top: auto; right: auto; bottom: -3px; translate: -50% 100%;}
-	#tituloPrincipal .ayudaMostrar::before {top: 0px; left: 50%; translate: 3px -100%;}
-	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-}
-@media (max-width: 345px) {
-	#recuadroDL #contenido {--margenCostado: max(0px, min(20px, calc(100% - 290px)/2));}
 }
 
-/* Alto */
-@media (max-height: 445px) {#recuadroDL #contenido #informacion {margin-top: 0;}} /* quita el margen superior del recuadro */
-@media (max-height: 430px) {
-	#cuerpo #recuadroDL #encabezado {display: none;} /* oculta el encabezado */
-	#listado li {--altoLi: min(15px, calc((100vh - 52px - 200px - 13px - 24px)/2));} /* 52px: header, 200px: botones, 13px: borde, 24px: footer */
-	#listado li#prodsNuevos {padding-top: var(--altoLi); padding-bottom: var(--altoLi);}
+/* Parado */
+@media (orientation: portrait) {
+	#recuadroDL #contenido {margin: 15px 0px;}
 }
 
-/* Ancho y Alto */
-@media (max-width: 700px) or (max-height: 700) {
-	#botones .iconos:has(i.fa-pen) {display: none;}
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
+	#recuadroDL #contenido {margin: 15px 15px;}
 }

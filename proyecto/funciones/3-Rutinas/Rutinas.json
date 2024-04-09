@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 22/mar",
+	"FechaUTC": "Mar. 9/abr",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 18/mar",
-	"HoraSemUTC": "17:50",
-	"semanaUTC": 12,
+	"FechaSemUTC": "Lun. 8/abr",
+	"HoraSemUTC": "17:26",
+	"semanaUTC": 15,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-mar-24": {"titulo": "Santa María Josefa del Corazón de Jesús"},
-		"21-mar-24": {"titulo": "San Nicolas de Flüe"},
-		"22-mar-24": {"titulo": "Cuaresma"},
-		"23-mar-24": {"titulo": "Cuaresma"},
-		"24-mar-24": {"titulo": "Sem. Santa 1 - Domingo de Ramos"}
+		"07-abr-24": {"titulo": "San Juan Bautista De La Salle", "entidad": "personajes", "id": 87},
+		"08-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"09-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"10-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"11-abr-24": {"titulo": "Santa Gemma Galgani", "entidad": "personajes", "id": 184}
 	}
 }

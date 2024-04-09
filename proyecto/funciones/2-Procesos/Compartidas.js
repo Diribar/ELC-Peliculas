@@ -752,7 +752,7 @@ module.exports = {
 		// Rutina por link
 		for (let link of links) {
 			// Averigua el status de su producto
-			let statusProd = link.pelicula
+			const statusProd = link.pelicula
 				? link.pelicula.statusRegistro_id
 				: link.coleccion
 				? link.coleccion.statusRegistro_id
