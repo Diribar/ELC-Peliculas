@@ -35,7 +35,6 @@ module.exports = (req, res, next) => {
 				],
 			};
 	}
-	console.log(40, informacion,!!informacion);
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else next();
