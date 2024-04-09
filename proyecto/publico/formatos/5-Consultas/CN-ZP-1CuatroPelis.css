@@ -5,7 +5,7 @@
 
 /* Botones para productos */
 #sectorIconos li {list-style-type: none;}
-#sectorIconos li {--altoLi: min(15px, calc((100vh - 52px - 200px - 24px)/2)); margin: var(--altoLi) 10px;}
+#sectorIconos li {--altoLi: min(15px, calc((100vh - 52px - 200px - var(--altoFooter))/2)); margin: var(--altoLi) 10px;}
 #sectorIconos li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #sectorIconos li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #sectorIconos li button.cfc {background: var(--amarillo-claro);}

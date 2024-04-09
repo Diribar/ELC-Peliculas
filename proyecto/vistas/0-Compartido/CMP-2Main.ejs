@@ -1,0 +1,35 @@
+<% if (!locals.estrucPers) { %>
+	<!-- CuerpoFooter e Imagen Derecha -->
+	<section id="cuerpoFooterImgDer">
+		<!-- Cuerpo y Footer -->
+		<div id="cuerpoFooter">
+			<!-- Cuerpo -->
+			<div id="cuerpo">
+				<% if (!locals.tema) { %>
+				<% } else if (["prodRud", "rclvCrud", "fmCrud"].includes(tema)) { %><%- include("FM-Detalle") %>
+				<% } else if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
+				<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
+				<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>
+				<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
+				<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
+				<% } else if (tema == "mantenimiento") { %><%- include("MT-2Cuerpo") %>
+				<% } else if (tema == "consultas") { %><%- include("CN-2Cuerpo") %>
+				<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
+				<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
+				<% } else if (tema == "gráficos") { %><%- include("GR-2Cuerpo") %>
+				<% } %>
+			</div>
+			<% if (!locals.omitirFooter) { %><%- include('CMP-4Footer') %><% } %>
+		</div>
+		<% if (!locals.omitirImagenDerecha) { %><%- include('CMP-3ImgDer') %><% } %>
+	</section>
+<% } else { %>
+	<% if (!locals.tema) { %>
+	<% } else if (tema == "prodRud") { %><%- include("PR2-Edicion") %>
+	<% } else if (tema == "rclvCrud") { %><%- include("RCLV1-AltaEdicion") %>
+	<% } else if (tema == "revisionEnts") { %><%- include("RE9-EdicionAvatar") %>
+	<% } %>
+<% } %>
+<% if (locals.informacion || locals.cartelGenerico || locals.cartelRechazo) { %>
+	<%- include('CMP-CartelGenerico') %>
+<% } %>

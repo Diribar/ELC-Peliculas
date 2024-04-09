@@ -135,7 +135,7 @@ module.exports = {
 				req.session.perennes = {dataEntry, errores};
 				return res.redirect("/usuarios/perennes");
 			}
-			return res.send(errores);
+			// return res.send(errores);
 
 			// Actualiza el rol y status del usuario
 			const novedades = {...dataEntry, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // le sube el rol y el status
