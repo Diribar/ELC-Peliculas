@@ -1,44 +1,38 @@
-/* Ancho */
-@media (max-width: 1350px) {
-	/* #cuerpoFooter #encabMasPelis {width: 100vw;} */
-	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+/* Laptop */
+@media (orientation: landscape) and (min-height: 600px) {
+	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap;}
 }
-@media (max-width: 950px) {
+
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
+	#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))} /* 290px es el ancho de un botón; es el mínimo entre el estándar y el calculado */
+
+	/* Sector resultados */
+	#vistaDeResults #scroll:has(#botones li) {overflow-x: auto;}
+	#botones li:first-child {margin-left: 0;}
+	#botones li:last-child {margin-right: 0;}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	/* Alturas y anchos */
+	#zonaDisponible #vistaDeResults {max-height: 95%;}
+	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
+
+
+	/* Sector filtros */
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;}
 	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);}
 	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta */
-
 	#vistaDeResults #actualizar {display: none;}
 }
-@media (max-width: 620px) {#vistaDeResults:has(#scroll #sectorIconos li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))}} /* Altera el ancho de los padding */
 
-/* Ayuda */
-@media (max-width: 740px) {
-	#tituloPrincipal .ayudaMostrar {top: 21px; right: auto; transform: none; translate: -50% 0;}
-	#tituloPrincipal .ayudaMostrar {left: calc(-257px + 18px + 50vw - 15px); max-width: min(350px, calc(100vw - 10px));} /* '15px' es un 'factor de corrección' */
-	#tituloPrincipal .ayudaMostrar::before {top: 0; right: auto; translate: 0 -100%;}
-	#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-	#tituloPrincipal .ayudaMostrar::before {left: calc(min(350px, calc(100vw - 10px))/2 - 50vw + 257px - 18px + 3px - 15px);} /* '15px' es un 'factor de corrección' */
-}
-
-/* Alto */
-@media (max-height: 365px) {
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
 	#zonaDisponible #vistaDeResults {max-height: 100%;}
-	#zonaDisponible #vistaDeResults #actualizar {display: none;}
-}
-@media (min-height: 365px) {
-	#zonaDisponible #vistaDeResults {max-height: 95%;}
-	#zonaDisponible:has(#scroll #sectorIconos li) #vistaDeResults {padding-top: 15px; padding-bottom: 15px;}
-}
-@media (max-height: 400px) {#encabMasPelis #encabezado {display: none;}} /* Oculta el encabezado */
+	#zonaDisponible #vistaDeResults:has(#scroll #botones li) {padding-top: 0; padding-bottom: 0;}
 
-/* Alto y Ancho */
-@media (max-height: 650px) or (max-width: 640px) {
-	#vistaDeResults #scroll:has(#sectorIconos li) {overflow-x: auto;}
-	#sectorIconos li:first-child {margin-left: 0;}
-	#sectorIconos li:last-child {margin-right: 0;}
-}
-@media (min-height: 650px) and (min-width: 640px) {
-	#vistaDeResults #scroll #sectorIconos:has(li) {flex-wrap: wrap;}
+	/* Ocultar */
+	#vistaDeResults #actualizar, #encabMasPelis :is(#encabezado, footer), #cuerpo #configCons {display: none;}
 }
