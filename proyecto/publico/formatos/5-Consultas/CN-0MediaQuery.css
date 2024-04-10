@@ -20,12 +20,13 @@
 	#zonaDisponible #vistaDeResults {max-height: 95%;}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
 
-
 	/* Sector filtros */
-	#tituloPrincipal #toggleFiltrosGlobal {display: flex;}
-	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);}
-	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta */
-	#vistaDeResults #actualizar {display: none;}
+	#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
+	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);} /* preferencias */
+
+	/* Ocultar */
+	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
+	#vistaDeResults #actualizar {display: none;} /* oculta el botón de actualizar prods */
 }
 
 /* Acostado */
@@ -34,5 +35,6 @@
 	#zonaDisponible #vistaDeResults:has(#scroll #botones li) {padding-top: 0; padding-bottom: 0;}
 
 	/* Ocultar */
-	#vistaDeResults #actualizar, #encabMasPelis :is(#encabezado, footer), #cuerpo #configCons {display: none;}
+	#cuerpoFooterImgDer #imgDerecha, #vistaDeResults #actualizar, #encabMasPelis :is(#encabezado, footer), #cuerpo #configCons
+		{display: none;}
 }
