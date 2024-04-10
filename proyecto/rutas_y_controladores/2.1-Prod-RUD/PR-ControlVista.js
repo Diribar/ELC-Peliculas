@@ -82,7 +82,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			mobile: true,
+			iconosMobile: true,
 		});
 	},
 	edicion: {
@@ -316,7 +316,7 @@ module.exports = {
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
-				mobile: true,
+				iconosMobile: true,
 			});
 		},
 		guardar: async (req, res) => {

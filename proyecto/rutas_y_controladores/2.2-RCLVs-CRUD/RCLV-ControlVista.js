@@ -49,7 +49,7 @@ module.exports = {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
 			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
-			mobile: true,
+			iconosMobile: true,
 		});
 	},
 	altaEdic: {
