@@ -1,7 +1,48 @@
 <!-- Muestra la Imagen -->
 <div id="imgDerecha">
-	<%- include("CMP-ImgDer-Imagen") %>
-	<% if (locals.tema == "prodRud" && codigo == "detalle") { %><%- include('PR1-Detalle-2Links') %><% } %>
+	<% let ruta, titulo, destino, cartelRCLV %>
+	<% if (locals.tema == "institucional") { %>
+		<!-- Imagen Institucional -->
+		<% ruta = imgInstitucional %>
+		<% titulo = "ELC-Películas" %>
+	<% } %>
+	<% if (!ruta && locals.imgDerPers) { %>
+		<!-- Imagen personalizada -->
+		<% ruta = imgDerPers %>
+	<% } %>
+	<% if (!ruta) { %>
+		<!-- Imagen Diaria -->
+		<% const ahora = new Date() %>
+		<% const diaLocal = ("0" + ahora.getDate()).slice(-2) %>
+		<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
+		<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
+		<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
+		<% const ID_entidad = ImagenesDerecha[hoyLocal].entidad %>
+		<% const ID_id = ImagenesDerecha[hoyLocal].id %>
+		<% destino = ID_entidad && ID_id ? ("/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id) : null %>
+		<% if (destino && tema == "consultas" && codigo == "tableroControl") cartelRCLV = true %>
+		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
+		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
+	<% } %>
+
+	<!-- Publica la imagen -->
+	<% if (destino && !cartelRCLV) { %>
+		<!-- Imagen con RCLV -->
+		<a href="<%= destino %>" tabindex="-1">
+			<img src="<%= ruta %>" title="Hoy se recuerda a <%= titulo %>">
+		</a>
+	<% } else { %>
+		<!-- Imagen sin RCLV -->
+		<img src="<%= ruta %>" title="<%= titulo %>">
+	<% } %>
+
+	<!-- Accesorios -->
+	<% if (locals.tema == "prodRud" && codigo == "detalle") { %>
+		<%- include('PR1-Detalle-2Links') %>
+	<% } %>
+	<% if (cartelRCLV) { %>
+		<button type="button">Hola</button>
+	<% } %>
 	<% if (locals.iconosMobile) { %>
 		<div id="sectorIconos">
 			<%- include("Iconos-5Mobile") %>
