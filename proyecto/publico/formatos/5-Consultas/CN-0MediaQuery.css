@@ -30,6 +30,7 @@
 	/* Encabezado */
 	#iconosDelTitulo #ayudaOpciones i.ayudaClick {font-size: 1.6rem;}
 	#iconosDelTitulo #ayudaOpciones .ayudaMostrar {max-width: 80vw;}
+	#iconosDelTitulo #ayudaOpciones .ayudaMostrar::before {top: 12px;}
 
 	/* Sector filtros */
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
