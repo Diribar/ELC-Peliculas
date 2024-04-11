@@ -19,6 +19,7 @@
 @media (orientation: portrait) {
 	#cuerpo #encabMasPelis, #encabMasPelis #zonaDisponible {position: absolute; height: 100%; width: 100%;}
 	#cuerpo #encabMasPelis {justify-content: space-between;}
+	#zonaDisponible #vistaDeResults {max-height: 80%}
 
 	/* Alturas y anchos */
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
@@ -36,7 +37,7 @@
 	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
 	#vistaDeResults #actualizar {display: none;} /* oculta el botón de actualizar prods */
 	#vistaDeResults img#telonFondo {display: none;} /* oculta el telón de fondo */
-	:is(#zonaDisponible #vistaDeResults, #imgDerecha #cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+	:is(#zonaDisponible #vistaDeResults, #imgDerecha a:has(#cartelRCLV)).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 }
 
 /* Acostado */
