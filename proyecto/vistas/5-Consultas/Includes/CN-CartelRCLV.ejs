@@ -1,5 +1,7 @@
-<button id="cartelRCLV" type="button" class="toggle cartel absoluteCentro">
-	<% const delLa = comp.obtieneDesdeEntidad.delLa(RCLV_entidad) %>
-	<% const familia = comp.obtieneDesdeEntidad.entidadNombre(RCLV_entidad) %>
-	Detalle <%= delLa %><br><%= familia %>
-</button>
+<a href="" class="toggle absoluteCentro" tabindex="-1">
+	<button id="cartelRCLV" type="button" class="cartel">
+		<% const delLa = comp.obtieneDesdeEntidad.delLa(RCLV_entidad) %>
+		<% const familia = comp.obtieneDesdeEntidad.entidadNombre(RCLV_entidad) %>
+		Detalle <%= delLa %><br><%= familia %>
+	</button>
+</a>
