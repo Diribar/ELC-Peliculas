@@ -42,7 +42,7 @@
 	"ImagenesDerecha": {
 		"09-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"10-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"11-abr-24": {"titulo": "Santa Gemma Galgani", "entidad": "personajes", "id": 184},
+		"11-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"12-abr-24": {"titulo": "San José Moscati", "entidad": "personajes", "id": 86},
 		"13-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
