@@ -9,12 +9,13 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const {entidad, id} = req.query;
+		const {entidad, id, fecha} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : null;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		let imgDerPers;
 
 		// Obtiene RCLV con productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -34,9 +35,13 @@ module.exports = {
 			registro: procsCRUD.bloqueRegistro({...rclv, entidad}),
 		};
 
+		// Imagen derecha
+		if (fecha) {
+
+		} else imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+
 		// Datos para la vista
 		const status_id = original.statusRegistro_id;
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
