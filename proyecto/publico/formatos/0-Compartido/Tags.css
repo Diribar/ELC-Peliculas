@@ -9,12 +9,11 @@ select, option, optgroup, input, textarea, label img, label {font-size: inherit;
 select optgroup {margin-top: 3px;}
 select option {font-style: normal;}
 select option[value=''] {display: none;}
-input[type="radio"], input[type="checkbox"] {scale: .8; cursor: pointer;}
+input[type="radio"], input[type="checkbox"] {scale: .8;}
 input[type="radio"] {vertical-align: middle;}
 input[type="submit"] {display: none;}
 ::placeholder, select:has(option[value=""]:checked) {font-style: italic;}
 :disabled {cursor: default;}
-label[for] {cursor: pointer;}
 
 /* Listas */
 ul[type="dots"] {list-style-position: outside;}
@@ -29,6 +28,9 @@ p, li {line-height: 1.2rem;}
 .bordeRojo {border: 1px solid red;}
 
 /* Anchor */
-a[href] {cursor: pointer;}
 a {text-decoration: none;}
 a:has(img) {font-size: 1px;}
+
+/* Cursor pointer */
+a[href], label[for], input[type="radio"], input[type="checkbox"] {cursor: pointer;}
+a[href] *, label[for] * {cursor: pointer;}
