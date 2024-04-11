@@ -9,7 +9,7 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const {entidad, id, fecha} = req.query;
+		const {entidad, id, hoyLocal} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : null;
@@ -36,8 +36,8 @@ module.exports = {
 		};
 
 		// Imagen derecha
-		if (fecha) {
-
+		if (hoyLocal) {
+			const existe = comp.gestionArchivos.existe("/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg")
 		} else imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Datos para la vista
