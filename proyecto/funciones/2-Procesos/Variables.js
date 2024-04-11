@@ -29,7 +29,7 @@ module.exports = {
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
-		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Epoca del Año"],
+		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 
@@ -105,7 +105,7 @@ module.exports = {
 			],
 		},
 		epocasEstreno: {titulo: "Época de Estreno", campoFiltro: "epocaEstreno_id"},
-		epocasOcurrencia: {titulo: "Epoca de Ocurrencia", campoFiltro: "epocaOcurrencia_id"},
+		epocasOcurrencia: {titulo: "Época de Ocurrencia", campoFiltro: "epocaOcurrencia_id"},
 		tiposActuacion: {titulo: "Tipo de Actuación", campoFiltro: "tipoActuacion_id"},
 		// Se muestran ocasionalmente
 		bhr: {
@@ -263,7 +263,7 @@ module.exports = {
 				grupo: "RCLV",
 			},
 			{
-				titulo: "Epoca del Año",
+				titulo: "Época del Año",
 				nombre: "epocaDelAno_id",
 				valores: registrosRCLV.epocasDelAno,
 				mensajes: ["Poné la fecha en la que comienza."],
@@ -435,7 +435,7 @@ module.exports = {
 			// Personajes y Hechos
 			{
 				nombre: "epocaOcurrencia_id",
-				titulo: "Epoca",
+				titulo: "Época",
 				personajes: true,
 				hechos: true,
 				relacInclude: "epocaOcurrencia",
