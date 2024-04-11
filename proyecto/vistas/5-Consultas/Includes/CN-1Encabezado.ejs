@@ -23,21 +23,12 @@
 		</select>
 
 		<!-- Ayuda -->
-		<div id="ayudaOpciones">
-			<i class="fa-solid fa-circle-question ayudaClick desplClick">
-				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-					<li>
-						Para las opciones de <em>Cuatro Películas</em>, los resultados con fondo amarillo tiene relación con la
-						<b>Iglesia Católica</b>.
-					</li>
-					<% for (let ayuda of ayudas) { %>
-					<li><span><%= ayuda.nombre %></span>: <%= ayuda.comentario %>.</li>
-					<% } %>
-				</ul>
-			</i>
-		</div>
+		<%- include("CN-1Encabezado-Ayuda") %>
 	</div>
 	<div id="iconosDelTitulo" class="flexRow">
+		<!-- Ayuda -->
+		<%- include("CN-1Encabezado-Ayuda") %>
+
 		<!-- Compartir la consulta -->
 		<div id="compartirCons" class="flexRow scale pointer relative">
 			<i class="fa-solid fa-share-nodes" title="Compartir las preferencias"></i>
