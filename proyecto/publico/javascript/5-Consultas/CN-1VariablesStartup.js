@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables - DOM
 	DOM = {
 		// Formulario General
+		cuerpoFooterImgDer:document.querySelector("#cuerpoFooterImgDer"),
 		cuerpo: document.querySelector("#cuerpo"),
 		configCons: document.querySelector("#cuerpo #configCons"),
 		encabMasPelis: document.querySelector("#cuerpo #encabMasPelis"),
