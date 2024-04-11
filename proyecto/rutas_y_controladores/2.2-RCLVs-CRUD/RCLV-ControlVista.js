@@ -39,7 +39,9 @@ module.exports = {
 		if (hoyLocal) {
 			const rutaNombre = carpetaPublica + "/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
 			const existe = comp.gestionArchivos.existe(rutaNombre);
-		} else imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+			if (existe) imgDerPers = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
+		}
+		if (!imgDerPers) imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Datos para la vista
 		const status_id = original.statusRegistro_id;
