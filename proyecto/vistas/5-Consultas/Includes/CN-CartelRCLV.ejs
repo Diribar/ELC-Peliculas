@@ -1,3 +1,5 @@
 <button id="cartelRCLV" type="button" class="toggl cartel absoluteCentro">
-	Hola
+	<% const delLa = comp.obtieneDesdeEntidad.delLa(RCLV_entidad) %>
+	<% const familia = comp.obtieneDesdeEntidad.entidadNombre(RCLV_entidad) %>
+	Detalle <%= delLa + familia %>
 </button>
