@@ -1,37 +1,43 @@
 /* Formato general del cartel */
 main .cartelCentro {width: max-content; min-width: 250px; max-width: min(600px, 95vw);}
-main .cartelCentro {max-height: 95%; overflow-y: auto; color: var(--gris-claro)}
+main .cartelCentro {max-height: 95%; color: var(--gris-claro)}
 main .cartelCentro {padding: 20px; border-radius: 15px; border: 6px double white;}
 main .cartelCentro {background: var(--rojo-oscuro);}
 main .cartelCentro.check {background: var(--verde-oscuro);}
 main .cartelCentro.trabajando {background: var(--azul-oscuro);}
 
 /* Partes internas */
-main .cartelCentro .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
-main .cartelCentro #titulo {margin-bottom: 15px; font-size: 1.5rem;}
-main .cartelCentro #titulo:empty {margin: 0;}
-main .cartelCentro :is(#mensajes, #mensajes *) {font-size: 1.2rem; line-height: 1.5;}
-main .cartelCentro #mensajes {margin: 0 20px 40px; text-align: center;}
-main .cartelCentro #mensajes li {text-align: left;}
-main .cartelCentro #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
-main .cartelCentro #mensajes li i.fa-circle {border: solid 1px transparent;}
-main .cartelCentro #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscuro);}
-main .cartelCentro #mensajes span {font-weight: bold; font-style: italic;}
+.cartelCentro .inicio {font-size: 4rem; color: var(--amarillo-oscuro);}
+.cartelCentro .inicio {margin-bottom: 40px;}
+.cartelCentro #titulo {margin-bottom: 15px; font-size: 1.5rem;}
+.cartelCentro #titulo:empty {margin: 0;}
+
+/* Mensajes */
+.cartelCentro #mensajes {margin: 0 20px;}
+.cartelCentro #mensajes li {text-align: left; line-height: 1.2;}
+.cartelCentro #mensajes > li {font-size: 1.2rem; margin-top: 6px;}
+.cartelCentro #mensajes li b {color: var(--amarillo-oscuro);}
+.cartelCentro #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
+.cartelCentro #mensajes li i.fa-circle {border: solid 1px transparent;}
+.cartelCentro #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscuro);}
+.cartelCentro #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
-main .cartelCentro #iconosCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
-main .cartelCentro #iconosCartel * {border-radius: 50%;}
-main .cartelCentro #iconosCartel *:focus {outline: none;}
-main .cartelCentro #iconosCartel a i {font-size: 2rem;}
+.cartelCentro #iconosCartel {display: flex; flex-direction: row; justify-content: space-around;}
+.cartelCentro #iconosCartel {width: 45%; margin-top: 40px;}
+.cartelCentro #iconosCartel * {border-radius: 50%;}
+.cartelCentro #iconosCartel *:focus {outline: none;}
+.cartelCentro #iconosCartel a i {font-size: 2rem;}
 /* Íconos de retroceder y avanzar */
-main .cartelCentro #iconosCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
-main .cartelCentro #iconosCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
+.cartelCentro #iconosCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
+.cartelCentro #iconosCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
 /* Íconos especiales */
-main .cartelCentro #iconosCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
-main .cartelCentro #iconosCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
+.cartelCentro #iconosCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
+.cartelCentro #iconosCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
 
 /* Particularidades de cartelGenerico */
 #cartelGenerico:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
+#cartelGenerico #contenedorMensajes {max-height: 50vh; overflow-y: auto; scrollbar-width: none;}
 
 /* Particularidades de cartelProgreso */
 #cartelProgreso #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
@@ -39,11 +45,11 @@ main .cartelCentro #iconosCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen)
 #cartelProgreso #contorno #progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
 
 /* Media Query */
-@media (max-height: 400px) or (max-width: 400px) {
+@media (orientation: portrait) {
 	main .cartelCentro .inicio {margin-bottom: 20px;}
-	main .cartelCentro #mensajes {margin-bottom: 20px;}
+	main .cartelCentro #iconosCartel {margin-top: 20px;}
 }
 @media (max-height: 350px) {
 	main .cartelCentro .inicio {margin-bottom: 10px;}
-	main .cartelCentro #mensajes {margin-bottom: 10px;}
+	main .cartelCentro #iconosCartel {margin-top: 10px;}
 }
