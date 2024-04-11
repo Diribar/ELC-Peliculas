@@ -18,7 +18,7 @@
 			<% if (locals.informacion) { %>
 				<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
 					<% for (mensaje of informacion.mensajes) { %>
-						<li><%- mensaje %></li>
+						<li><%- mensaje %></li> <!-- el '-' interpreta el texto como código -->
 					<% } %>
 				</ul>
 			<% } else { %>
