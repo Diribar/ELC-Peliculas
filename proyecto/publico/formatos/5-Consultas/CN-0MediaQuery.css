@@ -1,6 +1,7 @@
 /* Laptop */
 @media (orientation: landscape) and (min-height: 600px) {
 	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap;}
+	#cuerpoFooterImgDer #imgDerecha {position: relative;}
 }
 
 /* Ambos */
