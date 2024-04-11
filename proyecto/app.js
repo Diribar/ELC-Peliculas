@@ -50,7 +50,7 @@ global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
 // Otros requires
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
-global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs'
+global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
 global.Op = db.Sequelize.Op;
 global.express = require("express");
 const app = express();
