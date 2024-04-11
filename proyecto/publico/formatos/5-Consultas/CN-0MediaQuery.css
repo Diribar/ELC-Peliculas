@@ -31,7 +31,7 @@
 	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
 	#vistaDeResults #actualizar {display: none;} /* oculta el botón de actualizar prods */
 	#vistaDeResults img#telonFondo {display: none;} /* oculta el telón de fondo */
-
+	:is(#vistaDeResults, #cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 }
 
 /* Acostado */
