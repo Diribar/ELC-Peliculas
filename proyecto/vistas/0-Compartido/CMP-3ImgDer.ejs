@@ -1,5 +1,5 @@
 <!-- Muestra la Imagen -->
-<% let ruta, titulo, destino, cartelRCLV, RCLV_entidad %>
+<% let ruta, titulo, destino, cartelRCLV, hoyLocal, RCLV_entidad %>
 <div id="imgDerecha">
 	<% if (locals.tema == "institucional") { %>
 		<!-- Imagen Institucional -->
@@ -16,7 +16,7 @@
 		<% const diaLocal = ("0" + ahora.getDate()).slice(-2) %>
 		<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 		<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
-		<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
+		<% hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
 		<% const RCLV_id = ImagenesDerecha[hoyLocal].id %>
 		<% RCLV_entidad = ImagenesDerecha[hoyLocal].entidad %>
 		<% destino = RCLV_entidad && RCLV_id ? ("/rclv/detalle/?entidad=" + RCLV_entidad + "&id=" + RCLV_id) : null %>
@@ -41,7 +41,7 @@
 		<%- include('PR1-Detalle-2Links') %>
 	<% } %>
 	<% if (cartelRCLV) { %>
-		<%- include("CN-CartelRCLV", {RCLV_entidad}) %>
+		<%- include("CN-CartelRCLV", {hoyLocal, destino, RCLV_entidad}) %>
 	<% } %>
 	<% if (locals.iconosMobile) { %>
 		<div id="sectorIconos">
