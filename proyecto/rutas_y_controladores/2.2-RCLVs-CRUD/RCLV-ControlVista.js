@@ -37,7 +37,8 @@ module.exports = {
 
 		// Imagen derecha
 		if (hoyLocal) {
-			const existe = comp.gestionArchivos.existe("/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg")
+			const rutaNombre = carpetaPublica + "/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
+			const existe = comp.gestionArchivos.existe(rutaNombre);
 		} else imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Datos para la vista
