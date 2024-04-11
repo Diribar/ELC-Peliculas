@@ -242,247 +242,6 @@ module.exports = {
 				: "";
 		},
 	},
-	convierteLetras: {
-		alIngles: (resultado) => {
-			return resultado
-				.toLowerCase()
-				.replace(/-/g, " ")
-				.replace(/á/g, "a")
-				.replace(/é/g, "e")
-				.replace(/í/g, "i")
-				.replace(/ó/g, "o")
-				.replace(/úü/g, "u")
-				.replace(/ñ/g, "n")
-				.replace(/:¿![.][?]/g, "")
-				.replace(/ +/g, " ");
-		},
-		alCastellano: function (objeto) {
-			// Rutina por campo
-			for (let prop in objeto)
-				if (typeof objeto[prop] == "string") objeto[prop] = this.alCastellano_campo(objeto[prop]);
-				else if (objeto[prop] === undefined) delete objeto[prop];
-
-			// Fin
-			return objeto;
-		},
-		alCastellano_campo: (valor) => {
-			return valor
-				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
-				.replace(/[àâãäåāăą]/g, "a")
-				.replace(/á/g, "á")
-				.replace(/Æ/g, "Ae")
-				.replace(/æ/g, "ae")
-				.replace(/ß/g, "b")
-				.replace(/[ÇĆĈĊČ]/g, "C")
-				.replace(/[çćĉċč]/g, "c")
-				.replace(/[ÐĎĐ]/g, "D")
-				.replace(/[đď]/g, "d")
-				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-				.replace(/[èêëēĕėęě]/g, "e")
-				.replace(/[ĜĞĠĢ]/g, "G")
-				.replace(/[ĝğġģ]/g, "g")
-				.replace(/[ĦĤ]/g, "H")
-				.replace(/[ħĥ]/g, "h")
-				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
-				.replace(/[ìîïĩīĭįı]/g, "i")
-				.replace(/í/g, "í")
-				.replace(/Ĳ/g, "Ij")
-				.replace(/ĳ/g, "ij")
-				.replace(/Ĵ/g, "J")
-				.replace(/ĵ/g, "j")
-				.replace(/Ķ/g, "K")
-				.replace(/[ķĸ]/g, "k")
-				.replace(/[ĹĻĽĿŁ]/g, "L")
-				.replace(/[ĺļľŀł]/g, "l")
-				.replace(/[ŃŅŇ]/g, "N")
-				.replace(/[ńņňŉ]/g, "n")
-				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-				.replace(/[òôõōðōŏőöø]/g, "o")
-				.replace(/ó/g, "ó")
-				.replace(/[ÖŒ]/g, "Oe")
-				.replace(/[œ]/g, "oe")
-				.replace(/[ŔŖŘ]/g, "R")
-				.replace(/[ŕŗř]/g, "r")
-				.replace(/[ŚŜŞŠ]/g, "S")
-				.replace(/[śŝşš]/g, "s")
-				.replace(/[ŢŤŦȚ]/g, "T")
-				.replace(/[țţťŧ]/g, "t")
-				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
-				.replace(/[ùûũūŭůűų]/g, "u")
-				.replace(/Ŵ/g, "W")
-				.replace(/ŵ/g, "w")
-				.replace(/[ÝŶŸ]/g, "Y")
-				.replace(/[ýŷÿ]/g, "y")
-				.replace(/[ŽŹŻŽ]/g, "Z")
-				.replace(/[žźżž]/g, "z")
-				.replace(/[“”«»]/g, '"')
-				.replace(/[‘’`]/g, "'")
-				.replace(/[º]/g, "°")
-				.replace(/[  ®​​#]/g, "")
-				.replace(/–/g, "-")
-				.replace("[", "(")
-				.replace("]", ")")
-				.replace(/\t/g, " ") // previene el uso de 'tab'
-				.replace(/\n/g, " ") // previene el uso de 'return'
-				.replace(/\r/g, " ") // previene el uso de 'return'
-				.replace(/ +/g, " "); // previene el uso de varios espacios
-		},
-		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
-	},
-	fechaHora: {
-		ahora: () => {
-			return FN.ahora();
-		},
-		nuevoHorario: (delay, horario) => {
-			return FN.nuevoHorario(delay, horario);
-		},
-		diaMes: (fecha) => {
-			fecha = new Date(fecha);
-			let dia = fecha.getUTCDate();
-			let mes = mesesAbrev[fecha.getUTCMonth()];
-			fecha = dia + "/" + mes;
-			return fecha;
-		},
-		diaMesAno: function (fecha) {
-			fecha = new Date(fecha);
-			let ano = fecha.getUTCFullYear().toString().slice(-2);
-			return this.diaMes(fecha) + "/" + ano;
-		},
-		anoMesDia: (fecha) => {
-			fecha = new Date(fecha).toISOString().slice(0, 10);
-			return fecha;
-		},
-		fechaHorario: (horario) => {
-			horario = horario ? new Date(horario) : FN.ahora();
-			return (
-				horario.getDate() +
-				"/" +
-				mesesAbrev[horario.getMonth()] +
-				" a las " +
-				horario.getHours() +
-				":" +
-				String(horario.getMinutes()).padStart(2, "0") +
-				"hs"
-			);
-		},
-		fechaDelAno: (dataEntry) => {
-			let datos = {};
-			if (dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id <= 366) {
-				let fechaDelAno = fechasDelAno.find((n) => n.id == dataEntry.fechaDelAno_id);
-				datos.dia = fechaDelAno.dia;
-				datos.mes_id = fechaDelAno.mes_id;
-			}
-			// Fin
-			return datos;
-		},
-	},
-	gestionArchivos: {
-		existe: (rutaNombre) => {
-			return rutaNombre && fs.existsSync(rutaNombre);
-		},
-		carpetaProvisorio: function () {
-			// Si no existe la carpeta, la crea
-			const provisorio = carpetaExterna + "9-Provisorio";
-			if (!this.existe(provisorio)) fs.mkdirSync(provisorio);
-
-			// Fin
-			return;
-		},
-		elimina: function (ruta, archivo, output) {
-			// Arma el nombre del archivo
-			let rutaNombre = path.join(ruta, archivo);
-			output = true;
-
-			// Se fija si encuentra el archivo
-			if (this.existe(rutaNombre)) {
-				// Borra el archivo
-				fs.unlinkSync(rutaNombre);
-				// Avisa que lo borra
-				if (output) console.log("Archivo '" + rutaNombre + "' borrado");
-			}
-			// Mensaje si no lo encuentra
-			else if (output) console.log("Archivo " + rutaNombre + " no encontrado para borrar");
-
-			// Fin
-			return;
-		},
-		descarga: async function (url, rutaYnombre, output) {
-			// Carpeta donde descargar
-			const ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-			if (!this.existe(ruta)) fs.mkdirSync(ruta);
-
-			// Realiza la descarga
-			let writer = fs.createWriteStream(rutaYnombre);
-			let response = await axios({method: "GET", url, responseType: "stream"});
-			response.data.pipe(writer);
-
-			// Obtiene el resultado de la descarga
-			let resultado = await new Promise((resolve, reject) => {
-				writer.on("finish", () => {
-					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
-					if (output) console.log("Imagen '" + nombre + "' descargada");
-					resolve("OK");
-				});
-				writer.on("error", (error) => {
-					console.log("Error en la descarga", error);
-					reject("Error");
-				});
-			});
-			// Fin
-			return resultado;
-		},
-		mueveImagen: function (nombre, origen, destino, output) {
-			// Variables
-			let archivoOrigen = carpetaExterna + origen + "/" + nombre;
-			let carpetaDestino = carpetaExterna + destino + "/";
-			let archivoDestino = carpetaDestino + nombre;
-
-			// Si no existe la carpeta de destino, la crea
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-
-			// Si no encuentra el archivo de origen, lo avisa
-			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
-			// Mueve el archivo
-			else
-				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-
-			// Fin
-			return;
-		},
-		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			// Variables
-			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
-			const nombreDestino = (!archivoDestino.includes("/publico/") ? carpetaExterna : "") + archivoDestino;
-			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
-
-			// Acciones
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
-			else
-				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-		},
-		imagenAlAzar: (carpeta) => {
-			// Obtiene el listado de archivos
-			const archivos = fs.readdirSync(carpeta);
-
-			// Elije al azar el n° de imagen
-			const indice = parseInt(Math.random() * archivos.length);
-
-			// Genera el nombre del archivo
-			const imagenAlAzar = archivos[indice];
-
-			// Fin
-			return imagenAlAzar;
-		},
-	},
 
 	// Productos y RCLVs
 	validacs: {
@@ -926,6 +685,247 @@ module.exports = {
 	},
 
 	// Varias
+	convierteLetras: {
+		alIngles: (resultado) => {
+			return resultado
+				.toLowerCase()
+				.replace(/-/g, " ")
+				.replace(/á/g, "a")
+				.replace(/é/g, "e")
+				.replace(/í/g, "i")
+				.replace(/ó/g, "o")
+				.replace(/úü/g, "u")
+				.replace(/ñ/g, "n")
+				.replace(/:¿![.][?]/g, "")
+				.replace(/ +/g, " ");
+		},
+		alCastellano: function (objeto) {
+			// Rutina por campo
+			for (let prop in objeto)
+				if (typeof objeto[prop] == "string") objeto[prop] = this.alCastellano_campo(objeto[prop]);
+				else if (objeto[prop] === undefined) delete objeto[prop];
+
+			// Fin
+			return objeto;
+		},
+		alCastellano_campo: (valor) => {
+			return valor
+				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+				.replace(/[àâãäåāăą]/g, "a")
+				.replace(/á/g, "á")
+				.replace(/Æ/g, "Ae")
+				.replace(/æ/g, "ae")
+				.replace(/ß/g, "b")
+				.replace(/[ÇĆĈĊČ]/g, "C")
+				.replace(/[çćĉċč]/g, "c")
+				.replace(/[ÐĎĐ]/g, "D")
+				.replace(/[đď]/g, "d")
+				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+				.replace(/[èêëēĕėęě]/g, "e")
+				.replace(/[ĜĞĠĢ]/g, "G")
+				.replace(/[ĝğġģ]/g, "g")
+				.replace(/[ĦĤ]/g, "H")
+				.replace(/[ħĥ]/g, "h")
+				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+				.replace(/[ìîïĩīĭįı]/g, "i")
+				.replace(/í/g, "í")
+				.replace(/Ĳ/g, "Ij")
+				.replace(/ĳ/g, "ij")
+				.replace(/Ĵ/g, "J")
+				.replace(/ĵ/g, "j")
+				.replace(/Ķ/g, "K")
+				.replace(/[ķĸ]/g, "k")
+				.replace(/[ĹĻĽĿŁ]/g, "L")
+				.replace(/[ĺļľŀł]/g, "l")
+				.replace(/[ŃŅŇ]/g, "N")
+				.replace(/[ńņňŉ]/g, "n")
+				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+				.replace(/[òôõōðōŏőöø]/g, "o")
+				.replace(/ó/g, "ó")
+				.replace(/[ÖŒ]/g, "Oe")
+				.replace(/[œ]/g, "oe")
+				.replace(/[ŔŖŘ]/g, "R")
+				.replace(/[ŕŗř]/g, "r")
+				.replace(/[ŚŜŞŠ]/g, "S")
+				.replace(/[śŝşš]/g, "s")
+				.replace(/[ŢŤŦȚ]/g, "T")
+				.replace(/[țţťŧ]/g, "t")
+				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+				.replace(/[ùûũūŭůűų]/g, "u")
+				.replace(/Ŵ/g, "W")
+				.replace(/ŵ/g, "w")
+				.replace(/[ÝŶŸ]/g, "Y")
+				.replace(/[ýŷÿ]/g, "y")
+				.replace(/[ŽŹŻŽ]/g, "Z")
+				.replace(/[žźżž]/g, "z")
+				.replace(/[“”«»]/g, '"')
+				.replace(/[‘’`]/g, "'")
+				.replace(/[º]/g, "°")
+				.replace(/[  ®​​#]/g, "")
+				.replace(/–/g, "-")
+				.replace("[", "(")
+				.replace("]", ")")
+				.replace(/\t/g, " ") // previene el uso de 'tab'
+				.replace(/\n/g, " ") // previene el uso de 'return'
+				.replace(/\r/g, " ") // previene el uso de 'return'
+				.replace(/ +/g, " "); // previene el uso de varios espacios
+		},
+		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
+	},
+	fechaHora: {
+		ahora: () => {
+			return FN.ahora();
+		},
+		nuevoHorario: (delay, horario) => {
+			return FN.nuevoHorario(delay, horario);
+		},
+		diaMes: (fecha) => {
+			fecha = new Date(fecha);
+			let dia = fecha.getUTCDate();
+			let mes = mesesAbrev[fecha.getUTCMonth()];
+			fecha = dia + "/" + mes;
+			return fecha;
+		},
+		diaMesAno: function (fecha) {
+			fecha = new Date(fecha);
+			let ano = fecha.getUTCFullYear().toString().slice(-2);
+			return this.diaMes(fecha) + "/" + ano;
+		},
+		anoMesDia: (fecha) => {
+			fecha = new Date(fecha).toISOString().slice(0, 10);
+			return fecha;
+		},
+		fechaHorario: (horario) => {
+			horario = horario ? new Date(horario) : FN.ahora();
+			return (
+				horario.getDate() +
+				"/" +
+				mesesAbrev[horario.getMonth()] +
+				" a las " +
+				horario.getHours() +
+				":" +
+				String(horario.getMinutes()).padStart(2, "0") +
+				"hs"
+			);
+		},
+		fechaDelAno: (dataEntry) => {
+			let datos = {};
+			if (dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id <= 366) {
+				let fechaDelAno = fechasDelAno.find((n) => n.id == dataEntry.fechaDelAno_id);
+				datos.dia = fechaDelAno.dia;
+				datos.mes_id = fechaDelAno.mes_id;
+			}
+			// Fin
+			return datos;
+		},
+	},
+	gestionArchivos: {
+		existe: (rutaNombre) => {
+			return rutaNombre && fs.existsSync(rutaNombre);
+		},
+		carpetaProvisorio: function () {
+			// Si no existe la carpeta, la crea
+			const provisorio = carpetaExterna + "9-Provisorio";
+			if (!this.existe(provisorio)) fs.mkdirSync(provisorio);
+
+			// Fin
+			return;
+		},
+		elimina: function (ruta, archivo, output) {
+			// Arma el nombre del archivo
+			let rutaNombre = path.join(ruta, archivo);
+			output = true;
+
+			// Se fija si encuentra el archivo
+			if (this.existe(rutaNombre)) {
+				// Borra el archivo
+				fs.unlinkSync(rutaNombre);
+				// Avisa que lo borra
+				if (output) console.log("Archivo '" + rutaNombre + "' borrado");
+			}
+			// Mensaje si no lo encuentra
+			else if (output) console.log("Archivo " + rutaNombre + " no encontrado para borrar");
+
+			// Fin
+			return;
+		},
+		descarga: async function (url, rutaYnombre, output) {
+			// Carpeta donde descargar
+			const ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+			if (!this.existe(ruta)) fs.mkdirSync(ruta);
+
+			// Realiza la descarga
+			let writer = fs.createWriteStream(rutaYnombre);
+			let response = await axios({method: "GET", url, responseType: "stream"});
+			response.data.pipe(writer);
+
+			// Obtiene el resultado de la descarga
+			let resultado = await new Promise((resolve, reject) => {
+				writer.on("finish", () => {
+					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
+					if (output) console.log("Imagen '" + nombre + "' descargada");
+					resolve("OK");
+				});
+				writer.on("error", (error) => {
+					console.log("Error en la descarga", error);
+					reject("Error");
+				});
+			});
+			// Fin
+			return resultado;
+		},
+		mueveImagen: function (nombre, origen, destino, output) {
+			// Variables
+			let archivoOrigen = carpetaExterna + origen + "/" + nombre;
+			let carpetaDestino = carpetaExterna + destino + "/";
+			let archivoDestino = carpetaDestino + nombre;
+
+			// Si no existe la carpeta de destino, la crea
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+
+			// Si no encuentra el archivo de origen, lo avisa
+			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			// Mueve el archivo
+			else
+				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+
+			// Fin
+			return;
+		},
+		copiaImagen: function (archivoOrigen, archivoDestino, output) {
+			// Variables
+			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
+			const nombreDestino = (!archivoDestino.includes("/publico/") ? carpetaExterna : "") + archivoDestino;
+			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+
+			// Acciones
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+			else
+				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+		},
+		imagenAlAzar: (carpeta) => {
+			// Obtiene el listado de archivos
+			const archivos = fs.readdirSync(carpeta);
+
+			// Elije al azar el n° de imagen
+			const indice = parseInt(Math.random() * archivos.length);
+
+			// Genera el nombre del archivo
+			const imagenAlAzar = archivos[indice];
+
+			// Fin
+			return imagenAlAzar;
+		},
+	},
 	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
 		const transporter = nodemailer.createTransport({
