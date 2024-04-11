@@ -2,7 +2,7 @@
 #cuerpoFooter #cuerpo {flex-direction: row; max-height: 100%;}
 
 /* Configuración de la consulta */
-#cuerpo #configCons {display: flex; flex-direction: column; width: 220px; height: 100%; z-index: 10;}
+#cuerpo #configCons {display: flex; flex-direction: column; width: 220px; height: 100%;}
 
 /* Encabezado más películas */
 #cuerpo #encabMasPelis {display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1;}
@@ -26,14 +26,6 @@
 #vistaDeResults #actualizar i {background: var(--verde-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
 #vistaDeResults #actualizar i {font-size: 0.8rem; padding: 5px 5px 4px 4px}
 
-/* Vista de Resultados - Carteles */
-#vistaDeResults #carteles {position: absolute; translate: -50% -50%; left: 50%; top: 50%}
-#vistaDeResults #carteles {display: flex; flex-direction: column;}
-#vistaDeResults #carteles .cartel {padding: 10px 15px; border-radius: 10px; margin: auto;}
-#vistaDeResults #carteles .cartel {border: solid 2px;}
-#vistaDeResults #carteles .cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps;}
-#vistaDeResults #carteles .cartel span {cursor: pointer; text-decoration: underline;}
-
 /* Vista de Resultados - Carteles "Botón" */
 #vistaDeResults #carteles button.cartel {font-size: 2rem; font-weight: bold; font-style: italic;}
 #vistaDeResults #carteles :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
@@ -51,8 +43,12 @@
 #carteles .cartel.especial div table tr td {padding: 2px 0;}
 #carteles .cartel.especial div table tr td:first-of-type {padding-right: 10px;}
 
-/* Vista de Resultados - Varios */
-#vistaDeResults #ppp {font-size: 1.25rem;}
+/* Cartel - Genérico */
+:is(#vistaDeResults, #imgDerecha) .cartel {padding: 10px 15px; border-radius: 10px; margin: auto;}
+:is(#vistaDeResults, #imgDerecha) .cartel {border: solid 2px;}
+:is(#vistaDeResults, #imgDerecha) .cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps;}
+:is(#vistaDeResults, #imgDerecha) .cartel span {cursor: pointer; text-decoration: underline;}
 
-/* Footer */
+/* Varios */
+#vistaDeResults #ppp {font-size: 1.25rem;}
 #encabMasPelis footer {align-self: stretch;}
