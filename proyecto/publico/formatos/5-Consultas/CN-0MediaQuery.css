@@ -24,14 +24,15 @@
 	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);} /* preferencias */
 
 	/* Imagen derecha */
-	#cuerpoFooterImgDer #imgDerecha {position: absolute; top: 50%; translate: 0 -50%; z-index: -1;}
+	#zonaDisponible #vistaDeResults {z-index: 1;}
+	#cuerpoFooterImgDer #imgDerecha {position: absolute; top: 50%; translate: 0 -50%;}
 
 	/* Ocultar */
 	#zonaDisponible #vistaDeResults:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
 	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
 	#vistaDeResults #actualizar {display: none;} /* oculta el botón de actualizar prods */
 	#vistaDeResults img#telonFondo {display: none;} /* oculta el telón de fondo */
-	:is(#vistaDeResults, #cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+	:is(#zonaDisponible #vistaDeResults, #imgDerecha #cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 }
 
 /* Acostado */
