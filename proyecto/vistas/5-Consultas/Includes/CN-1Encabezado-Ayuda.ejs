@@ -1,0 +1,13 @@
+<div id="ayudaOpciones">
+	<i class="fa-solid fa-circle-question ayudaClick desplClick">
+		<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+			<li>
+				Para las opciones de <em>Cuatro Películas</em>, los resultados con fondo amarillo tiene relación con la
+				<b>Iglesia Católica</b>.
+			</li>
+			<% for (let ayuda of ayudas) { %>
+			<li><span><%= ayuda.nombre %></span>: <%= ayuda.comentario %>.</li>
+			<% } %>
+		</ul>
+	</i>
+</div>
