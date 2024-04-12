@@ -21,24 +21,25 @@ window.addEventListener("load", () => {
 	DOM.muestraDB = DOM.sectorIconos.querySelector("#muestraDB");
 
 	// Variables
-	const acostado = window.matchMedia("(orientation: landscape)").matches;
+	let acostado = window.matchMedia("(orientation: landscape)").matches;
 	let v = {
 		mostrar: true,
 		ruta: location.pathname,
 		rutasSectores: [
-			{ruta: "producto/detalle", sector: acostado ? "datosLargos" : "links"},
-			{ruta: "producto/calificar", sector: "datosLargos"},
-			{ruta: "rclv/detalle", sector: "datosLargos"},
+			{ruta: "producto/detalle", mostrarEstandar: acostado ? ["datosLargos", "links"] : ["links"]}, // más 'datosLargos' para 'acostado'
+			{ruta: "producto/calificar", mostrarEstandar: ["datosLargos"]},
+			{ruta: "rclv/detalle", mostrarEstandar: ["datosLargos"]},
 		],
+		sectores: ["links", "datosLargos", "datosBreves"],
 	};
-	const visibleEstandar = v.rutasSectores.find((n) => v.ruta.includes(n.ruta)).sector;
+	const {mostrarEstandar} = v.rutasSectores.find((n) => v.ruta.includes(n.ruta));
 
 	// Funciones
 	let mostrarOcultarEstandar = () => {
-		for (let rutaSector of v.rutasSectores) {
-			const {sector} = rutaSector;
+		// Rutina por sector a mostrar/ocultar
+		for (let sector of v.sectores) {
 			if (DOM[sector])
-				v.mostrar && sector == visibleEstandar
+				v.mostrar && mostrarEstandar.includes(sector)
 					? DOM[sector].classList.remove("toggle")
 					: DOM[sector].classList.add("toggle");
 		}
@@ -50,21 +51,14 @@ window.addEventListener("load", () => {
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => mostrarOcultarEstandar());
-
 	// Event listeners - Muestra datosLargos
-	DOM.muestraDL.addEventListener("click", () => {
-		// Alterna mostrar/ocultar
-		DOM.datosLargos.classList.toggle("toggle");
-		v.mostrar = DOM.datosLargos.className.includes("toggle"); // si está oculto, se debe mostrar
-		console.log(v.mostrar);
-
-		DOM.datosBreves.classList.add("toggle"); // oculta
-		if (DOM.links && visibleEstandar == "links") {
-			v.mostrar ? DOM.links.classList.remove("toggle") : DOM.links.classList.add("toggle"); // muestra/oculta
-			if (v.mostrar) v.mostrar = false;
-		}
-	});
-
+	if (DOM.muestraDL)
+		DOM.muestraDL.addEventListener("click", () => {
+			// Alterna mostrar/ocultar
+			v.mostrar = DOM.datosLargos.className.includes("toggle"); // si está oculto, se debe mostrar
+			DOM.datosLargos.classList.toggle("toggle");
+			mostrarOcultarEstandar();
+		});
 	// Event listeners - Muestra datosBreves
 	DOM.muestraDB.addEventListener("click", () => {
 		// Alterna muestra/oculta
@@ -79,8 +73,9 @@ window.addEventListener("load", () => {
 			if (v.mostrar) v.mostrar = false;
 		}
 	});
+	// Event listener - giro de la orientación
+	screen.orientation.addEventListener("change", () => {});
 
 	// Start-up
-	if (v.acostado) DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
 	mostrarOcultarEstandar();
 });
