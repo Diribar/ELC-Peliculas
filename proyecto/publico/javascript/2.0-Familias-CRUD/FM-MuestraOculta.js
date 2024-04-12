@@ -50,28 +50,34 @@ window.addEventListener("load", () => {
 	};
 
 	// Event listeners - Start-up / Sólo la imagen
-	DOM.imagen.addEventListener("click", () => mostrarOcultarEstandar());
+	DOM.imagen.addEventListener("click", () => {
+		if (acostado) v.mostrar = true;
+		mostrarOcultarEstandar();
+	});
+
 	// Event listeners - Muestra datosLargos
 	if (DOM.muestraDL)
 		DOM.muestraDL.addEventListener("click", () => {
+			// Averigua si está oculto
+			const oculto = DOM.datosLargos.className.includes("toggle"); // averigua si está oculto
+			v.mostrar = !oculto;
+
 			// Alterna mostrar/ocultar
-			v.mostrar = DOM.datosLargos.className.includes("toggle"); // si está oculto, se debe mostrar
-			DOM.datosLargos.classList.toggle("toggle");
 			mostrarOcultarEstandar();
+			if (oculto) DOM.datosLargos.classList.remove("toggle"); // muestra DB
+			v.mostrar = false;
 		});
+
 	// Event listeners - Muestra datosBreves
 	DOM.muestraDB.addEventListener("click", () => {
-		// Alterna muestra/oculta
-		if (DOM.muestraDB && DOM.muestraDB.className.includes("inactivo")) return;
-		DOM.datosBreves.classList.toggle("toggle");
-		v.mostrar = DOM.datosBreves.className.includes("toggle"); // si está oculto, se debe mostrar
-		console.log(v.mostrar);
+		// Averigua si está oculto
+		const oculto = DOM.datosBreves.className.includes("toggle");
+		v.mostrar = !oculto;
 
-		DOM.datosLargos.classList.add("toggle"); // oculta
-		if (DOM.links && visibleEstandar == "links") {
-			v.mostrar ? DOM.links.classList.remove("toggle") : DOM.links.classList.add("toggle"); // muestra/oculta
-			if (v.mostrar) v.mostrar = false;
-		}
+		// Alterna mostrar/ocultar
+		mostrarOcultarEstandar();
+		if (oculto) DOM.datosBreves.classList.remove("toggle"); // muestra DB
+		v.mostrar = false;
 	});
 	// Event listener - giro de la orientación
 	screen.orientation.addEventListener("change", () => {});
