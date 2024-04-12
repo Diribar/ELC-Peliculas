@@ -90,6 +90,8 @@ module.exports = {
 				? "/revision/tablero-de-control"
 				: origen == "TM"
 				? "/mantenimiento"
+				: origen == "CN"
+				? "/consultas"
 				: "";
 
 			// Redirecciona a la vista que corresponda

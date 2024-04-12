@@ -27,11 +27,17 @@ global.anoHoy = null;
 global.tamMaxImagen = 1000000; // 1Mb
 global.layoutDefault_id = 2; // El 'default' es "Al azar"
 global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
+global.setTimeOutStd = 1000;
 
 // Require 'path'
 global.path = require("path");
 const carpeta = path.basename(path.resolve());
-global.urlHost = carpeta == "Proyecto" ? "http://localhost" : "https://elc.lat";
+global.urlHost =
+	carpeta == "Proyecto"
+		? "http://localhost" // development
+		: carpeta.includes("Pruebas")
+		? "https://pruebas.elc.lat" // test
+		: "https://elc.lat"; // producción
 global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
 
 // Variables que toman valores de '.env'
@@ -39,18 +45,19 @@ require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
 global.versionELC = process.env.versionELC;
-global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
+global.carpetaPublica = path.join(__dirname, "publico");
+global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
 // Otros requires
-global.db = require("./base_de_datos/modelos");
-global.Op = db.Sequelize.Op;
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
+global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
+global.Op = db.Sequelize.Op;
 global.express = require("express");
 const app = express();
 
 // Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
-app.use("/publico", express.static(path.join(__dirname, "publico")));
+app.use("/publico", express.static(carpetaPublica));
 app.use("/Externa", express.static(carpetaExterna));
 
 // Otros
@@ -131,7 +138,7 @@ app.set("views", [
 		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
-		criteriosCalif: BD_genericas.obtieneTodos("cal_criterio"),
+		calCriterios: BD_genericas.obtieneTodos("calCriterios"),
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),

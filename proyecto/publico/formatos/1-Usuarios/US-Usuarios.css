@@ -1,6 +1,6 @@
 /* General */
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
-#cuerpo {margin: 0; width: 100%; max-height: calc(100% - 23.6px);} /* 23.6px es la altura del footer */
+#cuerpo {margin: 0; width: 100%; max-height: calc(100% - var(--altoFooter));}
 
 /* General del formulario */
 #cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}

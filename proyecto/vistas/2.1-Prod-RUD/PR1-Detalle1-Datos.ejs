@@ -1,5 +1,5 @@
 <div id="tituloInfoDetalle" class="relative">
-	<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
+	<% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 	<h3>Links para verl<%= oa %></h3>
 </div>
 <!-- Links -->

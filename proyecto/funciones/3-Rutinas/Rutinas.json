@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/mar",
-	"HoraUTC": "5:25",
+	"FechaUTC": "Jue. 11/abr",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 18/mar",
-	"HoraSemUTC": "17:50",
-	"semanaUTC": 12,
+	"FechaSemUTC": "Lun. 8/abr",
+	"HoraSemUTC": "17:26",
+	"semanaUTC": 15,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-mar-24": {"titulo": "San José, padre de Jesús", "entidad": "personajes", "id": 13},
-		"20-mar-24": {"titulo": "Santa María Josefa del Corazón de Jesús"},
-		"21-mar-24": {"titulo": "San Nicolas de Flüe"},
-		"22-mar-24": {"titulo": "Cuaresma"},
-		"23-mar-24": {"titulo": "Cuaresma"}
+		"09-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"10-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"11-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"12-abr-24": {"titulo": "San José Moscati", "entidad": "personajes", "id": 86},
+		"13-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }

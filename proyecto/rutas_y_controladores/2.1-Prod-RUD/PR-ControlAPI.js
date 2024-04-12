@@ -45,7 +45,7 @@ module.exports = {
 			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
 
 			// Fin
-			return res.json({califGuardada, atributosCalific, criteriosCalif});
+			return res.json({califGuardada, atributosCalific, calCriterios});
 		},
 		elimina: async (req, res) => {
 			// Variables

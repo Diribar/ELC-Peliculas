@@ -9,12 +9,13 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const {entidad, id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "DTR";
+		const {entidad, id, hoyLocal} = req.query;
+		const origen = req.query.origen ? req.query.origen : hoyLocal ? "CN" : "DTR";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : null;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		let imgDerPers;
 
 		// Obtiene RCLV con productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -24,9 +25,8 @@ module.exports = {
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
-			"Las películas son las que ya tenemos en nuestra BD.",
-			"Primero figuran las colecciones y luego las películas.",
-			"Están ordenadas desde la más reciente a las más antigua.",
+			"Las películas son solamente las que tenemos en nuestra base de datos.",
+			"Están ordenadas desde la más reciente a la más antigua.",
 		];
 
 		// Bloque de la derecha
@@ -35,21 +35,29 @@ module.exports = {
 			registro: procsCRUD.bloqueRegistro({...rclv, entidad}),
 		};
 
+		// Imagen derecha
+		if (hoyLocal) {
+			const rutaNombre = carpetaPublica + "/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
+			const existe = comp.gestionArchivos.existe(rutaNombre);
+			if (existe) imgDerPers = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
+		}
+		if (!imgDerPers) imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+
 		// Datos para la vista
 		const status_id = original.statusRegistro_id;
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		const canonNombre = comp.canonNombre(rclv);
 		const RCLVnombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
-		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre; // título de la vista
+		const tituloDetalle = "Detalle de " + entidadNombre;
+		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, revisorPERL},
-			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id},
-			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, canonNombre, RCLVnombre},
+			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
+			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
+			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
+			iconosMobile: true,
 		});
 	},
 	altaEdic: {
@@ -132,7 +140,7 @@ module.exports = {
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 				...{rolesIgl, apMars, originalUrl},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				...{omitirImagenDerecha: true, omitirFooter: true},
+				estrucPers: true,
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision

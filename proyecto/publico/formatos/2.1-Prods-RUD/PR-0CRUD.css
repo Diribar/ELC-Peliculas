@@ -1,18 +1,5 @@
-/* General */
-#recuadro #contenido {justify-content: space-around; margin: 0 40px;}
-
 /* Información */
-#contenido #informacion {margin-top: 30px; overflow-x: auto;}
-#informacion #tituloInfoDetalle {margin-left: 0px; margin-bottom: 5px; width: min-content;}
-#informacion #tituloInfoDetalle h3 {width: max-content;}
-#informacion #tituloInfoDetalle ul p {margin-top: 3px;}
-#informacion #tituloInfoDetalle ul b {color: snow;}
-
-/* Marco */
-#contenido .marco {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
-
-/* Botones */
-#contenido #botones {margin: 30px 0}
+#contenido #informacion {overflow-x: auto;}
 
 /* Gráfico de Calificaciones */
-#datosBreves #calificacionesGrafico {min-width: 170px;}
+#datosBreves #calificsGrafico {width: 170px;}

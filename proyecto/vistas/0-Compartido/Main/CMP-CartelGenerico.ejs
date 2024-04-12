@@ -4,38 +4,37 @@
 	</div>
 
 	<!-- Cartel -->
-	<div id="cartelGenerico" class="cartelCentro absoluteCentro <%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
-		<div class="flexColAlign">
-			<!-- Íconos -->
-			<i id="alerta" class="fa-solid fa-triangle-exclamation inicio <%- locals.informacion && (locals.informacion.check || locals.informacion.trabajando) ? 'ocultar' : '' %>"></i>
-			<img id="check" src="/publico/imagenes/Varios/Check.png" class="inicio <%- !locals.informacion || !locals.informacion.check ? 'ocultar' : '' %>" height="60px">
-			<i id="trabajando" class="fa-solid fa-tools inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
+	<div id="cartelGenerico" class="cartelCentro absoluteCentro flexColAlign <%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
+		<!-- Íconos -->
+		<i id="alerta" class="fa-solid fa-triangle-exclamation inicio <%- locals.informacion && (locals.informacion.check || locals.informacion.trabajando) ? 'ocultar' : '' %>"></i>
+		<img id="check" src="/publico/imagenes/Varios/Check.png" class="inicio <%- !locals.informacion || !locals.informacion.check ? 'ocultar' : '' %>" height="60px">
+		<i id="trabajando" class="fa-solid fa-tools inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
 
-			<!-- Título -->
-			<h1 id="titulo"><%= locals.informacion ? informacion.titulo : '' %></h1>
+		<!-- Título -->
+		<h1 id="titulo"><%= locals.informacion ? informacion.titulo : '' %></h1>
 
-			<!-- Si existe información, la muestra -->
+		<div id="contenedorMensajes">
 			<% if (locals.informacion) { %>
+				<!-- Si existe información, la muestra -->
 				<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
 					<% for (mensaje of informacion.mensajes) { %>
-						<li><%= mensaje %></li>
+						<li><%- mensaje %></li>
 					<% } %>
 				</ul>
 			<% } else { %>
 				<!-- Si no existe información, se deja preparado el sector -->
 				<ul type="dots" id="mensajes"></ul>
 			<% } %>
-			<!-- Se usa para Información y Front-End -->
-			<div id="flechasCartel">
-				<% if (locals.informacion) { %>
-					<% informacion.iconos.forEach((icono, i) => { %>
-						<% let autoFocus = informacion.iconos.length == 1 || icono.autofocus %>
-						<a href="<%= icono.link %>" tabindex="<%= i + 1 %>" <% if (autoFocus) { %>autofocus<% } %>>
-							<i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i>
-						</a>
-					<% }) %>
-				<% } %>
-			</div>
+		</div>
+		<div id="iconosCartel">
+			<% if (locals.informacion) { %>
+				<% informacion.iconos.forEach((icono, i) => { %>
+					<% let autoFocus = informacion.iconos.length == 1 || icono.autofocus %>
+					<a href="<%= icono.link %>" tabindex="<%= i + 1 %>" <% if (autoFocus) { %>autofocus<% } %>>
+						<i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i>
+					</a>
+				<% }) %>
+			<% } %>
 		</div>
 	</div>
 

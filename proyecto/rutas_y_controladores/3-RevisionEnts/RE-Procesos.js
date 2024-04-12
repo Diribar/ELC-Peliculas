@@ -400,8 +400,8 @@ module.exports = {
 				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
-			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
-			if (req.body.comentario) comentario += " - " + req.body.comentario;
+			let comentario = "";
+			if (req.body.comentario) comentario += req.body.comentario;
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Fin

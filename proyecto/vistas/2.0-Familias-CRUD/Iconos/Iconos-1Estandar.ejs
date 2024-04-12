@@ -1,12 +1,11 @@
-<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
 <% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
-<% const oa = locals.entidad == "capitulos" ? 'o' : 'a' %>
+<% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
-<div class="iconos">
-	<% if (locals.origen && origen != "DTR") { %><!-- Cuando tiene origen distinto a 'DTR' -->
+<div id="estandar" class="iconos">
+	<% if (locals.origen && (!detalle || origen != "DTR")) { %><!-- Cuando la vista no es 'detalle' o su origen no es 'Detalle RCLV' -->
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
 		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID || locals.id)) : '' %>

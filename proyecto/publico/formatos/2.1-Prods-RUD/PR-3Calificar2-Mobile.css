@@ -1,0 +1,21 @@
+/* Ambos */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+	/* Información */
+	#recuadroDL #contenido {margin: 20px;}
+	#calificaciones #individuales > div {flex-direction: column; align-items: flex-start; text-align: left;}
+	#contenido #sector2 #sectorIconos {display: flex !important; margin: 25px 0 0;} /* debe tener 3 ids, por prioridades */
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	.marco #calificaciones {flex-direction: column;}
+	#calificaciones #individuales .ayudaMostrar {max-width: 50vw; top: -7px; translate: 100% 0;}
+	#calificaciones #individuales .ayudaMostrar::before {top: 7px; translate: -100% 0;}
+	#calificaciones #sector2 {margin: 25px 0 0;}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (max-height: 600px) {
+	form.marco {flex-direction: row;} /* confirmar, a la derecha del resultado */
+	.marco #calificaciones {flex-direction: row;} /* resultado, a la derecha de las calificaciones */
+}

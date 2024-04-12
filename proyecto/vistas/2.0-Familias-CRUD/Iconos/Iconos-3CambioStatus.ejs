@@ -1,5 +1,8 @@
-<% if (locals.usuario && locals.usuario.statusRegistro_id == perennes_id && !!locals.registro && (entidad != "capitulos" || registro.colecAprob)) { %>
-	<div id="flechasCambioStatus" class="iconos">
+<div id="cambioStatus" class="iconos">
+	<% condicUsuario = locals.usuario && locals.usuario.statusRegistro_id == perennes_id %>
+	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
+	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
+	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
 		<% if (locals.status_id == creado_id) { %>
 			<!-- Solo para status creado y usuario logueado -->
 			<% if (locals.creadoPor_id == usuario.id) { %>
@@ -15,7 +18,7 @@
 			<% } %>
 		<% } %>
 		<% if (provisorios_ids.includes(locals.status_id) && locals.revisorPERL) { %>
-			<!-- Inactivar -->
+			<!-- Revisar -->
 			<a href="<%= '/revision/' + familia + '/inactivar-o-recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
@@ -38,75 +41,64 @@
 				</a>
 			<% } %>
 		<% } %>
-	</div>
-<% } %>
+	<% } %>
 
-<% condic1 = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
-<% condic2 = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
-<% if (condic1 || condic2) { %>
-	<!-- VISTA CRUD     - AGREGAR/EDICION/ELIMINAR EDICIÓN RCLV -->
-	<!-- VISTA REVISIÓN - SOLAPAMIENTO -->
-	<div class="iconos">
-		<!-- Eliminar edición -->
+	<% condicRclvCrud = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
+	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
+	<% if (condicRclvCrud || condicRevSolapam) { %>
+		<!-- CRUD - Eliminar edición RCLV -->
 		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
 			<label for="eliminaEdicion" title="Eliminar la Edición">
 				<i class="fa-solid fa-trash-can"></i>
 			</label>
 			<input id="eliminaEdicion" type="submit" class="submit" formaction="<%= originalUrl %>&eliminarEdic=true" formmethod="post" >
 		<% } %>
-		<!-- Aprobar -->
+		<!-- CRUD - Aprobar -->
 		<button type="submit" autofocus class="inactivo">
 			<i class="fa-solid fa-circle-check" title="Guardar"></i>
 		</button>
-	</div>
-<% } %>
-<% condic1 = tema == "fmCrud" && codigo != "eliminar" %>
-<% condic2 = tema == "revisionEnts" && codigo == "rechazo" %>
-<% if (condic1 || condic2) {  %>
-	<!-- VISTAS CRUD     - INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
-	<!-- VISTAS REVISION - RECHAZO - Para completar el feedback y enviar a Revisión -->
-	<!-- Confirma el cambio de status -->
-	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
-		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+	<% } %>
+
+	<% if (tema == "revisionEnts") { %>
+		<% if (locals.statusCreado) { %>
+			<!-- REVISION ALTA - Aprobar -->
+			<button type="submit" autofocus>
+				<i class="fa-solid fa-circle-check" title="Aprobar"></i>
+			</button>
+			<!-- REVISION ALTA - Ir a la vista Rechazar -->
+			<a href="<%= '/revision/' + familia + '/rechazo/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
+			</a>
+		<% } %>
+		<% if (codigo == "inactivar-o-recuperar") {  %>
+			<!-- REVISION INACTIVAR Y RECUPERAR - Rechaza el cambio de status -->
+			<label for="desaprueba" class="inactivo">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Desaprueba el cambio de status"></i>
+			</label>
+			<input type="submit" id="desaprueba" formaction="<%= urlActual %>&desaprueba=true" formmethod="post">
+
+			<!-- REVISION INACTIVAR Y RECUPERAR - Confirma el cambio de status -->
+			<button type="submit" id="aprueba">
+				<i class="fa-solid fa-circle-right" tabindex="-1" title="Aprueba el cambio de status"></i>
+			</button>
+		<% } %>
+	<% } %>
+</div>
+
+<% condicCrud = tema == "fmCrud" %>
+<% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
+<% condicRevRech = tema == "revisionEnts" && codigo == "rechazo" %>
+<% if (condicCrud || condicRevRech) {  %>
+	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>
+			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
+			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
+			<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+		<% } %>
+		<% if (condicCrudEliminar) {  %>
+			<!-- Elimina definitivamente -->
+			<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
+		<% } %>
 	</button>
 <% } %>
-<!-- VISTAS CRUD - ELIMINAR -->
-<% if (tema == "fmCrud" && codigo == "eliminar") {  %>
-	<!-- Elimina definitivamente -->
-	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
-		<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
-	</button>
-<% } %>
 
-
-<% if (tema == "revisionEnts" && locals.statusCreado) { %>
-	<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
-	<div class="iconos">
-		<!-- Aprobar -->
-		<button type="submit" autofocus>
-			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
-		</button>
-		<!-- Rechazar -->
-		<a href="<%= '/revision/' + familia + '/rechazo/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
-		</a>
-	</div>
-<% } %>
-
-<% if (tema == "revisionEnts" && codigo == "inactivar-o-recuperar") {  %>
-	<!-- VISTAS REVISION INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a 'aprobado' o 'inactivo' -->
-	<div class="iconos">
-
-		<!-- Rechaza el cambio de status -->
-		<label for="desaprueba" class="inactivo">
-			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Desaprueba el cambio de status"></i>
-		</label>
-		<input type="submit" id="desaprueba" formaction="<%= urlActual %>&desaprueba=true" formmethod="post">
-
-		<!-- Confirma el cambio de status -->
-		<button type="submit" id="aprueba">
-			<i class="fa-solid fa-circle-right" tabindex="-1" title="Aprueba el cambio de status"></i>
-		</button>
-
-	</div>
-<% } %>

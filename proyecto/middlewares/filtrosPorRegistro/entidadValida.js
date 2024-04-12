@@ -15,11 +15,15 @@ module.exports = (req, res, next) => {
 		// Entidad inexistente
 		const familia1 = comp.obtieneDesdeEntidad.familia(entidad);
 		const familia2 = req.baseUrl + req.path;
+		const rutasStd = ["/crud/", familia1];
 		const rutasPorFamilia = {
-			producto: ["/links/", "/crud/", familia1],
-			rclv: ["/crud/", familia1],
+			producto: [...rutasStd, "/links/"],
+			rclv: [...rutasStd],
 		};
-		if (!familia1 || !rutasPorFamilia[familia1].some((n) => familia2.includes(n) || familia2.startsWith(n)))
+		if (
+			!familia1 || // la entidad no pertenece a una familia
+			!rutasPorFamilia[familia1].some((n) => familia2.includes(n)) // la familia no está presente en el url
+		)
 			informacion = {
 				mensajes: ["La entidad ingresada es inválida."],
 				iconos: [
