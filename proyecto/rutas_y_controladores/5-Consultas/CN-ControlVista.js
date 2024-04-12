@@ -6,6 +6,7 @@ module.exports = {
 	consultas: async (req, res) => {
 		// Variables
 		const tema = "consultas";
+		const codigo = "tableroControl";
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = usuario ? usuario.id : null;
@@ -25,7 +26,7 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, titulo, userID},
+			...{tema, codigo, titulo, userID},
 			...{configsCons, ayudas}, // no lleva datos de la configuración actual
 			omitirFooter: true,
 		});

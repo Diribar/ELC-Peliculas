@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 		// Zona Disponible - Resultados
 		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
 		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
-		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #sectorIconos"),
+		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
 		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
 
 		// Otros

@@ -88,7 +88,7 @@ module.exports = {
 			...{tema, codigo, tituloDetalle, titulo, origen},
 			...{entidad, id, familia: "producto", registro: prodComb, link},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			mobile: true,
+			iconosMobile: true,
 		});
 	},
 };
