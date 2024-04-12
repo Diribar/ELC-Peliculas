@@ -16,7 +16,7 @@
 #contIframe iframe {border-radius: 25px; border: solid var(--gris-oscuro) 9px;}
 
 /* Laptop */
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* General */
 	#cuerpoFooter #cuerpo {justify-content: space-between; align-items: center;}
 	#cuerpo :is(#tituloPrincipal, #sectorIconos) {flex-grow: 1;}

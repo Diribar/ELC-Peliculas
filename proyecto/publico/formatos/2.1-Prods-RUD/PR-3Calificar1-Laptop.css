@@ -1,4 +1,4 @@
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* Información */
 	.marco #calificaciones {flex-direction: row;}
 	#calificaciones #individuales > div {flex-direction: row; align-items: center;}

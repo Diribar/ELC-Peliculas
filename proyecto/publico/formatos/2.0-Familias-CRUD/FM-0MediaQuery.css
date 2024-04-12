@@ -1,5 +1,5 @@
 /* Laptop */
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* General */
 	#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
 	#cuerpo #datos {height: calc(100% - 37px);} /* 37px: tituloPrincipal */
