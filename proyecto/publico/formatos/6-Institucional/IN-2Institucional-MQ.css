@@ -5,13 +5,13 @@
 }
 
 /* Alto */
-@media (max-height: 450px) {
+@media (height <= 450px) {
 	#cuerpo #tituloPrincipal {display: none;}
 	section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
 	#contenido .iconos {display: flex;}
 }
-@media (min-height: 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
+@media (height > 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
 
 /* Ancho y Alto */
-@media (width > 700px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
-@media (width > 750px) and (min-height: 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
+@media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
+@media (width > 750px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}

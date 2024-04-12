@@ -36,7 +36,7 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooter #cuerpo {justify-content: center; align-items: center;}
 	#medio #contIframe {--altoDisp: var(--altoMain);}
 }

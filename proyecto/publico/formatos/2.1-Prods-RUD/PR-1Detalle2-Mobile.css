@@ -1,5 +1,5 @@
 /* Ambos */
-@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
 	#recuadroDL #contenido {margin: 15px 20px;}
 
@@ -29,7 +29,7 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (height <= 600px) {
 	/* Adecua temas de laptop */
 	#cuerpoFooter #cuerpo {max-height: none}
 	#datosLargos #recuadroDL {max-width: calc(100vw - var(--anchoImgDer) - 2vw) !important;}

@@ -1,5 +1,5 @@
 /* Ambos */
-@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#listado #prodsNuevos:first-child {padding-left: 0;}
 	#listado #prodsNuevos:last-child {padding-right: 0;}
 	#listado #prodsNuevos {padding: 0 7.5px;}
@@ -14,6 +14,6 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (height <= 600px) {
 	#recuadroDL #contenido {margin: 15px 15px;}
 }

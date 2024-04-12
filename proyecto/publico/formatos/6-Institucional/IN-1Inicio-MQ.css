@@ -6,13 +6,13 @@
 @media (width <= 550px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos {flex-direction: column; height: 100%;}}
 
 /* Altura */
-@media (max-height: 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
-@media (min-height: 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
-@media (max-height: 490px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos a button p {display: none;}}
+@media (height <= 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
+@media (height > 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
+@media (height <= 490px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos a button p {display: none;}}
 
 /* Altura y Ancho */
-@media (width <= 550px), (max-height: 350px) {#zonaDeBienvenida #sectorIconos a:hover {scale: 1;}}
-@media (width > 550px) and (min-height: 350px) {
+@media (width <= 550px), (height <= 350px) {#zonaDeBienvenida #sectorIconos a:hover {scale: 1;}}
+@media (width > 550px) and (height > 350px) {
 	#zonaDeBienvenida #sectorIconos a {scale: 1.1;}
 	#zonaDeBienvenida #sectorIconos a:hover {scale: 1.3;}
 }

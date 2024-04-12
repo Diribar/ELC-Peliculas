@@ -22,7 +22,7 @@
 }
 
 /* Ambos */
-@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
@@ -59,7 +59,7 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (height <= 600px) {
 	/* Ancho, alto, posición */
 	body {--anchoImgDer: 26vw;}
 	#cuerpoFooterImgDer #imgDerecha {min-width: 144px;} /* 144px es el ancho del 'sectorFiltros' */
