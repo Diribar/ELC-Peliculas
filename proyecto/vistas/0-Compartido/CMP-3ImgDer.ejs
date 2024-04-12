@@ -25,14 +25,13 @@
 		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
 	<% } %>
 
-	<!-- Publica la imagen -->
 	<% if (destino && !cartelRCLV) { %>
-		<!-- Imagen con RCLV -->
+		<!-- Publica la imagen con RCLV -->
 		<a href="<%= destino %>" tabindex="-1">
 			<img src="<%= ruta %>" title="Hoy se recuerda a <%= titulo %>">
 		</a>
 	<% } else { %>
-		<!-- Imagen sin RCLV -->
+		<!-- Publica la imagen sin RCLV -->
 		<img src="<%= ruta %>" title="<%= titulo %>">
 	<% } %>
 
