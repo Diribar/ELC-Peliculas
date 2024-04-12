@@ -37,9 +37,8 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	body {--anchoImgDer: 100vw;}
-
 	/* Ancho, alto, posición */
+	body {--anchoImgDer: 100vw;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute; width: 100vw !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #imgDerecha img {max-width: 100vw;}
 
@@ -60,7 +59,9 @@
 
 /* Acostado */
 @media (orientation: landscape) and (max-height: 600px) {
+	/* Ancho, alto, posición */
 	body {--anchoImgDer: 26vw;}
+	#cuerpoFooterImgDer #imgDerecha {min-width: 144px;}
 
 	/* Información */
 	#datos #datosLargos {max-height: 100%;}
