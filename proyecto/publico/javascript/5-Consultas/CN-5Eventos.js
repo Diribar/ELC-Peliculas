@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-	DOM.cuerpo.addEventListener("click", async (e) => {
+	DOM.cuerpoFooterImgDer.addEventListener("click", async (e) => {
 		// Variables
 		const elemento = e.target;
 		const padre = elemento.parentNode;
@@ -235,15 +235,14 @@ window.addEventListener("load", async () => {
 			let pariente = elemento;
 
 			// Rutina para averiguar si el evento fue en la zona 'configCons'
-			while (true) {
+			while (pariente.parentNode) {
 				// Acciones si el pariente es 'configCons'
 				if (pariente.id == "configCons") {
 					muestraFiltros = true; // actualiza 'muestraFiltros'
 					break; // interrumpe
 				}
 				// Si el elemento tiene padre, sube una generación, de lo contrario interrumpe
-				if (pariente.parentNode) pariente = pariente.parentNode;
-				else break;
+				pariente = pariente.parentNode;
 			}
 
 			// Acciones si se deben ocultar los filtros

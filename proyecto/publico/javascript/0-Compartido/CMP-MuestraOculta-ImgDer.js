@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 		imagen: DOM.imgDerecha.querySelector("img"),
 		links: DOM.imgDerecha.querySelector("#links"),
 		sectorIconos: DOM.imgDerecha.querySelector("#sectorIconos"),
-		cartelRCLV: DOM.imgDerecha.querySelector("#imgDerecha #cartelRCLV"),
+		cartelRCLV: DOM.imgDerecha.querySelector("#imgDerecha a:has(#cartelRCLV)"),
 	};
 
 	// Íconos
@@ -27,7 +27,7 @@ window.addEventListener("load", () => {
 		DOM.muestraDL = DOM.sectorIconos.querySelector("#muestraDL");
 		DOM.muestraDB = DOM.sectorIconos.querySelector("#muestraDB");
 	}
-	if (window.matchMedia("(orientation: landscape)").matches) DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
+	if (DOM.datosLargos && window.matchMedia("(orientation: landscape)").matches) DOM.datosLargos.classList.remove("toggle"); // inicialmente visibles en acostados
 
 	// Event listeners - Start-up / Sólo la imagen
 	DOM.imagen.addEventListener("click", () => {
@@ -37,8 +37,8 @@ window.addEventListener("load", () => {
 		if (DOM.datosBreves) DOM.datosBreves.classList.add("toggle"); // oculto
 
 		// Consultas
-		if (DOM.vistaDeResults) DOM.vistaDeResults.classList.toggle("toggle")
-		if (DOM.cartelRCLV) DOM.cartelRCLV.classList.toggle("toggle")
+		if (DOM.vistaDeResults) DOM.vistaDeResults.classList.toggle("toggle");
+		if (DOM.cartelRCLV) DOM.cartelRCLV.classList.toggle("toggle");
 	});
 
 	// Event listeners - Muestra datosLargos

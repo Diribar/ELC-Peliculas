@@ -45,18 +45,19 @@ require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
 global.versionELC = process.env.versionELC;
-global.carpetaExterna = path.join(__dirname, "../", process.env.carpetaExterna);
+global.carpetaPublica = path.join(__dirname, "publico");
+global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
 // Otros requires
 global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
-global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs'
+global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
 global.Op = db.Sequelize.Op;
 global.express = require("express");
 const app = express();
 
 // Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
-app.use("/publico", express.static(path.join(__dirname, "publico")));
+app.use("/publico", express.static(carpetaPublica));
 app.use("/Externa", express.static(carpetaExterna));
 
 // Otros
