@@ -1,5 +1,5 @@
 /* Ancho */
-@media (max-width: 1267px) {
+@media (width <= 1267px) {
 	#cuerpoFooterImgDer #imgDerecha img {display: none;}
 	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
 }
@@ -13,5 +13,5 @@
 @media (min-height: 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
 
 /* Ancho y Alto */
-@media (min-width: 700px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
-@media (min-width: 750px) and (min-height: 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
+@media (width > 700px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
+@media (width > 750px) and (min-height: 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}

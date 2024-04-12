@@ -5,5 +5,5 @@
 }
 
 /* Ancho y Alto */
-@media (min-width: 930px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
-@media (min-width: 1000px) and (min-height: 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
+@media (width > 930px) and (min-height: 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
+@media (width > 1000px) and (min-height: 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
