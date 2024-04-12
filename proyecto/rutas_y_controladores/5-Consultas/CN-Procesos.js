@@ -55,7 +55,7 @@ module.exports = {
 			cn_layouts
 				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
 				.map((n) => {
-					if (!resultado.find((m) => m.comentario == n.comentario)) resultado.push(n);
+					if (!resultado.find((m) => m.nombre == n.nombre)) resultado.push(n);
 				});
 
 			// Fin
