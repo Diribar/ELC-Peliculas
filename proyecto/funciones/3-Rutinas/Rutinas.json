@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 11/abr",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Vie. 12/abr",
+	"HoraUTC": "13:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 8/abr",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"10-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"11-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"12-abr-24": {"titulo": "San José Moscati", "entidad": "personajes", "id": 86},
-		"13-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"13-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"14-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
