@@ -1,6 +1,6 @@
 <!-- Muestra la Imagen -->
+<% let ruta, titulo, destino, cartelRCLV, RCLV_entidad %>
 <div id="imgDerecha">
-	<% let ruta, titulo, destino, cartelRCLV %>
 	<% if (locals.tema == "institucional") { %>
 		<!-- Imagen Institucional -->
 		<% ruta = imgInstitucional %>
@@ -17,9 +17,9 @@
 		<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 		<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 		<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
-		<% const ID_entidad = ImagenesDerecha[hoyLocal].entidad %>
-		<% const ID_id = ImagenesDerecha[hoyLocal].id %>
-		<% destino = ID_entidad && ID_id ? ("/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id) : null %>
+		<% const RCLV_id = ImagenesDerecha[hoyLocal].id %>
+		<% RCLV_entidad = ImagenesDerecha[hoyLocal].entidad %>
+		<% destino = RCLV_entidad && RCLV_id ? ("/rclv/detalle/?entidad=" + RCLV_entidad + "&id=" + RCLV_id) : null %>
 		<% if (destino && tema == "consultas" && codigo == "tableroControl") cartelRCLV = true %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
 		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
@@ -41,7 +41,7 @@
 		<%- include('PR1-Detalle-2Links') %>
 	<% } %>
 	<% if (cartelRCLV) { %>
-		<button type="button">Hola</button>
+		<%- include("CN-CartelRCLV", {RCLV_entidad}) %>
 	<% } %>
 	<% if (locals.iconosMobile) { %>
 		<div id="sectorIconos">
