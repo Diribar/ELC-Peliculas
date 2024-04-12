@@ -41,7 +41,7 @@
 	body {--anchoImgDer: 100vw;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw; max-height: none;}
 
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {position: static; translate: none; margin-top: 10px; margin-left: 10px;}
