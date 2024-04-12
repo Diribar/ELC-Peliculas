@@ -20,7 +20,7 @@
 		<% const RCLV_id = ImagenesDerecha[hoyLocal].id %>
 		<% RCLV_entidad = ImagenesDerecha[hoyLocal].entidad %>
 		<% destino = RCLV_entidad && RCLV_id ? ("/rclv/detalle/?entidad=" + RCLV_entidad + "&id=" + RCLV_id) : null %>
-		<% if (destino && tema == "consultas" && codigo == "tableroControl") cartelRCLV = true %>
+		<% if (destino && locals.tema == "consultas" && locals.codigo == "tableroControl") cartelRCLV = true %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
 		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
 	<% } %>
