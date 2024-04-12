@@ -1,9 +1,9 @@
 /* Ancho */
-@media (max-width: 1400px) {#cuerpo #zonaDeVitreaux {display: none;}}
-@media (max-width: 1100px) or (orientation: portrait) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
-@media (max-width: 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
-@media (min-width: 700px) {#zonaDeBienvenida #sectorIconos {flex-direction: row;}}
-@media (max-width: 550px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos {flex-direction: column; height: 100%;}}
+@media (width <= 1400px) {#cuerpo #zonaDeVitreaux {display: none;}}
+@media (width <= 1100px) or (orientation: portrait) {#cuerpoFooterImgDer #imgDerecha img {display: none;}}
+@media (width <= 700px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
+@media (width > 700px) {#zonaDeBienvenida #sectorIconos {flex-direction: row;}}
+@media (width <= 550px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos {flex-direction: column; height: 100%;}}
 
 /* Altura */
 @media (max-height: 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
@@ -11,8 +11,8 @@
 @media (max-height: 490px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos a button p {display: none;}}
 
 /* Altura y Ancho */
-@media (max-width: 550px), (max-height: 350px) {#zonaDeBienvenida #sectorIconos a:hover {scale: 1;}}
-@media (min-width: 550px) and (min-height: 350px) {
+@media (width <= 550px), (max-height: 350px) {#zonaDeBienvenida #sectorIconos a:hover {scale: 1;}}
+@media (width > 550px) and (min-height: 350px) {
 	#zonaDeBienvenida #sectorIconos a {scale: 1.1;}
 	#zonaDeBienvenida #sectorIconos a:hover {scale: 1.3;}
 }
