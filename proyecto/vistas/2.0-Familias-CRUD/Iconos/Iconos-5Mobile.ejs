@@ -4,7 +4,6 @@
 		<% let iconoCalificar = 'fa-chart-simple fa-rotate-90 ' + (!!locals.yaCalificada || !!locals.califUsuario) %>
 		<i id="muestraDL" class="fa-solid <%- codigo == "detalle" ? iconoDetalle : iconoCalificar %>" tabindex="-1"></i>
 		<i id="muestraDB" class="fa-solid <%- tema == "prodRud" ? 'fa-chart-line' : 'fa-child' %>" tabindex="-1"></i>
-		<%- include("Iconos-5MobileHref") %>
 	</div>
 <% } %>
 
