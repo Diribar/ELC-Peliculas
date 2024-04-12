@@ -217,7 +217,7 @@ let auxiliares = {
 		// Crea el anchor
 		const anchor = document.createElement("a");
 		anchor.href = "/" + familia + "/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
-		anchor.target = "_blank";
+		// anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 		li.appendChild(anchor);
 
@@ -581,7 +581,7 @@ let creaUnaCelda = {
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/rclv/detalle/?entidad=" + rclv.entidad + "&id=" + rclv.id;
-		anchor.target = "_blank";
+		// anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 
 		// Si tiene más de 1 producto
@@ -618,7 +618,7 @@ let creaUnaCelda = {
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
-		anchor.target = "_blank";
+		// anchor.target = "_blank";
 		let span;
 
 		// Obtiene el rclv
