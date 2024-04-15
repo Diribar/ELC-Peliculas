@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 12/abr",
-	"HoraUTC": "13:44",
+	"FechaUTC": "Lun. 15/abr",
+	"HoraUTC": "11:25",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 8/abr",
-	"HoraSemUTC": "17:26",
-	"semanaUTC": 15,
+	"FechaSemUTC": "Lun. 15/abr",
+	"HoraSemUTC": "11:25",
+	"semanaUTC": 16,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"11-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"12-abr-24": {"titulo": "San José Moscati", "entidad": "personajes", "id": 86},
 		"13-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"14-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"14-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"15-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"16-abr-24": {"titulo": "Santa Bernardita Soubirous", "entidad": "personajes", "id": 25},
+		"17-abr-24": {"titulo": "Santa Catalina Tekakwitha", "entidad": "personajes", "id": 227}
 	}
 }
