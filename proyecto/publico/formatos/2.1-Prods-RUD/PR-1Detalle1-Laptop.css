@@ -1,4 +1,4 @@
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* Links */
 	#datosLargos :is(#links, #links nav) {flex-direction: row; }
 	#datosLargos #links {justify-content: flex-start; padding: 10px 20px;}

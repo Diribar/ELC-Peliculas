@@ -15,12 +15,12 @@ const usRolRevLinks = require("../../middlewares/filtrosPorUsuario/usRolRevLinks
 // Middlewares - Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
+const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const linksEnSemana = require("../../middlewares/filtrosPorRegistro/linksEnSemana");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
-const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
@@ -30,7 +30,7 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Middlewares - Consolidados
 const usuarioBase = [usAltaTerm, usPenalizaciones];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...usuarioBase, permUserReg];
-const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...usuarioBase, usRolRevPERL, edicion, permUserReg];
+const aptoEdicion = [...aptoCRUD, usRolRevPERL, edicion];
 
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
@@ -67,7 +67,7 @@ router.get("/rclv/solapamiento", aptoCRUD, usRolRevPERL, capturaActivar, vistaRC
 router.post("/rclv/solapamiento", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, vista.edic.solapam);
 
 // Vistas - Edición
-router.get("/:familia/edicion", aptoEdicion, capturaActivar, vista.edic.form);
+router.get("/:familia/edicion", aptoEdicion, rutaCRUD_ID, capturaActivar, vista.edic.form);
 router.post("/:familia/edicion", aptoEdicion, motivoOpcional, capturaInactivar, vista.edic.avatar);
 
 // Vistas - Links

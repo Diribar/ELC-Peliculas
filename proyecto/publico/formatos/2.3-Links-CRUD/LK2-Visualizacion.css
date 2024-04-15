@@ -16,7 +16,7 @@
 #contIframe iframe {border-radius: 25px; border: solid var(--gris-oscuro) 9px;}
 
 /* Laptop */
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* General */
 	#cuerpoFooter #cuerpo {justify-content: space-between; align-items: center;}
 	#cuerpo :is(#tituloPrincipal, #sectorIconos) {flex-grow: 1;}
@@ -36,7 +36,7 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooter #cuerpo {justify-content: center; align-items: center;}
 	#medio #contIframe {--altoDisp: var(--altoMain);}
 }

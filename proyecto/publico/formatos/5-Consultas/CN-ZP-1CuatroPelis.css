@@ -5,7 +5,7 @@
 
 /* Botones para productos */
 #botones li {list-style-type: none;}
-#botones li {--altoLi: min(15px, calc((100vh - 52px - 200px - var(--altoFooter))/2)); margin: var(--altoLi) 10px;}
+#botones li {--altoLi: min(15px, calc((100dvh - 52px - 200px - var(--altoFooter))/2)); margin: var(--altoLi) 10px;}
 #botones li button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
 #botones li button {border-width: 1px; text-align: left; background: var(--celeste-oscuro);}
 #botones li button.cfc {background: var(--amarillo-claro);}

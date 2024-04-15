@@ -229,7 +229,7 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Encabezado - Oculta filtros para celular parado
+		// Si los filtros para celular parado están visibles, los oculta
 		if (DOM.configCons.className.includes("aumentaX")) {
 			// Averigua si se deben mostrar los filtros
 			let pariente = elemento;
@@ -255,6 +255,11 @@ window.addEventListener("load", async () => {
 				DOM.configCons.classList.remove("aumentaX");
 				DOM.configCons.classList.add("disminuyeX");
 			}
+		}
+		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
+		else if (elemento == DOM.imgDerecha && DOM.cartelRCLV) {
+			DOM.vistaDeResults.classList.toggle("toggle");
+			DOM.cartelRCLV.classList.toggle("toggle");
 		}
 	});
 	DOM.cuerpo.addEventListener("keydown", (e) => {

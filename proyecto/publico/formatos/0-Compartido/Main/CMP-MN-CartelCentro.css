@@ -42,7 +42,7 @@ main .cartelCentro.trabajando {background: var(--azul-oscuro);}
 /* Particularidades de cartelGenerico */
 #cartelGenerico:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
 #cartelGenerico #contenedorMensajes {padding-block: 10px}
-#cartelGenerico #contenedorMensajes {max-height: 50vh; overflow-y: auto; scrollbar-width: none;}
+#cartelGenerico #contenedorMensajes {max-height: 50dvh; overflow-y: auto; scrollbar-width: none;}
 
 /* Particularidades de cartelProgreso */
 #cartelProgreso #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
@@ -54,9 +54,9 @@ main .cartelCentro.trabajando {background: var(--azul-oscuro);}
 	.cartelCentro .inicio {margin-bottom: 20px;}
 	.cartelCentro #iconosCartel {margin-top: 20px;}
 	.cartelCentro #mensajes {margin-inline: 10px;}
-	#cartelGenerico #contenedorMensajes {max-height: 50vh;}
+	#cartelGenerico #contenedorMensajes {max-height: 50dvh;}
 }
-@media (max-height: 350px) {
+@media (height <= 350px) {
 	/* Encabezado */
 	.cartelCentro .inicio {margin-bottom: 5px;}
 	#cartelGenerico #check {display: none;}

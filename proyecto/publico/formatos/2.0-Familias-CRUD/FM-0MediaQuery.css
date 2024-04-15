@@ -1,5 +1,5 @@
 /* Laptop */
-@media (orientation: landscape) and (min-height: 600px) {
+@media (orientation: landscape) and (height > 600px) {
 	/* General */
 	#cuerpoFooter #cuerpo {height: calc(100% - var(--altoFooter));}
 	#cuerpo #datos {height: calc(100% - 37px);} /* 37px: tituloPrincipal */
@@ -22,7 +22,7 @@
 }
 
 /* Ambos */
-@media (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
 	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
@@ -37,11 +37,11 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	body {--anchoImgDer: 100vw;}
-
 	/* Ancho, alto, posición */
-	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute; width: 100vw !important;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos, #imgDerecha img {max-width: 100vw;}
+	body {--anchoImgDer: 100vw;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw; max-height: none;}
 
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {position: static; translate: none; margin-top: 10px; margin-left: 10px;}
@@ -59,8 +59,10 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (max-height: 600px) {
-	body {--anchoImgDer: 26vw;}
+@media (orientation: landscape) and (height <= 600px) {
+	/* Ancho, alto, posición */
+	body {--anchoImgDer: 29vw;}
+	#cuerpoFooterImgDer #imgDerecha {min-width: 144px;} /* 144px es el ancho del 'sectorFiltros' */
 
 	/* Información */
 	#datos #datosLargos {max-height: 100%;}
@@ -69,4 +71,5 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
+	#imgDerecha #sectorIconos .iconos#href #ppp {display: none;}
 }

@@ -1,16 +1,15 @@
 <% if (["detalle", "calificar"].includes(codigo)) { %>
 	<div id="mobile" class="iconos">
-		<% let iconoDetalle = tema == "prodRud" ? 'fa-circle-info' : 'fa-film' %>
-		<% let iconoCalificar = 'fa-chart-simple fa-rotate-90 ' + (!!locals.yaCalificada || !!locals.califUsuario) %>
-		<i id="muestraDL" class="fa-solid <%- codigo == "detalle" ? iconoDetalle : iconoCalificar %>" tabindex="-1"></i>
-		<i id="muestraDB" class="fa-solid <%- tema == "prodRud" ? 'fa-chart-line' : 'fa-child' %>" tabindex="-1"></i>
-		<%- include("Iconos-5MobileHref") %>
+		<% if (tema == "prodRud" && codigo == "detalle") { %>
+			<i id="muestraDL" class="fa-solid fa-circle-info"></i>
+		<% } %>
+		<i id="muestraDB" class="fa-solid <%- tema == "prodRud" ? 'fa-chart-line' : 'fa-child' %>"></i>
 	</div>
 <% } %>
 
 <div id="href" class="iconos">
 	<%- include("Iconos-5MobileHref") %>
 	<% if (locals.interesDelUsuario) { %>
-		<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>
+		<i id="ppp" class="<%= interesDelUsuario.icono %>" title="<%= interesDelUsuario.nombre %>"></i>
 	<% } %>
 </div>
