@@ -3,9 +3,6 @@
 	/* Información */
 	#recuadroDL #contenido {margin: 15px 20px;}
 
-	/* Links */
-	#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
-
 	/* Links - Ayuda */
 	#imgDerecha #ayudaLinks {margin-bottom: 10px;}
 	#imgDerecha #ayudaLinks .ayudaMostrar {translate: -50% -100%; top: -7px; left: 8px; right: auto;}
@@ -14,6 +11,8 @@
 	#imgDerecha #ayudaLinks .ayudaMostrar::before {border-color: var(--backAyuda) transparent transparent transparent;}
 
 	/* Links */
+	#imgDerecha #links {position: absolute; left: 50%; top: 50%; translate: -50% -50%;}
+	#imgDerecha #links.toggle {display: none;}
 	#imgDerecha :is(#links, #links nav) {flex-direction: column;}
 	#imgDerecha #links nav {align-items: center;}
 	#imgDerecha #links nav :is(a, select) {margin-top: 10px;}
@@ -37,5 +36,4 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter #datosLargos #links {display: none !important;}
-	#imgDerecha #sectorIconos .iconos#href {display: none;}
 }

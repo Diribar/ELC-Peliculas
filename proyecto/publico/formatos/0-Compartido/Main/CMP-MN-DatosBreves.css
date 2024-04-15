@@ -8,8 +8,8 @@
 #datosBreves #recuadroDB {max-width: 220px; width: max-content; max-height: 80%;}
 
 /* Títulos */
-#datosBreves #recuadroDB h3 {background: var(--gris-oscuro); color: snow;}
-#datosBreves #recuadroDB h3 {padding: 3px; border-radius: 10px; text-align: center;}
+#datosBreves #recuadroDB h3 {background: var(--gris-oscuro); color: snow; border-radius: 10px;}
+#datosBreves #recuadroDB h3 {padding: 3px 5px; text-align: center;  text-wrap: balance;}
 #datosBreves #recuadroDB h3:nth-child(n+2) {margin-top: 20px;}
 
 /* Gráfico */

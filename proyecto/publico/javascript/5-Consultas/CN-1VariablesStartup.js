@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables - DOM
 	DOM = {
 		// Formulario General
-		cuerpoFooterImgDer:document.querySelector("#cuerpoFooterImgDer"),
+		cuerpoFooterImgDer: document.querySelector("#cuerpoFooterImgDer"),
 		cuerpo: document.querySelector("#cuerpo"),
 		configCons: document.querySelector("#cuerpo #configCons"),
 		encabMasPelis: document.querySelector("#cuerpo #encabMasPelis"),
@@ -19,6 +19,9 @@ window.addEventListener("load", async () => {
 
 		// Zona de Productos
 		zonaDisponible: document.querySelector("#encabMasPelis #zonaDisponible"),
+
+		// Imagen derecha
+		imgDerecha: document.querySelector("#imgDerecha img"),
 	};
 	DOM = {
 		...DOM,
@@ -46,6 +49,12 @@ window.addEventListener("load", async () => {
 		muestraFiltros: DOM.configCons.querySelector("#toggleFiltros #muestraFiltros"),
 		ocultaFiltros: DOM.configCons.querySelector("#toggleFiltros #ocultaFiltros"),
 
+		// Zona Disponible - Resultados
+		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
+		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
+		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
+		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
+
 		// Zona Disponible - Carteles e Imagen de fondo
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
 		telonFondo: DOM.zonaDisponible.querySelector("#vistaDeResults img#telonFondo"),
@@ -58,12 +67,7 @@ window.addEventListener("load", async () => {
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
 		cartelLoginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
 		cartelVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo"),
-
-		// Zona Disponible - Resultados
-		resultados: DOM.zonaDisponible.querySelectorAll("#vistaDeResults .resultados"),
-		vistaDeResults: DOM.zonaDisponible.querySelector("#vistaDeResults"),
-		botones: DOM.zonaDisponible.querySelector("#vistaDeResults #botones"),
-		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
+		cartelRCLV: document.querySelector("#imgDerecha a:has(#cartelRCLV)"),
 
 		// Otros
 		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
