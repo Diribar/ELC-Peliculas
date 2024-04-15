@@ -26,11 +26,10 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const multer = require("../../middlewares/varios/multer");
 
 // Middlewares - Consolidados
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
-const aptoCRUD = [...aptoCalificar, permUserReg];
-const aptoEdicion = [...aptoCRUD, edicion];
+const aptoEdicion = [...aptoCalificar, permUserReg, edicion];
 
 // API - Calificaciones
 router.get("/api/obtiene-calificaciones", API.califics.delProducto);
