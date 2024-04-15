@@ -61,7 +61,7 @@
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
 	/* Ancho, alto, posición */
-	body {--anchoImgDer: 26vw;}
+	body {--anchoImgDer: 29vw;}
 	#cuerpoFooterImgDer #imgDerecha {min-width: 144px;} /* 144px es el ancho del 'sectorFiltros' */
 
 	/* Información */
@@ -71,4 +71,5 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
+	#imgDerecha #sectorIconos .iconos#href #ppp {display: none;}
 }
