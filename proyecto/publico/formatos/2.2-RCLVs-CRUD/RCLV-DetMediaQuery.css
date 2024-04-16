@@ -1,8 +1,10 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
-	#listado #prodsNuevos:first-child {padding-left: 0;}
-	#listado #prodsNuevos:last-child {padding-right: 0;}
-	#listado #prodsNuevos {padding: 0 7.5px;}
+	#listado #prodsNuevos {
+		padding: 0 7.5px;
+		&:first-child {padding-left: 0;}
+		&:last-child {padding-right: 0;}
+	}
 
 	/* oculta los triangulitos de desplazamiento */
 	#cuadroDeResultados i.mover {display: none;}
@@ -16,4 +18,5 @@
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
 	#recuadroDL #contenido {margin: 15px 15px;}
+	#listado #prodsNuevos {padding-block: 0 !important;}
 }
