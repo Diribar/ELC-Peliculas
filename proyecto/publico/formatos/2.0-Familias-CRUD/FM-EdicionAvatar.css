@@ -8,41 +8,37 @@
 	:is(.ayuda, .errores) {position: static; translate: none;}
 	.errores .fa-solid {margin-left: 10px;}
 
-}
+	/* Imagen - AyudaMostrar */
+	&.inputError {
+		.ayuda {
+			.ayudaMostrar {
+				right: auto; top: auto;
+				left: 50%; bottom: -7px; translate: -50% 100%;
+			}
+			.ayudaMostrar::before {
+				left: 50%; top: 0; translate: -50% -100%;
+				border-color: transparent transparent var(--backAyuda) transparent;
+			}
 
-
-/* Imagen - AyudaMostrar */
-#imgDerecha.inputError {
-	.ayuda {
-		.ayudaMostrar {
-			right: auto; top: auto;
-			left: 50%; bottom: -7px; translate: -50% 100%;
 		}
-		.ayudaMostrar::before {
-			left: 50%; top: 0; translate: -50% -100%;
-			border-color: transparent transparent var(--backAyuda) transparent;
+
+		.errores {
+			.mensajeError {
+				right: auto; top: auto;
+				left: 50%; top: -5px; translate: -50% -100%;
+				&::before {
+					left: 50%; bottom: 0; translate: -50% 100%;
+					border-color: var(--colorMensajeError) transparent transparent;
+				}
+			}
 		}
 
-	}
-
-	.errores {
-		.mensajeError {
-			right: auto; top: auto;
-			left: 50%; top: -5px; translate: -50% -100%;
+		/* Imagen - Links a sitios externos */
+		.agregados {
+			position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+			background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;
+			margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;
+			img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
 		}
-		.mensajeError::before {
-			left: 50%; bottom: 0; translate: -50% 100%;
-			border-color: var(--colorMensajeError) transparent transparent;
-		}
-	}
-
-	/* Imagen - Links a sitios externos */
-	.agregados {
-		position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-		background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;
-		margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;
-		img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
 	}
 }
-
-

@@ -20,15 +20,17 @@
 				button {
 					margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;
 					font-weight: bold; background: var(--gris-oscuro); color: snow;
+					&:hover {scale: 1.1}
 				}
-				button:hover {scale: 1.1}
 			}
 			#tempCapS {
 				display: flex; flex-direction: row; justify-content: flex-end; align-items: center;
 				.pack {
 					line-height: 1; margin-right: 5px; white-space: nowrap;
-					i {font-size: 1.1rem; }
-					i:first-child {margin-right: 3px;}
+					i {
+						font-size: 1.1rem;
+						&:first-child {margin-right: 3px;}
+					}
 				}
 				:is(#temporada, #capitulo) {border-radius: 5px;}
 				#temporada {margin-right: 8px;}

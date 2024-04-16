@@ -15,7 +15,11 @@
 	li {text-align: left;}
 
 	/* Submit button */
-	.iconos {margin: 20px auto 0;}
-	.iconos i {font-size: 1.75rem; color: var(--amarillo-oscuro);}
-	.iconos i {border-radius: 50%; padding: 5px;}
+	.iconos {
+		margin: 20px auto 0;
+		i {
+			font-size: 1.75rem; color: var(--amarillo-oscuro);
+			border-radius: 50%; padding: 5px;
+		}
+	}
 }

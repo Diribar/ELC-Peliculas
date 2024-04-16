@@ -23,12 +23,19 @@
 	}
 
 	/* Condicionales */
-	#recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
-	#recuadroDL:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
-	#recuadroDL:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
-	#recuadroDL:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
-	#recuadroDL:has(.recuperar) {background: var(--verde-claro);}
-	#recuadroDL:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
+	#recuadroDL {
+		&:has(.inactivar, .rechazo, .eliminar) {
+			background: var(--rojo-claro) !important;
+			#encabezado {background: var(--rojo-oscuro);}
+			:is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+		}
+		&:has(.recuperar) {
+			background: var(--verde-claro) !important;
+			#encabezado {background: var(--verde-oscuro);}
+			:is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
+		}
+
+	}
 
 	/* Botones */
 	#contenido #sectorIconos {margin: 10px 40px 30px;}
