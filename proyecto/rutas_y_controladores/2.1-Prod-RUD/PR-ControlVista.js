@@ -302,7 +302,7 @@ module.exports = {
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
-			const iconoDL = "fa-chart-simple";
+			const iconoDL = "fa-chart-simple fa-rotate-90";
 			const iconoDB = "fa-chart-line";
 
 			// Ayuda para el título
