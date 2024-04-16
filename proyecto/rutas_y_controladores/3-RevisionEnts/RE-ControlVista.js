@@ -306,7 +306,7 @@ module.exports = {
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
-			let avatarExterno, avatarsExternos, avatar, imgDerPers, edicionAvatar;
+			let avatarExterno, avatarsExternosPelis, avatar, imgDerPers, edicionAvatar;
 			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
 
 			// Obtiene la versión original con include
@@ -348,7 +348,7 @@ module.exports = {
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/Externa/");
 				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
-				avatarsExternos = variables.avatarsExternos(nombre);
+				avatarsExternosPelis = variables.avatarsExternosPelis(nombre);
 				titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
 			}
 			// Acciones si el avatar no está presente en la edición
@@ -392,7 +392,7 @@ module.exports = {
 				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
 				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
-				...{avatar, avatarExterno, avatarsExternos, imgDerPers},
+				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
 				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},
 			});
 		},
