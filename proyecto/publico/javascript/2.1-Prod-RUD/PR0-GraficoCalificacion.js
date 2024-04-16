@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 		dondeUbicarLosResultados: document.querySelector("#calificacionesResultados"),
 		datosLargos: document.querySelector("#cuerpo #datos #datosLargos"),
 		datosBreves: document.querySelector("#cuerpo #datos #datosBreves"),
-		muestraDB:document.querySelector("#mobile #muestraDB")
+		iconoDB:document.querySelector("#mobile #iconoDB")
 	};
 
 	// Obtiene las calificaciones
@@ -78,10 +78,10 @@ window.addEventListener("load", async () => {
 	}
 
 	// Estética para el start-up
-	DOM.muestraDB.classList.add("inactivo")
+	DOM.iconoDB.classList.add("inactivo")
 	DOM.datosBreves.classList.replace("toggle", "esconderPorStartUp"); // inicialmente visibles en acostados
 	setTimeout(() => {
-		DOM.muestraDB.classList.remove("inactivo")
+		DOM.iconoDB.classList.remove("inactivo")
 		DOM.datosBreves.classList.replace("esconderPorStartUp", "toggle"); // inicialmente oculto en acostados
 	}, 1000);
 });
