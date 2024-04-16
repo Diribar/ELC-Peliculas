@@ -1,20 +1,34 @@
 /* Íconos */
-header section .grupos {margin: 0 15px; position: relative;}
-header section .grupos.margenDerecho {margin-right: 40px;}
-header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
-header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
+header {
+	section .grupos {
+		margin: 0 15px; position: relative;
+		&.margenDerecho {margin-right: 40px;}
+		.iconoHeader {
+			color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;
+			&.revision {color: var(--verde-intermedio);}
+		}
 
-/* Icono de movie */
-header #imagenConsultas {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
+		/* Ícono de agregar producto */
+		.iconoComb {
+			position: relative;
+			.adentro {
+				position: absolute; top: 48%; left: 3px; transform: translateY(-50%);
+				font-size: 1rem; color: var(--azul-oscuro);
+			}
+		}
 
-/* Ícono de agregar producto */
-header section .grupos .iconoComb {position: relative;}
-header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 3px; transform: translateY(-50%);}
-header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro);}
+	}
 
-/* Íconos de usuario */
-header #iconoUsuario {border-radius: 50%; overflow: hidden; }
-header #iconoUsuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+	/* Icono de movie */
+	#imagenConsultas {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
 
-/* Imágenes */
-header :is(#imagenConsultas, #imagenUsuario) img {height: 100%; width: 100%; object-fit: cover;}
+	/* Íconos de usuario */
+	#iconoUsuario {
+		border-radius: 50%; overflow: hidden;
+		#imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+	}
+
+	/* Imágenes */
+	:is(#imagenConsultas, #imagenUsuario) img {height: 100%; width: 100%; object-fit: cover;}
+}
+
