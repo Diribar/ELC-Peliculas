@@ -24,17 +24,16 @@
 	/* Alturas y anchos */
 	#cuerpo #encabMasPelis, #encabMasPelis #zonaDisponible {position: absolute; height: 100%; width: 100%;}
 	#cuerpo #encabMasPelis {justify-content: space-between;}
-	#zonaDisponible #vistaDeResults {max-height: 81%}
+	#zonaDisponible #vistaDeResults {max-height: 80%}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw; max-height: none;}
 
 	/* Encabezado */
 	#iconosDelTitulo #ayudaOpciones {
 		i.ayudaClick {font-size: 1.6rem;}
 		.ayudaMostrar {
-			max-width: 80vw; top: -15px;
-			&::before {top: 20px;}
+			max-width: 82vw; top: -20px;
+			&::before {top: 25px;}
 		}
-
 	}
 
 	/* Sector filtros */
