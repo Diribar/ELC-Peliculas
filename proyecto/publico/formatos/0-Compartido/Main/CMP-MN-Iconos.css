@@ -1,19 +1,28 @@
 /* sectorIconos */
-#sectorIconos {display: flex; flex-direction: row; justify-content: space-around;}
+#sectorIconos, #sectorIconos .iconos {display: flex; flex-direction: row; align-items: center;}
 
 /* Comunes */
-#sectorIconos .iconos {display: flex; flex-direction: row; align-items: center;}
-#sectorIconos .iconos {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
-#sectorIconos .iconos {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+#sectorIconos {
+	justify-content: space-around;
+	.iconos {
+		margin: 0 auto; padding: 5px 5px; border-radius: 18px;
+		background: var(--backFlechas); border: 2px solid var(--bordeFlechas);
+		&:has(img) {
+			padding-block: 4px;
+			img {height: 1.75rem;}
+		}
+		&:not(:has(*)) {display: none}
 
-/* Grupos */
-#sectorIconos .iconos :is(i, img, a, button) {font-size: 1.75rem; background: transparent; border: none;}
-#sectorIconos .iconos :where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
-#sectorIconos .iconos :is(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
-#sectorIconos .iconos :is(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
-#sectorIconos .iconos :is(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
-#sectorIconos .iconos:not(:has(*)) {display: none}
+		/* Grupos */
+		:is(i, img, button) {font-size: 1.75rem; background: transparent; border: none;}
+		:where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
+		:is(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
+		:is(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
+		:is(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
 
-/* Particularidades */
-#sectorIconos .iconos .pack {display: flex; flex-direction: row; align-items: center;}
-#sectorIconos .iconos button i {margin: 0;}
+		/* Particularidades */
+		.pack {display: flex; flex-direction: row; align-items: center;}
+		button i {margin: 0;}
+	}
+}
+
