@@ -1,9 +1,9 @@
 body {
 	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
-	width: 100vw; height: 100dvh;
+	width: 100vw; height: 100svh;
 
-	--altoHeader: max(52px, min(8dvh, 60px));
-	--altoMain: calc(100dvh - var(--altoHeader));
+	--altoHeader: max(52px, min(8svh, 60px));
+	--altoMain: calc(100svh - var(--altoHeader));
 	--altoFooter: 23.6px;
 	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoImgDer: 32vw;

@@ -19,9 +19,9 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 .bloques .temas .bloqueRegistros {overflow-y: hidden;}
 
 /* Scroll */
-#primeraColumna .temas {max-height: 60dvh; overflow-y: auto;}
-#segundaColumna .temas:not(:has(#grafico)) {max-height: 30dvh; overflow-y: auto;}
-#segundaColumna:has(#linksHD) .temas {max-height: 20dvh;}
+#primeraColumna .temas {max-height: 60svh; overflow-y: auto;}
+#segundaColumna .temas:not(:has(#grafico)) {max-height: 30svh; overflow-y: auto;}
+#segundaColumna:has(#linksHD) .temas {max-height: 20svh;}
 
 /* Particulares */
 #linksPends {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}
