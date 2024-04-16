@@ -25,7 +25,7 @@ router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Redireciona
 router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);
-router.get("/inicio", vista.redirecciona.inicio);
+router.get("/inicio", vista.redirecciona.redireccionaInicio);
 router.get("/", vista.redirecciona.inicio);
 
 // Información para mostrar en el explorador
