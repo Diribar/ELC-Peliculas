@@ -5,7 +5,6 @@ window.addEventListener("load", () => {
 		datos: document.querySelector("#cuerpo #datos"),
 		imgDerecha: document.querySelector("#imgDerecha"),
 	};
-
 	DOM = {
 		...DOM,
 		// Sector Cuerpo
@@ -17,71 +16,76 @@ window.addEventListener("load", () => {
 		sectorIconos: DOM.imgDerecha.querySelector("#sectorIconos"),
 	};
 	// Sector Íconos
-	DOM.muestraDL = DOM.sectorIconos.querySelector("#muestraDL");
-	DOM.muestraDB = DOM.sectorIconos.querySelector("#muestraDB");
+	DOM.iconoDL = DOM.sectorIconos.querySelector("#iconoDL");
+	DOM.iconoDB = DOM.sectorIconos.querySelector("#iconoDB");
 
-	// Variables
-	let acostado = window.matchMedia("(orientation: landscape)").matches;
-	let v = {
-		mostrar: true,
-		ruta: location.pathname,
-		rutasSectores: [
-			{ruta: "producto/detalle", mostrarEstandar: acostado ? ["datosLargos", "links"] : ["links"]}, // más 'datosLargos' para 'acostado'
-			{ruta: "producto/calificar", mostrarEstandar: ["datosLargos"]},
-			{ruta: "rclv/detalle", mostrarEstandar: ["datosLargos"]},
-		],
-		sectores: ["links", "datosLargos", "datosBreves"],
-	};
-	const {mostrarEstandar} = v.rutasSectores.find((n) => v.ruta.includes(n.ruta));
+	// Más variables
+	const parado = window.matchMedia("(orientation: portrait)").matches;
 
 	// Funciones
-	let mostrarOcultarEstandar = () => {
-		// Rutina por sector a mostrar/ocultar
-		for (let sector of v.sectores) {
-			if (DOM[sector])
-				v.mostrar && mostrarEstandar.includes(sector)
-					? DOM[sector].classList.remove("toggle")
-					: DOM[sector].classList.add("toggle");
+	let muestraOculta_startUp = () => {
+		if (parado) {
+			// Datos Largos
+			DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
+			DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+
+			// Datos Breves
+			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+			DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+
+			// Links
+			if (DOM.links) DOM.links.classList.toggle("toggle");
+		} else {
+			// Datos Largos
+			DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+			DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+
+			// Datos Breves
+			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+			DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+
+			// Links
+			if (DOM.links) DOM.links.classList.remove("toggle");
 		}
 
 		// Fin
-		v.mostrar = !v.mostrar;
 		return;
 	};
 
-	// Event listeners - Start-up / Sólo la imagen
-	DOM.imagen.addEventListener("click", () => {
-		if (acostado) v.mostrar = true;
-		mostrarOcultarEstandar();
-	});
-
 	// Event listeners - Muestra datosLargos
-	if (DOM.muestraDL)
-		DOM.muestraDL.addEventListener("click", () => {
-			// Averigua si está oculto
-			const oculto = DOM.datosLargos.className.includes("toggle"); // averigua si está oculto
-			v.mostrar = !oculto;
+	DOM.iconoDL.addEventListener("click", () => {
+		// Datos Largos
+		DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+		DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
 
-			// Alterna mostrar/ocultar
-			mostrarOcultarEstandar();
-			if (oculto) DOM.datosLargos.classList.remove("toggle"); // muestra DB
-			v.mostrar = false;
-		});
+		// Datos Breves
+		DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+		DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+
+		// Links
+		if (parado && DOM.links) DOM.links.classList.add("toggle");
+	});
 
 	// Event listeners - Muestra datosBreves
-	DOM.muestraDB.addEventListener("click", () => {
-		// Averigua si está oculto
-		const oculto = DOM.datosBreves.className.includes("toggle");
-		v.mostrar = !oculto;
+	DOM.iconoDB.addEventListener("click", () => {
+		// Datos Largos
+		DOM.datosLargos.classList.add("toggle"); // muestra datosLargos
+		DOM.iconoDL.classList.remove("toggle"); // oculta iconoDL
 
-		// Alterna mostrar/ocultar
-		mostrarOcultarEstandar();
-		if (oculto) DOM.datosBreves.classList.remove("toggle"); // muestra DB
-		v.mostrar = false;
+		// Datos Breves
+		DOM.datosBreves.classList.remove("toggle"); // oculta datosBreves
+		DOM.iconoDB.classList.add("toggle"); // muestra iconoDB
+
+		// Links
+		if (parado && DOM.links) DOM.links.classList.add("toggle");
 	});
-	// Event listener - giro de la orientación
-	screen.orientation.addEventListener("change", () => {});
+
+	// Event listeners - Start-up / 'click' en la imagen
+	DOM.imagen.addEventListener("click", () => muestraOculta_startUp());
+
+	// Event listeners - Recarga la vista si se gira
+	screen.orientation.addEventListener("change", () => location.reload());
 
 	// Start-up
-	mostrarOcultarEstandar();
+	muestraOculta_startUp();
 });
