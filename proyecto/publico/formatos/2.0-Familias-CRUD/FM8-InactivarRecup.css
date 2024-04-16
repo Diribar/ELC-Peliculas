@@ -1,29 +1,35 @@
 /* Datos Largos */
-#datos #datosLargos {width: 65%; max-width: 600px;}
+#datos #datosLargos {
+	width: 65%; max-width: 600px;
+	#encabezado {border-bottom: none; color: snow;}
+	#recuadroDL #informacion {
+		display: flex; flex-direction: row; justify-content: space-between;
+		flex-grow: 1; margin: 30px 40px;
+		ul {
+			padding-right: 10px; max-width: 260px;
+			li {margin-top: 3px;}
+		}
+		#comentario {
+			h3 {
+				margin-bottom: 3px;
+				span {font-weight: normal; font-size: 1rem;}
+			}
+			textarea {
+				padding: 10px; border-radius: 8px; resize: none; height: 80px; width: 250px;
+				background: snow; color: var(--gris-mas-oscuro);
+			}
+			textarea:read-only {background: var(--gris-intermedio);}
+		}
+	}
 
-/* Colores */
-#cuerpo #datosLargos #encabezado {border-bottom: none; color: snow;}
+	/* Condicionales */
+	#recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
+	#recuadroDL:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
+	#recuadroDL:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+	#recuadroDL:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
+	#recuadroDL:has(.recuperar) {background: var(--verde-claro);}
+	#recuadroDL:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
 
-/* Sector de información */
-#recuadroDL #informacion {display: flex; flex-direction: row; justify-content: space-between;}
-#recuadroDL #informacion {flex-grow: 1; margin: 30px 40px;}
-#informacion ul {padding-right: 10px; max-width: 260px;}
-#informacion ul li {margin-top: 3px;}
-
-/* Textarea */
-#informacion #comentario h3 {margin-bottom: 3px;}
-#informacion #comentario h3 span {font-weight: normal; font-size: 1rem;}
-#informacion #comentario textarea {padding: 10px; border-radius: 8px; resize: none; height: 80px; width: 250px;}
-#informacion #comentario textarea {background: snow; color: var(--gris-mas-oscuro);}
-#informacion #comentario textarea:read-only {background: var(--gris-intermedio);}
-
-/* Botones */
-#contenido #sectorIconos {margin: 10px 40px 30px;}
-
-/* Condicionales */
-#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) #encabezado {background: var(--rojo-oscuro);}
-#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) {background: var(--rojo-claro);}
-#datosLargos #recuadroDL:has(.inactivar, .rechazo, .eliminar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
-#datosLargos #recuadroDL:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
-#datosLargos #recuadroDL:has(.recuperar) {background: var(--verde-claro);}
-#datosLargos #recuadroDL:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
+	/* Botones */
+	#contenido #sectorIconos {margin: 10px 40px 30px;}
+}
