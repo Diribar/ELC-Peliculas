@@ -23,10 +23,10 @@ form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
 @media (width <= 400px) {
 	#cuerpo form {min-width: min-content; max-width: 90vw;}
 }
-@media (width <= calc(400px + 0.67 * (100dvh - 60px)) ) {
+@media (width <= calc(400px + 0.67 * (100svh - 60px)) ) {
 	#imgDerecha img {display: none;}
 }
-@media (width > calc(400px + 0.67 * (100dvh - 60px)) ) {
+@media (width > calc(400px + 0.67 * (100svh - 60px)) ) {
 	#imgDerecha img {max-width: calc(0.7 * var(--altoMain));}
 }
 

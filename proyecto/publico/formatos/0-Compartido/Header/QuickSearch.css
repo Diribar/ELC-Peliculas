@@ -1,25 +1,40 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
-#busquedaRapida .menuMostrar {position: absolute; right: -7px; top: -3px; translate: 100%;}
-#busquedaRapida .menuMostrar :is(input, #muestraResultados) {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-#busquedaRapida .menuMostrar input {padding: 4px 5px; font-size: 1.2rem; font-weight: bold;}
-#busquedaRapida .menuMostrar #muestraResultados {border-top-left-radius: 0; overflow: hidden;}
-#busquedaRapida .menuMostrar #muestraResultados tr td {padding: 0 5px;}
-#busquedaRapida .menuMostrar #escribiMas {background: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
+#busquedaRapida {
+	.menuMostrar {
+		position: absolute; right: -7px; top: -3px; translate: 100%;
+		:is(input, #muestraResultados) {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+		input {padding: 4px 5px; font-size: 1.2rem; font-weight: bold;}
+		#muestraResultados {
+			border-top-left-radius: 0; overflow: hidden;
+			tr td {padding: 0 5px;}
+		}
+		#escribiMas {background: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
+	}
 
-/* Ancho */
-#busquedaRapida :is(input, p) {width: 200px;}
-#busquedaRapida #muestraResultados table {min-width: 200px;}
+	:is(input, p) {width: 200px;}
 
-/* Opciones de #muestraResultados */
-#busquedaRapida #muestraResultados table {border-collapse: collapse;}
-#busquedaRapida #muestraResultados tr td:first-child a {display: block; width: 100%; line-height: 1.3;}
-#busquedaRapida #muestraResultados tr td:nth-of-type(2) {text-align: left;}
-#busquedaRapida #muestraResultados tr td:nth-of-type(2):first-letter {text-transform: uppercase;}
-#busquedaRapida #muestraResultados p,
-#busquedaRapida #muestraResultados tr.prod:nth-of-type(odd) {background: whitesmoke;}
-#busquedaRapida #muestraResultados tr.prod:nth-of-type(even) {background: var(--celeste-claro);}
-#busquedaRapida #muestraResultados tr.rclv:nth-of-type(odd) {background: var(--amarillo-oscuro);}
-#busquedaRapida #muestraResultados tr.rclv:nth-of-type(even) {background: var(--amarillo-claro);}
+	/* Opciones de #muestraResultados */
+	#muestraResultados {
+		:is(p, tr.prod:nth-of-type(odd)) {background: whitesmoke;}
+		table {
+			min-width: 200px;
+			border-collapse: collapse;
+			tr {
+				&.prod:nth-of-type(even) {background: var(--celeste-claro);}
+				&.rclv:nth-of-type(odd) {background: var(--amarillo-oscuro);}
+				&.rclv:nth-of-type(even) {background: var(--amarillo-claro);}
+				td {
+					&:first-child a {display: block; width: 100%; line-height: 1.3;}
+					&:nth-of-type(2) {text-align: left;}
+					&:nth-of-type(2):first-letter {text-transform: uppercase;}
+
+				}
+
+			}
+		}
+
+	}
+}
 
 /* Condicional */
-#busquedaRapida .menuMostrar:not(:has(#muestraResultados.ocultar))  input {border-bottom-left-radius: 0; border-bottom-right-radius: 0;}
+.menuMostrar:not(:has(#muestraResultados.ocultar))  input {border-bottom-left-radius: 0; border-bottom-right-radius: 0;}

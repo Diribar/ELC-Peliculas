@@ -1,25 +1,37 @@
 
-/* Formato de Menús */
-header .menuMostrar {position: absolute; border: 1px solid rgba(0,0,0,.15); width: max-content;}
-header .menuMostrar.menuFondo {padding: 4px 0; border-radius: 10px; background: var(--gris-claro);}
+header {
+	.menuMostrar {
+		/* Formato de Menús */
+		position: absolute; border: 1px solid rgba(0,0,0,.15); width: max-content;
+		&.menuFondo {padding: 4px 0; border-radius: 10px; background: var(--gris-claro);}
 
-/* Opciones */
-header .menuMostrar .menuOpcion {display: flex; flex-direction: row; align-items: center;}
-header .menuMostrar .menuOpcion {padding: 4px 16px;}
-header .menuMostrar.menuFondo .menuOpcion:hover {background: var(--gris-intermedio);}
+		/* Opciones */
+		.menuOpcion {
+			display: flex; flex-direction: row; align-items: center;
+			padding: 4px 16px;
+			&:hover {background: var(--gris-intermedio);}
 
-/* Íconos que acompañan al menú */
-header .menuMostrar .menuOpcion .icono {width: 18px; margin-right: 10px; font-weight: bold;}
-header .menuMostrar .menuOpcion .icono {display: flex; justify-content: center; align-items: center;}
+			/* Íconos que acompañan al menú */
+			.icono {
+				width: 18px; margin-right: 10px; font-weight: bold;
+				display: flex; justify-content: center; align-items: center;
+			}
 
-/* Ícono ELC */
-header .menuMostrar .menuOpcion .icono#ELC {background: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
+			/* Ícono ELC */
+			.icono#ELC {background: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
+		}
+	}
 
-/* Específico del Menú de Usuario */
-header .menuDerecha {right: 0px;}
+	/* Específico del Menú de Usuario */
+	.menuDerecha {right: 0px;}
 
-/* Específico del Menú Mobile */
-header #menuMobile .menuOpcion {height: 28px;}
-header #menuMobile .menuOpcion div {width: 30px; text-align: start;}
-header #menuMobile .menuOpcion span {font-size: 1rem;}
-header #menuMobile .soloAngosto {display: none;}
+	/* Específico del Menú Mobile */
+	#menuMobile {
+		.menuOpcion {
+			height: 28px;
+			div {width: 30px; text-align: start;}
+			span {font-size: 1rem;}
+		}
+		.soloAngosto {display: none;}
+	}
+}

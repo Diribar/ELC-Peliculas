@@ -231,19 +231,8 @@ window.addEventListener("load", async () => {
 
 		// Si los filtros para celular parado están visibles, los oculta
 		if (DOM.configCons.className.includes("aumentaX")) {
-			// Averigua si se deben mostrar los filtros
-			let pariente = elemento;
-
-			// Rutina para averiguar si el evento fue en la zona 'configCons'
-			while (pariente.parentNode) {
-				// Acciones si el pariente es 'configCons'
-				if (pariente.id == "configCons") {
-					muestraFiltros = true; // actualiza 'muestraFiltros'
-					break; // interrumpe
-				}
-				// Si el elemento tiene padre, sube una generación, de lo contrario interrumpe
-				pariente = pariente.parentNode;
-			}
+			// Si el evento fue en la zona 'configCons', actualiza 'muestraFiltros'
+			if (elemento.closest("#configCons")) muestraFiltros = true;
 
 			// Acciones si se deben ocultar los filtros
 			if (!muestraFiltros) {
