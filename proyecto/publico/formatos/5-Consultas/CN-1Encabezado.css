@@ -20,7 +20,7 @@
 #tituloPrincipal select:not(:valid) {background: var(--gris-intermedio);}
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
 #tituloPrincipal select optgroup {background: var(--azul-frances);}
-#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal; cursor: pointer;}
+#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
 
 /* Ayuda y Actualizar */
 #tituloPrincipal #ayudaOpciones {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}

@@ -1,9 +1,7 @@
-<% if (["detalle", "calificar"].includes(codigo)) { %>
+<% if (locals.iconoDL && locals.iconoDB) { %>
 	<div id="mobile" class="iconos">
-		<% if (tema == "prodRud" && codigo == "detalle") { %>
-			<i id="muestraDL" class="fa-solid fa-circle-info"></i>
-		<% } %>
-		<i id="muestraDB" class="fa-solid <%- tema == "prodRud" ? 'fa-chart-line' : 'fa-child' %>"></i>
+		<i id="iconoDL" class="fa-solid <%= iconoDL %>"></i>
+		<i id="iconoDB" class="fa-solid <%= iconoDB %>"></i>
 	</div>
 <% } %>
 

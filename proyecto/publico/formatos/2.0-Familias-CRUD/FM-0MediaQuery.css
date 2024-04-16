@@ -32,7 +32,7 @@
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none !important;}
+	:is(#datos :is(#datosLargos, #datosBreves), #mobile i).toggle {display: none !important;}
 	#datos #datosBreves.esconderPorStartUp {position: absolute; left: 0; translate: -100% 0;}
 
 	/* Sector Imagen Derecha */

@@ -73,6 +73,8 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = prodComb.creadoPor_id;
+		const iconoDL = "fa-circle-info";
+		const iconoDB = "fa-chart-line";
 
 		// Va a la vista
 		// return res.send(links);
@@ -82,7 +84,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			iconosMobile: true,
+			...{iconosMobile: true, iconoDL, iconoDB},
 		});
 	},
 	edicion: {
@@ -300,12 +302,15 @@ module.exports = {
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
+			const iconoDL = "fa-chart-simple fa-rotate-90";
+			const iconoDB = "fa-chart-line";
 
 			// Ayuda para el título
 			const ayudasTitulo = [];
 			if ([pppOpcsObj.sinPref.id, pppOpcsObj.laQuieroVer.id].includes(interesDelUsuario.id))
 				ayudasTitulo.push("Sólo podés calificar una película si ya la viste.");
-			if (interesDelUsuario.id == pppOpcsObj.sinPref.id) ayudasTitulo.push("Si la calificás, cambiaremos tu preferencia como 'Ya vista'");
+			if (interesDelUsuario.id == pppOpcsObj.sinPref.id)
+				ayudasTitulo.push("Si la calificás, cambiaremos tu preferencia como 'Ya vista'");
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
 			// Va a la vista
@@ -316,7 +321,7 @@ module.exports = {
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
-				iconosMobile: true,
+				...{iconosMobile: true, iconoDL, iconoDB},
 			});
 		},
 		guardar: async (req, res) => {

@@ -28,13 +28,18 @@
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw; max-height: none;}
 
 	/* Encabezado */
-	#iconosDelTitulo #ayudaOpciones i.ayudaClick {font-size: 1.6rem;}
-	#iconosDelTitulo #ayudaOpciones .ayudaMostrar {max-width: 80vw;}
-	#iconosDelTitulo #ayudaOpciones .ayudaMostrar::before {top: 12px;}
+	#iconosDelTitulo #ayudaOpciones {
+		i.ayudaClick {font-size: 1.6rem;}
+		.ayudaMostrar {
+			max-width: 82vw; top: -20px;
+			&::before {top: 25px;}
+		}
+	}
 
 	/* Sector filtros */
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
 	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);} /* preferencias */
+	#configFiltros #palabrasClave i {scale: 1.5;}
 
 	/* Imagen derecha */
 	#zonaDisponible #vistaDeResults {z-index: 1;}

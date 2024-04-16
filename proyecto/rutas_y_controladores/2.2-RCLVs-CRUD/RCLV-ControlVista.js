@@ -51,13 +51,15 @@ module.exports = {
 		const creadoPor_id = rclv.creadoPor_id;
 		const tituloDetalle = "Detalle de " + entidadNombre;
 		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
+		const iconoDL = "fa-video";
+		const iconoDB = "fa-child";
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
 			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
-			iconosMobile: true,
+			...{iconosMobile: true, iconoDL, iconoDB},
 		});
 	},
 	altaEdic: {
