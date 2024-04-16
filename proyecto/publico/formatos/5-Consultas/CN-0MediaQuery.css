@@ -35,6 +35,7 @@
 	/* Sector filtros */
 	#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
 	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);} /* preferencias */
+	#configFiltros #palabrasClave i {scale: 1.5;}
 
 	/* Imagen derecha */
 	#zonaDisponible #vistaDeResults {z-index: 1;}
