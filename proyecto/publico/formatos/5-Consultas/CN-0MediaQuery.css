@@ -24,7 +24,7 @@
 	/* Alturas y anchos */
 	#cuerpo #encabMasPelis, #encabMasPelis #zonaDisponible {position: absolute; height: 100%; width: 100%;}
 	#cuerpo #encabMasPelis {justify-content: space-between;}
-	#zonaDisponible #vistaDeResults {max-height: 80%}
+	#zonaDisponible #vistaDeResults {max-height: 81%}
 	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw; max-height: none;}
 
 	/* Encabezado */
