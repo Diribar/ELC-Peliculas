@@ -79,9 +79,9 @@ window.addEventListener("load", async () => {
 
 	// Estética para el start-up
 	DOM.muestraDB.classList.add("inactivo")
-	DOM.datosBreves.classList.replace("toggle", "esconder"); // inicialmente visibles en acostados
+	DOM.datosBreves.classList.replace("toggle", "esconderPorStartUp"); // inicialmente visibles en acostados
 	setTimeout(() => {
 		DOM.muestraDB.classList.remove("inactivo")
-		DOM.datosBreves.classList.replace("esconder", "toggle"); // inicialmente oculto en acostados
+		DOM.datosBreves.classList.replace("esconderPorStartUp", "toggle"); // inicialmente oculto en acostados
 	}, 1000);
 });

@@ -32,8 +32,8 @@
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
 	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
-	#datos :is(#datosLargos, #datosBreves).toggle {display: none;}
-	#datos :is(#datosLargos, #datosBreves).esconder {position: absolute; left: 0; translate: -100% 0;}
+	#datos :is(#datosLargos, #datosBreves).toggle {display: none !important;}
+	#datos #datosBreves.esconderPorStartUp {position: absolute; left: 0; translate: -100% 0;}
 
 	/* Sector Imagen Derecha */
 	#imgDerecha {position: relative;}
@@ -46,7 +46,7 @@
 @media (orientation: portrait) {
 	/* Ancho, alto, posición */
 	body {--anchoImgDer: 100vw;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw; max-height: none;}
 
