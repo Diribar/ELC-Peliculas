@@ -98,7 +98,15 @@ module.exports = {
 			if (!destino) destino = "/";
 			return res.redirect(destino);
 		},
-		inicio: (req, res) => res.redirect("/institucional/inicio"), // redirecciona a Inicio
+		redireccionaInicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
+		inicio: (req, res) => {
+			const vistaActual = vistasInstitucs.inicio;
+			return res.render("CMP-0Estructura", {
+				tema: "institucional",
+				...vistaActual,
+			});
+		},
+
 	},
 
 	// Listados
