@@ -2,11 +2,11 @@
 #cuerpo #datos {--anchoRecuadro: 675px;}
 
 /* Links */
-#links, #links nav {display: flex;}
 #links {
-	align-items: center;
+	display: flex; align-items: center;
 	:is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
 	nav {
+		display: flex;
 		:is(button, select) {
 			font-weight: bold; height: 24px;
 			border: 4px solid; border-radius: 13px; box-sizing: content-box;
