@@ -149,7 +149,7 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "cfc");
 
 		// Fin
-		this.bhr();
+		this.canons();
 		return;
 	},
 	canons: function () {
@@ -177,7 +177,7 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
 
 		// Fin
-		this.palabrasClave();
+		this.apMar();
 		return;
 	},
 	apMar: function () {
@@ -198,7 +198,7 @@ let actualizaConfigCons = {
 		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
 
 		// Fin
-		this.canons();
+		this.bhr();
 		return;
 	},
 
@@ -214,7 +214,7 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "bhr");
 
 		// Fin
-		this.apMar();
+		this.palabrasClave();
 		return;
 	},
 	palabrasClave: function () {
