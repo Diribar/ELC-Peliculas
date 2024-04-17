@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Filtros - 'palabrasClave'
-		else if (nombre == "palabrasClave") {
+		else if (nombre == "palClaveAprob") {
 			DOM.palClaveAprob.classList.add("inactivo");
 			await estandarParaInputs();
 

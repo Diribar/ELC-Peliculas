@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 16/abr",
-	"HoraUTC": "2:27",
+	"FechaUTC": "Mié. 17/abr",
+	"HoraUTC": "11:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 15/abr",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"14-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"15-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"16-abr-24": {"titulo": "Santa Bernardita Soubirous", "entidad": "personajes", "id": 25},
 		"17-abr-24": {"titulo": "Santa Catalina Tekakwitha", "entidad": "personajes", "id": 227},
-		"18-abr-24": {"titulo": "Albert Einstein", "entidad": "personajes", "id": 173}
+		"18-abr-24": {"titulo": "Albert Einstein", "entidad": "personajes", "id": 173},
+		"19-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
