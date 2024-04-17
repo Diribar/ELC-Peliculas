@@ -18,5 +18,4 @@
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
 	#recuadroDL #contenido {margin: 15px 15px;}
-	#listado #prodsNuevos {padding-block: 0 !important;}
 }
