@@ -17,11 +17,11 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let imgDerPers;
 
-		// Obtiene RCLV con productos
+		// Obtiene RCLV y sus productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let rclv = {...original, ...edicion, id};
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
-		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID); // Productos del RCLV
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
