@@ -26,7 +26,7 @@
 			:is(a, select) {margin-top: 10px;}
 			& > *:first-child {margin-top: 0;}
 		}
-		&:has(p) {
+		&:has(#sinLinks) {
 			width: max-content;
 			padding-block: 5px; text-wrap: balance; text-align: center;
 			background: var(--amarillo-claro); border: 2px solid gray; border-radius: 10px;
