@@ -1,11 +1,16 @@
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
-	#vistaDeResults #scroll #botones:has(li) {flex-wrap: wrap;}
-	#cuerpoFooterImgDer #imgDerecha {position: relative;}
-	#layoutAyuda #ayudaOpciones i.ayudaClick {font-size: 1.2rem;}
-
-	/* Ocultar */
-	#iconosDelTitulo #ayudaOpciones {display: none;}
+	#cuerpoFooterImgDer {
+		#cuerpo {
+			#vistaDeResults {
+				--anchoMinimo: 350px;
+				#scroll #botones:has(li) {flex-wrap: wrap;}
+			}
+			#iconosDelTitulo #ayudaOpciones {display: none;}
+			#layoutAyuda #ayudaOpciones i.ayudaClick {font-size: 1.2rem;}
+		}
+		#imgDerecha {position: relative;}
+	}
 }
 
 /* Ambos */
@@ -55,6 +60,7 @@
 				}
 				#zonaDisponible #vistaDeResults {
 					max-height: 80%; z-index: 1;
+					--anchoMinimo: 350px;
 					&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
 					#actualizar {display: none;} /* oculta el botón de actualizar prods */
 					img#telonFondo {display: none;} /* oculta el telón de fondo */
@@ -76,10 +82,14 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-	#zonaDisponible #vistaDeResults {max-height: 100%;}
-	#zonaDisponible #vistaDeResults:has(#scroll #botones li) {padding-top: 0; padding-bottom: 0;}
+	/* Vista de resultados */
+	#zonaDisponible #vistaDeResults {
+		--anchoMinimo: 330px;
+		max-height: 100%;
+		&:has(#scroll #botones li) {padding-top: 0; padding-bottom: 0;}
+	}
 
 	/* Ocultar */
-	#cuerpoFooterImgDer #imgDerecha, #vistaDeResults #actualizar, #encabMasPelis :is(#encabezado, footer), #cuerpo #configCons
+	#cuerpoFooterImgDer :is(#cuerpo :is(#configCons, #encabMasPelis :is(#encabezado, #vistaDeResults #actualizar, footer)), #imgDerecha)
 		{display: none;}
 }
