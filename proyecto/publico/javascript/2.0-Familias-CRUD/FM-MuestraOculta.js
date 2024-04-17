@@ -15,12 +15,11 @@ window.addEventListener("load", () => {
 		links: DOM.imgDerecha.querySelector("#links"),
 		sectorIconos: DOM.imgDerecha.querySelector("#sectorIconos"),
 	};
-	// Sector Íconos
-	DOM.iconoDL = DOM.sectorIconos.querySelector("#iconoDL");
-	DOM.iconoDB = DOM.sectorIconos.querySelector("#iconoDB");
 
 	// Más variables
-	const parado = window.matchMedia("(orientation: portrait)").matches;
+	DOM.iconoDL = DOM.sectorIconos.querySelector("#iconoDL");
+	DOM.iconoDB = DOM.sectorIconos.querySelector("#iconoDB");
+	let parado = window.matchMedia("(orientation: portrait)").matches;
 
 	// Funciones
 	let muestraOculta_startUp = () => {
@@ -84,7 +83,10 @@ window.addEventListener("load", () => {
 	DOM.imagen.addEventListener("click", () => muestraOculta_startUp());
 
 	// Event listeners - Recarga la vista si se gira
-	screen.orientation.addEventListener("change", () => location.reload());
+	screen.orientation.addEventListener("change", () => {
+		parado = window.matchMedia("(orientation: portrait)").matches;
+		muestraOculta_startUp();
+	});
 
 	// Start-up
 	muestraOculta_startUp();
