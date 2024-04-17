@@ -8,7 +8,6 @@
 			position: absolute; width: 220px;
 			* {font-size: 1rem;}
 			:is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
-			:is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 
 			/* Filtros Campos - Contenedor de Select e Input */
 			.pref {
