@@ -22,37 +22,56 @@
 /* Parado */
 @media (orientation: portrait) {
 	/* Alturas y anchos */
-	#cuerpo #encabMasPelis, #encabMasPelis #zonaDisponible {position: absolute; height: 100%; width: 100%;}
-	#cuerpo #encabMasPelis {justify-content: space-between;}
-	#zonaDisponible #vistaDeResults {max-height: 80%}
-	#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw; max-height: none;}
+	#cuerpoFooterImgDer {
+		/* Imagen derecha */
+		#imgDerecha {
+			position: absolute; top: 50%; left: 50%; translate: -50% -50%;
+			img {max-width: 100vw; max-height: none;}
+			a:has(#cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+		}
 
-	/* Encabezado */
-	#iconosDelTitulo #ayudaOpciones {
-		i.ayudaClick {font-size: 1.6rem;}
-		.ayudaMostrar {
-			max-width: 82vw; top: -20px;
-			&::before {top: 25px;}
+		#cuerpo {
+			/* General */
+			:is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
+
+			/* Sector Configuración de la Consulta */
+			#configCons {
+				position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);
+				#toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
+
+				/* Sector filtros */
+				#configFiltros #palabrasClave i {scale: 1.5;}
+
+			}
+
+			/* Sector Encabezado más películas */
+			#encabMasPelis {
+				justify-content: space-between;
+
+				/* Encabezado */
+				#tituloPrincipal {
+					#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
+					#layoutAyuda #ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
+					#iconosDelTitulo #ayudaOpciones {
+						i.ayudaClick {font-size: 1.6rem;}
+						.ayudaMostrar {
+							max-width: 82vw; top: -20px;
+							&::before {top: 25px;}
+						}
+					}
+				}
+				#zonaDisponible #vistaDeResults {
+					max-height: 80%; z-index: 1;
+					&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
+					#actualizar {display: none;} /* oculta el botón de actualizar prods */
+					img#telonFondo {display: none;} /* oculta el telón de fondo */
+					&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+				}
+				footer {z-index: 1; background: var(--gris-claro);}
+			}
 		}
 	}
 
-	/* Sector filtros */
-	#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
-	#cuerpo #configCons {position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);} /* preferencias */
-	#configFiltros #palabrasClave i {scale: 1.5;}
-
-	/* Imagen derecha */
-	#zonaDisponible #vistaDeResults {z-index: 1;}
-	#cuerpoFooterImgDer #imgDerecha {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
-	#cuerpoFooterImgDer footer {z-index: 1; background: var(--gris-claro);}
-
-	/* Ocultar */
-	#zonaDisponible #vistaDeResults:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
-	#configCons #toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
-	#vistaDeResults #actualizar {display: none;} /* oculta el botón de actualizar prods */
-	#vistaDeResults img#telonFondo {display: none;} /* oculta el telón de fondo */
-	#tituloPrincipal #layoutAyuda #ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
-	:is(#zonaDisponible #vistaDeResults, #imgDerecha a:has(#cartelRCLV)).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 }
 
 /* Acostado */
