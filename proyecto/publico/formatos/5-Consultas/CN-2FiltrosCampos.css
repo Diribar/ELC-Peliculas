@@ -1,14 +1,4 @@
 #configCons {
-	/* Carteles para mostrar/ocultar filtros */
-	#toggleFiltros {
-		justify-content: center; align-items: center; height: 100px;
-		background: var(--celeste-claro);
-		.pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-		#muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
-		#ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
-		span {font-weight: bold;}
-	}
-
 	/* Filtros Campos */
 	#configFiltros {
 		background: var(--gris-claro); flex-grow: 1;
@@ -53,5 +43,15 @@
 			/* Fondo verde a los sectores con elegibles elegidos */
 			:is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
 		}
+	}
+
+	/* Carteles para mostrar/ocultar filtros */
+	#toggleFiltros {
+		justify-content: center; align-items: center; height: 100px;
+		background: var(--celeste-claro);
+		.pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
+		#muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+		#ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+		span {font-weight: bold;}
 	}
 }
