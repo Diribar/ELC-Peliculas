@@ -15,7 +15,7 @@
 			#vistaDeResults {
 				position: absolute;
 				max-height: 95%; min-height: min(205px, 90%);
-				min-width: min(350px, 100%); max-width: min(660px, 100%);
+				min-width: min(var(--anchoMinimo), 100%); max-width: min(660px, 100%);
 				display: flex; flex-direction: column; justify-content: center;
 				border-radius: 15px; overflow: hidden; background: var(--celeste-claro);
 
@@ -31,7 +31,6 @@
 					#esperandoResultados {transition: .3s;}
 					button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
 					.cartel {
-						padding: 10px 15px; border-radius: 10px; margin: auto; border: solid 2px;
 						&#quieroVer, &.especial {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 						&#asegurate, &#loginNecesario {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 						&.especial {
@@ -54,7 +53,6 @@
 								}
 							}
 						}
-						&#cartelRCLV {text-wrap: balance;}
 						span {
 							color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps;
 							cursor: pointer; text-decoration: underline;
@@ -65,5 +63,14 @@
 			}
 		}
 		footer {align-self: stretch;}
+	}
+}
+
+/* Cartel - Genérico */
+:is(#vistaDeResults, #imgDerecha) {
+	.cartel {padding: 10px 15px; border-radius: 10px; margin: auto; border: solid 2px;}
+	button.cartel {
+		font-size: 1.5rem; font-weight: bold; font-style: italic;
+		&#cartelRCLV {text-wrap: balance;}
 	}
 }
