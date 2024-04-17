@@ -74,8 +74,8 @@ let actualizaConfigCons = {
 
 	// Presencia estable
 	presenciaEstable: function () {
-		// Impacto en prefs: todos los campos con presencia estable
-		for (let filtro of DOM.camposPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
+		// Impacto en prefs: todos los campos con presencia estable y que tengan un valor, impactan en el resultado
+		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
 		// Fin
 		this.entidad();
@@ -101,7 +101,7 @@ let actualizaConfigCons = {
 	},
 	pppOpciones: function () {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
-		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.cfc();
+		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.idiomas();
 
 		// Acciones si la opción elegida es "Mis preferencias"
 		if (v.layoutBD.codigo == "misPrefs") {
@@ -120,6 +120,17 @@ let actualizaConfigCons = {
 				if (pppOpcion.combo) prefs.pppOpciones = pppOpcion.combo.split(",");
 			}
 		}
+
+		// Fin
+		this.idiomas();
+		return;
+	},
+	idiomas: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = prefs.tiposLink != "todos"; // 'tiposLink' está contestado
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "idiomas");
 
 		// Fin
 		this.cfc();

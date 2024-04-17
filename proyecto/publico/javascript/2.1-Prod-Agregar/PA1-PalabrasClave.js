@@ -18,6 +18,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		validaDatos: "/producto/agregar/api/valida/palabras-clave/?",
 		campos: Array.from(DOM.inputs).map((n) => n.name),
+		resultados: {},
 	};
 
 	// FUNCIONES *******************************************
@@ -53,9 +54,9 @@ window.addEventListener("load", async () => {
 			// Obtiene el link
 			return "/producto/agregar/api/PC-cant-prods/?palabrasClave=" + palabrasClave;
 		},
-		mostrarResultados: async (resultados) => {
+		mostrarResultados: async () => {
 			// Variables
-			let {cantProds, cantProdsNuevos, hayMas} = resultados;
+			let {cantProds, cantProdsNuevos, hayMas} = v.resultados;
 			// Determinar oracion y formato
 			let formatoVigente = "resultadoInvalido";
 			let oracion;
@@ -92,9 +93,11 @@ window.addEventListener("load", async () => {
 				// Agrega el campo y el valor
 				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
+
 			// Consecuencias de las validaciones de errores
 			await this.muestraLosErrores(datosUrl, mostrarIconoError);
 			this.actualizaBotonSubmit();
+
 			// Fin
 			return;
 		},
@@ -129,15 +132,24 @@ window.addEventListener("load", async () => {
 		submitForm: async function (e) {
 			e.preventDefault();
 			if (DOM.submit.className.includes("fa-circle-question")) {
+				// Acciones si el botón está activo
 				if (!DOM.submit.className.includes("inactivo")) {
+					// Obtiene los resultados
 					DOM.submit.classList.add("inactivo");
 					let ruta = FN.rutaObtieneCantProds(DOM.inputs[0].value);
-					let resultados = await fetch(ruta).then((n) => n.json());
-					FN.mostrarResultados(resultados);
-					DOM.submit.classList.remove("inactivo");
+					v.resultados = await fetch(ruta).then((n) => n.json());
+
+					// Muestra los resultados
+					FN.mostrarResultados();
 					FN.avanzar();
-				} else this.statusInicial(true);
-			} else DOM.form.submit();
+					DOM.submit.classList.remove("inactivo");
+				}
+				// Acciones si el botón está inactivo
+				else this.statusInicial(true);
+			}
+			// Acciones si el botón es 'OK'
+			else if (!v.resultados.cantProds) location.href = "ingreso-manual";
+			else DOM.form.submit();
 		},
 	};
 
