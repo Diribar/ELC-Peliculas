@@ -3,49 +3,80 @@
 
 /* Links */
 #links, #links nav {display: flex;}
-#links {align-items: center;}
-#links :is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
-#links nav :is(button, select) {font-weight: bold; height: 24px;}
-#links nav :is(button, select) {border: 4px solid; border-radius: 13px; box-sizing: content-box;}
-#links nav :is(button, select).enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#links nav :is(button, select).subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
-#links nav :is(button, select).otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-#links nav button {padding: 0px 9px; text-wrap: nowrap;}
-#links nav select {padding: 0px 4px; font-style: normal;}
-#links nav select.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
-#links nav select option {font-weight: bold;}
-#links nav select option.enCast {background: var(--verde-oscuro); color: var(--gris-claro);}
-#links nav select option.subtCast {background: gold; color: var(--gris-oscuro);}
-#links nav select option.otroIdioma {background: var(--rojo-oscuro); color: var(--gris-claro);}
+#links {
+	align-items: center;
+	:is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
+	nav {
+		:is(button, select) {
+			font-weight: bold; height: 24px;
+			border: 4px solid; border-radius: 13px; box-sizing: content-box;
+			&.enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+			&.subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
+			&.otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+		}
+		button {padding: 0px 9px; text-wrap: nowrap;}
+		select {
+			padding: 0px 4px; font-style: normal; text-align: center;
+			&.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
+			option {
+				font-weight: bold;
+				&.enCast {background: var(--verde-oscuro); color: var(--gris-claro);}
+				&.subtCast {background: gold; color: var(--gris-oscuro);}
+				&.otroIdioma {background: var(--rojo-oscuro); color: var(--gris-claro);}
+			}
+			-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: ''; /* para ocultar la flecha */
+		}
+	}
+}
 
 /* Links - Ayuda */
-#ayudaLinks .ayudaMostrar > p em {color: var(--amarillo-oscuro);}
-#ayudaLinks .ayudaMostrar ul {list-style-type: none;}
-#ayudaLinks .ayudaMostrar i.enCast {color: var(--verde-oscuro);}
-#ayudaLinks .ayudaMostrar i.subtCast {color: gold;}
-#ayudaLinks .ayudaMostrar i.otroIdioma {color: var(--rojo-oscuro);}
-#ayudaLinks .ayudaMostrar i.elegi {color: var(--gris-oscuro);}
-#ayudaLinks .ayudaMostrar i {border: 1.5px solid snow; font-size: small; border-radius: 50%;}
+#ayudaLinks .ayudaMostrar {
+	& > p em {color: var(--amarillo-oscuro);}
+	ul {list-style-type: none;}
+	i {
+		border: 1.5px solid snow; font-size: small; border-radius: 50%;
+		&.enCast {color: var(--verde-oscuro);}
+		&.subtCast {color: gold;}
+		&.otroIdioma {color: var(--rojo-oscuro);}
+		&.elegi {color: var(--gris-oscuro);}
+	}
 
-/* Marco de Detalle - Etiquetas */
-#marcoInfo {display: flex; flex-direction: column;}
-#marcoInfo #etiquetas .etiqueta {border: 1px solid var(--gris-oscuro); border-bottom: none;}
-#marcoInfo #etiquetas .etiqueta {padding: 1px 3px; cursor: pointer; width: max-content;}
-#marcoInfo #etiquetas .etiqueta {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
-#marcoInfo #etiquetas .etiqueta {border-top-left-radius: 5px; border-top-right-radius: 5px;}
-#marcoInfo #etiquetas .etiqueta.resaltar {font-weight: bold; cursor: default;}
-#marcoInfo #etiquetas .etiqueta.resaltar {background: var(--azul-oscuro); color: var(--celeste-claro);}
+}
 
-/* Marco de Detalle - Información */
-#marcoInfo #datosInfo {padding: 10px 15px;}
-#marcoInfo #datosInfo {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
-#marcoInfo #datosInfo {border-radius: 10px; border-top-left-radius: 0;}
-#marcoInfo:has(#etiquetas .etiqueta.rclv.resaltar) #datosInfo {border-top-right-radius: 0;}
+/* Marco de Detalle */
+#marcoInfo {
+	display: flex; flex-direction: column;
 
-#datosInfo .datosParcial {flex-direction: column;}
-#datosInfo .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
-#datosInfo .datosParcial#masInfo #infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
-#datosInfo .datosParcial a {text-decoration: underline;}
-#datosInfo .datosParcial b {color: var(--gris-oscuro);}
-#datosInfo .datosParcial#actores {color: var(--gris-oscuro);}
-#datosInfo .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
+	/* Etiquetas */
+	&:has(#etiquetas .etiqueta.rclv.resaltar) #datosInfo {border-top-right-radius: 0;}
+	#etiquetas .etiqueta {
+		border: 1px solid var(--gris-oscuro); border-bottom: none;
+		padding: 1px 3px; cursor: pointer; width: max-content;
+		font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);
+		border-top-left-radius: 5px; border-top-right-radius: 5px;
+		&.resaltar {
+			font-weight: bold; cursor: default;
+			background: var(--azul-oscuro); color: var(--celeste-claro);
+		}
+	}
+
+	/* Información */
+	#datosInfo {
+		padding: 10px 15px;
+		border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);
+		border-radius: 10px; border-top-left-radius: 0;
+		.datosParcial {
+			flex-direction: column;
+			a {text-decoration: underline;}
+			b {color: var(--gris-oscuro);}
+			&#masInfo {
+				flex-direction: row; justify-content: space-between;
+				#infoGral {column-count: 2; column-gap: 25px; column-rule: solid 1px;}
+			}
+			&#actores {
+				color: var(--gris-oscuro);
+				p span {font-weight: normal; color: var(--azul-oscuro);}
+			}
+		}
+	}
+}
