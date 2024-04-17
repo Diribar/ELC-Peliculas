@@ -6,7 +6,7 @@
 #contenido #informacion #cuadroDeResultados {position: relative;}
 
 /* Productos */
-#listado #prodsNuevos {padding: 0 15px;}
+#listado #prodsNuevos {padding: 0 15px !important;}
 #prodsNuevos #infoPeli {display: flex; flex-direction: column; justify-content: space-between; height: 100%;}
 
 /* ppp */

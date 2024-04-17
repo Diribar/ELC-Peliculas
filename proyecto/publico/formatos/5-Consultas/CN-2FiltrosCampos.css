@@ -1,38 +1,57 @@
-/* Carteles para mostrar/ocultar filtros */
-#configCons #toggleFiltros {justify-content: center; align-items: center; height: 100px;}
-#configCons #toggleFiltros {background: var(--celeste-claro);}
-#configCons #toggleFiltros .pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
-#configCons #toggleFiltros #muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
-#configCons #toggleFiltros #ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#configCons #toggleFiltros span {font-weight: bold;}
+#configCons {
+	/* Filtros Campos */
+	#configFiltros {
+		background: var(--gris-claro); flex-grow: 1;
+		position: relative; overflow-x: hidden;
+		nav {
+			/* General */
+			position: absolute; width: 220px;
+			* {font-size: 1rem;}
+			:is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
+			:is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 
-/* Filtros Campos */
-#configCons #configFiltros {background: var(--gris-claro); flex-grow: 1;}
-#configCons #configFiltros {position: relative; overflow-x: hidden;}
-#configCons #configFiltros nav {position: absolute; width: 220px;}
+			/* Filtros Campos - Contenedor de Select e Input */
+			.pref {
+				padding: 0 20px;
+				&.cfc {background: var(--amarillo-oscuro);}
+				&.bhr {background: var(--verde-intermedio);}
 
-/* Filtros Campos - Contenedor de Select e Input */
-#configFiltros .pref {padding: 0 20px;}
-#configFiltros .pref.cfc {background: var(--amarillo-oscuro);}
-#configFiltros .pref.bhr {background: var(--verde-intermedio);}
+				/* Filtros Campos - Select e Input */
+				:is(select, input) {width: 100%;}
 
-/* Filtros Campos - Select e Input */
-#configFiltros .pref :is(select, input) {width: 100%;}
+				/* Filtros Campos - Select */
+				select {
+					margin: 6px 0; cursor: pointer;
+					&:not(:has(option[value=""]:checked)) option.sinFiltro {display: block;}
+					option {
+						background: snow; color: var(--azul-oscuro);
+						&[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
+						&.sinFiltro {font-style: italic}
+					}
+					/* Fondo verde a los elegibles elegidos */
+					&:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: var(--amarillo-claro); border-color: transparent;}
+				}
+			}
 
-/* Filtros Campos - Select */
-#configFiltros .pref select {margin: 6px 0;}
-#configFiltros .pref select option {background: snow; color: var(--azul-oscuro);}
-#configFiltros .pref select option[value=""] {color: var(--rojo-oscuro); font-weight: bold;}
-#configFiltros .pref select option.sinFiltro {font-style: italic}
-#configFiltros .pref select:not(:has(option[value=""]:checked)) option.sinFiltro {display: block;}
+			/* Filtros - Búsqueda */
+			#palabrasClave {
+				position: relative; background-color: var(--verde-intermedio);
+				input {margin-top: 7.9px; margin-bottom: 7.9px; padding: 0px 4px; cursor: text;}
+				i {position: absolute; right: 2px; translate: -20px -50%; top: 50%; cursor: pointer;}
+			}
 
-/* Filtros - Búsqueda */
-#configFiltros #palabrasClave {position: relative; background-color: var(--verde-intermedio);}
-#configFiltros #palabrasClave input {margin-top: 7.9px; margin-bottom: 7.9px; padding: 0px 4px;}
-#configFiltros #palabrasClave i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
+			/* Fondo verde a los sectores con elegibles elegidos */
+			:is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
+		}
+	}
 
-/* Condicionales */
-/* Fondo verde a los sectores con elegibles elegidos */
-#configFiltros :is(.pref.contSelect:not(:has(select option[value=""]:checked)), #palabrasClave.verde) {background: var(--verde-oscuro); border-top: solid 1px snow;}
-/* Fondo verde a los elegibles elegidos */
-#configFiltros .pref select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: var(--amarillo-claro); border-color: transparent;}
+	/* Carteles para mostrar/ocultar filtros */
+	#toggleFiltros {
+		justify-content: center; align-items: center; height: 100px;
+		background: var(--celeste-claro);
+		.pointer {padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 1.15rem;}
+		#muestraFiltros {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+		#ocultaFiltros {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+		span {font-weight: bold;}
+	}
+}

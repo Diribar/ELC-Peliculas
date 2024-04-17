@@ -1,14 +1,20 @@
-/* General */
-#cuerpo #configCons nav * {font-size: 1rem;}
-#cuerpo #configCons :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px; cursor: pointer;}
-
 /* Filtros Cabecera */
-#configCons #cabecera {background: var(--gris-oscuro); padding: 20px 20px 15px; display: flex; flex-direction: column;}
-#configCons #cabecera :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
-/* Filtros Cabecera - Nuevo Nombre */
-#cabecera #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
-#cabecera #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
-/* Filtros Cabecera - Nombre Actual */
-#cabecera select {font-weight: bold;}
-#cabecera #iconosBotonera {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;} /* overflow: hidden */
-#cabecera #iconosBotonera i {cursor: pointer; color: snow;}
+#configCons #cabecera {
+	/* General */
+	background: var(--gris-oscuro); padding: 20px 20px 15px; display: flex; flex-direction: column;
+	:is(select, input[type="text"]) {border-radius: 5px; border-width: 1px; cursor: pointer;}
+	:is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+
+	/* Nuevo Nombre */
+	#configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
+	#configNueva :not(:is(.nuevo, .edicion)) {display: none;}
+
+	/* Nombre Actual */
+	select {font-weight: bold;}
+
+	/* Botonera */
+	#iconosBotonera {
+		justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;
+		i {cursor: pointer; color: snow;}
+	}
+}

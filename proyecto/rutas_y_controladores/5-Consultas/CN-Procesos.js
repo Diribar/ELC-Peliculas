@@ -442,7 +442,10 @@ module.exports = {
 
 					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palsClave = true
 					for (let campo of campos)
-						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) prods[i].palsClave = true;
+						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) {
+							prods[i].palsClave = true;
+							break
+						}
 
 					if (!prods[i].palsClave)
 						for (let campo of camposInclude)

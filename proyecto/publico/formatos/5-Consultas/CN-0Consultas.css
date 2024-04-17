@@ -1,55 +1,76 @@
 /* Cuerpo */
-#cuerpoFooter #cuerpo {flex-direction: row; max-height: 100%;}
+#cuerpoFooter #cuerpo {
+	flex-direction: row; max-height: 100%;
 
-/* Configuración de la consulta */
-#cuerpo #configCons {display: flex; flex-direction: column; width: 220px; height: 100%;}
+	/* Configuración de la consulta */
+	#configCons {display: flex; flex-direction: column; width: 220px; height: 100%;}
 
-/* Encabezado más películas */
-#cuerpo #encabMasPelis {display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1;}
+	/* Encabezado más películas */
+	#encabMasPelis {
+		display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1;
+		#encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+		#zonaDisponible {
+			display: flex; flex-direction: column; justify-content: center; align-items: center;
+			width: 100%; flex-grow: 1; position: relative;
+			#vistaDeResults {
+				position: absolute;
+				max-height: 95%; min-height: min(205px, 90%);
+				min-width: min(350px, 100%); max-width: min(660px, 100%);
+				display: flex; flex-direction: column; justify-content: center;
+				border-radius: 15px; overflow: hidden; background: var(--celeste-claro);
 
-/* Encabezado más películas - Encabezado */
-#encabMasPelis #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+				/* Ícono actualizar */
+				#actualizar {
+					position: absolute; top: 15px; right: 20px;
+					i {
+						background: var(--verde-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;
+						font-size: 0.8rem; padding: 5px 5px 4px 4px;
+					}
+				}
+				#carteles {
+					#esperandoResultados {transition: .3s;}
+					button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
+					.cartel {
+						&#quieroVer, &.especial {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+						&#asegurate, &#loginNecesario {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+						&.especial {
+							scale: 1.5; overflow: hidden;
+							#cierra {
+								top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;
+								&:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px; transition: 0.7s;}
+							}
 
-/* Encabezado más películas - Zona de productos */
-#encabMasPelis #zonaDisponible {display: flex; flex-direction: column; justify-content: center; align-items: center;}
-#encabMasPelis #zonaDisponible {width: 100%; flex-grow: 1; position: relative;}
-
-/* Vista de Resultados */
-#zonaDisponible #vistaDeResults {position: absolute; max-height: 95%; min-height: min(205px, 90%);}
-#zonaDisponible #vistaDeResults {display: flex; flex-direction: column; justify-content: center;}
-#zonaDisponible #vistaDeResults {border-radius: 15px; overflow: hidden; background: var(--celeste-claro);}
-#zonaDisponible #vistaDeResults {min-width: min(400px, 100%); max-width: min(660px, 100%); }
-
-/* Dentro de Vista de Resultados */
-#vistaDeResults #esperandoResultados {transition: .3s;}
-#vistaDeResults #actualizar {position: absolute; top: 15px; right: 20px}
-#vistaDeResults #actualizar i {background: var(--verde-oscuro); color: var(--colorAyuda); border-radius: 50%; cursor: pointer;}
-#vistaDeResults #actualizar i {font-size: 0.8rem; padding: 5px 5px 4px 4px}
+							/* Vista de Resultados - Carteles "Especiales" - Párrafo y Tabla */
+							div {
+								&:not(p) {margin: 10px 0 5px;}
+								p {color: var(--azul-oscuro); margin: 5px 0 10px; font-weight: bold; text-align: center;}
+								table {
+									border-collapse: collapse; margin-left: auto; margin-right: auto;
+									tr td {
+										padding: 2px 0;
+										&:first-of-type {padding-right: 10px;}
+									}
+								}
+							}
+						}
+						span {
+							color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps;
+							cursor: pointer; text-decoration: underline;
+						}
+					}
+				}
+				#ppp {font-size: 1.25rem;}
+			}
+		}
+		footer {align-self: stretch;}
+	}
+}
 
 /* Cartel - Genérico */
-:is(#vistaDeResults, #imgDerecha) .cartel {padding: 10px 15px; border-radius: 10px; margin: auto;}
-:is(#vistaDeResults, #imgDerecha) .cartel {border: solid 2px;}
-:is(#vistaDeResults, #imgDerecha) button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
-:is(#vistaDeResults, #imgDerecha) .cartel span {color: var(--azul-oscuro); font-weight: bold; font-variant: small-caps;}
-:is(#vistaDeResults, #imgDerecha) .cartel span {cursor: pointer; text-decoration: underline;}
-
-/* Vista de Resultados - Carteles "Botón" */
-#vistaDeResults :is(button#quieroVer, .cartel.especial) {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#vistaDeResults :is(button#asegurate, button#loginNecesario) {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-
-/* Vista de Resultados - Carteles "Especiales" */
-.cartel.especial {scale: 1.5; overflow: hidden;}
-.cartel.especial #cierra {top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;}
-.cartel.especial #cierra:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px; transition: 0.7s;}
-.cartel.especial div:not(p) {margin: 10px 0 5px;}
-
-/* Vista de Resultados - Carteles "Especiales" - Párrafo y Tabla */
-.cartel.especial div p {color: var(--azul-oscuro); margin: 5px 0 10px; font-weight: bold; text-align: center;}
-.cartel.especial div table {border-collapse: collapse; margin-left: auto; margin-right: auto;}
-.cartel.especial div table tr td {padding: 2px 0;}
-.cartel.especial div table tr td:first-of-type {padding-right: 10px;}
-
-/* Varios */
-#vistaDeResults #ppp {font-size: 1.25rem;}
-#encabMasPelis footer {align-self: stretch;}
-.cartel#cartelRCLV {text-wrap: balance;}
+:is(#vistaDeResults, #imgDerecha) {
+	.cartel {padding: 10px 15px; border-radius: 10px; margin: auto; border: solid 2px;}
+	button.cartel {
+		font-size: 1.5rem; font-weight: bold; font-style: italic;
+		&#cartelRCLV {text-wrap: balance;}
+	}
+}
