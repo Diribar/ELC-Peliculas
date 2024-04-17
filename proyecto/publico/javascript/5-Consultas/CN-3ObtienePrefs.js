@@ -1,6 +1,7 @@
 "use strict";
 
 let actualizaConfigCons = {
+	// General
 	consolidado: function () {
 		// Borra la información anterior
 		prefs = {};
@@ -17,8 +18,6 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-
-	// Encabezado
 	layout: function () {
 		// Variables
 		v.layout_id = DOM.layout_id.value;
@@ -41,6 +40,8 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+
+	// Filtros - General
 	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
 		if (v.layout_id) {
@@ -71,8 +72,6 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-
-	// Presencia estable
 	presenciaEstable: function () {
 		// Impacto en prefs: todos los campos con presencia estable y que tengan un valor, impactan en el resultado
 		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
@@ -82,7 +81,7 @@ let actualizaConfigCons = {
 		return;
 	},
 
-	// Presencia eventual
+	// Filtros - Presencia eventual
 	entidad: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = !!v.layoutBD.entidades.length; // sólo si la opción acepta más de una entidad
@@ -136,6 +135,8 @@ let actualizaConfigCons = {
 		this.cfc();
 		return;
 	},
+
+	// Filtros - Relación con la Iglesia Católica
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
@@ -149,41 +150,6 @@ let actualizaConfigCons = {
 
 		// Fin
 		this.bhr();
-		return;
-	},
-	bhr: function () {
-		// Sólo se muestra si se cumplen ciertas condiciones
-		const seMuestra =
-			!prefs.bhr && // si no está contestado
-			!DOM.canons.value && // el procCanon no está contestado
-			!DOM.rolesIgl.value; // el rolIglesia no está contestado
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "bhr");
-
-		// Fin
-		this.apMar();
-		return;
-	},
-	apMar: function () {
-		// Sólo se muestra el sector si se cumplen ciertas condiciones
-		const seMuestra =
-			prefs.bhr !== "0" && // No es ficticio
-			prefs.cfc !== "0" && // No es ajeno a la Iglesia
-			(!prefs.epocasOcurrencia || prefs.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
-			v.entidad != "temas"; // La entidad es distinta de 'temas'
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "apMar");
-
-		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
-		if (prefs.apMar == "SI") {
-			delete prefs.epocasOcurrencia;
-			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
-		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
-
-		// Fin
-		this.canons();
 		return;
 	},
 	canons: function () {
@@ -212,6 +178,43 @@ let actualizaConfigCons = {
 
 		// Fin
 		this.palabrasClave();
+		return;
+	},
+	apMar: function () {
+		// Sólo se muestra el sector si se cumplen ciertas condiciones
+		const seMuestra =
+			prefs.bhr !== "0" && // No es ficticio
+			prefs.cfc !== "0" && // No es ajeno a la Iglesia
+			(!prefs.epocasOcurrencia || prefs.epocasOcurrencia == "pst") && // No es del viejo ni nuevo testamento
+			v.entidad != "temas"; // La entidad es distinta de 'temas'
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "apMar");
+
+		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
+		if (prefs.apMar == "SI") {
+			delete prefs.epocasOcurrencia;
+			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
+		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
+
+		// Fin
+		this.canons();
+		return;
+	},
+
+	// Filtros - Otros
+	bhr: function () {
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra =
+			!prefs.bhr && // si no está contestado
+			!DOM.canons.value && // el procCanon no está contestado
+			!DOM.rolesIgl.value; // el rolIglesia no está contestado
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "bhr");
+
+		// Fin
+		this.apMar();
 		return;
 	},
 	palabrasClave: function () {
