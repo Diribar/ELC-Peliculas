@@ -140,7 +140,7 @@ let actualizaConfigCons = {
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
-			(!DOM.canons.value || !["SB", "VS", "TD"].includes(DOM.canons.value)) && // el status es que no está en proceso de canonización
+			!DOM.canons.value && // el status es que no está en proceso de canonización
 			!DOM.rolesIgl.value && // 'rolesIgl' no está contestado
 			!DOM.apMar.value; // 'apMar' no está contestado
 
