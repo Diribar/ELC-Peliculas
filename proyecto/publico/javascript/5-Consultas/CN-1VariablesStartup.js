@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 		camposPresenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configFiltros.querySelectorAll("select"),
 		palClave: DOM.configFiltros.querySelector("#palabrasClave input"),
-		palClaveAprob: DOM.configFiltros.querySelector("#palabrasClave i"),
+		palClaveAprob: DOM.configFiltros.querySelector("#palabrasClave i#palClaveAprob"),
 
 		// Muestra / Oculta filtros
 		toggleFiltros: DOM.configCons.querySelector("#toggleFiltros"),
