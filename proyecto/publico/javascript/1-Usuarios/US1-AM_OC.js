@@ -25,12 +25,12 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".errores .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".errores .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".errores .mensajeError"),
+		mensajeErrorCreds: document.querySelector("#credenciales.errores .mensajeError"),
 
 		// Cartel progreso
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
-	if (olvidoContr) DOM.mensajeErrorCreds = document.querySelector("#credenciales.errores .mensajeError");
 
 	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
 	let v = {
