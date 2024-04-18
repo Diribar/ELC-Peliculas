@@ -30,10 +30,10 @@ module.exports = {
 
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				// intentos_AM - cookie
-				const intentos_AM = req.cookies && req.cookies.intentos_AM ? Number(req.cookies.intentos_AM) + 1 : 1;
-				if (intentos_AM <= intentosCookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
-				const intentosPendsCookie = Math.max(0, intentosCookies - intentos_AM);
+				// intentosAM - cookie
+				const intentosAM = req.cookies && req.cookies.intentosAM ? Number(req.cookies.intentosAM) + 1 : 1;
+				if (intentosAM <= intentosCookies) res.cookie("intentosAM", intentosAM, {maxAge: unDia});
+				const intentosPendsCookie = Math.max(0, intentosCookies - intentosAM);
 
 				// Convierte el resultado en texto
 				errores.credenciales =
@@ -79,7 +79,7 @@ module.exports = {
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
 				// intentosDP - cookie
-				intentosDP = req.cookies && req.cookies.intentosDP ? req.cookies.intentosDP + 1 : 1;
+				intentosDP = req.cookies && req.cookies.intentosDP ? Number(req.cookies.intentosDP) + 1 : 1;
 				if (intentosDP <= intentosCookies) res.cookie("intentosDP", intentosDP, {maxAge: unDia});
 				const intentosPendsCookie = Math.max(0, intentosCookies - intentosDP);
 
