@@ -85,7 +85,6 @@ main .cartelCentro {
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-	/* Encabezado */
 	.cartelCentro {
 		.inicio {margin-bottom: 5px;}
 		#mensajes {margin-top: 10px;}
