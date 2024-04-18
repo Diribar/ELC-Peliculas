@@ -33,11 +33,11 @@ module.exports = {
 				// intentos_AM - cookie
 				const intentos_AM = req.cookies && req.cookies.intentos_AM ? Number(req.cookies.intentos_AM) + 1 : 1;
 				if (intentos_AM <= intentosCookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
-				const intentosPends_Cookie = Math.max(0, intentosCookies - intentos_AM);
+				const intentosPendsCookie = Math.max(0, intentosCookies - intentos_AM);
 
 				// Convierte el resultado en texto
 				errores.credenciales =
-					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPends_Cookie;
+					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPendsCookie;
 			} else errores.credenciales = "";
 
 			// session - guarda la info
@@ -74,24 +74,24 @@ module.exports = {
 			// Variables
 			let datos = JSON.parse(req.query.datos);
 			const errores = await valida.olvidoContr.datosPer(datos);
-			let intentos_DP;
+			let intentosDP;
 
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
-				// intentos_DP - cookie
-				intentos_DP = req.cookies && req.cookies.intentos_DP ? req.cookies.intentos_DP + 1 : 1;
-				if (intentos_DP <= intentosCookies) res.cookie("intentos_DP", intentos_DP, {maxAge: unDia});
-				const intentosPends_Cookie = Math.max(0, intentosCookies - intentos_DP);
+				// intentosDP - cookie
+				intentosDP = req.cookies && req.cookies.intentosDP ? req.cookies.intentosDP + 1 : 1;
+				if (intentosDP <= intentosCookies) res.cookie("intentosDP", intentosDP, {maxAge: unDia});
+				const intentosPendsCookie = Math.max(0, intentosCookies - intentosDP);
 
-				// intentos_DP - usuario
-				intentos_DP = datos.usuario.intentos_DP + 1;
-				if (intentos_DP <= intentos_BD) BD_genericas.actualizaPorId("usuarios", datos.usuario.id, {intentos_DP});
-				const intentosPends_BD = Math.max(0, intentos_BD - intentos_DP);
+				// intentosDP - usuario
+				intentosDP = datos.usuario.intentosDP + 1;
+				if (intentosDP <= intentosBD) BD_genericas.actualizaPorId("usuarios", datos.usuario.id, {intentosDP});
+				const intentosPendsBD = Math.max(0, intentosBD - intentosDP);
 
 				// Convierte el resultado en texto
-				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
+				const intentosPendsCons = Math.min(intentosPendsCookie, intentosPendsBD);
 				errores.credenciales =
-					procesos.comentarios.credsInvalidas.olvidoContr + "<br>Intentos disponibles: " + intentosPends_Cons;
+					procesos.comentarios.credsInvalidas.olvidoContr + "<br>Intentos disponibles: " + intentosPendsCons;
 			} else errores.credenciales = "";
 
 			// session - guarda la info
