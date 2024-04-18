@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (req, res, next) => {
 	// Reenvíos por cookies
-	if (req.cookies && req.cookies.intentos_Login > intentos_Cookies) return res.redirect("/usuario/login/suspendido");
+	if (req.cookies && req.cookies.intentos_Login > intentosCookies) return res.redirect("/usuario/login/suspendido");
 
 	// Reenvíos x BD
 	let login, usuario;
