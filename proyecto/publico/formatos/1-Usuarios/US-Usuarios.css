@@ -25,9 +25,6 @@ form h1 {font-size: 1.5em; text-align: center;}
 .labelInput label {color: white; margin-right: 30px; text-align: left;}
 .inputError .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
 
-form select {text-align: left;}
-#cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-
 /* Íconos y Mensajes de Error */
 #cuerpo .inputError .mensajeError {right: -5px; top: -5px; translate: 0 -100%;}
 #cuerpo .inputError .mensajeError::before {left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;}
