@@ -118,7 +118,7 @@ window.addEventListener("load", async () => {
 		});
 
 		// Credenciales
-		if (olvidoContr && Object.keys(v.errores).includes("credenciales")) {
+		if (Object.keys(v.errores).includes("credenciales")) {
 			DOM.mensajeErrorCreds.innerHTML = v.errores.credenciales;
 			v.errores.credenciales
 				? DOM.mensajeErrorCreds.classList.remove("ocultar")
