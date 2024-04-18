@@ -1,8 +1,5 @@
-/* Parado y Laptop */
-body {--alturaViewPort: 100svh;}
-
-/* Acostado */
-@media (orientation: landscape) and (height <= 600px) {body {--alturaViewPort: 100vh;}}
+@media (orientation: portrait) {body {--alturaViewPort: 100svh;}}
+@media (orientation: landscape) {body {--alturaViewPort: 100vh;}}
 
 /* Variables */
 body {
