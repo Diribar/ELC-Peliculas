@@ -2,7 +2,7 @@
 #datos {--anchoRecuadro: 675px;}
 
 /* Informacion */
-#contenido #informacion {max-height: 40svh; overflow-y: auto;}
+#contenido #informacion {max-height: calc(var(--alturaViewPort) * 0.4); overflow-y: auto;}
 /* Oculta la 'side-bar' */
 /* #contenido #informacion::-webkit-scrollbar {display: none; Safari and Chrome} */
 /* #contenido #informacion {-ms-overflow-style: none; Internet Explorer 10+scrollbar-width: none; Firefox} */
