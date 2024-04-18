@@ -163,6 +163,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
+
 	// Varios
 	loginCompleto: async (req, res) => {
 		// Envía a Login si no está logueado
@@ -207,12 +208,12 @@ module.exports = {
 			// Variables
 			const datos = req.body;
 			const {errores, usuario} = await valida.login(datos);
-			let intentosLogin
+			let intentosLogin;
 
 			// Acciones si hay errores de credenciales
 			if (errores.hay) {
 				// intentosLogin - cookie
-				intentosLogin = req.cookies && req.cookies.iintentosLogin? req.cookies.intentosLogin + 1 : 1;
+				intentosLogin = req.cookies && req.cookies.iintentosLogin ? req.cookies.intentosLogin + 1 : 1;
 				if (intentosLogin <= intentosCookies) res.cookie("intentosLogin", intentosLogin, {maxAge: unDia});
 				const intentosPendsCookie = Math.max(0, intentosCookies - intentosLogin);
 
@@ -275,7 +276,6 @@ module.exports = {
 			const mensajeCola = "Con el ícono de entendido salís a la vista de inicio.";
 
 			// Feedback
-			console.log(278,codigo);
 			const mensajes = false
 				? false
 				: codigo == "alta-mail"
