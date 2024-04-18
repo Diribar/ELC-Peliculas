@@ -1,0 +1,35 @@
+/* General */
+#cuerpo #dataEntry {min-width: min(90%, 360px); }
+#cuerpo form {align-items: stretch; width: 100%; padding-left: 30px; padding-right: 30px;}
+#cuerpo form:has(#informacion) {background: var(--usuarios);}
+form h2 {background-color: var(--gris-oscuro); color: var(--amarillo-claro);}
+form h2 {align-self: center; padding: 10px; border-radius: 10px; font-weight: normal; font-style: italic;}
+
+/* Ayuda del Título */
+#tituloPrincipal .ayudaMostrar {right: -61px;}
+#tituloPrincipal .ayudaMostrar::before {right: 63px;}
+
+/* Input del mail */
+form > .labelInput {margin: 15px 0; width: min(100%, 260px); justify-content: center; align-self: center;}
+form > .labelInput :is(.inputError, .inputError .input) {width: 100%; text-align: center;}
+form > .labelInput .inputError p {background: var(--gris-intermedio); border-radius: 15px; padding: 5px 10px;}
+form > .labelInput .inputError p {font-weight: bold; text-align: center;}
+
+/* Comentarios sobre la política del uso del mail */
+form ul#politicaInfo {margin: 10px 0; margin-left: 15px;}
+form ul#politicaInfo li {color: var(--amarillo-claro); line-height: 1.5;}
+
+form:has(#datosPerennesTitulo.ocultar) #informacion {display: none;}
+
+/* Parado */
+@media (orientation: portrait) {
+	#cuerpo form {min-width: min-content; max-width: 90vw;}
+	#imgDerecha img {display: none;}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	#cuerpo #dataEntry {overflow: auto; max-height: 95%;}
+	form h1 {margin: 0;}
+	form .iconos {margin: 0 auto;}
+}
