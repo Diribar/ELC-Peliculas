@@ -22,32 +22,33 @@ let amplio = {
 			// Variables
 			const localName = e.target.localName;
 			const type = e.target.type;
-			let valor = e.target.value;
+			const valorInicial = e.target.value;
+			let valor = valorInicial;
 
 			// Validaciones
 			if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
 				// Variables
 				let posicCursor = e.target.selectionStart;
 
-				// Limita el uso del teclado solamente a los caracteres que nos interesan
+				// Elimina - Limita el uso del teclado solamente a los caracteres que nos interesan
 				valor = valor
 					.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
 					.replace(/\t/g, " ") // previene el uso de 'tab'
 					.replace(/\n/g, " ") // previene el uso de 'return'
 					.replace(/ +/g, " "); // previene repetición de espacios
 
-				// El primer caracter no puede ser un espacio
-				if (valor.slice(0, 1) == " ") {
-					valor = valor.slice(1);
-					posicCursor--;
-				}
+				// Elimina - El primer caracter no puede ser un espacio
+				if (valor.slice(0, 1) == " ") valor = valor.slice(1);
+
+				// Elimina - Posición del cursor
+				if (valorInicial != valor) posicCursor--;
 
 				// Primera letra en mayúscula
 				if (!respetarMinusc) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 
 				// Reemplaza el valor del DOM
 				e.target.value = valor;
-				e.target.selectionEnd = posicCursor;
+				e.target.selectionEnd = posicCursor; // debe estar al final
 			}
 		}
 
@@ -70,6 +71,28 @@ let basico = {
 
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
+
+		// Fin
+		return;
+	},
+	restringeLetras: (e, respetarMinusc) => {
+		// Primeras tareas
+		amplio.restringeCaracteres(e, respetarMinusc);
+
+		// Variables
+		const valorInicial = e.target.value;
+		let valor = valorInicial;
+		let posicCursor = e.target.selectionStart;
+
+		// Reemplaza en la variable
+		valor = valor.replace(/[^a-záéíóúüñ0 ]+$/gi, "");
+
+		// Elimina - Posición del cursor
+		if (valorInicial != valor) posicCursor--;
+
+		// Reemplaza el valor del DOM
+		e.target.value = valor;
+		e.target.selectionEnd = posicCursor; // debe estar al final
 
 		// Fin
 		return;
