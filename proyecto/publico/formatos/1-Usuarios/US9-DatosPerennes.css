@@ -2,17 +2,31 @@
 #cuerpo form:has(#informacion) {width: 440px; padding: 30px 0;}
 
 /* Información */
-form #informacion {display: flex; flex-direction: column; width: 100%;}
-#informacion .filas {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
-#informacion .labelInput {margin: 10px 0; display: flex; flex-direction: column;}
-#informacion .labelInput .inputError .input {width: 170px; text-align: center;}
-#informacion .labelInput .inputError .mensajeError {max-width: 200px;}
-#informacion .labelInput label {margin-right: 0;}
-#informacion .labelInput .margenInf {margin-bottom: 3px;}
+form #informacion {
+	display: flex; flex-direction: column; width: 100%;
+	.filas {
+		display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;
+		.labelInput {
+			margin: 10px 0; display: flex; flex-direction: column;
+			.margenInf {
+				margin-bottom: 3px;
+				label {margin-right: 0;}
+				.ayudaMostrar {
+					top: auto; bottom: -5px; translate: 0 100%; right: -50px;
+					&::before {
+						border-color: transparent transparent var(--gris-mas-oscuro) transparent;
+						top: 0; translate: 0 -100%; left: auto; right: 52px; transform: none;
+					}
+				}
+				}
+			.inputError {
+				.input {width: 170px; text-align: center;}
+				.mensajeError {max-width: 200px;}
+			}
+		}
+	}
 
-/* Ayuda de nombre y apellido */
-#informacion .labelInput .ayudaMostrar {top: auto; bottom: -5px; translate: 0 100%; right: -50px;}
-#informacion .labelInput .ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
-#informacion .labelInput .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; right: 52px; transform: none;}
-#informacion #fila1 .labelInput:not(:has(.ayuda .ocultar)) > .inputError .errores {display: none;}
+	/* Ayuda de nombre y apellido */
+	 #fila1 .labelInput:not(:has(.ayuda .ocultar)) > .inputError .errores {display: none;}
+}
 
