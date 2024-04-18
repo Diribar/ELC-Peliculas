@@ -3,8 +3,11 @@ window.addEventListener("load", async () => {
 	// Variables
 	const pathname = location.pathname;
 	const indice = 1 + pathname.slice(1).indexOf("/");
-	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena"; // código de la vista
+	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
 	const rutaInicio = "/usuarios/api/" + codigo;
+	const altaMail = codigo == "alta-mail";
+	const olvidoContr = codigo == "olvido-contrasena";
+
 	let rutas = {
 		datosDeSession: rutaInicio + "/datosDeSession",
 		valida: rutaInicio + "/validaciones/?datos=",
@@ -37,7 +40,7 @@ window.addEventListener("load", async () => {
 		pendiente: true,
 
 		// Varios
-		olvidoContr: codigo == "olvido-contrasena" ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
+		datosDeSession: olvidoContr ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		errores: {},
 	};
@@ -48,11 +51,11 @@ window.addEventListener("load", async () => {
 		let datos = {email: DOM.email.value};
 
 		// Si es un alta de mail o si se deben validar los datos perennes, averigua si hay errores
-		if (codigo == "alta-mail" || v.olvidoContr.mostrarCampos) {
+		if (altaMail || v.datosDeSession.mostrarCampos) {
 			// Obtiene la información de los datos perennes
-			if (codigo == "olvido-contrasena" && v.olvidoContr.mostrarCampos) {
+			if (olvidoContr && v.datosDeSession.mostrarCampos) {
 				for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
-				datos.usuario = v.olvidoContr.usuario;
+				datos.usuario = v.datosDeSession.usuario;
 			}
 
 			// Averigua los errores
@@ -206,7 +209,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	if (codigo == "olvido-contrasena" && !v.olvidoContr) location.reload(); // si corresponde, recarga la página
+	if (olvidoContr && !v.datosDeSession) location.reload(); // si corresponde, recarga la página
 	botonSubmit(); // anula 'submit' si hay algún error
 });
 
