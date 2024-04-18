@@ -1,20 +1,16 @@
-/* Alturas */
-body {
-	--alturaViewPort: 100svh;
-	--altoHeader: max(52px, min(8svh, 60px));
-	--altoMain: calc(100svh - var(--altoHeader));
-	@media screen {
-		--alturaViewPort: 100vh;
-		--altoHeader: max(52px, min(8vh, 60px));
-		--altoMain: calc(100vh - var(--altoHeader));
-	}
-}
+/* Parado y Laptop */
+body {--alturaViewPort: 100svh;}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {body {--alturaViewPort: 100vh;}}
 
 /* Variables */
 body {
 	--altoFooter: 23.6px;
-	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoImgDer: 32vw;
+	--altoHeader: max(52px, min(calc(var(--alturaViewPort) * 0.08), 60px));
+	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
+	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
 
 }
