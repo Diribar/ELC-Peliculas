@@ -22,7 +22,7 @@
 				<% } %>
 				<option value="1081" <%- link.calidad=="1081" ? "selected" : "" %>>>1080</option>
 			</select>
-			<%- include("CMP-Errores", {z_index: 7, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 7, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Castellano -->
@@ -32,7 +32,7 @@
 				<option value="1" <%- link.castellano ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.castellano ? "selected" : "" %>>NO</option>
 			</select>
-			<%- include("CMP-Errores", {z_index: 6, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 6, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Sub-Títulos -->
@@ -43,7 +43,7 @@
 				<option value="0" <%- link.subtitulos === false ? "selected" : "" %>>NO</option>
 				<option value="-" <%- link.subtitulos === null ? "selected" : "" %> class="ocultar">-</option>
 			</select>
-			<%- include("CMP-Errores", {z_index: 5, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 5, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Gratuito -->
@@ -54,7 +54,7 @@
 				<option value="1" <%- link.gratuito ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.gratuito ? "selected" : "" %>>NO</option>
 			</select>
-			<%- include("CMP-Errores", {z_index: 4, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 4, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Tipo -->
@@ -67,7 +67,7 @@
 					<option value="<%= linksTipos[1].id %>" <%- link.tipo_id==linksTipos[1].id ? "selected" : "" %>><%= linksTipos[1].nombre %></option>
 				<% } %>
 			</select>
-			<%- include("CMP-Errores", {z_index: 3, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 3, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Completo -->
@@ -78,7 +78,7 @@
 				<option value="1" <%- link.completo ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.completo ? "selected" : "" %>>NO</option>
 			</select>
-			<%- include("CMP-Errores", {z_index: 2, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 2, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Parte -->
@@ -86,7 +86,7 @@
 		<div class="inputError">
 			<% aux = link.prov.siempreCompleta %>
 			<input name="parte" type="text" class="input" value="<%= link.parte %>" <% if (aux) { %>disabled<% } %>>
-			<%- include("CMP-Errores", {z_index: 1, display: true}) %>
+			<%- include("CMP-Errores", {z_index: 1, ocultarOK: true}) %>
 		</div>
 	</td>
 	<!-- Status -->
