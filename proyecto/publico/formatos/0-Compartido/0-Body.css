@@ -1,13 +1,29 @@
+/* Alturas */
 body {
-	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
-	width: 100vw; height: 100svh;
-
+	--alturaViewPort: 100svh;
 	--altoHeader: max(52px, min(8svh, 60px));
 	--altoMain: calc(100svh - var(--altoHeader));
+	@media screen {
+		--alturaViewPort: 100vh;
+		--altoHeader: max(52px, min(8vh, 60px));
+		--altoMain: calc(100vh - var(--altoHeader));
+	}
+}
+
+/* Variables */
+body {
 	--altoFooter: 23.6px;
 	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoImgDer: 32vw;
 	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
+
 }
 
-*, body {margin: 0px; padding: 0; box-sizing: border-box;}
+/* Formatos */
+body {
+	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
+	height: var(--alturaViewPort);
+	width: 100vw;
+}
+
+body, * {margin: 0px; padding: 0; box-sizing: border-box;}
