@@ -341,7 +341,7 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookie = altaMail ? "intentos_AM" : olvidoContr ? "intentosDP" : "";
+			const cookie = altaMail ? "intentosAM" : olvidoContr ? "intentosDP" : "";
 			res.clearCookie(cookie);
 
 			// Elimina la cookie de los datos y errores
