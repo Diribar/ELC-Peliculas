@@ -18,7 +18,7 @@ module.exports = {
 		// Info para la vista
 		const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
 		const errores = datosGrales && datosGrales.errores ? datosGrales.errores : {};
-		const mostrarCampos = datosGrales && datosGrales.mostrarCampos ? datosGrales.mostrarCampos : null;
+		const mostrarCampos = datosGrales && datosGrales.mostrarCampos;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
