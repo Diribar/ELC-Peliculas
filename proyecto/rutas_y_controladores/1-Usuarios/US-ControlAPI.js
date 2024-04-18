@@ -41,8 +41,8 @@ module.exports = {
 			} else errores.credenciales = "";
 
 			// session - guarda la info
-			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, ...datos} : datos;
-			req.session.altaMail = {...req.session.altaMail, datos, errores};
+			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, email} : {email};
+			req.session.altaMail = {...datos, errores};
 
 			// Devuelve la info
 			return res.json(errores);
