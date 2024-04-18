@@ -32,7 +32,7 @@
 				<!-- Salir -->
 				<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
 				<!-- Submit -->
-				<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
+				<button type="submit" class="<%- errores.hay ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
 			</div>
 			<% if (codigo == "olvidoContr" && !mostrarCampos) { %>
 				<!-- En caso que el usuario no exista -->
