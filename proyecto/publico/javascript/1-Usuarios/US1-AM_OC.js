@@ -158,7 +158,8 @@ window.addEventListener("load", async () => {
 			e.target.value = valor;
 			e.target.selectionEnd = posicCursor;
 			v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
-		}
+		} else if (["nombre", "apellido"].includes(campo)) basico.restringeLetras(e);
+
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Limpia las credenciales
