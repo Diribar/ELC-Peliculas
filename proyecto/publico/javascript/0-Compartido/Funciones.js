@@ -85,7 +85,7 @@ let basico = {
 		let posicCursor = e.target.selectionStart;
 
 		// Reemplaza en la variable
-		valor = valor.replace(/[^a-záéíóúüñ0 ]+$/gi, "");
+		valor = valor.replace(/[^a-záéíóúüñ ]+$/gi, "");
 
 		// Elimina - Posición del cursor
 		if (valorInicial != valor) posicCursor--;
