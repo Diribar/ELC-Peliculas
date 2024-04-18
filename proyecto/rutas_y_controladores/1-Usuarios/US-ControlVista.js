@@ -277,7 +277,7 @@ module.exports = {
 			// Feedback
 			const mensajes = false
 				? false
-				: codigo == "altaMail"
+				: codigo == "alta-mail"
 				? [procesos.comentario("para dar de alta tu mail"), mensajeCola]
 				: codigo == "login"
 				? [procesos.comentario("para realizar el login"), mensajeCola]
@@ -286,7 +286,7 @@ module.exports = {
 				: [];
 			const titulo = false
 				? false
-				: codigo == "altaMail"
+				: codigo == "alta-mail"
 				? "Alta de Mail suspendida hasta 24hs"
 				: codigo == "login"
 				? "Login suspendido hasta 24hs"
@@ -295,7 +295,7 @@ module.exports = {
 				: "";
 			const iconos = false
 				? false
-				: codigo == "altaMail"
+				: codigo == "alta-mail"
 				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
 				: codigo == "login"
 				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
