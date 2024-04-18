@@ -77,7 +77,7 @@ module.exports = {
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
 			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-			if (usuario.intentos_Login == intentos_BD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
+			if (usuario.intentosLogin == intentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
 
 			// Valida el mail y la contraseña
 			errores.email_BD = !usuario;
@@ -209,8 +209,10 @@ let perennesBE = async (datos) => {
 		for (let campo of camposPerennes) condicion[campo] = datos[campo];
 
 		// Averigua si el usuario existe en la base de datos
-		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion));
-		errores.hay = errores.credenciales;
+		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion))
+			? procesos.comentarios.credsInvalidas.datosPer
+			: "";
+		errores.hay = !!errores.credenciales;
 	}
 
 	// Fin
