@@ -11,7 +11,7 @@
 		<% if (mostrarCampos) { %>
 			<p><%= dataEntry.email %></p>
 		<% } %>
-		<%- include("CMP-Errores", {nombre: "email", display: true}) %>
+		<%- include("CMP-Errores", {nombre: "email", ocultarOK: true}) %>
 	</div>
 </section>
 <% if (codigo == "altaMail") { %>

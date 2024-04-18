@@ -20,7 +20,7 @@
 						<!-- Ojito contraseña -->
 						<% if (campo.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 						<!-- Error/OK -->
-						<%- include("CMP-Errores", {nombre: campo.name, display: true}) %>
+						<%- include("CMP-Errores", {nombre: campo.name, ocultarOK: true}) %>
 					</div>
 				</div>
 			<% } %>

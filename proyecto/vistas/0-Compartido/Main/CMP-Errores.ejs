@@ -18,7 +18,7 @@
 	<!-- OK -->
 	<i
 		class="fa-solid fa-circle-check<%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
-		<% if (!locals.display) { %>style="display: none;"<% } %>
+		<% if (locals.ocultarOK) { %>style="display: none;"<% } %>
 	>
 	</i>
 </div>
