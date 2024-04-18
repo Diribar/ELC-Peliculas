@@ -31,7 +31,7 @@ module.exports = {
 			// Acciones si hubieron errores de credenciales
 			if (errores.credenciales) {
 				// intentos_AM - cookie
-				const intentos_AM = req.cookies && req.cookies.intentos_AM ? req.cookies.intentos_AM + 1 : 1;
+				const intentos_AM = req.cookies && req.cookies.intentos_AM ? Number(req.cookies.intentos_AM) + 1 : 1;
 				if (intentos_AM <= intentosCookies) res.cookie("intentos_AM", intentos_AM, {maxAge: unDia});
 				const intentosPends_Cookie = Math.max(0, intentosCookies - intentos_AM);
 
