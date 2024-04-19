@@ -23,7 +23,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
+						<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
 					<% } %>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 						</ul>
 					</i>
 				</div>
-				<%- include("CMP-Errores", {nombre: "fecha", display: true}) %>
+				<%- include("CMP-Errores", {nombre: "fecha", ocultarOK: true}) %>
 			</div>
 			<!-- Mes y Día -->
 			<div id="mesDia" class="flexRowAlign margenDebajo">
@@ -181,7 +181,7 @@
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre: "carpetaAvatars", display: true}) %>
+					<%- include("CMP-Errores", {nombre: "carpetaAvatars", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } else { %>
@@ -200,7 +200,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre: "repetidos", display: true}) %>
+						<%- include("CMP-Errores", {nombre: "repetidos", ocultarOK: true}) %>
 					</div>
 				</div>
 				<!-- Valores -->
@@ -224,7 +224,7 @@
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre:"sexo_id", display: true}) %>
+					<%- include("CMP-Errores", {nombre:"sexo_id", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } %>
@@ -262,7 +262,7 @@
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre: "prioridad_id", display: true}) %>
+					<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } %>
@@ -285,7 +285,7 @@
 					</i>
 				</div>
 			<% } %>
-			<%- include("CMP-Errores", {nombre: "epocaOcurrencia", display: true}) %>
+			<%- include("CMP-Errores", {nombre: "epocaOcurrencia", ocultarOK: true}) %>
 		</div>
 		<!-- Valores -->
 		<div class="flexRowAlign grow spaceBetween">
@@ -332,7 +332,7 @@
 		<div class="inputError" style="z-index: 4;">
 			<!-- Título -->
 			<h3>Relación con la Iglesia Católica</h3>
-			<%- include("CMP-Errores", {nombre: "RCLIC", display: true}) %>
+			<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
 		</div>
 		<% if (personajes) { %>
 			<div class="personajes">

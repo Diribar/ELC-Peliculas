@@ -29,6 +29,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 #tituloPrincipal .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
 
 /* Ayuda - Temas particulares */
+.ayudaMostrar, .ayudaMostrar * {text-wrap: wrap;}
 .ayudaMostrar {right: -7px; top: 50%; translate: 100% -50%; }
 .ayudaMostrar::before {left: 0px; top: 50%; translate: -100% -50%;}
 .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
@@ -53,7 +54,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .resultadoInvalido {background: var(--rojo-oscuro);}
 .resultadoEnEspera {background: var(--gris-oscuro);}
 .ayudaClick {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
-.ayudaMostrar, .ayudaMostrar * {background: var(--backAyuda); color: var(--colorAyuda); text-wrap: wrap;}
-.ayudaMostrar {border-color: var(--bordeAyuda);}
+.ayudaMostrar {border-color: var(--bordeAyuda); background: var(--backAyuda); color: var(--colorAyuda);}
+.ayudaMostrar * {background: transparent; color: var(--colorAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
 .link {background: var(--gris-oscuro); color: var(--gris-claro);}

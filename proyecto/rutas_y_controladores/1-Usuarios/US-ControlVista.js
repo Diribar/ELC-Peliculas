@@ -18,11 +18,11 @@ module.exports = {
 		// Info para la vista
 		const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
 		const errores = datosGrales && datosGrales.errores ? datosGrales.errores : {};
-		const mostrarCampos = datosGrales && datosGrales.mostrarCampos;
+		const mostrarDatosPerennes = datosGrales && datosGrales.mostrarDatosPerennes;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, hablaHispana, hablaNoHispana, dataEntry, errores, mostrarCampos},
+			...{tema, codigo, titulo, hablaHispana, hablaNoHispana, dataEntry, errores, mostrarDatosPerennes},
 			urlSalir: "/usuarios/login",
 		});
 	},

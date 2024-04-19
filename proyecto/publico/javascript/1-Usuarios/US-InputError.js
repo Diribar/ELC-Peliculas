@@ -21,7 +21,7 @@ window.addEventListener("load", () => {
 		// Varios
 		button: form.querySelector("button[type='submit']"),
 		inputs: form.querySelectorAll(".inputError .input"),
-		olvidoContr: form.querySelector(".iconos a:has(i.fa-key)"),
+		olvidoContr: form.querySelector(".iconos #olvidoContr"),
 	};
 	let v = {
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
@@ -29,7 +29,6 @@ window.addEventListener("load", () => {
 		esImagen: false,
 		imgOpcional: tarea == "editables",
 		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
-		olvidoContrHref: DOM.olvidoContr.href,
 	};
 
 	// Funciones
@@ -105,7 +104,11 @@ window.addEventListener("load", () => {
 		},
 	};
 
-	// Eventos
+	// Eventos - Redirige a 'olvido-contrasena'
+	if (DOM.olvidoContr)
+		DOM.olvidoContr.addEventListener("click", (e) => (location.href = "olvido-contrasena/?email=" + DOM.inputs[0].value));
+
+	// Eventos - Input
 	form.addEventListener("input", async (e) => {
 		// Variables
 		const input = e.target;
@@ -136,25 +139,11 @@ window.addEventListener("load", () => {
 		else if (indice > -1) await FN.actualizaVarios(indice);
 	});
 
-	// Redirige a 'olvido-contrasena'
-	DOM.olvidoContr.addEventListener("click", (e) => {
-		e.preventDefault();
-		const valor = DOM.inputs[0].value;
-		if (valor) {
-			DOM.olvidoContr.href = v.olvidoContrHref + "/?email=" + valor;
-			location.href = v.olvidoContrHref + "/?email=" + valor;
-		}
-	});
-
+	// Eventos - Submit
 	form.addEventListener("submit", async (e) => {
 		if (DOM.button.className.includes("inactivo")) {
 			e.preventDefault();
 			FN.startUp();
 		}
 	});
-
-	// Start-up
-	if (tarea == "login")
-		for (let i = 0; i < DOM.inputs.length; i++) if (!DOM.inputs[i].value) DOM.iconosError[i].classList.add("ocultar");
-	if (tarea == "documento") FN.startUp();
 });

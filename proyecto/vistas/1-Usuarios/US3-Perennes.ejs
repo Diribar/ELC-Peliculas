@@ -4,7 +4,15 @@
 		<!-- Título y Ayuda -->
 		<div id="tituloPrincipal">
 			<h1><%= titulo %></h1>
-			<%- include('US19-AyudaTitulo') %>
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="dots" class="ayudaMostrar desplMostrar">
+						<li>Por favor brindanos los datos de tu identidad, como figuran en tu documento.</li>
+						<li>Cuando sea necesario, te pediremos estos datos para validar que seas vos.</li>
+						<li>Una vez enviado el formulario, los datos no podrán ser editados.</li>
+					</ul>
+				</i>
+			</div>
 		</div>
 
 		<!-- Datos Perennes-->
