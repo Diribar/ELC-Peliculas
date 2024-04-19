@@ -581,22 +581,22 @@ module.exports = {
 
 let regsRCLV = async (entidades, userID) => {
 	const condics = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userID}}};
-		let valores = [];
+	let valores = [];
 	let registrosRCLV = {};
 
 	// Obtiene los registrosRCLV
-		for (let entidad of entidades)
-			valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
-		valores = await Promise.all(valores);
+	for (let entidad of entidades)
+		valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
+	valores = await Promise.all(valores);
 
-		// Pule la información
-		entidades.forEach((entidad, i) => {
-			// Ordena los registros por nombre
-			valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
-			// Fin
-		registrosRCLV[entidad] = valores[i];
-		});
-
+	// Pule la información
+	entidades.forEach((entidad, i) => {
+		// Ordena los registros por nombre
+		valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
 		// Fin
+		registrosRCLV[entidad] = valores[i];
+	});
+
+	// Fin
 	return registrosRCLV;
 };
