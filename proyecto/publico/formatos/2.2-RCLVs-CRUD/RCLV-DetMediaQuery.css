@@ -13,6 +13,7 @@
 /* Parado */
 @media (orientation: portrait) {
 	#recuadroDL #contenido {margin: 15px 5px;}
+	footer {display: none;}
 }
 
 /* Acostado */

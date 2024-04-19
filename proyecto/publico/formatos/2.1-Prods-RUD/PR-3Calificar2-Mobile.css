@@ -12,6 +12,7 @@
 	#calificaciones #individuales .ayudaMostrar {max-width: 50vw; top: -7px; translate: 100% 0;}
 	#calificaciones #individuales .ayudaMostrar::before {top: 7px; translate: -100% 0;}
 	#calificaciones #sector2 {margin: 25px 0 0;}
+	footer {display: none;}
 }
 
 /* Acostado */

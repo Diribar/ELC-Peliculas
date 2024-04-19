@@ -41,6 +41,7 @@
 	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
 	#imgDerecha #links:has(p) {max-width: 40%;}
+	footer {display: none;}
 }
 
 /* Acostado */
