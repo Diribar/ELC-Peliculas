@@ -13,12 +13,10 @@ form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
 form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
 form h1 {font-size: 1.5em; text-align: center;}
 
-/* Ayuda del Título */
-#tituloPrincipal .ayudaClick {border-style: solid; border-width: 1px; color: var(--gris-oscuro);}
-#tituloPrincipal .ayudaMostrar {background: var(--gris-oscuro); top: auto; bottom: -5px; transform: none; translate: 0 100%;}
-#tituloPrincipal .ayudaMostrar * {background: transparent;}
-#tituloPrincipal .ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
-#tituloPrincipal .ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto; transform: none;}
+/* Ayudas */
+.ayudaMostrar {top: auto; bottom: -5px; translate: 0 100%;}
+.ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
+.ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto;}
 
 /* Input del formulario */
 #datos .labelInput, form .labelInput {justify-content: space-between; margin: 20px 10px 0px; align-items: center}
