@@ -1,18 +1,19 @@
 <section class="labelInput flexRow">
-	<div class="inputError">
-		<input
-			type="text"
-			class="input <% if (mostrarCampos) { %>ocultar<% } %>"
-			name="email"
-			placeholder="Ingresá tu dirección de Correo Electrónico"
-			<% if (codigo != "altaMail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
-			autofocus
-		>
-		<% if (mostrarCampos) { %>
-			<p><%= dataEntry.email %></p>
-		<% } %>
-		<%- include("CMP-Errores", {nombre: "email", ocultarOK: true}) %>
-	</div>
+	<% if (codigo == "altaMail") { %>
+		<div class="inputError">
+			<input
+				type="text"
+				class="input <% if (mostrarCampos) { %>ocultar<% } %>"
+				name="email"
+				placeholder="Ingresá tu dirección de Correo Electrónico"
+				<% if (codigo != "altaMail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
+				autofocus
+			>
+			<%- include("CMP-Errores", {nombre: "email", ocultarOK: true}) %>
+		</div>
+	<% } else { %>
+		<p><%= dataEntry.email %></p>
+	<% } %>
 </section>
 <% if (codigo == "altaMail") { %>
 	<!-- Política para el uso de la información privada -->
