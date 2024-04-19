@@ -45,7 +45,7 @@ module.exports = {
 				};
 
 			// Fin
-			errores.hay = Object.values(errores).some((n) => !!n);
+			errores.hay = false;
 			return {errores, usuario};
 		},
 		datosPer: async function (datos) {
