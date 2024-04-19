@@ -16,7 +16,7 @@ global.linkAnoReciente = 3; // cantidad de años
 global.cantLinksVencPorSem = null;
 
 // Variable 'global' - Otras
-global.intentosCookies = 2; // cantidad que se tolera
+global.intentosCookies = 3; // cantidad que se tolera
 global.intentosBD = 3; // cantidad que se tolera
 global.usAutom_id = 2; // usuario 'automático'
 global.primerLunesDelAno = null;
