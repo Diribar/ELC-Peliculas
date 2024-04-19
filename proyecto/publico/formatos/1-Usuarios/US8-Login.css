@@ -7,17 +7,10 @@
 	}
 }
 
-/* Media Query - Ancho */
-@media (width <= 400px) {
+/* Parado */
+@media (orientation: portrait) {
 	#cuerpo form .labelInput {justify-content: center;}
 	#cuerpo form {min-width: min-content; width: 85vw;}
 	#cuerpo form label {display: none;}
-}
-
-/* Acostado */
-@media (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooterImgDer #imgDerecha img {display: none;}
-	#cuerpo #dataEntry {overflow: auto; max-height: 95%;}
-	#dataEntry form h1 {margin: 0;}
-	#dataEntry form .iconos {margin: 0 auto;}
 }
