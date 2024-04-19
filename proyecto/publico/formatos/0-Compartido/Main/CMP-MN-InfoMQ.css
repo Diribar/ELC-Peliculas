@@ -1,7 +1,0 @@
-/* Parado */
-@media (orientation: portrait) {
-}
-
-/* Acostado */
-@media (orientation: landscape) and (height <= 600px) {
-}
