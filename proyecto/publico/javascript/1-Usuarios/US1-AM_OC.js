@@ -49,7 +49,7 @@ window.addEventListener("load", async () => {
 	let mail = {
 		valida: async () => {
 			// Variables
-			let datos = {email: DOM.email.value};
+			let datos = {email: olvidoContr ? v.datosDeSession.email : DOM.email.value}; // toma el mail dependiendo de la ruta
 
 			// Obtiene la información de los datos perennes
 			if (olvidoContr && v.datosDeSession.mostrarDatosPerennes) {
