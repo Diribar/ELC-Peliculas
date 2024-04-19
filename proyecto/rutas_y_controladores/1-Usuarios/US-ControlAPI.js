@@ -50,7 +50,7 @@ module.exports = {
 		envioDeMail: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
-			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
+			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
 			if (mailEnviado)
@@ -107,7 +107,7 @@ module.exports = {
 			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Envía el mensaje con la contraseña
-			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena(email);
+			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email});
 
 			// Si no hubo errores con el envío del email, actualiza la contraseña del usuario
 			if (mailEnviado)
