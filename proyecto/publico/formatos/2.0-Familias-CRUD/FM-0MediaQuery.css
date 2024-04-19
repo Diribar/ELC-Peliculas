@@ -39,7 +39,7 @@
 	#imgDerecha {position: relative;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #sectorIconos, #datosLargos #tituloInfoDetalle {display: none !important;}
+	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos #tituloInfoDetalle {display: none !important;}
 }
 
 /* Parado */
