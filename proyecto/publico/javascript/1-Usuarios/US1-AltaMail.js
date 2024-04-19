@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		pendiente: true,
 
 		// Varios
-		olvidoContr: await fetch(rutas.datosDeSession).then((n) => n.json()),
+		olvidoContr: codigo == "olvido-contrasena" ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		errores: {},
 	};

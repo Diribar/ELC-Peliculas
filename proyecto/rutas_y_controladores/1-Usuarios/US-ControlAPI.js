@@ -69,7 +69,7 @@ module.exports = {
 		},
 	},
 	olvidoContr: {
-		datosDeSession: (req, res) => res.json(req.session.olvidoContr),
+		datosDeSession: (req, res) => res.json(req.session ? req.session.olvidoContr : {}),
 		validaDatosPer: async (req, res) => {
 			// Variables
 			let datos = JSON.parse(req.query.datos);

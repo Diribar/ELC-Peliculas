@@ -1,13 +1,22 @@
-body {
-	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
-	width: 100vw; height: 100svh;
+@media (orientation: portrait) {body {--alturaViewPort: 100svh;}}
+@media (orientation: landscape) {body {--alturaViewPort: 100vh;}}
 
-	--altoHeader: max(52px, min(8svh, 60px));
-	--altoMain: calc(100svh - var(--altoHeader));
+/* Variables */
+body {
 	--altoFooter: 23.6px;
-	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoImgDer: 32vw;
+	--altoHeader: max(52px, min(calc(var(--alturaViewPort) * 0.08), 60px));
+	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
+	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
+
 }
 
-*, body {margin: 0px; padding: 0; box-sizing: border-box;}
+/* Formatos */
+body {
+	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
+	height: var(--alturaViewPort);
+	width: 100vw;
+}
+
+body, * {margin: 0px; padding: 0; box-sizing: border-box;}
