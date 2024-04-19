@@ -31,7 +31,7 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	/* Información */
-	#cuerpoFooter #cuerpo, #cuerpo #datos {height: 100% !important; max-height: 100%;}
+	#cuerpo #datos {height: 100%; max-height: 100%;}
 	:is(#datos :is(#datosLargos, #datosBreves), #mobile i).toggle {display: none !important;}
 	#datos #datosBreves.esconderPorStartUp {position: absolute; left: 0; translate: -100% 0;}
 
@@ -39,16 +39,17 @@
 	#imgDerecha {position: relative;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter :is(#sectorIconos, footer), #datosLargos #tituloInfoDetalle {display: none !important;}
+	#cuerpoFooter #sectorIconos, #datosLargos #tituloInfoDetalle {display: none !important;}
 }
 
 /* Parado */
 @media (orientation: portrait) {
 	/* Ancho, alto, posición */
 	body {--anchoImgDer: 100vw;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;}
+	#cuerpoFooter {position: absolute; height: 100%;}
+	/* #cuerpoFooter #cuerpo, #cuerpo #datos {position: absolute !important;} */
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important;}
-	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw; max-height: none;}
+	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha, #imgDerecha img {max-width: 100vw;}
 
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {
