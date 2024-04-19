@@ -3,8 +3,10 @@ window.addEventListener("load", async () => {
 	// Variables
 	const pathname = location.pathname;
 	const indice = 1 + pathname.slice(1).indexOf("/");
-	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena"; // código de la vista
+	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
 	const rutaInicio = "/usuarios/api/" + codigo;
+	const olvidoContr = codigo == "olvido-contrasena";
+
 	let rutas = {
 		datosDeSession: rutaInicio + "/datosDeSession",
 		valida: rutaInicio + "/validaciones/?datos=",
@@ -29,6 +31,7 @@ window.addEventListener("load", async () => {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
+
 	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
 	let v = {
 		// Envío de mail
@@ -37,38 +40,39 @@ window.addEventListener("load", async () => {
 		pendiente: true,
 
 		// Varios
-		olvidoContr: codigo == "olvido-contrasena" ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
+		datosDeSession: olvidoContr ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		errores: {},
 	};
 
 	// Funciones -----------------------------
-	let validaEnviaMail = async (soloErrores) => {
-		// Variables
-		let datos = {email: DOM.email.value};
+	let mail = {
+		valida: async () => {
+			// Variables
+			let datos = {email: DOM.email.value};
 
-		// Si es un alta de mail o si se deben validar los datos perennes, averigua si hay errores
-		if (codigo == "alta-mail" || v.olvidoContr.mostrarCampos) {
 			// Obtiene la información de los datos perennes
-			if (codigo == "olvido-contrasena" && v.olvidoContr.mostrarCampos) {
+			if (olvidoContr && v.datosDeSession.mostrarCampos) {
 				for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
-				datos.usuario = v.olvidoContr.usuario;
+				datos.usuario = v.datosDeSession.usuario;
 			}
 
-			// Averigua los errores
+			// Averigua si hay errores
 			v.errores = await fetch(rutas.valida + JSON.stringify(datos)).then((n) => n.json());
 
-			// Si se necesitan los campos 'perennes', se recarga la página
-			if (v.errores.faltanCampos) return location.reload();
-		}
+			// Fin
+			return;
+		},
+		envia: async () => {
+			// Cartel mientras se recibe la respuesta
+			cartelProgreso();
 
-		// Sector de envío de email
-		if ((v.errores && v.errores.hay) || soloErrores) return;
-		cartelProgreso(); // Cartel mientras se recibe la respuesta
-		v.mailEnviado = await fetch(rutas.envia + datos.email).then((n) => n.json()); // Envía la información al BE
+			// Envía la información al BE
+			v.mailEnviado = await fetch(rutas.envia + datos.email).then((n) => n.json());
 
-		// Fin
-		return;
+			// Fin
+			return;
+		},
 	};
 	let cartelProgreso = async () => {
 		// Muestra el cartel
@@ -97,15 +101,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let consecuencias = () => {
-		// Acciones
-		v.errores.hay
-			? muestraErrores() // se muestran los errores
-			: (location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido); // De lo contrario redirige
-
-		// Fin
-		return;
-	};
 	let muestraErrores = () => {
 		// Campos con 'fa-solid'
 		v.inputs.forEach((campo, indice) => {
@@ -115,16 +110,11 @@ window.addEventListener("load", async () => {
 			// Actualiza el mensaje de error
 			DOM.mensajesError[indice].innerHTML = v.errores[campo];
 
-			// Muestra los íconos de Error
-			if (v.errores[campo]) {
-				DOM.iconosError[indice].classList.remove("ocultar");
-				DOM.iconosOK[indice].classList.add("ocultar");
-			}
-			// Muestra los íconos de OK sólo si fueron revisados
-			else {
-				DOM.iconosError[indice].classList.add("ocultar");
-				DOM.iconosOK[indice].classList.remove("ocultar");
-			}
+			// Muestra los íconos de OK y Error
+			v.errores[campo]
+				? DOM.iconosError[indice].classList.remove("ocultar")
+				: DOM.iconosError[indice].classList.add("ocultar");
+			v.errores[campo] ? DOM.iconosOK[indice].classList.add("ocultar") : DOM.iconosOK[indice].classList.remove("ocultar");
 		});
 
 		// Credenciales
@@ -168,7 +158,8 @@ window.addEventListener("load", async () => {
 			e.target.value = valor;
 			e.target.selectionEnd = posicCursor;
 			v.errores.email = !valor ? cartelMailVacio : !formatoMail.test(valor) ? cartelMailFormato : "";
-		}
+		} else if (["nombre", "apellido"].includes(campo)) basico.restringeLetras(e);
+
 		if (camposPerennes.includes(campo)) v.errores[campo] = !valor ? "Necesitamos esta información" : "";
 
 		// Limpia las credenciales
@@ -186,27 +177,26 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("submit", async (e) => {
 		e.preventDefault();
 
-		// Si el botón está inactivo, muestra los errores e interrumpe la función
-		if (DOM.button.className.includes("inactivo")) {
-			await validaEnviaMail(true);
-			muestraErrores();
-			return;
-		}
-		// De lo contrario lo inactiva
-		else DOM.button.classList.add("inactivo");
+		// Averigua si hay errores
+		await mail.valida();
+		muestraErrores();
+
+		// Si el botón está inactivo interrumpe la función
+		if (DOM.button.className.includes("inactivo") || v.errores.hay) return;
+		DOM.button.classList.add("inactivo");
 
 		// Envía la información al BE y eventualmente el mail al usuario
-		await validaEnviaMail();
+		mail.envia();
 
-		// Consecuencias
-		consecuencias();
+		// Redirige
+		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
 	});
 
 	// Start-up
-	if (codigo == "olvido-contrasena" && !v.olvidoContr) location.reload(); // si corresponde, recarga la página
+	if (olvidoContr && !v.datosDeSession) location.reload(); // si corresponde, recarga la página
 	botonSubmit(); // anula 'submit' si hay algún error
 });
 

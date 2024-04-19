@@ -1,6 +1,11 @@
 /* General */
-#cuerpo form {padding-right: 25px;}
-#cuerpo form #datos {margin-bottom: 15px;}
+#cuerpo form {
+	padding-right: 25px;
+	#datos {
+		margin-bottom: 15px;
+		#eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+	}
+}
 
 /* Media Query - Ancho */
 @media (width <= 400px) {

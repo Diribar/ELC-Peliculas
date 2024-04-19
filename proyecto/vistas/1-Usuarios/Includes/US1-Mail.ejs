@@ -5,7 +5,7 @@
 			class="input <% if (mostrarCampos) { %>ocultar<% } %>"
 			name="email"
 			placeholder="Ingresá tu dirección de Correo Electrónico"
-			<% if (codigo != "alta-mail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
+			<% if (codigo != "altaMail") { %>value="<%= dataEntry.email %>"<% } else { %>autocomplete="off"<% } %>
 			autofocus
 		>
 		<% if (mostrarCampos) { %>
@@ -14,7 +14,7 @@
 		<%- include("CMP-Errores", {nombre: "email", display: true}) %>
 	</div>
 </section>
-<% if (codigo == "alta-mail") { %>
+<% if (codigo == "altaMail") { %>
 	<!-- Política para el uso de la información privada -->
 	<ul id="politicaInfo" type="disc">
 		<li>No compartimos los mails con otras entidades.</li>

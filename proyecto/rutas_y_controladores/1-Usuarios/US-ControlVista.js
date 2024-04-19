@@ -9,16 +9,16 @@ module.exports = {
 		// Variables
 		const tema = "usuario";
 		const {ruta} = comp.reqBasePathUrl(req);
-		const codigo = ruta.slice(1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
-		const altaMail = codigo == "alta-mail";
-		const olvidoContr = codigo == "olvido-contrasena";
+		const codigo = ruta.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
+		const altaMail = codigo == "altaMail";
+		const olvidoContr = codigo == "olvidoContr";
 		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
 		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
 		const dataEntry = datosGrales && datosGrales.datos ? datosGrales.datos : {};
 		const errores = datosGrales && datosGrales.errores ? datosGrales.errores : {};
-		const mostrarCampos = datosGrales && datosGrales.mostrarCampos ? datosGrales.mostrarCampos : null;
+		const mostrarCampos = datosGrales && datosGrales.mostrarCampos;
 
 		// Vista
 		return res.render("CMP-0Estructura", {
@@ -163,6 +163,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		},
 	},
+
 	// Varios
 	loginCompleto: async (req, res) => {
 		// Envía a Login si no está logueado
@@ -207,27 +208,27 @@ module.exports = {
 			// Variables
 			const datos = req.body;
 			const {errores, usuario} = await valida.login(datos);
-			let intentos_Login;
+			let intentosLogin;
 
 			// Acciones si hay errores de credenciales
 			if (errores.hay) {
-				// intentos_Login - cookie
-				intentos_Login = req.cookies && req.cookies.intentos_Login ? req.cookies.intentos_Login + 1 : 1;
-				if (intentos_Login <= intentos_Cookies) res.cookie("intentos_Login", intentos_Login, {maxAge: unDia});
-				const intentosPends_Cookie = Math.max(0, intentos_Cookies - intentos_Login);
+				// intentosLogin - cookie
+				intentosLogin = req.cookies && req.cookies.iintentosLogin ? req.cookies.intentosLogin + 1 : 1;
+				if (intentosLogin <= intentosCookies) res.cookie("intentosLogin", intentosLogin, {maxAge: unDia});
+				const intentosPendsCookie = Math.max(0, intentosCookies - intentosLogin);
 
-				// intentos_Login - usuario
-				let intentosPends_BD = intentos_BD;
+				// intentosLogin - usuario
+				let intentosPendsBD = intentosBD;
 				if (usuario && errores.contr_BD) {
-					intentos_Login = usuario.intentos_Login + 1;
-					if (intentos_Login <= intentos_BD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentos_Login});
-					intentosPends_BD = Math.max(0, intentos_BD - intentos_Login);
+					intentosLogin = usuario.intentosLogin + 1;
+					if (intentosLogin <= intentosBD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentosLogin});
+					intentosPendsBD = Math.max(0, intentosBD - intentosLogin);
 				}
 
 				// Convierte el resultado en texto
-				const intentosPends_Cons = Math.min(intentosPends_Cookie, intentosPends_BD);
+				const intentosPendsCons = Math.min(intentosPendsCookie, intentosPendsBD);
 				errores.credenciales =
-					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPends_Cons;
+					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPendsCons;
 
 				// session - guarda la info
 				req.session.login = {datos, errores, usuario};
@@ -238,7 +239,7 @@ module.exports = {
 
 			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
 			res.cookie("email", req.body.email, {maxAge: unDia});
-			res.clearCookie("intentos_Login");
+			res.clearCookie("intentosLogin");
 			delete req.session.login;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
@@ -277,25 +278,25 @@ module.exports = {
 			// Feedback
 			const mensajes = false
 				? false
-				: codigo == "altaMail"
-				? [procesos.comentario("para dar de alta tu mail"), mensajeCola]
+				: codigo == "alta-mail"
+				? [procesos.comentarios.accesoSuspendido("para dar de alta tu mail"), mensajeCola]
 				: codigo == "login"
-				? [procesos.comentario("para realizar el login"), mensajeCola]
+				? [procesos.comentarios.accesoSuspendido("para realizar el login"), mensajeCola]
 				: codigo == "olvido-contrasena"
-				? [procesos.comentario("para validar tus datos"), mensajeCola]
+				? [procesos.comentarios.accesoSuspendido("para validar tus datos"), mensajeCola]
 				: [];
 			const titulo = false
 				? false
-				: codigo == "altaMail"
-				? "Alta de Mail suspendida hasta 24hs"
+				: codigo == "alta-mail"
+				? "Alta de Mail suspendida por 24hs"
 				: codigo == "login"
-				? "Login suspendido hasta 24hs"
+				? "Login suspendido por 24hs"
 				: codigo == "olvido-contrasena"
-				? "Olvido de Contraseña suspendido hasta 24hs"
+				? "Olvido de Contraseña suspendido por 24hs"
 				: "";
 			const iconos = false
 				? false
-				: codigo == "altaMail"
+				: codigo == "alta-mail"
 				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
 				: codigo == "login"
 				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
@@ -340,7 +341,7 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookie = altaMail ? "intentos_AM" : olvidoContr ? "intentos_DP" : "";
+			const cookie = altaMail ? "intentosAM" : olvidoContr ? "intentosDP" : "";
 			res.clearCookie(cookie);
 
 			// Elimina la cookie de los datos y errores

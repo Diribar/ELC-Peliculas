@@ -127,6 +127,6 @@ module.exports = {
 		accesoSuspendido: (tema) =>
 			"Por motivos de seguridad debido a los intentos fallidos " +
 			tema +
-			", te pedimos que esperes hasta 24hs para volver a intentarlo.",
+			", te pedimos que esperes para volver a intentarlo.",
 	},
 };
