@@ -1,5 +1,7 @@
 /* Footer */
-#cuerpoFooterImgDer footer {display: flex; flex-direction: row; justify-content: space-around;}
-#cuerpoFooterImgDer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
-#cuerpoFooterImgDer footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
-#cuerpoFooterImgDer footer p {line-height: 1;}
+footer {
+	display: flex; flex-direction: row; justify-content: space-around;
+	padding: .25em 5px; border-top: 2px solid var(--azul-frances);
+	font-family: var(--Calibri); font-size: 16px; font-weight: bold;
+	p {line-height: 1;}
+}
