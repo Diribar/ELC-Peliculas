@@ -88,15 +88,21 @@ module.exports = {
 			let coleccionesId = colecciones.map((n) => n.id);
 			capitulos = capitulos.filter((n) => !coleccionesId.find((m) => m == n.coleccion_id));
 
-			// Ordena por año (decreciente)
-			prodsDelRCLV = [...capitulos, ...noCapitulos];
-			prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno);
-
-			// Quita los inactivos
-			let resultado = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id);
+			// Operaciones varias
+			prodsDelRCLV = [...capitulos, ...noCapitulos]; // consolida los productos
+			if (prodsDelRCLV.length) {
+				for (let prod of prodsDelRCLV)
+					if (prod.direccion.includes(",")) {
+						prod.direccion = prod.direccion.split(", ");
+						prod.direccion.splice(2);
+						prod.direccion = prod.direccion.join(", ");
+					}
+				prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno); // Ordena por año (decreciente)
+				prodsDelRCLV = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id); // Quita los inactivos
+			}
 
 			// Fin
-			return resultado;
+			return prodsDelRCLV;
 		},
 		bloqueRCLV: (registro) => {
 			// Variables
