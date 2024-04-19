@@ -1,5 +1,6 @@
 <!-- Heads personalizados -->
-<% if (locals.informacion) { %><%- include("CMP-MN-InfoMQ") %>
+<% if (locals.informacion) { %>
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM-0MediaQuery.css">
 <% } else if (tema == "usuario") { %><%- include("US-1Head") %>
 <% } else if (tema == "prodAgregar") { %><%- include("PA-1Head") %>
 <% } else if (tema == "prodRud") { %><%- include("PR-1Head") %>
