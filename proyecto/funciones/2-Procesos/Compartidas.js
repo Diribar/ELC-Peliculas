@@ -508,6 +508,20 @@ module.exports = {
 		// Fin
 		return canonNombre;
 	},
+	filtrosConsRCLV: async (entidad) => {
+		// Variables
+		const condicion = {statusRegistro_id: aprobados_ids};
+		const includes = ["peliculas", "colecciones", "capitulos"];
+
+		// Obtiene los registros asociados con productos
+		const regsRCLV = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, includes)
+			.then((n) => n.filter((m) => includes.some((p) => m[p].length)))
+			.then((n) => n.map((m) => ({id: m.id, nombre: m.nombre})));
+
+		// Fin
+		return regsRCLV
+	},
+
 
 	// Links
 	prodAprobEnLink: (links) => {
