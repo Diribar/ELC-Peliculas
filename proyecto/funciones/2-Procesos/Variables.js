@@ -151,7 +151,7 @@ module.exports = {
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
-		temas: {titulo: "Relación con la Vida"},
+		temas: {titulo: "Tema"},
 		// entidad: {
 		// 	titulo: "Películas / Colecciones",
 		// 	opciones: [
