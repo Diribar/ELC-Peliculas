@@ -7,7 +7,15 @@
 		<!-- Título y Ayuda -->
 		<div id="tituloPrincipal">
 			<h1><%= titulo %></h1>
-			<% if (mostrarDatosPerennes) { %>
+		</div>
+
+		<!--E-Mail-->
+		<%- include("US1-Mail") %>
+
+		<% if (mostrarDatosPerennes) { %>
+			<!--Datos perennes-->
+			<div id="datosPerennesTitulo">
+				<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
 						<ul type="dots" class="ayudaMostrar desplMostrar">
@@ -16,17 +24,8 @@
 						</ul>
 					</i>
 				</div>
-			<% } %>
-		</div>
+			</div>
 
-		<!--E-Mail-->
-		<%- include("US1-Mail") %>
-
-		<% if (mostrarDatosPerennes) { %>
-			<!--Datos perennes-->
-			<h2 id="datosPerennesTitulo">
-				Necesitamos validar tus datos<br>para generarte una contraseña
-			</h2>
 			<%- include("US13-DatosPerennes") %>
 		<% } %>
 
