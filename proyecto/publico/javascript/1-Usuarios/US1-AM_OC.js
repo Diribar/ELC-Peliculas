@@ -196,7 +196,7 @@ window.addEventListener("load", async () => {
 
 	// Start-up - Redirige si se olvidó la contraseña y no se deben validar los datos perennes
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
-		v.datos.email = v.datosDeSession.email;
+		v.datos.email = v.datosDeSession.datos.email;
 
 		// Redirige
 		DOM.button.classList.add("inactivo");
