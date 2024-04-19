@@ -6,7 +6,7 @@
 		&:has(#informacion) {background: var(--usuarios);}
 
 		/* Input del mail */
-		.labelInput {
+		.labelInput:has([name="email"]) {
 			margin: 15px 0; width: min(100%, 260px); justify-content: center; align-self: center;
 			:is(.inputError, .inputError .input) {width: 100%; text-align: center;}
 		}
@@ -26,11 +26,11 @@
 		#datosPerennesTitulo {
 			position: relative; width: fit-content; margin: 0 auto;
 			h2 {
-				background-color: var(--gris-oscuro); color: var(--amarillo-claro);
+				background: var(--azul-frances); color: var(--amarillo-claro);
 				padding: 10px; border-radius: 10px; font-weight: normal; font-style: italic;
 			}
 			.ayudaMostrar {
-				right: -20px;
+				right: -61px;
 				&::before {right: 63px;}
 			}
 		}
