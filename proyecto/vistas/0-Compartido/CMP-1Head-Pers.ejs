@@ -1,5 +1,5 @@
 <!-- Heads personalizados -->
-<% if (!locals.tema) { %>
+<% if (locals.informacion) { %><%- include("CMP-MN-InfoMQ") %>
 <% } else if (tema == "usuario") { %><%- include("US-1Head") %>
 <% } else if (tema == "prodAgregar") { %><%- include("PA-1Head") %>
 <% } else if (tema == "prodRud") { %><%- include("PR-1Head") %>
