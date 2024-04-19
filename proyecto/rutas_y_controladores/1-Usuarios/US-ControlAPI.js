@@ -117,7 +117,7 @@ module.exports = {
 				});
 
 			// Guarda el mail en 'session' y borra los errores
-			req.session.email = email;
+			req.session.email = email; // para usar en el login
 			delete req.session.olvidoContr;
 
 			// Fin
