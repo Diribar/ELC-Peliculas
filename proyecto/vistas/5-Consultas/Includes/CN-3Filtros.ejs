@@ -1,34 +1,3 @@
-<!--Filtros Guardados-->
-<div id="cabecera">
-	<div id="configNueva" class="relative">
-		<input name="nombreNuevo" type="text" class="absolute" autocomplete="off">
-	</div>
-	<select name="cabecera_id">
-		<option value="">Configuraciones</option>
-		<!-- Configuraciones personales -->
-		<optgroup id="propios" label="Configuraciones Propias" class="<%- !configsCons.cabeceras.propios.length ? 'ocultar' : '' %>">
-			<% for (let configDeCabecera of configsCons.cabeceras.propios) { %>
-				<option value="<%= configDeCabecera.id %>"><%= configDeCabecera.nombre %></option>
-			<% } %>
-		</optgroup>
-		<!-- Configuraciones predeterminadas -->
-		<% if (userID != 1) { %>
-			<optgroup label="Provistas por Nuestro Sitio">
-				<% for (let configDeCabecera of configsCons.cabeceras.predeterms) { %>
-					<option value="<%= configDeCabecera.id %>"><%= configDeCabecera.nombre %></option>
-				<% } %>
-			</optgroup>
-		<% } %>
-	</select>
-	<div id="iconosBotonera" class="flexRow">
-		<i id="nuevo" class="fa-solid fa-file scale inactivo" title="Crea un filtro nuevo"></i>
-		<i id="deshacer" class="fa-solid fa-rotate-left scale inactivo" title="Deshace los cambios"></i>
-		<i id="guardar" class="fa-solid fa-floppy-disk scale inactivo" title="Guarda los cambios"></i>
-		<i id="edicion" class="fa-solid fa-pen scale inactivo" title="Edición del nombre"></i>
-		<i id="eliminar" class="fa-solid fa-trash-can scale inactivo" title="Elimina el filtro actual"></i>
-	</div>
-</div>
-
 <!-- Campos -->
 <div id="configFiltros" class="flexCol sectorConDesplV">
 	<nav class="startUp flexCol ocultar">

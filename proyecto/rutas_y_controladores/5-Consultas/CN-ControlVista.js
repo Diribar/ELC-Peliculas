@@ -18,7 +18,7 @@ module.exports = {
 				propios: configsConsCabs.filter((n) => userID && n.usuario_id == userID),
 				predeterms: configsConsCabs.filter((n) => n.usuario_id == 1),
 			},
-			filtros: procesos.varios.filtros(),
+			filtros: await procesos.varios.filtros(),
 		};
 
 		// Variables para la vista

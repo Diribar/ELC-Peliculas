@@ -151,6 +151,7 @@ module.exports = {
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
+		temas: {titulo: "Relación con la Vida"},
 		// entidad: {
 		// 	titulo: "Películas / Colecciones",
 		// 	opciones: [
@@ -339,7 +340,6 @@ module.exports = {
 
 	// Links
 	provsQueNoRespetanCopyright: [
-		{nombre: "Gloria TV", url: "gloria.tv"},
 		{nombre: "Cuevana", url: "cuevana"},
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
@@ -577,7 +577,6 @@ module.exports = {
 		{codigo: "TR", url: "/revision/tablero-de-control"},
 		{codigo: "TM", url: "/mantenimiento"},
 	],
-
 };
 
 let regsRCLV = async (entidades, userID) => {
