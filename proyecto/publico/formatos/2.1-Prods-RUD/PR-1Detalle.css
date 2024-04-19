@@ -4,17 +4,9 @@
 /* Links */
 #links {
 	display: flex; align-items: center;
-	:is(.ayudaClick, nav :is(button, select)) {font-size: 1.3rem;}
+	:is(.ayudaClick, :is(button, nav select)) {font-size: 1.3rem;}
 	nav {
 		display: flex;
-		:is(button, select) {
-			font-weight: bold; height: 24px;
-			border: 4px solid; border-radius: 13px; box-sizing: content-box;
-			&.enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-			&.subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
-			&.otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-		}
-		button {padding: 0px 9px; text-wrap: nowrap;}
 		select {
 			padding: 0px 4px; font-style: normal; text-align: center;
 			&.varios {background: var(--gris-claro); color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
@@ -27,6 +19,14 @@
 			-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: ''; /* para ocultar la flecha */
 		}
 	}
+	:is(button, nav select) {
+		font-weight: bold; height: 24px;
+		border: 4px solid; border-radius: 13px; box-sizing: content-box;
+		&.enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+		&.subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
+		&.otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+	}
+	button {padding: 0px 9px; text-wrap: nowrap;}
 }
 
 /* Links - Ayuda */
