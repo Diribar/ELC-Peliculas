@@ -24,8 +24,8 @@ module.exports = async (req, res, next) => {
 	const validarDatosPerennes = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
 	const datos = req.session && req.session.olvidoContr ? {...req.session.olvidoContr.datos, email} : {email};
 
-	// Tareas de session
-	req.session.olvidoContr = {datos, errores, usuario, validarDatosPerennes}; // crea la de 'olvidoContr'
+	// Crea la session de 'olvidoContr'
+	req.session.olvidoContr = {datos, errores, usuario, validarDatosPerennes};
 
 	// Fin
 	next();
