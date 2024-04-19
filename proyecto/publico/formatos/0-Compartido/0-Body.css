@@ -1,9 +1,30 @@
-@media (orientation: portrait) {body {--alturaViewPort: 100svh;}}
-@media (orientation: landscape) {body {--alturaViewPort: 100vh;}}
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 23.6px;
+	}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	body {
+		--alturaViewPort: 100svh;
+		--altoFooter: 23.6px;
+	}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 0;
+	}
+	#cuerpoFooterImgDer footer {display: none !important;}
+}
 
 /* Variables */
 body {
-	--altoFooter: 23.6px;
 	--anchoImgDer: 32vw;
 	--altoHeader: max(52px, min(calc(var(--alturaViewPort) * 0.08), 60px));
 	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
