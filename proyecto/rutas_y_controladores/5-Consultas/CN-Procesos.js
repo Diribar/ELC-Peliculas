@@ -134,7 +134,7 @@ module.exports = {
 
 				// Transfiere las preferencias simples a las condiciones
 				for (let prop in prefs) {
-					const campoFiltro = filtrosCons[prop] && filtrosCons[prop].campoFiltro ? filtrosCons[prop].campoFiltro : null;
+					const campoFiltro = filtrosCons[prop] ? filtrosCons[prop].campoFiltro : null;
 					if (campoFiltro) filtros[campoFiltro] = prefs[prop];
 				}
 
