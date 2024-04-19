@@ -20,7 +20,7 @@
 		--alturaViewPort: 100vh;
 		--altoFooter: 0;
 	}
-	#cuerpoFooterImgDer footer {display: none !important;}
+	#cuerpoFooterImgDer footer {display: none;}
 }
 
 /* Variables */
