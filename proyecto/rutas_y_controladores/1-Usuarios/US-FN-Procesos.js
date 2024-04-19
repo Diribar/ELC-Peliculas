@@ -40,7 +40,7 @@ module.exports = {
 		return {...usuario, fechaUltimoLogin};
 	},
 	// ControlVista: altaMail y olvidoContr
-	envioDeMailConContrasena: async (email) => {
+	envioDeMailConContrasena: async ({email, altaMail}) => {
 		// Variables
 		const asunto = "Contraseña para ELC";
 
@@ -51,13 +51,15 @@ module.exports = {
 
 		// Comentario
 		let comentario = "";
-		comentario += "<br>" + "¡Hola!";
-		comentario += "<br>" + "Ya tenés tu usuario para usar en nuestro sitio.";
-		comentario += "<br>" + "La contraseña es: <bold><u>" + contrasena + "</u></bold>";
-		comentario += "<br>" + "Necesitamos que la uses antes de que transcurran 24hs.";
-		comentario += "<br>" + "Si no se usa dentro de ese plazo, se dará de baja el usuario.";
+		comentario += "¡Hola!";
+		if (altaMail) {
+			comentario += "<br>" + "Ya tenés tu usuario para usar en nuestro sitio.";
+			comentario += "<br>" + "Necesitamos que la uses antes de que transcurran 24hs.";
+			comentario += "<br>" + "Si no se usa dentro de ese plazo, se dará de baja el usuario.";
+		}
+		comentario += "<br>" + "La contraseña de tu usuario es: <bold><u>" + contrasena + "</u></bold>";
 
-		// Envía el mail al usuario con la contraseña
+		// Envía el mail al usuario y actualiza la contraseña
 		const mailEnviado = await comp.enviaMail({asunto, email, comentario});
 
 		// Fin

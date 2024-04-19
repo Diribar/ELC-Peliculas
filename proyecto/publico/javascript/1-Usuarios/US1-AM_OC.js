@@ -43,22 +43,23 @@ window.addEventListener("load", async () => {
 		datosDeSession: olvidoContr ? await fetch(rutas.datosDeSession).then((n) => n.json()) : {},
 		inputs: Array.from(DOM.inputs).map((n) => n.name),
 		errores: {},
+		datos: {},
 	};
 
 	// Funciones -----------------------------
 	let mail = {
 		valida: async () => {
 			// Variables
-			let datos = {email: olvidoContr ? v.datosDeSession.email : DOM.email.value}; // toma el mail dependiendo de la ruta
+			v.datos = {email: olvidoContr ? v.datosDeSession.email : DOM.email.value}; // toma el mail dependiendo de la ruta
 
 			// Obtiene la información de los datos perennes
-			if (olvidoContr && v.datosDeSession.mostrarDatosPerennes) {
-				for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
-				datos.usuario = v.datosDeSession.usuario;
+			if (olvidoContr && v.datosDeSession.validarDatosPerennes) {
+				for (let campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
+				v.datos.usuario = v.datosDeSession.usuario;
 			}
 
 			// Averigua si hay errores
-			v.errores = await fetch(rutas.valida + JSON.stringify(datos)).then((n) => n.json());
+			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
 
 			// Fin
 			return;
@@ -68,7 +69,7 @@ window.addEventListener("load", async () => {
 			cartelProgreso();
 
 			// Envía la información al BE
-			v.mailEnviado = await fetch(rutas.envia + datos.email).then((n) => n.json());
+			v.mailEnviado = await fetch(rutas.envia + v.datos.email).then((n) => n.json());
 
 			// Fin
 			return;
@@ -138,10 +139,10 @@ window.addEventListener("load", async () => {
 			.every((n) => !n.includes("ocultar"));
 		let error = Array.from(DOM.iconosError)
 			.map((n) => n.className)
-			.some((n) => !n.includes("ocultar"));
+			.every((n) => n.includes("ocultar"));
 
 		// Fin
-		OK && !error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
+		OK && error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 		return;
 	};
 
@@ -183,21 +184,28 @@ window.addEventListener("load", async () => {
 
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.button.className.includes("inactivo") || v.errores.hay) return;
-		DOM.button.classList.add("inactivo");
-
-		// Envía la información al BE y eventualmente el mail al usuario
-		mail.envia();
 
 		// Redirige
+		DOM.button.classList.add("inactivo");
+		await mail.envia();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
 	});
 
-	// Start-up
-	if (olvidoContr && !v.datosDeSession) location.reload(); // si corresponde, recarga la página
-	botonSubmit(); // anula 'submit' si hay algún error
+	// Start-up - Redirige si se olvidó la contraseña y no se deben validar los datos perennes
+	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
+		v.datos.email = v.datosDeSession.datos.email;
+
+		// Redirige
+		DOM.button.classList.add("inactivo");
+		await mail.envia();
+		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+	}
+
+	// Inactiva 'submit' si hay algún error
+	botonSubmit();
 });
 
 // Variables

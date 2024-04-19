@@ -942,7 +942,7 @@ module.exports = {
 			to: email,
 			subject: asunto,
 			//text: comentario, // plain text body
-			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+			html: comentario,
 		};
 		// Envío del mail
 		const mailEnviado = await transporter
@@ -952,9 +952,6 @@ module.exports = {
 				console.log("Mail no enviado. ", {errorEnvioMail: error});
 				return false;
 			});
-
-		// datos.to = "diegoiribarren2015@gmail.com";
-		// await transporter.sendMail(datos);
 
 		// Fin
 		return mailEnviado;
