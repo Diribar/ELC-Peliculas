@@ -24,9 +24,9 @@ module.exports = async (req, res, next) => {
 	if (usuario.intentosDP >= intentosBD) return res.redirect("/usuarios/olvido-contrasena/suspendido");
 
 	// Crea la session
-	const mostrarDatosPerennes = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
+	const validarDatosPerennes = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
 	const datos = req.session && req.session.olvidoContr ? {...req.session.olvidoContr.datos, email} : {email};
-	req.session.olvidoContr = {datos, errores, usuario, mostrarDatosPerennes};
+	req.session.olvidoContr = {datos, errores, usuario, validarDatosPerennes};
 
 	// Fin
 	next();
