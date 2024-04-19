@@ -62,7 +62,7 @@ module.exports = {
 				});
 
 			// Guarda el mail en 'session'
-			req.session.email = email;
+			req.session.login = {email};
 
 			// Devuelve la info
 			return res.json(mailEnviado);
@@ -116,11 +116,8 @@ module.exports = {
 					fechaContrasena: new Date().toISOString(),
 				});
 
-			// Guarda el mail en 'session' y borra los errores
-			req.session.email = email; // para usar en el login
-			delete req.session.olvidoContr;
-
 			// Fin
+			if (mailEnviado) delete req.session.olvidoContr;
 			return res.json(mailEnviado);
 		},
 	},
