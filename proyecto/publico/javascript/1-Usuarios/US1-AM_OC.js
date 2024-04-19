@@ -52,7 +52,7 @@ window.addEventListener("load", async () => {
 			let datos = {email: DOM.email.value};
 
 			// Obtiene la información de los datos perennes
-			if (olvidoContr && v.datosDeSession.mostrarCampos) {
+			if (olvidoContr && v.datosDeSession.mostrarDatosPerennes) {
 				for (let campo of camposPerennes) if (DOM[campo]) datos[campo] = DOM[campo].value;
 				datos.usuario = v.datosDeSession.usuario;
 			}
