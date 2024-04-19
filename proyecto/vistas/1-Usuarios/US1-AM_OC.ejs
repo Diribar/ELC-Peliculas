@@ -7,17 +7,24 @@
 		<!-- Título y Ayuda -->
 		<div id="tituloPrincipal">
 			<h1><%= titulo %></h1>
-			<% if (mostrarCampos) { %>
-				<%- include('US19-AyudaTitulo') %>
+			<% if (mostrarDatosPerennes) { %>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="dots" class="ayudaMostrar desplMostrar">
+							<li>Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.</li>
+							<li>Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña.</li>
+						</ul>
+					</i>
+				</div>
 			<% } %>
 		</div>
 
 		<!--E-Mail-->
 		<%- include("US1-Mail") %>
 
-		<% if (codigo == "olvidoContr") { %>
-			<!--Campos para usuarios con datos perennes-->
-			<h2 id="datosPerennesTitulo" class="<%- !mostrarCampos ? 'ocultar' : '' %>">
+		<% if (mostrarDatosPerennes) { %>
+			<!--Datos perennes-->
+			<h2 id="datosPerennesTitulo">
 				Necesitamos validar tus datos<br>para generarte una contraseña
 			</h2>
 			<%- include("US13-DatosPerennes") %>
@@ -34,14 +41,6 @@
 				<!-- Submit -->
 				<button type="submit" class="<%- errores.hay ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
 			</div>
-			<% if (codigo == "olvidoContr" && !mostrarCampos) { %>
-				<!-- En caso que el usuario no exista -->
-				<div class="iconos">
-					<a href="/usuarios/alta-mail" tabindex="-1"  class="verde">
-						<i class="fa-solid fa-user-plus" title="Crear un usuario"></i>
-					</a>
-				</div>
-			<% } %>
 		</section>
 	</form>
 </div>
