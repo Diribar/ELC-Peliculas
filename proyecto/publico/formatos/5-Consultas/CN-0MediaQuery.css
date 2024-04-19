@@ -86,6 +86,6 @@
 	}
 
 	/* Ocultar */
-	#cuerpoFooterImgDer :is(#cuerpo :is(#configCons, #encabMasPelis :is(#encabezado, #vistaDeResults #actualizar, footer)), #imgDerecha)
+	#cuerpoFooterImgDer :is(#cuerpo :is(#configCons, #encabMasPelis :is(#encabezado, #vistaDeResults #actualizar)), #imgDerecha)
 		{display: none !important;}
 }
