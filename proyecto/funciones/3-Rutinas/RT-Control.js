@@ -484,6 +484,7 @@ module.exports = {
 				"loginsAcums",
 				"loginsDelDia",
 				"linksEdicion",
+				"aux_novedades_elc"
 			];
 
 			// Actualiza los valores de ID
