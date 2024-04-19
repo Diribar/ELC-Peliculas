@@ -151,6 +151,7 @@ module.exports = {
 				{id: "NN", nombre: "Sin proceso de canonizac.", condic: {[Op.startsWith]: "NN"}},
 			],
 		},
+		temas: {titulo: "Relación con la Vida", especial: true},
 		// entidad: {
 		// 	titulo: "Películas / Colecciones",
 		// 	opciones: [
@@ -339,7 +340,6 @@ module.exports = {
 
 	// Links
 	provsQueNoRespetanCopyright: [
-		{nombre: "Gloria TV", url: "gloria.tv"},
 		{nombre: "Cuevana", url: "cuevana"},
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
@@ -577,27 +577,26 @@ module.exports = {
 		{codigo: "TR", url: "/revision/tablero-de-control"},
 		{codigo: "TM", url: "/mantenimiento"},
 	],
-
 };
 
 let regsRCLV = async (entidades, userID) => {
 	const condics = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userID}}};
-	let valores = [];
+		let valores = [];
 	let registrosRCLV = {};
 
 	// Obtiene los registrosRCLV
-	for (let entidad of entidades)
-		valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
-	valores = await Promise.all(valores);
+		for (let entidad of entidades)
+			valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
+		valores = await Promise.all(valores);
 
-	// Pule la información
-	entidades.forEach((entidad, i) => {
-		// Ordena los registros por nombre
-		valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
-		// Fin
+		// Pule la información
+		entidades.forEach((entidad, i) => {
+			// Ordena los registros por nombre
+			valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
+			// Fin
 		registrosRCLV[entidad] = valores[i];
-	});
+		});
 
-	// Fin
+		// Fin
 	return registrosRCLV;
 };
