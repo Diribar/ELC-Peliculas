@@ -12,7 +12,7 @@ module.exports = {
 			// Fin
 			return regsCabecera;
 		},
-		filtros: function () {
+		filtros: async () => {
 			// Variable 'filtros'
 			let filtros = {...variables.filtrosCons};
 
@@ -21,13 +21,14 @@ module.exports = {
 				// Le agrega el nombre del campo a cada método
 				filtros[prop].codigo = prop;
 
-				// Si no tiene opciones, le agrega las de la BD
+				// Agrega las opciones que correspondan
 				if (!filtros[prop].opciones) {
 					// Si es el prop 'epocasOcurrencia', quita la opción 'varias'
 					if (prop == "epocasOcurrencia")
 						filtros.epocasOcurrencia.opciones = epocasOcurrencia
 							.filter((n) => n.id != "var")
 							.map((n) => ({id: n.id, nombre: n.consulta}));
+					else if (prop == "temas") filtros.temas.opciones = await comp.filtrosConsTemas();
 					else filtros[prop].opciones = global[prop];
 				}
 			}
@@ -444,7 +445,7 @@ module.exports = {
 					for (let campo of campos)
 						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) {
 							prods[i].palsClave = true;
-							break
+							break;
 						}
 
 					if (!prods[i].palsClave)
