@@ -531,8 +531,10 @@ let auxiliares = {
 		}
 
 		// Crea la celda del ppp y se la agrega a la fila
-		celda = creaUnaCelda.ppp(producto);
-		fila.appendChild(celda);
+		if (v.userID) {
+			celda = creaUnaCelda.ppp(producto);
+			fila.appendChild(celda);
+		}
 
 		// Fin
 		return fila;
