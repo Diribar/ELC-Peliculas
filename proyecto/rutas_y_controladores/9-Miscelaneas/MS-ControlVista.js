@@ -106,7 +106,6 @@ module.exports = {
 				...vistaActual,
 			});
 		},
-
 	},
 
 	// Listados
@@ -116,11 +115,12 @@ module.exports = {
 		rclvs: async (req, res) => {
 			// Variables
 			const {ruta} = comp.reqBasePathUrl(req);
-			const rclv = ruta.slice(1);
+			const indice = ruta.lastIndexOf("/");
+			const rclv = ruta.slice(indice + 1);
 			const condicion = {id: {[Op.ne]: 1}};
 			const include = [...variables.entidades.prods, "prodsEdiciones"];
 			let rclvs = {};
-			let resultado2 = {};
+			let resultado = {};
 
 			// Lectura
 			await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
@@ -131,16 +131,16 @@ module.exports = {
 					})
 				)
 				.then(() => {
-					// Ordena los métodos
+					// Ordena los métodos según la cantidad de productos
 					const metodos = Object.keys(rclvs).sort((a, b) =>
 						rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
 					);
 					// Crea un objeto nuevo, con los métodos ordenados
-					metodos.map((n) => (resultado2[n] = rclvs[n]));
+					metodos.map((n) => (resultado[n] = rclvs[n]));
 				});
 
 			// Fin
-			return res.send(resultado2);
+			return res.send(resultado);
 		},
 		links: async (req, res) => {
 			// Variables
@@ -172,7 +172,7 @@ module.exports = {
 			}
 
 			// Devuelve la info
-			return res.send({TR, GR,CC});
+			return res.send({TR, GR, CC});
 		},
 	},
 };
