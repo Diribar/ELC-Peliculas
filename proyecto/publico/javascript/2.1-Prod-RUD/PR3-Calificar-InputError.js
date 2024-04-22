@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		form: document.querySelector("form"),
 		calificaciones: document.querySelectorAll("form select"),
-		guardarCambios: document.querySelector("form #guardarCambios #guardar"),
-		eliminar: document.querySelector("form #guardarCambios #eliminar"),
+		guardarCambios: document.querySelectorAll("form #guardar"),
+		eliminar: document.querySelectorAll("form #eliminar"),
 		resultado: document.querySelector("form #consolidado #valor"),
 	};
 	let v = {
@@ -32,29 +32,28 @@ window.addEventListener("load", async () => {
 		}
 
 		// Activa/Inactiva el botón guardar
-		v.incompleto || v.iguales
-			? DOM.guardarCambios.classList.add("inactivo")
-			: DOM.guardarCambios.classList.remove("inactivo");
+		for (let boton of DOM.guardarCambios)
+			!!v.incompleto || !!v.iguales ? boton.classList.add("inactivo") : boton.classList.remove("inactivo");
 
 		// Fin
 		return;
 	};
 	let actualizaResultado = () => {
-		if (v.incompleto) DOM.resultado.innerHTML = "-";
-		else {
-			let resultado = 0;
-			for (let criterio of calCriterios) {
-				const campo_id = criterio.atributo_id;
-				const campo = criterio.atributo;
-				const ponderacion = criterio.ponderacion;
-				const ID = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
-				const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
-				const valor = atributoCalif.valor;
-				resultado += (valor * ponderacion) / 100;
-			}
-			resultado = Math.round(resultado);
-			DOM.resultado.innerHTML = resultado + "%";
+		if (v.incompleto) return (DOM.resultado.innerHTML = "-");
+
+		// Calcula el resultado
+		let resultado = 0;
+		for (let criterio of calCriterios) {
+			const campo_id = criterio.atributo_id;
+			const campo = criterio.atributo;
+			const ponderacion = criterio.ponderacion;
+			const ID = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
+			const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
+			const valor = atributoCalif.valor;
+			resultado += (valor * ponderacion) / 100;
 		}
+		resultado = Math.round(resultado);
+		DOM.resultado.innerHTML = resultado + "%";
 	};
 
 	// Input
@@ -62,12 +61,14 @@ window.addEventListener("load", async () => {
 		revisaErrores();
 		actualizaResultado();
 	});
+	// Guardar
 	DOM.form.addEventListener("submit", (e) => {
-		if (DOM.guardarCambios.className.includes("inactivo")) e.preventDefault();
+		if (DOM.guardarCambios[0].className.includes("inactivo")) e.preventDefault();
 		return;
 	});
-	if (DOM.eliminar)
-		DOM.eliminar.addEventListener("click", async () => {
+	// Eliminar
+	for (let eliminar of DOM.eliminar)
+		eliminar.addEventListener("click", async () => {
 			// Elimina la calificación
 			await fetch(rutas.eliminaCalifPropia);
 
