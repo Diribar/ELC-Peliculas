@@ -17,7 +17,7 @@
 								h3 {width: max-content;}
 							}
 						}
-						#sectorIconos {margin: 30px 0}
+						& > #sectorIconos {margin: 30px 0}
 					}
 				}
 			}
