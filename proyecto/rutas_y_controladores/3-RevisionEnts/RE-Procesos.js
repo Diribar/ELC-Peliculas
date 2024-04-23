@@ -400,7 +400,7 @@ module.exports = {
 				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
-			let comentario;
+			let comentario = "";
 			if (req.body.comentario) comentario = req.body.comentario;
 			else {
 				if (motivo_id && motivosStatusConComentario_ids.includes(motivo_id)) {
