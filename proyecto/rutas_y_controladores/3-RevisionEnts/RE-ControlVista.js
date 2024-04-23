@@ -191,7 +191,7 @@ module.exports = {
 			}
 
 			// Acciones para avatar por rechazo
-			if (subcodigo == "rechazo") {
+			if (subcodigo == "rechazar") {
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina(carpetaExterna + "9-Provisorio/", datos.avatar);
 
@@ -259,7 +259,7 @@ module.exports = {
 			...{aprobado: aprob, motivo_id, comentario},
 		};
 		const motivo =
-			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
+			codigo == "rechazar" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		BD_genericas.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
 
@@ -398,12 +398,12 @@ module.exports = {
 		},
 		avatar: async (req, res) => {
 			// Variables
-			const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
+			const {entidad, id, edicID, rechazar, motivo_id} = {...req.query, ...req.body};
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const revID = req.session.usuario.id;
 			const original = await BD_genericas.obtienePorId(entidad, id);
 			const campo = "avatar";
-			const aprob = !rechazo;
+			const aprob = !rechazar;
 			let edicion = await BD_genericas.obtienePorId(entidadEdic, edicID);
 			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 

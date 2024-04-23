@@ -353,9 +353,9 @@ module.exports = {
 
 	guardar: {
 		obtieneDatos: async function (req) {
-			// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+			// Variables
 			const {ruta} = comp.reqBasePathUrl(req);
-			let codigo = ruta.slice(1, -1);
+			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
 			const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
@@ -377,10 +377,10 @@ module.exports = {
 					: "recuperar"
 				: ruta.endsWith("/alta/")
 				? "alta"
-				: "rechazo";
+				: "rechazar";
 
 			// Averigua si la sugerencia fue aprobada
-			const aprob = subcodigo != "rechazo" && !desaprueba;
+			const aprob = subcodigo != "rechazar" && !desaprueba;
 
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
@@ -397,7 +397,7 @@ module.exports = {
 
 			// Obtiene el motivo_id
 			const motivo_id =
-				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
+				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
 			let comentario;
