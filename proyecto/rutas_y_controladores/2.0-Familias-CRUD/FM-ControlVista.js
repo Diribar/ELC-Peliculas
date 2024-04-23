@@ -75,7 +75,7 @@ module.exports = {
 		imgDerPers = procesos.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivosStatus.filter((n) => n[petitFamilias]);
+		if (codigo == "inactivar" || codigo == "rechazar") motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
 		// Comentario del rechazo
 		const comentarios =
