@@ -1,3 +1,12 @@
+/* Título secundario */
+#cuerpo #tituloPrincipal {
+	#secundario {
+		display: flex; flex-direction: row; align-items: center;
+		font-weight: normal; font-size: 0.9rem;
+		img {height: 1rem; border-radius: 5px; margin-left: 5px;}
+	}
+}
+
 /* Contenedor del Iframe */
 #medio #contIframe {
 	aspect-ratio: 16 / 9;

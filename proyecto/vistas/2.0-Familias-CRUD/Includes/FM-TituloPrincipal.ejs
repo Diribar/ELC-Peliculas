@@ -1,10 +1,12 @@
 <% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-TimerContador') %><% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
-	<h2>
-		Gentileza de
-		<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>">
-	</h2>
+	<% if (codigo == "visualizacion") { %>
+		<h2 id="secundario">
+			Gentileza de
+			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.prov.nombre %>">
+		</h2>
+	<% } %>
 	<% if (locals.ayudasTitulo) { %>
 		<!-- Ayuda -->
 		<div class="ayuda">
