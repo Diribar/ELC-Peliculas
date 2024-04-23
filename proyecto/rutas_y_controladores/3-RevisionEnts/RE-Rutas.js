@@ -59,7 +59,7 @@ router.get("/rclv/alta", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaE
 // Vistas - Cambios de status
 router.post("/producto/alta", aptoCRUD, usRolRevPERL, capturaInactivar, vista.cambioStatusGuardar);
 router.post("/rclv/alta", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, vista.cambioStatusGuardar);
-router.post("/:familia/rechazo", aptoCRUD, usRolRevPERL, motivoNecesario, capturaInactivar, vista.cambioStatusGuardar);
+router.post("/:familia/rechazar", aptoCRUD, usRolRevPERL, motivoNecesario, capturaInactivar, vista.cambioStatusGuardar);
 router.post("/:familia/inactivar-o-recuperar", aptoCRUD, usRolRevPERL, capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
