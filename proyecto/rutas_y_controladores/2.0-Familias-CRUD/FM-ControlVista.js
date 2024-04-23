@@ -10,7 +10,7 @@ module.exports = {
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const codigo1 = ruta.slice(1, -1);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = baseUrl == "/revision" ? codigo1.slice(codigo1.indexOf("/") + 1) : codigo1; // Resultados  posibles: 'inactivar', 'recuperar', 'eliminar', 'rechazo', 'inactivar-o-recuperar'
+		const codigo = baseUrl == "/revision" ? codigo1.slice(codigo1.indexOf("/") + 1) : codigo1; // Resultados  posibles: 'inactivar', 'recuperar', 'eliminar', 'rechazar', 'inactivar-o-recuperar'
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
