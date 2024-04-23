@@ -4,7 +4,8 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const rclvs = variables.entidades.rclvs;
 	const {ruta} = comp.reqBasePathUrl(req);
-	const rclv = ruta.slice(1);
+	const indice = ruta.lastIndexOf("/");
+	const rclv = ruta.slice(indice + 1);
 
 	// Valida la entidad
 	if (!rclvs.includes(rclv)) {

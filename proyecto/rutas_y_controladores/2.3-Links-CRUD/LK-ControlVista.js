@@ -53,7 +53,7 @@ module.exports = {
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
-			...{userID, imgDerPers, cartelGenerico: true, sigProd},
+			...{userID, imgDerPers, cartelGenerico: true, sigProd, grupo},
 			vista: req.baseUrl + req.path,
 		});
 	},

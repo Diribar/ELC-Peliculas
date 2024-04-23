@@ -512,7 +512,7 @@ let auxiliares = {
 	},
 	creaUnaFilaDeProd: function ({producto, indice}) {
 		// Variables
-		let celda;
+		let celda, vistaSinCalificar;
 
 		// Crea una fila y le asigna su clase
 		const fila = document.createElement("tr");
@@ -520,7 +520,9 @@ let auxiliares = {
 		fila.className = parImparProd;
 
 		// Crea la celda del producto y se la agrega a la fila
-		celda = creaUnaCelda.prod(producto);
+		if (v.layoutBD.codigo == "misCalificadas" && !producto.calificacion) vistaSinCalificar = true;
+
+		celda = creaUnaCelda.prod(producto, vistaSinCalificar);
 		celda.className = "primeraCol";
 		fila.appendChild(celda);
 
@@ -531,8 +533,10 @@ let auxiliares = {
 		}
 
 		// Crea la celda del ppp y se la agrega a la fila
-		celda = creaUnaCelda.ppp(producto);
-		fila.appendChild(celda);
+		if (v.userID) {
+			celda = creaUnaCelda.ppp(producto);
+			fila.appendChild(celda);
+		}
 
 		// Fin
 		return fila;
@@ -613,12 +617,12 @@ let creaUnaCelda = {
 		celda.appendChild(anchor);
 		return celda;
 	},
-	prod: (producto) => {
+	prod: (producto, vistaSinCalificar) => {
 		// Variables
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/producto/detalle/?entidad=" + producto.entidad + "&id=" + producto.id;
-		// anchor.target = "_blank";
+		const calificarDetalle = vistaSinCalificar ? "calificar" : "detalle";
+		anchor.href = "/producto/" + calificarDetalle + "/?entidad=" + producto.entidad + "&id=" + producto.id;
 		let span;
 
 		// Obtiene el rclv

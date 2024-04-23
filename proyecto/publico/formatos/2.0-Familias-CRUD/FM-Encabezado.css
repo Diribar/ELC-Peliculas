@@ -9,33 +9,33 @@
 	#nombres {
 		h2 {margin: 0; padding-bottom: 3px;}
 		h3 {font-weight: normal; font-size: 1rem;}
-		#colCap {
-			display: flex; flex-direction: column; align-items: flex-end;
-			#colecciones a div {
-				border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
-				padding: 5px 10px; border-radius: 10px; text-align: center;
+	}
+	#colCap {
+		display: flex; flex-direction: column; align-items: flex-end;
+		#colecciones a div {
+			border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
+			padding: 5px 10px; border-radius: 10px; text-align: center;
+		}
+		#tempCapI {
+			margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
+			button {
+				margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;
+				font-weight: bold; background: var(--gris-oscuro); color: snow;
+				&:hover {scale: 1.1}
 			}
-			#tempCapI {
-				margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
-				button {
-					margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;
-					font-weight: bold; background: var(--gris-oscuro); color: snow;
-					&:hover {scale: 1.1}
+		}
+		#tempCapS {
+			display: flex; flex-direction: row; justify-content: flex-end; align-items: center;
+			.pack {
+				line-height: 1; margin-right: 5px; white-space: nowrap;
+				i {
+					font-size: 1.1rem;
+					&:first-child {margin-right: 3px;}
 				}
 			}
-			#tempCapS {
-				display: flex; flex-direction: row; justify-content: flex-end; align-items: center;
-				.pack {
-					line-height: 1; margin-right: 5px; white-space: nowrap;
-					i {
-						font-size: 1.1rem;
-						&:first-child {margin-right: 3px;}
-					}
-				}
-				:is(#temporada, #capitulo) {border-radius: 5px;}
-				#temporada {margin-right: 8px;}
-				select#capitulo {width: 20px;}
-			}
+			:is(#temporada, #capitulo) {border-radius: 5px;}
+			#temporada {margin-right: 8px;}
+			select#capitulo {width: 20px;}
 		}
 	}
 }

@@ -17,7 +17,7 @@
 			<% if (locals.origen) {url += "&origen=" + origen} %>
 			<select id="activoInactivo" onchange="location = this.value;">
 				<option value="<%= url %>">Activos</option>
-				<option id="inactivos" value="<%= url + "&grupo=inactivos" %>">Inactivos</option>
+				<option id="inactivos" value="<%= url + "&grupo=inactivos" %>" <% if (locals.grupo) { %>selected<% } %>>Inactivos</option>
 			</select>
 		</div>
 		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
