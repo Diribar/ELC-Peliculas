@@ -27,7 +27,7 @@ window.addEventListener("load", () => {
 		DOM.cartelRechazo.classList.add("ocultar");
 	});
 
-	// Elegi motivo rechazo
+	// Elegi el motivo de rechazo
 	DOM.motivoRechazo.addEventListener("change", () => {
 		if (DOM.motivoRechazo.value) DOM.rechazar.classList.remove("inactivo");
 		else DOM.rechazar.classList.add("inactivo");
