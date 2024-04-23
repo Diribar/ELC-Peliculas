@@ -70,7 +70,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			? [inactivar_id, recuperar_id]
 			: ruta.includes("/links/")
 			? aprobados_ids
-			: ruta.includes("/rechazo/")
+			: ruta.includes("/rechazar/")
 			? [creado_id]
 			: ruta.includes("/solapamiento/")
 			? activos_ids

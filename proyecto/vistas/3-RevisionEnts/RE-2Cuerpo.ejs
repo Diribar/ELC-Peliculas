@@ -1,6 +1,6 @@
 <% if (codigo == "tableroControl") { %><%- include("RE0-TableroControl") %><% } %>
 
-<% if (["producto/alta", "rechazo", "inactivar-o-recuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
+<% if (["producto/alta", "rechazar", "inactivar-o-recuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
 
 <% if (["rclv/alta", "rclv/solapamiento"].includes(codigo)) { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
