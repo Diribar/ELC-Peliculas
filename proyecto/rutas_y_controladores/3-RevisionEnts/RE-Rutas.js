@@ -53,14 +53,14 @@ router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);
 
 // Vistas - Altas
-router.get("/producto/alta", aptoCRUD, rutaCRUD_ID, usRolRevPERL, capturaActivar, vista.alta.prodForm);
+router.get("/producto/alta", aptoCRUD, rutaCRUD_ID, usRolRevPERL, capturaActivar, vista.altaProdForm);
 router.get("/rclv/alta", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaEdic.form);
 
 // Vistas - Cambios de status
-router.post("/producto/alta", aptoCRUD, usRolRevPERL, capturaInactivar, vista.alta.guardar);
-router.post("/rclv/alta", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, vista.alta.guardar);
-router.post("/:familia/rechazo", aptoCRUD, usRolRevPERL, motivoNecesario, capturaInactivar, vista.alta.guardar);
-router.post("/:familia/inactivar-o-recuperar", aptoCRUD, usRolRevPERL, capturaInactivar, vista.alta.guardar); // Va sin 'motivo'
+router.post("/producto/alta", aptoCRUD, usRolRevPERL, capturaInactivar, vista.cambioStatusGuardar);
+router.post("/rclv/alta", aptoCRUD, usRolRevPERL, multer.single("avatar"), capturaInactivar, cambioStatusGuardar);
+router.post("/:familia/rechazo", aptoCRUD, usRolRevPERL, motivoNecesario, capturaInactivar, cambioStatusGuardar);
+router.post("/:familia/inactivar-o-recuperar", aptoCRUD, usRolRevPERL, capturaInactivar, cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
 router.get("/rclv/solapamiento", aptoCRUD, usRolRevPERL, capturaActivar, vistaRCLV.altaEdic.form);
