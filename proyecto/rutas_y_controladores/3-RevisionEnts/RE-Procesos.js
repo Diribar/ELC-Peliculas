@@ -353,9 +353,9 @@ module.exports = {
 
 	guardar: {
 		obtieneDatos: async function (req) {
-			// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+			// Variables
 			const {ruta} = comp.reqBasePathUrl(req);
-			let codigo = ruta.slice(1, -1);
+			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
 			const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
@@ -377,10 +377,10 @@ module.exports = {
 					: "recuperar"
 				: ruta.endsWith("/alta/")
 				? "alta"
-				: "rechazo";
+				: "rechazar";
 
 			// Averigua si la sugerencia fue aprobada
-			const aprob = subcodigo != "rechazo" && !desaprueba;
+			const aprob = subcodigo != "rechazar" && !desaprueba;
 
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
@@ -397,11 +397,19 @@ module.exports = {
 
 			// Obtiene el motivo_id
 			const motivo_id =
-				subcodigo == "rechazo" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
+				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
-			let comentario = "";
-			if (req.body.comentario) comentario += req.body.comentario;
+			let comentario;
+			if (req.body.comentario) comentario = req.body.comentario;
+			else {
+				if (motivo_id && motivosStatusConComentario_ids.includes(motivo_id)) {
+					const condicion = {entidad, entidad_id: id, comentario: {[Op.ne]: null}};
+					comentario = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion)
+						.then((n) => (n.length ? n.pop() : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
+						.then((n) => n.comentario);
+				}
+			}
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Fin

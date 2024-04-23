@@ -66,7 +66,7 @@
 				<i class="fa-solid fa-circle-check" title="Aprobar"></i>
 			</button>
 			<!-- REVISION ALTA - Ir a la vista Rechazar -->
-			<a href="<%= '/revision/' + familia + '/rechazo/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/revision/' + familia + '/rechazar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
 			</a>
 		<% } %>
@@ -87,7 +87,7 @@
 
 <% condicCrud = tema == "fmCrud" %>
 <% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
-<% condicRevRech = tema == "revisionEnts" && codigo == "rechazo" %>
+<% condicRevRech = tema == "revisionEnts" && codigo == "rechazar" %>
 <% if (condicCrud || condicRevRech) {  %>
 	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>

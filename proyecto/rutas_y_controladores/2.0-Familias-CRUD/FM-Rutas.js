@@ -52,7 +52,7 @@ router.get("/:familia/eliminado", vista.eliminado);
 
 // Vistas - Revisión
 router.get("/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.get("/:familia/rechazo", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.get("/:familia/rechazar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
 
 // Fin
 module.exports = router;

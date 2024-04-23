@@ -32,7 +32,7 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...rclv, entidad}),
-			registro: procsCRUD.bloqueRegistro({...rclv, entidad}),
+			registro: await procsCRUD.bloqueRegistro({...rclv, entidad}),
 		};
 
 		// Imagen derecha
@@ -116,7 +116,7 @@ module.exports = {
 				// Datos Breves
 				if (tema == "revisionEnts")
 					bloqueDer = {
-						registro: procsCRUD.bloqueRegistro({...original, entidad}),
+						registro: await procsCRUD.bloqueRegistro({...original, entidad}),
 						usuario: await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 					};
 			}

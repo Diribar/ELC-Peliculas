@@ -24,7 +24,7 @@
 
 	/* Condicionales */
 	#recuadroDL {
-		&:has(.inactivar, .rechazo, .eliminar) {
+		&:has(.inactivar, .rechazar, .eliminar) {
 			background: var(--rojo-claro) !important;
 			#encabezado {background: var(--rojo-oscuro);}
 			:is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
