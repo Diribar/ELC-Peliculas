@@ -650,7 +650,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function (registro) {
+	bloqueRegistro: async function (registro) {
 		// Variable
 		let resultado = [];
 
@@ -665,8 +665,19 @@ module.exports = {
 		resultado.push({titulo: "Status", ...this.statusRegistro(registro)});
 
 		// Si el registro no está activo, le agrega el comentario
-		if (!activos_ids.includes(registro.statusRegistro_id))
-			resultado.push({titulo: "Motivo", valor: registro.motivo.descripcion});
+		if (!activos_ids.includes(registro.statusRegistro_id)) {
+			// Obtiene el motivo
+			let valor = registro.motivo.descripcion;
+			if (motivosStatusConComentario_ids.includes(registro.motivo_id)) {
+				const condicion = {entidad: registro.entidad, entidad_id: registro.id};
+				valor = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion)
+					.then((n) => (n.length ? n.pop() : {comentario: registro.motivo.descripcion}))
+					.then((n) => n.comentario);
+			}
+
+			// Le agrega el motivo
+			resultado.push({titulo: "Motivo", valor});
+		}
 
 		// Fin
 		return resultado;

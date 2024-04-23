@@ -59,15 +59,15 @@ module.exports = {
 			? false
 			: tema == "revisionEnts"
 			? {
-					registro: procesos.bloqueRegistro({...original, entidad}),
+					registro: await procesos.bloqueRegistro({...original, entidad}),
 					usuario: await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 			  }
 			: familia == "producto"
-			? {producto: true, registro: procesos.bloqueRegistro({...original, entidad})}
+			? {producto: true, registro: await procesos.bloqueRegistro({...original, entidad})}
 			: familia == "rclv"
 			? {
 					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-					registro: procesos.bloqueRegistro({...original, entidad}),
+					registro: await procesos.bloqueRegistro({...original, entidad}),
 			  }
 			: {};
 
