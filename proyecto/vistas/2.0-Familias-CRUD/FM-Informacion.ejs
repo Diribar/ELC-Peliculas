@@ -11,7 +11,7 @@
 
     <!-- AMBOS -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
-    <% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM8-Inactivar") %>
+    <% } else if (["inactivar", "rechazar"].includes(codigo)) { %><%- include("FM8-Inactivar") %>
     <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM8-Recuperar") %>
 
     <!-- Fin -->
