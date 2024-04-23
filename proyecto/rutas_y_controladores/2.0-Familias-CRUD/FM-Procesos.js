@@ -652,24 +652,24 @@ module.exports = {
 	// Bloques a mostrar
 	bloqueRegistro: function (registro) {
 		// Variable
-		let bloque = [];
+		let resultado = [];
 
 		// Datos CRUD
-		bloque.push(
+		resultado.push(
 			!registro.altaRevisadaEn
 				? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
 				: {titulo: "Ingresado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
 		);
 
 		// Status resumido
-		bloque.push({titulo: "Status", ...this.statusRegistro(registro)});
+		resultado.push({titulo: "Status", ...this.statusRegistro(registro)});
 
 		// Si el registro no está activo, le agrega el comentario
 		if (!activos_ids.includes(registro.statusRegistro_id))
-			bloque.push({titulo: "Motivo", valor: registro.motivo.descripcion});
+			resultado.push({titulo: "Motivo", valor: registro.motivo.descripcion});
 
 		// Fin
-		return bloque;
+		return resultado;
 	},
 	statusRegistro: (registro) => {
 		// Variables

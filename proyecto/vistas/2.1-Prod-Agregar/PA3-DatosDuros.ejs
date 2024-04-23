@@ -25,28 +25,28 @@
 				<!-- TMDB -->
 				<% tmdb = dataEntry.nombreOriginal ? "search?language=es&query=" + dataEntry.nombreOriginal : "" %>
 				<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank" tabindex="-1">
-					<img src="/publico/imagenes/Logos-gral/BD-TMDB.jpg" title="The Movie Database">
+					<img src="/publico/imagenes/Logos/BD-TMDB.jpg" title="The Movie Database">
 				</a>
 
 				<!-- FA -->
 				<% fa = dataEntry.nombreCastellano ? "search.php?stext=" + dataEntry.nombreCastellano : dataEntry.nombreOriginal ? "search.php?stext=" + dataEntry.nombreOriginal : "" %>
 				<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank" tabindex="-1">
-					<img src="/publico/imagenes/Logos-gral/BD-FA.jpg" title="Film Affinity">
+					<img src="/publico/imagenes/Logos/BD-FA.jpg" title="Film Affinity">
 				</a>
 				<!-- IMDB -->
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombreOriginal ? "find?q="+dataEntry.nombreOriginal : "") %>
 				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank" tabindex="-1">
-					<img src="/publico/imagenes/Logos-gral/BD-IMDB.jpg" title="Internet Movie Database">
+					<img src="/publico/imagenes/Logos/BD-IMDB.jpg" title="Internet Movie Database">
 				</a>
 				<!-- Wikipedia -->
 				<% wiki = dataEntry.nombreCastellano ? dataEntry.nombreCastellano.toLowerCase() : "" %>
 				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank" tabindex="-1">
-					<img src="/publico/imagenes/Logos-gral/BD-Wiki.jpg" title="Wikipedia">
+					<img src="/publico/imagenes/Logos/BD-Wiki.jpg" title="Wikipedia">
 				</a>
 				<!-- Google -->
 				<% google = dataEntry.nombreCastellano ? "search?q="+dataEntry.nombreCastellano.toLowerCase() : "" %>
 				<a class="logos" href="//google.com/<%= google %>" target="_blank" tabindex="-1">
-					<img src="/publico/imagenes/Logos-gral/BD-Google.jpg" title="Google">
+					<img src="/publico/imagenes/Logos/BD-Google.jpg" title="Google">
 				</a>
 			</nav>
 		</div>

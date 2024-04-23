@@ -1,9 +1,21 @@
-/* Formato del título */
-#tituloPrincipal #titulo {background: var(--backTitulo); color: var(--colorTitulo);}
-#tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--bordeTitulo) var(--bordeTitulo) transparent}
-#tituloPrincipal #titulo {font-size: 1.25rem;font-family: var(--Arial); font-weight: bold;}
-#tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1;}
-#tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
-
 /* Formato del mensaje */
-:is(#tituloPrincipal, #tituloSecundario) {align-self: flex-start;}
+:is(#tituloPrincipal, #tituloPrincipal #secundario, #tituloSecundario) {align-self: flex-start;}
+
+/* Formato del título */
+#tituloPrincipal {
+	&:has(#secundario) {display: flex; flex-direction: column;}
+	#titulo, #secundario {
+		font-family: var(--Arial); line-height: 1;
+		border-bottom-right-radius: 10px;
+	}
+	#titulo {
+		background: var(--backTitulo); color: var(--colorTitulo);
+		border: 2px solid; border-color: transparent var(--bordeTitulo) var(--bordeTitulo) transparent;
+		padding: 8px 10px; margin: 0;
+		font-size: 1.25rem;
+	}
+	#secundario {
+		background: var(--gris-intermedio); color: var(--gris-oscuro);
+		padding: 4px 10px; margin: 0;
+	}
+}

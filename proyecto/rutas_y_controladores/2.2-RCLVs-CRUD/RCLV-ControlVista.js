@@ -115,10 +115,10 @@ module.exports = {
 
 				// Datos Breves
 				if (tema == "revisionEnts")
-					bloqueDer = [
-						procsCRUD.bloqueRegistro({...original, entidad}),
-						await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
-					];
+					bloqueDer = {
+						registro: procsCRUD.bloqueRegistro({...original, entidad}),
+						usuario: await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+					};
 			}
 
 			// Tipo de fecha

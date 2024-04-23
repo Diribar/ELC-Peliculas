@@ -1,0 +1,41 @@
+<!-- Contenido que se desplaza -->
+<div id="recuadroDB" class="sectorConDesplV bordeConSombra aparece toggle">
+	<% if (bloqueDer.producto) { %>
+		<!-- Calificaciones -->
+		<h3>Calificaciones</h3>
+		<% if (registro.calificacion) { %>
+			<p id="calificacionesResultados"></p>
+			<div id="calificsGrafico"></div>
+		<% } else { %>
+			<p style="text-align: center; margin-top: 10px; font-style: italic;">- Sin calificaciones aún -</p>
+		<% } %>
+	<% } %>
+
+	<% if (bloqueDer.rclv) { %>
+		<% const articulo = entidad == "epocasDelAno" ? " la " : "l " %>
+		<h3>Datos de<%= articulo + entidadNombre %></h3>
+		<div id="texto">
+			<% for (campo of bloqueDer.rclv) { %>
+				<p><b><%= campo.titulo %>:</b> <span><%= campo.valor %></span></p>
+			<% } %>
+		</div>
+	<% } %>
+
+	<h3>Datos del Registro</h3>
+	<div id="texto">
+		<% for (campo of bloqueDer.registro) { %>
+			<p <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
+				<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
+			</p>
+		<% } %>
+	</div>
+
+	<% if (bloqueDer.usuario) { %>
+		<h3 class="titulo">Datos del Usuario</h3>
+		<div id="texto">
+			<% for (campo of bloqueDer.usuario) { %>
+				<p class="datosUsuario"><b><%= campo.titulo %>:</b> <span><%= campo.valor %></span></p>
+			<% } %>
+		</div>
+	<% } %>
+</div>

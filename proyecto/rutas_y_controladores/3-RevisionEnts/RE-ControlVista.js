@@ -92,10 +92,11 @@ module.exports = {
 			const bloqueIzq = {infoGral, actores};
 
 			// Bloque Derecho
-			const bloqueDer = [
-				procsCRUD.bloqueRegistro({...original, entidad}),
-				await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
-			];
+			const bloqueDer = {
+				registro: procsCRUD.bloqueRegistro({...original, entidad}),
+				usuario: await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+			};
+
 			// Info para la vista
 			const statusRegistro_id = original.statusRegistro_id;
 			const statusCreado = statusRegistro_id == creado_id;
@@ -366,8 +367,10 @@ module.exports = {
 
 				// Variables
 				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original, userID).then((n) => n.length);
-				bloqueDer = [procsCRUD.bloqueRegistro({...original, entidad})];
-				bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
+				bloqueDer = {
+					registro: procsCRUD.bloqueRegistro({...original, entidad}),
+					usuario: bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias)),
+				};
 				imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 				motivos = motivosEdics.filter((m) => m.prods);
 

@@ -67,7 +67,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
-		const link = await BD_genericas.obtienePorId("links", linkID);
+		const link = await BD_genericas.obtienePorIdConInclude("links", linkID, "prov");
 		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
@@ -84,6 +84,7 @@ module.exports = {
 		const titulo = nombre;
 
 		// Va a la vista
+		//return res.send(link)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen},
 			...{entidad, id, familia: "producto", registro: prodComb, link},

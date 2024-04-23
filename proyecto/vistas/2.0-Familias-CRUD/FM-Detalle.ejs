@@ -23,20 +23,6 @@
 		</div>
 	</div>
 	<div id="datosBreves" class="toggle">
-		<!-- Revisión -->
-		<% if (tema == "revisionEnts") { %>
-			<%- include("RE0-Breves") %>
-
-		<!-- CRUD -->
-		<% } else { %>
-			<!-- CRUD para Productos -->
-			<% if (familia == "producto") { %>
-				<%- include("PR0-Breves") %>
-
-			<!-- CRUD para RCLVs -->
-			<% } else if (familia == "rclv") { %>
-				<%- include("RCLV-Breves") %>
-			<% } %>
-		<% } %>
+		<%- include("FM-Breves") %>
 	</div>
 </section>
