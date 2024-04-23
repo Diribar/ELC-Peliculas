@@ -58,18 +58,18 @@ module.exports = {
 		bloqueDer = false
 			? false
 			: tema == "revisionEnts"
-			? [
-					procesos.bloqueRegistro({...original, entidad}),
-					await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
-			  ]
+			? {
+					registro: procesos.bloqueRegistro({...original, entidad}),
+					usuario: await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+			  }
 			: familia == "producto"
-			? procesos.bloqueRegistro({...original, entidad})
+			? {producto: true, registro: procesos.bloqueRegistro({...original, entidad})}
 			: familia == "rclv"
 			? {
 					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
 					registro: procesos.bloqueRegistro({...original, entidad}),
 			  }
-			: [];
+			: {};
 
 		// Imagen Derecha
 		imgDerPers = procesos.obtieneAvatar(original).orig;
