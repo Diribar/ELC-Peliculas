@@ -8,27 +8,27 @@
 		<!-- TMDB -->
 		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank">
-			<img src="/publico/imagenes/Logos-gral/BD-TMDB.jpg" title="The Movie Database">
+			<img src="/publico/imagenes/Logos/BD-TMDB.jpg" title="The Movie Database">
 		</a>
 		<!-- FA -->
 		<% fa = registro.nombreOriginal ? "search.php?stext=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='FA' %>" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
-			<img src="/publico/imagenes/Logos-gral/BD-FA.jpg" title="Film Affinity">
+			<img src="/publico/imagenes/Logos/BD-FA.jpg" title="Film Affinity">
 		</a>
 		<!-- IMDB -->
 		<% imdb = registro.IMDB_id ? "title/"+registro.IMDB_id+"/technical" : (registro.nombreOriginal ? "find?q="+registro.nombreOriginal : "") %>
 		<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank">
-			<img src="/publico/imagenes/Logos-gral/BD-IMDB.jpg" title="Internet Movie Database">
+			<img src="/publico/imagenes/Logos/BD-IMDB.jpg" title="Internet Movie Database">
 		</a>
 		<!-- Wikipedia -->
 		<% wiki = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : "" %>
 		<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank">
-			<img src="/publico/imagenes/Logos-gral/BD-Wiki.jpg" title="Wikipedia">
+			<img src="/publico/imagenes/Logos/BD-Wiki.jpg" title="Wikipedia">
 		</a>
 		<!-- Google -->
 		<% google = registro.nombreCastellano ? ("search?q=" + registro.nombreCastellano.toLowerCase()) : "" %>
 		<a class="logos <%= registro.fuente=='IM' %>" href="//google.com/<%= google %>" target="_blank">
-			<img src="/publico/imagenes/Logos-gral/BD-Google.jpg" title="Google">
+			<img src="/publico/imagenes/Logos/BD-Google.jpg" title="Google">
 		</a>
 	</div>
 <% } %>

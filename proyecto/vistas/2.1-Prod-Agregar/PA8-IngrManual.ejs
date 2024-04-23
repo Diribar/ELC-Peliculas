@@ -80,7 +80,7 @@
 			<div class="iconos">
 				<% if (autorizadoFA) { %>
 					<label class="inactivo submit" for="inputSubmit" title="Avanzar mediante Film Affinity">
-						<img id="logoFA" src="/publico/imagenes/Logos-gral/BD-FA.jpg" alt="FA">
+						<img id="logoFA" src="/publico/imagenes/Logos/BD-FA.jpg" alt="FA">
 					</label>
 					<% const cola = (!urlActual.includes("/?") ? "/?" : "&") + "ingreso_fa=true" %>
 					<input id="inputSubmit" type="submit" class="submit" formaction="<%= urlActual + cola %>" formmethod="post" >
