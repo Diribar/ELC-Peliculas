@@ -46,7 +46,7 @@ module.exports = {
 		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
-		const bloqueDer = procsCRUD.bloqueRegistro({...prodComb, entidad});
+		const bloqueDer = {producto: true, registro: procsCRUD.bloqueRegistro({...prodComb, entidad})};
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Lecturas de BD
@@ -289,7 +289,7 @@ module.exports = {
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho
-			const bloqueDer = procsCRUD.bloqueRegistro({...prodComb, entidad});
+			const bloqueDer = {producto: true, registro: procsCRUD.bloqueRegistro({...prodComb, entidad})};
 			const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 			// Info para la vista
