@@ -11,7 +11,7 @@
 	<script src="/publico/javascript/7-Graficos/GR2-linksVencim.js"></script>
 
 <% } else { %>
-	<% if (["producto/alta", "rechazo", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
+	<% if (["producto/alta", "rechazar", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
 		<!-- Compartido -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
@@ -40,7 +40,7 @@
 			<script src="/publico/javascript/3-RevisionEnts/RE2-RCLV-Solapam.js"></script>
 		<% } %>
 
-	<% } else if (codigo == "rechazo") { %>
+	<% } else if (codigo == "rechazar") { %>
 		<!-- Rechazos - Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 		<script src="/publico/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
