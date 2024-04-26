@@ -826,13 +826,19 @@ let alAzar = {
 
 		// Elije los productos
 		this.porAltaUltimosDias(v);
-		for (let epocaEstreno of epocasEstreno) this.porEpocaDeEstreno({epocaEstreno, v});
+		const epocasEstrenoRecientes = epocasEstreno.slice(0, -1);
+		for (let epocaEstreno of epocasEstrenoRecientes) this.porEpocaDeEstreno({epocaEstreno, v});
 
 		// Agrega registros hasta llegar a cuatro
 		let indice = 0;
 		while (v.contador < 4 && v.resultados.length && indice < v.resultados.length) {
 			v.resultado = v.resultados[indice];
-			if (!v.seDebeEquilibrar || (v.resultado.cfc && v.cfc < 2) || (!v.resultado.cfc && v.vpc < 2)) this.agregaUnBoton(v);
+			if (
+				!v.seDebeEquilibrar || // no se debe equilibrar
+				(v.resultado.cfc && v.cfc < 2) || // se debe equilibrar y no se alcanzaron los 2 resultados 'cfc'
+				(!v.resultado.cfc && v.vpc < 2) // se debe equilibrar y no se alcanzaron los 2 resultados 'vpc'
+			)
+				this.agregaUnBoton(v);
 			else indice++;
 		}
 		while (v.contador < 4 && v.resultados.length) {
@@ -840,7 +846,7 @@ let alAzar = {
 			this.agregaUnBoton(v);
 		}
 
-		// Si corresponde, ordena los resultados
+		// Ordena los resultados
 		v.productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 		// Fin
