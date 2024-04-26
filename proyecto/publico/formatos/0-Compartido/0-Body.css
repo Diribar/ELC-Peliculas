@@ -18,7 +18,7 @@
 @media (orientation: landscape) and (height <= 600px) {
 	body {
 		--alturaViewPort: 100vh;
-		--altoFooter: 0;
+		--altoFooter: 0px;
 	}
 	#cuerpoFooterImgDer footer {display: none;}
 }
