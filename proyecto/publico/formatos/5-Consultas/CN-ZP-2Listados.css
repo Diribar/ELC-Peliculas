@@ -1,50 +1,65 @@
 /* General */
-#zonaDisponible:has(#scroll #listados table) #vistaDeResults {padding: 30px 0;}
-#vistaDeResults #scroll:has(table) {overflow-y: auto;}
+#zonaDisponible {
+    &:has(#scroll #listados table) #vistaDeResults {padding: 30px 0;}
+    #vistaDeResults {
+        #scroll:has(table) {overflow-y: auto;}
 
-/* Listados */
-#scroll #listados {display: flex; flex-direction: column; justify-content: flex-start; align-items: center;}
-#scroll #listados {padding: 0 25px; width: 100%;}
-#scroll #listados {
-    --bordeInterno: 1px dotted var(--gris-oscuro);
-    --bordeExterno: 2px solid var(--gris-oscuro);
+        /* Listados */
+        #listados {
+            --bordeInterno: 1px dotted var(--gris-oscuro);
+            --bordeExterno: 2px solid var(--gris-oscuro);
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+            padding: 0 25px; width: 100%;
+
+            table {
+                border-collapse: collapse; width: 100%;
+                line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                &:not(:last-child) {margin-bottom: 30px;}
+                &:has(tbody.ocultar) caption {border-radius: 15px;}
+
+                caption {
+                    padding: 10px; background: var(--gris-oscuro);
+                    * {font-size: 1.25rem; color: var(--amarillo-claro); font-weight: bold;}
+                    :is(.expandeContrae, .hallazgos) {position: absolute; top: 50%; translate: 0% -50%;}
+                    .expandeContrae {right: 13px;}
+                    .hallazgos {right: 35px; font-weight: normal; font-size: small; line-height: 1;}
+                }
+
+                tbody tr {
+                    /* Celdas - Color de fondo */
+                    &.imparRCLV td {background: snow;}
+                    &.parRCLV td {background: var(--amarillo-claro);}
+                    &.parProd td:nth-child(n+1) {background: var(--gris-claro);}
+
+                    td {
+                        /* Columnas */
+                        &.primeraCol {
+                            vertical-align: top;
+                            a p:first-of-type {
+                                font-weight: bold;
+                                span {font-style: italic; font-weight: normal;}
+                            }
+                        }
+
+                        /* Columna calificacion */
+                        &.calificacion {padding: 0 10px;}
+
+                        /* Celdas - anchor y ppp */
+                        &:has(i) {width: min-content; text-align: right;}
+                        i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
+                        a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
+
+                        /* Bordes */
+                        border: var(--bordeInterno);
+                        &:nth-last-child(2) {border-right: none;}
+                        &:nth-last-child(1) {border-left: none;}
+                    }
+                    border-left: var(--bordeExterno); border-right: var(--bordeExterno);
+                    &:last-of-type {border-bottom: var(--bordeExterno);}
+                }
+            }
+        }
+    }
 }
 
-/* Tabla */
-#listados table {border-collapse: collapse; width: 100%;}
-#listados table {line-height: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden;}
-#listados table {box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);}
-#listados table:not(:last-child) {margin-bottom: 30px;}
-#listados table:has(tbody.ocultar) caption {border-radius: 15px;}
-
-/* Título */
-#listados table caption {padding: 10px; background: var(--gris-oscuro);}
-#listados table caption * {font-size: 1.25rem; color: var(--amarillo-claro); font-weight: bold;}
-#listados table caption :is(.expandeContrae, .hallazgos) {position: absolute; top: 50%; translate: 0% -50%;}
-#listados table caption .expandeContrae {right: 13px;}
-#listados table caption .hallazgos {right: 35px; font-weight: normal; font-size: small; line-height: 1;}
-
-/* Columnas */
-#listados tbody tr td.primeraCol {vertical-align: top;}
-#listados tbody tr td.primeraCol a p:first-of-type {font-weight: bold;}
-#listados tbody tr td.primeraCol a p:first-of-type span {font-style: italic; font-weight: normal;}
-
-/* Celdas - Color de fondo */
-#listados tbody tr.imparRCLV td {background: snow;}
-#listados tbody tr.parRCLV td {background: var(--amarillo-claro);}
-#listados tbody tr.parProd td:nth-child(n+1) {background: var(--gris-claro);}
-
-/* Celdas calificacion */
-#listados tbody tr td.calificacion {padding: 0 10px;}
-
-/* Celdas - anchor y ppp */
-#listados tbody tr td a {padding: 5px 10px; line-height: 1; display: block; width: 100%;}
-#listados tbody tr td:has(i) {width: min-content; text-align: right;}
-#listados tbody tr td i {margin-left: 5px; margin-right: 10px; cursor: pointer;}
-
-/* Bordes */
-#listados tbody tr td {border: var(--bordeInterno);}
-#listados tbody tr td:nth-last-child(2) {border-right: none;}
-#listados tbody tr td:nth-last-child(1) {border-left: none;}
-#listados tbody tr {border-left: var(--bordeExterno); border-right: var(--bordeExterno);}
-#listados tbody tr:last-of-type {border-bottom: var(--bordeExterno);}
