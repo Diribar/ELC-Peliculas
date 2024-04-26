@@ -7,7 +7,7 @@
 			#datosLargos {
 				max-height: 90%;
 				#recuadroDL {
-					max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - 220px - 6vw)); /* 220px: datosBreves, 6vw: márgenes */
+					max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - var(--datosBreves) - 6vw)); /* 6vw: márgenes */
 					#contenido {
 						margin: 0 40px;
 						#informacion {
