@@ -17,7 +17,7 @@
 /* Layout */
 #tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;}
 #tituloPrincipal select {color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;}
-#tituloPrincipal select:not(:valid) {background: var(--gris-intermedio);}
+#tituloPrincipal select:not(:valid) {background: var(--rojo-oscuro);}
 #tituloPrincipal select:valid {background: var(--verde-oscuro);}
 #tituloPrincipal select optgroup {background: var(--azul-frances);}
 #tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
