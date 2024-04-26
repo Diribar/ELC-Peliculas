@@ -789,7 +789,7 @@ module.exports = {
 	procesaCampos: {
 		prods: (productos) => {
 			// Variables
-			const anchoMax = 35;
+			const anchoMax = 32;
 
 			// Reconvierte los elementos
 			for (let rubro in productos)
