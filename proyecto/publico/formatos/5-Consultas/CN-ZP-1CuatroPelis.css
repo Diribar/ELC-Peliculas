@@ -5,10 +5,11 @@
 
 /* Botones para productos */
 #botones li {
+	--altoBoton: 200px;
+	--altoLi: min(15px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
 	list-style-type: none; margin: var(--altoLi) 10px;
-	--altoLi: min(15px, calc((var(--alturaViewPort) - 52px - 200px - var(--altoFooter))/2));
 	button {
-		padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;
+		padding: 0; border-radius: 15px; overflow: hidden; height: var(--altoBoton); width: 290px;
 		border-width: 1px; text-align: left; background: var(--celeste-oscuro);
 		&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 		&:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
