@@ -270,14 +270,22 @@ module.exports = {
 			// De cada registro de status, obtiene los campos clave o los elabora
 			for (let regStatus of regsStatus) {
 				// Variables
-				const aprobado = regStatus.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
+				const {nombreOrden, nombreVisual} = await nombres(regStatus, familia);
+				if (!nombreOrden) continue;
+
+				// Más variables
+				const aprobado = regStatus.aprobado;
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
 				const statusInicial = statusRegistros.find((n) => n.id == regStatus.statusOriginal_id);
 				const statusFinal = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
-				const motivo = regStatus.comentario && !aprobado ? regStatus.comentario : "";
-				const {nombreOrden, nombreVisual} = await nombres(regStatus, familia);
-				if (!nombreOrden) continue;
+
+				// Motivo
+				let motivo;
+				if (!aprobado) {
+					const motivoAux = motivosStatus.find((n) => n.id == regStatus.motivo_id);
+					motivo = regStatus.comentario ? regStatus.comentario : motivoAux ? motivoAux.descripcion : "";
+				}
 
 				// Alimenta el resultado, salvo los prods que pasan de creadoAprob_id a aprobado_id
 				if (
@@ -387,9 +395,7 @@ module.exports = {
 				mensaje += n.aprobado
 					? n.valorAprob && n.valorDesc
 						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
-						: n.valorAprob
-						? "<em><b>" + n.valorAprob + "</b></em>"
-						: "<em><b>" + n.valorDesc + "</b></em> fue rechazado"
+						: "<em><b>" + n.valorAprob + "</b></em>"
 					: "se mantuvo <em><b>" +
 					  (n.valorAprob ? n.valorAprob : "(vacío)") +
 					  "</b></em> como mejor opción que <em>" +

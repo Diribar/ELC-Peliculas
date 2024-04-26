@@ -12,7 +12,7 @@ module.exports = {
 		const tema = "prodRud";
 		const codigo = "detalle";
 		const {entidad, id} = req.query;
-		const origen = req.query.origen;
+		const origen = req.query.origen ? req.query.origen : "DTP";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : "";
 		const autTablEnts = usuario ? usuario.rolUsuario.autTablEnts : false;
@@ -280,7 +280,7 @@ module.exports = {
 			const tema = "prodRud";
 			const codigo = "calificar";
 			const {entidad, id} = req.query;
-			const origen = req.query.origen; // ? req.query.origen : "CAL";
+			const origen = req.query.origen ? req.query.origen : "CAL";
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
