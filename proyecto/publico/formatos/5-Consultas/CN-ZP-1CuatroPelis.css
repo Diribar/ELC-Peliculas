@@ -1,33 +1,38 @@
 /* Resultados */
-#vistaDeResults:has(#scroll #botones li) {--anchoPaddEst: 20px; --anchoPaddDin: min(var(--anchoPaddEst), calc(50vw - 300px));}
-#vistaDeResults:has(#scroll #botones li) {padding: 15px var(--anchoPaddDin);}
-#vistaDeResults #scroll #botones {display: flex; flex-direction: row;}
+#vistaDeResults:has(#scroll #botones li) {
+	--anchoPaddEst: 20px;
+	--anchoPaddDin: min(var(--anchoPaddEst), calc(50vw - var(--anchoBoton) - 10px));
+	padding: 15px var(--anchoPaddDin);
 
-/* Botones para productos */
-#botones li {
-	--altoBoton: 200px;
-	--altoLi: min(15px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
-	list-style-type: none; margin: var(--altoLi) 10px;
-	button {
-		padding: 0; border-radius: 15px; overflow: hidden; height: var(--altoBoton); width: 290px;
-		border-width: 1px; text-align: left; background: var(--celeste-oscuro);
-		&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
-		&:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
-		&.cfc {
-			background: var(--amarillo-claro);
-			&:hover {background: var(--amarillo-oscuro); color: var(--azul-oscuro);}
-		}
+	/* Botones para productos */
+	#scroll #botones {
+		display: flex; flex-direction: row;
+		li {
+			--altoLi: min(15px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
+			list-style-type: none;
+			margin: var(--altoLi) 10px;
+			button {
+				padding: 0; border-radius: 15px; overflow: hidden; height: var(--altoBoton); width: var(--anchoBoton);
+				border-width: 1px; text-align: left; background: var(--celeste-oscuro);
+				&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+				&:focus {box-shadow: 0 0 10px var(--azul-oscuro)}
+				&.cfc {
+					background: var(--amarillo-claro);
+					&:hover {background: var(--amarillo-oscuro); color: var(--azul-oscuro);}
+				}
 
-		/* Partes del resultado */
-		.imagenChica {max-height: 100%; max-width: 140px; align-self: center}
-		#informacion {
-			justify-content: space-between; height: 100%; padding: 6px 0;
-			.infoFormato {
-				padding: 0 15px;
-				.interlineadoChico:not(:first-child) {margin-top: 5px;}
-				:is(#nombreCastellano, #nombre) {font-weight: bold; font-style: italic;}
+				/* Partes del resultado */
+				.imagenChica {max-height: 100%; max-width: 140px; align-self: center}
+				#informacion {
+					justify-content: space-between; height: 100%; padding: 6px 0;
+					.infoFormato {
+						padding: 0 15px;
+						.interlineadoChico:not(:first-child) {margin-top: 5px;}
+						:is(#nombreCastellano, #nombre) {font-weight: bold; font-style: italic;}
+					}
+				}
+				&:hover #informacion #infoSup i#ppp {color: inherit;}
 			}
 		}
-		&:hover #informacion #infoSup i#ppp {color: inherit;}
 	}
 }

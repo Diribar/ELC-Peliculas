@@ -13,12 +13,12 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
-	#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - 290px)/2))} /* 290px es el ancho de un botón; es el mínimo entre el estándar y el calculado */
+	#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - var(--anchoBoton))/2))}
 
 	/* Sector resultados */
 	#vistaDeResults #scroll:has(#botones li) {overflow-x: auto;}
-	#botones li:first-child {margin-left: 0;}
-	#botones li:last-child {margin-right: 0;}
+	#botones li:first-child {margin-left: 0 !important;}
+	#botones li:last-child {margin-right: 0 !important;}
 }
 
 /* Parado */
@@ -64,6 +64,8 @@
 				}
 				footer {z-index: 1; background: var(--gris-claro);}
 			}
+
+			#listados caption {text-align: left;}
 		}
 
 		/* Imagen derecha */

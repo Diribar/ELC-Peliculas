@@ -2,7 +2,7 @@
 	<div id="layoutAyuda" class="flexRow">
 		<!-- Opciones -->
 		<select name="layout_id" class="prefSimple" required>
-			<option value="" selected class="ocultar"></option>
+			<option value="" selected class="ocultar">Buscando el layout</option>
 			<optgroup id="cuatroPelis" label="Cuatro Películas">
 				<% for (let layout of cn_layouts.filter(n => n.boton)) { %>
 					<option value="<%= layout.id %>"><%= layout.nombre %></option>

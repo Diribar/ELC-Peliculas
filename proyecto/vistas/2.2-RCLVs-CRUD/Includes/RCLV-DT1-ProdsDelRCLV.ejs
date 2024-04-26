@@ -11,10 +11,12 @@
 						<% if (prod.direccion) { %>
 							<p class="interlineadoChico">Dirección: <%= prod.direccion %></p>
 						<% } %>
-						<div id="ppp" class="interlineadoChico flexRowAlign">
-							<i class="scale <%= prod.ppp.icono %>" tabindex="-1" title="<%= prod.ppp.nombre %>"></i>
-							<p id="texto" class="ocultar"><%= prod.ppp.nombre %></p>
-						</div>
+						<% if (usuario) { %>
+							<div id="ppp" class="interlineadoChico flexRowAlign">
+								<i class="scale <%= prod.ppp.icono %>" tabindex="-1" title="<%= prod.ppp.nombre %>"></i>
+								<p id="texto" class="ocultar"><%= prod.ppp.nombre %></p>
+							</div>
+						<% } %>
 					</div>
 				</div>
 			</button>

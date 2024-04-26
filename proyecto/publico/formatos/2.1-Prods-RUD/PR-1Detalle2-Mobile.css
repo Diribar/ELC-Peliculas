@@ -40,7 +40,7 @@
 	#informacion #marcoInfo {max-width: 85vw;}
 	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
-	#imgDerecha #links:has(p) {max-width: 40%;}
+	#imgDerecha #links:has(p) {max-width: 50%;}
 	body {
 		--altoFooter: 0px;
 		footer {display: none;}

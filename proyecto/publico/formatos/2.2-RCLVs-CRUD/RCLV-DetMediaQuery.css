@@ -1,9 +1,8 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#listado #prodsNuevos {
-		padding: 0 7.5px;
-		&:first-child {padding-left: 0;}
-		&:last-child {padding-right: 0;}
+		padding-left: 0 !important;
+		&:last-child {padding-right: 0 !important;}
 	}
 
 	/* oculta los triangulitos de desplazamiento */
@@ -21,5 +20,9 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-	#recuadroDL #contenido {margin: 15px 15px;}
+	#recuadroDL #contenido {
+		--altoLi: min(15px, calc((var(--altoCuerpo) - var(--altoBoton) - 14px) / 2)); /* 14px es el ancho de los bordes */
+		margin: var(--altoLi) 15px;
+	}
+
 }
