@@ -43,7 +43,7 @@
 	#medio #contIframe {--anchoDisp: var(--anchoImgDer);}
 	#cuerpo #medio {z-index: 1;}
 	body {
-		--altoFooter: 0;
+		--altoFooter: 0px;
 		footer {display: none;}
 	}
 }

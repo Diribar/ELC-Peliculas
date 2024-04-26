@@ -42,7 +42,7 @@
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
 	#imgDerecha #links:has(p) {max-width: 40%;}
 	body {
-		--altoFooter: 0;
+		--altoFooter: 0px;
 		footer {display: none;}
 	}
 }

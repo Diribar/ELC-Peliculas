@@ -13,7 +13,7 @@
 	#calificaciones #individuales .ayudaMostrar::before {top: 7px; translate: -100% 0;}
 	#calificaciones #sector2 {margin: 25px 0 0;}
 	body {
-		--altoFooter: 0;
+		--altoFooter: 0px;
 		footer {display: none;}
 	}
 }
