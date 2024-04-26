@@ -14,7 +14,7 @@
 @media (orientation: portrait) {
 	#recuadroDL #contenido {margin: 15px 5px;}
 	body {
-		--altoFooter: 0;
+		--altoFooter: 0px;
 		footer {display: none;}
 	}
 }
