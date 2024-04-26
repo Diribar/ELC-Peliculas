@@ -8,9 +8,9 @@ let resultados = {
 		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
+		DOM.esperandoResultados.classList.remove("ocultar");
 
 		// Tapa y limpia los resultados anteriores
-		if (!v.mostrarCartelQuieroVer) DOM.esperandoResultados.classList.remove("ocultar");
 		DOM.botones.innerHTML = "";
 		DOM.listados.innerHTML = "";
 		v.resultados = null;
