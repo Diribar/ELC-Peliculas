@@ -951,18 +951,21 @@ module.exports = {
 				pass: process.env.contrMail, // contraseña de aplicación de gmail
 			},
 		});
+
+		// Datos
 		const datos = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
 			to: email,
 			subject: asunto,
 			html: comentario,
 		};
+
 		// Envío del mail
 		const mailEnviado = await transporter
 			.sendMail(datos)
 			.then(() => true)
 			.catch((error) => {
-				console.log("Mail no enviado. ", {errorEnvioMail: error});
+				console.log("Mail no enviado. ", {error});
 				return false;
 			});
 
