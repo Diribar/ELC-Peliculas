@@ -955,7 +955,6 @@ module.exports = {
 			from: '"ELC - Películas" <' + process.env.direccMail + ">",
 			to: email,
 			subject: asunto,
-			//text: comentario, // plain text body
 			html: comentario,
 		};
 		// Envío del mail
