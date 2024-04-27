@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.IDdeTablas();
+		await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -484,7 +484,7 @@ module.exports = {
 				"loginsAcums",
 				"loginsDelDia",
 				"linksEdicion",
-				"novedadesELC"
+				"novedadesELC",
 			];
 
 			// Actualiza los valores de ID
@@ -500,7 +500,7 @@ module.exports = {
 				}
 
 				// Actualiza el próximo valor de ID
-				await BD_especificas.actualizaElProximoValorDeID(tabla)
+				await BD_especificas.actualizaElProximoValorDeID(tabla);
 			}
 
 			// Fin
