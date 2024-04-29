@@ -954,7 +954,7 @@ module.exports = {
 
 		// Datos
 		const datos = {
-			from: '"ELC - Películas" <' + process.env.direccMail + ">",
+			from: "'ELC - Películas' <" + process.env.direccMail + ">",
 			to: email,
 			subject: asunto,
 			html: comentario,
@@ -965,7 +965,7 @@ module.exports = {
 			.sendMail(datos)
 			.then(() => true)
 			.catch((error) => {
-				console.log("Mail no enviado. ", {error});
+				console.log("Mail no enviado. ", error);
 				return false;
 			});
 
