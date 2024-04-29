@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 27/abr",
-	"HoraUTC": "3:27",
+	"FechaUTC": "Lun. 29/abr",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 22/abr",
-	"HoraSemUTC": "13:41",
-	"semanaUTC": 17,
+	"FechaSemUTC": "Lun. 29/abr",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 18,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"26-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"27-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"28-abr-24": {"titulo": "Santa Juana Beretta Molla"},
-		"29-abr-24": {"titulo": "Santa Catalina de Siena", "entidad": "personajes", "id": 118}
+		"29-abr-24": {"titulo": "Santa Catalina de Siena", "entidad": "personajes", "id": 118},
+		"30-abr-24": {"titulo": "San José Benito Cottolengo", "entidad": "personajes", "id": 179},
+		"01-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
