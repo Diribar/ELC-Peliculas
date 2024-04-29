@@ -181,7 +181,8 @@ module.exports = {
 			// Averigua si corresponde actualizar el original
 			const actualizaOrig =
 				revisorPERL && // 1. Tiene que ser un revisorPERL
-				original.statusRegistro_id == creadoAprob_id; // 2. El registro debe estar en el status 'creadoAprob'
+				original.statusRegistro_id == creadoAprob_id && // 2. El registro debe estar en el status 'creadoAprob'
+				!edicion.id; // 3. No debe tener una edición
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que el registro no está repetido
@@ -223,7 +224,7 @@ module.exports = {
 					let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
 
 					// Espera a que se completen las funciones con 'Promise'
-					[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
+					await Promise.all([statusAprob, edicsEliminadas]);
 
 					// Limpia el valor de la edicion, para que no se recargue el url
 					edicion = null;
@@ -233,11 +234,11 @@ module.exports = {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
 					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
-					edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
+					edicion = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion, userID});
 				}
 
 				// Acciones sobre el archivo avatar, si recibimos uno
-				if (req.file) {
+				if (req.file)
 					if (actualizaOrig) {
 						// Mueve el archivo de la edición para reemplazar el original
 						comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
@@ -250,7 +251,6 @@ module.exports = {
 						if (avatarEdicInicial)
 							comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", avatarEdicInicial);
 					}
-				}
 
 				// Elimina los datos de la session
 				delete req.session.edicProd;
