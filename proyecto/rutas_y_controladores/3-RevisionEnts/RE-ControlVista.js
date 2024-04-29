@@ -366,7 +366,7 @@ module.exports = {
 				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original, userID).then((n) => n.length);
 				bloqueDer = {
 					registro: await procsCRUD.bloqueRegistro({...original, entidad}),
-					usuario: bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias)),
+					usuario: await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
 				};
 				imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 				motivos = motivosEdics.filter((m) => m.prods);
