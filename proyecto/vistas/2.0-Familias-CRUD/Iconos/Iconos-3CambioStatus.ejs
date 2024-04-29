@@ -10,14 +10,14 @@
 				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
-			<% } else if (locals.creadoPor_id == usAutom_id && locals.revisorPERL) { %>
+				<% } else if (locals.creadoPor_id == usAutom_id && locals.revisorPERL) { %>
 				<!-- Capítulos creados automáticamente con 'colecAprob' -> Revisarlo -->
 				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
 				</a>
 			<% } %>
 		<% } %>
-		<% if (provisorios_ids.includes(locals.status_id) && locals.revisorPERL) { %>
+		<% if (!estables_ids.includes(locals.status_id) && locals.revisorPERL) { %>
 			<!-- Revisar -->
 			<a href="<%= '/revision/' + familia + '/inactivar-o-recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
