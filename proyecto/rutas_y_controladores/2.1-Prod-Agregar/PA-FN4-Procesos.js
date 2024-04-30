@@ -33,10 +33,20 @@ module.exports = {
 		return;
 	},
 	datosAdics: {
+		valsCheckBtn: (datos) => {
+			// Variables
+			const camposDA = variables.camposDA;
+			const camposChkBtn = camposDA.filter((n) => n.chkBox).map((m) => m.nombre);
+			console.log(40,camposChkBtn);
+			for (let campo of camposChkBtn) datos[campo] = datos[campo] ? 1 : 0;
+
+			// Fin
+			return datos;
+		},
 		quitaCamposRCLV: (datos) => {
 			// Variables
 			const camposDA = variables.camposDA;
-			const camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
+			const camposRCLV = camposDA.filter((n) => n.rclv).map((m) => m.nombre);
 			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
 
 			// Fin
