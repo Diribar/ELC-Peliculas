@@ -24,8 +24,8 @@
 			<!-- Datos generales -->
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
-				<!-- Centrada en la Fe Católica, Ocurrió, Musical -->
-				<% for (campo of camposDA.filter(n => n.siNo)) { %>
+				<!-- Campos SI / NO -->
+				<% for (campo of camposDA.filter(n => n.radioBtn)) { %>
 					<%- include("PA4-DA1-SI_NO", {campo}) %>
 				<% } %>
 				<hr>

@@ -83,9 +83,9 @@
 /* Relación con la Iglesia Católica */
 #sectorRCLIC #soloCFC {margin-bottom: 5px;}
 #sectorRCLIC .pregunta {font-size: 1.10rem;}
-#sectorRCLIC .siNo {width: 70px; justify-content: space-between;}
-#sectorRCLIC .personajes .siNo {margin-left: 10px;}
-#sectorRCLIC .hechos .siNo {margin-right: 10px;}
+#sectorRCLIC .radioBtn {width: 70px; justify-content: space-between;}
+#sectorRCLIC .personajes .radioBtn {margin-left: 10px;}
+#sectorRCLIC .hechos .radioBtn {margin-right: 10px;}
 
 /* 1. Año (personajes y hechos) */
 #sectorEpoca:not(

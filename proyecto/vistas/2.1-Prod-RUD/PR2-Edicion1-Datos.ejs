@@ -22,7 +22,7 @@
 		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
 			<!-- Campos SI / NO -->
-			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
+			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-TipoActuac", {nombre: "tipoActuacion_id"}) %>
 			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
