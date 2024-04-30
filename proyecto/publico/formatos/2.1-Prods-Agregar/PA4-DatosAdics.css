@@ -1,38 +1,52 @@
 /* Ayuda */
-#cuerpo .inputError .ayudaMostrar {max-width: 400px;}
+#cuerpo {
+	/* Cuerpo del formulario */
+	#dataEntry {
+		#tituloSecundario {margin-bottom: 10px;}
+		#datos {
+			display: flex; flex-direction: row;
+			h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
 
-/* Cuerpo del formulario */
-#dataEntry #datos {display: flex; flex-direction: row;}
-#dataEntry #tituloSecundario {margin-bottom: 10px;}
-#dataEntry #primeraColumna {margin-right: 70px;}
+			/* Partes específicas del formulario */
+			.inputError {
+				&.altoFila {height: 25px;}
+				.ayudaMostrar {max-width: 400px;}
+				#radioBtnTitulo {width: 170px;}
+			}
+			.labelSelect {
+				display: flex; flex-direction: row; justify-content: space-between;
+				margin-top: 5px;
+				label {margin: 0 15px 0 0; font-weight: bold;}
+				select {padding: 0; margin-left: 5px;}
+				.ayuda {left: -5px; right: auto; translate: -100% -50%;}
+			}
 
-/* Partes específicas del formulario */
-#dataEntry h1 {margin-bottom: 15px;}
-#dataEntry h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
-#dataEntry .altoFila {height: 25px;}
-#dataEntry #siNoTitulo {width: 170px;}
+			/* Columnas */
+			#primeraColumna {margin-right: 70px;}
+			#segundaColumna {
+				margin-right: 25px; width: 290px;
+				hr {margin: 10px 0;}
+				.errores {translate: -100% -50%; left: -5px; right: auto; position: absolute;}
+				#checkbox {
+					display: flex; flex-direction: row; align-items: center;
+					label {padding-left: 5px; line-height: normal;}
+				}
+				#selectsRCLV {
+					select {width: 150px;}
+					.linkRCLV {
+						position: absolute; transform: translateY(-50%); top: 50%;
+						width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);
+						&.alta {right: -20px; font-size: 1rem;}
+						&.edicion {right: -40px; font-size: 1.15rem;}
+					}
+				}
+			}
+		}
 
-/* Temas de la 2a columna */
-#dataEntry #segundaColumna {margin-right: 25px; width: 290px;}
-#dataEntry #segundaColumna hr {margin: 10px 0;}
-#dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto; position: absolute;}
-
-/* Selects */
-#dataEntry .labelSelect {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry .labelSelect {margin-top: 5px;}
-#dataEntry .labelSelect label {margin: 0 15px 0 0; font-weight: bold;}
-#dataEntry .labelSelect select {padding: 0; width: 150px; margin-left: 5px;}
-#dataEntry .labelSelect .ayuda {left: -5px; right: auto; translate: -100% -50%;}
-
-/* Temas RCLV */
-#dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
-#dataEntry #checkbox label {padding-left: 5px; line-height: normal;}
-/* #dataEntry #selectsRCLV .labelSelect.ocultar {display: none;} */
-#dataEntry #selectsRCLV .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%;}
-#dataEntry #selectsRCLV .linkRCLV {width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);}
-#dataEntry #selectsRCLV .linkRCLV.alta {right: -20px; font-size: 1rem;}
-#dataEntry #selectsRCLV .linkRCLV.edicion {right: -40px; font-size: 1.15rem;}
-
-/* Iconos */
-#dataEntry .iconos {margin-top: 20px;}
-#dataEntry .iconos button {background: transparent; border: none; padding: 0; border-radius: 50%;}
+		/* Iconos */
+		.iconos {
+			margin-top: 20px;
+			button {background: transparent; border: none; padding: 0; border-radius: 50%;}
+		}
+	}
+}
