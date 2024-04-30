@@ -15,10 +15,6 @@ window.addEventListener("load", async () => {
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 
-		// 1a columna - checkBoxes y tipoActuacion
-		checkBoxes: document.querySelectorAll("#primeraColumna #checkBoxes input"),
-		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
-
 		// RCLV
 		checkRCLV: document.querySelector("#RCLV #checkBox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
@@ -72,22 +68,12 @@ window.addEventListener("load", async () => {
 		// Variables
 		let datosUrl = "";
 
-		//Busca todos los valores 'radio'
+		// Busca todos los valores 'radio'
 		DOM.radioSI.forEach((radioSI, i) => {
-			// Variables
 			let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
-			// Acción
 			datosUrl += radioSI.name + "=" + respuesta + "&";
 			if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
 		});
-
-		//Busca todos los valores 'check'
-		for (let checkBox of DOM.checkBoxes) if (checkBox.checked) datosUrl += checkBox.name + "=on&";
-
-		//Busca todos los valores 'tipoActuacion'
-		let respuesta = "";
-		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
-		datosUrl += "tipoActuacion_id=" + respuesta + "&";
 
 		// Busca el checkbox de RCLV
 		if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
@@ -96,6 +82,7 @@ window.addEventListener("load", async () => {
 		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
 			if (v.camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
+
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
 		});
