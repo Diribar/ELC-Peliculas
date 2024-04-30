@@ -6,7 +6,6 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
 		inputs: document.querySelectorAll(".inputError .input"),
-		checkbox: document.querySelector("#dataEntry #checkbox input"),
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
@@ -26,7 +25,7 @@ window.addEventListener("load", async () => {
 
 		// RCLV
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
-		checkRCLV: document.querySelector("#RCLV #checkbox input"),
+		checkRCLV: document.querySelector("#RCLV #checkBox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
 
@@ -87,7 +86,7 @@ window.addEventListener("load", async () => {
 		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
 		datosUrl += "tipoActuacion_id=" + respuesta + "&";
 		// Busca el checkbox
-		if (DOM.checkbox.checked) datosUrl += "sinRCLV=on&";
+		if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'
 		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
