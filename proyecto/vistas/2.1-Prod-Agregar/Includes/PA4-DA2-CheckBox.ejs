@@ -1,4 +1,4 @@
 <div id="checkBox" class="flexRow">
-	<input id="<%= nombre %>" type="checkbox" name="<%= nombre %>" tabindex="-1" <% if (dataEntry && dataEntry[nombre]) { %>checked<% } %>>
+	<input id="<%= nombre %>" type="checkbox" name="<%= nombre %>" tabindex="-1" <% if (!camposDE.includes(nombre) && nombre == "color" || dataEntry[nombre]) { %>checked<% } %>>
 	<label for="<%= nombre %>"><%= titulo %></label>
 </div>
