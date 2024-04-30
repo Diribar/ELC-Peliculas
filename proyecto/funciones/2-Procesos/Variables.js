@@ -222,9 +222,9 @@ module.exports = {
 		return [
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
 			{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
-			{titulo: "Color", nombre: "color", radioBtn: true},
-			{titulo: "Musical", nombre: "musical", radioBtn: true},
-			{titulo: "Deporte", nombre: "deporte", radioBtn: true},
+			{titulo: "Color", nombre: "color", chkBox: true},
+			{titulo: "Musical", nombre: "musical", chkBox: true},
+			{titulo: "Deporte", nombre: "deporte", chkBox: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{
