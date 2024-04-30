@@ -147,7 +147,7 @@ module.exports = {
 			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic},
-				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
+				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb, dataEntry: prodComb},
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
