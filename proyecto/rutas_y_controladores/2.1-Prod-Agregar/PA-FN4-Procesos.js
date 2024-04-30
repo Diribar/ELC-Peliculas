@@ -37,7 +37,6 @@ module.exports = {
 			// Variables
 			const camposDA = variables.camposDA;
 			const camposChkBtn = camposDA.filter((n) => n.chkBox).map((m) => m.nombre);
-			console.log(40,camposChkBtn);
 			for (let campo of camposChkBtn) datos[campo] = datos[campo] ? 1 : 0;
 
 			// Fin
