@@ -1,7 +1,7 @@
 <% const {titulo, nombre} = campo %>
 <section class="inputError flexRowAlign altoFila">
 	<label id="radioBtnTitulo" class="negrita"><%= titulo %></label>
-	<div id="radioBtnOpcs" class="flexRowAlign relative">
+	<div id="radioBtnOpcs" class="flexRowAlign<%- locals.prodEdic ? ' relative' : '' %>">
 		<div class="flexRowAlign">
 			<input id="<%= nombre %>SI" type="radio" name="<%= nombre %>" value="1" <% if (registro[nombre]==1) { %>checked<% } %> class="radioSI">
 			<label for="<%= nombre %>SI">SI</label>
@@ -10,8 +10,10 @@
 			<input id="<%= nombre %>NO" type="radio" name="<%= nombre %>" value="0" <% if (registro[nombre]==0) { %>checked<% } %> class="radioNO">
 			<label for="<%= nombre %>NO">NO</label>
 		</div>
-		<!-- Aviso de cambio en el data-entry -->
-		<i class="fa-solid fa-arrow-right-long ocultar"></i>
+		<% if (locals.prodEdic) { %>
+			<!-- Aviso de cambio en el data-entry -->
+			<i class="fa-solid fa-arrow-right-long ocultar"></i>
+		<% } %>
 	</div>
 	<%- include("CMP-Errores", {nombre}) %>
 </section>

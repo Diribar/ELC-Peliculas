@@ -141,11 +141,12 @@ module.exports = {
 			];
 			const status_id = original.statusRegistro_id;
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
+			const prodEdic = true;
 
 			// Va a la vista
 			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo, origen},
+				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
 				...{imgDerPers, status_id},
 				...{camposInput1, camposInput2, produccion},
