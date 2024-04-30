@@ -30,9 +30,11 @@
 			<% } %>
 
 			<!-- Campos checkBox -->
-			<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
-				<%- include("P-CheckBox", campo) %>
-			<% } %>
+			<div id="checkBoxes" class="flexRow altoFila">
+				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
+					<%- include("P-CheckBox", campo) %>
+				<% } %>
+			</div>
 
 			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
