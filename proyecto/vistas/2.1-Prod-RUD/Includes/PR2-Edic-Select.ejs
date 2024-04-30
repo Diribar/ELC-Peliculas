@@ -7,9 +7,7 @@
 		<select name="<%= nombre %>" class="input <%= angosto ? 'angosto ' : '' %>">
 			<option value="" <% if (!registro[nombre]) { %>selected<% } %>>Elejí<% if (!angosto) { %> una opción<% } %></option>
 			<% for (let valor of valores) { %>
-				<option value="<%= valor.id %>"
-					<% if (registro[nombre] == valor.id) { %>selected<% } %>
-				>
+				<option value="<%= valor.id %>" <% if (registro[nombre] == valor.id) { %>selected<% } %>>
 					<%= valor.nombre %>
 				</option>
 			<% } %>
