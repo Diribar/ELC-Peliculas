@@ -59,15 +59,12 @@ window.addEventListener("load", async () => {
 		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
 	};
 
-	// Campos de error
-	DOM.camposError = [...Array.from(DOM.radioSI).map((n) => n.name), ...["tipoActuacion_id", "RCLV"]];
-
-	// Opciones para personajes
+	// Otras variables
+	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
 	DOM.opcionesPers = [];
-	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push([...grupo.children]);
-	// Opciones para hechos
+	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push(grupo.children);
 	DOM.opcionesHechos = [];
-	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push([...grupo.children]);
+	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push(grupo.children);
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
@@ -120,7 +117,7 @@ window.addEventListener("load", async () => {
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
 		let errores = await fetch(rutas.validar + datos).then((n) => n.json());
 		// return;
-		DOM.camposError.forEach((campo, indice) => {
+		camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				DOM.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
