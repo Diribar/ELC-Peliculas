@@ -191,6 +191,7 @@ module.exports = {
 		{nombre: "bhr"},
 		{nombre: "color"},
 		{nombre: "musical"},
+		{nombre: "deporte"},
 		{nombre: "tipoActuacion_id"},
 		{nombre: "publico_id"},
 		{nombre: "epocaOcurrencia_id"},
@@ -219,10 +220,11 @@ module.exports = {
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
 		};
 		return [
-			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", siNo: true},
-			{titulo: "Basada en Hechos Reales", nombre: "bhr", siNo: true},
-			{titulo: "Es a color", nombre: "color", siNo: true},
-			{titulo: "Es un musical", nombre: "musical", siNo: true},
+			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
+			{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
+			{titulo: "Color", nombre: "color", radioBtn: true},
+			{titulo: "Musical", nombre: "musical", radioBtn: true},
+			{titulo: "Deporte", nombre: "deporte", radioBtn: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{
