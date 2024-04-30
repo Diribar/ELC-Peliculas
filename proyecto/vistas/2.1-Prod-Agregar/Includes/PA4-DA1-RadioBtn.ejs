@@ -2,7 +2,7 @@
 <% if (nombre=="color") { %><hr><% } %>
 <div class="inputError flexRowAlign altoFila">
 	<label id="radioBtnTitulo" class="negrita"><%= titulo %></label>
-	<div id="siNoOpciones" class="flexRowAlign">
+	<div id="radioBtnOpcs" class="flexRowAlign">
 		<div class="flexRowAlign">
 			<input id="<%= nombre %>SI" type="radio" name="<%= nombre %>" value="1" <% if (!camposDE.includes(nombre)&&nombre=="color" || dataEntry[nombre]==1) { %>checked<% } %> class="radioSI">
 			<label for="<%= nombre %>SI">SI</label>
