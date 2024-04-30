@@ -22,7 +22,13 @@
 			}
 
 			/* Columnas */
-			#primeraColumna {margin-right: 70px;}
+			#primeraColumna {
+				margin-right: 70px;
+				#checkBoxes {
+					justify-content: space-between; align-items: center;
+					label {padding-left: 5px; line-height: normal; font-weight: bold;}
+				}
+			}
 			#segundaColumna {
 				margin-right: 25px; width: 290px;
 				hr {margin: 10px 0;}
