@@ -24,7 +24,7 @@
 			<!-- Campos SI / NO -->
 			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
-			<%- include("PR2-Edic-TipoActuac", {nombre: "tipoActuacion_id"}) %>
+			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
 			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
