@@ -5,13 +5,13 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-    header .ocultoMobile_parcial {display: none;}
+    header .ocultoMobile {display: none ;}
 }
 
 /* Parado */
 @media (orientation: portrait) {
     header {
-        .ocultoMobile_total {display: none;}
+        :is(.ocultoMobile, .ocultoMobileParado) {display: none !important;}
         #menuMobile {
             div.soloAngosto {display: flex;}
             hr.soloAngosto {display: block;}
