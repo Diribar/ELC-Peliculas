@@ -46,7 +46,7 @@
 #info .labelInput .inputError select {padding: 0;}
 /* #info .labelInput .inputError .input:disabled, #info .labelInput#paises_id */
 #info :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
-#info .flexRowAlign #siNoTitulo {width: 210px;}
+#info .flexRowAlign #radioBtnTitulo {width: 210px;}
 
 /* País */
 #info #paises_id {align-items: center;}
