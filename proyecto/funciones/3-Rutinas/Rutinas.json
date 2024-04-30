@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 29/abr",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 30/abr",
+	"HoraUTC": "3:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 29/abr",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"27-abr-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"28-abr-24": {"titulo": "Santa Juana Beretta Molla"},
 		"29-abr-24": {"titulo": "Santa Catalina de Siena", "entidad": "personajes", "id": 118},
 		"30-abr-24": {"titulo": "San José Benito Cottolengo", "entidad": "personajes", "id": 179},
-		"01-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"01-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"02-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
