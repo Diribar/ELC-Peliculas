@@ -9,17 +9,6 @@
 		flex-direction: column;
 		&.toggle {display: none;}
 
-		/* Ayuda */
-		#ayudaLinks {
-			margin-bottom: 10px;
-			.ayudaMostrar {
-				translate: -50% -100%; top: -7px; left: 8px; right: auto;
-				max-width: min(275px, 75vw);
-				&::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
-				&::before {border-color: var(--backAyuda) transparent transparent transparent;}
-			}
-		}
-
 		/* Accesos */
 		nav {
 			align-items: center; flex-direction: column;
@@ -40,7 +29,20 @@
 	#informacion #marcoInfo {max-width: 85vw;}
 	#datosLargos #marcoInfo #etiquetas {overflow-x: auto; scroll-behavior: smooth;}
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
-	#imgDerecha #links:has(p) {max-width: 50%;}
+	#imgDerecha #links {
+		&:has(p) {max-width: 50%;}
+
+		/* Ayuda */
+		#ayudaLinks {
+			margin-bottom: 10px;
+			.ayudaMostrar {
+				translate: -50% -100%; top: -7px; left: 8px; right: auto;
+				max-width: min(275px, 75vw);
+				&::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
+				&::before {border-color: var(--backAyuda) transparent transparent transparent;}
+			}
+		}
+	}
 	body {
 		--altoFooter: 0px;
 		footer {display: none;}
@@ -50,11 +52,10 @@
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
 	/* Adecua temas de laptop */
-	#cuerpoFooter #cuerpo {max-height: none}
 	#datosLargos #recuadroDL {max-width: calc(100vw - var(--anchoImgDer) - 2vw) !important;}
 	#datos #marcoInfo {margin: 0;}
 	#imgDerecha #links:has(p) {max-width: 70%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #datosLargos #links {display: none !important;}
+	#cuerpoFooter #datosLargos #links, #imgDerecha #links #ayudaLinks {display: none !important;}
 }
