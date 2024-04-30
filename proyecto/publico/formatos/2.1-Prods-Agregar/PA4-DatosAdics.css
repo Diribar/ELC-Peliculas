@@ -6,10 +6,10 @@
 		#datos {
 			display: flex; flex-direction: row;
 			h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
+			.altoFila {height: 25px;}
 
 			/* Partes específicas del formulario */
 			.inputError {
-				&.altoFila {height: 25px;}
 				.ayudaMostrar {max-width: 400px;}
 				#radioBtnTitulo {width: 170px;}
 			}
