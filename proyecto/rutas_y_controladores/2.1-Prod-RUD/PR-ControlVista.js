@@ -161,11 +161,14 @@ module.exports = {
 			const userID = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const camposCheckBox = variables.camposDA.filter((n) => n.chkBox).map((n) => n.nombre);
 
-			// Elimina los campos vacíos y pule los espacios innecesarios
+			// Reemplaza valores
 			for (let prop in req.body)
-				if (!req.body[prop]) req.body[prop] = null;
-				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim();
+				if (!req.body[prop]) req.body[prop] = null; // elimina los campos vacíos
+				else if (req.body[prop] == "on") req.body[prop] = 1; // corrige el valor de los checkbox
+				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim(); // pule los espacios innecesarios
+			for (let campo of camposCheckBox) if (!Object.keys(req.body).includes(campo)) req.body[campo] = 0; // completa el valor de los checkbox
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
@@ -181,9 +184,9 @@ module.exports = {
 
 			// Averigua si corresponde actualizar el original
 			const actualizaOrig =
-				revisorPERL && // 1. Tiene que ser un revisorPERL
-				original.statusRegistro_id == creadoAprob_id && // 2. El registro debe estar en el status 'creadoAprob'
-				!edicion.id; // 3. No debe tener una edición
+				revisorPERL && // tiene que ser un revisorPERL
+				original.statusRegistro_id == creadoAprob_id && // el registro debe estar en el status 'creadoAprob'
+				!edicion.id; // no debe tener una edición
 
 			// Averigua si hay errores de validación
 			// 1. Se debe agregar el id del original, para verificar que el registro no está repetido
