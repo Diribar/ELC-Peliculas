@@ -161,6 +161,12 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		actualizaBotones: () => {
+			// Si la versión actual no es la edición nueva, inactiva y termina
+			if (v.versionActual != "edicN") {
+				for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
+				return;
+			}
+
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
 				DOM.botonesActivarVersion[1].classList.remove("inactivoVersion");
@@ -214,11 +220,12 @@ window.addEventListener("load", async () => {
 		},
 		accionesPorCambioDeVersion: async function () {
 			// Funciones
-			this.reemplazaInputs(); // Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
-			this.actualizaPaisesNombre(); // Actualiza los nombres de país
-			this.muestraOcultaIconosRclv(); // Muestra/oculta los íconos de RCLV, ayuda y error
-			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
-			await this.averiguaMuestraLosErrores(); // Muestra los errores
+			this.reemplazaInputs(); // reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
+			this.actualizaPaisesNombre();
+			this.muestraOcultaIconosRclv();
+			this.senalaLasDiferencias();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotones();
 
 			// Fin
 			return;
