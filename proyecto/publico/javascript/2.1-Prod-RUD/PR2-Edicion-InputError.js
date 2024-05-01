@@ -79,13 +79,14 @@ window.addEventListener("load", async () => {
 		},
 		obtieneLosValoresEdicN: () => {
 			// Obtiene los valores
-			let inputsChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
-			let inputs = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsChecked);
+			let inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
+			let inputs = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsRadioChecked);
 
 			// Almacena los valores
 			version.edicN = {};
 			for (let input of inputs) {
-				if (input.name != "avatar") version.edicN[input.name] = input.value != "on" ? input.value : input.checked ? 1 : 0;
+				if (input.name != "avatar")
+					version.edicN[input.name] = input.type == "checkbox" ? (input.checked ? 1 : 0) : input.value;
 				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
 			}
 
@@ -107,8 +108,8 @@ window.addEventListener("load", async () => {
 		},
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los valores simples más los chequeados
-			let inputsChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
-			let inputsResp = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsChecked);
+			let inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
+			let inputsResp = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsRadioChecked);
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
@@ -228,23 +229,20 @@ window.addEventListener("load", async () => {
 
 			// Rutina para cada campo
 			for (let input of DOM.inputsTodos) {
-				// Reemplaza los valores que no sean el avatar
-				if (input.name != "avatar") {
-					if (input.type != "radio")
-						input.value =
-							version[v.versionActual][input.name] !== undefined && version[v.versionActual][input.name] !== null
-								? version[v.versionActual][input.name]
-								: "";
-					else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
-				}
-
 				// Oculta y muestra los avatar que correspondan
-				else
+				if (input.name == "avatar")
 					DOM.imgsAvatar.forEach((imgAvatar, indice) => {
 						v.versiones[indice] == v.versionActual
 							? imgAvatar.classList.remove("ocultar")
 							: imgAvatar.classList.add("ocultar");
 					});
+				else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
+				else if (input.type == "checkbox") input.checked = version[v.versionActual][input.name] == 1;
+				// Reemplaza los valores que no sean el avatar
+				else
+					input.value = ![undefined, null].includes(version[v.versionActual][input.name])
+						? version[v.versionActual][input.name]
+						: "";
 
 				// Impide/permite que el usuario haga cambios según la versión
 				input.disabled = !v.estamosEnEdicNueva && !input.checked;
