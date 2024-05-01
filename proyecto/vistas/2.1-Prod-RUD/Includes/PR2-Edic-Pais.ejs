@@ -11,18 +11,18 @@
 			<optgroup label="Más Frecuentes">
 				<% for (let pais of paisesTop5) { %>
 					<option value="<%= pais.id %>"><%= pais.nombre %></option>
-				<% } %>	
+				<% } %>
 			</optgroup>
-			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
+			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %>
 			<% for (let continente of continentes) { %>
 				<optgroup label="<%= continente %>">
 					<% for (let pais of paises.filter(n => n.continente == continente)) { %>
 						<option value="<%= pais.id %>"><%= pais.nombre %></option>
-					<% } %>	
+					<% } %>
 				</optgroup>
-			<% } %> 
+			<% } %>
 		</select>
-		<%- include("CMP-Errores", {nombre: "paises_id"}) %>
+		<%- include("CMP-Errores", {nombre: "paises_id", ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
