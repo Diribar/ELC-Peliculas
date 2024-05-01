@@ -10,7 +10,7 @@ module.exports = {
 	},
 
 	// Lectura de edicion
-	obtieneOriginalEdicion: async (entidad, entID, userID, excluirInclude) => {
+	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -37,7 +37,9 @@ module.exports = {
 
 		// Pule la edición
 		edicion = edicion
-			? await puleEdicion(entidad, original, edicion) // El output puede ser 'null'
+			? omitirPulirEdic
+				? edicion
+				: await puleEdicion(entidad, original, edicion) // El output puede ser 'null'
 			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
