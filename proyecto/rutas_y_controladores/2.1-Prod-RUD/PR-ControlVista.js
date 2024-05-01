@@ -19,7 +19,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
@@ -109,7 +109,7 @@ module.exports = {
 				entidadNombre;
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 			let prodComb = {...original, ...edicion, id};
 			const session = req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id;
 			delete req.session.edicProd;
@@ -166,9 +166,9 @@ module.exports = {
 			// Reemplaza valores
 			for (let prop in req.body)
 				if (!req.body[prop]) req.body[prop] = null; // elimina los campos vacíos
-				else if (req.body[prop] == "on") req.body[prop] = 1; // corrige el valor de los checkbox
+				else if (req.body[prop] == "on") req.body[prop] = "1"; // corrige el valor de los checkbox
 				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim(); // pule los espacios innecesarios
-			for (let campo of camposCheckBox) if (!Object.keys(req.body).includes(campo)) req.body[campo] = 0; // completa el valor de los checkbox
+			for (let campo of camposCheckBox) if (!Object.keys(req.body).includes(campo)) req.body[campo] = "0"; // completa el valor de los checkbox
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
@@ -178,7 +178,7 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID, true);
+			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -289,7 +289,7 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho
