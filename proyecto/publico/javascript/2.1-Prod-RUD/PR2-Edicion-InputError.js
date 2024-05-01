@@ -346,21 +346,24 @@ window.addEventListener("load", async () => {
 	// Botones - 1. Activa las versiones
 	DOM.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
-			// Interrumpe si las versiones son iguales
-			if (v.versionActual == v.versiones[indice]) return;
-			// Interrumpe si el botón está inactivo
-			if (boton.className.includes("inactivoVersion")) return;
+			// Interrupciones
+			if (v.versionActual == v.versiones[indice]) return; // si las versiones son iguales
+			if (boton.className.includes("inactivoVersion")) return; // si el botón está inactivo
+
 			// Cambia la versión
 			let aux = v.versionActual;
 			v.versionActual = v.versiones[indice];
+
 			// Cambia los valores
 			FN.accionesPorCambioDeVersion();
+
 			// Cambia el boton activo
 			DOM.botonesActivarVersion.forEach((revisar, i) => {
 				if (i != indice) revisar.classList.remove("activo");
 				else revisar.classList.add("activo");
 			});
-			// Cambiar la versión anterior
+
+			// Cambia la versión anterior
 			v.versionAnt = aux;
 		});
 	});
