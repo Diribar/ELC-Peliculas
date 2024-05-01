@@ -18,7 +18,7 @@ module.exports = {
 		let imgDerPers;
 
 		// Obtiene RCLV y sus productos
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 		let rclv = {...original, ...edicion, id};
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
@@ -98,7 +98,7 @@ module.exports = {
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
 				// Obtiene el original y edicion
-				const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+				const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 				edicID = edicion.id;
 
 				// Actualiza el data entry de session

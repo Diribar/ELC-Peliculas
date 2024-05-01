@@ -358,7 +358,7 @@ module.exports = {
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID, true);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
