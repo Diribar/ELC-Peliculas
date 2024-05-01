@@ -1,85 +1,124 @@
 /* Temas generales */
-#cuerpoFooterImgDer {background: var(--gris-claro);}
-#cuerpoFooterImgDer #imgDerecha {position: relative;}
-#cuerpoFooter #cuerpo {flex-direction: column;}
+#cuerpoFooterImgDer {
+	background: var(--gris-claro);
+	#imgDerecha {
+		position: relative;
+		.fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
+	}
 
-.ayudaMostrar .fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
-.ayudaMostrar .fa-triangle-exclamation {font-size: .8rem;}
+	#cuerpoFooter #cuerpo {
+		flex-direction: column;
 
-/* Zona del formulario */
-#cuerpo #datos {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
-#cuerpo #datos {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
-#cuerpo #datos .altoFila {height: 21px;}
+		/* Zona del formulario */
+		#datos {
+			display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;
+			margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;
+			.altoFila {height: 21px;}
 
-/* Partes del formulario */
-#datos #info {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
-.labelInput .inputError .input {width: 100%;}
-.errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
+			#info {
+				display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;
 
-/* Primera columna */
-#primeraColumna {width: 350px;}
-#primeraColumna .inputError {width: 100%;}
-#primeraColumna .labelInput .inputError {max-width: 200px;}
-#primeraColumna .labelInput .inputError:has(.angosto, .numero) {max-width: 70px;}
+				/* Partes del formulario */
+				.labelInput .inputError .input {width: 100%;}
+				.errores .fa-triangle-exclamation {color: var(--naranja-oscuro); background: var(--gris-claro); border: var(--gris-claro) 1px solid;}
+				.ayudaMostrar {
+					.fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono); font-size: .7rem;}
+					.fa-triangle-exclamation {font-size: .8rem;}
+				}
+				.columna {
+					display: flex; flex-direction: column; justify-content: space-between;
+					h3 {
+						margin-top: 15px; color: var(--verde-oscuro); width: 100%;
+						&:first-child {margin-top: 0;}
+					}
+					.labelInput {
+						display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;
+						&:has(h3) {margin-top: 15px;}
+						label {margin-right: 20px; font-weight: bold;}
+						.inputError {
+							display: flex; flex-direction: row; margin-left: 5px; width: 100%;
+							:is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
+							.ayuda {right: -5px;}
+							.input {align-self: center;}
+							.input.numero {text-align: right;}
+							input {padding: 0px 5px;}
+							select {padding: 0;}
+						}
+					}
+					:is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
+				}
 
-/* Segunda columna */
-#segundaColumna {width: 380px; display: flex; flex-direction: column;}
-#segundaColumna .labelInput .inputError:not(:has(textarea)) {width: 240px;}
-#segundaColumna .labelInput .inputError:has(select[name="epocaOcurrencia_id"]) {width: 150px}
-#segundaColumna .labelInput .inputError {width: 100%;}
-#segundaColumna .labelInput .inputError :is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
-/* Partes específicas del formulario */
-#info .columna {display: flex; flex-direction: column; justify-content: space-between;}
-#info .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
-#info .columna h3:first-child {margin-top: 0;}
-#info .columna .labelInput:has(h3) {margin-top: 15px;}
+				/* Columnas */
+				#primeraColumna {
+					width: 350px;
+					.labelInput {
+						/* General */
+						.inputError {
+							max-width: 200px;
+							&:has(.angosto, .numero) {max-width: 70px;}
+						}
 
-#info .labelInput {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;}
-#info .labelInput label {margin-right: 20px; font-weight: bold;}
-#info .labelInput .inputError {display: flex; flex-direction: row; margin-left: 5px;}
-#info .labelInput .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
-#info .labelInput .inputError .ayuda {right: -5px;}
-#info .labelInput .inputError .input {align-self: center;}
-#info .labelInput .inputError .input.numero {text-align: right;}
-#info .labelInput .inputError input {padding: 0px 5px;}
-#info .labelInput .inputError select {padding: 0;}
-/* #info .labelInput .inputError .input:disabled, #info .labelInput#paises_id */
-#info :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
-#info .flexRowAlign #radioBtnTitulo {width: 210px;}
+						/* País */
+						&#paises_id {
+							align-items: center;
+							.inputError {
+								:is(input#mostrarPaises, select) {position: absolute; top: 0; translate: 0 -50%; height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+								input#mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
+								select {width: 100%; padding: 0;}
+							}
+						}
 
-/* País */
-#info #paises_id {align-items: center;}
-#info #paises_id .inputError {width: 200px;}
-#info #paises_id .inputError :is(input#mostrarPaises, select)
-	{position: absolute; top: 0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-#info #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
-#info #paises_id .inputError select {width: 100%; padding: 0;}
+						/* Sinopsis */
+						&#sinopsis {
+							display: flex; flex-direction: column; flex-grow: 1;
+							.inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+							textarea {
+								padding: 5px 10px; resize: none; height: 100%; min-height: 50px;
+								&::-webkit-scrollbar {display: none;}
+							}
+						}
 
-/* Sinopsis */
-#info .labelInput#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
-#info .labelInput#sinopsis .inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
-#info #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%; min-height: 50px;}
-#info #sinopsis textarea.input::-webkit-scrollbar {display: none;}
+					}
+				}
 
-/* RCLV */
-#info .labelInput .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-#info .labelInput .inputError .linkRCLV {width: 15px; cursor: pointer;}
-#info .labelInput .inputError #alta.linkRCLV {right: -40px;}
-#info .labelInput .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
+				#segundaColumna {
+					width: 380px; display: flex; flex-direction: column;
 
-/* Tipos de actuación */
-#info #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
+					#radioBtnTitulo {width: 210px;}
+					.labelInput .inputError {
+						width: 240px;
+						&:has(select[name="epocaOcurrencia_id"]) {width: 150px}
+						:is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
+
+						/* RCLV */
+						.linkRCLV {
+							position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;
+							width: 15px; cursor: pointer;
+							&#alta {right: -40px;}
+							&#edicion {right: -60px; font-size: 1.15rem;}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/* Comandos - Particularidades */
+.iconos {
+	/* Slash */
+	div:has(> .fa-slash) {width: 15px; display: flex; flex-direction: row; justify-content: center;}
+	i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none; margin: 0;}
+
+	/* Ícono activaVersión */
+	i.activaVersion {
+		padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;
+		background: var(--azul-oscuro);
+		&.activo {background: var(--verde-oscuro) !important; color: var(--amarillo-claro) !important;}
+	}
+}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
 .inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
-#imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
-
-/* Comandos - Particularidades */
-.iconos i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
-.iconos i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.iconos i.activarVersion.activo {background: var(--verde-oscuro);}
-/* Slash */
-.iconos div:has(> .fa-slash) {width: 15px; display: flex; flex-direction: row; justify-content: center;}
-.iconos i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none; margin: 0;}
