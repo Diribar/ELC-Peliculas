@@ -371,8 +371,9 @@ module.exports = {
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "bhr", productos: true},
-			{titulo: "Es un musical", nombre: "musical", productos: true},
 			{titulo: "Es a color", nombre: "color", productos: true},
+			{titulo: "Es un musical", nombre: "musical", productos: true},
+			{titulo: "Tiene deporte", nombre: "deporte", productos: true},
 			{
 				titulo: "Tipo de Actuación",
 				nombre: "tipoActuacion_id",
