@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// VARIABLES -----------------------------------------------------------------------
+	// Variables
 	let errores;
 	let DOM = {
 		// Datos del formulario
