@@ -3,25 +3,17 @@
 	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
 	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
-		<% if (locals.status_id == creado_id) { %>
-			<!-- Solo para status creado y usuario logueado -->
-			<% if (locals.creadoPor_id == usuario.id) { %>
-				<!-- Si fue creado por el usuario -> Eliminarlo definitivamente -->
-				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
-				</a>
-			<% } else if (locals.creadoPor_id == usAutom_id && locals.revisorPERL) { %>
-				<!-- Capítulos creados automáticamente con 'colecAprob' -> Revisarlo -->
-				<a href="<%= '/revision/producto/alta/?entidad=capitulos&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Revisar"></i>
-				</a>
-			<% } %>
-		<% } %>
 		<% if ([...provisorios_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
 			<!-- Revisar -->
 			<% const url = status_id == creado_id ? "alta" : "inactivar-o-recuperar" %>
 			<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
+		<% } %>
+		<% if (locals.status_id == creado_id && locals.creadoPor_id == usuario.id) { %>
+			<!-- Status creado y si fue creado por el usuario -> Eliminarlo definitivamente -->
+			<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 			</a>
 		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
