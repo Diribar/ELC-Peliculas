@@ -6,10 +6,10 @@
 		#datos {
 			display: flex; flex-direction: row;
 			h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
+			.altoFila {height: 25px;}
 
 			/* Partes específicas del formulario */
 			.inputError {
-				&.altoFila {height: 25px;}
 				.ayudaMostrar {max-width: 400px;}
 				#radioBtnTitulo {width: 170px;}
 			}
@@ -22,12 +22,18 @@
 			}
 
 			/* Columnas */
-			#primeraColumna {margin-right: 70px;}
+			#primeraColumna {
+				margin-right: 70px;
+				#checkBoxes {
+					justify-content: space-between; align-items: center;
+					label {padding-left: 5px; line-height: normal; font-weight: bold;}
+				}
+			}
 			#segundaColumna {
 				margin-right: 25px; width: 290px;
 				hr {margin: 10px 0;}
 				.errores {translate: -100% -50%; left: -5px; right: auto; position: absolute;}
-				#checkbox {
+				#checkBox {
 					display: flex; flex-direction: row; align-items: center;
 					label {padding-left: 5px; line-height: normal;}
 				}

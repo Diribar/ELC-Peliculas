@@ -6,29 +6,23 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
 		inputs: document.querySelectorAll(".inputError .input"),
-		checkbox: document.querySelector("#dataEntry #checkbox input"),
-		radioSI: document.querySelectorAll(".inputError .radioSI"),
-		radioNO: document.querySelectorAll(".inputError .radioNO"),
-		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
 
-		// OK/Errores
-		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
-		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-
-		// CFC
+		// 1a columna - cfc y bhr
 		cfcSI: document.querySelector("input[name='bhr']#bhrSI"),
 		cfcNO: document.querySelector("input[name='bhr']#bhrNO"),
-
-		// Ocurrió
 		bhrSI: document.querySelector("input[name='bhr']#bhrSI"),
 		bhrNO: document.querySelector("input[name='bhr']#bhrNO"),
+		radioSI: document.querySelectorAll(".inputError .radioSI"),
+		radioNO: document.querySelectorAll(".inputError .radioNO"),
+
+		// 1a columna - checkBoxes y tipoActuacion
+		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
 
 		// RCLV
-		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
-		checkRCLV: document.querySelector("#RCLV #checkbox input"),
+		checkRCLV: document.querySelector("#RCLV #checkBox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
+		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 
 		// RCLV - Sectores
 		sectorRCLV: document.querySelector("#RCLV"),
@@ -50,6 +44,11 @@ window.addEventListener("load", async () => {
 		// RCLV - Links
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
+
+		// OK/Errores
+		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
+		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
 	let rutas = {
 		validar: "/producto/agregar/api/valida/datos-adicionales/?",
@@ -87,7 +86,7 @@ window.addEventListener("load", async () => {
 		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
 		datosUrl += "tipoActuacion_id=" + respuesta + "&";
 		// Busca el checkbox
-		if (DOM.checkbox.checked) datosUrl += "sinRCLV=on&";
+		if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'
 		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV

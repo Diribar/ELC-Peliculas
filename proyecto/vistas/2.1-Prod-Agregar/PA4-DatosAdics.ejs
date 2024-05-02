@@ -24,13 +24,19 @@
 			<!-- Datos generales -->
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
-				<!-- Campos SI / NO -->
+				<!-- Campos radioBtn -->
 				<% for (campo of camposDA.filter(n => n.radioBtn)) { %>
 					<%- include("PA4-DA1-RadioBtn", {campo}) %>
 				<% } %>
 				<hr>
+				<!-- Campos checkBox -->
+				<div id="checkBoxes" class="flexRow altoFila">
+					<% for (campo of camposDA.filter(n => n.chkBox)) { %>
+						<%- include("PA4-DA2-CheckBox", campo) %>
+					<% } %>
+				</div>
 				<!-- Tipo de Actuación -->
-				<%- include("PA4-DA2-TipoActuac", {nombre: "tipoActuacion_id"}) %>
+				<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
 				<hr>
 			</div>
 		</div>
@@ -58,7 +64,7 @@
 					</div>
 				</div>
 				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DA8-Checkbox", {nombre: "sinRCLV", }) %>
+				<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
 				<!-- Opciones -->
 				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->

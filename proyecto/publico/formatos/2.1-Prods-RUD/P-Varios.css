@@ -1,5 +1,5 @@
 /* Datos Adicionales */
-#siNoOpciones {width: 75px; justify-content: space-between;}
-#siNoOpciones label[for], #tipoActuacion label[for] {padding-left: 3px;}
+#radioBtnOpcs {width: 75px; justify-content: space-between;}
+#radioBtnOpcs label[for], #tipoActuacion label[for] {padding-left: 3px;}
 #tipoActuacion {width: 100%; justify-content: space-between;}
 
