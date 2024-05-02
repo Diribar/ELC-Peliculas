@@ -1,5 +1,10 @@
 /* Datos Adicionales */
-#radioBtnOpcs {width: 75px; justify-content: space-between;}
-#radioBtnOpcs label[for], #tipoActuacion label[for] {padding-left: 3px;}
+#radioBtnOpcs {
+	width: 75px; justify-content: space-between;
+	label[for] {padding-left: 3px;}
+}
+#checkBoxes {
+	justify-content: space-between; align-items: center;
+	label {padding-left: 5px; line-height: normal; font-weight: bold;}
+}
 #tipoActuacion {width: 100%; justify-content: space-between;}
-

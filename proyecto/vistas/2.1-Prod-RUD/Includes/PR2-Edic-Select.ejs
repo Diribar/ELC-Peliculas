@@ -7,22 +7,22 @@
 		<select name="<%= nombre %>" class="input <%= angosto ? 'angosto ' : '' %>">
 			<option value="" <% if (!registro[nombre]) { %>selected<% } %>>Elejí<% if (!angosto) { %> una opción<% } %></option>
 			<% for (let valor of valores) { %>
-				<option value="<%= valor.id %>" 
-					<% if (registro[nombre] == valor.id) { %>selected<% } %>
-				>
+				<option value="<%= valor.id %>" <% if (registro[nombre] == valor.id) { %>selected<% } %>>
 					<%= valor.nombre %>
 				</option>
 			<% } %>
 		</select>
-		<!-- Ayuda -->
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaClick desplClick">
-				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-					<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
-					<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
-				</ul>
-			</i>
-		</div>
+		<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
+		<% if (campo.mensajes) { %>
+			<!-- Ayuda -->
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+						<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %>
+					</ul>
+				</i>
+			</div>
+		<% } %>
 		<%- include("CMP-Errores", {nombre}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>

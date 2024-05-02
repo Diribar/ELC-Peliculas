@@ -25,14 +25,14 @@
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
 				<!-- Campos radioBtn -->
-				<% for (campo of camposDA.filter(n => n.radioBtn)) { %>
-					<%- include("PA4-DA1-RadioBtn", {campo}) %>
+				<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
+					<%- include("P-RadioBtn", {campo}) %>
 				<% } %>
 				<hr>
 				<!-- Campos checkBox -->
 				<div id="checkBoxes" class="flexRow altoFila">
-					<% for (campo of camposDA.filter(n => n.chkBox)) { %>
-						<%- include("PA4-DA2-CheckBox", campo) %>
+					<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
+						<%- include("P-CheckBox", campo) %>
 					<% } %>
 				</div>
 				<!-- Tipo de Actuación -->

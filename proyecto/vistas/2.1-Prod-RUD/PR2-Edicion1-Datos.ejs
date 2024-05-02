@@ -10,25 +10,39 @@
 			<h3>Datos Generales</h3>
 			<!-- Primeros campos -->
 			<% for (let campo of camposInput1) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
+
 			<!-- Otros -->
 			<%- include("PR2-Edic-Pais") %>
 			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idiomaOriginal_id}) %>
+
 			<!-- Cast/Crew -->
 			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<%- include("PR2-Edic-Input", {campo: produccion}) %>
+
 			<!--Sinopsis-->
 			<%- include("PR2-Edic-Sinopsis") %>
 		</div>
 		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
-			<!-- Campos SI / NO -->
-			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
+			<!-- Campos radioBtn -->
+			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
+				<%- include("P-RadioBtn", {campo}) %>
+			<% } %>
+
+			<!-- Campos checkBox -->
+			<div id="checkBoxes" class="flexRow altoFila">
+				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
+					<%- include("P-CheckBox", campo) %>
+				<% } %>
+			</div>
+
 			<!-- Tipo de Actuación -->
-			<%- include("PR2-Edic-TipoActuac", {nombre: "tipoActuacion_id"}) %>
+			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
 			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
+
 			<!-- Relación con la vida -->
 			<div class="labelInput">
 				<h3>Relación con la vida</h3>
@@ -36,6 +50,7 @@
 					<%- include("CMP-Errores", {nombre: "RCLV"}) %>
 				</div>
 			</div>
+
 			<!--Personaje histórico-->
 			<%- include("PR2-Edic-RCLV1_perHec", {nombre: "personaje_id", grupos: gruposPers}) %>
 			<!--Hecho histórico-->
@@ -53,6 +68,7 @@
 		</div>
 	</div>
 </section>
+
 <!-- Botones y Comandos -->
 <section id="sectorIconos">
 	<%- include("Iconos-1Estandar") %>
