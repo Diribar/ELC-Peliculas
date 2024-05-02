@@ -180,88 +180,59 @@ module.exports = {
 	// Agregar Productos
 	camposDD: [...camposDD],
 	camposDA: [
-		{nombre: "cfc"},
-		{nombre: "bhr"},
-		{nombre: "color", chkBox: true},
-		{nombre: "musical", chkBox: true},
-		{nombre: "deporte", chkBox: true},
-		{nombre: "tipoActuacion_id"},
-		{nombre: "publico_id"},
-		{nombre: "epocaOcurrencia_id"},
-		{nombre: "personaje_id", rclv: true},
-		{nombre: "hecho_id", rclv: true},
-		{nombre: "tema_id", rclv: true},
-		{nombre: "evento_id", rclv: true},
-		{nombre: "epocaDelAno_id", rclv: true},
+		{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
+		{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
+		{titulo: "Color", nombre: "color", chkBox: true},
+		{titulo: "Musical", nombre: "musical", chkBox: true},
+		{titulo: "Deporte", nombre: "deporte", chkBox: true},
+		{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id"},
+		{titulo: "Público sugerido", nombre: "publico_id"},
+		{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id"},
+		{titulo: "Personaje Histórico", nombre: "personaje_id", rclv: true},
+		{titulo: "Hecho Histórico", nombre: "hecho_id", rclv: true},
+		{titulo: "Tema Principal", nombre: "tema_id", rclv: true},
+		{titulo: "Evento del Año", nombre: "evento_id", rclv: true},
+		{titulo: "Época del Año", nombre: "epocaDelAno_id", rclv: true},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
 		const entidadesRCLV = this.entidades.rclvs;
 		const registrosRCLV = await regsRCLV(entidadesRCLV, userID);
-
-		// Mensajes
 		const mensajes = {
 			publico: [
 				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
 				"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
 				"Familia: ideal para compartir en familia y que todos la disfruten.",
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
-				"Menores solamente: apuntado a un público solamente infantil.",
+				"Menores solamente: apuntado a un público infantil.",
 			],
 			epocaOcurrencia: ["Varias: si el nudo de la trama ocurre en más de una época."],
 			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
+			tema: ["Poné el más representativo."],
+			evento: ["Poné el más representativo."],
+			epocaDelAno: ["Poné la fecha en la que comienza."],
 		};
-		return [
-			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
-			{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
-			{titulo: "Color", nombre: "color", chkBox: true},
-			{titulo: "Musical", nombre: "musical", chkBox: true},
-			{titulo: "Deporte", nombre: "deporte", chkBox: true},
-			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
-			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{
-				titulo: "Época respecto a Cristo",
-				nombre: "epocaOcurrencia_id",
-				valores: epocasOcurrencia,
-				mensajes: mensajes.epocaOcurrencia,
-			},
-			{
-				titulo: "Personaje Histórico",
-				nombre: "personaje_id",
-				valores: registrosRCLV.personajes,
-				mensajes: mensajes.personaje,
-				link: "personajes",
-			},
-			{
-				titulo: "Hecho Histórico",
-				nombre: "hecho_id",
-				valores: registrosRCLV.hechos,
-				mensajes: mensajes.hecho,
-				link: "hechos",
-			},
-			{
-				titulo: "Tema Principal",
-				nombre: "tema_id",
-				valores: registrosRCLV.temas,
-				mensajes: ["Poné el más representativo."],
-				link: "temas",
-			},
-			{
-				titulo: "Evento del Año",
-				nombre: "evento_id",
-				valores: registrosRCLV.eventos,
-				mensajes: ["Poné el más representativo."],
-				link: "eventos",
-			},
-			{
-				titulo: "Época del Año",
-				nombre: "epocaDelAno_id",
-				valores: registrosRCLV.epocasDelAno,
-				mensajes: ["Poné la fecha en la que comienza."],
-				link: "epocasDelAno",
-			},
+		const resultado = [...this.camposDA];
+
+		// Agregado de valores
+		const campos = [
+			{nombre: "tipoActuacion_id", valores: tiposActuacion},
+			{nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
+			{nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epocaOcurrencia},
+			{nombre: "personaje_id", valores: registrosRCLV.personajes, mensajes: mensajes.personaje, link: "personajes"},
+			{nombre: "hecho_id", valores: registrosRCLV.hechos, mensajes: mensajes.hecho, link: "hechos"},
+			{nombre: "tema_id", valores: registrosRCLV.temas, mensajes: mensajes.tema, link: "temas"},
+			{nombre: "evento_id", valores: registrosRCLV.eventos, mensajes: mensajes.evento, link: "eventos"},
+			{nombre: "epocaDelAno_id", valores: registrosRCLV.epocasDelAno, mensajes: mensajes.epocaDelAno, link: "epocasDelAno"},
 		];
+		for (let campo of campos) {
+			const indice = resultado.findIndex((n) => n.nombre == campo.nombre);
+			resultado[indice] = {...resultado[indice], ...campo};
+		}
+
+		// Fin
+		return resultado;
 	},
 
 	// RCLV
