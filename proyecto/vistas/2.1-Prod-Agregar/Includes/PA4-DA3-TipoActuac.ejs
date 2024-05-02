@@ -1,5 +1,5 @@
-<% campo = camposDA.find(n => n.nombre == nombre) %>
-<% let {titulo, valores} = campo %>
+<% const campo = camposDA.find(n => n.nombre == nombre) %>
+<% const {titulo, valores} = campo %>
 <section class="labelSelect flexRowAlign">
 	<label><%= titulo %></label>
 	<div class="inputError altoFila">

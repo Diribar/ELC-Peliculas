@@ -1,5 +1,5 @@
-<% campo = camposDA.find(n => n.nombre == nombre) %>
-<% let {titulo, valores, grupo} = campo %>
+<% const campo = camposDA.find(n => n.nombre == nombre) %>
+<% const {titulo, valores, grupo} = campo %>
 <section id="<%= nombre %>" class="labelInput">
 	<label><%= titulo %></label>
 	<div class="inputError">
@@ -17,7 +17,7 @@
 			</optgroup>
 		</select>
 
-		<%- include("P-Ayuda") %>
+		<%- include("P-Ayuda", {campo}) %>
 		<!-- Link a Relación con la vida -->
 		<i id="alta" class="linkRCLV fa-solid fa-circle-plus <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
 		<i id="edicion" class="linkRCLV fa-solid fa-square-pen ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
