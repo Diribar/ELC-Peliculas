@@ -1,4 +1,15 @@
-<div id="checkBox" class="flexRow">
-	<input id="<%= nombre %>" type="checkbox" name="<%= nombre %>" tabindex="-1" <% if (locals.camposDE && !camposDE.includes(nombre) && nombre == "color" || dataEntry[nombre] == 1) { %>checked<% } %>>
+<div id="checkBox" class="flexRow<%- locals.prodEdic ? ' inputError' : '' %>">
+	<input
+		id="<%= nombre %>"
+		<% if (locals.prodEdic) { %>class="input"<% } %>
+		type="checkbox"
+		name="<%= nombre %>"
+		tabindex="-1"
+		<% if (locals.camposDE && !camposDE.includes(nombre) && nombre == "color" || dataEntry[nombre] == 1) { %>checked<% } %>
+	>
 	<label for="<%= nombre %>"><%= titulo %></label>
+	<% if (locals.prodEdic) { %>
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
+	<% } %>
 </div>

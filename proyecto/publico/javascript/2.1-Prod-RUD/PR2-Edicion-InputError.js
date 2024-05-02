@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 			// Almacena los valores
 			version.edicN = {};
 			for (let input of inputs) {
-				if (input.name != "avatar") version.edicN[input.name] = input.value;
+				if (input.name != "avatar") version.edicN[input.name] = input.value != "on" ? input.value : input.checked ? 1 : 0;
 				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
 			}
 
@@ -115,8 +115,15 @@ window.addEventListener("load", async () => {
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID + "&statusRegistro_id=" + statusRegistro_id;
 			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
 			for (let campo of v.camposTodos) {
-				let indice = camposResp.indexOf(campo);
-				let valor = indice > -1 ? inputsResp[indice].value : "";
+				const indice = camposResp.indexOf(campo);
+				const valor =
+					indice > -1
+						? inputsResp[indice].value != "on"
+							? inputsResp[indice].value
+							: inputsResp[indice].checked
+							? 1
+							: 0
+						: "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
 			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
