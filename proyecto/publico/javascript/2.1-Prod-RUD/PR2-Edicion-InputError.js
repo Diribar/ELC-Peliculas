@@ -331,9 +331,12 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el tipo de actuación
-		if (e.target.name == "tipoActuacion_id")
-			DOM.actores.value =
-				e.target.value == v.anime_id ? "Dibujos Animados" : e.target.value == v.documental_id ? "Documental" : "";
+		if (e.target.name == "tipoActuacion_id") {
+			if ([v.anime_id, v.documental_id].includes(Number(e.target.value))) {
+				DOM.actores.value = e.target.value == v.anime_id ? "Dibujos Animados" : "Documental";
+				DOM.actores.readOnly = true;
+			} else DOM.actores.readOnly = false;
+		}
 
 		// Acciones si se cambió el avatar
 		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
