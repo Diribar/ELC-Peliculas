@@ -121,12 +121,11 @@ module.exports = {
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
 
-			// Datos Duros - Bases de Datos
+			// Datos Duros
 			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
-			// Datos Duros - Avatar
 			const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 
-			// Datos Personalizados
+			// Datos Adicionales
 			const camposDA = await variables.camposDA_conValores(userID);
 			const gruposPers = procsCRUD.grupos.pers(camposDA);
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
