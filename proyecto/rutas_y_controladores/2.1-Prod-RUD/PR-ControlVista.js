@@ -284,7 +284,7 @@ module.exports = {
 			const tema = "prodRud";
 			const codigo = "calificar";
 			const {entidad, id} = req.query;
-			const origen = req.query.origen ? req.query.origen : "CAL";
+			const origen = req.query.origen ? req.query.origen : "";
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
