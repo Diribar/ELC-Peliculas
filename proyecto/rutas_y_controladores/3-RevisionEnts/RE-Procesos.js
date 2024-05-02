@@ -1031,9 +1031,9 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Variables
 	const campo = campoRevisar.nombre;
 	const casosEspeciales = [
-		...["cfc", "bhr", "musical", "color"], // productos
-		...["fechaMovil", "soloCfc", "ama"], // rclvs
-		...["castellano", "subtitulos", "gratuito"], // links
+		...variables.camposDA.filter((n) => n.radioBtn || n.chkBox).map((n) => n.nombre), // productos
+		...variables.camposRevisar.rclvs.filter((n) => n.siNo).map((n) => n.nombre), // rclvs
+		...variables.camposRevisar.links.filter((n) => n.siNo).map((n) => n.nombre), // links
 	];
 
 	// Obtiene una primera respuesta
