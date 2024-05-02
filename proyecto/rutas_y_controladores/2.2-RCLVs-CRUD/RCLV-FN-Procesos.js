@@ -16,7 +16,11 @@ module.exports = {
 
 				// Rutina por producto
 				for (let i = 0; i < prodsEnRCLV.length; i++) {
-					let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entProd, prodsEnRCLV[i].id, userID);
+					let [original, edicion] = await procsCRUD.obtieneOriginalEdicion({
+						entidad: entProd,
+						entID: prodsEnRCLV[i].id,
+						userID,
+					});
 					if (edicion) {
 						const avatar = procsCRUD.obtieneAvatar(original, edicion).edic;
 						RCLV[entProd][i] = {...original, ...edicion, avatar, id: original.id};
@@ -50,7 +54,7 @@ module.exports = {
 						let entID = edicion[campo_id];
 
 						// Obtiene los registros del producto original y su edición por el usuario
-						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
+						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({entidad: entProd, entID, userID});
 
 						// Actualiza la variable del registro original
 						let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};

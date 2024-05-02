@@ -84,7 +84,12 @@ module.exports = {
 			let userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
+			let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+				entidad: producto,
+				entID: prodID,
+				userID,
+				excluirInclude: true,
+			});
 
 			// Envía los datos
 			return res.json([prodOrig, prodEdic]);
@@ -121,7 +126,13 @@ module.exports = {
 			const userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
+			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+				entidad: producto,
+				entID: prodID,
+				userID,
+				excluirInclude: true,
+				omitirPulirEdic: true,
+			});
 
 			// Sólo se puede eliminar la edición si el producto no tiene status "creados_ids" o fue creado por otro usuario
 			const condicion = !creados_ids.includes(prodOrig.statusRegistro_id) || prodOrig.creadoPor_id != userID;

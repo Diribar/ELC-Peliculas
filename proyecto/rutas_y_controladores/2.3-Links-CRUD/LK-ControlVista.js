@@ -15,7 +15,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 		let producto = {...original, ...edicion, id}; // Combina los datos Editados con la versión Original
 
 		// Obtiene información de BD
@@ -74,7 +74,7 @@ module.exports = {
 		// Obtiene el producto 'Original' y 'Editado'
 		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 

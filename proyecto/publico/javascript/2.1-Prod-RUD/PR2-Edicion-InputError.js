@@ -161,6 +161,12 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		actualizaBotones: () => {
+			// Si la versión actual no es la edición nueva, inactiva y termina
+			if (v.versionActual != "edicN") {
+				for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
+				return;
+			}
+
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
 				DOM.botonesActivarVersion[1].classList.remove("inactivoVersion");
@@ -214,11 +220,12 @@ window.addEventListener("load", async () => {
 		},
 		accionesPorCambioDeVersion: async function () {
 			// Funciones
-			this.reemplazaInputs(); // Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
-			this.actualizaPaisesNombre(); // Actualiza los nombres de país
-			this.muestraOcultaIconosRclv(); // Muestra/oculta los íconos de RCLV, ayuda y error
-			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
-			await this.averiguaMuestraLosErrores(); // Muestra los errores
+			this.reemplazaInputs(); // reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
+			this.actualizaPaisesNombre();
+			this.muestraOcultaIconosRclv();
+			this.senalaLasDiferencias();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotones();
 
 			// Fin
 			return;
@@ -339,21 +346,24 @@ window.addEventListener("load", async () => {
 	// Botones - 1. Activa las versiones
 	DOM.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
-			// Interrumpe si las versiones son iguales
-			if (v.versionActual == v.versiones[indice]) return;
-			// Interrumpe si el botón está inactivo
-			if (boton.className.includes("inactivoVersion")) return;
+			// Interrupciones
+			if (v.versionActual == v.versiones[indice]) return; // si las versiones son iguales
+			if (boton.className.includes("inactivoVersion")) return; // si el botón está inactivo
+
 			// Cambia la versión
 			let aux = v.versionActual;
 			v.versionActual = v.versiones[indice];
+
 			// Cambia los valores
 			FN.accionesPorCambioDeVersion();
+
 			// Cambia el boton activo
 			DOM.botonesActivarVersion.forEach((revisar, i) => {
 				if (i != indice) revisar.classList.remove("activo");
 				else revisar.classList.add("activo");
 			});
-			// Cambiar la versión anterior
+
+			// Cambia la versión anterior
 			v.versionAnt = aux;
 		});
 	});
