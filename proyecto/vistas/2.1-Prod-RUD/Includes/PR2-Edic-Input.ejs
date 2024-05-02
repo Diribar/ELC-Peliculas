@@ -3,11 +3,16 @@
 	<label><%= titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="text" name="<%= nombre %>" value="<%= registro[nombre] %>" autofocus autocomplete="off" 
+		<input
+			type="text"
+			name="<%= nombre %>"
+			value="<%= registro[nombre] %>"
+			autofocus
+			autocomplete="off"
 			class="input <% if (numero) { %>numero<% } %>"
 			placeholder="<%- numero ? 'Sólo números' : 'Ingresá el texto' %>"
-		>
-		<%- include("CMP-Errores", {nombre}) %>
+		/>
+		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
