@@ -96,7 +96,7 @@ module.exports = {
 			// Más variables
 			const {entidad, id} = req.query;
 			const origen = req.query.origen;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
+			const userID = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Configura el título de la vista
