@@ -15,11 +15,9 @@
 			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idiomaOriginal_id}) %>
 
 			<!-- Cast/Crew -->
-			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
-			<%- include("PR2-Edic-Input", {campo: produccion}) %>
-
-			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
+			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
+
 			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
