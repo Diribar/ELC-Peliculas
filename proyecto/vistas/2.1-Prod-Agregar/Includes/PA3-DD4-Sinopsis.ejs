@@ -9,7 +9,7 @@
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 		><%= dataEntry.sinopsis %></textarea>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
-		<%- include("CMP-Errores", {nombre: "sinopsis"}) %>
+		<%- include("CMP-Errores", {nombre: "sinopsis", ocultarOK: true}) %>
 		<!-- Si se puede publicar, muestra el contenido de la sinopsis -->
 		<% if (dataEntry.sinopsis && (!locals.errores || !errores.sinopsis)) { %>
 			<%- include("PA3-DD9-AyudaSinopsis", {nombre: "sinopsis"}) %>
