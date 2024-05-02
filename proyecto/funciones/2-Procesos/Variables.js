@@ -1,6 +1,6 @@
 "use strict";
-let camposDD = [
-	{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
+const camposDD = [
+	{titulo: "Título en castellano", nombre: "nombreCastellano", campoInput: 1},
 	{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
 	{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1, angosto: true},
 	{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1, angosto: true}, // Colecciones
@@ -14,6 +14,21 @@ let camposDD = [
 	{titulo: "Producción", nombre: "produccion", productos: true, campoInput: 2},
 	{titulo: "Sinopsis", nombre: "sinopsis", productos: true, campoInput: 3},
 	{titulo: "Avatar", nombre: "avatar", productos: true},
+];
+const camposDA = [
+	{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
+	{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
+	{titulo: "Es a color", nombre: "color", chkBox: true},
+	{titulo: "Es un musical", nombre: "musical", chkBox: true},
+	{titulo: "Tiene deporte", nombre: "deporte", chkBox: true},
+	{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", relacInclude: "tipoActuacion", tabla: "tiposActuacion"},
+	{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos"},
+	{titulo: "Personaje histórico", nombre: "personaje_id", relacInclude: "personaje", tabla: "personajes", rclv: true},
+	{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true},
+	{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true},
+	{titulo: "Evento del año", nombre: "evento_id", relacInclude: "evento", tabla: "eventos", rclv: true},
+	{titulo: "Época del año", nombre: "epocaDelAno_id", relacInclude: "epocaDelAno", tabla: "epocasDelAno", rclv: true},
+	{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
 ];
 
 module.exports = {
@@ -179,21 +194,7 @@ module.exports = {
 
 	// Agregar Productos
 	camposDD: [...camposDD],
-	camposDA: [
-		{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
-		{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
-		{titulo: "Color", nombre: "color", chkBox: true},
-		{titulo: "Musical", nombre: "musical", chkBox: true},
-		{titulo: "Deporte", nombre: "deporte", chkBox: true},
-		{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id"},
-		{titulo: "Público sugerido", nombre: "publico_id"},
-		{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id"},
-		{titulo: "Personaje Histórico", nombre: "personaje_id", rclv: true},
-		{titulo: "Hecho Histórico", nombre: "hecho_id", rclv: true},
-		{titulo: "Tema Principal", nombre: "tema_id", rclv: true},
-		{titulo: "Evento del Año", nombre: "evento_id", rclv: true},
-		{titulo: "Época del Año", nombre: "epocaDelAno_id", rclv: true},
-	],
+	camposDA: [...camposDA],
 	camposDA_conValores: async function (userID) {
 		// Variables
 		const entidadesRCLV = this.entidades.rclvs;
@@ -213,7 +214,7 @@ module.exports = {
 			evento: ["Poné el más representativo."],
 			epocaDelAno: ["Poné la fecha en la que comienza."],
 		};
-		const resultado = [...this.camposDA];
+		const resultado = [...camposDA];
 
 		// Agregado de valores
 		const campos = [
@@ -314,54 +315,8 @@ module.exports = {
 		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
 			...camposDD,
-
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
-			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
-			{titulo: "Basada en Hechos Reales", nombre: "bhr", productos: true},
-			{titulo: "Es a color", nombre: "color", productos: true},
-			{titulo: "Es un musical", nombre: "musical", productos: true},
-			{titulo: "Tiene deporte", nombre: "deporte", productos: true},
-			{
-				titulo: "Tipo de Actuación",
-				nombre: "tipoActuacion_id",
-				relacInclude: "tipoActuacion",
-				tabla: "tiposActuacion",
-				productos: true,
-			},
-			{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos", productos: true},
-			{
-				titulo: "Personaje histórico",
-				nombre: "personaje_id",
-				relacInclude: "personaje",
-				tabla: "personajes",
-				rclv: true,
-				productos: true,
-			},
-			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
-			{
-				titulo: "Evento del año",
-				nombre: "evento_id",
-				relacInclude: "evento",
-				tabla: "eventos",
-				rclv: true,
-				productos: true,
-			},
-			{
-				titulo: "Época del año",
-				nombre: "epocaDelAno_id",
-				relacInclude: "epocaDelAno",
-				tabla: "epocasDelAno",
-				rclv: true,
-				productos: true,
-			},
-			{
-				titulo: "Época respecto a Cristo",
-				nombre: "epocaOcurrencia_id",
-				relacInclude: "epocaOcurrencia",
-				tabla: "epocasOcurrencia",
-				productos: true,
-			},
+			...camposDD,
 		],
 		rclvs: [
 			// Todos
