@@ -1,4 +1,20 @@
 "use strict";
+let camposDD = [
+	{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
+	{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
+	{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1, angosto: true},
+	{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1, angosto: true}, // Colecciones
+	{titulo: "Duración (min)", nombre: "duracion", numero: true, peliculas: true, capitulos: true, campoInput: 1, angosto: true}, // Películas y Capítulos
+	{titulo: "País/es", nombre: "paises_id", productos: true},
+	{titulo: "Idioma Original", nombre: "idiomaOriginal_id", productos: true, relacInclude: "idioma_original", tabla: "idiomas"},
+	{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: 2},
+	{titulo: "Guión", nombre: "guion", productos: true, campoInput: 2},
+	{titulo: "Música", nombre: "musica", productos: true, campoInput: 2},
+	{titulo: "Actuación", nombre: "actores", productos: true, campoInput: 2},
+	{titulo: "Producción", nombre: "produccion", productos: true, campoInput: 2},
+	{titulo: "Sinopsis", nombre: "sinopsis", productos: true, campoInput: 3},
+	{titulo: "Avatar", nombre: "avatar", productos: true},
+];
 
 module.exports = {
 	// Institucional
@@ -162,22 +178,7 @@ module.exports = {
 	},
 
 	// Agregar Productos
-	camposDD: [
-		{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
-		{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
-		{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1},
-		{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1},
-		{titulo: "Duración (minutos)", nombre: "duracion", numero: true, peliculas: true, capitulos: true, campoInput: 1},
-		{nombre: "paises_id", productos: true},
-		{nombre: "idiomaOriginal_id", productos: true},
-		{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: 2},
-		{titulo: "Guión", nombre: "guion", productos: true, campoInput: 2},
-		{titulo: "Música", nombre: "musica", productos: true, campoInput: 2},
-		{titulo: "Actuación", nombre: "actores", productos: true, campoInput: 2},
-		{titulo: "Producción", nombre: "produccion", productos: true, campoInput: 2},
-		{nombre: "sinopsis", productos: true},
-		{nombre: "avatar", productos: true},
-	],
+	camposDD: [...camposDD],
 	camposDA: [
 		{nombre: "cfc"},
 		{nombre: "bhr"},
@@ -341,25 +342,8 @@ module.exports = {
 		// productos, películas, colecciones, capítulos --> para filtrar los campos por entidad
 		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
-			// Todos
-			{titulo: "Título en castellano", nombre: "nombreCastellano", input: true, productos: true},
-			{titulo: "Título original", nombre: "nombreOriginal", input: true, productos: true},
-			{titulo: "Año de estreno", nombre: "anoEstreno", angosto: true, input: true, productos: true},
-			{titulo: "País/es", nombre: "paises_id", productos: true},
-			{
-				titulo: "Idioma Original",
-				nombre: "idiomaOriginal_id",
-				relacInclude: "idioma_original",
-				tabla: "idiomas",
-				productos: true,
-			},
-			{titulo: "Dirección", nombre: "direccion", input: true, productos: true},
-			{titulo: "Guión", nombre: "guion", input: true, productos: true},
-			{titulo: "Música", nombre: "musica", input: true, productos: true},
-			{titulo: "Actores", nombre: "actores", input: true, productos: true},
-			{titulo: "Producción", nombre: "produccion", input: true, productos: true},
-			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
-			{titulo: "Avatar", nombre: "avatar", productos: true},
+			...camposDD,
+
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "bhr", productos: true},
@@ -407,10 +391,6 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 				productos: true,
 			},
-			// Películas y Capítulos
-			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
-			// Colecciones
-			{titulo: "Año de finalización", nombre: "anoFin", angosto: true, input: true, colecciones: true},
 		],
 		rclvs: [
 			// Todos
