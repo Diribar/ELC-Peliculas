@@ -98,8 +98,6 @@ module.exports = {
 			const origen = req.query.origen;
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-			let imgDerPers, gruposPers, gruposHechos;
-			let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
 			// Configura el título de la vista
 			const titulo =
@@ -119,19 +117,19 @@ module.exports = {
 			prodComb = {...prodComb, ...edicSession};
 
 			// Datos Duros - Campos Input
-			let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
-			camposInput1 = camposInput.filter((n) => n.antesDePais);
-			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
-			produccion = camposInput.find((n) => n.nombre == "produccion");
+			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
+			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
+			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
+
 			// Datos Duros - Bases de Datos
-			paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
+			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
+			const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 
 			// Datos Personalizados
-			camposDA = await variables.camposDA_conValores(userID);
-			gruposPers = procsCRUD.grupos.pers(camposDA);
-			gruposHechos = procsCRUD.grupos.hechos(camposDA);
+			const camposDA = await variables.camposDA_conValores(userID);
+			const gruposPers = procsCRUD.grupos.pers(camposDA);
+			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Obtiene datos para la vista
 			if (entidad == "capitulos")
@@ -149,7 +147,7 @@ module.exports = {
 				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb, dataEntry: prodComb},
 				...{imgDerPers, status_id},
-				...{camposInput1, camposInput2, produccion},
+				...{camposInput1, camposInput2, camposInput3},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 				...{estrucPers: true, cartelGenerico: true},
 			});
