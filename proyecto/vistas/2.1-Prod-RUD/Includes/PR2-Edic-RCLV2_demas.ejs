@@ -14,10 +14,10 @@
 				<% for (let valor of valores.filter(n => n.id > 10)) { %>
 					<option value="<%= valor.id %>" class="RCLV" <% if (registro[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 				<% } %>
-			</optgroup>	
+			</optgroup>
 		</select>
 
-		<%- include("PA4-DA9-Ayuda") %>
+		<%- include("P-Ayuda") %>
 		<!-- Link a Relación con la vida -->
 		<i id="alta" class="linkRCLV fa-solid fa-circle-plus <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
 		<i id="edicion" class="linkRCLV fa-solid fa-square-pen ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
