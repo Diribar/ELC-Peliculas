@@ -15,9 +15,6 @@ window.addEventListener("load", async () => {
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 
-		// 1a columna - checkBoxes y tipoActuacion
-		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
-
 		// RCLV
 		checkRCLV: document.querySelector("#RCLV #checkBox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
@@ -58,42 +55,38 @@ window.addEventListener("load", async () => {
 		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
 	};
 
-	// Campos de error
-	DOM.camposError = [...Array.from(DOM.radioSI).map((n) => n.name), ...["tipoActuacion_id", "RCLV"]];
-
-	// Opciones para personajes
+	// Otras variables
+	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
 	DOM.opcionesPers = [];
-	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push([...grupo.children]);
-	// Opciones para hechos
+	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push(grupo.children);
 	DOM.opcionesHechos = [];
-	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push([...grupo.children]);
+	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push(grupo.children);
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
 	let obtieneLosDatos = () => {
 		// Variables
 		let datosUrl = "";
-		//Busca todos los valores 'radio'
+
+		// Busca todos los valores 'radio'
 		DOM.radioSI.forEach((radioSI, i) => {
-			// Variables
 			let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
-			// Acción
 			datosUrl += radioSI.name + "=" + respuesta + "&";
 			if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
 		});
-		//Busca todos los valores 'tipoActuacion'
-		let respuesta = "";
-		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
-		datosUrl += "tipoActuacion_id=" + respuesta + "&";
-		// Busca el checkbox
+
+		// Busca el checkbox de RCLV
 		if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
+
 		//Busca todos los valores 'input'
 		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
 			if (v.camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
+
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
 		});
+
 		// Fin
 		return datosUrl;
 	};
@@ -111,7 +104,7 @@ window.addEventListener("load", async () => {
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
 		let errores = await fetch(rutas.validar + datos).then((n) => n.json());
 		// return;
-		DOM.camposError.forEach((campo, indice) => {
+		camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				DOM.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
@@ -189,9 +182,7 @@ window.addEventListener("load", async () => {
 			const bhrNO = DOM.bhrNO.checked && !DOM.bhrSI.checked;
 
 			// Oculta o muestra el sector de RCLVs
-			bhrSI || bhrNO
-				? DOM.sectorRCLV.classList.remove("ocultaOcurrio")
-				: DOM.sectorRCLV.classList.add("ocultaOcurrio");
+			bhrSI || bhrNO ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
 			if (bhrSI) {

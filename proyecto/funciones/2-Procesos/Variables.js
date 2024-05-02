@@ -189,17 +189,17 @@ module.exports = {
 	camposDA: [
 		{nombre: "cfc"},
 		{nombre: "bhr"},
-		{nombre: "color"},
-		{nombre: "musical"},
-		{nombre: "deporte"},
+		{nombre: "color", chkBox: true},
+		{nombre: "musical", chkBox: true},
+		{nombre: "deporte", chkBox: true},
 		{nombre: "tipoActuacion_id"},
 		{nombre: "publico_id"},
 		{nombre: "epocaOcurrencia_id"},
-		{nombre: "personaje_id", grupo: "RCLV"},
-		{nombre: "hecho_id", grupo: "RCLV"},
-		{nombre: "tema_id", grupo: "RCLV"},
-		{nombre: "evento_id", grupo: "RCLV"},
-		{nombre: "epocaDelAno_id", grupo: "RCLV"},
+		{nombre: "personaje_id", rclv: true},
+		{nombre: "hecho_id", rclv: true},
+		{nombre: "tema_id", rclv: true},
+		{nombre: "evento_id", rclv: true},
+		{nombre: "epocaDelAno_id", rclv: true},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
@@ -239,7 +239,6 @@ module.exports = {
 				valores: registrosRCLV.personajes,
 				mensajes: mensajes.personaje,
 				link: "personajes",
-				grupo: "RCLV",
 			},
 			{
 				titulo: "Hecho Histórico",
@@ -247,7 +246,6 @@ module.exports = {
 				valores: registrosRCLV.hechos,
 				mensajes: mensajes.hecho,
 				link: "hechos",
-				grupo: "RCLV",
 			},
 			{
 				titulo: "Tema Principal",
@@ -255,7 +253,6 @@ module.exports = {
 				valores: registrosRCLV.temas,
 				mensajes: ["Poné el más representativo."],
 				link: "temas",
-				grupo: "RCLV",
 			},
 			{
 				titulo: "Evento del Año",
@@ -263,7 +260,6 @@ module.exports = {
 				valores: registrosRCLV.eventos,
 				mensajes: ["Poné el más representativo."],
 				link: "eventos",
-				grupo: "RCLV",
 			},
 			{
 				titulo: "Época del Año",
@@ -271,7 +267,6 @@ module.exports = {
 				valores: registrosRCLV.epocasDelAno,
 				mensajes: ["Poné la fecha en la que comienza."],
 				link: "epocasDelAno",
-				grupo: "RCLV",
 			},
 		];
 	},

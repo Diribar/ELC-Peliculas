@@ -127,7 +127,7 @@ module.exports = {
 	datosAdics: (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["cfc", "bhr", "musical", "color", "tipoActuacion_id"];
+		let camposPosibles = ["cfc", "bhr", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no

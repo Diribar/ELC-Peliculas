@@ -11,7 +11,7 @@
 			/* Partes específicas del formulario */
 			.inputError {
 				.ayudaMostrar {max-width: 400px;}
-				#radioBtnTitulo {width: 170px;}
+				#radioBtnTitulo {width: 185px;}
 			}
 			.labelSelect {
 				display: flex; flex-direction: row; justify-content: space-between;

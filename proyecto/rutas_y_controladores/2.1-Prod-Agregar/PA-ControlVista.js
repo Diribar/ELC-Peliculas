@@ -223,6 +223,7 @@ module.exports = {
 					: null;
 
 			// Procesa algunos datos
+			datosAdics = procesos.datosAdics.valsCheckBtn(datosAdics);
 			datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
 			datosAdics.actores = procesos.datosAdics.valorParaActores(datosAdics);
 
