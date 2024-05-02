@@ -5,7 +5,6 @@
 	</div>
 	<!-- Datos -->
 	<div id="info">
-		<!-- Datos generales -->
 		<div id="primeraColumna" class="columna">
 			<h3>Datos Generales</h3>
 			<!-- Primeros campos -->
@@ -19,8 +18,12 @@
 			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<%- include("PR2-Edic-Input", {campo: produccion}) %>
 
-			<!--Sinopsis-->
-			<%- include("PR2-Edic-Sinopsis") %>
+			<!-- Tipo de Actuación -->
+			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
+			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
+				<!-- Público -->
+				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
+			<% } %>
 		</div>
 		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
@@ -36,12 +39,8 @@
 				<% } %>
 			</div>
 
-			<!-- Tipo de Actuación -->
-			<%- include("PR2-Edic-Select", {nombre: "tipoActuacion_id"}) %>
-			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
-				<!-- Público -->
-				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
-			<% } %>
+			<!--Sinopsis-->
+			<%- include("PR2-Edic-Sinopsis") %>
 
 			<!-- Relación con la vida -->
 			<div class="labelInput">

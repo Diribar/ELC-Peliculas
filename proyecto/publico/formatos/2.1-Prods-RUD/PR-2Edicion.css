@@ -59,7 +59,6 @@
 							&:has(.angosto, .numero) {max-width: 70px;}
 						}
 
-						/* País */
 						&#paises_id {
 							align-items: center;
 							.inputError {
@@ -68,17 +67,6 @@
 								select {width: 100%; padding: 0;}
 							}
 						}
-
-						/* Sinopsis */
-						&#sinopsis {
-							display: flex; flex-direction: column; flex-grow: 1;
-							.inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
-							textarea {
-								padding: 5px 10px; resize: none; height: 100%; min-height: 50px;
-								&::-webkit-scrollbar {display: none;}
-							}
-						}
-
 					}
 				}
 
@@ -86,17 +74,28 @@
 					width: 380px; display: flex; flex-direction: column;
 
 					#radioBtnTitulo {width: 210px;}
-					.labelInput .inputError {
-						width: 240px;
-						&:has(select[name="epocaOcurrencia_id"]) {width: 150px}
-						:is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
+					.labelInput {
+						.inputError {
+							width: 240px;
+							&:has(select[name="epocaOcurrencia_id"]) {width: 150px}
+							:is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
-						/* RCLV */
-						.linkRCLV {
-							position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;
-							width: 15px; cursor: pointer;
-							&#alta {right: -40px;}
-							&#edicion {right: -60px; font-size: 1.15rem;}
+							/* RCLV */
+							.linkRCLV {
+								position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;
+								width: 15px; cursor: pointer;
+								&#alta {right: -40px;}
+								&#edicion {right: -60px; font-size: 1.15rem;}
+							}
+						}
+
+						&#sinopsis {
+							flex-grow: 1;
+							.inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+							textarea {
+								padding: 5px 10px; resize: none; height: 100%; min-height: 50px;
+								&::-webkit-scrollbar {display: none;}
+							}
 						}
 					}
 				}
