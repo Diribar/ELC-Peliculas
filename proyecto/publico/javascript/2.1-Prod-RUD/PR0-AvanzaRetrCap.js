@@ -2,7 +2,10 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(1,-1)
+	const codigo = location.pathname.slice(1, -1);
+	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
+	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
+
 	const origen = false
 		? null
 		: codigo == "producto/detalle"
@@ -14,14 +17,10 @@ window.addEventListener("load", async () => {
 		: codigo == "revision/links"
 		? "RL"
 		: "";
-	let ruta;
+	const ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
+	const [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
 
-	// CAPÍTULOS ANTERIOR O POSTERIOR
-	// Obtiene el ID del capítulo anterior y del posterior
-	ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
-	let [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
-	// Acción si se elije "capítulo anterior"
-	let botonCapAnt = document.querySelector("#datosLargos #encabezado .fa-circle-left");
+	// Acciones si existe "capítulo anterior"
 	if (capAntID) {
 		botonCapAnt.classList.remove("inactivo");
 		botonCapAnt.addEventListener("click", () => {
@@ -34,8 +33,8 @@ window.addEventListener("load", async () => {
 				origen;
 		});
 	} else botonCapAnt.classList.add("inactivo");
-	// Acción si se elije "capítulo posterior"
-	let botonCapPost = document.querySelector("#datosLargos #encabezado .fa-circle-right");
+
+	// Acciones si existe "capítulo posterior"
 	if (capPostID) {
 		botonCapPost.classList.remove("inactivo");
 		botonCapPost.addEventListener("click", () => {
