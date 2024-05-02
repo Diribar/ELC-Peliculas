@@ -146,7 +146,7 @@ module.exports = {
 				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic},
 				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb, dataEntry: prodComb},
 				...{imgDerPers, status_id},
-				...{camposInput1, camposInput2, camposInput3},
+				...{camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 				...{estrucPers: true, cartelGenerico: true},
 			});
