@@ -1,10 +1,14 @@
-<% let {valores} = camposDA.find(n => n.nombre == nombre) %>
-<div id="tipoActuacion" class="inputError flexRowAlign altoFila">
-	<% for (let valor of valores) { %>
-		<div class="flexRowAlign">
-			<input id="<%= valor.id %>" type="radio" name="tipoActuacion_id" value="<%= valor.id %>" <% if (!camposDE.includes(nombre)&&valor.id=="1" || dataEntry.tipoActuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
-			<label for="<%= valor.id %>"><%= valor.nombre %></label>
-		</div>
-	<% } %>
-	<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
-</div>
+<% campo = camposDA.find(n => n.nombre == nombre) %>
+<% let {titulo, valores} = campo %>
+<section id="<%= nombre %>" class="labelSelect flexRowAlign">
+	<label><%= titulo %></label>
+	<div class="inputError altoFila">
+		<!-- Input -->
+		<select name="<%= nombre %>" class="input" autofocus>
+			<% for (let valor of valores) { %>
+				<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+			<% } %>
+		</select>
+		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
+	</div>
+</section>

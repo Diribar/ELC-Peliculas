@@ -339,7 +339,7 @@
 				<!-- ¿El personaje es conocido por su relación con la Iglesia Católica? -->
 				<div id="categoria_id" class="flexRowAlign altoFila">
 					<div class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</div>
-					<div class="flexRowAlign siNo">
+					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
 							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="input">
 							<label for="CFC">SI</label>
@@ -395,7 +395,7 @@
 			<div class="hechos">
 				<!-- ¿Es un hecho específico de la historia de la Iglesia Católica? -->
 				<div id="soloCFC" class="flexRowAlign">
-					<div class="flexRowAlign siNo">
+					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
 							<input type="radio" name="soloCfc" value="1" id="SI" <% if (dataEntry.soloCfc=="1") { %>checked<% } %> class="input">
 							<label for="SI">SI</label>
@@ -410,7 +410,7 @@
 				<div id="preguntasRCLIC" class="invisible">
 					<!-- ¿Es una aparición mariana -->
 					<div id="sectorApMar" class="flexRowAlign invisible">
-						<div class="flexRowAlign siNo">
+						<div class="flexRowAlign radioBtn">
 							<div class="flexRowAlign opciones">
 								<input type="radio" name="ama" value="1" id="ama_SI" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
 								<label for="ama_SI">SI</label>
