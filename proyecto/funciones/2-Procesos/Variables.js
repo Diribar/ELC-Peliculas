@@ -316,7 +316,7 @@ module.exports = {
 		productos: [
 			...camposDD,
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
-			...camposDD,
+			...camposDA.map((n) => ({...n, productos: true})),
 		],
 		rclvs: [
 			// Todos
