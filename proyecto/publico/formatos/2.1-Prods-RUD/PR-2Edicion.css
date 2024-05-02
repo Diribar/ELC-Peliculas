@@ -91,7 +91,7 @@
 
 						&#sinopsis {
 							flex-grow: 1;
-							.inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+							.inputError {margin-left: 0; flex-grow: 1; max-width: unset; height: 100%;}
 							textarea {
 								padding: 5px 10px; resize: none; height: 100%; min-height: 50px;
 								&::-webkit-scrollbar {display: none;}
