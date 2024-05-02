@@ -12,17 +12,7 @@
 				</option>
 			<% } %>
 		</select>
-		<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
-		<% if (campo.mensajes) { %>
-			<!-- Ayuda -->
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaClick desplClick">
-					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-						<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %>
-					</ul>
-				</i>
-			</div>
-		<% } %>
+		<%- include("P-Ayuda") %>
 		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
