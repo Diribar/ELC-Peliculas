@@ -28,7 +28,11 @@
 	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Hover - scale */
-.iconos button, .iconos i, #cuerpo a, #iconosCartel a, .scale {transition: 300ms;}
-#cuerpo a:has(i, img):hover, .iconos :is(button, i):hover, #iconosCartel a:hover, .scale:hover {scale: 1.3;}
+:where(#cuerpo a:has(i, img), .iconos :is(button, i), #iconosCartel a, .scale, .scaleCh) {
+	transition: 300ms;
+	&:hover {scale: 1.3;}
+}
+.scaleCh:hover {scale: 1.1}
+
 .iconos button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
 .iconos :is(i.inactivoVersion, i.inactivo, button i):hover {scale: 1;}

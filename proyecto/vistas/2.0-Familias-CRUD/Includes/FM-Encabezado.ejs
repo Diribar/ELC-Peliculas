@@ -19,12 +19,14 @@
 		<% if (entidad == "colecciones") { %>
 			<!-- Cantidad de Temporadas y de Capítulos -->
 			<div id="colecciones">
-				<% const anchor = ["prodRud", "linksCRUD"].includes(tema) %>
+				<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
 				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
-					<div class="pointer scale">
-						<p <% if (registro.cantTemps == 1) { %>class="ocultar"<% } %>><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+					<button class="scaleCh">
+						<% if (registro.cantTemps != 1) { %>
+							<p><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+						<% } %>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
-					</div>
+					</button>
 				<% if (anchor) { %></a><% } %>
 			</div>
 		<% } %>
@@ -33,7 +35,7 @@
 			<div id="tempCapI">
 				<p><b>Colección:</b></p>
 				<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
-					<button type="button" class="scale"><%= registro.coleccion.nombreCastellano %></button>
+					<button type="button" class="scaleCh"><%= registro.coleccion.nombreCastellano %></button>
 				</a>
 			</div>
 			<div id="tempCapS">

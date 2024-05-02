@@ -17,9 +17,10 @@
 				</a>
 			<% } %>
 		<% } %>
-		<% if (provisorios_ids.includes(locals.status_id) && locals.revisorPERL) { %>
+		<% if ([...provisorios_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
 			<!-- Revisar -->
-			<a href="<%= '/revision/' + familia + '/inactivar-o-recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<% const url = status_id == creado_id ? "alta" : "inactivar-o-recuperar" %>
+			<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
