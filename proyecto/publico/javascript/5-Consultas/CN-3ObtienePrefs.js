@@ -37,7 +37,10 @@ let actualizaConfigCons = {
 		this.muestraOcultaBloques();
 
 		// Redirige a la siguiente instancia
-		if (v.layout_id) this.presenciaEstable();
+		if (v.layout_id) {
+			const metodos = Object.keys(this).slice(3);
+			for (let metodo of metodos) this[metodo]();
+		}
 
 		// Fin
 		return;
@@ -77,7 +80,6 @@ let actualizaConfigCons = {
 		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
 		// Fin
-		this.entidad();
 		return;
 	},
 	cfc: function () {
@@ -94,7 +96,6 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "cfc");
 
 		// Fin
-		this.canons();
 		return;
 	},
 	canons: function () {
@@ -108,7 +109,6 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "canons");
 
 		// Fin
-		this.rolesIgl();
 		return;
 	},
 	rolesIgl: function () {
@@ -122,7 +122,6 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
 
 		// Fin
-		this.apMar();
 		return;
 	},
 	apMar: function () {
@@ -144,7 +143,10 @@ let actualizaConfigCons = {
 		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
 
 		// Fin
-		this.bhr();
+		return;
+	},
+	miscelaneas: function () {
+		// Fin
 		return;
 	},
 	palabrasClave: function () {
@@ -169,7 +171,6 @@ let actualizaConfigCons = {
 		if (v.entidad) prefs.entidad = v.entidad;
 
 		// Fin
-		this.pppOpciones();
 		return;
 	},
 	pppOpciones: function () {
@@ -195,7 +196,6 @@ let actualizaConfigCons = {
 		}
 
 		// Fin
-		this.idiomas();
 		return;
 	},
 	idiomas: function () {
@@ -206,7 +206,6 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "idiomas");
 
 		// Fin
-		this.cfc();
 		return;
 	},
 	bhr: function () {
@@ -220,7 +219,6 @@ let actualizaConfigCons = {
 		muestraOcultaActualizaPref(seMuestra, "bhr");
 
 		// Fin
-		this.palabrasClave();
 		return;
 	},
 };
