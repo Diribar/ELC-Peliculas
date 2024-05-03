@@ -9,8 +9,10 @@ module.exports = {
 		let actores = [];
 
 		// Informacion General
-		if (producto.cfc !== null) infoGral.push({titulo: "Relacionada con la Fe Católica", valor: producto.cfc ? "SI" : "NO"});
-		if (producto.bhr !== null) infoGral.push({titulo: "Basada en Hechos Reales", valor: producto.bhr ? "SI" : "NO"});
+		if (producto.cfc !== null)
+			infoGral.push({valor: producto.cfc ? "Relacionada con la Fe Católica" : "Sin relación con la Fe Católica"});
+		if (producto.bhr !== null)
+			infoGral.push({valor: producto.bhr ? "Basada en Hechos Reales" : "No está basada en Hechos Reales"});
 		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
 		if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
@@ -18,8 +20,10 @@ module.exports = {
 		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		}
-		if (producto.color !== null) infoGral.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
-		if (producto.musical !== null) infoGral.push({titulo: "Es un musical", valor: producto.musical ? "SI" : "NO"});
+		if (producto.color !== null) infoGral.push({valor: producto.color ? "" : "Es en blanco y negro"});
+		if (producto.musical !== null) infoGral.push({valor: producto.musical ? "Es un musical" : ""});
+		if (producto.deporte !== null) infoGral.push({titulo: "", valor: producto.deporte ? "Tiene deporte" : ""});
+
 		infoGral.push({
 			titulo: "País" + (paisesNombre && paisesNombre.includes(",") ? "es" : ""),
 			valor: paisesNombre ? paisesNombre : "desconocido",
