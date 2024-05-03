@@ -75,81 +75,10 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	presenciaEstable: function () {
+	presenciaEstable: () => {
 		// Impacto en prefs: todos los campos con presencia estable y que tengan un valor, impactan en el resultado
 		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
-		// Fin
-		return;
-	},
-	cfc: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra =
-			!DOM.canons.value && // el status es que no está en proceso de canonización
-			!DOM.rolesIgl.value && // 'rolesIgl' no está contestado
-			!DOM.apMar.value; // 'apMar' no está contestado
-
-		// Si no se muestra, es porque se eligió 'cfc'
-		if (!seMuestra) prefs.cfc = "1";
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "cfc");
-
-		// Fin
-		return;
-	},
-	canons: function () {
-		// Sólo se muestra si se cumplen ciertas condiciones
-		const seMuestra =
-			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
-			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
-			DOM.bhr.value !== "0"; // no hay certeza de que sea ficticio
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "canons");
-
-		// Fin
-		return;
-	},
-	rolesIgl: function () {
-		// Sólo se muestra si se cumplen ciertas condiciones
-		const seMuestra =
-			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
-			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
-			DOM.bhr.value !== "0"; // no hay certeza de que sea ficticio
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
-
-		// Fin
-		return;
-	},
-	apMar: function () {
-		// Sólo se muestra el sector si se cumplen ciertas condiciones
-		const seMuestra =
-			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
-			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
-			DOM.bhr.value !== "0" && // no hay certeza de que sea ficticio
-			(!DOM.epocasOcurrencia.value || DOM.epocasOcurrencia.value == "pst") && // la época no es 'bíblica'
-			v.entidad != "temas"; // La entidad es distinta de 'temas'
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "apMar");
-
-		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
-		if (prefs.apMar == "SI") {
-			delete prefs.epocasOcurrencia;
-			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
-		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
-
-		// Fin
-		return;
-	},
-	miscelaneas: function () {
-		// Fin
-		return;
-	},
-	palabrasClave: function () {
 		// Actualiza el valor de 'palabrasClave'
 		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) prefs.palabrasClave = DOM.palClave.value;
 
@@ -158,7 +87,7 @@ let actualizaConfigCons = {
 	},
 
 	// Presencia eventual
-	entidad: function () {
+	entidad: () => {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = !!v.layoutBD.entidades.length; // sólo si la opción acepta más de una entidad
 
@@ -173,7 +102,7 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	pppOpciones: function () {
+	pppOpciones: () => {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
 		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.idiomas();
 
@@ -198,7 +127,7 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	idiomas: function () {
+	idiomas: () => {
 		// Averigua si el campo se debe mostrar
 		const seMuestra = DOM.tiposLink.value != "todos"; // 'tiposLink' está contestado
 
@@ -208,7 +137,67 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-	bhr: function () {
+	cfc: () => {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !DOM.canons.value && !DOM.rolesIgl.value && !DOM.apMar.value; // no está contestado ninguno
+
+		// Si no se muestra, es porque se eligió 'cfc'
+		if (!seMuestra) prefs.cfc = "1";
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "cfc");
+
+		// Fin
+		return;
+	},
+	canons: () => {
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra =
+			DOM.cfc.value == "1" && // se eligió 'con relación con la Iglesia Católica'
+			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
+			DOM.bhr.value !== "0"; // no hay certeza de que sea ficticio
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "canons");
+
+		// Fin
+		return;
+	},
+	rolesIgl: () => {
+		// Sólo se muestra si se cumplen ciertas condiciones
+		const seMuestra =
+			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
+			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
+			DOM.bhr.value !== "0"; // no hay certeza de que sea ficticio
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "rolesIgl");
+
+		// Fin
+		return;
+	},
+	apMar: () => {
+		// Sólo se muestra el sector si se cumplen ciertas condiciones
+		const seMuestra =
+			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
+			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
+			DOM.bhr.value !== "0" && // no hay certeza de que sea ficticio
+			(!DOM.epocasOcurrencia.value || DOM.epocasOcurrencia.value == "pst") && // la época no es 'bíblica'
+			v.entidad != "temas"; // La entidad es distinta de 'temas'
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "apMar");
+
+		// Si se elige una 'Aparición Mariana', oculta el sector de 'Época de Ocurrencia'
+		if (prefs.apMar == "SI") {
+			delete prefs.epocasOcurrencia;
+			DOM.epocasOcurrencia.parentNode.classList.add("ocultar");
+		} else DOM.epocasOcurrencia.parentNode.classList.remove("ocultar");
+
+		// Fin
+		return;
+	},
+	bhr: () => {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
 			!DOM.canons.value && // el 'procCanon' no está contestado
