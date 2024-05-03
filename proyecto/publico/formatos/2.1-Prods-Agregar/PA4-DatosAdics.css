@@ -5,33 +5,43 @@
 		#tituloSecundario {margin-bottom: 10px;}
 		#datos {
 			display: flex; flex-direction: row;
-			h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
-			.altoFila {height: 25px;}
 
 			/* Partes específicas del formulario */
-			.inputError {
-				.ayudaMostrar {max-width: 400px;}
-				#radioBtnTitulo {width: 185px;}
-			}
-			.labelSelect {
-				display: flex; flex-direction: row; justify-content: space-between;
-				margin-top: 5px;
-				label {margin: 0 15px 0 0; font-weight: bold;}
-				select {padding: 0; margin-left: 5px;}
-				.ayuda {left: -5px; right: auto; translate: -100% -50%;}
+			.columna {
+				h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
+				.altoFila {height: 25px;}
+				.inputError .ayudaMostrar {max-width: 400px;}
+				.labelSelect {
+					display: flex; flex-direction: row; justify-content: space-between;
+					margin-top: 5px;
+					label {margin: 0 15px 0 0; font-weight: bold;}
+					select {padding: 0; margin-left: 5px;}
+					.ayuda {left: -5px; right: auto; translate: -100% -50%;}
+				}
 			}
 
 			/* Columnas */
-			#primeraColumna {margin-right: 70px;}
+			#primeraColumna {
+				margin-right: 70px; max-width: 260px;
+				.inputError {
+					&:has(#radioBtnTitulo) {justify-content: space-between;}
+					#radioBtnTitulo {width: 185px;}
+				}
+				#checkBoxes {
+					flex-wrap: wrap;
+					.checkBox:nth-child(odd) {margin-right: 10px;}
+				}
+			}
 			#segundaColumna {
 				margin-right: 25px; width: 290px;
-				hr {margin: 10px 0;}
+				hr {margin-top: 6px;}
 				.errores {translate: -100% -50%; left: -5px; right: auto; position: absolute;}
 				#checkBox {
 					display: flex; flex-direction: row; align-items: center;
 					label {padding-left: 5px; line-height: normal;}
 				}
 				#selectsRCLV {
+					height: 100%; justify-content: center;
 					select {width: 150px;}
 					.linkRCLV {
 						position: absolute; transform: translateY(-50%); top: 50%;
