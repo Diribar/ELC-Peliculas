@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),
-		inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
+				inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -95,7 +95,7 @@ window.addEventListener("load", async () => {
 		},
 		senalaLasDiferencias: () => {
 			// Variables
-			const referencia = v.versionActual == "edicN" ? "edicG" : "orig";
+			const referencia = v.estamosEnEdicNueva ? "edicG" : "orig";
 
 			// Marca dónde están las diferencias con la versión original
 			v.camposTodos.forEach((campo, i) => {
@@ -127,7 +127,7 @@ window.addEventListener("load", async () => {
 						: "";
 				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
 			}
-			if (v.versionActual == "edicN" && (DOM.inputAvatar.value || !v.esImagen)) {
+			if (v.estamosEnEdicNueva && (DOM.inputAvatar.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatar.value;
 				if (DOM.inputAvatar.value) {
 					objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
@@ -162,7 +162,7 @@ window.addEventListener("load", async () => {
 		},
 		actualizaBotones: () => {
 			// Si la versión actual no es la edición nueva, inactiva y termina
-			if (v.versionActual != "edicN") {
+			if (!v.estamosEnEdicNueva) {
 				for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
 				return;
 			}
@@ -253,6 +253,8 @@ window.addEventListener("load", async () => {
 
 				// Impide/permite que el usuario haga cambios según la versión
 				input.disabled = !v.estamosEnEdicNueva && !input.checked;
+				if (input.checked) v.estamosEnEdicNueva ? input.classList.remove("inactivar") : input.classList.add("inactivar");
+
 				if (input.name == "paises_id") {
 					DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
 					DOM.paisesSelect.disabled = !v.estamosEnEdicNueva;
@@ -318,8 +320,11 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS --------------------------------------------------
 	// Revisa los campos
 	DOM.form.addEventListener("input", async (e) => {
-		// Si la versión actual no es la esperada para 'inputs', interrumpe
-		if (v.versionActual != v.versiones[0]) return;
+		// Acciones si la versión actual no es la edición nueva
+		if (!v.estamosEnEdicNueva) {
+			if ((e.target.type = "checkbox")) e.target.checked = !e.target.checked;
+			return;
+		}
 
 		// Validaciones estándar (función genérica)
 		amplio.restringeCaracteres(e);
@@ -345,7 +350,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-
 	// Botones - 1. Activa las versiones
 	DOM.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
