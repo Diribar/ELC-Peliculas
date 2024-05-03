@@ -20,9 +20,10 @@
 	<!-- Datos -->
 	<section id="datos">
 		<!--Primera columna-->
-		<div id="primeraColumna" class="columnas">
+		<div id="primeraColumna" class="columna">
 			<!-- Datos generales -->
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
+			<hr>
 
 			<!-- Campos radioBtn -->
 			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
@@ -31,18 +32,19 @@
 			<hr>
 
 			<!-- Campos checkBox -->
-			<div id="checkBoxes" class="flexRow altoFila">
+			<div id="checkBoxes" class="flexRow">
 				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
 					<%- include("P-CheckBox", campo) %>
 				<% } %>
 			</div>
+			<hr>
 
 			<!-- Tipo de Actuación -->
 			<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
 			<hr>
 		</div>
 		<!--Segunda columna (Avatar)-->
-		<div id="segundaColumna" class="columnas">
+		<div id="segundaColumna" class="columna">
 			<!-- Relación con la vida -->
 			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
 				<div class="flexRowAlign inputError">
@@ -66,14 +68,17 @@
 				</div>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
+
 				<!-- Opciones -->
 				<div id="selectsRCLV" class="flexCol">
+					<hr>
 					<!--Personaje histórico-->
 					<%- include("PA4-DA4-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
 					<!--Hecho histórico-->
 					<%- include("PA4-DA4-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
 					<!--Tema-->
 					<%- include("PA4-DA4-RCLV_val", {nombre: "tema_id"}) %>
+					<hr>
 				</div>
 			</div>
 		</div>
