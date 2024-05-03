@@ -407,7 +407,7 @@ window.addEventListener("load", async () => {
 			// 2. Acciones exclusivas para edicG
 			else {
 				// Elimina los datos de edicG en la BD
-				fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
 
 				// Recarga la vista para quitar el ID de la edición en el url
 				const origen = v.origen ? "&origen=" + v.origen : "";
