@@ -1,6 +1,6 @@
 <section class="inputError flexRowAlign altoFila">
 	<label id="radioBtnTitulo" class="negrita"><%= titulo %></label>
-	<div id="radioBtnOpcs" class="flexRowAlign<%- locals.prodEdic ? ' relative' : '' %>">
+	<div class="radioBtnOpcs flexRowAlign<%- locals.prodEdic ? ' relative' : '' %>">
 		<div class="flexRowAlign">
 			<input id="<%= nombre %>SI" type="radio" name="<%= nombre %>" value="1" <% if (dataEntry[nombre] == 1) { %>checked<% } %> class="radioSI">
 			<label for="<%= nombre %>SI">SI</label>
