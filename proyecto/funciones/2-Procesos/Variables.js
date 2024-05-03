@@ -186,10 +186,10 @@ module.exports = {
 		miscelaneas: {
 			titulo: "Miscelaneas",
 			opciones: [
-				{id: "color", nombre: "Es a color", condic: {color: 1}},
-				{id: "blancoNegro", nombre: "Es en blanco y negro", condic: {color: 0}},
-				{id: "musical", nombre: "Es un musical", condic: {musical: 1}},
-				{id: "deporte", nombre: "Tiene deporte", condic: {deporte: 1}},
+				{id: "CL", nombre: "Es a color", condic: {color: 1}},
+				{id: "BN", nombre: "Es en blanco y negro", condic: {color: 0}},
+				{id: "MS", nombre: "Es un musical", condic: {musical: 1}},
+				{id: "DP", nombre: "Tiene deporte", condic: {deporte: 1}},
 			],
 		},
 
