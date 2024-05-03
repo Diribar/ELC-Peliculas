@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),
-				inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
+		inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
