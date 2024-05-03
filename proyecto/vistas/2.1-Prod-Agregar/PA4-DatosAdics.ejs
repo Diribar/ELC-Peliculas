@@ -23,22 +23,23 @@
 		<div id="primeraColumna">
 			<!-- Datos generales -->
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
-			<div class="flexCol">
-				<!-- Campos radioBtn -->
-				<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
-					<%- include("P-RadioBtn", campo) %>
+
+			<!-- Campos radioBtn -->
+			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
+				<%- include("P-RadioBtn", campo) %>
+			<% } %>
+			<hr>
+
+			<!-- Campos checkBox -->
+			<div id="checkBoxes" class="flexRow altoFila">
+				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
+					<%- include("P-CheckBox", campo) %>
 				<% } %>
-				<hr>
-				<!-- Campos checkBox -->
-				<div id="checkBoxes" class="flexRow altoFila">
-					<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
-						<%- include("P-CheckBox", campo) %>
-					<% } %>
-				</div>
-				<!-- Tipo de Actuación -->
-				<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
-				<hr>
 			</div>
+
+			<!-- Tipo de Actuación -->
+			<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
+			<hr>
 		</div>
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
