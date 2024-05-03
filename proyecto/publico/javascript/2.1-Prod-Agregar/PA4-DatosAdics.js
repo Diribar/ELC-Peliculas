@@ -16,16 +16,16 @@ window.addEventListener("load", async () => {
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 
 		// RCLV
-		checkRCLV: document.querySelector("#RCLV #checkBox input"),
-		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
+		checkRCLV: document.querySelector("#segundaColumna #checkBox input"),
+		selectsRCLV: document.querySelector("#segundaColumna #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
-		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
+		inputsRCLV: document.querySelectorAll("#segundaColumna .inputError .input"),
 
 		// RCLV - Sectores
-		sectorRCLV: document.querySelector("#RCLV"),
-		sectorPers: document.querySelector("#RCLV #personaje_id"),
-		sectorHecho: document.querySelector("#RCLV #hecho_id"),
-		sectorValor: document.querySelector("#RCLV #tema_id"),
+		sectorRCLV: document.querySelector("#segundaColumna"),
+		sectorPers: document.querySelector("#segundaColumna #personaje_id"),
+		sectorHecho: document.querySelector("#segundaColumna #hecho_id"),
+		sectorValor: document.querySelector("#segundaColumna #tema_id"),
 
 		// RCLV - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
@@ -34,13 +34,13 @@ window.addEventListener("load", async () => {
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
 
 		// RCLV - Varios
-		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
-		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
-		iconosError_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-xmark"),
+		ayudaRCLV: document.querySelectorAll("#segundaColumna .ocultaAyudaRCLV"),
+		iconosOK_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-check"),
+		iconosError_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-xmark"),
 
 		// RCLV - Links
-		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
-		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
+		linksRCLV_Alta: document.querySelectorAll("#segundaColumna .inputError .linkRCLV.alta"),
+		linksRCLV_Edic: document.querySelectorAll("#segundaColumna .inputError .linkRCLV.edicion"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
