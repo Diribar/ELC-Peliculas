@@ -16,7 +16,7 @@
 	<i class="fa-solid fa-trash-can rechazar inactivo pointer" tabindex="-1" title='Rechazar'></i>
 	<select name="motivo_id" required>
 		<option value="">Elejí un motivo</option>
-		<% motivos = campo.input ? motivos : motivos.filter(n => n.rev_edicion) %>
+		<% motivos = campo.campoInput ? motivos : motivos.filter(n => n.rev_edicion) // si no es un input, quita esos motivos %>
 		<% for (motivo of motivos) { %>
 			<option value="<%= motivo.id %>" <% if (motivos.length==1) { %>selected<% } %>><%= motivo.descripcion %></option>
 		<% } %>

@@ -45,9 +45,11 @@
 							select {padding: 0;}
 						}
 					}
-					:is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
-				}
 
+					/* Disabled */
+					input[type="text"]:read-only, :disabled {background-color: var(--amarillo-claro) !important; opacity: 1;}
+					input.inactivar {accent-color: var(--amarillo-oscuro);} /* radio-buttons y checkboxes */
+				}
 
 				/* Columnas */
 				#primeraColumna {
@@ -91,7 +93,7 @@
 
 						&#sinopsis {
 							flex-grow: 1;
-							.inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+							.inputError {margin-left: 0; flex-grow: 1; max-width: unset; height: 100%;}
 							textarea {
 								padding: 5px 10px; resize: none; height: 100%; min-height: 50px;
 								&::-webkit-scrollbar {display: none;}

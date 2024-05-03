@@ -1031,7 +1031,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Variables
 	const campo = campoRevisar.nombre;
 	const casosEspeciales = [
-		...["cfc", "bhr", "musical", "color"], // productos
+		...["cfc", "bhr", "musical", "color", "deporte"], // productos
 		...["fechaMovil", "soloCfc", "ama"], // rclvs
 		...["castellano", "subtitulos", "gratuito"], // links
 	];

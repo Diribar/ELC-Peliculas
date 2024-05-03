@@ -96,7 +96,7 @@ module.exports = {
 			// Más variables
 			const {entidad, id} = req.query;
 			const origen = req.query.origen;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
+			const userID = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Configura el título de la vista
@@ -116,12 +116,10 @@ module.exports = {
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 			prodComb = {...prodComb, ...edicSession};
 
-			// Datos Duros - Campos Input
+			// Datos Duros
 			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
-
-			// Datos Duros
 			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 
@@ -138,15 +136,16 @@ module.exports = {
 			];
 			const status_id = original.statusRegistro_id;
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
+			const familia = "producto";
+			const registro = prodComb;
+			const dataEntry = prodComb;
 			const prodEdic = true;
 
 			// Va a la vista
 			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic},
-				...{entidadNombre, entidad, id, familia: "producto", registro: prodComb, dataEntry: prodComb},
-				...{imgDerPers, status_id},
-				...{camposInput1, camposInput2},
+				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic, imgDerPers, status_id},
+				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 				...{estrucPers: true, cartelGenerico: true},
 			});

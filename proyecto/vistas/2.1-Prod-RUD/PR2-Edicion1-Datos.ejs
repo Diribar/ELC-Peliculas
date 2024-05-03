@@ -27,7 +27,7 @@
 			<h3>Datos Adicionales</h3>
 			<!-- Campos radioBtn -->
 			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
-				<%- include("P-RadioBtn", {campo}) %>
+				<%- include("P-RadioBtn", campo) %>
 			<% } %>
 
 			<!-- Campos checkBox -->

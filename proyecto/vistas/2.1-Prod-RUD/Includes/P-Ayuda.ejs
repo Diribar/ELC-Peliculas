@@ -1,0 +1,11 @@
+<!-- Ayuda -->
+<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
+<% if (campo.mensajes) { %>
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul type="<%- campo.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar desplMostrar">
+				<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %>
+			</ul>
+		</i>
+	</div>
+<% } %>

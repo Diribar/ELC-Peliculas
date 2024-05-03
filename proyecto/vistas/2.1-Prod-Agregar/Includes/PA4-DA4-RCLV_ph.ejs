@@ -1,5 +1,5 @@
-<% campo = camposDA.find(n => n.nombre == nombre) %>
-<% let {titulo, valores, grupo} = campo %>
+<% const campo = camposDA.find(n => n.nombre == nombre) %>
+<% const {titulo, valores} = campo %>
 <section id="<%= nombre %>" class="labelSelect flexRowAlign">
 	<label><%= titulo %></label>
 	<div class="inputError">
@@ -14,11 +14,9 @@
 			<% } %>
 		</select>
 
-		<%- include("PA4-DA9-Ayuda") %>
+		<%- include("P-Ayuda", {campo}) %>
 		<!-- Link a Relación con la vida -->
-		<% if (grupo=="RCLV") { %>
-			<i class="linkRCLV fa-solid fa-circle-plus alta <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
-		<% } %>
+		<i class="linkRCLV fa-solid fa-circle-plus alta <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
+		<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 	</div>
 </section>

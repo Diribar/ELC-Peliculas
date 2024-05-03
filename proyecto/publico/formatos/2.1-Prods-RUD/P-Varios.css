@@ -1,5 +1,5 @@
 /* Datos Adicionales */
-#radioBtnOpcs {
+.radioBtnOpcs {
 	width: 75px; justify-content: space-between;
 	label[for] {padding-left: 3px;}
 }

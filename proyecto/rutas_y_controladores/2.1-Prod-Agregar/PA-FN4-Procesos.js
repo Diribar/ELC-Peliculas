@@ -34,21 +34,13 @@ module.exports = {
 	},
 	datosAdics: {
 		valsCheckBtn: (datos) => {
-			// Variables
-			const camposDA = variables.camposDA;
-			const camposChkBtn = camposDA.filter((n) => n.chkBox).map((m) => m.nombre);
+			const camposChkBtn = variables.camposDA.filter((n) => n.chkBox).map((m) => m.nombre);
 			for (let campo of camposChkBtn) datos[campo] = datos[campo] ? 1 : 0;
-
-			// Fin
 			return datos;
 		},
 		quitaCamposRCLV: (datos) => {
-			// Variables
-			const camposDA = variables.camposDA;
-			const camposRCLV = camposDA.filter((n) => n.rclv).map((m) => m.nombre);
+			const camposRCLV = variables.camposDA.filter((n) => n.rclv).map((m) => m.nombre);
 			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
-
-			// Fin
 			return datos;
 		},
 		valorParaActores: (datos) => {

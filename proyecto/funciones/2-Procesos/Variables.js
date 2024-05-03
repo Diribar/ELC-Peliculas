@@ -1,4 +1,35 @@
 "use strict";
+const camposDD = [
+	{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
+	{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
+	{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1, angosto: true},
+	{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1, angosto: true}, // Colecciones
+	{titulo: "Duración (min)", nombre: "duracion", numero: true, peliculas: true, capitulos: true, campoInput: 1, angosto: true}, // Películas y Capítulos
+	{titulo: "País/es", nombre: "paises_id", productos: true},
+	{titulo: "Idioma Original", nombre: "idiomaOriginal_id", productos: true, relacInclude: "idioma_original", tabla: "idiomas"},
+	{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: 2},
+	{titulo: "Guión", nombre: "guion", productos: true, campoInput: 2},
+	{titulo: "Música", nombre: "musica", productos: true, campoInput: 2},
+	{titulo: "Actuación", nombre: "actores", productos: true, campoInput: 2},
+	{titulo: "Producción", nombre: "produccion", productos: true, campoInput: 2},
+	{titulo: "Sinopsis", nombre: "sinopsis", productos: true, campoInput: 3},
+	{titulo: "Avatar", nombre: "avatar", productos: true},
+];
+const camposDA = [
+	{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
+	{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
+	{titulo: "Es a color", nombre: "color", chkBox: true},
+	{titulo: "Es un musical", nombre: "musical", chkBox: true},
+	{titulo: "Tiene deporte", nombre: "deporte", chkBox: true},
+	{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", relacInclude: "tipoActuacion", tabla: "tiposActuacion"},
+	{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos"},
+	{titulo: "Personaje histórico", nombre: "personaje_id", relacInclude: "personaje", tabla: "personajes", rclv: true},
+	{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true},
+	{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true},
+	{titulo: "Evento del año", nombre: "evento_id", relacInclude: "evento", tabla: "eventos", rclv: true},
+	{titulo: "Época del año", nombre: "epocaDelAno_id", relacInclude: "epocaDelAno", tabla: "epocasDelAno", rclv: true},
+	{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
+];
 
 module.exports = {
 	// Institucional
@@ -162,105 +193,47 @@ module.exports = {
 	},
 
 	// Agregar Productos
-	camposDD: [
-		{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
-		{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
-		{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1},
-		{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1},
-		{titulo: "Duración (minutos)", nombre: "duracion", numero: true, peliculas: true, capitulos: true, campoInput: 1},
-		{nombre: "paises_id", productos: true},
-		{nombre: "idiomaOriginal_id", productos: true},
-		{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: 2},
-		{titulo: "Guión", nombre: "guion", productos: true, campoInput: 2},
-		{titulo: "Música", nombre: "musica", productos: true, campoInput: 2},
-		{titulo: "Actuación", nombre: "actores", productos: true, campoInput: 2},
-		{titulo: "Producción", nombre: "produccion", productos: true, campoInput: 2},
-		{nombre: "sinopsis", productos: true},
-		{nombre: "avatar", productos: true},
-	],
-	camposDA: [
-		{nombre: "cfc"},
-		{nombre: "bhr"},
-		{nombre: "color", chkBox: true},
-		{nombre: "musical", chkBox: true},
-		{nombre: "deporte", chkBox: true},
-		{nombre: "tipoActuacion_id"},
-		{nombre: "publico_id"},
-		{nombre: "epocaOcurrencia_id"},
-		{nombre: "personaje_id", rclv: true},
-		{nombre: "hecho_id", rclv: true},
-		{nombre: "tema_id", rclv: true},
-		{nombre: "evento_id", rclv: true},
-		{nombre: "epocaDelAno_id", rclv: true},
-	],
+	camposDD: [...camposDD],
+	camposDA: [...camposDA],
 	camposDA_conValores: async function (userID) {
 		// Variables
 		const entidadesRCLV = this.entidades.rclvs;
 		const registrosRCLV = await regsRCLV(entidadesRCLV, userID);
-
-		// Mensajes
 		const mensajes = {
 			publico: [
 				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
 				"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
 				"Familia: ideal para compartir en familia y que todos la disfruten.",
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
-				"Menores solamente: apuntado a un público solamente infantil.",
+				"Menores solamente: apuntado a un público infantil.",
 			],
 			epocaOcurrencia: ["Varias: si el nudo de la trama ocurre en más de una época."],
 			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
+			tema: ["Poné el más representativo."],
+			evento: ["Poné el más representativo."],
+			epocaDelAno: ["Poné la fecha en la que comienza."],
 		};
-		return [
-			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", radioBtn: true},
-			{titulo: "Basada en Hechos Reales", nombre: "bhr", radioBtn: true},
-			{titulo: "Color", nombre: "color", chkBox: true},
-			{titulo: "Musical", nombre: "musical", chkBox: true},
-			{titulo: "Deporte", nombre: "deporte", chkBox: true},
-			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
-			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
-			{
-				titulo: "Época respecto a Cristo",
-				nombre: "epocaOcurrencia_id",
-				valores: epocasOcurrencia,
-				mensajes: mensajes.epocaOcurrencia,
-			},
-			{
-				titulo: "Personaje Histórico",
-				nombre: "personaje_id",
-				valores: registrosRCLV.personajes,
-				mensajes: mensajes.personaje,
-				link: "personajes",
-			},
-			{
-				titulo: "Hecho Histórico",
-				nombre: "hecho_id",
-				valores: registrosRCLV.hechos,
-				mensajes: mensajes.hecho,
-				link: "hechos",
-			},
-			{
-				titulo: "Tema Principal",
-				nombre: "tema_id",
-				valores: registrosRCLV.temas,
-				mensajes: ["Poné el más representativo."],
-				link: "temas",
-			},
-			{
-				titulo: "Evento del Año",
-				nombre: "evento_id",
-				valores: registrosRCLV.eventos,
-				mensajes: ["Poné el más representativo."],
-				link: "eventos",
-			},
-			{
-				titulo: "Época del Año",
-				nombre: "epocaDelAno_id",
-				valores: registrosRCLV.epocasDelAno,
-				mensajes: ["Poné la fecha en la que comienza."],
-				link: "epocasDelAno",
-			},
+		const resultado = [...camposDA];
+
+		// Agregado de valores
+		const campos = [
+			{nombre: "tipoActuacion_id", valores: tiposActuacion},
+			{nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
+			{nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epocaOcurrencia},
+			{nombre: "personaje_id", valores: registrosRCLV.personajes, mensajes: mensajes.personaje, link: "personajes"},
+			{nombre: "hecho_id", valores: registrosRCLV.hechos, mensajes: mensajes.hecho, link: "hechos"},
+			{nombre: "tema_id", valores: registrosRCLV.temas, mensajes: mensajes.tema, link: "temas"},
+			{nombre: "evento_id", valores: registrosRCLV.eventos, mensajes: mensajes.evento, link: "eventos"},
+			{nombre: "epocaDelAno_id", valores: registrosRCLV.epocasDelAno, mensajes: mensajes.epocaDelAno, link: "epocasDelAno"},
 		];
+		for (let campo of campos) {
+			const indice = resultado.findIndex((n) => n.nombre == campo.nombre);
+			resultado[indice] = {...resultado[indice], ...campo};
+		}
+
+		// Fin
+		return resultado;
 	},
 
 	// RCLV
@@ -341,133 +314,60 @@ module.exports = {
 		// productos, películas, colecciones, capítulos --> para filtrar los campos por entidad
 		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
-			// Todos
-			{titulo: "Título en castellano", nombre: "nombreCastellano", input: true, productos: true},
-			{titulo: "Título original", nombre: "nombreOriginal", input: true, productos: true},
-			{titulo: "Año de estreno", nombre: "anoEstreno", angosto: true, input: true, productos: true},
-			{titulo: "País/es", nombre: "paises_id", productos: true},
-			{
-				titulo: "Idioma Original",
-				nombre: "idiomaOriginal_id",
-				relacInclude: "idioma_original",
-				tabla: "idiomas",
-				productos: true,
-			},
-			{titulo: "Dirección", nombre: "direccion", input: true, productos: true},
-			{titulo: "Guión", nombre: "guion", input: true, productos: true},
-			{titulo: "Música", nombre: "musica", input: true, productos: true},
-			{titulo: "Actores", nombre: "actores", input: true, productos: true},
-			{titulo: "Producción", nombre: "produccion", input: true, productos: true},
-			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
-			{titulo: "Avatar", nombre: "avatar", productos: true},
+			...camposDD,
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
-			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
-			{titulo: "Basada en Hechos Reales", nombre: "bhr", productos: true},
-			{titulo: "Es a color", nombre: "color", productos: true},
-			{titulo: "Es un musical", nombre: "musical", productos: true},
-			{titulo: "Tiene deporte", nombre: "deporte", productos: true},
-			{
-				titulo: "Tipo de Actuación",
-				nombre: "tipoActuacion_id",
-				relacInclude: "tipoActuacion",
-				tabla: "tiposActuacion",
-				productos: true,
-			},
-			{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos", productos: true},
-			{
-				titulo: "Personaje histórico",
-				nombre: "personaje_id",
-				relacInclude: "personaje",
-				tabla: "personajes",
-				rclv: true,
-				productos: true,
-			},
-			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
-			{
-				titulo: "Evento del año",
-				nombre: "evento_id",
-				relacInclude: "evento",
-				tabla: "eventos",
-				rclv: true,
-				productos: true,
-			},
-			{
-				titulo: "Época del año",
-				nombre: "epocaDelAno_id",
-				relacInclude: "epocaDelAno",
-				tabla: "epocasDelAno",
-				rclv: true,
-				productos: true,
-			},
-			{
-				titulo: "Época respecto a Cristo",
-				nombre: "epocaOcurrencia_id",
-				relacInclude: "epocaOcurrencia",
-				tabla: "epocasOcurrencia",
-				productos: true,
-			},
-			// Películas y Capítulos
-			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
-			// Colecciones
-			{titulo: "Año de finalización", nombre: "anoFin", angosto: true, input: true, colecciones: true},
+			...camposDA.map((n) => ({...n, productos: true})),
 		],
 		rclvs: [
 			// Todos
-			{nombre: "nombre", titulo: "Nombre", rclvs: true},
-			{nombre: "fechaDelAno_id", titulo: "Día del Año", rclvs: true, relacInclude: "fechaDelAno", tabla: "fechasDelAno"},
-			{nombre: "fechaMovil", titulo: "Fecha Móvil", rclvs: true},
-			{nombre: "anoFM", titulo: "Año Fecha Móvil", rclvs: true},
-			{nombre: "comentarioMovil", titulo: "Comentario Móvil", rclvs: true},
-			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},
-			{nombre: "avatar", titulo: "Avatar", rclvs: true},
+			{titulo: "Nombre", nombre: "nombre", rclvs: true},
+			{titulo: "Día del Año", nombre: "fechaDelAno_id", rclvs: true, relacInclude: "fechaDelAno", tabla: "fechasDelAno"},
+			{titulo: "Fecha Móvil", nombre: "fechaMovil", rclvs: true, siNo: true},
+			{titulo: "Año Fecha Móvil", nombre: "anoFM", rclvs: true},
+			{titulo: "Comentario Móvil", nombre: "comentarioMovil", rclvs: true},
+			{titulo: "Prioridad", nombre: "prioridad_id", rclvs: true},
+			{titulo: "Avatar", nombre: "avatar", rclvs: true},
 
 			// Personajes y Hechos
 			{
-				nombre: "epocaOcurrencia_id",
 				titulo: "Época",
+				nombre: "epocaOcurrencia_id",
 				personajes: true,
 				hechos: true,
 				relacInclude: "epocaOcurrencia",
 				tabla: "epocasOcurrencia",
 			},
 			// Personajes
-			{nombre: "apodo", titulo: "Alternativo", personajes: true},
-			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
-			{nombre: "anoNacim", titulo: "Año de Nacim.", personajes: true},
-			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
+			{titulo: "Alternativo", nombre: "apodo", personajes: true},
+			{titulo: "Sexo", nombre: "sexo_id", personajes: true, relacInclude: "sexo", tabla: "sexos"},
+			{titulo: "Año de Nacim.", nombre: "anoNacim", personajes: true},
+			{titulo: "Categoría", nombre: "categoria_id", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
-				nombre: "rolIglesia_id",
 				titulo: "Rol en la Iglesia",
+				nombre: "rolIglesia_id",
 				personajes: true,
 				relacInclude: "rolIglesia",
 				tabla: "rolesIglesia",
 			},
-			{
-				nombre: "canon_id",
-				titulo: "Proceso de Canonizac.",
-				personajes: true,
-				relacInclude: "canon",
-				tabla: "canons",
-			},
-			{nombre: "apMar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "apMar", tabla: "hechos"},
+			{titulo: "Proceso de Canonizac.", nombre: "canon_id", personajes: true, relacInclude: "canon", tabla: "canons"},
+			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
 			// Hechos
-			{nombre: "anoComienzo", titulo: "Año de Comienzo", hechos: true},
-			{nombre: "soloCfc", titulo: "Hecho de la Iglesia", hechos: true},
-			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
+			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
+			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
+			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
 			// Epocas del año
-			{nombre: "diasDeDuracion", titulo: "Días de Duración", epocasDelAno: true},
-			{nombre: "comentarioDuracion", titulo: "Comentario Duración", epocasDelAno: true},
-			{nombre: "carpetaAvatars", titulo: "Carpeta de Imágenes", epocasDelAno: true},
+			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
+			{titulo: "Comentario Duración", nombre: "comentarioDuracion", epocasDelAno: true},
+			{titulo: "Carpeta de Imágenes", nombre: "carpetaAvatars", epocasDelAno: true},
 		],
 		links: [
-			{nombre: "calidad", titulo: "Calidad", links: true},
-			{nombre: "castellano", titulo: "En castellano", links: true},
-			{nombre: "subtitulos", titulo: "Subtítulos", links: true},
-			{nombre: "gratuito", titulo: "Gratuito", links: true},
-			{nombre: "tipo_id", titulo: "Tipo", links: true},
-			{nombre: "completo", titulo: "Completo", links: true},
-			{nombre: "parte", titulo: "Parte", links: true},
+			{titulo: "Calidad", nombre: "calidad", links: true},
+			{titulo: "En castellano", nombre: "castellano", links: true, siNo: true},
+			{titulo: "Subtítulos", nombre: "subtitulos", links: true, siNo: true},
+			{titulo: "Gratuito", nombre: "gratuito", links: true, siNo: true},
+			{titulo: "Tipo", nombre: "tipo_id", links: true},
+			{titulo: "Completo", nombre: "completo", links: true},
+			{titulo: "Parte", nombre: "parte", links: true},
 		],
 	},
 	avatarsExternosPelis: (nombre) => {
