@@ -56,9 +56,9 @@ window.addEventListener("load", async () => {
 	// Otras variables
 	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
 	DOM.opcionesPers = [];
-	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push(grupo.children);
+	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push([...grupo.children]);
 	DOM.opcionesHechos = [];
-	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push(grupo.children);
+	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push([...grupo.children]);
 
 	// Comunes a todos los campos
 	let funcionesGrales = {
@@ -163,41 +163,25 @@ window.addEventListener("load", async () => {
 		cfc: () => {
 			// Variables
 			const categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
-			if (categoria) console.log(categoria);
+			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc"); // si no hay respuesta, agrega el 'oculta' de RCLVs
 
-			// Si no hay respuesta, agrega el 'oculta' de RCLVs
-			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc");
-
-			// Opciones para Personajes
+			// Personajes - Borra todas las opciones y agrega las que van
 			DOM.selectPers.innerHTML = "";
-			console.log(...DOM.opcionesPers.map((n) => n.length));
-
 			DOM.optgroupPers.forEach((grupo, i) => {
-				// Acciones si el grupo tiene la clase
 				if (grupo.className.includes(categoria)) {
-					// Borra todas las opciones y agrega las que van
-					console.log(grupo);
 					grupo.innerHTML = "";
-					console.log(...DOM.opcionesPers.map((n) => n.length));
-					for (let opcion of DOM.opcionesPers[i])
-						if (opcion.className.includes(categoria)) {
-							grupo.appendChild(opcion);
-						}
-					// Si tiene opciones, agrega el grupo
-					if (grupo.childElementCount) DOM.selectPers.appendChild(grupo);
+					for (let opcion of DOM.opcionesPers[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+					if (grupo.childElementCount) DOM.selectPers.appendChild(grupo); // si tiene opciones, agrega el grupo
 				}
 			});
 
-			// Opciones para Hechos
+			// Hechos - Borra todas las opciones y agrega las que van
 			DOM.selectHecho.innerHTML = "";
 			DOM.optgroupHecho.forEach((grupo, i) => {
-				// Acciones si el grupo tiene la clase
 				if (grupo.className.includes(categoria)) {
-					// Borra todas las opciones y agrega las que van
 					grupo.innerHTML = "";
 					for (let opcion of DOM.opcionesHechos[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
-					// Si tiene opciones, agrega el grupo
-					if (grupo.childElementCount) DOM.selectHecho.appendChild(grupo);
+					if (grupo.childElementCount) DOM.selectHecho.appendChild(grupo); // si tiene opciones, agrega el grupo
 				}
 			});
 
