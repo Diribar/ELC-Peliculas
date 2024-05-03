@@ -186,7 +186,7 @@ module.exports = {
 			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "datosAdics";
-			const titulo = "Agregar - Datos Personalizados";
+			const titulo = "Agregar - Datos Adicionales";
 			const userID = req.session.usuario.id;
 
 			// Prepara variables para la vista
