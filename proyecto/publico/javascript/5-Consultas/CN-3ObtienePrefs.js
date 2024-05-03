@@ -18,6 +18,8 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
+
+	// Presencia estable
 	layout: function () {
 		// Variables
 		v.layout_id = DOM.layout_id.value;
@@ -40,8 +42,6 @@ let actualizaConfigCons = {
 		// Fin
 		return;
 	},
-
-	// Filtros - General
 	muestraOcultaBloques: () => {
 		// Acciones si no hay errores
 		if (v.layout_id) {
@@ -80,63 +80,6 @@ let actualizaConfigCons = {
 		this.entidad();
 		return;
 	},
-
-	// Filtros - Presencia eventual
-	entidad: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = !!v.layoutBD.entidades.length; // sólo si la opción acepta más de una entidad
-
-		// Obtiene la entidad
-		const asignaEnt = !seMuestra || !DOM.entidades || !DOM.entidades.value;
-		v.entidadBD = asignaEnt
-			? v.entidadesBD.find((n) => n.id == v.layoutBD.entDefault_id)
-			: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
-		v.entidad = v.entidadBD.codigo;
-		if (v.entidad) prefs.entidad = v.entidad;
-
-		// Fin
-		this.pppOpciones();
-		return;
-	},
-	pppOpciones: function () {
-		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
-		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.idiomas();
-
-		// Acciones si la opción elegida es "Mis preferencias"
-		if (v.layoutBD.codigo == "misPrefs") {
-			prefs.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
-			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
-		}
-		// Acciones si la opción elegida es otra
-		else {
-			// Muestra/Oculta el sector y actualiza el valor del filtro
-			muestraOcultaActualizaPref(true, "pppOpciones");
-
-			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
-			if (prefs.pppOpciones && prefs.pppOpciones != "todos") {
-				const id = prefs.pppOpciones;
-				const pppOpcion = v.pppOpcsArray.find((n) => n.id == id);
-				if (pppOpcion.combo) prefs.pppOpciones = pppOpcion.combo.split(",");
-			}
-		}
-
-		// Fin
-		this.idiomas();
-		return;
-	},
-	idiomas: function () {
-		// Averigua si el campo se debe mostrar
-		const seMuestra = DOM.tiposLink.value != "todos"; // 'tiposLink' está contestado
-
-		// Muestra/Oculta el sector y actualiza el valor del filtro
-		muestraOcultaActualizaPref(seMuestra, "idiomas");
-
-		// Fin
-		this.cfc();
-		return;
-	},
-
-	// Filtros - Relación con la Iglesia Católica
 	cfc: function () {
 		// Averigua si el campo se debe mostrar
 		const seMuestra =
@@ -204,8 +147,68 @@ let actualizaConfigCons = {
 		this.bhr();
 		return;
 	},
+	palabrasClave: function () {
+		// Actualiza el valor de 'palabrasClave'
+		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) prefs.palabrasClave = DOM.palClave.value;
 
-	// Filtros - Otros
+		// Fin
+		return;
+	},
+
+	// Presencia eventual
+	entidad: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = !!v.layoutBD.entidades.length; // sólo si la opción acepta más de una entidad
+
+		// Obtiene la entidad
+		const asignaEnt = !seMuestra || !DOM.entidades || !DOM.entidades.value;
+		v.entidadBD = asignaEnt
+			? v.entidadesBD.find((n) => n.id == v.layoutBD.entDefault_id)
+			: v.entidadesBD.find((n) => n.id == DOM.entidades.value);
+		v.entidad = v.entidadBD.codigo;
+		if (v.entidad) prefs.entidad = v.entidad;
+
+		// Fin
+		this.pppOpciones();
+		return;
+	},
+	pppOpciones: function () {
+		// Si el usuario no está logueado o quiere ver sus calificaciones, sigue a la siguiente rutina
+		if (!v.userID || v.layoutBD.codigo == "misCalificadas") return this.idiomas();
+
+		// Acciones si la opción elegida es "Mis preferencias"
+		if (v.layoutBD.codigo == "misPrefs") {
+			prefs.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
+			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
+		}
+		// Acciones si la opción elegida es otra
+		else {
+			// Muestra/Oculta el sector y actualiza el valor del filtro
+			muestraOcultaActualizaPref(true, "pppOpciones");
+
+			// Si 'pppOpciones' tiene el valor de un combo, lo convierte en array
+			if (prefs.pppOpciones && prefs.pppOpciones != "todos") {
+				const id = prefs.pppOpciones;
+				const pppOpcion = v.pppOpcsArray.find((n) => n.id == id);
+				if (pppOpcion.combo) prefs.pppOpciones = pppOpcion.combo.split(",");
+			}
+		}
+
+		// Fin
+		this.idiomas();
+		return;
+	},
+	idiomas: function () {
+		// Averigua si el campo se debe mostrar
+		const seMuestra = DOM.tiposLink.value != "todos"; // 'tiposLink' está contestado
+
+		// Muestra/Oculta el sector y actualiza el valor del filtro
+		muestraOcultaActualizaPref(seMuestra, "idiomas");
+
+		// Fin
+		this.cfc();
+		return;
+	},
 	bhr: function () {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
@@ -218,13 +221,6 @@ let actualizaConfigCons = {
 
 		// Fin
 		this.palabrasClave();
-		return;
-	},
-	palabrasClave: function () {
-		// Actualiza el valor de 'palabrasClave'
-		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) prefs.palabrasClave = DOM.palClave.value;
-
-		// Fin
 		return;
 	},
 };
