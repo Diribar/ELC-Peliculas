@@ -1,6 +1,6 @@
 "use strict";
 const camposDD = [
-	{titulo: "Título en castellano", nombre: "nombreCastellano", campoInput: 1},
+	{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, campoInput: 1},
 	{titulo: "Título original", nombre: "nombreOriginal", productos: true, campoInput: 1},
 	{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, campoInput: 1, angosto: true},
 	{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, campoInput: 1, angosto: true}, // Colecciones
