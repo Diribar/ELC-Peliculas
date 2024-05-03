@@ -43,43 +43,40 @@
 			<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
 			<hr>
 		</div>
-		<!--Segunda columna (Avatar)-->
-		<div id="segundaColumna" class="columna">
-			<!-- Relación con la vida -->
-			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
-				<div class="flexRowAlign inputError">
-					<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
-					<!-- Ayuda para un RCLV -->
-					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick desplClick">
-						<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
-							<li>Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.</li>
-							<li>Necesitamos que respondas por lo menos uno de los campos.</li>
-						</ul>
-					</i>
-					<!-- Ayuda para dos RCLVs -->
-					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick desplClick">
-						<p class="ayudaMostrar ocultar desplMostrar" type="dots">
-							Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
-						</p>
-					</i>
-					<div id="errorRCLV" class="ocultar">
-						<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
-					</div>
+		<!--Segunda columna - Relación con la vida -->
+		<div id="segundaColumna" class="columna flexCol ocultaCfc ocultaOcurrio">
+			<div class="flexRowAlign inputError">
+				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+				<!-- Ayuda para un RCLV -->
+				<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick desplClick">
+					<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+						<li>Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.</li>
+						<li>Necesitamos que respondas por lo menos uno de los campos.</li>
+					</ul>
+				</i>
+				<!-- Ayuda para dos RCLVs -->
+				<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick desplClick">
+					<p class="ayudaMostrar ocultar desplMostrar" type="dots">
+						Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
+					</p>
+				</i>
+				<div id="errorRCLV" class="ocultar">
+					<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
 				</div>
-				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
+			</div>
+			<!--No lo voy a responder ahora-->
+			<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
 
-				<!-- Opciones -->
-				<div id="selectsRCLV" class="flexCol">
-					<hr>
-					<!--Personaje histórico-->
-					<%- include("PA4-DA4-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
-					<!--Hecho histórico-->
-					<%- include("PA4-DA4-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
-					<!--Tema-->
-					<%- include("PA4-DA4-RCLV_val", {nombre: "tema_id"}) %>
-					<hr>
-				</div>
+			<!-- Opciones -->
+			<div id="selectsRCLV" class="flexCol">
+				<hr>
+				<!--Personaje histórico-->
+				<%- include("PA4-DA4-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
+				<!--Hecho histórico-->
+				<%- include("PA4-DA4-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
+				<!--Tema-->
+				<%- include("PA4-DA4-RCLV_val", {nombre: "tema_id"}) %>
+				<hr>
 			</div>
 		</div>
 	</section>
