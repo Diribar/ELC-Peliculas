@@ -267,11 +267,14 @@ module.exports = {
 			}
 
 			// Fin
-			return edicion
-				? res.redirect(req.originalUrl) // Recarga la vista
-				: origen == "TR"
+			// return edicion
+			// 	? res.redirect(req.originalUrl) // Recarga la vista
+			// 	: origen == "TR"
+			// 	? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
+			// 	: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la vista sin la edición
+			return origen == "TR"
 				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
-				: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la vista sin la edición
+				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
 	},
 	califica: {
