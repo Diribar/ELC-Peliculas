@@ -51,9 +51,7 @@ window.addEventListener("load", async () => {
 		validar: "/producto/agregar/api/valida/datos-adicionales/?",
 		guardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
-	let v = {
-		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
-	};
+	const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
 	// Otras variables
 	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
@@ -62,76 +60,103 @@ window.addEventListener("load", async () => {
 	DOM.opcionesHechos = [];
 	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push(grupo.children);
 
-	// FUNCIONES *******************************************
 	// Comunes a todos los campos
-	let obtieneLosDatos = () => {
-		// Variables
-		let datosUrl = "";
+	let funcionesGrales = {
+		obtieneLosDatos: () => {
+			// Variables
+			let datosUrl = "";
 
-		// Busca todos los valores 'radio'
-		DOM.radioSI.forEach((radioSI, i) => {
-			let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
-			datosUrl += radioSI.name + "=" + respuesta + "&";
-			if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
-		});
+			// Busca todos los valores 'radio'
+			DOM.radioSI.forEach((radioSI, i) => {
+				let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
+				datosUrl += radioSI.name + "=" + respuesta + "&";
+				if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
+			});
 
-		// Busca el checkbox de RCLV
-		if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
+			// Busca el checkbox de RCLV
+			if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
 
-		//Busca todos los valores 'input'
-		DOM.inputs.forEach((input, i) => {
-			// Particularidad para RCLV
-			if (v.camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
+			//Busca todos los valores 'input'
+			DOM.inputs.forEach((input, i) => {
+				// Particularidad para RCLV
+				if (camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
 
-			// Agrega el campo y el valor
-			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
-		});
+				// Agrega el campo y el valor
+				datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
+			});
 
-		// Fin
-		return datosUrl;
-	};
-	let statusInicial = async (mostrarIconoError) => {
-		// Variables
-		let datosUrl = obtieneLosDatos();
-		// Consecuencias de la validación de errores
-		await muestraLosErrores(datosUrl, mostrarIconoError);
-		actualizaBotonSubmit();
-		// Impactos en RCLV
-		for (let metodo in impactoVisualEnRCLV) impactoVisualEnRCLV[metodo]();
-		// Fin
-		return;
-	};
-	let muestraLosErrores = async (datos, mostrarIconoError) => {
-		let errores = await fetch(rutas.validar + datos).then((n) => n.json());
-		// return;
-		camposError.forEach((campo, indice) => {
-			if (errores[campo] !== undefined) {
-				DOM.mensajesError[indice].innerHTML = errores[campo];
-				// Acciones en función de si hay o no mensajes de error
-				errores[campo]
-					? DOM.iconosError[indice].classList.add("error")
-					: DOM.iconosError[indice].classList.remove("error");
-				errores[campo] && mostrarIconoError
-					? DOM.iconosError[indice].classList.remove("ocultar")
-					: DOM.iconosError[indice].classList.add("ocultar");
-				errores[campo] ? DOM.iconosOK[indice].classList.add("ocultar") : DOM.iconosOK[indice].classList.remove("ocultar");
-			}
-		});
-		// Fin
-		return;
-	};
-	let actualizaBotonSubmit = () => {
-		// Detectar la cantidad de 'errores' ocultos
-		let hayErrores = Array.from(DOM.iconosError)
-			.map((n) => n.className)
-			.some((n) => n.includes("error"));
-		// Consecuencias
-		hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
-	};
-	let submitForm = async (e) => {
-		e.preventDefault();
-		if (DOM.submit.className.includes("inactivo")) statusInicial(true);
-		else DOM.form.submit();
+			// Fin
+			return datosUrl;
+		},
+		muestraLosErrores: async (datos, mostrarIconoError) => {
+			let errores = await fetch(rutas.validar + datos).then((n) => n.json());
+			// return;
+			camposError.forEach((campo, indice) => {
+				if (errores[campo] !== undefined) {
+					DOM.mensajesError[indice].innerHTML = errores[campo];
+					// Acciones en función de si hay o no mensajes de error
+					errores[campo]
+						? DOM.iconosError[indice].classList.add("error")
+						: DOM.iconosError[indice].classList.remove("error");
+					errores[campo] && mostrarIconoError
+						? DOM.iconosError[indice].classList.remove("ocultar")
+						: DOM.iconosError[indice].classList.add("ocultar");
+					errores[campo]
+						? DOM.iconosOK[indice].classList.add("ocultar")
+						: DOM.iconosOK[indice].classList.remove("ocultar");
+				}
+			});
+			// Fin
+			return;
+		},
+		actualizaBotonSubmit: () => {
+			// Detectar la cantidad de 'errores' ocultos
+			let hayErrores = Array.from(DOM.iconosError)
+				.map((n) => n.className)
+				.some((n) => n.includes("error"));
+			// Consecuencias
+			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
+		},
+		statusInicial: async function (mostrarIconoError) {
+			// Variables
+			let datosUrl = this.obtieneLosDatos();
+			// Consecuencias de la validación de errores
+			await this.muestraLosErrores(datosUrl, mostrarIconoError);
+			this.actualizaBotonSubmit();
+			// Impactos en RCLV
+			for (let metodo in impactoVisualEnRCLV) impactoVisualEnRCLV[metodo]();
+			// Fin
+			return;
+		},
+		submitForm: async function (e) {
+			e.preventDefault();
+			if (DOM.submit.className.includes("inactivo")) this.statusInicial(true);
+			else DOM.form.submit();
+		},
+		urlRCLV: (campo) => {
+			// Variables
+			let bhr = DOM.bhrSI.checked ? "1" : DOM.bhrNO.checked ? "0" : "";
+			let checkRCLV = DOM.checkRCLV.checked;
+
+			// Agrega el valor del campo 'sin' o de los demás campos
+			let url = "";
+			checkRCLV
+				? (url += campo + "=on" + "&")
+				: camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
+
+			// Agrega 'ocurrió'
+			if (bhr) url += "bhr=" + bhr;
+
+			// Fin
+			return url;
+		},
+		guardaLosValoresEnSessionCookies: function () {
+			let params = this.obtieneLosDatos();
+			// Guardar los valores en session y cookies
+			if (params.length) fetch(rutas.guardaDatosAdics + params);
+			// Fin
+			return;
+		},
 	};
 	// RCLV
 	let impactoVisualEnRCLV = {
@@ -152,7 +177,7 @@ window.addEventListener("load", async () => {
 				if (grupo.className.includes(categoria)) {
 					// Borra todas las opciones y agrega las que van
 					console.log(grupo);
-					//grupo.innerHTML = "";
+					grupo.innerHTML = "";
 					console.log(...DOM.opcionesPers.map((n) => n.length));
 					for (let opcion of DOM.opcionesPers[i])
 						if (opcion.className.includes(categoria)) {
@@ -252,30 +277,6 @@ window.addEventListener("load", async () => {
 			verificaUnaSolaOpcionRCLV();
 		}
 	};
-	let urlRCLV = (campo) => {
-		// Variables
-		let bhr = DOM.bhrSI.checked ? "1" : DOM.bhrNO.checked ? "0" : "";
-		let checkRCLV = DOM.checkRCLV.checked;
-
-		// Agrega el valor del campo 'sin' o de los demás campos
-		let url = "";
-		checkRCLV
-			? (url += campo + "=on" + "&")
-			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
-
-		// Agrega 'ocurrió'
-		if (bhr) url += "bhr=" + bhr;
-
-		// Fin
-		return url;
-	};
-	let guardaLosValoresEnSessionCookies = () => {
-		let params = obtieneLosDatos();
-		// Guardar los valores en session y cookies
-		if (params.length) fetch(rutas.guardaDatosAdics + params);
-		// Fin
-		return;
-	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
@@ -295,24 +296,24 @@ window.addEventListener("load", async () => {
 		}
 
 		// 2. Para campos 'RCLV'
-		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
-		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
+		if (camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
+		if (campo == "sinRCLV" || camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...v.camposRCLV, "sinRCLV", "bhr"].includes(campo)) datosUrl += urlRCLV(campo);
+		if ([...camposRCLV, "sinRCLV", "bhr"].includes(campo)) datosUrl += funcionesGrales.urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
-		await muestraLosErrores(datosUrl, true);
+		await funcionesGrales.muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
-		actualizaBotonSubmit();
+		funcionesGrales.actualizaBotonSubmit();
 	});
 
 	// Links a RCLV - Alta
 	DOM.linksRCLV_Alta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
-			guardaLosValoresEnSessionCookies();
+			funcionesGrales.guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
@@ -323,7 +324,7 @@ window.addEventListener("load", async () => {
 	DOM.linksRCLV_Edic.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
-			guardaLosValoresEnSessionCookies();
+			funcionesGrales.guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Obtiene el RCLV_id
@@ -335,17 +336,17 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	DOM.form.addEventListener("submit", async (e) => {
-		submitForm(e);
+		funcionesGrales.submitForm(e);
 	});
 	DOM.submit.addEventListener("click", async (e) => {
-		submitForm(e);
+		funcionesGrales.submitForm(e);
 	});
 	DOM.submit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") submitForm(e);
+		if (e.key == "Enter" || e.key == "Space") funcionesGrales.submitForm(e);
 	});
 
 	// STATUS INICIAL
-	statusInicial();
+	funcionesGrales.statusInicial();
 });
 
 let entidades = (link) => {
