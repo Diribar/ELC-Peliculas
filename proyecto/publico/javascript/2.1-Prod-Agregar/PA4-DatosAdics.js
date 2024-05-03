@@ -137,44 +137,49 @@ window.addEventListener("load", async () => {
 	let impactoVisualEnRCLV = {
 		cfc: () => {
 			// Variables
-			let categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
+			const categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
+			if (categoria) console.log(categoria);
+
 			// Si no hay respuesta, agrega el 'oculta' de RCLVs
-			if (!categoria) DOM.sectorRCLV.classList.add("ocultaCfc");
-			// Acciones si hay respuesta
-			else {
-				// Opciones para Personajes
-				DOM.selectPers.innerHTML = "";
-				DOM.optgroupPers.forEach((grupo, i) => {
-					// Acciones si el grupo tiene la clase
-					if (grupo.className.includes(categoria)) {
-						// Borra todas las opciones y agrega las que van
-						grupo.innerHTML = "";
-						for (let opcion of DOM.opcionesPers[i])
-							if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
-						// Si tiene opciones, agrega el grupo
-						if (grupo.childElementCount) DOM.selectPers.appendChild(grupo);
-					}
-				});
+			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc");
 
-				// Opciones para Hechos
-				DOM.selectHecho.innerHTML = "";
-				DOM.optgroupHecho.forEach((grupo, i) => {
-					// Acciones si el grupo tiene la clase
-					if (grupo.className.includes(categoria)) {
-						// Borra todas las opciones y agrega las que van
-						grupo.innerHTML = "";
-						for (let opcion of DOM.opcionesHechos[i])
-							if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
-						// Si tiene opciones, agrega el grupo
-						if (grupo.childElementCount) DOM.selectHecho.appendChild(grupo);
-					}
-				});
+			// Opciones para Personajes
+			DOM.selectPers.innerHTML = "";
+			console.log(...DOM.opcionesPers.map((n) => n.length));
 
-				// Quita el 'oculta' de RCLVs
-				DOM.sectorRCLV.classList.remove("ocultaCfc");
-				// Fin
-				return;
-			}
+			DOM.optgroupPers.forEach((grupo, i) => {
+				// Acciones si el grupo tiene la clase
+				if (grupo.className.includes(categoria)) {
+					// Borra todas las opciones y agrega las que van
+					console.log(grupo);
+					//grupo.innerHTML = "";
+					console.log(...DOM.opcionesPers.map((n) => n.length));
+					for (let opcion of DOM.opcionesPers[i])
+						if (opcion.className.includes(categoria)) {
+							grupo.appendChild(opcion);
+						}
+					// Si tiene opciones, agrega el grupo
+					if (grupo.childElementCount) DOM.selectPers.appendChild(grupo);
+				}
+			});
+
+			// Opciones para Hechos
+			DOM.selectHecho.innerHTML = "";
+			DOM.optgroupHecho.forEach((grupo, i) => {
+				// Acciones si el grupo tiene la clase
+				if (grupo.className.includes(categoria)) {
+					// Borra todas las opciones y agrega las que van
+					grupo.innerHTML = "";
+					for (let opcion of DOM.opcionesHechos[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+					// Si tiene opciones, agrega el grupo
+					if (grupo.childElementCount) DOM.selectHecho.appendChild(grupo);
+				}
+			});
+
+			// Quita el 'oculta' de RCLVs
+			DOM.sectorRCLV.classList.remove("ocultaCfc");
+			// Fin
+			return;
 		},
 		bhr: () => {
 			// Averigua si es verdadero o falso
