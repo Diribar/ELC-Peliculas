@@ -5,24 +5,26 @@
 		#tituloSecundario {margin-bottom: 10px;}
 		#datos {
 			display: flex; flex-direction: row;
-			h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
-			.altoFila {height: 25px;}
 
 			/* Partes específicas del formulario */
-			.inputError {
-				.ayudaMostrar {max-width: 400px;}
-				#radioBtnTitulo {width: 185px;}
-			}
-			.labelSelect {
-				display: flex; flex-direction: row; justify-content: space-between;
-				margin-top: 5px;
-				label {margin: 0 15px 0 0; font-weight: bold;}
-				select {padding: 0; margin-left: 5px;}
-				.ayuda {left: -5px; right: auto; translate: -100% -50%;}
+			.columnas {
+				h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
+				.altoFila {height: 25px;}
+				.inputError .ayudaMostrar {max-width: 400px;}
+				.labelSelect {
+					display: flex; flex-direction: row; justify-content: space-between;
+					margin-top: 5px;
+					label {margin: 0 15px 0 0; font-weight: bold;}
+					select {padding: 0; margin-left: 5px;}
+					.ayuda {left: -5px; right: auto; translate: -100% -50%;}
+				}
 			}
 
 			/* Columnas */
-			#primeraColumna {margin-right: 70px;}
+			#primeraColumna {
+				margin-right: 70px;
+				.inputError #radioBtnTitulo {width: 185px;}
+			}
 			#segundaColumna {
 				margin-right: 25px; width: 290px;
 				hr {margin: 10px 0;}
