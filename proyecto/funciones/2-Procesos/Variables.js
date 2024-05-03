@@ -183,6 +183,16 @@ module.exports = {
 			],
 		},
 		temas: {titulo: "Tema", campoFiltro: "tema_id"},
+		miscelaneas: {
+			titulo: "Miscelaneas",
+			opciones: [
+				{id: "color", nombre: "Es a color", condic: {color: 1}},
+				{id: "blancoNegro", nombre: "Es en blanco y negro", condic: {color: 0}},
+				{id: "musical", nombre: "Es un musical", condic: {musical: 1}},
+				{id: "deporte", nombre: "Tiene deporte", condic: {deporte: 1}},
+			],
+		},
+
 		// entidad: {
 		// 	titulo: "Películas / Colecciones",
 		// 	opciones: [

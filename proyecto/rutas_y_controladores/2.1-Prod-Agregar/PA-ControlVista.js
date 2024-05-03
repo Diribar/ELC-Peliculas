@@ -10,13 +10,14 @@ module.exports = {
 			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "palabrasClave";
+			const titulo = "Agregar - Palabras Clave";
 
 			// Obtiene el Data Entry de session y cookies
 			const palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Agregar - Palabras Clave"},
+				...{tema, codigo, titulo},
 				dataEntry: {palabrasClave},
 			});
 		},
@@ -49,6 +50,7 @@ module.exports = {
 		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "desambiguar";
+		const titulo = "Agregar - Desambiguar";
 
 		// Si no existe el cookie, redirecciona
 		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
@@ -59,9 +61,7 @@ module.exports = {
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Agregar - Desambiguar",
+			...{tema, codigo, titulo},
 			palabrasClave: desambiguar.palabrasClave,
 			omitirImagenDerecha: true,
 		});
@@ -71,6 +71,7 @@ module.exports = {
 			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "datosDuros";
+			const titulo = "Agregar - Datos Duros";
 
 			// Obtiene el Data Entry de session y cookies
 			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
@@ -114,7 +115,7 @@ module.exports = {
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Agregar - Datos Duros", origen},
+				...{tema, codigo, titulo, origen},
 				...{dataEntry: datosDuros, imgDerPers, errores},
 				...{camposInput1, camposInput2},
 				...{paises, paisesTop5, paisesNombre, idiomas},
@@ -185,6 +186,7 @@ module.exports = {
 			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "datosAdics";
+			const titulo = "Agregar - Datos Adicionales";
 			const userID = req.session.usuario.id;
 
 			// Prepara variables para la vista
@@ -202,7 +204,7 @@ module.exports = {
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
+				...{tema, codigo, titulo},
 				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE},
 				...{gruposPers, gruposHechos},
 			});
@@ -251,6 +253,7 @@ module.exports = {
 			// Tema y Código
 			const tema = "prodAgregar";
 			const codigo = "confirma";
+			const titulo = "Agregar - Confirma";
 			let maximo;
 
 			// Obtiene el Data Entry de session y cookies
@@ -277,13 +280,8 @@ module.exports = {
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Agregar - Confirma",
-				dataEntry: confirma,
-				direccion,
-				actores,
-				imgDerPers,
+				...{tema, codigo, titulo},
+				...{dataEntry: confirma, direccion, actores, imgDerPers},
 				tituloImgDerPers: confirma.nombreCastellano,
 			});
 		},
@@ -349,6 +347,7 @@ module.exports = {
 		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "terminaste";
+		const titulo = "Agregar - Terminaste";
 		const userID = req.session.usuario.id;
 
 		// Si se perdió la info, redirige a 'palabras clave'
@@ -377,7 +376,7 @@ module.exports = {
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMG},
+			...{tema, codigo, titulo, imagenMG},
 			...{entidad, familia: "producto", id, dataEntry: original, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
@@ -389,9 +388,12 @@ module.exports = {
 			// Variables
 			const tema = "prodAgregar";
 			const codigo = "IM";
-			const prodsNombre = variables.entidades.prodsNombre;
+			const titulo = "Agregar - Tipo de Producto";
+
+			// Entidades
+			const {prodsNombre, prods} = variables.entidades;
 			let entidades = [];
-			variables.entidades.prods.forEach((prod, i) => entidades.push({codigo: prod, nombre: prodsNombre[i]}));
+			prods.forEach((prod, i) => entidades.push({codigo: prod, nombre: prodsNombre[i]}));
 
 			// Obtiene el Data Entry de session y cookies
 			let IM = req.session.IM ? req.session.IM : req.cookies.IM ? req.cookies.IM : {};
@@ -425,7 +427,7 @@ module.exports = {
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Agregar - Tipo de Producto"},
+				...{tema, codigo, titulo},
 				...{entidades, dataEntry: IM},
 				...{autorizadoFA: req.session.usuario.autorizadoFA, urlActual: req.session.urlActual},
 			});
@@ -473,15 +475,11 @@ module.exports = {
 			// Variables
 			const tema = "prodAgregar";
 			const codigo = "FA";
+			const titulo = "Agregar - Copiar FA";
 			const dataEntry = req.session.FA ? req.session.FA : req.cookies.FA;
 
 			// Fin
-			return res.render("CMP-0Estructura", {
-				tema,
-				codigo,
-				titulo: "Agregar - Copiar FA",
-				dataEntry,
-			});
+			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry});
 		},
 		guardar: async (req, res) => {
 			// Obtiene el Data Entry de session y cookies y actualiza la información
