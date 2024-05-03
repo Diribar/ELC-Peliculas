@@ -24,7 +24,7 @@ ul ul {padding-left: 30px;}
 /* Varios */
 button, span, em, b, u, a, i {font-size: inherit; color: inherit; line-height: inherit;}
 /* button:has(i) {border: none; outline: none;} */
-hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
+hr {margin-block: 2px; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 p, li {line-height: 1.2rem;}
 .bordeRojo {border: 1px solid red;}
 
