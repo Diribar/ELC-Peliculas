@@ -109,13 +109,14 @@ module.exports = {
 					: req.session.IM || req.cookies.IM
 					? "ingreso-manual"
 					: "desambiguar";
+			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
+			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Agregar - Datos Duros", origen},
 				...{dataEntry: datosDuros, imgDerPers, errores},
-				camposInput1: camposInput.filter((n) => n.antesDePais),
-				camposInput2: camposInput.filter((n) => !n.antesDePais),
+				...{camposInput1, camposInput2},
 				...{paises, paisesTop5, paisesNombre, idiomas},
 			});
 		},
