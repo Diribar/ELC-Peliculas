@@ -382,8 +382,9 @@ window.addEventListener("load", async () => {
 	// Botones - 3. Elimina la edición
 	DOM.botonesEliminar.forEach((boton, indice) => {
 		boton.addEventListener("click", async () => {
-			// Si está inactivo aborta la operación
+			// Si está inactivo interrumpe la operación
 			if (boton.className.includes("inactivo")) return;
+			boton.classList.add("inactivo")
 
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {
@@ -392,29 +393,29 @@ window.addEventListener("load", async () => {
 
 				// Elimina Session y Cookies
 				fetch("/producto/api/edicion-nueva/eliminar");
+
+				// Vuelve al status de la versión anterior
+				version[!indice ? "edicN" : "edicG"] = {...version[!indice ? "edicG" : "orig"]};
+
+				// Actualiza el avatar
+				DOM.imgsAvatar[indice].src = DOM.imgsAvatar[indice + 1].src;
+
+				// Tareas finales
+				FN.accionesPorCambioDeVersion();
+				FN.actualizaBotones();
 			}
 			// 2. Acciones exclusivas para edicG
 			else {
-				// Actualiza la información de que ya no existe la edicG
-				version.edicG_existe = false;
-
 				// Elimina los datos de edicG en la BD
-				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
 
-				// Recarga la vista para actualizar el url sin el ID de la edición
+				// Recarga la vista para quitar el ID de la edición en el url
 				const origen = v.origen ? "&origen=" + v.origen : "";
 				location.href = location.pathname + "?entidad=" + v.entidad + "&id=" + v.prodID + origen;
 			}
 
-			// Vuelve al status de la versión anterior
-			version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
-
-			// Actualiza el avatar
-			DOM.imgsAvatar[indice].src = DOM.imgsAvatar[indice + 1].src;
-
-			// Tareas finales
-			FN.accionesPorCambioDeVersion();
-			FN.actualizaBotones();
+			// Fin
+			return;
 		});
 	});
 
