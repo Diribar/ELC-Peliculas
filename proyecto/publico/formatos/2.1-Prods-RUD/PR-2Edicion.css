@@ -45,8 +45,10 @@
 							select {padding: 0;}
 						}
 					}
-					:is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
-					input:read-only, :disabled {background-color: var(--amarillo-claro) !important;}
+
+					/* Disabled */
+					input[type="text"]:read-only, :disabled {background-color: var(--amarillo-claro) !important; opacity: 1;}
+					input.inactivar {accent-color: var(--amarillo-oscuro);} /* radio-buttons y checkboxes */
 				}
 
 				/* Columnas */
