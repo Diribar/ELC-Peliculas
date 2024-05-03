@@ -128,7 +128,7 @@ module.exports = {
 			},
 			filtros: (prefs) => {
 				// Variables
-				const filtrosCons = variables.filtrosCons;
+				const {filtrosCons} = variables;
 				const {idiomas} = filtrosCons;
 				let filtros = {};
 
@@ -140,18 +140,18 @@ module.exports = {
 
 				// Conversión de 'idiomas'
 				if (prefs.idiomas) {
-					const aux = idiomas.opciones.find((n) => n.id == prefs.idiomas).condic;
-					if (aux) {
-						const tiposLink = prefs.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks";
-						filtros = {...filtros, ...aux[tiposLink]};
+					const condic = idiomas.opciones.find((n) => n.id == prefs.idiomas).condic; // obtiene las condiciones de idioma
+					if (condic) {
+						const tiposLink = prefs.tiposLink == "conLinksHD" ? "conLinksHD" : "conLinks"; // obtiene la condición dentro de las condiciones
+						filtros = {...filtros, ...condic[tiposLink]};
 					}
 				}
 
-				// Conversión de campos similares
-				for (let campo of ["tiposLink", "publicos"])
+				// Conversión de campos con condición
+				for (let campo of ["tiposLink", "publicos", "miscelaneas"])
 					if (prefs[campo]) {
-						const aux = filtrosCons[campo].opciones.find((n) => n.id == prefs[campo]).condic;
-						if (aux) filtros = {...filtros, ...aux};
+						const condic = filtrosCons[campo].opciones.find((n) => n.id == prefs[campo]).condic;
+						if (condic) filtros = {...filtros, ...condic};
 					}
 
 				// Fin
