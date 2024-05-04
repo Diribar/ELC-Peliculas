@@ -49,6 +49,7 @@ module.exports = async (req, res, next) => {
 				iconos: [variables.vistaEntendido(req.originalUrl)],
 				titulo: "Novedades del sitio",
 				check: true,
+				ol: true,
 			};
 
 		// Actualiza la versión en el usuario
