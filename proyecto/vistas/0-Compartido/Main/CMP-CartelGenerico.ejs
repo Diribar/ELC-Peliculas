@@ -18,19 +18,19 @@
 				<% if (informacion.ol) { %>
 				<ol id="mensajes" type="<%- informacion.mensajes.length > 1 ? '1' : 'none' %>">
 					<% for (mensaje of informacion.mensajes) { %>
-					<li><%- mensaje %></li>
+						<li><%- mensaje %></li>
 					<% } %>
 				</ol>
 				<% } else { %>
 				<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
 					<% for (mensaje of informacion.mensajes) { %>
-					<li><%- mensaje %></li>
+						<li><%- mensaje %></li>
 					<% } %>
 				</ul>
 				<% } %>
 			<% } else { %>
-			<!-- Si no existe información, se deja preparado el sector -->
-			<ul type="dots" id="mensajes"></ul>
+				<!-- Si no existe información, se deja preparado el sector -->
+				<ul type="dots" id="mensajes"></ul>
 			<% } %>
 		</div>
 		<div id="iconosCartel">
@@ -38,8 +38,8 @@
 				<% informacion.iconos.forEach((icono, i) => { %>
 					<% let autoFocus = informacion.iconos.length == 1 || icono.autofocus %>
 					<a href="<%= icono.link %>" tabindex="<%= i + 1 %>" <% if (autoFocus) { %>autofocus<% } %>>
-				<i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i>
-			</a>
+						<i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i>
+					</a>
 				<% }) %>
 			<% } %>
 		</div>
