@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
-		sexos_id: document.querySelectorAll("form input[name='genero_id']"),
+		generos_id: document.querySelectorAll("form input[name='genero_id']"),
 		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 
@@ -267,7 +267,7 @@ window.addEventListener("load", async () => {
 			},
 			genero: async () => {
 				// Obtiene la opción elegida
-				let genero_id = opcionElegida(DOM.sexos_id);
+				let genero_id = opcionElegida(DOM.generos_id);
 
 				// Función para dejar solamente las opciones con ese genero
 				let opcsVisibles = (select, opciones) => {
@@ -404,7 +404,7 @@ window.addEventListener("load", async () => {
 			},
 			genero: async () => {
 				// Obtiene la opción elegida
-				let genero_id = opcionElegida(DOM.sexos_id);
+				let genero_id = opcionElegida(DOM.generos_id);
 
 				// Genera la variable de parámetros
 				let params = "genero&genero_id=" + genero_id.value;
@@ -470,7 +470,7 @@ window.addEventListener("load", async () => {
 
 					if (categoria_id.value == "CFC") {
 						// Obtiene el genero_id
-						if (categoria_id) genero_id = opcionElegida(DOM.sexos_id);
+						if (categoria_id) genero_id = opcionElegida(DOM.generos_id);
 						params += "&genero_id=" + (genero_id.value ? "on" : "");
 
 						// Obtiene los valores de los preguntasRCLIC
@@ -583,10 +583,10 @@ window.addEventListener("load", async () => {
 					} else this.impactos.fecha.epocasDelAno();
 			}
 
-			// Sexo
-			if (DOM.sexos_id.length) {
-				if (opcionElegida(DOM.sexos_id).value) await this.impactos.genero();
-				if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
+			// Genero
+			if (DOM.generos_id.length) {
+				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero();
+				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
 			}
 
 			// Carpeta Avatars
@@ -736,7 +736,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el sector Repetido
 		if (campo == "repetido") FN.validacs.repetido();
 
-		// Acciones si se cambia el sector Sexo
+		// Acciones si se cambia el sector Genero
 		if (campo == "genero_id") {
 			await FN.impactos.genero();
 			await FN.validacs.genero();

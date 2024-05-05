@@ -70,10 +70,10 @@
 #inicio #sectorPrioridad {margin-top: 5px;}
 #inicio #sectorPrioridad .ayuda ul[type="dots"] {padding: 7px;}
 
-/* Sexo */
-#inicio #sectorSexo {margin-top: 10px;}
-#inicio #sectorSexo .opciones {margin-left: 10px;}
-#inicio #sectorSexo .opciones .ayuda ul {max-width: 200px;}
+/* Genero */
+#inicio #sectorGenero{margin-top: 10px;}
+#inicio #sectorGenero.opciones {margin-left: 10px;}
+#inicio #sectorGenero.opciones .ayuda ul {max-width: 200px;}
 
 /* Época */
 #sectorEpoca .opciones {justify-content: center; }
@@ -97,8 +97,8 @@
 #dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
 	#preguntasRCLIC.invisible {visibility: visible;}
 
-#dataEntry:has(#sectorSexo input:checked)                       /* contestó 'genero' */
-	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
+#dataEntry:has(#sectorGeneroinput:checked)                       /* contestó 'genero' */
+	#preguntasRCLIC .segunGenero_id.invisible {visibility: inherit;}
 
 /* 3. PreguntasRCLIC (hechos) */
 #dataEntry:has(.hechos #soloCFC input#SI:checked)            /* --> si soloCFC='SI' */
