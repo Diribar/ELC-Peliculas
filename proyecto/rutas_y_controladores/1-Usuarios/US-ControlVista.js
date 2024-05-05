@@ -40,12 +40,12 @@ module.exports = {
 			const avatar = usuario.avatar
 				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
+			const generos = generos.filter((m) => m.letraFinal);
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
-				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana},
-				generos: generos.filter((m) => m.letra_final),
+				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, generos},
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -94,8 +94,8 @@ module.exports = {
 			let usuario = req.session.usuario;
 			let informacion = {
 				mensajes: [
-					"Estimad" + usuario.genero.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-					"Bienvenid" + usuario.genero.letra_final + " a nuestro sitio como usuario.",
+					"Estimad" + usuario.genero.letraFinal + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+					"Bienvenid" + usuario.genero.letraFinal + " a nuestro sitio como usuario.",
 					"Con tu alta de usuario, ya podés guardar tus consultas personalizadas.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
