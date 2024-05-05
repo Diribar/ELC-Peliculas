@@ -48,13 +48,14 @@ module.exports = {
 			// Fin
 			return {cabecera_id, ...prefs};
 		},
-		ayudas: () => {
+		ayudas: (userID) => {
 			// Variables
 			let resultado = [];
 
 			// Obtiene las ayudas sin repetir
 			cn_layouts
 				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
+				.filter((n) => (!userID ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
 				.map((n) => {
 					if (!resultado.find((m) => m.nombre == n.nombre)) resultado.push(n);
 				});

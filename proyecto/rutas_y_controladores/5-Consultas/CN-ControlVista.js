@@ -22,7 +22,7 @@ module.exports = {
 		};
 
 		// Variables para la vista
-		const ayudas = procesos.varios.ayudas();
+		const ayudas = procesos.varios.ayudas(userID);
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
