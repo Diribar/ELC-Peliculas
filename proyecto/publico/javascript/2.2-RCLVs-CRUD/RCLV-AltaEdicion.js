@@ -265,11 +265,11 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
-			sexo: async () => {
+			genero: async () => {
 				// Obtiene la opción elegida
 				let genero_id = opcionElegida(DOM.sexos_id);
 
-				// Función para dejar solamente las opciones con ese sexo
+				// Función para dejar solamente las opciones con ese genero
 				let opcsVisibles = (select, opciones) => {
 					select.innerHTML = "";
 					for (let opcion of opciones)
@@ -402,12 +402,12 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			sexo: async () => {
+			genero: async () => {
 				// Obtiene la opción elegida
 				let genero_id = opcionElegida(DOM.sexos_id);
 
 				// Genera la variable de parámetros
-				let params = "sexo&genero_id=" + genero_id.value;
+				let params = "genero&genero_id=" + genero_id.value;
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -585,8 +585,8 @@ window.addEventListener("load", async () => {
 
 			// Sexo
 			if (DOM.sexos_id.length) {
-				if (opcionElegida(DOM.sexos_id).value) await this.impactos.sexo();
-				if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.sexo();
+				if (opcionElegida(DOM.sexos_id).value) await this.impactos.genero();
+				if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
 			}
 
 			// Carpeta Avatars
@@ -738,8 +738,8 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Sexo
 		if (campo == "genero_id") {
-			await FN.impactos.sexo();
-			await FN.validacs.sexo();
+			await FN.impactos.genero();
+			await FN.validacs.genero();
 			// Si corresponde, valida RCLIC
 			if (v.OK.genero_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
 		}

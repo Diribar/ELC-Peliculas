@@ -17,8 +17,8 @@
 				<% genero_id = dataEntry ? dataEntry.genero_id : "" %>
 				<select id="genero_id" name="genero_id" class="input" required>
 					<option value="" <% if (!genero_id) { %>selected<% } %>>Elegí una opción</option>
-					<% for (let sexo of sexos) { %>
-						<option value="<%= sexo.id %>" <% if (sexo.id == genero_id) {%>selected<% } %>><%= sexo.nombre %></option>
+					<% for (let genero of generos) { %>
+						<option value="<%= genero.id %>" <% if (genero.id == genero_id) {%>selected<% } %>><%= genero.nombre %></option>
 					<% } %>
 				</select>
 				<%- include("CMP-Errores", {nombre: "genero_id", ocultarOK: true}) %>

@@ -97,7 +97,7 @@
 #dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
 	#preguntasRCLIC.invisible {visibility: visible;}
 
-#dataEntry:has(#sectorSexo input:checked)                       /* contestó 'sexo' */
+#dataEntry:has(#sectorSexo input:checked)                       /* contestó 'genero' */
 	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
 
 /* 3. PreguntasRCLIC (hechos) */

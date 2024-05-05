@@ -45,7 +45,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
 				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana},
-				sexos: sexos.filter((m) => m.letra_final),
+				generos: generos.filter((m) => m.letra_final),
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -94,8 +94,8 @@ module.exports = {
 			let usuario = req.session.usuario;
 			let informacion = {
 				mensajes: [
-					"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-					"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
+					"Estimad" + usuario.genero.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+					"Bienvenid" + usuario.genero.letra_final + " a nuestro sitio como usuario.",
 					"Con tu alta de usuario, ya podés guardar tus consultas personalizadas.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],

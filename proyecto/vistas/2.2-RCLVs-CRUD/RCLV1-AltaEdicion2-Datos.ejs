@@ -210,10 +210,10 @@
 				<!-- Sexo -->
 				<div id="sectorSexo" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
-					<% for (let sexo of sexos) { %>
+					<% for (let genero of generos) { %>
 						<div class="flexRowAlign opciones relative">
-							<input type="radio" name="genero_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.genero_id==sexo.id) { %>checked<% } %>>
-							<label for="<%= sexo.id %>"><%= sexo.nombre %></label>
+							<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
+							<label for="<%= genero.id %>"><%= genero.nombre %></label>
 						</div>
 					<% } %>
 					<!-- Ayuda -->

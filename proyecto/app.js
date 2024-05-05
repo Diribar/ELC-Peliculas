@@ -126,7 +126,7 @@ app.set("views", [
 
 		// Variable de entidades
 		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
-		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
+		generos: BD_genericas.obtieneTodos("generos", "orden"),
 		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
 		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
 
