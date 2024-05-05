@@ -144,14 +144,15 @@ module.exports = async (req, res, next) => {
 			};
 			const horario = comp.fechaHora.fechaHorario(prodCapturado.capturadoEn);
 			// Preparar la información
-			const terminacion =
-				pc_entidad == "peliculas" || pc_entidad == "colecciones"
-					? {entidad: "la ", reservado: "a"}
-					: {entidad: "el ", reservado: "o"};
+			const terminacion = {
+				entidad: comp.obtieneDesdeEntidad.elLa(pc_entidad),
+				reservado: comp.obtieneDesdeEntidad.oa(pc_entidad),
+			};
+
 			const nombre = comp.nombresPosibles(prodCapturado);
 			informacion = {
 				mensajes: [
-					"Tenés que liberar " +
+					"Tenés que liberar" +
 						terminacion.entidad +
 						pc_entidadNombre.toLowerCase() +
 						" '" +
