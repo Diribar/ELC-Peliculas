@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		paisNacim_id: {type: dt.STRING(2)},
 
 		apodo: {type: dt.STRING(30)},
-		sexo_id: {type: dt.STRING(1)},
+		genero_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
 		avatar: {type: dt.STRING(100)},
 		rolUsuario_id: {type: dt.INTEGER},
@@ -61,7 +61,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
+		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "genero_id"});
 		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 		entidad.belongsTo(n.rolesUsuarios, {as: "rolUsuario", foreignKey: "rolUsuario_id"});
 		entidad.belongsTo(n.statusRegistrosUs, {as: "statusRegistro", foreignKey: "statusRegistro_id"});

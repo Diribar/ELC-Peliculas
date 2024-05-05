@@ -116,12 +116,13 @@ module.exports = {
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
 			if (registro.apodo) {
 				// Necesariamente es un 'personaje'
-				const articulo = registro.sexo_id == "V" ? "o" : "a";
+				const articulo = registro.genero_id == "V" ? "o" : "a";
 				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
 			}
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
-				const articulo = registro.sexo_id == "M" ? "la" : "lo";
+				console.log(124,registro);
+				const articulo = registro.genero_id == "M" ? "la" : "lo";
 				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
 			}
 
@@ -139,7 +140,7 @@ module.exports = {
 			// Particularidades para hechos
 			if (registro.entidad == "hechos") {
 				if (registro.anoComienzo) bloque.push({titulo: "Año", valor: registro.anoComienzo});
-				if (registro.ama) bloque.push({titulo: "Es una aparición mariana", valor: "sí"});
+				if (registro.ama) bloque.push({valor: "Es una aparición mariana"});
 			}
 
 			// Fin
@@ -208,16 +209,16 @@ module.exports = {
 			// Datos exclusivos de personajes
 			if (entidad == "personajes") {
 				// Variables
-				const {apodo, sexo_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
-				DE = {...DE, sexo_id, epocaOcurrencia_id, categoria_id};
+				const {apodo, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
+				DE = {...DE, genero_id, epocaOcurrencia_id, categoria_id};
 				const CFC = categoria_id == "CFC";
 
-				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
+				DE.canon_id = CFC ? canon_id : "NN" + genero_id;
 				DE.canonNombre = comp.canonNombre({nombre, canon_id});
 
 				DE.apodo = apodo ? apodo : "";
 				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
-				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
+				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + genero_id;
 				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 

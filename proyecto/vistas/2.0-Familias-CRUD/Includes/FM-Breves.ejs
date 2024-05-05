@@ -16,7 +16,7 @@
 		<h3>Datos de<%= articulo + entidadNombre %></h3>
 		<div id="texto">
 			<% for (campo of bloqueDer.rclv) { %>
-				<p><b><%= campo.titulo %>:</b> <span><%= campo.valor %></span></p>
+				<p><b><%- campo.titulo ? (campo.titulo + ': ') : '' %></b> <span><%= campo.valor %></span></p>
 			<% } %>
 		</div>
 	<% } %>

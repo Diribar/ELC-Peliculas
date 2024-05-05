@@ -12,16 +12,16 @@
 		</section>
 		<!--Sexo-->
 		<div class="labelInput flexRow">
-			<label for="sexo_id">Sexo</label>
+			<label for="genero_id">Sexo</label>
 			<div class="inputError">
-				<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
-				<select id="sexo_id" name="sexo_id" class="input" required>
-					<option value="" <% if (!sexo_id) { %>selected<% } %>>Elegí una opción</option>
+				<% genero_id = dataEntry ? dataEntry.genero_id : "" %>
+				<select id="genero_id" name="genero_id" class="input" required>
+					<option value="" <% if (!genero_id) { %>selected<% } %>>Elegí una opción</option>
 					<% for (let sexo of sexos) { %>
-						<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
+						<option value="<%= sexo.id %>" <% if (sexo.id == genero_id) {%>selected<% } %>><%= sexo.nombre %></option>
 					<% } %>
 				</select>
-				<%- include("CMP-Errores", {nombre: "sexo_id", ocultarOK: true}) %>
+				<%- include("CMP-Errores", {nombre: "genero_id", ocultarOK: true}) %>
 			</div>
 		</div>
 		<!--Pais de residencia-->

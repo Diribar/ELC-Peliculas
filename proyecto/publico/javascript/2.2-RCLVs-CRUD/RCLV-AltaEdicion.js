@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
-		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
+		sexos_id: document.querySelectorAll("form input[name='genero_id']"),
 		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 
@@ -267,13 +267,13 @@ window.addEventListener("load", async () => {
 			},
 			sexo: async () => {
 				// Obtiene la opción elegida
-				let sexo_id = opcionElegida(DOM.sexos_id);
+				let genero_id = opcionElegida(DOM.sexos_id);
 
 				// Función para dejar solamente las opciones con ese sexo
 				let opcsVisibles = (select, opciones) => {
 					select.innerHTML = "";
 					for (let opcion of opciones)
-						if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2) select.appendChild(opcion);
+						if (opcion.value.slice(-1) == genero_id.value || opcion.value <= 2) select.appendChild(opcion);
 				};
 
 				// Opciones de 'Rol en la Iglesia'
@@ -404,14 +404,14 @@ window.addEventListener("load", async () => {
 			},
 			sexo: async () => {
 				// Obtiene la opción elegida
-				let sexo_id = opcionElegida(DOM.sexos_id);
+				let genero_id = opcionElegida(DOM.sexos_id);
 
 				// Genera la variable de parámetros
-				let params = "sexo&sexo_id=" + sexo_id.value;
+				let params = "sexo&genero_id=" + genero_id.value;
 
 				// OK y Errores
-				v.errores.sexo_id = await fetch(rutas.validacion + params).then((n) => n.json());
-				v.OK.sexo_id = !v.errores.sexo_id;
+				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.genero_id = !v.errores.genero_id;
 
 				// Fin
 				return;
@@ -462,19 +462,19 @@ window.addEventListener("load", async () => {
 				personajes: async () => {
 					// Variables
 					let params = "RCLIC_personajes";
-					let sexo_id;
+					let genero_id;
 
 					// Obtiene la categoría
 					let categoria_id = opcionElegida(DOM.categorias_id);
 					params += "&categoria_id=" + categoria_id.value;
 
 					if (categoria_id.value == "CFC") {
-						// Obtiene el sexo_id
-						if (categoria_id) sexo_id = opcionElegida(DOM.sexos_id);
-						params += "&sexo_id=" + (sexo_id.value ? "on" : "");
+						// Obtiene el genero_id
+						if (categoria_id) genero_id = opcionElegida(DOM.sexos_id);
+						params += "&genero_id=" + (genero_id.value ? "on" : "");
 
 						// Obtiene los valores de los preguntasRCLIC
-						if (sexo_id.value) {
+						if (genero_id.value) {
 							// Agrega los datos de CFC
 							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
 							// Agrega los datos de epocaOcurrencia_id y año
@@ -586,7 +586,7 @@ window.addEventListener("load", async () => {
 			// Sexo
 			if (DOM.sexos_id.length) {
 				if (opcionElegida(DOM.sexos_id).value) await this.impactos.sexo();
-				if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.sexo_id === undefined)) await this.validacs.sexo();
+				if (opcionElegida(DOM.sexos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.sexo();
 			}
 
 			// Carpeta Avatars
@@ -737,11 +737,11 @@ window.addEventListener("load", async () => {
 		if (campo == "repetido") FN.validacs.repetido();
 
 		// Acciones si se cambia el sector Sexo
-		if (campo == "sexo_id") {
+		if (campo == "genero_id") {
 			await FN.impactos.sexo();
 			await FN.validacs.sexo();
 			// Si corresponde, valida RCLIC
-			if (v.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
+			if (v.OK.genero_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
 		// Acciones si se cambia el sector Carpeta Avatars

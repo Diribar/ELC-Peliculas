@@ -159,14 +159,14 @@ module.exports = {
 
 	// Personajes
 	sexo: (datos) => {
-		return !datos.sexo_id ? variables.radioVacio : "";
+		return !datos.genero_id ? variables.radioVacio : "";
 	},
 	RCLIC_personajes: (datos) => {
 		if (datos.anoNacim) datos.anoNacim = parseInt(datos.anoNacim);
 		let respuesta = !datos.categoria_id
 			? "Necesitamos saber sobre su relación con la Iglesia"
 			: datos.categoria_id == "CFC"
-			? !datos.sexo_id
+			? !datos.genero_id
 				? "Estamos a la espera de que nos informes el sexo"
 				: !datos.rolIglesia_id
 				? "Necesitamos saber el rol de la persona en la Iglesia"

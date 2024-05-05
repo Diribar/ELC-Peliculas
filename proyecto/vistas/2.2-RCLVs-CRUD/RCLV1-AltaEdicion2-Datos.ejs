@@ -212,7 +212,7 @@
 					<h3>Sexo</h3>
 					<% for (let sexo of sexos) { %>
 						<div class="flexRowAlign opciones relative">
-							<input type="radio" name="sexo_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.sexo_id==sexo.id) { %>checked<% } %>>
+							<input type="radio" name="genero_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.genero_id==sexo.id) { %>checked<% } %>>
 							<label for="<%= sexo.id %>"><%= sexo.nombre %></label>
 						</div>
 					<% } %>
@@ -224,7 +224,7 @@
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre:"sexo_id", ocultarOK: true}) %>
+					<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } %>
