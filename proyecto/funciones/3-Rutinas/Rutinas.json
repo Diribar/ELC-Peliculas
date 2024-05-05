@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 4/may",
-	"HoraUTC": "8:05",
+	"FechaUTC": "Dom. 5/may",
+	"HoraUTC": "11:21",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 29/abr",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"03-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"04-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"05-may-24": {"titulo": "Beato Edmundo Rice"},
-		"06-may-24": {"titulo": "Santo Domingo Savio"}
+		"06-may-24": {"titulo": "Santo Domingo Savio"},
+		"07-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
