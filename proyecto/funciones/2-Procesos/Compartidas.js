@@ -69,12 +69,17 @@ module.exports = {
 			return FN.entidadNombre(entidad);
 		},
 		delLa: (entidad) => {
-			return false
-				? false
-				: ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+			return  ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
 				? " de la "
 				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
 				? " del "
+				: "";
+		},
+		elLa: (entidad) => {
+			return  ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+				? " la "
+				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
+				? " el "
 				: "";
 		},
 		oa: (entidad) => {
@@ -313,8 +318,8 @@ module.exports = {
 			).toLowerCase();
 
 			// 1. Inicio
-			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-			let inicio = "Est" + genero + " ";
+			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			let inicio = "Est" + ea + " ";
 
 			// 2. Anchor
 			let url = "?entidad=" + entidad + "&id=" + id;
