@@ -15,7 +15,7 @@ module.exports = {
 		const userID = usuario ? usuario.id : null;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let imgDerPers;
+		let imgDerPers, ayudasTitulo;
 
 		// Obtiene RCLV y sus productos
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
@@ -24,10 +24,11 @@ module.exports = {
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
 
 		// Ayuda para el titulo
-		const ayudasTitulo = [
-			"Las películas son solamente las que tenemos en nuestra base de datos.",
-			"Están ordenadas desde la más reciente a la más antigua.",
-		];
+		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."]
+		if (prodsDelRCLV.length > 1) ayudasTitulo = [
+			"Son las películas que tenemos en nuestra base de datos.",
+			"Están ordenadas desde la más reciente a la más antigua."
+		]
 
 		// Bloque de la derecha
 		const bloqueDer = {
