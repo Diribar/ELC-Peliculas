@@ -361,7 +361,7 @@
 									value="<%= rolIglesia.id %>"
 									<% if (dataEntry.rolIglesia_id == rolIglesia.id) { %>selected<% } %>
 								>
-									<%= rolIglesia.nombre %>
+									<%= rolIglesia[dataEntry.genero_id] %>
 								</option>
 							<% } %>
 						</select>

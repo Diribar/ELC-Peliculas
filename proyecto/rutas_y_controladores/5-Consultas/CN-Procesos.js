@@ -789,7 +789,7 @@ module.exports = {
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {
-						datosRclv.rolIglesiaNombre = rclv.rolIglesia.nombre;
+						datosRclv.rolIglesiaNombre = rclv.rolIglesia[rclv.genero_id];
 						if (rclv.canon_id != "NN") datosRclv.canonNombre = rclv.canon[rclv.genero_id];
 					}
 

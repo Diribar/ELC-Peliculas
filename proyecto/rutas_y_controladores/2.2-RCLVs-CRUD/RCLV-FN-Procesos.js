@@ -131,7 +131,7 @@ module.exports = {
 				if (registro.canon_id && registro.canon_id != "NN" && registro.canon && registro.canon[registro.genero_id])
 					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
 				if (registro.rolIglesia_id && registro.rolIglesia_id != "NN" && registro.rolIglesia)
-					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
+					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia[registro.genero_id]});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
 					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
 			}
