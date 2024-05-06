@@ -801,7 +801,7 @@ let quitaStatusDeComentario = async () => {
 		for (let motivo of motivos) if (comentario.startsWith(motivo)) comentario = comentario.replace(motivo, "");
 		if (comentario.startsWith(" - ")) comentario = comentario.replace(" - ", "");
 		comentario = comentario.trim();
-		comentario = comp.convierteLetras.inicialMayus(comentario);
+		comentario = comp.letras.inicialMayus(comentario);
 
 		// Si hubo cambios, actualiza el comentario
 		if (original !== comentario) BD_genericas.actualizaPorId("histStatus", hist.id, {comentario});

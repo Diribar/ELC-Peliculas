@@ -69,14 +69,14 @@ module.exports = {
 			return FN.entidadNombre(entidad);
 		},
 		delLa: (entidad) => {
-			return  ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
 				? " de la "
 				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
 				? " del "
 				: "";
 		},
 		elLa: (entidad) => {
-			return  ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
 				? " la "
 				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
 				? " el "
@@ -677,7 +677,7 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
+	penalizacAcum: (userID, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
@@ -699,13 +699,10 @@ module.exports = {
 		// Fin
 		return;
 	},
-	nombreApellido: (usuario) => {
-		return usuario.nombre + " " + usuario.apellido;
-	},
 
 	// Varias
-	convierteLetras: {
-		alIngles: (resultado) => {
+	letras: {
+		convierteAlIngles: (resultado) => {
 			return resultado
 				.toLowerCase()
 				.replace(/-/g, " ")
@@ -718,16 +715,16 @@ module.exports = {
 				.replace(/:¿![.][?]/g, "")
 				.replace(/ +/g, " ");
 		},
-		alCastellano: function (objeto) {
+		convierteAlCastell: function (objeto) {
 			// Rutina por campo
 			for (let prop in objeto)
-				if (typeof objeto[prop] == "string") objeto[prop] = this.alCastellano_campo(objeto[prop]);
+				if (typeof objeto[prop] == "string") objeto[prop] = this.convierteAlCastell_campo(objeto[prop]);
 				else if (objeto[prop] === undefined) delete objeto[prop];
 
 			// Fin
 			return objeto;
 		},
-		alCastellano_campo: (valor) => {
+		convierteAlCastell_campo: (valor) => {
 			return valor
 				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 				.replace(/[àâãäåāăą]/g, "a")
@@ -790,6 +787,8 @@ module.exports = {
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
+		oa: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
+		laLo: (registro) => (registro.genero_id == "F" ? "la" : "lo"),
 	},
 	fechaHora: {
 		ahora: () => {

@@ -149,7 +149,7 @@ module.exports = {
 		bienvenido: (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
-			let letra = usuario.genero_id == "M" ? "a " : "o ";
+			let letra = comp.letras.oa(usuario);
 			let informacion = {
 				titulo: "Permiso otorgado",
 				mensajes: [

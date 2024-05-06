@@ -234,7 +234,7 @@ module.exports = {
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
 		const link = origen == "TM" ? "/mantenimiento" : "/";
-		const titulo = comp.convierteLetras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
+		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
 
 		// Cartel de registro eliminado
 		const informacion = {

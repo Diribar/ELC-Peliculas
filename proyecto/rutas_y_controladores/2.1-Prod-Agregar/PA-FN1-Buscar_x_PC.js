@@ -8,7 +8,7 @@ module.exports = {
 	// ControllerAPI (cantProductos)
 	search: async (palabrasClave) => {
 		// Variables
-		palabrasClave = comp.convierteLetras.alIngles(palabrasClave);
+		palabrasClave = comp.letras.convierteAlIngles(palabrasClave);
 		let entidadesTMDB = ["collection", "tv", "movie"];
 		let resultados = {productos: [], cantPaginasAPI: {}, cantPaginasUsadas: {}};
 		let pagina = 0;
@@ -432,8 +432,8 @@ let FN = {
 				}
 
 				// Define el título sin "distractores", para encontrar duplicados
-				let desempate1 = comp.convierteLetras.alIngles(nombreOriginal).replace(/ /g, "").replace(/'/g, "");
-				let desempate2 = comp.convierteLetras.alIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
+				let desempate1 = comp.letras.convierteAlIngles(nombreOriginal).replace(/ /g, "").replace(/'/g, "");
+				let desempate2 = comp.letras.convierteAlIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
 
 				// Deja sólo algunos campos
 				if (idiomaOriginal_id) idiomaOriginal_id = idiomaOriginal_id.toUpperCase();
@@ -463,9 +463,9 @@ let FN = {
 					let sinopsis = producto.sinopsis;
 
 					// Averigua si alguno tiene la palabra clave
-					nombreOriginal = nombreOriginal && comp.convierteLetras.alIngles(nombreOriginal).includes(palabra);
-					nombreCastellano = nombreCastellano && comp.convierteLetras.alIngles(nombreCastellano).includes(palabra);
-					sinopsis = sinopsis && comp.convierteLetras.alIngles(sinopsis).includes(palabra);
+					nombreOriginal = nombreOriginal && comp.letras.convierteAlIngles(nombreOriginal).includes(palabra);
+					nombreCastellano = nombreCastellano && comp.letras.convierteAlIngles(nombreCastellano).includes(palabra);
+					sinopsis = sinopsis && comp.letras.convierteAlIngles(sinopsis).includes(palabra);
 
 					// Conserva el producto si se cumple alguna condición
 					if (nombreOriginal || nombreCastellano || sinopsis) {

@@ -165,7 +165,7 @@ module.exports = {
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
 
 				// Penaliza al usuario si corresponde
-				if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, "links");
+				if (datosHist.motivo) comp.penalizacAcum(sugeridoPor_id, datosHist.motivo, "links");
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
