@@ -27,5 +27,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	obtieneVariables: (req, res) => res.json({pppOpcsArray, pppOpcsSimples, setTimeOutStd}),
+	obtieneVars: {
+		detalle: (req, res) => res.json({pppOpcsArray, pppOpcsSimples, setTimeOutStd}),
+		edicion: (req, res) => res.json({rolesIglesia, canons, meses: meses.map((n) => n.abrev)}),
+	},
 };
