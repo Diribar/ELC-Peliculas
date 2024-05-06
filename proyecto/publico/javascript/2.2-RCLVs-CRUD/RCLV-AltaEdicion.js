@@ -269,7 +269,7 @@ window.addEventListener("load", async () => {
 			genero: {
 				consolidado: function () {
 					// Variables
-					v.genero_id = opcionElegida(DOM.generos_id);
+					v.genero_id = opcionElegida(DOM.generos_id).value;
 
 					// Opciones de 'Rol en la Iglesia'
 					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia);
