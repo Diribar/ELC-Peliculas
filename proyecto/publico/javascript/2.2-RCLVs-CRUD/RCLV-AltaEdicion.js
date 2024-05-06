@@ -88,6 +88,7 @@ window.addEventListener("load", async () => {
 		DOM.rolIglesia_id = document.querySelector("form select[name='rolIglesia_id']");
 		DOM.rolIglesiaDefault = DOM.rolIglesia_id.querySelector("option");
 		DOM.canon_id = document.querySelector("form select[name='canon_id']");
+		DOM.canonDefault = DOM.canon_id.querySelector("option");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
 
@@ -275,7 +276,7 @@ window.addEventListener("load", async () => {
 					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
 
 					// Opciones de 'Proceso de Canonización'
-					this.opcsVisibles(DOM.canon_id, v.canons);
+					this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
 
 					// Fin
 					return;
@@ -284,7 +285,7 @@ window.addEventListener("load", async () => {
 					// Limpia el select
 					const selectedValue_id = select.value;
 					select.innerHTML = "";
-					if (trivial) select.appendChild(trivial);
+					select.appendChild(trivial);
 
 					// Agrega las opciones válidas para el género
 					for (let opcion of opciones)
