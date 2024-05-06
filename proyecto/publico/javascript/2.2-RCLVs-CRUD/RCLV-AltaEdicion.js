@@ -86,9 +86,8 @@ window.addEventListener("load", async () => {
 		DOM.preguntasRCLIC = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
 		DOM.categorias_id = document.querySelectorAll("form input[name='categoria_id']");
 		DOM.rolIglesia_id = document.querySelector("form select[name='rolIglesia_id']");
-		DOM.opcionesRolIglesia = document.querySelectorAll("form select[name='rolIglesia_id'] option");
+		DOM.rolIglesiaDefault = DOM.rolIglesia_id.querySelector("option");
 		DOM.canon_id = document.querySelector("form select[name='canon_id']");
-		DOM.opcionesProceso = document.querySelectorAll("form select[name='canon_id'] option");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
 
@@ -272,7 +271,7 @@ window.addEventListener("load", async () => {
 					v.genero_id = opcionElegida(DOM.generos_id).value;
 
 					// Opciones de 'Rol en la Iglesia'
-					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia);
+					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
 
 					// Opciones de 'Proceso de Canonización'
 					this.opcsVisibles(DOM.canon_id, v.canons);
@@ -280,10 +279,11 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				opcsVisibles: (select, opciones) => {
+				opcsVisibles: (select, opciones, trivial) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
 					select.innerHTML = "";
+					if (trivial) select.appendChild(trivial);
 
 					// Agrega las opciones válidas para el género
 					for (let opcion of opciones)
@@ -425,7 +425,7 @@ window.addEventListener("load", async () => {
 			genero: async () => {
 				// Variables
 				let params = "genero";
-				params += "&genero_id=" + v.genero_id.value;
+				params += "&genero_id=" + v.genero_id;
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -486,8 +486,8 @@ window.addEventListener("load", async () => {
 
 					if (categoria_id.value == "CFC") {
 						// Obtiene los valores de los preguntasRCLIC
-						params += "&genero_id=" + v.genero_id.value;
-						if (v.genero_id.value) {
+						params += "&genero_id=" + v.genero_id;
+						if (v.genero_id) {
 							// Agrega los datos de CFC
 							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
 
