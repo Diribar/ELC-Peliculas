@@ -341,11 +341,11 @@
 					<div class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</div>
 					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="input">
+							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id == "CFC") { %>checked<% } %> class="input">
 							<label for="CFC">SI</label>
 						</div>
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="input">
+							<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id == "VPC") { %>checked<% } %> class="input">
 							<label for="VPC">NO</label>
 						</div>
 					</div>
@@ -372,10 +372,10 @@
 							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
 							<% for (let canon of canons) { %>
 								<option value="<%= canon.id %>" <% if (dataEntry.canon_id == canon.id) { %>selected<% } %>>
-									<%= canon.nombre %>
+									<%= canon[dataEntry.genero_id] %>
 								</option>
 							<% } %>
-							<option value="null" <% if (dataEntry.canon_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+							<option value="null" <% if (dataEntry.canon_id === null) { %>selected<% } %>>Sin proceso de canonizac.</option>
 						</select>
 					</div>
 					<!-- Aparición Mariana -->
