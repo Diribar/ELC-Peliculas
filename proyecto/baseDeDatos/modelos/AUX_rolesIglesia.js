@@ -3,12 +3,12 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		plural: {type: dt.STRING(20)},
+		M: {type: dt.STRING(20)},
+		F: {type: dt.STRING(20)},
+		X: {type: dt.STRING(20)},
 		grupo: {type: dt.BOOLEAN},
 		usuario: {type: dt.BOOLEAN},
 		personaje: {type: dt.BOOLEAN},
-		varon: {type: dt.BOOLEAN},
-		mujer: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_roles_iglesia",
