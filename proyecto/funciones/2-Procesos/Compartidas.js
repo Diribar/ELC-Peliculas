@@ -82,7 +82,7 @@ module.exports = {
 				? " el "
 				: "";
 		},
-		oa: (entidad) => {
+		ao: (entidad) => {
 			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o";
 		},
 		campo_id: (entidad) => {
@@ -787,7 +787,7 @@ module.exports = {
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
-		oa: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
+		ao: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
 		laLo: (registro) => (registro.genero_id == "F" ? "la" : "lo"),
 	},
 	fechaHora: {

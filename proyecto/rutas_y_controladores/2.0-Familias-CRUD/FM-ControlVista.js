@@ -227,7 +227,7 @@ module.exports = {
 		else res.clearCookie("eliminado");
 
 		// Más variables
-		const articFinal = comp.obtieneDesdeEntidad.oa(entidad);
+		const articFinal = comp.obtieneDesdeEntidad.ao(entidad);
 		const articInicial = articFinal == "a" ? "La " : "El ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";

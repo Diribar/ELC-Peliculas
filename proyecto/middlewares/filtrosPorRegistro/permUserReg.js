@@ -146,7 +146,7 @@ module.exports = async (req, res, next) => {
 			// Preparar la información
 			const terminacion = {
 				entidad: comp.obtieneDesdeEntidad.elLa(pc_entidad),
-				reservado: comp.obtieneDesdeEntidad.oa(pc_entidad),
+				reservado: comp.obtieneDesdeEntidad.ao(pc_entidad),
 			};
 
 			const nombre = comp.nombresPosibles(prodCapturado);
