@@ -96,6 +96,7 @@ window.addEventListener("load", async () => {
 	}
 	if (v.hechos) {
 		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
+		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.ama = document.querySelectorAll("form input[name='ama']");
 	}
 	if (v.epocasDelAno) {
