@@ -492,7 +492,7 @@ module.exports = {
 		let canonNombre = "";
 
 		// Averigua si el RCLV tiene algún "proceso de canonización"
-		if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
+		if (RCLV.canon_id && RCLV.canon_id != "NN") {
 			// Obtiene los procesos de canonización
 			const proceso = canons.find((m) => m.id == RCLV.canon_id);
 

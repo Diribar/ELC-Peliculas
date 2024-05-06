@@ -121,17 +121,16 @@ module.exports = {
 			}
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
-				console.log(124,registro);
-				const articulo = comp.letras.laLo(registro)
+				const articulo = comp.letras.laLo(registro);
 				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
 			}
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
-				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon[registro.genero_id])
+				if (registro.canon_id && registro.canon_id != "NN" && registro.canon && registro.canon[registro.genero_id])
 					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
-				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
+				if (registro.rolIglesia_id && registro.rolIglesia_id != "NN" && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
 					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
