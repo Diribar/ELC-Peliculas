@@ -129,8 +129,8 @@ module.exports = {
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
-				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon.nombre)
-					bloque.push({titulo: "Status Canonizac.", valor: registro.canon.nombre});
+				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon[registro.genero_id])
+					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
 				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
