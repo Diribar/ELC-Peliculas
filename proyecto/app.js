@@ -145,8 +145,8 @@ app.set("views", [
 
 		// Variables de RCLVs
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
-		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
+		canons: BD_genericas.obtieneTodos("canons", "orden"),
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
