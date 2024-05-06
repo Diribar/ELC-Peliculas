@@ -356,13 +356,12 @@
 					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-							<% for (let rolIgl of rolesIgl) { %>
+							<% if (dataEntry.genero_id) for (let rolIgl of rolesIgl) if (rolIgl[dataEntry.genero_id]) { %>
 								<option
-									class="ocultar"
 									value="<%= rolIgl.id %>"
 									<% if (dataEntry.rolIglesia_id == rolIgl.id) { %>selected<% } %>
 								>
-									<%- dataEntry.genero_id ? rolIgl[dataEntry.genero_id] : rolIgl.nombre %>
+									<%= rolIgl[dataEntry.genero_id] %>
 								</option>
 							<% } %>
 						</select>
