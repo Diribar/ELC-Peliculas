@@ -192,8 +192,8 @@ module.exports = {
 							: canons == "VS"
 							? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
 							: canons == "TD"
-							? resultados.filter((n) => !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
-							: resultados.filter((n) => n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
+							? resultados.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
+							: resultados.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
 
 				// cfc / vpc
 				if (cfc) resultados = resultados.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
@@ -788,7 +788,7 @@ module.exports = {
 					if (categoria_id == "CFC" || soloCfc) datosRclv.cfc = true;
 
 					// Obtiene campos en función de la entidad
-					if (entidad == "personajes" && !rclv.rolIglesia_id.startsWith("NN")) {
+					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {
 						datosRclv.rolIglesiaNombre = rclv.rolIglesia.nombre;
 						if (rclv.canon_id != "NN") datosRclv.canonNombre = rclv.canon[rclv.genero_id];
 					}
