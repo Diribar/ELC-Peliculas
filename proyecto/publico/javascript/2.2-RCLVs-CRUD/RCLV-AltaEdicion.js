@@ -67,15 +67,11 @@ window.addEventListener("load", async () => {
 		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
-		camposRCLIC: Array.from(DOM.camposRCLIC).map((n) => n.name),
 
 		// Errores
 		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
-
-		// Temas de fecha
-		fechasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
 
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
@@ -96,6 +92,7 @@ window.addEventListener("load", async () => {
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
 
+		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
 		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
 	if (v.hechos) {
@@ -108,6 +105,7 @@ window.addEventListener("load", async () => {
 		DOM.dias_del_ano_RCLV = document.querySelectorAll("form #calendario tr td:nth-child(2)");
 		DOM.marcoCalendario = document.querySelector("form #calendario");
 		DOM.tablaCalendario = document.querySelector("form #calendario table");
+		v.fechasDelAno = Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML);
 	}
 
 	// Funciones
@@ -270,6 +268,9 @@ window.addEventListener("load", async () => {
 			},
 			genero: {
 				consolidado: function () {
+					// Variables
+					v.genero_id = opcionElegida(DOM.generos_id);
+
 					// Opciones de 'Rol en la Iglesia'
 					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia);
 
@@ -279,7 +280,7 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				rutina: (select, opciones) => {
+				opcsVisibles: (select, opciones) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
 					select.innerHTML = "";
@@ -601,7 +602,7 @@ window.addEventListener("load", async () => {
 
 			// Genero
 			if (DOM.generos_id.length) {
-				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero();
+				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero.consolidado();
 				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined))
 					await this.validacs.genero();
 			}
@@ -755,7 +756,6 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Genero
 		if (campo == "genero_id") {
-			v.genero_id = opcionElegida(DOM.generos_id);
 			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
 			// Si corresponde, valida RCLIC
