@@ -19,7 +19,6 @@ window.addEventListener("load", async () => {
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
-		apodo: document.querySelector("form input[name='apodo']"),
 
 		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
@@ -46,32 +45,17 @@ window.addEventListener("load", async () => {
 		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 
-		// Días del año
-		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
-		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
-		dias_del_ano_RCLV: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
-		marcoCalendario: document.querySelector("form #calendario"),
-		tablaCalendario: document.querySelector("form #calendario table"),
-
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
 		ano: document.querySelector("form input[name='" + ano + "']"),
-
-		// Personajes
-		camposRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
-		preguntasRCLIC: document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input"),
-		categorias_id: document.querySelectorAll("form input[name='categoria_id']"),
-		rolIglesia_id: document.querySelector("form select[name='rolIglesia_id']"),
-		opcionesRolIglesia: document.querySelectorAll("form select[name='rolIglesia_id'] option"),
-		canon_id: document.querySelector("form select[name='canon_id']"),
-		opcionesProceso: document.querySelectorAll("form select[name='canon_id'] option"),
-		sectorApMar: document.querySelector("form #sectorApMar"),
-		apMar_id: document.querySelector("form select[name='apMar_id']"),
-
-		// Hechos
-		soloCfc: document.querySelectorAll("form input[name='soloCfc']"),
-		ama: document.querySelectorAll("form input[name='ama']"),
+	};
+	let rutas = {
+		// Rutas
+		obtieneVariables: "/rclv/api/edicion/obtiene-variables",
+		validacion: "/rclv/api/valida-sector/?funcion=",
+		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
+		prefijos: "/rclv/api/prefijos",
 	};
 	let v = {
 		// Variables de entidad
@@ -91,7 +75,6 @@ window.addEventListener("load", async () => {
 		errores: {},
 
 		// Temas de fecha
-		meses: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
 		fechasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
 
 		// Otros
@@ -99,13 +82,33 @@ window.addEventListener("load", async () => {
 		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: false,
+		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
-	if (v.personajes) v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
-	let rutas = {
-		// Rutas
-		validacion: "/rclv/api/valida-sector/?funcion=",
-		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
-	};
+	if (v.personajes) {
+		DOM.apodo = document.querySelector("form input[name='apodo']");
+		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
+		DOM.preguntasRCLIC = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
+		DOM.categorias_id = document.querySelectorAll("form input[name='categoria_id']");
+		DOM.rolIglesia_id = document.querySelector("form select[name='rolIglesia_id']");
+		DOM.opcionesRolIglesia = document.querySelectorAll("form select[name='rolIglesia_id'] option");
+		DOM.canon_id = document.querySelector("form select[name='canon_id']");
+		DOM.opcionesProceso = document.querySelectorAll("form select[name='canon_id'] option");
+		DOM.sectorApMar = document.querySelector("form #sectorApMar");
+		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
+
+		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
+	}
+	if (v.hechos) {
+		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
+		DOM.ama = document.querySelectorAll("form input[name='ama']");
+	}
+	if (v.epocasDelAno) {
+		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
+		DOM.dias_del_ano_Dia = document.querySelectorAll("form #calendario tr td:first-child");
+		DOM.dias_del_ano_RCLV = document.querySelectorAll("form #calendario tr td:nth-child(2)");
+		DOM.marcoCalendario = document.querySelector("form #calendario");
+		DOM.tablaCalendario = document.querySelector("form #calendario table");
+	}
 
 	// Funciones
 	let FN = {
@@ -265,25 +268,38 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
-			genero: async () => {
-				// Obtiene la opción elegida
-				let genero_id = opcionElegida(DOM.generos_id);
+			genero: {
+				consolidado: function () {
+					// Opciones de 'Rol en la Iglesia'
+					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia);
 
-				// Función para dejar solamente las opciones con ese genero
-				let opcsVisibles = (select, opciones) => {
+					// Opciones de 'Proceso de Canonización'
+					this.opcsVisibles(DOM.canon_id, v.canons);
+
+					// Fin
+					return;
+				},
+				rutina: (select, opciones) => {
+					// Limpia el select
+					const selectedValue_id = select.value;
 					select.innerHTML = "";
+
+					// Agrega las opciones válidas para el género
 					for (let opcion of opciones)
-						if (opcion.value.slice(-1) == genero_id.value || opcion.value <= 2) select.appendChild(opcion);
-				};
+						if (opcion[v.genero_id]) {
+							// Crea la opción
+							const option = document.createElement("option");
+							option.value = opcion.id;
+							option.selected = opcion.id == selectedValue_id;
+							option.innerText = opcion[v.genero_id];
 
-				// Opciones de 'Rol en la Iglesia'
-				opcsVisibles(DOM.rolIglesia_id, DOM.opcionesRolIglesia);
+							// Agrega la opción
+							select.appendChild(option);
+						}
 
-				// Opciones de 'Proceso de Canonización'
-				opcsVisibles(DOM.canon_id, DOM.opcionesProceso);
-
-				// Fin
-				return;
+					// Fin
+					return;
+				},
 			},
 			epocaOcurrencia: {
 				personajes: async () => {
@@ -337,20 +353,22 @@ window.addEventListener("load", async () => {
 			nombre: {
 				personajes: async () => {
 					// Variables
-					let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+					let params = "nombre";
+					params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
 					params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
 					params += "&entidad=" + entidad;
 					if (id) params += "&id=" + id;
 
 					// Averigua los errores
-					v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+					v.errores.nombre = await fetch(rutas.validacion + params).then((n) => n.json());
 					v.OK.nombre = !v.errores.nombre;
 					// Fin
 					return;
 				},
 				demas: async () => {
 					// Variables
-					let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+					let params = "nombre";
+					params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
 					params += "&entidad=" + entidad;
 					if (id) params += "&id=" + id;
 
@@ -364,7 +382,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Averigua los errores
-					v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+					v.errores.nombre = await fetch(rutas.validacion + params).then((n) => n.json());
 					v.OK.nombre = !v.errores.nombre;
 
 					// Fin
@@ -375,11 +393,12 @@ window.addEventListener("load", async () => {
 				// Si se conoce la fecha...
 				if (DOM.tipoFecha.value != "SF") {
 					// Obtiene los datos de los campos
-					let params = "&entidad=" + entidad;
+					let params = "fecha";
+					params += "&entidad=" + entidad;
 					for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 					// Averigua si hay un error con la fecha
-					v.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
+					v.errores.fecha = await fetch(rutas.validacion + params).then((n) => n.json());
 				} else v.errores.fecha = "";
 
 				// OK vigencia
@@ -403,11 +422,9 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			genero: async () => {
-				// Obtiene la opción elegida
-				let genero_id = opcionElegida(DOM.generos_id);
-
-				// Genera la variable de parámetros
-				let params = "genero&genero_id=" + genero_id.value;
+				// Variables
+				let params = "genero";
+				params += "&genero_id=" + v.genero_id.value;
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -419,8 +436,6 @@ window.addEventListener("load", async () => {
 			carpetaAvatars: async () => {
 				// Variables
 				let params = "carpetaAvatars";
-
-				// Agrega los demás parámetros
 				params += "&carpetaAvatars=" + DOM.carpetaAvatars.value;
 
 				// OK y Errores
@@ -444,11 +459,12 @@ window.addEventListener("load", async () => {
 			},
 			epocaOcurrencia: async () => {
 				// Variables
-				let params = "epocaOcurrencia&entidad=" + entidad;
-
-				// Agrega los demás parámetros
+				let params = "epocaOcurrencia";
+				params += "&entidad=" + entidad;
 				let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+
+				// Agrega los demás parámetros
 				if (epocaOcurrencia_id.value == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
 
 				// OK y Errores
@@ -462,28 +478,28 @@ window.addEventListener("load", async () => {
 				personajes: async () => {
 					// Variables
 					let params = "RCLIC_personajes";
-					let genero_id;
 
 					// Obtiene la categoría
 					let categoria_id = opcionElegida(DOM.categorias_id);
 					params += "&categoria_id=" + categoria_id.value;
 
 					if (categoria_id.value == "CFC") {
-						// Obtiene el genero_id
-						if (categoria_id) genero_id = opcionElegida(DOM.generos_id);
-						params += "&genero_id=" + (genero_id.value ? "on" : "");
-
 						// Obtiene los valores de los preguntasRCLIC
-						if (genero_id.value) {
+						params += "&genero_id=" + v.genero_id.value;
+						if (v.genero_id.value) {
 							// Agrega los datos de CFC
 							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
-							// Agrega los datos de epocaOcurrencia_id y año
-							let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+
+							// Agrega la epocaOcurrencia_id
+							const epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
 							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
-							let ano = FN_ano(DOM.ano.value);
+
+							// Acciones si la epocaOcurrencia_id es 'pst'
 							if (epocaOcurrencia_id.value == "pst") {
 								// Agrega el año
+								const ano = FN_ano(DOM.ano.value);
 								params += "&anoNacim=" + ano;
+
 								// Agrega lo referido a la aparición mariana
 								if (ano > 1100) params += "&apMar_id=" + opcionElegida(DOM.apMar_id).value;
 							}
@@ -586,7 +602,8 @@ window.addEventListener("load", async () => {
 			// Genero
 			if (DOM.generos_id.length) {
 				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero();
-				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
+				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined))
+					await this.validacs.genero();
 			}
 
 			// Carpeta Avatars
@@ -738,7 +755,8 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Genero
 		if (campo == "genero_id") {
-			await FN.impactos.genero();
+			v.genero_id = opcionElegida(DOM.generos_id);
+			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
 			// Si corresponde, valida RCLIC
 			if (v.OK.genero_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
@@ -795,16 +813,7 @@ const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 
 // Funciones
 let opcionElegida = (opciones) => {
-	// Detecta la opción elegida
-	for (var opcion of opciones) if (opcion.checked) break;
-	if (!opcion.checked) opcion = {value: "", name: ""};
-
-	// Fin
-	return opcion;
+	for (var opcion of opciones) if (opcion.checked) return opcion;
+	return {value: "", name: ""};
 };
-let FN_ano = (ano) => {
-	// Si está vacío, lo considera cero
-	ano = ano ? parseInt(ano) : 0;
-	// Envía el valor
-	return ano;
-};
+let FN_ano = (ano) => (ano ? parseInt(ano) : 0);
