@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 5/may",
-	"HoraUTC": "11:21",
+	"FechaUTC": "Lun. 6/may",
+	"HoraUTC": "11:39",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 29/abr",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 18,
+	"FechaSemUTC": "Lun. 6/may",
+	"HoraSemUTC": "11:39",
+	"semanaUTC": 19,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"03-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"04-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"05-may-24": {"titulo": "Beato Edmundo Rice"},
 		"06-may-24": {"titulo": "Santo Domingo Savio"},
-		"07-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"07-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"08-may-24": {"titulo": "Milagro de Luján"}
 	}
 }
