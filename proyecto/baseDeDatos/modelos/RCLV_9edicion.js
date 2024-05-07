@@ -18,11 +18,11 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común entre 'personajes' y 'hechos'
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específico de 'personajes'
 		anoNacim: {type: dt.INTEGER},
-		apodo: {type: dt.STRING(35)},
 		genero_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
