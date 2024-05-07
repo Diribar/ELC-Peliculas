@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
-		apodo: {type: dt.STRING(35)},
+		nombreAltern: {type: dt.STRING(35)},
 		canon_id: {type: dt.STRING(3)},
 		anoNacim: {type: dt.INTEGER},
 		genero_id: {type: dt.STRING(1)},
