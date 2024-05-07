@@ -348,8 +348,8 @@ module.exports = {
 				relacInclude: "epocaOcurrencia",
 				tabla: "epocasOcurrencia",
 			},
+			{titulo: "Alternativo", nombre: "nombreAltern", personajes: true, hechos: true},
 			// Personajes
-			{titulo: "Alternativo", nombre: "apodo", personajes: true},
 			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Nacim.", nombre: "anoNacim", personajes: true},
 			{titulo: "Categoría", nombre: "categoria_id", personajes: true, relacInclude: "categoria", tabla: "categorias"},

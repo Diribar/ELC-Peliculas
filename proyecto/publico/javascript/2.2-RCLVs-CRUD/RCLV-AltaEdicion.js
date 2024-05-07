@@ -96,6 +96,7 @@ window.addEventListener("load", async () => {
 		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
 	if (v.hechos) {
+		DOM.nombreAltern = document.querySelector("form input[name='apodo']");
 		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.ama = document.querySelectorAll("form input[name='ama']");
@@ -353,44 +354,29 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			nombre: {
-				personajes: async () => {
-					// Variables
-					let params = "nombre";
-					params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
-					params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
-					params += "&entidad=" + entidad;
-					if (id) params += "&id=" + id;
+			nombre: async () => {
+				// Variables
+				let params = "nombre";
+				params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
+				if (DOM.apodo.value) params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
+				params += "&entidad=" + entidad;
+				if (id) params += "&id=" + id;
 
-					// Averigua los errores
-					v.errores.nombre = await fetch(rutas.validacion + params).then((n) => n.json());
-					v.OK.nombre = !v.errores.nombre;
-					// Fin
-					return;
-				},
-				demas: async () => {
-					// Variables
-					let params = "nombre";
-					params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
-					params += "&entidad=" + entidad;
-					if (id) params += "&id=" + id;
+				// Le agrega lo referido a la aparición mariana
+				if (v.hechos) {
+					let soloCfc = opcionElegida(DOM.soloCfc);
+					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let ano = FN_ano(DOM.ano.value);
+					let ama = opcionElegida(DOM.ama).value;
+					if (soloCfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
+				}
 
-					// Le agrega lo referido a la aparición mariana
-					if (v.hechos) {
-						let soloCfc = opcionElegida(DOM.soloCfc);
-						let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-						let ano = FN_ano(DOM.ano.value);
-						let ama = opcionElegida(DOM.ama).value;
-						if (soloCfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
-					}
+				// Averigua los errores
+				v.errores.nombre = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.nombre = !v.errores.nombre;
 
-					// Averigua los errores
-					v.errores.nombre = await fetch(rutas.validacion + params).then((n) => n.json());
-					v.OK.nombre = !v.errores.nombre;
-
-					// Fin
-					return;
-				},
+				// Fin
+				return;
 			},
 			fecha: async () => {
 				// Si se conoce la fecha...
@@ -583,8 +569,7 @@ window.addEventListener("load", async () => {
 			if (forzar) DOM.iconosOK[0].classList.remove("ocultaAvatar");
 
 			// Nombre
-			if (DOM.nombre.value || (forzar && v.errores.nombre === undefined))
-				v.personajes ? await this.validacs.nombre.personajes() : await this.validacs.nombre.demas();
+			if (DOM.nombre.value || (forzar && v.errores.nombre === undefined)) await this.validacs.nombre();
 			if (DOM.nombre.value && v.OK.nombre) this.impactos.nombre.logos();
 
 			// Fechas
@@ -730,7 +715,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Nombre
 		if (v.camposNombre.includes(campo)) {
-			await FN.validacs.nombre[v.personajes ? "personajes" : "demas"]();
+			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
 		}
 
@@ -788,7 +773,7 @@ window.addEventListener("load", async () => {
 		if (v.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await FN.validacs.RCLIC[entidad]();
-			if (v.hechos) await FN.validacs.nombre.demas();
+			if (v.hechos) await FN.validacs.nombre();
 		}
 
 		// Final de la rutina
