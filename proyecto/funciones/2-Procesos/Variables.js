@@ -255,7 +255,7 @@ module.exports = {
 	camposEdicionRCLV: {
 		personajes: [
 			"nombre",
-			"apodo",
+			"nombreAltern",
 			"fechaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
@@ -270,6 +270,7 @@ module.exports = {
 		],
 		hechos: [
 			"nombre",
+			"nombreAltern",
 			"anoComienzo",
 			"fechaDelAno_id",
 			"fechaMovil",
