@@ -90,18 +90,18 @@
 /* 1. Año (personajes y hechos) */
 #sectorEpoca:not(
 	:not(:has(.opciones input#pst:checked)), /* epocaOcurrencia = 'pst' */
-	:has(.opciones input.noPST:checked)      /* ninguna otra opción está 'checked' */
+	:has(.opciones input.noPST:checked) /* ninguna otra opción está 'checked' */
 ) .invisible {visibility: visible;}
 
 /* 2. PreguntasRCLIC (personajes) */
 #dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
 	#preguntasRCLIC.invisible {visibility: visible;}
 
-#dataEntry:has(#sectorGenero input:checked)                       /* contestó 'genero' */
+#dataEntry:has(#sectorGenero input:checked) /* contestó 'genero' */
 	#preguntasRCLIC .segunGenero_id.invisible {visibility: inherit;}
 
 /* 3. PreguntasRCLIC (hechos) */
-#dataEntry:has(.hechos #soloCFC input#SI:checked)            /* --> si soloCFC='SI' */
+#dataEntry:has(.hechos #soloCFC input#SI:checked) /* --> si soloCFC='SI' */
 	#preguntasRCLIC.invisible {visibility: visible;}
 
 /* Temas de ayuda */
