@@ -24,7 +24,10 @@ module.exports = {
 		}
 
 		// Campos de hechos
-		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
+		if (datos.entidad == "hechos") {
+			errores.genero = this.genero(datos);
+			errores.RCLIC = this.RCLIC_hechos(datos);
+		}
 
 		// Épocas del año
 		if (datos.entidad == "epocasDelAno") errores.carpetaAvatars = this.carpetaAvatars(datos);
