@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		letraFinal: {type: dt.STRING(1)},
+		letraFinal: {type: dt.STRING(2)},
 	};
 	const config = {
 		tableName: "aux_generos",
