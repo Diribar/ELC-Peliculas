@@ -3,7 +3,6 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(35)},
-		nombreAltern: {type: dt.STRING(35)},
 		genero_id: {type: dt.STRING(1)},
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},
@@ -14,6 +13,7 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con personajes
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
