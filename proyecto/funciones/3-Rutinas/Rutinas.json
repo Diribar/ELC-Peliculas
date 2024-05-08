@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 7/may",
-	"HoraUTC": "18:06",
+	"FechaUTC": "Mié. 8/may",
+	"HoraUTC": "17:18",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 6/may",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"05-may-24": {"titulo": "Beato Edmundo Rice"},
 		"06-may-24": {"titulo": "Santo Domingo Savio"},
 		"07-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"08-may-24": {"titulo": "Milagro de Luján"},
-		"09-may-24": {"titulo": "Santa Luisa de Marillac"}
+		"09-may-24": {"titulo": "Santa Luisa de Marillac"},
+		"10-may-24": {"titulo": "San Damián de Veuster", "entidad": "personajes", "id": 53}
 	}
 }
