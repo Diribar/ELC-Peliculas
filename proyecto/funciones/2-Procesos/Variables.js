@@ -349,6 +349,7 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 			},
 			{titulo: "Alternativo", nombre: "nombreAltern", personajes: true, hechos: true},
+
 			// Personajes
 			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Nacim.", nombre: "anoNacim", personajes: true},
@@ -362,7 +363,9 @@ module.exports = {
 			},
 			{titulo: "Proceso de Canonizac.", nombre: "canon_id", personajes: true, relacInclude: "canon", tabla: "canons"},
 			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
+
 			// Hechos
+			{titulo: "Genero", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
