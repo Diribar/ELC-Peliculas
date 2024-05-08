@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		epocaDelAno_id: {type: dt.INTEGER},
 
 		// Comunes
-		nombre: {type: dt.STRING(35)},
+		nombre: {type: dt.STRING(40)},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
 		anoFM: {type: dt.INTEGER},
