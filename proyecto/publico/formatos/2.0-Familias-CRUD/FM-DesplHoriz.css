@@ -29,7 +29,7 @@ ul#listado {
 		&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 	}
 	button {
-		.imagenChica {height: 100%;}
+		.imagenChica {max-height: 100%; max-width: 150px; align-self: center;}
 		#infoPeli {
 			padding: 10px 15px; align-items: flex-start;
 			#nombreCastellano {font-weight: bold;}
