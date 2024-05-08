@@ -12,10 +12,10 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con hechos
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específicos
-		nombreAltern: {type: dt.STRING(35)},
 		canon_id: {type: dt.STRING(3)},
 		anoNacim: {type: dt.INTEGER},
 		genero_id: {type: dt.STRING(1)},
