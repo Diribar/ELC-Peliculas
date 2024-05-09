@@ -29,6 +29,6 @@ module.exports = {
 	},
 	obtieneVars: {
 		detalle: (req, res) => res.json({pppOpcsArray, pppOpcsSimples, setTimeOutStd}),
-		edicion: (req, res) => res.json({rolesIglesia, canons, meses: meses.map((n) => n.abrev)}),
+		edicion: (req, res) => res.json({rolesIglesia, canons, meses: meses.map((n) => n.abrev), hoyEstamos}),
 	},
 };

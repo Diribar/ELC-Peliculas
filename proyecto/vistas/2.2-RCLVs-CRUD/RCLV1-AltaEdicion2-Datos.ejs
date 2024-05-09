@@ -5,7 +5,7 @@
 		<!-- Nombres -->
 		<div id="sectorNombre" class="flexCol">
 			<!-- Título, Ayuda y Error/OK -->
-			<div class="margenDebajo inputError flexRow" style="z-index: 5;">
+			<div class="margenDebajo inputError flexRow">
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
@@ -29,7 +29,7 @@
 				<!-- Campos -->
 				<div class="flexCol spaceBetween">
 					<!-- Nombre Formal -->
-					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
+					<div class="flexRowAlign spaceBetween">
 						<% if (personajes || hechos) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
@@ -48,7 +48,7 @@
 		<!-- Fecha Representativa -->
 		<div id="sectorFecha" class="borderTop flexCol">
 			<!-- Título, Ayuda y Error/OK -->
-			<div class="flexRow spaceBetween margenDebajo inputError" style="z-index: 4;">
+			<div class="flexRow spaceBetween margenDebajo inputError">
 				<!-- Título -->
 				<h3>Fecha representativa</h3>
 				<!-- Select -->
@@ -133,7 +133,7 @@
 			<div id="sectorDiasDelAno">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
-					<div class="margenDebajo inputError" style="z-index: 3;">
+					<div class="margenDebajo inputError">
 						<!-- Título -->
 						<h3>Calendario</h3>
 						<!-- Ayuda -->
@@ -186,7 +186,7 @@
 			<!-- Repetidos -->
 			<div id="sectorRepetidos">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="margenDebajo inputError" style="z-index: 3;">
+				<div class="margenDebajo inputError">
 					<!-- Título -->
 					<h3>Nombres con esa fecha</h3>
 					<!-- Ayuda -->
@@ -267,9 +267,9 @@
 			<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
 			<% if (hechos) { %>
-				<div class="ayuda" style="z-index: 3;">
+				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 							<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
 						</ul>
 					</i>
@@ -281,9 +281,9 @@
 		<div class="flexRowAlign grow spaceBetween">
 			<!-- Épocas -->
 			<% epocasOcurrencia.forEach((epocaOcurrencia, indice) => { %>
-				<% if (indice + 1 == epocasOcurrencia.length) return %>
-				<% let z_index = "z-index:" + (1 + epocasOcurrencia.length - indice) %>
-				<div class="flexRowAlign opciones" style=<%= z_index %>>
+				<% if (epocaOcurrencia.id == "var") return %>
+				<% const zIndex = "z-index:" + (epocasOcurrencia.length - indice) %>
+				<div class="flexRowAlign opciones" style=<%= zIndex %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epocaOcurrencia.id %>" id="<%= epocaOcurrencia.id %>" <% if (dataEntry.epocaOcurrencia_id==epocaOcurrencia.id) { %>checked<% } %> class="input<%= epocaOcurrencia.id!="pst"?" noPST":"" %>">
 					<label for="<%= epocaOcurrencia.id %>"><%= epocaOcurrencia.nombre %></label>
 					<!-- Ayuda -->
@@ -299,8 +299,8 @@
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
-			<div class="flexRowAlign inputError invisible">
-				<% let ano = personajes ? "anoNacim" : "anoComienzo" %>
+			<div class="flexRowAlign inputError invisible" style="z-index: 1">
+				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
 				<!-- Ayuda -->
@@ -319,7 +319,7 @@
 	<!-- Relación con la Iglesia Católica -->
 	<section id="sectorRCLIC" class="borderTop OK flexCol">
 		<!-- Título, Ayuda y Error/OK -->
-		<div class="inputError" style="z-index: 4;">
+		<div class="inputError">
 			<!-- Título -->
 			<h3>Relación con la Iglesia Católica</h3>
 			<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
@@ -417,6 +417,35 @@
 		<% } %>
 	</section>
 <% } %>
+<!-- Leyenda -->
+<section id="sectorLeyenda" class="borderTop OK flexCol">
+	<!-- Título, Ayuda y Error/OK -->
+	<div class="inputError invisibl">
+		<!-- Título -->
+		<h3>Leyenda</h3>
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+					<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
+				</ul>
+			</i>
+		</div>
+		<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
+	</div>
+	<!-- Data Entry -->
+	<div id="datosLeyenda" class="flexRowAlign">
+		<div id="hoyEstamos">
+			<select name="" id=""></select>
+			<p></p>
+		</div>
+		<div id="resto">
+			<select name="" id=""></select>
+			<p></p>
+		</div>
+	</div>
+
+</section>
+
 <!-- Iconos y Botón -->
 <div id="sectorIconos">
 	<%- include("Iconos-1Estandar") %>
