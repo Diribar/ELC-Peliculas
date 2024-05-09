@@ -131,7 +131,6 @@
 				}
 
 				/* PreguntasRCLIC (personajes) */
-				.personajes:has(#categoria_id input#CFC:checked) #preguntasRCLIC.invisible {visibility: unset;} /* la categoría es 'CFC' */
 				&:has(#sectorGenero input:checked) #preguntasRCLIC .segunGenero_id.invisible {visibility: unset;} /* contestó 'genero' */
 
 				/* PreguntasRCLIC (hechos) */
