@@ -14,7 +14,7 @@
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<% if (personajes) { %>
+									<% if (personajes || hechos) { %>
 										<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
 										<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera.</li>
 									<% } else { %>
@@ -32,10 +32,10 @@
 				<div class="flexCol spaceBetween">
 					<!-- Nombre Formal -->
 					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
-						<% if (personajes) { %><label>Formal</label><% } %>
+						<% if (personajes || hechos) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
-					<% if (personajes) { %>
+					<% if (personajes || hechos) { %>
 						<!-- Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
@@ -206,28 +206,26 @@
 				<!-- Valores -->
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
-			<% if (personajes) { %>
-				<!-- Genero -->
-				<div id="sectorGenero" class="flexRowAlign altoFila inputError">
-					<h3>Sexo</h3>
-					<% for (let genero of generos) { %>
-						<div class="flexRowAlign opciones relative">
-							<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
-							<label for="<%= genero.id %>"><%= genero.nombre %></label>
-						</div>
-					<% } %>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
-							<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-								<li>Se usa 'grupo' si te referís a un grupo con varones y mujeres.</li>
-							</ul>
-						</i>
-					</div>
-					<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
-				</div>
 			<% } %>
-		<% } %>
+			<!-- Genero -->
+			<div id="sectorGenero" class="flexRowAlign altoFila inputError">
+				<h3><%- personajes ? 'Sexo' : 'Género' %></h3>
+				<% for (let genero of generos) { %>
+					<div class="flexRowAlign opciones relative">
+						<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
+						<label for="<%= genero.id %>"><%= genero.nombre %></label>
+					</div>
+				<% } %>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+							<li>Se usa 'grupo' si te referís a un grupo con varones y mujeres.</li>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
+			</div>
 		<% if (codigo != "rclv/solapamiento") { %>
 			<!-- Prioridad -->
 			<% if (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id)) { %>
