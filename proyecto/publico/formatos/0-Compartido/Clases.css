@@ -38,3 +38,4 @@
 .negrita {font-weight: bold;}
 .bloqueado {background: var(--celeste-oscuro);}
 .bordeConSombra {box-shadow: 0px 0px 10px rgb(100 100 100)}
+.sinFlechas {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
