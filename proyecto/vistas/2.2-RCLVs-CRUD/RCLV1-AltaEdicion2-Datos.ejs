@@ -331,17 +331,17 @@
 					<div class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</div>
 					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id == "CFC") { %>checked<% } %> class="input">
+							<input id="CFC" class="input" name="categoria_id" value="CFC" type="radio" <% if (dataEntry.categoria_id == "CFC") { %>checked<% } %>>
 							<label for="CFC">SI</label>
 						</div>
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id == "VPC") { %>checked<% } %> class="input">
+							<input id="VPC" class="input" name="categoria_id" value="VPC" type="radio" <% if (dataEntry.categoria_id == "VPC") { %>checked<% } %>>
 							<label for="VPC">NO</label>
 						</div>
 					</div>
 				</div>
 				<!-- Preguntas RCLIC -->
-				<div id="preguntasRCLIC" class="flexRowAlign altoFila invisible grow spaceBetween">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar grow spaceBetween">
 					<!-- Rol en la Iglesia -->
 					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="rolIglesia_id" class="input">
@@ -397,7 +397,7 @@
 					</div>
 					<div class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</div>
 				</div>
-				<div id="preguntasRCLIC" class="flexRowAlign altoFila invisible">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar">
 					<!-- ¿Es una aparición mariana -->
 					<div id="sectorApMar" class="flexRowAlign invisible">
 						<div class="flexRowAlign radioBtn">
@@ -436,16 +436,16 @@
 	<div id="datosLeyenda" class="flexRowAlign">
 		<div id="hoyEstamos">
 			<select name="hoyEstamos" class="input sinFlecha">
+				<option value="">Elegí una opción</option>
 				<option value="1">Hoy recordamos</option>
 			</select>
-			<p></p>
 		</div>
 		<div id="resto">
 			<select name="resto" class="input sinFlecha">
+				<option value="">Elegí una opción</option>
 				<option value="1">a Juan Pablo II, santo</option>
 				<option value="2">a san Francisco de Asís</option>
 			</select>
-			<p></p>
 		</div>
 	</div>
 
