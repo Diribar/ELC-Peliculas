@@ -18,7 +18,7 @@ module.exports = (sequelize, dt) => {
 		apodo: {type: dt.STRING(35)},
 		canon_id: {type: dt.STRING(3)},
 		anoNacim: {type: dt.INTEGER},
-		sexo_id: {type: dt.STRING(1)},
+		genero_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		rolIglesia_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
@@ -51,7 +51,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
+		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
 

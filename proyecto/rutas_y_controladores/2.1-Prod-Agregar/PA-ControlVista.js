@@ -373,10 +373,11 @@ module.exports = {
 			: original.nombreOriginal
 			? original.nombreOriginal
 			: "";
+		const agregaste = true;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, imagenMG},
+			...{tema, codigo, titulo, imagenMG, agregaste},
 			...{entidad, familia: "producto", id, dataEntry: original, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});

@@ -259,7 +259,7 @@ module.exports = {
 			"fechaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
-			"sexo_id",
+			"genero_id",
 			"epocaOcurrencia_id",
 			"anoNacim",
 			"categoria_id",
@@ -349,7 +349,7 @@ module.exports = {
 			},
 			// Personajes
 			{titulo: "Alternativo", nombre: "apodo", personajes: true},
-			{titulo: "Sexo", nombre: "sexo_id", personajes: true, relacInclude: "sexo", tabla: "sexos"},
+			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Nacim.", nombre: "anoNacim", personajes: true},
 			{titulo: "Categoría", nombre: "categoria_id", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{

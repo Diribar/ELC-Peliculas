@@ -1,8 +1,4 @@
-<div id="tituloPrincipal">
-	<h1 id="titulo">
-		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.entidadNombre %> a nuestra Base de Datos
-	</h1>
-</div>
+<%- include("PA9-TituloPrincipal") %>
 <form method="POST" id="dataEntry" class="flexCol">
 	<section class="flexCol">
 		<!-- Título y Ayuda -->

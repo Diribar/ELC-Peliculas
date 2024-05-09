@@ -16,6 +16,7 @@ module.exports = (sequelize, dt) => {
 
 		// Específicos
 		anoComienzo: {type: dt.INTEGER},
+		genero_id: {type: dt.STRING(1)},
 		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 

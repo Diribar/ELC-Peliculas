@@ -207,13 +207,13 @@
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
 			<% if (personajes) { %>
-				<!-- Sexo -->
-				<div id="sectorSexo" class="flexRowAlign altoFila inputError">
+				<!-- Genero -->
+				<div id="sectorGenero" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
-					<% for (let sexo of sexos) { %>
+					<% for (let genero of generos) { %>
 						<div class="flexRowAlign opciones relative">
-							<input type="radio" name="sexo_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.sexo_id==sexo.id) { %>checked<% } %>>
-							<label for="<%= sexo.id %>"><%= sexo.nombre %></label>
+							<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
+							<label for="<%= genero.id %>"><%= genero.nombre %></label>
 						</div>
 					<% } %>
 					<!-- Ayuda -->
@@ -224,7 +224,7 @@
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre:"sexo_id", ocultarOK: true}) %>
+					<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } %>
@@ -353,7 +353,7 @@
 				<!-- Preguntas RCLIC -->
 				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
 					<!-- Rol en la Iglesia -->
-					<div class="flexRowAlign altoFila segunSexo_id invisible">
+					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
 							<% for (let rolIglesia of rolesIgl) { %>
@@ -367,7 +367,7 @@
 						</select>
 					</div>
 					<!-- Proceso de Canonización -->
-					<div class="flexRowAlign altoFila segunSexo_id invisible">
+					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="canon_id" class="input">
 							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
 							<% for (let canon of canons) { %>

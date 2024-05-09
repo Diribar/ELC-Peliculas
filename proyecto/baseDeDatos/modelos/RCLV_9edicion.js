@@ -23,7 +23,7 @@ module.exports = (sequelize, dt) => {
 		// Específico de 'personajes'
 		anoNacim: {type: dt.INTEGER},
 		apodo: {type: dt.STRING(35)},
-		sexo_id: {type: dt.STRING(1)},
+		genero_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 		canon_id: {type: dt.STRING(3)},
@@ -57,7 +57,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 
-		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
+		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
 		entidad.belongsTo(n.hechos, {as: "apMar", foreignKey: "apMar_id"});

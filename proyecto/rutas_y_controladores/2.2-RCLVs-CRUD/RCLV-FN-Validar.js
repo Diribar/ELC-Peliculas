@@ -19,7 +19,7 @@ module.exports = {
 
 		// Campos de personajes
 		if (datos.entidad == "personajes") {
-			errores.sexo = this.sexo(datos);
+			errores.genero = this.genero(datos);
 			errores.RCLIC = this.RCLIC_personajes(datos);
 		}
 
@@ -158,16 +158,16 @@ module.exports = {
 	},
 
 	// Personajes
-	sexo: (datos) => {
-		return !datos.sexo_id ? variables.radioVacio : "";
+	genero: (datos) => {
+		return !datos.genero_id ? variables.radioVacio : "";
 	},
 	RCLIC_personajes: (datos) => {
 		if (datos.anoNacim) datos.anoNacim = parseInt(datos.anoNacim);
 		let respuesta = !datos.categoria_id
 			? "Necesitamos saber sobre su relación con la Iglesia"
 			: datos.categoria_id == "CFC"
-			? !datos.sexo_id
-				? "Estamos a la espera de que nos informes el sexo"
+			? !datos.genero_id
+				? "Estamos a la espera de que nos informes el genero"
 				: !datos.rolIglesia_id
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.canon_id
