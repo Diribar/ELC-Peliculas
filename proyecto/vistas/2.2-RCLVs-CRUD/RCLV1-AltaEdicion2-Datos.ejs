@@ -341,9 +341,9 @@
 					</div>
 				</div>
 				<!-- Preguntas RCLIC -->
-				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila invisible grow spaceBetween">
 					<!-- Rol en la Iglesia -->
-					<div class="flexRowAlign altoFila invisible">
+					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
 							<% if (dataEntry.genero_id) for (let rolIgl of rolesIgl) if (rolIgl[dataEntry.genero_id]) { %>
@@ -357,7 +357,7 @@
 						</select>
 					</div>
 					<!-- Proceso de Canonización -->
-					<div class="flexRowAlign altoFila invisible">
+					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="canon_id" class="input">
 							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
 							<% for (let canon of canons) { %>
@@ -397,7 +397,7 @@
 					</div>
 					<div class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</div>
 				</div>
-				<div id="preguntasRCLIC" class="flexRowAlign altoFila ">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila invisible">
 					<!-- ¿Es una aparición mariana -->
 					<div id="sectorApMar" class="flexRowAlign invisible">
 						<div class="flexRowAlign radioBtn">
