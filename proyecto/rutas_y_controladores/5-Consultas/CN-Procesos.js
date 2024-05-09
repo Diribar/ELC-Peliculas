@@ -550,7 +550,7 @@ module.exports = {
 				if (!palabrasClave) return rclvs;
 
 				// Variables
-				let campos = ["nombre", "apodo"];
+				let campos = ["nombre", "nombreAltern"];
 				palabrasClave = palabrasClave.toLowerCase();
 
 				// Rutina por rclv
@@ -781,7 +781,7 @@ module.exports = {
 					let datosRclv = {entidad, id, nombre, productos, avatar};
 
 					// Casos especiales
-					if (rclv.apodo) datosRclv.apodo = rclv.apodo;
+					if (rclv.nombreAltern) datosRclv.nombreAltern = rclv.nombreAltern;
 					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
 					if (epocaOcurrencia)
 						datosRclv = {...datosRclv, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
