@@ -2,7 +2,8 @@ module.exports = (sequelize, dt) => {
 	const alias = "generos";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(20)},
+		nombre: {type: dt.STRING(10)},
+		mascFem: {type: dt.STRING(20)},
 		letraFinal: {type: dt.STRING(2)},
 	};
 	const config = {
