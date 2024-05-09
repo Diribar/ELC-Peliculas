@@ -79,11 +79,12 @@ INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', '
 Tabla Generos
 UPDATE c19353_elc.aux_generos SET orden=1, nombre='Varón', letraFinal='o' WHERE id='M';
 INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'a');
-INSERT INTO c19353_elc.aux_generos VALUES('MS', 3, 'Varón', 'o');
-INSERT INTO c19353_elc.aux_generos VALUES('FS', 4, 'Mujer', 'a');
-INSERT INTO c19353_elc.aux_generos VALUES('MP', 5, 'Varón', 'os');
-INSERT INTO c19353_elc.aux_generos VALUES('FP', 6, 'Mujer', 'as');
-INSERT INTO c19353_elc.aux_generos VALUES('MFP', 7, 'Varón y Mujer', 'os');
+INSERT INTO c19353_elc.aux_generos VALUES('P', 3, 'Grupo', NULL);
+INSERT INTO c19353_elc.aux_generos VALUES('MS', 4, 'Varón', 'o');
+INSERT INTO c19353_elc.aux_generos VALUES('FS', 5, 'Mujer', 'a');
+INSERT INTO c19353_elc.aux_generos VALUES('MP', 6, 'Varón', 'os');
+INSERT INTO c19353_elc.aux_generos VALUES('FP', 7, 'Mujer', 'as');
+INSERT INTO c19353_elc.aux_generos VALUES('MFP', 8, 'Varón y Mujer', 'os');
 
 Tabla Personajes
 UPDATE c19353_elc.rclv_1personajes SET genero_id='FS' WHERE genero_id='M';
