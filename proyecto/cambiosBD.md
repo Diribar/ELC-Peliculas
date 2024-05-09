@@ -55,14 +55,15 @@ ALTER TABLE c19353_elc.rclv_9edicion CHANGE sexo_id genero_id varchar(2) CHARACT
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE avatar avatar varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER prioridad_id;
 ALTER TABLE c19353_elc.rclv_9edicion ADD hoy varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
 
+MODIFICACIONES -----------------------------------
 
 Tabla Canons
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('ST', 1, 'Santo/a', 'Santo', 'Santa', 'Santos', 'Santas');
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('BT', 2, 'Beato/a', 'Beato', 'Beata', 'Beatos', 'Beatas');
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('VN', 3, 'Venerable', 'Venerable', 'Venerable', 'Venerables', 'Venerables');
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('SD', 4, 'Siervo/a de Dios', 'Siervo de Dios', 'Sierva de Dios', 'Siervos de Dios', 'Siervas de Dios');
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('NN', 5, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno');
-INSERT INTO c19353_elc.rclv_canons (id, orden, nombre, MS, FS, MP, FP) VALUES('VC', 99, '', '', '', '', '');
+INSERT INTO c19353_elc.rclv_canons VALUES('ST', 1, 'Santo/a', 'Santo', 'Santa', 'Santos', 'Santas');
+INSERT INTO c19353_elc.rclv_canons VALUES('BT', 2, 'Beato/a', 'Beato', 'Beata', 'Beatos', 'Beatas');
+INSERT INTO c19353_elc.rclv_canons VALUES('VN', 3, 'Venerable', 'Venerable', 'Venerable', 'Venerables', 'Venerables');
+INSERT INTO c19353_elc.rclv_canons VALUES('SD', 4, 'Siervo/a de Dios', 'Siervo de Dios', 'Sierva de Dios', 'Siervos de Dios', 'Siervas de Dios');
+INSERT INTO c19353_elc.rclv_canons VALUES('NN', 5, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno');
+INSERT INTO c19353_elc.rclv_canons VALUES('VC', 99, '', '', '', '', '');
 
 Tabla Roles Iglesia
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LA', 1, 'Laico/a', 'Laico', 'Laica', 'Laicos', 'Laicas', 'Laicos', 1, 1, 1, 1, 1);
@@ -76,19 +77,19 @@ INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sag
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
 
 Tabla Generos
-INSERT INTO c19353_elc.aux_generos (id, orden, nombre, letraFinal) VALUES('MS', 3, 'Varón', 'o');
-INSERT INTO c19353_elc.aux_generos (id, orden, nombre, letraFinal) VALUES('FS', 4, 'Mujer', 'a');
-INSERT INTO c19353_elc.aux_generos (id, orden, nombre, letraFinal) VALUES('MP', 5, 'Varón', 'os');
-INSERT INTO c19353_elc.aux_generos (id, orden, nombre, letraFinal) VALUES('FP', 6, 'Mujer', 'as');
-INSERT INTO c19353_elc.aux_generos (id, orden, nombre, letraFinal) VALUES('MFP', 7, 'Varón y Mujer', 'os');
+UPDATE c19353_elc.aux_generos SET orden=1, nombre='Varón', letraFinal='o' WHERE id='M';
+INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'a');
+INSERT INTO c19353_elc.aux_generos VALUES('MS', 3, 'Varón', 'o');
+INSERT INTO c19353_elc.aux_generos VALUES('FS', 4, 'Mujer', 'a');
+INSERT INTO c19353_elc.aux_generos VALUES('MP', 5, 'Varón', 'os');
+INSERT INTO c19353_elc.aux_generos VALUES('FP', 6, 'Mujer', 'as');
+INSERT INTO c19353_elc.aux_generos VALUES('MFP', 7, 'Varón y Mujer', 'os');
 
-Cambio de valor genero_id
+Tabla Personajes
 UPDATE c19353_elc.rclv_1personajes SET genero_id='FS' WHERE genero_id='M';
 UPDATE c19353_elc.rclv_1personajes SET genero_id='MS' WHERE genero_id='V';
 UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
 UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
-
-Cambio de valor en canon_id y rolIglesia_id
 UPDATE c19353_elc.rclv_1personajes SET canon_id='ST' WHERE canon_id LIKE 'ST_';
 UPDATE c19353_elc.rclv_1personajes SET canon_id='BT' WHERE canon_id LIKE 'BT_';
 UPDATE c19353_elc.rclv_1personajes SET canon_id='VN' WHERE canon_id LIKE 'VN_';
@@ -104,6 +105,13 @@ UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='SC' WHERE rolIglesia_id LI
 UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='SF' WHERE rolIglesia_id LIKE 'SF_';
 UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='PP' WHERE rolIglesia_id LIKE 'PP_';
 
-Eliminar
+Tabla Usuarios
+UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
+UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
+
+
+ELIMINAR ----------------------------
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
+DELETE FROM c19353_elc.aux_generos WHERE id='X';
+DELETE FROM c19353_elc.aux_generos WHERE id='V';
