@@ -88,8 +88,7 @@ INSERT INTO c19353_elc.aux_generos VALUES('MFP', 7, 'Varón y Mujer', 'os');
 Tabla Personajes
 UPDATE c19353_elc.rclv_1personajes SET genero_id='FS' WHERE genero_id='M';
 UPDATE c19353_elc.rclv_1personajes SET genero_id='MS' WHERE genero_id='V';
-UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
-UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
+UPDATE c19353_elc.rclv_1personajes SET genero_id='MFP' WHERE genero_id='X';
 UPDATE c19353_elc.rclv_1personajes SET canon_id='ST' WHERE canon_id LIKE 'ST_';
 UPDATE c19353_elc.rclv_1personajes SET canon_id='BT' WHERE canon_id LIKE 'BT_';
 UPDATE c19353_elc.rclv_1personajes SET canon_id='VN' WHERE canon_id LIKE 'VN_';
@@ -108,7 +107,6 @@ UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='PP' WHERE rolIglesia_id LI
 Tabla Usuarios
 UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
 UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
-
 
 ELIMINAR ----------------------------
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
