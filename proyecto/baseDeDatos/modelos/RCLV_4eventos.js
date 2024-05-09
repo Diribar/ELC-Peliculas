@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "eventos";
 	const columns = {
 		// Común con todos los RCLVs
-		nombre: {type: dt.STRING(40)},
+		nombre: {type: dt.STRING(35)},
 		genero_id: {type: dt.STRING(2)},
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},

@@ -42,7 +42,7 @@ ALTER TABLE c19353_elc.rclv_2hechos ADD hoy varchar(70) CHARACTER SET utf8mb4 CO
 ALTER TABLE c19353_elc.rclv_3temas ADD genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_3temas ADD CONSTRAINT rclv_3temas_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE c19353_elc.rclv_4eventos MODIFY COLUMN nombre varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.rclv_4eventos MODIFY COLUMN nombre varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclv_4eventos ADD genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_4eventos ADD CONSTRAINT rclv_4eventos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE c19353_elc.rclv_4eventos ADD hoy varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
@@ -50,7 +50,7 @@ ALTER TABLE c19353_elc.rclv_4eventos ADD hoy varchar(70) CHARACTER SET utf8mb4 C
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano ADD genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano ADD CONSTRAINT rclv_5epocas_del_ano_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE c19353_elc.rclv_9edicion MODIFY COLUMN nombre varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.rclv_9edicion MODIFY COLUMN nombre varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE sexo_id genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER apodo;
 
