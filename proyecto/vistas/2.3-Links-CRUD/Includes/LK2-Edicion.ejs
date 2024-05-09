@@ -16,7 +16,7 @@
 	<td class="ancho_calidad calidad campo">
 		<div class="inputError">
 			<% aux = link.prov.calidad %>
-			<select name="calidad" class="input sinFlechas" <% if (aux) { %>disabled<% } %>>
+			<select name="calidad" class="input sinFlecha" <% if (aux) { %>disabled<% } %>>
 				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
 				<% } %>
@@ -28,7 +28,7 @@
 	<!-- Castellano -->
 	<td class="ancho_castellano castellano campo">
 		<div class="inputError">
-			<select name="castellano" class="input sinFlechas">
+			<select name="castellano" class="input sinFlecha">
 				<option value="1" <%- link.castellano ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.castellano ? "selected" : "" %>>NO</option>
 			</select>
@@ -38,7 +38,7 @@
 	<!-- Sub-Títulos -->
 	<td class="ancho_subtitulos subtitulos campo">
 		<div class="inputError">
-			<select name="subtitulos" class="input sinFlechas">
+			<select name="subtitulos" class="input sinFlecha">
 				<option value="1" <%- link.subtitulos ? "selected" : "" %>>SI</option>
 				<option value="0" <%- link.subtitulos === false ? "selected" : "" %>>NO</option>
 				<option value="-" <%- link.subtitulos === null ? "selected" : "" %> class="ocultar">-</option>
@@ -61,7 +61,7 @@
 	<td class="ancho_tipo_id tipo_id campo">
 		<div class="inputError">
 			<% aux = !link.prov.trailer || !link.prov.pelicula %>
-			<select name="tipo_id" class="input sinFlechas" <% if (aux) { %>disabled<% } %>>
+			<select name="tipo_id" class="input sinFlecha" <% if (aux) { %>disabled<% } %>>
 				<option value="<%= linksTipos[0].id %>" <%- link.tipo_id==linksTipos[0].id ? "selected" : "" %>><%= linksTipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
 					<option value="<%= linksTipos[1].id %>" <%- link.tipo_id==linksTipos[1].id ? "selected" : "" %>><%= linksTipos[1].nombre %></option>
@@ -74,7 +74,7 @@
 	<td class="ancho_completo completo campo">
 		<div class="inputError">
 			<% aux = link.prov.siempreCompleta %>
-			<select name="completo" class="input sinFlechas" <% if (aux) { %>disabled<% } %>>
+			<select name="completo" class="input sinFlecha" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.completo ? "selected" : "" %>>SI</option>
 				<option value="0" <%- !link.completo ? "selected" : "" %>>NO</option>
 			</select>

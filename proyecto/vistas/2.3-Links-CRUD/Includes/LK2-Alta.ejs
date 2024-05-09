@@ -15,7 +15,7 @@
 	<!-- Calidad -->
 	<td class="ancho_calidad calidad desperdicio campo">
 		<div class="inputError">
-			<select name="calidad" class="input ocultar sinFlechas">
+			<select name="calidad" class="input ocultar sinFlecha">
 				<option value="" selected>?</option>
 				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>"><%= calidad %></option>
@@ -28,7 +28,7 @@
 	<!-- Castellano -->
 	<td class="ancho_castellano castellano desperdicio campo">
 		<div class="inputError">
-			<select name="castellano" class="input ocultar sinFlechas">
+			<select name="castellano" class="input ocultar sinFlecha">
 				<option value="" selected>?</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
@@ -39,7 +39,7 @@
 	<!-- Sub-Títulos -->
 	<td class="ancho_subtitulos subtitulos desperdicio campo">
 		<div class="inputError">
-			<select name="subtitulos" class="input ocultar sinFlechas">
+			<select name="subtitulos" class="input ocultar sinFlecha">
 				<option value="" selected>?</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
@@ -62,7 +62,7 @@
 	<!-- Tipo -->
 	<td class="ancho_tipo_id tipo_id desperdicio campo">
 		<div class="inputError">
-			<select name="tipo_id" class="input ocultar sinFlechas">
+			<select name="tipo_id" class="input ocultar sinFlecha">
 				<option value="">Elejí</option>
 				<option value="<%= linksTipos[0].id %>" <%- entidad == "colecciones" ? "selected" : "" %>><%= linksTipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
@@ -75,7 +75,7 @@
 	<!-- Completo -->
 	<td class="ancho_completo completo desperdicio campo">
 		<div class="inputError">
-			<select name="completo" class="input ocultar sinFlechas">
+			<select name="completo" class="input ocultar sinFlecha">
 				<option value="" selected>Elejí</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
