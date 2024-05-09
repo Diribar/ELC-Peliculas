@@ -211,10 +211,7 @@
 			<div id="sectorGenero" class="flexRowAlign altoFila inputError">
 				<h3><%- personajes ? 'Sexo' : 'Género' %></h3>
 				<% for (let genero of generos) { %>
-					<div class="flexRowAlign opciones relative">
-						<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
-						<label for="<%= genero.id %>"><%= genero.nombre %></label>
-					</div>
+					<%- include("RCLV-2AE-InputGenero", {genero}) %>
 				<% } %>
 				<!-- Ayuda -->
 				<div class="ayuda">
