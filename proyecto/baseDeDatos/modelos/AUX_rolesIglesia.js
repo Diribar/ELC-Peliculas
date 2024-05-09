@@ -7,9 +7,6 @@ module.exports = (sequelize, dt) => {
 		FS: {type: dt.STRING(20)},
 		MP: {type: dt.STRING(20)},
 		FP: {type: dt.STRING(20)},
-		grupo: {type: dt.BOOLEAN},
-		usuario: {type: dt.BOOLEAN},
-		personaje: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_roles_iglesia",
