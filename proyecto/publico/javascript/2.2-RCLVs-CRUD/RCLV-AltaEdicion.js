@@ -42,6 +42,7 @@ window.addEventListener("load", async () => {
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
 		generos_id: document.querySelectorAll("form input[name='genero_id']"),
+		plural_id: document.querySelector("form input[name='plural_id']"),
 		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 
@@ -49,6 +50,8 @@ window.addEventListener("load", async () => {
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
 		ano: document.querySelector("form input[name='" + ano + "']"),
+		leyenda_hoyEstamos: document.querySelector("form .input[name='hoyEstamos']"),
+		leyenda_resto: document.querySelector("form .input[name='resto']"),
 	};
 	let rutas = {
 		// Rutas
@@ -80,6 +83,9 @@ window.addEventListener("load", async () => {
 		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
+	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
+	console.log(v.hoyEstamos);
+
 	if (v.personajes) {
 		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
 		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
@@ -274,7 +280,8 @@ window.addEventListener("load", async () => {
 			genero: {
 				consolidado: function () {
 					// Variables
-					v.genero_id = opcionElegida(DOM.generos_id).value;
+					v.genero_id = opcElegidaCheck(DOM.generos_id);
+					v.plural_id = DOM.plural_id.checked ? "P" : "S";
 
 					// Opciones de 'Rol en la Iglesia'
 					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
@@ -311,13 +318,13 @@ window.addEventListener("load", async () => {
 			epocaOcurrencia: {
 				personajes: async () => {
 					// Obtiene la opción elegida
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
 					// Obtiene el año
 					let ano = FN_ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
-					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
+					if (epocaOcurrencia_id == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
 					else DOM.sectorApMar.classList.add("invisible");
 
 					// Fin
@@ -325,14 +332,14 @@ window.addEventListener("load", async () => {
 				},
 				hechos: async () => {
 					// Obtiene la opción elegida
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
 
 					// Obtiene el año
 					let ano = FN_ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
-					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
+					if (epocaOcurrencia_id == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
 					else DOM.sectorApMar.classList.add("invisible");
 
 					// Fin
@@ -367,11 +374,11 @@ window.addEventListener("load", async () => {
 
 				// Le agrega lo referido a la aparición mariana
 				if (v.hechos) {
-					let soloCfc = opcionElegida(DOM.soloCfc);
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let soloCfc = opcElegidaRadio(DOM.soloCfc);
+					let epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
 					let ano = FN_ano(DOM.ano.value);
-					let ama = opcionElegida(DOM.ama).value;
-					if (soloCfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
+					let ama = opcElegidaRadio(DOM.ama);
+					if (soloCfc == 1 && epocaOcurrencia_id == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
 				}
 
 				// Averigua los errores
@@ -453,11 +460,11 @@ window.addEventListener("load", async () => {
 				// Variables
 				let params = "epocaOcurrencia";
 				params += "&entidad=" + entidad;
-				let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+				let epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
+				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 				// Agrega los demás parámetros
-				if (epocaOcurrencia_id.value == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
+				if (epocaOcurrencia_id == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
 
 				// OK y Errores
 				v.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -472,10 +479,10 @@ window.addEventListener("load", async () => {
 					let params = "RCLIC_personajes";
 
 					// Obtiene la categoría
-					let categoria_id = opcionElegida(DOM.categorias_id);
-					params += "&categoria_id=" + categoria_id.value;
+					const categoria_id = opcElegidaRadio(DOM.categorias_id);
+					params += "&categoria_id=" + categoria_id;
 
-					if (categoria_id.value == "CFC") {
+					if (categoria_id == "CFC") {
 						// Obtiene los valores de los preguntasRCLIC
 						params += "&genero_id=" + v.genero_id;
 						if (v.genero_id) {
@@ -483,17 +490,17 @@ window.addEventListener("load", async () => {
 							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
 
 							// Agrega la epocaOcurrencia_id
-							const epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+							const epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
+							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 							// Acciones si la epocaOcurrencia_id es 'pst'
-							if (epocaOcurrencia_id.value == "pst") {
+							if (epocaOcurrencia_id == "pst") {
 								// Agrega el año
 								const ano = FN_ano(DOM.ano.value);
 								params += "&anoNacim=" + ano;
 
 								// Agrega lo referido a la aparición mariana
-								if (ano > 1100) params += "&apMar_id=" + opcionElegida(DOM.apMar_id).value;
+								if (ano > 1100) params += "&apMar_id=" + opcElegidaRadio(DOM.apMar_id);
 							}
 						}
 					}
@@ -510,20 +517,20 @@ window.addEventListener("load", async () => {
 					let params = "RCLIC_hechos";
 
 					// Obtiene el 'soloCfc'
-					let soloCfc = opcionElegida(DOM.soloCfc);
-					params += "&soloCfc=" + soloCfc.value;
+					let soloCfc = opcElegidaRadio(DOM.soloCfc);
+					params += "&soloCfc=" + soloCfc;
 
-					if (soloCfc.value == 1) {
+					if (soloCfc == 1) {
 						// Agrega los datos de epocaOcurrencia_id y año
-						let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-						params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+						let epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
+						params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
-						if (epocaOcurrencia_id.value == "pst") {
+						if (epocaOcurrencia_id == "pst") {
 							let ano = FN_ano(DOM.ano.value);
 							// Agrega el año
 							params += "&anoComienzo=" + ano;
 							// Agrega lo referido a la aparición mariana
-							if (ano > 1100) params += "&ama=" + opcionElegida(DOM.ama).value;
+							if (ano > 1100) params += "&ama=" + opcElegidaRadio(DOM.ama);
 						}
 					}
 
@@ -592,8 +599,8 @@ window.addEventListener("load", async () => {
 
 			// Genero
 			if (DOM.generos_id.length) {
-				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero.consolidado();
-				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined))
+				if (opcElegidaRadio(DOM.generos_id)) await this.impactos.genero.consolidado();
+				if (opcElegidaRadio(DOM.generos_id) || (forzar && v.errores.genero_id === undefined))
 					await this.validacs.genero();
 			}
 
@@ -607,15 +614,15 @@ window.addEventListener("load", async () => {
 
 			// Época
 			if (DOM.epocasOcurrencia_id.length) {
-				if (opcionElegida(DOM.epocasOcurrencia_id).value) await this.impactos.epocaOcurrencia[entidad]();
-				if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && v.errores.epocaOcurrencia === undefined))
+				if (opcElegidaRadio(DOM.epocasOcurrencia_id)) await this.impactos.epocaOcurrencia[entidad]();
+				if (opcElegidaRadio(DOM.epocasOcurrencia_id) || (forzar && v.errores.epocaOcurrencia === undefined))
 					await this.validacs.epocaOcurrencia();
 			}
 
 			// RCLIC
 			if (
-				(v.personajes && opcionElegida(DOM.categorias_id).value) ||
-				(v.hechos && opcionElegida(DOM.soloCfc).value) ||
+				(v.personajes && opcElegidaRadio(DOM.categorias_id)) ||
+				(v.hechos && opcElegidaRadio(DOM.soloCfc)) ||
 				(forzar && (v.personajes || v.hechos) && v.errores.RCLIC === undefined)
 			)
 				await this.validacs.RCLIC[entidad]();
@@ -751,12 +758,12 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el sector Repetido
 		if (campo == "repetido") FN.validacs.repetido();
 
-		// Acciones si se cambia el sector Genero
-		if (campo == "genero_id") {
+		// Acciones si se cambia el sector 'Genero'
+		if (["genero_id", "plural_id"].includes(campo)) {
 			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
 			// Si corresponde, valida RCLIC
-			if (v.OK.genero_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
+			if (v.OK.genero_id && opcElegidaRadio(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
 		// Acciones si se cambia el sector Carpeta Avatars
@@ -774,8 +781,8 @@ window.addEventListener("load", async () => {
 			if (e.target.value == "pst") DOM.ano.focus();
 			// Si corresponde, valida RCLIC
 			if (v.OK.epocaOcurrencia) {
-				if (v.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
-				if (v.hechos && opcionElegida(DOM.soloCfc).value == 1) await FN.validacs.RCLIC.hechos();
+				if (v.personajes && opcElegidaRadio(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
+				if (v.hechos && opcElegidaRadio(DOM.soloCfc) == 1) await FN.validacs.RCLIC.hechos();
 			}
 		}
 
@@ -809,7 +816,11 @@ const id = new URL(location.href).searchParams.get("id");
 const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 
 // Funciones
-let opcionElegida = (opciones) => {
+let opcElegidaRadio = (opciones) => {
+	for (var opcion of opciones) if (opcion.checked) return opcion.value;
+	return "";
+};
+let opcElegidaCheck = (opciones) => {
 	for (var opcion of opciones) if (opcion.checked) return opcion;
 	return {value: "", name: ""};
 };
