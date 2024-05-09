@@ -15,6 +15,7 @@ module.exports = (sequelize, dt) => {
 		// Común con hechos
 		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
+		hoy: {type: dt.STRING(70)},
 
 		// Específicos
 		canon_id: {type: dt.STRING(3)},
@@ -23,6 +24,7 @@ module.exports = (sequelize, dt) => {
 		rolIglesia_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 
+		// Fechas y Usuarios
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 		altaRevisadaPor_id: {type: dt.INTEGER},
