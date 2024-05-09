@@ -596,7 +596,7 @@ let creaUnaCelda = {
 		primeraLinea.innerHTML = rclv.nombre; // Nombre
 		const span = document.createElement("span");
 
-		if (rclv.apodo) span.innerHTML += " (" + rclv.apodo + ")"; // Apodo
+		if (rclv.nombreAltern) span.innerHTML += " (" + rclv.nombreAltern + ")"; // Apodo
 		if (span.innerHTML) primeraLinea.appendChild(span);
 		anchor.appendChild(primeraLinea);
 

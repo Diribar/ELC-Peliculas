@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
 	if (v.personajes) {
-		DOM.apodo = document.querySelector("form input[name='apodo']");
+		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
 		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
 		DOM.preguntasRCLIC = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
 		DOM.categorias_id = document.querySelectorAll("form input[name='categoria_id']");
@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
 	if (v.hechos) {
-		DOM.nombreAltern = document.querySelector("form input[name='apodo']");
+		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
 		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.ama = document.querySelectorAll("form input[name='ama']");
@@ -358,7 +358,7 @@ window.addEventListener("load", async () => {
 				// Variables
 				let params = "nombre";
 				params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
-				if (DOM.apodo.value) params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
+				if (DOM.nombreAltern.value) params += "&nombreAltern=" + encodeURIComponent(DOM.nombreAltern.value);
 				params += "&entidad=" + entidad;
 				if (id) params += "&id=" + id;
 
@@ -642,9 +642,9 @@ window.addEventListener("load", async () => {
 			let valor = e.target.value;
 
 			// Acciones si se cambia un texto
-			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario")) {
+			if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario")) {
 				// Variables
-				const largoMaximo = campo == "nombre" || campo == "apodo" ? 35 : campo.startsWith("comentario") ? 70 : false;
+				const largoMaximo = campo == "nombre" || campo == "nombreAltern" ? 35 : campo.startsWith("comentario") ? 70 : false;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
 				if (campo == "nombre" && v.personajes)
@@ -688,7 +688,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Reemplaza el valor del DOM
-			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario") || campo == ano) {
+			if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario") || campo == ano) {
 				const posicCursor = e.target.selectionStart;
 				e.target.value = valor;
 				e.target.selectionEnd = posicCursor;
