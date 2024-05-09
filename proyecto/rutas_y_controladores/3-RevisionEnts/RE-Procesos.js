@@ -815,8 +815,8 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Procesar los registros
-			let anchoMax = 35;
+			// Variables
+			const anchoMax = 35; // ancho máximo a mostrar de cada producto
 
 			// Reconvierte los elementos
 			for (let rubro in rclvs)

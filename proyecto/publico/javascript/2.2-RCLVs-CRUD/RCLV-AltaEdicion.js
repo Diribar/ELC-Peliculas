@@ -644,7 +644,14 @@ window.addEventListener("load", async () => {
 			// Acciones si se cambia un texto
 			if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario")) {
 				// Variables
-				const largoMaximo = campo == "nombre" || campo == "nombreAltern" ? 35 : campo.startsWith("comentario") ? 70 : false;
+				const largoMaximo =
+					campo == "nombreAltern" || (campo == "nombre" && entidad != "eventos")
+						? 35
+						: campo == "nombre"
+						? 45
+						: campo.startsWith("comentario")
+						? 70
+						: false;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
 				if (campo == "nombre" && v.personajes)
