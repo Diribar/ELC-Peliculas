@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		// Común con personajes
 		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
-		hoy: {type: dt.STRING(70)},
+		// hoy: {type: dt.STRING(70)},
 
 		// Específicos
 		anoComienzo: {type: dt.INTEGER},
