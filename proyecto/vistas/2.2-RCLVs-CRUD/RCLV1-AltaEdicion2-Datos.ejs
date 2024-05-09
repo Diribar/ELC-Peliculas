@@ -418,7 +418,7 @@
 	</section>
 <% } %>
 <!-- Leyenda -->
-<section id="sectorLeyenda" class="borderTop OK flexCol">
+<section id="sectorLeyenda" class="borderTop OK flexRowAlign	">
 	<!-- Título, Ayuda y Error/OK -->
 	<div class="inputError invisibl">
 		<!-- Título -->
@@ -430,16 +430,21 @@
 				</ul>
 			</i>
 		</div>
-		<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
+		<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
 	</div>
 	<!-- Data Entry -->
 	<div id="datosLeyenda" class="flexRowAlign">
 		<div id="hoyEstamos">
-			<select name="" id=""></select>
+			<select name="hoyEstamos" class="input">
+				<option value="1">Hoy recordamos</option>
+			</select>
 			<p></p>
 		</div>
 		<div id="resto">
-			<select name="" id=""></select>
+			<select name="resto" class="input">
+				<option value="1">a Juan Pablo II, santo</option>
+				<option value="2">a san Francisco de Asís</option>
+			</select>
 			<p></p>
 		</div>
 	</div>
