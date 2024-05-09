@@ -18,7 +18,7 @@
 				<select id="genero_id" name="genero_id" class="input" required>
 					<option value="" <% if (!genero_id) { %>selected<% } %>>Elegí una opción</option>
 					<% for (let genero of generos) { %>
-						<option value="<%= genero.id %>" <% if (genero.id == genero_id) {%>selected<% } %>><%= genero.nombre %></option>
+						<option value="<%= genero.id %>" <% if (genero.id == genero_id) {%>selected<% } %>><%= genero.pers %></option>
 					<% } %>
 				</select>
 				<%- include("CMP-Errores", {nombre: "genero_id", ocultarOK: true}) %>

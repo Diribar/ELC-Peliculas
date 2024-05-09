@@ -251,7 +251,7 @@
 						type="<%- (personajes || genero.id == "P") ? 'checkbox' : 'radio' %>"
 						<% if (dataEntry.genero_id && dataEntry.genero_id.includes(genero.id)) { %>checked<% } %>
 					>
-					<label for="<%= genero.id %>"><%= personajes ? genero.nombre : genero.mascFem %></label>
+					<label for="<%= genero.id %>"><%= personajes ? genero.pers : genero.rclvs %></label>
 				</div>
 			<% } %>
 			<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
