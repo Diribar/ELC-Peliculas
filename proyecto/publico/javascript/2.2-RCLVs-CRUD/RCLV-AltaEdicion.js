@@ -810,6 +810,7 @@ window.addEventListener("load", async () => {
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await FN.startUp();
 });
+
 // Variables
 const entidad = new URL(location.href).searchParams.get("entidad");
 const id = new URL(location.href).searchParams.get("id");
@@ -821,7 +822,8 @@ let opcElegidaRadio = (opciones) => {
 	return "";
 };
 let opcElegidaCheck = (opciones) => {
-	for (var opcion of opciones) if (opcion.checked) return opcion;
-	return {value: "", name: ""};
+	let valor = "";
+	for (var opcion of opciones) if (opcion.checked) valor += opcion.value;
+	return valor;
 };
 let FN_ano = (ano) => (ano ? parseInt(ano) : 0);
