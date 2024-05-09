@@ -126,7 +126,7 @@ app.set("views", [
 
 		// Variable de entidades
 		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
-		generos: BD_genericas.obtieneTodos("generos", "orden"),
+		generos: BD_genericas.obtieneTodos("generos", "orden").then((n) => n.filter((m) => m.id.length == 1)),
 		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
 		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
 

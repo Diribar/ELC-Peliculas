@@ -40,7 +40,6 @@ module.exports = {
 			const avatar = usuario.avatar
 				? "/Externa/1-Usuarios/" + usuario.avatar
 				: "/publico/imagenes/Avatar/Usuario-Generico.jpg";
-			const generos = generos.filter((m) => m.letraFinal);
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
