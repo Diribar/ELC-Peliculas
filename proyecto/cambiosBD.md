@@ -22,8 +22,8 @@ ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN mujer;
 
 Tabla GENEROS
 ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
-ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN nombre varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_generos ADD mascFem varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
+ALTER TABLE c19353_elc.aux_generos CHANGE nombre pers varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.aux_generos ADD rclvs varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER pers;
 ALTER TABLE c19353_elc.aux_generos CHANGE letra_final letraFinal varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN varon;
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN mujer;
@@ -80,7 +80,7 @@ INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sag
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
 
 Tabla Generos
-UPDATE c19353_elc.aux_generos SET orden=1, nombre='Varón', mascFem='Masc.', letraFinal='o' WHERE id='M';
+UPDATE c19353_elc.aux_generos SET orden=1, pers='Varón', rclvs='Masc.', letraFinal='o' WHERE id='M';
 INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'Fem.', 'a');
 INSERT INTO c19353_elc.aux_generos VALUES('P', 3, 'Grupo', 'Plural', NULL);
 INSERT INTO c19353_elc.aux_generos VALUES('MS', 4, NULL, NULL, 'o');
