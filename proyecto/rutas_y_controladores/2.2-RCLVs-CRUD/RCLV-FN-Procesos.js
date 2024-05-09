@@ -114,10 +114,9 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.apodo) {
-				// Necesariamente es un 'personaje'
-				const articulo = registro.genero_id == "V" ? "o" : "a";
-				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
+			if (registro.nombreAltern) {
+				const articulo = comp.obtieneDesdeEntidad.ao(registro.entidad);
+				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.nombreAltern});
 			}
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
@@ -208,14 +207,14 @@ module.exports = {
 			// Datos exclusivos de personajes
 			if (entidad == "personajes") {
 				// Variables
-				const {apodo, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
+				const {nombreAltern, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
 				DE = {...DE, genero_id, epocaOcurrencia_id, categoria_id};
 				const CFC = categoria_id == "CFC";
 
 				DE.canon_id = CFC ? canon_id : "NN" + genero_id;
 				DE.canonNombre = comp.canonNombre({nombre, canon_id});
 
-				DE.apodo = apodo ? apodo : "";
+				DE.nombreAltern = nombreAltern ? nombreAltern : "";
 				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + genero_id;
 				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
@@ -224,7 +223,8 @@ module.exports = {
 			// Datos para hechos
 			if (entidad == "hechos") {
 				// Variables
-				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
+				const {nombreAltern, epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
+				DE.nombreAltern = nombreAltern ? nombreAltern : "";
 				DE.epocaOcurrencia_id = epocaOcurrencia_id;
 				if (epocaOcurrencia_id == "pst") DE.anoComienzo = anoComienzo;
 				DE.soloCfc = Number(soloCfc);
