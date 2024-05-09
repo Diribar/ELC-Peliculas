@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		FS: {type: dt.STRING(20)},
 		MP: {type: dt.STRING(20)},
 		FP: {type: dt.STRING(20)},
+		MFP: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "rclv_canons",
