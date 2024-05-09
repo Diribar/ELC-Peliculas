@@ -306,7 +306,7 @@ module.exports = {
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
 					datosCompleto.valorDesc = valorDesc;
-					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
+					let motivo = ["nombre", "nombreAltern"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datosCompleto.motivo_id = motivo.id; // con este campo se sabe si fue rechazado
 					datosCompleto.penalizac = motivo.penalizac;
 				}
