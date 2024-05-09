@@ -269,7 +269,7 @@
 			<% if (hechos) { %>
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 							<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
 						</ul>
 					</i>
@@ -299,7 +299,7 @@
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
-			<div class="flexRowAlign inputError invisible">
+			<div class="flexRowAlign inputError invisible" style="z-index: 1">
 				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
@@ -417,7 +417,34 @@
 		<% } %>
 	</section>
 <% } %>
-<!-- Recordatorio -->
+<!-- Leyenda -->
+<section id="sectorLeyenda" class="borderTop OK flexCol">
+	<!-- Título, Ayuda y Error/OK -->
+	<div class="inputError invisibl">
+		<!-- Título -->
+		<h3>Leyenda</h3>
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+					<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
+				</ul>
+			</i>
+		</div>
+		<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
+	</div>
+	<!-- Data Entry -->
+	<div id="datosLeyenda" class="flexRowAlign">
+		<div id="hoyEstamos">
+			<select name="" id=""></select>
+			<p></p>
+		</div>
+		<div id="resto">
+			<select name="" id=""></select>
+			<p></p>
+		</div>
+	</div>
+
+</section>
 
 <!-- Iconos y Botón -->
 <div id="sectorIconos">
