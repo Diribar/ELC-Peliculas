@@ -119,7 +119,7 @@ DELETE FROM c19353_elc.aux_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_generos WHERE id='X';
 DELETE FROM c19353_elc.aux_generos WHERE id='V';
 
-CREATE TABLE c19353_elc.rclvl_hoyEstamos (id smallint(5) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
+CREATE TABLE c19353_elc.rclv_hoy_estamos (id smallint(5) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
 ALTER TABLE c19353_elc.rclv_ley1Hoy ADD entidad varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclvl_1hoy ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
