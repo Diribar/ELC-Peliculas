@@ -47,7 +47,7 @@ module.exports = {
 		let mensaje = "";
 
 		// Obtiene los campos a validar
-		let campos = Object.keys(datos).filter((n) => ["nombre", "apodo"].includes(n));
+		let campos = Object.keys(datos).filter((n) => ["nombre", "nombreAltern"].includes(n));
 
 		// Validaciones individuales
 		for (let campo of campos) {
@@ -56,7 +56,7 @@ module.exports = {
 		}
 
 		// Revisa si los nombres son iguales
-		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
+		if (!mensaje && datos.nombre && datos.nombre == datos.nombreAltern) mensaje = "El nombre y el nombre alternativo deben ser diferentes";
 
 		// Fin
 		return mensaje;
@@ -231,7 +231,7 @@ let nombreApodo = async ({datos, campo}) => {
 		// Idioma castellano
 		if (!mensaje) mensaje = comp.validacs.castellano.completo(dato);
 		if (!mensaje) mensaje = comp.validacs.inicial.basico(dato);
-		if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
+		if (mensaje && campo == "nombreAltern") mensaje += " (nombre alternativo)";
 
 		// Prefijo y longitud
 		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
