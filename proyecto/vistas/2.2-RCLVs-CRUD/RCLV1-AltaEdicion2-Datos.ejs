@@ -16,7 +16,7 @@
 								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<% if (personajes) { %>
 										<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
-										<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si la persona es conocida también por otro nombre o apodo.</li>
+										<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera.</li>
 									<% } else { %>
 										<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
 									<% } %>
@@ -39,7 +39,7 @@
 						<!-- Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
-							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+							<input type="text" name="nombreAltern" class="input" value="<%= dataEntry.nombreAltern %>" autocomplete="off">
 						</div>
 					<% } %>
 				</div>
