@@ -171,7 +171,7 @@ module.exports = {
 		// Obtiene el valor
 		let {valor} = req.query;
 		// Lo convierte al castellano
-		let conversion = comp.convierteLetras.alCastellano_campo(valor);
+		let conversion = comp.letras.convierteAlCastell_campo(valor);
 		// Devuelve el resultado
 		return res.json(conversion);
 	},

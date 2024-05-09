@@ -267,7 +267,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// CONSECUENCIAS - Penaliza al usuario si corresponde
-		if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
+		if (datosHist.penalizac) comp.penalizacAcum(userID, motivo, petitFamilias);
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 		if (producto)

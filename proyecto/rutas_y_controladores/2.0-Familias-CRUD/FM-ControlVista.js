@@ -227,14 +227,14 @@ module.exports = {
 		else res.clearCookie("eliminado");
 
 		// Más variables
-		const articFinal = comp.obtieneDesdeEntidad.oa(entidad);
+		const articFinal = comp.obtieneDesdeEntidad.ao(entidad);
 		const articInicial = articFinal == "a" ? "La " : "El ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
 		const link = origen == "TM" ? "/mantenimiento" : "/";
-		const titulo = comp.convierteLetras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
+		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
 
 		// Cartel de registro eliminado
 		const informacion = {

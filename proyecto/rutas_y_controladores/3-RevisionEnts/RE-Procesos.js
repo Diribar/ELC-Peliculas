@@ -661,7 +661,7 @@ module.exports = {
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
 				// 5. Si corresponde, penaliza al usuario
-				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
+				if (motivo) comp.penalizacAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
 			// Elimina el valor del campo en el registro de 'edición' y en la variable

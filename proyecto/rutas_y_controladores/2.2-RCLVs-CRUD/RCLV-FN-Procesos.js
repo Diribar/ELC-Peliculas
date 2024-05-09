@@ -122,7 +122,7 @@ module.exports = {
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
 				console.log(124,registro);
-				const articulo = registro.genero_id == "M" ? "la" : "lo";
+				const articulo = comp.letras.laLo(registro)
 				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
 			}
 
