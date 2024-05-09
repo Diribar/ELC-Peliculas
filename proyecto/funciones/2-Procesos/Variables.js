@@ -365,14 +365,26 @@ module.exports = {
 			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
 
 			// Hechos
-			{titulo: "Genero", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
+
 			// Epocas del año
 			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
 			{titulo: "Comentario Duración", nombre: "comentarioDuracion", epocasDelAno: true},
 			{titulo: "Carpeta de Imágenes", nombre: "carpetaAvatars", epocasDelAno: true},
+
+			// Todas salvo personajes
+			{
+				titulo: "Genero",
+				nombre: "genero_id",
+				hechos: true,
+				temas: true,
+				eventos: true,
+				epocasDelAno: true,
+				relacInclude: "genero",
+				tabla: "generos",
+			},
 		],
 		links: [
 			{titulo: "Calidad", nombre: "calidad", links: true},
