@@ -246,7 +246,7 @@
 				<div class="flexRowAlign opciones relative<%- genero.id == "P" && (eventos || epocasDelAno) ? ' ocultar' : '' %>">
 					<input
 						id="<%= genero.id %>"
-						name="genero_id"
+						name="<%- genero.id == "P" ? 'plural_id' : 'genero_id' %>"
 						value="<%= genero.id %>"
 						type="<%- (personajes || genero.id == "P") ? 'checkbox' : 'radio' %>"
 						<% if (dataEntry.genero_id && dataEntry.genero_id.includes(genero.id)) { %>checked<% } %>
