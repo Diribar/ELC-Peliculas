@@ -97,9 +97,12 @@ window.addEventListener("load", async () => {
 	}
 	if (v.hechos) {
 		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
+		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
 		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
 		DOM.ama = document.querySelectorAll("form input[name='ama']");
+
+		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
 	}
 	if (v.epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
@@ -314,8 +317,8 @@ window.addEventListener("load", async () => {
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
-					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.style.visibility = "inherit";
-					else DOM.sectorApMar.style.visibility = "hidden";
+					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
+					else DOM.sectorApMar.classList.add("invisible");
 
 					// Fin
 					return;
