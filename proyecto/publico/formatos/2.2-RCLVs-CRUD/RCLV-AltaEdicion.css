@@ -121,6 +121,10 @@
 					.personajes .radioBtn {margin-left: 10px;}
 					.hechos .radioBtn {margin-right: 10px;}
 				}
+				#sectorLeyenda {
+					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
+					select {background: transparent !important; border: none !important;}
+				}
 
 				/* PreguntasRCLIC (personajes) */
 				.personajes:has(#categoria_id input#CFC:checked) #preguntasRCLIC.invisible {visibility: unset;} /* la categoría es 'CFC' */
