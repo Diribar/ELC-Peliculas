@@ -22,6 +22,8 @@ ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN mujer;
 
 Tabla GENEROS
 ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN nombre varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.aux_generos ADD mascFem varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.aux_generos CHANGE letra_final letraFinal varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN varon;
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN mujer;
@@ -77,14 +79,14 @@ INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sag
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
 
 Tabla Generos
-UPDATE c19353_elc.aux_generos SET orden=1, nombre='Varón', letraFinal='o' WHERE id='M';
-INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'a');
-INSERT INTO c19353_elc.aux_generos VALUES('P', 3, 'Grupo', NULL);
-INSERT INTO c19353_elc.aux_generos VALUES('MS', 4, 'Varón', 'o');
-INSERT INTO c19353_elc.aux_generos VALUES('FS', 5, 'Mujer', 'a');
-INSERT INTO c19353_elc.aux_generos VALUES('MP', 6, 'Varón', 'os');
-INSERT INTO c19353_elc.aux_generos VALUES('FP', 7, 'Mujer', 'as');
-INSERT INTO c19353_elc.aux_generos VALUES('MFP', 8, 'Varón y Mujer', 'os');
+UPDATE c19353_elc.aux_generos SET orden=1, nombre='Varón', mascFem='Masc.', letraFinal='o' WHERE id='M';
+INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'Fem.', 'a');
+INSERT INTO c19353_elc.aux_generos VALUES('P', 3, 'Grupo', 'Plural', NULL);
+INSERT INTO c19353_elc.aux_generos VALUES('MS', 4, NULL, NULL, 'o');
+INSERT INTO c19353_elc.aux_generos VALUES('FS', 5, NULL, NULL, 'a');
+INSERT INTO c19353_elc.aux_generos VALUES('MP', 6, NULL, NULL, 'os');
+INSERT INTO c19353_elc.aux_generos VALUES('FP', 7, NULL, NULL, 'as');
+INSERT INTO c19353_elc.aux_generos VALUES('MFP', 8, NULL, NULL, 'os');
 
 Tabla Personajes
 UPDATE c19353_elc.rclv_1personajes SET genero_id='FS' WHERE genero_id='M';
