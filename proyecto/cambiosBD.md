@@ -43,6 +43,7 @@ ALTER TABLE c19353_elc.rclv_2hechos ADD genero_id varchar(3) CHARACTER SET utf8m
 ALTER TABLE c19353_elc.rclv_2hechos ADD CONSTRAINT rclv_2hechos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE c19353_elc.rclv_2hechos ADD hoyEstamos_id tinyint(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER  ama;
 ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER hoyEstamos;
+ALTER TABLE c19353_elc.rclv_2hechos ADD CONSTRAINT rclv_2hechos_hoy_estamos FOREIGN KEY (hoyEstamos_id) REFERENCES c19353_elc.rclv_hoy_estamos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 - Tabla TEMAS
 ALTER TABLE c19353_elc.rclv_3temas ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
@@ -53,6 +54,7 @@ ALTER TABLE c19353_elc.rclv_4eventos MODIFY COLUMN nombre varchar(45) CHARACTER 
 ALTER TABLE c19353_elc.rclv_4eventos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_4eventos ADD CONSTRAINT rclv_4eventos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE c19353_elc.rclv_4eventos ADD hoyEstamos_id tinyint(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
+ALTER TABLE c19353_elc.rclv_4eventos ADD CONSTRAINT rclv_4eventos_hoy_estamos FOREIGN KEY (hoyEstamos_id) REFERENCES c19353_elc.rclv_hoy_estamos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 - Tabla ÉPOCAS DEL AÑO
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
