@@ -846,7 +846,6 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		const campo = e.target.name;
-		console.log(campo);
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
