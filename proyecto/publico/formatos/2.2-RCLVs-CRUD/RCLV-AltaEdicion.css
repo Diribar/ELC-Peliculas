@@ -119,6 +119,11 @@
 					.radioBtn {width: 70px; justify-content: space-between;}
 					.personajes .radioBtn {margin-left: 10px;}
 					.hechos .radioBtn {margin-right: 10px;}
+					/* PreguntasRCLIC (personajes y hechos) */
+					&:not(
+						:has(.input#cfc:not(:checked)), /* es 'cfc' */
+						:not(:has(#preguntasRCLIC > :not(.invisible))) /* algún elemento está visible */
+					) #preguntasRCLIC.ocultar {display: flex !important;}
 				}
 				#sectorLeyenda {
 					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
@@ -133,9 +138,6 @@
 					}
 
 				}
-
-				/* PreguntasRCLIC (personajes y hechos) - si algún 'hijo' está visible, muestra el sector RCLIC */
-				#preguntasRCLIC.ocultar:has(> :not(.invisible)) {display: flex !important;}
 
 				/* Temas de ayuda */
 				ul#ayudaNombrePers {max-width: min(400px, 90vw);}
