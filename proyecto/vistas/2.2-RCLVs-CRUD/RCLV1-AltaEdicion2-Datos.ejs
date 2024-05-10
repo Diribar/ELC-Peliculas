@@ -423,6 +423,9 @@
 				<div id="leyNombre">
 					<select name="leyNombre" class="input sinFlecha">
 						<option value="">Elegí una opción</option>
+						<% for (let opcion of opcsLeyNombre) { %>
+							<option value="<%= opcion %>" <% if (opcion == dataEntry.leyNombre) { %>selected<% } %>><%= opcion %></option>
+						<% } %>
 					</select>
 				</div>
 			<% } else { %>
