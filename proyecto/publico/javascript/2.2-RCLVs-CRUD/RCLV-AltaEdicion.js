@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables comunes
+	// Campos en común
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
