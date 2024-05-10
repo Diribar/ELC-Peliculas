@@ -434,19 +434,29 @@
 	</div>
 	<!-- Data Entry -->
 	<div id="datosLeyenda" class="flexRowAlign">
-		<div id="hoyEstamos">
-			<select name="hoyEstamos" class="input sinFlecha">
-				<option value="">Elegí una opción</option>
-				<option value="1">Hoy recordamos</option>
-			</select>
-		</div>
-		<div id="resto">
-			<select name="resto" class="input sinFlecha">
-				<option value="">Elegí una opción</option>
-				<option value="1">a Juan Pablo II, santo</option>
-				<option value="2">a san Francisco de Asís</option>
-			</select>
-		</div>
+		<!-- hoyEstamos -->
+		<% if (hechos || temas || eventos) { %>
+			<div id="hoyEstamos">
+				<select name="hoyEstamos" class="input sinFlecha">
+					<option value="">Elegí una opción</option>
+				</select>
+			</div>
+		<% } else { %>
+			<div id="hoyEstamos"><%= hoyEstamos.find(n => n.entidad == entidad).comentario %></div>
+		<% } %>
+
+		<!-- Resto -->
+		<% if (personajes || hechos) { %>
+			<div id="resto">
+				<select name="resto" class="input sinFlecha">
+					<option value="">Elegí una opción</option>
+					<option value="1">a Juan Pablo II, santo</option>
+					<option value="2">a san Francisco de Asís</option>
+				</select>
+			</div>
+		<% } else { %>
+			<div id="resto"><%= dataEntry.nombre ? dataEntry.nombre : "" %></div>
+		<% } %>
 	</div>
 
 </section>
