@@ -162,40 +162,6 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				leyNombre: () => {
-					// Variables
-					const nombres = Array.from(DOM.camposNombre)
-						.map((n) => n.value)
-						.filter((n) => !!n);
-					console.log(nombres);
-					return;
-					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
-
-					// Reinicia el select
-					DOM.hoyEstamos.innerHTML = "";
-					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
-
-					// Agrega las opciones válidas para el género
-					for (let opcion of opciones) {
-						// Crea la opción
-						const option = document.createElement("option");
-						option.value = opcion.id;
-						option.selected = true;
-						option.innerText = opcion.comentario;
-
-						// Agrega la opción
-						DOM.hoyEstamos.appendChild(option);
-					}
-
-					// Si hay una sola respuesta, la inactiva
-					DOM.hoyEstamos.disabled = opciones.length < 2;
-
-					// Corrige el ancho
-					FN.impactos.hoyEstamos();
-
-					// Fin
-					return;
-				},
 			},
 			fecha: {
 				muestraLosDiasDelMes: () => {
@@ -409,7 +375,7 @@ window.addEventListener("load", async () => {
 					DOM.hoyEstamos.disabled = opciones.length < 2;
 
 					// Corrige el ancho
-					FN.impactos.hoyEstamos();
+					FN.impactos.ancho("hoyEstamos");
 
 					// Fin
 					return;
@@ -459,16 +425,47 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			hoyEstamos: () => {
+			enLeyendaNombre: (campo) => {
 				// Variables
-				const opcionElegida = document.querySelector("form .input[name=hoyEstamos] option:checked");
+				const nombres = Array.from(DOM.camposNombre)
+					.map((n) => n.value)
+					.filter((n) => !!n);
+
+				// Reinicia el select
+				DOM.leyNombre.innerHTML = "";
+				DOM.leyNombre.appendChild(DOM.leyNombreDefault);
+
+				// Agrega las opciones
+				for (let nombre of nombres) {
+					// Crea la opción
+					const option = document.createElement("option");
+					option.value = nombre;
+					option.innerText = nombre;
+					option.selected = true;
+
+					// Agrega la opción
+					DOM.leyNombre.appendChild(option);
+				}
+
+				// Si hay una sola respuesta, la inactiva
+				DOM.leyNombre.disabled = opciones.length < 2;
+
+				// Corrige el ancho
+				FN.impactos.ancho("hoyEstamos");
+
+				// Fin
+				return;
+			},
+			ancho: (sector) => {
+				// Variables
+				const opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
 				const ancho = opcionElegida.innerText.length;
 				// console.log(opcionElegida.clientWidth);
 
 				// Ajusta el ancho del select
-				DOM.hoyEstamos.style.width = ancho * 8 + "px";
+				DOM[sector].style.width = ancho * (ancho < 10 ? 8 : ancho < 20 ? 7 : 6.5) + "px";
+				console.log(ancho);
 			},
-			leyNombre: () => {},
 		},
 		validacs: {
 			avatar: async () => {
@@ -861,7 +858,6 @@ window.addEventListener("load", async () => {
 		if (v.camposNombre.includes(campo)) {
 			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
-			FN.impactos.nombre.leyNombre();
 		}
 
 		// Acciones si se cambia el sector Fecha
@@ -922,7 +918,11 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambia el sector hoyEstamos
-		if (campo == "hoyEstamos") FN.impactos.hoyEstamos();
+		if (campo == "hoyEstamos") FN.impactos.ancho("hoyEstamos");
+
+		// Campos que impactan en 'leyendaNombre'
+		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
+			FN.impactos.enLeyendaNombre(campo);
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
