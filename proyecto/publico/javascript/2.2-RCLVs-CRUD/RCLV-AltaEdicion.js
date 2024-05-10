@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
-		botonSubmit: document.querySelector(".iconos button[type='submit']"),
+		botonSubmit: document.querySelector(".iconos button[type=submit]"),
 
 		// Variables de errores
 		iconosOK: document.querySelectorAll("form .OK .fa-circle-check"),
@@ -13,45 +13,48 @@ window.addEventListener("load", async () => {
 
 		// Avatar
 		imgAvatar: document.querySelector("form #imgDerecha img#imgAvatar"),
-		inputAvatar: document.querySelector("form #imgDerecha .input[name='avatar']"),
+		inputAvatar: document.querySelector("form #imgDerecha .input[name=avatar]"),
 		googleIMG: document.querySelector("form #imgDerecha .agregados a"),
 
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
-		nombre: document.querySelector("form .input[name='nombre']"),
+		nombre: document.querySelector("form .input[name=nombre]"),
 
 		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
-		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
+		tipoFecha: document.querySelector("form .input[name=tipoFecha]"),
 		mesDia: document.querySelector("form #sectorFecha #mesDia"),
-		mes_id: document.querySelector("form .input[name='mes_id']"),
-		dia: document.querySelector("form .input[name='dia']"),
-		anoFM: document.querySelector("form .input[name='anoFM']"),
+		mes_id: document.querySelector("form .input[name=mes_id]"),
+		dia: document.querySelector("form .input[name=dia]"),
+		anoFM: document.querySelector("form .input[name=anoFM]"),
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
-		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
+		diasDeDuracion: document.querySelector("form .input[name=diasDeDuracion]"),
 
 		// Primera columna - Fecha comentarios móvil
 		sectorContadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres"),
 		contadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres span"),
-		comentarioMovil: document.querySelector("form .input[name='comentarioMovil']"),
+		comentarioMovil: document.querySelector("form .input[name=comentarioMovil]"),
 
 		// Primera columna - Fecha comentarios duración
 		contadorDuracion: document.querySelector("form #dataEntry #diasDeDuracion .caracteres span"),
-		comentarioDuracion: document.querySelector("form .input[name='comentarioDuracion']"),
+		comentarioDuracion: document.querySelector("form .input[name=comentarioDuracion]"),
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
-		generos_id: document.querySelectorAll("form input[name='genero_id']"),
-		plural_id: document.querySelector("form input[name='plural_id']"),
-		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
-		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
+		generos_id: document.querySelectorAll("form input[name=genero_id]"),
+		plural_id: document.querySelector("form input[name=plural_id]"),
+		carpetaAvatars: document.querySelector("form .input[name=carpetaAvatars]"),
+		prioridad_id: document.querySelector("form .input[name=prioridad_id]"),
 
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
-		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
-		ano: document.querySelector("form input[name='" + ano + "']"),
-		leyenda_hoyEstamos: document.querySelector("form .input[name='hoyEstamos']"),
-		leyenda_resto: document.querySelector("form .input[name='resto']"),
+		epocasOcurrencia_id: document.querySelectorAll("form input[name=epocaOcurrencia_id]"),
+		ano: document.querySelector("form input[name=" + ano + "]"),
+		cfc: document.querySelector("form .input[name=categoria_id][value=CFC]"),
+		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
+		resto: document.querySelector("form .input[name=resto]"),
+		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
+		restoDefault: document.querySelector("form .input[name=resto] option"),
 	};
 	let rutas = {
 		// Rutas
@@ -83,32 +86,31 @@ window.addEventListener("load", async () => {
 		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
-	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
-	console.log(v.hoyEstamos);
-
 	if (v.personajes) {
-		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
-		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.preguntasRCLIC = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
-		DOM.categorias_id = document.querySelectorAll("form input[name='categoria_id']");
-		DOM.rolIglesia_id = document.querySelector("form select[name='rolIglesia_id']");
+		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
+		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
+		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
+		DOM.preguntasInputs = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
+		DOM.categorias_id = document.querySelectorAll("form input[name=categoria_id]");
+		DOM.rolIglesia_id = document.querySelector("form select[name=rolIglesia_id]");
 		DOM.rolIglesiaDefault = DOM.rolIglesia_id.querySelector("option");
-		DOM.canon_id = document.querySelector("form select[name='canon_id']");
+		DOM.canon_id = document.querySelector("form select[name=canon_id]");
 		DOM.canonDefault = DOM.canon_id.querySelector("option");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
+		DOM.apMar_id = document.querySelector("form select[name=apMar_id]");
 
-		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
+		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
 	if (v.hechos) {
-		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
-		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
+		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
+		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
+		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
+		DOM.soloCfc = document.querySelectorAll("form input[name=soloCfc]");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.ama = document.querySelectorAll("form input[name='ama']");
+		DOM.ama = document.querySelectorAll("form input[name=ama]");
 
-		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
+		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 	}
 	if (v.epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
@@ -118,6 +120,8 @@ window.addEventListener("load", async () => {
 		DOM.tablaCalendario = document.querySelector("form #calendario table");
 		v.fechasDelAno = Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML);
 	}
+	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
+	console.log(v.hoyEstamos);
 
 	// Funciones
 	let FN = {
@@ -142,8 +146,8 @@ window.addEventListener("load", async () => {
 				muestraLosDiasDelMes: () => {
 					// Aplica cambios en los días 30 y 31
 					// Variables
-					let dia30 = document.querySelector("select[name='dia'] option[value='30']");
-					let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+					let dia30 = document.querySelector("select[name=dia] option[value=30]");
+					let dia31 = document.querySelector("select[name=dia] option[value=31]");
 					let mes = DOM.mes_id.value;
 
 					// Revisar para febrero
@@ -281,7 +285,8 @@ window.addEventListener("load", async () => {
 				consolidado: function () {
 					// Variables
 					v.genero_id = opcElegidaCheck(DOM.generos_id);
-					v.plural_id = DOM.plural_id.checked ? "P" : "S";
+					if (v.genero_id == "MF") DOM.plural_id.checked = true;
+					v.genero_id += DOM.plural_id.checked ? "P" : "S";
 
 					// Opciones de 'Rol en la Iglesia'
 					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
@@ -289,14 +294,17 @@ window.addEventListener("load", async () => {
 					// Opciones de 'Proceso de Canonización'
 					this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
 
+					// Opciones de 'hoyEstamos'
+					this.hoyEstamos(DOM.hoyEstamos, v.hoyEstamos, DOM.hoyEstamosDefault);
+
 					// Fin
 					return;
 				},
-				opcsVisibles: (select, opciones, trivial) => {
+				opcsVisibles: (select, opciones, opcionDefault) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
 					select.innerHTML = "";
-					select.appendChild(trivial);
+					select.appendChild(opcionDefault);
 
 					// Agrega las opciones válidas para el género
 					for (let opcion of opciones)
@@ -310,6 +318,31 @@ window.addEventListener("load", async () => {
 							// Agrega la opción
 							select.appendChild(option);
 						}
+
+					// Fin
+					return;
+				},
+				hoyEstamos: () => {
+					// Variables
+					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
+
+					// Reinicia el select
+					DOM.hoyEstamos.innerHTML = "";
+					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
+
+					// Agrega las opciones válidas para el género
+					for (let opcion of opciones) {
+						// Crea la opción
+						const option = document.createElement("option");
+						option.value = opcion.id;
+						option.selected = true;
+						option.innerText = opcion.comentario;
+
+						// Agrega la opción
+						DOM.hoyEstamos.appendChild(option);
+					}
+
+					opciones.length == 1 ? (DOM.hoyEstamos.disabled = true) : (DOM.hoyEstamos.disabled = false);
 
 					// Fin
 					return;
@@ -345,6 +378,10 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
+			},
+			cfc: () => {
+				DOM.cfc.checked ? DOM.preguntasRCLIC.classList.remove("ocultar") : DOM.preguntasRCLIC.classList.add("ocultar"); // Muestra u oculta el sector RCLIC
+				return;
 			},
 		},
 		validacs: {
@@ -483,11 +520,12 @@ window.addEventListener("load", async () => {
 					params += "&categoria_id=" + categoria_id;
 
 					if (categoria_id == "CFC") {
-						// Obtiene los valores de los preguntasRCLIC
+						// Obtiene los valores de los preguntasInputs
 						params += "&genero_id=" + v.genero_id;
 						if (v.genero_id) {
 							// Agrega los datos de CFC
-							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
+							for (let campo of DOM.preguntasInputs)
+								if (campo.value) params += "&" + campo.name + "=" + campo.value;
 
 							// Agrega la epocaOcurrencia_id
 							const epocaOcurrencia_id = opcElegidaRadio(DOM.epocasOcurrencia_id);
@@ -718,7 +756,7 @@ window.addEventListener("load", async () => {
 	// Acciones cuando se  confirma el input
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
-		let campo = e.target.name;
+		const campo = e.target.name;
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
@@ -742,8 +780,7 @@ window.addEventListener("load", async () => {
 			if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 			if (campo == "mes_id") FN.impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") FN.impactos.fecha.muestraOcultaCamposFecha();
-			if (v.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
-				FN.impactos.fecha.epocasDelAno(campo);
+			if (v.epocasDelAno && ["mes_id", "dia", "diasDeDuracion"].includes(campo)) FN.impactos.fecha.epocasDelAno(campo);
 
 			// Valida las fechas
 			await FN.validacs.fecha();
@@ -788,7 +825,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {
-			// Nota: sus impactos se resuelven con CSS
+			if (campo == "categoria_id") FN.impactos.cfc();
 			await FN.validacs.RCLIC[entidad]();
 			if (v.hechos) await FN.validacs.nombre();
 		}
@@ -810,6 +847,7 @@ window.addEventListener("load", async () => {
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await FN.startUp();
 });
+
 // Variables
 const entidad = new URL(location.href).searchParams.get("entidad");
 const id = new URL(location.href).searchParams.get("id");
@@ -821,7 +859,8 @@ let opcElegidaRadio = (opciones) => {
 	return "";
 };
 let opcElegidaCheck = (opciones) => {
-	for (var opcion of opciones) if (opcion.checked) return opcion;
-	return {value: "", name: ""};
+	let valor = "";
+	for (var opcion of opciones) if (opcion.checked) valor += opcion.value;
+	return valor;
 };
 let FN_ano = (ano) => (ano ? parseInt(ano) : 0);
