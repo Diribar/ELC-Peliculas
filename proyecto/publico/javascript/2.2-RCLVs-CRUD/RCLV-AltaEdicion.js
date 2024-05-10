@@ -90,13 +90,13 @@ window.addEventListener("load", async () => {
 		...DOM,
 
 		// hoyEstamos
-		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
-		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
+		hoyEstamos: document.querySelector("form select.input[name=hoyEstamos]"),
+		hoyEstamosDefault: document.querySelector("form select.input[name=hoyEstamos] option"),
 		hoyEstamosFijo: document.querySelector("form div#hoyEstamos"),
 
 		// leyNombre
-		leyNombre: document.querySelector("form .input[name=leyNombre]"),
-		leyNombreDefault: document.querySelector("form .input[name=leyNombre] option"),
+		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
+		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
 		leyNombreFijo: document.querySelector("form div#leyNombre"),
 	};
 	let rutas = {
@@ -317,10 +317,10 @@ window.addEventListener("load", async () => {
 
 						// Opciones de 'Proceso de Canonización'
 						this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
-					}
 
-					// Impacto en 'cfc'
-					FN.impactos.cfcGenero();
+						// Impacto por la combinación de cfc y género
+						FN.impactos.cfcGenero();
+					}
 
 					// Impacto en 'hoyEstamos'
 					if (DOM.hoyEstamos) this.hoyEstamos();
@@ -373,6 +373,9 @@ window.addEventListener("load", async () => {
 					// Si hay una sola respuesta, la inactiva
 					DOM.hoyEstamos.disabled = opciones.length < 2;
 
+					// Corrige el ancho
+					FN.impactos.hoyEstamos();
+
 					// Fin
 					return;
 				},
@@ -421,6 +424,14 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
+			hoyEstamos: () => {
+				// Variables
+				const opcionElegida = document.querySelector("form .input[name=hoyEstamos] option:checked");
+				const ancho = opcionElegida.innerText.length;
+
+				// Ajusta el ancho del select
+				DOM.hoyEstamos.style.width =  ancho * 6.5 + "px";
+			},
 		},
 		validacs: {
 			avatar: async () => {
@@ -443,7 +454,8 @@ window.addEventListener("load", async () => {
 				// Variables
 				let params = "nombre";
 				params += "&nombre=" + encodeURIComponent(DOM.nombre.value);
-				if (DOM.nombreAltern.value) params += "&nombreAltern=" + encodeURIComponent(DOM.nombreAltern.value);
+				if (DOM.nombreAltern && DOM.nombreAltern.value)
+					params += "&nombreAltern=" + encodeURIComponent(DOM.nombreAltern.value);
 				params += "&entidad=" + entidad;
 				if (id) params += "&id=" + id;
 
@@ -787,10 +799,12 @@ window.addEventListener("load", async () => {
 			e.target.selectionEnd = posicCursor;
 		}
 		// Actualiza los datos de 'leyNombre'
-		if (campo == "nombre") {
+		if (["nombre", "nombreAltern"].includes(campo)) {
 			if (DOM.leyNombreFijo) {
 				DOM.leyNombreFijo.innerHTML = valor;
-			} else {
+			}
+			// Actualiza las opciones
+			else if (DOM.leyNombre) {
 			}
 		}
 
@@ -876,6 +890,9 @@ window.addEventListener("load", async () => {
 			if (hechos) await FN.validacs.nombre();
 		}
 
+		// Acciones si se cambia el sector hoyEstamos
+		if (campo == "hoyEstamos") FN.impactos.hoyEstamos();
+
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
 		FN.validacs.botonSubmit();
@@ -887,6 +904,7 @@ window.addEventListener("load", async () => {
 		if (DOM.botonSubmit.className.includes("inactivo")) {
 			e.preventDefault();
 			await FN.startUp(true);
+			p;
 		}
 	});
 
