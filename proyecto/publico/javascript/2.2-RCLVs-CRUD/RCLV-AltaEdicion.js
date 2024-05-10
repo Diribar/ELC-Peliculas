@@ -87,9 +87,9 @@ window.addEventListener("load", async () => {
 	DOM = {
 		...DOM,
 		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
-		resto: document.querySelector("form .input[name=resto]"),
+		restoNombre: document.querySelector("form .input[name=restoNombre]"),
 		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
-		restoDefault: document.querySelector("form .input[name=resto] option"),
+		restoDefault: document.querySelector("form .input[name=restoNombre] option"),
 	};
 	let rutas = {
 		// Rutas
