@@ -166,10 +166,9 @@ window.addEventListener("load", async () => {
 			fecha: {
 				muestraLosDiasDelMes: () => {
 					// Aplica cambios en los días 30 y 31
-					// Variables
-					let dia30 = document.querySelector("select[name=dia] option[value=30]");
-					let dia31 = document.querySelector("select[name=dia] option[value=31]");
-					let mes = DOM.mes_id.value;
+					const mes = DOM.mes_id.value;
+					const dia30 = document.querySelector("select[name=dia] option[value='30']");
+					const dia31 = document.querySelector("select[name=dia] option[value='31']");
 
 					// Revisar para febrero
 					if (mes == 2) {
@@ -324,7 +323,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					if (DOM.hoyEstamos) FN.impactos.enSectorLeyenda("hoyEstamos");
+					FN.impactos.enSectorLeyenda("hoyEstamos");
 
 					// Fin
 					return;
@@ -397,16 +396,19 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			enSectorLeyenda: function (sector) {
+				// Si no existe el sector, interrumpe la función
+				if (!DOM[sector]) return; // hoyEstamos, leyNombre
+
 				// Variables
-				// hoyEstamos, leyNombre
 				const opciones =
 					sector == "hoyEstamos"
-						? v.hoyEstamos.filter((n) => n.genero_id == v.genero_id)
+						? v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id)
 						: sector == "leyNombre"
 						? Array.from(DOM.camposNombre)
 								.map((n) => n.value)
 								.filter((n) => !!n)
 						: null;
+				if (!opciones) return;
 
 				// Obtiene la opción seleccionada actualmente
 				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
@@ -422,14 +424,13 @@ window.addEventListener("load", async () => {
 					const option = document.createElement("option");
 					option.value = typeof opcion == "string" ? opcion : opcion.id;
 					option.innerText = typeof opcion == "string" ? opcion : opcion.comentario;
-					option.selected=true
+					option.selected = true;
 
 					// Agrega la opción
 					DOM[sector].appendChild(option);
 				}
 
 				// Selecciona la opción original
-				console.log(indice);
 				if (indice && indice < DOM[sector].length) DOM[sector].selectedIndex = indice;
 
 				// Si hay una sola respuesta, la inactiva
@@ -731,11 +732,9 @@ window.addEventListener("load", async () => {
 			)
 				await this.validacs.RCLIC[entidad]();
 
-			// hoyEstamos - si hay una sola respuesta, la inactiva
-			if (DOM.hoyEstamos) {
-				const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
-				DOM.hoyEstamos.disabled = opciones.length < 2;
-			}
+			// SectorLeyenda
+			FN.impactos.enSectorLeyenda("hoyEstamos")
+			FN.impactos.enSectorLeyenda("leyNombre")
 
 			// Fin
 			this.validacs.muestraErroresOK();
