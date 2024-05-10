@@ -343,42 +343,11 @@
 				<!-- Preguntas RCLIC -->
 				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar grow spaceBetween">
 					<!-- Rol en la Iglesia -->
-					<div id="sectorRolIgl" class="flexRowAlign invisible segunGenero_id">
-						<select name="rolIglesia_id" class="input">
-							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-							<% if (dataEntry.genero_id) for (let rolIgl of rolesIgl) if (rolIgl[dataEntry.genero_id]) { %>
-								<option
-									value="<%= rolIgl.id %>"
-									<% if (dataEntry.rolIglesia_id == rolIgl.id) { %>selected<% } %>
-								>
-									<%= rolIgl[dataEntry.genero_id] %>
-								</option>
-							<% } %>
-						</select>
-					</div>
+					<%- include("RCLV-1AE-Pregs", {titulo: "Rol en la Iglesia", id: "sectorRolIgl", sg: true, nombre: "rolIglesia_id", opciones: rolesIgl}) %>
 					<!-- Proceso de Canonización -->
-					<div id="sectorCanon" class="flexRowAlign invisible segunGenero_id">
-						<select name="canon_id" class="input">
-							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
-							<% for (let canon of canons) { %>
-								<option value="<%= canon.id %>" <% if (dataEntry.canon_id == canon.id) { %>selected<% } %>>
-									<%= canon[dataEntry.genero_id] %>
-								</option>
-							<% } %>
-							<option value="null" <% if (dataEntry.canon_id === null) { %>selected<% } %>>Sin proceso de canonizac.</option>
-						</select>
-					</div>
+					<%- include("RCLV-1AE-Pregs", {titulo: "Proceso de Canonización", id: "sectorCanon", sg: true, nombre: "canon_id", opciones: canons}) %>
 					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign invisible">
-						<select name="apMar_id" class="input">
-							<option value="" <% if (!dataEntry.apMar_id) { %>selected<% } %>>Aparición Mariana</option>
-							<% for (let apMar of apMars) { %>
-								<option value="<%= apMar.id %>" <% if (dataEntry.apMar_id == apMar.id) { %>selected<% } %>>
-									<%= apMar.nombre %>
-								</option>
-							<% } %>
-						</select>
-					</div>
+					<%- include("RCLV-1AE-Pregs", {titulo: "Aparición Mariana", id: "sectorApMar", sg: false, nombre: "apMar_id", opciones: apMars}) %>
 				</div>
 			</div>
 		<% } else if (hechos) { %>
