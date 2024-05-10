@@ -388,7 +388,7 @@
 <% } %>
 <% if (personajes || hechos || eventos) { %>
 	<!-- Leyenda -->
-	<section id="sectorLeyenda" class="borderTop OK flexRowAlign	">
+	<section id="sectorLeyenda" class="borderTop OK flexRowAlign">
 		<!-- Título, Ayuda y Error/OK -->
 		<div class="inputError invisibl">
 			<!-- Título -->
@@ -409,10 +409,13 @@
 				<div id="hoyEstamos">
 					<select name="hoyEstamos" class="input sinFlecha">
 						<option value="">Elegí una opción</option>
+						<% for (let opcion of opcsHoyEstamos) { %>
+							<option value="<%= opcion.id %>" <% if (opcion.id == dataEntry.hoyEstamos_id) { %>selected<% } %>><%= opcion.comentario %></option>
+						<% } %>
 					</select>
 				</div>
 			<% } else { %>
-				<div id="hoyEstamos"><%= hoyEstamos.find(n => n.entidad == entidad).comentario // elije cualquiera de esa entidad %></div>
+				<div id="hoyEstamos"><%= hoyEstamos.find(n => n.entidad == entidad).comentario %></div>
 			<% } %>
 
 			<!-- Resto -->

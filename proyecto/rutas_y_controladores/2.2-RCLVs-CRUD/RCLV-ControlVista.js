@@ -24,11 +24,12 @@ module.exports = {
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
 
 		// Ayuda para el titulo
-		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."]
-		if (prodsDelRCLV.length > 1) ayudasTitulo = [
-			"Son las películas que tenemos en nuestra base de datos.",
-			"Están ordenadas desde la más reciente a la más antigua."
-		]
+		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."];
+		if (prodsDelRCLV.length > 1)
+			ayudasTitulo = [
+				"Son las películas que tenemos en nuestra base de datos.",
+				"Están ordenadas desde la más reciente a la más antigua.",
+			];
 
 		// Bloque de la derecha
 		const bloqueDer = {
@@ -134,6 +135,10 @@ module.exports = {
 			const ent = personajes ? "pers" : hechos ? "hecho" : "";
 			const originalUrl = req.originalUrl;
 			const prioridades = variables.prioridadesRCLV;
+			const opcsHoyEstamos =
+				dataEntry.genero_id && dataEntry.hoyEstamos_id
+					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
+					: [];
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
@@ -141,7 +146,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{rolesIgl, apMars, originalUrl},
+				...{rolesIgl, apMars, originalUrl, opcsHoyEstamos},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				estrucPers: true,
 			});

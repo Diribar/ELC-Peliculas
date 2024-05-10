@@ -15,10 +15,10 @@ module.exports = (sequelize, dt) => {
 		// Común con personajes
 		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
-		hoyEstamos: {type: dt.STRING(40)},
 		leyNombre: {type: dt.STRING(70)},
 
 		// Específicos
+		hoyEstamos_id: {type: dt.INTEGER},
 		anoComienzo: {type: dt.INTEGER},
 		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
@@ -55,6 +55,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
+		entidad.belongsTo(n.hoyEstamos, {as: "hoyEstamos", foreignKey: "hoyEstamos_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creadoPor", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "altaRevisadaPor", foreignKey: "altaRevisadaPor_id"});
