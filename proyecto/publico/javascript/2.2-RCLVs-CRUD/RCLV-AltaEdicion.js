@@ -464,7 +464,6 @@ window.addEventListener("load", async () => {
 
 				// Ajusta el ancho del select
 				DOM[sector].style.width = ancho * (ancho < 10 ? 8 : ancho < 20 ? 7 : 6.5) + "px";
-				console.log(ancho);
 			},
 		},
 		validacs: {
