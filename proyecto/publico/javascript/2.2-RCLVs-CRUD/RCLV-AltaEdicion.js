@@ -324,7 +324,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					if (DOM.hoyEstamos) this.hoyEstamos();
+					if (DOM.hoyEstamos)FN.impactos.enSectorLeyenda("hoyEstamos");
 
 					// Fin
 					return;
@@ -499,7 +499,7 @@ window.addEventListener("load", async () => {
 				DOM[sector].disabled = opciones.length < 2;
 
 				// Corrige el ancho
-				FN.impactos.ancho(sector);
+				this.ancho(sector);
 
 				// Fin
 				return;
