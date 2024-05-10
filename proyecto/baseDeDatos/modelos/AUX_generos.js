@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		pers: {type: dt.STRING(10)},
 		rclvs: {type: dt.STRING(20)},
-		diaEnQue: {type: dt.STRING(3)},
+		loLa: {type: dt.STRING(3)},
 		letraFinal: {type: dt.STRING(2)},
 	};
 	const config = {

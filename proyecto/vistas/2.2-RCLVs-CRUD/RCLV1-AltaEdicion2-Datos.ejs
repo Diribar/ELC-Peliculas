@@ -242,7 +242,7 @@
 		<!-- Genero -->
 		<div id="sectorGenero" class="flexRowAlign altoFila inputError">
 			<h3><%- personajes ? 'Sexo' : 'Género' %></h3>
-			<% for (let genero of generos) { %>
+			<% for (let genero of generos.filter((m) => m.id.length == 1)) { %>
 				<div class="flexRowAlign opciones relative<%- genero.id == "P" && (eventos || epocasDelAno) ? ' ocultar' : '' %>">
 					<input
 						id="<%= genero.id %>"

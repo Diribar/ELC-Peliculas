@@ -183,6 +183,18 @@ module.exports = {
 				? prioridades.menor
 				: "";
 		},
+		opcsLeyNombre: (registro) => {
+			// Variables
+			const {nombre, nombreAltern} = registro;
+			let opciones = [];
+
+			// Opciones con el genero
+			if (nombre) opciones.push(...opcsLeyNombre.consolidado(nombre, registro));
+			if (nombreAltern) opciones.push(...opcsLeyNombre.consolidado(nombreAltern, registro));
+
+			// Fin
+			return opciones;
+		},
 	},
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
@@ -207,7 +219,8 @@ module.exports = {
 			// Datos exclusivos de personajes
 			if (entidad == "personajes") {
 				// Variables
-				const {nombreAltern, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
+				const {nombreAltern, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} =
+					datos;
 				DE = {...DE, genero_id, epocaOcurrencia_id, categoria_id};
 				const CFC = categoria_id == "CFC";
 
@@ -285,5 +298,59 @@ module.exports = {
 			// Fin
 			return {original, edicion, edicN};
 		},
+	},
+};
+let opcsLeyNombre = {
+	consolidado: function (nombre, registro) {
+		// Variables
+		let opciones = [];
+
+		// Canon al final
+		opciones.push(...this.canonAlFinal(nombre, registro));
+		opciones.push(...this.canonAlPrinc(nombre, registro));
+
+		// Fin
+		return opciones;
+	},
+	canonAlFinal: function (nombre, registro) {
+		// Variables
+		const {genero_id, canon_id} = registro;
+		const genero = generos.find((n) => n.id == genero_id);
+		if (!genero) return [];
+		let opciones = [];
+		let frase = "",
+			canon;
+
+		// Singular
+		frase += "a " + nombre;
+		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
+		canon = this.obtieneCanon(genero_id, canon_id);
+		if (canon) frase += ", " + canon;
+		opciones.push(frase);
+
+		// Plural
+		if (genero_id.includes("P")) {
+			frase = "a " + genero.loLa + " " + nombre;
+			canon = this.obtieneCanon(genero_id, canon_id);
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
+
+		// Fin
+		return opciones;
+	},
+	canonAlPrinc: function (nombre, registro) {
+		// Fin
+		return [];
+	},
+	obtieneCanon: (genero_id, canon_id) => {
+		// Obtiene el avance de su proceso de canonización
+		let canon = canon_id && canon_id != "NN" ? canons.find((n) => n.id == canon_id)[genero_id] : null;
+
+		// Pone en minúscula su primera letra
+		if (canon) canon = canon.slice(0, 1).toLowerCase() + canon.slice(1);
+
+		// Fin
+		return canon;
 	},
 };
