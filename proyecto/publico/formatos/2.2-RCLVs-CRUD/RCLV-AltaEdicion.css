@@ -124,7 +124,11 @@
 					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
 					#datosLeyenda {
 						padding-inline: 5px;
-						select {padding-block: 3px; border: none !important;}
+						select {
+							padding-block: 3px; border: none !important;
+							&:focus {outline: none;}
+							&:disabled {opacity: 1;}
+						}
 						#hoyEstamos {margin-right: 3px;}
 					}
 
