@@ -355,6 +355,10 @@ window.addEventListener("load", async () => {
 					// Variables
 					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
 
+					// Obtiene la opción seleccionada actualmente
+					DOM.opcionElegida = document.querySelector("form .input[name=hoyEstamos] option:checked");
+					const indice = Array.from(DOM.hoyEstamos).indexOf(DOM.opcionElegida);
+
 					// Reinicia el select
 					DOM.hoyEstamos.innerHTML = "";
 					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
@@ -365,11 +369,13 @@ window.addEventListener("load", async () => {
 						const option = document.createElement("option");
 						option.value = opcion.id;
 						option.innerText = opcion.comentario;
-						option.selected = true;
 
 						// Agrega la opción
 						DOM.hoyEstamos.appendChild(option);
 					}
+
+					// Selecciona la opción original
+					if (indice) DOM.hoyEstamos.selectedIndex = indice;
 
 					// Si hay una sola respuesta, la inactiva
 					DOM.hoyEstamos.disabled = opciones.length < 2;
@@ -425,7 +431,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enLeyendaNombre: function (campo) {
+			enLeyendaNombre: function () {
 				// Variables
 				const nombres = Array.from(DOM.camposNombre)
 					.map((n) => n.value)
@@ -445,7 +451,6 @@ window.addEventListener("load", async () => {
 					const option = document.createElement("option");
 					option.value = nombre;
 					option.innerText = nombre;
-					option.selected = true;
 
 					// Agrega la opción
 					DOM.leyNombre.appendChild(option);
@@ -459,6 +464,42 @@ window.addEventListener("load", async () => {
 
 				// Corrige el ancho
 				this.ancho("leyNombre");
+
+				// Fin
+				return;
+			},
+			enSectorLeyenda: function (sector) {
+				// Variables
+				// hoyEstamos
+				const opciones = v[sector].filter((n) => n.genero_id == v.genero_id);
+
+				// Obtiene la opción seleccionada actualmente
+				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
+				const indice = Array.from(DOM[sector]).indexOf(DOM.opcionElegida);
+
+				// Reinicia el select
+				DOM[sector].innerHTML = "";
+				DOM[sector].appendChild(DOM[sector + "Default"]);
+
+				// Agrega las opciones válidas para el género
+				for (let opcion of opciones) {
+					// Crea la opción
+					const option = document.createElement("option");
+					option.value = opcion.id;
+					option.innerText = opcion.comentario;
+
+					// Agrega la opción
+					DOM[sector].appendChild(option);
+				}
+
+				// Selecciona la opción original
+				if (indice) DOM[sector].selectedIndex = indice;
+
+				// Si hay una sola respuesta, la inactiva
+				DOM[sector].disabled = opciones.length < 2;
+
+				// Corrige el ancho
+				FN.impactos.ancho(sector);
 
 				// Fin
 				return;
@@ -928,7 +969,7 @@ window.addEventListener("load", async () => {
 
 		// Campos que impactan en 'leyendaNombre'
 		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
-			FN.impactos.enLeyendaNombre(campo);
+			FN.impactos.enLeyendaNombre();
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
