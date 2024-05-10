@@ -16,7 +16,8 @@ module.exports = (sequelize, dt) => {
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
-		hoyEstamos: {type: dt.STRING(70)},
+		hoyEstamos: {type: dt.STRING(40)},
+		leyNombre: {type: dt.STRING(70)},
 
 		// Común entre 'personajes' y 'hechos'
 		nombreAltern: {type: dt.STRING(35)},

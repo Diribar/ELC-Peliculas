@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		// Común con hechos
 		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
-		hoyEstamos: {type: dt.STRING(70)},
+		leyNombre: {type: dt.STRING(70)},
 
 		// Específicos
 		canon_id: {type: dt.STRING(3)},
