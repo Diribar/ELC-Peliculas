@@ -291,7 +291,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Opciones de 'hoyEstamos'
-					this.hoyEstamos();
+					if (DOM.hoyEstamos) this.hoyEstamos();
 
 					// Fin
 					return;
