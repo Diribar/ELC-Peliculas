@@ -407,8 +407,8 @@ window.addEventListener("load", async () => {
 						? Array.from(DOM.camposNombre)
 								.map((n) => n.value)
 								.filter((n) => !!n)
-						: null;
-				if (!opciones) return;
+						: [];
+				if (!opciones.length) return;
 
 				// Obtiene la opción seleccionada actualmente
 				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
