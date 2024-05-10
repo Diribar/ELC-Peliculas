@@ -312,6 +312,10 @@ let opcsLeyNombre = {
 		// Fin
 		return opciones;
 	},
+	canonAlPrinc: function (nombre, registro) {
+		// Fin
+		return [];
+	},
 	canonAlFinal: function (nombre, registro) {
 		// Variables
 		const {genero_id, canon_id} = registro;
@@ -338,10 +342,6 @@ let opcsLeyNombre = {
 
 		// Fin
 		return opciones;
-	},
-	canonAlPrinc: function (nombre, registro) {
-		// Fin
-		return [];
 	},
 	obtieneCanon: (genero_id, canon_id) => {
 		// Obtiene el avance de su proceso de canonización
