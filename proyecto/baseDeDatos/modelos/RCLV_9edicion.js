@@ -25,7 +25,7 @@ module.exports = (sequelize, dt) => {
 
 		// Específico de 'personajes'
 		anoNacim: {type: dt.INTEGER},
-		genero_id: {type: dt.STRING(1)},
+		genero_id: {type: dt.STRING(3)},
 		categoria_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 		canon_id: {type: dt.STRING(3)},
