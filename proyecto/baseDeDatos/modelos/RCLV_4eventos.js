@@ -11,7 +11,9 @@ module.exports = (sequelize, dt) => {
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
-		hoyEstamos: {type: dt.STRING(40)},
+
+		// Específicos
+		hoyEstamos_id: {type: dt.INTEGER},
 
 		// Fechas y Usuarios
 		creadoPor_id: {type: dt.INTEGER},
