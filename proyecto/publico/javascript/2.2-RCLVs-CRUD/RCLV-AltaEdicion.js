@@ -324,7 +324,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					if (DOM.hoyEstamos) this.hoyEstamos();
+					if (DOM.hoyEstamos) FN.impactos.enSectorLeyenda("hoyEstamos");
 
 					// Fin
 					return;
@@ -347,35 +347,6 @@ window.addEventListener("load", async () => {
 							// Agrega la opción
 							select.appendChild(option);
 						}
-
-					// Fin
-					return;
-				},
-				hoyEstamos: () => {
-					// Variables
-					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
-
-					// Reinicia el select
-					DOM.hoyEstamos.innerHTML = "";
-					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
-
-					// Agrega las opciones válidas para el género
-					for (let opcion of opciones) {
-						// Crea la opción
-						const option = document.createElement("option");
-						option.value = opcion.id;
-						option.selected = true;
-						option.innerText = opcion.comentario;
-
-						// Agrega la opción
-						DOM.hoyEstamos.appendChild(option);
-					}
-
-					// Si hay una sola respuesta, la inactiva
-					DOM.hoyEstamos.disabled = opciones.length < 2;
-
-					// Corrige el ancho
-					FN.impactos.ancho("hoyEstamos");
 
 					// Fin
 					return;
@@ -425,33 +396,47 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enLeyendaNombre: (campo) => {
+			enSectorLeyenda: function (sector) {
 				// Variables
-				const nombres = Array.from(DOM.camposNombre)
-					.map((n) => n.value)
-					.filter((n) => !!n);
+				// hoyEstamos, leyNombre
+				const opciones =
+					sector == "hoyEstamos"
+						? v.hoyEstamos.filter((n) => n.genero_id == v.genero_id)
+						: sector == "leyNombre"
+						? Array.from(DOM.camposNombre)
+								.map((n) => n.value)
+								.filter((n) => !!n)
+						: null;
+
+				// Obtiene la opción seleccionada actualmente
+				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
+				const indice = Array.from(DOM[sector]).indexOf(DOM.opcionElegida);
 
 				// Reinicia el select
-				DOM.leyNombre.innerHTML = "";
-				DOM.leyNombre.appendChild(DOM.leyNombreDefault);
+				DOM[sector].innerHTML = "";
+				DOM[sector].appendChild(DOM[sector + "Default"]);
 
 				// Agrega las opciones
-				for (let nombre of nombres) {
+				for (let opcion of opciones) {
 					// Crea la opción
 					const option = document.createElement("option");
-					option.value = nombre;
-					option.innerText = nombre;
-					option.selected = true;
+					option.value = typeof opcion == "string" ? opcion : opcion.id;
+					option.innerText = typeof opcion == "string" ? opcion : opcion.comentario;
+					option.selected=true
 
 					// Agrega la opción
-					DOM.leyNombre.appendChild(option);
+					DOM[sector].appendChild(option);
 				}
 
+				// Selecciona la opción original
+				console.log(indice);
+				if (indice && indice < DOM[sector].length) DOM[sector].selectedIndex = indice;
+
 				// Si hay una sola respuesta, la inactiva
-				DOM.leyNombre.disabled = opciones.length < 2;
+				DOM[sector].disabled = opciones.length < 2;
 
 				// Corrige el ancho
-				FN.impactos.ancho("hoyEstamos");
+				this.ancho(sector);
 
 				// Fin
 				return;
@@ -460,10 +445,9 @@ window.addEventListener("load", async () => {
 				// Variables
 				const opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
 				const ancho = opcionElegida.innerText.length;
-				// console.log(opcionElegida.clientWidth);
 
 				// Ajusta el ancho del select
-				DOM[sector].style.width = ancho * (ancho < 10 ? 8 : ancho < 20 ? 7 : 6.5) + "px";
+				DOM[sector].style.width = 8 * 2 + ancho * 6 + "px";
 			},
 		},
 		validacs: {
@@ -921,7 +905,7 @@ window.addEventListener("load", async () => {
 
 		// Campos que impactan en 'leyendaNombre'
 		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
-			FN.impactos.enLeyendaNombre(campo);
+			FN.impactos.enSectorLeyenda("leyNombre");
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
