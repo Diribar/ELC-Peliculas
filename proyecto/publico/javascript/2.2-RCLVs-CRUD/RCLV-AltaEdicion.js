@@ -83,13 +83,19 @@ window.addEventListener("load", async () => {
 		sectorApMar: DOM.preguntasRCLIC.querySelector("#sectorApMar"),
 		apMar_id: DOM.preguntasRCLIC.querySelector("#sectorApMar select[name=apMar_id]"),
 	};
-	// Hoy estamos
+	// Sector Leyenda
 	DOM = {
 		...DOM,
+
+		// hoyEstamos
 		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
-		restoNombre: document.querySelector("form .input[name=restoNombre]"),
 		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
-		restoDefault: document.querySelector("form .input[name=restoNombre] option"),
+		hoyEstamosFijo: document.querySelector("form div#hoyEstamos"),
+
+		// leyNombre
+		leyNombre: document.querySelector("form .input[name=leyNombre]"),
+		leyNombreDefault: document.querySelector("form .input[name=leyNombre] option"),
+		leyNombreFijo: document.querySelector("form div#leyNombre"),
 	};
 	let rutas = {
 		// Rutas
@@ -713,76 +719,73 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
-		// Validaciones estándar
-		amplio.restringeCaracteres(e);
-
 		// Variables
-		let campo = e.target.name;
+		const campo = e.target.name;
+		if (!DOM[campo]) return;
 
-		// Acciones si existe el campo
-		if (DOM[campo]) {
+		// Obtiene el valor
+		amplio.restringeCaracteres(e);
+		let valor = e.target.value;
+
+		// Acciones si se cambia un texto
+		if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario")) {
 			// Variables
-			let valor = e.target.value;
+			const largoMaximo =
+				campo == "nombreAltern" || (campo == "nombre" && entidad != "eventos")
+					? 35
+					: campo == "nombre"
+					? 45
+					: campo.startsWith("comentario")
+					? 70
+					: false;
 
-			// Acciones si se cambia un texto
-			if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario")) {
-				// Variables
-				const largoMaximo =
-					campo == "nombreAltern" || (campo == "nombre" && entidad != "eventos")
-						? 35
-						: campo == "nombre"
-						? 45
-						: campo.startsWith("comentario")
-						? 70
-						: false;
+			// Si se cambia el nombre, quita el prefijo 'San'
+			if (campo == "nombre" && personajes)
+				for (let prefijo of v.prefijos)
+					if (valor.startsWith(prefijo + " ")) {
+						valor = valor.slice(prefijo.length + 1);
+						break;
+					}
 
-				// Si se cambia el nombre, quita el prefijo 'San'
-				if (campo == "nombre" && personajes)
-					for (let prefijo of v.prefijos)
-						if (valor.startsWith(prefijo + " ")) {
-							valor = valor.slice(prefijo.length + 1);
-							break;
-						}
+			// Quita los caracteres que exceden el largo permitido
+			if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
 
-				// Quita los caracteres que exceden el largo permitido
-				if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
+			// Si se cambia un 'textarea', actualiza el contador
+			if (campo == "comentarioMovil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
+			if (campo == "comentarioDuracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
 
-				// Si se cambia un 'textarea', actualiza el contador
-				if (campo == "comentarioMovil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
-				if (campo == "comentarioDuracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
+			// Limpia el ícono de error/OK
+			const indice = campo.startsWith("comentario") ? 2 : 1; // 2 para fecha, 1 para nombre
+			DOM.mensajesError[indice].innerHTML = "";
+			DOM.iconosError[indice].classList.add("ocultar");
+			DOM.iconosOK[indice].classList.add("ocultar");
+		}
+		// Acciones si se cambia el año
+		if (campo == ano) {
+			// Sólo números en el año
+			valor = valor.replace(/[^\d]/g, "");
 
-				// Limpia el ícono de error/OK
-				const indice = campo.startsWith("comentario") ? 2 : 1; // 2 para fecha, 1 para nombre
-				DOM.mensajesError[indice].innerHTML = "";
-				DOM.iconosError[indice].classList.add("ocultar");
-				DOM.iconosOK[indice].classList.add("ocultar");
+			// Menor o igual que el año actual
+			if (valor) {
+				const anoIngresado = parseInt(valor);
+				const anoActual = new Date().getFullYear();
+				valor = Math.min(anoIngresado, anoActual);
 			}
 
-			// Acciones si se cambia el año
-			if (campo == ano) {
-				// Sólo números en el año
-				valor = valor.replace(/[^\d]/g, "");
-
-				// Menor o igual que el año actual
-				if (valor) {
-					const anoIngresado = parseInt(valor);
-					const anoActual = new Date().getFullYear();
-					valor = Math.min(anoIngresado, anoActual);
-				}
-
-				// Limpia el ícono de error/OK
-				const indice = v.camposError.indexOf("epocaOcurrencia");
-				DOM.mensajesError[indice].innerHTML = "";
-				DOM.iconosError[indice].classList.add("ocultar");
-				DOM.iconosOK[indice].classList.add("ocultar");
-			}
-
-			// Reemplaza el valor del DOM
-			if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario") || campo == ano) {
-				const posicCursor = e.target.selectionStart;
-				e.target.value = valor;
-				e.target.selectionEnd = posicCursor;
-			}
+			// Limpia el ícono de error/OK
+			const indice = v.camposError.indexOf("epocaOcurrencia");
+			DOM.mensajesError[indice].innerHTML = "";
+			DOM.iconosError[indice].classList.add("ocultar");
+			DOM.iconosOK[indice].classList.add("ocultar");
+		}
+		// Reemplaza el valor del DOM
+		if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario") || campo == ano) {
+			const posicCursor = e.target.selectionStart;
+			e.target.value = valor;
+			e.target.selectionEnd = posicCursor;
+		}
+		// Actualiza los datos de 'leyNombre'
+		if (campo == "nombre") {
 		}
 
 		// Fin
