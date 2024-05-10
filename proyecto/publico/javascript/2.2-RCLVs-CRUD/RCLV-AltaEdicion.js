@@ -942,7 +942,6 @@ window.addEventListener("load", async () => {
 	// Status inicial
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await FN.startUp();
-	console.log(DOM.leyNombreFijo);
 });
 
 // Variables
