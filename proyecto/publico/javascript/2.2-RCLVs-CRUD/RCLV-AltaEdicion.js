@@ -92,12 +92,12 @@ window.addEventListener("load", async () => {
 		// hoyEstamos
 		hoyEstamos: document.querySelector("form select.input[name=hoyEstamos]"),
 		hoyEstamosDefault: document.querySelector("form select.input[name=hoyEstamos] option"),
-		hoyEstamosFijo: document.querySelector("form div#hoyEstamos"),
+		hoyEstamosFijo: document.querySelector("form #hoyEstamos:not(:has(select))"),
 
 		// leyNombre
 		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
 		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
-		leyNombreFijo: document.querySelector("form div#leyNombre"),
+		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
 	};
 	let rutas = {
 		// Rutas
@@ -159,6 +159,40 @@ window.addEventListener("load", async () => {
 						for (let link of DOM.linksClick) link.href = "";
 						DOM.googleIMG.href = "";
 					}
+					// Fin
+					return;
+				},
+				leyNombre: () => {
+					// Variables
+					const nombres = Array.from(DOM.camposNombre)
+						.map((n) => n.value)
+						.filter((n) => !!n);
+					console.log(nombres);
+					return;
+					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
+
+					// Reinicia el select
+					DOM.hoyEstamos.innerHTML = "";
+					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
+
+					// Agrega las opciones válidas para el género
+					for (let opcion of opciones) {
+						// Crea la opción
+						const option = document.createElement("option");
+						option.value = opcion.id;
+						option.selected = true;
+						option.innerText = opcion.comentario;
+
+						// Agrega la opción
+						DOM.hoyEstamos.appendChild(option);
+					}
+
+					// Si hay una sola respuesta, la inactiva
+					DOM.hoyEstamos.disabled = opciones.length < 2;
+
+					// Corrige el ancho
+					FN.impactos.hoyEstamos();
+
 					// Fin
 					return;
 				},
@@ -432,8 +466,9 @@ window.addEventListener("load", async () => {
 				// console.log(opcionElegida.clientWidth);
 
 				// Ajusta el ancho del select
-				DOM.hoyEstamos.style.width =  ancho * 8 + "px";
+				DOM.hoyEstamos.style.width = ancho * 8 + "px";
 			},
+			leyNombre: () => {},
 		},
 		validacs: {
 			avatar: async () => {
@@ -801,14 +836,7 @@ window.addEventListener("load", async () => {
 			e.target.selectionEnd = posicCursor;
 		}
 		// Actualiza los datos de 'leyNombre'
-		if (["nombre", "nombreAltern"].includes(campo)) {
-			if (DOM.leyNombreFijo) {
-				DOM.leyNombreFijo.innerHTML = valor;
-			}
-			// Actualiza las opciones
-			else if (DOM.leyNombre) {
-			}
-		}
+		if (["nombre", "nombreAltern"].includes(campo) && DOM.leyNombreFijo) DOM.leyNombreFijo.innerHTML = valor;
 
 		// Fin
 		return;
@@ -818,6 +846,7 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		const campo = e.target.name;
+		console.log(campo);
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
@@ -833,6 +862,7 @@ window.addEventListener("load", async () => {
 		if (v.camposNombre.includes(campo)) {
 			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
+			FN.impactos.nombre.leyNombre();
 		}
 
 		// Acciones si se cambia el sector Fecha
@@ -913,6 +943,7 @@ window.addEventListener("load", async () => {
 	// Status inicial
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await FN.startUp();
+	console.log(DOM.leyNombreFijo);
 });
 
 // Variables
