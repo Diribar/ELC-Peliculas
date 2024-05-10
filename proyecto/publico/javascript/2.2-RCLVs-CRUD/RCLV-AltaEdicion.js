@@ -312,7 +312,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impacto en 'cfc'
-					FN.impactos.cfc();
+					FN.impactos.cfcGenero();
 
 					// Impacto en 'hoyEstamos'
 					if (DOM.hoyEstamos) this.hoyEstamos();
@@ -400,7 +400,7 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
-			cfc: () => {
+			cfcGenero: () => {
 				// Muestra u oculta el sector RCLIC
 				if (DOM.cfc.checked && v.genero_id) {
 					DOM.sectorRolIgl.classList.remove("invisible");
@@ -862,7 +862,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC && v.camposRCLIC.includes(campo)) {
-			if (campo == "categoria_id") FN.impactos.cfc(); // personajes; para hechos se resuelve con
+			if (campo == "categoria_id") FN.impactos.cfcGenero(); // son campos afectados por la combinación de genero y cfc
 			await FN.validacs.RCLIC[entidad]();
 			if (hechos) await FN.validacs.nombre();
 		}
