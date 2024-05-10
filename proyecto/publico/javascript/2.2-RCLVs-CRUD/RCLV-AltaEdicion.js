@@ -279,8 +279,10 @@ window.addEventListener("load", async () => {
 				consolidado: function () {
 					// Variables
 					v.genero_id = opcElegida(DOM.generos_id);
-					if (v.genero_id == "MF") DOM.plural_id.checked = true;
-					v.genero_id += DOM.plural_id.checked ? "P" : "S";
+
+					// Acciones en el género
+					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
+					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S"; // si se eligió alguno, se le agrega el 'singular/plural'
 
 					if (personajes) {
 						// Opciones de 'Rol en la Iglesia'
@@ -290,8 +292,11 @@ window.addEventListener("load", async () => {
 						this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
 					}
 
-					// Opciones de 'hoyEstamos'
-					this.hoyEstamos();
+					// Impacto en 'cfc'
+					FN.impactos.cfc()
+
+					// Impacto en 'hoyEstamos'
+					if (DOM.hoyEstamos) this.hoyEstamos();
 
 					// Fin
 					return;
@@ -377,7 +382,12 @@ window.addEventListener("load", async () => {
 				},
 			},
 			cfc: () => {
-				DOM.cfc.checked ? DOM.preguntasRCLIC.classList.remove("ocultar") : DOM.preguntasRCLIC.classList.add("ocultar"); // Muestra u oculta el sector RCLIC
+				// Muestra u oculta el sector RCLIC
+				DOM.cfc.checked && v.genero_id
+					? DOM.preguntasRCLIC.classList.remove("ocultar")
+					: DOM.preguntasRCLIC.classList.add("ocultar");
+
+				// Fin
 				return;
 			},
 		},
