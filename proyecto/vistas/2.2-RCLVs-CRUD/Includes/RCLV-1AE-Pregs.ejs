@@ -1,0 +1,16 @@
+<div id="<%= id %>" class="flexRowAlign invisible <%= locals.sg ? ' segunGenero_id' : '' %>">
+	<select name="<%= nombre %>" class="input">
+		<option value="" <% if (!dataEntry[nombre]) { %>selected<% } %>><%= titulo %></option>
+		<% if (!locals.sg || dataEntry.genero_id) for (let opcion of opciones) if (!locals.sg || opcion[dataEntry.genero_id]) { %>
+			<option
+				value="<%= opcion.id %>"
+				<% if (dataEntry[nombre] == opcion.id) { %>selected<% } %>
+			>
+				<%= opcion[locals.sg ? dataEntry.genero_id : "nombre"] %>
+			</option>
+			<% if (nombre == "canon_id") { %>
+				<option value="null" <% if (dataEntry.canon_id === null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+			<% } %>
+		<% } %>
+	</select>
+</div>
