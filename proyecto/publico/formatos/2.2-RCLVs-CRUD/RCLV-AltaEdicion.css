@@ -25,7 +25,7 @@
 				.margenDebajo {margin-bottom: 5px;}
 				.borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
 				.input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-				:is(.input, #posiblesRepetidos, #calendario, #datosLeyenda) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+				:is(.input, #posiblesRepetidos, #calendario) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 				label[for] {padding-left: 3px;}
 
 				/* Primer bloque */
@@ -128,9 +128,9 @@
 				#sectorLeyenda {
 					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
 					#datosLeyenda {
-						padding-inline: 5px;
 						select {
-							padding-block: 3px; border: none !important;
+							padding: 5px 3px;
+							border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;
 							&:focus {outline: none;}
 							&:disabled {opacity: 1;}
 						}

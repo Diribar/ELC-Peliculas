@@ -307,10 +307,11 @@ window.addEventListener("load", async () => {
 					// Variables
 					v.genero_id = opcElegida(DOM.generos_id);
 
-					// Acciones en el género
+					// Impactos en sí mismo
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
 					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S"; // si se eligió alguno, se le agrega el 'singular/plural'
 
+					// Impactos en campos RCLIC exclusivos de personajes
 					if (personajes) {
 						// Opciones de 'Rol en la Iglesia'
 						this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
@@ -322,7 +323,7 @@ window.addEventListener("load", async () => {
 						FN.impactos.cfcGenero();
 					}
 
-					// Impacto en 'hoyEstamos'
+					// Impactos en 'hoyEstamos'
 					if (DOM.hoyEstamos) this.hoyEstamos();
 
 					// Fin
@@ -428,9 +429,10 @@ window.addEventListener("load", async () => {
 				// Variables
 				const opcionElegida = document.querySelector("form .input[name=hoyEstamos] option:checked");
 				const ancho = opcionElegida.innerText.length;
+				// console.log(opcionElegida.clientWidth);
 
 				// Ajusta el ancho del select
-				DOM.hoyEstamos.style.width =  ancho * 6.5 + "px";
+				DOM.hoyEstamos.style.width =  ancho * 8 + "px";
 			},
 		},
 		validacs: {
