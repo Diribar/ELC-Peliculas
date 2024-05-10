@@ -733,8 +733,8 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			FN.impactos.enSectorLeyenda("hoyEstamos")
-			FN.impactos.enSectorLeyenda("leyNombre")
+			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) FN.impactos.enSectorLeyenda("hoyEstamos");
+			if (DOM.leyNombre && !DOM.leyNombre.value) FN.impactos.enSectorLeyenda("leyNombre");
 
 			// Fin
 			this.validacs.muestraErroresOK();
