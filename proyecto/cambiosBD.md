@@ -40,7 +40,7 @@ ALTER TABLE c19353_elc.rclv_1personajes ADD leyNombre varchar(70) CHARACTER SET 
 ALTER TABLE c19353_elc.rclv_2hechos ADD nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_2hechos ADD genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
 ALTER TABLE c19353_elc.rclv_2hechos ADD CONSTRAINT rclv_2hechos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE c19353_elc.rclv_2hechos ADD hoyEstamos varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER  ama;
+ALTER TABLE c19353_elc.rclv_2hechos ADD hoyEstamos varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER  ama;
 ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER hoyEstamos;
 
 ALTER TABLE c19353_elc.rclv_3temas ADD genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
