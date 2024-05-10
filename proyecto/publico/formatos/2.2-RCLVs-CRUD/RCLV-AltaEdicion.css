@@ -25,8 +25,7 @@
 				.margenDebajo {margin-bottom: 5px;}
 				.borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
 				.input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-				:is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario)
-					{border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+				:is(.input, #posiblesRepetidos, #calendario, #datosLeyenda) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 				label[for] {padding-left: 3px;}
 
 				/* Primer bloque */
@@ -121,9 +120,21 @@
 					.personajes .radioBtn {margin-left: 10px;}
 					.hechos .radioBtn {margin-right: 10px;}
 				}
+				#sectorLeyenda {
+					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
+					#datosLeyenda {
+						padding-inline: 5px;
+						select {
+							padding-block: 3px; border: none !important;
+							&:focus {outline: none;}
+							&:disabled {opacity: 1;}
+						}
+						#hoyEstamos {margin-right: 3px;}
+					}
+
+				}
 
 				/* PreguntasRCLIC (personajes) */
-				.personajes:has(#categoria_id input#CFC:checked) #preguntasRCLIC.invisible {visibility: unset;} /* la categoría es 'CFC' */
 				&:has(#sectorGenero input:checked) #preguntasRCLIC .segunGenero_id.invisible {visibility: unset;} /* contestó 'genero' */
 
 				/* PreguntasRCLIC (hechos) */

@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
-		botonSubmit: document.querySelector(".iconos button[type='submit']"),
+		botonSubmit: document.querySelector(".iconos button[type=submit]"),
 
 		// Variables de errores
 		iconosOK: document.querySelectorAll("form .OK .fa-circle-check"),
@@ -13,42 +13,48 @@ window.addEventListener("load", async () => {
 
 		// Avatar
 		imgAvatar: document.querySelector("form #imgDerecha img#imgAvatar"),
-		inputAvatar: document.querySelector("form #imgDerecha .input[name='avatar']"),
+		inputAvatar: document.querySelector("form #imgDerecha .input[name=avatar]"),
 		googleIMG: document.querySelector("form #imgDerecha .agregados a"),
 
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
-		nombre: document.querySelector("form .input[name='nombre']"),
+		nombre: document.querySelector("form .input[name=nombre]"),
 
 		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
-		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
+		tipoFecha: document.querySelector("form .input[name=tipoFecha]"),
 		mesDia: document.querySelector("form #sectorFecha #mesDia"),
-		mes_id: document.querySelector("form .input[name='mes_id']"),
-		dia: document.querySelector("form .input[name='dia']"),
-		anoFM: document.querySelector("form .input[name='anoFM']"),
+		mes_id: document.querySelector("form .input[name=mes_id]"),
+		dia: document.querySelector("form .input[name=dia]"),
+		anoFM: document.querySelector("form .input[name=anoFM]"),
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
-		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
+		diasDeDuracion: document.querySelector("form .input[name=diasDeDuracion]"),
 
 		// Primera columna - Fecha comentarios móvil
 		sectorContadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres"),
 		contadorMovil: document.querySelector("form #dataEntry #sectorFecha .caracteres span"),
-		comentarioMovil: document.querySelector("form .input[name='comentarioMovil']"),
+		comentarioMovil: document.querySelector("form .input[name=comentarioMovil]"),
 
 		// Primera columna - Fecha comentarios duración
 		contadorDuracion: document.querySelector("form #dataEntry #diasDeDuracion .caracteres span"),
-		comentarioDuracion: document.querySelector("form .input[name='comentarioDuracion']"),
+		comentarioDuracion: document.querySelector("form .input[name=comentarioDuracion]"),
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
-		generos_id: document.querySelectorAll("form input[name='genero_id']"),
-		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
-		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
+		generos_id: document.querySelectorAll("form input[name=genero_id]"),
+		plural_id: document.querySelector("form input[name=plural_id]"),
+		carpetaAvatars: document.querySelector("form .input[name=carpetaAvatars]"),
+		prioridad_id: document.querySelector("form .input[name=prioridad_id]"),
 
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
-		epocasOcurrencia_id: document.querySelectorAll("form input[name='epocaOcurrencia_id']"),
-		ano: document.querySelector("form input[name='" + ano + "']"),
+		epocasOcurrencia_id: document.querySelectorAll("form input[name=epocaOcurrencia_id]"),
+		ano: document.querySelector("form input[name=" + ano + "]"),
+		cfc: document.querySelector("form .input[name=categoria_id][value=CFC]"),
+		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
+		resto: document.querySelector("form .input[name=resto]"),
+		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
+		restoDefault: document.querySelector("form .input[name=resto] option"),
 	};
 	let rutas = {
 		// Rutas
@@ -58,11 +64,6 @@ window.addEventListener("load", async () => {
 		prefijos: "/rclv/api/prefijos",
 	};
 	let v = {
-		// Variables de entidad
-		personajes: entidad == "personajes",
-		hechos: entidad == "hechos",
-		epocasDelAno: entidad == "epocasDelAno",
-
 		// Campos por sector
 		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
@@ -80,31 +81,33 @@ window.addEventListener("load", async () => {
 		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
-	if (v.personajes) {
-		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
-		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.preguntasRCLIC = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
-		DOM.categorias_id = document.querySelectorAll("form input[name='categoria_id']");
-		DOM.rolIglesia_id = document.querySelector("form select[name='rolIglesia_id']");
+	if (personajes) {
+		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
+		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
+		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
+		DOM.preguntasInputs = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
+		DOM.categorias_id = document.querySelectorAll("form input[name=categoria_id]");
+		DOM.rolIglesia_id = document.querySelector("form select[name=rolIglesia_id]");
 		DOM.rolIglesiaDefault = DOM.rolIglesia_id.querySelector("option");
-		DOM.canon_id = document.querySelector("form select[name='canon_id']");
+		DOM.canon_id = document.querySelector("form select[name=canon_id]");
 		DOM.canonDefault = DOM.canon_id.querySelector("option");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.apMar_id = document.querySelector("form select[name='apMar_id']");
+		DOM.apMar_id = document.querySelector("form select[name=apMar_id]");
 
-		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
+		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
-	if (v.hechos) {
-		DOM.nombreAltern = document.querySelector("form input[name='nombreAltern']");
-		DOM.camposRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.soloCfc = document.querySelectorAll("form input[name='soloCfc']");
+	if (hechos) {
+		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
+		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
+		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
+		DOM.soloCfc = document.querySelectorAll("form input[name=soloCfc]");
 		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.ama = document.querySelectorAll("form input[name='ama']");
+		DOM.ama = document.querySelectorAll("form input[name=ama]");
 
-		v.camposRCLIC = Array.from(DOM.camposRCLIC).map((n) => n.name);
+		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 	}
-	if (v.epocasDelAno) {
+	if (epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
 		DOM.dias_del_ano_Dia = document.querySelectorAll("form #calendario tr td:first-child");
 		DOM.dias_del_ano_RCLV = document.querySelectorAll("form #calendario tr td:nth-child(2)");
@@ -112,6 +115,7 @@ window.addEventListener("load", async () => {
 		DOM.tablaCalendario = document.querySelector("form #calendario table");
 		v.fechasDelAno = Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML);
 	}
+	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
 
 	// Funciones
 	let FN = {
@@ -136,8 +140,8 @@ window.addEventListener("load", async () => {
 				muestraLosDiasDelMes: () => {
 					// Aplica cambios en los días 30 y 31
 					// Variables
-					let dia30 = document.querySelector("select[name='dia'] option[value='30']");
-					let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+					let dia30 = document.querySelector("select[name=dia] option[value=30]");
+					let dia31 = document.querySelector("select[name=dia] option[value=31]");
 					let mes = DOM.mes_id.value;
 
 					// Revisar para febrero
@@ -274,22 +278,34 @@ window.addEventListener("load", async () => {
 			genero: {
 				consolidado: function () {
 					// Variables
-					v.genero_id = opcionElegida(DOM.generos_id).value;
+					v.genero_id = opcElegida(DOM.generos_id);
 
-					// Opciones de 'Rol en la Iglesia'
-					this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
+					// Acciones en el género
+					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
+					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S"; // si se eligió alguno, se le agrega el 'singular/plural'
 
-					// Opciones de 'Proceso de Canonización'
-					this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
+					if (personajes) {
+						// Opciones de 'Rol en la Iglesia'
+						this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
+
+						// Opciones de 'Proceso de Canonización'
+						this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
+					}
+
+					// Impacto en 'cfc'
+					FN.impactos.cfc()
+
+					// Impacto en 'hoyEstamos'
+					if (DOM.hoyEstamos) this.hoyEstamos();
 
 					// Fin
 					return;
 				},
-				opcsVisibles: (select, opciones, trivial) => {
+				opcsVisibles: (select, opciones, opcionDefault) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
 					select.innerHTML = "";
-					select.appendChild(trivial);
+					select.appendChild(opcionDefault);
 
 					// Agrega las opciones válidas para el género
 					for (let opcion of opciones)
@@ -307,17 +323,43 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
+				hoyEstamos: () => {
+					// Variables
+					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
+
+					// Reinicia el select
+					DOM.hoyEstamos.innerHTML = "";
+					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
+
+					// Agrega las opciones válidas para el género
+					for (let opcion of opciones) {
+						// Crea la opción
+						const option = document.createElement("option");
+						option.value = opcion.id;
+						option.selected = true;
+						option.innerText = opcion.comentario;
+
+						// Agrega la opción
+						DOM.hoyEstamos.appendChild(option);
+					}
+
+					// Si hay una sola respuesta, la inactiva
+					DOM.hoyEstamos.disabled = opciones.length < 2;
+
+					// Fin
+					return;
+				},
 			},
 			epocaOcurrencia: {
 				personajes: async () => {
 					// Obtiene la opción elegida
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
 					// Obtiene el año
 					let ano = FN_ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
-					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
+					if (epocaOcurrencia_id == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
 					else DOM.sectorApMar.classList.add("invisible");
 
 					// Fin
@@ -325,19 +367,28 @@ window.addEventListener("load", async () => {
 				},
 				hechos: async () => {
 					// Obtiene la opción elegida
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+					let epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
 
 					// Obtiene el año
 					let ano = FN_ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
-					if (epocaOcurrencia_id.value == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
+					if (epocaOcurrencia_id == "pst" && ano > 1100) DOM.sectorApMar.classList.remove("invisible");
 					else DOM.sectorApMar.classList.add("invisible");
 
 					// Fin
 					return;
 				},
+			},
+			cfc: () => {
+				// Muestra u oculta el sector RCLIC
+				DOM.cfc.checked && v.genero_id
+					? DOM.preguntasRCLIC.classList.remove("ocultar")
+					: DOM.preguntasRCLIC.classList.add("ocultar");
+
+				// Fin
+				return;
 			},
 		},
 		validacs: {
@@ -366,12 +417,12 @@ window.addEventListener("load", async () => {
 				if (id) params += "&id=" + id;
 
 				// Le agrega lo referido a la aparición mariana
-				if (v.hechos) {
-					let soloCfc = opcionElegida(DOM.soloCfc);
-					let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
+				if (hechos) {
+					let soloCfc = opcElegida(DOM.soloCfc);
+					let epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
 					let ano = FN_ano(DOM.ano.value);
-					let ama = opcionElegida(DOM.ama).value;
-					if (soloCfc.value == 1 && epocaOcurrencia_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
+					let ama = opcElegida(DOM.ama);
+					if (soloCfc == 1 && epocaOcurrencia_id == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
 				}
 
 				// Averigua los errores
@@ -453,11 +504,11 @@ window.addEventListener("load", async () => {
 				// Variables
 				let params = "epocaOcurrencia";
 				params += "&entidad=" + entidad;
-				let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+				let epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
+				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 				// Agrega los demás parámetros
-				if (epocaOcurrencia_id.value == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
+				if (epocaOcurrencia_id == "pst") params += "&" + ano + "=" + FN_ano(DOM.ano.value);
 
 				// OK y Errores
 				v.errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -472,28 +523,29 @@ window.addEventListener("load", async () => {
 					let params = "RCLIC_personajes";
 
 					// Obtiene la categoría
-					let categoria_id = opcionElegida(DOM.categorias_id);
-					params += "&categoria_id=" + categoria_id.value;
+					const categoria_id = opcElegida(DOM.categorias_id);
+					params += "&categoria_id=" + categoria_id;
 
-					if (categoria_id.value == "CFC") {
-						// Obtiene los valores de los preguntasRCLIC
+					if (categoria_id == "CFC") {
+						// Obtiene los valores de los preguntasInputs
 						params += "&genero_id=" + v.genero_id;
 						if (v.genero_id) {
 							// Agrega los datos de CFC
-							for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
+							for (let campo of DOM.preguntasInputs)
+								if (campo.value) params += "&" + campo.name + "=" + campo.value;
 
 							// Agrega la epocaOcurrencia_id
-							const epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+							const epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
+							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 							// Acciones si la epocaOcurrencia_id es 'pst'
-							if (epocaOcurrencia_id.value == "pst") {
+							if (epocaOcurrencia_id == "pst") {
 								// Agrega el año
 								const ano = FN_ano(DOM.ano.value);
 								params += "&anoNacim=" + ano;
 
 								// Agrega lo referido a la aparición mariana
-								if (ano > 1100) params += "&apMar_id=" + opcionElegida(DOM.apMar_id).value;
+								if (ano > 1100) params += "&apMar_id=" + opcElegida(DOM.apMar_id);
 							}
 						}
 					}
@@ -510,20 +562,20 @@ window.addEventListener("load", async () => {
 					let params = "RCLIC_hechos";
 
 					// Obtiene el 'soloCfc'
-					let soloCfc = opcionElegida(DOM.soloCfc);
-					params += "&soloCfc=" + soloCfc.value;
+					let soloCfc = opcElegida(DOM.soloCfc);
+					params += "&soloCfc=" + soloCfc;
 
-					if (soloCfc.value == 1) {
+					if (soloCfc == 1) {
 						// Agrega los datos de epocaOcurrencia_id y año
-						let epocaOcurrencia_id = opcionElegida(DOM.epocasOcurrencia_id);
-						params += "&epocaOcurrencia_id=" + epocaOcurrencia_id.value;
+						let epocaOcurrencia_id = opcElegida(DOM.epocasOcurrencia_id);
+						params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
-						if (epocaOcurrencia_id.value == "pst") {
+						if (epocaOcurrencia_id == "pst") {
 							let ano = FN_ano(DOM.ano.value);
 							// Agrega el año
 							params += "&anoComienzo=" + ano;
 							// Agrega lo referido a la aparición mariana
-							if (ano > 1100) params += "&ama=" + opcionElegida(DOM.ama).value;
+							if (ano > 1100) params += "&ama=" + opcElegida(DOM.ama);
 						}
 					}
 
@@ -592,9 +644,8 @@ window.addEventListener("load", async () => {
 
 			// Genero
 			if (DOM.generos_id.length) {
-				if (opcionElegida(DOM.generos_id).value) await this.impactos.genero.consolidado();
-				if (opcionElegida(DOM.generos_id).value || (forzar && v.errores.genero_id === undefined))
-					await this.validacs.genero();
+				if (opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
+				if (opcElegida(DOM.generos_id) || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
 			}
 
 			// Carpeta Avatars
@@ -607,18 +658,24 @@ window.addEventListener("load", async () => {
 
 			// Época
 			if (DOM.epocasOcurrencia_id.length) {
-				if (opcionElegida(DOM.epocasOcurrencia_id).value) await this.impactos.epocaOcurrencia[entidad]();
-				if (opcionElegida(DOM.epocasOcurrencia_id).value || (forzar && v.errores.epocaOcurrencia === undefined))
+				if (opcElegida(DOM.epocasOcurrencia_id)) await this.impactos.epocaOcurrencia[entidad]();
+				if (opcElegida(DOM.epocasOcurrencia_id) || (forzar && v.errores.epocaOcurrencia === undefined))
 					await this.validacs.epocaOcurrencia();
 			}
 
 			// RCLIC
 			if (
-				(v.personajes && opcionElegida(DOM.categorias_id).value) ||
-				(v.hechos && opcionElegida(DOM.soloCfc).value) ||
-				(forzar && (v.personajes || v.hechos) && v.errores.RCLIC === undefined)
+				(personajes && opcElegida(DOM.categorias_id)) ||
+				(hechos && opcElegida(DOM.soloCfc)) ||
+				(forzar && (personajes || hechos) && v.errores.RCLIC === undefined)
 			)
 				await this.validacs.RCLIC[entidad]();
+
+			// hoyEstamos - si hay una sola respuesta, la inactiva
+			if (DOM.hoyEstamos) {
+				const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
+				DOM.hoyEstamos.disabled = opciones.length < 2;
+			}
 
 			// Fin
 			this.validacs.muestraErroresOK();
@@ -657,7 +714,7 @@ window.addEventListener("load", async () => {
 						: false;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
-				if (campo == "nombre" && v.personajes)
+				if (campo == "nombre" && personajes)
 					for (let prefijo of v.prefijos)
 						if (valor.startsWith(prefijo + " ")) {
 							valor = valor.slice(prefijo.length + 1);
@@ -708,10 +765,11 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
+
 	// Acciones cuando se  confirma el input
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
-		let campo = e.target.name;
+		const campo = e.target.name;
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
@@ -735,8 +793,7 @@ window.addEventListener("load", async () => {
 			if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 			if (campo == "mes_id") FN.impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") FN.impactos.fecha.muestraOcultaCamposFecha();
-			if (v.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
-				FN.impactos.fecha.epocasDelAno(campo);
+			if (epocasDelAno && ["mes_id", "dia", "diasDeDuracion"].includes(campo)) FN.impactos.fecha.epocasDelAno(campo);
 
 			// Valida las fechas
 			await FN.validacs.fecha();
@@ -751,12 +808,13 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el sector Repetido
 		if (campo == "repetido") FN.validacs.repetido();
 
-		// Acciones si se cambia el sector Genero
-		if (campo == "genero_id") {
+		// Acciones si se cambia el sector 'Genero'
+		if (["genero_id", "plural_id"].includes(campo)) {
 			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
+
 			// Si corresponde, valida RCLIC
-			if (v.OK.genero_id && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
+			if (personajes && v.OK.genero_id && opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
 		// Acciones si se cambia el sector Carpeta Avatars
@@ -774,22 +832,23 @@ window.addEventListener("load", async () => {
 			if (e.target.value == "pst") DOM.ano.focus();
 			// Si corresponde, valida RCLIC
 			if (v.OK.epocaOcurrencia) {
-				if (v.personajes && opcionElegida(DOM.categorias_id).value == "CFC") await FN.validacs.RCLIC.personajes();
-				if (v.hechos && opcionElegida(DOM.soloCfc).value == 1) await FN.validacs.RCLIC.hechos();
+				if (personajes && opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
+				if (hechos && opcElegida(DOM.soloCfc) == 1) await FN.validacs.RCLIC.hechos();
 			}
 		}
 
 		// Acciones si se cambia el sector RCLIC
-		if (v.camposRCLIC.includes(campo)) {
-			// Nota: sus impactos se resuelven con CSS
+		if (v.camposRCLIC && v.camposRCLIC.includes(campo)) {
+			if (campo == "categoria_id") FN.impactos.cfc();
 			await FN.validacs.RCLIC[entidad]();
-			if (v.hechos) await FN.validacs.nombre();
+			if (hechos) await FN.validacs.nombre();
 		}
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
 		FN.validacs.botonSubmit();
 	});
+
 	// Botón submit
 	DOM.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
@@ -803,14 +862,27 @@ window.addEventListener("load", async () => {
 	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await FN.startUp();
 });
+
 // Variables
 const entidad = new URL(location.href).searchParams.get("entidad");
+const personajes = entidad == "personajes";
+const hechos = entidad == "hechos";
+const epocasDelAno = entidad == "epocasDelAno";
+const ano = personajes ? "anoNacim" : "anoComienzo";
 const id = new URL(location.href).searchParams.get("id");
-const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 
 // Funciones
-let opcionElegida = (opciones) => {
-	for (var opcion of opciones) if (opcion.checked) return opcion;
-	return {value: "", name: ""};
+let opcElegida = (opciones) => {
+	// Radio
+	if (opciones[0].type == "radio") {
+		for (var opcion of opciones) if (opcion.checked) return opcion.value;
+		return "";
+	}
+	// Check
+	else {
+		let valor = "";
+		for (var opcion of opciones) if (opcion.checked) valor += opcion.value;
+		return valor;
+	}
 };
 let FN_ano = (ano) => (ano ? parseInt(ano) : 0);
