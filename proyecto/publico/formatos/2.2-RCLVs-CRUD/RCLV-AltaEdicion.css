@@ -134,11 +134,8 @@
 
 				}
 
-				/* PreguntasRCLIC (personajes) */
-				&:has(#sectorGenero input:checked) #preguntasRCLIC .segunGenero_id.invisible {visibility: unset;} /* contestó 'genero' */
-
-				/* PreguntasRCLIC (hechos) */
-				&:has(.hechos #soloCFC input#SI:checked) #preguntasRCLIC.invisible {visibility: visible;} /* --> si soloCFC='SI' */
+				/* PreguntasRCLIC (personajes y hechos) - si algún 'hijo' está visible, muestra el sector RCLIC */
+				#preguntasRCLIC.ocultar:has(> :not(.invisible)) {display: flex !important;}
 
 				/* Temas de ayuda */
 				ul#ayudaNombrePers {max-width: min(400px, 90vw);}
