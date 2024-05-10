@@ -448,15 +448,15 @@
 
 			<!-- Resto -->
 			<% if (personajes || hechos) { %>
-				<div id="resto">
-					<select name="resto" class="input sinFlecha">
+				<div id="leyNombre">
+					<select name="leyNombre" class="input sinFlecha">
 						<option value="">Elegí una opción</option>
 						<option value="1">a Juan Pablo II, santo</option>
 						<option value="2">a san Francisco de Asís</option>
 					</select>
 				</div>
 			<% } else { %>
-				<div id="resto"><%= dataEntry.nombre ? dataEntry.nombre : "" %></div>
+				<div id="leyNombre"><%= dataEntry.nombre ? dataEntry.nombre : "" %></div>
 			<% } %>
 		</div>
 
