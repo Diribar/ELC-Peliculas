@@ -58,13 +58,14 @@ window.addEventListener("load", async () => {
 	DOM = {
 		...DOM,
 		inputsRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
-		categorias_id: document.querySelectorAll("form ##sectorRCLIC input[name=categoria_id]"),
+		categorias_id: document.querySelectorAll("form #sectorRCLIC input[name=categoria_id]"),
 		soloCfc: document.querySelectorAll("form #sectorRCLIC input[name=soloCfc]"), // equivalente a 'categorias_id'
 		cfc: document.querySelector("form #sectorRCLIC .input#cfc"),
 		preguntasRCLIC: document.querySelector("form #sectorRCLIC #preguntasRCLIC"),
 	};
 	// preguntasRCLIC
 	DOM = {
+		...DOM,
 		preguntasInputs: DOM.preguntasRCLIC.querySelectorAll(".input"),
 		ama: DOM.preguntasRCLIC.querySelectorAll("input[name=ama]"), // equivalente a 'preguntasInputs'
 
