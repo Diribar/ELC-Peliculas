@@ -92,12 +92,12 @@ window.addEventListener("load", async () => {
 		// hoyEstamos
 		hoyEstamos: document.querySelector("form select.input[name=hoyEstamos]"),
 		hoyEstamosDefault: document.querySelector("form select.input[name=hoyEstamos] option"),
-		hoyEstamosFijo: document.querySelector("form div#hoyEstamos"),
+		hoyEstamosFijo: document.querySelector("form #hoyEstamos:not(:has(select))"),
 
 		// leyNombre
 		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
 		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
-		leyNombreFijo: document.querySelector("form div#leyNombre"),
+		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
 	};
 	let rutas = {
 		// Rutas
@@ -159,6 +159,40 @@ window.addEventListener("load", async () => {
 						for (let link of DOM.linksClick) link.href = "";
 						DOM.googleIMG.href = "";
 					}
+					// Fin
+					return;
+				},
+				leyNombre: () => {
+					// Variables
+					const nombres = Array.from(DOM.camposNombre)
+						.map((n) => n.value)
+						.filter((n) => !!n);
+					console.log(nombres);
+					return;
+					const opciones = v.hoyEstamos.filter((n) => n.genero_id == v.genero_id);
+
+					// Reinicia el select
+					DOM.hoyEstamos.innerHTML = "";
+					DOM.hoyEstamos.appendChild(DOM.hoyEstamosDefault);
+
+					// Agrega las opciones válidas para el género
+					for (let opcion of opciones) {
+						// Crea la opción
+						const option = document.createElement("option");
+						option.value = opcion.id;
+						option.selected = true;
+						option.innerText = opcion.comentario;
+
+						// Agrega la opción
+						DOM.hoyEstamos.appendChild(option);
+					}
+
+					// Si hay una sola respuesta, la inactiva
+					DOM.hoyEstamos.disabled = opciones.length < 2;
+
+					// Corrige el ancho
+					FN.impactos.hoyEstamos();
+
 					// Fin
 					return;
 				},
@@ -307,10 +341,11 @@ window.addEventListener("load", async () => {
 					// Variables
 					v.genero_id = opcElegida(DOM.generos_id);
 
-					// Acciones en el género
+					// Impactos en sí mismo
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
 					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S"; // si se eligió alguno, se le agrega el 'singular/plural'
 
+					// Impactos en campos RCLIC exclusivos de personajes
 					if (personajes) {
 						// Opciones de 'Rol en la Iglesia'
 						this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
@@ -322,7 +357,7 @@ window.addEventListener("load", async () => {
 						FN.impactos.cfcGenero();
 					}
 
-					// Impacto en 'hoyEstamos'
+					// Impactos en 'hoyEstamos'
 					if (DOM.hoyEstamos) this.hoyEstamos();
 
 					// Fin
@@ -428,10 +463,12 @@ window.addEventListener("load", async () => {
 				// Variables
 				const opcionElegida = document.querySelector("form .input[name=hoyEstamos] option:checked");
 				const ancho = opcionElegida.innerText.length;
+				// console.log(opcionElegida.clientWidth);
 
 				// Ajusta el ancho del select
-				DOM.hoyEstamos.style.width =  ancho * 6.5 + "px";
+				DOM.hoyEstamos.style.width = ancho * 8 + "px";
 			},
+			leyNombre: () => {},
 		},
 		validacs: {
 			avatar: async () => {
@@ -799,14 +836,7 @@ window.addEventListener("load", async () => {
 			e.target.selectionEnd = posicCursor;
 		}
 		// Actualiza los datos de 'leyNombre'
-		if (["nombre", "nombreAltern"].includes(campo)) {
-			if (DOM.leyNombreFijo) {
-				DOM.leyNombreFijo.innerHTML = valor;
-			}
-			// Actualiza las opciones
-			else if (DOM.leyNombre) {
-			}
-		}
+		if (["nombre", "nombreAltern"].includes(campo) && DOM.leyNombreFijo) DOM.leyNombreFijo.innerHTML = valor;
 
 		// Fin
 		return;
@@ -831,6 +861,7 @@ window.addEventListener("load", async () => {
 		if (v.camposNombre.includes(campo)) {
 			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
+			FN.impactos.nombre.leyNombre();
 		}
 
 		// Acciones si se cambia el sector Fecha
