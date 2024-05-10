@@ -1,13 +1,13 @@
 RENAME TABLE c19353_elc.aux_sexos TO c19353_elc.aux_generos;
 
-Tabla CANONS
+- Tabla CANONS
 ALTER TABLE c19353_elc.rclv_canons ADD MS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD FS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD MP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD FP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD MFP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 
-Tablas ROLES_IGLESIA
+- Tablas ROLES_IGLESIA
 ALTER TABLE c19353_elc.aux_roles_iglesia ADD MS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_roles_iglesia ADD FS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_roles_iglesia ADD MP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
@@ -20,7 +20,7 @@ ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN personaje;
 ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN varon;
 ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN mujer;
 
-Tabla GENEROS
+- Tabla GENEROS
 ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.aux_generos CHANGE nombre pers varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_generos ADD rclvs varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER pers;
@@ -29,36 +29,36 @@ ALTER TABLE c19353_elc.aux_generos CHANGE letra_final letraFinal varchar(2) CHAR
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN varon;
 ALTER TABLE c19353_elc.aux_generos DROP COLUMN mujer;
 
-Tabla USUARIOS
+- Tabla USUARIOS
 ALTER TABLE c19353_elc.usuarios CHANGE sexo_id genero_id varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 
-Tablas PERSONAJES
+- Tablas PERSONAJES
 ALTER TABLE c19353_elc.rclv_1personajes CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_1personajes CHANGE sexo_id genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
 ALTER TABLE c19353_elc.rclv_1personajes ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER apMar_id;
 
-Tabla HECHOS
+- Tabla HECHOS
 ALTER TABLE c19353_elc.rclv_2hechos ADD nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_2hechos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
 ALTER TABLE c19353_elc.rclv_2hechos ADD CONSTRAINT rclv_2hechos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE c19353_elc.rclv_2hechos ADD hoyEstamos varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER  ama;
+ALTER TABLE c19353_elc.rclv_2hechos ADD hoyEstamos_id tinyint(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER  ama;
 ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER hoyEstamos;
 
-Tabla TEMAS
+- Tabla TEMAS
 ALTER TABLE c19353_elc.rclv_3temas ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_3temas ADD CONSTRAINT rclv_3temas_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-Tabla EVENTOS
+- Tabla EVENTOS
 ALTER TABLE c19353_elc.rclv_4eventos MODIFY COLUMN nombre varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclv_4eventos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_4eventos ADD CONSTRAINT rclv_4eventos_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE c19353_elc.rclv_4eventos ADD hoyEstamos varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
+ALTER TABLE c19353_elc.rclv_4eventos ADD hoyEstamos_id tinyint(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
 
-Tabla ÉPOCAS DEL AÑO
+- Tabla ÉPOCAS DEL AÑO
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombre;
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano ADD CONSTRAINT rclv_5epocas_del_ano_genero_fk FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-Tabla EDICION RCLV
+- Tabla EDICION RCLV
 ALTER TABLE c19353_elc.rclv_9edicion MODIFY COLUMN nombre varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE sexo_id genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
@@ -68,7 +68,7 @@ ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8
 
 MODIFICACIONES -----------------------------------
 
-Tabla Canons
+- Tabla Canons
 INSERT INTO c19353_elc.rclv_canons VALUES('ST', 1, 'Santo/a', 'Santo', 'Santa', 'Santos', 'Santas');
 INSERT INTO c19353_elc.rclv_canons VALUES('BT', 2, 'Beato/a', 'Beato', 'Beata', 'Beatos', 'Beatas');
 INSERT INTO c19353_elc.rclv_canons VALUES('VN', 3, 'Venerable', 'Venerable', 'Venerable', 'Venerables', 'Venerables');
@@ -76,7 +76,7 @@ INSERT INTO c19353_elc.rclv_canons VALUES('SD', 4, 'Siervo/a de Dios', 'Siervo d
 INSERT INTO c19353_elc.rclv_canons VALUES('NN', 5, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno');
 INSERT INTO c19353_elc.rclv_canons VALUES('VC', 99, '', '', '', '', '');
 
-Tabla Roles Iglesia
+- Tabla Roles Iglesia
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LA', 1, 'Laico/a', 'Laico', 'Laica', 'Laicos', 'Laicas', 'Laicos', 1, 1, 1, 1, 1);
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LS', 2, 'Laico/a soltero/a', 'Laico soltero', 'Laica soltera', 'Laicos solteros', 'Laicas solteras', 'Laicos solteros', 6, 0, 1, 1, 1);
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LC', 3, 'Laico/a casado/a', 'Laico casado', 'Laica casada', 'Laicos casados', 'Laicas casadas', 'Laicos casados', 11, 0, 1, 1, 1);
@@ -87,7 +87,7 @@ INSERT INTO c19353_elc.aux_roles_iglesia VALUES('AP', 7, 'Apóstol', 'Apóstol',
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 36, 0, 1, 0, 0);
 INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
 
-Tabla Generos
+- Tabla Generos
 UPDATE c19353_elc.aux_generos SET orden=1, pers='Varón', rclvs='Masc.', diaEnQue=NULL, letraFinal='o' WHERE id='M';
 INSERT INTO c19353_elc.aux_generos VALUES('F', 2, 'Mujer', 'Fem.', NULL, 'a');
 INSERT INTO c19353_elc.aux_generos VALUES('P', 3, 'Grupo', 'Plural', NULL, NULL);
@@ -97,7 +97,7 @@ INSERT INTO c19353_elc.aux_generos VALUES('MP', 6, NULL, NULL, 'los', 'os');
 INSERT INTO c19353_elc.aux_generos VALUES('FP', 7, NULL, NULL, 'las', 'as');
 INSERT INTO c19353_elc.aux_generos VALUES('MFP', 8, NULL, NULL, 'los', 'os');
 
-Tabla Personajes
+- Tabla Personajes
 UPDATE c19353_elc.rclv_1personajes SET genero_id='FS' WHERE genero_id='M';
 UPDATE c19353_elc.rclv_1personajes SET genero_id='MS' WHERE genero_id='V';
 UPDATE c19353_elc.rclv_1personajes SET genero_id='MFP' WHERE genero_id='X';
@@ -116,17 +116,18 @@ UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='SC' WHERE rolIglesia_id LI
 UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='SF' WHERE rolIglesia_id LIKE 'SF_';
 UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='PP' WHERE rolIglesia_id LIKE 'PP_';
 
-Tabla Usuarios
+- Tabla Usuarios
 UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
 UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
 
-ELIMINAR ----------------------------
+- ELIMINAR
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_generos WHERE id='X';
 DELETE FROM c19353_elc.aux_generos WHERE id='V';
 
-CREATE TABLE c19353_elc.rclv_hoy_estamos (id smallint(5) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
+- hoyEstamos
+CREATE TABLE c19353_elc.rclv_hoy_estamos (id tinyint(3) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD entidad varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
