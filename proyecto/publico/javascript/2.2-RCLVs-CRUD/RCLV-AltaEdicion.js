@@ -364,8 +364,8 @@ window.addEventListener("load", async () => {
 						// Crea la opción
 						const option = document.createElement("option");
 						option.value = opcion.id;
-						option.selected = true;
 						option.innerText = opcion.comentario;
+						option.selected = true;
 
 						// Agrega la opción
 						DOM.hoyEstamos.appendChild(option);
@@ -425,11 +425,15 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enLeyendaNombre: (campo) => {
+			enLeyendaNombre: function (campo) {
 				// Variables
 				const nombres = Array.from(DOM.camposNombre)
 					.map((n) => n.value)
 					.filter((n) => !!n);
+
+				// Obtiene la opción seleccionada actualmente
+				DOM.opcionElegida = document.querySelector("form .input[name=leyNombre] option:checked");
+				const indice = Array.from(DOM.leyNombre).indexOf(DOM.opcionElegida);
 
 				// Reinicia el select
 				DOM.leyNombre.innerHTML = "";
@@ -447,11 +451,14 @@ window.addEventListener("load", async () => {
 					DOM.leyNombre.appendChild(option);
 				}
 
+				// Selecciona la opción original
+				if (indice) DOM.leyNombre.selectedIndex = indice;
+
 				// Si hay una sola respuesta, la inactiva
-				DOM.leyNombre.disabled = opciones.length < 2;
+				DOM.leyNombre.disabled = nombres.length < 2;
 
 				// Corrige el ancho
-				FN.impactos.ancho("hoyEstamos");
+				this.ancho("leyNombre");
 
 				// Fin
 				return;
@@ -460,10 +467,10 @@ window.addEventListener("load", async () => {
 				// Variables
 				const opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
 				const ancho = opcionElegida.innerText.length;
-				// console.log(opcionElegida.clientWidth);
+				console.log(ancho);
 
 				// Ajusta el ancho del select
-				DOM[sector].style.width = ancho * (ancho < 10 ? 8 : ancho < 20 ? 7 : 6.5) + "px";
+				DOM[sector].style.width = 8 * 2 + ancho * 6 + "px";
 			},
 		},
 		validacs: {
