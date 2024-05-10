@@ -804,7 +804,6 @@ window.addEventListener("load", async () => {
 			await FN.validacs.genero();
 
 			// Si corresponde, valida RCLIC
-			// return
 			if (personajes && v.OK.genero_id && opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
