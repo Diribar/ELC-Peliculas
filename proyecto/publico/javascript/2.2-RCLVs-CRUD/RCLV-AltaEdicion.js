@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
+	// Variables comunes
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
@@ -19,6 +19,7 @@ window.addEventListener("load", async () => {
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
 		nombre: document.querySelector("form .input[name=nombre]"),
+		nombreAltern: document.querySelector("form input[name=nombreAltern]"),
 
 		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
@@ -45,12 +46,45 @@ window.addEventListener("load", async () => {
 		plural_id: document.querySelector("form input[name=plural_id]"),
 		carpetaAvatars: document.querySelector("form .input[name=carpetaAvatars]"),
 		prioridad_id: document.querySelector("form .input[name=prioridad_id]"),
-
-		// Abajo
+	};
+	// Época de ocurrencia
+	DOM = {
+		...DOM,
 		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocasOcurrencia_id: document.querySelectorAll("form input[name=epocaOcurrencia_id]"),
 		ano: document.querySelector("form input[name=" + ano + "]"),
-		cfc: document.querySelector("form .input[name=categoria_id][value=CFC]"),
+	};
+	// sectorRCLIC
+	DOM = {
+		...DOM,
+		inputsRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
+		categorias_id: document.querySelectorAll("form ##sectorRCLIC input[name=categoria_id]"),
+		soloCfc: document.querySelectorAll("form #sectorRCLIC input[name=soloCfc]"), // equivalente a 'categorias_id'
+		cfc: document.querySelector("form #sectorRCLIC .input#cfc"),
+		preguntasRCLIC: document.querySelector("form #sectorRCLIC #preguntasRCLIC"),
+	};
+	// preguntasRCLIC
+	DOM = {
+		preguntasInputs: DOM.preguntasRCLIC.querySelectorAll(".input"),
+		ama: DOM.preguntasRCLIC.querySelectorAll("input[name=ama]"), // equivalente a 'preguntasInputs'
+
+		// Sector Rol en la Iglesia
+		sectorRolIgl: DOM.preguntasRCLIC.querySelector("#sectorRolIgl"),
+		rolIglesia_id: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id]"),
+		rolIglesiaDefault: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id] option"),
+
+		// Sector Proceso de Canonización
+		sectorCanon: DOM.preguntasRCLIC.querySelector("#sectorCanon"),
+		canon_id: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id]"),
+		canonDefault: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id] option"),
+
+		// Sector Aparición Mariana
+		sectorApMar: DOM.preguntasRCLIC.querySelector("#sectorApMar"),
+		apMar_id: DOM.preguntasRCLIC.querySelector("#sectorApMar select[name=apMar_id]"),
+	};
+	// Hoy estamos
+	DOM = {
+		...DOM,
 		hoyEstamos: document.querySelector("form .input[name=hoyEstamos]"),
 		resto: document.querySelector("form .input[name=resto]"),
 		hoyEstamosDefault: document.querySelector("form .input[name=hoyEstamos] option"),
@@ -61,7 +95,6 @@ window.addEventListener("load", async () => {
 		obtieneVariables: "/rclv/api/edicion/obtiene-variables",
 		validacion: "/rclv/api/valida-sector/?funcion=",
 		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
-		prefijos: "/rclv/api/prefijos",
 	};
 	let v = {
 		// Campos por sector
@@ -81,31 +114,17 @@ window.addEventListener("load", async () => {
 		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
-	if (personajes) {
-		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
-		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
-		DOM.preguntasInputs = document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input");
-		DOM.categorias_id = document.querySelectorAll("form input[name=categoria_id]");
-		DOM.rolIglesia_id = document.querySelector("form select[name=rolIglesia_id]");
-		DOM.rolIglesiaDefault = DOM.rolIglesia_id.querySelector("option");
-		DOM.canon_id = document.querySelector("form select[name=canon_id]");
-		DOM.canonDefault = DOM.canon_id.querySelector("option");
-		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.apMar_id = document.querySelector("form select[name=apMar_id]");
-
+	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
+	// Por entidad
+	if (personajes || hechos) {
+		// Compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
-		v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
-	}
-	if (hechos) {
-		DOM.nombreAltern = document.querySelector("form input[name=nombreAltern]");
-		DOM.inputsRCLIC = document.querySelectorAll("form #sectorRCLIC .input");
-		DOM.preguntasRCLIC = document.querySelector("form #sectorRCLIC #preguntasRCLIC");
-		DOM.soloCfc = document.querySelectorAll("form input[name=soloCfc]");
-		DOM.sectorApMar = document.querySelector("form #sectorApMar");
-		DOM.ama = document.querySelectorAll("form input[name=ama]");
 
-		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
+		// Personajes
+		if (personajes) {
+			rutas.prefijos = "/rclv/api/prefijos";
+			v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
+		}
 	}
 	if (epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
@@ -115,7 +134,6 @@ window.addEventListener("load", async () => {
 		DOM.tablaCalendario = document.querySelector("form #calendario table");
 		v.fechasDelAno = Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML);
 	}
-	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
 
 	// Funciones
 	let FN = {
@@ -293,7 +311,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impacto en 'cfc'
-					FN.impactos.cfc()
+					FN.impactos.cfc();
 
 					// Impacto en 'hoyEstamos'
 					if (DOM.hoyEstamos) this.hoyEstamos();
@@ -383,9 +401,13 @@ window.addEventListener("load", async () => {
 			},
 			cfc: () => {
 				// Muestra u oculta el sector RCLIC
-				DOM.cfc.checked && v.genero_id
-					? DOM.preguntasRCLIC.classList.remove("ocultar")
-					: DOM.preguntasRCLIC.classList.add("ocultar");
+				if (DOM.cfc.checked && v.genero_id) {
+					DOM.sectorRolIgl.classList.remove("invisible");
+					DOM.sectorCanon.classList.remove("invisible");
+				} else {
+					DOM.sectorRolIgl.classList.add("invisible");
+					DOM.sectorCanon.classList.add("invisible");
+				}
 
 				// Fin
 				return;
@@ -766,7 +788,7 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	// Acciones cuando se  confirma el input
+	// Acciones cuando se confirma el input
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		const campo = e.target.name;
@@ -839,7 +861,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC && v.camposRCLIC.includes(campo)) {
-			if (campo == "categoria_id") FN.impactos.cfc();
+			if (campo == "categoria_id") FN.impactos.cfc(); // personajes; para hechos se resuelve con
 			await FN.validacs.RCLIC[entidad]();
 			if (hechos) await FN.validacs.nombre();
 		}
