@@ -343,7 +343,7 @@
 				<!-- Preguntas RCLIC -->
 				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar grow spaceBetween">
 					<!-- Rol en la Iglesia -->
-					<div id="sectorRolIgl" class="flexRowAlign segunGenero_id invisible">
+					<div id="sectorRolIgl" class="flexRowAlign invisible segunGenero_id">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
 							<% if (dataEntry.genero_id) for (let rolIgl of rolesIgl) if (rolIgl[dataEntry.genero_id]) { %>
@@ -357,7 +357,7 @@
 						</select>
 					</div>
 					<!-- Proceso de Canonización -->
-					<div id="sectorCanon" class="flexRowAlign segunGenero_id invisible">
+					<div id="sectorCanon" class="flexRowAlign invisible segunGenero_id">
 						<select name="canon_id" class="input">
 							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
 							<% for (let canon of canons) { %>
