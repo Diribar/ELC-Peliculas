@@ -54,35 +54,37 @@ window.addEventListener("load", async () => {
 		epocasOcurrencia_id: document.querySelectorAll("form input[name=epocaOcurrencia_id]"),
 		ano: document.querySelector("form input[name=" + ano + "]"),
 	};
-	// sectorRCLIC
-	DOM = {
-		...DOM,
-		inputsRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
-		categorias_id: document.querySelectorAll("form #sectorRCLIC input[name=categoria_id]"),
-		soloCfc: document.querySelectorAll("form #sectorRCLIC input[name=soloCfc]"), // equivalente a 'categorias_id'
-		cfc: document.querySelector("form #sectorRCLIC .input#cfc"),
-		preguntasRCLIC: document.querySelector("form #sectorRCLIC #preguntasRCLIC"),
-	};
-	// preguntasRCLIC
-	DOM = {
-		...DOM,
-		preguntasInputs: DOM.preguntasRCLIC.querySelectorAll(".input"),
-		ama: DOM.preguntasRCLIC.querySelectorAll("input[name=ama]"), // equivalente a 'preguntasInputs'
+	if (personajes || hechos) {
+		// sectorRCLIC
+		DOM = {
+			...DOM,
+			inputsRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
+			categorias_id: document.querySelectorAll("form #sectorRCLIC input[name=categoria_id]"),
+			soloCfc: document.querySelectorAll("form #sectorRCLIC input[name=soloCfc]"), // equivalente a 'categorias_id'
+			cfc: document.querySelector("form #sectorRCLIC .input#cfc"),
+			preguntasRCLIC: document.querySelector("form #sectorRCLIC #preguntasRCLIC"),
+		};
+		// preguntasRCLIC
+		DOM = {
+			...DOM,
+			preguntasInputs: DOM.preguntasRCLIC.querySelectorAll(".input"),
+			ama: DOM.preguntasRCLIC.querySelectorAll("input[name=ama]"), // equivalente a 'preguntasInputs'
 
-		// Sector Rol en la Iglesia
-		sectorRolIgl: DOM.preguntasRCLIC.querySelector("#sectorRolIgl"),
-		rolIglesia_id: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id]"),
-		rolIglesiaDefault: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id] option"),
+			// Sector Rol en la Iglesia
+			sectorRolIgl: DOM.preguntasRCLIC.querySelector("#sectorRolIgl"),
+			rolIglesia_id: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id]"),
+			rolIglesiaDefault: DOM.preguntasRCLIC.querySelector("#sectorRolIgl select[name=rolIglesia_id] option"),
 
-		// Sector Proceso de Canonización
-		sectorCanon: DOM.preguntasRCLIC.querySelector("#sectorCanon"),
-		canon_id: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id]"),
-		canonDefault: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id] option"),
+			// Sector Proceso de Canonización
+			sectorCanon: DOM.preguntasRCLIC.querySelector("#sectorCanon"),
+			canon_id: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id]"),
+			canonDefault: DOM.preguntasRCLIC.querySelector("#sectorCanon select[name=canon_id] option"),
 
-		// Sector Aparición Mariana
-		sectorApMar: DOM.preguntasRCLIC.querySelector("#sectorApMar"),
-		apMar_id: DOM.preguntasRCLIC.querySelector("#sectorApMar select[name=apMar_id]"),
-	};
+			// Sector Aparición Mariana
+			sectorApMar: DOM.preguntasRCLIC.querySelector("#sectorApMar"),
+			apMar_id: DOM.preguntasRCLIC.querySelector("#sectorApMar select[name=apMar_id]"),
+		};
+	}
 	// Sector Leyenda
 	DOM = {
 		...DOM,
@@ -786,6 +788,10 @@ window.addEventListener("load", async () => {
 		}
 		// Actualiza los datos de 'leyNombre'
 		if (campo == "nombre") {
+			if (DOM.leyNombreFijo) {
+				DOM.leyNombreFijo.innerHTML = valor;
+			} else {
+			}
 		}
 
 		// Fin
