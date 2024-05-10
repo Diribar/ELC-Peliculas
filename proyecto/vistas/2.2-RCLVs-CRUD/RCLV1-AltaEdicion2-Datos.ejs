@@ -417,39 +417,51 @@
 		<% } %>
 	</section>
 <% } %>
-<!-- Leyenda -->
-<section id="sectorLeyenda" class="borderTop OK flexRowAlign	">
-	<!-- Título, Ayuda y Error/OK -->
-	<div class="inputError invisibl">
-		<!-- Título -->
-		<h3>Leyenda</h3>
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaClick desplClick">
-				<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-					<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
-				</ul>
-			</i>
+<% if (personajes || hechos || eventos) { %>
+	<!-- Leyenda -->
+	<section id="sectorLeyenda" class="borderTop OK flexRowAlign	">
+		<!-- Título, Ayuda y Error/OK -->
+		<div class="inputError invisibl">
+			<!-- Título -->
+			<h3>Leyenda</h3>
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+						<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
+					</ul>
+				</i>
+			</div>
+			<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
 		</div>
-		<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
-	</div>
-	<!-- Data Entry -->
-	<div id="datosLeyenda" class="flexRowAlign">
-		<div id="hoyEstamos">
-			<select name="hoyEstamos" class="input sinFlecha">
-				<option value="">Elegí una opción</option>
-				<option value="1">Hoy recordamos</option>
-			</select>
-		</div>
-		<div id="resto">
-			<select name="resto" class="input sinFlecha">
-				<option value="">Elegí una opción</option>
-				<option value="1">a Juan Pablo II, santo</option>
-				<option value="2">a san Francisco de Asís</option>
-			</select>
-		</div>
-	</div>
+		<!-- Data Entry -->
+		<div id="datosLeyenda" class="flexRowAlign">
+			<!-- hoyEstamos -->
+			<% if (hechos || eventos) { %>
+				<div id="hoyEstamos">
+					<select name="hoyEstamos" class="input sinFlecha">
+						<option value="">Elegí una opción</option>
+					</select>
+				</div>
+			<% } else { %>
+				<div id="hoyEstamos"><%= hoyEstamos.find(n => n.entidad == entidad).comentario %></div>
+			<% } %>
 
-</section>
+			<!-- Resto -->
+			<% if (personajes || hechos) { %>
+				<div id="resto">
+					<select name="resto" class="input sinFlecha">
+						<option value="">Elegí una opción</option>
+						<option value="1">a Juan Pablo II, santo</option>
+						<option value="2">a san Francisco de Asís</option>
+					</select>
+				</div>
+			<% } else { %>
+				<div id="resto"><%= dataEntry.nombre ? dataEntry.nombre : "" %></div>
+			<% } %>
+		</div>
+
+	</section>
+<% } %>
 
 <!-- Iconos y Botón -->
 <div id="sectorIconos">
