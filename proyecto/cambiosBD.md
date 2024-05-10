@@ -58,7 +58,8 @@ ALTER TABLE c19353_elc.rclv_9edicion MODIFY COLUMN nombre varchar(45) CHARACTER 
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE sexo_id genero_id varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE avatar avatar varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER prioridad_id;
-ALTER TABLE c19353_elc.rclv_9edicion ADD hoyEstamos varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER avatar;
+ALTER TABLE c19353_elc.rclv_9edicion ADD hoyEstamos varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER ama;
+ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER hoyEstamos;
 
 MODIFICACIONES -----------------------------------
 
