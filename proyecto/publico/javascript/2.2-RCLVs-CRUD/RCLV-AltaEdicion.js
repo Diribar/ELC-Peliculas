@@ -444,6 +444,9 @@ window.addEventListener("load", async () => {
 				// Corrige el ancho
 				this.ancho(sector);
 
+				// OK
+				v.OK[sector] = true;
+
 				// Fin
 				return;
 			},
