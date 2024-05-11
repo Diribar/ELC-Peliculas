@@ -13,8 +13,8 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con personajes
-		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
+		nombreAltern: {type: dt.STRING(35)},
 		leyNombre: {type: dt.STRING(70)},
 
 		// Específicos
