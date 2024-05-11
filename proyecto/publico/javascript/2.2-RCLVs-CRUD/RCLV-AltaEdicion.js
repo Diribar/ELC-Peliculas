@@ -909,7 +909,7 @@ window.addEventListener("load", async () => {
 		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
 
 		// Campos que impactan en 'leyendaNombre'
-		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
+		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canon_id")))
 			await FN.impactos.enSectorLeyenda("leyNombre");
 
 		// Final de la rutina
