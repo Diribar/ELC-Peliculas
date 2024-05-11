@@ -102,8 +102,8 @@ window.addEventListener("load", async () => {
 	let rutas = {
 		// Rutas
 		obtieneVariables: "/rclv/api/edicion/obtiene-variables",
-		validacion: "/rclv/api/valida-sector/?funcion=",
-		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
+		validacion: "/rclv/api/edicion/valida-sector/?funcion=",
+		registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
 	};
 	let v = {
 		// Campos por sector
@@ -131,8 +131,8 @@ window.addEventListener("load", async () => {
 
 		// Personajes
 		if (personajes) {
-			rutas.prefijos = "/rclv/api/prefijos";
-			v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
+			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
+			rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?entidad=" + entidad;
 		}
 	}
 	if (epocasDelAno) {
@@ -308,7 +308,8 @@ window.addEventListener("load", async () => {
 
 					// Impactos en sí mismo
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
-					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S"; // si se eligió alguno, se le agrega el 'singular/plural'
+					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S";
+					else DOM.plural_id.checked = false;
 
 					// Impactos en campos RCLIC exclusivos de personajes
 					if (personajes) {
@@ -395,19 +396,21 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enSectorLeyenda: function (sector) {
+			enSectorLeyenda: async function (sector) {
 				// Si no existe el sector, interrumpe la función
 				if (!DOM[sector]) return; // hoyEstamos, leyNombre
 
-				// Variables
-				const opciones =
-					sector == "hoyEstamos"
-						? v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id)
-						: sector == "leyNombre"
-						? Array.from(DOM.camposNombre)
-								.map((n) => n.value)
-								.filter((n) => !!n)
-						: [];
+				// Opciones
+				let opciones = [];
+				if (sector == "hoyEstamos") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
+				else if (sector == "leyNombre" && DOM.nombre.value) {
+					// nombre, genero_id, canon_id
+					let info = "&nombre=" + DOM.nombre.value;
+					info += "&nombreAlt=" + DOM.nombreAltern.value;
+					info += "&genero_id=" + v.genero_id;
+					info += "&canon_id=" + DOM.canon_id.value;
+					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
+				}
 				if (!opciones.length) return;
 
 				// Obtiene la opción seleccionada actualmente
@@ -733,8 +736,8 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) FN.impactos.enSectorLeyenda("hoyEstamos");
-			if (DOM.leyNombre && !DOM.leyNombre.value) FN.impactos.enSectorLeyenda("leyNombre");
+			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) await FN.impactos.enSectorLeyenda("hoyEstamos");
+			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enSectorLeyenda("leyNombre");
 
 			// Fin
 			this.validacs.muestraErroresOK();
@@ -904,7 +907,7 @@ window.addEventListener("load", async () => {
 
 		// Campos que impactan en 'leyendaNombre'
 		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
-			FN.impactos.enSectorLeyenda("leyNombre");
+			await FN.impactos.enSectorLeyenda("leyNombre");
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
