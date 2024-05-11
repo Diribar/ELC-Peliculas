@@ -188,9 +188,17 @@ module.exports = {
 			const {nombre, nombreAltern} = registro;
 			let opciones = [];
 
-			// Opciones con el genero
-			if (nombre) opciones.push(...opcsLeyNombre.consolidado(nombre, registro));
-			if (nombreAltern) opciones.push(...opcsLeyNombre.consolidado(nombreAltern, registro));
+			// Opciones para personajes
+			if (registro.personajes) {
+				opciones.push(...opcsLeyNombrePers.consolidado(nombre, registro));
+				if (nombreAltern) opciones.push(...opcsLeyNombrePers.consolidado(nombreAltern, registro));
+			}
+
+			// Opciones para hechos
+			else if (registro.hechos) {
+				opciones.push(nombre);
+				if (nombreAltern) opciones.push(nombreAltern);
+			}
 
 			// Fin
 			return opciones;
@@ -300,30 +308,41 @@ module.exports = {
 		},
 	},
 };
-let opcsLeyNombre = {
+let opcsLeyNombrePers = {
 	consolidado: function (nombre, registro) {
 		// Variables
 		let opciones = [];
+		const genero = generos.find((n) => n.id == registro.genero_id);
+		if (!genero) return [];
 
 		// Canon al final
-		opciones.push(...this.canonAlFinal(nombre, registro));
-		opciones.push(...this.canonAlPrinc(nombre, registro));
+		if (nombre == registro.nombre) opciones.push(this.canonAlPrinc(nombre, registro, genero));
+		opciones.push(...this.canonAlFinal(nombre, registro, genero));
 
 		// Fin
 		return opciones;
 	},
-	canonAlPrinc: function (nombre, registro) {
-		// Fin
-		return [];
-	},
-	canonAlFinal: function (nombre, registro) {
+	canonAlPrinc: function (nombre, registro, genero) {
 		// Variables
 		const {genero_id, canon_id} = registro;
-		const genero = generos.find((n) => n.id == genero_id);
-		if (!genero) return [];
+		let canon = this.obtieneCanon(genero_id, canon_id);
+
+		// Trabajo sobre 'canon'
+		if (canon) {
+			if (canon == "santo" && !variables.prefijosSanto.includes(nombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
+			if (canon_id != "ST") canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
+			canon += " ";
+		} else canon = "";
+
+		// Fin
+		return canon + nombre;
+	},
+	canonAlFinal: function (nombre, registro, genero) {
+		// Variables
+		const {genero_id, canon_id} = registro;
 		let opciones = [];
-		let frase = "",
-			canon;
+		let frase = "";
+		let canon;
 
 		// Singular
 		frase += "a " + nombre;
