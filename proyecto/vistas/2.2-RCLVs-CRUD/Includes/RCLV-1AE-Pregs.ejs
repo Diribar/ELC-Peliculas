@@ -8,9 +8,6 @@
 			>
 				<%= opcion[locals.sg ? dataEntry.genero_id : "nombre"] %>
 			</option>
-			<% if (nombre == "canon_id") { %>
-				<option value="null" <% if (dataEntry.canon_id === null) { %>selected<% } %>>Sin proceso de canonizac.</option>
-			<% } %>
 		<% } %>
 	</select>
 </div>
