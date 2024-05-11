@@ -132,7 +132,7 @@ window.addEventListener("load", async () => {
 		// Personajes
 		if (personajes) {
 			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
-			rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?entidad=" + entidad;
+			rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 		}
 	}
 	if (epocasDelAno) {
@@ -404,11 +404,13 @@ window.addEventListener("load", async () => {
 				let opciones = [];
 				if (sector == "hoyEstamos") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
 				else if (sector == "leyNombre" && DOM.nombre.value) {
-					// nombre, genero_id, canon_id
+					// Obtiene la info - nombre, genero_id, canon_id
 					let info = "&nombre=" + DOM.nombre.value;
-					info += "&nombreAlt=" + DOM.nombreAltern.value;
+					info += "&nombreAltern=" + DOM.nombreAltern.value;
 					info += "&genero_id=" + v.genero_id;
-					info += "&canon_id=" + DOM.canon_id.value;
+					if (DOM.canon_id) info += "&canon_id=" + DOM.canon_id.value;
+
+					// Obtiene la opciones
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
 				}
 				if (!opciones.length) return;
