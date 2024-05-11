@@ -923,7 +923,6 @@ window.addEventListener("load", async () => {
 		if (DOM.botonSubmit.className.includes("inactivo")) {
 			e.preventDefault();
 			await FN.startUp(true);
-			p;
 		}
 	});
 
