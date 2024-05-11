@@ -1,8 +1,13 @@
 "use strict";
 // Variables
 const valida = require("./RCLV-FN-Validar");
+const procesos = require("./RCLV-FN-Procesos");
 
 module.exports = {
+	obtieneVars: {
+		detalle: (req, res) => res.json({pppOpcsArray, pppOpcsSimples, setTimeOutStd}),
+		edicion: (req, res) => res.json({rolesIglesia, canons, meses: meses.map((n) => n.abrev), hoyEstamos}),
+	},
 	validaSector: async (req, res) => {
 		// Variables
 		let datos = req.query;
@@ -14,9 +19,6 @@ module.exports = {
 		// Fin
 		return res.json(mensaje);
 	},
-	prefijos: (req, res) => {
-		return res.json(variables.prefijos);
-	},
 	registrosConEsaFecha: async (req, res) => {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
@@ -27,8 +29,9 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	obtieneVars: {
-		detalle: (req, res) => res.json({pppOpcsArray, pppOpcsSimples, setTimeOutStd}),
-		edicion: (req, res) => res.json({rolesIglesia, canons, meses: meses.map((n) => n.abrev), hoyEstamos}),
+	prefijos: (req, res) => res.json(variables.prefijos),
+	obtieneLeyNombre: (req, res) => {
+		const opciones = procesos.altaEdicForm.opcsLeyNombre(req.query);
+		return res.json(opciones);
 	},
 };
