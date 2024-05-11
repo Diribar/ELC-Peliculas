@@ -1,6 +1,6 @@
 - Misceláneas
 RENAME TABLE c19353_elc.aux_sexos TO c19353_elc.aux_generos;
-RENAME TABLE c19353_elc.aux_novedades_elc TO c19353_elc.aux_novedades;
+RENAME TABLE c19353_elc.aux_novedades_elc TO aux_novedades;
 ALTER TABLE c19353_elc.aux_novedades MODIFY COLUMN comentario varchar(100) NOT NULL;
 
 - Tabla GENEROS

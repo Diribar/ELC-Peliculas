@@ -1015,12 +1015,12 @@ INSERT INTO `aux_mis_consultas` VALUES (99,11,'capitulos',322,'2024-05-07 18:01:
 UNLOCK TABLES;
 
 --
--- Table structure for table `aux_novedades_elc`
+-- Table structure for table `aux_novedades`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `aux_novedades_elc` (
+CREATE TABLE `aux_novedades` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `comentario` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
   `fecha` date NOT NULL DEFAULT utc_date(),
@@ -1036,22 +1036,22 @@ CREATE TABLE `aux_novedades_elc` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `aux_novedades_elc`
+-- Dumping data for table `aux_novedades`
 --
 
-LOCK TABLES `aux_novedades_elc` WRITE;
-/*!40000 ALTER TABLE `aux_novedades_elc` DISABLE KEYS */;
-INSERT INTO `aux_novedades_elc` VALUES (1,'Publicamos nuestro sitio en internet','2023-09-30','1.00',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (2,'Adaptamos el sitio para usar en el celular','2023-11-20','1.01',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (3,'Habilitamos la posibilidad de que nos escriban','2023-12-15','1.02',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (4,'Vista <em><b>Consultas</b></em>: la hicimos más simple e incorporamos opciones','2024-01-16','1.03',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (5,'N° de Documento: no lo pedimos más y los borramos de nuestro sitio','2024-02-21','1.04',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (6,'Vista <em><b>Consultas</b></em>: guardamos tus últimos criterios de búsqueda','2024-02-21','1.05',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (7,'Actualizamos el sitio aún más para usar en el celular','2024-04-09','1.06',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (8,'Vista <em><b>Calificar una Película</b></em>: ya está accesible en el celular','2024-04-09','1.06',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (9,'Vista <em><b>Consultas</b></em>: incorporamos el filtro <em>Tema</em>','2024-04-19','1.07',0,0,0,0,0,0);
-INSERT INTO `aux_novedades_elc` VALUES (10,'Vista <em><b>Consultas</b></em>: incorporamos el filtro <em>Miscelaneas</em>','2024-05-03','1.08',0,0,0,0,0,0);
-/*!40000 ALTER TABLE `aux_novedades_elc` ENABLE KEYS */;
+LOCK TABLES `aux_novedades` WRITE;
+/*!40000 ALTER TABLE `aux_novedades` DISABLE KEYS */;
+INSERT INTO `aux_novedades` VALUES (1,'Publicamos nuestro sitio en internet','2023-09-30','1.00',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (2,'Adaptamos el sitio para usar en el celular','2023-11-20','1.01',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (3,'Habilitamos la posibilidad de que nos escriban','2023-12-15','1.02',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (4,'Vista <em><b>Consultas</b></em>: la hicimos más simple e incorporamos opciones','2024-01-16','1.03',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (5,'N° de Documento: no lo pedimos más y los borramos de nuestro sitio','2024-02-21','1.04',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (6,'Vista <em><b>Consultas</b></em>: guardamos tus últimos criterios de búsqueda','2024-02-21','1.05',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (7,'Actualizamos el sitio aún más para usar en el celular','2024-04-09','1.06',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (8,'Vista <em><b>Calificar una Película</b></em>: ya está accesible en el celular','2024-04-09','1.06',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (9,'Vista <em><b>Consultas</b></em>: incorporamos el filtro <em>Tema</em>','2024-04-19','1.07',0,0,0,0,0,0);
+INSERT INTO `aux_novedades` VALUES (10,'Vista <em><b>Consultas</b></em>: incorporamos el filtro <em>Miscelaneas</em>','2024-05-03','1.08',0,0,0,0,0,0);
+/*!40000 ALTER TABLE `aux_novedades` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1336,12 +1336,12 @@ INSERT INTO `aux_paises` VALUES ('ZW','Zimbabue','Africa','EN',2,'zwe.svg',0);
 UNLOCK TABLES;
 
 --
--- Table structure for table `aux_roles_iglesia`
+-- Table structure for table `rclv_roles_iglesia`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `aux_roles_iglesia` (
+CREATE TABLE `rclv_roles_iglesia` (
   `id` varchar(3) NOT NULL,
   `orden` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(20) NOT NULL,
@@ -1355,21 +1355,21 @@ CREATE TABLE `aux_roles_iglesia` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `aux_roles_iglesia`
+-- Dumping data for table `rclv_roles_iglesia`
 --
 
-LOCK TABLES `aux_roles_iglesia` WRITE;
-/*!40000 ALTER TABLE `aux_roles_iglesia` DISABLE KEYS */;
-INSERT INTO `aux_roles_iglesia` VALUES ('AP',7,'Apóstol','Apóstol',NULL,'Apóstoles',NULL,NULL);
-INSERT INTO `aux_roles_iglesia` VALUES ('LA',1,'Laico/a','Laico','Laica','Laicos','Laicas','Laicos');
-INSERT INTO `aux_roles_iglesia` VALUES ('LC',3,'Laico/a casado/a','Laico casado','Laica casada','Laicos casados','Laicas casadas','Laicos casados');
-INSERT INTO `aux_roles_iglesia` VALUES ('LS',2,'Laico/a soltero/a','Laico soltero','Laica soltera','Laicos solteros','Laicas solteras','Laicos solteros');
-INSERT INTO `aux_roles_iglesia` VALUES ('NN',9,'Ninguno','Ninguno','Ninguno','Ninguno','Ninguno','Ninguno');
-INSERT INTO `aux_roles_iglesia` VALUES ('PP',6,'Papa','Papa',NULL,'Papas',NULL,NULL);
-INSERT INTO `aux_roles_iglesia` VALUES ('RE',4,'Religioso/a','Religioso','Religiosa','Religiosos','Religiosas','Religiosos');
-INSERT INTO `aux_roles_iglesia` VALUES ('SC',5,'Sacerdote','Sacerdote',NULL,'Sacerdotes',NULL,NULL);
-INSERT INTO `aux_roles_iglesia` VALUES ('SF',8,'Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia');
-/*!40000 ALTER TABLE `aux_roles_iglesia` ENABLE KEYS */;
+LOCK TABLES `rclv_roles_iglesia` WRITE;
+/*!40000 ALTER TABLE `rclv_roles_iglesia` DISABLE KEYS */;
+INSERT INTO `rclv_roles_iglesia` VALUES ('AP',7,'Apóstol','Apóstol',NULL,'Apóstoles',NULL,NULL);
+INSERT INTO `rclv_roles_iglesia` VALUES ('LA',1,'Laico/a','Laico','Laica','Laicos','Laicas','Laicos');
+INSERT INTO `rclv_roles_iglesia` VALUES ('LC',3,'Laico/a casado/a','Laico casado','Laica casada','Laicos casados','Laicas casadas','Laicos casados');
+INSERT INTO `rclv_roles_iglesia` VALUES ('LS',2,'Laico/a soltero/a','Laico soltero','Laica soltera','Laicos solteros','Laicas solteras','Laicos solteros');
+INSERT INTO `rclv_roles_iglesia` VALUES ('NN',9,'Ninguno','Ninguno','Ninguno','Ninguno','Ninguno','Ninguno');
+INSERT INTO `rclv_roles_iglesia` VALUES ('PP',6,'Papa','Papa',NULL,'Papas',NULL,NULL);
+INSERT INTO `rclv_roles_iglesia` VALUES ('RE',4,'Religioso/a','Religioso','Religiosa','Religiosos','Religiosas','Religiosos');
+INSERT INTO `rclv_roles_iglesia` VALUES ('SC',5,'Sacerdote','Sacerdote',NULL,'Sacerdotes',NULL,NULL);
+INSERT INTO `rclv_roles_iglesia` VALUES ('SF',8,'Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia','Sagrada Familia');
+/*!40000 ALTER TABLE `rclv_roles_iglesia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6176,7 +6176,7 @@ CREATE TABLE `rclv_1personajes` (
   CONSTRAINT `rclv_1personajes_ibfk_09` FOREIGN KEY (`genero_id`) REFERENCES `aux_generos` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_10` FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_11` FOREIGN KEY (`canon_id`) REFERENCES `rclv_canons` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_12` FOREIGN KEY (`rolIglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
+  CONSTRAINT `rclv_1personajes_ibfk_12` FOREIGN KEY (`rolIglesia_id`) REFERENCES `rclv_roles_iglesia` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_13` FOREIGN KEY (`creadoPor_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_14` FOREIGN KEY (`altaRevisadaPor_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_15` FOREIGN KEY (`editadoPor_id`) REFERENCES `usuarios` (`id`)
@@ -6424,9 +6424,9 @@ CREATE TABLE `rclv_2hechos` (
   KEY `rclv_2hechos_ibfk_08` (`capturadoPor_id`),
   KEY `rclv_2hechos_ibfk_09` (`statusRegistro_id`),
   KEY `rclv_2hechos_ibfk_10` (`motivo_id`),
-  KEY `rclv_2hechos_genero_fk` (`genero_id`),
+  KEY `rclv_2hechos_genero` (`genero_id`),
   KEY `rclv_2hechos_hoy_estamos` (`hoyEstamos_id`),
-  CONSTRAINT `rclv_2hechos_genero_fk` FOREIGN KEY (`genero_id`) REFERENCES `aux_generos` (`id`),
+  CONSTRAINT `rclv_2hechos_genero` FOREIGN KEY (`genero_id`) REFERENCES `aux_generos` (`id`),
   CONSTRAINT `rclv_2hechos_hoy_estamos` FOREIGN KEY (`hoyEstamos_id`) REFERENCES `rclv_hoy_estamos` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_01` FOREIGN KEY (`fechaDelAno_id`) REFERENCES `aux_fechas_del_ano` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_02` FOREIGN KEY (`epocaOcurrencia_id`) REFERENCES `rclv_epocas_ocurr` (`id`),
@@ -6779,7 +6779,7 @@ CREATE TABLE `rclv_9edicion` (
   CONSTRAINT `rclv_9edicion_ibfk_02` FOREIGN KEY (`genero_id`) REFERENCES `aux_generos` (`id`),
   CONSTRAINT `rclv_9edicion_ibfk_03` FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),
   CONSTRAINT `rclv_9edicion_ibfk_04` FOREIGN KEY (`canon_id`) REFERENCES `rclv_canons` (`id`),
-  CONSTRAINT `rclv_9edicion_ibfk_05` FOREIGN KEY (`rolIglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
+  CONSTRAINT `rclv_9edicion_ibfk_05` FOREIGN KEY (`rolIglesia_id`) REFERENCES `rclv_roles_iglesia` (`id`),
   CONSTRAINT `rclv_9edicion_ibfk_06` FOREIGN KEY (`epocaOcurrencia_id`) REFERENCES `rclv_epocas_ocurr` (`id`),
   CONSTRAINT `rclv_9edicion_ibfk_07` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `rclv_9edicion_ibfk_08` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
