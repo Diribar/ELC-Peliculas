@@ -394,7 +394,6 @@ module.exports = {
 			const fechaLoginsDiarios = loginsDiarios.length
 				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
 				: null;
-			let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
 
 			// Logins acums
 			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
@@ -714,10 +713,26 @@ module.exports = {
 			// Fin
 			return;
 		},
+		EliminaLoginsAcumsRepetidos:async () => {
+			// Variables
+			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+
+			// Elimina los loginsAcums repetidos
+			let registroAnterior;
+			for (let registro of loginsAcums) {
+				if (registroAnterior && registro.fecha == registroAnterior.fecha)
+					BD_genericas.eliminaPorId("loginsAcums", registro.id);
+				registroAnterior = registro;
+			}
+
+			// Fin
+			return
+		},
 	},
 };
 
-// Variables
+// Funciones
+let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
 let actualizaLaEpocaDeEstreno = async () => {
 	const condicion = {anoEstreno: {[Op.ne]: null}};
 
