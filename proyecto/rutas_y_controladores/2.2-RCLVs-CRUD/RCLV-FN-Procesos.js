@@ -315,7 +315,7 @@ let opcsLeyNombrePers = {
 		const genero = generos.find((n) => n.id == registro.genero_id);
 		if (!genero) return [];
 
-		// Canon al final
+		// Canon
 		if (nombre == registro.nombre) opciones.push(this.canonAlPrinc(nombre, registro, genero));
 		opciones.push(...this.canonAlFinal(nombre, registro, genero));
 
