@@ -35,5 +35,3 @@ module.exports = {
 		return res.json(opciones);
 	},
 };
-
-// nombre, genero_id, canon_id
