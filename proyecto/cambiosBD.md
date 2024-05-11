@@ -1,6 +1,18 @@
+- Misceláneas
 RENAME TABLE c19353_elc.aux_sexos TO c19353_elc.aux_generos;
+ALTER TABLE c19353_elc.aux_novedades_elc MODIFY COLUMN comentario varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+- Tabla GENEROS
+ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.aux_generos CHANGE nombre pers varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.aux_generos ADD rclvs varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER pers;
+ALTER TABLE c19353_elc.aux_generos ADD loLa varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER rclvs;
+ALTER TABLE c19353_elc.aux_generos CHANGE letra_final letraFinal varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.aux_generos DROP COLUMN varon;
+ALTER TABLE c19353_elc.aux_generos DROP COLUMN mujer;
 
 - Tabla CANONS
+ALTER TABLE c19353_elc.rclv_canons MODIFY COLUMN orden tinyint(1) unsigned NOT NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD MS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD FS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_canons ADD MP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
@@ -20,17 +32,13 @@ ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN personaje;
 ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN varon;
 ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN mujer;
 
-- Tabla GENEROS
-ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
-ALTER TABLE c19353_elc.aux_generos CHANGE nombre pers varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_generos ADD rclvs varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER pers;
-ALTER TABLE c19353_elc.aux_generos ADD loLa varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER rclvs;
-ALTER TABLE c19353_elc.aux_generos CHANGE letra_final letraFinal varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_generos DROP COLUMN varon;
-ALTER TABLE c19353_elc.aux_generos DROP COLUMN mujer;
-
-- Tabla USUARIOS
-ALTER TABLE c19353_elc.usuarios CHANGE sexo_id genero_id varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+- Tabla HOY-ESTAMOS
+CREATE TABLE c19353_elc.rclv_hoy_estamos (id tinyint(3) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
+ALTER TABLE c19353_elc.rclv_hoy_estamos ADD entidad varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.rclv_hoy_estamos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_hoy_estamos ADD comentario varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.rclv_hoy_estamos ADD CONSTRAINT rclv_hoy_estamos_generos FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 - Tablas PERSONAJES
 ALTER TABLE c19353_elc.rclv_1personajes CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
@@ -65,8 +73,12 @@ ALTER TABLE c19353_elc.rclv_9edicion MODIFY COLUMN nombre varchar(45) CHARACTER 
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE apodo nombreAltern varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE sexo_id genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER nombreAltern;
 ALTER TABLE c19353_elc.rclv_9edicion CHANGE avatar avatar varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER prioridad_id;
-ALTER TABLE c19353_elc.rclv_9edicion ADD hoyEstamos varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER ama;
+ALTER TABLE c19353_elc.rclv_9edicion ADD hoyEstamos_id tinyint(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER ama;
 ALTER TABLE c19353_elc.rclv_2hechos ADD leyNombre varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER hoyEstamos;
+ALTER TABLE c19353_elc.rclv_9edicion ADD CONSTRAINT rclv_9edicion_hoy_estamos FOREIGN KEY (hoyEstamos_id) REFERENCES c19353_elc.rclv_hoy_estamos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+- Tabla USUARIOS
+ALTER TABLE c19353_elc.usuarios CHANGE sexo_id genero_id varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 
 MODIFICACIONES -----------------------------------
 
@@ -127,11 +139,3 @@ DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_generos WHERE id='X';
 DELETE FROM c19353_elc.aux_generos WHERE id='V';
-
-- hoyEstamos
-CREATE TABLE c19353_elc.rclv_hoy_estamos (id tinyint(3) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
-ALTER TABLE c19353_elc.rclv_hoy_estamos ADD entidad varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
-ALTER TABLE c19353_elc.rclv_hoy_estamos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.rclv_hoy_estamos ADD comentario varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
-ALTER TABLE c19353_elc.aux_novedades_elc MODIFY COLUMN comentario varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
