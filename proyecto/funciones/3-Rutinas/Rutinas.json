@@ -36,7 +36,8 @@
 		"ActualizaFechaVencimLinks": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI"
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaLoginsAcumsRepetidos": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
