@@ -330,7 +330,8 @@ let opcsLeyNombrePers = {
 		// Trabajo sobre 'canon'
 		if (canon) {
 			if (canon == "santo" && !variables.prefijosSanto.includes(nombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
-			if (canon_id != "ST") canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
+			if (canon_id == "ST") canon = "a " + canon;
+			else canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
 			canon += " ";
 		} else canon = "";
 
