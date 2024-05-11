@@ -139,6 +139,10 @@ module.exports = {
 				dataEntry.genero_id && dataEntry.hoyEstamos_id
 					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
 					: [];
+			const opcsLeyNombre =
+				dataEntry.nombre && dataEntry.genero_id && dataEntry.canon_id && dataEntry.leyNombre
+					? procesos.opcsLeyNombre(dataEntry)
+					: [];
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
@@ -146,7 +150,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{rolesIgl, apMars, originalUrl, opcsHoyEstamos},
+				...{rolesIgl, apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				estrucPers: true,
 			});
