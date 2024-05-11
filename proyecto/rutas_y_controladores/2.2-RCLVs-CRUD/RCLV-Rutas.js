@@ -36,9 +36,10 @@ router.get("/api/detalle/obtiene-variables", API.obtieneVars.detalle);
 
 // APIs - Agregar/Editar
 router.get("/api/edicion/obtiene-variables", API.obtieneVars.edicion);
-router.get("/api/valida-sector", API.validaSector);
-router.get("/api/registros-con-esa-fecha", API.registrosConEsaFecha);
-router.get("/api/prefijos", API.prefijos);
+router.get("/api/edicion/valida-sector", API.validaSector);
+router.get("/api/edicion/registros-con-esa-fecha", API.registrosConEsaFecha);
+router.get("/api/edicion/prefijos", API.prefijos);
+router.get("/api/edicion/obtiene-leyenda-nombre", API.obtieneLeyNombre);
 
 // Vistas - Relación con la vida
 router.get("/agregar", aptoAgregar, vista.altaEdic.form);

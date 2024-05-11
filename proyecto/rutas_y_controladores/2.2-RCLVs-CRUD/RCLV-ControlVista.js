@@ -85,17 +85,15 @@ module.exports = {
 			const eventos = entidad == "eventos";
 			const epocasDelAno = entidad == "epocasDelAno";
 			let dataEntry = {};
-			let apMars, rolesIgl, edicID, bloqueDer;
+			let apMars, edicID, bloqueDer;
 
 			// Configura el título de la vista
 			const titulo =
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) {
-				rolesIgl = rolesIglesia.filter((m) => m.personaje);
+			if (personajes)
 				apMars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
-			}
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
@@ -140,8 +138,8 @@ module.exports = {
 					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
 					: [];
 			const opcsLeyNombre =
-				dataEntry.nombre && dataEntry.genero_id && dataEntry.canon_id && dataEntry.leyNombre
-					? procesos.opcsLeyNombre(dataEntry)
+				dataEntry.nombre && dataEntry.leyNombre
+					? procesos.altaEdicForm.opcsLeyNombre({...dataEntry, personajes, hechos})
 					: [];
 
 			// Ir a la vista
@@ -150,7 +148,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{rolesIgl, apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre},
+				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				estrucPers: true,
 			});
