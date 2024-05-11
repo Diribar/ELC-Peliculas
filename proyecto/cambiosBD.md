@@ -134,3 +134,4 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD entidad varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD genero_id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD comentario varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.aux_novedades_elc MODIFY COLUMN comentario varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
