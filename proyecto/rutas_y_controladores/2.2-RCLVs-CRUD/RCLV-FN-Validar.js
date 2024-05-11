@@ -24,7 +24,10 @@ module.exports = {
 		}
 
 		// Campos de hechos
-		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
+		if (datos.entidad == "hechos") {
+			errores.genero = this.genero(datos);
+			errores.RCLIC = this.RCLIC_hechos(datos);
+		}
 
 		// Épocas del año
 		if (datos.entidad == "epocasDelAno") errores.carpetaAvatars = this.carpetaAvatars(datos);
@@ -44,7 +47,7 @@ module.exports = {
 		let mensaje = "";
 
 		// Obtiene los campos a validar
-		let campos = Object.keys(datos).filter((n) => ["nombre", "apodo"].includes(n));
+		let campos = Object.keys(datos).filter((n) => ["nombre", "nombreAltern"].includes(n));
 
 		// Validaciones individuales
 		for (let campo of campos) {
@@ -53,7 +56,8 @@ module.exports = {
 		}
 
 		// Revisa si los nombres son iguales
-		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
+		if (!mensaje && datos.nombre && datos.nombre == datos.nombreAltern)
+			mensaje = "El nombre y el nombre alternativo deben ser diferentes";
 
 		// Fin
 		return mensaje;
@@ -228,11 +232,11 @@ let nombreApodo = async ({datos, campo}) => {
 		// Idioma castellano
 		if (!mensaje) mensaje = comp.validacs.castellano.completo(dato);
 		if (!mensaje) mensaje = comp.validacs.inicial.basico(dato);
-		if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
+		if (mensaje && campo == "nombreAltern") mensaje += " (nombre alternativo)";
 
 		// Prefijo y longitud
-		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
-		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, 35);
+		if (!mensaje && entidad == "personajes") mensaje = prefijo(dato, campo);
+		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, entidad == "eventos" ? 45 : 35);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && ama == 1 && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";
@@ -247,15 +251,16 @@ let nombreApodo = async ({datos, campo}) => {
 	// Fin
 	return mensaje;
 };
-let prefijo = (nombre) => {
+let prefijo = (nombre, campo) => {
 	// Variables
-	let prefijos = variables.prefijos;
+	const {prefijos} = variables;
+	const campoNombre = campo == "nombre" ? campo : "nombre alternativo";
 	let respuesta = "";
 
 	// Verificación
 	for (let prefijo of prefijos)
 		if (nombre.startsWith(prefijo + " ")) {
-			respuesta = "El nombre no debe tener ningún prefijo (ej: " + prefijo + ").";
+			respuesta = "El " + campoNombre + " no debe tener ningún prefijo (ej: " + prefijo + ").";
 			break;
 		}
 

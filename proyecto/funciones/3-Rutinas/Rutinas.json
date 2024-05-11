@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 6/may",
-	"HoraUTC": "11:39",
+	"FechaUTC": "Vie. 10/may",
+	"HoraUTC": "2:47",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 6/may",
@@ -40,10 +40,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"05-may-24": {"titulo": "Beato Edmundo Rice"},
-		"06-may-24": {"titulo": "Santo Domingo Savio"},
-		"07-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"08-may-24": {"titulo": "Milagro de Luján"}
+		"08-may-24": {"titulo": "Milagro de Luján"},
+		"09-may-24": {"titulo": "Santa Luisa de Marillac"},
+		"10-may-24": {"titulo": "San Damián de Veuster", "entidad": "personajes", "id": 53},
+		"11-may-24": {"titulo": "Beato Mamerto Esquiú", "entidad": "personajes", "id": 132},
+		"12-may-24": {"titulo": "Ascensión de Nuestro Señor"}
 	}
 }

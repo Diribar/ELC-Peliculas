@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(35)},
+		genero_id: {type: dt.STRING(3)},
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
@@ -12,17 +13,18 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con hechos
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
+		hoyEstamos: {type: dt.STRING(70)},
 
 		// Específicos
-		apodo: {type: dt.STRING(35)},
 		canon_id: {type: dt.STRING(3)},
 		anoNacim: {type: dt.INTEGER},
-		genero_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		rolIglesia_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 
+		// Fechas y Usuarios
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 		altaRevisadaPor_id: {type: dt.INTEGER},

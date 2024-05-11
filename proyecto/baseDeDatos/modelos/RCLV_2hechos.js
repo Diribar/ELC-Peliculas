@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(35)},
+		genero_id: {type: dt.STRING(2)},
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
@@ -12,11 +13,12 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Común con personajes
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
+		hoyEstamos: {type: dt.STRING(70)},
 
 		// Específicos
 		anoComienzo: {type: dt.INTEGER},
-		genero_id: {type: dt.STRING(1)},
 		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
@@ -49,6 +51,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
 

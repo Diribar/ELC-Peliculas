@@ -306,7 +306,7 @@ module.exports = {
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
 					datosCompleto.valorDesc = valorDesc;
-					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
+					let motivo = ["nombre", "nombreAltern"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datosCompleto.motivo_id = motivo.id; // con este campo se sabe si fue rechazado
 					datosCompleto.penalizac = motivo.penalizac;
 				}
@@ -815,8 +815,8 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Procesar los registros
-			let anchoMax = 35;
+			// Variables
+			const anchoMax = 35; // ancho máximo a mostrar de cada producto
 
 			// Reconvierte los elementos
 			for (let rubro in rclvs)

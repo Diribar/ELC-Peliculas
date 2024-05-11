@@ -1,7 +1,7 @@
 /* Máxima prioridad */
 main #todoElMain:has(video) {z-index: 14;}
 header {z-index: 13;}
-main :is(#cartelProgreso, .encimaDelFondo) {z-index: 12;}
+main :where(#cartelProgreso, .encimaDelFondo) {z-index: 12;}
 main #cuerpo #cartelRechazo {z-index: 12;}
 main #todoElMain {z-index: 11;}
 
@@ -14,10 +14,10 @@ main #todoElMain #cierraVideo {z-index: 1;}
 
 /* Cuerpo */
 main #cuerpo #configCons {z-index: 10;}
-main #cuerpo :is(#tituloPrincipal, #datosPerennesTitulo) {z-index: 9;}
+main #cuerpo :where(#tituloPrincipal, #datosPerennesTitulo) {z-index: 9;}
 main #cuerpo #tituloSecundario {z-index: 8;}
 main #cuerpo #primeraColumna {z-index: 7;}
-main #cuerpo :is(.ayuda, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
+main #cuerpo :where(.ayuda, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
 
 /* Ayuda */
 main #cuerpo .inputError .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}

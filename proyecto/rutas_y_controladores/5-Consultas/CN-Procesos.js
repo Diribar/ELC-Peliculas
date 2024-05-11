@@ -192,8 +192,8 @@ module.exports = {
 							: canons == "VS"
 							? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
 							: canons == "TD"
-							? resultados.filter((n) => !n.personaje.canon_id.startsWith("NN")) // Todos (Santos a Siervos)
-							: resultados.filter((n) => n.personaje.canon_id.startsWith("NN")); // Sin proceso de canonización
+							? resultados.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
+							: resultados.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
 
 				// cfc / vpc
 				if (cfc) resultados = resultados.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
@@ -550,7 +550,7 @@ module.exports = {
 				if (!palabrasClave) return rclvs;
 
 				// Variables
-				let campos = ["nombre", "apodo"];
+				let campos = ["nombre", "nombreAltern"];
 				palabrasClave = palabrasClave.toLowerCase();
 
 				// Rutina por rclv
@@ -781,16 +781,16 @@ module.exports = {
 					let datosRclv = {entidad, id, nombre, productos, avatar};
 
 					// Casos especiales
-					if (rclv.apodo) datosRclv.apodo = rclv.apodo;
+					if (rclv.nombreAltern) datosRclv.nombreAltern = rclv.nombreAltern;
 					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
 					if (epocaOcurrencia)
 						datosRclv = {...datosRclv, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
 					if (categoria_id == "CFC" || soloCfc) datosRclv.cfc = true;
 
 					// Obtiene campos en función de la entidad
-					if (entidad == "personajes" && !rclv.rolIglesia_id.startsWith("NN")) {
-						datosRclv.rolIglesiaNombre = rclv.rolIglesia.nombre;
-						if (!rclv.canon_id.startsWith("NN")) datosRclv.canonNombre = rclv.canon.nombre;
+					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {
+						datosRclv.rolIglesiaNombre = rclv.rolIglesia[rclv.genero_id];
+						if (rclv.canon_id != "NN") datosRclv.canonNombre = rclv.canon[rclv.genero_id];
 					}
 
 					// Fin

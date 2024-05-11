@@ -126,7 +126,7 @@ app.set("views", [
 
 		// Variable de entidades
 		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
-		generos: BD_genericas.obtieneTodos("generos", "orden"),
+		generos: BD_genericas.obtieneTodos("generos", "orden").then((n) => n.filter((m) => m.id.length == 1)),
 		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
 		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
 
@@ -145,8 +145,9 @@ app.set("views", [
 
 		// Variables de RCLVs
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
-		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
+		canons: BD_genericas.obtieneTodos("canons", "orden"),
+		hoyEstamos: BD_genericas.obtieneTodos("hoyEstamos"),
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente

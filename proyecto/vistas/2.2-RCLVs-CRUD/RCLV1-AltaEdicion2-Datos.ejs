@@ -5,41 +5,39 @@
 		<!-- Nombres -->
 		<div id="sectorNombre" class="flexCol">
 			<!-- Título, Ayuda y Error/OK -->
-			<div class="flexRow">
-				<div class="margenDebajo inputError flexRow" style="z-index: 5;">
-					<!-- Título -->
-					<h3>Nombre<%- personajes ? 's' : '' %></h3>
-					<% if (codigo != "rclv/solapamiento") { %>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
-								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<% if (personajes) { %>
-										<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
-										<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si la persona es conocida también por otro nombre o apodo.</li>
-									<% } else { %>
-										<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
-									<% } %>
-								</ul>
-							</i>
-						</div>
-						<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
-					<% } %>
-				</div>
+			<div class="margenDebajo inputError flexRow">
+				<!-- Título -->
+				<h3>Nombre<%- personajes ? 's' : '' %></h3>
+				<% if (codigo != "rclv/solapamiento") { %>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<% if (personajes || hechos) { %>
+									<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
+									<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera.</li>
+								<% } else { %>
+									<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
+								<% } %>
+							</ul>
+						</i>
+					</div>
+					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
+				<% } %>
 			</div>
 			<% if (codigo != "rclv/solapamiento") { %>
 				<!-- Campos -->
 				<div class="flexCol spaceBetween">
 					<!-- Nombre Formal -->
-					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
-						<% if (personajes) { %><label>Formal</label><% } %>
+					<div class="flexRowAlign spaceBetween">
+						<% if (personajes || hechos) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
-					<% if (personajes) { %>
+					<% if (personajes || hechos) { %>
 						<!-- Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
-							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+							<input type="text" name="nombreAltern" class="input" value="<%= dataEntry.nombreAltern %>" autocomplete="off">
 						</div>
 					<% } %>
 				</div>
@@ -50,7 +48,7 @@
 		<!-- Fecha Representativa -->
 		<div id="sectorFecha" class="borderTop flexCol">
 			<!-- Título, Ayuda y Error/OK -->
-			<div class="flexRow spaceBetween margenDebajo inputError" style="z-index: 4;">
+			<div class="flexRow spaceBetween margenDebajo inputError">
 				<!-- Título -->
 				<h3>Fecha representativa</h3>
 				<!-- Select -->
@@ -135,7 +133,7 @@
 			<div id="sectorDiasDelAno">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
-					<div class="margenDebajo inputError" style="z-index: 3;">
+					<div class="margenDebajo inputError">
 						<!-- Título -->
 						<h3>Calendario</h3>
 						<!-- Ayuda -->
@@ -188,98 +186,90 @@
 			<!-- Repetidos -->
 			<div id="sectorRepetidos">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flexRow">
-					<div class="margenDebajo inputError" style="z-index: 3;">
-						<!-- Título -->
-						<h3>Nombres con esa fecha</h3>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
-								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-									<li>Destildalos si no coinciden con el tuyo.</li>
-								</ul>
-							</i>
-						</div>
-						<%- include("CMP-Errores", {nombre: "repetidos", ocultarOK: true}) %>
-					</div>
-				</div>
-				<!-- Valores -->
-				<ul type="none" id="posiblesRepetidos"></ul>
-			</div>
-			<% if (personajes) { %>
-				<!-- Genero -->
-				<div id="sectorGenero" class="flexRowAlign altoFila inputError">
-					<h3>Sexo</h3>
-					<% for (let genero of generos) { %>
-						<div class="flexRowAlign opciones relative">
-							<input type="radio" name="genero_id" value="<%= genero.id %>" id="<%= genero.id %>" <% if (dataEntry.genero_id==genero.id) { %>checked<% } %>>
-							<label for="<%= genero.id %>"><%= genero.nombre %></label>
-						</div>
-					<% } %>
+				<div class="margenDebajo inputError">
+					<!-- Título -->
+					<h3>Nombres con esa fecha</h3>
 					<!-- Ayuda -->
 					<div class="ayuda">
 						<i class="fa-solid fa-circle-question ayudaClick desplClick">
 							<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-								<li>Se usa 'mixto' si te referís a un grupo con varones y mujeres.</li>
+								<li>Destildalos si no coinciden con el tuyo.</li>
 							</ul>
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
+					<%- include("CMP-Errores", {nombre: "repetidos", ocultarOK: true}) %>
 				</div>
+				<!-- Valores -->
+				<ul type="none" id="posiblesRepetidos"></ul>
+			</div>
 			<% } %>
-		<% } %>
-		<% if (codigo != "rclv/solapamiento") { %>
+		<% if (codigo != "rclv/solapamiento" && (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id))) { %>
 			<!-- Prioridad -->
-			<% if (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id)) { %>
-				<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
-					<h3>Prioridad</h3>
-					<select name="prioridad_id" class="input margenIzq">
-						<option value="">Elegí una</option>
-						<% for (let prioridad of prioridades) { %>
-							<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
-						<% } %>
-					</select>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
-							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-								<% if (personajes) { %>
-									<li>Estándar</li>
-									<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
-								<% } else if (hechos) { %>
-									<li>VPC: Menor Importancia</li>
-									<li>CFC: Estándar</li>
-									<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
-								<% } else if (temas) { %>
-									<li>Menor Importancia</li>
-								<% } else if (eventos) { %>
-									<li>VPC: Menor Importancia</li>
-									<li>CFC: Mayor importancia</li>
-								<% } else if (epocasDelAno) { %>
-									<li>Menor Importancia</li>
-									<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
-								<% } %>
-							</ul>
-						</i>
-					</div>
-					<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
+			<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
+				<h3>Prioridad</h3>
+				<select name="prioridad_id" class="input margenIzq">
+					<option value="">Elegí una</option>
+					<% for (let prioridad of prioridades) { %>
+						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
+					<% } %>
+				</select>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+							<% if (personajes) { %>
+								<li>Estándar</li>
+								<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
+							<% } else if (hechos) { %>
+								<li>VPC: Menor Importancia</li>
+								<li>CFC: Estándar</li>
+								<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
+							<% } else if (temas) { %>
+								<li>Menor Importancia</li>
+							<% } else if (eventos) { %>
+								<li>VPC: Menor Importancia</li>
+								<li>CFC: Mayor importancia</li>
+							<% } else if (epocasDelAno) { %>
+								<li>Menor Importancia</li>
+								<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
+							<% } %>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
+			</div>
+		<% } %>
+		<!-- Genero -->
+		<div id="sectorGenero" class="flexRowAlign altoFila inputError">
+			<h3><%- personajes ? 'Sexo' : 'Género' %></h3>
+			<% for (let genero of generos) { %>
+				<div class="flexRowAlign opciones relative<%- genero.id == "P" && (eventos || epocasDelAno) ? ' ocultar' : '' %>">
+					<input
+						id="<%= genero.id %>"
+						name="<%- genero.id == "P" ? 'plural_id' : 'genero_id' %>"
+						value="<%= genero.id %>"
+						type="<%- (personajes || genero.id == "P") ? 'checkbox' : 'radio' %>"
+						<% if (dataEntry.genero_id && dataEntry.genero_id.includes(genero.id)) { %>checked<% } %>
+					>
+					<label for="<%= genero.id %>"><%= personajes ? genero.pers : genero.rclvs %></label>
 				</div>
 			<% } %>
-		<% } %>
+			<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
+		</div>
 	</div>
 </section>
 <% if (personajes || hechos) { %>
 	<!-- Época respecto a Jesús -->
-	<section id="sectorEpoca" class="borderTop OK">
+	<section id="sectorEpoca" class="borderTop OK flexCol">
 		<!-- Título, Ayuda y Error/OK -->
 		<div class="inputError flexRow margenDebajo">
 			<!-- Título -->
 			<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
 			<% if (hechos) { %>
-				<div class="ayuda" style="z-index: 3;">
+				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 							<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
 						</ul>
 					</i>
@@ -291,9 +281,9 @@
 		<div class="flexRowAlign grow spaceBetween">
 			<!-- Épocas -->
 			<% epocasOcurrencia.forEach((epocaOcurrencia, indice) => { %>
-				<% if (indice + 1 == epocasOcurrencia.length) return %>
-				<% let z_index = "z-index:" + (1 + epocasOcurrencia.length - indice) %>
-				<div class="flexRowAlign opciones" style=<%= z_index %>>
+				<% if (epocaOcurrencia.id == "var") return %>
+				<% const zIndex = "z-index:" + (epocasOcurrencia.length - indice) %>
+				<div class="flexRowAlign opciones" style=<%= zIndex %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epocaOcurrencia.id %>" id="<%= epocaOcurrencia.id %>" <% if (dataEntry.epocaOcurrencia_id==epocaOcurrencia.id) { %>checked<% } %> class="input<%= epocaOcurrencia.id!="pst"?" noPST":"" %>">
 					<label for="<%= epocaOcurrencia.id %>"><%= epocaOcurrencia.nombre %></label>
 					<!-- Ayuda -->
@@ -309,8 +299,8 @@
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
-			<div class="flexRowAlign inputError invisible">
-				<% let ano = personajes ? "anoNacim" : "anoComienzo" %>
+			<div class="flexRowAlign inputError invisible" style="z-index: 1">
+				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
 				<!-- Ayuda -->
@@ -327,9 +317,9 @@
 		</div>
 	</section>
 	<!-- Relación con la Iglesia Católica -->
-	<section id="sectorRCLIC" class="borderTop OK">
+	<section id="sectorRCLIC" class="borderTop OK flexCol">
 		<!-- Título, Ayuda y Error/OK -->
-		<div class="inputError" style="z-index: 4;">
+		<div class="inputError">
 			<!-- Título -->
 			<h3>Relación con la Iglesia Católica</h3>
 			<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
@@ -341,27 +331,27 @@
 					<div class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</div>
 					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="input">
+							<input id="CFC" class="input" name="categoria_id" value="CFC" type="radio" <% if (dataEntry.categoria_id == "CFC") { %>checked<% } %>>
 							<label for="CFC">SI</label>
 						</div>
 						<div class="flexRowAlign opciones">
-							<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="input">
+							<input id="VPC" class="input" name="categoria_id" value="VPC" type="radio" <% if (dataEntry.categoria_id == "VPC") { %>checked<% } %>>
 							<label for="VPC">NO</label>
 						</div>
 					</div>
 				</div>
 				<!-- Preguntas RCLIC -->
-				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar grow spaceBetween">
 					<!-- Rol en la Iglesia -->
 					<div class="flexRowAlign altoFila segunGenero_id invisible">
 						<select name="rolIglesia_id" class="input">
 							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-							<% for (let rolIglesia of rolesIgl) { %>
+							<% if (dataEntry.genero_id) for (let rolIgl of rolesIgl) if (rolIgl[dataEntry.genero_id]) { %>
 								<option
-									value="<%= rolIglesia.id %>"
-									<% if (dataEntry.rolIglesia_id == rolIglesia.id) { %>selected<% } %>
+									value="<%= rolIgl.id %>"
+									<% if (dataEntry.rolIglesia_id == rolIgl.id) { %>selected<% } %>
 								>
-									<%= rolIglesia.nombre %>
+									<%= rolIgl[dataEntry.genero_id] %>
 								</option>
 							<% } %>
 						</select>
@@ -372,10 +362,10 @@
 							<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
 							<% for (let canon of canons) { %>
 								<option value="<%= canon.id %>" <% if (dataEntry.canon_id == canon.id) { %>selected<% } %>>
-									<%= canon.nombre %>
+									<%= canon[dataEntry.genero_id] %>
 								</option>
 							<% } %>
-							<option value="null" <% if (dataEntry.canon_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+							<option value="null" <% if (dataEntry.canon_id === null) { %>selected<% } %>>Sin proceso de canonizac.</option>
 						</select>
 					</div>
 					<!-- Aparición Mariana -->
@@ -394,7 +384,7 @@
 		<% } else if (hechos) { %>
 			<div class="hechos">
 				<!-- ¿Es un hecho específico de la historia de la Iglesia Católica? -->
-				<div id="soloCFC" class="flexRowAlign">
+				<div id="soloCFC" class="flexRowAlign altoFila">
 					<div class="flexRowAlign radioBtn">
 						<div class="flexRowAlign opciones">
 							<input type="radio" name="soloCfc" value="1" id="SI" <% if (dataEntry.soloCfc=="1") { %>checked<% } %> class="input">
@@ -407,7 +397,7 @@
 					</div>
 					<div class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</div>
 				</div>
-				<div id="preguntasRCLIC" class="invisible">
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila ocultar">
 					<!-- ¿Es una aparición mariana -->
 					<div id="sectorApMar" class="flexRowAlign invisible">
 						<div class="flexRowAlign radioBtn">
@@ -427,6 +417,52 @@
 		<% } %>
 	</section>
 <% } %>
+<% if (personajes || hechos || eventos) { %>
+	<!-- Leyenda -->
+	<section id="sectorLeyenda" class="borderTop OK flexRowAlign	">
+		<!-- Título, Ayuda y Error/OK -->
+		<div class="inputError invisibl">
+			<!-- Título -->
+			<h3>Leyenda</h3>
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+						<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
+					</ul>
+				</i>
+			</div>
+			<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
+		</div>
+		<!-- Data Entry -->
+		<div id="datosLeyenda" class="flexRowAlign">
+			<!-- hoyEstamos -->
+			<% if (hechos || eventos) { %>
+				<div id="hoyEstamos">
+					<select name="hoyEstamos" class="input sinFlecha">
+						<option value="">Elegí una opción</option>
+					</select>
+				</div>
+			<% } else { %>
+				<div id="hoyEstamos"><%= hoyEstamos.find(n => n.entidad == entidad).comentario %></div>
+			<% } %>
+
+			<!-- Resto -->
+			<% if (personajes || hechos) { %>
+				<div id="resto">
+					<select name="resto" class="input sinFlecha">
+						<option value="">Elegí una opción</option>
+						<option value="1">a Juan Pablo II, santo</option>
+						<option value="2">a san Francisco de Asís</option>
+					</select>
+				</div>
+			<% } else { %>
+				<div id="resto"><%= dataEntry.nombre ? dataEntry.nombre : "" %></div>
+			<% } %>
+		</div>
+
+	</section>
+<% } %>
+
 <!-- Iconos y Botón -->
 <div id="sectorIconos">
 	<%- include("Iconos-1Estandar") %>

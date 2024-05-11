@@ -255,7 +255,7 @@ module.exports = {
 	camposEdicionRCLV: {
 		personajes: [
 			"nombre",
-			"apodo",
+			"nombreAltern",
 			"fechaDelAno_id",
 			"fechaMovil",
 			"prioridad_id",
@@ -270,6 +270,7 @@ module.exports = {
 		],
 		hechos: [
 			"nombre",
+			"nombreAltern",
 			"anoComienzo",
 			"fechaDelAno_id",
 			"fechaMovil",
@@ -347,8 +348,9 @@ module.exports = {
 				relacInclude: "epocaOcurrencia",
 				tabla: "epocasOcurrencia",
 			},
+			{titulo: "Alternativo", nombre: "nombreAltern", personajes: true, hechos: true},
+
 			// Personajes
-			{titulo: "Alternativo", nombre: "apodo", personajes: true},
 			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
 			{titulo: "Año de Nacim.", nombre: "anoNacim", personajes: true},
 			{titulo: "Categoría", nombre: "categoria_id", personajes: true, relacInclude: "categoria", tabla: "categorias"},
@@ -361,14 +363,28 @@ module.exports = {
 			},
 			{titulo: "Proceso de Canonizac.", nombre: "canon_id", personajes: true, relacInclude: "canon", tabla: "canons"},
 			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
+
 			// Hechos
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
+
 			// Epocas del año
 			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
 			{titulo: "Comentario Duración", nombre: "comentarioDuracion", epocasDelAno: true},
 			{titulo: "Carpeta de Imágenes", nombre: "carpetaAvatars", epocasDelAno: true},
+
+			// Todas salvo personajes
+			{
+				titulo: "Genero",
+				nombre: "genero_id",
+				hechos: true,
+				temas: true,
+				eventos: true,
+				epocasDelAno: true,
+				relacInclude: "genero",
+				tabla: "generos",
+			},
 		],
 		links: [
 			{titulo: "Calidad", nombre: "calidad", links: true},
