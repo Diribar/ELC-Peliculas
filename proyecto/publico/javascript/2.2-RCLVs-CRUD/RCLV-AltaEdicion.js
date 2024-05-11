@@ -906,6 +906,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector hoyEstamos
 		if (campo == "hoyEstamos") FN.impactos.ancho("hoyEstamos");
+		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
 
 		// Campos que impactan en 'leyendaNombre'
 		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canons")))
