@@ -4,6 +4,7 @@ ALTER TABLE c19353_elc.aux_novedades_elc MODIFY COLUMN comentario varchar(100) C
 
 - Tabla GENEROS
 ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN nombre varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE c19353_elc.aux_generos CHANGE nombre pers varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 ALTER TABLE c19353_elc.aux_generos ADD rclvs varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER pers;
 ALTER TABLE c19353_elc.aux_generos ADD loLa varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL AFTER rclvs;
@@ -20,17 +21,18 @@ ALTER TABLE c19353_elc.rclv_canons ADD FP varchar(20) CHARACTER SET utf8mb4 COLL
 ALTER TABLE c19353_elc.rclv_canons ADD MFP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
 
 - Tablas ROLES_IGLESIA
-ALTER TABLE c19353_elc.aux_roles_iglesia ADD MS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_roles_iglesia ADD FS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_roles_iglesia ADD MP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_roles_iglesia ADD FP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_roles_iglesia ADD MFP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN plural;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN grupo;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN usuario;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN personaje;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN varon;
-ALTER TABLE c19353_elc.aux_roles_iglesia DROP COLUMN mujer;
+RENAME TABLE c19353_elc.aux_roles_iglesia TO c19353_elc.rclv_roles_iglesia;
+ALTER TABLE c19353_elc.rclv_roles_iglesia ADD MS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_roles_iglesia ADD FS varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_roles_iglesia ADD MP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_roles_iglesia ADD FP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_roles_iglesia ADD MFP varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN plural;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN grupo;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN usuario;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN personaje;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN varon;
+ALTER TABLE c19353_elc.rclv_roles_iglesia DROP COLUMN mujer;
 
 - Tabla HOY-ESTAMOS
 CREATE TABLE c19353_elc.rclv_hoy_estamos (id tinyint(3) unsigned auto_increment NOT NULL, CONSTRAINT `PRIMARY` PRIMARY KEY (id))
@@ -91,15 +93,15 @@ INSERT INTO c19353_elc.rclv_canons VALUES('NN', 5, 'Ninguno', 'Ninguno', 'Ningun
 INSERT INTO c19353_elc.rclv_canons VALUES('VC', 99, '', '', '', '', '');
 
 - Tabla Roles Iglesia
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LA', 1, 'Laico/a', 'Laico', 'Laica', 'Laicos', 'Laicas', 'Laicos', 1, 1, 1, 1, 1);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LS', 2, 'Laico/a soltero/a', 'Laico soltero', 'Laica soltera', 'Laicos solteros', 'Laicas solteras', 'Laicos solteros', 6, 0, 1, 1, 1);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('LC', 3, 'Laico/a casado/a', 'Laico casado', 'Laica casada', 'Laicos casados', 'Laicas casadas', 'Laicos casados', 11, 0, 1, 1, 1);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('RE', 4, 'Religioso/a', 'Religioso', 'Religiosa', 'Religiosos', 'Religiosas', 'Religiosos', 16, 1, 1, 1, 1);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SC', 5, 'Sacerdote', 'Sacerdote', NULL, 'Sacerdotes', NULL, NULL, 21, 1, 1, 1, 0);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('PP', 6, 'Papa', 'Papa', NULL, 'Papas', NULL, NULL, 26, 0, 1, 1, 0);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('AP', 7, 'Apóstol', 'Apóstol', NULL, 'Apóstoles', NULL, NULL, 31, 0, 1, 1, 0);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 36, 0, 1, 0, 0);
-INSERT INTO c19353_elc.aux_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('LA', 1, 'Laico/a', 'Laico', 'Laica', 'Laicos', 'Laicas', 'Laicos', 1, 1, 1, 1, 1);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('LS', 2, 'Laico/a soltero/a', 'Laico soltero', 'Laica soltera', 'Laicos solteros', 'Laicas solteras', 'Laicos solteros', 6, 0, 1, 1, 1);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('LC', 3, 'Laico/a casado/a', 'Laico casado', 'Laica casada', 'Laicos casados', 'Laicas casadas', 'Laicos casados', 11, 0, 1, 1, 1);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('RE', 4, 'Religioso/a', 'Religioso', 'Religiosa', 'Religiosos', 'Religiosas', 'Religiosos', 16, 1, 1, 1, 1);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('SC', 5, 'Sacerdote', 'Sacerdote', NULL, 'Sacerdotes', NULL, NULL, 21, 1, 1, 1, 0);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('PP', 6, 'Papa', 'Papa', NULL, 'Papas', NULL, NULL, 26, 0, 1, 1, 0);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('AP', 7, 'Apóstol', 'Apóstol', NULL, 'Apóstoles', NULL, NULL, 31, 0, 1, 1, 0);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('SF', 8, 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 'Sagrada Familia', 36, 0, 1, 0, 0);
+INSERT INTO c19353_elc.rclv_roles_iglesia VALUES('NN', 9, 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 'Ninguno', 41, 1, 1, 1, 1);
 
 - Tabla Generos
 UPDATE c19353_elc.aux_generos SET orden=1, pers='Varón', rclvs='Masc.', loLa=NULL, letraFinal='o' WHERE id='M';
@@ -136,6 +138,6 @@ UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
 
 - ELIMINAR
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
-DELETE FROM c19353_elc.aux_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
+DELETE FROM c19353_elc.rclv_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_generos WHERE id='X';
 DELETE FROM c19353_elc.aux_generos WHERE id='V';
