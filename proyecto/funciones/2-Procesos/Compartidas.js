@@ -658,7 +658,7 @@ module.exports = {
 
 		// Capítulos
 		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
-		const capsParaProc = Math.min(capsPosibles, capsPends);
+		const capsParaProc = Math.min(capsPosibles - 5, capsPends); // el '-5' es para que no 'sature' la semana con capítulos
 
 		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
@@ -669,7 +669,7 @@ module.exports = {
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 
 		// Agrega la información
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
+		const paraProc = {pelisColesParaProc, capsParaProc, prodsParaProc: pelisColesParaProc + capsParaProc};
 		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
 
 		// Fin
