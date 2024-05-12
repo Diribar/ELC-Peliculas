@@ -104,7 +104,7 @@ module.exports = {
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
 			if (IN == "SI" && link.statusRegistro_id != creado_id) {
 				// Si no hay más links para procesar, interrumpe la función
-				if (!cantLinksVencPorSem.paraProc.prods) return res.json("En esta semana ya no se puede revisar este link");
+				if (!cantLinksVencPorSem.paraProc.prodsParaProc) return res.json("En esta semana ya no se puede revisar este link");
 
 				// Acciones si es un link de capítulo y no es un trailer
 				if (link.capitulo_id && link.tipo_id != linkTrailer_id) {
