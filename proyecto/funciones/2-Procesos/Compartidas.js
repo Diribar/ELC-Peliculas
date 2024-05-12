@@ -657,14 +657,15 @@ module.exports = {
 		// Variables
 		const cantLinksTotal = cantPends + cantAprobs;
 		const cantPromSem = Math.trunc((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // deja un decimal
-		const cantPromSemEntero = Math.trunc(cantPromSem);
+		const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
 		const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// Capítulos
-		const capsParaProc = Math.min(
-			Math.max(0, prodsPosibles - 5), // el '-5' es para que no 'sature' la semana con capítulos
-			capsPends
+		const capsPosibles = Math.max(
+			0,
+			Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
 		);
+		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
@@ -673,7 +674,7 @@ module.exports = {
 		for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
 			pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
 		// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
-		pelisColesPosibles += Math.max(0, prodsPosibles - capsPends);
+		pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
 		// Averigua la cantidad para procesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 
