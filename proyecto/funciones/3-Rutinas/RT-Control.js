@@ -713,7 +713,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaLoginsAcumsRepetidos:async () => {
+		EliminaLoginsAcumsRepetidos: async () => {
 			// Variables
 			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
 
@@ -726,7 +726,7 @@ module.exports = {
 			}
 
 			// Fin
-			return
+			return;
 		},
 	},
 };
@@ -786,14 +786,15 @@ let agregaColeccion_id = async () => {
 	// Fin
 	return;
 };
-let corrigeStatusColeccion_id = async () => {
+let corrigeStatusColeccionEnCapitulo = async () => {
 	// Variables
 	const registros = await BD_genericas.obtieneTodosConInclude("capitulos", "coleccion");
 
 	// Rutina por registro
 	for (let registro of registros) {
 		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
-		BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+		if (registro.statusColeccion_id != statusColeccion_id)
+			BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
 	}
 
 	// Fin
