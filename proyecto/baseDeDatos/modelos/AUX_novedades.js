@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		revisorUs: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "aux_novedades_elc",
+		tableName: "aux_novedades",
 		timestamps: false,
 	};
 
