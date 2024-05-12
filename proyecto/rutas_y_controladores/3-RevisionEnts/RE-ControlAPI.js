@@ -109,7 +109,7 @@ module.exports = {
 				// Acciones si es un link de capítulo y no es un trailer
 				if (link.capitulo_id && link.tipo_id != linkTrailer_id) {
 					// Si queda lugar en la ultima semana, la asigna
-					if (cantLinksVencPorSem[linksSemsVidaUtil].prods < cantLinksVencPorSem.cantPromSem)
+					if (cantLinksVencPorSem[linksSemsVidaUtil].prods < cantLinksVencPorSem.cantPromSemEntero)
 						semana = linksSemsVidaUtil;
 					// De lo contrario, interrumpe la función
 					else return res.json("En esta semana ya no se puede revisar este link");
