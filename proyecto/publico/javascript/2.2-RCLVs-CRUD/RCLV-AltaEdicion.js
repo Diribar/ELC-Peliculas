@@ -313,10 +313,10 @@ window.addEventListener("load", async () => {
 					// Impactos en campos RCLIC exclusivos de personajes
 					if (personajes) {
 						// Opciones de 'Rol en la Iglesia'
-						this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
+						if (v.genero_id) this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
 
 						// Opciones de 'Proceso de Canonización'
-						this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
+						if (v.genero_id) this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
 
 						// Impacto por la combinación de cfc y género
 						FN.impactos.cfcGenero();
@@ -442,6 +442,9 @@ window.addEventListener("load", async () => {
 
 				// Corrige el ancho
 				this.ancho(sector);
+
+				// Si corresponde, valida
+				if (v.errores.leyenda) await FN.validacs.leyenda();
 
 				// Fin
 				return;
@@ -920,6 +923,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el sector leyenda
 		if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
 		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
+		if (["hoyEstamos_id", "leyNombre"].includes(campo)) await FN.validacs.leyenda();
 
 		// Campos que impactan en 'leyendaNombre'
 		if (v.camposNombre.includes(campo) || ["genero_id", "plural_id"].includes(campo) || campo == "canon_id")
