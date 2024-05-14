@@ -89,10 +89,9 @@ window.addEventListener("load", async () => {
 	DOM = {
 		...DOM,
 
-		// hoyEstamos
-		hoyEstamos: document.querySelector("form select.input[name=hoyEstamos]"),
-		hoyEstamosDefault: document.querySelector("form select.input[name=hoyEstamos] option"),
-		hoyEstamosFijo: document.querySelector("form #hoyEstamos:not(:has(select))"),
+		// hoyEstamos_id
+		hoyEstamos_id: document.querySelector("form select.input[name=hoyEstamos_id]"),
+		hoyEstamos_idDefault: document.querySelector("form select.input[name=hoyEstamos_id] option"),
 
 		// leyNombre
 		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
@@ -324,7 +323,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					FN.impactos.enLeyenda("hoyEstamos");
+					FN.impactos.enLeyenda("hoyEstamos_id");
 
 					// Fin
 					return;
@@ -402,7 +401,7 @@ window.addEventListener("load", async () => {
 
 				// Opciones
 				let opciones = [];
-				if (sector == "hoyEstamos") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
+				if (sector == "hoyEstamos_id") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
 				else if (sector == "leyNombre" && DOM.nombre.value) {
 					// Obtiene la info - nombre, genero_id, canon_id
 					let info = "&nombre=" + DOM.nombre.value;
@@ -443,9 +442,6 @@ window.addEventListener("load", async () => {
 
 				// Corrige el ancho
 				this.ancho(sector);
-
-				// OK
-				v.OK[sector] = true;
 
 				// Fin
 				return;
@@ -656,21 +652,36 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
+			leyenda: async () => {
+				// Fin
+				if (!DOM.hoyEstamos_id && !DOM.leyNombre) return;
+
+				// Variables
+				let params = "leyenda";
+				params += "&entidad=" + entidad;
+				if (DOM.hoyEstamos_id) params += "&hoyEstamos_id=" + DOM.hoyEstamos_id.value;
+				if (DOM.leyNombre) params += "&leyNombre=" + DOM.leyNombre.value;
+
+				// OK y Errores
+				v.errores.leyenda = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.leyenda = !v.errores.leyenda;
+
+				// Fin
+				return;
+			},
 			muestraErroresOK: () => {
-				for (let i = 0; i < v.camposError.length; i++) {
+				v.camposError.forEach((campoError, i) => {
 					// Íconos de OK
-					v.OK[v.camposError[i]]
-						? DOM.iconosOK[i].classList.remove("ocultar")
-						: DOM.iconosOK[i].classList.add("ocultar");
+					v.OK[campoError] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
 
 					// Íconos de error
-					v.errores[v.camposError[i]]
+					v.errores[campoError]
 						? DOM.iconosError[i].classList.remove("ocultar")
 						: DOM.iconosError[i].classList.add("ocultar");
 
 					// Mensaje de error
-					DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
-				}
+					DOM.mensajesError[i].innerHTML = v.errores[campoError] ? v.errores[campoError] : "";
+				});
 			},
 			botonSubmit: () => {
 				// Variables
@@ -739,7 +750,8 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) await FN.impactos.enLeyenda("hoyEstamos");
+			if (forzar && (DOM.hoyEstamos_id || DOM.leyNombre)) await this.validacs.leyenda();
+			if (DOM.hoyEstamos_id && !DOM.hoyEstamos_id.value) await FN.impactos.enLeyenda("hoyEstamos");
 			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enLeyenda("leyNombre");
 
 			// Fin
@@ -905,8 +917,8 @@ window.addEventListener("load", async () => {
 			if (hechos) await FN.validacs.nombre();
 		}
 
-		// Acciones si se cambia el sector hoyEstamos
-		if (campo == "hoyEstamos") FN.impactos.ancho("hoyEstamos");
+		// Acciones si se cambia el sector leyenda
+		if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
 		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
 
 		// Campos que impactan en 'leyendaNombre'
