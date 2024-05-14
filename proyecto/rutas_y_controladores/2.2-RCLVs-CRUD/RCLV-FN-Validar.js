@@ -202,6 +202,25 @@ module.exports = {
 		return respuesta;
 	},
 
+	// Leyenda
+	leyenda: (datos) => {
+		// Variables
+		const {entidad} = datos;
+		let campos = [];
+		let mensaje = "";
+
+		// Obtiene los campos a validar
+		variables.camposRevisar.rclvs
+			.filter((n) => n[entidad] && ["hoyEstamos_id", "leyNombre"].includes(n.nombre))
+			.map((n) => campos.push(n.nombre));
+
+		// Validaciones
+		for (let campo of campos) if (!datos[campo]) mensaje = variables.selectVacio;
+
+		// Fin
+		return mensaje;
+	},
+
 	// Épocas del año
 	carpetaAvatars: (datos) => {
 		return !datos.carpetaAvatars ? variables.selectVacio : "";
