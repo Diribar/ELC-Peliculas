@@ -128,11 +128,11 @@ window.addEventListener("load", async () => {
 	if (personajes || hechos) {
 		// Compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
+		rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 
 		// Personajes
 		if (personajes) {
 			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
-			rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 		}
 	}
 	if (epocasDelAno) {
@@ -324,7 +324,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					FN.impactos.enSectorLeyenda("hoyEstamos");
+					FN.impactos.enLeyenda("hoyEstamos");
 
 					// Fin
 					return;
@@ -396,7 +396,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enSectorLeyenda: async function (sector) {
+			enLeyenda: async function (sector) {
 				// Si no existe el sector, interrumpe la función
 				if (!DOM[sector]) return; // hoyEstamos, leyNombre
 
@@ -536,7 +536,7 @@ window.addEventListener("load", async () => {
 			genero: async () => {
 				// Variables
 				let params = "genero";
-				params += "&genero_id=" + v.genero_id;
+				params += "&genero_id=" + (v.genero_id ? v.genero_id : "");
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -712,10 +712,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Genero
-			if (DOM.generos_id.length) {
-				if (opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
-				if (opcElegida(DOM.generos_id) || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
-			}
+			if (opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
+			if (opcElegida(DOM.generos_id) || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
 
 			// Carpeta Avatars
 			if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && v.errores.carpetaAvatars === undefined)))
@@ -741,8 +739,8 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) await FN.impactos.enSectorLeyenda("hoyEstamos");
-			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enSectorLeyenda("leyNombre");
+			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) await FN.impactos.enLeyenda("hoyEstamos");
+			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enLeyenda("leyNombre");
 
 			// Fin
 			this.validacs.muestraErroresOK();
@@ -912,8 +910,8 @@ window.addEventListener("load", async () => {
 		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
 
 		// Campos que impactan en 'leyendaNombre'
-		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canon_id")))
-			await FN.impactos.enSectorLeyenda("leyNombre");
+		if (v.camposNombre.includes(campo) || ["genero_id", "plural_id"].includes(campo) || campo == "canon_id")
+			await FN.impactos.enLeyenda("leyNombre");
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
