@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 12/may",
-	"HoraUTC": "3:07",
+	"FechaUTC": "Mar. 14/may",
+	"HoraUTC": "21:03",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 6/may",
-	"HoraSemUTC": "11:39",
-	"semanaUTC": 19,
+	"FechaSemUTC": "Mar. 14/may",
+	"HoraSemUTC": "21:03",
+	"semanaUTC": 20,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -37,14 +37,14 @@
 		"EliminaHistorialAntiguo": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
-		"EliminaLoginsAcumsRepetidos": "NO"
+		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-may-24": {"titulo": "San Damián de Veuster", "entidad": "personajes", "id": 53},
-		"11-may-24": {"titulo": "Beato Mamerto Esquiú", "entidad": "personajes", "id": 132},
 		"12-may-24": {"titulo": "Ascensión de Nuestro Señor"},
 		"13-may-24": {"titulo": "Santa María Mazzarello", "entidad": "personajes", "id": 91},
-		"14-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
+		"14-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"15-may-24": {"titulo": "San Isidro Labrador", "entidad": "personajes", "id": 79},
+		"16-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24}
 	}
 }
