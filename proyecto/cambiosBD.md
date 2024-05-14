@@ -140,6 +140,26 @@ UPDATE c19353_elc.rclv_1personajes SET rolIglesia_id='PP' WHERE rolIglesia_id LI
 UPDATE c19353_elc.usuarios SET genero_id='F' WHERE genero_id='M';
 UPDATE c19353_elc.usuarios SET genero_id='M' WHERE genero_id='V';
 
+- Tabla hoyEstamos
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(1, 'personajes', NULL, 'Hoy recordamos');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(2, 'hechos', 'MS', 'Hoy recordamos el');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(3, 'hechos', 'MS', 'Hoy recordamos el comienzo del');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(4, 'hechos', 'MP', 'Hoy recordamos los');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(5, 'hechos', 'MP', 'Hoy recordamos el comienzo de los');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(6, 'hechos', 'FS', 'Hoy recordamos la');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(7, 'hechos', 'FS', 'Hoy recordamos el comienzo de la');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(8, 'hechos', 'FP', 'Hoy recordamos las');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(9, 'hechos', 'FP', 'Hoy recordamos el comienzo de las');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(10, 'temas', 'MS', 'Hoy es el día del');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(11, 'temas', 'MP', 'Hoy es el día de los');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(12, 'temas', 'FS', 'Hoy es el día de la');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(13, 'temas', 'FP', 'Hoy es el día de las');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(14, 'eventos', 'MS', 'Hoy es');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(15, 'eventos', 'MS', 'Hoy recordamos el');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(16, 'eventos', 'FS', 'Hoy es la');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(17, 'eventos', 'FS', 'Hoy recordamos la');
+INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(18, 'epocasDelAno', NULL, 'Estamos en época de');
+
 - ELIMINAR
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.rclv_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
