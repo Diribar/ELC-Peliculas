@@ -349,6 +349,7 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 			},
 			{titulo: "Alternativo", nombre: "nombreAltern", personajes: true, hechos: true},
+			{titulo: "Nombre en la frase", nombre: "leyNombre", personajes: true, hechos: true},
 
 			// Personajes
 			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
@@ -368,6 +369,10 @@ module.exports = {
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
+			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", hechos: true},
+
+			// Eventos
+			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", eventos: true},
 
 			// Epocas del año
 			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
