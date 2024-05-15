@@ -412,7 +412,6 @@ window.addEventListener("load", async () => {
 					// Obtiene la opciones
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
 				}
-				if (!opciones.length) return;
 
 				// Obtiene la opción seleccionada actualmente
 				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
@@ -926,8 +925,7 @@ window.addEventListener("load", async () => {
 		if (["hoyEstamos_id", "leyNombre"].includes(campo)) await FN.validacs.leyenda();
 
 		// Campos que impactan en 'leyendaNombre'
-		if (v.camposNombre.includes(campo) || ["genero_id", "plural_id"].includes(campo) || campo == "canon_id")
-			await FN.impactos.enLeyenda("leyNombre");
+		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)) await FN.impactos.enLeyenda("leyNombre");
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
