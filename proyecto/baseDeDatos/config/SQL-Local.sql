@@ -18,7 +18,7 @@
 --
 -- Table structure for table `aux_fechas_del_ano`
 --
-CREATE DATABASE IF NOT EXISTS `c19353_elc_bkp` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `c19353_elc_bkp2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `c19353_elc_bkp`;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
