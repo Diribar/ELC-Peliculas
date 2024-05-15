@@ -857,7 +857,7 @@ let FN_links = {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
-		const {pelisColes: pelisColesParaProc, capitulos: capsParaProc} = cantLinksVencPorSem.paraProc;
+		const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem.paraProc;
 		let respuesta;
 
 		// Obtiene los links a revisar

@@ -653,24 +653,34 @@ module.exports = {
 		// Averigua los links totales 'aprobados_ids'
 		let cantAprobs = 0;
 		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
+
+		// Variables
 		const cantLinksTotal = cantPends + cantAprobs;
-		const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // redondea "para arriba", a un decimal
+		const cantPromSem = Math.trunc((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // deja un decimal
+		const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
+		const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// Capítulos
-		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+		const capsPosibles = Math.max(
+			0,
+			Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
+		);
 		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
+		// Averigua los posibles sin la última semana
 		for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
-			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
-		pelisColesPosibles += Math.max(0, capsPosibles - capsPends); // le suma la capacidad 'ociosa' de capítulos
+			pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
+		// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
+		pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
+		// Averigua la cantidad para procesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 
 		// Agrega la información
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
-		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
+		const paraProc = {pelisColesParaProc, capsParaProc, prodsParaProc: pelisColesParaProc + capsParaProc};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
 
 		// Fin
 		return;
