@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="flexRowAlign invisible <%= locals.sg ? ' segunGenero_id' : '' %>">
+<div id="<%= id %>" class="flexRowAlign invisible<%= locals.sg ? ' segunGenero_id' : '' %>">
 	<select name="<%= nombre %>" class="input">
 		<option value="" <% if (!dataEntry[nombre]) { %>selected<% } %>><%= titulo %></option>
 		<% if (!locals.sg || dataEntry.genero_id) for (let opcion of opciones) if (!locals.sg || opcion[dataEntry.genero_id]) { %>
