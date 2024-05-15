@@ -500,7 +500,7 @@ module.exports = {
 			canonNombre = proceso[rclv.genero_id] + " ";
 
 			// Verificación si el nombre del proceso es "Santo" (varón)
-			if (rclv.canon_id == "ST" && genero_id == "MS") {
+			if (rclv.canon_id == "ST" && rclv.genero_id == "MS") {
 				// Obtiene el primer nombre del rclv
 				let nombre = rclv.nombre;
 				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
