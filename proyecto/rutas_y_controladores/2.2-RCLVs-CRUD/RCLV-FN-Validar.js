@@ -246,7 +246,8 @@ let nombreApodo = async ({datos, campo}) => {
 		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, entidad == "eventos" ? 45 : 35);
 
 		// Revisa si es una aparición mariana
-		if (!mensaje && ama == 1 && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";
+		if (!mensaje && campo == "nombre" && ama == 1 && !dato.startsWith(apMar))
+			mensaje = "El nombre debe comenzar con '" + apMar + "'";
 
 		// Nombre repetido
 		if (!mensaje) {
