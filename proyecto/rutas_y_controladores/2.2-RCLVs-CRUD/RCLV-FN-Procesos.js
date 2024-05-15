@@ -207,56 +207,44 @@ module.exports = {
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
 			// Variables
+			const {tipoFecha, mes_id, dia, prioridad_id, plural_id, entidad} = datos;
 			let DE = {};
-			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad, anoFM} = datos;
 
-			// Asigna el valor 'null' a todos los campos
-			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
+			// Obtiene los datos que se guardan en la tabla
+			const campos = variables.camposRevisar.rclvs.filter((n) => n.rclvs || n[datos.entidad]).map((n) => n.nombre);
+			for (let campo of campos) DE[campo] = datos[campo] ? datos[campo] : null;
 
-			// Datos comunes a todos los RCLV
-			if (nombre) DE.nombre = nombre;
+			// Variables con procesos
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
 			DE.fechaMovil = tipoFecha == "FM";
-			if (tipoFecha == "FM") {
-				DE.comentarioMovil = comentarioMovil;
-				DE.anoFM = Number(anoFM);
-			}
-			if (prioridad_id) DE.prioridad_id = Number(prioridad_id);
-			if (avatar) DE.avatar = avatar;
+			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
+			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
+			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
+			DE.genero_id = DE.genero_id + (plural_id ? plural_id : "S");
 
-			// Datos exclusivos de personajes
+			// Variables con procesos en personajes
 			if (entidad == "personajes") {
 				// Variables
-				const {nombreAltern, genero_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} =
-					datos;
-				DE = {...DE, genero_id, epocaOcurrencia_id, categoria_id};
-				const CFC = categoria_id == "CFC";
+				const CFC = DE.categoria_id == "CFC";
+				const {epocaOcurrencia_id, anoNacim, rolIglesia_id, apMar_id} = datos;
+				const epocaPosterior = epocaOcurrencia_id == "pst";
 
-				DE.canon_id = CFC ? canon_id : "NN" + genero_id;
-				DE.canonNombre = comp.canonNombre({nombre, canon_id});
-
-				DE.nombreAltern = nombreAltern ? nombreAltern : "";
-				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
-				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + genero_id;
-				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
+				// Variables con procesos
+				DE.canon_id = CFC ? DE.canon_id : "NN";
+				DE.anoNacim = epocaPosterior ? anoNacim : null;
+				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN";
+				DE.apMar_id = CFC && epocaPosterior && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 
-			// Datos para hechos
+			// Variables con procesos en hechos
 			if (entidad == "hechos") {
 				// Variables
-				const {nombreAltern, epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
-				DE.nombreAltern = nombreAltern ? nombreAltern : "";
-				DE.epocaOcurrencia_id = epocaOcurrencia_id;
-				if (epocaOcurrencia_id == "pst") DE.anoComienzo = anoComienzo;
+				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
+
+				// Variables con procesos
+				DE.anoComienzo = epocaOcurrencia_id == "pst" ? anoComienzo : null;
 				DE.soloCfc = Number(soloCfc);
 				DE.ama = soloCfc == "1" ? Number(ama) : 0;
-			}
-
-			// Datos para epocasDelAno
-			if (entidad == "epocasDelAno") {
-				DE.diasDeDuracion = datos.diasDeDuracion;
-				DE.comentarioDuracion = datos.comentarioDuracion;
-				if (datos.carpetaAvatars) DE.carpetaAvatars = datos.carpetaAvatars;
 			}
 
 			// Fin

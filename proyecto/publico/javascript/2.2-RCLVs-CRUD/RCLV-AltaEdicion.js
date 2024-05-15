@@ -89,10 +89,9 @@ window.addEventListener("load", async () => {
 	DOM = {
 		...DOM,
 
-		// hoyEstamos
-		hoyEstamos: document.querySelector("form select.input[name=hoyEstamos]"),
-		hoyEstamosDefault: document.querySelector("form select.input[name=hoyEstamos] option"),
-		hoyEstamosFijo: document.querySelector("form #hoyEstamos:not(:has(select))"),
+		// hoyEstamos_id
+		hoyEstamos_id: document.querySelector("form select.input[name=hoyEstamos_id]"),
+		hoyEstamos_idDefault: document.querySelector("form select.input[name=hoyEstamos_id] option"),
 
 		// leyNombre
 		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
@@ -128,11 +127,11 @@ window.addEventListener("load", async () => {
 	if (personajes || hechos) {
 		// Compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
+		rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 
 		// Personajes
 		if (personajes) {
 			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
-			rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 		}
 	}
 	if (epocasDelAno) {
@@ -302,11 +301,9 @@ window.addEventListener("load", async () => {
 				},
 			},
 			genero: {
-				consolidado: function () {
-					// Variables
+				consolidado: async function () {
+					// Obtiene el genero_id
 					v.genero_id = opcElegida(DOM.generos_id);
-
-					// Impactos en sí mismo
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
 					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S";
 					else DOM.plural_id.checked = false;
@@ -314,17 +311,17 @@ window.addEventListener("load", async () => {
 					// Impactos en campos RCLIC exclusivos de personajes
 					if (personajes) {
 						// Opciones de 'Rol en la Iglesia'
-						this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
+						if (v.genero_id) this.opcsVisibles(DOM.rolIglesia_id, v.rolesIglesia, DOM.rolIglesiaDefault);
 
 						// Opciones de 'Proceso de Canonización'
-						this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
+						if (v.genero_id) this.opcsVisibles(DOM.canon_id, v.canons, DOM.canonDefault);
 
 						// Impacto por la combinación de cfc y género
 						FN.impactos.cfcGenero();
 					}
 
 					// Impactos en 'hoyEstamos'
-					FN.impactos.enSectorLeyenda("hoyEstamos");
+					await FN.impactos.enLeyenda("hoyEstamos_id");
 
 					// Fin
 					return;
@@ -396,13 +393,13 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			enSectorLeyenda: async function (sector) {
+			enLeyenda: async function (sector) {
 				// Si no existe el sector, interrumpe la función
 				if (!DOM[sector]) return; // hoyEstamos, leyNombre
 
 				// Opciones
 				let opciones = [];
-				if (sector == "hoyEstamos") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
+				if (sector == "hoyEstamos_id") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
 				else if (sector == "leyNombre" && DOM.nombre.value) {
 					// Obtiene la info - nombre, genero_id, canon_id
 					let info = "&nombre=" + DOM.nombre.value;
@@ -413,7 +410,6 @@ window.addEventListener("load", async () => {
 					// Obtiene la opciones
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
 				}
-				if (!opciones.length) return;
 
 				// Obtiene la opción seleccionada actualmente
 				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
@@ -438,14 +434,8 @@ window.addEventListener("load", async () => {
 				// Selecciona la opción original
 				if (indice && indice < DOM[sector].length) DOM[sector].selectedIndex = indice;
 
-				// Si hay una sola respuesta, la inactiva
-				DOM[sector].disabled = opciones.length < 2;
-
 				// Corrige el ancho
 				this.ancho(sector);
-
-				// OK
-				v.OK[sector] = true;
 
 				// Fin
 				return;
@@ -536,7 +526,7 @@ window.addEventListener("load", async () => {
 			genero: async () => {
 				// Variables
 				let params = "genero";
-				params += "&genero_id=" + v.genero_id;
+				params += "&genero_id=" + (v.genero_id ? v.genero_id : ""); // tiene que ser escrito así, para que no quede el texto 'undefined'
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -656,21 +646,36 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
+			leyenda: async () => {
+				// Fin
+				if (!DOM.hoyEstamos_id && !DOM.leyNombre) return;
+
+				// Variables
+				let params = "leyenda";
+				params += "&entidad=" + entidad;
+				if (DOM.hoyEstamos_id) params += "&hoyEstamos_id=" + DOM.hoyEstamos_id.value;
+				if (DOM.leyNombre) params += "&leyNombre=" + DOM.leyNombre.value;
+
+				// OK y Errores
+				v.errores.leyenda = await fetch(rutas.validacion + params).then((n) => n.json());
+				v.OK.leyenda = !v.errores.leyenda;
+
+				// Fin
+				return;
+			},
 			muestraErroresOK: () => {
-				for (let i = 0; i < v.camposError.length; i++) {
+				v.camposError.forEach((campoError, i) => {
 					// Íconos de OK
-					v.OK[v.camposError[i]]
-						? DOM.iconosOK[i].classList.remove("ocultar")
-						: DOM.iconosOK[i].classList.add("ocultar");
+					v.OK[campoError] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
 
 					// Íconos de error
-					v.errores[v.camposError[i]]
+					v.errores[campoError]
 						? DOM.iconosError[i].classList.remove("ocultar")
 						: DOM.iconosError[i].classList.add("ocultar");
 
 					// Mensaje de error
-					DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
-				}
+					DOM.mensajesError[i].innerHTML = v.errores[campoError] ? v.errores[campoError] : "";
+				});
 			},
 			botonSubmit: () => {
 				// Variables
@@ -712,10 +717,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Genero
-			if (DOM.generos_id.length) {
-				if (opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
-				if (opcElegida(DOM.generos_id) || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
-			}
+			if (opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
+			if (opcElegida(DOM.generos_id) || (forzar && v.errores.genero_id === undefined)) await this.validacs.genero();
 
 			// Carpeta Avatars
 			if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && v.errores.carpetaAvatars === undefined)))
@@ -741,12 +744,16 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			if (DOM.hoyEstamos && !DOM.hoyEstamos.value) await FN.impactos.enSectorLeyenda("hoyEstamos");
-			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enSectorLeyenda("leyNombre");
+			if (DOM.hoyEstamos_id && !DOM.hoyEstamos_id.value) await FN.impactos.enLeyenda("hoyEstamos");
+			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enLeyenda("leyNombre");
+			if (forzar && (DOM.hoyEstamos_id || DOM.leyNombre)) await this.validacs.leyenda();
 
-			// Fin
+			// Acciones finales
 			this.validacs.muestraErroresOK();
 			this.validacs.botonSubmit();
+
+			// Fin
+			return;
 		},
 		actualizaVarios: async function () {
 			await this.validacs.avatar();
@@ -834,7 +841,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const campo = e.target.name;
 
-		// Acciones si se cambia el avatar
+		// avatar
 		if (campo == "avatar") {
 			// Muestra los resultados
 			DOM.iconosOK[0].classList.remove("ocultaAvatar");
@@ -844,13 +851,13 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Acciones si se cambia el sector Nombre
+		// sector Nombre
 		if (v.camposNombre.includes(campo)) {
 			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
 		}
 
-		// Acciones si se cambia el sector Fecha
+		// sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			// Impactos
 			if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
@@ -868,10 +875,10 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Acciones si se cambia el sector Repetido
+		// sector Repetido
 		if (campo == "repetido") FN.validacs.repetido();
 
-		// Acciones si se cambia el sector 'Genero'
+		// sector 'Genero'
 		if (["genero_id", "plural_id"].includes(campo)) {
 			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
@@ -880,13 +887,13 @@ window.addEventListener("load", async () => {
 			if (personajes && v.OK.genero_id && opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
-		// Acciones si se cambia el sector Carpeta Avatars
+		// sector Carpeta Avatars
 		if (campo == "carpetaAvatars") await FN.validacs.carpetaAvatars();
 
-		// Acciones si se cambia el sector Prioridad
+		// sector Prioridad
 		if (campo == "prioridad_id") await FN.validacs.prioridad();
 
-		// Acciones si se cambia el sector Época
+		// sector Época
 		if (v.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
 			await FN.impactos.epocaOcurrencia[entidad]();
@@ -900,20 +907,25 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Acciones si se cambia el sector RCLIC
+		// sector RCLIC
 		if (v.camposRCLIC && v.camposRCLIC.includes(campo)) {
 			if (campo == "categoria_id") FN.impactos.cfcGenero(); // son campos afectados por la combinación de genero y cfc
 			await FN.validacs.RCLIC[entidad]();
 			if (hechos) await FN.validacs.nombre();
 		}
 
-		// Acciones si se cambia el sector hoyEstamos
-		if (campo == "hoyEstamos") FN.impactos.ancho("hoyEstamos");
-		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
+		// sector leyenda
+		if (["hoyEstamos_id", "leyNombre"].includes(campo)) {
+			if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
+			if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
+			await FN.validacs.leyenda();
+		}
 
 		// Campos que impactan en 'leyendaNombre'
-		if (v.camposNombre.includes(campo) || (personajes && (["genero_id", "plural_id"].includes(campo) || campo == "canon_id")))
-			await FN.impactos.enSectorLeyenda("leyNombre");
+		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)) {
+			await FN.impactos.enLeyenda("leyNombre");
+			await FN.validacs.leyenda();
+		}
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
