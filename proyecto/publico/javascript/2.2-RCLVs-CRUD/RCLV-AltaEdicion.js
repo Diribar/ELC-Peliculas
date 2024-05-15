@@ -302,10 +302,8 @@ window.addEventListener("load", async () => {
 			},
 			genero: {
 				consolidado: async function () {
-					// Variables
+					// Obtiene el genero_id
 					v.genero_id = opcElegida(DOM.generos_id);
-
-					// Impactos en sí mismo
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
 					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S";
 					else DOM.plural_id.checked = false;
@@ -331,6 +329,7 @@ window.addEventListener("load", async () => {
 				opcsVisibles: (select, opciones, opcionDefault) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
+					console.log(selectedValue_id);
 					select.innerHTML = "";
 					select.appendChild(opcionDefault);
 
@@ -924,7 +923,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Campos que impactan en 'leyendaNombre'
-		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)){
+		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)) {
 			await FN.impactos.enLeyenda("leyNombre");
 			await FN.validacs.leyenda();
 		}
