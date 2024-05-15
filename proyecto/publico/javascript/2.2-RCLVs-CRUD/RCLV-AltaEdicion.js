@@ -329,7 +329,6 @@ window.addEventListener("load", async () => {
 				opcsVisibles: (select, opciones, opcionDefault) => {
 					// Limpia el select
 					const selectedValue_id = select.value;
-					console.log(selectedValue_id);
 					select.innerHTML = "";
 					select.appendChild(opcionDefault);
 
