@@ -91,7 +91,7 @@
 							.ayuda ul[type="dots"] {padding: 7px;}
 						}
 						#sectorGenero {
-							margin-top: 10px;
+							/* margin-top: 10px; */
 							.opciones {
 								margin-left: 10px;
 								.ayuda ul {max-width: 200px;}

@@ -16,7 +16,7 @@ module.exports = (sequelize, dt) => {
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
-		hoyEstamos: {type: dt.STRING(40)},
+		hoyEstamos_id: {type: dt.INTEGER},
 		leyNombre: {type: dt.STRING(70)},
 
 		// Común entre 'personajes' y 'hechos'
@@ -65,6 +65,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.hechos, {as: "apMar", foreignKey: "apMar_id"});
 		entidad.belongsTo(n.canons, {as: "canon", foreignKey: "canon_id"});
 		entidad.belongsTo(n.rolesIglesia, {as: "rolIglesia", foreignKey: "rolIglesia_id"});
+
+		entidad.belongsTo(n.hoyEstamos, {as: "hoyEstamos", foreignKey: "hoyEstamos_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editadoPor", foreignKey: "editadoPor_id"});
 	};

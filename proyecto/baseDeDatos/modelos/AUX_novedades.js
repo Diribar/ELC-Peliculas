@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "novedadesELC";
 	const columns = {
-		comentario: {type: dt.STRING(250)},
+		comentario: {type: dt.STRING(100)},
 		fecha: {type: dt.DATE},
 		versionELC: {type: dt.STRING(4)},
 
@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		revisorUs: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "aux_novedades_elc",
+		tableName: "aux_novedades",
 		timestamps: false,
 	};
 

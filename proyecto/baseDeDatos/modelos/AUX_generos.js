@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		pers: {type: dt.STRING(10)},
-		rclvs: {type: dt.STRING(20)},
+		rclvs: {type: dt.STRING(10)},
 		loLa: {type: dt.STRING(3)},
 		letraFinal: {type: dt.STRING(2)},
 	};
@@ -12,8 +12,5 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
-	entidad.associate = (n) => {
-		entidad.hasMany(n.usuarios, {as: "usuarios", foreignKey: "genero_id"});
-	};
 	return entidad;
 };

@@ -407,7 +407,7 @@
 			<!-- hoyEstamos -->
 			<% if (hechos || eventos) { %>
 				<div id="hoyEstamos">
-					<select name="hoyEstamos" class="input sinFlecha">
+					<select name="hoyEstamos_id" class="input sinFlecha">
 						<option value="">Elegí una opción</option>
 						<% for (let opcion of opcsHoyEstamos) { %>
 							<option value="<%= opcion.id %>" <% if (opcion.id == dataEntry.hoyEstamos_id) { %>selected<% } %>><%= opcion.comentario %></option>

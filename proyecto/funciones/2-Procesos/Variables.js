@@ -252,48 +252,6 @@ module.exports = {
 		{id: 2, nombre: "Estándar"},
 		{id: 3, nombre: "Mayor"},
 	],
-	camposEdicionRCLV: {
-		personajes: [
-			"nombre",
-			"nombreAltern",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"prioridad_id",
-			"genero_id",
-			"epocaOcurrencia_id",
-			"anoNacim",
-			"categoria_id",
-			"rolIglesia_id",
-			"canon_id",
-			"apMar_id",
-			"avatar",
-		],
-		hechos: [
-			"nombre",
-			"nombreAltern",
-			"anoComienzo",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"prioridad_id",
-			"epocaOcurrencia_id",
-			"soloCfc",
-			"ama",
-			"avatar",
-		],
-		temas: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		eventos: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		epocasDelAno: [
-			"nombre",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"comentarioMovil",
-			"diasDeDuracion",
-			"comentarioDuracion",
-			"prioridad_id",
-			"carpetaAvatars",
-			"avatar",
-		],
-	},
 	prefijos: [
 		"Beata",
 		"Beato",
@@ -310,6 +268,7 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -349,6 +308,7 @@ module.exports = {
 				tabla: "epocasOcurrencia",
 			},
 			{titulo: "Alternativo", nombre: "nombreAltern", personajes: true, hechos: true},
+			{titulo: "Nombre en la frase", nombre: "leyNombre", personajes: true, hechos: true},
 
 			// Personajes
 			{titulo: "Sexo", nombre: "genero_id", personajes: true, relacInclude: "genero", tabla: "generos"},
@@ -368,6 +328,10 @@ module.exports = {
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
+			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", hechos: true},
+
+			// Eventos
+			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", eventos: true},
 
 			// Epocas del año
 			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
@@ -474,7 +438,6 @@ module.exports = {
 	},
 
 	// Varios
-	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	origenes: [
 		// Productos
 		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},

@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		MFP: {type: dt.STRING(20)},
 	};
 	const config = {
-		tableName: "aux_roles_iglesia",
+		tableName: "rclv_roles_iglesia",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
