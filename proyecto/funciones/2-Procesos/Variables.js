@@ -252,48 +252,6 @@ module.exports = {
 		{id: 2, nombre: "Estándar"},
 		{id: 3, nombre: "Mayor"},
 	],
-	camposEdicionRCLV: {
-		personajes: [
-			"nombre",
-			"nombreAltern",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"prioridad_id",
-			"genero_id",
-			"epocaOcurrencia_id",
-			"anoNacim",
-			"categoria_id",
-			"rolIglesia_id",
-			"canon_id",
-			"apMar_id",
-			"avatar",
-		],
-		hechos: [
-			"nombre",
-			"nombreAltern",
-			"anoComienzo",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"prioridad_id",
-			"epocaOcurrencia_id",
-			"soloCfc",
-			"ama",
-			"avatar",
-		],
-		temas: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		eventos: ["nombre", "fechaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		epocasDelAno: [
-			"nombre",
-			"fechaDelAno_id",
-			"fechaMovil",
-			"comentarioMovil",
-			"diasDeDuracion",
-			"comentarioDuracion",
-			"prioridad_id",
-			"carpetaAvatars",
-			"avatar",
-		],
-	},
 	prefijos: [
 		"Beata",
 		"Beato",
@@ -310,6 +268,7 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -479,7 +438,6 @@ module.exports = {
 	},
 
 	// Varios
-	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	origenes: [
 		// Productos
 		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
