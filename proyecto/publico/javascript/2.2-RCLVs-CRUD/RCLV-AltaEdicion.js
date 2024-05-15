@@ -436,9 +436,6 @@ window.addEventListener("load", async () => {
 				// Selecciona la opción original
 				if (indice && indice < DOM[sector].length) DOM[sector].selectedIndex = indice;
 
-				// Si hay una sola respuesta, la inactiva
-				DOM[sector].disabled = opciones.length < 2;
-
 				// Corrige el ancho
 				this.ancho(sector);
 
