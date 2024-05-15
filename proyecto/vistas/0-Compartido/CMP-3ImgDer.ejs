@@ -25,15 +25,10 @@
 		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
 	<% } %>
 
-	<% if (destino && !cartelRCLV) { %>
-		<!-- Publica la imagen con RCLV -->
-		<a href="<%= destino %>" tabindex="-1">
-			<img src="<%= ruta %>" title="Hoy se recuerda a <%= titulo %>">
-		</a>
-	<% } else { %>
-		<!-- Publica la imagen sin RCLV -->
-		<img src="<%= ruta %>" title="<%= titulo %>">
-	<% } %>
+	<!-- Publica la imagen -->
+	<% if (destino && !cartelRCLV) { %><a href="<%= destino %>" tabindex="-1"><% } %>
+			<img src="<%= ruta %>" title="<%= titulo %>">
+	<% if (destino && !cartelRCLV) { %></a><% } %>
 
 	<!-- Accesorios -->
 	<% if (locals.tema == "prodRud" && codigo == "detalle") { %>
