@@ -526,7 +526,7 @@ window.addEventListener("load", async () => {
 			genero: async () => {
 				// Variables
 				let params = "genero";
-				params += "&genero_id=" + (v.genero_id ? v.genero_id : "");
+				params += "&genero_id=" + (v.genero_id ? v.genero_id : ""); // tiene que ser escrito así, para que no quede el texto 'undefined'
 
 				// OK y Errores
 				v.errores.genero_id = await fetch(rutas.validacion + params).then((n) => n.json());
