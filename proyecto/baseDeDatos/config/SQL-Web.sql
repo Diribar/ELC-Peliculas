@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `c19353_elc`
 --
-CREATE DATABASE IF NOT EXISTS `c19353_elc` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `c19353_elc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `c19353_elc`;
 
 -- --------------------------------------------------------
