@@ -746,7 +746,8 @@ window.addEventListener("load", async () => {
 			// SectorLeyenda
 			if (DOM.hoyEstamos_id && !DOM.hoyEstamos_id.value) await FN.impactos.enLeyenda("hoyEstamos");
 			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enLeyenda("leyNombre");
-			if (forzar && (DOM.hoyEstamos_id || DOM.leyNombre)) await this.validacs.leyenda();
+			if ((DOM.hoyEstamos_id && (forzar || DOM.hoyEstamos_id.value)) || (DOM.leyNombre && (forzar || DOM.leyNombre.value)))
+				await this.validacs.leyenda();
 
 			// Acciones finales
 			this.validacs.muestraErroresOK();

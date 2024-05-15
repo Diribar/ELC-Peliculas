@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Mié. 15/may",
-	"HoraUTC": "11:16",
+	"HoraUTC": "14:49",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 14/may",
@@ -41,10 +41,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-may-24": {"titulo": "Santa María Mazzarello", "entidad": "personajes", "id": 91},
-		"14-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"15-may-24": {"titulo": "San Isidro Labrador", "entidad": "personajes", "id": 79},
-		"16-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"17-may-24": {"titulo": "Turf - Seabiscuit", "entidad": "personajes", "id": 158}
+		"13-may-24": {"leyenda": "Hoy recordamos a Madre Mazzarello, santa", "entidad": "personajes", "id": 91},
+		"14-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"15-may-24": {"leyenda": "Hoy recordamos a san Isidro Labrador", "entidad": "personajes", "id": 79},
+		"16-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"17-may-24": {"leyenda": "Hoy recordamos al caballo Seabiscuit", "entidad": "personajes", "id": 158}
 	}
 }

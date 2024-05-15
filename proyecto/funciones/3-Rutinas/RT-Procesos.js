@@ -834,12 +834,19 @@ let datosImgDerecha = (resultado) => {
 	// Acciones si se obtuvo un resultado
 	if (resultado) {
 		// Datos iniciales
-		imgDerecha = {entidad: resultado.entidad, id: resultado.id};
+		const {entidad, id, hoyEstamos_id, leyNombre, genero_id, nombre} = resultado;
+		imgDerecha = {entidad, id};
+
+		// hoyEstamos
+		const hoyEstamosFinal = hoyEstamos_id
+			? hoyEstamos.find((n) => n.id == hoyEstamos_id).comentario
+			: hoyEstamos.find((n) => n.entidad == entidad).comentario;
+
+		// leyNombre
+		const leyNombreFinal = leyNombre ? leyNombre : nombre;
 
 		// Nombre de la imagen
-		const canonNombre = comp.canonNombre(resultado);
-		imgDerecha.titulo = canonNombre ? canonNombre : "";
-		imgDerecha.titulo += resultado.nombre;
+		imgDerecha.leyenda = hoyEstamosFinal + " " + leyNombreFinal;
 
 		// Datos del archivo, dependiendo de la entidad
 		if (!resultado.carpetaAvatars) {

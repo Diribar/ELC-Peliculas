@@ -305,7 +305,7 @@ module.exports = {
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
 			let avatarExterno, avatarsExternosPelis, avatar, imgDerPers, edicionAvatar;
-			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
+			let ingresos, reemplazos, bloqueDer, motivos, prodsDelRCLV, titulo, ayudasTitulo;
 
 			// Obtiene la versión original con include
 			let include = [
@@ -363,7 +363,7 @@ module.exports = {
 				}
 
 				// Variables
-				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original, userID).then((n) => n.length);
+				if (familia == "rclv") prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
 				bloqueDer = {
 					registro: await procsCRUD.bloqueRegistro({...original, entidad}),
 					usuario: await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
@@ -390,7 +390,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
-				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
+				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, prodsDelRCLV},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
 				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},
