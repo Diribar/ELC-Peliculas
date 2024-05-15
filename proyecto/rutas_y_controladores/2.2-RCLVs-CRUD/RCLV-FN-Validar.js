@@ -7,27 +7,23 @@ module.exports = {
 		let errores = {
 			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
-			avatar: this.avatar(datos),
+			genero: this.genero(datos),
 			prioridad: this.prioridad(datos),
+			leyenda: this.leyenda(datos),
+			avatar: this.avatar(datos),
 		};
+
+		// Campos de personajes y hechos
+		if (["personajes", "hechos"].includes(datos.entidad)) errores.epocaOcurrencia = this.epocaOcurrencia(datos);
 
 		// Campos de todos menos 'epocasDelAno'
 		if (datos.entidad != "epocasDelAno") errores.repetidos = this.repetidos(datos);
 
-		// Campos de personajes y hechos
-		if (datos.entidad == "personajes" || datos.entidad == "hechos") errores.epocaOcurrencia = this.epocaOcurrencia(datos);
-
 		// Campos de personajes
-		if (datos.entidad == "personajes") {
-			errores.genero = this.genero(datos);
-			errores.RCLIC = this.RCLIC_personajes(datos);
-		}
+		if (datos.entidad == "personajes") errores.RCLIC = this.RCLIC_personajes(datos);
 
 		// Campos de hechos
-		if (datos.entidad == "hechos") {
-			errores.genero = this.genero(datos);
-			errores.RCLIC = this.RCLIC_hechos(datos);
-		}
+		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
 
 		// Épocas del año
 		if (datos.entidad == "epocasDelAno") errores.carpetaAvatars = this.carpetaAvatars(datos);
@@ -39,9 +35,6 @@ module.exports = {
 		return errores;
 	},
 	// Campos comunes a todos los RCLV
-	avatar: (datos) => {
-		return comp.validacs.avatar(datos);
-	},
 	nombre: async (datos) => {
 		// Variables
 		let mensaje = "";
@@ -123,14 +116,12 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	prioridad: (datos) => {
-		return !datos.prioridad_id && datos.revisorPERL ? variables.selectVacio : "";
-	},
+	genero: (datos) => (!datos.genero_id ? variables.radioVacio : ""),
+	prioridad: (datos) => (!datos.prioridad_id && datos.revisorPERL ? variables.selectVacio : ""),
+	avatar: (datos) => comp.validacs.avatar(datos),
 
 	// Entidades distintas a 'epocasDelAno'
-	repetidos: (datos) => {
-		return datos.repetidos ? cartelRegistroDuplicado : "";
-	},
+	repetidos: (datos) => (datos.repetidos ? cartelRegistroDuplicado : ""),
 
 	// Personajes y Hechos
 	epocaOcurrencia: (datos) => {
@@ -162,9 +153,6 @@ module.exports = {
 	},
 
 	// Personajes
-	genero: (datos) => {
-		return !datos.genero_id ? variables.radioVacio : "";
-	},
 	RCLIC_personajes: (datos) => {
 		if (datos.anoNacim) datos.anoNacim = parseInt(datos.anoNacim);
 		let respuesta = !datos.categoria_id
