@@ -324,14 +324,20 @@ module.exports = {
 			{titulo: "Proceso de Canonizac.", nombre: "canon_id", personajes: true, relacInclude: "canon", tabla: "canons"},
 			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
 
+			// Hechos y Épocas
+			{
+				titulo: "Hoy estamos",
+				nombre: "hoyEstamos_id",
+				hechos: true,
+				eventos: true,
+				relacInclude: "hoyEstamos",
+				tabla: "hoyEstamos",
+			},
+
 			// Hechos
 			{titulo: "Año de Comienzo", nombre: "anoComienzo", hechos: true},
 			{titulo: "Hecho de la Iglesia", nombre: "soloCfc", hechos: true, siNo: true},
 			{titulo: "Es una aparición mariana", nombre: "ama", hechos: true, siNo: true},
-			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", hechos: true},
-
-			// Eventos
-			{titulo: "Hoy estamos", nombre: "hoyEstamos_id", eventos: true},
 
 			// Epocas del año
 			{titulo: "Días de Duración", nombre: "diasDeDuracion", epocasDelAno: true},
