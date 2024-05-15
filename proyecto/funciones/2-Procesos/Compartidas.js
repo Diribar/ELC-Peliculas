@@ -798,7 +798,11 @@ module.exports = {
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
 		ao: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
-		laLo: (registro) => (registro.genero_id == "F" ? "la" : "lo"),
+		laLo: (registro) => {
+			return !registro.genero_id
+				? "lo"
+				: (registro.genero_id.startsWith("F") ? "la" : "lo") + (registro.genero_id.endsWith("P") ? "s" : "");
+		},
 	},
 	fechaHora: {
 		ahora: () => {
