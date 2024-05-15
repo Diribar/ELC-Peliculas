@@ -1,7 +1,8 @@
-- Misceláneas
+- Misceláneas ------------------------------------
 RENAME TABLE c19353_elc.aux_sexos TO c19353_elc.aux_generos;
 RENAME TABLE c19353_elc.aux_novedades_elc TO aux_novedades;
 ALTER TABLE c19353_elc.aux_novedades MODIFY COLUMN comentario varchar(100) NOT NULL;
+ALTER TABLE c19353_elc.aux_novedades DEFAULT CHARSET=utf8mb4;
 
 - Tabla GENEROS
 ALTER TABLE c19353_elc.aux_generos MODIFY COLUMN id varchar(3) NOT NULL;
@@ -160,7 +161,7 @@ INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(16, 'eventos', 'FS', 'Hoy es la')
 INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(17, 'eventos', 'FS', 'Hoy recordamos la');
 INSERT INTO c19353_elc.rclv_hoy_estamos VALUES(18, 'epocasDelAno', NULL, 'Estamos en época de');
 
-- ELIMINAR
+- ELIMINAR ---------------------------------------
 DELETE FROM c19353_elc.rclv_canons WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.rclv_roles_iglesia WHERE CHAR_LENGTH(id) > 2;
 DELETE FROM c19353_elc.aux_generos WHERE id='X';
