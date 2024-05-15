@@ -1,7 +1,6 @@
 <section id="todoElMain" class="<%- !locals.informacion ? 'ocultar' : '' %>">
-		<!-- Tapar el fondo -->
-	<div id="tapaElFondo" class="<%- !locals.informacion ? 'ocultar' : '' %>">
-	</div>
+	<!-- Tapar el fondo -->
+	<div id="tapaElFondo" class="<%- !locals.informacion ? 'ocultar' : '' %>"></div>
 
 	<!-- Cartel -->
 	<div id="cartelGenerico" class="cartelCentro absoluteCentro flexColAlign <%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
@@ -16,11 +15,19 @@
 		<div id="contenedorMensajes">
 			<% if (locals.informacion) { %>
 				<!-- Si existe información, la muestra -->
+				<% if (informacion.ol) { %>
+				<ol id="mensajes" type="<%- informacion.mensajes.length > 1 ? '1' : 'none' %>">
+					<% for (mensaje of informacion.mensajes) { %>
+						<li><%- mensaje %></li>
+					<% } %>
+				</ol>
+				<% } else { %>
 				<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
 					<% for (mensaje of informacion.mensajes) { %>
 						<li><%- mensaje %></li>
 					<% } %>
 				</ul>
+				<% } %>
 			<% } else { %>
 				<!-- Si no existe información, se deja preparado el sector -->
 				<ul type="dots" id="mensajes"></ul>
@@ -37,5 +44,4 @@
 			<% } %>
 		</div>
 	</div>
-
 </section>

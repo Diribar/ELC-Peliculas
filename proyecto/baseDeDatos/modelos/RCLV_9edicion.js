@@ -9,21 +9,23 @@ module.exports = (sequelize, dt) => {
 		epocaDelAno_id: {type: dt.INTEGER},
 
 		// Comunes
-		nombre: {type: dt.STRING(35)},
+		nombre: {type: dt.STRING(45)},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
 		anoFM: {type: dt.INTEGER},
 		comentarioMovil: {type: dt.STRING(70)},
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
+		hoyEstamos_id: {type: dt.INTEGER},
+		leyNombre: {type: dt.STRING(70)},
 
 		// Común entre 'personajes' y 'hechos'
+		nombreAltern: {type: dt.STRING(35)},
 		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		// Específico de 'personajes'
 		anoNacim: {type: dt.INTEGER},
-		apodo: {type: dt.STRING(35)},
-		sexo_id: {type: dt.STRING(1)},
+		genero_id: {type: dt.STRING(3)},
 		categoria_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 		canon_id: {type: dt.STRING(3)},
@@ -57,12 +59,14 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 
-		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
+		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
 		entidad.belongsTo(n.hechos, {as: "apMar", foreignKey: "apMar_id"});
 		entidad.belongsTo(n.canons, {as: "canon", foreignKey: "canon_id"});
 		entidad.belongsTo(n.rolesIglesia, {as: "rolIglesia", foreignKey: "rolIglesia_id"});
+
+		entidad.belongsTo(n.hoyEstamos, {as: "hoyEstamos", foreignKey: "hoyEstamos_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editadoPor", foreignKey: "editadoPor_id"});
 	};

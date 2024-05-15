@@ -1,113 +1,151 @@
 /* Temas generales */
-#cuerpoFooterImgDer #imgDerecha {position: relative;}
-#cuerpoFooter #cuerpo {background: transparent; flex-direction: column;}
+#cuerpoFooterImgDer {
+	#imgDerecha {
+		position: relative;
+		&.inputError .agregados:has(a[href=""]) {display: none;}
+	}
+	#cuerpoFooter #cuerpo {
+		background: transparent; flex-direction: column;
 
-/* Temas generales del formulario */
-#cuerpo #datos {justify-content: space-evenly; align-items: center;}
-#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
-#cuerpo #dataEntry {display: flex; flex-direction: column; width: fit-content;}
-#cuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;}
+		/* Temas generales del formulario */
+		#datos {
+			justify-content: space-evenly; align-items: center;
+			#dataEntry {
+				/* General */
+				padding: 30px 40px; border-radius: 20px;
+				display: flex; flex-direction: column; width: fit-content;
+				background: var(--gris-claro); border: var(--gris-oscuro) 7px solid;
+				.inputError {
+					align-self: flex-start;
+					.errores {left: -5px; translate: -100% -50%; right: auto;}
+				}
+				.altoFila {height: 28px;}
+				.margenDer {margin-right: 5px;}
+				.margenIzq {margin-left: 15px;}
+				.margenDebajo {margin-bottom: 5px;}
+				.borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
+				.input.angosto {width: 50px; margin-left: 10px; text-align: center;}
+				:is(.input, #posiblesRepetidos, #calendario, #datosLeyenda select) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+				label[for] {padding-left: 3px;}
 
-/* Temas generales de dataEntry */
-#dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px; z-index: 7;}
-#dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
-#dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry :is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario)
-	{border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
-#dataEntry label[for] {padding-left: 3px;}
+				/* Primer bloque */
+				#inicio {
+					display: flex; flex-direction: row; justify-content: space-between;
+					/* Particular */
+					#primeraCol {
+						margin-right: 50px; min-width: 210px; z-index: 7;
 
-/* Temas de filas */
-#dataEntry .altoFila {height: 28px;}
-#dataEntry .margenDer {margin-right: 5px;}
-#dataEntry .margenIzq {margin-left: 15px;}
-#dataEntry .margenDebajo {margin-bottom: 5px;}
-#dataEntry .borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
+						/* Nombres */
+						#sectorNombre {
+							label {margin-right: 7px;}
+							.input {padding-left: 5px; width: 235px;}
+						}
+						#sectorFecha {
+							h3 {align-self: flex-start; margin-top: 1px;}
+							:is(select[name=tipoFecha], select[name=dia], select[name=anoFM], #inputDias) {margin-left: 15px;}
+							nav {
+								margin-left: 10px; width: 50px;
+								&:has(a[href=""]) {display: none;}
+								a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
+							}
+							.caracteres {align-self: flex-end;}
+							textarea {padding: 2px 5px; height: 34px; resize: none;}
+							#diasDeDuracion {
+								margin-top: 7px;
+								input {
+									width: 30px; text-align: center;
+									&::-webkit-outer-spin-button, &::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
+								}
+							}
 
-/* Temas particulares de dataEntry */
-#dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
+						}
+					}
+					#segundaCol {
+						display: flex; flex-direction: column; min-width: 210px;
+						#sectorRepetidos {
+							display: flex; flex-direction: column; flex-grow: 1;
+							#posiblesRepetidos {
+								display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
+								margin-top: 5px; padding: 5px; height: 100%;
+								li {
+									padding: 3px 0; display: flex; flex-direction: row;
+									input {padding-right: 5px;}
+								}
+							}
+							.sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+						}
+						#sectorDiasDelAno {
+							display: flex; flex-direction: column; flex-grow: 1;
+							#calendario {
+								height: 100%; margin-top: 5px; padding: 5px 10px;
+								overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;
+								table {
+									border-collapse: collapse; width: 90%;
+									tr td {padding: 1px 0;}
+								}
+							}
+						}
+						:is(#sectorCarpetaAvatars select, #sectorPrioridad select) {width: 108px;}
+						#sectorPrioridad {
+							margin-top: 5px;
+							.ayuda ul[type="dots"] {padding: 7px;}
+						}
+						#sectorGenero {
+							/* margin-top: 10px; */
+							.opciones {
+								margin-left: 10px;
+								.ayuda ul {max-width: 200px;}
+							}
+						}
 
-/* Links */
-#imgDerecha.inputError .agregados:has(a[href=""]) {display: none;}
-#inicio #sectorFecha nav:has(a[href=""]) {display: none;}
+					}
+				}
 
-/* Nombres */
-#inicio #sectorNombre label {margin-right: 7px;}
-#inicio #sectorNombre .input {padding-left: 5px; width: 235px;}
+				/* Siguientes bloques */
+				#sectorEpoca {
+					&:not(
+						:not(:has(.opciones input#pst:checked)), /* epocaOcurrencia = 'pst' */
+						:has(.opciones input.noPST:checked) /* ninguna otra opción está 'checked' */
+					) .invisible {visibility: visible;}
 
-/* Fecha */
-#inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
-#inicio #sectorFecha :is(select[name=tipoFecha], select[name=dia], select[name=anoFM], #inputDias)
-	{margin-left: 15px;}
-#inicio #sectorFecha nav {margin-left: 10px; width: 50px;}
-#inicio #sectorFecha nav a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
-#inicio #sectorFecha .caracteres {align-self: flex-end;}
-#inicio #sectorFecha textarea {padding: 2px 5px; height: 34px; resize: none;}
+					.opciones {
+						justify-content: center;
+						.ayuda {position: static; translate: 5px 0px;}
+						input {align-self: center;}
+					}
+				}
+				#sectorRCLIC {
+					.pregunta {font-size: 1.10rem;}
+					.radioBtn {width: 70px; justify-content: space-between;}
+					.personajes .radioBtn {margin-left: 10px;}
+					.hechos .radioBtn {margin-right: 10px;}
+					/* PreguntasRCLIC (personajes y hechos) */
+					&:not(
+						:has(.input#cfc:not(:checked)), /* es 'cfc' */
+						:not(:has(#preguntasRCLIC > :not(.invisible))) /* algún elemento está visible */
+					) #preguntasRCLIC.ocultar {display: flex !important;}
+				}
+				#sectorLeyenda {
+					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
+					#datosLeyenda {
+						select {
+							padding: 5px 3px;
+							&:focus {outline: none;}
+							&:disabled {opacity: 1;}
+						}
+						#hoyEstamos {margin-right: 3px;}
+					}
 
-#inicio #sectorFecha #diasDeDuracion {margin-top: 7px;}
-#inicio #sectorFecha #diasDeDuracion input {width: 30px; text-align: center;}
-#inicio #sectorFecha #diasDeDuracion input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
-/* #inicio #sectorFecha #diasDeDuracion input[type=number] {-moz-appearance: textfield;} Firefox */
+				}
 
-/* Repetidos */
-#inicio #sectorRepetidos {display: flex; flex-direction: column; flex-grow: 1;}
-#sectorRepetidos #posiblesRepetidos {display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;}
-#sectorRepetidos #posiblesRepetidos {margin-top: 5px; padding: 5px; height: 100%;}
-#sectorRepetidos #posiblesRepetidos li {padding: 3px 0; display: flex; flex-direction: row;}
-#sectorRepetidos #posiblesRepetidos li input {padding-right: 5px;}
-#sectorRepetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+				/* Temas de ayuda */
+				ul#ayudaNombrePers {max-width: min(400px, 90vw);}
+				ul#ayudaNombrePers li span {font-variant: small-caps; text-decoration: underline;}
 
-/* Calendario */
-#sectorDiasDelAno {display: flex; flex-direction: column; flex-grow: 1;}
-#sectorDiasDelAno #calendario {height: 100%;}
-#sectorDiasDelAno #calendario {margin-top: 5px; padding: 5px 10px;}
-#sectorDiasDelAno #calendario {overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
-#sectorDiasDelAno #calendario table {border-collapse: collapse; width: 90%;}
-#sectorDiasDelAno #calendario table tr td {padding: 1px 0;}
-
-/* Carpeta de Imágenes y Prioridad */
-#inicio :is(#sectorCarpetaAvatars select, #sectorPrioridad select) {width: 108px;}
-#inicio #sectorPrioridad {margin-top: 5px;}
-#inicio #sectorPrioridad .ayuda ul[type="dots"] {padding: 7px;}
-
-/* Sexo */
-#inicio #sectorSexo {margin-top: 10px;}
-#inicio #sectorSexo .opciones {margin-left: 10px;}
-#inicio #sectorSexo .opciones .ayuda ul {max-width: 200px;}
-
-/* Época */
-#sectorEpoca .opciones {justify-content: center; }
-#sectorEpoca .opciones .ayuda {position: static; translate: 5px 0px;}
-#sectorEpoca .opciones input {align-self: center;}
-
-/* Relación con la Iglesia Católica */
-#sectorRCLIC #soloCFC {margin-bottom: 5px;}
-#sectorRCLIC .pregunta {font-size: 1.10rem;}
-#sectorRCLIC .radioBtn {width: 70px; justify-content: space-between;}
-#sectorRCLIC .personajes .radioBtn {margin-left: 10px;}
-#sectorRCLIC .hechos .radioBtn {margin-right: 10px;}
-
-/* 1. Año (personajes y hechos) */
-#sectorEpoca:not(
-	:not(:has(.opciones input#pst:checked)), /* epocaOcurrencia = 'pst' */
-	:has(.opciones input.noPST:checked)      /* ninguna otra opción está 'checked' */
-) .invisible {visibility: visible;}
-
-/* 2. PreguntasRCLIC (personajes) */
-#dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
-	#preguntasRCLIC.invisible {visibility: visible;}
-
-#dataEntry:has(#sectorSexo input:checked)                       /* contestó 'sexo' */
-	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
-
-/* 3. PreguntasRCLIC (hechos) */
-#dataEntry:has(.hechos #soloCFC input#SI:checked)            /* --> si soloCFC='SI' */
-	#preguntasRCLIC.invisible {visibility: visible;}
-
-/* Temas de ayuda */
-#dataEntry ul#ayudaNombrePers {max-width: min(400px, 90vw);}
-#dataEntry ul#ayudaNombrePers li span {font-variant: small-caps; text-decoration: underline;}
-
-/* Submit button */
-#dataEntry .iconos {margin: 20px 0 0;}
-#dataEntry .iconos label[for="eliminaEdicion"] {color: var(--rojo-oscuro);}
+				/* Submit button */
+				.iconos {margin: 20px 0 0;}
+				.iconos label[for="eliminaEdicion"] {color: var(--rojo-oscuro);}
+			}
+		}
+	}
+}

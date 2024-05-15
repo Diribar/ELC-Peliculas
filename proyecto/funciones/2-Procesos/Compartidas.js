@@ -69,15 +69,20 @@ module.exports = {
 			return FN.entidadNombre(entidad);
 		},
 		delLa: (entidad) => {
-			return false
-				? false
-				: ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
 				? " de la "
 				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
 				? " del "
 				: "";
 		},
-		oa: (entidad) => {
+		elLa: (entidad) => {
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+				? " la "
+				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
+				? " el "
+				: "";
+		},
+		ao: (entidad) => {
 			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o";
 		},
 		campo_id: (entidad) => {
@@ -313,8 +318,8 @@ module.exports = {
 			).toLowerCase();
 
 			// 1. Inicio
-			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-			let inicio = "Est" + genero + " ";
+			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			let inicio = "Est" + ea + " ";
 
 			// 2. Anchor
 			let url = "?entidad=" + entidad + "&id=" + id;
@@ -482,22 +487,22 @@ module.exports = {
 	},
 
 	// RCLVs
-	canonNombre: (RCLV) => {
+	canonNombre: (rclv) => {
 		// Variables
 		let canonNombre = "";
 
-		// Averigua si el RCLV tiene algún "proceso de canonización"
-		if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
+		// Averigua si el rclv tiene algún "proceso de canonización"
+		if (rclv.canon_id && rclv.canon_id != "NN") {
 			// Obtiene los procesos de canonización
-			const proceso = canons.find((m) => m.id == RCLV.canon_id);
+			const proceso = canons.find((m) => m.id == rclv.canon_id);
 
 			// Asigna el nombre del proceso
-			canonNombre = proceso.nombre + " ";
+			canonNombre = proceso[rclv.genero_id] + " ";
 
 			// Verificación si el nombre del proceso es "Santo" (varón)
-			if (RCLV.canon_id == "STV") {
-				// Obtiene el primer nombre del RCLV
-				let nombre = RCLV.nombre;
+			if (rclv.canon_id == "ST" && rclv.genero_id == "MS") {
+				// Obtiene el primer nombre del rclv
+				let nombre = rclv.nombre;
 				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
@@ -648,31 +653,41 @@ module.exports = {
 		// Averigua los links totales 'aprobados_ids'
 		let cantAprobs = 0;
 		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
+
+		// Variables
 		const cantLinksTotal = cantPends + cantAprobs;
-		const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // redondea "para arriba", a un decimal
+		const cantPromSem = Math.trunc((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // deja un decimal
+		const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
+		const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// Capítulos
-		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+		const capsPosibles = Math.max(
+			0,
+			Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
+		);
 		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
+		// Averigua los posibles sin la última semana
 		for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
-			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
-		pelisColesPosibles += Math.max(0, capsPosibles - capsPends); // le suma la capacidad 'ociosa' de capítulos
+			pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
+		// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
+		pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
+		// Averigua la cantidad para procesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 
 		// Agrega la información
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
-		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
+		const paraProc = {pelisColesParaProc, capsParaProc, prodsParaProc: pelisColesParaProc + capsParaProc};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
 
 		// Fin
 		return;
 	},
 
 	// Usuarios
-	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
+	penalizacAcum: (userID, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
@@ -694,13 +709,10 @@ module.exports = {
 		// Fin
 		return;
 	},
-	nombreApellido: (usuario) => {
-		return usuario.nombre + " " + usuario.apellido;
-	},
 
 	// Varias
-	convierteLetras: {
-		alIngles: (resultado) => {
+	letras: {
+		convierteAlIngles: (resultado) => {
 			return resultado
 				.toLowerCase()
 				.replace(/-/g, " ")
@@ -713,16 +725,16 @@ module.exports = {
 				.replace(/:¿![.][?]/g, "")
 				.replace(/ +/g, " ");
 		},
-		alCastellano: function (objeto) {
+		convierteAlCastell: function (objeto) {
 			// Rutina por campo
 			for (let prop in objeto)
-				if (typeof objeto[prop] == "string") objeto[prop] = this.alCastellano_campo(objeto[prop]);
+				if (typeof objeto[prop] == "string") objeto[prop] = this.convierteAlCastell_campo(objeto[prop]);
 				else if (objeto[prop] === undefined) delete objeto[prop];
 
 			// Fin
 			return objeto;
 		},
-		alCastellano_campo: (valor) => {
+		convierteAlCastell_campo: (valor) => {
 			return valor
 				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 				.replace(/[àâãäåāăą]/g, "a")
@@ -785,6 +797,12 @@ module.exports = {
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
+		ao: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
+		laLo: (registro) => {
+			return !registro.genero_id
+				? "lo"
+				: (registro.genero_id.startsWith("F") ? "la" : "lo") + (registro.genero_id.endsWith("P") ? "s" : "");
+		},
 	},
 	fechaHora: {
 		ahora: () => {

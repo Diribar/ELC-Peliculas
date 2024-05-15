@@ -173,7 +173,7 @@ module.exports = {
 
 			// Limpia el resultado
 			for (let prop in datos) if (!datos[prop]) delete datos[prop];
-			datos = comp.convierteLetras.alCastellano(datos);
+			datos = comp.letras.convierteAlCastell(datos);
 
 			// Avatar
 			const avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
@@ -220,7 +220,7 @@ module.exports = {
 			if (datos.coleccion_id) resultado.coleccion_id = datos.coleccion_id;
 
 			// Limpia el resultado de caracteres especiales
-			resultado = comp.convierteLetras.alCastellano(resultado);
+			resultado = comp.letras.convierteAlCastell(resultado);
 			resultado.avatarUrl = avatarUrl;
 
 			// Fin

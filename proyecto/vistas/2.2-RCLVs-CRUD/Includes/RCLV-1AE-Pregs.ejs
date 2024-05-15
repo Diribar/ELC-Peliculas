@@ -1,0 +1,13 @@
+<div id="<%= id %>" class="flexRowAlign invisible<%= sg ? ' segunGenero_id' : '' %>">
+	<select name="<%= nombre %>" class="input">
+		<option value="" <% if (!dataEntry[nombre]) { %>selected<% } %>><%= titulo %></option>
+		<% if (!sg || dataEntry.genero_id) for (let opcion of opciones) if (!sg || opcion[dataEntry.genero_id]) { %>
+			<option
+				value="<%= opcion.id %>"
+				<% if (dataEntry[nombre] == opcion.id) { %>selected<% } %>
+			>
+				<%= opcion[sg ? dataEntry.genero_id : "nombre"] %>
+			</option>
+		<% } %>
+	</select>
+</div>

@@ -267,7 +267,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// CONSECUENCIAS - Penaliza al usuario si corresponde
-		if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
+		if (datosHist.penalizac) comp.penalizacAcum(userID, motivo, petitFamilias);
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 		if (producto)
@@ -304,8 +304,8 @@ module.exports = {
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
-			let avatarExterno, avatarsExternosPelis, avatar, imgDerPers, edicionAvatar;
-			let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
+			let avatarExterno, avatarsExternosPelis, avatar, imgDerPers, edicionAvatar, canonNombre;
+			let ingresos, reemplazos, bloqueDer, motivos, prodsDelRCLV, titulo, ayudasTitulo;
 
 			// Obtiene la versión original con include
 			let include = [
@@ -363,7 +363,10 @@ module.exports = {
 				}
 
 				// Variables
-				if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original, userID).then((n) => n.length);
+				if (familia == "rclv") {
+					prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
+					canonNombre = comp.canonNombre(original);
+				}
 				bloqueDer = {
 					registro: await procsCRUD.bloqueRegistro({...original, entidad}),
 					usuario: await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
@@ -390,7 +393,8 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
-				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
+				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodsDelRCLV},
+				...{canonNombre, entidadNombre},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
 				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},

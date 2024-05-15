@@ -114,24 +114,23 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.apodo) {
-				// Necesariamente es un 'personaje'
-				const articulo = registro.sexo_id == "V" ? "o" : "a";
-				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.apodo});
+			if (registro.nombreAltern) {
+				const articulo = comp.obtieneDesdeEntidad.ao(registro.entidad);
+				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.nombreAltern});
 			}
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
 				// Puede ser cualquier familia RCLV
-				const articulo = registro.sexo_id == "M" ? "la" : "lo";
+				const articulo = comp.letras.laLo(registro);
 				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
 			}
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
 				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
-				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon && registro.canon.nombre)
-					bloque.push({titulo: "Status Canonizac.", valor: registro.canon.nombre});
-				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
-					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
+				if (registro.canon_id && registro.canon_id != "NN" && registro.canon && registro.canon[registro.genero_id])
+					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
+				if (registro.rolIglesia_id && registro.rolIglesia_id != "NN" && registro.rolIglesia)
+					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia[registro.genero_id]});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
 					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
 			}
@@ -139,7 +138,7 @@ module.exports = {
 			// Particularidades para hechos
 			if (registro.entidad == "hechos") {
 				if (registro.anoComienzo) bloque.push({titulo: "Año", valor: registro.anoComienzo});
-				if (registro.ama) bloque.push({titulo: "Es una aparición mariana", valor: "sí"});
+				if (registro.ama) bloque.push({valor: "Es una aparición mariana"});
 			}
 
 			// Fin
@@ -184,58 +183,68 @@ module.exports = {
 				? prioridades.menor
 				: "";
 		},
+		opcsLeyNombre: (registro) => {
+			// Variables
+			const {nombre, nombreAltern} = registro;
+			let opciones = [];
+
+			// Opciones para personajes
+			if (registro.personajes) {
+				opciones.push(...opcsLeyNombrePers.consolidado(nombre, registro));
+				if (nombreAltern) opciones.push(...opcsLeyNombrePers.consolidado(nombreAltern, registro));
+			}
+
+			// Opciones para hechos
+			else if (registro.hechos) {
+				opciones.push(nombre);
+				if (nombreAltern) opciones.push(nombreAltern);
+			}
+
+			// Fin
+			return opciones;
+		},
 	},
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
 			// Variables
+			const {tipoFecha, mes_id, dia, prioridad_id, plural_id, entidad} = datos;
 			let DE = {};
-			const {nombre, tipoFecha, mes_id, dia, comentarioMovil, prioridad_id, avatar, entidad, anoFM} = datos;
 
-			// Asigna el valor 'null' a todos los campos
-			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
+			// Obtiene los datos que se guardan en la tabla
+			const campos = variables.camposRevisar.rclvs.filter((n) => n.rclvs || n[datos.entidad]).map((n) => n.nombre);
+			for (let campo of campos) DE[campo] = datos[campo] ? datos[campo] : null;
 
-			// Datos comunes a todos los RCLV
-			if (nombre) DE.nombre = nombre;
+			// Variables con procesos
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
 			DE.fechaMovil = tipoFecha == "FM";
-			if (tipoFecha == "FM") {
-				DE.comentarioMovil = comentarioMovil;
-				DE.anoFM = Number(anoFM);
-			}
-			if (prioridad_id) DE.prioridad_id = Number(prioridad_id);
-			if (avatar) DE.avatar = avatar;
+			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
+			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
+			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
+			DE.genero_id = DE.genero_id + (plural_id ? plural_id : "S");
 
-			// Datos exclusivos de personajes
+			// Variables con procesos en personajes
 			if (entidad == "personajes") {
 				// Variables
-				const {apodo, sexo_id, epocaOcurrencia_id, anoNacim, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
-				DE = {...DE, sexo_id, epocaOcurrencia_id, categoria_id};
-				const CFC = categoria_id == "CFC";
+				const CFC = DE.categoria_id == "CFC";
+				const {epocaOcurrencia_id, anoNacim, rolIglesia_id, apMar_id} = datos;
+				const epocaPosterior = epocaOcurrencia_id == "pst";
 
-				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.canonNombre = comp.canonNombre({nombre, canon_id});
-
-				DE.apodo = apodo ? apodo : "";
-				if (epocaOcurrencia_id == "pst") DE.anoNacim = anoNacim;
-				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
-				DE.apMar_id = CFC && epocaOcurrencia_id == "pst" && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
+				// Variables con procesos
+				DE.canon_id = CFC ? DE.canon_id : "NN";
+				DE.anoNacim = epocaPosterior ? anoNacim : null;
+				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN";
+				DE.apMar_id = CFC && epocaPosterior && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
 			}
 
-			// Datos para hechos
+			// Variables con procesos en hechos
 			if (entidad == "hechos") {
 				// Variables
 				const {epocaOcurrencia_id, anoComienzo, soloCfc, ama} = datos;
-				DE.epocaOcurrencia_id = epocaOcurrencia_id;
-				if (epocaOcurrencia_id == "pst") DE.anoComienzo = anoComienzo;
+
+				// Variables con procesos
+				DE.anoComienzo = epocaOcurrencia_id == "pst" ? anoComienzo : null;
 				DE.soloCfc = Number(soloCfc);
 				DE.ama = soloCfc == "1" ? Number(ama) : 0;
-			}
-
-			// Datos para epocasDelAno
-			if (entidad == "epocasDelAno") {
-				DE.diasDeDuracion = datos.diasDeDuracion;
-				DE.comentarioDuracion = datos.comentarioDuracion;
-				if (datos.carpetaAvatars) DE.carpetaAvatars = datos.carpetaAvatars;
 			}
 
 			// Fin
@@ -285,5 +294,71 @@ module.exports = {
 			// Fin
 			return {original, edicion, edicN};
 		},
+	},
+};
+let opcsLeyNombrePers = {
+	consolidado: function (nombre, registro) {
+		// Variables
+		let opciones = [];
+		const genero = generos.find((n) => n.id == registro.genero_id);
+		if (!genero) return [];
+
+		// Canon
+		if (nombre == registro.nombre) opciones.push(this.canonAlPrinc(nombre, registro, genero));
+		opciones.push(...this.canonAlFinal(nombre, registro, genero));
+
+		// Fin
+		return opciones;
+	},
+	canonAlPrinc: function (nombre, registro, genero) {
+		// Variables
+		const {genero_id, canon_id} = registro;
+		let canon = this.obtieneCanon(genero_id, canon_id);
+
+		// Trabajo sobre 'canon'
+		if (canon) {
+			if (canon == "santo" && !variables.prefijosSanto.includes(nombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
+			if (canon_id == "ST") canon = "a " + canon;
+			else canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
+			canon += " ";
+		} else canon = "";
+
+		// Fin
+		return canon + nombre;
+	},
+	canonAlFinal: function (nombre, registro, genero) {
+		// Variables
+		const {genero_id, canon_id} = registro;
+		let opciones = [];
+		let frase = "";
+		let canon;
+
+		// Singular
+		frase += "a " + nombre;
+		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
+		canon = this.obtieneCanon(genero_id, canon_id);
+		if (canon) frase += ", " + canon;
+		opciones.push(frase);
+
+		// Plural
+		if (genero_id.includes("P")) {
+			frase = "a " + genero.loLa + " " + nombre;
+			canon = this.obtieneCanon(genero_id, canon_id);
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
+
+		// Fin
+		return opciones;
+	},
+	obtieneCanon: (genero_id, canon_id) => {
+		// Obtiene el avance de su proceso de canonización
+		let canon = canon_id && canon_id != "NN" ? canons.find((n) => n.id == canon_id)[genero_id] : null;
+
+		// Pone en minúscula su primera letra
+		if (canon) canon = canon.slice(0, 1).toLowerCase() + canon.slice(1);
+
+		// Fin
+		return canon;
 	},
 };

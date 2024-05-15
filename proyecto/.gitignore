@@ -1,5 +1,4 @@
 node_modules
 .env
-varios/Memoria/~*.*
-varios/Memoria/1. Revisado/~*.*
 *.zip
+../Backup/Varios/Archivos-Office/~*.*

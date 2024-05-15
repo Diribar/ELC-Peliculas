@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(35)},
+		genero_id: {type: dt.STRING(3)},
 		prodsAprob: {type: dt.INTEGER},
 		fechaDelAno_id: {type: dt.INTEGER},
 		fechaMovil: {type: dt.BOOLEAN},
@@ -13,8 +14,11 @@ module.exports = (sequelize, dt) => {
 
 		// Común con personajes
 		epocaOcurrencia_id: {type: dt.STRING(3)},
+		nombreAltern: {type: dt.STRING(35)},
+		leyNombre: {type: dt.STRING(70)},
 
 		// Específicos
+		hoyEstamos_id: {type: dt.INTEGER},
 		anoComienzo: {type: dt.INTEGER},
 		soloCfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
@@ -48,8 +52,10 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.generos, {as: "genero", foreignKey: "genero_id"});
 		entidad.belongsTo(n.fechasDelAno, {as: "fechaDelAno", foreignKey: "fechaDelAno_id"});
 		entidad.belongsTo(n.epocasOcurrencia, {as: "epocaOcurrencia", foreignKey: "epocaOcurrencia_id"});
+		entidad.belongsTo(n.hoyEstamos, {as: "hoyEstamos", foreignKey: "hoyEstamos_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creadoPor", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "altaRevisadaPor", foreignKey: "altaRevisadaPor_id"});

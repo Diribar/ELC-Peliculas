@@ -44,8 +44,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
-				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana},
-				sexos: sexos.filter((m) => m.letra_final),
+				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, generos},
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -94,8 +93,8 @@ module.exports = {
 			let usuario = req.session.usuario;
 			let informacion = {
 				mensajes: [
-					"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-					"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
+					"Estimad" + usuario.genero.letraFinal + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+					"Bienvenid" + usuario.genero.letraFinal + " a nuestro sitio como usuario.",
 					"Con tu alta de usuario, ya podés guardar tus consultas personalizadas.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
@@ -149,7 +148,7 @@ module.exports = {
 		bienvenido: (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
-			let letra = usuario.sexo_id == "M" ? "a " : "o ";
+			let letra = comp.letras.ao(usuario);
 			let informacion = {
 				titulo: "Permiso otorgado",
 				mensajes: [

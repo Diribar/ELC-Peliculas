@@ -16,7 +16,7 @@ module.exports = {
 
 		// Limpia el resultado de caracteres especiales
 		const avatar = datos.avatar;
-		datos = comp.convierteLetras.alCastellano(datos);
+		datos = comp.letras.convierteAlCastell(datos);
 		if (avatar) datos.avatar = avatar;
 
 		// Fin

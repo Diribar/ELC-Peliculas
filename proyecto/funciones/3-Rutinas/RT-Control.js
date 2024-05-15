@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		await this.rutinasHorarias.FeedbackParaUsers();
+		// await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -327,11 +327,11 @@ module.exports = {
 				// Obtiene los títulos nuevos de las 'ImagenesDerecha' y descarga los archivos
 				else {
 					// Variables
-					const {titulo, entidad, id, carpeta, nombreArchivo} = await procesos.obtieneImgDerecha(fechaNum);
+					const {leyenda, entidad, id, carpeta, nombreArchivo} = await procesos.obtieneImgDerecha(fechaNum);
 					tituloNuevo = true;
 
 					// Actualiza los datos para esa fecha
-					ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
+					ImagenesDerecha[fechaArchivo] = entidad && id ? {leyenda, entidad, id} : {leyenda};
 
 					// Guarda el archivo de la 'imgDerecha' para esa fecha
 					comp.gestionArchivos.copiaImagen(
@@ -394,7 +394,6 @@ module.exports = {
 			const fechaLoginsDiarios = loginsDiarios.length
 				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
 				: null;
-			let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
 
 			// Logins acums
 			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
@@ -714,10 +713,26 @@ module.exports = {
 			// Fin
 			return;
 		},
+		EliminaLoginsAcumsRepetidos: async () => {
+			// Variables
+			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+
+			// Elimina los loginsAcums repetidos
+			let registroAnterior;
+			for (let registro of loginsAcums) {
+				if (registroAnterior && registro.fecha == registroAnterior.fecha)
+					BD_genericas.eliminaPorId("loginsAcums", registro.id);
+				registroAnterior = registro;
+			}
+
+			// Fin
+			return;
+		},
 	},
 };
 
-// Variables
+// Funciones
+let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
 let actualizaLaEpocaDeEstreno = async () => {
 	const condicion = {anoEstreno: {[Op.ne]: null}};
 
@@ -771,14 +786,15 @@ let agregaColeccion_id = async () => {
 	// Fin
 	return;
 };
-let corrigeStatusColeccion_id = async () => {
+let corrigeStatusColeccionEnCapitulo = async () => {
 	// Variables
 	const registros = await BD_genericas.obtieneTodosConInclude("capitulos", "coleccion");
 
 	// Rutina por registro
 	for (let registro of registros) {
 		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
-		BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+		if (registro.statusColeccion_id != statusColeccion_id)
+			BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
 	}
 
 	// Fin
@@ -801,7 +817,7 @@ let quitaStatusDeComentario = async () => {
 		for (let motivo of motivos) if (comentario.startsWith(motivo)) comentario = comentario.replace(motivo, "");
 		if (comentario.startsWith(" - ")) comentario = comentario.replace(" - ", "");
 		comentario = comentario.trim();
-		comentario = comp.convierteLetras.inicialMayus(comentario);
+		comentario = comp.letras.inicialMayus(comentario);
 
 		// Si hubo cambios, actualiza el comentario
 		if (original !== comentario) BD_genericas.actualizaPorId("histStatus", hist.id, {comentario});

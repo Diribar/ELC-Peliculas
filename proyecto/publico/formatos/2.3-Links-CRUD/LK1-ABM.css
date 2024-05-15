@@ -1,56 +1,75 @@
 /* Temas generales */
-main {background: var(--gris-claro);}
-main #cuerpo {flex-direction: column;}
-#cuerpo #contenido {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
-#cuerpo #contenido {padding: 20px 40px 20px;}
-#cuerpo #datosLargos {display: flex; flex-direction: column; align-items: normal;}
+main {
+	background: var(--gris-claro);
+	#cuerpo {
+		flex-direction: column;
+		#contenido {
+			display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;
+			padding: 20px 40px 20px;
+		}
+		#datosLargos {
+			display: flex; flex-direction: column; align-items: normal;
+			#filtros {
+				margin: 15px 0;
+				select {border-radius: 10px;}
+			}
+			form#tabla {align-self: center;}
+			table {
+				border-collapse: collapse; border: 2px solid var(--verde-ingles);
+				:is(thead, tbody) {display: block;}
+				:is(thead tr th, tbody tr td) {text-align: center; vertical-align: middle; line-height: 1;}
+				thead {
+					padding-right: 18px;
+					* {font-size: 1.1rem;}
+					tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
+				}
+				tbody {
+					max-height: 200px; overflow-y: auto; overflow-x: clip; /* Tablas - Barra de desplazamiento vertical */
+					padding-top: 15px; padding-bottom: 15px;
+					tr {
+						height: 30px;
+						&.oscuro_true {background: var(--gris-intermedio);}
+						td {
+							padding: 1px 5px;
 
-/* Filtros */
-#datosLargos #filtros {margin: 15px 0;}
-#datosLargos #filtros select {border-radius: 10px;}
+							/* Tablas - Columnas específicas */
+							&.motivo {
+								background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;
+								* {text-align: left; color: var(--rojo-oscuro);}
+							}
+							&.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
+							&.url .inputError .prov_id {display: none;}
+							&.calidad option {text-align: center; }
 
-/* Tablas - Temas generales */
-#datosLargos form#tabla {align-self: center;}
-#datosLargos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
-#datosLargos :is(thead, tbody) {display: block;}
-#datosLargos :is(thead tr th, tbody tr td) {text-align: center; vertical-align: middle; line-height: 1;}
+							/* Temas de altas y edición */
+							.fa-solid {font-size: 1rem;}
+							.inputError .input {width: 100%;}
+							.inputError .errores {right: 5px;}
 
-#datosLargos thead {padding-right: 18px;}
-#datosLargos thead * {font-size: 1.1rem;}
-#datosLargos thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
+							/* Temas de edición */
+							:is(input, select) {
+								text-align: center; border-radius: 5px; border-width: 1px;
+								padding: 0 5px 2px; line-height: 1; height: 22px; max-width: 100%;
+							}
+						}
+					}
+				}
 
-#datosLargos tbody {max-height: 200px; overflow-y: auto; overflow-x: clip;} /* Tablas - Barra de desplazamiento vertical */
-#datosLargos tbody {padding-top: 15px; padding-bottom: 15px;}
-#datosLargos tbody tr {height: 30px;}
-#datosLargos tbody tr td {padding: 1px 5px;}
-#datosLargos tbody tr.oscuro_true {background: var(--gris-intermedio);}
-#datosLargos tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
-#datosLargos tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
-#datosLargos tbody tr td .fa-solid {font-size: 1rem;}
-#datosLargos tbody tr td .inputError .input {width: 100%;}
-#datosLargos tbody tr td .inputError .errores {right: 5px;} /* Temas de altas y edición */
-
-/* Temas de edición */
-#datosLargos tbody tr :is(input, select) {text-align: center; border-radius: 5px; border-width: 1px;}
-#datosLargos tbody tr :is(input, select) {padding: 0 5px 2px; line-height: 1; height: 22px;}
-#datosLargos tbody tr :is(input, select) {max-width: 100%;}
-
-/* Tablas - Anchos */
-#datosLargos table .ancho_url {width: 140px;}
-#datosLargos table :is(.ancho_calidad, .ancho_castellano, .ancho_subtitulos) {width: 70px;}
-#datosLargos table .ancho_gratuito {width: 64px;}
-#datosLargos table .ancho_tipo_id {width: 90px;}
-#datosLargos table .ancho_completo {width: 73px;}
-#datosLargos table .ancho_parte {width: 60px;}
-#datosLargos table .ancho_status {width: 75px;}
-#datosLargos table .ancho_propio {width: 53px;}
-#datosLargos table .ancho_accion {width: 70px;}
-#datosLargos table .ancho_motivo {width: 497px;}
-
-/* Tablas - Columnas específicas */
-#datosLargos tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
-#datosLargos tbody tr td.url .inputError .prov_id {display: none;}
-#datosLargos tbody tr td.calidad option {text-align: center; }
+				/* Tablas - Anchos */
+				.ancho_url {width: 140px;}
+				:is(.ancho_calidad, .ancho_castellano, .ancho_subtitulos) {width: 70px;}
+				.ancho_gratuito {width: 64px;}
+				.ancho_tipo_id {width: 90px;}
+				.ancho_completo {width: 73px;}
+				.ancho_parte {width: 60px;}
+				.ancho_status {width: 75px;}
+				.ancho_propio {width: 53px;}
+				.ancho_accion {width: 70px;}
+				.ancho_motivo {width: 497px;}
+			}
+		}
+	}
+}
 
 /* Formato del desperdicio */
 #datosLargos tbody :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
@@ -60,7 +79,6 @@ main #cuerpo {flex-direction: column;}
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
 #datosLargos tbody .alta select::-ms-expand, #datosLargos tbody .edicion select::-ms-expand {display: none;}
-#datosLargos tbody .alta select, #datosLargos tbody .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 #datosLargos tbody .inputError {padding-left: 10px; padding-right: 10px;}
 

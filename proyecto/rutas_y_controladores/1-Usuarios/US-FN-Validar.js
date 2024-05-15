@@ -109,7 +109,7 @@ module.exports = {
 			// Fin
 			errores.apodo = respuesta;
 		}
-		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? variables.selectVacio : "";
+		if (campos.includes("genero_id")) errores.genero_id = !datos.genero_id ? variables.selectVacio : "";
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 

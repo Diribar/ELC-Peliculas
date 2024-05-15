@@ -28,7 +28,7 @@ module.exports = {
 		const entidadesProd = variables.entidades.prods;
 		const entidadesRCLV = variables.entidades.rclvs;
 		const camposProds = ["nombreCastellano", "nombreOriginal"];
-		const camposPers = ["nombre", "apodo"];
+		const camposRclvs = ["nombre", "nombreAltern"];
 		const original = true;
 		let datos = [];
 		let aux = [];
@@ -39,13 +39,13 @@ module.exports = {
 
 		// Armado de la variable 'datos' para rclvs originales
 		for (let entidad of entidadesRCLV) {
-			const campos = entidad == "personajes" ? camposPers : ["nombre"];
+			const campos = ["personajes", "hechos"].includes(entidad) ? camposRclvs : ["nombre"];
 			datos.push({familia: "rclv", entidad, campos, original});
 		}
 
 		// Armado de la variable 'datos' para ediciones
 		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds, include: variables.entidades.asocProds}); // productos
-		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposPers, include: variables.entidades.asocRclvs}); // rclvs
+		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposRclvs, include: variables.entidades.asocRclvs}); // rclvs
 
 		// Rutina
 		for (let dato of datos) {

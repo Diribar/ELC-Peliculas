@@ -22,18 +22,13 @@
 		<% destino = RCLV_entidad && RCLV_id ? ("/rclv/detalle/?entidad=" + RCLV_entidad + "&id=" + RCLV_id) : null %>
 		<% if (destino && locals.tema == "consultas" && locals.codigo == "tableroControl") cartelRCLV = true %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
-		<% titulo = ImagenesDerecha[hoyLocal].titulo %>
+		<% titulo = ImagenesDerecha[hoyLocal].leyenda %>
 	<% } %>
 
-	<% if (destino && !cartelRCLV) { %>
-		<!-- Publica la imagen con RCLV -->
-		<a href="<%= destino %>" tabindex="-1">
-			<img src="<%= ruta %>" title="Hoy se recuerda a <%= titulo %>">
-		</a>
-	<% } else { %>
-		<!-- Publica la imagen sin RCLV -->
+	<!-- Publica la imagen -->
+	<% if (destino && !cartelRCLV) { %><a href="<%= destino %>" tabindex="-1"><% } %>
 		<img src="<%= ruta %>" title="<%= titulo %>">
-	<% } %>
+	<% if (destino && !cartelRCLV) { %></a><% } %>
 
 	<!-- Accesorios -->
 	<% if (locals.tema == "prodRud" && codigo == "detalle") { %>

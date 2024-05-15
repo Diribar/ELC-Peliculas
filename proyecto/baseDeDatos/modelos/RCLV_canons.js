@@ -4,6 +4,11 @@ module.exports = (sequelize, dt) => {
 		id: {type: dt.STRING(2), primaryKey: true},
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
+		MS: {type: dt.STRING(20)},
+		FS: {type: dt.STRING(20)},
+		MP: {type: dt.STRING(20)},
+		FP: {type: dt.STRING(20)},
+		MFP: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "rclv_canons",

@@ -47,8 +47,9 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: novedades.map((n) => n.comentario),
 				iconos: [variables.vistaEntendido(req.originalUrl)],
-				titulo: "Novedades del sitio",
+				titulo: "Novedad" + (novedades.length > 1 ? "es" : "") + " del sitio",
 				check: true,
+				ol: novedades.length > 2, // si son más de 2 novedades, las enumera
 			};
 
 		// Actualiza la versión en el usuario

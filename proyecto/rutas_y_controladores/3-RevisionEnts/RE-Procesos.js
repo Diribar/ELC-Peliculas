@@ -306,7 +306,7 @@ module.exports = {
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
 					datosCompleto.valorDesc = valorDesc;
-					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
+					let motivo = ["nombre", "nombreAltern"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datosCompleto.motivo_id = motivo.id; // con este campo se sabe si fue rechazado
 					datosCompleto.penalizac = motivo.penalizac;
 				}
@@ -661,7 +661,7 @@ module.exports = {
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
 				// 5. Si corresponde, penaliza al usuario
-				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
+				if (motivo) comp.penalizacAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
 			// Elimina el valor del campo en el registro de 'edición' y en la variable
@@ -815,8 +815,8 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Procesar los registros
-			let anchoMax = 35;
+			// Variables
+			const anchoMax = 35; // ancho máximo a mostrar de cada producto
 
 			// Reconvierte los elementos
 			for (let rubro in rclvs)
@@ -857,7 +857,7 @@ let FN_links = {
 		// Variables
 		const anoActual = new Date().getFullYear();
 		const anoReciente = anoActual - linkAnoReciente;
-		const {pelisColes: pelisColesParaProc, capitulos: capsParaProc} = cantLinksVencPorSem.paraProc;
+		const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem.paraProc;
 		let respuesta;
 
 		// Obtiene los links a revisar

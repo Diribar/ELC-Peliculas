@@ -227,19 +227,19 @@ module.exports = {
 		else res.clearCookie("eliminado");
 
 		// Más variables
-		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
-		const articulo2 = articulo1 == "La " ? "a" : "o";
+		const articFinal = comp.obtieneDesdeEntidad.ao(entidad);
+		const articInicial = articFinal == "a" ? "La " : "El ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
 		const link = origen == "TM" ? "/mantenimiento" : "/";
-		const titulo = comp.convierteLetras.inicialMayus(entidadNombre) + " eliminad" + articulo2 + plural2;
+		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
 
 		// Cartel de registro eliminado
 		const informacion = {
 			mensajes: [
-				articulo1 +
+				articInicial +
 					entidadNombre +
 					' "' +
 					nombre +
@@ -248,7 +248,7 @@ module.exports = {
 					"fue" +
 					plural1 +
 					" eliminad" +
-					articulo2 +
+					articFinal +
 					plural2 +
 					" de nuestra base de datos.",
 			],
