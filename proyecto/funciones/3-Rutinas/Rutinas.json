@@ -1,1 +1,50 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Mié. 15/may","HoraUTC":"11:16","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Mar. 14/may","HoraSemUTC":"21:03","semanaUTC":20,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","MotivoHorarias1":"Solución de errores con impacto en el usuario","MotivoHorarias2":"Actualizaciones que se necesita que sean horarias","RutinasHorarias":["ProdAprobEnLink","LinksEnProd","ProdsEnRCLV","FeedbackParaUsers","ProductosAlAzar"],"MotivoDiarias1":"Actualizaciones que se necesita que sean diarias","MotivoDiarias2":"Limpieza de información que se necesita que sea diaria","MotivoDiarias3":"Estadísticas que alcanza con que se actualicen en forma diaria","RutinasDiarias":{"ImagenDerecha":"SI","FeedbackParaRevisores":"SI","LoginsAcums":"SI","RutinasEnUsuario":"SI","AprobadoConAvatarLink":"SI","IDdeTablas":"SI","EliminaLinksInactivos":"SI","EliminaCalifsSinPPP":"SI","EliminaImagenesSinRegistro":"SI","EliminaHistorialDeRegsEliminados":"SI","PaisesConMasProductos":"SI","LinksPorProv":"SI"},"MotivoSemanales1":"Actualizaciones que se necesita que sean semanales","MotivoSemanales2":"Limpieza de información que se necesita que sea semanal","MotivoSemanales3":"Solución de errores con curva de aprendizaje madura","RutinasSemanales":{"ActualizaFechaVencimLinks":"SI","EliminaHistorialAntiguo":"SI","RCLV_idEnCapitulos":"SI","RCLVsSinEpocaPSTyConAno":"SI","EliminaLoginsAcumsRepetidos":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"13-may-24":{"titulo":"Santa María Mazzarello","entidad":"personajes","id":91},"14-may-24":{"titulo":"Pascua de Resurrección","entidad":"epocasDelAno","id":24},"15-may-24":{"titulo":"San Isidro Labrador","entidad":"personajes","id":79},"16-may-24":{"titulo":"Pascua de Resurrección","entidad":"epocasDelAno","id":24},"17-may-24":{"titulo":"Turf - Seabiscuit","entidad":"personajes","id":158}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Mié. 15/may",
+	"HoraUTC": "11:16",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Mar. 14/may",
+	"HoraSemUTC": "21:03",
+	"semanaUTC": 20,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
+	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
+	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "ProdsEnRCLV", "FeedbackParaUsers", "ProductosAlAzar"],
+	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
+	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
+	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
+	"RutinasDiarias": {
+		"ImagenDerecha": "SI",
+		"FeedbackParaRevisores": "SI",
+		"LoginsAcums": "SI",
+		"RutinasEnUsuario": "SI",
+		"AprobadoConAvatarLink": "SI",
+		"IDdeTablas": "SI",
+		"EliminaLinksInactivos": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"PaisesConMasProductos": "SI",
+		"LinksPorProv": "SI"
+	},
+	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
+	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
+	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
+	"RutinasSemanales": {
+		"ActualizaFechaVencimLinks": "SI",
+		"EliminaHistorialAntiguo": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaLoginsAcumsRepetidos": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"13-may-24": {"titulo": "Santa María Mazzarello", "entidad": "personajes", "id": 91},
+		"14-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"15-may-24": {"titulo": "San Isidro Labrador", "entidad": "personajes", "id": 79},
+		"16-may-24": {"titulo": "Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"17-may-24": {"titulo": "Turf - Seabiscuit", "entidad": "personajes", "id": 158}
+	}
+}
