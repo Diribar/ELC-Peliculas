@@ -834,7 +834,7 @@ let datosImgDerecha = (resultado) => {
 	// Acciones si se obtuvo un resultado
 	if (resultado) {
 		// Datos iniciales
-		const {entidad, id, hoyEstamos_id, leyNombre, genero_id, nombre} = resultado;
+		const {entidad, id, hoyEstamos_id, leyNombre, nombre} = resultado;
 		imgDerecha = {entidad, id};
 
 		// hoyEstamos
