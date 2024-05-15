@@ -212,7 +212,7 @@ module.exports = {
 
 			// Obtiene los datos que se guardan en la tabla
 			const campos = variables.camposRevisar.rclvs.filter((n) => n.rclvs || n[datos.entidad]).map((n) => n.nombre);
-			for (campo of campos) DE[campo] = datos[campo] ? datos[campo] : null;
+			for (let campo of campos) DE[campo] = datos[campo] ? datos[campo] : null;
 
 			// Variables con procesos
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
