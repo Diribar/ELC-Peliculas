@@ -25,7 +25,7 @@
 				.margenDebajo {margin-bottom: 5px;}
 				.borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
 				.input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-				:is(.input, #posiblesRepetidos, #calendario, #datosLeyenda) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+				:is(.input, #posiblesRepetidos, #calendario, #datosLeyenda select) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 				label[for] {padding-left: 3px;}
 
 				/* Primer bloque */
@@ -91,7 +91,7 @@
 							.ayuda ul[type="dots"] {padding: 7px;}
 						}
 						#sectorGenero {
-							margin-top: 10px;
+							/* margin-top: 10px; */
 							.opciones {
 								margin-left: 10px;
 								.ayuda ul {max-width: 200px;}
@@ -119,13 +119,17 @@
 					.radioBtn {width: 70px; justify-content: space-between;}
 					.personajes .radioBtn {margin-left: 10px;}
 					.hechos .radioBtn {margin-right: 10px;}
+					/* PreguntasRCLIC (personajes y hechos) */
+					&:not(
+						:has(.input#cfc:not(:checked)), /* es 'cfc' */
+						:not(:has(#preguntasRCLIC > :not(.invisible))) /* algún elemento está visible */
+					) #preguntasRCLIC.ocultar {display: flex !important;}
 				}
 				#sectorLeyenda {
 					.inputError {align-self: center; margin-right: 30px; line-height: 0;}
 					#datosLeyenda {
-						padding-inline: 5px;
 						select {
-							padding-block: 3px; border: none !important;
+							padding: 5px 3px;
 							&:focus {outline: none;}
 							&:disabled {opacity: 1;}
 						}
@@ -133,12 +137,6 @@
 					}
 
 				}
-
-				/* PreguntasRCLIC (personajes) */
-				&:has(#sectorGenero input:checked) #preguntasRCLIC .segunGenero_id.invisible {visibility: unset;} /* contestó 'genero' */
-
-				/* PreguntasRCLIC (hechos) */
-				&:has(.hechos #soloCFC input#SI:checked) #preguntasRCLIC.invisible {visibility: visible;} /* --> si soloCFC='SI' */
 
 				/* Temas de ayuda */
 				ul#ayudaNombrePers {max-width: min(400px, 90vw);}

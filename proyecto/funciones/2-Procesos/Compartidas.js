@@ -487,22 +487,22 @@ module.exports = {
 	},
 
 	// RCLVs
-	canonNombre: (RCLV) => {
+	canonNombre: (rclv) => {
 		// Variables
 		let canonNombre = "";
 
-		// Averigua si el RCLV tiene algún "proceso de canonización"
-		if (RCLV.canon_id && RCLV.canon_id != "NN") {
+		// Averigua si el rclv tiene algún "proceso de canonización"
+		if (rclv.canon_id && rclv.canon_id != "NN") {
 			// Obtiene los procesos de canonización
-			const proceso = canons.find((m) => m.id == RCLV.canon_id);
+			const proceso = canons.find((m) => m.id == rclv.canon_id);
 
 			// Asigna el nombre del proceso
-			canonNombre = proceso.nombre + " ";
+			canonNombre = proceso[rclv.genero_id] + " ";
 
 			// Verificación si el nombre del proceso es "Santo" (varón)
-			if (RCLV.canon_id == "STV") {
-				// Obtiene el primer nombre del RCLV
-				let nombre = RCLV.nombre;
+			if (rclv.canon_id == "ST" && rclv.genero_id == "MS") {
+				// Obtiene el primer nombre del rclv
+				let nombre = rclv.nombre;
 				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
@@ -653,24 +653,34 @@ module.exports = {
 		// Averigua los links totales 'aprobados_ids'
 		let cantAprobs = 0;
 		for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
+
+		// Variables
 		const cantLinksTotal = cantPends + cantAprobs;
-		const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // redondea "para arriba", a un decimal
+		const cantPromSem = Math.trunc((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // deja un decimal
+		const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
+		const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 		// Capítulos
-		const capsPosibles = Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+		const capsPosibles = Math.max(
+			0,
+			Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
+		);
 		const capsParaProc = Math.min(capsPosibles, capsPends);
 
 		// Películas y Colecciones
 		const semPrimRev = linksPrimRev / unaSemana;
 		let pelisColesPosibles = 0;
+		// Averigua los posibles sin la última semana
 		for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
-			pelisColesPosibles += Math.max(0, Math.ceil(cantPromSem) - cantLinksVencPorSem[i].prods);
-		pelisColesPosibles += Math.max(0, capsPosibles - capsPends); // le suma la capacidad 'ociosa' de capítulos
+			pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
+		// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
+		pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
+		// Averigua la cantidad para procesar
 		const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
 
 		// Agrega la información
-		const paraProc = {pelisColes: pelisColesParaProc, capitulos: capsParaProc, prods: pelisColesParaProc + capsParaProc};
-		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem};
+		const paraProc = {pelisColesParaProc, capsParaProc, prodsParaProc: pelisColesParaProc + capsParaProc};
+		cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
 
 		// Fin
 		return;
@@ -788,7 +798,11 @@ module.exports = {
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
 		ao: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
-		laLo: (registro) => (registro.genero_id == "F" ? "la" : "lo"),
+		laLo: (registro) => {
+			return !registro.genero_id
+				? "lo"
+				: (registro.genero_id.startsWith("F") ? "la" : "lo") + (registro.genero_id.endsWith("P") ? "s" : "");
+		},
 	},
 	fechaHora: {
 		ahora: () => {

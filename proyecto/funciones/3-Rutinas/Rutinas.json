@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 10/may",
-	"HoraUTC": "2:47",
+	"FechaUTC": "Mié. 15/may",
+	"HoraUTC": "14:49",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 6/may",
-	"HoraSemUTC": "11:39",
-	"semanaUTC": 19,
+	"FechaSemUTC": "Mar. 14/may",
+	"HoraSemUTC": "21:03",
+	"semanaUTC": 20,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -36,14 +36,15 @@
 		"ActualizaFechaVencimLinks": "SI",
 		"EliminaHistorialAntiguo": "SI",
 		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI"
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-may-24": {"titulo": "Milagro de Luján"},
-		"09-may-24": {"titulo": "Santa Luisa de Marillac"},
-		"10-may-24": {"titulo": "San Damián de Veuster", "entidad": "personajes", "id": 53},
-		"11-may-24": {"titulo": "Beato Mamerto Esquiú", "entidad": "personajes", "id": 132},
-		"12-may-24": {"titulo": "Ascensión de Nuestro Señor"}
+		"13-may-24": {"leyenda": "Hoy recordamos a Madre Mazzarello, santa", "entidad": "personajes", "id": 91},
+		"14-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"15-may-24": {"leyenda": "Hoy recordamos a san Isidro Labrador", "entidad": "personajes", "id": 79},
+		"16-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
+		"17-may-24": {"leyenda": "Hoy recordamos al caballo Seabiscuit", "entidad": "personajes", "id": 158}
 	}
 }

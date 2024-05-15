@@ -24,11 +24,12 @@ module.exports = {
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
 
 		// Ayuda para el titulo
-		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."]
-		if (prodsDelRCLV.length > 1) ayudasTitulo = [
-			"Son las películas que tenemos en nuestra base de datos.",
-			"Están ordenadas desde la más reciente a la más antigua."
-		]
+		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."];
+		if (prodsDelRCLV.length > 1)
+			ayudasTitulo = [
+				"Son las películas que tenemos en nuestra base de datos.",
+				"Están ordenadas desde la más reciente a la más antigua.",
+			];
 
 		// Bloque de la derecha
 		const bloqueDer = {
@@ -84,17 +85,15 @@ module.exports = {
 			const eventos = entidad == "eventos";
 			const epocasDelAno = entidad == "epocasDelAno";
 			let dataEntry = {};
-			let apMars, rolesIgl, edicID, bloqueDer;
+			let apMars, edicID, bloqueDer;
 
 			// Configura el título de la vista
 			const titulo =
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) {
-				rolesIgl = rolesIglesia.filter((m) => m.personaje);
+			if (personajes)
 				apMars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
-			}
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
@@ -134,6 +133,14 @@ module.exports = {
 			const ent = personajes ? "pers" : hechos ? "hecho" : "";
 			const originalUrl = req.originalUrl;
 			const prioridades = variables.prioridadesRCLV;
+			const opcsHoyEstamos =
+				dataEntry.genero_id && dataEntry.hoyEstamos_id
+					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
+					: [];
+			const opcsLeyNombre =
+				dataEntry.nombre && dataEntry.leyNombre
+					? procesos.altaEdicForm.opcsLeyNombre({...dataEntry, personajes, hechos})
+					: [];
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
@@ -141,7 +148,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer},
-				...{rolesIgl, apMars, originalUrl},
+				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				estrucPers: true,
 			});
