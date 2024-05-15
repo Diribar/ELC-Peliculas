@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		genero_id: {type: dt.STRING(3)},
-		comentario: {type: dt.STRING(35)},
+		nombre: {type: dt.STRING(35)},
 	};
 	const config = {
 		tableName: "rclv_hoy_estamos",

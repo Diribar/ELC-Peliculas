@@ -41,7 +41,7 @@ CREATE TABLE c19353_elc.rclv_hoy_estamos (id tinyint(3) unsigned auto_increment 
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='';
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD entidad varchar(20) NOT NULL;
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD genero_id varchar(3) DEFAULT NULL NULL;
-ALTER TABLE c19353_elc.rclv_hoy_estamos ADD comentario varchar(35) NOT NULL;
+ALTER TABLE c19353_elc.rclv_hoy_estamos ADD nombre varchar(35) NOT NULL;
 ALTER TABLE c19353_elc.rclv_hoy_estamos ADD CONSTRAINT rclv_hoy_estamos_generos FOREIGN KEY (genero_id) REFERENCES c19353_elc.aux_generos(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 - Tablas PERSONAJES
