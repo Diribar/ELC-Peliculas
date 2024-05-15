@@ -324,7 +324,7 @@ module.exports = {
 			{titulo: "Proceso de Canonizac.", nombre: "canon_id", personajes: true, relacInclude: "canon", tabla: "canons"},
 			{titulo: "Aparición Mariana", nombre: "apMar_id", personajes: true, relacInclude: "apMar", tabla: "hechos"},
 
-			// Hechos y Épocas
+			// Hechos y Eventos
 			{
 				titulo: "Hoy estamos",
 				nombre: "hoyEstamos_id",
