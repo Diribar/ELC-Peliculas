@@ -301,7 +301,7 @@ window.addEventListener("load", async () => {
 				},
 			},
 			genero: {
-				consolidado: function () {
+				consolidado: async function () {
 					// Variables
 					v.genero_id = opcElegida(DOM.generos_id);
 
@@ -323,7 +323,7 @@ window.addEventListener("load", async () => {
 					}
 
 					// Impactos en 'hoyEstamos'
-					FN.impactos.enLeyenda("hoyEstamos_id");
+					await FN.impactos.enLeyenda("hoyEstamos_id");
 
 					// Fin
 					return;
@@ -441,9 +441,6 @@ window.addEventListener("load", async () => {
 
 				// Corrige el ancho
 				this.ancho(sector);
-
-				// Si corresponde, valida
-				if (v.errores.leyenda) await FN.validacs.leyenda();
 
 				// Fin
 				return;
@@ -752,13 +749,16 @@ window.addEventListener("load", async () => {
 				await this.validacs.RCLIC[entidad]();
 
 			// SectorLeyenda
-			if (forzar && (DOM.hoyEstamos_id || DOM.leyNombre)) await this.validacs.leyenda();
 			if (DOM.hoyEstamos_id && !DOM.hoyEstamos_id.value) await FN.impactos.enLeyenda("hoyEstamos");
 			if (DOM.leyNombre && !DOM.leyNombre.value) await FN.impactos.enLeyenda("leyNombre");
+			if (forzar && (DOM.hoyEstamos_id || DOM.leyNombre)) await this.validacs.leyenda();
 
-			// Fin
+			// Acciones finales
 			this.validacs.muestraErroresOK();
 			this.validacs.botonSubmit();
+
+			// Fin
+			return;
 		},
 		actualizaVarios: async function () {
 			await this.validacs.avatar();
@@ -846,7 +846,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const campo = e.target.name;
 
-		// Acciones si se cambia el avatar
+		// avatar
 		if (campo == "avatar") {
 			// Muestra los resultados
 			DOM.iconosOK[0].classList.remove("ocultaAvatar");
@@ -856,13 +856,13 @@ window.addEventListener("load", async () => {
 			return;
 		}
 
-		// Acciones si se cambia el sector Nombre
+		// sector Nombre
 		if (v.camposNombre.includes(campo)) {
 			await FN.validacs.nombre();
 			FN.impactos.nombre.logos();
 		}
 
-		// Acciones si se cambia el sector Fecha
+		// sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			// Impactos
 			if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
@@ -880,10 +880,10 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Acciones si se cambia el sector Repetido
+		// sector Repetido
 		if (campo == "repetido") FN.validacs.repetido();
 
-		// Acciones si se cambia el sector 'Genero'
+		// sector 'Genero'
 		if (["genero_id", "plural_id"].includes(campo)) {
 			await FN.impactos.genero.consolidado();
 			await FN.validacs.genero();
@@ -892,13 +892,13 @@ window.addEventListener("load", async () => {
 			if (personajes && v.OK.genero_id && opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
-		// Acciones si se cambia el sector Carpeta Avatars
+		// sector Carpeta Avatars
 		if (campo == "carpetaAvatars") await FN.validacs.carpetaAvatars();
 
-		// Acciones si se cambia el sector Prioridad
+		// sector Prioridad
 		if (campo == "prioridad_id") await FN.validacs.prioridad();
 
-		// Acciones si se cambia el sector Época
+		// sector Época
 		if (v.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
 			await FN.impactos.epocaOcurrencia[entidad]();
@@ -912,20 +912,25 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Acciones si se cambia el sector RCLIC
+		// sector RCLIC
 		if (v.camposRCLIC && v.camposRCLIC.includes(campo)) {
 			if (campo == "categoria_id") FN.impactos.cfcGenero(); // son campos afectados por la combinación de genero y cfc
 			await FN.validacs.RCLIC[entidad]();
 			if (hechos) await FN.validacs.nombre();
 		}
 
-		// Acciones si se cambia el sector leyenda
-		if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
-		if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
-		if (["hoyEstamos_id", "leyNombre"].includes(campo)) await FN.validacs.leyenda();
+		// sector leyenda
+		if (["hoyEstamos_id", "leyNombre"].includes(campo)) {
+			if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
+			if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
+			await FN.validacs.leyenda();
+		}
 
 		// Campos que impactan en 'leyendaNombre'
-		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)) await FN.impactos.enLeyenda("leyNombre");
+		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)){
+			await FN.impactos.enLeyenda("leyNombre");
+			await FN.validacs.leyenda();
+		}
 
 		// Final de la rutina
 		FN.validacs.muestraErroresOK();
