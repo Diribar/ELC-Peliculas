@@ -781,10 +781,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 
 		// Obtiene los RCLVs
 		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
-			n.map((m) => {
-				if (m.peliculas.length || m.colecciones.length || m.capitulos.length) m.entidad = entidad;
-				return m;
-			})
+			n.map((m) => ({...m, entidad}))
 		);
 		rclvs.push(registros);
 	}
@@ -839,8 +836,8 @@ let datosImgDerecha = (resultado) => {
 
 		// hoyEstamos
 		const hoyEstamosFinal = hoyEstamos_id
-			? hoyEstamos.find((n) => n.id == hoyEstamos_id).comentario
-			: hoyEstamos.find((n) => n.entidad == entidad).comentario;
+			? hoyEstamos.find((n) => n.id == hoyEstamos_id).nombre
+			: hoyEstamos.find((n) => n.entidad == entidad).nombre;
 
 		// leyNombre
 		const leyNombreFinal = leyNombre ? leyNombre : nombre;
