@@ -16,6 +16,7 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : "";
 		const autTablEnts = usuario ? usuario.rolUsuario.autTablEnts : false;
+		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -24,7 +25,7 @@ module.exports = {
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;
-		const tituloDetalle = "Detalle de " + entidadNombre;
+		const tituloDetalle = "Detalle" + delLa + entidadNombre;
 		const titulo = entidadNombre + " - " + nombre;
 
 		// Info para el bloque Izquierdo
