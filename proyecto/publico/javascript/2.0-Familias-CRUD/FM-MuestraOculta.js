@@ -91,14 +91,12 @@ window.addEventListener("load", () => {
 	DOM.imagen.addEventListener("click", () => {
 		if (parado) {
 			// Datos Largos - si alguno está visible, oculta datos largos
-			!DOM.datosLargos.className.includes("toggle")||!DOM.datosBreves.className.includes("toggle")
-			?DOM.datosLargos.classList.add("toggle") // oculta datosLargos
-			:DOM.datosLargos.classList.remove("toggle")
+			!DOM.datosLargos.className.includes("toggle") || !DOM.datosBreves.className.includes("toggle")
+				? DOM.datosLargos.classList.add("toggle") // oculta datosLargos
+				: DOM.datosLargos.classList.remove("toggle");
 
-			// Botón Datos Largos - si DL está oculto, lo muestra
-			DOM.datosLargos.className.includes("toggle")
-				? DOM.iconoDL.classList.remove("toggle") // muestra iconoDL
-				: DOM.iconoDL.classList.add("toggle"); // oculta los íconos
+			// Botón Datos Largos
+			DOM.iconoDL.classList.add("toggle"); // oculta los íconos
 
 			// Datos Breves - lo oculta siempre
 			DOM.datosBreves.classList.add("toggle");
@@ -107,6 +105,11 @@ window.addEventListener("load", () => {
 			DOM.datosLargos.className.includes("toggle")
 				? DOM.iconoDB.classList.add("toggle") // oculta iconoDB
 				: DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+
+			// Sector Íconos - si DL está oculto, lo oculta
+			DOM.datosLargos.className.includes("toggle")
+				? DOM.sectorIconos.classList.add("ocultar") // oculta iconoDB
+				: DOM.sectorIconos.classList.remove("ocultar"); // muestra iconoDB
 
 			// Links
 			if (DOM.links) DOM.links.classList.toggle("toggle");
