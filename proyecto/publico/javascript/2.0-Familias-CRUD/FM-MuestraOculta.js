@@ -17,8 +17,9 @@ window.addEventListener("load", () => {
 	};
 
 	// Más variables
-	DOM.iconoDL = DOM.sectorIconos.querySelector("#iconoDL");
-	DOM.iconoDB = DOM.sectorIconos.querySelector("#iconoDB");
+	DOM.mobile = DOM.sectorIconos.querySelector("#mobile");
+	DOM.iconoDL = DOM.mobile.querySelector("#iconoDL");
+	DOM.iconoDB = DOM.mobile.querySelector("#iconoDB");
 	let parado = window.matchMedia("(orientation: portrait)").matches;
 
 	// Funciones
@@ -89,5 +90,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Start-up
+	// return;
 	muestraOculta_startUp();
+	DOM.mobile.classList.remove("invisible")
 });
