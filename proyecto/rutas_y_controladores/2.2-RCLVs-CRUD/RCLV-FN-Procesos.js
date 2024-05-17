@@ -339,7 +339,6 @@ let opcsLeyNombrePers = {
 		const canon = this.obtieneCanon(genero_id, canon_id);
 		let opciones = [];
 		let frase = "";
-		let rolIglesia;
 
 		// Singular
 		frase += (rolIglesia_id == "PP" ? "al papa " : "a ") + nombre;
@@ -348,7 +347,7 @@ let opcsLeyNombrePers = {
 		opciones.push(frase);
 
 		// Sacerdote
-		if (nombre == registro.nombre && rolIglesia == "SC") {
+		if (rolIglesia_id == "SC") {
 			frase = "al padre " + nombre;
 			if (canon) frase += ", " + canon;
 			opciones.push(frase);
