@@ -176,7 +176,7 @@ module.exports = {
 				datos.tamano = req.file.size;
 			}
 
-			// Acciones si se elimina la edición
+			// Acciones si el usuario elimina la edición
 			if (eliminarEdic) {
 				// Variables
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -195,19 +195,18 @@ module.exports = {
 				urlFinal = posicion > 0 ? urlFinal.slice(posicion) : "";
 				req.originalUrl = urlInicial + urlFinal;
 				req.originalUrl = req.originalUrl.replace("&eliminarEdic=true", "");
-			} else {
-				// Averigua si hay errores de validación
-				errores = await valida.consolidado(datos);
+			}
+			// Averigua si hay errores de validación
+			else errores = await valida.consolidado(datos);
+
+			// Acciones si hay errores o se eliminó la edición
+			if (eliminarEdic || (errores && errores.hay)) {
 				if (errores.hay) {
 					// Guarda session y cookie
 					const session = {...req.body};
 					req.session[entidad] = session;
 					res.cookie(entidad, session, {maxAge: unDia});
 				}
-			}
-
-			// Acciones si hay errores o se eliminó la edición
-			if ((errores && errores.hay) || eliminarEdic) {
 				// Si se agregó un archivo avatar, lo elimina
 				if (req.file) comp.gestionArchivos.elimina(carpetaExterna + "9-Provisorio/", datos.avatar);
 

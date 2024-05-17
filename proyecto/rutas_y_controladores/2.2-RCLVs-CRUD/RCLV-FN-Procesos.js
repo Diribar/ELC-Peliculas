@@ -223,7 +223,7 @@ module.exports = {
 			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
 			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
 			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
-			DE.genero_id = DE.genero_id + (plural_id ? plural_id : "S");
+			if (DE.genero_id) DE.genero_id = DE.genero_id.join("") + (plural_id ? plural_id : "S");
 
 			// Variables con procesos en personajes
 			if (entidad == "personajes") {
