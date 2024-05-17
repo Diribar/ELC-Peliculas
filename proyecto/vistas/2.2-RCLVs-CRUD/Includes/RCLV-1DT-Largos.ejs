@@ -1,6 +1,6 @@
 <div id="cuadroDeResultados">
 	<i class="fa-solid fa-caret-left mover inactivo"></i>
-	<ul id="listado">
+	<ul type="none" id="listado">
 		<% if (prodsDelRCLV.length) { %><%- include('RCLV-1DT-Prods') %>
 		<% } else { %><%- include('RCLV-1DT-SinCasos') %><% } %>
 	</ul>
