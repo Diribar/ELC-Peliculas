@@ -23,40 +23,70 @@ window.addEventListener("load", () => {
 	let parado = window.matchMedia("(orientation: portrait)").matches;
 
 	// Funciones
-	let muestraOculta_startUp = () => {
-		if (parado) {
-			// Datos Largos
-			if (calificar || rclvDetalle) {
+	let muestraOculta = {
+		startUp: () => {
+			if (parado) {
+				// Datos Largos
+				if (calificar || rclvDetalle) {
+					DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+					DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+				} else {
+					DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
+					DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+				}
+
+				// Datos Breves
+				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+				calificar || rclvDetalle
+					? DOM.iconoDB.classList.remove("toggle") // muestra iconoDB
+					: DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+
+				// Links
+				if (DOM.links) DOM.links.classList.toggle("toggle");
+			} else {
+				// Datos Largos
 				DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
 				DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
-			} else {
-				DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
-				DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+
+				// Datos Breves
+				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+				DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+
+				// Links
+				if (DOM.links) DOM.links.classList.remove("toggle");
 			}
 
-			// Datos Breves
-			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
-			calificar || rclvDetalle
-				? DOM.iconoDB.classList.remove("toggle") // muestra iconoDB
-				: DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+			// Fin
+			return;
+		},
+		imagen: () => {
+			if (parado) {
+				console.log(!DOM.datosLargos.className.includes("toggle"));
+				// Datos Largos - si alguno está visible, oculta datos largos
+				!DOM.datosLargos.className.includes("toggle") || !DOM.datosBreves.className.includes("toggle")
+					? DOM.datosLargos.classList.add("toggle") // oculta datosLargos
+					: DOM.datosLargos.classList.remove("toggle");
 
-			// Links
-			if (DOM.links) DOM.links.classList.toggle("toggle");
-		} else {
-			// Datos Largos
-			DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
-			DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+				// Botón Datos Largos
+				DOM.iconoDL.classList.add("toggle"); // oculta los íconos
 
-			// Datos Breves
-			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
-			DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+				// Datos Breves - lo oculta siempre
+				DOM.datosBreves.classList.add("toggle");
 
-			// Links
-			if (DOM.links) DOM.links.classList.remove("toggle");
-		}
+				// Botón Datos Breves - si DL está oculto, lo oculta
+				DOM.datosLargos.className.includes("toggle")
+					? DOM.iconoDB.classList.add("toggle") // oculta iconoDB
+					: DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
 
-		// Fin
-		return;
+				// Sector Íconos - si DL está oculto, lo oculta
+				DOM.datosLargos.className.includes("toggle")
+					? DOM.sectorIconos.classList.add("ocultar") // oculta iconoDB
+					: DOM.sectorIconos.classList.remove("ocultar"); // muestra iconoDB
+
+				// Links
+				if (DOM.links) DOM.links.classList.toggle("toggle");
+			} else muestraOculta.startUp();
+		},
 	};
 
 	// Event listeners - Muestra datosLargos
@@ -89,32 +119,12 @@ window.addEventListener("load", () => {
 
 	// Event listeners - Start-up / 'click' en la imagen
 	DOM.imagen.addEventListener("click", () => {
-		if (parado) {
-			// Datos Largos - si alguno está visible, oculta datos largos
-			!DOM.datosLargos.className.includes("toggle") || !DOM.datosBreves.className.includes("toggle")
-				? DOM.datosLargos.classList.add("toggle") // oculta datosLargos
-				: DOM.datosLargos.classList.remove("toggle");
-
-			// Botón Datos Largos
-			DOM.iconoDL.classList.add("toggle"); // oculta los íconos
-
-			// Datos Breves - lo oculta siempre
-			DOM.datosBreves.classList.add("toggle");
-
-			// Botón Datos Breves - si DL está oculto, lo oculta
-			DOM.datosLargos.className.includes("toggle")
-				? DOM.iconoDB.classList.add("toggle") // oculta iconoDB
-				: DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
-
-			// Sector Íconos - si DL está oculto, lo oculta
-			DOM.datosLargos.className.includes("toggle")
-				? DOM.sectorIconos.classList.add("ocultar") // oculta iconoDB
-				: DOM.sectorIconos.classList.remove("ocultar"); // muestra iconoDB
-
-			// Links
-			if (DOM.links) DOM.links.classList.toggle("toggle");
-		} else muestraOculta_startUp();
-
+		muestraOculta.imagen();
+		// Fin
+		return;
+	});
+	DOM.sectorIconos.addEventListener("click", () => {
+		muestraOculta.imagen();
 		// Fin
 		return;
 	});
@@ -122,12 +132,12 @@ window.addEventListener("load", () => {
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {
 		parado = window.matchMedia("(orientation: portrait)").matches;
-		muestraOculta_startUp();
+		muestraOculta.startUp();
 	});
 
 	// Start-up
 	// return;
-	muestraOculta_startUp();
+	muestraOculta.startUp();
 	DOM.mobile.classList.remove("invisible");
 });
 
