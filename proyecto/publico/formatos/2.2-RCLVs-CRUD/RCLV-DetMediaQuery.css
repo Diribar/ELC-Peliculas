@@ -1,7 +1,7 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#listado .prodsNuevos {
-		padding-left: 0 !important;
+		margin-left: 0; padding-left: 0 !important;
 		&:last-child {padding-right: 0 !important;}
 	}
 
@@ -15,17 +15,20 @@
 		--altoFooter: 0px;
 		footer {display: none;}
 	}
-	#recuadroDL #contenido {
-		margin: 15px 5px;
-		#listado .prodsNuevos {margin-left: 0;}
+	#recuadroDL {
+		width: 100vw !important;
+		#contenido {
+			margin-block: 15px;
+			margin-inline: min(15px, max(5px, calc(50% - var(--anchoBoton) / 2))); /* oscila entre 5px y 15px */
+		}
 	}
 }
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
 	#recuadroDL #contenido {
-		--altoLi: min(15px, calc((var(--altoCuerpo) - var(--altoBoton) - 14px) / 2)); /* 14px es el ancho de los bordes */
-		margin: var(--altoLi) 15px;
+		--altoContenido: min(15px, calc((var(--altoCuerpo) - var(--altoBoton) - 14px) / 2)); /* 14px es el ancho de los bordes */
+		margin: var(--altoContenido) 15px;
 	}
 
 }

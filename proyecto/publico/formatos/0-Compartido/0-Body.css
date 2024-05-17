@@ -31,6 +31,7 @@ body {
 	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
 	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
 	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
+	--altoTituloPrincipal: 37px;
 
 	/* Desplazamiento horizontal */
 	--altoBoton: 200px;
