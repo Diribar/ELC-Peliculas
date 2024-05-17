@@ -123,9 +123,9 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	});
-	DOM.sectorIconos.addEventListener("click", () => {
+	DOM.sectorIconos.addEventListener("click", (e) => {
+		if (e.target.id != "sectorIconos") return;
 		muestraOculta.imagen();
-		// Fin
 		return;
 	});
 
