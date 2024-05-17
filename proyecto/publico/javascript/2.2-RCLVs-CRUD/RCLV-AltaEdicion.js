@@ -54,6 +54,39 @@ window.addEventListener("load", async () => {
 		epocasOcurrencia_id: document.querySelectorAll("form input[name=epocaOcurrencia_id]"),
 		ano: document.querySelector("form input[name=" + ano + "]"),
 	};
+	// Sector Leyenda
+	DOM = {
+		...DOM,
+
+		// hoyEstamos_id
+		hoyEstamos_id: document.querySelector("form select.input[name=hoyEstamos_id]"),
+		hoyEstamos_idDefault: document.querySelector("form select.input[name=hoyEstamos_id] option"),
+
+		// leyNombre
+		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
+		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
+		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
+	};
+	let v = {
+		// Campos por sector
+		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
+		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
+		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
+
+		// Errores
+		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
+		OK: {},
+		errores: {},
+
+		// Otros
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
+		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
+		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
+		esImagen: false,
+		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
+	};
+	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
+	// Por entidad
 	if (personajes || hechos) {
 		// sectorRCLIC
 		DOM = {
@@ -84,52 +117,11 @@ window.addEventListener("load", async () => {
 			sectorApMar: DOM.preguntasRCLIC.querySelector("#sectorApMar"),
 			apMar_id: DOM.preguntasRCLIC.querySelector("#sectorApMar select[name=apMar_id]"),
 		};
-	}
-	// Sector Leyenda
-	DOM = {
-		...DOM,
-
-		// hoyEstamos_id
-		hoyEstamos_id: document.querySelector("form select.input[name=hoyEstamos_id]"),
-		hoyEstamos_idDefault: document.querySelector("form select.input[name=hoyEstamos_id] option"),
-
-		// leyNombre
-		leyNombre: document.querySelector("form select.input[name=leyNombre]"),
-		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
-		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
-	};
-	let rutas = {
-		// Rutas
-		obtieneVariables: "/rclv/api/edicion/obtiene-variables",
-		validacion: "/rclv/api/edicion/valida-sector/?funcion=",
-		registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
-	};
-	let v = {
-		// Campos por sector
-		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
-		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
-		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
-
-		// Errores
-		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
-		OK: {},
-		errores: {},
-
-		// Otros
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
-		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
-		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
-		esImagen: false,
-		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
-	};
-	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
-	// Por entidad
-	if (personajes || hechos) {
-		// Compartidas
+		// Variables compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 		rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
 
-		// Personajes
+		// Variables para personajes
 		if (personajes) {
 			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
 		}
@@ -405,7 +397,8 @@ window.addEventListener("load", async () => {
 					let info = "&nombre=" + DOM.nombre.value;
 					info += "&nombreAltern=" + DOM.nombreAltern.value;
 					info += "&genero_id=" + v.genero_id;
-					if (DOM.canon_id) info += "&canon_id=" + DOM.canon_id.value;
+					info += "&rolIglesia_id=" + DOM.rolIglesia_id.value;
+					info += "&canon_id=" + DOM.canon_id.value;
 
 					// Obtiene la opciones
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
@@ -923,7 +916,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Campos que impactan en 'leyendaNombre'
-		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id"].includes(campo)) {
+		if ([...v.camposNombre, "genero_id", "plural_id", "canon_id", "rolIglesia_id"].includes(campo)) {
 			await FN.impactos.enLeyenda("leyNombre");
 			await FN.validacs.leyenda();
 		}
@@ -948,12 +941,18 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
+const id = new URL(location.href).searchParams.get("id");
 const entidad = new URL(location.href).searchParams.get("entidad");
 const personajes = entidad == "personajes";
 const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
-const id = new URL(location.href).searchParams.get("id");
+const rutas = {
+	// Rutas
+	obtieneVariables: "/rclv/api/edicion/obtiene-variables",
+	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
+	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
+};
 
 // Funciones
 let opcElegida = (opciones) => {
