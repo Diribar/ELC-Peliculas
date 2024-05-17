@@ -69,7 +69,7 @@
 								margin-top: 5px; padding: 5px; height: 100%;
 								li {
 									padding: 3px 0; display: flex; flex-direction: row;
-									input {padding-right: 5px;}
+									input {padding-right: 5px; accent-color: var(--rojo-oscuro);}
 								}
 							}
 							.sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
