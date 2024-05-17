@@ -336,21 +336,27 @@ let opcsLeyNombrePers = {
 	canonAlFinal: function (nombre, registro, genero) {
 		// Variables
 		const {genero_id, canon_id, rolIglesia_id} = registro;
+		const canon = this.obtieneCanon(genero_id, canon_id);
 		let opciones = [];
 		let frase = "";
-		let canon, rolIglesia;
+		let rolIglesia;
 
 		// Singular
 		frase += (rolIglesia_id == "PP" ? "al papa " : "a ") + nombre;
 		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
-		canon = this.obtieneCanon(genero_id, canon_id);
 		if (canon) frase += ", " + canon;
 		opciones.push(frase);
+
+		// Sacerdote
+		if (nombre == registro.nombre && rolIglesia == "SC") {
+			frase = "al padre " + nombre;
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
 
 		// Plural
 		if (genero_id.includes("P")) {
 			frase = "a " + genero.loLa + " " + nombre;
-			canon = this.obtieneCanon(genero_id, canon_id);
 			if (canon) frase += ", " + canon;
 			opciones.push(frase);
 		}
