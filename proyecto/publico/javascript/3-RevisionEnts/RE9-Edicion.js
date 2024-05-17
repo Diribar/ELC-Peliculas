@@ -21,22 +21,16 @@ window.addEventListener("load", async () => {
 		filas: document.querySelectorAll("#contenido .fila"),
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
 	};
+	// Variables
 	let v = {
-		// Datos del registro
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		entID: new URL(location.href).searchParams.get("id"),
-		origen: new URL(location.href).searchParams.get("origen"),
-		edicID: new URL(location.href).searchParams.get("edicID"),
-		// Otras variables
+		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
-		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
-		familia: location.pathname.slice(1),
-		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
+		rutaEdicion: rutaEdicion + entidad + "&id=" + entID + "&edicID=" + edicID,
+		cola: "?entidad=" + entidad + "&id=" + entID + "&origen=" + (origen ? origen : "TR"),
 	};
 	// Otras variables
-	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
 
 	// Funciones
 	let consecuencias = (resultado) => {
@@ -64,48 +58,44 @@ window.addEventListener("load", async () => {
 		let todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
 
 		// Si está todo procesado y quedan campos,
-		if (todoProcesado == resultado.quedanCampos) console.log("Error", {todoProcesado, quedanCampos: resultado.quedanCampos});
-		// Acciones si está todo procesado
-		else if (todoProcesado && !resultado.quedanCampos) {
-			// Variables
-			const cola = "?entidad=" + v.entidad + "&id=" + v.entID + "&origen=" + (v.origen ? v.origen : "TR");
+		if (todoProcesado == resultado.quedanCampos) {
+			// Mensajes
+			let arrayMensajes = [
+				"Se encontró una inconsistencia en el registro de edición.",
+				"Figura que está todo procesado, y a la vez quedan campos por procesar",
+			];
+			// Iconos
+			let icono = {
+				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
+				link: "/" + familia + "/edicion/" + v.cola,
+			};
+			// Partes del cartel
+			let cartelGenerico = document.querySelector("#cartelGenerico");
+			let alerta = document.querySelector("#cartelGenerico #alerta");
+			let check = document.querySelector("#cartelGenerico #check");
+			let mensajes = document.querySelector("#cartelGenerico ul#mensajes");
+			// mensajes.style.listStyle = "dots";
+			let iconos = document.querySelector("#cartelGenerico #iconosCartel");
 
-			// 1. Si el registro pasó al status 'aprobado', publica el cartel
-			if (resultado.statusAprob) {
-				// Mensajes
-				let arrayMensajes = ["Se completó la revisión, muchas gracias."];
-				// Iconos
-				let icono = {
-					HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
-					link: "/inactivar-captura/" + cola,
-				};
-				// Partes del cartel
-				let cartelGenerico = document.querySelector("#cartelGenerico");
-				let alerta = document.querySelector("#cartelGenerico #alerta");
-				let check = document.querySelector("#cartelGenerico #check");
-				let mensajes = document.querySelector("#cartelGenerico ul#mensajes");
-				mensajes.style.listStyle = "none";
-				let iconos = document.querySelector("#cartelGenerico #iconosCartel");
+			// Formatos
+			cartelGenerico.style.backgroundColor = "var(--rojo-oscuro)";
+			alerta.classList.remove("ocultar");
+			check.classList.add("ocultar");
 
-				// Formatos
-				cartelGenerico.style.backgroundColor = "var(--verde-oscuro)";
-				alerta.classList.add("ocultar");
-				check.classList.remove("ocultar");
+			// Cambia el contenido del mensaje y los iconos
+			mensajes.innerHTML = "";
+			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+			iconos.innerHTML = "";
+			iconos.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
-				// Cambia el contenido del mensaje y los iconos
-				mensajes.innerHTML = "";
-				for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-				iconos.innerHTML = "";
-				iconos.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
-
-				// Muestra el cartel
-				DOM.todoElMain.classList.remove("ocultar");
-				DOM.tapaElFondo.classList.remove("ocultar");
-				cartelGenerico.classList.remove("ocultar");
-			}
-			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
-			else location.href = "/producto/edicion/" + cola;
+			// Muestra el cartel
+			DOM.todoElMain.classList.remove("ocultar");
+			DOM.tapaElFondo.classList.remove("ocultar");
+			cartelGenerico.classList.remove("ocultar");
 		}
+		// Acciones si está todo procesado
+		else if (todoProcesado && !resultado.quedanCampos)
+			location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + v.cola;
 
 		// Fin
 		return;
@@ -167,3 +157,13 @@ window.addEventListener("load", async () => {
 		});
 	}
 });
+// Datos del registro
+const entidad = new URL(location.href).searchParams.get("entidad");
+const entID = new URL(location.href).searchParams.get("id");
+const origen = new URL(location.href).searchParams.get("origen");
+const edicID = new URL(location.href).searchParams.get("edicID");
+
+// Otras variables
+const url = location.pathname.replace("/revision/", "");
+const familia = url.slice(0, url.indexOf("/"));
+const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=";
