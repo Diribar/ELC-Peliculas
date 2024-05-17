@@ -1,6 +1,6 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
-	#listado #prodsNuevos {
+	#listado .prodsNuevos {
 		padding-left: 0 !important;
 		&:last-child {padding-right: 0 !important;}
 	}
@@ -11,10 +11,13 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	#recuadroDL #contenido {margin: 15px 5px;}
 	body {
 		--altoFooter: 0px;
 		footer {display: none;}
+	}
+	#recuadroDL #contenido {
+		margin: 15px 5px;
+		#listado .prodsNuevos {margin-left: 0;}
 	}
 }
 

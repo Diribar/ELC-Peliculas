@@ -58,6 +58,12 @@
 		i {font-size: 1.5rem;}
 	}
 
+	/* Encabezado */
+	#encabezado #colCap {
+		align-items: center !important;
+		#tempCapI {flex-direction: column !important; align-items: center;}
+	}
+
 	/* Información */
 	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
