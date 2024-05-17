@@ -16,7 +16,7 @@ ul#listado {
 		padding: 0; border-radius: 15px; overflow: hidden; height: 200px;
 		text-align: left; width: 290px; border-width: 1px;
 	}
-	#prodsNuevos button {
+	.prodsNuevos button {
 		background: var(--verde-intermedio);
 		&:hover {background: var(--verde-oscuro); color: var(--amarillo-claro);}
 	}
@@ -24,7 +24,7 @@ ul#listado {
 		background: var(--rojo-claro);
 		&:hover {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
 	}
-	#prodsYaEnBD button {
+	.prodsYaEnBD button {
 		background: var(--celeste-oscuro);
 		&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 	}

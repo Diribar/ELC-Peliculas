@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables DOM
-	const iconosPPP = document.querySelectorAll("#prodsNuevos #prod #ppp i");
-	const leyendaPPP = document.querySelectorAll("#prodsNuevos #prod #ppp #texto");
-	const anchors = document.querySelectorAll("#prodsNuevos a");
+	const iconosPPP = document.querySelectorAll(".prodsNuevos #prod #ppp i");
+	const leyendaPPP = document.querySelectorAll(".prodsNuevos #prod #ppp #texto");
+	const anchors = document.querySelectorAll(".prodsNuevos a");
 
 	// Variables varias
 	const rutas = {

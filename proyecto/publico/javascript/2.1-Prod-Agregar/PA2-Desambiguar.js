@@ -9,8 +9,8 @@ window.addEventListener("load", async () => {
 		// Opciones
 		listado: document.querySelector("#listado"),
 		ingrManual: document.querySelector("#listado #ingrManual"),
-		prodsNuevos: document.querySelector("#listado #prodsNuevos"),
-		prodsYaEnBD: document.querySelector("#listado #prodsYaEnBD"),
+		prodsNuevos: document.querySelector("#listado .prodsNuevos"),
+		prodsYaEnBD: document.querySelector("#listado .prodsYaEnBD"),
 
 		// Cartel
 		cartelProgreso: document.querySelector("#cartelProgreso"),
@@ -167,7 +167,7 @@ window.addEventListener("load", async () => {
 // Funciones
 let accionesLuegoDeElegirProdNuevo = (DOM) => {
 	// Variables
-	const forms = document.querySelectorAll("#prodsNuevos form");
+	const forms = document.querySelectorAll(".prodsNuevos form");
 	let yaEligio;
 
 	for (let form of forms) {

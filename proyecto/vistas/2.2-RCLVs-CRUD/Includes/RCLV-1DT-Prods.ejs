@@ -1,5 +1,5 @@
 <% for (let prod of prodsDelRCLV) { %>
-	<li id="prodsNuevos">
+	<li class="prodsNuevos">
 		<a href="/producto/detalle/?entidad=<%= prod.entidad %>&id=<%= prod.id %>">
 			<!-- Info a mostrar -->
 			<button id= "prod" type="text" class="flexRow <% if (prod.statusRegistro_id == inactivo_id) { %>rojo<% } %>" autofocus>
