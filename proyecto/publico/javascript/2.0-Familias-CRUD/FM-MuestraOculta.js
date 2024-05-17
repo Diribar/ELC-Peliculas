@@ -26,12 +26,19 @@ window.addEventListener("load", () => {
 	let muestraOculta_startUp = () => {
 		if (parado) {
 			// Datos Largos
-			DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
-			DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+			if (calificar || rclvDetalle) {
+				DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+				DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+			} else {
+				DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
+				DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+			}
 
 			// Datos Breves
 			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
-			DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+			calificar || rclvDetalle
+				? DOM.iconoDB.classList.remove("toggle") // muestra iconoDB
+				: DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
 
 			// Links
 			if (DOM.links) DOM.links.classList.toggle("toggle");
@@ -81,7 +88,33 @@ window.addEventListener("load", () => {
 	});
 
 	// Event listeners - Start-up / 'click' en la imagen
-	DOM.imagen.addEventListener("click", () => muestraOculta_startUp());
+	DOM.imagen.addEventListener("click", () => {
+		if (parado) {
+			// Datos Largos - si alguno está visible, oculta datos largos
+			!DOM.datosLargos.className.includes("toggle")||!DOM.datosBreves.className.includes("toggle")
+			?DOM.datosLargos.classList.add("toggle") // oculta datosLargos
+			:DOM.datosLargos.classList.remove("toggle")
+
+			// Botón Datos Largos - si DL está oculto, lo muestra
+			DOM.datosLargos.className.includes("toggle")
+				? DOM.iconoDL.classList.remove("toggle") // muestra iconoDL
+				: DOM.iconoDL.classList.add("toggle"); // oculta los íconos
+
+			// Datos Breves - lo oculta siempre
+			DOM.datosBreves.classList.add("toggle");
+
+			// Botón Datos Breves - si DL está oculto, lo oculta
+			DOM.datosLargos.className.includes("toggle")
+				? DOM.iconoDB.classList.add("toggle") // oculta iconoDB
+				: DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+
+			// Links
+			if (DOM.links) DOM.links.classList.toggle("toggle");
+		} else muestraOculta_startUp();
+
+		// Fin
+		return;
+	});
 
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {
@@ -92,5 +125,12 @@ window.addEventListener("load", () => {
 	// Start-up
 	// return;
 	muestraOculta_startUp();
-	DOM.mobile.classList.remove("invisible")
+	DOM.mobile.classList.remove("invisible");
 });
+
+// Variables
+const tarea = location.pathname;
+const calificar = tarea.includes("producto/calificar");
+const rclvDetalle = tarea.includes("rclv/detalle");
+
+console.log(tarea);
