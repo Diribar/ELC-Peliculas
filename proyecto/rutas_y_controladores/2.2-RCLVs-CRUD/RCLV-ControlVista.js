@@ -13,6 +13,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "DTR";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : null;
+		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let imgDerPers, ayudasTitulo;
@@ -51,7 +52,7 @@ module.exports = {
 		const RCLVnombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
-		const tituloDetalle = "Detalle de " + entidadNombre;
+		const tituloDetalle = "Detalle"+delLa + entidadNombre;
 		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
 		const iconoDL = "fa-video";
 		const iconoDB = "fa-child";
