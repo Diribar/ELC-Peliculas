@@ -203,6 +203,9 @@ module.exports = {
 				if (nombreAltern) opciones.push(nombreAltern);
 			}
 
+			// Ordena las opciones alfabéticamente
+			opciones.sort((a, b) => (a < b ? -1 : 1));
+
 			// Fin
 			return opciones;
 		},
@@ -349,6 +352,13 @@ let opcsLeyNombrePers = {
 		// Sacerdote
 		if (rolIglesia_id == "SC") {
 			frase = "al padre " + nombre;
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
+
+		// Apóstol
+		if (rolIglesia_id == "AP") {
+			frase = (!genero_id.includes("P") ? "al apóstol " : "a los apóstoles ") + nombre;
 			if (canon) frase += ", " + canon;
 			opciones.push(frase);
 		}
