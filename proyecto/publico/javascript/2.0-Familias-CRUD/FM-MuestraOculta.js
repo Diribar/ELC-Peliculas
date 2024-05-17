@@ -132,5 +132,3 @@ window.addEventListener("load", () => {
 const tarea = location.pathname;
 const calificar = tarea.includes("producto/calificar");
 const rclvDetalle = tarea.includes("rclv/detalle");
-
-console.log(tarea);
