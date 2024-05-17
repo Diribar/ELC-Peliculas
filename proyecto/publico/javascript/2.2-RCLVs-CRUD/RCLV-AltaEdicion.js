@@ -397,7 +397,7 @@ window.addEventListener("load", async () => {
 					let info = "&nombre=" + DOM.nombre.value;
 					info += "&nombreAltern=" + DOM.nombreAltern.value;
 					info += "&genero_id=" + v.genero_id;
-					info += "rolIglesia_id=" + DOM.rolIglesia_id.value;
+					info += "&rolIglesia_id=" + DOM.rolIglesia_id.value;
 					info += "&canon_id=" + DOM.canon_id.value;
 
 					// Obtiene la opciones

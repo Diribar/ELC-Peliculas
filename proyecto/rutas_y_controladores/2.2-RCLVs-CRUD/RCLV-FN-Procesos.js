@@ -185,13 +185,16 @@ module.exports = {
 		},
 		opcsLeyNombre: (registro) => {
 			// Variables
-			const {nombre, nombreAltern} = registro;
+			const {nombre, nombreAltern, rolIglesia_id} = registro;
 			let opciones = [];
 
 			// Opciones para personajes
 			if (registro.personajes) {
+				// Nombre
 				opciones.push(...opcsLeyNombrePers.consolidado(nombre, registro));
-				if (nombreAltern) opciones.push(...opcsLeyNombrePers.consolidado(nombreAltern, registro));
+				// Nombre alternativo - se omite si no existe o si fue 'papa'
+				if (nombreAltern && rolIglesia_id != "PP")
+					opciones.push(...opcsLeyNombrePers.consolidado(nombreAltern, registro));
 			}
 
 			// Opciones para hechos
@@ -299,12 +302,13 @@ module.exports = {
 let opcsLeyNombrePers = {
 	consolidado: function (nombre, registro) {
 		// Variables
+		const {genero_id, rolIglesia_id} = registro;
 		let opciones = [];
-		const genero = generos.find((n) => n.id == registro.genero_id);
+		const genero = generos.find((n) => n.id == genero_id);
 		if (!genero) return [];
 
 		// Canon
-		if (nombre == registro.nombre) opciones.push(this.canonAlPrinc(nombre, registro, genero));
+		if (nombre == registro.nombre && rolIglesia_id != "PP") opciones.push(this.canonAlPrinc(nombre, registro, genero));
 		opciones.push(...this.canonAlFinal(nombre, registro, genero));
 
 		// Fin
@@ -328,13 +332,13 @@ let opcsLeyNombrePers = {
 	},
 	canonAlFinal: function (nombre, registro, genero) {
 		// Variables
-		const {genero_id, canon_id} = registro;
+		const {genero_id, canon_id, rolIglesia_id} = registro;
 		let opciones = [];
 		let frase = "";
-		let canon;
+		let canon, rolIglesia;
 
 		// Singular
-		frase += "a " + nombre;
+		frase += (rolIglesia_id == "PP" ? "al papa " : "a ") + nombre;
 		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
 		canon = this.obtieneCanon(genero_id, canon_id);
 		if (canon) frase += ", " + canon;
