@@ -2,6 +2,4 @@
 
 <% if (["producto/alta", "rechazar", "inactivar-o-recuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
 
-<% if (["rclv/alta", "rclv/solapamiento"].includes(codigo)) { %><%- include("RCLV1-AltaEdicion") %><% } %>
-
 <% if (codigo == "abmLinks") { %><%- include("LK1-ABM") %><% } %>
