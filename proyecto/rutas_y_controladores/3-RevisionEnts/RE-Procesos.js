@@ -563,7 +563,7 @@ module.exports = {
 				if (!campoRevisar) continue;
 
 				// Obtiene las variables de include
-				let relacInclude = campoRevisar.relacInclude;
+				let {relacInclude} = campoRevisar;
 
 				// Criterio para determinar qué valores mostrar
 				const esEdicion = true;
