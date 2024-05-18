@@ -390,6 +390,7 @@ module.exports = {
 					"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 				];
 			}
+
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
