@@ -213,7 +213,7 @@ module.exports = {
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
 			// Variables
-			const {tipoFecha, mes_id, dia, prioridad_id, plural_id, entidad} = datos;
+			const {tipoFecha, mes_id, dia, plural_id, entidad} = datos;
 			let DE = {};
 
 			// Obtiene los datos que se guardan en la tabla
@@ -223,9 +223,9 @@ module.exports = {
 			// Variables con procesos
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
 			DE.fechaMovil = tipoFecha == "FM";
-			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
-			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
-			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
+			DE.comentarioMovil = DE.fechaMovil ? DE.comentarioMovil : null;
+			DE.anoFM = DE.fechaMovil ? Number(DE.anoFM) : null;
+			if (DE.prioridad_id) DE.prioridad_id = Number(DE.prioridad_id);
 			if (DE.genero_id)
 				DE.genero_id =
 					(typeof DE.genero_id == "string" ? DE.genero_id : Array.isArray(DE.genero_id) ? DE.genero_id.join("") : "") +
