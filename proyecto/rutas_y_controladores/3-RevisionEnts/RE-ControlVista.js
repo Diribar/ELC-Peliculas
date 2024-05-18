@@ -398,7 +398,7 @@ module.exports = {
 				...{canonNombre, entidadNombre},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
-				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},
+				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: !!edicionAvatar},
 			});
 		},
 		avatar: async (req, res) => {
