@@ -327,7 +327,8 @@ let opcsLeyNombrePers = {
 
 		// Trabajo sobre 'canon'
 		if (canon) {
-			if (canon == "santo" && !variables.prefijosSanto.includes(nombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
+			const primerNombre = nombre.split(" ")[0];
+			if (canon == "santo" && !variables.prefijosSanto.includes(primerNombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
 			if (canon_id == "ST") canon = "a " + canon;
 			else canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
 			canon += " ";
@@ -339,7 +340,7 @@ let opcsLeyNombrePers = {
 	canonAlFinal: function (nombre, registro, genero) {
 		// Variables
 		const {genero_id, canon_id, rolIglesia_id} = registro;
-		const canon = this.obtieneCanon(genero_id, canon_id);
+		const canon = this.obtieneCanon(genero_id, canon_id, nombre);
 		let opciones = [];
 		let frase = "";
 
