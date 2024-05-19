@@ -417,7 +417,7 @@ window.addEventListener("load", async () => {
 					// Crea la opción
 					const option = document.createElement("option");
 					option.value = typeof opcion == "string" ? opcion : opcion.id;
-					option.innerText = typeof opcion == "string" ? opcion : opcion.comentario;
+					option.innerText = typeof opcion == "string" ? opcion : opcion.nombre;
 					option.selected = true;
 
 					// Agrega la opción

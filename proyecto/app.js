@@ -169,6 +169,7 @@ app.set("views", [
 		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
 		novedadesELC: BD_genericas.obtieneTodos("novedadesELC", "fecha"),
 	};
+
 	// Procesa todas las lecturas
 	const valores = await Promise.all(Object.values(datos));
 	Object.keys(datos).forEach((campo, i) => (global[campo] = valores[i]));

@@ -502,11 +502,10 @@ module.exports = {
 			// Verificación si el nombre del proceso es "Santo" (varón)
 			if (rclv.canon_id == "ST" && rclv.genero_id == "MS") {
 				// Obtiene el primer nombre del rclv
-				let nombre = rclv.nombre;
-				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+				const primerNombre = rclv.nombre.split(" ")[0];
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
-				if (!variables.prefijosSanto.includes(nombre)) canonNombre = "San ";
+				if (!variables.prefijosSanto.includes(primerNombre)) canonNombre = "San ";
 			}
 		}
 

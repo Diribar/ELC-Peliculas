@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 17/may",
-	"HoraUTC": "1:27",
+	"FechaUTC": "Sáb. 18/may",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mar. 14/may",
@@ -41,10 +41,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-may-24": {"leyenda": "Hoy recordamos a san Isidro Labrador", "entidad": "personajes", "id": 79},
 		"16-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
 		"17-may-24": {"leyenda": "Hoy recordamos al caballo Seabiscuit", "entidad": "personajes", "id": 158},
 		"18-may-24": {"leyenda": "Estamos en época de Pascua de Resurrección", "entidad": "epocasDelAno", "id": 24},
-		"19-may-24": {"leyenda": "Hoy recordamos la Fiesta de Pentecostés", "entidad": "hechos", "id": 15}
+		"19-may-24": {"leyenda": "Hoy recordamos la Fiesta de Pentecostés", "entidad": "hechos", "id": 15},
+		"20-may-24": {"leyenda": "Hoy es la Memoria de María, madre de la Iglesia", "entidad": "eventos", "id": 27}
 	}
 }

@@ -390,7 +390,7 @@
 	<!-- Leyenda -->
 	<section id="sectorLeyenda" class="borderTop OK flexRowAlign">
 		<!-- Título, Ayuda y Error/OK -->
-		<div class="inputError invisibl">
+		<div class="inputError">
 			<!-- Título -->
 			<h3>Leyenda</h3>
 			<div class="ayuda">
@@ -410,7 +410,7 @@
 					<select name="hoyEstamos_id" class="input sinFlecha">
 						<option value="">Elegí una opción</option>
 						<% for (let opcion of opcsHoyEstamos) { %>
-							<option value="<%= opcion.id %>" <% if (opcion.id == dataEntry.hoyEstamos_id) { %>selected<% } %>><%= opcion.comentario %></option>
+							<option value="<%= opcion.id %>" <% if (opcion.id == dataEntry.hoyEstamos_id) { %>selected<% } %>><%= opcion.nombre %></option>
 						<% } %>
 					</select>
 				</div>

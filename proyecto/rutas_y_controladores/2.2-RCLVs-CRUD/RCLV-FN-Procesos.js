@@ -203,6 +203,9 @@ module.exports = {
 				if (nombreAltern) opciones.push(nombreAltern);
 			}
 
+			// Ordena las opciones alfabéticamente
+			opciones.sort((a, b) => (a < b ? -1 : 1));
+
 			// Fin
 			return opciones;
 		},
@@ -210,7 +213,7 @@ module.exports = {
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
 			// Variables
-			const {tipoFecha, mes_id, dia, prioridad_id, plural_id, entidad} = datos;
+			const {tipoFecha, mes_id, dia, plural_id, entidad} = datos;
 			let DE = {};
 
 			// Obtiene los datos que se guardan en la tabla
@@ -220,9 +223,9 @@ module.exports = {
 			// Variables con procesos
 			DE.fechaDelAno_id = tipoFecha == "SF" ? 400 : fechasDelAno.find((n) => n.mes_id == mes_id && n.dia == dia).id;
 			DE.fechaMovil = tipoFecha == "FM";
-			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
-			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
-			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
+			DE.comentarioMovil = DE.fechaMovil ? DE.comentarioMovil : null;
+			DE.anoFM = DE.fechaMovil ? Number(DE.anoFM) : null;
+			if (DE.prioridad_id) DE.prioridad_id = Number(DE.prioridad_id);
 			if (DE.genero_id)
 				DE.genero_id =
 					(typeof DE.genero_id == "string" ? DE.genero_id : Array.isArray(DE.genero_id) ? DE.genero_id.join("") : "") +
@@ -324,7 +327,8 @@ let opcsLeyNombrePers = {
 
 		// Trabajo sobre 'canon'
 		if (canon) {
-			if (canon == "santo" && !variables.prefijosSanto.includes(nombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
+			const primerNombre = nombre.split(" ")[0];
+			if (canon == "santo" && !variables.prefijosSanto.includes(primerNombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
 			if (canon_id == "ST") canon = "a " + canon;
 			else canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
 			canon += " ";
@@ -336,7 +340,7 @@ let opcsLeyNombrePers = {
 	canonAlFinal: function (nombre, registro, genero) {
 		// Variables
 		const {genero_id, canon_id, rolIglesia_id} = registro;
-		const canon = this.obtieneCanon(genero_id, canon_id);
+		const canon = this.obtieneCanon(genero_id, canon_id, nombre);
 		let opciones = [];
 		let frase = "";
 
@@ -349,6 +353,13 @@ let opcsLeyNombrePers = {
 		// Sacerdote
 		if (rolIglesia_id == "SC") {
 			frase = "al padre " + nombre;
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
+
+		// Apóstol
+		if (rolIglesia_id == "AP") {
+			frase = (!genero_id.includes("P") ? "al apóstol " : "a los apóstoles ") + nombre;
 			if (canon) frase += ", " + canon;
 			opciones.push(frase);
 		}
