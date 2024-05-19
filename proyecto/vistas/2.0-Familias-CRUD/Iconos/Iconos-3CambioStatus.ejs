@@ -39,6 +39,10 @@
 	<% condicRclvCrud = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
 	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
 	<% if (condicRclvCrud || condicRevSolapam) { %>
+		<!-- CRUD - Aprobar -->
+		<button type="submit" autofocus class="inactivo">
+			<i class="fa-solid fa-circle-check" title="Guardar"></i>
+		</button>
 		<!-- CRUD - Eliminar edición RCLV -->
 		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
 			<label for="eliminaEdicion" title="Eliminar la Edición">
@@ -46,10 +50,6 @@
 			</label>
 			<input id="eliminaEdicion" type="submit" class="submit" formaction="<%= originalUrl %>&eliminarEdic=true" formmethod="post" >
 		<% } %>
-		<!-- CRUD - Aprobar -->
-		<button type="submit" autofocus class="inactivo">
-			<i class="fa-solid fa-circle-check" title="Guardar"></i>
-		</button>
 	<% } %>
 
 	<% if (tema == "revisionEnts") { %>

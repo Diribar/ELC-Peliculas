@@ -1,7 +1,7 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#listado .prodsNuevos {
-		margin-left: 0; padding-left: 0 !important;
+		padding-left: 0 !important;
 		&:last-child {padding-right: 0 !important;}
 	}
 
@@ -19,7 +19,7 @@
 		width: 100vw !important;
 		#contenido {
 			margin-block: 15px;
-			margin-inline: min(15px, max(5px, calc(50% - var(--anchoBoton) / 2))); /* oscila entre 5px y 15px */
+			margin-inline: clamp(0px, calc(50% - var(--anchoBoton) / 2), 15px); /* oscila entre 0px y 15px */
 		}
 	}
 }

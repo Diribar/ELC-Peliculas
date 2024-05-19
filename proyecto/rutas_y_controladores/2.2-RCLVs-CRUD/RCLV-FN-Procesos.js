@@ -223,7 +223,10 @@ module.exports = {
 			DE.comentarioMovil = DE.fechaMovil ? comentarioMovil : null;
 			DE.anoFM = DE.fechaMovil ? Number(anoFM) : null;
 			if (DE.prioridad_id) DE.prioridad_id = Number(prioridad_id);
-			if (DE.genero_id) DE.genero_id = DE.genero_id.join("") + (plural_id ? plural_id : "S");
+			if (DE.genero_id)
+				DE.genero_id =
+					(typeof DE.genero_id == "string" ? DE.genero_id : Array.isArray(DE.genero_id) ? DE.genero_id.join("") : "") +
+					(plural_id ? plural_id : "S");
 
 			// Variables con procesos en personajes
 			if (entidad == "personajes") {
@@ -333,21 +336,26 @@ let opcsLeyNombrePers = {
 	canonAlFinal: function (nombre, registro, genero) {
 		// Variables
 		const {genero_id, canon_id, rolIglesia_id} = registro;
+		const canon = this.obtieneCanon(genero_id, canon_id);
 		let opciones = [];
 		let frase = "";
-		let canon, rolIglesia;
 
 		// Singular
 		frase += (rolIglesia_id == "PP" ? "al papa " : "a ") + nombre;
 		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
-		canon = this.obtieneCanon(genero_id, canon_id);
 		if (canon) frase += ", " + canon;
 		opciones.push(frase);
+
+		// Sacerdote
+		if (rolIglesia_id == "SC") {
+			frase = "al padre " + nombre;
+			if (canon) frase += ", " + canon;
+			opciones.push(frase);
+		}
 
 		// Plural
 		if (genero_id.includes("P")) {
 			frase = "a " + genero.loLa + " " + nombre;
-			canon = this.obtieneCanon(genero_id, canon_id);
 			if (canon) frase += ", " + canon;
 			opciones.push(frase);
 		}
