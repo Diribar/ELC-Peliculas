@@ -2,4 +2,4 @@
 #segundaColumna .temas:has(#grafico) {margin-top: 10px; padding: 0;}
 #segundaColumna .temas #cuadro {border-radius: 15px; overflow: hidden; transition: 300ms;}
 #segundaColumna .temas #cuadro:has(a):hover {scale: 1.05}
-#segundaColumna .temas #cuadro #algunosDatos {text-align: center;}
+#segundaColumna .temas #cuadro #algunosDatos {text-align: center; background: var(--amarillo-claro);}
