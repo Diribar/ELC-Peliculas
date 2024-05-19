@@ -395,10 +395,10 @@ window.addEventListener("load", async () => {
 				else if (sector == "leyNombre" && DOM.nombre.value) {
 					// Obtiene la info - nombre, genero_id, canon_id
 					let info = "&nombre=" + DOM.nombre.value;
-					info += "&nombreAltern=" + DOM.nombreAltern.value;
+					if (DOM.nombreAltern) info += "&nombreAltern=" + DOM.nombreAltern.value;
 					info += "&genero_id=" + v.genero_id;
-					info += "&rolIglesia_id=" + DOM.rolIglesia_id.value;
-					info += "&canon_id=" + DOM.canon_id.value;
+					if (DOM.rolIglesia_id) info += "&rolIglesia_id=" + DOM.rolIglesia_id.value;
+					if (DOM.canon_id) info += "&canon_id=" + DOM.canon_id.value;
 
 					// Obtiene la opciones
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());

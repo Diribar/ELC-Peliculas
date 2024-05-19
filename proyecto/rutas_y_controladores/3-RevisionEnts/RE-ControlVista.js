@@ -390,6 +390,7 @@ module.exports = {
 					"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 				];
 			}
+
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
@@ -397,7 +398,7 @@ module.exports = {
 				...{canonNombre, entidadNombre},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
-				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: edicionAvatar},
+				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: !!edicionAvatar},
 			});
 		},
 		avatar: async (req, res) => {

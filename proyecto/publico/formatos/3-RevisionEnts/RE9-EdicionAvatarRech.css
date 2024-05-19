@@ -1,7 +1,8 @@
-#cartelRechazo {background: var(--rojo-oscuro); border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
-#cartelRechazo {padding: 30px 40px; text-align: center; border-radius: 20px;}
-#cartelRechazo h2 {color: snow; margin-bottom: 10px;}
-#cartelRechazo p {color: var(--amarillo-claro); font-size: 1.2rem;}
-#cartelRechazo select {margin: 20px 0; border-radius: 10px; padding: 0 5px;}
-#cartelRechazo .iconos {width: 120px;}
-#cartelRechazo .iconos i.rechazar {color: var(--rojo-oscuro);}
+#cartelRechazo {
+	background: var(--rojo-oscuro); border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);
+	padding: 30px 40px; text-align: center; border-radius: 20px;
+	h2 {color: snow; margin-bottom: 10px;}
+	p {color: var(--amarillo-claro); font-size: 1.2rem;}
+	select {margin: 20px 0; border-radius: 10px; padding: 0 5px;}
+	.iconos i.rechazar {color: var(--rojo-oscuro);}
+}

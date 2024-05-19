@@ -1,43 +1,47 @@
 /* General */
-#cuerpoFooter #cuerpo {background: transparent; flex-direction: row; justify-content: space-between; max-height: 100%;}
-
-/* Secciones de Imagen */
-#cuerpo .imagenes {position: relative;}
-#cuerpo .imagenes {display: flex; flex-direction: column; justify-content: center;}
-#cuerpo .imagenes img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
-#cuerpo .imagenes .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
-#cuerpo .imagenes .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
-#cuerpo .imagenes .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
-/* Secciones de Imagen - Izquierda */
-#cuerpo .imagenes .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
-
-/* Sección central - Arriba */
-#centro #arriba {display: flex; flex-direction: column;}
-#centro #arriba #tituloPrincipal {text-align: center; align-self: stretch;}
-#centro #arriba #tituloPrincipal #titulo {border-left-color: var(--bordeTitulo); border-bottom-right-radius: 0;}
-#centro #arriba #tituloPrincipal .ayuda {translate: 0 -50%; right: 10px;}
-#centro #arriba #timer {position: static; margin-left: auto;}
-
-/* Sección central - Medio */
-#centro #medio {display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;}
-#centro #medio {width: 100%;}
-
-/* Sección central - Medio - Info */
-#centro #medio .contOpcionAvatar {max-width: 40%; border-radius: 20px; border: 4px solid;}
-#centro #medio .contOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
-#centro #medio .contOpcionAvatar#aprobar {transform-origin: left; background: var(--verde-claro); border-color: var(--verde-oscuro);}
-#centro #medio .contOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
-#centro #medio .contOpcionAvatar#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
-#centro #medio .contOpcionAvatar button {border: none; background: transparent; outline: none;}
-#centro #medio #info {padding: 15px 20px; width: fit-content;}
-#centro #medio #info :is(h2, ul) {text-align: left;}
-#centro #medio #info ul:has(li) {margin-top: 5px;}
-#centro #medio #info ul li {font-size: 1.1rem;}
-
-/* Sección central - Medio - Ficha Técnica */
-#centro #medio #fichaTecnica {padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw; align-self: center;}
-#centro #medio #fichaTecnica {background: var(--gris-claro); border: var(--gris-oscuro) 4px solid;}
-#centro #medio #fichaTecnica p {line-height: 1.5; font-size: 1.15rem;}
-
-/* Sección central - Iconos */
-.iconos {width: fit-content;}
+#cuerpoFooter #cuerpo {
+	background: transparent; flex-direction: row; justify-content: space-between; max-height: 100%;
+	#centro {
+		#arriba {
+			display: flex; flex-direction: column;
+			#tituloPrincipal {
+				text-align: center; align-self: stretch;
+				#titulo {border-left-color: var(--bordeTitulo); border-bottom-right-radius: 0;}
+				.ayuda {translate: 0 -50%; right: 10px;}
+			}
+			#timer {position: static; margin-left: auto;}
+		}
+		#medio {
+			display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;
+			width: 100%;
+			.contOpcionAvatar {
+				max-width: 40%; border-radius: 20px; border: 4px solid;
+				&#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
+				&#aprobar {transform-origin: left; background: var(--verde-claro); border-color: var(--verde-oscuro);}
+				&#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
+				&#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
+				button {border: none; background: transparent; outline: none;}
+			}
+			#info {padding: 15px 20px; width: fit-content;}
+			#info :is(h2, ul) {text-align: left;}
+			#info ul:has(li) {margin-top: 5px;}
+			#info ul li {font-size: 1.1rem;}
+			#fichaTecnica {
+				padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw; align-self: center;
+				background: var(--gris-claro); border: var(--gris-oscuro) 4px solid;
+				p {line-height: 1.5; font-size: 1.15rem;}
+			}
+		}
+	}
+	.imagenes {
+		position: relative;
+		display: flex; flex-direction: column; justify-content: center;
+		img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
+		.agregados {
+			position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+			background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;
+			margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;
+			img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
+		}
+	}
+}

@@ -26,8 +26,8 @@
 <% } else { %>
 	<% if (!locals.tema) { %>
 	<% } else if (tema == "prodRud") { %><%- include("PR2-Edicion") %>
-	<% } else if (tema == "rclvCrud" || tema == "revisionEnts" && familia == "rclv") { %><%- include("RCLV1-AltaEdicion") %>
-	<% } else if (tema == "revisionEnts" && familia == "producto") { %><%- include("RE9-EdicionAvatar") %>
+	<% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %>
+	<% } else if (tema == "revisionEnts") { %><%- include("RE9-EdicionAvatar") %>
 	<% } %>
 <% } %>
 <% if (locals.informacion || locals.cartelGenerico || locals.cartelRechazo) { %>
