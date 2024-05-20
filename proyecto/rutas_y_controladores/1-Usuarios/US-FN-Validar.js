@@ -30,7 +30,9 @@ module.exports = {
 
 			// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
 			const ahora = comp.fechaHora.ahora();
-			const fechaContrasena = usuario.fechaContrasena;
+			const fechaContrasena = usuario.fechaContrasena
+				? usuario.fechaContrasena
+				: new Date(ahora.getTime() - 24 * unaHora - 1);
 			const diferencia = (ahora.getTime() - fechaContrasena.getTime()) / unaHora;
 			if (diferencia < 24)
 				return {
