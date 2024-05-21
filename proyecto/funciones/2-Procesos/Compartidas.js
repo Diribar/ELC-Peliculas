@@ -959,19 +959,13 @@ module.exports = {
 	},
 	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
-		const transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true, // true for 465, false for other ports
-			auth: {
-				user: process.env.direccMail, // dirección de gmail
-				pass: process.env.contrMail, // contraseña de aplicación de gmail
-			},
-		});
+		const {host, port, user, pass} = process.env;
+		const transporter = nodemailer.createTransport({host, port: 465, secure: true, auth: {user, pass}});
+		// secure: true for 465, false for other ports
 
 		// Datos
 		const datos = {
-			from: "'ELC - Películas' <" + process.env.direccMail + ">",
+			from: "'ELC - Películas' <" + user + ">",
 			to: email,
 			subject: asunto,
 			html: comentario,

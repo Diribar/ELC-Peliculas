@@ -60,7 +60,7 @@ module.exports = {
 		comentario += "<br>" + "La contraseña de tu usuario es: <bold><u>" + contrasena + "</u></bold>";
 
 		// Envía el mail al usuario y actualiza la contraseña
-		const mailEnviado = await comp.enviaMail({asunto, email, comentario});
+		const mailEnviado = await comp.enviaMail({email, asunto, comentario});
 
 		// Fin
 		console.log("Contraseña: " + contrasena);

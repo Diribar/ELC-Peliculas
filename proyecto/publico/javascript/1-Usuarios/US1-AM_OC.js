@@ -1,18 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const pathname = location.pathname;
-	const indice = 1 + pathname.slice(1).indexOf("/");
-	const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
-	const rutaInicio = "/usuarios/api/" + codigo;
-	const olvidoContr = codigo == "olvido-contrasena";
-
-	let rutas = {
-		datosDeSession: rutaInicio + "/datosDeSession",
-		valida: rutaInicio + "/validaciones/?datos=",
-		envia: rutaInicio + "/envio-de-mail/?email=",
-	};
-
 	let DOM = {
 		// General
 		form: document.querySelector("form"),
@@ -50,7 +38,7 @@ window.addEventListener("load", async () => {
 	let mail = {
 		valida: async () => {
 			// Variables
-			v.datos = {email: olvidoContr ? v.datosDeSession.email : DOM.email.value}; // toma el mail dependiendo de la ruta
+			v.datos = {email: olvidoContr ? v.datosDeSession.datos.email : DOM.email.value}; // toma el mail dependiendo de la ruta
 
 			// Obtiene la información de los datos perennes
 			if (olvidoContr && v.datosDeSession.validarDatosPerennes) {
@@ -214,3 +202,14 @@ const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const formatoMail = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const pathname = location.pathname;
+const indice = 1 + pathname.slice(1).indexOf("/");
+const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
+const rutaInicio = "/usuarios/api/" + codigo;
+const olvidoContr = codigo == "olvido-contrasena";
+console.log(olvidoContr);
+const rutas = {
+	datosDeSession: rutaInicio + "/datosDeSession",
+	valida: rutaInicio + "/validaciones/?datos=",
+	envia: rutaInicio + "/envio-de-mail/?email=",
+};
