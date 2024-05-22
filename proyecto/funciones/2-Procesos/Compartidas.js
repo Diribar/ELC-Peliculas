@@ -552,19 +552,17 @@ module.exports = {
 	linksVencPorSem: {
 		actualizaFechaVencim: async function (links) {
 			// Variables
-			const condicion = {statusRegistro_id: aprobado_id};
-			const include = variables.entidades.asocProds;
-			const soloLinksSinFecha = !links; // si no se especifican links, sólo se actualizan los que no tienen fecha
 			let espera = [];
 
 			// Obtiene todos los links con sus vínculos de prods
-			if (soloLinksSinFecha) links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+			if (!links) {
+				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
+				const include = variables.entidades.asocProds;
+				links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+			}
 
 			// Rutina por link
 			for (let link of links) {
-				// Revisa si se debe saltear la rutina
-				if (soloLinksSinFecha && link.fechaVencim) continue;
-
 				// Obtiene el anoEstreno
 				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 				const anoEstreno = link[asocProd].anoEstreno;
