@@ -618,8 +618,11 @@ module.exports = {
 		for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 		// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
-		const links = await BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: activos_ids, prodAprob});
-		const linksRevisar = links.filter((n) => creados_ids.includes(n.statusRegistro_id));
+		const links = await BD_genericas.obtieneTodosPorCondicion("links", {
+			statusRegistro_id: {[Op.ne]: inactivo_id},
+			prodAprob,
+		});
+		const linksRevisar = links.filter((n) => !estables_ids.includes(n.statusRegistro_id));
 		const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 
 		// Abre los 'linksRevisar' entre 'antiguos' y 'recientes'
