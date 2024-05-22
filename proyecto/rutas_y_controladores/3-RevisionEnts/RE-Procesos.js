@@ -856,65 +856,69 @@ let purgaEdicionRclv = (edicion, entidad) => {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const anoReciente = anoHoy - linkAnoReciente;
 		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes.total;
 		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos.total;
-		let respuesta;
+		let respuesta, registros;
 
 		// Obtiene los links a revisar
 		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
-		const creados = originales.filter((n) => n.statusRegistro_id == creado_id);
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const inactivarRecuperar = originales.filter((n) => inactivarRecuperar_ids.includes(n.statusRegistro_id));
-		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
-		const sigRev = creadoAprobs
-			.filter((n) => n.yaTuvoPrimRev)
-			.filter((n) => n.anoEstreno <= anoReciente || n.tipo_id == linkTrailer_id);
 
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
 
 		// Sin restricción - Ediciones
-		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
+		respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Inactivar/Recuperar
-		if (inactivarRecuperar.length) respuesta = this.obtieneProdLink({links: inactivarRecuperar, datos});
+		// Categoría "no estándar"
+		registros = originales.filter((n) => n.statusRegistro_id == creado_id); // Altas
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Altas
-		if (creados.length) respuesta = this.obtieneProdLink({links: creados, datos});
+		registros = inactivarRecuperar.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Capítulos
-		respuesta = this.regsConRestric({paraProc: capsParaProc, primRev, sigRev, filtro: {[Op.ne]: null}, datos});
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstrenoReciente_id); // creadoAprob
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Películas y Colecciones
-		respuesta = this.regsConRestric({paraProc: pelisColesParaProc, primRev, sigRev, filtro: null, datos});
+		// Categoría "estándar" - Capítulos
+		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id); // si es trailer, es normal que tenga larga vida
-		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
+		respuesta = this.creadoAprobStd({paraProc: capsParaProc, registros, datos});
+		if (respuesta) return respuesta;
+
+		// Categoría "estándar" - Películas y Colecciones
+		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
+
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
+		respuesta = this.creadoAprobStd({paraProc: pelisColesParaProc, registros, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
 		return null;
 	},
-	regsConRestric: ({paraProc, primRev, sigRev, filtro, datos}) => {
+	creadoAprobStd: ({paraProc, registros: registrosTodos, filtro, datos}) => {
 		if (!paraProc) return;
 
 		// Variables
 		let registros, respuesta;
 
 		// Primera revisión
-		registros = primRev.filter((n) => n.capitulo_id);
+		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
 		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
 		// Siguientes revisiones
-		registros = sigRev.filter((n) => n.capitulo_id == filtro);
+		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
 		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
@@ -922,6 +926,8 @@ let FN_links = {
 		return;
 	},
 	obtieneProdLink: function ({links, datos}) {
+		if (!links.length) return;
+
 		// Variables
 		const {entidad, id, revID} = datos;
 		let productos;
