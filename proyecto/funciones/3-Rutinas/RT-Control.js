@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.FeedbackParaUsers();
+		// await actualizaCategoriaLink();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -827,4 +827,17 @@ let quitaStatusDeComentario = async () => {
 
 	// Fin
 	return;
+};
+let actualizaCategoriaLink = async () => {
+	// Variables
+	const links = await BD_genericas.obtieneTodos("links");
+
+	// Actualiza todos los links
+	for (let link of links) {
+		const categoria_id = comp.linksVencPorSem.categoria(link);
+		await BD_genericas.actualizaPorId("links", link.id, {categoria_id});
+	}
+
+	// Fin
+	return
 };
