@@ -3,7 +3,7 @@
 	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
 	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
-		<% if ([...provisorios_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
+		<% if ([...inactivarRecuperar_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
 			<!-- Revisar -->
 			<% const url = status_id == creado_id ? "alta" : "inactivar-o-recuperar" %>
 			<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
