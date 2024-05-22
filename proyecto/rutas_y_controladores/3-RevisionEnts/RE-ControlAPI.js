@@ -97,36 +97,44 @@ module.exports = {
 			const ahora = comp.fechaHora.ahora();
 			let semana = 0;
 
-			// PROBLEMAS
-			if (!url) return res.json("Falta el 'url' del link"); // Averigua si existe el dato del 'url'
-			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds); // Se obtiene el status original del link
-			if (!link) return res.json("El link no existe en la base de datos"); // El link no existe en la BD
-			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar"); // El link existe y tiene un status 'estable'
-			if (IN == "SI" && link.statusRegistro_id != creado_id) {
-				// Si no hay más links para procesar, interrumpe la función
-				if (!cantLinksVencPorSem.paraProc.prodsParaProc) return res.json("En esta semana ya no se puede revisar este link");
+			// PROBLEMA - Valida que exista el dato del 'url'
+			if (!url) return res.json("Falta el 'url' del link");
 
-				// Acciones si es un link de capítulo y no es un trailer
-				if (link.capitulo_id && link.tipo_id != linkTrailer_id) {
-					// Si queda lugar en la ultima semana, la asigna
-					if (cantLinksVencPorSem[linksSemsVidaUtil].prods < cantLinksVencPorSem.cantPromSemEntero)
-						semana = linksSemsVidaUtil;
-					// De lo contrario, interrumpe la función
-					else return res.json("En esta semana ya no se puede revisar este link");
-				}
+			// PROBLEMA - Valida que el link exista en la BD
+			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds);
+			if (!link) return res.json("El link no existe en la base de datos");
 
-				// Si no se cumple la condición anterior, averigua la semana
+			// PROBLEMA - Valida que el link tenga un status distinto a 'estable'
+			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
+
+			// PROBLEMA - Si no queda lugar, interrumpe la función
+			const linkEstandarAprob = IN == "SI" && comp.linksVencPorSem.categoria_id(link);
+			if (
+				linkEstandarAprob &&
+				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos.total) || // es un capítulo y no queda lugar
+					(!link.capitulo_id && !cantLinksVencPorSem.paraProc.pelisColes.total)) // no es un capítulo y no queda lugar
+			)
+				return res.json("En esta semana ya no se puede revisar este link");
+
+			// Si se aprobó el link y es una categoría estándar, averigua su semana
+			if (linkEstandarAprob) {
+				// Semana para capítulo
+				if (link.capitulo_id) semana = linksSemsVidaUtil;
+				// Semana para los demás
 				else {
 					// Variables
 					const semPrimRev = linksPrimRev / unaSemana;
-					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> recientes
+					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
+					const piso = corte + 1;
 
 					// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
 					const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-						.slice(corte + 1, -2)
+						.slice(piso) // descarta los registros de la semanas anteriores al piso
+						.slice(0, -3) // descarta los registros finales
 						.map((n) => n.prods);
+					console.log(129, cantLinksVencPorSemMayorCorte);
 					const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
-					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + corte + 1;
+					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
 				}
 			}
 
