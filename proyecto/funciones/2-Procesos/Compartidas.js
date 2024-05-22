@@ -554,7 +554,7 @@ module.exports = {
 			// Variables
 			let espera = [];
 
-			// Obtiene todos los links con sus vínculos de prods
+			// Si no se especificaron links, obtiene todos los aprobados que no tengan 'fechaVencim'
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
 				const include = variables.entidades.asocProds;
@@ -682,11 +682,9 @@ module.exports = {
 			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 			// Capítulos
-			const capsPosibles = Math.max(
-				0,
-				Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
-			);
-			const capsParaProc = Math.min(capsPosibles, capsPends);
+			const capsPosibles = Math.max(0, Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods); // se disminuye para que no 'sature' la semana con capítulos
+			const capsParaProc = Math.min(capsPosibles, capsPends); // Averigua la cantidad para procesar
+			// Resumen
 			capitulos = {
 				creadoAprob: capsParaProc - Math.min(capsParaProc, capitulos.inactivarRecuperar),
 				inactivarRecuperar: Math.min(capsParaProc, capitulos.inactivarRecuperar),
@@ -696,13 +694,11 @@ module.exports = {
 			// Películas y Colecciones
 			const semPrimRev = linksPrimRev / unaSemana;
 			let pelisColesPosibles = 0;
-			// Averigua los posibles sin la última semana
 			for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
-				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
-			// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
-			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
-			// Averigua la cantidad para procesar
-			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
+				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
+			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc); // en la última semana, menos los capítulos a procesar
+			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends); // Averigua la cantidad para procesar
+			// Resumen
 			pelisColes = {
 				creadoAprob: pelisColesParaProc - Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
 				inactivarRecuperar: Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
@@ -712,7 +708,7 @@ module.exports = {
 			// Agrega la información
 			const paraProc = {pelisColes, capitulos, sinLimite, prods: pelisColesParaProc + capsParaProc + sinLimite};
 			cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
-			//console.log(694, cantLinksVencPorSem);
+			console.log(694, cantLinksVencPorSem);
 
 			// Fin
 			return;
