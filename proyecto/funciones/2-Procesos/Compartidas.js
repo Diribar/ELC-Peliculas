@@ -727,7 +727,7 @@ module.exports = {
 			// Fin
 			return link.statusRegistro_id == creado_id
 				? linkRecienCreado_id
-				: (anoEstreno || anoEstreno > anoReciente) && noTrailer
+				: anoEstreno && anoEstreno > anoReciente && noTrailer
 				? linkEstrenoReciente_id
 				: linkEstandar_id;
 		},
