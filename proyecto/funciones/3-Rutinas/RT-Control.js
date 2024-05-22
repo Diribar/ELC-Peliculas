@@ -11,7 +11,7 @@ module.exports = {
 		// Variables
 		procesos.variablesDiarias();
 		comp.variablesSemanales();
-		await comp.actualizaLinksVencPorSem();
+		await comp.linksVencPorSem.actualizaLVPS();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -633,7 +633,7 @@ module.exports = {
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
 			// actualiza solamente la fecha de los links sin fecha
-			await comp.actualizaFechaVencimLinks();
+			await comp.linksVencPorSem.actualizaFechaVencim();
 			return;
 		},
 		EliminaHistorialAntiguo: async () => {
