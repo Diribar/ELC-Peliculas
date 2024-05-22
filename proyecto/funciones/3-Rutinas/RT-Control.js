@@ -265,6 +265,8 @@ module.exports = {
 								BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 								console.log("Mail enviado a " + email);
 							}
+							// Si el mail no fue enviado, lo avisa
+							else console.log("Mail no enviado a " + email);
 
 							// Fin
 							return;
