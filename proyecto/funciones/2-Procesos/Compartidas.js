@@ -549,10 +549,9 @@ module.exports = {
 		// Fin
 		return;
 	},
-	linksVencPorSem:{
+	linksVencPorSem: {
 		actualizaFechaVencim: async function (links) {
 			// Variables
-			const anoActual = new Date().getFullYear();
 			const condicion = {statusRegistro_id: aprobado_id};
 			const include = variables.entidades.asocProds;
 			const soloLinksSinFecha = !links; // si no se especifican links, sólo se actualizan los que no tienen fecha
@@ -570,9 +569,12 @@ module.exports = {
 				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 				const anoEstreno = link[asocProd].anoEstreno;
 
+				// Obtiene la categoria_id
+				const categoria_id = this.categoria_id(link);
+
 				// Averigua si es un linkReciente y sin primRev
 				const sinPrimRev = !link.yaTuvoPrimRev;
-				const anoReciente = anoActual - linkAnoReciente;
+				const anoReciente = anoHoy - linkAnoReciente;
 				const linkReciente = (!anoEstreno || anoEstreno > anoReciente) && link.tipo_id != linkTrailer_id;
 
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
@@ -618,19 +620,34 @@ module.exports = {
 			// Crea las semanas dentro de la variable
 			for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
-			// Obtiene todos los links con producto aprobado y en status çreado, creadoAprob y aprobado
+			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
 			const links = await BD_genericas.obtieneTodosPorCondicion("links", {
 				statusRegistro_id: {[Op.ne]: inactivo_id},
 				prodAprob,
 			});
-			const linksRevisar = links.filter((n) => !estables_ids.includes(n.statusRegistro_id));
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
+			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
+			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linkEstandar_id); // links de corto plazo
+			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linkEstandar_id); // links de plazo estándar
 
-			// Abre los 'linksRevisar' entre 'antiguos' y 'recientes'
-			const prods = linksRevisar.length;
-			const pelisColes = linksRevisar.filter((n) => !n.capitulo_id).length;
-			const capitulos = prods - pelisColes;
-			cantLinksVencPorSem["0"] = {pelisColes, capitulos, prods};
+			// Abre los links con límite
+			let pelisColes = linksConLimite.filter((n) => !n.capitulo_id);
+			pelisColes = {
+				creadoAprob: pelisColes.filter((n) => n.statusRegistro_id == creadoAprob_id).length,
+				inactivarRecuperar: pelisColes.filter((n) => n.statusRegistro_id != creadoAprob_id).length,
+				total: pelisColes.length,
+			};
+			let capitulos = linksConLimite.filter((n) => n.capitulo_id);
+			capitulos = {
+				creadoAprob: capitulos.filter((n) => n.statusRegistro_id == creadoAprob_id).length,
+				inactivarRecuperar: capitulos.filter((n) => n.statusRegistro_id != creadoAprob_id).length,
+				total: capitulos.length,
+			};
+
+			// Otros datos
+			const sinLimite = linksSinLimite.length;
+			const prods = linksConLimite.length + linksSinLimite.length;
+			cantLinksVencPorSem["0"] = {pelisColes, capitulos, sinLimite, prods};
 
 			// Obtiene la cantidad por semana de los 'linksAprob'
 			for (let link of linksAprob) {
@@ -651,7 +668,10 @@ module.exports = {
 		},
 		paramsVencPorSem: () => {
 			// Averigua la cantidad total de pendientes
-			const {pelisColes: pelisColesPends, capitulos: capsPends, prods: cantPends} = cantLinksVencPorSem[0];
+			const {sinLimite} = cantLinksVencPorSem[0];
+			let {pelisColes, capitulos, prods: cantPends} = cantLinksVencPorSem[0];
+			const pelisColesPends = pelisColes.total;
+			const capsPends = capitulos.total;
 
 			// Averigua los links totales 'aprobados_ids'
 			let cantAprobs = 0;
@@ -669,6 +689,11 @@ module.exports = {
 				Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
 			);
 			const capsParaProc = Math.min(capsPosibles, capsPends);
+			capitulos = {
+				creadoAprob: capsParaProc - Math.min(capsParaProc, capitulos.inactivarRecuperar),
+				inactivarRecuperar: Math.min(capsParaProc, capitulos.inactivarRecuperar),
+				total: capsParaProc,
+			};
 
 			// Películas y Colecciones
 			const semPrimRev = linksPrimRev / unaSemana;
@@ -680,13 +705,33 @@ module.exports = {
 			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
 			// Averigua la cantidad para procesar
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
+			pelisColes = {
+				creadoAprob: pelisColesParaProc - Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
+				inactivarRecuperar: Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
+				total: pelisColesParaProc,
+			};
 
 			// Agrega la información
-			const paraProc = {pelisColesParaProc, capsParaProc, prodsParaProc: pelisColesParaProc + capsParaProc};
+			const paraProc = {pelisColes, capitulos, sinLimite, prods: pelisColesParaProc + capsParaProc + sinLimite};
 			cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
+			//console.log(694, cantLinksVencPorSem);
 
 			// Fin
 			return;
+		},
+		categoria_id: (link) => {
+			// Variables
+			const anoReciente = anoHoy - linkAnoReciente;
+			const noTrailer = link.tipo_id != linkTrailer_id;
+			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
+
+			// Fin
+			return link.statusRegistro_id == creado_id
+				? linkRecienCreado_id
+				: (anoEstreno || anoEstreno > anoReciente) && noTrailer
+				? linkEstrenoReciente_id
+				: linkEstandar_id;
 		},
 	},
 
