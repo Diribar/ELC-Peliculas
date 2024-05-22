@@ -690,7 +690,6 @@ module.exports = {
 				prods: pelisColesParaProc + capsParaProc + sinLimite,
 			};
 			cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
-			console.log(694, cantLinksVencPorSem);
 
 			// Fin
 			return;
