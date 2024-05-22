@@ -881,7 +881,7 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstrenoReciente_id); // creadoAprob
+		registros = creadoAprobs.filter((n) => n.categoria_id != linkEstandar_id); // creadoAprob
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
