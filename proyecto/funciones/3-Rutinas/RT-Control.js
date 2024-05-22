@@ -834,7 +834,7 @@ let actualizaCategoriaLink = async () => {
 
 	// Actualiza todos los links
 	for (let link of links) {
-		const categoria_id = comp.linksVencPorSem.categoria(link);
+		const categoria_id = comp.linksVencPorSem.categoria_id(link);
 		await BD_genericas.actualizaPorId("links", link.id, {categoria_id});
 	}
 
