@@ -807,8 +807,7 @@ window.addEventListener("load", async () => {
 			// Menor o igual que el año actual
 			if (valor) {
 				const anoIngresado = parseInt(valor);
-				const anoActual = new Date().getFullYear();
-				valor = Math.min(anoIngresado, anoActual);
+				valor = Math.min(anoIngresado, anoHoy);
 			}
 
 			// Limpia el ícono de error/OK
