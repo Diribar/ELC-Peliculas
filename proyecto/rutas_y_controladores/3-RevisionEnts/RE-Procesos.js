@@ -749,10 +749,11 @@ module.exports = {
 			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
-			const fechaVencim = FN_links.fechaVencim({link, anoEstreno, IN, ahora, semana});
+			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
 
 			// Arma los datos
 			let datos = {
+				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id}), // se actualiza con el nuevo status
 				fechaVencim,
 				anoEstreno,
 				statusSugeridoPor_id: revID,
@@ -764,7 +765,7 @@ module.exports = {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
-			} else datos.yaTuvoPrimRev = true;
+			} else datos.sigRev = true;
 
 			// Fin
 			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
@@ -855,75 +856,78 @@ let purgaEdicionRclv = (edicion, entidad) => {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const anoActual = new Date().getFullYear();
-		const anoReciente = anoActual - linkAnoReciente;
-		const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem.paraProc;
-		let respuesta;
+		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes.total;
+		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos.total;
+		let respuesta, registros;
 
 		// Obtiene los links a revisar
 		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
-		const creados = originales.filter((n) => n.statusRegistro_id == creado_id);
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const inactivarRecuperar = originales.filter((n) => inactivarRecuperar_ids.includes(n.statusRegistro_id));
-		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
-		const yaTuvoPrimRev = creadoAprobs
-			.filter((n) => n.yaTuvoPrimRev)
-			.filter((n) => n.anoEstreno <= anoReciente || n.tipo_id == linkTrailer_id);
 
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
 
 		// Sin restricción - Ediciones
-		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
+		respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Inactivar/Recuperar
-		if (inactivarRecuperar.length) respuesta = this.obtieneProdLink({links: inactivarRecuperar, datos});
+		// Categoría "no estándar"
+		registros = originales.filter((n) => n.statusRegistro_id == creado_id); // Altas
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - Altas
-		if (creados.length) respuesta = this.obtieneProdLink({links: creados, datos});
+		registros = inactivarRecuperar.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		// Con restricción - Capítulos
-		if (capsParaProc) {
-			// Variables
-			let capitulos;
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstrenoReciente_id); // creadoAprob
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
 
-			//Primera revisión
-			capitulos = primRev.filter((n) => n.capitulo_id);
-			if (capitulos.length) respuesta = this.obtieneProdLink({links: capitulos, datos});
-			if (respuesta) return respuesta;
+		// Categoría "estándar" - Capítulos
+		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
 
-			// Capítulos
-			capitulos = yaTuvoPrimRev.filter((n) => n.capitulo_id);
-			if (capitulos.length) respuesta = this.obtieneProdLink({links: capitulos, datos});
-			if (respuesta) return respuesta;
-		}
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
+		respuesta = this.creadoAprobStd({paraProc: capsParaProc, registros, datos});
+		if (respuesta) return respuesta;
 
-		// Con restricción - Películas y Colecciones
-		if (pelisColesParaProc) {
-			let pelisColes;
-			// Primera revisión
-			pelisColes = primRev.filter((n) => !n.capitulo_id);
-			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
-			if (respuesta) return respuesta;
+		// Categoría "estándar" - Películas y Colecciones
+		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
 
-			// Películas y Colecciones
-			pelisColes = yaTuvoPrimRev.filter((n) => !n.capitulo_id);
-			if (pelisColes.length) respuesta = this.obtieneProdLink({links: pelisColes, datos});
-			if (respuesta) return respuesta;
-		}
-
-		// Sin restricción - Recientes no trailers
-		const recientes = creadoAprobs.filter((n) => n.anoEstreno > anoReciente && n.tipo_id != linkTrailer_id); // si es trailer, es normal que tenga larga vida
-		if (recientes.length) respuesta = this.obtieneProdLink({links: recientes, datos});
+		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
+		respuesta = this.creadoAprobStd({paraProc: pelisColesParaProc, registros, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
 		return null;
 	},
+	creadoAprobStd: ({paraProc, registros: registrosTodos, filtro, datos}) => {
+		if (!paraProc) return;
+
+		// Variables
+		let registros, respuesta;
+
+		// Primera revisión
+		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
+		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
+
+		// Siguientes revisiones
+		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
+		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
+
+		// Fin
+		return;
+	},
 	obtieneProdLink: function ({links, datos}) {
+		if (!links.length) return;
+
 		// Variables
 		const {entidad, id, revID} = datos;
 		let productos;
@@ -991,22 +995,17 @@ let FN_links = {
 		// Fin
 		return sigProd;
 	},
-	fechaVencim: ({link, anoEstreno, IN, ahora, semana}) => {
-		const anoActual = new Date().getFullYear();
-		const anoReciente = anoActual - linkAnoReciente;
-		const noTrailer = link.tipo_id != linkTrailer_id;
+	fechaVencim: ({ahora, IN, categoria_id, semana}) => {
 		const ahoraTiempo = ahora.getTime();
-		const fechaVencim =
-			IN != "SI"
-				? null
-				: link.statusRegistro_id == creado_id // si está recién creado
-				? new Date(ahoraTiempo + linksPrimRev)
-				: (!anoEstreno || anoEstreno > anoReciente) && noTrailer // si se desconoce su año de estreno o es reciente, y no es un trailer
-				? new Date(ahoraTiempo + linksPrimRev + unaSemana)
-				: new Date(ahoraTiempo + semana * unaSemana); // en la semana disponible
-
-		// Fin
-		return fechaVencim;
+		return IN != "SI"
+			? null
+			: categoria_id == linkRecienCreado_id
+			? new Date(ahoraTiempo + linksPrimRev)
+			: categoria_id == linkEstrenoReciente_id
+			? new Date(ahoraTiempo + linksPrimRev + unaSemana)
+			: categoria_id == linkEstandar_id
+			? new Date(ahoraTiempo + semana * unaSemana)
+			: null;
 	},
 };
 let obtieneRegs = async (campos) => {
