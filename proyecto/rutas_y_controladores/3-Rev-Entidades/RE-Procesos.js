@@ -488,10 +488,9 @@ module.exports = {
 			const capsID = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id}).then((n) =>
 				n.map((m) => m.id)
 			);
-			const links = await BD_genericas.obtieneTodosPorCondicion("links", {capitulo_id: capsID});
 
-			// Actualiza el campo 'prodAprob' a cada link
-			for (let link of links) BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+			// Actualiza el campo 'prodAprob' a los links de la colección
+			await BD_genericas.actualizaTodosPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
 
 			// Fin
 			return;
