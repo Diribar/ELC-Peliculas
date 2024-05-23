@@ -128,11 +128,11 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
-		datos = {}; // limpia la variable 'datos'
 		const producto = !rclv;
 		const userID = original.statusSugeridoPor_id;
 		const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 		let destino;
+		datos = {}; // limpia la variable 'datos'
 
 		// Acciones si es un RCLV
 		if (rclv) {
