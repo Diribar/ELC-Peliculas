@@ -102,10 +102,10 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.2-RCLVs/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-Links"),
 	path.resolve(__dirname, "./vistas/2.3-Links/Includes"),
-	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
-	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
-	path.resolve(__dirname, "./vistas/4-RevisionUs"),
-	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades/Includes"),
+	path.resolve(__dirname, "./vistas/4-Rev-Usuarios"),
+	path.resolve(__dirname, "./vistas/4-Rev-Usuarios/Includes"),
 	path.resolve(__dirname, "./vistas/5-Consultas"),
 	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/6-Institucional"),
@@ -272,8 +272,8 @@ app.set("views", [
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
 	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_controladores/4-RevisionUs/RU-Rutas"));
-	app.use("/revision", require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_controladores/4-Rev-Usuarios/RU-Rutas"));
+	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
