@@ -30,7 +30,8 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		//quitaElStatusDelComentario();
+		// quitaElStatusDelComentario();
+		// await this.rutinasDiarias.IDdeTablas()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -496,7 +497,7 @@ module.exports = {
 
 				// Actualiza los IDs
 				for (let registro of registros) {
-					await BD_genericas.actualizaPorId(tabla, registro.id, {id});
+					await BD_genericas.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
 					id++;
 				}
 
