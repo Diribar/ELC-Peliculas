@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await actualizaCategoriaLink();
+		await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -205,10 +205,12 @@ module.exports = {
 		},
 		FeedbackParaUsers: async () => {
 			// En 'development' interrumpe
-			if (nodeEnv == "development") return;
+			//if (nodeEnv == "development") return;
 
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
+			console.log(212,regsStatus.length, regsEdic.length);
+			return
 			const regsTodos = [...regsStatus, ...regsEdic];
 
 			// Si no hay registros a comunicar, termina el proceso
