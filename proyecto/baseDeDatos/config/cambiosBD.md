@@ -1,0 +1,1 @@
+DELETE FROM c19353_elc.cam_hist_status WHERE sugeridoPor_id=2;
