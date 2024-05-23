@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero

@@ -2,7 +2,7 @@
 // Variables
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
+const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const validaRCLV = require("../2.2-RCLVs/RCLV-FN-Validar");
 const procsLinks = require("../2.3-Links/LK-FN-Procesos");
