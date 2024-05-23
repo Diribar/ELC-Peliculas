@@ -357,7 +357,7 @@ module.exports = {
 			const {ruta} = comp.reqBasePathUrl(req);
 			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
-			const inactivarRecuperar = codigo == "inactivar-o-recuperar";
+			const inacRecups = codigo == "inactivar-o-recuperar";
 
 			// Variables
 			const {entidad, id, desaprueba} = req.query;
@@ -371,7 +371,7 @@ module.exports = {
 			const statusOriginal_id = original.statusRegistro_id;
 
 			// Obtiene el 'subcodigo'
-			const subcodigo = inactivarRecuperar
+			const subcodigo = inacRecups
 				? statusOriginal_id == inactivar_id
 					? "inactivar"
 					: "recuperar"
@@ -863,7 +863,7 @@ let FN_links = {
 		// Obtiene los links a revisar
 		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
-		const inactivarRecuperar = originales.filter((n) => inactivarRecuperar_ids.includes(n.statusRegistro_id));
+		const inacRecups = originales.filter((n) => inacRecup_ids.includes(n.statusRegistro_id));
 
 		// Si no hay links, interrumpe la función
 		if (!ediciones.length && !originales.length) return;
@@ -877,7 +877,7 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = inactivarRecuperar.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
@@ -886,7 +886,7 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
-		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
@@ -895,7 +895,7 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Películas y Colecciones
-		registros = inactivarRecuperar.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
