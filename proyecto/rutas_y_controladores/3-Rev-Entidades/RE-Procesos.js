@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../2.0-Familias/FM-Procesos");
 const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 module.exports = {
