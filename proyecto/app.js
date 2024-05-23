@@ -187,7 +187,7 @@ app.set("views", [
 	global.creados_ids = [creado_id, creadoAprob_id];
 	global.aprobados_ids = [creadoAprob_id, aprobado_id];
 	global.estables_ids = [aprobado_id, inactivo_id];
-	global.inactivarRecuperar_ids = [inactivar_id, recuperar_id];
+	global.inacRecup_ids = [inactivar_id, recuperar_id];
 	global.activos_ids = [creado_id, creadoAprob_id, aprobado_id];
 
 	// 2. Tipos de actuación
