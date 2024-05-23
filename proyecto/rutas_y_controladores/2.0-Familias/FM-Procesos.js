@@ -347,10 +347,10 @@ module.exports = {
 			// Si fue originado por una persona, agrega un registro en el histStatus
 			if (registro.statusSugeridoPor_id != usAutom_id) {
 				let datosHist = {
-					...{entidad, entidad_id: registro.id},
-					...{sugeridoPor_id: registro.statusSugeridoPor_id, sugeridoEn: registro.statusSugeridoEn},
-					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
-					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
+					...{entidad, entidad_id: registro.id, aprobado: true}, // entidad
+					...{statusOrigPor_id: registro.statusSugeridoPor_id, statusFinalPor_id: usAutom_id}, // personas
+					...{statusOrig_id: registro.statusRegistro_id, statusFinal_id: aprobado_id}, // status
+					...{statusOrigEn: registro.statusSugeridoEn}, // fecha
 				};
 				BD_genericas.agregaRegistro("histStatus", datosHist);
 			}
