@@ -312,7 +312,7 @@ module.exports = {
 				if (!altaAprob) {
 					// Mensaje adicional
 					mensaje += ", de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
-					mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
+					mensaje += " a status <em>" + n.statusFinal.nombre.toLowerCase() + "</em>";
 
 					// Mensaje adicional si hay un motivo
 					if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
