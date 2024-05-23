@@ -98,10 +98,10 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD"),
-	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
-	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs/Includes"),
+	path.resolve(__dirname, "./vistas/2.3-Links"),
+	path.resolve(__dirname, "./vistas/2.3-Links/Includes"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
@@ -269,8 +269,8 @@ app.set("views", [
 	app.use("/", rutaCRUD);
 	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas"));
-	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas"));
-	app.use("/links", require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas"));
+	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
+	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
 	app.use("/revision/usuarios", require("./rutas_y_controladores/4-RevisionUs/RU-Rutas"));
 	app.use("/revision", require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas"));

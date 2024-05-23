@@ -1,6 +1,6 @@
 "use strict";
 // ************ Requires *************
-const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
+const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********

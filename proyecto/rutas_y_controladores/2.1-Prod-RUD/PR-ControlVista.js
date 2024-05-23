@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
+const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
