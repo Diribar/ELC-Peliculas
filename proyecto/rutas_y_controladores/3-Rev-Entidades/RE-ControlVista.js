@@ -253,10 +253,11 @@ module.exports = {
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
-			...{entidad, entidad_id: id},
-			...{sugeridoPor_id: userID, sugeridoEn: original.statusSugeridoEn, statusOriginal_id},
-			...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
-			...{aprobado: aprob, motivo_id, comentario},
+			...{entidad, entidad_id: id, aprobado: aprob}, // entidad
+			...{statusOrigPor_id: userID, statusFinalPor_id: revID}, // personas
+			...{statusOrig_id: statusOriginal_id, statusFinal_id}, // status
+			...{statusOrigEn: original.statusSugeridoEn}, // fecha
+			...{motivo_id, comentario},
 		};
 		const motivo =
 			codigo == "rechazar" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
