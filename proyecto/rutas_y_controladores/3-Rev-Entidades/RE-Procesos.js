@@ -403,12 +403,10 @@ module.exports = {
 			let comentario = "";
 			if (req.body.comentario) comentario = req.body.comentario;
 			else {
-				if (motivo_id && motivosStatusConComentario_ids.includes(motivo_id)) {
-					const condicion = {entidad, entidad_id: id, comentario: {[Op.ne]: null}};
-					comentario = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion)
-						.then((n) => (n.length ? n.pop() : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
-						.then((n) => n.comentario);
-				}
+				const condicion = {entidad, entidad_id: id};
+				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
+					.then((n) => (n ? n : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
+					.then((n) => n.comentario);
 			}
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
