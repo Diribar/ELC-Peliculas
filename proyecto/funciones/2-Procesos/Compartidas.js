@@ -554,7 +554,7 @@ module.exports = {
 			// Variables
 			let espera = [];
 
-			// Obtiene todos los links con sus vínculos de prods
+			// Si no se especificaron links, obtiene todos los aprobados que no tengan 'fechaVencim'
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
 				const include = variables.entidades.asocProds;
@@ -619,33 +619,25 @@ module.exports = {
 			for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
-			const links = await BD_genericas.obtieneTodosPorCondicion("links", {
-				statusRegistro_id: {[Op.ne]: inactivo_id},
-				prodAprob,
-			});
+			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob};
+			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
 			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linkEstandar_id); // links de corto plazo
 			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linkEstandar_id); // links de plazo estándar
 
 			// Abre los links con límite
-			let pelisColes = linksConLimite.filter((n) => !n.capitulo_id);
-			pelisColes = {
-				creadoAprob: pelisColes.filter((n) => n.statusRegistro_id == creadoAprob_id).length,
-				inactivarRecuperar: pelisColes.filter((n) => n.statusRegistro_id != creadoAprob_id).length,
-				total: pelisColes.length,
-			};
-			let capitulos = linksConLimite.filter((n) => n.capitulo_id);
-			capitulos = {
-				creadoAprob: capitulos.filter((n) => n.statusRegistro_id == creadoAprob_id).length,
-				inactivarRecuperar: capitulos.filter((n) => n.statusRegistro_id != creadoAprob_id).length,
-				total: capitulos.length,
-			};
+			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
+			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
+			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
+			const capitulos = capitulosRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
+			const irPelisColes = pelisColesRegs.length - pelisColes;
+			const irCapitulos = capitulosRegs.length - capitulos;
 
 			// Otros datos
 			const sinLimite = linksSinLimite.length;
 			const prods = linksConLimite.length + linksSinLimite.length;
-			cantLinksVencPorSem["0"] = {pelisColes, capitulos, sinLimite, prods};
+			cantLinksVencPorSem["0"] = {pelisColes, capitulos, sinLimite, irPelisColes, irCapitulos, prods};
 
 			// Obtiene la cantidad por semana de los 'linksAprob'
 			for (let link of linksAprob) {
@@ -666,10 +658,8 @@ module.exports = {
 		},
 		paramsVencPorSem: () => {
 			// Averigua la cantidad total de pendientes
-			const {sinLimite} = cantLinksVencPorSem[0];
-			let {pelisColes, capitulos, prods: cantPends} = cantLinksVencPorSem[0];
-			const pelisColesPends = pelisColes.total;
-			const capsPends = capitulos.total;
+			const {pelisColes: pelisColesPends, capitulos: capsPends, prods: cantPends} = cantLinksVencPorSem[0];
+			const {sinLimite, irPelisColes, irCapitulos} = cantLinksVencPorSem[0];
 
 			// Averigua los links totales 'aprobados_ids'
 			let cantAprobs = 0;
@@ -682,37 +672,24 @@ module.exports = {
 			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
 
 			// Capítulos
-			const capsPosibles = Math.max(
-				0,
-				Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods // se disminuye para que no 'sature' la semana con capítulos
-			);
-			const capsParaProc = Math.min(capsPosibles, capsPends);
-			capitulos = {
-				creadoAprob: capsParaProc - Math.min(capsParaProc, capitulos.inactivarRecuperar),
-				inactivarRecuperar: Math.min(capsParaProc, capitulos.inactivarRecuperar),
-				total: capsParaProc,
-			};
+			const capsPosibles = Math.max(0, Math.round(cantPromSemEntero / 2) - cantLinksVencPorSem[linksSemsVidaUtil].prods); // se disminuye para que no 'sature' la semana con capítulos
+			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
 			// Películas y Colecciones
 			const semPrimRev = linksPrimRev / unaSemana;
 			let pelisColesPosibles = 0;
-			// Averigua los posibles sin la última semana
 			for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
-				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods);
-			// Averigua los posibles en la última semana, sumándole la capacidad 'ociosa' de capítulos
-			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc);
-			// Averigua la cantidad para procesar
-			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends);
-			pelisColes = {
-				creadoAprob: pelisColesParaProc - Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
-				inactivarRecuperar: Math.min(pelisColesParaProc, pelisColes.inactivarRecuperar),
-				total: pelisColesParaProc,
-			};
+				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
+			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc); // en la última semana, menos los capítulos
+			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
 
 			// Agrega la información
-			const paraProc = {pelisColes, capitulos, sinLimite, prods: pelisColesParaProc + capsParaProc + sinLimite};
+			const paraProc = {
+				pelisColes: pelisColesParaProc,
+				capitulos: capsParaProc,
+				prods: pelisColesParaProc + capsParaProc + sinLimite,
+			};
 			cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
-			//console.log(694, cantLinksVencPorSem);
 
 			// Fin
 			return;
@@ -727,7 +704,7 @@ module.exports = {
 			// Fin
 			return link.statusRegistro_id == creado_id
 				? linkRecienCreado_id
-				: (anoEstreno || anoEstreno > anoReciente) && noTrailer
+				: anoEstreno && anoEstreno > anoReciente && noTrailer
 				? linkEstrenoReciente_id
 				: linkEstandar_id;
 		},

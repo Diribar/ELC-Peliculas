@@ -744,6 +744,7 @@ module.exports = {
 			const id = link.id;
 			const revID = req.session.usuario.id;
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
+			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id}); // se actualiza con el nuevo status
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 			const statusCreado = link.statusRegistro_id == creado_id;
@@ -753,7 +754,7 @@ module.exports = {
 
 			// Arma los datos
 			let datos = {
-				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id}), // se actualiza con el nuevo status
+				categoria_id,
 				fechaVencim,
 				anoEstreno,
 				statusSugeridoPor_id: revID,
@@ -881,7 +882,7 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstrenoReciente_id); // creadoAprob
+		registros = creadoAprobs.filter((n) => n.categoria_id != linkEstandar_id); // creadoAprob
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 

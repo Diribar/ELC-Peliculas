@@ -107,12 +107,12 @@ module.exports = {
 			// PROBLEMA - Valida que el link tenga un status distinto a 'estable'
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
 
-			// PROBLEMA - Si no queda lugar, interrumpe la función
-			const linkEstandarAprob = IN == "SI" && comp.linksVencPorSem.categoria_id(link);
+			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
+			const linkEstandarAprob = IN == "SI" && comp.linksVencPorSem.categoria_id(link) == linkEstandar_id;
 			if (
 				linkEstandarAprob &&
-				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos.total) || // es un capítulo y no queda lugar
-					(!link.capitulo_id && !cantLinksVencPorSem.paraProc.pelisColes.total)) // no es un capítulo y no queda lugar
+				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
+					(!link.capitulo_id && !cantLinksVencPorSem.paraProc.pelisColes)) // no es un capítulo y no queda lugar
 			)
 				return res.json("En esta semana ya no se puede revisar este link");
 

@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const lunesSemana53 = primerLunesDelAno + unaSemana * 53;
 		const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
-		let resultado = [["Semana", "Caps.", "PelisColes.", {role: "annotation"}]];
+		let resultado = [["Semana", "Caps.", "PelisColes.", "Ilimitado", "InacRecup", {role: "annotation"}]];
 		let restar = 0;
 		let ticks = [];
 
@@ -34,7 +34,9 @@ window.addEventListener("load", async () => {
 			// Agrega los valores Y
 			const capitulos = cantLinks[ejeX].capitulos;
 			const pelisColes = cantLinks[ejeX].pelisColes;
-			resultado.push([ejeX, capitulos, pelisColes, ""]);
+			const sinLimite = cantLinks[ejeX].sinLimite;
+			const inacRecup = cantLinks[ejeX].irPelisColes + cantLinks[ejeX].irCapitulos;
+			resultado.push([ejeX, capitulos, pelisColes, sinLimite, inacRecup, ""]);
 		}
 
 		// Especifica la información
@@ -50,7 +52,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(37,64,97)", "rgb(31,73,125)"],
+			colors: ["rgb(37,64,97)", "rgb(31,73,125)","rgb(79,98,40)","firebrick"],
 			legend: "none",
 			hAxis: {
 				scaleType: "number",

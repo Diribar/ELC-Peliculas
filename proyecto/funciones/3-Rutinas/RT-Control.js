@@ -839,5 +839,5 @@ let actualizaCategoriaLink = async () => {
 	}
 
 	// Fin
-	return
+	return;
 };
