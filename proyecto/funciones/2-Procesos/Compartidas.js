@@ -959,8 +959,8 @@ module.exports = {
 	},
 	enviaMail: async function ({email, asunto, comentario}) {
 		// create reusable transporter object using the default SMTP transport
-		const {host, port, user, pass} = process.env;
-		const transporter = nodemailer.createTransport({host, port: 465, secure: true, auth: {user, pass}});
+		const {host, puerto, user, pass} = process.env;
+		const transporter = nodemailer.createTransport({host, port: Number(puerto), secure: true, auth: {user, pass}});
 		// secure: true for 465, false for other ports
 
 		// Datos

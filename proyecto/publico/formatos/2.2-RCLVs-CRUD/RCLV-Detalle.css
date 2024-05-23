@@ -8,21 +8,23 @@
 	#contenido #informacion #cuadroDeResultados {
 		position: relative;
 
-		#listado .prodsNuevos {
+		#listado li {
 			padding-block: 0px !important; padding-inline: 15px;
-			button {
-				#infoPeli {
-					display: flex; flex-direction: column; justify-content: space-between; height: 100%;
-					#ppp {
-						i {font-size: 1.25rem;}
-						#texto {
-							margin-left: 5px; text-wrap: nowrap; border-radius: 10px;
-							background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
-							padding: 0px 5px; line-height: 1.06;
+			&.prodsNuevos {
+				button {
+					#infoPeli {
+						display: flex; flex-direction: column; justify-content: space-between; height: 100%;
+						#ppp {
+							i {font-size: 1.25rem;}
+							#texto {
+								margin-left: 5px; text-wrap: nowrap; border-radius: 10px;
+								background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
+								padding: 0px 5px; line-height: 1.06;
+							}
 						}
 					}
+					&:hover #infoPeli #ppp i {color: inherit;}
 				}
-				&:hover #infoPeli #ppp i {color: inherit;}
 			}
 		}
 	}

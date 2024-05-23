@@ -1,6 +1,6 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
-	#listado .prodsNuevos {
+	#listado li {
 		padding-left: 0 !important;
 		&:last-child {padding-right: 0 !important;}
 	}
