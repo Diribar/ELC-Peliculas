@@ -94,10 +94,10 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Iconos"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-Agregar"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-Agregar/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-RUD"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.2-RCLVs"),
 	path.resolve(__dirname, "./vistas/2.2-RCLVs/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-Links"),
@@ -267,8 +267,8 @@ app.set("views", [
 	// Urls que dependen de la variable 'global'
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
 	app.use("/", rutaCRUD);
-	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas"));
-	app.use("/producto", require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas"));
+	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prods-Agregar/PA-Rutas"));
+	app.use("/producto", require("./rutas_y_controladores/2.1-Prods-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
 	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));

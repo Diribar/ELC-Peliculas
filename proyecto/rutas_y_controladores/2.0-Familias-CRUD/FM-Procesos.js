@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
