@@ -572,8 +572,7 @@ module.exports = {
 
 				// Averigua si es un linkReciente y sin primRev
 				const sinPrimRev = !link.yaTuvoPrimRev;
-				const anoReciente = anoHoy - linkAnoReciente;
-				const linkReciente = (!anoEstreno || anoEstreno > anoReciente) && link.tipo_id != linkTrailer_id;
+				const linkReciente = categoria_id == linkEstrenoReciente_id;
 
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 				const desde = link.statusSugeridoEn.getTime();
@@ -581,7 +580,7 @@ module.exports = {
 				const fechaVencim = new Date(fechaVencimNum);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
-				espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
+				espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, categoria_id}));
 			}
 			await Promise.all(espera);
 
@@ -697,14 +696,13 @@ module.exports = {
 		categoria_id: (link) => {
 			// Variables
 			const anoReciente = anoHoy - linkAnoReciente;
-			const noTrailer = link.tipo_id != linkTrailer_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
 
 			// Fin
 			return link.statusRegistro_id == creado_id
 				? linkRecienCreado_id
-				: noTrailer && anoEstreno && anoEstreno > anoReciente
+				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
 				? linkEstrenoReciente_id
 				: linkEstandar_id;
 		},
