@@ -2,7 +2,7 @@
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
 const procesos = require("./PA-FN4-Procesos");
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../2.0-Familias/FM-Procesos");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
