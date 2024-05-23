@@ -11,7 +11,7 @@ module.exports = {
 		// Variables
 		procesos.variablesDiarias();
 		comp.variablesSemanales();
-		await comp.actualizaLinksVencPorSem();
+		await comp.linksVencPorSem.actualizaLVPS();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.FeedbackParaUsers();
+		// await actualizaCategoriaLink();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -265,6 +265,8 @@ module.exports = {
 								BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 								console.log("Mail enviado a " + email);
 							}
+							// Si el mail no fue enviado, lo avisa
+							else console.log("Mail no enviado a " + email);
 
 							// Fin
 							return;
@@ -631,7 +633,7 @@ module.exports = {
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
 			// actualiza solamente la fecha de los links sin fecha
-			await comp.actualizaFechaVencimLinks();
+			await comp.linksVencPorSem.actualizaFechaVencim();
 			return;
 		},
 		EliminaHistorialAntiguo: async () => {
@@ -825,4 +827,17 @@ let quitaStatusDeComentario = async () => {
 
 	// Fin
 	return;
+};
+let actualizaCategoriaLink = async () => {
+	// Variables
+	const links = await BD_genericas.obtieneTodos("links");
+
+	// Actualiza todos los links
+	for (let link of links) {
+		const categoria_id = comp.linksVencPorSem.categoria_id(link);
+		await BD_genericas.actualizaPorId("links", link.id, {categoria_id});
+	}
+
+	// Fin
+	return
 };

@@ -36,7 +36,7 @@ module.exports = {
 			await procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
-		// Si es un link propio y en status creado, lo actualiza
+		// Si es un link propio y en status creado, lo actualiza con la edición
 		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
@@ -87,6 +87,7 @@ module.exports = {
 		else {
 			// Inactivar
 			const datos = {
+				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id: inactivar_id}),
 				statusSugeridoPor_id: userID,
 				statusSugeridoEn: ahora,
 				motivo_id,
@@ -117,8 +118,15 @@ module.exports = {
 			: link.statusRegistro_id != inactivo_id // El link no está en status 'inactivo'
 			? {mensaje: "El link no está en status 'inactivo'", reload: true}
 			: respuesta;
+
+		// Acciones si no hay ningún error
 		if (!respuesta.mensaje) {
-			datos = {statusSugeridoEn: ahora, statusSugeridoPor_id: userID, statusRegistro_id: recuperar_id};
+			datos = {
+				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id: recuperar_id}),
+				statusSugeridoEn: ahora,
+				statusSugeridoPor_id: userID,
+				statusRegistro_id: recuperar_id,
+			};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			await procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
@@ -149,13 +157,16 @@ module.exports = {
 			: link.statusSugeridoPor_id != userID
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
+
+		// Acciones si no hay mensaje de error
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
 			const nuevosDatos =
 				link.statusRegistro_id == inactivar_id
 					? {statusRegistro_id: aprobado_id, motivo_id: null}
 					: {statusRegistro_id: inactivo_id};
-			await BD_genericas.actualizaPorId("links", link.id, nuevosDatos);
+			const categoria_id = comp.linksVencPorSem.categoria({...link, statusRegistro_id: nuevosDatos.statusRegistro_id});
+			await BD_genericas.actualizaPorId("links", link.id, {...nuevosDatos, categoria_id});
 
 			// Actualiza los campos del producto asociado
 			link = {...link, ...nuevosDatos};

@@ -426,7 +426,7 @@ let auxiliares = {
 			const epocaAnt = v.registroAnt.epocaOcurrencia_id;
 			const epocaActual = registroAct.epocaOcurrencia_id;
 			const anoAnt = v.registroAnt.anoOcurrencia;
-			const anoActual = registroAct.anoOcurrencia;
+			const anoRegActual = registroAct.anoOcurrencia;
 
 			// Resultado
 			if (epocaActual == "pst") {
@@ -436,17 +436,17 @@ let auxiliares = {
 				const menorIgual1000 = "Años 34 al 1.000";
 
 				titulo =
-					!anoAnt || anoAnt < anoActual // ascendente
-						? (!anoAnt || anoAnt <= 1800) && anoActual > 1800
+					!anoAnt || anoAnt < anoRegActual // ascendente
+						? (!anoAnt || anoAnt <= 1800) && anoRegActual > 1800
 							? mayor1800
-							: (!anoAnt || anoAnt <= 1000) && anoActual > 1000
+							: (!anoAnt || anoAnt <= 1000) && anoRegActual > 1000
 							? mayor1000
 							: !anoAnt
 							? menorIgual1000
 							: ""
-						: anoActual <= 1000 && anoAnt > 1000 // descendente
+						: anoRegActual <= 1000 && anoAnt > 1000 // descendente
 						? menorIgual1000
-						: anoActual <= 1800 && anoAnt > 1800
+						: anoRegActual <= 1800 && anoAnt > 1800
 						? mayor1000
 						: "";
 			}

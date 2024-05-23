@@ -24,11 +24,11 @@
 			<!-- Tabla -->
 			<table>
 				<!-- Títulos (11 columnas) -->
-				<%- include("LK0-TituloTabla") %>
+				<%- include("FM-LK0-TituloTabla") %>
 				<tbody id="<%= tema %>">
 					<!-- Filas para links existentes -->
 					<% links.forEach((link, fila)=> { %>
-						<%- include("LK1-Datos", {link, fila}) %>
+						<%- include("FM-LK1-Datos", {link, fila}) %>
 						<% if (tema == "revisionEnts") { %>
 							<% for (let edicion of link.ediciones) { %>
 								<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %>

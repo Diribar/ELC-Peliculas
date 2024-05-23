@@ -864,6 +864,7 @@ let FN_links = {
 		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
 		const creados = originales.filter((n) => n.statusRegistro_id == creado_id);
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
+		const inactivarRecuperar = originales.filter((n) => inactivarRecuperar_ids.includes(n.statusRegistro_id));
 		const primRev = creadoAprobs.filter((n) => !n.yaTuvoPrimRev);
 		const yaTuvoPrimRev = creadoAprobs
 			.filter((n) => n.yaTuvoPrimRev)
@@ -874,6 +875,10 @@ let FN_links = {
 
 		// Sin restricción - Ediciones
 		if (ediciones.length) respuesta = this.obtieneProdLink({links: ediciones, datos});
+		if (respuesta) return respuesta;
+
+		// Sin restricción - Inactivar/Recuperar
+		if (inactivarRecuperar.length) respuesta = this.obtieneProdLink({links: inactivarRecuperar, datos});
 		if (respuesta) return respuesta;
 
 		// Sin restricción - Altas

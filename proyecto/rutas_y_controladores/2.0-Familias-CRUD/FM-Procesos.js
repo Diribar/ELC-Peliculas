@@ -439,7 +439,7 @@ module.exports = {
 			}
 
 			// Actualiza la variable de links vencidos
-			await comp.actualizaLinksVencPorSem();
+			await comp.linksVencPorSem.actualizaLVPS();
 
 			// Fin
 			return;

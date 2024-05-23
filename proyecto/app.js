@@ -152,6 +152,7 @@ app.set("views", [
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
 		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
+		linksCategs: BD_genericas.obtieneTodos("linksCategs"),
 
 		// Consultas
 		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
@@ -186,7 +187,7 @@ app.set("views", [
 	global.creados_ids = [creado_id, creadoAprob_id];
 	global.aprobados_ids = [creadoAprob_id, aprobado_id];
 	global.estables_ids = [aprobado_id, inactivo_id];
-	global.provisorios_ids = [inactivar_id, recuperar_id];
+	global.inactivarRecuperar_ids = [inactivar_id, recuperar_id];
 	global.activos_ids = [creado_id, creadoAprob_id, aprobado_id];
 
 	// 2. Tipos de actuación
@@ -226,6 +227,11 @@ app.set("views", [
 	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
+
+	// Categorías de links
+	global.linkRecienCreado_id = linksCategs.find((n) => n.nombre == "recienCreado").id;
+	global.linkEstrenoReciente_id = linksCategs.find((n) => n.nombre == "estrenoReciente").id;
+	global.linkEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
 
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");

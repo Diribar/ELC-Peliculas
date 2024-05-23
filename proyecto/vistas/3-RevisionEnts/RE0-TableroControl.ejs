@@ -90,13 +90,13 @@
 			<% if (usuario.rolUsuario.revisorLinks) { %>
 				<!-- Links -->
 				<div class="bloques" id="links">
-					<% const {pelisColesParaProc, capsParaProc} = cantLinksVencPorSem.paraProc; %>
+					<% const {prods} = cantLinksVencPorSem.paraProc; %>
 					<!-- Título y ayuda -->
 					<div class="tituloSecundario">
 						<!-- Título -->
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<div id="linksPends">Pends: <%= pelisColesParaProc + capsParaProc %></div>
+						<div id="linksPends">Pends: <%= prods %></div>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
