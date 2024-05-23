@@ -228,7 +228,7 @@ app.set("views", [
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
 
-	// Categorías de links
+	// Links - categorías
 	global.linkRecienCreado_id = linksCategs.find((n) => n.nombre == "recienCreado").id;
 	global.linkEstrenoReciente_id = linksCategs.find((n) => n.nombre == "estrenoReciente").id;
 	global.linkEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
