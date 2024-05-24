@@ -80,11 +80,16 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			inactivarRecuperar || codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicionConInclude(
-						"histStatus",
-						{entidad, entidad_id: id},
-						"statusFinal"
-				  ).then((n) => n.map((m) => m.statusFinal.nombre + (m.comentario ? " - " + m.comentario : "")))
+				? await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", {entidad, entidad_id: id}, [
+						"statusFinal",
+						"motivo",
+				  ]).then((n) =>
+						n.map(
+							(m) =>
+								m.statusFinal.nombre +
+								(m.comentario ? " - " + m.comentario : m.motivo ? " - " + m.motivo.descripcion : "")
+						)
+				  )
 				: [];
 
 		// Obtiene datos para la vista
