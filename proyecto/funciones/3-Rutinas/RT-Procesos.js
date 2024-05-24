@@ -237,7 +237,11 @@ module.exports = {
 			let condiciones;
 
 			// Obtiene los registros de "histStatus"
-			condiciones = {aprobado: {[Op.ne]: null}, comunicadoEn: null, sugeridoPor_id: {[Op.ne]: usAutom_id}};
+			condiciones = {
+				statusFinalPor_id: {[Op.and]: {[Op.ne]: inactivar_id, [Op.ne]: recuperar_id}},
+				statusOrigPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
+				comunicadoEn: null, // no fue comunicado
+			};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones)
 					// Agrega el nombre de la tabla
@@ -312,7 +316,7 @@ module.exports = {
 				if (!altaAprob) {
 					// Mensaje adicional
 					mensaje += ", de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
-					mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
+					mensaje += " a status <em>" + n.statusFinal.nombre.toLowerCase() + "</em>";
 
 					// Mensaje adicional si hay un motivo
 					if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;

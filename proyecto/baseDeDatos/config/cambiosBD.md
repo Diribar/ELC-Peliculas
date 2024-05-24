@@ -1,12 +1,12 @@
-CREATE TABLE `links_categorias` (
-  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+DELETE FROM c19353_elc.cam_hist_status WHERE sugeridoPor_id=2;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE sugeridoPor_id statusOrigPor_id int(10) unsigned NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE revisadoPor_id statusFinalPor_id int(10) unsigned NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE statusOriginal_id statusOrig_id tinyint(3) unsigned NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE sugeridoEn statusOrigEn datetime NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE revisadoEn statusFinalEn datetime NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status MODIFY COLUMN statusFinalEn datetime DEFAULT utc_date() NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE statusOrigEn statusOrigEn datetime NOT NULL AFTER statusFinalPor_id;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE statusFinalEn statusFinalEn datetime DEFAULT utc_date() NOT NULL AFTER statusOrigEn;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE comentario comentario varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL AFTER motivo_id;
 
-INSERT INTO c19353_elc.links_categorias (nombre) VALUES('recienCreado');
-INSERT INTO c19353_elc.links_categorias (nombre) VALUES('estrenoReciente');
-INSERT INTO c19353_elc.links_categorias (nombre) VALUES('estandar');
-
-ALTER TABLE c19353_elc.links ADD categoria_id tinyint(1) unsigned DEFAULT 1 NOT NULL AFTER anoEstreno;
-ALTER TABLE c19353_elc.links ADD CONSTRAINT links_categorias_fk FOREIGN KEY (categoria_id) REFERENCES c19353_elc.links_categorias(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+quita el status del comentario

@@ -1,0 +1,97 @@
+<div id="cambioStatus" class="iconos">
+	<% condicUsuario = locals.usuario && locals.usuario.statusRegistro_id == perennes_id %>
+	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
+	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
+	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
+		<% if ([...inacRecup_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
+			<!-- Revisar -->
+			<% const url = status_id == creado_id ? "alta" : "inactivar-o-recuperar" %>
+			<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
+		<% } %>
+		<% if (locals.status_id == creado_id && locals.creadoPor_id == usuario.id) { %>
+			<!-- Status creado y si fue creado por el usuario -> Eliminarlo definitivamente -->
+			<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+			</a>
+		<% } %>
+		<% if (aprobados_ids.includes(locals.status_id)) { %>
+			<!-- Inactivar -->
+			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
+		<% } %>
+		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
+			<!-- Recuperar -->
+			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
+			</a>
+			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
+				<!-- Eliminar -->
+				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+				</a>
+			<% } %>
+		<% } %>
+	<% } %>
+
+	<% condicRclvCrud = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
+	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
+	<% if (condicRclvCrud || condicRevSolapam) { %>
+		<!-- CRUD - Aprobar -->
+		<button type="submit" autofocus class="inactivo">
+			<i class="fa-solid fa-circle-check" title="Guardar"></i>
+		</button>
+		<!-- CRUD - Eliminar edición RCLV -->
+		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
+			<label for="eliminaEdicion" title="Eliminar la Edición">
+				<i class="fa-solid fa-trash-can"></i>
+			</label>
+			<input id="eliminaEdicion" type="submit" class="submit" formaction="<%= originalUrl %>&eliminarEdic=true" formmethod="post" >
+		<% } %>
+	<% } %>
+
+	<% if (tema == "revisionEnts") { %>
+		<% if (locals.statusCreado) { %>
+			<!-- REVISION ALTA - Aprobar -->
+			<button type="submit" autofocus>
+				<i class="fa-solid fa-circle-check" title="Aprobar"></i>
+			</button>
+			<!-- REVISION ALTA - Ir a la vista Rechazar -->
+			<a href="<%= '/revision/' + familia + '/rechazar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
+			</a>
+		<% } %>
+		<% if (codigo == "inactivar-o-recuperar") {  %>
+			<!-- REVISION INACTIVAR Y RECUPERAR - Rechaza el cambio de status -->
+			<label for="desaprueba" class="inactivo">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Desaprueba el cambio de status"></i>
+			</label>
+			<input type="submit" id="desaprueba" formaction="<%= urlActual %>&desaprueba=true" formmethod="post">
+
+			<!-- REVISION INACTIVAR Y RECUPERAR - Confirma el cambio de status -->
+			<button type="submit" id="aprueba">
+				<i class="fa-solid fa-circle-right" tabindex="-1" title="Aprueba el cambio de status"></i>
+			</button>
+		<% } %>
+	<% } %>
+</div>
+
+<% condicCrud = tema == "fmCrud" %>
+<% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
+<% condicRevRech = tema == "revisionEnts" && codigo == "rechazar" %>
+<% if (condicCrud || condicRevRech) {  %>
+	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>
+			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
+			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
+			<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+		<% } %>
+		<% if (condicCrudEliminar) {  %>
+			<!-- Elimina definitivamente -->
+			<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
+		<% } %>
+	</button>
+<% } %>
+

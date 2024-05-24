@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procesosRE = require("../3-RevisionEnts/RE-Procesos");
+const procesosRE = require("../3-Rev-Entidades/RE-Procesos");
 const procesos = require("./MS-Procesos");
 
 // *********** Controlador ***********

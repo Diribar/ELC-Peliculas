@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const cron = require("node-cron");
-const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../../rutas_y_controladores/2.0-Familias/FM-Procesos");
 const procesos = require("./RT-Procesos");
 
 // Exportar
@@ -30,7 +30,8 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await actualizaCategoriaLink();
+		// quitaElStatusDelComentario();
+		// await this.rutinasDiarias.IDdeTablas()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -174,7 +175,7 @@ module.exports = {
 				);
 
 				// Ejecuta la función linksEnProd
-				for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
+				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
 			}
 			await Promise.all(esperar);
 
@@ -182,7 +183,7 @@ module.exports = {
 			const IDs = await BD_genericas.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
 				n.map((m) => m.id)
 			);
-			for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
+			for (let id of IDs) comp.linksEnColec(id);
 
 			// Fin
 			return;
@@ -197,7 +198,7 @@ module.exports = {
 				let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 				// Rutina por ID: ejecuta la función prodsEnRCLV
-				for (let id of IDs) procsCRUD.revisiones.prodsEnRCLV({entidad, id});
+				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
 			}
 
 			// Fin
@@ -496,7 +497,7 @@ module.exports = {
 
 				// Actualiza los IDs
 				for (let registro of registros) {
-					await BD_genericas.actualizaPorId(tabla, registro.id, {id});
+					await BD_genericas.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
 					id++;
 				}
 
@@ -802,12 +803,10 @@ let corrigeStatusColeccionEnCapitulo = async () => {
 	// Fin
 	return;
 };
-let quitaStatusDeComentario = async () => {
+let quitaElStatusDelComentario = async () => {
 	// Obtiene todos los motivos
 	const motivos = statusRegistros.map((m) => m.nombre);
-	console.log(789, motivos);
 	const histStatus = await BD_genericas.obtieneTodos("histStatus");
-	console.log(histStatus[1]);
 
 	// Rutina
 	for (let hist of histStatus) {

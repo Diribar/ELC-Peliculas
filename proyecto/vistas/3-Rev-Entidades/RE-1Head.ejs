@@ -1,0 +1,78 @@
+<!-- General -->
+<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE0-Revision.css">
+
+<% if (codigo == "tableroControl") { %>
+	<!-- TABLERO -->
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-TableroControl.css">
+	<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE1-TableroControl.css">
+	<script src="/publico/javascript/0-Compartido/TableroControl.js"></script>
+	<script src="/publico/javascript/3-Rev-Entidades/RE1-UnaSolaPestana.js"></script>
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="/publico/javascript/7-Graficos/GR2-linksVencim.js"></script>
+
+<% } else { %>
+	<% if (["producto/alta", "rechazar", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
+		<!-- Compartido -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Encabezado.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
+
+	<% } %>
+	<% if (codigo == "producto/alta") { %>
+		<!-- Prod-Altas - Particular -->
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle.css">
+		<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle1-Laptop.css">
+		<script src="/publico/javascript/2.1-Prods-RUD/PR1-Detalle-Etiquetas.js"></script>
+		<script src="/publico/javascript/2.1-Prods-RUD/PR1-Detalle-Actores.js"></script>
+
+	<% } else if (codigo == "rclv/alta" || codigo == "rclv/solapamiento") { %>
+		<!-- RCLV-Altas / Solapamiento -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-EdicionAvatar.css">
+		<link rel="stylesheet" href="/publico/formatos/2.2-RCLVs/RCLV-AltaEdicion.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<% if (codigo == "rclv/alta") { %>
+			<script src="/publico/javascript/2.2-RCLVs/RCLV-AltaEdicion.js"></script>
+		<% } else if (codigo == "rclv/solapamiento") { %>
+			<script src="/publico/javascript/3-Rev-Entidades/RE2-RCLV-Solapam.js"></script>
+		<% } %>
+
+	<% } else if (codigo == "rechazar") { %>
+		<!-- Rechazos - Particular -->
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRecup.css">
+		<script src="/publico/javascript/2.0-Familias/FM-InputError.js"></script>
+
+	<% } else if (codigo == "inactivar-o-recuperar") { %>
+		<!-- Revisión de Inactivar o Recuperar - Particular -->
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRecup.css">
+		<script src="/publico/javascript/3-Rev-Entidades/RE8-InacRecup.js"></script>
+
+	<% } else if (codigo.endsWith("/edicion")) { %>
+		<!-- Ediciones - Particular -->
+		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-Edicion.css">
+		<script src="/publico/javascript/3-Rev-Entidades/RE9-Edicion.js"></script>
+
+	<% } else if (codigo.endsWith("/edicion/avatar")) { %>
+		<!-- Prod-Avatar -->
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatar.css">
+		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatarRech.css">
+		<script src="/publico/javascript/3-Rev-Entidades/RE9-EdicionAvatar.js"></script>
+		<script src="/publico/javascript/3-Rev-Entidades/RE9-EdicionAvatarRech.js"></script>
+
+	<% } else if (codigo == "abmLinks") { %>
+		<!-- Links - Uso compartido -->
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-ABM-Links.css">
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Iframes.css" />
+		<script src="/publico/javascript/2.0-Familias/FM-PeliTrailerLinks.js"></script>
+		<script src="/publico/javascript/2.0-Familias/FM-EliminarLinks.js"></script>
+		<script src="/publico/javascript/2.0-Familias/FM-Iframes.js"></script>
+
+		<!-- Links - Específico -->
+		<script src="/publico/javascript/3-Rev-Entidades/RE3-Link1-AltasBajas.js"></script>
+		<script src="/publico/javascript/3-Rev-Entidades/RE3-Link2-Ediciones.js"></script>
+	<% } %>
+<% } %>
