@@ -102,17 +102,24 @@ module.exports = {
 		});
 	},
 	inacRecupGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, motivo_id} = {...req.query, ...req.body};
+		// Si es un 'recuperar' y no escribió un motivo, redirige
 		let {comentario: comentUs} = req.body;
 		const {ruta} = comp.reqBasePathUrl(req);
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+		if (codigo == "recuperar" && !comentUs) return res.send(req.originalUrl);
+
+		// Variables
+		const {entidad, id, motivo_id} = {...req.query, ...req.body};
 		const userID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+		// Pule el comentario
+		if (!comentUs) comentUs = "";
+		if (comentUs.endsWith(".")) comentUs = comentUs.slice(0, -1);
 
 		// Comentario para la tabla 'histStatus'
 		let comentario = "";
@@ -124,7 +131,6 @@ module.exports = {
 			}
 		}
 		if (comentUs) comentario += comentUs;
-		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		let datos = {
@@ -170,7 +176,7 @@ module.exports = {
 
 		// CONSECUENCIAS - Actualiza los RCLV, en el campo 'prodsAprob'
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		if (familia == "producto") procesos.revisiones.accionesPorCambioDeStatus(entidad, original);
+		if (familia == "producto") procesos.accionesPorCambioDeStatus(entidad, original);
 
 		// Fin
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;

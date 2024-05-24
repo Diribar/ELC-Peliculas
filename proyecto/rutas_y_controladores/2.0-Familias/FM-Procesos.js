@@ -4,7 +4,7 @@ const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Procesos CRUD
+	// CRUD
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -501,78 +501,9 @@ module.exports = {
 			return;
 		},
 	},
-	obtieneDatos: async function (req) {
-		// Variables
-		const {ruta} = comp.reqBasePathUrl(req);
-		let codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
-		if (codigo.split("/").length > 2) codigo = codigo.slice(codigo.indexOf("/") + 1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
-		const inacRecups = codigo == "inactivar-o-recuperar";
-		const ahora = comp.fechaHora.ahora();
-
-		// Variables
-		const {entidad, id, desaprueba} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const rclv = familia == "rclv";
-
-		// Obtiene el registro original y el subcodigo
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
-		if (familia == "producto") include.push("links");
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const statusOriginal_id = original.statusRegistro_id;
-
-		// Obtiene el 'subcodigo'
-		const subcodigo = inacRecups
-			? statusOriginal_id == inactivar_id
-				? "inactivar"
-				: "recuperar"
-			: ruta.endsWith("/alta/")
-			? "alta"
-			: "rechazar";
-
-		// Averigua si la sugerencia fue aprobada
-		const aprob = subcodigo != "rechazar" && !desaprueba;
-
-		// Obtiene el status final
-		const adicionales = {publico: true, epocaOcurrencia: true};
-		const statusFinal_id =
-			codigo == "inactivar"
-				? inactivar_id
-				: codigo == "recuperar"
-				? recuperar_id
-				: (!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
-				? inactivo_id
-				: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
-				? aprobado_id // si es un RCLV, se aprueba
-				: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
-				? creadoAprob_id
-				: entidad == "capitulos"
-				? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
-				: aprobado_id;
-
-		// Obtiene el motivo_id
-		const motivo_id =
-			subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
-
-		// Obtiene el comentario
-		let comentario = "";
-		if (req.body.comentario) comentario = req.body.comentario;
-		else {
-			const condicion = {entidad, entidad_id: id};
-			comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
-				.then((n) => (n ? n : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
-				.then((n) => n.comentario);
-		}
-		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
-
-		// Fin
-		return {
-			...{original, statusOriginal_id, statusFinal_id},
-			...{codigo, subcodigo, rclv, motivo_id, comentario, aprob},
-		};
-	},
 
 	// Bloques a mostrar
-	bloqueRegistro: async function (registro) {
+	bloqueRegistro: async (registro) => {
 		// Variable
 		let resultado = [];
 
