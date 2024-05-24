@@ -42,8 +42,8 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
-			statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
+			let edicsEliminadas = procsCRUD.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
+			statusAprob = procsCRUD.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
@@ -177,7 +177,7 @@ module.exports = {
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
-			await procsCRUD.revisiones.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
+			await procsCRUD.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
 
 			// Fin
 			return res.json("");

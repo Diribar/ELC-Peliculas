@@ -212,17 +212,17 @@ module.exports = {
 						// Rutina por campo - sin 'await' y solo para los campos editados
 						for (let prop in req.body)
 							if (original[prop] != req.body[prop])
-								esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body, prop));
+								esperar.push(procsCRUD.transfiereDatos(original, req.body, prop));
 
 						// Espera a que se corran todos los campos
 						await Promise.all(esperar);
 					}
 
 					// Elimina otras ediciones que tengan los mismos valores
-					let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, id});
+					let edicsEliminadas = procsCRUD.eliminaDemasEdiciones({entidad, original: prodComb, id});
 
 					// Se fija si corresponde cambiar el status
-					let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
+					let statusAprob = procsCRUD.statusAprob({entidad, registro: prodComb});
 
 					// Espera a que se completen las funciones con 'Promise'
 					await Promise.all([statusAprob, edicsEliminadas]);
@@ -235,7 +235,7 @@ module.exports = {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
 					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
-					edicion = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion, userID});
+					edicion = await procsCRUD.guardaActEdic({entidad, original, edicion, userID});
 				}
 
 				// Acciones sobre el archivo avatar, si recibimos uno
