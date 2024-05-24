@@ -485,6 +485,72 @@ module.exports = {
 		// Fin
 		return paisesNombre.join(", ");
 	},
+	linksEnProd: async function ({entidad, id}) {
+		// Variables
+		const campo_id = this.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
+		const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
+
+		// Obtiene las películas y trailers
+		const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
+		const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
+		const linksHD = linksPelis.filter((n) => n.calidad >= 720);
+
+		// Averigua qué links tiene
+		const tiposDeLink = {
+			// Trailer
+			linksTrailer: FN.averiguaTipoDeLink(linksTrailers),
+
+			// Películas
+			linksGral: FN.averiguaTipoDeLink(linksPelis),
+			linksGratis: FN.averiguaTipoDeLink(linksPelis, "gratuito"),
+			linksCast: FN.averiguaTipoDeLink(linksPelis, "castellano"),
+			linksSubt: FN.averiguaTipoDeLink(linksPelis, "subtitulos"),
+
+			// Películas HD
+			HD_Gral: FN.averiguaTipoDeLink(linksHD),
+			HD_Gratis: FN.averiguaTipoDeLink(linksHD, "gratuito"),
+			HD_Cast: FN.averiguaTipoDeLink(linksHD, "castellano"),
+			HD_Subt: FN.averiguaTipoDeLink(linksHD, "subtitulos"),
+		};
+
+		// Actualiza el registro
+		entidad != "capitulos"
+			? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
+			: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
+
+		// Fin
+		return;
+	},
+	linksEnColec: async (colID) => {
+		// Variables
+		const campos = [
+			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
+		];
+
+		// Rutinas
+		const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+		for (let campo of campos) {
+			// Cuenta la cantidad de casos true, false y null
+			const SI = links.filter((n) => n[campo] == conLinks).length;
+			const potencial = links.filter((n) => n[campo] == linksTalVez).length;
+			const NO = links.filter((n) => n[campo] == sinLinks).length;
+
+			// Averigua los porcentajes de OK y Potencial
+			const total = SI + potencial + NO;
+			const resultado = {
+				SI: SI / total,
+				potencial: (SI + potencial) / total,
+			};
+			const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? linksTalVez : sinLinks;
+
+			// Actualiza la colección
+			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
+		}
+
+		// Fin
+		return;
+	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
@@ -525,6 +591,51 @@ module.exports = {
 
 		// Fin
 		return temas;
+	},
+	prodsEnRCLV: async ({entidad, id}) => {
+		// Variables
+		const entidadesProds = variables.entidades.prods;
+		const statusAprobado = {statusRegistro_id: aprobado_id};
+		const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
+		let prodsAprob;
+
+		// Si el ID es menor o igual a 10, termina la función
+		if (id && id <= 10) return;
+
+		// Establece la condición perenne
+		const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[rclv_id]: id};
+
+		// 1. Averigua si existe algún producto aprobado, con ese rclv_id
+		for (let entidadProd of entidadesProds) {
+			prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+			if (prodsAprob) {
+				prodsAprob = conLinks;
+				break;
+			}
+		}
+
+		// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
+		if (!prodsAprob)
+			for (let entidadProd of entidadesProds) {
+				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
+				if (prodsAprob) {
+					prodsAprob = linksTalVez;
+					break;
+				}
+			}
+
+		// 3. Averigua si existe alguna edición con ese rclv_id
+		if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
+
+		// 4. No encontró ningún caso
+		if (!prodsAprob) prodsAprob = sinLinks;
+
+		// Actualiza el campo en el RCLV
+		BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
+
+		// Fin
+		return;
 	},
 
 	// Links
@@ -1095,5 +1206,18 @@ let FN = {
 		// Fin
 		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
 		return;
+	},
+	averiguaTipoDeLink: (links, condicion) => {
+		// Filtro inicial
+		if (condicion) links = links.filter((n) => n[condicion]);
+
+		// Resultados
+		let resultado = {
+			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+		};
+
+		// Fin
+		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
 };
