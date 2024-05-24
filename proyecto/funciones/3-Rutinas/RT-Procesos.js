@@ -237,7 +237,11 @@ module.exports = {
 			let condiciones;
 
 			// Obtiene los registros de "histStatus"
-			condiciones = {aprobado: {[Op.ne]: null}, comunicadoEn: null, sugeridoPor_id: {[Op.ne]: usAutom_id}};
+			condiciones = {
+				aprobado: {[Op.ne]: null},
+				comunicadoEn: null, // no fue comunicado
+				sugeridoPor_id: {[Op.ne]: usAutom_id}// sugerido por una persona
+			};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones)
 					// Agrega el nombre de la tabla

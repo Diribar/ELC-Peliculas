@@ -91,21 +91,21 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/0-Compartido/Main"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
 	path.resolve(__dirname, "./vistas/1-Usuarios/Includes"),
-	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
-	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Iconos"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD"),
-	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
-	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
-	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
-	path.resolve(__dirname, "./vistas/4-RevisionUs"),
-	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
+	path.resolve(__dirname, "./vistas/2.0-Familias"),
+	path.resolve(__dirname, "./vistas/2.0-Familias/Includes"),
+	path.resolve(__dirname, "./vistas/2.0-Familias/Iconos"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-Agregar"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-Agregar/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-RUD"),
+	path.resolve(__dirname, "./vistas/2.1-Prods-RUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs/Includes"),
+	path.resolve(__dirname, "./vistas/2.3-Links"),
+	path.resolve(__dirname, "./vistas/2.3-Links/Includes"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades/Includes"),
+	path.resolve(__dirname, "./vistas/4-Rev-Usuarios"),
+	path.resolve(__dirname, "./vistas/4-Rev-Usuarios/Includes"),
 	path.resolve(__dirname, "./vistas/5-Consultas"),
 	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/6-Institucional"),
@@ -265,15 +265,15 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Urls que dependen de la variable 'global'
-	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
+	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias/FM-Rutas");
 	app.use("/", rutaCRUD);
-	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas"));
-	app.use("/producto", require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas"));
-	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas"));
-	app.use("/links", require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas"));
+	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prods-Agregar/PA-Rutas"));
+	app.use("/producto", require("./rutas_y_controladores/2.1-Prods-RUD/PR-Rutas"));
+	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
+	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_controladores/4-RevisionUs/RU-Rutas"));
-	app.use("/revision", require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_controladores/4-Rev-Usuarios/RU-Rutas"));
+	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));

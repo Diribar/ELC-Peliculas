@@ -1,0 +1,45 @@
+<!-- General -->
+<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Encabezado.css">
+
+<!-- Detalle y Calificar -->
+<% if (["detalle", "calificar"].includes(codigo)) { %>
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
+	<script src="/publico/javascript/2.0-Familias/FM-MuestraOculta.js"></script>
+	<% if (interesDelUsuario) { %>
+		<script src="/publico/javascript/2.1-Prods-RUD/PR4-Preferencias-Pers.js"></script>
+	<% } %>
+	<% if (registro.calificacion) { %>
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="/publico/javascript/2.1-Prods-RUD/PR0-GraficoCalificacion.js"></script>
+	<% } %>
+<% } %>
+
+<!-- Detalle -->
+<% if (codigo == "detalle") { %>
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle1-Laptop.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle2-Mobile.css">
+	<script src="/publico/javascript/2.1-Prods-RUD/PR1-Detalle-Etiquetas.js"></script>
+	<script src="/publico/javascript/2.1-Prods-RUD/PR1-Detalle-Actores.js"></script>
+<% } %>
+
+<!-- Calificar -->
+<% if (codigo == "calificar") { %>
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar1-Laptop.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-3Calificar2-Mobile.css">
+	<script src="/publico/javascript/2.1-Prods-RUD/PR3-Calificar-InputError.js"></script>
+<% } %>
+
+<!-- Edición -->
+<% if (codigo == "edicion") { %>
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-EdicionAvatar.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/P-Varios.css">
+	<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-2Edicion.css">
+	<script src="/publico/javascript/2.1-Prods-RUD/PR2-Edicion-InputError.js"></script>
+	<script src="/publico/javascript/2.1-Prods-RUD/PR2-Edicion-RCLV.js"></script>
+<% } %>
