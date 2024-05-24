@@ -247,6 +247,67 @@ module.exports = {
 				: "";
 		},
 	},
+	puleEdicion: async (entidad, original, edicion) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const edicID = edicion.id;
+		let camposNull = {};
+		let camposRevisar = [];
+
+		// Obtiene los campos a revisar
+		for (let campo of variables.camposRevisar[familias]) {
+			// Agrega el campo simple
+			camposRevisar.push(campo.nombre);
+			// Agrega el campo include
+			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
+		}
+
+		// Quita de edición los campos que correspondan
+		for (let prop in edicion) {
+			// Quita de edición los campos que no se comparan o que sean 'null'
+			if (!camposRevisar.includes(prop) || edicion[prop] === null) {
+				delete edicion[prop];
+				continue;
+			}
+
+			// Corrige errores de data-entry
+			if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
+
+			// CONDICION 1: Los valores de original y edición son significativos e idénticos
+			const condic1 =
+				edicion[prop] === original[prop] || // son estrictamente iguales
+				(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
+				(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
+				(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
+			if (condic1) camposNull[prop] = null;
+
+			// CONDICION 2: El objeto vinculado tiene el mismo ID
+			const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
+
+			// Si se cumple alguna de las condiciones, se elimina ese método
+			if (condic1 || condic2) delete edicion[prop];
+		}
+
+		// 3. Acciones en función de si quedan campos
+		let quedanCampos = !!Object.keys(edicion).length;
+		if (quedanCampos) {
+			// Devuelve el id a la variable de edicion
+			if (edicID) edicion.id = edicID;
+
+			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
+			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+		} else {
+			// Convierte en 'null' la variable de 'edicion'
+			edicion = null;
+
+			// Si había una edición guardada en la BD, la elimina
+			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
+		}
+
+		// Fin
+		return edicion;
+	},
 
 	// Productos y RCLVs
 	validacs: {
