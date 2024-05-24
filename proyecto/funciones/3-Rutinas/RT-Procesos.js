@@ -238,8 +238,8 @@ module.exports = {
 
 			// Obtiene los registros de "histStatus"
 			condiciones = {
-				statusFinalPor_id: {[Op.and]: {[Op.ne]: inactivar_id, [Op.ne]: recuperar_id}},
 				statusOrigPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
+				statusFinalPor_id: {[Op.and]: {[Op.ne]: inactivar_id, [Op.ne]: recuperar_id}},
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
@@ -525,16 +525,16 @@ module.exports = {
 			// Variables
 			const comunicadoEn = new Date();
 			const condiciones = [
-				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id}, // desde 'creado' a creadoAprob'
-				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id}, // desde 'creadoAprob' a 'aprobado'
-				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id}, // desde 'creado' a 'aprobado'
+				{statusOrig_id: creado_id, statusFinal_id: creadoAprob_id}, // desde 'creado' a creadoAprob'
+				{statusOrig_id: creadoAprob_id, statusFinal_id: aprobado_id}, // desde 'creadoAprob' a 'aprobado'
+				{statusOrig_id: creado_id, statusFinal_id: aprobado_id}, // desde 'creado' a 'aprobado'
 			];
 
 			// Elimina los registros o completa el campo 'comunicadoEn'
 			for (let reg of regs) {
 				// Variables
 				const condicOK = condiciones.some(
-					(n) => n.statusOriginal_id == reg.statusOriginal_id && n.statusFinal_id == reg.statusFinal_id
+					(n) => n.statusOrig_id == reg.statusOrig_id && n.statusFinal_id == reg.statusFinal_id
 				);
 
 				// Elimina los registros
