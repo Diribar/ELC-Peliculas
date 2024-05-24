@@ -405,9 +405,9 @@ module.exports = {
 			if (req.body.comentario) comentario = req.body.comentario;
 			else {
 				const condicion = {entidad, entidad_id: id};
-				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
-					.then((n) => n.comentario)
-					.then((n) => (n ? n : ""));
+				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion).then((n) =>
+					n && n.comentario ? n.comentario : ""
+				);
 			}
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
