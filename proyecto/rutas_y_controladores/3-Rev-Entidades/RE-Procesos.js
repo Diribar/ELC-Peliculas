@@ -354,19 +354,20 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
+			const {entidad, id, origen, desaprueba} = req.query;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const producto = familia == "producto";
+			const rclv = familia == "rclv";
+
+			// Obtiene el código
 			const {ruta} = comp.reqBasePathUrl(req);
 			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
 			const inacRecups = codigo == "inactivar-o-recuperar";
 
-			// Variables
-			const {entidad, id, desaprueba} = req.query;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const rclv = familia == "rclv";
-
 			// Obtiene el registro original y el subcodigo
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
-			if (familia == "producto") include.push("links");
+			if (producto) include.push("links");
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
 
@@ -404,16 +405,27 @@ module.exports = {
 			if (req.body.comentario) comentario = req.body.comentario;
 			else {
 				const condicion = {entidad, entidad_id: id};
-				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
-					.then((n) => (n ? n : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
-					.then((n) => n.comentario);
+				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion).then((n) =>
+					n && n.comentario ? n.comentario : ""
+				);
 			}
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
+			// Datos para la controladora
+			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const revID = req.session.usuario.id;
+			const ahora = comp.fechaHora.ahora();
+			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const {baseUrl} = comp.reqBasePathUrl(req);
+			const userID = original.statusSugeridoPor_id;
+			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
+
 			// Fin
 			return {
-				...{original, statusOriginal_id, statusFinal_id},
-				...{codigo, subcodigo, rclv, motivo_id, comentario, aprob},
+				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
+				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprob},
+				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},
 		actualizaDiasDelAno: async ({desde, duracion, id}) => {

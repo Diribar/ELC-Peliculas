@@ -80,11 +80,16 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			inactivarRecuperar || codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicionConInclude(
-						"histStatus",
-						{entidad, entidad_id: id},
-						"statusFinal"
-				  ).then((n) => n.map((m) => m.statusFinal.nombre + (m.comentario ? " - " + m.comentario : "")))
+				? await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", {entidad, entidad_id: id}, [
+						"statusFinal",
+						"motivo",
+				  ]).then((n) =>
+						n.map(
+							(m) =>
+								m.statusFinal.nombre +
+								(m.comentario ? " - " + m.comentario : m.motivo ? " - " + m.motivo.descripcion : "")
+						)
+				  )
 				: [];
 
 		// Obtiene datos para la vista
@@ -102,38 +107,20 @@ module.exports = {
 		});
 	},
 	inacRecupGuardar: async (req, res) => {
-		// Si es un 'recuperar' y no escribió un motivo, redirige
-		let {comentario: comentUs} = req.body;
-		const {ruta} = comp.reqBasePathUrl(req);
-		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
-		if (codigo == "recuperar" && !comentUs) return res.send(req.originalUrl);
+		//  iniciales
+		let datos = await obtieneDatos(req);
+		const {entidad, id, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id}=datos
 
-		// Variables
-		const {entidad, id, motivo_id} = {...req.query, ...req.body};
-		const userID = req.session.usuario.id;
-		const ahora = comp.fechaHora.ahora();
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const include = comp.obtieneTodosLosCamposInclude(entidad);
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Pule el comentario
-		if (!comentUs) comentUs = "";
-		if (comentUs.endsWith(".")) comentUs = comentUs.slice(0, -1);
-
-		// Comentario para la tabla 'histStatus'
-		let comentario = "";
+		// Acciones con comentario
+		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
 		if (codigo == "inactivar") {
-			comentario += motivosStatus.find((n) => n.id == motivo_id).descripcion;
-			if (comentUs) {
-				if (comentUs.startsWith(comentario)) comentUs = comentUs.replace(comentario, "");
-				comentario += ": ";
-			}
+			const motivo = motivosStatus.find((n) => n.id == motivo_id);
+			if (!motivo.agregarComent) comentario = ""; // comentario no solicitado
 		}
-		if (comentUs) comentario += comentUs;
+		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
-		let datos = {
+		datos = {
 			statusSugeridoPor_id: userID,
 			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
@@ -265,4 +252,18 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion, titulo});
 	},
+};
+let obtieneDatos = async (req) => {
+	const {entidad, id, motivo_id} = {...req.query, ...req.body};
+	const {ruta} = comp.reqBasePathUrl(req);
+	const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+	const userID = req.session.usuario.id;
+	const ahora = comp.fechaHora.ahora();
+	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+	const include = comp.obtieneTodosLosCamposInclude(entidad);
+	const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+	const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+	// Fin
+	return {entidad, id, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
 };
