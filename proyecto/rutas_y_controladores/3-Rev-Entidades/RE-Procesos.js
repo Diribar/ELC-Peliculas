@@ -406,8 +406,8 @@ module.exports = {
 			else {
 				const condicion = {entidad, entidad_id: id};
 				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
-					.then((n) => (n ? n : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
-					.then((n) => n.comentario);
+					.then((n) => n.comentario)
+					.then((n) => (n ? n : ""));
 			}
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
