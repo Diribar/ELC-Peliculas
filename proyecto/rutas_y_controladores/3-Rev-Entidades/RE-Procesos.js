@@ -623,7 +623,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
-				if (entidad == "colecciones") await procsCRUD.revisiones.transfiereDatos(original, edicion, campo);
+				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
@@ -667,7 +667,7 @@ module.exports = {
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
 			// 7. Disminuye la edición a su mínima expresión, y si corresponde la elimina
-			edicion = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
+			edicion = await comp.puleEdicion(entidad, originalGuardado, edicion);
 
 			// Fin
 			return edicion;
