@@ -322,11 +322,11 @@ module.exports = {
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
-			await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
+			await procsCRUD.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
 			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-				procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
+				procsCRUD.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 			// SESSION Y COOKIES
 			// Establece como vista anterior la vista del primer paso

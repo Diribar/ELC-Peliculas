@@ -159,10 +159,10 @@ module.exports = {
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
-			...{entidad, entidad_id: id},
-			...{sugeridoPor_id: original.statusSugeridoPor_id, sugeridoEn: original.statusSugeridoEn},
-			...{revisadoPor_id: userID, revisadoEn: ahora},
-			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id},
+			...{entidad, entidad_id: id}, // entidad
+			...{statusOrigPor_id: original.statusSugeridoPor_id, statusFinalPor_id: userID}, // personas
+			...{statusOrig_id: original.statusRegistro_id, statusFinal_id}, // status
+			...{statusOrigEn: original.statusSugeridoEn}, // fecha
 			comentario,
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;

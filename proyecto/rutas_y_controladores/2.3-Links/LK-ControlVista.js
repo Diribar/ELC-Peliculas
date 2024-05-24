@@ -28,7 +28,7 @@ module.exports = {
 		}
 
 		// Actualiza linksEnProd
-		procsCRUD.revisiones.linksEnProd({entidad, id});
+		procsCRUD.linksEnProd({entidad, id});
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {

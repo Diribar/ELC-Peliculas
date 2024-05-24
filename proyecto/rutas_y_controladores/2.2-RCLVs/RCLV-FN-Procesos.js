@@ -297,7 +297,7 @@ module.exports = {
 				if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id)
 					await BD_genericas.actualizaPorId(entidad, id, DE);
 				// Si no esta en status 'creado', guarda la edición
-				else edicN = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion: {...edicion, ...DE}, userID});
+				else edicN = await procsCRUD.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
 			}
 
 			// Fin

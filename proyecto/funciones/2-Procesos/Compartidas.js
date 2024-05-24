@@ -247,6 +247,67 @@ module.exports = {
 				: "";
 		},
 	},
+	puleEdicion: async (entidad, original, edicion) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const edicID = edicion.id;
+		let camposNull = {};
+		let camposRevisar = [];
+
+		// Obtiene los campos a revisar
+		for (let campo of variables.camposRevisar[familias]) {
+			// Agrega el campo simple
+			camposRevisar.push(campo.nombre);
+			// Agrega el campo include
+			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
+		}
+
+		// Quita de edición los campos que correspondan
+		for (let prop in edicion) {
+			// Quita de edición los campos que no se comparan o que sean 'null'
+			if (!camposRevisar.includes(prop) || edicion[prop] === null) {
+				delete edicion[prop];
+				continue;
+			}
+
+			// Corrige errores de data-entry
+			if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
+
+			// CONDICION 1: Los valores de original y edición son significativos e idénticos
+			const condic1 =
+				edicion[prop] === original[prop] || // son estrictamente iguales
+				(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
+				(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
+				(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
+			if (condic1) camposNull[prop] = null;
+
+			// CONDICION 2: El objeto vinculado tiene el mismo ID
+			const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
+
+			// Si se cumple alguna de las condiciones, se elimina ese método
+			if (condic1 || condic2) delete edicion[prop];
+		}
+
+		// 3. Acciones en función de si quedan campos
+		let quedanCampos = !!Object.keys(edicion).length;
+		if (quedanCampos) {
+			// Devuelve el id a la variable de edicion
+			if (edicID) edicion.id = edicID;
+
+			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
+			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+		} else {
+			// Convierte en 'null' la variable de 'edicion'
+			edicion = null;
+
+			// Si había una edición guardada en la BD, la elimina
+			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
+		}
+
+		// Fin
+		return edicion;
+	},
 
 	// Productos y RCLVs
 	validacs: {
@@ -485,6 +546,72 @@ module.exports = {
 		// Fin
 		return paisesNombre.join(", ");
 	},
+	linksEnProd: async function ({entidad, id}) {
+		// Variables
+		const campo_id = this.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
+		const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
+
+		// Obtiene las películas y trailers
+		const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
+		const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
+		const linksHD = linksPelis.filter((n) => n.calidad >= 720);
+
+		// Averigua qué links tiene
+		const tiposDeLink = {
+			// Trailer
+			linksTrailer: FN.averiguaTipoDeLink(linksTrailers),
+
+			// Películas
+			linksGral: FN.averiguaTipoDeLink(linksPelis),
+			linksGratis: FN.averiguaTipoDeLink(linksPelis, "gratuito"),
+			linksCast: FN.averiguaTipoDeLink(linksPelis, "castellano"),
+			linksSubt: FN.averiguaTipoDeLink(linksPelis, "subtitulos"),
+
+			// Películas HD
+			HD_Gral: FN.averiguaTipoDeLink(linksHD),
+			HD_Gratis: FN.averiguaTipoDeLink(linksHD, "gratuito"),
+			HD_Cast: FN.averiguaTipoDeLink(linksHD, "castellano"),
+			HD_Subt: FN.averiguaTipoDeLink(linksHD, "subtitulos"),
+		};
+
+		// Actualiza el registro
+		entidad != "capitulos"
+			? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
+			: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
+
+		// Fin
+		return;
+	},
+	linksEnColec: async (colID) => {
+		// Variables
+		const campos = [
+			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
+		];
+
+		// Rutinas
+		const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+		for (let campo of campos) {
+			// Cuenta la cantidad de casos true, false y null
+			const SI = links.filter((n) => n[campo] == conLinks).length;
+			const potencial = links.filter((n) => n[campo] == linksTalVez).length;
+			const NO = links.filter((n) => n[campo] == sinLinks).length;
+
+			// Averigua los porcentajes de OK y Potencial
+			const total = SI + potencial + NO;
+			const resultado = {
+				SI: SI / total,
+				potencial: (SI + potencial) / total,
+			};
+			const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? linksTalVez : sinLinks;
+
+			// Actualiza la colección
+			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
+		}
+
+		// Fin
+		return;
+	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
@@ -525,6 +652,51 @@ module.exports = {
 
 		// Fin
 		return temas;
+	},
+	prodsEnRCLV: async ({entidad, id}) => {
+		// Variables
+		const entidadesProds = variables.entidades.prods;
+		const statusAprobado = {statusRegistro_id: aprobado_id};
+		const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
+		let prodsAprob;
+
+		// Si el ID es menor o igual a 10, termina la función
+		if (id && id <= 10) return;
+
+		// Establece la condición perenne
+		const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[rclv_id]: id};
+
+		// 1. Averigua si existe algún producto aprobado, con ese rclv_id
+		for (let entidadProd of entidadesProds) {
+			prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+			if (prodsAprob) {
+				prodsAprob = conLinks;
+				break;
+			}
+		}
+
+		// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
+		if (!prodsAprob)
+			for (let entidadProd of entidadesProds) {
+				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
+				if (prodsAprob) {
+					prodsAprob = linksTalVez;
+					break;
+				}
+			}
+
+		// 3. Averigua si existe alguna edición con ese rclv_id
+		if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
+
+		// 4. No encontró ningún caso
+		if (!prodsAprob) prodsAprob = sinLinks;
+
+		// Actualiza el campo en el RCLV
+		BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
+
+		// Fin
+		return;
 	},
 
 	// Links
@@ -1095,5 +1267,18 @@ let FN = {
 		// Fin
 		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
 		return;
+	},
+	averiguaTipoDeLink: (links, condicion) => {
+		// Filtro inicial
+		if (condicion) links = links.filter((n) => n[condicion]);
+
+		// Resultados
+		let resultado = {
+			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+		};
+
+		// Fin
+		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
 };
