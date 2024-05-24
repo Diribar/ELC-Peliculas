@@ -355,7 +355,6 @@ module.exports = {
 		obtieneDatos: async function (req) {
 			// Variables
 			const {entidad, id, origen, desaprueba} = req.query;
-			const inacRecups = codigo == "inactivar-o-recuperar";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
@@ -364,6 +363,7 @@ module.exports = {
 			const {ruta} = comp.reqBasePathUrl(req);
 			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
+			const inacRecups = codigo == "inactivar-o-recuperar";
 
 			// Obtiene el registro original y el subcodigo
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
