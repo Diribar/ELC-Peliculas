@@ -6,7 +6,7 @@ const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
-		return await puleEdicion(entidad, original, edicion);
+		return await FN.puleEdicion(entidad, original, edicion);
 	},
 
 	// Lectura de edicion
@@ -39,7 +39,7 @@ module.exports = {
 		edicion = edicion
 			? omitirPulirEdic
 				? edicion
-				: await puleEdicion(entidad, original, edicion) // El output puede ser 'null'
+				: await FN.puleEdicion(entidad, original, edicion) // El output puede ser 'null'
 			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
@@ -52,7 +52,7 @@ module.exports = {
 		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 
 		// Quita la info que no agrega valor
-		edicion = await puleEdicion(entidad, original, edicion);
+		edicion = await FN.puleEdicion(entidad, original, edicion);
 
 		// Acciones si quedaron datos para actualizar
 		if (edicion) {
@@ -293,7 +293,7 @@ module.exports = {
 			// Acciones si existen ediciones
 			if (ediciones.length) {
 				let espera = [];
-				for (let edic of ediciones) espera.push(puleEdicion(entidad, original, edic));
+				for (let edic of ediciones) espera.push(FN.puleEdicion(entidad, original, edic));
 				await Promise.all(espera);
 			}
 
@@ -448,19 +448,19 @@ module.exports = {
 			// Averigua qué links tiene
 			const tiposDeLink = {
 				// Trailer
-				linksTrailer: averiguaTipoDeLink(linksTrailers),
+				linksTrailer: FN.averiguaTipoDeLink(linksTrailers),
 
 				// Películas
-				linksGral: averiguaTipoDeLink(linksPelis),
-				linksGratis: averiguaTipoDeLink(linksPelis, "gratuito"),
-				linksCast: averiguaTipoDeLink(linksPelis, "castellano"),
-				linksSubt: averiguaTipoDeLink(linksPelis, "subtitulos"),
+				linksGral: FN.averiguaTipoDeLink(linksPelis),
+				linksGratis: FN.averiguaTipoDeLink(linksPelis, "gratuito"),
+				linksCast: FN.averiguaTipoDeLink(linksPelis, "castellano"),
+				linksSubt: FN.averiguaTipoDeLink(linksPelis, "subtitulos"),
 
 				// Películas HD
-				HD_Gral: averiguaTipoDeLink(linksHD),
-				HD_Gratis: averiguaTipoDeLink(linksHD, "gratuito"),
-				HD_Cast: averiguaTipoDeLink(linksHD, "castellano"),
-				HD_Subt: averiguaTipoDeLink(linksHD, "subtitulos"),
+				HD_Gral: FN.averiguaTipoDeLink(linksHD),
+				HD_Gratis: FN.averiguaTipoDeLink(linksHD, "gratuito"),
+				HD_Cast: FN.averiguaTipoDeLink(linksHD, "castellano"),
+				HD_Subt: FN.averiguaTipoDeLink(linksHD, "subtitulos"),
 			};
 
 			// Actualiza el registro
@@ -599,7 +599,7 @@ module.exports = {
 				await BD_genericas.actualizaTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
 
 				// Revisa si tiene que eliminar alguna edición - la rutina no necesita este resultado
-				eliminaEdicionesVacias(ediciones, rclv_id);
+				FN.eliminaEdicionesVacias(ediciones, rclv_id);
 			}
 
 			// Fin
@@ -630,7 +630,7 @@ module.exports = {
 					espera.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				siHayErroresBajaElStatus(prodsPorEnts);
+				FN.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
@@ -639,6 +639,75 @@ module.exports = {
 			// Fin
 			return;
 		},
+	},
+	obtieneDatos: async function (req) {
+		// Variables
+		const {ruta} = comp.reqBasePathUrl(req);
+		let codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+		if (codigo.split("/").length > 2) codigo = codigo.slice(codigo.indexOf("/") + 1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
+		const inacRecups = codigo == "inactivar-o-recuperar";
+		const ahora = comp.fechaHora.ahora();
+
+		// Variables
+		const {entidad, id, desaprueba} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const rclv = familia == "rclv";
+
+		// Obtiene el registro original y el subcodigo
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		if (familia == "producto") include.push("links");
+		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const statusOriginal_id = original.statusRegistro_id;
+
+		// Obtiene el 'subcodigo'
+		const subcodigo = inacRecups
+			? statusOriginal_id == inactivar_id
+				? "inactivar"
+				: "recuperar"
+			: ruta.endsWith("/alta/")
+			? "alta"
+			: "rechazar";
+
+		// Averigua si la sugerencia fue aprobada
+		const aprob = subcodigo != "rechazar" && !desaprueba;
+
+		// Obtiene el status final
+		const adicionales = {publico: true, epocaOcurrencia: true};
+		const statusFinal_id =
+			codigo == "inactivar"
+				? inactivar_id
+				: codigo == "recuperar"
+				? recuperar_id
+				: (!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+				? inactivo_id
+				: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+				? aprobado_id // si es un RCLV, se aprueba
+				: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
+				? creadoAprob_id
+				: entidad == "capitulos"
+				? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
+				: aprobado_id;
+
+		// Obtiene el motivo_id
+		const motivo_id =
+			subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
+
+		// Obtiene el comentario
+		let comentario = "";
+		if (req.body.comentario) comentario = req.body.comentario;
+		else {
+			const condicion = {entidad, entidad_id: id};
+			comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
+				.then((n) => (n ? n : {comentario: "Motivo no comentado"})) // sería un error que hubiera algún motivo no comentado
+				.then((n) => n.comentario);
+		}
+		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Fin
+		return {
+			...{original, statusOriginal_id, statusFinal_id},
+			...{codigo, subcodigo, rclv, motivo_id, comentario, aprob},
+		};
 	},
 
 	// Bloques a mostrar
@@ -654,7 +723,7 @@ module.exports = {
 		);
 
 		// Status resumido
-		resultado.push({titulo: "Status", ...this.statusRegistro(registro)});
+		resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 		// Si el registro no está activo, le agrega el comentario
 		if (!activos_ids.includes(registro.statusRegistro_id)) {
@@ -662,8 +731,8 @@ module.exports = {
 			let valor = registro.motivo.descripcion;
 			if (motivosStatusConComentario_ids.includes(registro.motivo_id)) {
 				const condicion = {entidad: registro.entidad, entidad_id: registro.id};
-				valor = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion)
-					.then((n) => (n.length ? n.pop() : {comentario: registro.motivo.descripcion}))
+				valor = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
+					.then((n) => (n ? n : {comentario: registro.motivo.descripcion}))
 					.then((n) => n.comentario);
 			}
 
@@ -673,27 +742,6 @@ module.exports = {
 
 		// Fin
 		return resultado;
-	},
-	statusRegistro: (registro) => {
-		// Variables
-		const {entidad, id} = registro;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {codigo, nombre} = registro.statusRegistro;
-		const origen = familia == "producto" ? "P" : "R";
-		const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=DT" + origen;
-
-		// Genera el href
-		const href =
-			registro.statusRegistro_id == creado_id
-				? "/revision/" + familia + "/alta" + cola
-				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
-				? "/revision/" + familia + "/edicion" + cola
-				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
-				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
-				: "";
-
-		// Fin
-		return {codigo, valor: nombre, href};
 	},
 	fichaDelUsuario: async function (userID, petitFamilias) {
 		// Variables
@@ -742,116 +790,138 @@ module.exports = {
 };
 
 // Funciones
-let puleEdicion = async (entidad, original, edicion) => {
-	// Variables
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-	const edicID = edicion.id;
-	let camposNull = {};
-	let camposRevisar = [];
+let FN = {
+	eliminaEdicionesVacias: async function (ediciones, campo_idRCLV) {
+		// Revisa si tiene que eliminar alguna edición
+		for (let edicion of ediciones) {
+			// Variables
+			const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(edicion);
+			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(edicion);
+			const prodID = edicion[campo_idProd];
 
-	// Obtiene los campos a revisar
-	for (let campo of variables.camposRevisar[familias]) {
-		// Agrega el campo simple
-		camposRevisar.push(campo.nombre);
-		// Agrega el campo include
-		if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
-	}
+			// Obtiene el producto original
+			const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
 
-	// Quita de edición los campos que correspondan
-	for (let prop in edicion) {
-		// Quita de edición los campos que no se comparan o que sean 'null'
-		if (!camposRevisar.includes(prop) || edicion[prop] === null) {
-			delete edicion[prop];
-			continue;
+			// Elimina la edición si está vacía
+			delete edicion[campo_idRCLV];
+			await this.puleEdicion(prodEntidad, original, edicion);
+		}
+		// Fin
+		return;
+	},
+	puleEdicion: async (entidad, original, edicion) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const edicID = edicion.id;
+		let camposNull = {};
+		let camposRevisar = [];
+
+		// Obtiene los campos a revisar
+		for (let campo of variables.camposRevisar[familias]) {
+			// Agrega el campo simple
+			camposRevisar.push(campo.nombre);
+			// Agrega el campo include
+			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
 		}
 
-		// Corrige errores de data-entry
-		if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
-
-		// CONDICION 1: Los valores de original y edición son significativos e idénticos
-		const condic1 =
-			edicion[prop] === original[prop] || // son estrictamente iguales
-			(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
-			(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
-			(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
-		if (condic1) camposNull[prop] = null;
-
-		// CONDICION 2: El objeto vinculado tiene el mismo ID
-		const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
-
-		// Si se cumple alguna de las condiciones, se elimina ese método
-		if (condic1 || condic2) delete edicion[prop];
-	}
-
-	// 3. Acciones en función de si quedan campos
-	let quedanCampos = !!Object.keys(edicion).length;
-	if (quedanCampos) {
-		// Devuelve el id a la variable de edicion
-		if (edicID) edicion.id = edicID;
-
-		// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-		if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
-	} else {
-		// Convierte en 'null' la variable de 'edicion'
-		edicion = null;
-
-		// Si había una edición guardada en la BD, la elimina
-		if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
-	}
-
-	// Fin
-	return edicion;
-};
-// Actualiza para las colecciones
-let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
-	// Revisa si tiene que eliminar alguna edición
-	for (let edicion of ediciones) {
-		// Variables
-		const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(edicion);
-		const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(edicion);
-		const prodID = edicion[campo_idProd];
-
-		// Obtiene el producto original
-		const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
-
-		// Elimina la edición si está vacía
-		delete edicion[campo_idRCLV];
-		await puleEdicion(prodEntidad, original, edicion);
-	}
-	// Fin
-	return;
-};
-let siHayErroresBajaElStatus = (prodsPorEnts) => {
-	// Variables
-	const entidades = variables.entidades.prods;
-
-	// Acciones por cada ENTIDAD
-	entidades.forEach(async (entidad, i) => {
-		// Averigua si existen registros por cada entidad
-		if (prodsPorEnts[i].length)
-			// Acciones por cada PRODUCTO
-			for (let original of prodsPorEnts[i]) {
-				// Si hay errores, le cambia el status
-				const errores = await validaPR.consolidado({datos: {...original, entidad}});
-				if (errores.impideAprobado)
-					BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+		// Quita de edición los campos que correspondan
+		for (let prop in edicion) {
+			// Quita de edición los campos que no se comparan o que sean 'null'
+			if (!camposRevisar.includes(prop) || edicion[prop] === null) {
+				delete edicion[prop];
+				continue;
 			}
-	});
 
-	// Fin
-	return;
-};
-let averiguaTipoDeLink = (links, condicion) => {
-	// Filtro inicial
-	if (condicion) links = links.filter((n) => n[condicion]);
+			// Corrige errores de data-entry
+			if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
 
-	// Resultados
-	let resultado = {
-		SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
-		linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
-	};
+			// CONDICION 1: Los valores de original y edición son significativos e idénticos
+			const condic1 =
+				edicion[prop] === original[prop] || // son estrictamente iguales
+				(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
+				(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
+				(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
+			if (condic1) camposNull[prop] = null;
 
-	// Fin
-	return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
+			// CONDICION 2: El objeto vinculado tiene el mismo ID
+			const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
+
+			// Si se cumple alguna de las condiciones, se elimina ese método
+			if (condic1 || condic2) delete edicion[prop];
+		}
+
+		// 3. Acciones en función de si quedan campos
+		let quedanCampos = !!Object.keys(edicion).length;
+		if (quedanCampos) {
+			// Devuelve el id a la variable de edicion
+			if (edicID) edicion.id = edicID;
+
+			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
+			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+		} else {
+			// Convierte en 'null' la variable de 'edicion'
+			edicion = null;
+
+			// Si había una edición guardada en la BD, la elimina
+			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
+		}
+
+		// Fin
+		return edicion;
+	},
+	siHayErroresBajaElStatus: (prodsPorEnts) => {
+		// Variables
+		const entidades = variables.entidades.prods;
+
+		// Acciones por cada ENTIDAD
+		entidades.forEach(async (entidad, i) => {
+			// Averigua si existen registros por cada entidad
+			if (prodsPorEnts[i].length)
+				// Acciones por cada PRODUCTO
+				for (let original of prodsPorEnts[i]) {
+					// Si hay errores, le cambia el status
+					const errores = await validaPR.consolidado({datos: {...original, entidad}});
+					if (errores.impideAprobado)
+						BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+				}
+		});
+
+		// Fin
+		return;
+	},
+	averiguaTipoDeLink: (links, condicion) => {
+		// Filtro inicial
+		if (condicion) links = links.filter((n) => n[condicion]);
+
+		// Resultados
+		let resultado = {
+			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+		};
+
+		// Fin
+		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
+	},
+	statusRegistro: (registro) => {
+		// Variables
+		const {entidad, id} = registro;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const {codigo, nombre} = registro.statusRegistro;
+		const origen = familia == "producto" ? "P" : "R";
+		const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=DT" + origen;
+
+		// Genera el href
+		const href =
+			registro.statusRegistro_id == creado_id
+				? "/revision/" + familia + "/alta" + cola
+				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
+				? "/revision/" + familia + "/edicion" + cola
+				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
+				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
+				: "";
+
+		// Fin
+		return {codigo, valor: nombre, href};
+	},
 };
