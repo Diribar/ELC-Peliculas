@@ -102,14 +102,21 @@ module.exports = {
 		});
 	},
 	inacRecupGuardar: async (req, res) => {
-		// Si es un 'recuperar' y no escribió un motivo, redirige
-		let {comentario: comentUs} = req.body;
+		// Variables iniciales
+		const {motivo_id} = req.body;
 		const {ruta} = comp.reqBasePathUrl(req);
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
-		if (codigo == "recuperar" && !comentUs) return res.send(req.originalUrl);
+		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
 
-		// Variables
-		const {entidad, id, motivo_id} = {...req.query, ...req.body};
+		// Si faltan datos, redirige
+		if (codigo == "inactivar") {
+			if (!motivo_id) return res.send(req.originalUrl); // no se especificó el motivo
+			var motivo = motivosStatus.find((n) => n.id == motivo_id);
+			if (motivo.agregarComent && !comentario) return res.send(req.originalUrl); // comentario mandatorio
+		} else if (codigo == "recuperar" && !comentario) return res.send(req.originalUrl); // comentario mandatorio
+
+		// Más variables
+		const {entidad, id} = req.query;
 		const userID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -117,20 +124,9 @@ module.exports = {
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
-		// Pule el comentario
-		if (!comentUs) comentUs = "";
-		if (comentUs.endsWith(".")) comentUs = comentUs.slice(0, -1);
-
-		// Comentario para la tabla 'histStatus'
-		let comentario = "";
-		if (codigo == "inactivar") {
-			comentario += motivosStatus.find((n) => n.id == motivo_id).descripcion;
-			if (comentUs) {
-				if (comentUs.startsWith(comentario)) comentUs = comentUs.replace(comentario, "");
-				comentario += ": ";
-			}
-		}
-		if (comentUs) comentario += comentUs;
+		// Acciones con comentario
+		if (codigo == "inactivar" && !motivo.agregarComent) comentario = ""; // comentario no solicitado
+		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		let datos = {
