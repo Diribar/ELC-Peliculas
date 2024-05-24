@@ -4,12 +4,7 @@ const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Soporte para lectura y guardado de edición
-	puleEdicion: async (entidad, original, edicion) => {
-		return await FN.puleEdicion(entidad, original, edicion);
-	},
-
-	// Lectura de edicion
+	// Procesos CRUD
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -39,20 +34,18 @@ module.exports = {
 		edicion = edicion
 			? omitirPulirEdic
 				? edicion
-				: await FN.puleEdicion(entidad, original, edicion) // El output puede ser 'null'
+				: await comp.puleEdicion(entidad, original, edicion) // El output puede ser 'null'
 			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
 		return [original, edicion];
 	},
-
-	// Guardado de edición
-	guardaActEdicCRUD: async ({entidad, original, edicion, userID}) => {
+	guardaActEdic: async ({entidad, original, edicion, userID}) => {
 		// Variables
 		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 
 		// Quita la info que no agrega valor
-		edicion = await FN.puleEdicion(entidad, original, edicion);
+		edicion = await comp.puleEdicion(entidad, original, edicion);
 
 		// Acciones si quedaron datos para actualizar
 		if (edicion) {
@@ -86,45 +79,14 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
-	// Avatar
-	obtieneAvatar: (original, edicion) => {
-		// Variables
-		const familias = original.fuente ? "productos" : "RCLVs"; // los registros de producto tienen el campo 'fuente'
-		const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
-		const final = carpeta + "/Final/";
-		const revisar = carpeta + "/Revisar/";
-		const sinAvatar = "/publico/imagenes/Avatar/Sin-Avatar.jpg";
-
-		// Si no detectó la familia, devuelve el genérico
-		if (!familias) return {orig: sinAvatar, edic: sinAvatar};
-
-		// Obtiene el avatar original
-		const orig = !original.avatar
-			? sinAvatar
-			: original.avatar.includes("/")
-			? original.avatar
-			: comp.gestionArchivos.existe(carpetaExterna + final + original.avatar)
-			? "/Externa/" + final + original.avatar
-			: comp.gestionArchivos.existe(carpetaExterna + revisar + original.avatar)
-			? "/Externa/" + revisar + original.avatar
-			: sinAvatar;
-
-		// avatarEdic
-		const edic = edicion && edicion.avatar ? "/Externa/" + revisar + edicion.avatar : orig;
-
-		// Fin
-		return {orig, edic};
-	},
-
-	// Listados de RCLV
 	grupos: {
 		pers: (camposDA) => {
 			// Variables
 			const personajes = camposDA
 				.find((n) => n.nombre == "personaje_id") // Obtiene los personajes
 				.valores // Obtiene los valores
-				// Deja los datos necesarios
 				.map((n) => {
+					// Deja los datos necesarios
 					return {
 						id: n.id,
 						nombre: n.nombre,
@@ -242,312 +204,211 @@ module.exports = {
 		},
 	},
 
-	// CAMBIOS DE STATUS
-	// Revisión: API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba un valor editado
-	// Prod-RUD: Edición - Cuando la realiza un revisor
-	revisiones: {
-		transfiereDatos: async (original, edicion, campo) => {
-			// 1. Si el campo no recibe datos, termina
-			const camposQueNoRecibenDatos = [
-				"nombreOriginal",
-				"nombreCastellano",
-				"anoEstreno",
-				"sinopsis",
-				"avatar",
-				"avatar_url",
-				...variables.entidades.rclvs_id,
-			];
-			if (camposQueNoRecibenDatos.includes(campo)) return;
+	// CRUD y Revisión
+	obtieneAvatar: (original, edicion) => {
+		// Variables
+		const familias = original.fuente ? "productos" : "RCLVs"; // los registros de producto tienen el campo 'fuente'
+		const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
+		const final = carpeta + "/Final/";
+		const revisar = carpeta + "/Revisar/";
+		const sinAvatar = "/publico/imagenes/Avatar/Sin-Avatar.jpg";
 
-			// Condiciones
-			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
-			const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
-			if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
+		// Si no detectó la familia, devuelve el genérico
+		if (!familias) return {orig: sinAvatar, edic: sinAvatar};
 
-			// 2. Actualización condicional por campo
-			const cond1 = campo == "tipoActuacion_id";
-			const cond21 = variables.entidades.rclvs_id.includes(campo);
-			const cond22 = cond21 && edicion[campo] != 2; // particularidad para rclv_id
-			const cond31 = campo == "epocaOcurrencia_id";
-			const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
-			const novedad = {[campo]: edicion[campo]};
-			if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		// Obtiene el avatar original
+		const orig = !original.avatar
+			? sinAvatar
+			: original.avatar.includes("/")
+			? original.avatar
+			: comp.gestionArchivos.existe(carpetaExterna + final + original.avatar)
+			? "/Externa/" + final + original.avatar
+			: comp.gestionArchivos.existe(carpetaExterna + revisar + original.avatar)
+			? "/Externa/" + revisar + original.avatar
+			: sinAvatar;
 
-			// 3. Actualización condicional por valores
-			if (!cond1 && !cond21 && !cond31) await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+		// avatarEdic
+		const edic = edicion && edicion.avatar ? "/Externa/" + revisar + edicion.avatar : orig;
 
-			// Fin
-			return true;
-		},
-		eliminaDemasEdiciones: async ({entidad, original, id}) => {
-			// Revisa cada registro de edición y decide si corresponde:
-			// - Eliminar el registro
-			// - Elimina el valor del campo
+		// Fin
+		return {orig, edic};
+	},
+	transfiereDatos: async (original, edicion, campo) => {
+		// 1. Si el campo no recibe datos, termina
+		const camposQueNoRecibenDatos = [
+			"nombreOriginal",
+			"nombreCastellano",
+			"anoEstreno",
+			"sinopsis",
+			"avatar",
+			"avatar_url",
+			...variables.entidades.rclvs_id,
+		];
+		if (camposQueNoRecibenDatos.includes(campo)) return;
 
-			// Variables
-			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[campo_id]: id};
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
+		// Condiciones
+		const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
+		const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
+		if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
 
-			// Acciones si existen ediciones
-			if (ediciones.length) {
-				let espera = [];
-				for (let edic of ediciones) espera.push(FN.puleEdicion(entidad, original, edic));
-				await Promise.all(espera);
-			}
+		// 2. Actualización condicional por campo
+		const cond1 = campo == "tipoActuacion_id";
+		const cond21 = variables.entidades.rclvs_id.includes(campo);
+		const cond22 = cond21 && edicion[campo] != 2; // particularidad para rclv_id
+		const cond31 = campo == "epocaOcurrencia_id";
+		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
+		const novedad = {[campo]: edicion[campo]};
+		if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
 
-			// Fin
-			return;
-		},
-		statusAprob: async function ({entidad, registro}) {
-			// Variables
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
+		// 3. Actualización condicional por valores
+		if (!cond1 && !cond21 && !cond31) await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
-			// Acciones si es un producto que no está en status 'aprobado':
-			// 1. Averigua si corresponde cambiarlo al status 'aprobado'
-			// 2. Si es una colección, ídem para sus capítulos
-			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
-			// 4. Obtiene el nuevo status del producto
-			if (!statusAprob) statusAprob = await this.prodsPosibleAprob(entidad, registro);
+		// Fin
+		return true;
+	},
+	eliminaDemasEdiciones: async ({entidad, original, id}) => {
+		// Revisa cada registro de edición y decide si corresponde:
+		// - Eliminar el registro
+		// - Elimina el valor del campo
 
-			// Fin
-			return statusAprob;
-		},
-		prodsPosibleAprob: async function (entidad, registro) {
-			// Variables
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		// Variables
+		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[campo_id]: id};
+		const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
 
-			// Acciones si no hay errores
-			const errores = await validaPR.consolidado({datos: {...registro, entidad}});
-			if (errores.impideAprobado) return false;
-
-			// Variables
-			const ahora = comp.fechaHora.ahora();
-			let datos = {statusRegistro_id: aprobado_id};
-			if (!registro.altaTermEn)
-				datos = {
-					...datos,
-					altaTermEn: ahora,
-					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-					statusSugeridoPor_id: usAutom_id,
-					statusSugeridoEn: ahora,
-				};
-
-			// Cambia el status del registro
-			await BD_genericas.actualizaPorId(entidad, registro.id, datos);
-
-			// Actualiza el campo 'prodAprob' en los links
-			BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob: true});
-
-			// Si es una colección, revisa si corresponde aprobar capítulos
-			if (entidad == "colecciones") await this.capsAprobs(registro.id);
-
-			// Actualiza prodsEnRCLV
-			this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
-
-			// Fin
-			return true;
-		},
-		capsAprobs: async (colID) => {
-			// Variables
-			const ahora = comp.fechaHora.ahora();
+		// Acciones si existen ediciones
+		if (ediciones.length) {
 			let espera = [];
-			let datos;
-
-			// Prepara los datos
-			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-			const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
-
-			// Obtiene los capitulos id
-			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-
-			// Actualiza el status de los capítulos
-			for (let capitulo of capitulos) {
-				// Variables
-				const datosTerm = !capitulo.altaTermEn
-					? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
-					: {};
-
-				// Revisa si cada capítulo supera el test de errores
-				datos = {entidad: "capitulos", ...capitulo};
-				const errores = await validaPR.consolidado({datos});
-
-				// Actualiza los datos
-				datos = errores.impideAprobado
-					? {...datosFijos, statusRegistro_id: creadoAprob_id}
-					: {...datosFijos, ...datosSugeridos, ...datosTerm};
-				espera.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
-			}
-
-			// Espera hasta que se revisen todos los capítulos
+			for (let edic of ediciones) espera.push(comp.puleEdicion(entidad, original, edic));
 			await Promise.all(espera);
+		}
 
-			// Fin
-			return;
-		},
-		accionesPorCambioDeStatus: async function (entidad, registro) {
-			// Variables
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		// Fin
+		return;
+	},
+	statusAprob: async function ({entidad, registro}) {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
-			// prodsEnRCLV
-			if (familias == "productos") {
-				// Variables
-				const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
+		// Primera respuesta
+		let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
+		if (statusAprob) return true;
 
-				// Actualiza prodAprob en sus links
-				if (registro.links && registro.links.length) {
-					const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
-					await BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
-				}
+		// Si hay errores, devuelve falso e interrumpe la función
+		const errores = await validaPR.consolidado({datos: {...registro, entidad}});
+		if (errores.impideAprobado) return false;
 
-				// Rutina por entidad RCLV
-				const entidadesRCLV = variables.entidades.rclvs;
-				for (let entidadRCLV of entidadesRCLV) {
-					const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
-					if (registro[campo_id] && registro[campo_id] != 1)
-						prodAprob
-							? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-							: this.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
-				}
-			}
-
-			// linksEnProds
-			if (familias == "links") {
-				// Obtiene los datos identificatorios del producto
-				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
-				const prodID = registro[campo_id];
-
-				// Actualiza el producto
-				await this.linksEnProd({entidad: prodEntidad, id: prodID});
-				if (prodEntidad == "capitulos") {
-					const colID = await BD_genericas.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
-					this.linksEnColec(colID);
-				}
-			}
-
-			// Actualiza la variable de links vencidos
-			await comp.linksVencPorSem.actualizaLVPS();
-
-			// Fin
-			return;
-		},
-		// Actualiza los campos de 'links' en el producto
-		linksEnProd: async ({entidad, id}) => {
-			// Variables
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
-			const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
-
-			// Obtiene las películas y trailers
-			const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
-			const linksPelis = lectura.filter((n) => n.tipo_id == linkPelicula_id);
-			const linksHD = linksPelis.filter((n) => n.calidad >= 720);
-
-			// Averigua qué links tiene
-			const tiposDeLink = {
-				// Trailer
-				linksTrailer: FN.averiguaTipoDeLink(linksTrailers),
-
-				// Películas
-				linksGral: FN.averiguaTipoDeLink(linksPelis),
-				linksGratis: FN.averiguaTipoDeLink(linksPelis, "gratuito"),
-				linksCast: FN.averiguaTipoDeLink(linksPelis, "castellano"),
-				linksSubt: FN.averiguaTipoDeLink(linksPelis, "subtitulos"),
-
-				// Películas HD
-				HD_Gral: FN.averiguaTipoDeLink(linksHD),
-				HD_Gratis: FN.averiguaTipoDeLink(linksHD, "gratuito"),
-				HD_Cast: FN.averiguaTipoDeLink(linksHD, "castellano"),
-				HD_Subt: FN.averiguaTipoDeLink(linksHD, "subtitulos"),
+		// 1. Cambia el status del registro
+		const ahora = comp.fechaHora.ahora();
+		let datos = {statusRegistro_id: aprobado_id};
+		if (!registro.altaTermEn)
+			datos = {
+				...datos,
+				altaTermEn: ahora,
+				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+				statusSugeridoPor_id: usAutom_id,
+				statusSugeridoEn: ahora,
 			};
+		await BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
-			// Actualiza el registro
-			entidad != "capitulos"
-				? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
-				: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
+		// 2. Actualiza el campo 'prodAprob' en los links
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[campo_id]: registro.id};
+		BD_genericas.actualizaTodosPorCondicion("links", condicion, {prodAprob: true});
 
-			// Fin
-			return;
-		},
-		linksEnColec: async (colID) => {
+		// 3. Si es una colección, revisa si corresponde aprobar capítulos
+		if (entidad == "colecciones") await this.capsAprobs(registro.id);
+
+		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
+		this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
+
+		// Fin
+		return true;
+	},
+	capsAprobs: async (colID) => {
+		// Variables
+		const ahora = comp.fechaHora.ahora();
+		let espera = [];
+		let datos;
+
+		// Prepara los datos
+		const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
+		const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
+
+		// Obtiene los capitulos id
+		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+
+		// Actualiza el status de los capítulos
+		for (let capitulo of capitulos) {
 			// Variables
-			const campos = [
-				...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-				...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-			];
+			const datosTerm = !capitulo.altaTermEn
+				? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
+				: {};
 
-			// Rutinas
-			const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-			for (let campo of campos) {
-				// Cuenta la cantidad de casos true, false y null
-				const SI = links.filter((n) => n[campo] == conLinks).length;
-				const potencial = links.filter((n) => n[campo] == linksTalVez).length;
-				const NO = links.filter((n) => n[campo] == sinLinks).length;
+			// Revisa si cada capítulo supera el test de errores
+			datos = {entidad: "capitulos", ...capitulo};
+			const errores = await validaPR.consolidado({datos});
 
-				// Averigua los porcentajes de OK y Potencial
-				const total = SI + potencial + NO;
-				const resultado = {
-					SI: SI / total,
-					potencial: (SI + potencial) / total,
-				};
-				const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? linksTalVez : sinLinks;
+			// Actualiza los datos
+			datos = errores.impideAprobado
+				? {...datosFijos, statusRegistro_id: creadoAprob_id}
+				: {...datosFijos, ...datosSugeridos, ...datosTerm};
+			espera.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+		}
 
-				// Actualiza la colección
-				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
+		// Espera hasta que se revisen todos los capítulos
+		await Promise.all(espera);
+
+		// Fin
+		return;
+	},
+	accionesPorCambioDeStatus: async (entidad, registro) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+		// prodsEnRCLV
+		if (familias == "productos") {
+			// Variables
+			const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
+
+			// Actualiza prodAprob en sus links
+			if (registro.links && registro.links.length) {
+				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
+				await BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
 			}
 
-			// Fin
-			return;
-		},
-
-		// Actualiza los campos de 'producto' en el RCLV
-		prodsEnRCLV: async ({entidad, id}) => {
-			// Variables
-			const entidadesProds = variables.entidades.prods;
-			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
-			let prodsAprob;
-
-			// Si el ID es menor o igual a 10, termina la función
-			if (id && id <= 10) return;
-
-			// Establece la condición perenne
-			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[rclv_id]: id};
-
-			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
-			for (let entidadProd of entidadesProds) {
-				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
-				if (prodsAprob) {
-					prodsAprob = conLinks;
-					break;
-				}
+			// Rutina por entidad RCLV
+			const entidadesRCLV = variables.entidades.rclvs;
+			for (let entidadRCLV of entidadesRCLV) {
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+				if (registro[campo_id] && registro[campo_id] != 1)
+					prodAprob
+						? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
+						: comp.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
 			}
+		}
 
-			// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
-			if (!prodsAprob)
-				for (let entidadProd of entidadesProds) {
-					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
-					if (prodsAprob) {
-						prodsAprob = linksTalVez;
-						break;
-					}
-				}
+		// linksEnProds
+		if (familias == "links") {
+			// Obtiene los datos identificatorios del producto
+			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
+			const prodID = registro[campo_id];
 
-			// 3. Averigua si existe alguna edición con ese rclv_id
-			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
+			// Actualiza el producto
+			await comp.linksEnProd({entidad: prodEntidad, id: prodID});
+			if (prodEntidad == "capitulos") {
+				const colID = await BD_genericas.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
+				comp.linksEnColec(colID);
+			}
+		}
 
-			// 4. No encontró ningún caso
-			if (!prodsAprob) prodsAprob = sinLinks;
+		// Actualiza la variable de links vencidos
+		await comp.linksVencPorSem.actualizaLVPS();
 
-			// Actualiza el campo en el RCLV
-			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
-
-			// Fin
-			return;
-		},
+		// Fin
+		return;
 	},
 	eliminar: {
 		eliminaDependientes: async (entidad, id, original) => {
@@ -743,7 +604,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	fichaDelUsuario: async function (userID, petitFamilias) {
+	fichaDelUsuario: async (userID, petitFamilias) => {
 		// Variables
 		const ahora = comp.fechaHora.ahora();
 		const usuario = await BD_genericas.obtienePorId("usuarios", userID);
@@ -763,29 +624,10 @@ module.exports = {
 		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
 
 		// Calidad de las altas
-		bloque.push(...this.usuarioCalidad(usuario, petitFamilias));
+		bloque.push(...FN.usuarioCalidad(usuario, petitFamilias));
 
 		// Fin
 		return bloque;
-	},
-	usuarioCalidad: (usuario, prefijo) => {
-		// Contar los casos aprobados y rechazados
-		const cantAprob = usuario[prefijo + "Aprob"];
-		const cantRech = usuario[prefijo + "Rech"];
-
-		// Mediciones
-		const cantidad = cantAprob + cantRech;
-		const calidad = cantidad ? parseInt((cantAprob / cantidad) * 100) + "%" : "-";
-
-		// Prepara el resultado
-		const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
-		const resultados = [
-			{titulo: "Calidad de " + sufijo, valor: calidad},
-			{titulo: "Cant. de " + sufijo, valor: cantidad},
-		];
-
-		// Fin
-		return resultados;
 	},
 };
 
@@ -804,71 +646,10 @@ let FN = {
 
 			// Elimina la edición si está vacía
 			delete edicion[campo_idRCLV];
-			await this.puleEdicion(prodEntidad, original, edicion);
+			await comp.puleEdicion(prodEntidad, original, edicion);
 		}
 		// Fin
 		return;
-	},
-	puleEdicion: async (entidad, original, edicion) => {
-		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		const edicID = edicion.id;
-		let camposNull = {};
-		let camposRevisar = [];
-
-		// Obtiene los campos a revisar
-		for (let campo of variables.camposRevisar[familias]) {
-			// Agrega el campo simple
-			camposRevisar.push(campo.nombre);
-			// Agrega el campo include
-			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
-		}
-
-		// Quita de edición los campos que correspondan
-		for (let prop in edicion) {
-			// Quita de edición los campos que no se comparan o que sean 'null'
-			if (!camposRevisar.includes(prop) || edicion[prop] === null) {
-				delete edicion[prop];
-				continue;
-			}
-
-			// Corrige errores de data-entry
-			if (typeof edicion[prop] == "string") edicion[prop] = edicion[prop].trim();
-
-			// CONDICION 1: Los valores de original y edición son significativos e idénticos
-			const condic1 =
-				edicion[prop] === original[prop] || // son estrictamente iguales
-				(typeof original[prop] == "number" && edicion[prop] == original[prop]) || // coincide el número
-				(edicion[prop] === "1" && original[prop] === true) || // coincide el boolean
-				(edicion[prop] === "0" && original[prop] === false); // coincide el boolean
-			if (condic1) camposNull[prop] = null;
-
-			// CONDICION 2: El objeto vinculado tiene el mismo ID
-			const condic2 = !!edicion[prop] && !!edicion[prop].id && !!original[prop] && edicion[prop].id === original[prop].id;
-
-			// Si se cumple alguna de las condiciones, se elimina ese método
-			if (condic1 || condic2) delete edicion[prop];
-		}
-
-		// 3. Acciones en función de si quedan campos
-		let quedanCampos = !!Object.keys(edicion).length;
-		if (quedanCampos) {
-			// Devuelve el id a la variable de edicion
-			if (edicID) edicion.id = edicID;
-
-			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
-		} else {
-			// Convierte en 'null' la variable de 'edicion'
-			edicion = null;
-
-			// Si había una edición guardada en la BD, la elimina
-			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
-		}
-
-		// Fin
-		return edicion;
 	},
 	siHayErroresBajaElStatus: (prodsPorEnts) => {
 		// Variables
@@ -890,19 +671,6 @@ let FN = {
 		// Fin
 		return;
 	},
-	averiguaTipoDeLink: (links, condicion) => {
-		// Filtro inicial
-		if (condicion) links = links.filter((n) => n[condicion]);
-
-		// Resultados
-		let resultado = {
-			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
-			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
-		};
-
-		// Fin
-		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
-	},
 	statusRegistro: (registro) => {
 		// Variables
 		const {entidad, id} = registro;
@@ -923,5 +691,24 @@ let FN = {
 
 		// Fin
 		return {codigo, valor: nombre, href};
+	},
+	usuarioCalidad: (usuario, prefijo) => {
+		// Contar los casos aprobados y rechazados
+		const cantAprob = usuario[prefijo + "Aprob"];
+		const cantRech = usuario[prefijo + "Rech"];
+
+		// Mediciones
+		const cantidad = cantAprob + cantRech;
+		const calidad = cantidad ? parseInt((cantAprob / cantidad) * 100) + "%" : "-";
+
+		// Prepara el resultado
+		const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
+		const resultados = [
+			{titulo: "Calidad de " + sufijo, valor: calidad},
+			{titulo: "Cant. de " + sufijo, valor: cantidad},
+		];
+
+		// Fin
+		return resultados;
 	},
 };
