@@ -30,8 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// quitaElStatusDelComentario();
-		// await this.rutinasDiarias.IDdeTablas()
+		// await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -230,11 +229,9 @@ module.exports = {
 			for (let usuario of usuarios) {
 				if (!usuario.pais || !usuario.email) continue;
 
-				// Variables
+				// Si para el usuario no son las 0hs, lo saltea
 				const zonaHoraria = usuario.pais.zonaHoraria;
 				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-
-				// Si para el usuario no son las 0hs, lo saltea
 				if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
