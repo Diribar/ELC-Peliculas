@@ -1,8 +1,10 @@
-<div id="tituloInfoDetalle" class="relative">
-	<% const ao = comp.obtieneDesdeEntidad.ao(locals.entidad) %>
-	<h3>Links para verl<%= ao %></h3>
-</div>
-<!-- Links -->
-<%- include("PR1-Detalle-2Links") %>
+<% if (registro.statusRegistro_id != inactivo_id) { %>
+	<!-- Links -->
+	<div id="tituloInfoDetalle" class="relative">
+		<% const ao = comp.obtieneDesdeEntidad.ao(locals.entidad) %>
+		<h3>Links para verl<%= ao %></h3>
+	</div>
+	<%- include("PR1-Detalle-2Links") %>
+<% } %>
 <!-- Información -->
 <%- include("PR1-Detalle-3Info") %>

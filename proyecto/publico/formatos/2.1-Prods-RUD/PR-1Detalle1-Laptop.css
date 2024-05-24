@@ -2,27 +2,22 @@
 	#recuadroDL {
 		min-width: 500px;
 
-		#informacion {
-			#marcoInfo {margin-top: 20px;}
-
-			/* Links */
-			#links {
-				flex-direction: row; justify-content: flex-start; padding: 10px 20px;
-				:is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
-				nav {
-					flex-direction: row;
-					:is(button, select) {height: 20px;}
-					:is(a, select) {margin-right: 10px;}
-					button#primerCap {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
-				}
-				#ayudaLinks {
-					margin-right: 10px;
-					.ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
-					.ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
-				}
+		/* Links */
+		#informacion #links {
+			flex-direction: row; justify-content: flex-start; padding: 10px 20px; margin-bottom: 20px;
+			:is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
+			nav {
+				flex-direction: row;
+				:is(button, select) {height: 20px;}
+				:is(a, select) {margin-right: 10px;}
+				button#primerCap {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
+			}
+			#ayudaLinks {
+				margin-right: 10px;
+				.ayudaMostrar {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
+				.ayudaMostrar::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
 			}
 		}
-
 	}
 
 	/* Sectores a ocultar */
