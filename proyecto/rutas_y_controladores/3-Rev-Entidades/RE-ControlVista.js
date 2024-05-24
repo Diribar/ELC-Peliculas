@@ -116,21 +116,12 @@ module.exports = {
 	},
 	cambioStatusGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, origen} = req.query;
-		const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
-		const revID = req.session.usuario.id;
-		const ahora = comp.fechaHora.ahora();
-		const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const {baseUrl} = comp.reqBasePathUrl(req);
+		let datos = await procesos.guardar.obtieneDatos(req);
+		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
+		const {codigo, subcodigo, producto, rclv, motivo_id, comentario, aprob} = datos;
+		const {cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
 
 		// Otras variables
-		let datos = await procesos.guardar.obtieneDatos(req);
-		const {original, statusOriginal_id, statusFinal_id} = datos;
-		const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = datos;
-		const producto = !rclv;
-		const userID = original.statusSugeridoPor_id;
-		const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 		let destino;
 		datos = {}; // limpia la variable 'datos'
 
@@ -228,7 +219,7 @@ module.exports = {
 		}
 
 		// Datos sólo si es un producto
-		if (!rclv) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
+		if (producto) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
 
 		// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
@@ -275,8 +266,7 @@ module.exports = {
 		if (datosHist.penalizac) comp.penalizacAcum(userID, motivo, petitFamilias);
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
-		if (producto)
-			await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+		if (producto) await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 		// CONSECUENCIAS - Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
@@ -434,8 +424,7 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion")
-				await procsCRUD.statusAprob({entidad, registro: originalGuardado});
+			if (!edicion && entidadEdic == "prodsEdicion") await procsCRUD.statusAprob({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
