@@ -175,7 +175,7 @@ module.exports = {
 				);
 
 				// Ejecuta la función linksEnProd
-				for (let id of IDs) esperar.push(procsCRUD.linksEnProd({entidad, id}));
+				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
 			}
 			await Promise.all(esperar);
 
@@ -183,7 +183,7 @@ module.exports = {
 			const IDs = await BD_genericas.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
 				n.map((m) => m.id)
 			);
-			for (let id of IDs) procsCRUD.linksEnColec(id);
+			for (let id of IDs) comp.linksEnColec(id);
 
 			// Fin
 			return;
@@ -198,7 +198,7 @@ module.exports = {
 				let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 				// Rutina por ID: ejecuta la función prodsEnRCLV
-				for (let id of IDs) procsCRUD.prodsEnRCLV({entidad, id});
+				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
 			}
 
 			// Fin
