@@ -26,11 +26,11 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.usuarios, {as: "statusSugeridoPor", foreignKey: "sugeridoPor_id"});
-		entidad.belongsTo(n.usuarios, {as: "revisadoPor", foreignKey: "revisadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "statusOrigPor", foreignKey: "statusOrigPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "statusFinalPor", foreignKey: "statusFinalPor_id"});
 
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.statusRegistros, {as: "statusOriginal", foreignKey: "statusOriginal_id"});
+		entidad.belongsTo(n.statusRegistros, {as: "statusOriginal", foreignKey: "statusOrig_id"});
 		entidad.belongsTo(n.statusRegistros, {as: "statusFinal", foreignKey: "statusFinal_id"});
 	};
 	return entidad;

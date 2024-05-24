@@ -238,9 +238,9 @@ module.exports = {
 
 			// Obtiene los registros de "histStatus"
 			condiciones = {
-				aprobado: {[Op.ne]: null},
+				statusFinalPor_id: {[Op.and]: {[Op.ne]: inactivar_id, [Op.ne]: recuperar_id}},
+				statusOrigPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
 				comunicadoEn: null, // no fue comunicado
-				sugeridoPor_id: {[Op.ne]: usAutom_id}// sugerido por una persona
 			};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones)

@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await actualizaCategoriaLink();
+		//quitaElStatusDelComentario();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -802,12 +802,10 @@ let corrigeStatusColeccionEnCapitulo = async () => {
 	// Fin
 	return;
 };
-let quitaStatusDeComentario = async () => {
+let quitaElStatusDelComentario = async () => {
 	// Obtiene todos los motivos
 	const motivos = statusRegistros.map((m) => m.nombre);
-	console.log(789, motivos);
 	const histStatus = await BD_genericas.obtieneTodos("histStatus");
-	console.log(histStatus[1]);
 
 	// Rutina
 	for (let hist of histStatus) {

@@ -5,3 +5,8 @@ ALTER TABLE c19353_elc.cam_hist_status CHANGE statusOriginal_id statusOrig_id ti
 ALTER TABLE c19353_elc.cam_hist_status CHANGE sugeridoEn statusOrigEn datetime NOT NULL;
 ALTER TABLE c19353_elc.cam_hist_status CHANGE revisadoEn statusFinalEn datetime NOT NULL;
 ALTER TABLE c19353_elc.cam_hist_status MODIFY COLUMN statusFinalEn datetime DEFAULT utc_date() NOT NULL;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE statusOrigEn statusOrigEn datetime NOT NULL AFTER statusFinalPor_id;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE statusFinalEn statusFinalEn datetime DEFAULT utc_date() NOT NULL AFTER statusOrigEn;
+ALTER TABLE c19353_elc.cam_hist_status CHANGE comentario comentario varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL AFTER motivo_id;
+
+quita el status del comentario

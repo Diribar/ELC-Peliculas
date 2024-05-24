@@ -344,17 +344,6 @@ module.exports = {
 			// Si es una colección, revisa si corresponde aprobar capítulos
 			if (entidad == "colecciones") await this.capsAprobs(registro.id);
 
-			// Si fue originado por una persona, agrega un registro en el histStatus
-			if (registro.statusSugeridoPor_id != usAutom_id) {
-				let datosHist = {
-					...{entidad, entidad_id: registro.id, aprobado: true}, // entidad
-					...{statusOrigPor_id: registro.statusSugeridoPor_id, statusFinalPor_id: usAutom_id}, // personas
-					...{statusOrig_id: registro.statusRegistro_id, statusFinal_id: aprobado_id}, // status
-					...{statusOrigEn: registro.statusSugeridoEn}, // fecha
-				};
-				BD_genericas.agregaRegistro("histStatus", datosHist);
-			}
-
 			// Actualiza prodsEnRCLV
 			this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
 
