@@ -237,7 +237,7 @@ module.exports = {
 		if (entidad == "colecciones") {
 			// Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
-				? await procsCRUD.revisiones.capsAprobs(id)
+				? await procsCRUD.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
@@ -276,7 +276,7 @@ module.exports = {
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 		if (producto)
-			await procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+			await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 		// CONSECUENCIAS - Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
@@ -380,7 +380,7 @@ module.exports = {
 				motivos = motivosEdics.filter((m) => m.prods);
 
 				// Achica la edición a su mínima expresión
-				edicion = await procsCRUD.puleEdicion(entidad, original, edicion);
+				edicion = await comp.puleEdicion(entidad, original, edicion);
 
 				// Fin, si no quedan campos
 				if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
@@ -435,7 +435,7 @@ module.exports = {
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
 			if (!edicion && entidadEdic == "prodsEdicion")
-				await procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
+				await procsCRUD.statusAprob({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
