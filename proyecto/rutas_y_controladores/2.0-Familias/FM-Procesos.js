@@ -501,7 +501,7 @@ module.exports = {
 			return;
 		},
 	},
-	obtieneDatos: async function (req) {
+	obtieneDatos: async (req) => {
 		// Variables
 		const {ruta} = comp.reqBasePathUrl(req);
 		let codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
@@ -572,7 +572,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: async function (registro) {
+	bloqueRegistro: async (registro) => {
 		// Variable
 		let resultado = [];
 
