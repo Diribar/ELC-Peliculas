@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Lun. 27/may",
-	"HoraUTC": "0:00",
+	"HoraUTC": "0:16",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 20/may",
-	"HoraSemUTC": "12:13",
-	"semanaUTC": 21,
+	"FechaSemUTC": "Lun. 27/may",
+	"HoraSemUTC": "0:16",
+	"semanaUTC": 22,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -16,35 +16,35 @@
 	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
 	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
-		"ImagenDerecha": "NO",
-		"FeedbackParaRevisores": "NO",
-		"LoginsAcums": "NO",
-		"RutinasEnUsuario": "NO",
-		"AprobadoConAvatarLink": "NO",
-		"IDdeTablas": "NO",
-		"EliminaLinksInactivos": "NO",
-		"EliminaCalifsSinPPP": "NO",
-		"EliminaImagenesSinRegistro": "NO",
-		"EliminaHistorialDeRegsEliminados": "NO",
-		"PaisesConMasProductos": "NO",
-		"LinksPorProv": "NO"
+		"ImagenDerecha": "SI",
+		"FeedbackParaRevisores": "SI",
+		"LoginsAcums": "SI",
+		"RutinasEnUsuario": "SI",
+		"AprobadoConAvatarLink": "SI",
+		"IDdeTablas": "SI",
+		"EliminaLinksInactivos": "SI",
+		"EliminaCalifsSinPPP": "SI",
+		"EliminaImagenesSinRegistro": "SI",
+		"EliminaHistorialDeRegsEliminados": "SI",
+		"PaisesConMasProductos": "SI",
+		"LinksPorProv": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
 		"ActualizaFechaVencimLinks": "SI",
-		"EliminaHistorialAntiguo": "SI",
-		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI",
-		"EliminaLoginsAcumsRepetidos": "SI"
+		"EliminaHistorialAntiguo": "NO",
+		"RCLV_idEnCapitulos": "NO",
+		"RCLVsSinEpocaPSTyConAno": "NO",
+		"EliminaLoginsAcumsRepetidos": "NO"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"24-may-24": {},
 		"25-may-24": {"leyenda": "Hoy recordamos Vicenta María López y Vicuña", "entidad": "personajes", "id": 207},
 		"26-may-24": {"leyenda": "Hoy es Fiesta de la Santísima Trinidad", "entidad": "eventos", "id": 24},
 		"27-may-24": {},
-		"28-may-24": {"leyenda": "Hoy recordamos Esteban Wyszynski", "entidad": "personajes", "id": 142}
+		"28-may-24": {"leyenda": "Hoy recordamos Esteban Wyszynski", "entidad": "personajes", "id": 142},
+		"29-may-24": {"leyenda": "Hoy recordamos al papa Pablo VI, santo", "entidad": "personajes", "id": 55}
 	}
 }
