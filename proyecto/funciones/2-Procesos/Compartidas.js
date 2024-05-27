@@ -735,21 +735,16 @@ module.exports = {
 
 			// Rutina por link
 			for (let link of links) {
-				// Obtiene el anoEstreno
+				// Variables
 				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 				const anoEstreno = link[asocProd].anoEstreno;
-
-				// Obtiene la categoria_id
 				const categoria_id = this.categoria_id(link);
-
-				// Averigua si es un linkReciente y sin primRev
-				const sinPrimRev = !link.yaTuvoPrimRev;
-				const linkReciente = categoria_id == linkEstrenoReciente_id;
 
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 				const desde = link.statusSugeridoEn.getTime();
 				const fechaVencimNum =
-					desde + (sinPrimRev ? linksPrimRev : linkReciente ? linksPrimRev + unaSemana : linksVidaUtil);
+					desde +
+					(categoria_id == linkPrimRev_id ? linkPrimRev : categoria_id == linkEstrRec_id ? linkEstrRec : linksVidaUtil);
 				const fechaVencim = new Date(fechaVencimNum);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
@@ -840,7 +835,7 @@ module.exports = {
 			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
 			// Películas y Colecciones
-			const semPrimRev = linksPrimRev / unaSemana;
+			const semPrimRev = linkPrimRev / unaSemana;
 			let pelisColesPosibles = 0;
 			for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
 				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
@@ -865,10 +860,10 @@ module.exports = {
 			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
 
 			// Fin
-			return link.statusRegistro_id == creado_id
-				? linkRecienCreado_id
+			return !link.yaTuvoPrimRev
+				? linkPrimRev_id
 				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
-				? linkEstrenoReciente_id
+				? linkEstrRec_id
 				: linkEstandar_id;
 		},
 	},
