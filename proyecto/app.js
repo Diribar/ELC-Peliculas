@@ -6,9 +6,10 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 // Variable 'global' - Links
+global.linksSemsPrimRev = 4;
 global.linksSemsEstandar = 26;
-global.linksVU_primRev = unaSemana * 4;
-global.linksVU_estrRec = unaSemana * 5;
+global.linksVU_primRev = unaSemana * linksSemsPrimRev;
+global.linksVU_estrRec = unaSemana * (linksSemsPrimRev + 1);
 global.linksVU_estandar = unaSemana * linksSemsEstandar;
 global.sinLinks = 0;
 global.linksTalVez = 1;
