@@ -765,7 +765,7 @@ module.exports = {
 				categoria_id,
 				fechaVencim,
 				anoEstreno,
-				yaTuvoPrimRev: true,
+				yaTuvoPrimRev: !statusCreado, // se revisa el alta, luego la primera revisión, y en adelante con frecuencia estándar
 				statusSugeridoPor_id: revID,
 				statusSugeridoEn: ahora,
 				statusRegistro_id,
@@ -776,7 +776,6 @@ module.exports = {
 				datos.altaRevisadaEn = ahora;
 				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
 			}
-
 
 			// Fin
 			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
