@@ -783,15 +783,14 @@ module.exports = {
 		},
 		actualizaLVPS: async function () {
 			// Variables - Links vencidos por semana
-			if (!semanaUTC) this.variablesSemanales(); // Para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-			const prodAprob = true;
-			cantLinksVencPorSem = {};
+			if (!semanaUTC) this.variablesSemanales(); // para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
+			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 
 			// Crea las semanas dentro de la variable
+			cantLinksVencPorSem = {}; // elimina los datos anteriores
 			for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
-			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob};
 			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
 			const techoCaps = Math.ceil((links.filter((n) => n.capitulo_id).length / links.length) * 100);
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
@@ -812,18 +811,8 @@ module.exports = {
 			const prods = linksConLimite.length + linksSinLimite.length;
 			cantLinksVencPorSem["0"] = {pelisColes, capitulos, sinLimite, irPelisColes, irCapitulos, prods, techoCaps};
 
-			// Obtiene la cantidad por semana de los 'linksAprob'
-			for (let link of linksAprob) {
-				// Obtiene la semana de vencimiento
-				const fechaVencim = new Date(link.fechaVencim).getTime();
-				const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
-				if (semVencim < 1 || semVencim > linksSemsVidaUtil) continue; // saltea la semana actual y las que tengan un error
-
-				// Agrega al conteo
-				const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
-				cantLinksVencPorSem[semVencim][entidad]++;
-				cantLinksVencPorSem[semVencim].prods++;
-			}
+			// Obtiene la cantidad de 'linksAprob' por semana
+			FN.cantLinksAprobPorSemana(linksAprob);
 
 			// Fin
 			this.paramsVencPorSem();
@@ -1213,9 +1202,7 @@ module.exports = {
 
 // Funciones
 let FN = {
-	ahora: () => {
-		return new Date(new Date().toUTCString()); // <-- para convertir en 'horario local'
-	},
+	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en 'horario local'
 	nuevoHorario: (delay, horario) => {
 		horario = horario ? horario : FN.ahora();
 		let nuevoHorario = new Date(horario);
@@ -1284,5 +1271,21 @@ let FN = {
 
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
+	},
+	cantLinksAprobPorSemana: (links) => {
+		for (let link of links) {
+			// Obtiene la semana de vencimiento
+			const fechaVencim = new Date(link.fechaVencim).getTime();
+			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
+			if (semVencim < 1 || semVencim > linksSemsVidaUtil) continue; // saltea la semana actual y las que tengan un error
+
+			// Agrega al conteo
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
+			cantLinksVencPorSem[semVencim][entidad]++;
+			cantLinksVencPorSem[semVencim].prods++;
+		}
+
+		// Fin
+		return;
 	},
 };
