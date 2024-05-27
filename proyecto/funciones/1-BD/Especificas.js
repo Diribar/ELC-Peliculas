@@ -130,7 +130,10 @@ module.exports = {
 				prodAprob: true,
 				statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
 			};
-			const originales = db.links.findAll({where: condiciones, include}).then((n) => n.map((m) => m.toJSON()));
+			const originales = db.links
+				.findAll({where: condiciones, include})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) => n.sort((a, b) => (a.fechaVencim < b.fechaVencim ? -1 : 1)));
 
 			// Obtiene todas las ediciones
 			const ediciones = db.linksEdicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
