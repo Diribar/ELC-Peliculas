@@ -748,7 +748,7 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, req, semana}) => {
+		variables: ({link, req, semana, categoria_id, statusRegistro_id}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
@@ -765,6 +765,7 @@ module.exports = {
 				categoria_id,
 				fechaVencim,
 				anoEstreno,
+				yaTuvoPrimRev: true,
 				statusSugeridoPor_id: revID,
 				statusSugeridoEn: ahora,
 				statusRegistro_id,
@@ -774,7 +775,8 @@ module.exports = {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
-			} else datos.sigRev = true;
+			}
+
 
 			// Fin
 			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
