@@ -120,11 +120,11 @@ module.exports = {
 			let semana;
 			if (linkEstandarAprob) {
 				// Semana para capítulo
-				if (link.capitulo_id) semana = linksSemsVidaUtil;
+				if (link.capitulo_id) semana = linksSemsEstandar;
 				// Semana para los demás
 				else {
 					// Variables
-					const semPrimRev = linkPrimRev / unaSemana;
+					const semPrimRev = linksSemsPrimRev / unaSemana;
 					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
 					const piso = corte + 1;
 
