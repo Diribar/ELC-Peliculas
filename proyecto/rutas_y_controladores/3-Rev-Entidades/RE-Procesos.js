@@ -995,9 +995,9 @@ let FN_links = {
 		return IN != "SI"
 			? null
 			: categoria_id == linkPrimRev_id
-			? new Date(ahoraTiempo + linkPrimRev)
+			? new Date(ahoraTiempo + linksSemsPrimRev)
 			: categoria_id == linkEstrRec_id
-			? new Date(ahoraTiempo + linkEstrRec)
+			? new Date(ahoraTiempo + linksSemsEstrRec)
 			: categoria_id == linkEstandar_id
 			? new Date(ahoraTiempo + semana * unaSemana)
 			: null;
