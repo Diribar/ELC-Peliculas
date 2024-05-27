@@ -760,7 +760,7 @@ module.exports = {
 			// Condiciones y nuevo status
 			const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
 			const status = {
-				yaTuvoPrimRev: true,
+				yaTuvoPrimRev: true,// es EL momento en que se pasa a 'true'
 				statusSugeridoPor_id: usAutom_id,
 				statusRegistro_id: creadoAprob_id,
 				statusSugeridoEn: ahora,
