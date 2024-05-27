@@ -758,16 +758,16 @@ module.exports = {
 			const ahora = new Date();
 
 			// Condiciones y nuevo status
-			const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
-			const status = {
-				yaTuvoPrimRev: true,// es EL momento en que se pasa a 'true'
+			const condiciones = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
+			const novedades = {
+				yaTuvoPrimRev: true, // es EL momento en que se pasa a 'true'
 				statusSugeridoPor_id: usAutom_id,
 				statusRegistro_id: creadoAprob_id,
 				statusSugeridoEn: ahora,
 			};
 
-			// Actualiza el status de los links
-			await BD_genericas.actualizaTodosPorCondicion("links", condiciones, status);
+			// Actualiza las novedades de los links
+			await BD_genericas.actualizaTodosPorCondicion("links", condiciones, novedades);
 
 			// Fin
 			await this.actualizaLVPS();
