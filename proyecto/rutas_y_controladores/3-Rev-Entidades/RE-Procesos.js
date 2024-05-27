@@ -765,7 +765,6 @@ module.exports = {
 				categoria_id,
 				fechaVencim,
 				anoEstreno,
-				yaTuvoPrimRev: !statusCreado, // se revisa el alta, luego la primera revisión, y en adelante con frecuencia estándar
 				statusSugeridoPor_id: revID,
 				statusSugeridoEn: ahora,
 				statusRegistro_id,
