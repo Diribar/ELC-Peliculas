@@ -124,8 +124,7 @@ module.exports = {
 				// Semana para los demás
 				else {
 					// Variables
-					const semPrimRev = linksVU_primRev / unaSemana;
-					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
+					const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
 					const piso = corte + 1;
 
 					// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')

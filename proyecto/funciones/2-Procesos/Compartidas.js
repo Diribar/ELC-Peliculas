@@ -833,9 +833,8 @@ module.exports = {
 			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
 			// Películas y Colecciones
-			const semPrimRev = linksVU_primRev / unaSemana;
 			let pelisColesPosibles = 0;
-			for (let i = semPrimRev + 1; i < linksSemsEstandar; i++)
+			for (let i = linksSemsPrimRev + 1; i < linksSemsEstandar; i++)
 				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
 			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc); // en la última semana, menos los capítulos
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
