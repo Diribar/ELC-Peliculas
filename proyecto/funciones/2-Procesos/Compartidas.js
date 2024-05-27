@@ -779,11 +779,8 @@ module.exports = {
 		actualizaLVPS: async function () {
 			// Variables - Links vencidos por semana
 			if (!semanaUTC) this.variablesSemanales(); // para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
-
-			// Crea las semanas dentro de la variable
 			cantLinksVencPorSem = {}; // elimina los datos anteriores
-			for (let i = 0; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
+			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
 			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
@@ -1268,6 +1265,10 @@ let FN = {
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
 	cantLinksAprobPorSemana: (links) => {
+		// Se asegura de tener un valor para cada semana y entidad
+		for (let i = 1; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
+
+		// Crea las semanas dentro de la variable
 		for (let link of links) {
 			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
