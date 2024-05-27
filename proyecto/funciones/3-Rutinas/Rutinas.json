@@ -1,11 +1,11 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Lun. 27/may",
-	"HoraUTC": "12:55",
+	"HoraUTC": "15:36",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun 27/may",
-	"HoraSemUTC": "0:16",
+	"FechaSemUTC": "Lun. 27/may",
+	"HoraSemUTC": "15:36",
 	"semanaUTC": 22,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
@@ -34,10 +34,10 @@
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
 		"ActualizaFechaVencimLinks": "SI",
-		"EliminaHistorialAntiguo": "NO",
-		"RCLV_idEnCapitulos": "NO",
-		"RCLVsSinEpocaPSTyConAno": "NO",
-		"EliminaLoginsAcumsRepetidos": "NO"
+		"EliminaHistorialAntiguo": "SI",
+		"RCLV_idEnCapitulos": "SI",
+		"RCLVsSinEpocaPSTyConAno": "SI",
+		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
