@@ -735,18 +735,15 @@ module.exports = {
 
 			// Rutina por link
 			for (let link of links) {
-				// Variables
-				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-				const anoEstreno = link[asocProd].anoEstreno;
-				const categoria_id = this.categoria_id(link);
-
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
+				const categoria_id = this.categoria_id(link);
 				const desde = link.statusSugeridoEn.getTime();
 				const linksVU = [linksVU_primRev, linksVU_estrRec, linksVU_estandar];
-				const fechaVencimNum = desde + linksVU[categoria_id];
-				const fechaVencim = new Date(fechaVencimNum);
+				const fechaVencim = new Date(desde + linksVU[categoria_id]);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
+				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+				const anoEstreno = link[asocProd].anoEstreno;
 				espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, categoria_id}));
 			}
 			await Promise.all(espera);
