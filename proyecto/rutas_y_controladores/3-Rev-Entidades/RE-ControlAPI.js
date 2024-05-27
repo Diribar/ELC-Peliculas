@@ -108,7 +108,7 @@ module.exports = {
 			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id});
-			const linkEstandarAprob = IN == "SI" && categoria_id == linkEstandar_id;
+			const linkEstandarAprob = IN == "SI" && categoria_id == linksEstandar_id;
 			if (
 				linkEstandarAprob &&
 				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
@@ -124,7 +124,7 @@ module.exports = {
 				// Semana para los demás
 				else {
 					// Variables
-					const semPrimRev = linksSemsPrimRev / unaSemana;
+					const semPrimRev = linksVU_primRev / unaSemana;
 					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
 					const piso = corte + 1;
 
