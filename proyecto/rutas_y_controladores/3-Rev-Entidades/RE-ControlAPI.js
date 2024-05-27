@@ -94,9 +94,6 @@ module.exports = {
 		altaBaja: async (req, res) => {
 			// Variables
 			const {url, IN} = req.query;
-			const ahora = comp.fechaHora.ahora();
-			let semana = 0;
-			let motivo
 
 			// PROBLEMA - Valida que exista el dato del 'url'
 			if (!url) return res.json("Falta el 'url' del link");
@@ -109,7 +106,9 @@ module.exports = {
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
 
 			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
-			const linkEstandarAprob = IN == "SI" && comp.linksVencPorSem.categoria_id(link) == linkEstandar_id;
+			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
+			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id});
+			const linkEstandarAprob = IN == "SI" && categoria_id == linkEstandar_id;
 			if (
 				linkEstandarAprob &&
 				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
@@ -118,13 +117,14 @@ module.exports = {
 				return res.json("En esta semana ya no se puede revisar este link");
 
 			// Si se aprobó el link y es una categoría estándar, averigua su semana
+			let semana;
 			if (linkEstandarAprob) {
 				// Semana para capítulo
 				if (link.capitulo_id) semana = linksSemsVidaUtil;
 				// Semana para los demás
 				else {
 					// Variables
-					const semPrimRev = linksPrimRev / unaSemana;
+					const semPrimRev = linkPrimRev / unaSemana;
 					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
 					const piso = corte + 1;
 
@@ -139,8 +139,12 @@ module.exports = {
 			}
 
 			// Más variables
-			const {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} =
-				procesos.links.variables({link, ahora, req, semana});
+			const {id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} = procesos.links.variables({
+				link,
+				req,
+				semana,
+				categoria_id,
+			});
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
@@ -159,6 +163,7 @@ module.exports = {
 					statusOrigEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
 					aprobado: decisAprob,
 				};
+				let motivo;
 				if (motivo_id) {
 					motivo = motivosStatus.find((n) => n.id == motivo_id);
 					datosHist.motivo_id = motivo_id;
