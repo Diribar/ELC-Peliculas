@@ -144,6 +144,7 @@ module.exports = {
 				req,
 				semana,
 				categoria_id,
+				statusRegistro_id,
 			});
 
 			// CONSECUENCIAS - Actualiza el registro del link
