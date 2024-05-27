@@ -736,9 +736,9 @@ module.exports = {
 			// Rutina por link
 			for (let link of links) {
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
-				const categoria_id = this.categoria_id(link);
 				const desde = link.statusSugeridoEn.getTime();
 				const linksVU = [linksVU_primRev, linksVU_estrRec, linksVU_estandar];
+				const categoria_id = this.categoria_id(link);
 				const fechaVencim = new Date(desde + linksVU[categoria_id]);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
