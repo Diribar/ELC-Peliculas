@@ -887,32 +887,32 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = inacRecups.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id); // Inactivar/Recuperar
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id != linkEstandar_id); // creadoAprob
+		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id); // creadoAprob
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
 		if (capsParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
 
 		// Categoría "estándar" - Películas y Colecciones
 		if (pelisColesParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
@@ -994,11 +994,11 @@ let FN_links = {
 		const ahoraTiempo = ahora.getTime();
 		return IN != "SI"
 			? null
-			: categoria_id == linkPrimRev_id
-			? new Date(ahoraTiempo + linksSemsPrimRev)
-			: categoria_id == linkEstrRec_id
-			? new Date(ahoraTiempo + linksSemsEstrRec)
-			: categoria_id == linkEstandar_id
+			: categoria_id == linksPrimRev_id
+			? new Date(ahoraTiempo + linksVU_primRev)
+			: categoria_id == linksEstrRec_id
+			? new Date(ahoraTiempo + linksVU_estrRec)
+			: categoria_id == linksEstandar_id
 			? new Date(ahoraTiempo + semana * unaSemana)
 			: null;
 	},
