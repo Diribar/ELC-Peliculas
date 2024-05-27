@@ -96,6 +96,7 @@ module.exports = {
 			const {url, IN} = req.query;
 			const ahora = comp.fechaHora.ahora();
 			let semana = 0;
+			let motivo
 
 			// PROBLEMA - Valida que exista el dato del 'url'
 			if (!url) return res.json("Falta el 'url' del link");
@@ -145,34 +146,32 @@ module.exports = {
 			await BD_genericas.actualizaPorId("links", id, datos);
 
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
-			const sugeridoPor_id = link.statusSugeridoPor_id;
-			if (sugeridoPor_id != usAutom_id) {
+			const statusOrigPor_id = link.statusSugeridoPor_id;
+			if (statusOrigPor_id != usAutom_id) {
 				// Agrega un registro en el histStatus
 				let datosHist = {
 					entidad_id: id,
 					entidad: "links",
-					sugeridoPor_id,
-					sugeridoEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
-					revisadoPor_id: revID,
-					revisadoEn: ahora,
-					statusOriginal_id: link.statusRegistro_id,
+					statusOrig_id: link.statusRegistro_id,
 					statusFinal_id: statusRegistro_id,
+					statusOrigPor_id,
+					statusFinalPor_id: revID,
+					statusOrigEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
 					aprobado: decisAprob,
-					comentario: statusRegistros.find((n) => n.id == statusRegistro_id).nombre,
 				};
 				if (motivo_id) {
+					motivo = motivosStatus.find((n) => n.id == motivo_id);
 					datosHist.motivo_id = motivo_id;
-					datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
-					datosHist.duracion = Number(datosHist.motivo.duracion);
-					datosHist.comentario += " - " + datosHist.motivo.descripcion;
+					datosHist.duracion = Number(motivo.duracion);
+					datosHist.comentario = motivo.descripcion;
 				}
 				BD_genericas.agregaRegistro("histStatus", datosHist);
 
 				// Aumenta el valor de linksAprob/rech en el registro del usuario
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", statusOrigPor_id, campoDecision, 1);
 
 				// Penaliza al usuario si corresponde
-				if (datosHist.motivo) comp.penalizacAcum(sugeridoPor_id, datosHist.motivo, "links");
+				if (motivo) comp.penalizacAcum(statusOrigPor_id, motivo, "links");
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
