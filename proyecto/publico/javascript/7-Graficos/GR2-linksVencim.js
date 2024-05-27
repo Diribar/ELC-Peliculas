@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
-	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil} = datos;
+	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 
 	// Aspectos de la imagen de Google
@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 		let ticks = [];
 
 		// Consolida el resultado
-		for (let ejeX = 0; ejeX <= linksSemsVidaUtil; ejeX++) {
+		for (let ejeX = 0; ejeX <= linksSemsEstandar; ejeX++) {
 			// Agrega los valores X
 			const semana = ejeX + semanaActual;
 			if (semana == 53 && ano52Sems) restar = 52;
