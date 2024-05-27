@@ -783,7 +783,7 @@ module.exports = {
 			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
 
 			// Otras variables
-			const techoCaps = Math.ceil((links.filter((n) => n.capitulo_id).length / links.length) * 100);
+			const techoCaps = Math.round((links.filter((n) => n.capitulo_id).length / links.length) * 100);
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
 			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linksEstandar_id); // links de corto plazo
@@ -823,12 +823,12 @@ module.exports = {
 
 			// Variables
 			const cantLinksTotal = cantPends + cantAprobs;
-			const cantPromSem = Math.ceil((cantLinksTotal / linksSemsEstandar) * 10) / 10; // deja un decimal
-			const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
+			const cantPromSem = Math.trunc((cantLinksTotal / linksSemsEstandar) * 10) / 10; // deja un decimal
+			const cantPromSemEntero = Math.round(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
 			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsEstandar].prods);
 
 			// Capítulos
-			techoCaps = Math.ceil((techoCaps / 100) * cantPromSemEntero);
+			techoCaps = Math.round((techoCaps / 100) * cantPromSemEntero);
 			const capsPosibles = Math.max(0, techoCaps - cantLinksVencPorSem[linksSemsEstandar].prods); // se disminuye para que no 'sature' la semana con capítulos
 			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
