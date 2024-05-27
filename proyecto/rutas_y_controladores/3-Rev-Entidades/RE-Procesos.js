@@ -748,17 +748,16 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, ahora, req, semana}) => {
+		variables: ({link, req, semana}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
-			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
-			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id}); // se actualiza con el nuevo status
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
+			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
 
 			// Arma los datos
@@ -994,10 +993,10 @@ let FN_links = {
 		const ahoraTiempo = ahora.getTime();
 		return IN != "SI"
 			? null
-			: categoria_id == linkRecienCreado_id
-			? new Date(ahoraTiempo + linksPrimRev)
-			: categoria_id == linkEstrenoReciente_id
-			? new Date(ahoraTiempo + linksPrimRev + unaSemana)
+			: categoria_id == linkPrimRev_id
+			? new Date(ahoraTiempo + linkPrimRev)
+			: categoria_id == linkEstrRec_id
+			? new Date(ahoraTiempo + linkEstrRec)
 			: categoria_id == linkEstandar_id
 			? new Date(ahoraTiempo + semana * unaSemana)
 			: null;
