@@ -748,7 +748,7 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, req, semana, categoria_id, statusRegistro_id}) => {
+		variables: ({link, req, semana, categoria_id}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
@@ -759,6 +759,7 @@ module.exports = {
 			const anoEstreno = link[asocProd].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
+			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 
 			// Arma los datos
 			let datos = {
