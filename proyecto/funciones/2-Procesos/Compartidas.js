@@ -744,7 +744,7 @@ module.exports = {
 				const desde = link.statusSugeridoEn.getTime();
 				const fechaVencimNum =
 					desde +
-					(categoria_id == linkPrimRev_id ? linkPrimRev : categoria_id == linkEstrRec_id ? linkEstrRec : linksVidaUtil);
+					(categoria_id == linkPrimRev_id ? linksSemsPrimRev : categoria_id == linkEstrRec_id ? linksSemsEstrRec : linkSemsEstandar);
 				const fechaVencim = new Date(fechaVencimNum);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
@@ -764,6 +764,7 @@ module.exports = {
 			// Condiciones y nuevo status
 			const condiciones = [{fechaVencim: {[Op.lt]: fechaDeCorte}}, {statusRegistro_id: aprobado_id}];
 			const status = {
+				yaTuvoPrimRev: true,
 				statusSugeridoPor_id: usAutom_id,
 				statusRegistro_id: creadoAprob_id,
 				statusSugeridoEn: ahora,
@@ -822,23 +823,23 @@ module.exports = {
 
 			// Averigua los links totales 'aprobados_ids'
 			let cantAprobs = 0;
-			for (let i = 1; i <= linksSemsVidaUtil; i++) cantAprobs += cantLinksVencPorSem[i].prods;
+			for (let i = 1; i <= linksSemsEstandar; i++) cantAprobs += cantLinksVencPorSem[i].prods;
 
 			// Variables
 			const cantLinksTotal = cantPends + cantAprobs;
-			const cantPromSem = Math.ceil((cantLinksTotal / linksSemsVidaUtil) * 10) / 10; // deja un decimal
+			const cantPromSem = Math.ceil((cantLinksTotal / linksSemsEstandar) * 10) / 10; // deja un decimal
 			const cantPromSemEntero = Math.ceil(cantPromSem); // permite que se supere el promedio en alguna semana, para que no queden links sin aprobar
-			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsVidaUtil].prods);
+			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsEstandar].prods);
 
 			// Capítulos
 			techoCaps = Math.ceil((techoCaps / 100) * cantPromSemEntero);
-			const capsPosibles = Math.max(0, techoCaps - cantLinksVencPorSem[linksSemsVidaUtil].prods); // se disminuye para que no 'sature' la semana con capítulos
+			const capsPosibles = Math.max(0, techoCaps - cantLinksVencPorSem[linksSemsEstandar].prods); // se disminuye para que no 'sature' la semana con capítulos
 			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
 			// Películas y Colecciones
-			const semPrimRev = linkPrimRev / unaSemana;
+			const semPrimRev = linksSemsPrimRev / unaSemana;
 			let pelisColesPosibles = 0;
-			for (let i = semPrimRev + 1; i < linksSemsVidaUtil; i++)
+			for (let i = semPrimRev + 1; i < linksSemsEstandar; i++)
 				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
 			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc); // en la última semana, menos los capítulos
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
@@ -1270,14 +1271,14 @@ let FN = {
 	},
 	cantLinksAprobPorSemana: (links) => {
 		// Se asegura de tener un valor para cada semana y entidad
-		for (let i = 1; i <= linksSemsVidaUtil; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
+		for (let i = 1; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
 
 		// Crea las semanas dentro de la variable
 		for (let link of links) {
 			// Obtiene la semana de vencimiento
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
-			if (semVencim < 1 || semVencim > linksSemsVidaUtil) continue; // saltea la semana actual y las que tengan un error
+			if (semVencim < 1 || semVencim > linksSemsEstandar) continue; // saltea la semana actual y las que tengan un error
 
 			// Agrega al conteo
 			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
