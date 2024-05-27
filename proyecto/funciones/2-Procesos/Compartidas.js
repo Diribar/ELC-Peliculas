@@ -780,22 +780,26 @@ module.exports = {
 			// Variables - Links vencidos por semana
 			if (!semanaUTC) this.variablesSemanales(); // para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
 			cantLinksVencPorSem = {}; // elimina los datos anteriores
-			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
+			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
+
+			// Otras variables
 			const techoCaps = Math.ceil((links.filter((n) => n.capitulo_id).length / links.length) * 100);
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
 			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linkEstandar_id); // links de corto plazo
 			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linkEstandar_id); // links de plazo estándar
 
-			// Abre los links con límite
+			// Abre los links con límite - pelisColes
 			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
-			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
 			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
-			const capitulos = capitulosRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
 			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
+
+			// Abre los links con límite - capitulos
+			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
+			const capitulos = capitulosRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
 			const irCapitulos = capitulosRegs.length - capitulos; // inactivarRecuperar
 
 			// Otros datos
