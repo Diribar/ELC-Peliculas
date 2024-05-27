@@ -6,7 +6,8 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 // Variable 'global' - Links
-global.linksPrimRev = unaSemana * 4;
+global.linkPrimRev = unaSemana * 4;
+global.linkEstrRec = linkPrimRev + unaSemana;
 global.linksSemsVidaUtil = 26;
 global.linksVidaUtil = unaSemana * linksSemsVidaUtil;
 global.sinLinks = 0;
@@ -229,8 +230,8 @@ app.set("views", [
 	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
 
 	// Links - categorías
-	global.linkRecienCreado_id = linksCategs.find((n) => n.nombre == "recienCreado").id;
-	global.linkEstrenoReciente_id = linksCategs.find((n) => n.nombre == "estrenoReciente").id;
+	global.linkPrimRev_id = linksCategs.find((n) => n.nombre == "primRev").id;
+	global.linkEstrRec_id = linksCategs.find((n) => n.nombre == "estrRec").id;
 	global.linkEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
 
 	// Otros
