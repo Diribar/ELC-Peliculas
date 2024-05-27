@@ -866,8 +866,8 @@ let purgaEdicionRclv = (edicion, entidad) => {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes.total;
-		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos.total;
+		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
+		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -916,7 +916,7 @@ let FN_links = {
 		// Fin
 		return null;
 	},
-	creadoAprobStd: ({paraProc, registros: registrosTodos, filtro, datos}) => {
+	creadoAprobStd: function ({paraProc, registros: registrosTodos, filtro, datos}) {
 		if (!paraProc) return;
 
 		// Variables
