@@ -132,7 +132,6 @@ module.exports = {
 						.slice(piso) // descarta los registros de la semanas anteriores al piso
 						.slice(0, -3) // descarta los registros finales
 						.map((n) => n.prods);
-					console.log(129, cantLinksVencPorSemMayorCorte);
 					const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
 					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
 				}
