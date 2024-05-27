@@ -744,7 +744,7 @@ module.exports = {
 				const desde = link.statusSugeridoEn.getTime();
 				const fechaVencimNum =
 					desde +
-					(categoria_id == linkPrimRev_id ? linksSemsPrimRev : categoria_id == linkEstrRec_id ? linksSemsEstrRec : linkSemsEstandar);
+					(categoria_id == linksPrimRev_id ? linksVU_primRev : categoria_id == linksEstrRec_id ? linksVU_estrRec : linksVU_estandar);
 				const fechaVencim = new Date(fechaVencimNum);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
@@ -790,8 +790,8 @@ module.exports = {
 			const techoCaps = Math.ceil((links.filter((n) => n.capitulo_id).length / links.length) * 100);
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
-			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linkEstandar_id); // links de corto plazo
-			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linkEstandar_id); // links de plazo estándar
+			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linksEstandar_id); // links de corto plazo
+			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linksEstandar_id); // links de plazo estándar
 
 			// Abre los links con límite - pelisColes
 			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
@@ -837,7 +837,7 @@ module.exports = {
 			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 
 			// Películas y Colecciones
-			const semPrimRev = linksSemsPrimRev / unaSemana;
+			const semPrimRev = linksVU_primRev / unaSemana;
 			let pelisColesPosibles = 0;
 			for (let i = semPrimRev + 1; i < linksSemsEstandar; i++)
 				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
@@ -863,10 +863,10 @@ module.exports = {
 
 			// Fin
 			return !link.yaTuvoPrimRev
-				? linkPrimRev_id
+				? linksPrimRev_id
 				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
-				? linkEstrRec_id
-				: linkEstandar_id;
+				? linksEstrRec_id
+				: linksEstandar_id;
 		},
 	},
 
