@@ -47,6 +47,7 @@ module.exports = (sequelize, dt) => {
 		HD_Gratis: {type: dt.INTEGER},
 		HD_Cast: {type: dt.INTEGER},
 		HD_Subt: {type: dt.INTEGER},
+		capSinLink_id: {type: dt.INTEGER},
 
 		feValores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
