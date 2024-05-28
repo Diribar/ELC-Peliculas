@@ -44,9 +44,9 @@ module.exports = {
 			SC: pelisColes.filter((n) => pppSinCal.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // prodsAprob - Sin calificar
 			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
 
-			// Links - sin links
-			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
-			SL_coles: prodsAprob.filter((n) => !n.linksGral && n.entidad == "colecciones"), // capítulos
+			// Prods - sin links
+			SL_pelis: pelisColes.filter((n) => n.entidad == "peliculas" && !n.linksGral), // películas
+			SL_coles: pelisColes.filter((n) => n.entidad == "colecciones" && n.capSinLink_id), // colecciones
 
 			// Links Basicos
 			SLG_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
