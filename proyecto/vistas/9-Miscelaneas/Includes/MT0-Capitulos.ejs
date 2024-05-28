@@ -1,0 +1,12 @@
+<% if (regs && regs.length) { %>
+	<h3 class="pointer"><%= titulo %> (<%= regs.length %>)</h3>
+	<div class="bloqueRegistros <%- !DE || !DE[titulo.toLowerCase()] ? 'ocultar' : '' %>">
+		<% for (let reg of regs) { %>
+			<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
+			<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
+			<a href="<%='/' + url + '/?entidad=capitulos&id=' + reg.capSinLink + ORIGEN + GRUPO %>">
+				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
+			</a>
+		<% } %>
+	</div>
+<% } %>
