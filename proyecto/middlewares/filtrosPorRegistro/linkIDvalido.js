@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const link_id = req.query.id;
+	const link_id = req.query.link_id;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion;
 
