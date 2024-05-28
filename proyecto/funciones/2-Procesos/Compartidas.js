@@ -634,7 +634,8 @@ module.exports = {
 			: await BD_genericas.actualizaTodos("colecciones", {capSinLink_id: null});
 
 		// Le coloca el capSinLink_id a la colec
-		for (let capitulo of capitulos) BD_genericas.actualizaPorId("colecciones", capitulo.coleccion_id, {capSinLink_id: capitulo.id});
+		for (let capitulo of capitulos)
+			BD_genericas.actualizaPorId("colecciones", capitulo.coleccion_id, {capSinLink_id: capitulo.id});
 
 		// Fin
 		return;
