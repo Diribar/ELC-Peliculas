@@ -12,6 +12,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 // Middlewares - Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
+const linkIDvalido = require("../../middlewares/filtrosPorRegistro/linkIDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 
 // Middlewares - Temas de captura
@@ -37,7 +38,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Vistas
 router.get("/abm", aptoABM, capturaActivar, vista.abm);
-router.get("/visualizacion", vista.visualizacion);
+router.get("/visualizacion",linkIDvalido, vista.visualizacion);
 
 // Fin
 module.exports = router;
