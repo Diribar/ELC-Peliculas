@@ -612,6 +612,33 @@ module.exports = {
 		// Fin
 		return;
 	},
+	capituloSinLink: async (coleccion_id) => {
+		// Variables
+		let condiciones = {statusColeccion_id: aprobados_ids};
+		if (coleccion_id) condiciones.coleccion_id = coleccion_id;
+
+		// Obtiene todas los capítulos con su colección aprobada
+		let capitulos = await BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "links")
+			.then((n) => n.filter((m) => !m.links.length || !m.links.some((o) => o.tipo_id == linkPelicula_id))) // descarta los que tengan un link de película
+			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
+			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
+			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
+
+		// Descarta los capítulos de colección repetida
+		for (let i = capitulos.length - 1; i > 0; i--)
+			if (capitulos[i].coleccion_id == capitulos[i - 1].coleccion_id) capitulos.splice(i, 1);
+
+		// Todos los capsSinLink de colecciones pasan a null
+		coleccion_id
+			? await BD_genericas.actualizaTodosPorCondicion("colecciones", {coleccion_id}, {capSinLink_id: null})
+			: await BD_genericas.actualizaTodos("colecciones", {capSinLink_id: null});
+
+		// Le coloca el capSinLink_id a la colec
+		for (let capitulo of capitulos) BD_genericas.actualizaPorId("colecciones", capitulo.coleccion_id, {capSinLink_id: capitulo.id});
+
+		// Fin
+		return;
+	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
