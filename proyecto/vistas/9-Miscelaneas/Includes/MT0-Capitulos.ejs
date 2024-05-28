@@ -4,7 +4,7 @@
 		<% for (let reg of regs) { %>
 			<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
 			<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
-			<a href="<%='/' + url + '/?entidad=capitulos&id=' + reg.capSinLink + ORIGEN + GRUPO %>">
+			<a href="<%='/' + url + '/?entidad=capitulos&id=' + reg.capSinLink_id + ORIGEN + GRUPO %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
 			</a>
 		<% } %>
