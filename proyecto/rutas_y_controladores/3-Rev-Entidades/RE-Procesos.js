@@ -819,6 +819,7 @@ module.exports = {
 						links: n.linksGral || n.linksTrailer,
 					};
 					if (rubro == "ED") datos.edicID = n.edicID;
+					if (n.entidad == "colecciones") datos.capSinLink_id = n.capSinLink_id;
 					return datos;
 				});
 
