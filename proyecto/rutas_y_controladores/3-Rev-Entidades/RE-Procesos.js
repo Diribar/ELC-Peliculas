@@ -866,8 +866,8 @@ let purgaEdicionRclv = (edicion, entidad) => {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes.total;
-		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos.total;
+		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
+		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -896,44 +896,29 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
-		registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
-		respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
+		if (capsParaProc) {
+			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+			respuesta = this.obtieneProdLink({links: registros, datos});
+			if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
-		respuesta = this.creadoAprobStd({paraProc: capsParaProc, registros, datos});
-		if (respuesta) return respuesta;
+			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
+			respuesta = this.obtieneProdLink({links: registros, datos});
+			if (respuesta) return respuesta;
+		}
 
 		// Categoría "estándar" - Películas y Colecciones
-		registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
-		respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
+		if (pelisColesParaProc) {
+			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+			respuesta = this.obtieneProdLink({links: registros, datos});
+			if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
-		respuesta = this.creadoAprobStd({paraProc: pelisColesParaProc, registros, datos});
-		if (respuesta) return respuesta;
+			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
+			respuesta = this.obtieneProdLink({links: registros, datos});
+			if (respuesta) return respuesta;
+		}
 
 		// Fin
 		return null;
-	},
-	creadoAprobStd: ({paraProc, registros: registrosTodos, filtro, datos}) => {
-		if (!paraProc) return;
-
-		// Variables
-		let registros, respuesta;
-
-		// Primera revisión
-		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
-		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
-
-		// Siguientes revisiones
-		registros = registrosTodos.filter((n) => n.capitulo_id == filtro);
-		if (registros.length) respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
-
-		// Fin
-		return;
 	},
 	obtieneProdLink: function ({links, datos}) {
 		if (!links.length) return;

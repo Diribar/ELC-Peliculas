@@ -56,6 +56,7 @@ module.exports = {
 	},
 	RutinasDiarias: async function () {
 		procesos.variablesDiarias();
+
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
 		const rutinasDiarias = info.RutinasDiarias;
@@ -639,7 +640,7 @@ module.exports = {
 			const ahora = Date.now();
 			const tablas = [
 				{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
-				{nombre: "histStatus", campo: "revisadoEn", antiguedad: unDia * 365},
+				{nombre: "histStatus", campo: "statusFinalEn", antiguedad: unDia * 365},
 			];
 
 			// Elimina historial antiguo
