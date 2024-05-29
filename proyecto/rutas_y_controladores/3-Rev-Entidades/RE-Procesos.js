@@ -69,7 +69,7 @@ module.exports = {
 		},
 		obtieneProds_SE_IR: async (revID) => {
 			// Variables
-			const entidades = ["peliculas", "colecciones", "capitulos"];
+			const entidades = [...variables.entidades.prods];
 			let campos;
 
 			// AL: En staus 'creado'
@@ -934,7 +934,7 @@ module.exports = {
 
 					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
-					if (n.entidad == "colecciones") for (let campo of variables.calidadLinks) datos[campo] = n[campo];
+					if (n.entidad == "colecciones") datos.csl = n.csl;
 
 					// Fin
 					return datos;
