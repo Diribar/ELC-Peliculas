@@ -6,9 +6,11 @@
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-TableroControl.css">
 	<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE1-TableroControl.css">
 	<script src="/publico/javascript/0-Compartido/TableroControl.js"></script>
-	<script src="/publico/javascript/3-Rev-Entidades/RE1-UnaSolaPestana.js"></script>
-	<script src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="/publico/javascript/6-Graficos/GR2-linksVencim.js"></script>
+	<% if (tema == "revisionEnts") { %>
+		<script src="/publico/javascript/3-Rev-Entidades/RE1-UnaSolaPestana.js"></script>
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="/publico/javascript/6-Graficos/GR2-linksVencim.js"></script>
+	<% } %>
 
 <% } else { %>
 	<% if (["producto/alta", "rechazar", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
