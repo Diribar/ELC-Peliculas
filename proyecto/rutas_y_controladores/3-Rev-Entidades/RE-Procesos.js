@@ -1264,7 +1264,7 @@ let TM = {
 		// Variables
 		const {petitFamilias} = condiciones;
 		const entidades = variables.entidades[petitFamilias];
-		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = "ediciones");
+		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = ["ediciones"]);
 
 		let resultados1 = [];
 		let resultados2 = [];
