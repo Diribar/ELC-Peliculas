@@ -10,7 +10,7 @@ const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenaliza
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
 
-// Middlewares - Específicos de entidades
+// Middlewares - Específicos del registro
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");

@@ -9,7 +9,7 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 
-// Middlewares - Específicos de entidades
+// Middlewares - Específicos del registro
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const linkIDvalido = require("../../middlewares/filtrosPorRegistro/linkIDvalido");
