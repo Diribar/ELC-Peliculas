@@ -748,17 +748,16 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, ahora, req, semana}) => {
+		variables: ({link, req, semana, categoria_id, statusRegistro_id}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
-			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
-			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id}); // se actualiza con el nuevo status
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
+			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
 
 			// Arma los datos
@@ -775,7 +774,7 @@ module.exports = {
 				datos.altaRevisadaPor_id = revID;
 				datos.altaRevisadaEn = ahora;
 				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
-			} else datos.sigRev = true;
+			}
 
 			// Fin
 			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
@@ -887,32 +886,32 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = inacRecups.filter((n) => n.categoria_id != linkEstandar_id); // Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id); // Inactivar/Recuperar
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = creadoAprobs.filter((n) => n.categoria_id != linkEstandar_id); // creadoAprob
+		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id); // creadoAprob
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
 		if (capsParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
 
 		// Categoría "estándar" - Películas y Colecciones
 		if (pelisColesParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linkEstandar_id && !n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
@@ -994,11 +993,11 @@ let FN_links = {
 		const ahoraTiempo = ahora.getTime();
 		return IN != "SI"
 			? null
-			: categoria_id == linkRecienCreado_id
-			? new Date(ahoraTiempo + linksPrimRev)
-			: categoria_id == linkEstrenoReciente_id
-			? new Date(ahoraTiempo + linksPrimRev + unaSemana)
-			: categoria_id == linkEstandar_id
+			: categoria_id == linksPrimRev_id
+			? new Date(ahoraTiempo + linksVU_primRev)
+			: categoria_id == linksEstrRec_id
+			? new Date(ahoraTiempo + linksVU_estrRec)
+			: categoria_id == linksEstandar_id
 			? new Date(ahoraTiempo + semana * unaSemana)
 			: null;
 	},

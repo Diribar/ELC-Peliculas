@@ -94,8 +94,6 @@ module.exports = {
 		altaBaja: async (req, res) => {
 			// Variables
 			const {url, IN} = req.query;
-			const ahora = comp.fechaHora.ahora();
-			let semana = 0;
 
 			// PROBLEMA - Valida que exista el dato del 'url'
 			if (!url) return res.json("Falta el 'url' del link");
@@ -108,7 +106,9 @@ module.exports = {
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
 
 			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
-			const linkEstandarAprob = IN == "SI" && comp.linksVencPorSem.categoria_id(link) == linkEstandar_id;
+			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
+			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id});
+			const linkEstandarAprob = IN == "SI" && categoria_id == linksEstandar_id;
 			if (
 				linkEstandarAprob &&
 				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
@@ -117,14 +117,14 @@ module.exports = {
 				return res.json("En esta semana ya no se puede revisar este link");
 
 			// Si se aprobó el link y es una categoría estándar, averigua su semana
+			let semana;
 			if (linkEstandarAprob) {
 				// Semana para capítulo
-				if (link.capitulo_id) semana = linksSemsVidaUtil;
+				if (link.capitulo_id) semana = linksSemsEstandar;
 				// Semana para los demás
 				else {
 					// Variables
-					const semPrimRev = linksPrimRev / unaSemana;
-					const corte = semPrimRev + 1; // 'semPrimRev'--> nuevos, '+1'--> estreno reciente
+					const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
 					const piso = corte + 1;
 
 					// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
@@ -138,41 +138,45 @@ module.exports = {
 			}
 
 			// Más variables
-			const {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} =
-				procesos.links.variables({link, ahora, req, semana});
+			const {id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} = procesos.links.variables({
+				link,
+				req,
+				semana,
+				categoria_id,
+				statusRegistro_id,
+			});
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
 
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
-			const sugeridoPor_id = link.statusSugeridoPor_id;
-			if (sugeridoPor_id != usAutom_id) {
+			const statusOrigPor_id = link.statusSugeridoPor_id;
+			if (statusOrigPor_id != usAutom_id) {
 				// Agrega un registro en el histStatus
 				let datosHist = {
 					entidad_id: id,
 					entidad: "links",
-					sugeridoPor_id,
-					sugeridoEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
-					revisadoPor_id: revID,
-					revisadoEn: ahora,
-					statusOriginal_id: link.statusRegistro_id,
+					statusOrig_id: link.statusRegistro_id,
 					statusFinal_id: statusRegistro_id,
+					statusOrigPor_id,
+					statusFinalPor_id: revID,
+					statusOrigEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
 					aprobado: decisAprob,
-					comentario: statusRegistros.find((n) => n.id == statusRegistro_id).nombre,
 				};
+				let motivo;
 				if (motivo_id) {
+					motivo = motivosStatus.find((n) => n.id == motivo_id);
 					datosHist.motivo_id = motivo_id;
-					datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
-					datosHist.duracion = Number(datosHist.motivo.duracion);
-					datosHist.comentario += " - " + datosHist.motivo.descripcion;
+					datosHist.duracion = Number(motivo.duracion);
+					datosHist.comentario = motivo.descripcion;
 				}
 				BD_genericas.agregaRegistro("histStatus", datosHist);
 
 				// Aumenta el valor de linksAprob/rech en el registro del usuario
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", statusOrigPor_id, campoDecision, 1);
 
 				// Penaliza al usuario si corresponde
-				if (datosHist.motivo) comp.penalizacAcum(sugeridoPor_id, datosHist.motivo, "links");
+				if (motivo) comp.penalizacAcum(statusOrigPor_id, motivo, "links");
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'

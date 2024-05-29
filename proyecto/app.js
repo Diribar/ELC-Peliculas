@@ -6,9 +6,11 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 // Variable 'global' - Links
-global.linksPrimRev = unaSemana * 4;
-global.linksSemsVidaUtil = 26;
-global.linksVidaUtil = unaSemana * linksSemsVidaUtil;
+global.linksSemsPrimRev = 4;
+global.linksSemsEstandar = 26;
+global.linksVU_primRev = unaSemana * linksSemsPrimRev;
+global.linksVU_estrRec = unaSemana * (linksSemsPrimRev + 1);
+global.linksVU_estandar = unaSemana * linksSemsEstandar;
 global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
@@ -229,9 +231,9 @@ app.set("views", [
 	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
 
 	// Links - categorías
-	global.linkRecienCreado_id = linksCategs.find((n) => n.nombre == "recienCreado").id;
-	global.linkEstrenoReciente_id = linksCategs.find((n) => n.nombre == "estrenoReciente").id;
-	global.linkEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
+	global.linksPrimRev_id = linksCategs.find((n) => n.nombre == "primRev").id;
+	global.linksEstrRec_id = linksCategs.find((n) => n.nombre == "estrRec").id;
+	global.linksEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
 
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");

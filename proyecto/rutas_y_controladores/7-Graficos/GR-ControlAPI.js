@@ -69,7 +69,7 @@ module.exports = {
 		return res.json({cfc, vpc});
 	},
 	linksVencim: async (req, res) =>
-		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsVidaUtil}),
+		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar}),
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
 		let provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links");

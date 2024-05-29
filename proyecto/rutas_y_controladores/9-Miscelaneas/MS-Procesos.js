@@ -45,8 +45,8 @@ module.exports = {
 			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
 
 			// Links - sin links
-			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad != "capitulos"), // películas
-			SL_caps: prodsAprob.filter((n) => !n.linksGral && n.entidad == "capitulos"), // capítulos
+			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
+			SL_coles: prodsAprob.filter((n) => !n.linksGral && n.entidad == "colecciones"), // capítulos
 
 			// Links Basicos
 			SLG_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
