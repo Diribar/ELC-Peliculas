@@ -61,13 +61,13 @@ module.exports = {
 		// Variables
 		const tema = "linksCRUD";
 		const codigo = "visualizacion";
-		const linkID = req.query.link_id;
+		const {link_id} = req.query;
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : "";
 		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
-		const link = await BD_genericas.obtienePorIdConInclude("links", linkID, "prov");
+		const link = await BD_genericas.obtienePorIdConInclude("links", link_id, "prov");
 		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
