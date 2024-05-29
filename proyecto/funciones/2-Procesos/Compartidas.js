@@ -639,7 +639,7 @@ module.exports = {
 	filtrosConsTemas: async () => {
 		// Variables
 		const condicion = {statusRegistro_id: aprobados_ids, id: {[Op.gt]: 10}};
-		const includes = ["peliculas", "colecciones", "capitulos"];
+		const includes = [...variables.entidades.prods];
 
 		// Obtiene los registros asociados con productos
 		const temas = await BD_genericas.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
