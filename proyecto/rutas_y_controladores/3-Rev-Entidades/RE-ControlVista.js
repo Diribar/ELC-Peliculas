@@ -54,7 +54,7 @@ module.exports = {
 		});
 	},
 	// Tablero de mantenimiento
-	tableroMantenim: async (req, res) => {
+	tableroEntidades: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
