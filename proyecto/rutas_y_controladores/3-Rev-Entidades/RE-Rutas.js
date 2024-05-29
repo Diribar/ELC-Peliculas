@@ -12,9 +12,10 @@ const usRolAutTablEnts = require("../../middlewares/filtrosPorUsuario/usRolAutTa
 const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
 const usRolRevLinks = require("../../middlewares/filtrosPorUsuario/usRolRevLinks");
 
-// Middlewares - Específicos de entidades
+// Middlewares - Específicos del registro
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
+const linkAltaBaja = require("../../middlewares/filtrosPorRegistro/linkAltaBaja");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
@@ -43,8 +44,8 @@ router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", API.edicAprobRech);
 
 // APIs- Links
-router.get("/api/link/alta-baja", API.links.altaBaja);
-router.get("/api/link/eliminar", API.links.altaBaja);
+router.get("/api/link/alta-baja", linkAltaBaja, API.links.altaBaja);
+//router.get("/api/link/eliminar", API.links.altaBaja);
 router.get("/api/link/edicion", API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
