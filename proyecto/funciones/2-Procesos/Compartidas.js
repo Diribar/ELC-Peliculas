@@ -590,8 +590,8 @@ module.exports = {
 		// Obtiene los capítulos de la colección
 		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID})
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
-			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
-			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
+			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
+		if (!capitulos.length) return;
 
 		// Actualiza cada campo de la colección
 		for (let campo of campos) {
