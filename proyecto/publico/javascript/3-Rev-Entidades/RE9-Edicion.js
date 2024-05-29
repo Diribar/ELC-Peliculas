@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
 		rutaEdicion: rutaEdicion + entidad + "&id=" + entID + "&edicID=" + edicID,
-		cola: "?entidad=" + entidad + "&id=" + entID + "&origen=" + (origen ? origen : "TR"),
+		cola: "?entidad=" + entidad + "&id=" + entID + "&origen=" + (origen ? origen : "TE"),
 	};
 	// Otras variables
 

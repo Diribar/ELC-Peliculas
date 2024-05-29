@@ -49,7 +49,7 @@ module.exports = {
 		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Revisión"},
-			...{prods, rclvs, sigProd, origen: "TR"},
+			...{prods, rclvs, sigProd, origen: "TE"},
 			...{dataEntry},
 		});
 	},
@@ -89,7 +89,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "producto/alta";
 		const {entidad, id} = req.query;
-		const origen = "TR";
+		const origen = "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -304,7 +304,7 @@ module.exports = {
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
 		else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
-		else destino = "/revision/tablero-de-control"; // sin origen
+		else destino = "/revision/tablero-de-entidades"; // sin origen
 
 		// Fin
 		return res.redirect(destino);
@@ -320,7 +320,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, edicID} = req.query;
-			const origen = req.query.origen ? req.query.origen : "TR";
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -457,7 +457,7 @@ module.exports = {
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
-			else return res.redirect("/revision/tablero-de-control");
+			else return res.redirect("/revision/tablero-de-entidades");
 		},
 		solapam: async (req, res) => {
 			// Variables
@@ -491,7 +491,7 @@ module.exports = {
 			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
 
 			// Fin
-			return res.redirect("/revision/tablero-de-control");
+			return res.redirect("/revision/tablero-de-entidades");
 		},
 	},
 
@@ -502,7 +502,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "TR";
+		const origen = req.query.origen ? req.query.origen : "TE";
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -531,7 +531,7 @@ module.exports = {
 
 		// Genera el link del próximo producto
 		const sigProd =
-			origen == "TR"
+			origen == "TE"
 				? req.sigProd // aprovecha el dato disponible
 					? req.sigProd
 					: await procesos.links.obtieneSigProd({entidad, id, revID})

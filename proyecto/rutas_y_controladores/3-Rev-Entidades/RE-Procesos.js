@@ -798,7 +798,7 @@ module.exports = {
 			iconos: [
 				{
 					nombre: "fa-spell-check",
-					link: "/revision/tablero-de-control",
+					link: "/revision/tablero-de-entidades",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 				},
 			],

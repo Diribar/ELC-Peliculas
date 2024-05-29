@@ -12,7 +12,7 @@ const revisorUs = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorUs];
 
 // Vistas
-router.get("/tablero-de-control", aptoRevisor, vista.tableroControl);
+router.get("/tablero-de-usuarios", aptoRevisor, vista.tableroControl);
 
 // Fin
 module.exports = router;

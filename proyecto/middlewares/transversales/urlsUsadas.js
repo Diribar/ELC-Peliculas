@@ -70,7 +70,7 @@ module.exports = (req, res, next) => {
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		!urlAnterior.startsWith("/links/") &&
-		(!urlAnterior.startsWith("/revision/") || urlAnterior.includes("/tablero-de-control")) &&
+		(!urlAnterior.startsWith("/revision/") || urlAnterior.includes("/tablero-de-")) &&
 		!urlAnterior.includes("/edicion/")
 	)
 		activaSessionCookie("urlSinCaptura", true);

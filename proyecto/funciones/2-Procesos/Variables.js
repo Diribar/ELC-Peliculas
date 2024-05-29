@@ -457,10 +457,10 @@ module.exports = {
 		// Links
 		{codigo: "RL", url: "/revision/links"},
 		// Usuarios
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-control"},
+		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		// Tableros
-		{codigo: "TR", url: "/revision/tablero-de-entidades"},
-		{codigo: "TM", url: "/revision/mantenimiento"},
+		{codigo: "TE", url: "/revision/tablero-de-entidades"},
+		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
 	],
 };
 

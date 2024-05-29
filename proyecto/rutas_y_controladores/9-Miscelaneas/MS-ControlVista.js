@@ -48,15 +48,15 @@ module.exports = {
 				: "";
 
 			// Usuarios
-			if (origen == "TU") destino = "/revision/usuarios/tablero-de-control";
+			if (origen == "TU") destino = "/revision/usuarios/tablero-de-usuarios";
 
 			// Entidades
 			destino = destino
 				? destino
-				: origen == "TR"
-				? "/revision/tablero-de-control"
+				: origen == "TE"
+				? "/revision/tablero-de-entidades"
 				: origen == "TM"
-				? "/revision/mantenimiento"
+				? "/revision/tablero-de-mantenimiento"
 				: origen == "CN"
 				? "/consultas"
 				: "";

@@ -15,7 +15,7 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "TR";
+		const origen = req.query.origen ? req.query.origen : "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const userID = req.session.usuario.id;
@@ -226,7 +226,7 @@ module.exports = {
 		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
-		const link = origen == "TM" ? "/revision/mantenimiento" : "/";
+		const link = origen == "TM" ? "/revision/tablero-de-mantenimiento" : "/";
 		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
 
 		// Cartel de registro eliminado

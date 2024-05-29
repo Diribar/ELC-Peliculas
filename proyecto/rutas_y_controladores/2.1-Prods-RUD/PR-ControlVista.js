@@ -268,7 +268,7 @@ module.exports = {
 			}
 
 			// Fin
-			return origen == "TR"
+			return origen == "TE"
 				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
