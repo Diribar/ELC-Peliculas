@@ -14,5 +14,6 @@ CREATE TABLE `prod_caps_sin_link` (
   `HD_Subt` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `prod_caps_sin_link1` (`coleccion_id`),
+  UNIQUE KEY `prod_caps_sin_link_unique` (`coleccion_id`),
   CONSTRAINT `prod_caps_sin_link1` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
