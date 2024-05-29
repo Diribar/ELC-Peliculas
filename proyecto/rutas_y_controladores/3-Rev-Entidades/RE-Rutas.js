@@ -7,6 +7,7 @@ const vistaRCLV = require("../2.2-RCLVs/RCLV-ControlVista");
 
 // Middlewares - Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usRolAutTablEnts = require("../../middlewares/filtrosPorUsuario/usRolAutTablEnts");
 const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
@@ -30,6 +31,7 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 
 // Middlewares - Consolidados
 const usuarioBase = [usAltaTerm, usPenalizaciones];
+const aptoUsuario = [...usuarioBase, usAptoInput];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...usuarioBase, permUserReg];
 const aptoEdicion = [...aptoCRUD, usRolRevPERL, edicion];
 
@@ -51,7 +53,7 @@ router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
-router.get("/tablero-de-control", ...usuarioBase, usRolAutTablEnts, vista.tableroControl);
+router.get("/tablero-de-control", usuarioBase, usRolAutTablEnts, vista.tableroControl);
 router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
