@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const valida = require("../../rutas_y_controladores/1-Usuarios/US-FN-Validar");
+const valida = require("../../rutas_y_controladores/1.1.1-Usuarios/US-FN-Validar");
 
 module.exports = async (req, res, next) => {
 	// Variables

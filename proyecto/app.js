@@ -273,7 +273,7 @@ app.set("views", [
 	app.use("/producto", require("./rutas_y_controladores/2.1-Prods-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
 	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
-	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
+	app.use("/usuarios", require("./rutas_y_controladores/1.1-Usuarios/US-Rutas"));
 	app.use("/revision/usuarios", require("./rutas_y_controladores/4-Rev-Usuarios/RU-Rutas"));
 	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
