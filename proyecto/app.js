@@ -274,11 +274,11 @@ app.set("views", [
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
 	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_controladores/1.1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_controladores/4-Rev-Usuarios/RU-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_controladores/1.2-Rev-Usuarios/RU-Rutas"));
 	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
-	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
+	app.use("/institucional", require("./rutas_y_controladores/7-Institucional/IN-Rutas"));
 	app.use("/graficos", require("./rutas_y_controladores/6-Graficos/GR-Rutas"));
 	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
