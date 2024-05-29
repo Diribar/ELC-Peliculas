@@ -183,6 +183,7 @@ module.exports = {
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 		const idMin = petitFamilias == "rclvs" ? 10 : 0;
+		if (entidad == "colecciones") include ? include.push("csl") : (include = ["csl"]);
 
 		// Condiciones
 		const condiciones = {
