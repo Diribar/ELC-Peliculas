@@ -580,39 +580,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	linksEnColec: async (colID) => {
-		return;
-		// Variables
-		const campos = [
-			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-		];
-
-		// Obtiene los capítulos de la colección
-		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID})
-			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
-			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
-			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
-
-		// Actualiza cada campo de la colección
-		for (let campo of campos) {
-			// Variables
-			const capSinLink = capitulos.find((n) => n[campo] == sinLinks); // busca un capítulo que no tenga link
-			const capTalVez = capitulos.find((n) => n[campo] == linksTalVez);
-			const capConLinks = capitulos.find((n) => n[campo] == conLinks);
-
-			// Obtiene los resultados
-			const resultado = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null;
-			const capID = capSinLink ? capSinLink.id : null;
-
-			// Actualiza el campo de la colección
-			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: resultado});
-			BD_genericas.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[campo]: capID});
-		}
-
-		// Fin
-		return;
-	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
