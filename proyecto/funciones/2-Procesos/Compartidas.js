@@ -575,67 +575,7 @@ module.exports = {
 		};
 
 		// Actualiza el registro
-		entidad != "capitulos"
-			? BD_genericas.actualizaPorId(entidad, id, tiposDeLink)
-			: await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
-
-		// Fin
-		return;
-	},
-	linksEnColec: async (colID) => {
-		// Variables
-		const campos = [
-			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-		];
-
-		// Rutinas
-		const links = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-		for (let campo of campos) {
-			// Cuenta la cantidad de casos true, false y null
-			const SI = links.filter((n) => n[campo] == conLinks).length;
-			const potencial = links.filter((n) => n[campo] == linksTalVez).length;
-			const NO = links.filter((n) => n[campo] == sinLinks).length;
-
-			// Averigua los porcentajes de OK y Potencial
-			const total = SI + potencial + NO;
-			const resultado = {
-				SI: SI / total,
-				potencial: (SI + potencial) / total,
-			};
-			const valor = resultado.SI > 0.5 ? conLinks : resultado.potencial >= 0.5 ? linksTalVez : sinLinks;
-
-			// Actualiza la colección
-			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
-		}
-
-		// Fin
-		return;
-	},
-	capituloSinLink: async (coleccion_id) => {
-		// Variables
-		let condiciones = {statusColeccion_id: aprobados_ids};
-		if (coleccion_id) condiciones.coleccion_id = coleccion_id;
-
-		// Obtiene todas los capítulos con su colección aprobada
-		let capitulos = await BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "links")
-			.then((n) => n.filter((m) => !m.links.length || !m.links.some((o) => o.tipo_id == linkPelicula_id))) // descarta los que tengan un link de película
-			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
-			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
-			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
-
-		// Descarta los capítulos de colección repetida
-		for (let i = capitulos.length - 1; i > 0; i--)
-			if (capitulos[i].coleccion_id == capitulos[i - 1].coleccion_id) capitulos.splice(i, 1);
-
-		// Todos los capsSinLink de colecciones pasan a null
-		coleccion_id
-			? await BD_genericas.actualizaTodosPorCondicion("colecciones", {coleccion_id}, {capSinLink_id: null})
-			: await BD_genericas.actualizaTodos("colecciones", {capSinLink_id: null});
-
-		// Le coloca el capSinLink_id a la colec
-		for (let capitulo of capitulos)
-			BD_genericas.actualizaPorId("colecciones", capitulo.coleccion_id, {capSinLink_id: capitulo.id});
+		await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
 
 		// Fin
 		return;
@@ -749,6 +689,7 @@ module.exports = {
 		// Fin
 		return;
 	},
+
 	linksVencPorSem: {
 		actualizaFechaVencim: async function (links) {
 			// Variables
@@ -788,7 +729,6 @@ module.exports = {
 			// Condiciones y nuevo status
 			const condiciones = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
 			const novedades = {
-				yaTuvoPrimRev: true, // es EL momento en que se pasa a 'true'
 				statusSugeridoPor_id: usAutom_id,
 				statusRegistro_id: creadoAprob_id,
 				statusSugeridoEn: ahora,
@@ -885,7 +825,7 @@ module.exports = {
 			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
 
 			// Fin
-			return !link.yaTuvoPrimRev
+			return link.statusRegistro_id == creado_id
 				? linksPrimRev_id
 				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
 				? linksEstrRec_id
@@ -1285,8 +1225,8 @@ let FN = {
 
 		// Resultados
 		let resultado = {
-			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
-			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length,
+			SI: links.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length, // en status creadoAprob o aprobado
+			linksTalVez: links.filter((n) => n.statusRegistro_id != inactivo_id).length, // en un status distinto a inactivo
 		};
 
 		// Fin

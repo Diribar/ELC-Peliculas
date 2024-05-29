@@ -45,18 +45,18 @@ module.exports = {
 			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
 
 			// Prods - sin links
-			SL_pelis: pelisColes.filter((n) => n.entidad == "peliculas" && !n.linksGral), // películas
-			SL_coles: pelisColes.filter((n) => n.entidad == "colecciones" && n.capSinLink_id), // colecciones
+			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas
+			SL_coles: pelisColes.filter((n) => !n.linksGral && n.entidad == "colecciones"), // colecciones
 
-			// Links Basicos
-			SLG_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksGratis), // sin links gratuitos
-			SLC_basico: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && !n.linksCast && !n.linksSubt), // sin links en castellano
+			// Tiene links, pero no variantes básicas
+			SLG_basico: pelisColes.filter((n) => n.linksGral && !n.linksGratis), // sin links gratuitos
+			SLC_basico: pelisColes.filter((n) => n.linksGral && !n.linksCast && !n.linksSubt), // sin links en castellano
 
 			// Links HD
-			SL_HD_pelis: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && n.entidad != "capitulos"), // con Links pero sin HD
-			SL_HD_caps: prodsAprob.filter((n) => n.linksGral && !n.HD_Gral && n.entidad == "capitulos"), // con Links pero sin HD
-			SLG_HD: prodsAprob.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
-			SLC_HD: prodsAprob.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
+			SL_HD_pelis: pelisColes.filter((n) => n.linksGral && !n.HD_Gral && n.entidad == "peliculas"), // con Links pero sin HD
+			SL_HD_coles: pelisColes.filter((n) => n.linksGral && !n.HD_Gral && n.entidad == "colecciones"), // con Links pero sin HD
+			SLG_HD: pelisColes.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
+			SLC_HD: pelisColes.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
 		};
 
 		// Fin
