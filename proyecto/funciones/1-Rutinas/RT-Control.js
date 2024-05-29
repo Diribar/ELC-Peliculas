@@ -628,6 +628,16 @@ module.exports = {
 			// Fin
 			return;
 		},
+		LinksEnColes: async () => {
+			// Variables
+			const colecciones = await BD_genericas.obtieneTodos("colecciones");
+
+			// Rutina
+			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
+
+			// Fin
+			return;
+		},
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
