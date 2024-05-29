@@ -118,7 +118,7 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	const BD_genericas = require("./funciones/1-BD/Genericas");
+	const BD_genericas = require("./funciones/3-BD/Genericas");
 	let datos = {
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
@@ -244,9 +244,9 @@ app.set("views", [
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");
 	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
-	global.BD_genericas = require("./funciones/1-BD/Genericas");
-	global.BD_especificas = require("./funciones/1-BD/Especificas");
-	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
+	global.BD_genericas = require("./funciones/3-BD/Genericas");
+	global.BD_especificas = require("./funciones/3-BD/Especificas");
+	const procesos = require("./funciones/1-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
@@ -257,7 +257,7 @@ app.set("views", [
 		if (variables.filtrosCons[prop].default) filtrosConDefault[prop] = variables.filtrosCons[prop].default;
 
 	// Procesos que dependen de la variable 'global'
-	const rutinas = require("./funciones/3-Rutinas/RT-Control");
+	const rutinas = require("./funciones/1-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
