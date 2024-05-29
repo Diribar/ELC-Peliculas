@@ -104,7 +104,7 @@ window.addEventListener("load", async () => {
 			  }
 			: codigo.startsWith("/revision/")
 			? {
-					link: "/revision/tablero-de-" + (codigo.includes("mantenimiento") ? "mantenimiento" : "entidades"),
+					link: "/revision/tablero-de-entidades",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: productos
