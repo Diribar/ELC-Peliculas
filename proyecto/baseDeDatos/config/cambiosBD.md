@@ -1,1 +1,1 @@
-ALTER TABLE c19353_elc.prod_2colecciones ADD capSinLink int(10) unsigned NULL AFTER HD_Subt;
+RENAME TABLE c19353_elc.prod_categ1 TO c19353_elc.prod_categoria;
