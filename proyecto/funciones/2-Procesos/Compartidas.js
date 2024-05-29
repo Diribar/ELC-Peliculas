@@ -580,62 +580,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	linksEnColec: async (colID) => {
-		return;
-		// Variables
-		const campos = [
-			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-		];
-
-		// Obtiene los capítulos de la colección
-		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID})
-			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
-			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
-			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
-
-		// Actualiza cada campo de la colección
-		for (let campo of campos) {
-			// Variables
-			const capSinLink = capitulos.find((n) => n[campo] == sinLinks); // busca un capítulo que no tenga link
-			const capTalVez = capitulos.find((n) => n[campo] == linksTalVez);
-			const capConLinks = capitulos.find((n) => n[campo] == conLinks);
-			const capID = capSinLink ? capSinLink.id : capTalVez ? linksTalVez : capConLinks ? conLinks : null;
-
-			// Actualiza el campo de la colección
-			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: capID});
-		}
-
-		// Fin
-		return;
-	},
-	capituloSinLink: async (coleccion_id) => {
-		// Variables
-		const campos = [linksTrailer, linksGral, linksGratis, linksCast, linksSubt, HD_Gral, HD_Gratis, HD_Cast, HD_Subt];
-		let condiciones = {statusColeccion_id: aprobados_ids};
-		if (coleccion_id) condiciones.coleccion_id = coleccion_id;
-
-		// Obtiene todas los capítulos con su colección aprobada
-		let capitulos = await BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "links")
-			.then((n) => n.filter((m) => !m.links.length || !m.links.some((o) => o.tipo_id == linkPelicula_id))) // descarta los que tengan un link de película
-			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
-			.then((n) => n.sort((a, b) => a.temporada - b.temporada)) // los ordena por temporada
-			.then((n) => n.sort((a, b) => a.coleccion_id - b.coleccion_id)); // los ordena por coleccion
-
-		// Descarta los capítulos de colección repetida
-		for (let i = capitulos.length - 1; i > 0; i--)
-			if (capitulos[i].coleccion_id == capitulos[i - 1].coleccion_id) capitulos.splice(i, 1);
-
-		// Todos los capsSinLink de colecciones pasan a null
-		await BD_genericas.actualizaTodosPorCondicion("colecciones", condiciones, {capSinLink_id: null});
-
-		// Le coloca el capSinLink_id a las colecciones
-		for (let capitulo of capitulos)
-			BD_genericas.actualizaPorId("colecciones", capitulo.coleccion_id, {capSinLink_id: capitulo.id});
-
-		// Fin
-		return;
-	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
