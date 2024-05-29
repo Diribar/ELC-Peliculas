@@ -915,10 +915,13 @@ module.exports = {
 			// Reconvierte los elementos
 			for (let rubro in productos)
 				productos[rubro] = productos[rubro].map((n) => {
+					// Variables
 					let nombre =
 						(n.nombreCastellano.length > anchoMax
 							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
+
+					// Comienza el armado de los datos
 					let datos = {
 						id: n.id,
 						entidad: n.entidad,
@@ -928,8 +931,12 @@ module.exports = {
 						fechaRefTexto: n.fechaRefTexto,
 						links: n.linksGral || n.linksTrailer,
 					};
+
+					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
-					if (n.entidad == "colecciones") datos.capSinLink_id = n.capSinLink_id;
+					if (n.entidad == "colecciones") for (let campo of variables.calidadLinks) datos[campo] = n[campo];
+
+					// Fin
 					return datos;
 				});
 
