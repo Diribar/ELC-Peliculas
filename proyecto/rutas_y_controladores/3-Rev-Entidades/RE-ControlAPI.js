@@ -93,52 +93,12 @@ module.exports = {
 	links: {
 		altaBaja: async (req, res) => {
 			// Variables
-			const {url, IN} = req.query;
-
-			// PROBLEMA - Valida que exista el dato del 'url'
-			if (!url) return res.json("Falta el 'url' del link");
-
-			// PROBLEMA - Valida que el link exista en la BD
+			const {url} = req.query;
 			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds);
-			if (!link) return res.json("El link no existe en la base de datos");
-
-			// PROBLEMA - Valida que el link tenga un status distinto a 'estable'
-			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
-
-			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
-			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando está recién creado es 'linksPrimRev_id', cuando es "creadoAprob desde aprob" es 'linksEstrRec_id/linksEstandar_id'
-			const linkEstandarAprob = IN == "SI" && categoria_id == linksEstandar_id;
-			if (
-				linkEstandarAprob &&
-				((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
-					(!link.capitulo_id && !cantLinksVencPorSem.paraProc.pelisColes)) // no es un capítulo y no queda lugar
-			)
-				return res.json("En esta semana ya no se puede revisar este link");
-
-			// Si se aprobó el link y es una categoría estándar, averigua su semana
-			let semana;
-			if (linkEstandarAprob) {
-				// Semana para capítulo
-				if (link.capitulo_id) semana = linksSemsEstandar;
-				// Semana para los demás
-				else {
-					// Variables
-					const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
-					const piso = corte + 1;
-
-					// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
-					const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-						.slice(piso) // descarta los registros de la semanas anteriores al piso
-						.slice(0, -3) // descarta los registros finales
-						.map((n) => n.prods);
-					const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
-					semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
-				}
-			}
 
 			// Más variables
-			const {id, decisAprob, datos, statusRegistro_id, campoDecision, motivo_id, statusCreado, revID} =
-				procesos.links.variables({link, req, semana, categoria_id});
+			const {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID} =
+				procesos.links.variables({link, req});
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
