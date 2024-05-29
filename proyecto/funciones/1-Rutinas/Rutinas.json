@@ -27,7 +27,8 @@
 		"EliminaImagenesSinRegistro": "SI",
 		"EliminaHistorialDeRegsEliminados": "SI",
 		"PaisesConMasProductos": "SI",
-		"LinksPorProv": "SI"
+		"LinksPorProv": "SI",
+		"LinksEnColes": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
