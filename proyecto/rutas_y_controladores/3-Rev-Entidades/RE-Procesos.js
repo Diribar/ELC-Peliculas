@@ -748,7 +748,7 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, req, semana, categoria_id}) => {
+		variables: ({link, req}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
 			const revID = req.session.usuario.id;
@@ -757,7 +757,8 @@ module.exports = {
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
-			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
+			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando está recién creado es 'linksPrimRev_id', cuando es "creadoAprob" es 'linksEstrRec_id/linksEstandar_id'
+			const fechaVencim = FN_links.fechaVencim({link, categoria_id, IN, ahora});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 			const statusCreado = link.statusRegistro_id == creado_id;
 
@@ -779,7 +780,7 @@ module.exports = {
 			}
 
 			// Fin
-			return {id, statusRegistro_id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID};
+			return {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID};
 		},
 	},
 
@@ -992,17 +993,45 @@ let FN_links = {
 		// Fin
 		return sigProd;
 	},
-	fechaVencim: ({ahora, IN, categoria_id, semana}) => {
+	fechaVencim: ({link, ahora, IN, categoria_id}) => {
+		// Variables
 		const ahoraTiempo = ahora.getTime();
-		return IN != "SI"
-			? null
-			: categoria_id == linksPrimRev_id
-			? new Date(ahoraTiempo + linksVU_primRev)
-			: categoria_id == linksEstrRec_id
-			? new Date(ahoraTiempo + linksVU_estrRec)
-			: categoria_id == linksEstandar_id
-			? new Date(ahoraTiempo + semana * unaSemana)
-			: null;
+
+		let resultado =
+			IN != "SI"
+				? null
+				: categoria_id == linksPrimRev_id
+				? new Date(ahoraTiempo + linksVU_primRev)
+				: categoria_id == linksEstrRec_id
+				? new Date(ahoraTiempo + linksVU_estrRec)
+				: null;
+
+		if (!resultado) {
+			// Si es una categoría estándar, averigua su semana
+			let semana;
+
+			// Semana para capítulo
+			if (link.capitulo_id) semana = linksSemsEstandar;
+			// Semana para los demás
+			else {
+				// Variables
+				const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
+				const piso = corte + 1;
+
+				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+					.slice(piso) // descarta los registros de la semanas anteriores al piso
+					.slice(0, -3) // descarta los registros finales
+					.map((n) => n.prods);
+				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
+				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
+			}
+
+			resultado = new Date(ahoraTiempo + semana * unaSemana);
+		}
+
+		// Fin
+		return resultado;
 	},
 };
 let obtieneRegs = async (campos) => {
