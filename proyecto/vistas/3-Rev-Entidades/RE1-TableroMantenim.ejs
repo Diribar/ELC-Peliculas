@@ -104,7 +104,7 @@
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links - Peliculas", regs: prods.SL_pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("MT0-Capitulos", {DE, titulo: "Sin Links - Colecciones", regs: prods.SL_coles, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("RE1-Colecciones", {DE, titulo: "Sin Links - Colecciones", regs: prods.SL_coles, url: "links/abm", mostrarOrigen: true, campo: "linksGral"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_basico, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC_basico, url: "links/abm", mostrarOrigen: true}) %>
 				<% if (usuario.rolUsuario.revisorPERL) { %>
@@ -136,7 +136,7 @@
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD - Películas", regs: prods.SL_HD_pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD - Colecciones", regs: prods.SL_HD_coles, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("RE1-Colecciones", {DE, titulo: "Sin Links HD - Colecciones", regs: prods.SL_coles, url: "links/abm", mostrarOrigen: true, campo: "HD_Gral"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD Gratuitos", regs: prods.SLG_HD, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links HD en Castellano", regs: prods.SLC_HD, url: "links/abm", mostrarOrigen: true}) %>
 			</div>
