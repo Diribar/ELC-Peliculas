@@ -582,10 +582,7 @@ module.exports = {
 	},
 	linksEnColec: async (colID) => {
 		// Variables
-		const campos = [
-			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-		];
+		const campos = variables.calidadLinks;
 
 		// Obtiene los capítulos de la colección
 		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID})
