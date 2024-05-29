@@ -53,8 +53,8 @@ router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
-router.get("/tablero-de-control", usuarioBase, usRolAutTablEnts, vista.tableroControl);
-router.get("/mantenimiento", aptoUsuario, vista.tableroEntidades);
+router.get("/tablero-de-control", usuarioBase, usRolAutTablEnts, vista.tableroEntidades);
+router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
 router.get("/producto/alta", aptoCRUD, rutaCRUD_ID, usRolRevPERL, capturaActivar, vista.altaProdForm);

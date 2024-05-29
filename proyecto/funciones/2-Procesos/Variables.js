@@ -435,8 +435,8 @@ module.exports = {
 	},
 	vistaTablero: {
 		nombre: "fa-spell-check",
-		link: "/revision/tablero-de-control",
-		titulo: "Ir al 'Tablero de Control' de Revisiones",
+		link: "/revision/tablero-de-entidades",
+		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
 	vistaEntendido: (url) => {

@@ -9,7 +9,7 @@ const procsLinks = require("../2.3-Links/LK-FN-Procesos");
 
 module.exports = {
 	// Tablero
-	tableroControl: async (req, res) => {
+	tableroEntidades: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
@@ -54,7 +54,7 @@ module.exports = {
 		});
 	},
 	// Tablero de mantenimiento
-	tableroEntidades: async (req, res) => {
+	tableroMantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
