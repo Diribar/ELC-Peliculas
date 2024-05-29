@@ -1,40 +1,7 @@
 "use strict";
-// Variables
-const procesosRE = require("../3-Rev-Entidades/RE-Procesos");
-const procesos = require("./MS-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	// Tablero de mantenimiento
-	tableroMantenim: async (req, res) => {
-		// Variables
-		const tema = "mantenimiento";
-		const codigo = "tableroControl";
-		const userID = req.session.usuario.id;
-		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
-
-		// Productos
-		let prods = procesos.obtieneProds(userID).then((n) => procesosRE.procesaCampos.prods(n));
-		let rclvs = procesos.obtieneRCLVs(userID).then((n) => procesosRE.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(userID).then((n) => procesosRE.procesaCampos.prods(n));
-
-		// RCLVs
-		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
-
-		// Une Productos y Links
-		prods = {...prods, ...prodsConLinksInactivos};
-
-		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-
-		// Va a la vista
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
-			...{prods, rclvs, omnipotente},
-			dataEntry,
-		});
-	},
-
 	// Redireccionar después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
@@ -89,7 +56,7 @@ module.exports = {
 				: origen == "TR"
 				? "/revision/tablero-de-control"
 				: origen == "TM"
-				? "/mantenimiento"
+				? "/revision/mantenimiento"
 				: origen == "CN"
 				? "/consultas"
 				: "";

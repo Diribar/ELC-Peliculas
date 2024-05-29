@@ -163,18 +163,6 @@ let obtienePorEntidad = async ({...condiciones}) => {
 	// Fin
 	return resultados2;
 };
-let purgaEdicion = (edicion, entidad) => {
-	// Quita de edición los campos 'null'
-	for (let prop in edicion) if (edicion[prop] === null) delete edicion[prop];
-
-	// Quita de edición los campos que no se comparan
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
-	for (let prop in edicion) if (!campos.includes(prop)) delete edicion[prop];
-
-	// Fin
-	return edicion;
-};
 let obtieneSinEdicion = (entidad) => {
 	// Variables
 	const condiciones = {statusRegistro_id: creadoAprob_id};

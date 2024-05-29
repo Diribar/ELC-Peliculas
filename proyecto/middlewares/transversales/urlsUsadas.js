@@ -29,7 +29,6 @@ module.exports = (req, res, next) => {
 		"/usuarios",
 		"/revision",
 		"/consultas",
-		"/mantenimiento",
 		"/institucional",
 		"/graficos",
 	];

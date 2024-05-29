@@ -460,7 +460,7 @@ module.exports = {
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-control"},
 		// Tableros
 		{codigo: "TR", url: "/revision/tablero-de-control"},
-		{codigo: "TM", url: "/mantenimiento"},
+		{codigo: "TM", url: "/revision/mantenimiento"},
 	],
 };
 

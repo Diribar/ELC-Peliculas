@@ -20,9 +20,6 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 router.get("/api/horario-inicial/", API.horarioInicial);
 router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
-// Vistas
-router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
-
 // Redireciona
 router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);
 router.get("/inicio", vista.redirecciona.redireccionaInicio);
