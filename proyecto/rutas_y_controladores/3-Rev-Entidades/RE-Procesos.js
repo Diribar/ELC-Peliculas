@@ -754,18 +754,19 @@ module.exports = {
 			const revID = req.session.usuario.id;
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
-			const statusCreado = link.statusRegistro_id == creado_id;
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({categoria_id, IN, ahora, semana});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
+			const statusCreado = link.statusRegistro_id == creado_id;
 
 			// Arma los datos
 			let datos = {
 				categoria_id,
 				fechaVencim,
 				anoEstreno,
+				yaTuvoPrimRev: !statusCreado, // sólo el status 'creado_id' es sin primera revisión
 				statusSugeridoPor_id: revID,
 				statusSugeridoEn: ahora,
 				statusRegistro_id,
