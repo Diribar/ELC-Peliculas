@@ -30,6 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
+		// creaCapSinLink()
 		//await this.rutinasDiarias.LinksEnColes()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
