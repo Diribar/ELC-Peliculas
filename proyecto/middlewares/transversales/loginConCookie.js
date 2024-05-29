@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 
-const procesos = require("../../rutas_y_controladores/1.1.1-Usuarios/US-FN-Procesos");
+const procesos = require("../../rutas_y_controladores/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
