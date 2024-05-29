@@ -1,4 +1,4 @@
-RENAME TABLE c19353_elc.prod_categ1 TO c19353_elc.prod_categoria;
+RENAME TABLE c19353_elc.prod_categ1 TO c19353_elc.prod_categorias;
 
 CREATE TABLE `prod_caps_sin_link` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
