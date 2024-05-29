@@ -5,7 +5,10 @@
 			<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>
 			<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
 			<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
-			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + EDIC_ID + ORIGEN + GRUPO %>">
+			<% const corresponde_id = reg.entidad != "colecciones" || locals.grupo == "inactivo" || locals.origen == "TE" || !locals.campo %>
+			<% console.log(9, corresponde_id, GRUPO, ORIGEN, titulo); %>
+			<% if (!corresponde_id) console.log(10,reg); %>
+			<a href="<%='/' + url + '/?entidad=' + (corresponde_id ? reg.entidad : "capitulos") + '&id=' + (corresponde_id ? reg.id : reg.csl[campo]) + EDIC_ID + ORIGEN + GRUPO %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
 			</a>
 		<% } %>
