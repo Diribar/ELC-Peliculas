@@ -43,15 +43,15 @@
 				<% const rp = "revision/producto/" %>
 				<% DE = dataEntry[familias] %>
 				<% if (revisorPERL) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
+					<%- include("RE-Registros", {DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
+					<%- include("RE-Registros", {DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
 				<% } %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Productos repetidos", regs: prods.RP, url: dt, mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed, mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed, mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {DE, titulo: "Productos repetidos", regs: prods.RP, url: dt, mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed, mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed, mostrarOrigen: true}) %>
 				<% if (revisorPERL) { %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
-					<%- include("CMP-RegsTC", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
+					<%- include("RE-Registros", {DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
+					<%- include("RE-Registros", {DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
 				<% } %>
 			</div>
 		</div>
@@ -79,11 +79,11 @@
 					<div class="temas">
 						<% let rr = "revision/rclv/" %>
 						<% DE = dataEntry[familias] %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
-						<%- include("CMP-RegsTC", {DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %>
+						<%- include("RE-Registros", {DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
+						<%- include("RE-Registros", {DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
+						<%- include("RE-Registros", {DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
+						<%- include("RE-Registros", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
+						<%- include("RE-Registros", {DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %>
 					</div>
 				</div>
 			<% } %>
