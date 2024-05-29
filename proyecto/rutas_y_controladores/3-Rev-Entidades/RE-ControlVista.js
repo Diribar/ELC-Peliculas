@@ -48,7 +48,7 @@ module.exports = {
 		// Va a la vista
 		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Revisión"},
+			...{tema, codigo, titulo: "Tablero de Entidades"},
 			...{prods, rclvs, sigProd, origen: "TE"},
 			...{dataEntry},
 		});
