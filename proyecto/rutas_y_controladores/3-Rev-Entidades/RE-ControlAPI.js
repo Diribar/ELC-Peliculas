@@ -106,8 +106,7 @@ module.exports = {
 			if (estables_ids.includes(link.statusRegistro_id)) return res.json("En este status no se puede procesar");
 
 			// PROBLEMA - Si es con restricción y no queda lugar, interrumpe la función
-			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
-			const categoria_id = comp.linksVencPorSem.categoria_id({...link, statusRegistro_id});
+			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando está recién creado es 'linksPrimRev_id', cuando es "creadoAprob desde aprob" es 'linksEstrRec_id/linksEstandar_id'
 			const linkEstandarAprob = IN == "SI" && categoria_id == linksEstandar_id;
 			if (
 				linkEstandarAprob &&
@@ -138,13 +137,8 @@ module.exports = {
 			}
 
 			// Más variables
-			const {id, decisAprob, datos, campoDecision, motivo_id, statusCreado, revID} = procesos.links.variables({
-				link,
-				req,
-				semana,
-				categoria_id,
-				statusRegistro_id,
-			});
+			const {id, decisAprob, datos, statusRegistro_id, campoDecision, motivo_id, statusCreado, revID} =
+				procesos.links.variables({link, req, semana, categoria_id});
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await BD_genericas.actualizaPorId("links", id, datos);
