@@ -255,7 +255,7 @@ module.exports = {
 
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
-			// Actualiza el status de los capítulos
+			// 1. Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
 				? await procsCRUD.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
@@ -264,9 +264,10 @@ module.exports = {
 						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 				  );
 
-			// Actualiza el campo 'prodAprob' en los links de sus capítulos
+			// 2. Actualiza el campo 'prodAprob' en los links de sus capítulos
 			procesos.guardar.prodAprobEnLink(id, statusFinal_id);
 
+			// 3. Si la colección fue aprobada, actualiza sus status de links
 			if (aprobados_ids.includes(statusFinal_id)) {
 				// Si no existe su registro 'capsSinLink', lo agrega
 				if (!(await BD_genericas.obtienePorCondicion("capsSinLink", {coleccion_id: id})))
@@ -276,6 +277,9 @@ module.exports = {
 				comp.linksEnColec(id);
 			}
 		}
+
+		// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
+		if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.rclv.edicAprobRech(entidad, original, revID);
