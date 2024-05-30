@@ -1,8 +1,8 @@
 imagen del fondo
 - parado
-    - oculta DL y muestra iconoDL
+    - si se ve algo, oculta todo
+    - si está todo oculto, muestra iconoDL y links
     - oculta DB y oculta iconoDB
-    - muestra/oculta links (inicial visible)
 - acostado
     - muestra DL y oculta iconoDL
     - oculta DB y muestra iconoDB 
@@ -17,3 +17,5 @@ iconoDB
 - oculta DL y muestra iconoDL
 - muestra DB y oculta iconoDB
 - parado: oculta links
+
+links: inicial visible
