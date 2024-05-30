@@ -1,8 +1,15 @@
+startup
+- parado
+    - si existe links, los muestra y muestra iconoDL
+    - si no existe links, muestra DL e ícono DB
+
 imagen del fondo
 - parado
     - si se ve algo, oculta todo
-    - si está todo oculto, muestra iconoDL y links
-    - oculta DB y oculta iconoDB
+    - si está todo oculto, 
+	- si existe links, los muestra y muestra iconoDL
+	- si no existe links, muestra DL e ícono DB
+    - oculta DB e iconoDL
 - acostado
     - muestra DL y oculta iconoDL
     - oculta DB y muestra iconoDB 
@@ -18,4 +25,3 @@ iconoDB
 - muestra DB y oculta iconoDB
 - parado: oculta links
 
-links: inicial visible
