@@ -49,7 +49,7 @@
 					<!-- Elige una temporada o capítulo -->
 					<script src="/publico/javascript/2.1-Prods-RUD/PR0-CambioTempCap.js"></script>
 					<% if (registro.coleccion.cantTemps > 1) { %>
-						<select id="temporada" <% if (tema != "prodRud") { %>readonly <% } %>>
+						<select id="temporada">
 							<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
 								<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 							<% } %>
