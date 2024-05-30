@@ -19,28 +19,34 @@ window.addEventListener("load", async () => {
 	let colID = await fetch(ruta + prodID).then((n) => n.json());
 
 	// Obtiene DOM de Temporada y Capítulos
-	let tempSelect = document.querySelector("#encabezado select#temporada");
-	let capSelect = document.querySelector("#encabezado select#capitulo");
+	const tempSelect = document.querySelector("#encabezado select#temporada");
+	const capSelect = document.querySelector("#encabezado select#capitulo");
 
 	// CAMBIOS EN LA TEMPORADA --> se deben actualizar los capítulos
-	tempSelect.addEventListener("change", async () => {
-		// Obtiene la temporada
-		const tempNum = temporada.value;
+	if (tempSelect)
+		tempSelect.addEventListener("change", async () => {
+			// Obtiene la temporada
+			const tempNum = tempSelect.value;
 
-		// Obtiene el primer capítulo de la temporada
-		const ruta = "/crud/api/obtiene-capitulos/";
-		const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
-		const capID = capitulos[0].id;
+			// Obtiene el primer capítulo de la temporada
+			const ruta = "/crud/api/obtiene-capitulos/";
+			const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
+			const capID = capitulos[0].id;
 
-		// Actualiza la vista
-		location.href =
-			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + origen;
-	});
+			// Actualiza la vista
+			location.href =
+				"/inactivar-captura/?entidad=capitulos&id=" +
+				prodID +
+				"&prodEntidad=capitulos&prodID=" +
+				capID +
+				"&origen=" +
+				origen;
+		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
 	capSelect.addEventListener("change", async () => {
 		// Obtiene los datos para conseguir el capID
-		const tempNum = temporada.value;
+		const tempNum = tempSelect ? tempSelect.value : 1;
 		const capNum = capitulo.value;
 
 		// Obtiene el capID
