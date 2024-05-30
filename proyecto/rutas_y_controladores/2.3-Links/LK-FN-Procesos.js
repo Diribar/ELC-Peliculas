@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsMS = require("../9-Miscelaneas/MS-Procesos");
+const procsRE = require("../3-Rev-Entidades/RE-Procesos");
 
 module.exports = {
 	// Links - Controlador Vista
@@ -93,7 +93,7 @@ module.exports = {
 	},
 	sigProdInactivo: async ({producto, entidad, userID}) => {
 		// Variables
-		const productos = await procsMS.obtieneLinksInactivos(userID).then((n) => n.LI);
+		const productos = await procsRE.obtieneLinksInactivos(userID).then((n) => n.LI);
 
 		// Obtiene el siguiente producto
 		const sigProd = productos.find((n) => n.entidad != entidad || n.id != producto.id);

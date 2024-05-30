@@ -1,5 +1,5 @@
 <% if (codigo == "tableroControl") { %>
-	<%- tema = "revisionEnts" ? include("RE0-TableroEntidades") : include("RE1-TableroMantenim") %>
+	<%- tema == "revisionEnts" ? include("RE0-TableroEntidades") : include("RE1-TableroMantenim") %>
 <% } %>
 
 <% if (["producto/alta", "rechazar", "inactivar-o-recuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
