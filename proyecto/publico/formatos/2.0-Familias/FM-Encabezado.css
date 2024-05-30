@@ -38,6 +38,3 @@
 		}
 	}
 }
-
-/* Ancho, dependiendo de si tiene capítulos */
-#datosLargos #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}
