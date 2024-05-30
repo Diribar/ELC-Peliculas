@@ -442,8 +442,11 @@ module.exports = {
 				await BD_genericas.eliminaTodosPorCondicion("linksEdicion", condicion);
 				await BD_genericas.eliminaTodosPorCondicion("links", condicion);
 
-				// Colección - elimina sus capítulos
-				if (entidad == "colecciones") await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id});
+				// Particularidades para colección
+				if (entidad == "colecciones") {
+					await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id}); // elimina sus capítulos
+					await BD_genericas.eliminaTodosPorCondicion("capsSinLink", {coleccion_id: id}); // elimina su 'capSinLink'
+				}
 			}
 
 			// Fin
