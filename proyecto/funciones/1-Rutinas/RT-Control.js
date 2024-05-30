@@ -30,7 +30,8 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await comp.capituloSinLink()
+		// creaCapSinLink()
+		//await this.rutinasDiarias.LinksEnColes()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -628,6 +629,16 @@ module.exports = {
 			// Fin
 			return;
 		},
+		LinksEnColes: async () => {
+			// Variables
+			const colecciones = await BD_genericas.obtieneTodos("colecciones");
+
+			// Rutina
+			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
+
+			// Fin
+			return;
+		},
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
@@ -834,6 +845,16 @@ let actualizaCategoriaLink = async () => {
 		const categoria_id = comp.linksVencPorSem.categoria_id(link);
 		await BD_genericas.actualizaPorId("links", link.id, {categoria_id});
 	}
+
+	// Fin
+	return;
+};
+let creaCapSinLink = async () => {
+	// Obtiene las colecciones
+	const colecciones = await BD_genericas.obtieneTodos("colecciones");
+
+	// Rutina para agregar un registro
+	for (let coleccion of colecciones) BD_genericas.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
 
 	// Fin
 	return;

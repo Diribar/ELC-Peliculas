@@ -202,7 +202,7 @@ module.exports = {
 		// },
 	},
 
-	// Agregar Productos
+	// Productos
 	camposDD: [...camposDD],
 	camposDA: [...camposDA],
 	camposDA_conValores: async function (userID) {
@@ -245,6 +245,10 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	calidadLinks: [
+		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
+	],
 
 	// RCLV
 	prioridadesRCLV: [

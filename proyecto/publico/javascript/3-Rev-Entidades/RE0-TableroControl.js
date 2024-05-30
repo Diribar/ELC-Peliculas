@@ -7,9 +7,10 @@ window.addEventListener("load", async () => {
 		bloqueRegistros: document.querySelectorAll(".bloques .temas .bloqueRegistros"),
 	};
 	const actualizaVisibles = "/revision/api/actualiza-visibles/?datos=";
-	let circuito = location.pathname.slice(1);
-	const indice = circuito.indexOf("/");
-	if (indice != -1) circuito = circuito.slice(0, indice);
+	const tablero = "tablero-de-";
+	let circuito = location.pathname;
+	const indice = circuito.indexOf(tablero);
+	if (indice != -1) circuito = circuito.slice(indice).replace(tablero, "");
 
 	// Muestra u oculta
 	DOM.mostrarOcultar.forEach((mostrarOcultar, i) => {

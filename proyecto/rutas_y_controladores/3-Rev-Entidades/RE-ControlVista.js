@@ -43,12 +43,12 @@ module.exports = {
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
+		const dataEntry = req.session.tableros && req.session.tableros.entidades ? req.session.tableros.entidades : {};
 
 		// Va a la vista
 		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Revisión"},
+			...{tema, codigo, titulo: "Tablero de Entidades"},
 			...{prods, rclvs, sigProd, origen: "TE"},
 			...{dataEntry},
 		});

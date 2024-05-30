@@ -69,7 +69,7 @@ module.exports = {
 		},
 		obtieneProds_SE_IR: async (revID) => {
 			// Variables
-			const entidades = ["peliculas", "colecciones", "capitulos"];
+			const entidades = [...variables.entidades.prods];
 			let campos;
 
 			// AL: En staus 'creado'
@@ -312,8 +312,8 @@ module.exports = {
 				// Links HD
 				SL_HD_pelis: pelisColes.filter((n) => n.linksGral && !n.HD_Gral && n.entidad == "peliculas"), // con Links pero sin HD
 				SL_HD_coles: pelisColes.filter((n) => n.linksGral && !n.HD_Gral && n.entidad == "colecciones"), // con Links pero sin HD
-				SLG_HD: pelisColes.filter((n) => n.HD_Gral && !n.HD_Gratis), // sin HD gratuitos
-				SLC_HD: pelisColes.filter((n) => n.HD_Gral && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
+				SLG_HD: pelisColes.filter((n) => n.HD_Gral && n.linksGratis && !n.HD_Gratis), // sin HD gratuitos
+				SLC_HD: pelisColes.filter((n) => n.HD_Gral && (n.linksCast || n.linksSubt) && !n.HD_Cast && !n.HD_Subt), // sin HD en castellano
 			};
 
 			// Fin
@@ -915,10 +915,13 @@ module.exports = {
 			// Reconvierte los elementos
 			for (let rubro in productos)
 				productos[rubro] = productos[rubro].map((n) => {
+					// Variables
 					let nombre =
 						(n.nombreCastellano.length > anchoMax
 							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
+
+					// Comienza el armado de los datos
 					let datos = {
 						id: n.id,
 						entidad: n.entidad,
@@ -928,8 +931,12 @@ module.exports = {
 						fechaRefTexto: n.fechaRefTexto,
 						links: n.linksGral || n.linksTrailer,
 					};
+
+					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
-					if (n.entidad == "colecciones") datos.capSinLink_id = n.capSinLink_id;
+					if (n.entidad == "colecciones") datos.csl = n.csl;
+
+					// Fin
 					return datos;
 				});
 
@@ -1257,7 +1264,7 @@ let TM = {
 		// Variables
 		const {petitFamilias} = condiciones;
 		const entidades = variables.entidades[petitFamilias];
-		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = "ediciones");
+		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = ["ediciones"]);
 
 		let resultados1 = [];
 		let resultados2 = [];

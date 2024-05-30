@@ -183,6 +183,8 @@ module.exports = {
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 		const idMin = petitFamilias == "rclvs" ? 10 : 0;
+		let includeBD = [...include];
+		if (entidad == "colecciones") includeBD.push("csl");
 
 		// Condiciones
 		const condiciones = {
@@ -205,7 +207,7 @@ module.exports = {
 			id: {[Op.gt]: idMin},
 		};
 
-		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, includeBD)
 			// Agrega las fechaRef
 			// Actualiza el original con la edición
 			.then((n) =>
