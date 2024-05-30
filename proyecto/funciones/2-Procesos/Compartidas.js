@@ -583,9 +583,10 @@ module.exports = {
 	linksEnColec: async (colID) => {
 		// Variables
 		const campos = variables.calidadLinks;
+		const condiciones = {coleccion_id: colID, statusRegistro_id: activos_ids};
 
 		// Obtiene los capítulos de la colección
-		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID})
+		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", condiciones)
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
 			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
 		if (!capitulos.length) return;
