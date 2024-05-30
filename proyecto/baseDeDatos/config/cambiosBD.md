@@ -17,3 +17,5 @@ CREATE TABLE `prod_caps_sin_link` (
   UNIQUE KEY `prod_caps_sin_link_unique` (`coleccion_id`),
   CONSTRAINT `prod_caps_sin_link1` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+
+FN creaCapSinLink
