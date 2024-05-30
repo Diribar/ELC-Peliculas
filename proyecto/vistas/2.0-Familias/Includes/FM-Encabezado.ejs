@@ -21,8 +21,8 @@
 				<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
 				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
 					<button type="button" class="scaleCh">
-						<% if (registro.cantTemps != 1) { %>
-							<p><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+						<% if (registro.cantTemps > 1) { %>
+							<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 						<% } %>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 					</button>
