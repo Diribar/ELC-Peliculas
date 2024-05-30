@@ -266,6 +266,15 @@ module.exports = {
 
 			// Actualiza el campo 'prodAprob' en los links de sus capítulos
 			procesos.guardar.prodAprobEnLink(id, statusFinal_id);
+
+			if (aprobados_ids.includes(statusFinal_id)) {
+				// Si no existe su registro 'capsSinLink', lo agrega
+				if (!(await BD_genericas.obtienePorCondicion("capsSinLink", {coleccion_id: id})))
+					await BD_genericas.agregaRegistro("capsSinLink", {coleccion_id: id});
+
+				// Actualiza su link
+				comp.linksEnColec(id);
+			}
 		}
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
