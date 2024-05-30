@@ -17,7 +17,7 @@
 	<div id="colCap">
 		<% if (entidad == "colecciones") { %>
 			<!-- Cantidad de Temporadas y de Capítulos -->
-			<div id="colecciones">
+			<div id="coleccion">
 				<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
 				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
 					<button type="button" class="scaleCh">
@@ -32,7 +32,7 @@
 		<% if (entidad == "capitulos") { %>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p><b>Colección:</b></p>
+				<p id="coleccionTitulo"><b>Colección:</b></p>
 				<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
 					<button type="button" class="scaleCh"><%= registro.coleccion.nombreCastellano %></button>
 				</a>
