@@ -99,12 +99,12 @@ window.addEventListener("load", async () => {
 			? false
 			: codigo.startsWith("/revision/usuarios")
 			? {
-					link: "/revision/usuarios/tablero-de-control",
+					link: "/revision/usuarios/tablero-de-usuarios",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/revision/")
 			? {
-					link: "/revision/tablero-de-control",
+					link: "/revision/tablero-de-entidades",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: productos

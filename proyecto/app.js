@@ -106,10 +106,8 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.2-RCLVs/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-Links"),
 	path.resolve(__dirname, "./vistas/2.3-Links/Includes"),
-	path.resolve(__dirname, "./vistas/3.1-Rev-Entidades"),
-	path.resolve(__dirname, "./vistas/3.1-Rev-Entidades/Includes"),
-	path.resolve(__dirname, "./vistas/3.2-Rev-Mantenim"),
-	path.resolve(__dirname, "./vistas/3.2-Rev-Mantenim/Includes"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades"),
+	path.resolve(__dirname, "./vistas/3-Rev-Entidades/Includes"),
 	path.resolve(__dirname, "./vistas/5-Consultas"),
 	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/6-Graficos"),
@@ -120,7 +118,7 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	const BD_genericas = require("./funciones/1-BD/Genericas");
+	const BD_genericas = require("./funciones/3-BD/Genericas");
 	let datos = {
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
@@ -246,9 +244,9 @@ app.set("views", [
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");
 	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
-	global.BD_genericas = require("./funciones/1-BD/Genericas");
-	global.BD_especificas = require("./funciones/1-BD/Especificas");
-	const procesos = require("./funciones/3-Rutinas/RT-Procesos");
+	global.BD_genericas = require("./funciones/3-BD/Genericas");
+	global.BD_especificas = require("./funciones/3-BD/Especificas");
+	const procesos = require("./funciones/1-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
@@ -259,7 +257,7 @@ app.set("views", [
 		if (variables.filtrosCons[prop].default) filtrosConDefault[prop] = variables.filtrosCons[prop].default;
 
 	// Procesos que dependen de la variable 'global'
-	const rutinas = require("./funciones/3-Rutinas/RT-Control");
+	const rutinas = require("./funciones/1-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
@@ -273,13 +271,13 @@ app.set("views", [
 	app.use("/producto", require("./rutas_y_controladores/2.1-Prods-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
 	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
-	app.use("/usuarios", require("./rutas_y_controladores/1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_controladores/4-Rev-Usuarios/RU-Rutas"));
+	app.use("/usuarios", require("./rutas_y_controladores/1.1-Usuarios/US-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_controladores/1.2-Rev-Usuarios/RU-Rutas"));
 	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
 	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
-	app.use("/institucional", require("./rutas_y_controladores/6-Institucional/IN-Rutas"));
-	app.use("/graficos", require("./rutas_y_controladores/7-Graficos/GR-Rutas"));
+	app.use("/institucional", require("./rutas_y_controladores/7-Institucional/IN-Rutas"));
+	app.use("/graficos", require("./rutas_y_controladores/6-Graficos/GR-Rutas"));
 	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales

@@ -94,7 +94,7 @@ module.exports = {
 				// Variables
 				const {entidad, layout} = prefs;
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
-				const entsProd = layout.caps ? ["peliculas", "colecciones", "capitulos"] : ["peliculas", "colecciones"];
+				const entsProd = layout.caps ? [...variables.entidades.prods] : ["peliculas", "colecciones"];
 				let productos = [];
 				let resultados = [];
 

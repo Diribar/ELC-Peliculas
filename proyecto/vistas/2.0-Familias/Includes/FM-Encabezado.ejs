@@ -17,12 +17,12 @@
 	<div id="colCap">
 		<% if (entidad == "colecciones") { %>
 			<!-- Cantidad de Temporadas y de Capítulos -->
-			<div id="colecciones">
+			<div id="coleccion">
 				<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
 				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
 					<button type="button" class="scaleCh">
-						<% if (registro.cantTemps != 1) { %>
-							<p><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+						<% if (registro.cantTemps > 1) { %>
+							<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
 						<% } %>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 					</button>
@@ -32,11 +32,12 @@
 		<% if (entidad == "capitulos") { %>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p><b>Colección:</b></p>
+				<p id="coleccionTitulo"><b>Colección:</b></p>
 				<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
 					<button type="button" class="scaleCh"><%= registro.coleccion.nombreCastellano %></button>
 				</a>
 			</div>
+			<!-- Cambiar de capítulo -->
 			<div id="tempCapS">
 				<!-- Avanza/Retrocede un capítulo -->
 				<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
@@ -47,11 +48,13 @@
 				<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
 					<!-- Elige una temporada o capítulo -->
 					<script src="/publico/javascript/2.1-Prods-RUD/PR0-CambioTempCap.js"></script>
-					<select id="temporada" <% if (tema != "prodRud") { %>readonly <% } %> <% if (registro.coleccion.cantTemps == 1) { %>class="ocultar"<% } %>>
-						<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
-							<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
-						<% } %>
-					</select>
+					<% if (registro.coleccion.cantTemps > 1) { %>
+						<select id="temporada">
+							<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
+								<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+							<% } %>
+						</select>
+					<% } %>
 					<select id="capitulo">
 						<% for (let capitulo of registro.capitulos) { %>
 							<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>

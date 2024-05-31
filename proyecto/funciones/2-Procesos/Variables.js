@@ -202,7 +202,7 @@ module.exports = {
 		// },
 	},
 
-	// Agregar Productos
+	// Productos
 	camposDD: [...camposDD],
 	camposDA: [...camposDA],
 	camposDA_conValores: async function (userID) {
@@ -245,6 +245,10 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	calidadLinks: [
+		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
+	],
 
 	// RCLV
 	prioridadesRCLV: [
@@ -435,8 +439,8 @@ module.exports = {
 	},
 	vistaTablero: {
 		nombre: "fa-spell-check",
-		link: "/revision/tablero-de-control",
-		titulo: "Ir al 'Tablero de Control' de Revisiones",
+		link: "/revision/tablero-de-entidades",
+		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
 	vistaEntendido: (url) => {
@@ -457,10 +461,10 @@ module.exports = {
 		// Links
 		{codigo: "RL", url: "/revision/links"},
 		// Usuarios
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-control"},
+		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		// Tableros
-		{codigo: "TR", url: "/revision/tablero-de-control"},
-		{codigo: "TM", url: "/mantenimiento"},
+		{codigo: "TE", url: "/revision/tablero-de-entidades"},
+		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
 	],
 };
 

@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 			: ruta == "/links/abm/"
 			? "LK"
 			: ruta.startsWith("/revision/")
-			? "TR"
+			? "TE"
 			: "";
 
 	// Averigua el id del primer capítulo de la colección

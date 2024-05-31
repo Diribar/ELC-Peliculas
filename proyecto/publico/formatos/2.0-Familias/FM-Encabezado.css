@@ -12,7 +12,7 @@
 	}
 	#colCap {
 		display: flex; flex-direction: column; align-items: flex-end;
-		#colecciones a button {
+		#coleccion a button {
 			border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
 			padding: 5px 10px; border-radius: 10px; text-align: center;
 		}
@@ -38,6 +38,3 @@
 		}
 	}
 }
-
-/* Ancho, dependiendo de si tiene capítulos */
-#datosLargos #encabezado:has(#colCap) > #nombres {max-width: 70%; margin-right: 40px;}

@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id, motivo_id} = {...req.query, ...req.body};
+	const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
 	const link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 	let informacion;
 
@@ -15,7 +15,6 @@ module.exports = async (req, res, next) => {
 
 	// Si correspondía un comentario, redirige
 	const motivo = motivosStatus.find((n) => n.id == motivo_id);
-	const comentario = req.body && req.body.comentario ? req.body.comentario : "";
 	if (motivo.agregarComent && !comentario)
 		informacion = {
 			mensajes: ["Necesitamos que nos des un comentario"],

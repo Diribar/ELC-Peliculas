@@ -2,9 +2,11 @@
 	<h3 class="pointer"><%= titulo %> (<%= regs.length %>)</h3>
 	<div class="bloqueRegistros <%- !DE || !DE[titulo.toLowerCase()] ? 'ocultar' : '' %>">
 		<% for (let reg of regs) { %>
+			<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>
 			<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
 			<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
-			<a href="<%='/' + url + '/?entidad=capitulos&id=' + reg.capSinLink_id + ORIGEN + GRUPO %>">
+			<% const corresponde_id = reg.entidad != "colecciones" || locals.grupo == "inactivo" || locals.origen == "TE" || !locals.campo %>
+			<a href="<%='/' + url + '/?entidad=' + (corresponde_id ? reg.entidad : "capitulos") + '&id=' + (corresponde_id ? reg.id : reg.csl[campo]) + EDIC_ID + ORIGEN + GRUPO %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
 			</a>
 		<% } %>

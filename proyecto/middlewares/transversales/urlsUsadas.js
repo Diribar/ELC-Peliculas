@@ -29,7 +29,6 @@ module.exports = (req, res, next) => {
 		"/usuarios",
 		"/revision",
 		"/consultas",
-		"/mantenimiento",
 		"/institucional",
 		"/graficos",
 	];
@@ -71,7 +70,7 @@ module.exports = (req, res, next) => {
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		!urlAnterior.startsWith("/links/") &&
-		(!urlAnterior.startsWith("/revision/") || urlAnterior.includes("/tablero-de-control")) &&
+		(!urlAnterior.startsWith("/revision/tablero-de-entidades")) &&
 		!urlAnterior.includes("/edicion/")
 	)
 		activaSessionCookie("urlSinCaptura", true);

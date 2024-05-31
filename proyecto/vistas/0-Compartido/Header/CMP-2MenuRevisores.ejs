@@ -1,12 +1,12 @@
 <div class="desplMostrar menuMostrar menuFondo ocultar">
 	<% if (usuario.rolUsuario.autTablEnts) { %>
-		<!-- Tablero de Revisión -->
-		<a href="/revision/tablero-de-control" class="menuOpcion">
+		<!-- Tablero de Entidades -->
+		<a href="/revision/tablero-de-entidades" class="menuOpcion">
 			<i class="fa-solid fa-video icono"></i>
-			<span>Tablero de Revisión</span>
+			<span>Tablero de Entidades</span>
 		</a>
 		<!-- Tablero de Mantenimiento -->
-		<a href="/mantenimiento" class="menuOpcion">
+		<a href="/revision/tablero-de-mantenimiento" class="menuOpcion">
 			<i class="fa-solid fa-tools icono"></i>
 			<span>Tablero de Mantenimiento</span>
 		</a>
@@ -15,7 +15,7 @@
 	<% if (usuario.rolUsuario.revisorUs && false) { %>
 		<hr>
 		<!-- Tablero de Usuarios -->
-		<a href="/revision/usuarios/tablero-de-control" class="menuOpcion">
+		<a href="/revision/usuarios/tablero-de-usuarios" class="menuOpcion">
 			<i class="fa-solid fa-user-check icono"></i>
 			<span>Tablero de Usuarios</span>
 		</a>

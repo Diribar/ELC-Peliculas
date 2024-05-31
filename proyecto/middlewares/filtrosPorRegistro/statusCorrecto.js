@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 			: baseUrl == "/revision/usuarios"
 			? "TU"
 			: baseUrl == "/revision"
-			? "TR"
+			? "TE"
 			: baseUrl == "/rclv"
 			? "DTR"
 			: "DTP";

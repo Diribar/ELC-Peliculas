@@ -580,6 +580,36 @@ module.exports = {
 		// Fin
 		return;
 	},
+	linksEnColec: async (colID) => {
+		// Variables
+		const campos = variables.calidadLinks;
+		const condiciones = {coleccion_id: colID, statusRegistro_id: activos_ids};
+
+		// Obtiene los capítulos de la colección
+		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", condiciones)
+			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
+			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
+		if (!capitulos.length) return;
+
+		// Actualiza cada campo de la colección
+		for (let campo of campos) {
+			// Variables
+			const capSinLink = capitulos.find((n) => n[campo] == sinLinks); // busca un capítulo que no tenga link
+			const capTalVez = capitulos.find((n) => n[campo] == linksTalVez);
+			const capConLinks = capitulos.find((n) => n[campo] == conLinks);
+
+			// Obtiene los resultados
+			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null;
+			const capID = capSinLink ? capSinLink.id : null;
+
+			// Actualiza el campo de la colección
+			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: tieneLink});
+			BD_genericas.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[campo]: capID});
+		}
+
+		// Fin
+		return;
+	},
 
 	// RCLVs
 	canonNombre: (rclv) => {
@@ -610,7 +640,7 @@ module.exports = {
 	filtrosConsTemas: async () => {
 		// Variables
 		const condicion = {statusRegistro_id: aprobados_ids, id: {[Op.gt]: 10}};
-		const includes = ["peliculas", "colecciones", "capitulos"];
+		const includes = [...variables.entidades.prods];
 
 		// Obtiene los registros asociados con productos
 		const temas = await BD_genericas.obtieneTodosPorCondicionConInclude("temas", condicion, includes)

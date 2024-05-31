@@ -9,7 +9,7 @@ const procsLinks = require("../2.3-Links/LK-FN-Procesos");
 
 module.exports = {
 	// Tablero
-	tableroControl: async (req, res) => {
+	tableroEntidades: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
@@ -43,14 +43,43 @@ module.exports = {
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
+		const dataEntry = req.session.tableros && req.session.tableros.entidades ? req.session.tableros.entidades : {};
 
 		// Va a la vista
 		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Revisión"},
-			...{prods, rclvs, sigProd, origen: "TR"},
+			...{tema, codigo, titulo: "Tablero de Entidades"},
+			...{prods, rclvs, sigProd, origen: "TE"},
 			...{dataEntry},
+		});
+	},
+	// Tablero de mantenimiento
+	tableroMantenim: async (req, res) => {
+		// Variables
+		const tema = "mantenimiento";
+		const codigo = "tableroControl";
+		const userID = req.session.usuario.id;
+		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
+
+		// Productos
+		let prods = procesos.TM.obtieneProds(userID).then((n) => procesos.procesaCampos.prods(n));
+		let rclvs = procesos.TM.obtieneRCLVs(userID).then((n) => procesos.procesaCampos.rclvs(n));
+		let prodsConLinksInactivos = procesos.TM.obtieneLinksInactivos(userID).then((n) => procesos.procesaCampos.prods(n));
+
+		// RCLVs
+		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
+
+		// Une Productos y Links
+		prods = {...prods, ...prodsConLinksInactivos};
+
+		// Obtiene información para la vista
+		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
+
+		// Va a la vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
+			...{prods, rclvs, omnipotente},
+			dataEntry,
 		});
 	},
 
@@ -60,7 +89,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "producto/alta";
 		const {entidad, id} = req.query;
-		const origen = "TR";
+		const origen = "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -226,7 +255,7 @@ module.exports = {
 
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
-			// Actualiza el status de los capítulos
+			// 1. Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
 				? await procsCRUD.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
@@ -235,9 +264,22 @@ module.exports = {
 						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 				  );
 
-			// Actualiza el campo 'prodAprob' en los links de sus capítulos
+			// 2. Actualiza el campo 'prodAprob' en los links de sus capítulos
 			procesos.guardar.prodAprobEnLink(id, statusFinal_id);
+
+			// 3. Si la colección fue aprobada, actualiza sus status de links
+			if (aprobados_ids.includes(statusFinal_id)) {
+				// Si no existe su registro 'capsSinLink', lo agrega
+				if (!(await BD_genericas.obtienePorCondicion("capsSinLink", {coleccion_id: id})))
+					await BD_genericas.agregaRegistro("capsSinLink", {coleccion_id: id});
+
+				// Actualiza su link
+				comp.linksEnColec(id);
+			}
 		}
+
+		// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
+		if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.rclv.edicAprobRech(entidad, original, revID);
@@ -268,14 +310,14 @@ module.exports = {
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 		if (producto) await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
-		// CONSECUENCIAS - Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
-		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
+		// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
+		if (subcodigo == "recuperar" && entidad != "capitulo" && aprob && original.avatar && original.avatar.includes("/"))
 			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
 		else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
-		else destino = "/revision/tablero-de-control"; // sin origen
+		else destino = "/revision/tablero-de-entidades"; // sin origen
 
 		// Fin
 		return res.redirect(destino);
@@ -291,7 +333,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, edicID} = req.query;
-			const origen = req.query.origen ? req.query.origen : "TR";
+			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -428,7 +470,7 @@ module.exports = {
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
-			else return res.redirect("/revision/tablero-de-control");
+			else return res.redirect("/revision/tablero-de-entidades");
 		},
 		solapam: async (req, res) => {
 			// Variables
@@ -462,7 +504,7 @@ module.exports = {
 			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
 
 			// Fin
-			return res.redirect("/revision/tablero-de-control");
+			return res.redirect("/revision/tablero-de-entidades");
 		},
 	},
 
@@ -473,7 +515,7 @@ module.exports = {
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "TR";
+		const origen = req.query.origen ? req.query.origen : "TE";
 
 		// Configura el título
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -502,7 +544,7 @@ module.exports = {
 
 		// Genera el link del próximo producto
 		const sigProd =
-			origen == "TR"
+			origen == "TE"
 				? req.sigProd // aprovecha el dato disponible
 					? req.sigProd
 					: await procesos.links.obtieneSigProd({entidad, id, revID})

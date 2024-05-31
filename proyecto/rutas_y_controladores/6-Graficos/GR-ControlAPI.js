@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsRutinas = require("../../funciones/3-Rutinas/RT-Control");
+const procsRutinas = require("../../funciones/1-Rutinas/RT-Control");
 
 module.exports = {
 	pelisPublico: async (req, res) => {

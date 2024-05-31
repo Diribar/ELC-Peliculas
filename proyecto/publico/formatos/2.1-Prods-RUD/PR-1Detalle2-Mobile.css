@@ -4,21 +4,21 @@
 	#recuadroDL #contenido {margin: 15px 20px;}
 
 	/* Links */
-	#imgDerecha #links {
-		position: absolute; left: 50%; top: 50%; translate: -50% -50%;
-		flex-direction: column;
-		&.toggle {display: none;}
-
-		/* Accesos */
-		nav {
-			align-items: center; flex-direction: column;
-			:is(a, select) {margin-top: 10px;}
-			& > *:first-child {margin-top: 0;}
-		}
-		&:has(#sinLinks) {
-			width: max-content;
-			padding-block: 5px; text-wrap: balance; text-align: center;
-			background: var(--amarillo-claro); border: 2px solid gray; border-radius: 10px;
+	#imgDerecha {
+		:is(#links, #sectorIconos).toggle {display: none;}
+		#links {
+			position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+			flex-direction: column;
+			nav {
+				align-items: center; flex-direction: column;
+				:is(a, select) {margin-top: 10px;}
+				& > *:first-child {margin-top: 0;}
+			}
+			&:has(#sinLinks) {
+				width: max-content;
+				padding-block: 5px; text-wrap: balance; text-align: center;
+				background: var(--amarillo-claro); border: 2px solid gray; border-radius: 10px;
+			}
 		}
 	}
 }

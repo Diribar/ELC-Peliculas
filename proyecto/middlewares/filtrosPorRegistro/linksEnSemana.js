@@ -4,7 +4,6 @@ const procesos = require("../../rutas_y_controladores/3-Rev-Entidades/RE-Proceso
 module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id} = req.query;
-	const origen = req.query.origen ? req.query.origen : "TR";
 	const revID = req.session.usuario.id;
 	delete req.sigProd;
 
@@ -12,7 +11,7 @@ module.exports = async (req, res, next) => {
 	let sigProd = await procesos.links.obtieneSigProd({revID});
 
 	// Si no hay ninguno, termina y redirige
-	if (!sigProd) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TR");
+	if (!sigProd) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE");
 
 	// Acciones si es distinto
 	if (entidad != sigProd.entidad || id != sigProd.id) {
@@ -22,7 +21,7 @@ module.exports = async (req, res, next) => {
 
 		// Si tampoco es el siguiente, termina y redirige
 		if (!sigProd || entidad != sigProd.entidad || id != sigProd.id)
-			return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TR");
+			return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE");
 	}
 
 	// Fin
