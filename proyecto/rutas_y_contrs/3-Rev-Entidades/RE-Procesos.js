@@ -536,32 +536,6 @@ module.exports = {
 				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},
-		actualizaDiasDelAno: async ({desde, duracion, id}) => {
-			// Obtiene el/los rangos
-			const condicion = BD_especificas.condicsDDA({desde, duracion});
-
-			// Se fija si en ese rango hay alguna epocaOcurrencia distinta a '1' y el ID actual
-			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("fechasDelAno", condicion)
-				.then((n) => n.filter((m) => m.epocaDelAno_id != 1 && m.epocaDelAno_id != id))
-				.then((n) => n.map((n) => n.epocaDelAno_id))
-				.then((n) => [...new Set(n)]);
-
-			// En caso afirmativo, activa 'solapamiento' para esas epocasDelAno
-			if (IDs_solapam.length) await BD_especificas.activaSolapam(IDs_solapam);
-
-			// Limpia la tabla 'fechasDelAno' del registro 'epocaDelAno_id'
-			await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {epocaDelAno_id: id}, {epocaDelAno_id: 1});
-
-			// Actualiza la tabla 'fechasDelAno' con la 'epocaDelAno_id'
-			const datos = {epocaDelAno_id: id};
-			await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", condicion, datos);
-
-			// Actualiza la variable 'fechasDelAno'
-			fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
-
-			// Fin
-			return;
-		},
 		prodsAsocs: async (entidad, id) => {
 			// Variables
 			const entidadesProd = variables.entidades.prods;
