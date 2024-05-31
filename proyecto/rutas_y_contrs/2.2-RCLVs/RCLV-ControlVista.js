@@ -220,11 +220,26 @@ module.exports = {
 
 			// Si se agregó un registro, agrega el id del rclv en 'session'
 			if (codigo == "/rclv/agregar/") {
+				// Si el origen es "Datos Adicionales", actualiza su session y cookies
 				if (origen == "DA") {
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 				}
+				// Si el origen es "Edición de Producto", crea o actualiza la edición
 				if (origen == "EDP") {
+					// Obtiene el registro original del producto, y su edición ya creada (si existe)
+					let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+						entidad: prodEntidad,
+						entID: prodID,
+						userID,
+						excluirInclude: true,
+					});
+
+					// Actualiza la edición
+					prodEdic = {...prodEdic, [campo_id]: original.id};
+
+					// Crea o actualiza la edición
+					await procsCRUD.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userID});
 				}
 			}
 
