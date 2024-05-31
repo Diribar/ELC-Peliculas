@@ -157,6 +157,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "DTR";
 			const codigo = req.baseUrl + req.path;
 			const userID = req.session.usuario.id;
@@ -179,7 +180,6 @@ module.exports = {
 			// Acciones si el usuario elimina la edición
 			if (eliminarEdic) {
 				// Variables
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				const condiciones = {[campo_id]: id, editadoPor_id: userID};
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
@@ -217,6 +217,12 @@ module.exports = {
 			// Obtiene el dataEntry y guarda los cambios
 			const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
 			const {original, edicion} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
+
+			// Si se agregó un registro, agrega el id del rclv en 'session'
+			if (codigo == "/rclv/agregar/") {
+				if (origen == "DA") req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
+				// if (origen=="EDP")
+			}
 
 			// Acciones si recibimos un avatar
 			if (req.file) {
