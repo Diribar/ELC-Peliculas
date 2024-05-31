@@ -66,7 +66,7 @@
 		}
 	}
 
-	#imgDerecha img {max-height: calc(var(--altoCuerpo) - var(--altoTituloPrincipal) * 2);}
+	#imgDerecha img {max-height: var(--altoCuerpo);}
 
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {
