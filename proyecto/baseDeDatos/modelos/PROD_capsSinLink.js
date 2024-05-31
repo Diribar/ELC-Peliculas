@@ -2,6 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "capsSinLink";
 	const columns = {
 		coleccion_id: {type: dt.INTEGER},
+
 		linksTrailer: {type: dt.INTEGER},
 
 		linksGral: {type: dt.INTEGER},

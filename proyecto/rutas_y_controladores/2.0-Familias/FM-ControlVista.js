@@ -109,7 +109,7 @@ module.exports = {
 	inacRecupGuardar: async (req, res) => {
 		//  iniciales
 		let datos = await obtieneDatos(req);
-		const {entidad, id, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id}=datos
+		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
 
 		// Acciones con comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
@@ -128,28 +128,6 @@ module.exports = {
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// CONSECUENCIAS - Actualiza en los links el campo 'prodAprob'
-		const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
-		comp.prodAprobEnLink(links);
-
-		// CONSECUENCIAS - Acciones si es una colección
-		if (entidad == "colecciones") {
-			// Actualiza sus capítulos con el mismo status
-			await BD_genericas.actualizaTodosPorCondicion(
-				"capitulos",
-				{coleccion_id: id},
-				{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
-			);
-
-			// Actualiza en los links el campo 'prodAprob'
-			const ids = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: id}).then((n) =>
-				n.map((m) => m.id)
-			);
-			const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo");
-			comp.prodAprobEnLink(links);
-		}
-
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
 			...{entidad, entidad_id: id}, // entidad
@@ -161,9 +139,38 @@ module.exports = {
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
-		// CONSECUENCIAS - Actualiza los RCLV, en el campo 'prodsAprob'
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		if (familia == "producto") procesos.accionesPorCambioDeStatus(entidad, original);
+		// CONSECUENCIAS - Acciones si es un producto
+		if (familia == "producto") {
+			// 1. Actualiza en los links el campo 'prodAprob'
+			const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
+			const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
+			comp.prodAprobEnLink(links);
+
+			// 2. Acciones si es una colección
+			if (entidad == "colecciones") {
+				// 2.1. Actualiza sus capítulos con el mismo status
+				await BD_genericas.actualizaTodosPorCondicion(
+					"capitulos",
+					{coleccion_id: id},
+					{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
+				);
+
+				// 2.2. Actualiza en los links de sus capítulos el campo 'prodAprob'
+				BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
+					.then((n) => n.map((m) => m.id))
+					.then((ids) =>
+						BD_genericas.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo").then((links) =>
+							comp.prodAprobEnLink(links)
+						)
+					);
+			}
+
+			// 3. Si es un capítulo, actualiza el status de link de su colección
+			if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
+
+			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
+			procesos.accionesPorCambioDeStatus(entidad, original);
+		}
 
 		// Fin
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
@@ -255,6 +262,7 @@ module.exports = {
 };
 let obtieneDatos = async (req) => {
 	const {entidad, id, motivo_id} = {...req.query, ...req.body};
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const {ruta} = comp.reqBasePathUrl(req);
 	const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 	const userID = req.session.usuario.id;
@@ -265,5 +273,5 @@ let obtieneDatos = async (req) => {
 	const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 	// Fin
-	return {entidad, id, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
+	return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
 };
