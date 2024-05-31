@@ -770,7 +770,7 @@ window.addEventListener("load", async () => {
 		if (campo == "nombre" || campo == "nombreAltern" || campo.startsWith("comentario")) {
 			// Variables
 			const largoMaximo =
-				campo == "nombreAltern" || (campo == "nombre" && entidad != "eventos")
+				campo == "nombreAltern" || (campo == "nombre" && !["hechos", "eventos"].includes(entidad))
 					? 35
 					: campo == "nombre"
 					? 45
