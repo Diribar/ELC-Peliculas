@@ -218,9 +218,9 @@ module.exports = {
 			const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
 			const {original, edicion} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
-			// Si se agregó un registro, agrega el id del rclv en 'session'
+			// Acciones si se agregó un registro 'rclv'
 			if (codigo == "/rclv/agregar/") {
-				// Si el origen es "Datos Adicionales", actualiza su session y cookies
+				// Si el origen es "Datos Adicionales", actualiza su session y cookie
 				if (origen == "DA") {
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
