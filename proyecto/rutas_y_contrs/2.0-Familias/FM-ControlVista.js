@@ -198,11 +198,9 @@ module.exports = {
 			// Borra el vínculo en los productos y les cambia el status si corresponde
 			espera.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
-			// Borra el vínculo en los fechasDelAno y actualiza la variable
-			if (entidad == "epocasDelAno") {
+			// Borra el vínculo en los fechasDelAno
+			if (entidad == "epocasDelAno")
 				await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
-				fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
-			}
 		}
 
 		// Elimina el registro
@@ -213,7 +211,10 @@ module.exports = {
 		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
-		// Guarda la información para la próxima vista
+		// Actualiza solapamiento y la variable 'fechasDelAno'
+		if (entidad == "epocasDelAno") comp.actualizaSolapam();
+
+		// Guarda la información para la próxima vista durante 5 segundos
 		const nombre = comp.nombresPosibles(original);
 		let objeto = {entidad, nombre};
 		if (origen) objeto.origen = origen;
