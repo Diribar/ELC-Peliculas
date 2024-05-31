@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 30/may",
-	"HoraUTC": "10:37",
+	"FechaUTC": "Vie. 31/may",
+	"HoraUTC": "16:42",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 27/may",
@@ -42,10 +42,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-may-24": {"leyenda": "Hoy recordamos Esteban Wyszynski", "entidad": "personajes", "id": 142},
 		"29-may-24": {"leyenda": "Hoy recordamos al papa Pablo VI, santo", "entidad": "personajes", "id": 55},
 		"30-may-24": {"leyenda": "Hoy recordamos Juana de Arco", "entidad": "personajes", "id": 71},
 		"31-may-24": {},
-		"01-jun-24": {}
+		"01-jun-24": {},
+		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25}
 	}
 }
