@@ -203,10 +203,8 @@ module.exports = {
 						comp.gestionArchivos.copiaImagen("3-RCLVs/Final" + datos.avatar, archivoAvatar);
 					}
 
-					// Actualiza los fechasDelAno
-					const desde = datos.fechaDelAno_id;
-					const duracion = parseInt(datos.diasDeDuracion) - 1;
-					await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
+					// Actualiza el solapamiento
+					comp.actualizaSolapam();
 				}
 			}
 
@@ -499,7 +497,7 @@ module.exports = {
 			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
-			comp.actualizaSolapam()
+			comp.actualizaSolapam();
 
 			// Fin
 			return res.redirect("/revision/tablero-de-entidades");
