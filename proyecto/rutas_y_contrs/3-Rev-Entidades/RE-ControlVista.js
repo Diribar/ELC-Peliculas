@@ -494,14 +494,12 @@ module.exports = {
 			datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 			for (let prop in datos) if (datos[prop] === null) delete datos[prop];
 
-			// Actualiza los fechasDelAno
-			const desde = datos.fechaDelAno_id;
-			const duracion = parseInt(datos.diasDeDuracion) - 1;
-			await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
-
 			// Actualiza el registro original
-			datos = {...datos, solapamiento: false, editadoPor_id: revID, editadoEn: ahora};
+			datos = {...datos, editadoPor_id: revID, editadoEn: ahora};
 			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
+
+			// Actualiza el solapamiento
+			comp.actualizaSolapam()
 
 			// Fin
 			return res.redirect("/revision/tablero-de-entidades");
