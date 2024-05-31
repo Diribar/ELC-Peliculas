@@ -243,7 +243,7 @@ let nombreApodo = async ({datos, campo}) => {
 
 		// Prefijo y longitud
 		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato, campo);
-		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, entidad == "eventos" ? 45 : 35);
+		if (!mensaje) mensaje = comp.validacs.longitud(dato, 3, ["hechos", "eventos"].includes(entidad) ? 45 : 35);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && campo == "nombre" && ama == 1 && !dato.startsWith(apMar))

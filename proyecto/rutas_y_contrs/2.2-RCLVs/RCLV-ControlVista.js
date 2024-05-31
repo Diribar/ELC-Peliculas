@@ -157,6 +157,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "DTR";
 			const codigo = req.baseUrl + req.path;
 			const userID = req.session.usuario.id;
@@ -179,7 +180,6 @@ module.exports = {
 			// Acciones si el usuario elimina la edición
 			if (eliminarEdic) {
 				// Variables
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				const condiciones = {[campo_id]: id, editadoPor_id: userID};
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
@@ -217,6 +217,31 @@ module.exports = {
 			// Obtiene el dataEntry y guarda los cambios
 			const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
 			const {original, edicion} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
+
+			// Acciones si se agregó un registro 'rclv'
+			if (codigo == "/rclv/agregar/") {
+				// Si el origen es "Datos Adicionales", actualiza su session y cookie
+				if (origen == "DA") {
+					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
+					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
+				}
+				// Si el origen es "Edición de Producto", crea o actualiza la edición
+				if (origen == "EDP") {
+					// Obtiene el registro original del producto, y su edición ya creada (si existe)
+					let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+						entidad: prodEntidad,
+						entID: prodID,
+						userID,
+						excluirInclude: true,
+					});
+
+					// Actualiza la edición
+					prodEdic = {...prodEdic, [campo_id]: original.id};
+
+					// Crea o actualiza la edición
+					await procsCRUD.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userID});
+				}
+			}
 
 			// Acciones si recibimos un avatar
 			if (req.file) {
