@@ -198,9 +198,11 @@ module.exports = {
 			// Borra el vínculo en los productos y les cambia el status si corresponde
 			espera.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
-			// Borra el vínculo en los fechasDelAno
-			if (entidad == "epocasDelAno")
-				espera.push(BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+			// Borra el vínculo en los fechasDelAno y actualiza la variable
+			if (entidad == "epocasDelAno") {
+				await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
+				fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
+			}
 		}
 
 		// Elimina el registro
