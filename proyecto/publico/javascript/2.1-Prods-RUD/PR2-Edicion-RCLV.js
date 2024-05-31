@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		linksAlta: document.querySelectorAll(".inputError i.linkRCLV#alta"),
 		linksEdicion: document.querySelectorAll(".inputError i.linkRCLV#edicion"),
 		inputsRCLV: document.querySelectorAll(".inputError .input.RCLV"),
-		
+
 		// Otras
 		inputs: document.querySelectorAll(".inputError .input"),
 	};
@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	// Variables para el ruteo del origen
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodID = new URL(location.href).searchParams.get("id");
-	const paramsOrigen = "&origen=EDP&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodID=" + prodID + "&origen=EDP";
 
 	// Variables para guardar los datos
 	const rutaRQ = "/producto/api/envia-a-req-session/";
