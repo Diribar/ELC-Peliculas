@@ -220,8 +220,12 @@ module.exports = {
 
 			// Si se agregó un registro, agrega el id del rclv en 'session'
 			if (codigo == "/rclv/agregar/") {
-				if (origen == "DA") req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
-				// if (origen=="EDP")
+				if (origen == "DA") {
+					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
+					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
+				}
+				if (origen == "EDP") {
+				}
 			}
 
 			// Acciones si recibimos un avatar
