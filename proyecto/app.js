@@ -265,20 +265,20 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Urls que dependen de la variable 'global'
-	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias/FM-Rutas");
+	const rutaCRUD = require("./rutas_y_contrs/2.0-Familias/FM-Rutas");
 	app.use("/", rutaCRUD);
-	app.use("/producto/agregar", require("./rutas_y_controladores/2.1-Prods-Agregar/PA-Rutas"));
-	app.use("/producto", require("./rutas_y_controladores/2.1-Prods-RUD/PR-Rutas"));
-	app.use("/rclv", require("./rutas_y_controladores/2.2-RCLVs/RCLV-Rutas"));
-	app.use("/links", require("./rutas_y_controladores/2.3-Links/LK-Rutas"));
-	app.use("/usuarios", require("./rutas_y_controladores/1.1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_controladores/1.2-Rev-Usuarios/RU-Rutas"));
-	app.use("/revision", require("./rutas_y_controladores/3-Rev-Entidades/RE-Rutas"));
+	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
+	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
+	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas"));
+	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-Rutas"));
+	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
+	app.use("/revision/usuarios", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
+	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", rutaCRUD); // Para vistas compartidas con CRUD
-	app.use("/consultas", require("./rutas_y_controladores/5-Consultas/CN-Rutas"));
-	app.use("/institucional", require("./rutas_y_controladores/7-Institucional/IN-Rutas"));
-	app.use("/graficos", require("./rutas_y_controladores/6-Graficos/GR-Rutas"));
-	app.use("/", require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas"));
+	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
+	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
+	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
+	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlDesconocida")); // Si no se reconoce el url - se debe informar después de los urls anteriores

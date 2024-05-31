@@ -1,5 +1,5 @@
 "use strict";
-const procesos = require("../../rutas_y_controladores/3-Rev-Entidades/RE-Procesos");
+const procesos = require("../../rutas_y_contrs/3-Rev-Entidades/RE-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables

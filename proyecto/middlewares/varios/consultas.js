@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procesos = require("../../rutas_y_controladores/5-Consultas/CN-Procesos");
+const procesos = require("../../rutas_y_contrs/5-Consultas/CN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
