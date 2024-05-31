@@ -260,6 +260,9 @@ module.exports = {
 				}
 			}
 
+			// Si corresponde, actualiza el solapamiento
+			if (entidad == "epocasDelAno") comp.actualizaSolapam();
+
 			// Obtiene el url de la siguiente instancia
 			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
 			if (origen == "EDP" || origen == "DTP") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;

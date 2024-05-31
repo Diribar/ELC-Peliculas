@@ -156,26 +156,6 @@ module.exports = {
 		// Fin
 		return db[entidad].update(objeto, {where: condicion});
 	},
-	// Revisar fechasDelAno
-	condicsDDA: ({desde, duracion}) => {
-		// Primera Condicion
-		let condicion = {id: {[Op.between]: [desde, Math.min(desde + duracion, 366)]}};
-
-		// Si es necesario, segunda condición
-		if (desde + duracion > 366)
-			condicion = {[Op.or]: [condicion, {id: {[Op.between]: [1, Math.min(desde + duracion - 366)]}}]};
-
-		// Fin
-		return condicion;
-	},
-	activaSolapam: (IDs_solapam) => {
-		// Variables
-		const datos = {solapamiento: true};
-		const condicion = {id: IDs_solapam};
-
-		// Fin
-		return db.epocasDelAno.update(datos, {where: condicion});
-	},
 
 	// Otros
 	MT_obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {

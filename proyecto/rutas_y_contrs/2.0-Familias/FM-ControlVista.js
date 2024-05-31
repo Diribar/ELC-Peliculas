@@ -200,7 +200,7 @@ module.exports = {
 
 			// Borra el vínculo en los fechasDelAno
 			if (entidad == "epocasDelAno")
-				espera.push(BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+				await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
 		}
 
 		// Elimina el registro
@@ -211,7 +211,10 @@ module.exports = {
 		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
-		// Guarda la información para la próxima vista
+		// Actualiza solapamiento y la variable 'fechasDelAno'
+		if (entidad == "epocasDelAno") comp.actualizaSolapam();
+
+		// Guarda la información para la próxima vista durante 5 segundos
 		const nombre = comp.nombresPosibles(original);
 		let objeto = {entidad, nombre};
 		if (origen) objeto.origen = origen;

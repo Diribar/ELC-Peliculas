@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		marcoCalendario: document.querySelector("form #calendario"),
 		tablaCalendario: document.querySelector("form #calendario table"),
 	};
-	let varios = {
+	let v = {
 		// Campos por sector
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 
@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 	};
-	let rutas = {validacion: "/rclv/api/valida-sector/?funcion="};
+	let rutas = {validacion: "/rclv/api/edicion/valida-sector/?funcion="};
 
 	// -------------------------------------------------------
 	// Funciones
@@ -160,11 +160,11 @@ window.addEventListener("load", async () => {
 				if (!diasDeDuracion || diasDeDuracion < 2 || diasDeDuracion > 366) return;
 
 				// Obtiene la fecha de inicio
-				const mes = varios.meses[mes_id - 1];
+				const mes = v.meses[mes_id - 1];
 				const fechaInicio = dia + "/" + mes;
 
 				// Obtiene los ID de inicio y de fin
-				const idInicio = varios.fechasDelAno.indexOf(fechaInicio);
+				const idInicio = v.fechasDelAno.indexOf(fechaInicio);
 				if (idInicio < 0) return;
 				let idFin = idInicio + diasDeDuracion - 1;
 				if (idFin > 365) idFin -= 366;
@@ -203,40 +203,36 @@ window.addEventListener("load", async () => {
 				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 				// Averigua si hay un error con la fecha
-				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
-			} else varios.errores.fecha = "";
+				v.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
+			} else v.errores.fecha = "";
 
 			// OK vigencia
-			varios.OK.fecha = !varios.errores.fecha;
+			v.OK.fecha = !v.errores.fecha;
 
 			// Fin
 			return;
 		},
 		muestraErroresOK: () => {
-			for (let i = 0; i < varios.camposError.length; i++) {
+			for (let i = 0; i < v.camposError.length; i++) {
 				// Íconos de OK
-				varios.OK[varios.camposError[i]]
-					? DOM.iconosOK[i].classList.remove("ocultar")
-					: DOM.iconosOK[i].classList.add("ocultar");
+				v.OK[v.camposError[i]] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
 
 				// Íconos de error
-				varios.errores[varios.camposError[i]]
+				v.errores[v.camposError[i]]
 					? DOM.iconosError[i].classList.remove("ocultar")
 					: DOM.iconosError[i].classList.add("ocultar");
 
 				// Mensaje de error
-				DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]]
-					? varios.errores[varios.camposError[i]]
-					: "";
+				DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
 			}
 		},
 		botonSubmit: () => {
 			// Variables
-			let resultado = Object.values(varios.OK);
+			let resultado = Object.values(v.OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
 
 			// Activa/Inactiva
-			resultadosTrue && resultado.length == varios.camposError.length
+			resultadosTrue && resultado.length == v.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
 
@@ -248,11 +244,11 @@ window.addEventListener("load", async () => {
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
 		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && varios.errores.fecha == undefined)) {
+		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && v.errores.fecha == undefined)) {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
-			if (varios.OK.fecha) impactos.fecha.epocasDelAno();
+			if (v.OK.fecha) impactos.fecha.epocasDelAno();
 		}
 
 		// Fin

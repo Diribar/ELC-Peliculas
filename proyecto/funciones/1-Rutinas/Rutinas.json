@@ -13,7 +13,7 @@
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
 	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "ProdsEnRCLV", "FeedbackParaUsers", "ProductosAlAzar"],
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
-	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
+	"MotivoDiarias2": "Limpieza de información que alcanza o se necesita que sea diaria",
 	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
@@ -28,7 +28,8 @@
 		"EliminaHistorialDeRegsEliminados": "SI",
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
-		"LinksEnColes": "SI"
+		"LinksEnColes": "SI",
+		"ActualizaSolapam": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
