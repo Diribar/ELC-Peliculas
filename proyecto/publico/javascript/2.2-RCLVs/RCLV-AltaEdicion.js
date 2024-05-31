@@ -265,7 +265,7 @@ window.addEventListener("load", async () => {
 					// Obtiene los ID de inicio y de fin
 					const idInicio = v.fechasDelAno.indexOf(fechaInicio);
 					if (idInicio < 0) return;
-					let idFin = idInicio + diasDeDuracion - 1;
+					let idFin = idInicio + diasDeDuracion - 1; // resta uno para contar bien
 					if (idFin > 365) idFin -= 366;
 
 					// Actualiza el color de todos los días del año
@@ -273,7 +273,8 @@ window.addEventListener("load", async () => {
 						let ninguno = DOM.dias_del_ano_RCLV[i].innerHTML == "Ninguno";
 						let siMismo = DOM.dias_del_ano_RCLV[i].innerHTML == DOM.nombre.value;
 						let color =
-							(idInicio < idFin && (i < idInicio || i > idFin)) || (idFin < i && i < idInicio)
+							(idInicio < idFin && (i < idInicio || i > idFin)) || // el evento ocurre todo en el mismo año, e 'i' está fuera del rango
+							(idFin < i && i < idInicio) // ocurre en más de un año, e 'i' está fuera del rango
 								? "white"
 								: "var(--" + (ninguno || siMismo ? "verde" : "rojo") + "-claro)";
 						DOM.dias_del_ano_Fila[i].style = "background:" + color;
@@ -439,7 +440,7 @@ window.addEventListener("load", async () => {
 				const ancho = opcionElegida.innerText.length;
 
 				// Ajusta el ancho del select
-				DOM[sector].style.width = 8 * 2 + ancho * 6 + "px";
+				DOM[sector].style.width = 9 * 2 + ancho * 6 + "px";
 			},
 		},
 		validacs: {
@@ -909,8 +910,7 @@ window.addEventListener("load", async () => {
 
 		// sector leyenda
 		if (["hoyEstamos_id", "leyNombre"].includes(campo)) {
-			if (campo == "hoyEstamos_id") FN.impactos.ancho("hoyEstamos_id");
-			if (campo == "leyNombre") FN.impactos.ancho("leyNombre");
+			FN.impactos.ancho(campo);
 			await FN.validacs.leyenda();
 		}
 
