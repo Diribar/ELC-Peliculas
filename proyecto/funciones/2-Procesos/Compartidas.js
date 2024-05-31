@@ -716,8 +716,8 @@ module.exports = {
 
 				// Se fija si la 'fechaDelAno' tiene un valor trivial para 'epocaDelAno_id'
 				const indice = epocaDelAno.fechaDelAno_id - 1 + i - restar;
-				fechaDelAno[indice].epocaDelAno_id == 1
-					? (fechaDelAno[indice].epocaDelAno_id = epocaDelAno.id) // en caso positivo le asigna el id de la epocaDelAno
+				fechasDelAno[indice].epocaDelAno_id == 1
+					? (fechasDelAno[indice].epocaDelAno_id = epocaDelAno.id) // en caso positivo le asigna el id de la epocaDelAno
 					: (epocaDelAno.solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
 			}
 
