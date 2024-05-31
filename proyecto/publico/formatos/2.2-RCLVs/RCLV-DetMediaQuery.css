@@ -23,6 +23,7 @@
 			margin-inline: clamp(0px, calc(50% - var(--anchoBoton) / 2), 15px); /* oscila entre 0px y 15px */
 		}
 	}
+	#imgDerecha img {max-height: calc(var(--altoCuerpo) - var(--altoTituloPrincipal) * 2);}
 }
 
 /* Acostado */
