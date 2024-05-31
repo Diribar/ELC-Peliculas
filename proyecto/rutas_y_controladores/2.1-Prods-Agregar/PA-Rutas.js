@@ -11,7 +11,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const circuitoProdAgregar = require("../../middlewares/varios/circuitoProdAgregar");
 const usAutorizFA = require("../../middlewares/filtrosPorUsuario/usAutorizFA");
 
-// Middlewares - Específicos de entidades
+// Middlewares - Específicos del registro
 const prodYaEnBD = require("../../middlewares/filtrosPorRegistro/prodYaEnBD");
 
 // Middlewares - Otros

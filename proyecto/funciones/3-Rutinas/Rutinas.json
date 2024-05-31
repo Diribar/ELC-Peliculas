@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 28/may",
-	"HoraUTC": "6:30",
+	"FechaUTC": "Mié. 29/may",
+	"HoraUTC": "11:30",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 27/may",
@@ -41,10 +41,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-may-24": {"leyenda": "Hoy es Fiesta de la Santísima Trinidad", "entidad": "eventos", "id": 24},
 		"27-may-24": {},
 		"28-may-24": {"leyenda": "Hoy recordamos Esteban Wyszynski", "entidad": "personajes", "id": 142},
 		"29-may-24": {"leyenda": "Hoy recordamos al papa Pablo VI, santo", "entidad": "personajes", "id": 55},
-		"30-may-24": {"leyenda": "Hoy recordamos Juana de Arco", "entidad": "personajes", "id": 71}
+		"30-may-24": {"leyenda": "Hoy recordamos Juana de Arco", "entidad": "personajes", "id": 71},
+		"31-may-24": {}
 	}
 }
