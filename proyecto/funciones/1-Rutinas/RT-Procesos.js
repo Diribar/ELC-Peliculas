@@ -775,7 +775,8 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 	// Obtiene los RCLV de las primeras cuatro entidades
 	for (let entidad of variables.entidades.rclvs) {
 		// Si corresponde, saltea la rutina
-		if (entidad == "epocasDelAno" && (fechaDelAno.epocaDelAno_id == 1 || fechaDelAno.ano != anoHoy)) continue;
+		if (entidad == "epocasDelAno" && (fechaDelAno.epocaDelAno_id == 1 || (fechaDelAno.ano && fechaDelAno.ano != anoHoy)))
+			continue;
 
 		// Condicion
 		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
