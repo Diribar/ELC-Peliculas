@@ -116,9 +116,9 @@ module.exports = {
 	},
 	diaMesAno: (fecha) => {
 		fecha = new Date(fecha);
-		let dia = ("0" + fecha.getDate()).slice(-2);
-		let mes = mesesAbrev[fecha.getMonth()];
-		let ano = fecha.getFullYear().toString().slice(-2);
+		const dia = ("0" + fecha.getDate()).slice(-2);
+		const mes = mesesAbrev[fecha.getMonth()];
+		const ano = fecha.getFullYear().toString().slice(-2);
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
