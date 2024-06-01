@@ -638,10 +638,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ActualizaSolapam: async () => {
-			await comp.actualizaSolapam();
-			return;
-		},
+		ActualizaSolapam: async () => await comp.actualizaSolapam(),
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
