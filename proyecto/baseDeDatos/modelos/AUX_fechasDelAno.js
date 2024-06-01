@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		mes_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(6)},
 		epocaDelAno_id: {type: dt.INTEGER},
-		ano: {type: dt.INTEGER},
+		anoFM: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "aux_fechas_del_ano",
