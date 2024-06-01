@@ -96,11 +96,11 @@ module.exports = {
 		// Variables
 		const fecha = new Date(fechaNum);
 
-		// Obtiene el 'fechaDelAno_id'
+		// Obtiene la 'fechaDelAno_id'
 		const dia = fecha.getDate();
 		const mes_id = fecha.getMonth() + 1;
 		const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
-		delete fechaDelAno.epocaDelAno;
+		delete fechaDelAno.epocaDelAno; // quita el include
 
 		// Obtiene los RCLV
 		const rclvs = await obtieneLosRCLV(fechaDelAno);
@@ -774,14 +774,12 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 
 	// Obtiene los RCLV de las primeras cuatro entidades
 	for (let entidad of variables.entidades.rclvs) {
-		// Condicion estándar: RCLVs en status aprobado y con avatar
-		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
+		// Si corresponde, saltea la rutina
+		if (entidad == "epocasDelAno" && (fechaDelAno.epocaDelAno_id == 1 || fechaDelAno.ano != anoHoy)) continue;
 
-		// Condición personalizada: fecha del año del día y que no sea "ninguno"
-		condicion =
-			entidad != "epocasDelAno"
-				? {...condicion, fechaDelAno_id: fechaDelAno.id}
-				: {...condicion, id: {[Op.and]: [fechaDelAno.epocaDelAno_id, {[Op.ne]: 1}]}};
+		// Condicion
+		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
+		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
 		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
