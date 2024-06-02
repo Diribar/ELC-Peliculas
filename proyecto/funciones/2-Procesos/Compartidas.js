@@ -708,7 +708,7 @@ module.exports = {
 		// Obtiene tablas
 		let epocasDelAno = BD_genericas.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
 		let fechasDelAno = BD_genericas.obtieneTodos("fechasDelAno");
-		await Promise.all([epocasDelAno, fechasDelAno]);
+		[epocasDelAno, fechasDelAno] = await Promise.all([epocasDelAno, fechasDelAno]);
 
 		// Rutina para cada registro de epocaDelAno
 		for (let epocaDelAno of epocasDelAno) {
@@ -729,7 +729,7 @@ module.exports = {
 					: (solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
 			}
 
-			// Si la epocaDelAno tiene solapamiento, lo actualiza en la tabla
+			// Si corresponde, actualiza el solapamiento en la tabla
 			if (solapamiento) BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true});
 
 			// Actualiza la tabla 'fechasDelAno'
