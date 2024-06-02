@@ -1,7 +1,7 @@
 <% const detalle = (["prodRud", "rclvCrud"].includes(tema)) && codigo == "detalle" %>
 <% const terminaste = tema == "prodAgregar" && locals.id %>
 <% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
-<% const ao = comp.obtieneDesdeEntidad.ao(locals.entidad) %>
+<% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
 <div id="estandar" class="iconos">
@@ -30,7 +30,7 @@
 					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 				</a>
 				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>">
-					<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+ ao +' calificaste' : 'Califical'+ao %>"></i>
+					<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+ oa +' calificaste' : 'Califical' + oa %>"></i>
 				</a>
 			<% } %>
 		<% } else { %>
