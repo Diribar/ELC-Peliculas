@@ -301,6 +301,7 @@ module.exports = {
 		},
 	},
 	rutinasDiarias: {
+		ActualizaSolapam: async () => await comp.actualizaSolapam(),
 		ImagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
@@ -638,7 +639,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ActualizaSolapam: async () => await comp.actualizaSolapam(),
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
