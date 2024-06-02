@@ -82,9 +82,8 @@ module.exports = {
 				? " el "
 				: "";
 		},
-		oa: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o";
-		},
+		oa: (entidad) => ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o",
+		ea: (entidad) => ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e",
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
 				? "pelicula_id"
