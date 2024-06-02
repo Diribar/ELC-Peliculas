@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Dom. 2/jun",
-	"HoraUTC": "12:43",
+	"HoraUTC": "12:56",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 27/may",
@@ -44,7 +44,7 @@
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"31-may-24": {},
-		"01-jun-24": {"leyenda": "Hoy recordamos la Ascensión de Nuestro Señor", "entidad": "hechos", "id": 67},
+		"01-jun-24": {},
 		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25},
 		"03-jun-24": {},
 		"04-jun-24": {}
