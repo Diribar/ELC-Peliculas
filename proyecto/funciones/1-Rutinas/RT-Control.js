@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.LinksEnColes()
+		// await this.rutinasDiarias.ActualizaSolapam()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
