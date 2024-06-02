@@ -173,11 +173,11 @@ window.addEventListener("load", async () => {
 				for (let i = 0; i < DOM.dias_del_ano_Fila.length; i++) {
 					let ninguno = DOM.dias_del_ano_RCLV[i].innerHTML == "Ninguno";
 					let siMismo = DOM.dias_del_ano_RCLV[i].innerHTML == DOM.nombre.innerHTML;
-					let background =
+					let colores =
 						(idInicio < idFin && (i < idInicio || i > idFin)) || (idFin < i && i < idInicio)
 							? "snow"
 							: "var(--" + (ninguno || siMismo ? "verde-claro)" : "rojo-oscuro); color: snow") + "";
-					DOM.dias_del_ano_Fila[i].style = "background: " + background;
+					DOM.dias_del_ano_Fila[i].style = "background: " + colores;
 				}
 
 				// Centra el día 'desde'
