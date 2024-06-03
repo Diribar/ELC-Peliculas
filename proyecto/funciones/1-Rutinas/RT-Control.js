@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.ActualizaSolapam()
+		// await this.rutinasHorarias.FeedbackParaUsers();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -214,13 +214,12 @@ module.exports = {
 
 			// Si no hay registros a comunicar, termina el proceso
 			if (!regsTodos.length) {
-				console.log("Sin mails para enviar");
-				// procesos.finRutinasHorarias("FeedbackParaUsers");
+				procesos.finRutinasHorarias("FeedbackParaUsers");
 				return;
 			}
 
 			// Variables
-			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
+			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
 			const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 			const asunto = "Resultado de las sugerencias realizadas";
 			const ahora = new Date();
@@ -233,18 +232,18 @@ module.exports = {
 				// Si para el usuario no son las 0hs, lo saltea
 				const zonaHoraria = usuario.pais.zonaHoraria;
 				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-				if (new Date(ahoraUsuario).getUTCHours()) continue;
+				// if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
 				const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
 				const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
 				const horaUsuario = ahora.getUTCHours();
 				const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
-				if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
+				// if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
 
 				// Variables
 				const email = usuario.email;
-				const regsStatus_user = regsStatus.filter((n) => n.sugeridoPor_id == usuario.id);
+				const regsStatus_user = regsStatus.filter((n) => n.statusOriginalPor_id == usuario.id);
 				const regsEdic_user = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
 				let cuerpoMail = "";
 
@@ -258,6 +257,7 @@ module.exports = {
 						.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 						.then((n) => {
 							// Acciones si el mail fue enviado
+							return
 							if (n) {
 								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
 								if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
