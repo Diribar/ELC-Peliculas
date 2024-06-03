@@ -533,12 +533,12 @@ module.exports = {
 			// Elimina los registros o completa el campo 'comunicadoEn'
 			for (let reg of regs) {
 				// Variables
-				const condicOK = condiciones.some(
+				const eliminar = condiciones.some(
 					(n) => n.statusOrig_id == reg.statusOrig_id && n.statusFinal_id == reg.statusFinal_id
 				);
 
 				// Elimina los registros
-				if (condicOK) BD_genericas.eliminaPorId("histStatus", reg.id);
+				if (eliminar) BD_genericas.eliminaPorId("histStatus", reg.id);
 				else BD_genericas.actualizaPorId("histStatus", reg.id, {comunicadoEn});
 			}
 
