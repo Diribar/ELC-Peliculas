@@ -82,9 +82,8 @@ module.exports = {
 				? " el "
 				: "";
 		},
-		ao: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o";
-		},
+		oa: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o"),
+		ea: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e"),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
 				? "pelicula_id"
@@ -703,7 +702,7 @@ module.exports = {
 		// Actualiza tablas
 		espera.push(BD_genericas.actualizaTodos("epocasDelAno", {solapamiento: false}));
 		espera.push(BD_genericas.actualizaTodos("fechasDelAno", {epocaDelAno_id: 1}));
-		await Promise.all(espera);
+		espera = await Promise.all(espera).then(() => []);
 
 		// Obtiene tablas
 		let epocasDelAno = BD_genericas.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
@@ -737,7 +736,7 @@ module.exports = {
 			const {id: epocaDelAno_id, anoFM} = epocaDelAno;
 			if (IDs.length) espera.push(BD_genericas.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id, anoFM})); // actualiza los registros de esos IDs
 		}
-		await Promise.all(espera);
+		espera = await Promise.all(espera);
 
 		// Actualiza la variable 'fechasDelAno'
 		fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
@@ -1023,7 +1022,7 @@ module.exports = {
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
-		ao: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
+		oa: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
 		laLo: (registro) => {
 			return !registro.genero_id
 				? "lo"

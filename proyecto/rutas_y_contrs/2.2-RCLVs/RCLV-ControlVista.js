@@ -56,12 +56,13 @@ module.exports = {
 		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
 		const iconoDL = "fa-video";
 		const iconoDB = "fa-child";
+		const ea = comp.obtieneDesdeEntidad.ea(entidad);
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL, usuario},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
-			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre},
+			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre, ea},
 			...{iconosMobile: true, iconoDL, iconoDB},
 		});
 	},

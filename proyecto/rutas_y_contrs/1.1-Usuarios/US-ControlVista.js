@@ -148,7 +148,7 @@ module.exports = {
 		bienvenido: (req, res) => {
 			// Variables
 			let usuario = req.session.usuario;
-			let letra = comp.letras.ao(usuario);
+			let letra = comp.letras.oa(usuario);
 			let informacion = {
 				titulo: "Permiso otorgado",
 				mensajes: [

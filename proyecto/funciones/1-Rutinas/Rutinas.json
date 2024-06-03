@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 2/jun",
-	"HoraUTC": "12:56",
+	"FechaUTC": "Lun. 3/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 27/may",
-	"HoraSemUTC": "15:36",
-	"semanaUTC": 22,
+	"FechaSemUTC": "Lun. 3/jun",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 23,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"31-may-24": {},
 		"01-jun-24": {},
 		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25},
 		"03-jun-24": {},
-		"04-jun-24": {}
+		"04-jun-24": {},
+		"05-jun-24": {}
 	}
 }
