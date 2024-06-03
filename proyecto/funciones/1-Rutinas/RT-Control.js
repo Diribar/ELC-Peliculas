@@ -206,7 +206,7 @@ module.exports = {
 		},
 		FeedbackParaUsers: async () => {
 			// En 'development' interrumpe
-			//if (nodeEnv == "development") return;
+			if (nodeEnv == "development") return;
 
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -232,14 +232,14 @@ module.exports = {
 				// Si para el usuario no son las 0hs, lo saltea
 				const zonaHoraria = usuario.pais.zonaHoraria;
 				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-				// if (new Date(ahoraUsuario).getUTCHours()) continue;
+				if (new Date(ahoraUsuario).getUTCHours()) continue;
 
 				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
 				const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
 				const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
 				const horaUsuario = ahora.getUTCHours();
 				const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
-				// if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
+				if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
 
 				// Variables
 				const email = usuario.email;
