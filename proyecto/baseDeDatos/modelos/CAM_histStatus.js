@@ -9,13 +9,13 @@ module.exports = (sequelize, dt) => {
 		aprobado: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
 
-		statusOrig_id: {type: dt.INTEGER},
+		statusOriginal_id: {type: dt.INTEGER},
 		statusFinal_id: {type: dt.INTEGER},
 
-		statusOrigPor_id: {type: dt.INTEGER},
+		statusOriginalPor_id: {type: dt.INTEGER},
 		statusFinalPor_id: {type: dt.INTEGER},
 
-		statusOrigEn: {type: dt.DATE},
+		statusOriginalEn: {type: dt.DATE},
 		statusFinalEn: {type: dt.DATE},
 
 		comunicadoEn: {type: dt.DATE},
@@ -26,11 +26,11 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.usuarios, {as: "statusOrigPor", foreignKey: "statusOrigPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "statusOriginalPor", foreignKey: "statusOriginalPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "statusFinalPor", foreignKey: "statusFinalPor_id"});
 
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.statusRegistros, {as: "statusOriginal", foreignKey: "statusOrig_id"});
+		entidad.belongsTo(n.statusRegistros, {as: "statusOriginal", foreignKey: "statusOriginal_id"});
 		entidad.belongsTo(n.statusRegistros, {as: "statusFinal", foreignKey: "statusFinal_id"});
 	};
 	return entidad;
