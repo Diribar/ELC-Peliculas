@@ -487,20 +487,10 @@ module.exports = {
 			return cuerpoMail;
 		},
 		eliminaRegsStatusComunica: (regs) => {
-			// Variables
 			const comunicadoEn = new Date();
-			const condiciones = [
-				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id}, // desde 'creado' a creadoAprob'
-				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id}, // desde 'creado' a 'aprobado'
-				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id}, // desde 'creadoAprob' a 'aprobado'
-			];
-
-			// Elimina los registros o completa el campo 'comunicadoEn'
 			for (let reg of regs) {
 				// Variables
-				const eliminar = condiciones.some(
-					(n) => n.statusOriginal_id == reg.statusOriginal_id && n.statusFinal_id == reg.statusFinal_id
-				);
+				const eliminar = reg.statusOriginal_id == creado_id && aprobados_ids.includes(reg.statusFinal_id);
 
 				// Elimina los registros
 				if (eliminar) BD_genericas.eliminaPorId("histStatus", reg.id);
