@@ -86,17 +86,17 @@ module.exports = {
 			await BD_genericas.actualizaPorId("links", id, datos);
 
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
-			const statusOrigPor_id = link.statusSugeridoPor_id;
-			if (statusOrigPor_id != usAutom_id) {
+			const statusOriginalPor_id = link.statusSugeridoPor_id;
+			if (statusOriginalPor_id != usAutom_id) {
 				// Agrega un registro en el histStatus
 				let datosHist = {
 					entidad_id: id,
 					entidad: "links",
-					statusOrig_id: link.statusRegistro_id,
+					statusOriginal_id: link.statusRegistro_id,
 					statusFinal_id: statusRegistro_id,
-					statusOrigPor_id,
+					statusOriginalPor_id,
 					statusFinalPor_id: revID,
-					statusOrigEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
+					statusOriginalEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
 					aprobado: decisAprob,
 				};
 				let motivo;
@@ -109,10 +109,10 @@ module.exports = {
 				BD_genericas.agregaRegistro("histStatus", datosHist);
 
 				// Aumenta el valor de linksAprob/rech en el registro del usuario
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", statusOrigPor_id, campoDecision, 1);
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", statusOriginalPor_id, campoDecision, 1);
 
 				// Penaliza al usuario si corresponde
-				if (motivo) comp.penalizacAcum(statusOrigPor_id, motivo, "links");
+				if (motivo) comp.penalizacAcum(statusOriginalPor_id, motivo, "links");
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
