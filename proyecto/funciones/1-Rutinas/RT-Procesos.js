@@ -239,7 +239,7 @@ module.exports = {
 			// Obtiene los registros de "histStatus"
 			condiciones = {
 				statusOriginalPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
-				statusFinal_id: {[Op.and]: {[Op.ne]: inactivar_id, [Op.ne]: recuperar_id}}, // descarta los cambios que no sean revisiones
+				statusOriginal_id: [creado_id, inactivar_id, recuperar_id], // descarta los cambios que no sean revisiones
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
@@ -262,94 +262,51 @@ module.exports = {
 			// Fin
 			return {regsStatus, regsEdic};
 		},
-		mensajeStatus: {
-			transformaLaInfo: async function (regsStatus) {
+		mensajeStatus: async (regsStatus) => {
+			// Variables
+			let resultados = [];
+
+			// De cada registro de status, obtiene los campos clave o los elabora
+			for (let regStatus of regsStatus) {
 				// Variables
-				let resultados = [];
+				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
+				const {nombre, anchor} = await nombres(regStatus, familia);
+				if (!nombre) continue;
 
-				// De cada registro de status, obtiene los campos clave o los elabora
-				for (let regStatus of regsStatus) {
-					// Variables
-					const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
-					const {nombre, anchor} = await nombres(regStatus, familia);
-					if (!nombre) continue;
+				// Más variables
+				const aprobado =
+					([creado_id, recuperar_id].includes(regStatus.statusOriginal_id) &&
+						aprobados_ids.includes(regStatus.statusFinal_id)) ||
+					(regStatus.statusOriginal_id == inactivar_id && regStatus.statusFinal_id == inactivo_id);
+				const altaAprob = regStatus.statusOriginal_id == creado_id && aprobado;
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
+				const statusOrigNombre = statusRegistros.find((n) => n.id == regStatus.statusOriginal_id).nombre;
+				const statusFinalNombre = statusRegistros.find((n) => n.id == regStatus.statusFinal_id).nombre;
 
-					// Más variables
-					const aprobado =
-						([creado_id, recuperar_id].includes(regStatus.statusOriginal_id) &&
-							aprobados_ids.includes(regStatus.statusFinal_id)) ||
-						(regStatus.statusOriginal_id == inactivar_id && regStatus.statusFinal_id == inactivo_id);
-					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
-					const statusOrigNombre = statusRegistros.find((n) => n.id == regStatus.statusOriginal_id).nombre;
-					const statusFinalNombre = statusRegistros.find((n) => n.id == regStatus.statusFinal_id).nombre;
-
-					// Motivo
-					let motivo;
-					if (!aprobado) {
-						const motivoAux = motivosStatus.find((n) => n.id == regStatus.motivo_id);
-						motivo = regStatus.comentario ? regStatus.comentario : motivoAux ? motivoAux.descripcion : "";
-					}
-
-					// Transforma el resultado
-					resultados.push({
-						...{familia, entidadNombre, nombre, anchor},
-						...{statusOrigNombre, statusFinalNombre, aprobado, motivo},
-					});
+				// Motivo
+				let motivo;
+				if (!aprobado) {
+					const motivoAux = motivosStatus.find((n) => n.id == regStatus.motivo_id);
+					motivo = regStatus.comentario ? regStatus.comentario : motivoAux ? motivoAux.descripcion : "";
 				}
 
-				// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
-				resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
-				resultados.sort((a, b) => (a.entidadNombre < b.entidadNombre ? -1 : a.entidadNombre > b.entidadNombre ? 1 : 0));
-				resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
-
-				// Crea el mensaje
-				const mensajeGlobal = this.creaElMensaje(resultados);
-
-				// Fin
-				return mensajeGlobal;
-			},
-			creaElMensaje: (resultados) => {
-				// Variables
-				let mensajesAcum = "";
-				let mensajesAltas = "";
-				let mensajesAprob = "";
-				let mensajesRech = "";
-				let color;
-
-				// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
-				resultados.map((n) => {
-					// Crea el mensaje
-					let mensaje = n.entidadNombre + ": <b>" + n.anchor + "</b>";
-					const altaAprob = n.statusOriginal_id == creado_id && n.aprobado;
-					if (!altaAprob) {
-						// Mensaje adicional
-						mensaje += ", de status <em>" + statusOrigNombre.toLowerCase() + "</em>";
-						mensaje += " a status <em>" + statusFinalNombre.toLowerCase() + "</em>";
-
-						// Mensaje adicional si hay un motivo
-						if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
-					}
-
-					// Le asigna un color
-					color = n.aprobado ? "green" : "firebrick";
-					mensaje = formatos.li(mensaje, color);
-
-					// Agrega el mensaje al sector que corresponda
-					altaAprob
-						? (mensajesAltas += mensaje) // altas aprobadas
-						: n.aprobado
-						? (mensajesAprob += mensaje) // otros cambios aprobados
-						: (mensajesRech += mensaje); // rechazados
+				// Transforma el resultado
+				resultados.push({
+					...{familia, entidadNombre, nombre, anchor, altaAprob},
+					...{statusOrigNombre, statusFinalNombre, aprobado, motivo},
 				});
+			}
 
-				// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
-				if (mensajesAltas) mensajesAcum += formatos.h2("Altas APROBADAS") + formatos.ol(mensajesAltas);
-				if (mensajesAprob) mensajesAcum += formatos.h2("Status - Cambios APROBADOS") + formatos.ol(mensajesAprob);
-				if (mensajesRech) mensajesAcum += formatos.h2("Status - Cambios RECHAZADOS") + formatos.ol(mensajesRech);
+			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
+			resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+			resultados.sort((a, b) => (a.entidadNombre < b.entidadNombre ? -1 : a.entidadNombre > b.entidadNombre ? 1 : 0));
+			resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
 
-				// Fin
-				return mensajesAcum;
-			},
+			// Crea el mensaje
+			const mensajeGlobal = creaElMensajeStatus(resultados);
+
+			// Fin
+			return mensajeGlobal;
 		},
 		mensajeEdicion: async (regsEdic) => {
 			// Variables
@@ -625,6 +582,48 @@ module.exports = {
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
 // Funciones
+let creaElMensajeStatus = (resultados) => {
+	// Variables
+	let mensajesAcum = "";
+	let mensajesAltas = "";
+	let mensajesAprob = "";
+	let mensajesRech = "";
+	let color;
+
+	// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
+	resultados.map((n) => {
+		// Crea el mensaje
+		let mensaje = n.entidadNombre + ": <b>" + n.anchor + "</b>";
+
+		if (!n.altaAprob) {
+			// Mensaje adicional
+			mensaje += ", de status <em>" + n.statusOrigNombre.toLowerCase() + "</em>";
+			mensaje += " a status <em>" + n.statusFinalNombre.toLowerCase() + "</em>";
+
+			// Mensaje adicional si hay un motivo
+			if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+		}
+
+		// Le asigna un color
+		color = n.aprobado ? "green" : "firebrick";
+		mensaje = formatos.li(mensaje, color);
+
+		// Agrega el mensaje al sector que corresponda
+		n.altaAprob
+			? (mensajesAltas += mensaje) // altas aprobadas
+			: n.aprobado
+			? (mensajesAprob += mensaje) // otros cambios aprobados
+			: (mensajesRech += mensaje); // rechazados
+	});
+
+	// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
+	if (mensajesAltas) mensajesAcum += formatos.h2("Altas APROBADAS") + formatos.ol(mensajesAltas);
+	if (mensajesAprob) mensajesAcum += formatos.h2("Status - Cambios APROBADOS") + formatos.ol(mensajesAprob);
+	if (mensajesRech) mensajesAcum += formatos.h2("Status - Cambios RECHAZADOS") + formatos.ol(mensajesRech);
+
+	// Fin
+	return mensajesAcum;
+};
 let ordenarEdic = (resultados) => {
 	return resultados.sort((a, b) =>
 		false
