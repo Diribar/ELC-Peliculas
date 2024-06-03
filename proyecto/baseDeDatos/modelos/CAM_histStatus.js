@@ -6,7 +6,6 @@ module.exports = (sequelize, dt) => {
 
 		motivo_id: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(150)},
-		aprobado: {type: dt.BOOLEAN},
 		penalizac: {type: dt.DECIMAL},
 
 		statusOriginal_id: {type: dt.INTEGER},
