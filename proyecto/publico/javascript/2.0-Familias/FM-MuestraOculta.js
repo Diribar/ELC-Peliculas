@@ -126,7 +126,7 @@ window.addEventListener("load", () => {
 	// Event listeners - Start-up / 'click' en la imagen
 	for (let sector of [DOM.imagen, DOM.sectorIconos])
 		sector.addEventListener("click", (e) => {
-			if (e.target.id == "sectorIconos") muestraOculta.imagen();
+			if (e.target.localName == "img" || e.target.id == "sectorIconos") muestraOculta.imagen();
 			return;
 		});
 
