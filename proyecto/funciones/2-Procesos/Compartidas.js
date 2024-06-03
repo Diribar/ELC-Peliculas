@@ -698,40 +698,46 @@ module.exports = {
 	},
 	actualizaSolapam: async () => {
 		// Variables
-		await BD_genericas.actualizaTodos("epocasDelAno", {solapamiento: false});
-		let epocasDelAno = await BD_genericas.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
+		let espera = [];
 
-		// Le asigna el valor trivial al campo 'epocaDelAno_id' de la variable 'fechasDelAno'
-		for (let fechaDelAno of fechasDelAno) fechaDelAno.epocaDelAno_id = 1;
+		// Actualiza tablas
+		espera.push(BD_genericas.actualizaTodos("epocasDelAno", {solapamiento: false}));
+		espera.push(BD_genericas.actualizaTodos("fechasDelAno", {epocaDelAno_id: 1}));
+		await Promise.all(espera);
+
+		// Obtiene tablas
+		let epocasDelAno = BD_genericas.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
+		let fechasDelAno = BD_genericas.obtieneTodos("fechasDelAno");
+		[epocasDelAno, fechasDelAno] = await Promise.all([epocasDelAno, fechasDelAno]);
 
 		// Rutina para cada registro de epocaDelAno
 		for (let epocaDelAno of epocasDelAno) {
 			// Variables
 			let restar = 0;
+			let solapamiento;
 
 			// Revisa si en algún día hay solapamiento
 			for (let i = 0; i < epocaDelAno.diasDeDuracion; i++) {
 				// Si se completó el año, lo resta
-				if (epocaDelAno.fechaDelAno_id + i > 366) restar = 366;
+				if (!restar && epocaDelAno.fechaDelAno_id + i > 366) restar = 366;
 
 				// Se fija si la 'fechaDelAno' tiene un valor trivial para 'epocaDelAno_id'
-				const indice = epocaDelAno.fechaDelAno_id - 1 + i - restar;
-				fechasDelAno[indice].epocaDelAno_id == 1
-					? (fechasDelAno[indice].epocaDelAno_id = epocaDelAno.id) // en caso positivo le asigna el id de la epocaDelAno
-					: (epocaDelAno.solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
+				const indice = epocaDelAno.fechaDelAno_id - 1 + i - restar; // se resta '1' porque el id tiene esa diferencia con el índice del array
+				const fechaDelAno = fechasDelAno[indice];
+				fechaDelAno.epocaDelAno_id == 1
+					? (fechasDelAno[indice] = {...fechaDelAno, epocaDelAno_id: epocaDelAno.id}) // en caso positivo le asigna el id de la epocaDelAno
+					: (solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
 			}
 
-			// Si le epocaDelAno tiene solapamiento, lo actualiza en la tabla
-			if (epocaDelAno.solapamiento) BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true});
+			// Si corresponde, actualiza el solapamiento en la tabla
+			if (solapamiento) BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true});
 
-			// Actualiza la tabla 'fechasDelAno' con el valor de la epocaDelAno
+			// Actualiza la tabla 'fechasDelAno'
 			const IDs = fechasDelAno.filter((n) => n.epocaDelAno_id == epocaDelAno.id).map((n) => n.id); // obtiene los IDs de las fechas de la epocaDelAno
-			if (IDs.length) await BD_genericas.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id: epocaDelAno.id}); // en los registros con esos IDs, actualiza el campo 'epocaDelAno_id' con el valor de id de la 'epocaDelAno'
+			const {id: epocaDelAno_id, anoFM} = epocaDelAno;
+			if (IDs.length) espera.push(BD_genericas.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id, anoFM})); // actualiza los registros de esos IDs
 		}
-
-		// Actualiza la tabla 'fechasDelAno' con el valor trivial
-		const IDs = fechasDelAno.filter((n) => n.epocaDelAno_id == 1).map((n) => n.id); // obtiene los IDs de las fechas con valor trivial
-		if (IDs.length) await BD_genericas.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id: 1}); // en los registros con esos IDs, actualiza el campo 'epocaDelAno_id' con el valor trivial
+		await Promise.all(espera);
 
 		// Actualiza la variable 'fechasDelAno'
 		fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");

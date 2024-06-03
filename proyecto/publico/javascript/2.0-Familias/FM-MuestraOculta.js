@@ -124,14 +124,11 @@ window.addEventListener("load", () => {
 	});
 
 	// Event listeners - Start-up / 'click' en la imagen
-	DOM.imagen.addEventListener("click", () => {
-		muestraOculta.imagen();
-		return;
-	});
-	DOM.sectorIconos.addEventListener("click", (e) => {
-		if (e.target.id == "sectorIconos") muestraOculta.imagen();
-		return;
-	});
+	for (let sector of [DOM.imagen, DOM.sectorIconos])
+		sector.addEventListener("click", (e) => {
+			if (e.target.id == "sectorIconos") muestraOculta.imagen();
+			return;
+		});
 
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {

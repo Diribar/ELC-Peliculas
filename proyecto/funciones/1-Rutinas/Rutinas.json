@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 31/may",
-	"HoraUTC": "16:42",
+	"FechaUTC": "Dom. 2/jun",
+	"HoraUTC": "12:56",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 27/may",
@@ -16,6 +16,7 @@
 	"MotivoDiarias2": "Limpieza de información que alcanza o se necesita que sea diaria",
 	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
+		"ActualizaSolapam": "SI",
 		"ImagenDerecha": "SI",
 		"FeedbackParaRevisores": "SI",
 		"LoginsAcums": "SI",
@@ -28,8 +29,7 @@
 		"EliminaHistorialDeRegsEliminados": "SI",
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
-		"LinksEnColes": "SI",
-		"ActualizaSolapam": "SI"
+		"LinksEnColes": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-may-24": {"leyenda": "Hoy recordamos al papa Pablo VI, santo", "entidad": "personajes", "id": 55},
-		"30-may-24": {"leyenda": "Hoy recordamos Juana de Arco", "entidad": "personajes", "id": 71},
 		"31-may-24": {},
 		"01-jun-24": {},
-		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25}
+		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25},
+		"03-jun-24": {},
+		"04-jun-24": {}
 	}
 }

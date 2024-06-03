@@ -96,11 +96,11 @@ module.exports = {
 		// Variables
 		const fecha = new Date(fechaNum);
 
-		// Obtiene el 'fechaDelAno_id'
+		// Obtiene la 'fechaDelAno_id'
 		const dia = fecha.getDate();
 		const mes_id = fecha.getMonth() + 1;
 		const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
-		delete fechaDelAno.epocaDelAno;
+		delete fechaDelAno.epocaDelAno; // quita el include
 
 		// Obtiene los RCLV
 		const rclvs = await obtieneLosRCLV(fechaDelAno);
@@ -116,9 +116,9 @@ module.exports = {
 	},
 	diaMesAno: (fecha) => {
 		fecha = new Date(fecha);
-		let dia = ("0" + fecha.getDate()).slice(-2);
-		let mes = mesesAbrev[fecha.getMonth()];
-		let ano = fecha.getFullYear().toString().slice(-2);
+		const dia = ("0" + fecha.getDate()).slice(-2);
+		const mes = mesesAbrev[fecha.getMonth()];
+		const ano = fecha.getFullYear().toString().slice(-2);
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
@@ -772,16 +772,14 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 	let rclvs = [];
 	let resultados = [];
 
-	// Obtiene los RCLV de las primeras cuatro entidades
+	// Obtiene los RCLV
 	for (let entidad of variables.entidades.rclvs) {
-		// Condicion estándar: RCLVs en status aprobado y con avatar
-		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
+		// Si corresponde, saltea la rutina
+		if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == 1) continue;
 
-		// Condición personalizada: fecha del año del día y que no sea "ninguno"
-		condicion =
-			entidad != "epocasDelAno"
-				? {...condicion, fechaDelAno_id: fechaDelAno.id}
-				: {...condicion, id: {[Op.and]: [fechaDelAno.epocaDelAno_id, {[Op.ne]: 1}]}};
+		// Condicion
+		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: [null, anoHoy]};
+		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
 		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>

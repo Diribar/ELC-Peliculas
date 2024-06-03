@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.LinksEnColes()
+		// await this.rutinasDiarias.ActualizaSolapam()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -301,6 +301,7 @@ module.exports = {
 		},
 	},
 	rutinasDiarias: {
+		ActualizaSolapam: async () => await comp.actualizaSolapam(),
 		ImagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
@@ -636,10 +637,6 @@ module.exports = {
 			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
 
 			// Fin
-			return;
-		},
-		ActualizaSolapam: async () => {
-			await comp.actualizaSolapam();
 			return;
 		},
 	},
