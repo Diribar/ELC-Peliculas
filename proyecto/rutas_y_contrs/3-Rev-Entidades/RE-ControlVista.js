@@ -289,9 +289,9 @@ module.exports = {
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
 			...{entidad, entidad_id: id, aprobado: aprob}, // entidad
-			...{statusOrigPor_id: userID, statusFinalPor_id: revID}, // personas
-			...{statusOrig_id: statusOriginal_id, statusFinal_id}, // status
-			...{statusOrigEn: original.statusSugeridoEn}, // fecha
+			...{statusOriginalPor_id: userID, statusFinalPor_id: revID}, // personas
+			...{statusOriginal_id: statusOriginal_id, statusFinal_id}, // status
+			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
 		};
 		const motivo =
