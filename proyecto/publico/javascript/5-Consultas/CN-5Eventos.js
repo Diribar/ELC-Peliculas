@@ -246,9 +246,25 @@ window.addEventListener("load", async () => {
 			}
 		}
 		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
-		else if (elemento == DOM.imgDerecha && DOM.cartelRCLV) {
-			DOM.vistaDeResults.classList.toggle("toggle");
-			DOM.cartelRCLV.classList.toggle("toggle");
+		else if (elemento == DOM.imgDerecha) {
+			let seHicieronCambios;
+
+			// 1. Si se ve 'vistaDeResults', lo oculta y muestra 'cartelRCLV'
+			if (!DOM.vistaDeResults.className.includes("toggle")) {
+				DOM.vistaDeResults.classList.add("toggle");
+				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.remove("toggle");
+				seHicieronCambios = true;
+			}
+
+			// 2. Si se ve 'cartelRCLV', lo oculta
+			if (!seHicieronCambios && DOM.cartelRCLV && !DOM.cartelRCLV.className.includes("toggle")) {
+				DOM.vistaDeResults.classList.add("toggle");
+				DOM.cartelRCLV.classList.add("toggle");
+				seHicieronCambios = true;
+			}
+
+			// 3. Si no se hicieron cambios, muestra 'vistaDeResults'
+			if (!seHicieronCambios) DOM.vistaDeResults.classList.remove("toggle");
 		}
 	});
 	DOM.cuerpo.addEventListener("keydown", (e) => {
