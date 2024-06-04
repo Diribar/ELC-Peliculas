@@ -147,7 +147,7 @@ app.set("views", [
 		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
 		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
-		hoyEstamos: BD_genericas.obtieneTodos("hoyEstamos"),
+		hoyEstamos: BD_genericas.obtieneTodos("hoyEstamos").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
