@@ -39,6 +39,7 @@ module.exports = {
 		// Se usa "details", porque mejora el resultado de la API
 		// PARTES DEL URL
 		// https://api.themoviedb.org/3/movie/    218275?api_key=&language=es&append_to_response=credits
+		// https://api.themoviedb.org/3/movie/    218275/watch/providers?api_key=
 		// https://api.themoviedb.org/3/collection/97919?api_key=&language=es
 		// https://api.themoviedb.org/3/tv/        61865?api_key=&language=es
 		// https://api.themoviedb.org/3/tv/		   61865/season/0?api_key=&language=es
