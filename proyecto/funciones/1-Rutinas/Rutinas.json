@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 3/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 4/jun",
+	"HoraUTC": "1:36",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 3/jun",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-jun-24": {},
 		"02-jun-24": {"leyenda": "Hoy es Solemnidad de Corpus Christi", "entidad": "eventos", "id": 25},
 		"03-jun-24": {},
 		"04-jun-24": {},
-		"05-jun-24": {}
+		"05-jun-24": {},
+		"06-jun-24": {}
 	}
 }
