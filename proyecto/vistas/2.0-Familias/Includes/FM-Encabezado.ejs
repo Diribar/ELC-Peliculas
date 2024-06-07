@@ -22,7 +22,7 @@
 				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
 					<button type="button" class="scaleCh">
 						<% if (registro.cantTemps > 1) { %>
-							<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps ? registro.cantTemps : "Sin datos" %></p>
+							<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
 						<% } %>
 						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 					</button>
@@ -69,6 +69,6 @@
 		<% } %>
 	</div>
 <% } %>
-<% if (familia == "rclv" && codigo == "detalle") { %>
+<% if (familia == "rclv" && codigo == "detalle" && prodsDelRCLV.length > 1) { %>
 	<div id="vinculadas">Películas: <%= prodsDelRCLV.length %></div>
 <% } %>
