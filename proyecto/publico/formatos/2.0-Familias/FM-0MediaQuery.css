@@ -50,8 +50,9 @@
 	#cuerpoFooter {position: absolute;}
 	#cuerpo #datos {position: absolute !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important; max-width: 100vw;}
-	#encabezado {
-		&:has(#colCap) #nombres {margin-right: 20px;}
+	#cuerpo #encabezado {
+		padding-inline: 10px;
+		&:has(#colCap, #vinculadas) #nombres {margin-right: 20px;}
 		#colCap {
 			#tempCapI {
 				#coleccionTitulo {display: none;}
