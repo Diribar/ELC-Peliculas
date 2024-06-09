@@ -31,7 +31,7 @@
 	<% if (destino && !cartelRCLV) { %></a><% } %>
 
 	<!-- Accesorios -->
-	<% if (locals.tema == "prodRud" && codigo == "detalle") { %>
+	<% if (locals.tema == "prodRud" && codigo == "detalle" && registro.statusRegistro_id != inactivo_id) { %>
 		<%- include('PR1-Detalle-2Links') %>
 	<% } %>
 	<% if (cartelRCLV) { %>
