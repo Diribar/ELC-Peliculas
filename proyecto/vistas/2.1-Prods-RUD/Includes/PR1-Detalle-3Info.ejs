@@ -39,13 +39,12 @@
 			<!-- Un párrafo por cada dato -->
 			<p>
 				<!-- Si tiene más de un dato, muestra sus nombres -->
-				<% if (bloqueIzq[RCLV.asociacion].length > 1) { %><%= campo.titulo + ": " %><% } %> <% if (campo.titulo ==
-				bloqueIzq[RCLV.asociacion][0].titulo) { %>
-				<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
-					<b><%= campo.valor %></b>
-				</a>
+				<% if (bloqueIzq[RCLV.asociacion].length > 1) { %><%= campo.titulo + ": " %><% } %> <% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
+					<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
+						<b><%= campo.valor %></b>
+					</a>
 				<% } else { %>
-				<b><%= campo.valor %></b>
+					<b><%= campo.valor %></b>
 				<% } %>
 			</p>
 			<% } %>
