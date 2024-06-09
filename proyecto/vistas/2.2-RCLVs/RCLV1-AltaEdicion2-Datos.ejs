@@ -151,6 +151,7 @@
 						<tbody>
 							<% for (let fechaDelAno of fechasDelAno) { %>
 								<% if (fechaDelAno.id > 366) {break} %>
+								<% console.log(152, fechaDelAno); %>
 								<tr>
 									<td style="width: 50px;"><%= fechaDelAno.nombre %></td>
 									<td><%= fechaDelAno.epocaDelAno.nombre %></td>

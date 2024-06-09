@@ -10,9 +10,9 @@
 					max-width: max(var(--anchoRecuadro), calc(var(--anchoCuerpo) - var(--datosBreves) - 6vw)); /* 6vw: márgenes */
 					#encabezado:has(#colCap) #nombres {max-width: 70%; margin-right: 40px;}
 					#contenido {
-						margin: 0 40px;
+						margin: 0 30px;
 						#informacion {
-							margin-top: 30px;
+							margin-top: 20px;
 							#tituloInfoDetalle {
 								margin-bottom: 5px; width: min-content;
 								h3 {width: max-content;}
