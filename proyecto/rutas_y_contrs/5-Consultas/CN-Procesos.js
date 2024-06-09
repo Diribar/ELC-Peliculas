@@ -346,7 +346,15 @@ module.exports = {
 					// Ordena los registros
 					rclvs
 						.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
-						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Día ascendente
+						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id) // Día ascendente
+						.sort((a, b) =>
+							// Año ascendente
+							(!a.anoFM || a.anoFM == anoHoy) && b.anoFM > anoHoy
+								? -1
+								: a.anoFM > anoHoy && (!b.anoFM || b.anoFM == anoHoy)
+								? 1
+								: 0
+						);
 
 					// Para los botones, mueve los pasados al futuro
 					if (prefs.layout.codigo == "fechaDelAnoBoton") {
