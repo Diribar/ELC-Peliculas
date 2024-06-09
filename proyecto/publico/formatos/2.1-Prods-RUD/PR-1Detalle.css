@@ -63,8 +63,8 @@
 	/* Información */
 	#datosInfo {
 		padding: 10px 15px;
-		border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);
-		border-radius: 10px; border-top-left-radius: 0;
+		border: var(--gris-oscuro) 1px solid; background: var(--amarillo-claro);
+		border-radius: 15px; border-top-left-radius: 0;
 		.datosParcial {
 			flex-direction: column;
 			a {text-decoration: underline;}

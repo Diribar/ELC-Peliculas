@@ -4,12 +4,13 @@
 	#encabezado {border-bottom: none; color: snow;}
 	#recuadroDL #informacion {
 		display: flex; flex-direction: row; justify-content: space-between;
-		flex-grow: 1; margin: 30px 40px;
+		margin-bottom: 20px;
 		ul {
 			padding-right: 10px; max-width: 260px;
 			li {margin-top: 3px;}
 		}
 		#comentario {
+			margin-left: 10px;
 			h3 {
 				margin-bottom: 3px;
 				span {font-weight: normal; font-size: 1rem;}
