@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 8/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Dom. 9/jun",
+	"HoraUTC": "0:47",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 3/jun",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"06-jun-24": {},
 		"07-jun-24": {"leyenda": "Hoy es Fiesta del Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23},
 		"08-jun-24": {"leyenda": "Hoy es Memorial del Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
 		"09-jun-24": {},
-		"10-jun-24": {}
+		"10-jun-24": {},
+		"11-jun-24": {}
 	}
 }
