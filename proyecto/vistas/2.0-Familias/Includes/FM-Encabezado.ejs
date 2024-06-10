@@ -55,14 +55,18 @@
 							<% } %>
 						</select>
 					<% } %>
+					<!-- Elige un capítulo -->
 					<select id="capitulo">
 						<% for (let capitulo of registro.capitulos) { %>
 							<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>
 						<% } %>
 					</select>
 				<% } else { %>
-					<!-- Información de Temporada y Capítulo - no se cambia -->
-					<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
+					<!-- Información de temporada -->
+					<% if (registro.coleccion.cantTemps > 1) { %>
+						<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
+					<% } %>
+					<!-- Información de capítulo -->
 					<p><b>Capítulo:</b> <%= registro.capitulo %></p>
 				<% } %>
 			</div>
