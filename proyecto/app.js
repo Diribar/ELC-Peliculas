@@ -189,6 +189,7 @@ app.set("views", [
 	global.estables_ids = [aprobado_id, inactivo_id];
 	global.inacRecup_ids = [inactivar_id, recuperar_id];
 	global.activos_ids = [creado_id, creadoAprob_id, aprobado_id];
+	global.inactivos_ids = [inactivar_id, inactivo_id];
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.codigo == "anime").id;

@@ -22,12 +22,14 @@ module.exports = {
 			if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
 		}
 
-		// Obtiene el registro original con sus includes y le quita los campos sin contenido
+		// Obtiene el registro original con sus includes
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic) : "";
 		[original, edicion] = await Promise.all([original, edicion]);
 		if (includesOrig.includes("capitulos"))
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
+
+		// Le quita los campos sin contenido
 		for (let prop in original) if (original[prop] === null) delete original[prop];
 
 		// Pule la edición
