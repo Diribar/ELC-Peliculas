@@ -49,7 +49,7 @@ module.exports = {
 			// Averigua si hay más productos para 'Search' - para que no haya más, se tiene que haber superado el máximo en las 3 entidades
 			resultados.hayMas = false;
 			for (let entidadTMDB of entidadesTMDB)
-				resultados.hayMas = resultados.hayMas || pagina < resultados.cantPaginasAPI[entidadTMDB];
+				if (!resultados.hayMas) resultados.hayMas = pagina < resultados.cantPaginasAPI[entidadTMDB];
 
 			// Se fija si no hay que buscar más
 			if (resultados.productos.length >= 20 || !resultados.hayMas) break;
