@@ -63,9 +63,9 @@ module.exports = {
 			return res.json();
 		},
 		// Pule la información
-		puleLaInfo: async (req, res) => {
+		organizaLaInfo: async (req, res) => {
 			// Organiza la información
-			const resultados = await buscar_x_PC.organizaLaInformacion(req.session.desambiguar);
+			const resultados = await buscar_x_PC.organizaLaInfo(req.session.desambiguar);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
 			delete req.session.desambiguar.productos;

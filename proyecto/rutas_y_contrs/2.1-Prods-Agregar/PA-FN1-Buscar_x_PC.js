@@ -138,7 +138,7 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	organizaLaInformacion: async ({productos, hayMas}) => {
+	organizaLaInfo: async ({productos, hayMas}) => {
 		// Variables
 		let prodsNuevos = [];
 		let prodsYaEnBD = [];
