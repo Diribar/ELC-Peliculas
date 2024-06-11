@@ -60,9 +60,6 @@ window.addEventListener("load", async () => {
 			aux = await aux;
 		}
 		DOM.progreso.style.width = "100%";
-
-		// Combina los hallazgos 'yaEnBD'
-		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
 	}
 
 	// Agrega los productos
