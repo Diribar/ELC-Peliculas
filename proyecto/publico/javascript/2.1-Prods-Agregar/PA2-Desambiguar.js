@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 			{ruta: "busca-los-productos", duracion: 1200},
 			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 1000},
 			{ruta: "pule-la-informacion", duracion: 1000},
-			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 100},
+			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
 		];
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
