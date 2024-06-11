@@ -21,11 +21,6 @@ window.addEventListener("load", async () => {
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	if (!desambiguar) location.href = "palabras-clave"; // si no existe, redirige al paso anterior
 
-	// Muestra el cartelProgreso
-	DOM.cartelProgreso.classList.remove("disminuye");
-	DOM.cartelProgreso.classList.remove("ocultar");
-	DOM.cartelProgreso.classList.add("aumenta");
-
 	// Si corresponde, completa los datos de sesion
 	if (!desambiguar.mensaje) {
 		await FN.completaSessionDesambiguar(DOM);
@@ -126,12 +121,17 @@ window.addEventListener("load", async () => {
 // Funciones
 let FN = {
 	completaSessionDesambiguar: async (DOM) => {
+		// Muestra el cartelProgreso
+		DOM.cartelProgreso.classList.remove("disminuye");
+		DOM.cartelProgreso.classList.remove("ocultar");
+		DOM.cartelProgreso.classList.add("aumenta");
+
 		// Acciones si no hay productos en 'session' - Variables
 		const pausa = 200; // milisegundos
 		const APIs = [
 			{ruta: "busca-los-productos", duracion: 1200},
 			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 1000},
-			{ruta: "pule-la-informacion", duracion: 1000},
+			{ruta: "organiza-la-info", duracion: 1000},
 			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
 		];
 		let duracionTotal = 0;
