@@ -14,19 +14,27 @@ module.exports = {
 	},
 	cantProductos: async (req, res) => {
 		// Variables
-		let palabrasClave = req.query.palabrasClave;
-		let resultado;
+		const palabrasClave = req.query.palabrasClave;
+		let cantProdsNuevos;
 
 		// Obtiene los productos
-		resultado = await buscar_x_PC.search(palabrasClave);
+		const resultado = await buscar_x_PC.search(palabrasClave);
 
 		// Revisa si debe reemplazar una película por su colección
 		const productos = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado.productos);
 
 		// Prepara la respuesta
-		let cantProds = productos.length;
-		let cantProdsNuevos = productos.filter((n) => !n.id).length;
-		let hayMas = resultado.hayMas;
+		const cantProds = productos.length;
+		const {hayMas} = resultado;
+
+		// Averigua la cantidad de prodsNuevos
+		if (cantProds) {
+			const TMDB_ids = productos.map((n) => n.TMDB_id);
+			let pelis = BD_genericas.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
+			let coles = BD_genericas.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
+			[pelis, coles] = await Promise.all([pelis, coles]);
+			cantProdsNuevos = cantProds - pelis.length - coles.length;
+		} else cantProdsNuevos = 0;
 
 		// Fin
 		return res.json({cantProds, cantProdsNuevos, hayMas});
