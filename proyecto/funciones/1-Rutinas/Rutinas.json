@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 10/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 11/jun",
+	"HoraUTC": "11:19",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 10/jun",
@@ -42,11 +42,5 @@
 		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
-	"ImagenesDerecha": {
-		"08-jun-24": {"leyenda": "Hoy es Memorial del Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
-		"09-jun-24": {},
-		"10-jun-24": {},
-		"11-jun-24": {},
-		"12-jun-24": {}
-	}
+	"ImagenesDerecha": {"09-jun-24": {}, "10-jun-24": {}, "11-jun-24": {}, "12-jun-24": {}, "13-jun-24": {}}
 }
