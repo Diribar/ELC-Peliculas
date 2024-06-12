@@ -43,3 +43,7 @@ ul#listado {
 #cuerpo::-webkit-scrollbar {outline: transparent;}
 ::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
 ::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+
+@media (orientation: landscape) and (height > 600px) {
+	#informacion {padding-block: 10px;}
+}

@@ -14,19 +14,27 @@ module.exports = {
 	},
 	cantProductos: async (req, res) => {
 		// Variables
-		let palabrasClave = req.query.palabrasClave;
-		let resultado;
+		const palabrasClave = req.query.palabrasClave;
+		let cantProdsNuevos;
 
 		// Obtiene los productos
-		resultado = await buscar_x_PC.search(palabrasClave);
+		const resultado = await buscar_x_PC.search(palabrasClave);
 
 		// Revisa si debe reemplazar una película por su colección
-		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
+		const productos = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado.productos);
 
 		// Prepara la respuesta
-		let cantProds = resultado.productos.length;
-		let cantProdsNuevos = resultado.productos.filter((n) => !n.id).length;
-		let hayMas = resultado.hayMas;
+		const cantProds = productos.length;
+		const {hayMas} = resultado;
+
+		// Averigua la cantidad de prodsNuevos
+		if (cantProds) {
+			const TMDB_ids = productos.map((n) => n.TMDB_id);
+			let pelis = BD_genericas.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
+			let coles = BD_genericas.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
+			[pelis, coles] = await Promise.all([pelis, coles]);
+			cantProdsNuevos = cantProds - pelis.length - coles.length;
+		} else cantProdsNuevos = 0;
 
 		// Fin
 		return res.json({cantProds, cantProdsNuevos, hayMas});
@@ -35,15 +43,15 @@ module.exports = {
 	// Vista (desambiguar)
 	desambForm: {
 		// Busca valores 'session'
-		buscaInfoEnBE: async (req, res) => res.json(req.session.desambiguar),
+		buscaInfoDeSession: async (req, res) => res.json(req.session.desambiguar),
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			if (!req.session.desambiguar) req.session.desambiguar = {palabrasClave: req.cookies.desambiguar.palabrasClave};
 			const {palabrasClave} = req.session.desambiguar;
 
-			// Obtiene los productos y los conserva en session
-			req.session.desambiguar.productos = await buscar_x_PC.search(palabrasClave);
+			// Obtiene los datos y los conserva en session
+			const resultados = await buscar_x_PC.search(palabrasClave);
+			req.session.desambiguar = {palabrasClave, ...resultados};
 
 			// Fin
 			return res.json();
@@ -63,50 +71,36 @@ module.exports = {
 			return res.json();
 		},
 		// Pule la información
-		puleLaInfo: async (req, res) => {
-			// Variables
-			let {productos} = req.session.desambiguar;
-
+		organizaLaInfo: async (req, res) => {
 			// Organiza la información
-			productos = await buscar_x_PC.organizaLaInformacion(productos);
+			const resultados = await buscar_x_PC.organizaLaInfo(req.session.desambiguar);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			req.session.desambiguar.productos = productos;
+			delete req.session.desambiguar.productos;
+			req.session.desambiguar = {...req.session.desambiguar, ...resultados};
 
 			// Fin
 			return res.json();
 		},
 		// Obtiene los hallazgos de origen IM y FA
-		obtieneHallazgosDeIMFA: async (req, res) => {
+		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
 			const {palabrasClave} = req.session.desambiguar;
 			const userID = req.session.usuario ? req.session.usuario.id : 0;
+			let {prodsYaEnBD} = req.session.desambiguar;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
 			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
-
-			// Conserva la información en session para no tener que procesarla de nuevo
-			req.session.desambiguar.prodsIMFA = prodsIMFA;
-
-			// Fin
-			return res.json();
-		},
-		// Combina los hallazgos 'prodsYaEnBD'
-		combinaHallazgosYaEnBD: async (req, res) => {
-			// Variables
-			let {prodsYaEnBD} = req.session.desambiguar.productos;
-			const {prodsIMFA} = req.session.desambiguar;
-			delete req.session.desambiguar.prodsIMFA;
 
 			// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
 			prodsYaEnBD = [...prodsYaEnBD, ...prodsIMFA];
 			prodsYaEnBD.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			req.session.desambiguar.productos.prodsYaEnBD = prodsYaEnBD;
+			req.session.desambiguar.prodsYaEnBD = prodsYaEnBD;
 
 			// Fin
-			return res.json(req.session.desambiguar.productos);
+			return res.json();
 		},
 	},
 	desambGuardar: {

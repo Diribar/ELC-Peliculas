@@ -29,12 +29,11 @@ router.get("/api/valida/datos-adicionales", API.validaDatosAdics);
 router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
 
 // APIs - Desambiguar Form
-router.get("/api/desambiguar-busca-info-en-BE", API.desambForm.buscaInfoEnBE);
+router.get("/api/desambiguar-busca-info-de-session", API.desambForm.buscaInfoDeSession);
 router.get("/api/desambiguar-busca-los-productos", API.desambForm.buscaProds);
 router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
-router.get("/api/desambiguar-pule-la-informacion", API.desambForm.puleLaInfo);
-router.get("/api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA", API.desambForm.obtieneHallazgosDeIMFA);
-router.get("/api/desambiguar-combina-los-hallazgos-yaEnBD", API.desambForm.combinaHallazgosYaEnBD);
+router.get("/api/desambiguar-organiza-la-info", API.desambForm.organizaLaInfo);
+router.get("/api/desambiguar-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
 
 // APIs - Desambiguar - Guardar
 router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);

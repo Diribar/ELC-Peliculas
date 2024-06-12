@@ -69,6 +69,11 @@ module.exports = {
 			for (let entidad of variables.entidades.prods) {
 				// Completa la información de cada producto dentro del tipo de producto
 				const prodsPorEnt = RCLV[entidad].map((registro) => {
+					// Causas para descartar el registro
+					if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
+					if (inactivos_ids.includes(registro.statusRegistro_id)) return null; // status inactivar o inactivo
+					if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id == userID) return null; // recuperar
+
 					// Variables
 					const avatar = procsCRUD.obtieneAvatar(registro).edic;
 					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -82,6 +87,9 @@ module.exports = {
 				// Consolida la información
 				prodsDelRCLV.push(...prodsPorEnt);
 			}
+
+			// Descarta los productos eliminados
+			prodsDelRCLV = prodsDelRCLV.filter((n) => !!n);
 
 			// Separa entre capitulos y resto
 			let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
