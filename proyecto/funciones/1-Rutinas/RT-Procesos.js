@@ -486,7 +486,7 @@ module.exports = {
 			// Fin
 			return cuerpoMail;
 		},
-		eliminaRegsStatus_DesdeCreadoHaciaAprobado_Comunicado: (regs) => {
+		eliminaRegsHistStatus: (regs) => {
 			// Variables
 			const ids = regs.map((n) => n.id);
 			const condiciones = {
@@ -505,7 +505,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaRegsEdicComunica: (regs) => {
+		eliminaRegsHistEdics: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
 

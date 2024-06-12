@@ -1,11 +1,11 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Mié. 12/jun",
-	"HoraUTC": "0:00",
+	"HoraUTC": "13:11",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 10/jun",
-	"HoraSemUTC": "0:00",
+	"FechaSemUTC": "Mié. 12/jun",
+	"HoraSemUTC": "13:11",
 	"semanaUTC": 24,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
@@ -26,7 +26,7 @@
 		"EliminaLinksInactivos": "SI",
 		"EliminaCalifsSinPPP": "SI",
 		"EliminaImagenesSinRegistro": "SI",
-		"EliminaHistorialDeRegsEliminados": "SI",
+		"EliminaHistorialSinEntidad_id": "SI",
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"LinksEnColes": "SI"
