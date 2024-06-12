@@ -255,7 +255,10 @@ module.exports = {
 						.then((n) => {
 							// Acciones si el mail fue enviado
 							if (n) {
-								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatus_DesdeCreadoHaciaAprobado_Comunicado(regsStatus_user); // Borra los registros prescindibles
+								if (regsStatus_user.length)
+									procesos.mailDeFeedback.eliminaRegsStatus_DesdeCreadoHaciaAprobado_Comunicado(
+										regsStatus_user
+									); // Borra los registros prescindibles
 								if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
 								BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 								console.log("Mail enviado a " + email);
@@ -554,7 +557,7 @@ module.exports = {
 			// Variables
 			const tablas = [
 				{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
-				{nombre: "histStatus", campoUsuario: "statusOriginalPor_id"},
+				{nombre: "histStatus", campoUsuario: "statusOriginalPor_id", noEliminarPorUsuario: true},
 				{nombre: "misConsultas", campoUsuario: "usuario_id"},
 			];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
@@ -569,11 +572,14 @@ module.exports = {
 			// Elimina historial
 			for (let tabla of tablas) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const regsHistorial = await BD_genericas.obtieneTodos(tabla);
+				const regsHistorial = await BD_genericas.obtieneTodos(tabla.nombre);
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id))
+					if (
+						!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id) || // si no encuentra la "entidad + id"
+						(!tabla.noEliminarPorUsuario && !regsVinculados.usuarios.includes(regHistorial[tabla.campoUsuario])) // si no encuentra el usuario
+					)
 						BD_genericas.eliminaPorId(tabla, regHistorial.id);
 			}
 
