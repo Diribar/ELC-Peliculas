@@ -552,7 +552,11 @@ module.exports = {
 		},
 		EliminaHistorialDeRegsEliminados: async () => {
 			// Variables
-			const tablas = ["histEdics", "histStatus", "misConsultas"];
+			const tablas = [
+				{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
+				{nombre: "histStatus", campoUsuario: "statusOriginalPor_id"},
+				{nombre: "misConsultas", campoUsuario: "usuario_id"},
+			];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
