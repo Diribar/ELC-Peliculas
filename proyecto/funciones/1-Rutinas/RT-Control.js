@@ -553,7 +553,7 @@ module.exports = {
 		},
 		EliminaHistorialSinEntidad_id: async () => {
 			// Variables
-			const tablas = ["histEdics", "histStatus", "misConsultas"];
+			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
@@ -741,41 +741,6 @@ let actualizaLaEpocaDeEstreno = async () => {
 	// Fin
 	return;
 };
-let eliminaHistorialQueNoCorresponde = async () => {
-	// Obtiene los calRegistros
-	let calRegistros = await BD_genericas.obtieneTodos("calRegistros");
-
-	// Rutina por registro
-	for (let registro of calRegistros) {
-		// Si el producto no existe, elimina el registro
-		const producto = await BD_genericas.obtienePorId(registro.entidad, registro.entidad_id);
-		if (!producto) BD_genericas.eliminaPorId("calRegistros", registro.id);
-	}
-
-	// Fin
-	return;
-};
-let agregaColeccion_id = async () => {
-	// Variables
-	const entidades = ["prodsEdicion", "links", "linksEdicion"];
-	const condicion = {capitulo_id: {[Op.ne]: null}};
-
-	// Rutina por entidad
-	for (let entidad of entidades) {
-		// Variables
-		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, "capitulo");
-		if (!registros.length) continue;
-
-		// Rutina por registro
-		for (let registro of registros) {
-			const {coleccion_id} = registro.capitulo;
-			BD_genericas.actualizaPorId(entidad, registro.id, {coleccion_id});
-		}
-	}
-
-	// Fin
-	return;
-};
 let corrigeStatusColeccionEnCapitulo = async () => {
 	// Variables
 	const registros = await BD_genericas.obtieneTodosConInclude("capitulos", "coleccion");
@@ -785,30 +750,6 @@ let corrigeStatusColeccionEnCapitulo = async () => {
 		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
 		if (registro.statusColeccion_id != statusColeccion_id)
 			BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
-	}
-
-	// Fin
-	return;
-};
-let quitaElStatusDelComentario = async () => {
-	// Obtiene todos los motivos
-	const motivos = statusRegistros.map((m) => m.nombre);
-	const histStatus = await BD_genericas.obtieneTodos("histStatus");
-
-	// Rutina
-	for (let hist of histStatus) {
-		// Variables
-		let {comentario} = hist;
-		const original = comentario;
-
-		// Les quita el motivo y el ' - '
-		for (let motivo of motivos) if (comentario.startsWith(motivo)) comentario = comentario.replace(motivo, "");
-		if (comentario.startsWith(" - ")) comentario = comentario.replace(" - ", "");
-		comentario = comentario.trim();
-		comentario = comp.letras.inicialMayus(comentario);
-
-		// Si hubo cambios, actualiza el comentario
-		if (original !== comentario) BD_genericas.actualizaPorId("histStatus", hist.id, {comentario});
 	}
 
 	// Fin
