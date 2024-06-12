@@ -574,13 +574,13 @@ module.exports = {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
 				const regsHistorial = await BD_genericas.obtieneTodos(tabla.nombre);
 
-				// Si no encuentra la "entidad + id", elimina el registro
+				// Si no encuentra la "entidad + id" o el usuario_id, elimina el registro
 				for (let regHistorial of regsHistorial)
 					if (
 						!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id) || // si no encuentra la "entidad + id"
 						(!tabla.noEliminarPorUsuario && !regsVinculados.usuarios.includes(regHistorial[tabla.campoUsuario])) // si no encuentra el usuario
 					)
-						BD_genericas.eliminaPorId(tabla, regHistorial.id);
+						BD_genericas.eliminaPorId(tabla.nombre, regHistorial.id);
 			}
 
 			// Fin
