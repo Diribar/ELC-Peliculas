@@ -79,7 +79,7 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			inactivarRecuperar || ["recuperar", "eliminar"].includes(codigo)
-				? await procesos.obtieneElHistorialDeStatus({entidad, entidad_id: id, original})
+				? await procesos.obtieneElHistorialDeStatus({entidad, ...original})
 				: [];
 
 		// Obtiene datos para la vista
