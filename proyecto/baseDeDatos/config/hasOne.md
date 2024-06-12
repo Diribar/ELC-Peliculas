@@ -1,0 +1,6 @@
+aux_paises.cantProds
+links_provs.cantLinks
+prod_1peliculas.azar
+prod_2colecciones.azar
+prod_3capitulos.azar
+usuarios.diasLogin
