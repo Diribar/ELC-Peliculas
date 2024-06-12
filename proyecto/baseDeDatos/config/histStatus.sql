@@ -1,3 +1,4 @@
+use c19353_elc;
 DROP TABLE IF EXISTS c19353_elc.cam_hist_status;
 
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
