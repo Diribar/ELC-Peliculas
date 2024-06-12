@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 11/jun",
-	"HoraUTC": "11:19",
+	"FechaUTC": "Mié. 12/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 10/jun",
@@ -42,5 +42,5 @@
 		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
-	"ImagenesDerecha": {"09-jun-24": {}, "10-jun-24": {}, "11-jun-24": {}, "12-jun-24": {}, "13-jun-24": {}}
+	"ImagenesDerecha": {"10-jun-24": {}, "11-jun-24": {}, "12-jun-24": {}, "13-jun-24": {}, "14-jun-24": {}}
 }
