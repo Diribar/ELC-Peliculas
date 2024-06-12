@@ -80,8 +80,9 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
-	obtieneElHistorialDeStatus: async ({entidad, entidad_id, original}) => {
+	obtieneElHistorialDeStatus: async (registro) => {
 		// Variables
+		const {entidad, id: entidad_id} = registro;
 		const condics = {entidad, entidad_id};
 		const include = ["statusFinal", "motivo"];
 
@@ -91,7 +92,7 @@ module.exports = {
 		// Acciones si no existe el historial de status
 		if (!historialStatus.length) {
 			// Crea un historial de status a partir de su situación actual
-			const {motivo_id, creadoPor_id, creadoEn, statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = original;
+			const {motivo_id, creadoPor_id, creadoEn, statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = registro;
 			const datos = {
 				...{...condics, motivo_id},
 				...{statusOriginal_id: creado_id, statusOriginalPor_id: creadoPor_id, statusOriginalEn: creadoEn},
@@ -552,15 +553,8 @@ module.exports = {
 
 		// Si el registro no está activo, le agrega el comentario
 		if (!activos_ids.includes(registro.statusRegistro_id)) {
-			// Obtiene el motivo
-			let valor = registro.motivo.descripcion;
-			if (motivosStatusConComentario_ids.includes(registro.motivo_id)) {
-				const datos = {entidad: registro.entidad, entidad_id: registro.id, original: registro};
-				valor = (await this.obtieneElHistorialDeStatus(datos)).pop().split("-").pop();
-			}
-
-			// Le agrega el motivo
-			resultado.push({titulo: "Motivo", valor});
+			let valor = (await this.obtieneElHistorialDeStatus(registro)).pop().split("-").pop(); // Lo obtiene
+			resultado.push({titulo: "Motivo", valor}); // Lo agrega
 		}
 
 		// Fin
