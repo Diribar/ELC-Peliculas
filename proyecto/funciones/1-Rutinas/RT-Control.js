@@ -255,7 +255,7 @@ module.exports = {
 						.then((n) => {
 							// Acciones si el mail fue enviado
 							if (n) {
-								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
+								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatus_DesdeCreadoHaciaAprobado_Comunicado(regsStatus_user); // Borra los registros prescindibles
 								if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
 								BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 								console.log("Mail enviado a " + email);
