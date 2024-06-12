@@ -36,7 +36,7 @@
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
 		"ActualizaFechaVencimLinks": "SI",
-		"EliminaHistorialAntiguo": "SI",
+		"EliminaMisConsultasExcedente": "SI",
 		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI",
 		"EliminaLoginsAcumsRepetidos": "SI"
