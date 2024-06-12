@@ -217,7 +217,7 @@ module.exports = {
 
 			// Obtiene el dataEntry y guarda los cambios
 			const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
-			const {original, edicion} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
+			const {original, edicion, edicN} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
 			// Acciones si se agregó un registro 'rclv'
 			if (codigo == "/rclv/agregar/") {
@@ -262,7 +262,7 @@ module.exports = {
 			}
 
 			// Si corresponde, actualiza el solapamiento
-			if (entidad == "epocasDelAno") await comp.actualizaSolapam();
+			if (entidad == "epocasDelAno" && !edicion && !edicN) await comp.actualizaSolapam();
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
