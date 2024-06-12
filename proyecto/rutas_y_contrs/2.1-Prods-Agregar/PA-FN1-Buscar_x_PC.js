@@ -240,8 +240,8 @@ module.exports = {
 			// Agrega info de la BD
 			for (let producto of productos) {
 				// Variables
-				const {TMDB_id} = producto;
-				const prodBD = prodsBD.find((n) => n.TMDB_id == TMDB_id); // busca entre los productos de la BD
+				const {TMDB_id, TMDB_entidad} = producto;
+				const prodBD = prodsBD.find((n) => n.TMDB_id == TMDB_id && (!TMDB_entidad || n.TMDB_entidad == TMDB_entidad)); // busca entre los productos de la BD
 
 				// prodYaEnBD
 				if (prodBD) {

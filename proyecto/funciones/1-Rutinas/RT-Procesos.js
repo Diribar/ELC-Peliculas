@@ -486,21 +486,26 @@ module.exports = {
 			// Fin
 			return cuerpoMail;
 		},
-		eliminaRegsStatusComunica: (regs) => {
+		eliminaRegsHistStatus: (regs) => {
+			// Variables
+			const ids = regs.map((n) => n.id);
+			const condiciones = {
+				id: ids,
+				statusOriginal_id: creado_id,
+				statusFinal_id: aprobados_ids,
+			};
 			const comunicadoEn = new Date();
-			for (let reg of regs) {
-				// Variables
-				const eliminar = reg.statusOriginal_id == creado_id && aprobados_ids.includes(reg.statusFinal_id);
 
-				// Elimina los registros
-				if (eliminar) BD_genericas.eliminaPorId("histStatus", reg.id);
-				else BD_genericas.actualizaPorId("histStatus", reg.id, {comunicadoEn});
-			}
+			// Elimina los que corresponda
+			BD_genericas.eliminaTodosPorCondicion("histStatus", condiciones);
+
+			// Agrega la fecha 'comunicadoEn'
+			BD_genericas.actualizaTodosPorCondicion("histStatus", {id: ids}, {comunicadoEn});
 
 			// Fin
 			return;
 		},
-		eliminaRegsEdicComunica: (regs) => {
+		eliminaRegsHistEdics: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
 
