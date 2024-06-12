@@ -204,7 +204,7 @@ module.exports = {
 					}
 
 					// Actualiza el solapamiento
-					comp.actualizaSolapam();
+					await comp.actualizaSolapam();
 				}
 			}
 
@@ -497,7 +497,7 @@ module.exports = {
 			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
-			comp.actualizaSolapam();
+			await comp.actualizaSolapam();
 
 			// Fin
 			return res.redirect("/revision/tablero-de-entidades");
