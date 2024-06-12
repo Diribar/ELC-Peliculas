@@ -205,9 +205,6 @@ module.exports = {
 			return;
 		},
 		FeedbackParaUsers: async () => {
-			// En 'development' interrumpe
-			if (nodeEnv == "development") return;
-
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
 			const regsTodos = [...regsStatus, ...regsEdic];
@@ -555,11 +552,7 @@ module.exports = {
 		},
 		EliminaHistorialDeRegsEliminados: async () => {
 			// Variables
-			const tablas = [
-				{nombre: "histEdics", campoUsuario: "sugeridoPor_id"},
-				{nombre: "histStatus", campoUsuario: "sugeridoPor_id"},
-				{nombre: "misConsultas", campoUsuario: "usuario_id"},
-			];
+			const tablas = ["histEdics", "histStatus", "misConsultas"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
@@ -567,21 +560,17 @@ module.exports = {
 			// Obtiene los registros por entidad
 			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
 			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i]));
+			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array los convierte en un objeto
 
 			// Elimina historial
 			for (let tabla of tablas) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const regsHistorial = await BD_genericas.obtieneTodos(tabla.nombre);
+				const regsHistorial = await BD_genericas.obtieneTodos(tabla);
 
-				// Revisa que esté presente la entidad y el ususario del registro
+				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (
-						!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id) || // Lo busca en su entidad vinculada
-						!regsVinculados.usuarios.includes(regHistorial[tabla.campoUsuario]) // Busca su usuario
-					)
-						// Si no lo encuentra en ambas tablas, elimina el regHistorial
-						BD_genericas.eliminaPorId(tabla.nombre, regHistorial.id);
+					if (!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id))
+						BD_genericas.eliminaPorId(tabla, regHistorial.id);
 			}
 
 			// Fin
@@ -645,20 +634,7 @@ module.exports = {
 			await comp.linksVencPorSem.actualizaFechaVencim();
 			return;
 		},
-		EliminaHistorialAntiguo: async () => {
-			// Variables
-			const ahora = Date.now();
-			const tablas = [
-				{nombre: "histEdics", campo: "revisadoEn", antiguedad: unDia * 365},
-				{nombre: "histStatus", campo: "statusFinalEn", antiguedad: unDia * 365},
-			];
-
-			// Elimina historial antiguo
-			for (let tabla of tablas) {
-				const fechaDeCorte = new Date(ahora - tabla.antiguedad);
-				BD_genericas.eliminaTodosPorCondicion(tabla.nombre, {[tabla.campo]: {[Op.lt]: fechaDeCorte}});
-			}
-
+		EliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
 			let misConsultas = await BD_genericas.obtieneTodos("misConsultas").then((n) => n.reverse());
 			const limite = 20;
@@ -668,10 +644,12 @@ module.exports = {
 				const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
 
 				// Elimina los registros sobrantes en la BD
-				if (registros.length > limite)
-					for (let i = limite; i < registros.length; i++) BD_genericas.eliminaPorId("misConsultas", registros[i].id);
+				if (registros.length > limite) {
+					const idsBorrar = registros.map((n) => n.id).slice(limite);
+					BD_genericas.eliminaPorId("misConsultas", idsBorrar);
+				}
 
-				// Elimina los registros del usuario de la lectura
+				// Revisa las consultas de otro usuario
 				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
 			}
 
