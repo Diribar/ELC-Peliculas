@@ -1,13 +1,9 @@
 <section>
 	<h3>Historial de status:</h3>
-	<% if (locals.comentarios && comentarios.length) { %>
-		<ul type="dots">
-			<% for (let comentario of comentarios) { %>
-				<li><%= comentario %></li>
-			<% } %>
-		</ul>
-	<% } else { %>
-		<p><em>No disponemos de esa información</em></p>
-	<% } %>
+	<ul type="dots">
+		<% for (let comentario of comentarios) { %>
+			<li><%= comentario %></li>
+		<% } %>
+	</ul>
 </section>
 <%- codigo != "eliminar" ? include("FM1-Comentario") : "" %>
