@@ -55,21 +55,20 @@ module.exports = {
 		}
 
 		// Datos Breves
-		bloqueDer = false
-			? false
-			: tema == "revisionEnts"
-			? {
-					registro: await procesos.bloqueRegistro({...original, entidad}),
-					usuario: await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
-			  }
-			: familia == "producto"
-			? {producto: true, registro: await procesos.bloqueRegistro({...original, entidad})}
-			: familia == "rclv"
-			? {
-					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-					registro: await procesos.bloqueRegistro({...original, entidad}),
-			  }
-			: {};
+		bloqueDer =
+			tema == "revisionEnts"
+				? {
+						registro: await procesos.bloqueRegistro({...original, entidad}),
+						usuario: await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+				  }
+				: familia == "producto"
+				? {producto: true, registro: await procesos.bloqueRegistro({...original, entidad})}
+				: familia == "rclv"
+				? {
+						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
+						registro: await procesos.bloqueRegistro({...original, entidad}),
+				  }
+				: {};
 
 		// Imagen Derecha
 		imgDerPers = procesos.obtieneAvatar(original).orig;
@@ -79,17 +78,8 @@ module.exports = {
 
 		// Comentario del rechazo
 		const comentarios =
-			inactivarRecuperar || codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", {entidad, entidad_id: id}, [
-						"statusFinal",
-						"motivo",
-				  ]).then((n) =>
-						n.map(
-							(m) =>
-								m.statusFinal.nombre +
-								(m.comentario ? " - " + m.comentario : m.motivo ? " - " + m.motivo.descripcion : "")
-						)
-				  )
+			inactivarRecuperar || ["recuperar", "eliminar"].includes(codigo)
+				? await procesos.obtieneElHistorialDeStatus({entidad, entidad_id: id, original})
 				: [];
 
 		// Obtiene datos para la vista
