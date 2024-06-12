@@ -39,13 +39,13 @@
 			</div>
 			<!-- Cambiar de capítulo -->
 			<div id="tempCapS">
-				<!-- Avanza/Retrocede un capítulo -->
-				<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
-				<div class="pack">
-					<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
-					<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
-				</div>
 				<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
+					<!-- Avanza/Retrocede un capítulo -->
+					<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
+					<div class="pack">
+						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
+						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
+					</div>
 					<!-- Elige una temporada o capítulo -->
 					<script src="/publico/javascript/2.1-Prods-RUD/PR0-CambioTempCap.js"></script>
 					<% if (registro.coleccion.cantTemps > 1) { %>
