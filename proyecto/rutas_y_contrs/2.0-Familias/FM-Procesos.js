@@ -53,9 +53,8 @@ module.exports = {
 		if (edicion) {
 			// Si existe el registro, lo actualiza
 			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
-
 			// Si no existe el registro, lo agrega
-			if (!edicion.id) {
+			else {
 				// campo_id, editadoPor_id
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
