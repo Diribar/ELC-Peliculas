@@ -51,8 +51,8 @@ router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminaGu
 router.get("/:familia/eliminado", vista.eliminado);
 
 // Vistas - Revisión
-router.get("/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.get("/:familia/rechazar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
 
 // Fin
 module.exports = router;
