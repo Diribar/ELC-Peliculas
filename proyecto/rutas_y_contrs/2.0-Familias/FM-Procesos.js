@@ -259,6 +259,22 @@ module.exports = {
 			return grupos;
 		},
 	},
+	actualizaAgregaComentario: async (datos) => {
+		// Variables
+		const tabla = "comentsInactivos";
+		const {entidad, entidad_id} = datos;
+
+		// Averigua si existe el registro
+		let registro = await BD_genericas.obtienePorCondicion(tabla, {entidad, entidad_id});
+
+		// Si existe, lo actualiza
+		if (registro) await BD_genericas.actualizaPorId(tabla, registro.id, datos);
+		// Si no existe, lo agrega
+		else await BD_genericas.agregaRegistro(tabla, datos);
+
+		// Fin
+		return;
+	},
 
 	// CRUD y Revisión
 	obtieneAvatar: (original, edicion) => {
@@ -577,7 +593,7 @@ module.exports = {
 		resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 		// Si el registro está inactivo, le agrega el motivo
-		if (registro.statusRegistro_id == inactivo_id) {
+				if (registro.statusRegistro_id == inactivo_id) {
 			const {entidad, id: entidad_id} = registro;
 			const regComent = await BD_genericas.obtienePorCondicion("comentsInactivos", {entidad, entidad_id});
 			const comentario = regComent ? regComent.comentario : "No disponemos del comentario";
