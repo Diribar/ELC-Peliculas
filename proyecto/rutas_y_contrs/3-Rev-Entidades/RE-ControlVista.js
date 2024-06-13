@@ -238,7 +238,7 @@ module.exports = {
 			statusSugeridoEn: ahora,
 		};
 
-		// Datos sólo si es un alta/rechazo
+		// Datos sólo si es un alta
 		if (!original.altaRevisadaEn) {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
@@ -282,9 +282,9 @@ module.exports = {
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.rclv.edicAprobRech(entidad, original, revID);
 
-		// CONSECUENCIAS - Si el registro anterior terminaba en inactivar o recuperar, lo borra
+		// CONSECUENCIAS - Si el registro anterior no tiene comentario, lo borra
 		const ultReg = await BD_genericas.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: id});
-		if (ultReg && inacRecup_ids.includes(ultReg.statusFinal_id)) BD_genericas.eliminaPorId("histStatus", ultReg.id);
+		if (ultReg && !ultReg.comentario) BD_genericas.eliminaPorId("histStatus", ultReg.id);
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
