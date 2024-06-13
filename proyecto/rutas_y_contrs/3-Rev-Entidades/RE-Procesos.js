@@ -509,14 +509,7 @@ module.exports = {
 				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
-			let comentario = "";
-			if (req.body.comentario) comentario = req.body.comentario;
-			else {
-				const condicion = {entidad, entidad_id: id};
-				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion).then((n) =>
-					n && n.comentario ? n.comentario : ""
-				);
-			}
+			let comentario = req.body.comentario ? req.body.comentario : "";
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Datos para la controladora
