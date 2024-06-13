@@ -91,14 +91,39 @@ module.exports = {
 
 		// Acciones si no existe el historial de status
 		if (!historialStatus.length) {
-			// Crea un historial de status a partir de su situación actual
-			const {motivo_id, creadoPor_id, creadoEn, statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = registro;
-			const datos = {
-				...{...condics, motivo_id},
-				...{statusOriginal_id: creado_id, statusOriginalPor_id: creadoPor_id, statusOriginalEn: creadoEn},
-				...{statusFinal_id: statusRegistro_id, statusFinalPor_id: statusSugeridoPor_id, statusFinalEn: statusSugeridoEn},
-			};
+			// Variables - Crea un historial de status a partir de su situación actual
+			let datos;
+			const {motivo_id, creadoPor_id, creadoEn, altaRevisadaPor_id, altaRevisadaEn} = registro;
+			const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = registro;
+
+			// Status 4-inactivar
+			if (statusRegistro_id == inactivar_id)
+				datos = {
+					...{...condics, motivo_id, statusOriginal_id: creadoAprob_id, statusFinal_id: inactivar_id},
+					...{statusOriginalPor_id: altaRevisadaPor_id, statusOriginalEn: altaRevisadaEn},
+					...{statusFinalPor_id: statusSugeridoPor_id, statusFinalEn: statusSugeridoEn},
+				};
+			// Status 5-recuperar o 6-inactivo
+			else
+				datos = {
+					...{...condics, motivo_id, statusOriginal_id: creado_id, statusFinal_id: inactivo_id},
+					...{statusOriginalPor_id: creadoPor_id, statusOriginalEn: creadoEn},
+					...{statusFinalPor_id: altaRevisadaPor_id, statusFinalEn: altaRevisadaEn},
+				};
+
+			// Guarda el movimiento
 			await BD_genericas.agregaRegistro("histStatus", datos);
+
+			// Adicional para status 5-recuperar
+			if (statusRegistro_id == recuperar_id) {
+				datos = {
+					...{...condics, motivo_id, statusOriginal_id: inactivo_id, statusFinal_id: recuperar_id},
+					...{statusOriginalPor_id: altaRevisadaPor_id, statusOriginalEn: altaRevisadaEn},
+					...{statusFinalPor_id: statusSugeridoPor_id, statusFinalEn: statusSugeridoEn},
+				};
+				await BD_genericas.agregaRegistro("histStatus", datos);
+			}
+
 			historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
 		}
 
