@@ -576,10 +576,12 @@ module.exports = {
 		// Status resumido
 		resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
-		// Si el registro no está activo, le agrega el comentario
-		if (!activos_ids.includes(registro.statusRegistro_id)) {
-			let valor = (await this.obtieneElHistorialDeStatus(registro)).pop().split("-").pop(); // Lo obtiene
-			resultado.push({titulo: "Motivo", valor}); // Lo agrega
+		// Si el registro está inactivo, le agrega el motivo
+		if (registro.statusRegistro_id == inactivo_id) {
+			const {entidad, id: entidad_id} = registro;
+			const regComent = await BD_genericas.obtienePorCondicion("comentsInactivos", {entidad, entidad_id});
+			const comentario = regComent ? regComent.comentario : "No disponemos del comentario";
+			resultado.push({titulo: "Motivo", valor: comentario});
 		}
 
 		// Fin
