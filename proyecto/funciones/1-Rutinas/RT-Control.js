@@ -484,6 +484,7 @@ module.exports = {
 				"pppRegistros",
 				"prodsEdicion",
 				"rclvsEdicion",
+				"comentsInactivos",
 			];
 
 			// Actualiza los valores de ID
@@ -552,9 +553,9 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaHistorialSinEntidad_id: async () => {
+		EliminaRegsSinEntidad_id: async () => {
 			// Variables
-			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
+			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros", "comentsInactivos"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
@@ -562,7 +563,7 @@ module.exports = {
 			// Obtiene los registros por entidad
 			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
 			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array los convierte en un objeto
+			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array de arrays, los convierte en un objeto de arrays
 
 			// Elimina historial
 			for (let tabla of tablas) {
