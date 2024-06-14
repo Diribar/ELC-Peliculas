@@ -19,7 +19,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const userID = req.session.usuario.id;
-		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
+		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, historialStatus;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -76,11 +76,11 @@ module.exports = {
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazar") motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
-		// Comentario del rechazo
-		const comentarios =
-			inactivarRecuperar || ["recuperar", "eliminar"].includes(codigo)
-				? await procesos.obtieneElHistorialDeStatus({entidad, ...original})
-				: [];
+		// Recuperar/Eliminar y Revisiones - completa el historial de status
+		if (!activos_ids.includes[original.statusRegistro_id]) {
+			historialStatus = await procesos.obtieneElHistorialDeStatus({entidad, ...original});
+			return res.send(historialStatus.map((n) => [n.statusFinalEn, n.statusFinal.nombre, n.comentario]));
+		}
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -91,7 +91,7 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familia, comentarios, urlActual, registro: original},
+			...{entidad, id, entidadNombre, familia, historialStatus, urlActual, registro: original},
 			...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
@@ -100,14 +100,22 @@ module.exports = {
 		//  iniciales
 		let datos = await obtieneDatos(req);
 		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
+		let comentInactivo;
 
 		// Acciones con comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
-		if (codigo == "inactivar") {
-			const motivo = motivosStatus.find((n) => n.id == motivo_id);
-			if (!motivo.agregarComent) comentario = ""; // comentario no solicitado
-		}
 		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Acciones particulares si el nuevo status es 'inactivar_id'
+		if (codigo == "inactivar") {
+			// Si el comentario está restringido, lo descarta
+			const motivo = motivosStatus.find((n) => n.id == motivo_id);
+			if (!motivo.agregarComent) comentario = "";
+
+			// Guarda el comentario para usar en el 'bloqueRegistro'
+			comentInactivo = comentario ? comentario : motivo.descripcion;
+			procesos.actualizaAgregaComentario({entidad, entidad_id: id, comentario: comentInactivo});
+		}
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
