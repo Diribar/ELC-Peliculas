@@ -13,8 +13,7 @@
 	<!-- Particular -->
 	 <% if (["inactivar", "rechazar"].includes(codigo)) { %>
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRech.css">
-	<% } %>
-	<% if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %>
+	<% } else { %>
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-HistorialStatus.css">
 	<% } %>
 	<% if (codigo != "eliminar") { %>
