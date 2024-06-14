@@ -14,6 +14,9 @@
 	 <% if (["inactivar", "rechazar"].includes(codigo)) { %>
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRech.css">
 	<% } %>
+	<% if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %>
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-HistorialStatus.css">
+	<% } %>
 	<% if (codigo != "eliminar") { %>
 		<script src="/publico/javascript/2.0-Familias/FM-InputError.js"></script>
 	<% } %>
