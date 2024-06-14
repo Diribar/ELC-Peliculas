@@ -5,8 +5,15 @@
 		&:has(.recuperar) {
 			background: var(--verde-claro) !important;
 			#encabezado {background: var(--verde-oscuro);}
-			/* :is(#informacion, select) {color: var(--verde-oscuro);} */
+			:is(#informacion) {color: var(--verde-oscuro);}
 		}
-
+		#informacion table {
+			border-spacing: 5px 5px;
+			tr td {
+			   vertical-align: top;
+			   &#fecha {min-width: 65px; text-align: right;}
+			   &#status {max-width: 220px; text-wrap: wrap;}
+		   }
+		}
 	}
 }
