@@ -80,135 +80,154 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
-	obtieneElHistorialDeStatus: async function (prodRclv) {
-		// Variables
-		const {entidad, id: entidad_id, creadoPor_id, creadoEn} = prodRclv;
-		const condics = {entidad, entidad_id};
-		const include = ["statusOriginal", "statusFinal", "motivo"];
-		const ordenMovs = [
-			{stOrig_id: 1, stFinal_id: 6},
-			{stOrig_id: 4, stFinal_id: 6},
-			{stOrig_id: 6, stFinal_id: 5},
-		]; // no se incluye hacia 'inactivar_id', porque sería el único registro
+	historialDeStatus: {
+		obtiene: async function (prodRclv) {
+			// Variables
+			const {entidad, id: entidad_id, creadoPor_id, creadoEn} = prodRclv;
+			const condics = {entidad, entidad_id};
+			const include = ["statusOriginal", "statusFinal", "motivo"];
+			const ordenMovs = [
+				{stOrig_id: 1, stFinal_id: 6},
+				{stOrig_id: 4, stFinal_id: 6},
+				{stOrig_id: 6, stFinal_id: 5},
+			]; // no se incluye hacia 'inactivar_id', porque sería el único registro
 
-		// Obtiene el historial de status
-		let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
-		historialStatus = historialStatus
-			.map((n) => ({
+			// Obtiene el historial de status
+			let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
+			historialStatus = historialStatus
+				.map((n) => ({
+					...n,
+					orden: ordenMovs.findIndex((m) => m.stOrig_id == n.statusOriginal_id && m.stFinal_id == n.statusFinal_id),
+				}))
+				.sort((a, b) => a.orden - b.orden)
+				.sort((a, b) => (a.statusOriginalEn < b.statusOriginalEn ? -1 : a.statusOriginalEn > b.statusOriginalEn ? 1 : 0));
+
+			// Agrega el primer registro, con status 'creado_id'
+			historialStatus.unshift({
+				statusFinal_id: creado_id,
+				statusFinal: {nombre: "Creado"},
+				statusFinalPor_id: creadoPor_id,
+				statusFinalEn: creadoEn,
+			});
+
+			// Completa el historial - rutina para los siguientes
+			let contador = 0;
+			while (contador < historialStatus.length) {
+				historialStatus = await this.agregaUnMov({historialStatus, prodRclv, contador});
+				contador++;
+			}
+
+			// Procesa los comentarios
+			historialStatus = historialStatus.map((n) => ({
 				...n,
-				orden: ordenMovs.findIndex((m) => m.stOrig_id == n.statusOriginal_id && m.stFinal_id == n.statusFinal_id),
-			}))
-			.sort((a, b) => a.orden - b.orden)
-			.sort((a, b) => (a.statusOriginalEn < b.statusOriginalEn ? -1 : a.statusOriginalEn > b.statusOriginalEn ? 1 : 0));
+				comentario: n.comentario ? n.comentario : n.motivo ? n.motivo.descripcion : "",
+			}));
 
-		// Agrega el primer registro, con status 'creado_id'
-		historialStatus.unshift({
-			statusFinal_id: creado_id,
-			statusFinal: {nombre: "Creado"},
-			statusFinalPor_id: creadoPor_id,
-			statusFinalEn: creadoEn,
-		});
+			// Fin
+			return this.formato(historialStatus);
+		},
+		agregaUnMov: async ({historialStatus, prodRclv, contador}) => {
+			// Variables
+			const {entidad, id: entidad_id, motivo} = prodRclv;
+			const {altaRevisadaPor_id, altaRevisadaEn, altaTermEn} = prodRclv;
+			const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = prodRclv;
+			const regAct = historialStatus[contador];
+			const statusAct = regAct.statusFinal_id;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			let statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn, comentario;
 
-		// Completa el historial - rutina para los siguientes
-		let contador = 0;
-		while (contador < historialStatus.length) {
-			historialStatus = await this.agregaUnMovStatus({historialStatus, prodRclv, contador});
-			contador++;
-		}
+			// Obtiene el siguiente status
+			const buscarDelProdRCLV = contador == historialStatus.length - 1; // no hay un registro posterior en el historial
+			const statusSig = buscarDelProdRCLV
+				? statusRegistro_id // el status del prodRclv
+				: historialStatus[contador + 1].statusOriginal_id; // el status del siguiente registro en el historial
 
-		// Procesa los comentarios
-		historialStatus = historialStatus.map((n) => ({
-			...n,
-			comentario: n.comentario ? n.comentario : n.motivo ? n.motivo.descripcion : "",
-		}));
+			// Si el status coincide, interrumpe la función
+			if (statusAct == statusSig) return historialStatus;
 
-		// Fin
-		return historialStatus;
-	},
-	agregaUnMovStatus: async ({historialStatus, prodRclv, contador}) => {
-		// Variables
-		const {entidad, id: entidad_id, motivo} = prodRclv;
-		const {altaRevisadaPor_id, altaRevisadaEn, altaTermEn} = prodRclv;
-		const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = prodRclv;
-		const regAct = historialStatus[contador];
-		const statusAct = regAct.statusFinal_id;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn, comentario;
+			// Algoritmos por status
+			if (statusAct == creado_id) {
+				// Variables - Los datos finales son los de la revisión
+				statusFinalPor_id = altaRevisadaPor_id;
+				statusFinalEn = altaRevisadaEn;
 
-		// Obtiene el siguiente status
-		const buscarDelProdRCLV = contador == historialStatus.length - 1; // no hay un registro posterior en el historial
-		const statusSig = buscarDelProdRCLV
-			? statusRegistro_id // el status del prodRclv
-			: historialStatus[contador + 1].statusOriginal_id; // el status del siguiente registro en el historial
+				statusFinal_id =
+					altaRevisadaEn == statusSugeridoEn // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
+						? statusRegistro_id
+						: familia == "producto"
+						? altaRevisadaEn != altaTermEn // si la fecha no coincide, es porque fue aprobado
+							? creadoAprob_id
+							: inactivo_id // si la fecha coincide, es porque fue rechazado
+						: familia == "rclv"
+						? statusSig == inactivar_id // Rclvs - si está en inactivar, pasó por aprobado, de lo contrario está o pasó por inactivo_id
+							? aprobado_id
+							: inactivo_id
+						: null;
+				if (statusFinal_id == inactivo_id) comentario = motivo.descripcion;
+			}
+			if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
+			if (statusAct == inactivar_id) statusFinal_id = inactivo_id;
+			if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
 
-		// Si el status coincide, interrumpe la función
-		if (statusAct == statusSig) return historialStatus;
+			// Agrega el nombre del statusFinal
+			if (!statusFinal_id) return historialStatus;
+			const {nombre} = statusRegistros.find((n) => n.id == statusFinal_id);
+			statusFinal = {nombre};
 
-		// Algoritmos por status
-		if (statusAct == creado_id) {
-			// Variables - Los datos finales son los de la revisión
-			statusFinalPor_id = altaRevisadaPor_id;
-			statusFinalEn = altaRevisadaEn;
+			// Agrega 'statusFinalPor_id' y 'statusFinalEn'
+			if (statusFinal_id == statusSig && !statusFinalPor_id)
+				statusFinalPor_id = buscarDelProdRCLV
+					? statusSugeridoPor_id // del producto
+					: historialStatus[contador + 1].statusOriginalPor_id; // del siguiente registro
+			if (statusFinal_id == statusSig && !statusFinalEn)
+				statusFinalEn = buscarDelProdRCLV
+					? statusSugeridoEn // del producto
+					: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
 
-			statusFinal_id =
-				altaRevisadaEn == statusSugeridoEn // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
-					? statusRegistro_id
-					: familia == "producto"
-					? altaRevisadaEn != altaTermEn // si la fecha no coincide, es porque fue aprobado
-						? creadoAprob_id
-						: inactivo_id // si la fecha coincide, es porque fue rechazado
-					: familia == "rclv"
-					? statusSig == inactivar_id // Rclvs - si está en inactivar, pasó por aprobado, de lo contrario está o pasó por inactivo_id
-						? aprobado_id
-						: inactivo_id
-					: null;
-			if (statusFinal_id == inactivo_id) comentario = motivo.descripcion;
-		}
-		if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
-		if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
-		if (statusAct == inactivar_id) statusFinal_id = inactivo_id;
-		if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
+			// Arma el registro a agregarle al historial
+			const statusOriginal_id = regAct.statusFinal_id;
+			const statusOriginal = {nombre: regAct.statusFinal.nombre};
+			const statusOriginalPor_id = regAct.statusFinalPor_id;
+			const statusOriginalEn = regAct.statusFinalEn;
+			if (!statusFinalEn) statusFinalEn = statusOriginalEn;
+			let sigReg = {
+				...{entidad, entidad_id},
+				...{statusOriginal_id, statusOriginal, statusOriginalPor_id, statusOriginalEn},
+				...{statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn},
+			};
 
-		// Agrega el nombre del statusFinal
-		if (!statusFinal_id) return historialStatus;
-		const {nombre} = statusRegistros.find((n) => n.id == statusFinal_id);
-		statusFinal = {nombre};
+			// Se fija si corresponde guardar el último registro en la BD
+			if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
+				await BD_genericas.agregaRegistro("histStatus", sigReg);
 
-		// Agrega 'statusFinalPor_id' y 'statusFinalEn'
-		if (statusFinal_id == statusSig && !statusFinalPor_id)
-			statusFinalPor_id = buscarDelProdRCLV
-				? statusSugeridoPor_id // del producto
-				: historialStatus[contador + 1].statusOriginalPor_id; // del siguiente registro
-		if (statusFinal_id == statusSig && !statusFinalEn)
-			statusFinalEn = buscarDelProdRCLV
-				? statusSugeridoEn // del producto
-				: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
+			// Procesa el comentario
+			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
+			if (comentario) sigReg.comentario = comentario;
 
-		// Arma el registro a agregarle al historial
-		const statusOriginal_id = regAct.statusFinal_id;
-		const statusOriginal = {nombre: regAct.statusFinal.nombre};
-		const statusOriginalPor_id = regAct.statusFinalPor_id;
-		const statusOriginalEn = regAct.statusFinalEn;
-		if (!statusFinalEn) statusFinalEn = statusOriginalEn;
-		let sigReg = {
-			...{entidad, entidad_id},
-			...{statusOriginal_id, statusOriginal, statusOriginalPor_id, statusOriginalEn},
-			...{statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn},
-		};
+			// Agrega el registro al historial
+			historialStatus.splice(contador + 1, 0, sigReg);
 
-		// Se fija si corresponde guardar el último registro en la BD
-		if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
-			await BD_genericas.agregaRegistro("histStatus", sigReg);
+			// Fin
+			return historialStatus;
+		},
+		formato: (historialStatus) => {
+			historialStatus.forEach((reg, i) => {
+				// Variables
+				const {statusFinalEn} = reg;
+				const dia = statusFinalEn.getDate();
+				const mes = statusFinalEn.getMonth();
+				const ano = String(statusFinalEn.getFullYear()).slice(-2);
+				const fechaNombre = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).nombre;
+				const fecha = fechaNombre + "/" + ano + " - ";
+				const status = reg.statusFinal.nombre;
+				const comentario = reg.comentario ? " - " + reg.comentario : "";
+				historialStatus[i] = {fecha, status, comentario};
+			});
 
-		// Procesa el comentario
-		if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
-		if (comentario) sigReg.comentario = comentario;
-
-		// Agrega el registro al historial
-		historialStatus.splice(contador + 1, 0, sigReg);
-
-		// Fin
-		return historialStatus;
+			// Fin
+			return historialStatus;
+		},
 	},
 	grupos: {
 		pers: (camposDA) => {
@@ -653,7 +672,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: async function (registro) {
+	bloqueRegistro: async (registro) => {
 		// Variable
 		let resultado = [];
 
