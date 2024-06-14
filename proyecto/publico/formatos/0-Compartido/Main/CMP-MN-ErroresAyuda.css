@@ -8,7 +8,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 
 /* Bordes */
 .ayudaIconoForm, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
-.fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question, .ayudaMostrar {border-width: 1px; border-style: solid}
+.fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question, .ayudaMensForm {border-width: 1px; border-style: solid}
 .errores :is(.fa-circle-xmark, .fa-triangle-exclamation) .mensajeError {border-width: 2px; border-style: solid}
 
 /* Donde se hace 'click' */
@@ -17,23 +17,23 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .errores .fa-circle-check {cursor: default;}
 
 /* Desplegables - Temas comunes */
-.ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;}
-.ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMostrar::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
+.ayudaMensForm, .mensajeError, .ayudaMensForm::before, .mensajeError::before {position: absolute; cursor: default;}
+.ayudaMensForm, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;}
+.ayudaMensForm, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
+.ayudaMensForm::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
 
 /* Títulos - Temas particulares */
-#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: min(350px, 90vw);}
-#tituloPrincipal .ayudaMostrar {top: -7px; right: -7px; translate: 100% 0;}
-#tituloPrincipal .ayudaMostrar::before {top: 7px; left: 0px; translate: -100% 0;}
-#tituloPrincipal .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
+#tituloPrincipal .ayudaMensForm, #tituloSecundario .ayudaMensForm {max-width: min(350px, 90vw);}
+#tituloPrincipal .ayudaMensForm {top: -7px; right: -7px; translate: 100% 0;}
+#tituloPrincipal .ayudaMensForm::before {top: 7px; left: 0px; translate: -100% 0;}
+#tituloPrincipal .ayudaMensForm::before {border-color: transparent var(--backAyuda) transparent transparent;}
 
 /* Ayuda - Temas particulares */
-.ayudaMostrar, .ayudaMostrar * {text-wrap: wrap;}
-.ayudaMostrar {right: -7px; top: 50%; translate: 100% -50%; }
-.ayudaMostrar::before {left: 0px; top: 50%; translate: -100% -50%;}
-.ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
-.ayudaMostrar li {padding: 3px 0; margin-left: 0;}
+.ayudaMensForm, .ayudaMensForm * {text-wrap: wrap;}
+.ayudaMensForm {right: -7px; top: 50%; translate: 100% -50%; }
+.ayudaMensForm::before {left: 0px; top: 50%; translate: -100% -50%;}
+.ayudaMensForm::before {border-color: transparent var(--backAyuda) transparent transparent;}
+.ayudaMensForm li {padding: 3px 0; margin-left: 0;}
 
 /* Errores - Temas particulares */
 .mensajeError {display: none;}
@@ -54,7 +54,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .resultadoInvalido {background: var(--rojo-oscuro);}
 .resultadoEnEspera {background: var(--gris-oscuro);}
 .ayudaIconoForm {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
-.ayudaMostrar {border-color: var(--bordeAyuda); background: var(--backAyuda); color: var(--colorAyuda);}
-.ayudaMostrar * {background: transparent; color: var(--colorAyuda);}
+.ayudaMensForm {border-color: var(--bordeAyuda); background: var(--backAyuda); color: var(--colorAyuda);}
+.ayudaMensForm * {background: transparent; color: var(--colorAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
 .link {background: var(--gris-oscuro); color: var(--gris-claro);}

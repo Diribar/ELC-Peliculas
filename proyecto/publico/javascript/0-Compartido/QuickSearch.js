@@ -2,10 +2,10 @@
 window.addEventListener("load", () => {
 	// DOM
 	let DOM = {
-		desplMostrar: document.querySelector("#busquedaRapida .desplMostrar"),
-		input: document.querySelector("#busquedaRapida .desplMostrar input"),
-		muestraResultados: document.querySelector("#busquedaRapida .desplMostrar #muestraResultados"),
-		escribiMas: document.querySelector("#busquedaRapida .desplMostrar #escribiMas"),
+		ayudaMensMostrar: document.querySelector("#busquedaRapida .ayudaMensMostrar"),
+		input: document.querySelector("#busquedaRapida .ayudaMensMostrar input"),
+		muestraResultados: document.querySelector("#busquedaRapida .ayudaMensMostrar #muestraResultados"),
+		escribiMas: document.querySelector("#busquedaRapida .ayudaMensMostrar #escribiMas"),
 	};
 
 	// Funciones
@@ -120,6 +120,6 @@ window.addEventListener("load", () => {
 		}
 
 		// Escape - Oculta el sector de muestraResultados
-		if (e.key == "Escape") DOM.desplMostrar.classList.add("ocultar");
+		if (e.key == "Escape") DOM.ayudaMensMostrar.classList.add("ocultar");
 	});
 });

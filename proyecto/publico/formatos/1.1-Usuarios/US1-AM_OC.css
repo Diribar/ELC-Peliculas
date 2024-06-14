@@ -29,7 +29,7 @@
 				background: var(--azul-frances); color: var(--amarillo-claro);
 				padding: 10px; border-radius: 10px; font-weight: normal; font-style: italic;
 			}
-			.ayudaMostrar {
+			.ayudaMensForm {
 				right: -61px;
 				&::before {right: 63px;}
 			}

@@ -11,11 +11,11 @@
 	/* Imagen - AyudaMostrar */
 	&.inputError {
 		.ayuda {
-			.ayudaMostrar {
+			.ayudaMensForm {
 				right: auto; top: auto;
 				left: 50%; bottom: -7px; translate: -50% 100%;
 			}
-			.ayudaMostrar::before {
+			.ayudaMensForm::before {
 				left: 50%; top: 0; translate: -50% -100%;
 				border-color: transparent transparent var(--backAyuda) transparent;
 			}
