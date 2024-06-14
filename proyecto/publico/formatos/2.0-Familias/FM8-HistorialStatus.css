@@ -1,0 +1,12 @@
+/* Datos Largos */
+#datos #datosLargos {
+	/* Condicionales */
+	#recuadroDL {
+		&:has(.recuperar) {
+			background: var(--verde-claro) !important;
+			#encabezado {background: var(--verde-oscuro);}
+			/* :is(#informacion, select) {color: var(--verde-oscuro);} */
+		}
+
+	}
+}

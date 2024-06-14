@@ -2,6 +2,7 @@
 	<h3>Historial de status:</h3>
 	<ul type="dots">
 		<% for (let reg of historialStatus) { %>
+			<% const {fecha, status, comentario} = reg %>
 			<li><%= fecha + status + comentario %></li>
 		<% } %>
 	</ul>
