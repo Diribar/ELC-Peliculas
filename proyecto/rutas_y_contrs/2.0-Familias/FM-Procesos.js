@@ -82,10 +82,9 @@ module.exports = {
 	},
 	obtieneElHistorialDeStatus: async function (prodRclv) {
 		// Variables
-		const {entidad, id: entidad_id} = prodRclv;
+		const {entidad, id: entidad_id, creadoPor_id, creadoEn} = prodRclv;
 		const condics = {entidad, entidad_id};
 		const include = ["statusOriginal", "statusFinal", "motivo"];
-		const {creadoPor_id, creadoEn} = prodRclv;
 
 		// Obtiene el historial de status
 		let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
