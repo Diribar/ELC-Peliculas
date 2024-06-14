@@ -282,7 +282,7 @@ module.exports = {
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprobado) procesos.rclv.edicAprobRech(entidad, original, revID);
 
-		// CONSECUENCIAS - Si el registro anterior no tiene comentario, lo borra
+		// CONSECUENCIAS - Elimina los registros provisorios del historial
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivos_ids};
 		const Ids = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion);
 		if (Ids.length) BD_genericas.eliminaPorId("histStatus", Ids);
