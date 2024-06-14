@@ -47,7 +47,7 @@ module.exports = {
 
 		// Actualiza el solapamiento
 		if (entidad == "epocasDelAno" && ["fechaDelAno_id", "diasDeDuracion"].includes(campo) && aprob)
-			await comp.actualizaSolapam();
+			comp.actualizaSolapam();
 
 		// Fin
 		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});

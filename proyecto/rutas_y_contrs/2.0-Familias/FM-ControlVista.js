@@ -208,7 +208,7 @@ module.exports = {
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Actualiza solapamiento y la variable 'fechasDelAno'
-		if (entidad == "epocasDelAno") await comp.actualizaSolapam();
+		if (entidad == "epocasDelAno") comp.actualizaSolapam();
 
 		// Guarda la información para la próxima vista durante 5 segundos
 		const nombre = comp.nombresPosibles(original);
