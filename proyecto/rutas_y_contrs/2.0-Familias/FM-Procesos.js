@@ -174,17 +174,15 @@ module.exports = {
 		const {nombre} = statusRegistros.find((n) => n.id == statusFinal_id);
 		statusFinal = {nombre};
 
-		// Agrega otros datos
-		if (statusFinal_id == statusSig) {
-			if (!statusFinalPor_id)
-				statusFinalPor_id = buscarDelProdRCLV
-					? statusSugeridoPor_id // del producto
-					: historialStatus[contador + 1].statusOriginalPor_id; // del siguiente registro
-			if (!statusFinalEn)
-				statusFinalEn = buscarDelProdRCLV
-					? statusSugeridoEn // del producto
-					: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
-		}
+		// Agrega 'statusFinalPor_id' y 'statusFinalEn'
+		if (statusFinal_id == statusSig && !statusFinalPor_id)
+			statusFinalPor_id = buscarDelProdRCLV
+				? statusSugeridoPor_id // del producto
+				: historialStatus[contador + 1].statusOriginalPor_id; // del siguiente registro
+		if (statusFinal_id == statusSig && !statusFinalEn)
+			statusFinalEn = buscarDelProdRCLV
+				? statusSugeridoEn // del producto
+				: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
 
 		// Arma el registro a agregarle al historial
 		const statusOriginal_id = regAct.statusFinal_id;
