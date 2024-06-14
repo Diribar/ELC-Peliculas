@@ -689,9 +689,7 @@ module.exports = {
 
 		// Si el registro está inactivo, le agrega el motivo
 		if (registro.statusRegistro_id == inactivo_id) {
-			const {entidad, id: entidad_id} = registro;
-			const regComent = await BD_genericas.obtienePorCondicion("comentsInactivos", {entidad, entidad_id});
-			const comentario = regComent ? regComent.comentario : "No disponemos del comentario";
+			const comentario = await FN.comentarioBR(registro);
 			resultado.push({titulo: "Motivo", valor: comentario});
 		}
 
@@ -804,5 +802,37 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+	comentarioBR: async (registro) => {
+		// Variables
+		const {entidad, id: entidad_id} = registro;
+		let comentario;
+
+		// Actualiza el comentario - comentsInactivos
+		const regComent = await BD_genericas.obtienePorCondicion("comentsInactivos", {entidad, entidad_id});
+		if (regComent) return regComent.comentario;
+
+		// Actualiza el comentario - histStatus
+		if (registro.motivo.agregarComent) {
+			const condiciones = {
+				entidad,
+				entidad_id,
+				statusFinal_id: [inactivar_id, inactivo_id],
+				comentario: {[Op.ne]: null},
+			};
+			let histStatus = await BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones);
+			if (histStatus.length > 1)
+				histStatus.sort((a, b) => (a.statusFinalEn < b.statusFinalEn ? -1 : a.statusFinalEn > b.statusFinalEn ? 1 : 0));
+			if (histStatus.length) comentario = histStatus.slice(-1)[0].comentario;
+		}
+
+		// Actualiza el comentario - motivo
+		if (!comentario) comentario = registro.motivo.descripcion;
+
+		// Crea el comentario en la BD
+		BD_genericas.agregaRegistro("comentsInactivos", {entidad, entidad_id, comentario});
+
+		// Fin
+		return comentario;
 	},
 };
