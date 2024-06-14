@@ -216,9 +216,10 @@ module.exports = {
 				// Variables
 				const {statusFinalEn} = reg;
 				const dia = statusFinalEn.getDate();
-				const mes = statusFinalEn.getMonth();
+				const mes = statusFinalEn.getMonth() + 1;
 				const ano = String(statusFinalEn.getFullYear()).slice(-2);
-				const fechaNombre = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes).nombre;
+				const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
+				const fechaNombre = fechaDelAno.nombre;
 				const fecha = fechaNombre + "/" + ano;
 				const status = reg.statusFinal.nombre;
 				const comentario = reg.comentario ? " - " + reg.comentario : "";
