@@ -77,9 +77,8 @@ module.exports = {
 		if (codigo == "inactivar" || codigo == "rechazar") motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
 		// Recuperar/Eliminar y Revisiones - completa el historial de status
-		if (!activos_ids.includes[original.statusRegistro_id]) {
-			historialStatus = await procesos.obtieneElHistorialDeStatus({entidad, ...original});
-		}
+		if (!activos_ids.includes[original.statusRegistro_id])
+			historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...original});
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
