@@ -20,14 +20,6 @@ module.exports = {
 		// Obtiene el registro editado
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
 
-		// PROBLEMAS
-		// 1. No existe la edición
-		if (!edicion) return res.json({mensaje: "No se encuentra la edición"});
-		// 2. No existe el campo a analizar
-		if (edicion[campo] === null) return res.json({mensaje: "El campo no está pendiente para procesar"});
-		// 3. Rechazado sin motivo
-		if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
-
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
