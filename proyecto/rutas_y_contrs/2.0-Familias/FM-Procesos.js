@@ -130,7 +130,6 @@ module.exports = {
 		const {entidad, id: entidad_id, motivo} = prodRclv;
 		const {altaRevisadaPor_id, altaRevisadaEn, altaTermEn} = prodRclv;
 		const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = prodRclv;
-		//const regAnt = contador ? historialStatus[contador - 1] : {};
 		const regAct = historialStatus[contador];
 		const statusAct = regAct.statusFinal_id;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -143,9 +142,7 @@ module.exports = {
 			: historialStatus[contador + 1].statusOriginal_id; // el status del siguiente registro en el historial
 
 		// Si el status coincide, interrumpe la función
-		//console.log(143, {statusAct, statusSig, coincide: statusAct == statusSig, b: buscarDelProdRCLV});
 		if (statusAct == statusSig) return historialStatus;
-		//return historialStatus;
 
 		// Algoritmos por status
 		if (statusAct == creado_id) {
