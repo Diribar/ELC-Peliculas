@@ -169,6 +169,7 @@ module.exports = {
 			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
 			if (statusAct == inactivar_id) statusFinal_id = inactivo_id;
 			if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
+			if (statusAct == recuperar_id) statusFinal_id = aprobado_id;
 
 			// Agrega el nombre del statusFinal
 			if (!statusFinal_id) return historialStatus;
