@@ -147,7 +147,7 @@ module.exports = {
 		// Variables
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
-		const {codigo, subcodigo, producto, rclv, motivo_id, comentario, aprob} = datos;
+		const {codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
 		const {cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
 
 		// Otras variables
@@ -280,22 +280,23 @@ module.exports = {
 		if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-		if (rclv && subcodigo == "alta" && aprob) procesos.rclv.edicAprobRech(entidad, original, revID);
+		if (rclv && subcodigo == "alta" && aprobado) procesos.rclv.edicAprobRech(entidad, original, revID);
 
 		// CONSECUENCIAS - Si el registro anterior no tiene comentario, lo borra
-		const ultReg = await BD_genericas.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: id});
-		if (ultReg && !ultReg.comentario) BD_genericas.eliminaPorId("histStatus", ultReg.id);
+		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivos_ids};
+		const Ids = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion);
+		if (Ids.length) BD_genericas.eliminaPorId("histStatus", Ids);
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
-			...{entidad, entidad_id: id, aprobado: aprob}, // entidad
+			...{entidad, entidad_id: id, aprobado}, // entidad
 			...{statusOriginalPor_id: userID, statusFinalPor_id: revID}, // personas
 			...{statusOriginal_id: statusOriginal_id, statusFinal_id}, // status
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
 		};
 		const motivo =
-			codigo == "rechazar" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
+			codigo == "rechazar" || (!aprobado && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		BD_genericas.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
 
@@ -309,7 +310,7 @@ module.exports = {
 		if (producto) await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 		// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
-		if (subcodigo == "recuperar" && entidad != "capitulo" && aprob && original.avatar && original.avatar.includes("/"))
+		if (subcodigo == "recuperar" && entidad != "capitulo" && aprobado && original.avatar && original.avatar.includes("/"))
 			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Opciones de redireccionamiento
