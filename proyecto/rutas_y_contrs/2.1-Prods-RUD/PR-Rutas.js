@@ -14,7 +14,7 @@ const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 const misDetalleProd = require("../../middlewares/varios/misDetalleProd");
-const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const edicion = require("../../middlewares/filtrosPorRegistro/edicionVista");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 
 // Middlewares - Temas de captura
