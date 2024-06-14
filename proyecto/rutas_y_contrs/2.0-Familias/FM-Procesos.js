@@ -85,10 +85,21 @@ module.exports = {
 		const {entidad, id: entidad_id, creadoPor_id, creadoEn} = prodRclv;
 		const condics = {entidad, entidad_id};
 		const include = ["statusOriginal", "statusFinal", "motivo"];
+		const ordenMovs = [
+			{stOrig_id: 1, stFinal_id: 6},
+			{stOrig_id: 4, stFinal_id: 6},
+			{stOrig_id: 6, stFinal_id: 5},
+		]; // no se incluye hacia 'inactivar_id', porque sería el único registro
 
 		// Obtiene el historial de status
 		let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
-		historialStatus.sort((a, b) => (a.statusOriginalEn < b.statusOriginalEn ? -1 : 1));
+		historialStatus = historialStatus
+			.map((n) => ({
+				...n,
+				orden: ordenMovs.findIndex((m) => m.stOrig_id == n.statusOriginal_id && m.stFinal_id == n.statusFinal_id),
+			}))
+			.sort((a, b) => a.orden - b.orden)
+			.sort((a, b) => (a.statusOriginalEn < b.statusOriginalEn ? -1 : a.statusOriginalEn > b.statusOriginalEn ? 1 : 0));
 
 		// Agrega el primer registro, con status 'creado_id'
 		historialStatus.unshift({
