@@ -17,8 +17,10 @@ module.exports = {
 	obtienePorCondicion: (entidad, condicion) => db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : "")),
 	obtienePorCondicionConInclude: (entidad, condicion, include) =>
 		db[entidad].findOne({where: condicion, include}).then((n) => (n ? n.toJSON() : "")),
-	obtienePorCondicionElUltimo: (entidad, condicion) =>
-		db[entidad].findOne({where: condicion, order: [["id", "DESC"]]}).then((n) => (n ? n.toJSON() : "")),
+	obtienePorCondicionElUltimo: (entidad, condicion, campoOrden) =>
+		db[entidad]
+			.findOne({where: condicion, order: [[campoOrden ? campoOrden : "id", "DESC"]]})
+			.then((n) => (n ? n.toJSON() : "")),
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
