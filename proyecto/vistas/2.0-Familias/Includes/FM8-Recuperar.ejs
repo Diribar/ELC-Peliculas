@@ -1,9 +1,0 @@
-<section>
-	<h3>Historial de status:</h3>
-	<ul type="dots">
-		<% for (let comentario of comentarios) { %>
-			<li><%= comentario %></li>
-		<% } %>
-	</ul>
-</section>
-<%- codigo != "eliminar" ? include("FM1-Comentario") : "" %>
