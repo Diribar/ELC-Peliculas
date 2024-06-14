@@ -39,20 +39,20 @@ router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.motivosRechAltas);
 
 // Vistas - CRUD: Inactivar, Recuperar
-router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecupGuardar);
-router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecupGuardar);
+router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
+router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
+router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup_guardar);
+router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecup_guardar);
 
 // Vistas -  CRUD: Eliminar, Eliminado
-router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecupElimForm);
-router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.eliminaGuardar);
-router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminaGuardar);
-router.get("/:familia/eliminado", vista.eliminado);
+router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecupElim_form);
+router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.elimina_guardar);
+router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_guardar);
+router.get("/:familia/eliminado", vista.eliminado_form);
 
 // Vistas - Revisión
-router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
-router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.inacRecupElimForm);
+router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
+router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
 
 // Fin
 module.exports = router;
