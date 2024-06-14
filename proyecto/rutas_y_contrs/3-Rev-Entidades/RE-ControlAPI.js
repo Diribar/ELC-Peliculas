@@ -16,7 +16,7 @@ module.exports = {
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		let statusAprob;
+		let statusAprob, reload;
 
 		// Obtiene el registro editado
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
@@ -29,9 +29,12 @@ module.exports = {
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
 
 		// Campos especiales - RCLVs
-		if (familias == "rclvs" && campo == "fechaMovil") {
-			if (aprob && edicion.fechaMovil == "0") BD_genericas.actualizaPorId(entidad, entID, {anoFM: null});
-			if (!aprob && edicion.fechaMovil == "1") BD_genericas.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+		if (familias == "rclvs") {
+			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
+				BD_genericas.actualizaPorId(entidad, entID, {anoFM: null});
+				BD_genericas.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
+			}
 		}
 
 		// Entre otras tareas, actualiza el original si fue aprobada la sugerencia, y obtiene la edición en su mínima expresión
@@ -46,11 +49,10 @@ module.exports = {
 		}
 
 		// Actualiza el solapamiento
-		if (entidad == "epocasDelAno" && ["fechaDelAno_id", "diasDeDuracion"].includes(campo) && aprob)
-			comp.actualizaSolapam();
+		if (entidad == "epocasDelAno" && ["fechaDelAno_id", "diasDeDuracion"].includes(campo) && aprob) comp.actualizaSolapam();
 
 		// Fin
-		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
+		return res.json({OK: true, quedanCampos: !!edicion, statusAprob, reload});
 	},
 	actualizaVisibles: (req, res) => {
 		// Variables
