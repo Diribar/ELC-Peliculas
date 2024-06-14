@@ -5,7 +5,7 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inacRecupElimForm: async (req, res) => {
+	inacRecupElim_form: async (req, res) => {
 		// Tema y Código
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const codigo1 = ruta.slice(1, -1);
@@ -96,7 +96,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	inacRecupGuardar: async (req, res) => {
+	inacRecup_guardar: async (req, res) => {
 		//  iniciales
 		let datos = await obtieneDatos(req);
 		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
@@ -174,7 +174,7 @@ module.exports = {
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(destino);
 	},
-	eliminaGuardar: async (req, res) => {
+	elimina_guardar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -221,7 +221,7 @@ module.exports = {
 		// Fin
 		return res.redirect("/" + familia + "/eliminado");
 	},
-	eliminado: (req, res) => {
+	eliminado_form: (req, res) => {
 		// Variables
 		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
 		if (!entidad) return res.redirect("/");
