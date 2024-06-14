@@ -12,9 +12,10 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
+		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		let statusAprob;
 
 		// Obtiene el registro editado
@@ -26,6 +27,12 @@ module.exports = {
 
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
+
+		// Campos especiales - RCLVs
+		if (familias == "rclvs" && campo == "fechaMovil") {
+			if (aprob && edicion.fechaMovil == "0") BD_genericas.actualizaPorId(entidad, entID, {anoFM: null});
+			if (!aprob && edicion.fechaMovil == "1") BD_genericas.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+		}
 
 		// Entre otras tareas, actualiza el original si fue aprobada la sugerencia, y obtiene la edición en su mínima expresión
 		const objeto = {entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id};
