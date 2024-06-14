@@ -80,6 +80,36 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
+	obtieneElHistorialDeStatus: async (registro) => {
+		// Variables
+		const {entidad, id: entidad_id} = registro;
+		const condics = {entidad, entidad_id};
+		const include = ["statusFinal", "motivo"];
+
+		// Obtiene el historial de status
+		let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
+
+		// Acciones si no existe el historial de status
+		if (!historialStatus.length) {
+			// Crea un historial de status a partir de su situación actual
+			const {motivo_id, creadoPor_id, creadoEn, statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = registro;
+			const datos = {
+				...{...condics, motivo_id},
+				...{statusOriginal_id: creado_id, statusOriginalPor_id: creadoPor_id, statusOriginalEn: creadoEn},
+				...{statusFinal_id: statusRegistro_id, statusFinalPor_id: statusSugeridoPor_id, statusFinalEn: statusSugeridoEn},
+			};
+			await BD_genericas.agregaRegistro("histStatus", datos);
+			historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
+		}
+
+		// Comentarios
+		const comentarios = historialStatus.map(
+			(n) => n.statusFinal.nombre + (n.comentario ? " - " + n.comentario : n.motivo ? " - " + n.motivo.descripcion : "")
+		);
+
+		// Fin
+		return comentarios;
+	},
 	grupos: {
 		pers: (camposDA) => {
 			// Variables
@@ -507,7 +537,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: async (registro) => {
+	bloqueRegistro: async function (registro) {
 		// Variable
 		let resultado = [];
 
@@ -523,17 +553,8 @@ module.exports = {
 
 		// Si el registro no está activo, le agrega el comentario
 		if (!activos_ids.includes(registro.statusRegistro_id)) {
-			// Obtiene el motivo
-			let valor = registro.motivo.descripcion;
-			if (motivosStatusConComentario_ids.includes(registro.motivo_id)) {
-				const condicion = {entidad: registro.entidad, entidad_id: registro.id};
-				valor = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion)
-					.then((n) => (n ? n : {comentario: registro.motivo.descripcion}))
-					.then((n) => n.comentario);
-			}
-
-			// Le agrega el motivo
-			resultado.push({titulo: "Motivo", valor});
+			let valor = (await this.obtieneElHistorialDeStatus(registro)).pop().split("-").pop(); // Lo obtiene
+			resultado.push({titulo: "Motivo", valor}); // Lo agrega
 		}
 
 		// Fin

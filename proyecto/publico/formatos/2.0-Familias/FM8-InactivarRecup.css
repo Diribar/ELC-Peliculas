@@ -28,12 +28,12 @@
 		&:has(.inactivar, .rechazar, .eliminar) {
 			background: var(--rojo-claro) !important;
 			#encabezado {background: var(--rojo-oscuro);}
-			:is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+			/* :is(#informacion, select) {color: var(--rojo-oscuro);} */
 		}
 		&:has(.recuperar) {
 			background: var(--verde-claro) !important;
 			#encabezado {background: var(--verde-oscuro);}
-			:is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
+			/* :is(#informacion, select) {color: var(--verde-oscuro);} */
 		}
 
 	}
