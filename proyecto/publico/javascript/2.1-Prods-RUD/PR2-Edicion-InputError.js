@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		actores: document.querySelector(".inputError input[name=actores"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
-		iconosAyuda: document.querySelectorAll(".inputError .desplClick"),
+		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
 	let v = {

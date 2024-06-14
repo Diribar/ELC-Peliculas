@@ -4,7 +4,7 @@
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
 		<input id="<%= nombre %>" type="<%- registro.numero ? 'number' : 'text' %>"
-			class="input<% if (inputOK) { %> desplClick<% } %><% if (registro.numero) { %> numero<% } %>"
+			class="input<% if (inputOK) { %> ayudaClick<% } %><% if (registro.numero) { %> numero<% } %>"
 			name="<%= nombre %>"
 			autocomplete="off"
 			value="<%= dataEntry[nombre] %>"
