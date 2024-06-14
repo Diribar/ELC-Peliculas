@@ -79,7 +79,6 @@ module.exports = {
 		// Recuperar/Eliminar y Revisiones - completa el historial de status
 		if (!activos_ids.includes[original.statusRegistro_id]) {
 			historialStatus = await procesos.obtieneElHistorialDeStatus({entidad, ...original});
-			return res.send(historialStatus.map((n) => [n.statusFinalEn, n.statusFinal.nombre, n.comentario]));
 		}
 
 		// Obtiene datos para la vista
