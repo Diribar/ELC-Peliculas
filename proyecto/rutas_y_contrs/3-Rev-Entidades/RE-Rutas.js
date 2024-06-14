@@ -19,7 +19,8 @@ const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const linkAltaBaja = require("../../middlewares/filtrosPorRegistro/linkAltaBaja");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
-const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const edicionAPI = require("../../middlewares/filtrosPorRegistro/edicionAPI");
+const edicionVista = require("../../middlewares/filtrosPorRegistro/edicionVista");
 const linksEnSemana = require("../../middlewares/filtrosPorRegistro/linksEnSemana");
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
@@ -33,7 +34,7 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const usuarioBase = [usAltaTerm, usPenalizaciones];
 const aptoUsuario = [...usuarioBase, usAptoInput];
 const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...usuarioBase, permUserReg];
-const aptoEdicion = [...aptoCRUD, usRolRevPERL, edicion];
+const aptoEdicion = [...aptoCRUD, usRolRevPERL, edicionVista];
 
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
@@ -43,12 +44,12 @@ router.get("/api/actualiza-visibles", API.actualizaVisibles);
 
 // APIs - Producto y RCLV
 router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
-router.get("/api/edicion/aprob-rech", API.edicAprobRech);
+router.get("/api/edicion/aprob-rech", edicionAPI, API.edicAprobRech);
 
 // APIs- Links
 router.get("/api/link/alta-baja", linkAltaBaja, API.links.altaBaja);
 //router.get("/api/link/eliminar", API.links.altaBaja);
-router.get("/api/link/edicion", API.edicAprobRech);
+router.get("/api/link/edicion", edicionAPI, API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
