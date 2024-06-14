@@ -11,7 +11,7 @@
 				<% if (codigo != "rclv/solapamiento") { %>
 					<!-- Ayuda -->
 					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 							<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
 								<% if (personajes || hechos) { %>
 									<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
@@ -61,7 +61,7 @@
 				</select>
 				<!-- Ayuda -->
 				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 							<p>Usamos la fecha en que se lo recuerda.</p>
 							<% if (personajes) { %>
@@ -138,7 +138,7 @@
 						<h3>Calendario</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 									<li>.</li>
 								</ul>
@@ -173,7 +173,7 @@
 					</select>
 					<!-- Ayuda -->
 					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 								<li>Es la carpeta en la que se guardan las imagenes.</li>
 							</ul>
@@ -191,7 +191,7 @@
 					<h3>Nombres con esa fecha</h3>
 					<!-- Ayuda -->
 					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 							<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 								<li>Destildalos si no coinciden con el tuyo.</li>
 							</ul>
@@ -215,7 +215,7 @@
 				</select>
 				<!-- Ayuda -->
 				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 							<% if (personajes) { %>
 								<li>Estándar</li>
@@ -270,7 +270,7 @@
 			<!-- Ayuda -->
 			<% if (hechos) { %>
 				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 							<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
 						</ul>
@@ -291,7 +291,7 @@
 					<!-- Ayuda -->
 					<% if (epocaOcurrencia["ayuda_" + ent]) { %>
 						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 									<li><%= epocaOcurrencia["ayuda_" + ent] %>.</li>
 								</ul>
@@ -307,7 +307,7 @@
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
 				<!-- Ayuda -->
 				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 							<li>Se refiere al año en que <%= personajes ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
 							<li>Si no lo encontrás, poné un valor estimado.</li>
@@ -396,7 +396,7 @@
 			<!-- Título -->
 			<h3>Leyenda</h3>
 			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<i class="fa-solid fa-circle-question ayudaIconoForm desplClick">
 					<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 						<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
 					</ul>

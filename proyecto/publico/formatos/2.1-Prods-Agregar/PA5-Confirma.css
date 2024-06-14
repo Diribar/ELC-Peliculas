@@ -5,10 +5,10 @@
 #dataEntry #datos {padding-left: 20px;}
 #dataEntry #datos .texto {margin: 3px 0; font-size: 1.2rem;}
 #dataEntry #datos #liConAyuda {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}
-#dataEntry #datos #liConAyuda .ayudaClick {margin-left: 10px;}
-#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar {max-width: 350px;}
-#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
-#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
+#dataEntry #datos #liConAyuda .ayudaIconoForm {margin-left: 10px;}
+#dataEntry #datos #liConAyuda .ayudaIconoForm .ayudaMostrar {max-width: 350px;}
+#dataEntry #datos #liConAyuda .ayudaIconoForm .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
+#dataEntry #datos #liConAyuda .ayudaIconoForm .ayudaMostrar #subPuntos li {padding-top: 0;}
 
 /* Datos del producto */
 #dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: column; max-width: 400px; align-self: center;}

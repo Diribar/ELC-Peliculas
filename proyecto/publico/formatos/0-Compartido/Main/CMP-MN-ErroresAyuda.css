@@ -7,13 +7,13 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Bordes */
-.ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
+.ayudaIconoForm, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
 .fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question, .ayudaMostrar {border-width: 1px; border-style: solid}
 .errores :is(.fa-circle-xmark, .fa-triangle-exclamation) .mensajeError {border-width: 2px; border-style: solid}
 
 /* Donde se hace 'click' */
-.ayudaClick, .errores :is(.fa-circle-xmark, .fa-circle-check, .fa-triangle-exclamation) {font-size: 1rem;}
-.ayudaClick, .errores :is(.fa-circle-xmark, .fa-triangle-exclamation) {position: relative; cursor: pointer;}
+.ayudaIconoForm, .errores :is(.fa-circle-xmark, .fa-circle-check, .fa-triangle-exclamation) {font-size: 1rem;}
+.ayudaIconoForm, .errores :is(.fa-circle-xmark, .fa-triangle-exclamation) {position: relative; cursor: pointer;}
 .errores .fa-circle-check {cursor: default;}
 
 /* Desplegables - Temas comunes */
@@ -53,7 +53,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .resultadoExitoso {background: var(--verde-oscuro);}
 .resultadoInvalido {background: var(--rojo-oscuro);}
 .resultadoEnEspera {background: var(--gris-oscuro);}
-.ayudaClick {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
+.ayudaIconoForm {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
 .ayudaMostrar {border-color: var(--bordeAyuda); background: var(--backAyuda); color: var(--colorAyuda);}
 .ayudaMostrar * {background: transparent; color: var(--colorAyuda);}
 .mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}

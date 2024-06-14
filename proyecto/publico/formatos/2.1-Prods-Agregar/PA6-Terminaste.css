@@ -7,9 +7,9 @@
 /* Texto */
 #dataEntry #datos {padding-left: 20px;}
 #dataEntry #datos .texto {margin: 10px 0 5px; font-size: 1.2rem;}
-#dataEntry #datos .ayudaClick {margin-left: 5px;}
-#dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
-#dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
+#dataEntry #datos .ayudaIconoForm {margin-left: 5px;}
+#dataEntry #datos .ayudaIconoForm .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
+#dataEntry #datos .ayudaIconoForm .ayudaMostrar #subPuntos li {padding-top: 0;}
 #dataEntry #datos #capitulos {background: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
 #dataEntry #datos #capitulos span {color: var(--gris-claro);}
 
