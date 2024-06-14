@@ -489,12 +489,12 @@ module.exports = {
 				: "rechazar";
 
 			// Averigua si la sugerencia fue aprobada
-			const aprob = subcodigo != "rechazar" && !desaprueba;
+			const aprobado = subcodigo != "rechazar" && !desaprueba;
 
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
-				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+				(!aprobado && subcodigo != "inactivar") || (aprobado && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 					? inactivo_id
 					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
 					? aprobado_id // si es un RCLV, se aprueba
@@ -520,12 +520,12 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const {baseUrl} = comp.reqBasePathUrl(req);
 			const userID = original.statusSugeridoPor_id;
-			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
+			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
-				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprob},
+				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado},
 				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},
