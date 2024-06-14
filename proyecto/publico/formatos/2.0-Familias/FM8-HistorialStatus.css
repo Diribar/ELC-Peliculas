@@ -8,11 +8,18 @@
 			:is(#informacion) {color: var(--verde-oscuro);}
 		}
 		#informacion table {
-			border-spacing: 5px 5px;
+			border-spacing: 5px 8px;
 			tr td {
-			   vertical-align: top;
-			   &#fecha {min-width: 65px; text-align: right;}
-			   &#status {max-width: 220px; text-wrap: wrap;}
+				vertical-align: top;
+				&.fecha {min-width: 65px; text-align: right;}
+				&.status {
+					max-width: 220px; text-wrap: wrap;
+					b {padding-inline: 5px; border-radius: 8px;}
+				}
+				&#creado b, &#creadoAprob b, &#recuperar b {background: var(--verde-claro); color: var(--verde-oscuro);}
+				&#inactivar b {background: var(--rojo-claro); color: var(--rojo-oscuro); border: 1px var(--rojo-oscuro) solid;}
+				&#aprobado b {background: var(--verde-oscuro); color: snow;}
+				&#inactivo b {background: var(--rojo-oscuro); color: snow;}
 		   }
 		}
 	}
