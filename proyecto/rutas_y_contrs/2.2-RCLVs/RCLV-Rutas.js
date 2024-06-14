@@ -12,7 +12,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 // Middlewares - Específicos del registro
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
-const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const edicion = require("../../middlewares/filtrosPorRegistro/edicionVista");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 const rclvNoEditable = require("../../middlewares/filtrosPorRegistro/rclvNoEditable");
 

@@ -704,12 +704,14 @@ module.exports = {
 
 			// Acciones si se aprobó el campo
 			if (aprob) {
-				// 1. Actualiza el registro 'original'
+				// 1. Prepara la info a guardar
 				datos[campo] = edicion[campo];
 				if (campo == "anoEstreno") datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
+
+				// 2. Actualiza el registro 'original'
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
-				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
+				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
 				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
 			}
 
