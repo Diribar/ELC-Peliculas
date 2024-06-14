@@ -1,0 +1,15 @@
+<section>
+	<h3>Historial de status:</h3>
+	<table>
+		<tbody>
+			<% for (let reg of historialStatus) { %>
+			<tr>
+				<td id="fecha"><%= reg.fecha %></td>
+				<td>-</td>
+				<td id="status"><b><%= reg.status %></b><em><%= reg.comentario %></em></td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+</section>
+<%- codigo != "eliminar" ? include("FM1-Comentario") : "" %>

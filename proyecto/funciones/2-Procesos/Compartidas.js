@@ -729,8 +729,8 @@ module.exports = {
 					: (solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
 			}
 
-			// Si corresponde, actualiza el solapamiento en la tabla
-			if (solapamiento) BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true});
+			// Si corresponde, actualiza el solapamiento en la tabla - es crítico su 'await'
+			if (solapamiento) espera.push(BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true}));
 
 			// Actualiza la tabla 'fechasDelAno'
 			const IDs = fechasDelAnoSolap.filter((n) => n.epocaDelAno_id == epocaDelAno.id).map((n) => n.id); // obtiene los IDs de las fechas de la epocaDelAno

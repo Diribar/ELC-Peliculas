@@ -5,7 +5,7 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inacRecupElimForm: async (req, res) => {
+	inacRecupElim_form: async (req, res) => {
 		// Tema y Código
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const codigo1 = ruta.slice(1, -1);
@@ -19,7 +19,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const userID = req.session.usuario.id;
-		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV;
+		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, historialStatus;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -76,11 +76,9 @@ module.exports = {
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazar") motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
-		// Comentario del rechazo
-		const comentarios =
-			inactivarRecuperar || ["recuperar", "eliminar"].includes(codigo)
-				? await procesos.obtieneElHistorialDeStatus({entidad, ...original})
-				: [];
+		// Recuperar/Eliminar y Revisiones - completa el historial de status
+		if (!activos_ids.includes(original.statusRegistro_id))
+			historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...original});
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -91,23 +89,31 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familia, comentarios, urlActual, registro: original},
+			...{entidad, id, entidadNombre, familia, historialStatus, urlActual, registro: original},
 			...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
 	},
-	inacRecupGuardar: async (req, res) => {
+	inacRecup_guardar: async (req, res) => {
 		//  iniciales
 		let datos = await obtieneDatos(req);
 		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
+		let comentInactivo;
 
 		// Acciones con comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
-		if (codigo == "inactivar") {
-			const motivo = motivosStatus.find((n) => n.id == motivo_id);
-			if (!motivo.agregarComent) comentario = ""; // comentario no solicitado
-		}
 		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Acciones particulares si el nuevo status es 'inactivar_id'
+		if (codigo == "inactivar") {
+			// Si el comentario está restringido, lo descarta
+			const motivo = motivosStatus.find((n) => n.id == motivo_id);
+			if (!motivo.agregarComent) comentario = "";
+
+			// Guarda el comentario para usar en el 'bloqueRegistro'
+			comentInactivo = comentario ? comentario : motivo.descripcion;
+			procesos.actualizaAgregaComentario({entidad, entidad_id: id, comentario: comentInactivo});
+		}
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
@@ -166,7 +172,7 @@ module.exports = {
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(destino);
 	},
-	eliminaGuardar: async (req, res) => {
+	elimina_guardar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -202,7 +208,7 @@ module.exports = {
 		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Actualiza solapamiento y la variable 'fechasDelAno'
-		if (entidad == "epocasDelAno") await comp.actualizaSolapam();
+		if (entidad == "epocasDelAno") comp.actualizaSolapam();
 
 		// Guarda la información para la próxima vista durante 5 segundos
 		const nombre = comp.nombresPosibles(original);
@@ -213,7 +219,7 @@ module.exports = {
 		// Fin
 		return res.redirect("/" + familia + "/eliminado");
 	},
-	eliminado: (req, res) => {
+	eliminado_form: (req, res) => {
 		// Variables
 		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
 		if (!entidad) return res.redirect("/");

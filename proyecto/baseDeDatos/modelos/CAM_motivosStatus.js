@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		descripcion: {type: dt.STRING(33)},
-		codigo: {type: dt.STRING(15)},
+		//codigo: {type: dt.STRING(15)},
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},

@@ -489,12 +489,12 @@ module.exports = {
 				: "rechazar";
 
 			// Averigua si la sugerencia fue aprobada
-			const aprob = subcodigo != "rechazar" && !desaprueba;
+			const aprobado = subcodigo != "rechazar" && !desaprueba;
 
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
-				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+				(!aprobado && subcodigo != "inactivar") || (aprobado && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 					? inactivo_id
 					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
 					? aprobado_id // si es un RCLV, se aprueba
@@ -509,14 +509,7 @@ module.exports = {
 				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
 
 			// Obtiene el comentario
-			let comentario = "";
-			if (req.body.comentario) comentario = req.body.comentario;
-			else {
-				const condicion = {entidad, entidad_id: id};
-				comentario = await BD_genericas.obtienePorCondicionElUltimo("histStatus", condicion).then((n) =>
-					n && n.comentario ? n.comentario : ""
-				);
-			}
+			let comentario = req.body.comentario ? req.body.comentario : "";
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Datos para la controladora
@@ -527,12 +520,12 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const {baseUrl} = comp.reqBasePathUrl(req);
 			const userID = original.statusSugeridoPor_id;
-			const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
+			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
-				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprob},
+				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado},
 				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},
@@ -711,12 +704,14 @@ module.exports = {
 
 			// Acciones si se aprobó el campo
 			if (aprob) {
-				// 1. Actualiza el registro 'original'
+				// 1. Prepara la info a guardar
 				datos[campo] = edicion[campo];
 				if (campo == "anoEstreno") datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
+
+				// 2. Actualiza el registro 'original'
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
-				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
+				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
 				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
 			}
 

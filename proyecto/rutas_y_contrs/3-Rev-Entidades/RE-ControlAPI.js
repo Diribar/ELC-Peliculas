@@ -12,21 +12,14 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
+		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
-		let statusAprob;
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		let statusAprob, reload;
 
 		// Obtiene el registro editado
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
-
-		// PROBLEMAS
-		// 1. No existe la edición
-		if (!edicion) return res.json({mensaje: "No se encuentra la edición"});
-		// 2. No existe el campo a analizar
-		if (edicion[campo] === null) return res.json({mensaje: "El campo no está pendiente para procesar"});
-		// 3. Rechazado sin motivo
-		if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
 
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
@@ -34,6 +27,15 @@ module.exports = {
 
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
+
+		// Campos especiales - RCLVs
+		if (familias == "rclvs") {
+			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
+				await BD_genericas.actualizaPorId(entidad, entID, {anoFM: null}); // debe serlo por el eventual solapamiento
+				BD_genericas.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
+			}
+		}
 
 		// Entre otras tareas, actualiza el original si fue aprobada la sugerencia, y obtiene la edición en su mínima expresión
 		const objeto = {entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id};
@@ -47,11 +49,10 @@ module.exports = {
 		}
 
 		// Actualiza el solapamiento
-		if (entidad == "epocasDelAno" && ["fechaDelAno_id", "diasDeDuracion"].includes(campo) && aprob)
-			await comp.actualizaSolapam();
+		if (entidad == "epocasDelAno" && aprob) comp.actualizaSolapam();
 
 		// Fin
-		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
+		return res.json({OK: true, quedanCampos: !!edicion, statusAprob, reload});
 	},
 	actualizaVisibles: (req, res) => {
 		// Variables

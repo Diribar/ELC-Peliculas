@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 12/jun",
-	"HoraUTC": "14:18",
+	"FechaUTC": "Vie. 14/jun",
+	"HoraUTC": "10:27",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mié. 12/jun",
@@ -26,7 +26,7 @@
 		"EliminaLinksInactivos": "SI",
 		"EliminaCalifsSinPPP": "SI",
 		"EliminaImagenesSinRegistro": "SI",
-		"EliminaHistorialSinEntidad_id": "SI",
+		"EliminaRegsSinEntidad_id": "SI",
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"LinksEnColes": "SI"
@@ -42,5 +42,5 @@
 		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
-	"ImagenesDerecha": {"10-jun-24": {}, "11-jun-24": {}, "12-jun-24": {}, "13-jun-24": {}, "14-jun-24": {}}
+	"ImagenesDerecha": {"12-jun-24": {}, "13-jun-24": {}, "14-jun-24": {}, "15-jun-24": {}, "16-jun-24": {}}
 }

@@ -5,10 +5,6 @@
 	#recuadroDL #informacion {
 		display: flex; flex-direction: row; justify-content: space-between;
 		margin-bottom: 20px;
-		ul {
-			padding-right: 10px; max-width: 260px;
-			li {margin-top: 3px;}
-		}
 		#comentario {
 			margin-left: 15px;
 			h3 {
@@ -28,14 +24,8 @@
 		&:has(.inactivar, .rechazar, .eliminar) {
 			background: var(--rojo-claro) !important;
 			#encabezado {background: var(--rojo-oscuro);}
-			/* :is(#informacion, select) {color: var(--rojo-oscuro);} */
+			:is(#informacion, select) {color: var(--rojo-oscuro);}
 		}
-		&:has(.recuperar) {
-			background: var(--verde-claro) !important;
-			#encabezado {background: var(--verde-oscuro);}
-			/* :is(#informacion, select) {color: var(--verde-oscuro);} */
-		}
-
 	}
 
 	/* Botones */
