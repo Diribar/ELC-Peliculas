@@ -164,14 +164,8 @@ module.exports = {
 					: null;
 			if (statusFinal_id == inactivo_id) comentario = motivo.descripcion;
 		}
-		if (statusAct == creadoAprob_id) {
-			statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
-			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
-		}
-		if (statusAct == aprobado_id) {
-			statusFinal_id = inactivar_id;
-			comentario = motivo.descripcion;
-		}
+		if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+		if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
 		if (statusAct == inactivar_id) statusFinal_id = inactivo_id;
 		if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
 
@@ -182,7 +176,6 @@ module.exports = {
 
 		// Agrega otros datos
 		if (statusFinal_id == statusSig) {
-			console.log(177, {statusFinal_id});
 			if (!statusFinalPor_id)
 				statusFinalPor_id = buscarDelProdRCLV
 					? statusSugeridoPor_id // del producto
@@ -204,14 +197,16 @@ module.exports = {
 			...{statusOriginal_id, statusOriginal, statusOriginalPor_id, statusOriginalEn},
 			...{statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn},
 		};
-		//console.log(198, {statusOriginal_id, statusFinal_id, statusOriginalEn, statusFinalEn});
 
 		// Se fija si corresponde guardar el último registro en la BD
 		if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
 			await BD_genericas.agregaRegistro("histStatus", sigReg);
 
-		// Agrega el registro al historial
+		// Procesa el comentario
+		if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
 		if (comentario) sigReg.comentario = comentario;
+
+		// Agrega el registro al historial
 		historialStatus.splice(contador + 1, 0, sigReg);
 
 		// Fin
