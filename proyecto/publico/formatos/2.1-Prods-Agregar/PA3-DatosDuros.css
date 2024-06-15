@@ -24,6 +24,7 @@
 #dataEntry .inputError :is(input.input, textarea) {padding: 0px 5px;}
 #dataEntry .inputError input.input.angosto {width: 90px;}
 #dataEntry .inputError textarea {padding: 0px 5px; resize: vertical; max-height: 45px; min-height: 18px;}
+#datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Temas de input 'número' */
 #dataEntry .inputError .numero {width: 90px !important; text-align: right;}
