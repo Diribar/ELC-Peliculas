@@ -9,7 +9,7 @@
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
-					<%- include("CMP-Ayuda", {mensajes: personajes || hechos ? ["El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.", "El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera."] : ["Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación."], id: "ayudaNombrePers" }) %>
+					<%- include("CMP-Ayuda", {mensajes: personajes || hechos ? ["El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.", "El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera."] : ["Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación."], ulId: "ayudaNombrePers" }) %>
 					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
