@@ -1,6 +1,6 @@
 /* Compartir y mostrar preferencias */
 #tituloPrincipal #iconosDelTitulo {margin-top: 15px;}
-#iconosDelTitulo :is(.ayudaOpciones, .iconosAzules) {margin-left: 15px;}
+#iconosDelTitulo :is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
 #iconosDelTitulo .iconosAzules {display: flex; flex-direction: row; position: relative;}
 #iconosDelTitulo .iconosAzules {width: 25px; height: 25px; border-radius: 50%;}
 #iconosDelTitulo .iconosAzules {justify-content: center; align-items: center; z-index: 1;}
@@ -23,8 +23,8 @@
 #tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
 
 /* Ayuda y Actualizar */
-#tituloPrincipal .ayudaOpciones {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
-#tituloPrincipal .ayudaOpciones ul li span {color: var(--amarillo-claro); font-variant: small-caps}
+#tituloPrincipal .ayuda.consulta {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
+#tituloPrincipal .ayuda.consulta ul li span {color: var(--amarillo-claro); font-variant: small-caps}
 
 /* Contador */
 #derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
