@@ -691,7 +691,7 @@ module.exports = {
 		resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 		// Si el registro está inactivo, le agrega el motivo
-		if (registro.statusRegistro_id == inactivar_id) {
+		if (registro.statusRegistro_id == inactivo_id) {
 			const comentario = await FN.comentarioBR(registro);
 			resultado.push({comentario});
 		}
