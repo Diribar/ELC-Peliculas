@@ -1,6 +1,6 @@
 <!-- Ayuda -->
-<div class="ayuda">
-	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
+<% if (!locals.ocultarAyuda) { %><div class="ayuda"><% } %>
+	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick<%- locals.iclass ? (' ' + iclass) : '' %>">
 		<% const tipoTexto = !!locals.mensaje %>
 		<ul <% if (locals.id) { %>id="<%= id %>"<% } %> class="ayudaMensForm ayudaMensMostrar ocultar" type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
 			<% if (tipoTexto) { %>
@@ -10,4 +10,4 @@
 			<% } %>
 		</ul>
 	</i>
-</div>
+<% if (!locals.ocultarAyuda) { %></div><% } %>
