@@ -4,7 +4,7 @@
 		#cuerpo {
 			#vistaDeResults {#scroll #botones:has(li) {flex-wrap: wrap;}}
 			#iconosDelTitulo #ayudaOpciones {display: none;}
-			#layoutAyuda #ayudaOpciones i.ayudaClick {font-size: 1.2rem;}
+			#layoutAyuda #ayudaOpciones i.ayudaIconoForm {font-size: 1.2rem;}
 		}
 		#imgDerecha {position: relative;}
 	}
@@ -48,7 +48,7 @@
 					#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
 					#layoutAyuda #ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
 					#iconosDelTitulo #ayudaOpciones {
-						i.ayudaClick {font-size: 1.6rem;}
+						i.ayudaIconoForm {font-size: 1.6rem;}
 						.ayudaMostrar {
 							max-width: 82vw; top: -20px;
 							&::before {top: 25px;}

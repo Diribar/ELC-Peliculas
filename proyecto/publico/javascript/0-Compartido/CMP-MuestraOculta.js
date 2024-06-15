@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	const clicks = document.querySelectorAll(".desplClick");
+	const clicks = document.querySelectorAll(".ayudaClick");
 	const mostrar = document.querySelectorAll(".desplMostrar");
 
 	// Otras variables

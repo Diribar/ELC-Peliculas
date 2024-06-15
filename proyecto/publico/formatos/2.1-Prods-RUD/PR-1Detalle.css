@@ -4,7 +4,7 @@
 /* Links */
 #links {
 	display: flex; align-items: center;
-	:is(.ayudaClick, :is(button, nav select)) {font-size: 1.3rem;}
+	:is(.ayudaIconoForm, :is(button, nav select)) {font-size: 1.3rem;}
 	nav {
 		display: flex;
 		select {

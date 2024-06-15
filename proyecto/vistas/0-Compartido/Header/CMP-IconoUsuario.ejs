@@ -2,7 +2,7 @@
 	<% if (locals.usuario) { %>
 		<div id="imagenUsuario">
 			<% const avatarUsuario = usuario.avatar ? ("/Externa/1-Usuarios/"+ usuario.avatar) : "/publico/imagenes/Avatar/Usuario-SinRostro.jpg" %>
-			<img src="<%= avatarUsuario %>" class="desplClick">
+			<img src="<%= avatarUsuario %>" class="ayudaClick">
 		</div>
 	<% } else { %>
 		<a href="/usuarios/login">

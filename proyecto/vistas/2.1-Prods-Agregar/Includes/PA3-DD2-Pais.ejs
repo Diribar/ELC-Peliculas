@@ -5,7 +5,7 @@
 		<!-- Lugar donde almacenar los ID -->
 		<input name="paises_id" type="text" <% if (inputOK) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input" tabindex="-1">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paisesNombre %>" <% if (inputOK) { %>disabled class="desplClick"<% } %> placeholder="Elegí un país" tabindex="-1">
+		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paisesNombre %>" <% if (inputOK) { %>disabled class="ayudaClick"<% } %> placeholder="Elegí un país" tabindex="-1">
 		<!-- Opciones de países -->
 		<% if (!inputOK) { %>
 			<select name="paises" tabindex="-1">

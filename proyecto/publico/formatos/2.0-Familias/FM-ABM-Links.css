@@ -87,8 +87,8 @@ main {
 #datosLargos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 #datosLargos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
 #datosLargos tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
-#datosLargos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
-#datosLargos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
+#datosLargos tbody tr td.ancho_accion .ayudaIconoForm .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
+#datosLargos tbody tr td.ancho_accion .ayudaIconoForm .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
 
 /* Comandos - Particularidades */
 #cuerpo .iconos.img {padding-left: 5px; padding-right: 5px;}

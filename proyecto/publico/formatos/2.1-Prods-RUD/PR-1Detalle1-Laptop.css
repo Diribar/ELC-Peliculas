@@ -6,7 +6,7 @@
 			/* Links */
 			#informacion #links {
 				flex-direction: row; justify-content: flex-start; padding: 10px 20px; margin-bottom: 20px;
-				:is(.ayudaClick, nav :is(button, select)) {font-size: 1.07rem;}
+				:is(.ayudaIconoForm, nav :is(button, select)) {font-size: 1.07rem;}
 				nav {
 					flex-direction: row;
 					:is(button, select) {height: 20px;}
