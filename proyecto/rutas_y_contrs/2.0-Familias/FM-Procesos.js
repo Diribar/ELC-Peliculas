@@ -105,7 +105,7 @@ module.exports = {
 			// Agrega el primer registro, con status 'creado_id'
 			historialStatus.unshift({
 				statusFinal_id: creado_id,
-				statusFinal: {nombre: "Creado"},
+				statusFinal: {nombre: "Creado", codigo: "creado"},
 				statusFinalPor_id: creadoPor_id,
 				statusFinalEn: creadoEn,
 			});
@@ -167,14 +167,15 @@ module.exports = {
 			}
 			if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
 			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
-			if (statusAct == inactivar_id) statusFinal_id = inactivo_id;
+			if (statusAct == inactivar_id) statusFinal_id = statusSig != aprobado_id ? inactivo_id : aprobado_id;
 			if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
-			if (statusAct == recuperar_id) statusFinal_id = aprobado_id;
+			if (statusAct == recuperar_id) statusFinal_id = statusSig != inactivo_id ? aprobado_id : inactivo_id;
 
 			// Agrega el nombre del statusFinal
 			if (!statusFinal_id) return historialStatus;
 			const {nombre} = statusRegistros.find((n) => n.id == statusFinal_id);
-			statusFinal = {nombre};
+			const {codigo} = statusRegistros.find((n) => n.id == statusFinal_id);
+			statusFinal = {nombre, codigo};
 
 			// Agrega 'statusFinalPor_id' y 'statusFinalEn'
 			if (statusFinal_id == statusSig && !statusFinalPor_id)
@@ -216,15 +217,16 @@ module.exports = {
 			historialStatus.forEach((reg, i) => {
 				// Variables
 				const {statusFinalEn} = reg;
+				const statusCodigo = reg.statusFinal.codigo;
 				const dia = statusFinalEn.getDate();
 				const mes = statusFinalEn.getMonth() + 1;
 				const ano = String(statusFinalEn.getFullYear()).slice(-2);
 				const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
 				const fechaNombre = fechaDelAno.nombre;
 				const fecha = fechaNombre + "/" + ano;
-				const status = reg.statusFinal.nombre;
+				const statusNombre = reg.statusFinal.nombre;
 				const comentario = reg.comentario ? " - " + reg.comentario : "";
-				historialStatus[i] = {fecha, status, comentario};
+				historialStatus[i] = {statusCodigo, fecha, statusNombre, comentario};
 			});
 
 			// Fin

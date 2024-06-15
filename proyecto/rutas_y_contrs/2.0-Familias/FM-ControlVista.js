@@ -74,7 +74,7 @@ module.exports = {
 		imgDerPers = procesos.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazar") motivos = motivosStatus.filter((n) => n[petitFamilias]);
+		if (["inactivar", "rechazar"].includes(codigo)) motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
 		// Recuperar/Eliminar y Revisiones - completa el historial de status
 		if (!activos_ids.includes(original.statusRegistro_id))

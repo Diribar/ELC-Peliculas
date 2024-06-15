@@ -4,9 +4,9 @@
 		<tbody>
 			<% for (let reg of historialStatus) { %>
 			<tr>
-				<td id="fecha"><%= reg.fecha %></td>
+				<td class="fecha"><%= reg.fecha %></td>
 				<td>-</td>
-				<td id="status"><b><%= reg.status %></b><em><%= reg.comentario %></em></td>
+				<td id="<%= reg.statusCodigo %>" class="status"><b><%= reg.statusNombre %></b><em><%= reg.comentario %></em></td>
 			</tr>
 			<% } %>
 		</tbody>
