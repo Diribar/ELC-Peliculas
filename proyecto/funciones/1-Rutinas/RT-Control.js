@@ -51,6 +51,7 @@ module.exports = {
 			await this.rutinasHorarias[rutina]();
 			procesos.finRutinasHorarias(rutina);
 		}
+		console.log("Fin de rutinas horarias");
 
 		// Fin
 		return;
@@ -67,6 +68,7 @@ module.exports = {
 			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
 			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias"); // actualiza el archivo JSON
 		}
+		console.log("Fin de rutinas diarias");
 
 		// Fin
 		return;
@@ -81,6 +83,7 @@ module.exports = {
 			await this.rutinasSemanales[rutinaSemanal]();
 			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales");
 		}
+		console.log("Fin de rutinas semanales");
 
 		// Fin
 		return;
