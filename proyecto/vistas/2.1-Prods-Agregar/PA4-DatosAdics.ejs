@@ -36,9 +36,9 @@
 			<div class="flexRowAlign inputError">
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!-- Ayuda para un RCLV -->
-				<%- include("CMP-Ayuda", {mensajes: ["Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.", "Necesitamos que respondas por lo menos uno de los campos."], iclass: "ocultaAyudaRCLV", ocultarAyuda: true}) %>
+				<%- include("CMP-Ayuda", {mensajes: ["Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.", "Necesitamos que respondas por lo menos uno de los campos."], iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
 				<!-- Ayuda para más RCLVs -->
-				<%- include("CMP-Ayuda", {mensaje: "Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.", iclass: "ocultaAyudaRCLV", ocultarAyuda: true}) %>
+				<%- include("CMP-Ayuda", {mensaje: "Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.", iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
 				<div id="errorRCLV" class="ocultar">
 					<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
 				</div>
