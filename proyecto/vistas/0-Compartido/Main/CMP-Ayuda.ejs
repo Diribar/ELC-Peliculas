@@ -1,13 +1,19 @@
+<% const tipoTexto = !!locals.mensaje %>
+
 <!-- Ayuda -->
-<% if (!locals.ocultarAyuda) { %><div class="ayuda"><% } %>
+<div class="ayuda <%- locals.ayudaClass ? ayudaClass : 'absolute' %>">
 	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick<%- locals.iclass ? (' ' + iclass) : '' %>">
-		<% const tipoTexto = !!locals.mensaje %>
-		<ul <% if (locals.id) { %>id="<%= id %>"<% } %> class="ayudaMensForm ayudaMensMostrar ocultar" type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
-			<% if (tipoTexto) { %>
-				<li><%- mensaje %></li>
-			<% } else for (let mensaje of mensajes) { %>
-				<li><%- mensaje %></li>
+		<div class="ayudaMensForm ayudaMensMostrar ocultar">
+			<% if (locals.parrafo) { %>
+				<p><%- parrafo %></p>
 			<% } %>
-		</ul>
+			<ul <% if (locals.ulId) { %>id="<%= ulId %>"<% } %> type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
+				<% if (tipoTexto) { %>
+					<li><%- mensaje %></li>
+				<% } else for (let mensaje of mensajes) { %>
+					<li><%- mensaje %></li>
+				<% } %>
+			</ul>
+		</div>
 	</i>
-<% if (!locals.ocultarAyuda) { %></div><% } %>
+</div>
