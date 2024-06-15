@@ -32,7 +32,7 @@
 			<div <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
 				<b><%= campo.titulo %>:</b>
 				<span><%= campo.valor %></span>
-				<%- (campo.titulo.startsWith("Status") && comentario) ? include("CMP-Ayuda", {mensaje: comentario, ocultarAyuda: true}) : null %>
+				<%- (campo.titulo.startsWith("Status") && comentario) ? include("CMP-Ayuda", {mensaje: comentario, ayudaClass: "nada"}) : null %>
 			</div>
 		<% } %>
 	</div>
