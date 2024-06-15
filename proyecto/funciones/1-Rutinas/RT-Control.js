@@ -31,7 +31,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.FeedbackParaUsers();
-		// await this.rutinasDiarias.IDdeTablas()
+		// await this.rutinasDiarias.ImagenDerecha()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -311,7 +311,7 @@ module.exports = {
 			// Limpia el historial de ImagenesDerecha en 'global'
 			ImagenesDerecha = {};
 
-			// Actualiza los títulos de la imagen derecha para cada fecha y descarga las imágenes nuevas
+			// Actualiza los títulos de la imagen derecha para cada fecha y guarda las imágenes nuevas
 			for (let i = 0; i < cantFechas; i++) {
 				// Variables
 				const fechaNum = fechaInicial + unDia * i;
