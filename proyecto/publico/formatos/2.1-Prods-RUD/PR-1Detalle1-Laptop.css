@@ -13,7 +13,7 @@
 					:is(a, select) {margin-right: 10px;}
 					button#primerCap {padding: 2px 5px; border-radius: 5px; font-weight: bold; background: var(--gris-oscuro); color: snow; border: none;}
 				}
-				#ayudaLinks {
+				.ayuda.links {
 					margin-right: 10px;
 					.ayudaMensForm {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
 					.ayudaMensForm::before {left: 0; top: 25px; translate: -100% 0; right: auto;}
