@@ -487,7 +487,6 @@ module.exports = {
 				"pppRegistros",
 				"prodsEdicion",
 				"rclvsEdicion",
-				"comentsInactivos",
 			];
 
 			// Actualiza los valores de ID
@@ -558,7 +557,7 @@ module.exports = {
 		},
 		EliminaRegsSinEntidad_id: async () => {
 			// Variables
-			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros", "comentsInactivos"];
+			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
