@@ -2,7 +2,7 @@
 <div class="ayuda">
 	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
 		<% const tipoTexto = !!locals.mensaje %>
-		<ul type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>" class="ayudaMensForm ayudaMensMostrar ocultar">
+		<ul <% if (locals.id) { %>id="<%= id %>"<% } %> class="ayudaMensForm ayudaMensMostrar ocultar" type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
 			<% if (tipoTexto) { %>
 				<li><%- mensaje %></li>
 			<% } else for (let mensaje of mensajes) { %>
