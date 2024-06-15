@@ -1,10 +1,1 @@
-<div id="ayudaOpciones">
-	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-		<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-			<p>Para las opciones de <b>Cuatro Películas</b>, los resultados con fondo amarillo tienen relación con la <em>Iglesia Católica</em>.</p>
-			<% for (let ayuda of ayudas) { %>
-				<li><span><%= ayuda.nombre %></span>: <%= ayuda.comentario %>.</li>
-			<% } %>
-		</ul>
-	</i>
-</div>
+<%- include("CMP-Ayuda", {ayudaClass: "ayudaOpciones", parrafo: "Para las opciones de <b>Cuatro Películas</b>, los resultados con fondo amarillo tienen relación con la <em>Iglesia Católica</em>.", mensajes: ayudas.map(ayuda => "<span>" + ayuda.nombre + "</span>: " + ayuda.comentario + ".")}) %>
