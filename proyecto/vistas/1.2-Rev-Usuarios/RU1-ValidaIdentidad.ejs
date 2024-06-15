@@ -2,15 +2,7 @@
 <section id="tituloPrincipal">
 	<!-- Título y Ayuda -->
 	<h1 id="titulo"><%= titulo %></h1>
-	<!-- Ayuda -->
-	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-			<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-				<li>Necesitamos que nos digas si los datos coinciden con el documento.</li>
-				<li>Si el documento no corresponde, te vamos a pedir que nos digas el motivo.</li>
-			</ul>
-		</i>
-	</div>
+	<%- include("CMP-Ayuda", {mensajes: ["Necesitamos que nos digas si los datos coinciden con el documento.", "Si el documento no corresponde, te vamos a pedir que nos digas el motivo."]}) %>
 </section>
 <form method="POST" id="subCuerpo" class="flexCol">
 	<section id="datos" class="bordeConSombra">

@@ -4,15 +4,7 @@
 		<!-- Título y Ayuda -->
 		<div id="tituloSecundario">
 			<h2>Paso 3 de 5: Datos a completar</h2>
-			<!-- Ayuda -->
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-					<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-						<li>Los links arriba de la imagen son para conseguir la información que no disponemos.</li>
-						<li>Si no conseguís algún dato, podés poner <em>Desconocido</em>.</li>
-					</ul>
-				</i>
-			</div>
+			<%- include("CMP-Ayuda", {mensajes: ["Los links arriba de la imagen son para conseguir la información que no disponemos.", "Si no conseguís algún dato, podés poner <em>Desconocido</em>."]}) %>
 		</div>
 		<!-- Links a otras páginas de consulta -->
 		<div class="flexCol" id="links">

@@ -3,15 +3,7 @@
 	<!-- Título y Ayuda -->
 	<div id="tituloSecundario">
 		<h2>Paso 4 de 5: Datos Adicionales</h2>
-		<!-- Ayuda -->
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-				<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-					<li>Necesitamos que nos des la información que no disponemos.</li>
-					<li>Para cada dato, te sugerimos que consultes las ayudas.</li>
-				</ul>
-			</i>
-		</div>
+		<%- include("CMP-Ayuda", {mensajes: ["Necesitamos que nos des la información que no disponemos.", "Para cada dato, te sugerimos que consultes las ayudas."]}) %>
 	</div>
 	<!-- Datos -->
 	<section id="datos">

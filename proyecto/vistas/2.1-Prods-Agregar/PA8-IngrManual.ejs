@@ -26,15 +26,7 @@
 					<select name="coleccion_id" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-								<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-								<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensajes: ["Buscá entre las colecciones que tenemos en nuestra Base de Datos", "Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo"]}) %>
 				</div>
 				<h3>Número de Temporada</h3>
 				<div class="inputError">
@@ -42,28 +34,14 @@
 					<select name="temporada" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-								<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensaje: "Se muestran todas las temporadas según nuestra base de datos, y una más"}) %>
 				</div>
 				<h3>Número de Capítulo</h3>
 				<div class="inputError">
 					<select name="capitulo" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="none">
-								<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensaje: "Se muestran solamente los capítulos que no tenemos en nuestra base de datos"}) %>
 				</div>
 			</div>
 		</section>
