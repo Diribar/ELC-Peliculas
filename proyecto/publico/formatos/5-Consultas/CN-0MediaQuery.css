@@ -3,8 +3,8 @@
 	#cuerpoFooterImgDer {
 		#cuerpo {
 			#vistaDeResults {#scroll #botones:has(li) {flex-wrap: wrap;}}
-			#iconosDelTitulo #ayudaOpciones {display: none;}
-			#layoutAyuda #ayudaOpciones i.ayudaIconoForm {font-size: 1.2rem;}
+			#iconosDelTitulo .ayudaOpciones {display: none;}
+			#layoutAyuda .ayudaOpciones i.ayudaIconoForm {font-size: 1.2rem;}
 		}
 		#imgDerecha {position: relative;}
 	}
@@ -46,8 +46,8 @@
 				/* Encabezado */
 				#tituloPrincipal {
 					#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
-					#layoutAyuda #ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
-					#iconosDelTitulo #ayudaOpciones {
+					#layoutAyuda .ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
+					#iconosDelTitulo .ayudaOpciones {
 						i.ayudaIconoForm {font-size: 1.6rem;}
 						.ayudaMensForm {
 							max-width: 82vw; top: -20px;
