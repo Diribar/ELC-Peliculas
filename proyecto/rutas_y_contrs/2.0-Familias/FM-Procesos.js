@@ -693,7 +693,7 @@ module.exports = {
 		// Si el registro está inactivo, le agrega el motivo
 		if (registro.statusRegistro_id == inactivo_id) {
 			const comentario = await FN.comentarioBR(registro);
-			resultado.push({titulo: "Motivo", valor: comentario});
+			resultado.push({comentario});
 		}
 
 		// Fin

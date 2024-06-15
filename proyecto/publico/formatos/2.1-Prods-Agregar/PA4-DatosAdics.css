@@ -10,7 +10,7 @@
 			.columna {
 				h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
 				.altoFila {height: 25px;}
-				.inputError .ayudaMostrar {max-width: 400px;}
+				.inputError .ayudaMensForm {max-width: 400px;}
 				.labelSelect {
 					display: flex; flex-direction: row; justify-content: space-between;
 					margin-top: 5px;

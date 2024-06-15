@@ -49,7 +49,7 @@
 					#layoutAyuda #ayudaOpciones {display: none;} /* oculta la ayuda al lado del título */
 					#iconosDelTitulo #ayudaOpciones {
 						i.ayudaIconoForm {font-size: 1.6rem;}
-						.ayudaMostrar {
+						.ayudaMensForm {
 							max-width: 82vw; top: -20px;
 							&::before {top: 25px;}
 						}

@@ -3,7 +3,7 @@
 <% if (campo.mensajes) { %>
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-			<ul type="<%- campo.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar desplMostrar">
+			<ul type="<%- campo.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMensForm ocultar ayudaMensMostrar">
 				<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %>
 			</ul>
 		</i>

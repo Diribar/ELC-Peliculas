@@ -20,7 +20,7 @@ main #cuerpo #primeraColumna {z-index: 7;}
 main #cuerpo :where(.ayuda, #centro #medio, .inputError #mostrarPaises) {z-index: 1;}
 
 /* Ayuda */
-main #cuerpo .inputError .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
+main #cuerpo .inputError .ayuda .ayudaMensForm, .ayudaMensForm {z-index: 5;}
 main #cuerpo .inputError .ayuda {z-index: 3;}
 
 /* Errores */

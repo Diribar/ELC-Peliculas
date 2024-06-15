@@ -16,17 +16,30 @@
 		<h3>Datos de<%= articulo + entidadNombre %></h3>
 		<div id="texto">
 			<% for (campo of bloqueDer.rclv) { %>
-				<p><b><%- campo.titulo ? (campo.titulo + ': ') : '' %></b> <span><%= campo.valor %></span></p>
+				<div>
+					<b><%- campo.titulo ? (campo.titulo + ': ') : '' %></b>
+					<span><%= campo.valor %></span>
+				</div>
 			<% } %>
 		</div>
 	<% } %>
 
 	<h3>Datos del Registro</h3>
 	<div id="texto">
+		<% const {comentario} = bloqueDer.registro.slice(-1)[0] %>
 		<% for (campo of bloqueDer.registro) { %>
-			<p <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
-				<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
-			</p>
+			<% if (!campo.titulo) continue %>
+			<div <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
+				<b><%= campo.titulo %>:</b>
+				<span><%= campo.valor %></span>
+				<% if (campo.titulo.startsWith("Status") && comentario) { %>
+					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
+						<ul type="none" class="ayudaMensForm ayudaMensMostrar ocultar">
+							<li><%= comentario %></li>
+						</ul>
+					</i>
+				<% } %>
+			</div>
 		<% } %>
 	</div>
 
@@ -34,7 +47,7 @@
 		<h3 class="titulo">Datos del Usuario</h3>
 		<div id="texto">
 			<% for (campo of bloqueDer.usuario) { %>
-				<p class="datosUsuario"><b><%= campo.titulo %>:</b> <span><%= campo.valor %></span></p>
+				<div class="datosUsuario"><b><%= campo.titulo %>:</b> <span><%= campo.valor %></span></div>
 			<% } %>
 		</div>
 	<% } %>

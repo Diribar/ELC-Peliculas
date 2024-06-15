@@ -14,9 +14,9 @@ form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
 form h1 {font-size: 1.5em; text-align: center;}
 
 /* Ayudas */
-.ayudaMostrar {top: auto; bottom: -5px; translate: 0 100%;}
-.ayudaMostrar::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
-.ayudaMostrar::before {top: 0; translate: 0 -100%; left: auto;}
+.ayudaMensForm {top: auto; bottom: -5px; translate: 0 100%;}
+.ayudaMensForm::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
+.ayudaMensForm::before {top: 0; translate: 0 -100%; left: auto;}
 
 /* Input del formulario */
 #datos .labelInput, form .labelInput {justify-content: space-between; margin: 20px 10px 0px; align-items: center}

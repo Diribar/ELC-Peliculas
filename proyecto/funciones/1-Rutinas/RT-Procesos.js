@@ -748,11 +748,11 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == 1) continue;
 
 		// Condicion
-		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: [null, anoHoy]};
+		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: {[Op.or]: [null, anoHoy]}}; // es necesario escribir anoFM de esa manera, para que funcione
 		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
-		const registros = BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include).then((n) =>
+		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
 			n.map((m) => ({...m, entidad}))
 		);
 		rclvs.push(registros);

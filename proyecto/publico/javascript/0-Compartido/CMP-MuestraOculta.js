@@ -2,11 +2,11 @@
 window.addEventListener("load", () => {
 	// Variables
 	const clicks = document.querySelectorAll(".ayudaClick");
-	const mostrar = document.querySelectorAll(".desplMostrar");
+	const mostrar = document.querySelectorAll(".ayudaMensMostrar");
 
 	// Otras variables
-	const busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .desplMostrar");
-	const busquedaRapida_input = document.querySelector("header #busquedaRapida .desplMostrar input");
+	const busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .ayudaMensMostrar");
+	const busquedaRapida_input = document.querySelector("header #busquedaRapida .ayudaMensMostrar input");
 
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {

@@ -17,14 +17,26 @@
 
 		#texto {
 			margin: 0 5px;
-			p {
-				margin-top: 10px;
+			&>div {
+				margin-top: 10px; line-height: 1.2rem;
 				&.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
 			}
-			&:has(#creado, #creadoAprob, #recuperar) p.status span {background: var(--verde-claro); color: var(--verde-oscuro);}
-			&:has(#inactivar) p.status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
-			&:has(#aprobado) p.status span {background: var(--verde-oscuro); color: snow;}
-			&:has(#inactivo) p.status span {background: var(--rojo-oscuro); color: snow;}
+			.status {
+				display: flex; flex-direction: row; align-items: center; position: relative;
+				.ayudaIconoForm {
+					position: static; margin-left: 5px;
+					.ayudaMensForm {
+						top: -1px; right: 50%; translate: 50% -100%;
+						padding-block: 0px;
+						&::before {content: unset;}
+					}
+				}
+			}
+
+			&:has(#creado, #creadoAprob, #recuperar) .status span {background: var(--verde-claro); color: var(--verde-oscuro);}
+			&:has(#inactivar) .status span {background: var(--rojo-claro); color: var(--rojo-oscuro);}
+			&:has(#aprobado) .status span {background: var(--verde-oscuro); color: snow;}
+			&:has(#inactivo) .status span {background: var(--rojo-oscuro); color: snow;}
 		}
 	}
 }

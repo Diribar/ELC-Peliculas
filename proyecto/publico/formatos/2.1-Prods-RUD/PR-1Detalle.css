@@ -30,7 +30,7 @@
 }
 
 /* Links - Ayuda */
-#ayudaLinks .ayudaMostrar {
+#ayudaLinks .ayudaMensForm {
 	& > p em {color: var(--amarillo-oscuro);}
 	ul {list-style-type: none;}
 	i {

@@ -72,7 +72,7 @@
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {
 		position: static; translate: none; margin-top: 10px; margin-left: 10px;
-		.ayudaMostrar {top: -2px; right: -5px; max-width: min(350px, 85vw);}
+		.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 85vw);}
 		i {font-size: 1.5rem;}
 	}
 

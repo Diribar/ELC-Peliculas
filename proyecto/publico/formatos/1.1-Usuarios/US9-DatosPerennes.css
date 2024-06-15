@@ -12,7 +12,7 @@
 				.margenInf {
 					margin-bottom: 3px;
 					label {margin-right: 0;}
-					.ayudaMostrar {
+					.ayudaMensForm {
 						top: auto; bottom: -5px; translate: 0 100%; right: -50px;
 						&::before {
 							border-color: transparent transparent var(--gris-mas-oscuro) transparent;

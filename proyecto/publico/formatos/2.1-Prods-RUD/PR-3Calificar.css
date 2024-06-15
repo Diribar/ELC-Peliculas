@@ -2,8 +2,8 @@
 #cuerpo #datos {--anchoRecuadro: 520px;}
 
 /* Titulo principal */
-#tituloInfoDetalle .ayudaMostrar {max-width: min(195px, 75vw); translate: 100% 0; top: -2px;}
-#tituloInfoDetalle .ayudaMostrar::before {left: 0; top: 4px; translate: -100% 0;}
+#tituloInfoDetalle .ayudaMensForm {max-width: min(195px, 75vw); translate: 100% 0; top: -2px;}
+#tituloInfoDetalle .ayudaMensForm::before {left: 0; top: 4px; translate: -100% 0;}
 
 /* Marco */
 form.marco {display: flex; flex-direction: column; align-items: center;}
