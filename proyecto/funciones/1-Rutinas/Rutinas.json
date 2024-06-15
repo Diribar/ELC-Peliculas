@@ -42,5 +42,11 @@
 		"EliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
-	"ImagenesDerecha": {"13-jun-24": {}, "14-jun-24": {}, "15-jun-24": {}, "16-jun-24": {}, "17-jun-24": {}}
+	"ImagenesDerecha": {
+		"13-jun-24": {"leyenda": "Hoy recordamos Antonio de Padua", "entidad": "personajes", "id": 67},
+		"14-jun-24": {},
+		"15-jun-24": {},
+		"16-jun-24": {"leyenda": "Hoy recordamos las Apariciones del Sagrado Corazón", "entidad": "hechos", "id": 74},
+		"17-jun-24": {"leyenda": "Hoy recordamos Alberto Chmielowski", "entidad": "personajes", "id": 229}
+	}
 }
