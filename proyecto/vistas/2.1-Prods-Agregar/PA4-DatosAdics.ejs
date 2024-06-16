@@ -36,9 +36,9 @@
 			<div class="flexRowAlign inputError">
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!-- Ayuda para un RCLV -->
-				<%- include("CMP-Ayuda", {mensajes: ayudas.rclvs1, iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
+				<%- include("CMP-Ayuda", {mensajes: ayudas.rclvs1, ayudaClass: "ocultar ayudaRclv"}) %>
 				<!-- Ayuda para más RCLVs -->
-				<%- include("CMP-Ayuda", {mensaje: ayudas.rclv2, iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
+				<%- include("CMP-Ayuda", {mensaje: ayudas.rclv2, ayudaClass: "ocultar ayudaRclv"}) %>
 				<div id="errorRCLV" class="ocultar">
 					<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
 				</div>
