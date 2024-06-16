@@ -4,8 +4,8 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		consulta: {type: dt.STRING(35)},
 		nombre: {type: dt.STRING(15)},
-		ayuda_pers: {type: dt.STRING(50)},
-		ayuda_hecho: {type: dt.STRING(50)},
+		ayudaPers: {type: dt.STRING(50)},
+		ayudaHecho: {type: dt.STRING(50)},
 	};
 	const config = {
 		tableName: "rclv_epocas_ocurr",
