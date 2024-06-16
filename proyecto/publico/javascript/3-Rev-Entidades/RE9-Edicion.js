@@ -2,6 +2,11 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
+		// Generales
+		todoElMain: document.querySelector("main #todoElMain"),
+		tapaElFondo: document.querySelector("#todoElMain #tapaElFondo"),
+		datos: document.querySelector("#cuerpo #datos"),
+
 		// Motivos para borrar
 		aprobar: document.querySelectorAll("#contenido .aprobar"),
 		rechazar: document.querySelectorAll("#contenido .rechazar"),
@@ -9,14 +14,22 @@ window.addEventListener("load", async () => {
 		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
 		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .iconos .fa-circle-left"),
-		todoElMain: document.querySelector("#todoElMain"),
-		tapaElFondo: document.querySelector("#tapaElFondo"),
+
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
 		filasIngrs: document.querySelectorAll("#contenido #ingrs .fila"),
+
 		// Bloque Reemplazos
 		bloqueReemps: document.querySelector("#contenido #reemps"),
 		filasReemps: document.querySelectorAll("#contenido #reemps .fila"),
+
+		// Cartel genérico
+		cartelGenerico: document.querySelector("#cartelGenerico"),
+		alerta: document.querySelector("#cartelGenerico #alerta"),
+		check: document.querySelector("#cartelGenerico #check"),
+		mensajes: document.querySelector("#cartelGenerico ul#mensajes"),
+		iconos: document.querySelector("#cartelGenerico #iconosCartel"),
+
 		// Otras variables
 		filas: document.querySelectorAll("#contenido .fila"),
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
@@ -51,62 +64,68 @@ window.addEventListener("load", async () => {
 			const bloqueReempsOculto = !DOM.bloqueReemps || DOM.bloqueReemps.className.includes("ocultar");
 			todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
 
+			// Acciones si está todo procesado
+			if (todoProcesado) {
+				DOM.datos.classList.add("ocultar");
+				this.cartelAveriguandoInconsistencias();
+			}
+
 			// Fin
-			if (todoProcesado) this.cartelAveriguandoInconsistencias();
 			return;
 		},
 		cartelAveriguandoInconsistencias: () => {
-			// Variables
+			// Cambia el contenido del mensaje y los iconos
+			DOM.mensajes.innerHTML = "";
+			DOM.iconos.innerHTML = "";
+
+			// Formatos
+			DOM.cartelGenerico.style.backgroundColor = "var(--verde-oscuro)";
+			DOM.check.classList.remove("ocultar");
+			DOM.alerta.classList.add("ocultar");
 
 			// Muestra el cartel
+			DOM.todoElMain.classList.remove("ocultar");
+			DOM.tapaElFondo.classList.remove("ocultar");
+			DOM.cartelGenerico.classList.remove("ocultar");
 
 			// Fin
 			return;
 		},
-		averiguaInconsistencias:function ()  {
+		averiguaInconsistencias: function () {
 			// Si corresponde, interrumpe la función
 			if (!resultado.OK || !todoProcesado) return;
 
 			// Acciones si quedan campos
-			if (resultado.quedanCampos) this.cartelHayInconsistencias()
-			 else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + v.cola;
+			if (resultado.quedanCampos) this.cartelHayInconsistencias();
+			else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + v.cola;
 
 			// Fin
 			return;
 		},
 		cartelHayInconsistencias: () => {
 			// Variables
-			let arrayMensajes = [
+			const mensajes = [
 				"Se encontró una inconsistencia en el registro de edición.",
 				"Figura que está todo procesado, y a la vez quedan campos por procesar",
 			];
-			let icono = {
+			const icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
 				link: "/" + familia + "/edicion/" + v.cola,
 			};
-			let DOM = {
-				cartelGenerico: document.querySelector("#cartelGenerico"),
-				alerta: document.querySelector("#cartelGenerico #alerta"),
-				check: document.querySelector("#cartelGenerico #check"),
-				mensajes: document.querySelector("#cartelGenerico ul#mensajes"),
-				iconos: document.querySelector("#cartelGenerico #iconosCartel"),
-			};
-
-			// Formatos
-			cartelGenerico.style.backgroundColor = "var(--rojo-oscuro)";
-			alerta.classList.remove("ocultar");
-			check.classList.add("ocultar");
 
 			// Cambia el contenido del mensaje y los iconos
-			mensajes.innerHTML = "";
-			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-			iconos.innerHTML = "";
-			iconos.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
+			for (let mensaje of mensajes) DOM.mensajes.innerHTML += "<li>" + mensaje + "</li>";
+			DOM.iconos.innerHTML = "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
+
+			// Formatos
+			DOM.cartelGenerico.style.backgroundColor = "var(--rojo-oscuro)";
+			DOM.alerta.classList.remove("ocultar");
+			DOM.check.classList.add("ocultar");
 
 			// Muestra el cartel
 			DOM.todoElMain.classList.remove("ocultar");
 			DOM.tapaElFondo.classList.remove("ocultar");
-			cartelGenerico.classList.remove("ocultar");
+			DOM.cartelGenerico.classList.remove("ocultar");
 
 			// Fin
 			return;
