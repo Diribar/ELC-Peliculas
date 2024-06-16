@@ -1,11 +1,11 @@
 <!-- Ayuda -->
 <div class="ayuda <%- locals.ayudaClass ? ayudaClass : 'absolute' %>">
-	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick<%- locals.iclass ? (' ' + iclass) : '' %>">
+	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
 		<div class="ayudaMensForm ayudaMensMostrar ocultar">
 			<% if (locals.parrafo) { %><p><%- parrafo %></p><% } %>
 			<% if (locals.mensaje || locals.mensajes) { %>
 				<% const tipoTexto = !!locals.mensaje %>
-				<ul <% if (locals.ulId) { %>id="<%= ulId %>"<% } %> type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
+				<ul type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
 					<% if (tipoTexto) { %>
 						<li><%- mensaje %></li>
 					<% } else for (let mensaje of mensajes) { %>
