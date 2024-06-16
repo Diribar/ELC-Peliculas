@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 			DOM.iconos.innerHTML = "";
 
 			// Formatos
-			DOM.cartelGenerico.style.backgroundColor = "var(--verde-oscuro)";
+			DOM.cartelGenerico.classList.add("check");
 			DOM.check.classList.remove("ocultar");
 			DOM.alerta.classList.add("ocultar");
 
@@ -118,7 +118,7 @@ window.addEventListener("load", async () => {
 			DOM.iconos.innerHTML = "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
 			// Formatos
-			DOM.cartelGenerico.style.backgroundColor = "var(--rojo-oscuro)";
+			DOM.cartelGenerico.classList.remove("check");
 			DOM.alerta.classList.remove("ocultar");
 			DOM.check.classList.add("ocultar");
 
