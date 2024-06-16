@@ -217,6 +217,48 @@ module.exports = {
 			// Fin
 			return opciones;
 		},
+		ayudas: (entidad) => {
+			const nombre = ["personajes", "hechos"].includes(entidad)
+				? [
+						"El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.",
+						"El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera.",
+				  ]
+				: [
+						"Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.",
+				  ];
+			const fecha =
+				entidad == "personajes"
+					? [
+							"Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).",
+							"Para los demás, suele ser la fecha de su muerte.",
+					  ]
+					: ["Si es un hecho sin una fecha definida, se usa aquella en la que comenzó a ocurrir"];
+			const prioridad =
+				entidad == "personajes"
+					? ["Estándar", "Mayor importancia: Sagrada Familia, San José, María, Jesús"]
+					: entidad == "hechos"
+					? [
+							"VPC: Menor Importancia",
+							"CFC: Estándar",
+							"Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés",
+					  ]
+					: entidad == "temas"
+					? ["Menor Importancia"]
+					: entidad == "eventos"
+					? ["VPC: Menor Importancia", "CFC: Mayor importancia"]
+					: entidad == "epocasDelAno"
+					? ["Menor Importancia", "Mayor importancia: algunas cortas como Semana Santa y Adviento"]
+					: [""];
+			const epoca =
+				"Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.";
+			const ano = [
+				"Se refiere al año en que " + (entidad == "personajes" ? "nació" : "ocurrió, o comenzó a ocurrir") + ".",
+				"Si no lo encontrás, poné un valor estimado.",
+			];
+
+			// Fin
+			return {nombre, fecha, prioridad, epoca, ano};
+		},
 	},
 	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
