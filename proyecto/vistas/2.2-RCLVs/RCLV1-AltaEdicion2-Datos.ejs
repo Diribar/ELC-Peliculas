@@ -9,7 +9,7 @@
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
-					<%- include("CMP-Ayuda", {mensajes: ayuda.nombre, ulId: "ayudaNombrePers" }) %>
+					<%- include("CMP-Ayuda", {mensajes: ayuda.nombre}) %>
 					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
