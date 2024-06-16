@@ -23,7 +23,7 @@
 /* .inactivo, .inactivoVersion, button:has(.inactivo, .inactivoVersion) {border-color: transparent !important;} */
 
 /* Maneras de Ocultar */
-.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, .ocultaAvatar,
+.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAvatar,
 .ocultaCfc, .ocultaOcurrio, .ocultaFiltros, .ocultaFiltro {display: none !important}
 .invisible {visibility: hidden;}
 
