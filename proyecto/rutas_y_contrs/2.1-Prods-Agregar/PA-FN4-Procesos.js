@@ -51,6 +51,19 @@ module.exports = {
 				? "Documental"
 				: datos.actores;
 		},
+		ayudas: {
+			tituloSecundario: [
+				"Necesitamos que nos des la información que no disponemos.",
+				"Para cada dato, te sugerimos que consultes las ayudas.",
+			],
+			rclvs1: [
+				"Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.",
+				"Necesitamos que respondas por lo menos uno de los campos.",
+			],
+			rclv2: [
+				"Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.",
+			],
+		},
 	},
 	confirma: {
 		verificaQueExistanLosRCLV: async (confirma) => {
