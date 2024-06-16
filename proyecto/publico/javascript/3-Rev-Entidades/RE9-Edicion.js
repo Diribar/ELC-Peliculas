@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 	// Otras variables
 
 	// Funciones
-	let consecuencias = (resultado) => {
+	let consecuencias = () => {
 		// Fórmulas
 		let ocultaBloque = (bloque, filas) => {
 			return (
@@ -111,12 +111,13 @@ window.addEventListener("load", async () => {
 		DOM.aprobar[indice].addEventListener("click", async () => {
 			// Ocultar la fila
 			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
+
 			// Actualiza el valor original y obtiene el resultado
-			let ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
-			let resultado = await fetch(ruta).then((n) => n.json());
+			const ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
+			resultado = await fetch(ruta).then((n) => n.json());
 
 			// Consecuencias
-			consecuencias(resultado, campo);
+			consecuencias();
 
 			// Fin
 			return;
@@ -147,16 +148,17 @@ window.addEventListener("load", async () => {
 			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
-			let resultado = await fetch(ruta).then((n) => n.json());
+			resultado = await fetch(ruta).then((n) => n.json());
 
 			// Consecuencias
-			consecuencias(resultado, campo);
+			consecuencias();
 
 			// Fin
 			return;
 		});
 	}
 });
+
 // Datos del registro
 const entidad = new URL(location.href).searchParams.get("entidad");
 const entID = new URL(location.href).searchParams.get("id");
@@ -167,3 +169,4 @@ const edicID = new URL(location.href).searchParams.get("edicID");
 const url = location.pathname.replace("/revision/", "");
 const familia = url.slice(0, url.indexOf("/"));
 const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=";
+let resultado
