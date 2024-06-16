@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 15/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Dom. 16/jun",
+	"HoraUTC": "5:55",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Mié. 12/jun",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-jun-24": {},
 		"14-jun-24": {"leyenda": "Hoy recordamos Antonio de Padua", "entidad": "personajes", "id": 67},
 		"15-jun-24": {},
 		"16-jun-24": {"leyenda": "Hoy recordamos las Apariciones del Sagrado Corazón", "entidad": "hechos", "id": 74},
-		"17-jun-24": {"leyenda": "Hoy recordamos Alberto Chmielowski", "entidad": "personajes", "id": 229}
+		"17-jun-24": {"leyenda": "Hoy recordamos Alberto Chmielowski", "entidad": "personajes", "id": 229},
+		"18-jun-24": {}
 	}
 }
