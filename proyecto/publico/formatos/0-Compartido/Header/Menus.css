@@ -12,7 +12,7 @@ header {
 
 			/* Íconos que acompañan al menú */
 			.icono {
-				width: 18px; margin-right: 10px; font-weight: bold;
+				width: 20px; margin-right: 8px; font-weight: bold;
 				display: flex; justify-content: center; align-items: center;
 			}
 
@@ -27,9 +27,8 @@ header {
 	/* Específico del Menú Mobile */
 	#menuMobile {
 		.menuOpcion {
-			height: 28px;
-			div {width: 30px; text-align: start;}
-			span {font-size: 1rem;}
+			height: 25px;
+			div {width: 28px; text-align: start;}
 		}
 		.soloAngosto {display: none;}
 	}
