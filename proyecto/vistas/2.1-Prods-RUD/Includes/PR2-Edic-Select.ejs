@@ -12,7 +12,10 @@
 				</option>
 			<% } %>
 		</select>
-		<%- include("P-Ayuda", {campo}) %>
+
+		<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
+		<% if (campo.mensajes) { %><%- include("CMP-Ayuda", {mensajes: campo.mensajes}) %><% } %>
+
 		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>

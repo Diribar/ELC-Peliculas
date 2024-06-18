@@ -357,22 +357,6 @@ module.exports = {
 			return grupos;
 		},
 	},
-	actualizaAgregaComentario: async (datos) => {
-		// Variables
-		const tabla = "comentsInactivos";
-		const {entidad, entidad_id} = datos;
-
-		// Averigua si existe el registro
-		let registro = await BD_genericas.obtienePorCondicion(tabla, {entidad, entidad_id});
-
-		// Si existe, lo actualiza
-		if (registro) await BD_genericas.actualizaPorId(tabla, registro.id, datos);
-		// Si no existe, lo agrega
-		else await BD_genericas.agregaRegistro(tabla, datos);
-
-		// Fin
-		return;
-	},
 
 	// CRUD y Revisión
 	obtieneAvatar: (original, edicion) => {
@@ -811,10 +795,6 @@ let FN = {
 		const {entidad, id: entidad_id} = registro;
 		let comentario;
 
-		// Actualiza el comentario - comentsInactivos
-		const regComent = await BD_genericas.obtienePorCondicion("comentsInactivos", {entidad, entidad_id});
-		if (regComent) return regComent.comentario;
-
 		// Actualiza el comentario - histStatus
 		if (registro.motivo.agregarComent) {
 			const condiciones = {
@@ -831,9 +811,6 @@ let FN = {
 
 		// Actualiza el comentario - motivo
 		if (!comentario) comentario = registro.motivo.descripcion;
-
-		// Crea el comentario en la BD
-		BD_genericas.agregaRegistro("comentsInactivos", {entidad, entidad_id, comentario});
 
 		// Fin
 		return comentario;

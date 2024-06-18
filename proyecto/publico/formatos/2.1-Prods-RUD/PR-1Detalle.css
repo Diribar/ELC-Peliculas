@@ -27,20 +27,21 @@
 		&.otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 	}
 	button {padding: 0px 9px; text-wrap: nowrap;}
-}
 
-/* Links - Ayuda */
-#ayudaLinks .ayudaMensForm {
-	& > p em {color: var(--amarillo-oscuro);}
-	ul {list-style-type: none;}
-	i {
-		border: 1.5px solid snow; font-size: small; border-radius: 50%;
-		&.enCast {color: var(--verde-oscuro);}
-		&.subtCast {color: gold;}
-		&.otroIdioma {color: var(--rojo-oscuro);}
-		&.elegi {color: var(--gris-oscuro);}
+	/* Links - Ayuda */
+	.ayudaMensForm {
+		& > p em {color: var(--amarillo-oscuro);}
+		ul {
+			list-style-type: none;
+			li i {
+				border: 1.5px solid snow; font-size: small; border-radius: 50%;
+				&.enCast {color: var(--verde-oscuro);}
+				&.subtCast {color: gold;}
+				&.otroIdioma {color: var(--rojo-oscuro);}
+				&.elegi {color: var(--gris-oscuro);}
+			}
+		}
 	}
-
 }
 
 /* Marco de Detalle */

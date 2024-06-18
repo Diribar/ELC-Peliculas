@@ -4,16 +4,7 @@
 		<!-- Título y Ayuda -->
 		<div id="tituloSecundario">
 			<h2>Paso 5 de 5: Confirmá el agregado</h2>
-			<!-- Ayuda -->
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-					<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-						<li>Éste es el último paso.</li>
-						<li>Una vez que confirmes, <u><b style="color:var(--amarillo-claro)">no hay marcha atrás</b></u>.</li>
-						<li>Figurará para siempre como creada por vos.</li>
-					</ul>
-				</i>
-			</div>
+			<%- include("CMP-Ayuda", {mensajes: ["Éste es el último paso.", "Una vez que confirmes, <u><b style="color:var(--amarillo-claro)">no hay marcha atrás</b></u>.", "Figurará para siempre como creada por vos."]}) %>
 		</div>
 		<ul type="dots" id="datos">
 			<li class="texto">Estamos listos para agregar el producto a nuestra Base de Datos</li>

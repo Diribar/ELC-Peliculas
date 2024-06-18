@@ -98,7 +98,6 @@ module.exports = {
 		//  iniciales
 		let datos = await obtieneDatos(req);
 		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
-		let comentInactivo;
 
 		// Acciones con comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
@@ -109,10 +108,6 @@ module.exports = {
 			// Si el comentario está restringido, lo descarta
 			const motivo = motivosStatus.find((n) => n.id == motivo_id);
 			if (!motivo.agregarComent) comentario = "";
-
-			// Guarda el comentario para usar en el 'bloqueRegistro'
-			comentInactivo = comentario ? comentario : motivo.descripcion;
-			procesos.actualizaAgregaComentario({entidad, entidad_id: id, comentario: comentInactivo});
 		}
 
 		// CONSECUENCIAS - Actualiza el status en el registro original

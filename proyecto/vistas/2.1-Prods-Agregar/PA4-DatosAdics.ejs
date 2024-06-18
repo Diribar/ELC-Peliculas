@@ -3,15 +3,7 @@
 	<!-- Título y Ayuda -->
 	<div id="tituloSecundario">
 		<h2>Paso 4 de 5: Datos Adicionales</h2>
-		<!-- Ayuda -->
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-				<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-					<li>Necesitamos que nos des la información que no disponemos.</li>
-					<li>Para cada dato, te sugerimos que consultes las ayudas.</li>
-				</ul>
-			</i>
-		</div>
+		<%- include("CMP-Ayuda", {mensajes: ["Necesitamos que nos des la información que no disponemos.", "Para cada dato, te sugerimos que consultes las ayudas."]}) %>
 	</div>
 	<!-- Datos -->
 	<section id="datos">
@@ -44,18 +36,9 @@
 			<div class="flexRowAlign inputError">
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!-- Ayuda para un RCLV -->
-				<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-					<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-						<li>Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.</li>
-						<li>Necesitamos que respondas por lo menos uno de los campos.</li>
-					</ul>
-				</i>
-				<!-- Ayuda para dos RCLVs -->
-				<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-					<p class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-						Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
-					</p>
-				</i>
+				<%- include("CMP-Ayuda", {mensajes: ["Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.", "Necesitamos que respondas por lo menos uno de los campos."], iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
+				<!-- Ayuda para más RCLVs -->
+				<%- include("CMP-Ayuda", {mensaje: "Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.", iclass: "ocultaAyudaRCLV", ayudaClass: "nada"}) %>
 				<div id="errorRCLV" class="ocultar">
 					<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
 				</div>

@@ -18,21 +18,7 @@
 					autocomplete="off"
 					autofocus
 				>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-							<b><u>Pasos</u></b>:<br>
-							<li>
-								Buscá la película o colección en
-								<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
-							</li>
-							<li>Seleccioná la dirección (url)</li>
-							<li>Copiala</li>
-							<li>Pegala en el casillero de la izquierda</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["Buscá la película o colección en <a target='_blank' href='https://www.filmaffinity.com/es'><u>Film Affinity</u></a>.", "Seleccioná la dirección (url)", "Copiala", "Pegala en el casillero de la izquierda"]}) %>
 				<%- include("CMP-Errores", {nombre: campo, display}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
@@ -44,17 +30,7 @@
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 				>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick" id="ayuda_avatar">
-						<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-							<p><b><u>Pasos</u></b>:</p>
-							<li>En la página de FA, hacé <b><em>click izquierdo</em></b> sobre la imagen de la película.</li>
-							<li>Una vez que la imagen se agranda, hacé <b><em>click derecho</em></b> sobre ella.</li>
-							<li>En el menú que aparece, hacé <b><em>click izquierdo</em></b> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, hacé <b><em>click izquierdo</em></b> sobre la imagen de la película.", "Una vez que la imagen se agranda, hacé <b><em>click derecho</em></b> sobre ella.", "En el menú que aparece, hacé <b><em>click izquierdo</em></b> sobre la opción <em>'Copiar dirección de la imagen'</em> y pegala en el casillero de la izquierda."]}) %>
 				<%- include("CMP-Errores", {nombre: campo, display}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
@@ -62,21 +38,7 @@
 				<% campo = "contenido" %>
 				<!-- Data Entry -->
 				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry[campo] : "" %></textarea>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="dots">
-							<b><u>Pasos</u></b>:<br>
-							<li>
-								En la página de FA, seleccioná desde
-								el <b><em><u>título en castellano</u></em></b>
-								hasta el final de la <b><em><u>sinopsis</u></em></b>.
-							</li>
-							<li>Copialo.</li>
-							<li>Pegalo en el casillero de la izquierda.</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, seleccioná desde el <b><em><u>título en castellano</u></em></b> hasta el final de la <b><em><u>sinopsis</u></em></b>.", "Copialo.", "Pegalo en el casillero de la izquierda."]}) %>
 				<%- include("CMP-Errores", {nombre: campo, display}) %>
 			</div>
 			<div id="resultado"><br></div>

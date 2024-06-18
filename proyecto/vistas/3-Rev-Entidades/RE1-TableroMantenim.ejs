@@ -1,14 +1,6 @@
 <div id="tituloPrincipal" class="<%= tema %>">
 	<h1 id="titulo"><%= titulo %></h1>
-	<!-- Ayuda -->
-	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-			<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-				<li>A estos registros les falta información.</li>
-				<li>Nos viene muy bien si nos ayudás completándola.</li>
-			</ul>
-		</i>
-	</div>
+	<%- include("CMP-Ayuda", {mensajes: ["A estos registros les falta información.", "Nos viene muy bien si nos ayudás completándola."]}) %>
 </div>
 <!-- Datos -->
 <% let familias, DE %>
@@ -21,18 +13,7 @@
 				<!-- Título -->
 				<% familias = "productos" %>
 				<h2><%= familias.toUpperCase() %></h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<p>Las columnas son: </p>
-							<li>Fecha de la novedad</li>
-							<li>Tipo de producto</li>
-							<li>Nombre del producto</li>
-							<li>Año de lanzamiento</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "Las columnas son:", mensajes: ["Fecha de la novedad", "Tipo de producto", "Nombre del producto", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Registros -->
 			<div class="temas">
@@ -55,17 +36,7 @@
 				<!-- Título -->
 				<% familias = "rclvs" %>
 				<h2><%= familias.toUpperCase() %></h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<p>Las columnas son: </p>
-							<li>Fecha de la novedad</li>
-							<li>Tipo de RCLV</li>
-							<li>Nombre del RCLV</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "Las columnas son:", mensajes: ["Fecha de la novedad", "Tipo de RCLV", "Nombre del RCLV"]}) %>
 			</div>
 			<!-- Registros -->
 			<div class="temas">
@@ -87,18 +58,7 @@
 				<!-- Título -->
 				<% familias = "links" %>
 				<h2><%= familias.toUpperCase() %></h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<p>Las columnas son: </p>
-							<li>Fecha de la novedad</li>
-							<li>Tipo de producto</li>
-							<li>Nombre del producto</li>
-							<li>Año de lanzamiento</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "Las columnas son:", mensajes: ["Fecha de la novedad", "Tipo de producto", "Nombre del producto", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Temas -->
 			<div class="temas">
@@ -119,18 +79,7 @@
 				<!-- Título -->
 				<% familias = "links hd" %>
 				<h2><%= familias.toUpperCase() %></h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<p>Las columnas son: </p>
-							<li>Fecha de la novedad</li>
-							<li>Tipo de producto</li>
-							<li>Nombre del producto</li>
-							<li>Año de lanzamiento</li>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {parrafo: "Las columnas son:", mensajes: ["Fecha de la novedad", "Tipo de producto", "Nombre del producto", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Temas -->
 			<div class="temas">

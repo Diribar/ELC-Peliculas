@@ -9,19 +9,7 @@
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul id="ayudaNombrePers" type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-								<% if (personajes || hechos) { %>
-									<li>El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.</li>
-									<li>El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera.</li>
-								<% } else { %>
-									<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
-								<% } %>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensajes: personajes || hechos ? ["El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.", "El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera."] : ["Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación."], ulId: "ayudaNombrePers" }) %>
 					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
@@ -59,18 +47,7 @@
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
 					<% } %>
 				</select>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<p>Usamos la fecha en que se lo recuerda.</p>
-							<% if (personajes) { %>
-								<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
-								<li>Para los demás, suele ser la fecha de su muerte.</li>
-							<% } %>
-						</ul>
-					</i>
-				</div>
+				<% if (personajes || hechos) { %><%- include("CMP-Ayuda", {mensajes: personajes ? ["Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).", "Para los demás, suele ser la fecha de su muerte."] : ["Si es un hecho sin una fecha definida, se usa aquella en la que comenzó a ocurrir"]}) %><% } %>
 				<%- include("CMP-Errores", {nombre: "fecha", ocultarOK: true}) %>
 			</div>
 			<!-- Mes y Día -->
@@ -136,14 +113,7 @@
 					<div class="margenDebajo inputError">
 						<!-- Título -->
 						<h3>Calendario</h3>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-								<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-									<li>.</li>
-								</ul>
-							</i>
-						</div>
+						<!-- <div class="ayuda"></div> -->
 					</div>
 				</div>
 				<div id="calendario" class="relative">
@@ -171,14 +141,7 @@
 							<option value="<%= carpeta %>" <% if (dataEntry.carpetaAvatars == carpeta) { %>selected<% } %>><%= carpeta %></option>
 						<% } %>
 					</select>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-								<li>Es la carpeta en la que se guardan las imagenes.</li>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensaje: "Es la carpeta en la que se guardan las imagenes."}) %>
 					<%- include("CMP-Errores", {nombre: "carpetaAvatars", ocultarOK: true}) %>
 				</div>
 			<% } %>
@@ -189,14 +152,7 @@
 				<div class="margenDebajo inputError">
 					<!-- Título -->
 					<h3>Nombres con esa fecha</h3>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-							<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-								<li>Destildalos si no coinciden con el tuyo.</li>
-							</ul>
-						</i>
-					</div>
+					<%- include("CMP-Ayuda", {mensaje: "Destildalos si no coinciden con el tuyo."}) %>
 					<%- include("CMP-Errores", {nombre: "repetidos", ocultarOK: true}) %>
 				</div>
 				<!-- Valores -->
@@ -213,29 +169,7 @@
 						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
 					<% } %>
 				</select>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<% if (personajes) { %>
-								<li>Estándar</li>
-								<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
-							<% } else if (hechos) { %>
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Estándar</li>
-								<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
-							<% } else if (temas) { %>
-								<li>Menor Importancia</li>
-							<% } else if (eventos) { %>
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Mayor importancia</li>
-							<% } else if (epocasDelAno) { %>
-								<li>Menor Importancia</li>
-								<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
-							<% } %>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {mensajes: personajes ? ["Estándar", "Mayor importancia: Sagrada Familia, San José, María, Jesús"] : hechos ? ["VPC: Menor Importancia", "CFC: Estándar", "Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés"] : temas ? ["Menor Importancia"] : eventos ? ["VPC: Menor Importancia", "CFC: Mayor importancia"] : epocasDelAno ? ["Menor Importancia", "Mayor importancia: algunas cortas como Semana Santa y Adviento"] : [""]}) %>
 				<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
 			</div>
 		<% } %>
@@ -268,15 +202,7 @@
 			<!-- Título -->
 			<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
-			<% if (hechos) { %>
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
-						</ul>
-					</i>
-				</div>
-			<% } %>
+			<% if (hechos) { %><%- include("CMP-Ayuda", {mensaje: "Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época."}) %><% } %>
 			<%- include("CMP-Errores", {nombre: "epocaOcurrencia", ocultarOK: true}) %>
 		</div>
 		<!-- Valores -->
@@ -288,16 +214,7 @@
 				<div class="flexRowAlign opciones" style=<%= zIndex %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epocaOcurrencia.id %>" id="<%= epocaOcurrencia.id %>" <% if (dataEntry.epocaOcurrencia_id==epocaOcurrencia.id) { %>checked<% } %> class="input<%= epocaOcurrencia.id!="pst"?" noPST":"" %>">
 					<label for="<%= epocaOcurrencia.id %>"><%= epocaOcurrencia.nombre %></label>
-					<!-- Ayuda -->
-					<% if (epocaOcurrencia["ayuda_" + ent]) { %>
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-								<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-									<li><%= epocaOcurrencia["ayuda_" + ent] %>.</li>
-								</ul>
-							</i>
-						</div>
-					<% } %>
+					<% if (epocaOcurrencia["ayuda_" + ent]) { %><%- include("CMP-Ayuda", {mensaje: epocaOcurrencia["ayuda_" + ent] + "."}) %><% } %>
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
@@ -305,16 +222,7 @@
 				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-						<ul type="dots" class="ayudaMensForm ocultar ayudaMensMostrar">
-							<li>Se refiere al año en que <%= personajes ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
-							<li>Si no lo encontrás, poné un valor estimado.</li>
-							<% if (hechos) { %><li>Asumimos que los Apóstoles vivieron entre los años 1 y 100</li><% } %>
-						</ul>
-					</i>
-				</div>
+				<%- include("CMP-Ayuda", {mensajes: ["Se refiere al año en que " + (personajes ? "nació" : "ocurrió, o comenzó a ocurrir") + ".", "Si no lo encontrás, poné un valor estimado."]}) %>
 			</div>
 		</div>
 	</section>
@@ -395,13 +303,7 @@
 		<div class="inputError">
 			<!-- Título -->
 			<h3>Leyenda</h3>
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-					<ul type="none" class="ayudaMensForm ocultar ayudaMensMostrar">
-						<li>Se necesita armar la leyenda que acompaña la imagen derecha</li>
-					</ul>
-				</i>
-			</div>
+			<%- include("CMP-Ayuda", {mensaje: "Se necesita armar la leyenda que acompaña la imagen derecha"}) %>
 			<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
 		</div>
 		<!-- Data Entry -->

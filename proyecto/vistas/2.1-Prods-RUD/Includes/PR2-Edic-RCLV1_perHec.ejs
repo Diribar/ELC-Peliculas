@@ -16,7 +16,9 @@
 			<% } %>
 		</select>
 
-		<%- include("P-Ayuda", {campo}) %>
+		<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
+		<% if (campo.mensajes) { %><%- include("CMP-Ayuda", {mensajes: campo.mensajes}) %><% } %>
+
 		<!-- Link a Relación con la vida -->
 		<i id="alta" class="fa-solid fa-circle-plus linkRCLV <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>
 		<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>

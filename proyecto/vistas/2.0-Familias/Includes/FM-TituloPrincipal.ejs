@@ -8,15 +8,6 @@
 		</h2>
 	<% } %>
 	<% if (locals.ayudasTitulo) { %>
-		<!-- Ayuda -->
-		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-				<ul class="ayudaMensForm ocultar ayudaMensMostrar" type="<%- ayudasTitulo.length > 1 ? 'dots' : 'none' %>">
-					<% for (let ayuda of ayudasTitulo) { %>
-						<li><%= ayuda %></li>
-					<% } %>
-				</ul>
-			</i>
-		</div>
+		<%- include("CMP-Ayuda", {mensajes: ayudasTitulo}) %>
 	<% } %>
 </div>

@@ -1,13 +1,1 @@
-<div id="ayudaLinks">
-	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-		<div class="ayudaMensForm ocultar ayudaMensMostrar">
-			<p><em>Color de los bordes (simil semáforo):</em></p>
-			<ul>
-				<li><i class="fa-solid fa-circle enCast"></i> hablada en <b>castellano</b></li>
-				<li><i class="fa-solid fa-circle subtCast"></i> <b>subtitulos</b> en castellano</li>
-				<li><i class="fa-solid fa-circle otroIdioma"></i> hablada en <b>otro</b> idioma</li>
-				<li><i class="fa-solid fa-circle elegi"></i> <b>elegí</b> el idioma</li>
-			</ul>
-		</div>
-	</i>
-</div>
+<%- include("CMP-Ayuda", {ayudaClass: "links", parrafo: "<em>Color de los bordes (simil semáforo):</em>", mensajes: ["<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>", "<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano", "<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma", "<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma"]}) %>

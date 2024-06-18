@@ -33,7 +33,7 @@
 		&:has(p) {max-width: 50%;}
 
 		/* Ayuda */
-		#ayudaLinks {
+		.ayuda.links {
 			margin-bottom: 10px;
 			.ayudaMensForm {
 				translate: -50% -100%; top: -7px; left: 8px; right: auto;
@@ -57,5 +57,5 @@
 	#imgDerecha #links:has(p) {max-width: 70%;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #datosLargos #links, #imgDerecha #links #ayudaLinks {display: none !important;}
+	#cuerpoFooter #datosLargos #links, #imgDerecha #links .ayuda.links {display: none !important;}
 }
