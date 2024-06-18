@@ -199,14 +199,15 @@ module.exports = {
 			const gruposPers = procsCRUD.grupos.pers(camposDA);
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
-			// Imagen derecha
+			// Datos para la vista
 			const imgDerPers = datosAdics.avatar ? "/Externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
+			const ayudas = procesos.datosAdics.ayudas;
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo},
 				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE},
-				...{gruposPers, gruposHechos},
+				...{gruposPers, gruposHechos, ayudas},
 			});
 		},
 		guardar: async (req, res) => {

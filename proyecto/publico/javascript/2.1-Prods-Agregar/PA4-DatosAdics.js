@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
 
 		// RCLV - Varios
-		ayudaRCLV: document.querySelectorAll("#segundaColumna .ocultaAyudaRCLV"),
+		ayudaRclv: document.querySelectorAll("#segundaColumna .ayudaRclv"),
 		iconosOK_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-xmark"),
 
@@ -204,8 +204,8 @@ window.addEventListener("load", async () => {
 				DOM.sectorPers.classList.remove("ocultar");
 				DOM.sectorHecho.classList.remove("ocultar");
 				// Ayudas
-				DOM.ayudaRCLV[0].classList.remove("ocultaAyudaRCLV");
-				DOM.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
+				DOM.ayudaRclv[0].classList.remove("ocultar");
+				DOM.ayudaRclv[1].classList.add("ocultar");
 			}
 			// Acciones si no ocurrió
 			if (bhrNO) {
@@ -213,8 +213,8 @@ window.addEventListener("load", async () => {
 				DOM.sectorPers.classList.add("ocultar");
 				DOM.sectorHecho.classList.add("ocultar");
 				// Ayudas
-				DOM.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
-				DOM.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
+				DOM.ayudaRclv[0].classList.add("ocultar");
+				DOM.ayudaRclv[1].classList.remove("ocultar");
 				// Valores de RCLV
 				DOM.selectPers.value = 1;
 				DOM.selectHecho.value = 1;

@@ -39,6 +39,10 @@
 						#sectorNombre {
 							label {margin-right: 7px;}
 							.input {padding-left: 5px; width: 235px;}
+							.ayuda ul {
+								max-width: min(400px, 90vw);
+								li span {font-variant: small-caps; text-decoration: underline;}
+							}
 						}
 						#sectorFecha {
 							h3 {align-self: flex-start; margin-top: 1px;}
@@ -137,10 +141,6 @@
 					}
 
 				}
-
-				/* Temas de ayuda */
-				ul#ayudaNombrePers {max-width: min(400px, 90vw);}
-				ul#ayudaNombrePers li span {font-variant: small-caps; text-decoration: underline;}
 
 				/* Submit button */
 				.iconos {margin: 20px 0 0;}

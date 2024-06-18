@@ -9,7 +9,7 @@
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
-					<%- include("CMP-Ayuda", {mensajes: personajes || hechos ? ["El nombre <span>formal</span> es su nombre religioso (o civil si no tiene uno), sin títulos ni palabras ajenas a su nombre.", "El nombre <span>alternativo</span> es opcional, y se completa sólo si se lo/la conoce de otra manera."] : ["Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><b>Ap. Mar. - Guadalupe</b></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación."], ulId: "ayudaNombrePers" }) %>
+					<%- include("CMP-Ayuda", {mensajes: ayuda.nombre}) %>
 					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
@@ -47,7 +47,7 @@
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
 					<% } %>
 				</select>
-				<% if (personajes || hechos) { %><%- include("CMP-Ayuda", {mensajes: personajes ? ["Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).", "Para los demás, suele ser la fecha de su muerte."] : ["Si es un hecho sin una fecha definida, se usa aquella en la que comenzó a ocurrir"]}) %><% } %>
+				<% if (personajes || hechos) { %><%- include("CMP-Ayuda", {mensajes: ayuda.fecha}) %><% } %>
 				<%- include("CMP-Errores", {nombre: "fecha", ocultarOK: true}) %>
 			</div>
 			<!-- Mes y Día -->
@@ -169,7 +169,7 @@
 						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
 					<% } %>
 				</select>
-				<%- include("CMP-Ayuda", {mensajes: personajes ? ["Estándar", "Mayor importancia: Sagrada Familia, San José, María, Jesús"] : hechos ? ["VPC: Menor Importancia", "CFC: Estándar", "Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés"] : temas ? ["Menor Importancia"] : eventos ? ["VPC: Menor Importancia", "CFC: Mayor importancia"] : epocasDelAno ? ["Menor Importancia", "Mayor importancia: algunas cortas como Semana Santa y Adviento"] : [""]}) %>
+				<%- include("CMP-Ayuda", {mensajes: ayuda.prioridad}) %>
 				<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
 			</div>
 		<% } %>
@@ -202,7 +202,7 @@
 			<!-- Título -->
 			<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
-			<% if (hechos) { %><%- include("CMP-Ayuda", {mensaje: "Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época."}) %><% } %>
+			<% if (hechos) { %><%- include("CMP-Ayuda", {mensaje: ayuda.epoca}) %><% } %>
 			<%- include("CMP-Errores", {nombre: "epocaOcurrencia", ocultarOK: true}) %>
 		</div>
 		<!-- Valores -->
@@ -214,7 +214,7 @@
 				<div class="flexRowAlign opciones" style=<%= zIndex %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epocaOcurrencia.id %>" id="<%= epocaOcurrencia.id %>" <% if (dataEntry.epocaOcurrencia_id==epocaOcurrencia.id) { %>checked<% } %> class="input<%= epocaOcurrencia.id!="pst"?" noPST":"" %>">
 					<label for="<%= epocaOcurrencia.id %>"><%= epocaOcurrencia.nombre %></label>
-					<% if (epocaOcurrencia["ayuda_" + ent]) { %><%- include("CMP-Ayuda", {mensaje: epocaOcurrencia["ayuda_" + ent] + "."}) %><% } %>
+					<% if (epocaOcurrencia["ayuda" + ent]) { %><%- include("CMP-Ayuda", {mensaje: epoca.ocurrencia["ayuda" + ent] + "."}) %><% } %>
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
@@ -222,7 +222,7 @@
 				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
-				<%- include("CMP-Ayuda", {mensajes: ["Se refiere al año en que " + (personajes ? "nació" : "ocurrió, o comenzó a ocurrir") + ".", "Si no lo encontrás, poné un valor estimado."]}) %>
+				<%- include("CMP-Ayuda", {mensajes: ayuda.ano}) %>
 			</div>
 		</div>
 	</section>
