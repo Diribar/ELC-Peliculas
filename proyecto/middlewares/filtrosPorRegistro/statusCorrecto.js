@@ -58,7 +58,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			? [creado_id]
 			: ruta == "/calificar/"
 			? activos_ids
-			: [99]
+			: []
 		: baseUrl == "/links" && ruta == "/abm/" // Preguntas para 'Links'
 		? activos_ids
 		: baseUrl == "/revision" // Preguntas para 'Revisión'
@@ -74,6 +74,6 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			? [creado_id]
 			: ruta.includes("/solapamiento/")
 			? activos_ids
-			: [99]
-		: [99];
+			: []
+		: [];
 };
