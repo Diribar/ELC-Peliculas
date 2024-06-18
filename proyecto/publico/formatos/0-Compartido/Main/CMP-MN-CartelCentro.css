@@ -1,17 +1,30 @@
 /* Formato general del cartel */
 main .cartelCentro {
-	width: max-content; min-width: 250px; max-width: min(600px, 95vw);
+	width: max-content; max-width: min(600px, 95vw);
 	max-height: 95%; color: var(--gris-claro);
 	padding: 20px; border-radius: 15px; border: 6px double white;
 	background: var(--rojo-oscuro);
 	&.check {background: var(--verde-oscuro);}
 	&.trabajando {background: var(--azul-oscuro);}
+	&#cartelGenerico {
+		&:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
+		#contenedorMensajes {
+			overflow-y: auto; scrollbar-width: none;
+			max-height: calc(var(--alturaViewPort) * 0.5);
+			&:not:empty {padding-block: 40px;}
+		}
+	}
+	&#cartelProgreso {
+		min-width: 250px;
+		.inicio {margin-bottom: 40px;}
+		#contorno {
+			border: solid 1px var(--amarillo-claro); height: 18px; width: 200px; border-radius: 10px; overflow: hidden;
+			#progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
+		}
+	}
 
 	/* Partes internas */
-	.inicio {
-		font-size: 4rem; color: var(--amarillo-oscuro);
-		margin-bottom: 40px;
-	}
+	.inicio {font-size: 4rem; color: var(--amarillo-oscuro);}
 	#titulo {margin-bottom: 15px; font-size: 1.5rem;}
 	#titulo:empty {margin: 0;}
 
@@ -41,8 +54,7 @@ main .cartelCentro {
 
 	/* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 	#iconosCartel {
-		display: flex; flex-direction: row; justify-content: space-around;
-		width: 45%; margin-top: 40px;
+		display: flex; flex-direction: row; justify-content: space-around; width: 45%;
 		* {
 			border-radius: 50%;
 			&:focus {outline: none;}
@@ -57,21 +69,6 @@ main .cartelCentro {
 		:where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
 		:where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
 	}
-}
-
-/* Particularidades de cartelGenerico */
-#cartelGenerico {
-	&:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
-	#contenedorMensajes {
-		padding-block: 10px; overflow-y: auto; scrollbar-width: none;
-		max-height: calc(var(--alturaViewPort) * 0.5);
-	}
-}
-
-/* Particularidades de cartelProgreso */
-#cartelProgreso #contorno {
-	border: solid 1px var(--amarillo-claro); height: 18px; width: 200px; border-radius: 10px; overflow: hidden;
-	#progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
 }
 
 /* Parado */
