@@ -105,6 +105,7 @@ let basico = {
 
 let desplazamHoriz = () => {
 	// Definir variables
+	let cuerpo = document.querySelector("#cuerpo");
 	let izquierda = document.querySelector(".fa-caret-left");
 	let derecha = document.querySelector(".fa-caret-right");
 	let resultados = document.querySelector("#listado");
@@ -141,7 +142,7 @@ let desplazamHoriz = () => {
 	};
 
 	// Desplazamiento por teclado
-	window.addEventListener("keydown", (e) => {
+	cuerpo.addEventListener("keydown", (e) => {
 		// Anular desplazamientos naturales
 		let teclasDesplazamiento = [
 			"Home",
