@@ -15,56 +15,7 @@ window.addEventListener("load", () => {
 		DOM.muestraResultados.classList.remove("ocultar");
 
 		// Rutinas en función del tipo de variable que sea 'registros'
-		if (Array.isArray(registros)) {
-			// Crea la tabla y el cuerpo
-			let tabla = document.createElement("table");
-			let tblBody = document.createElement("tbody");
-
-			// Crea las filas y celdas
-			for (let registro of registros) {
-				// Variables
-				const {familia, entidad, id, anoEstreno} = registro;
-				let {nombre} = registro;
-				const entidadCorta = entidad.slice(0, -1);
-
-				// Crea una fila y el anchor del registro
-				let fila = document.createElement("tr");
-				fila.classList.add(familia.slice(0, 4));
-				const anchor = document.createElement("a");
-				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
-
-				// Procesa el nombre
-				let anchoMax = 40;
-				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
-				if (familia == "producto" && anoEstreno) nombre += " (" + anoEstreno + ")";
-
-				// Procesa la asociación
-				let ent = entidadCorta.slice(0, 5);
-				if (ent == "perso") ent = "pers";
-				if (ent != entidadCorta && ent != "epoca") ent += ".";
-				let datos = [nombre, ent];
-
-				// Crea las celdas
-				for (let i = 0; i < datos.length; i++) {
-					const celda = document.createElement("td");
-					const textoCelda = document.createTextNode(datos[i]);
-					if (i == 0) {
-						// Agrega el texto al 'anchor' (celda nombre)
-						anchor.appendChild(textoCelda);
-						celda.appendChild(anchor);
-					}
-					// Agrega el texto a la celda (entidad)
-					else celda.appendChild(textoCelda);
-					// Agrega la celda a la fila
-					fila.appendChild(celda);
-				}
-
-				// Agrega la fila al cuerpo de la tabla (tblbody)
-				tblBody.appendChild(fila);
-				tabla.appendChild(tblBody);
-				DOM.muestraResultados.appendChild(tabla);
-			}
-		}
+		if (Array.isArray(registros)) creaElListado(registros);
 		// En caso de que sea un sólo registro
 		else {
 			let parrafo = document.createElement("p");
@@ -73,6 +24,51 @@ window.addEventListener("load", () => {
 			parrafo.appendChild(document.createTextNode(registros));
 			DOM.muestraResultados.appendChild(parrafo);
 		}
+	};
+	let creaElListado = (registros) => {
+		// Rutina de creación de filas
+		for (let registro of registros) {
+			// Variables
+			const {familia, entidad, id} = registro;
+			const clase = familia.slice(0, 4);
+
+			// Crea el anchor del registro
+			const anchor = document.createElement("a");
+			anchor.classList.add(clase, "flexRow");
+			anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+
+			// Crea las celdas
+			creaLasCeldas({anchor, registro});
+
+			// Agrega la fila al cuerpo de la tabla (tblbody)
+			DOM.muestraResultados.appendChild(anchor);
+		}
+	};
+	let creaLasCeldas = ({anchor, registro}) => {
+		// Variables
+		const {familia, entidad, anoEstreno} = registro;
+		let {nombre} = registro;
+		let anchoMax = 40;
+
+		// Nombre
+		if (nombre.length > anchoMax) nombre = nombre.slice(0, anchoMax - 1) + "…";
+		if (familia == "producto" && anoEstreno) nombre += " (" + anoEstreno + ")";
+		const spanNombre = document.createElement("span");
+		spanNombre.innerHTML = nombre;
+		spanNombre.className = "spanNombre";
+		anchor.appendChild(spanNombre);
+
+		// Entidad
+		const entidadCorta = entidad.slice(0, -1);
+		let ent = entidad == "personajes" ? "pers" : entidadCorta.slice(0, 5);
+		if (ent != entidadCorta && ent != "epoca") ent += ".";
+		const spanEnt = document.createElement("span");
+		spanEnt.innerHTML = ent;
+		spanEnt.className = "spanEnt";
+		anchor.appendChild(spanEnt);
+
+		// Fin
+		return;
 	};
 
 	// Add Event Listener
