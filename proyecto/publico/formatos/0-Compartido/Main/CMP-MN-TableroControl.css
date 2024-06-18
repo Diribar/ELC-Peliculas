@@ -1,21 +1,30 @@
-/* Entidades */
-main #familias {display: flex; flex-direction: row; justify-content: space-around; padding: 40px 0px 20px 0px;}
+main #familias {
+	display: flex; flex-direction: row; justify-content: space-around; padding: 40px 0px 20px 0px;
+	.bloques {
+		max-width: 30vw;
+		&:nth-child(n+2) {margin-top: 20px;}
+		.tituloSecundario {
+			position: relative;
+			h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
+		}
+		/* Bloques - Registros */
+		.temas {
+			padding: 0 10px; width: 385px; max-width: 100%;
+			h3 {margin: 10px 0 2px;}
+			.bloqueRegistros {
+				overflow-y: hidden;
+				a:hover p {background-color: var(--gris-intermedio)}
+			}
+		}
+	}
+}
 
-/* Bloques */
-main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Bloques - Título */
-.bloques {max-width: 30vw;}
-.bloques .tituloSecundario {position: relative;}
-.bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
 #cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); color: var(--gris-claro);}
 #cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 #cuerpo:has(.revisionUs) .bloques .tituloSecundario h2 {background: var(--gris-oscuro); color: var(--gris-claro);}
 
-/* Bloques - Registros */
-.bloques .temas {padding: 0 10px; width: 385px; max-width: 100%}
-.bloques .temas h3 {margin: 10px 0 2px;}
-.bloques .temas .bloqueRegistros {overflow-y: hidden;}
 
 /* Scroll */
 #primeraColumna .temas {max-height: calc(var(--alturaViewPort) * 0.6); overflow-y: auto;}
