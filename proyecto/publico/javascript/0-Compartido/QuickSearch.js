@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
 		muestraResultados: document.querySelector("#busquedaRapida .ayudaMensMostrar #muestraResultados"),
 		escribiMas: document.querySelector("#busquedaRapida .ayudaMensMostrar #escribiMas"),
 	};
+	let producto = null;
 
 	// Funciones
 	let agregaResultados = (registros) => {
@@ -107,12 +108,36 @@ window.addEventListener("load", () => {
 		return;
 	});
 	DOM.input.addEventListener("keydown", (e) => {
+		// Variables
+		const cantResultados = DOM.muestraResultados.children ? DOM.muestraResultados.children.length : 0;
+		if (!cantResultados) return;
+
+		// Se desliza entre los productos
+		if (e.key == "ArrowUp") {
+			// Resalta el registro anterior
+			if (producto === null) producto = cantResultados - 1;
+			else {
+				DOM.muestraResultados.children[producto].classList.remove("resaltar");
+				if (producto === 0) producto = cantResultados - 1;
+				else producto--;
+			}
+			DOM.muestraResultados.children[producto].classList.add("resaltar");
+		}
+		if (e.key == "ArrowDown") {
+			// Resalta el registro siguiente
+			if (producto === null) producto = 0;
+			else {
+				DOM.muestraResultados.children[producto].classList.remove("resaltar");
+				if (producto == cantResultados - 1) producto = 0;
+				else producto++;
+			}
+			DOM.muestraResultados.children[producto].classList.add("resaltar");
+		}
+
 		// Redirige a la vista del hallazgo
 		if (e.key == "Enter") {
 			DOM.anchors = DOM.muestraResultados.querySelectorAll("a");
-			if (DOM.anchors.length == 1) location.href = DOM.anchors[0].href;
-			console.log(DOM.anchors.length);
-			console.log(DOM.anchors[0].href);
+			if (DOM.anchors.length) location.href = DOM.anchors[0].href;
 		}
 
 		// Escape - Oculta el sector de muestraResultados
