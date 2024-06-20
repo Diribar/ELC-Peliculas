@@ -294,5 +294,5 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Une las partes
 	a.appendChild(i);
 	DOM.iconos.appendChild(a);
-	DOM.iconos.querySelector("i").focus();
+	DOM.iconos.querySelector("a").focus();
 };
