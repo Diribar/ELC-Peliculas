@@ -28,7 +28,6 @@ window.addEventListener("load", async () => {
 		alerta: document.querySelector("#cartelGenerico #alerta"),
 		check: document.querySelector("#cartelGenerico #check"),
 		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
-		iconos: document.querySelector("#cartelGenerico #iconosCartel"),
 
 		// Otras variables
 		filas: document.querySelectorAll("#contenido .fila"),

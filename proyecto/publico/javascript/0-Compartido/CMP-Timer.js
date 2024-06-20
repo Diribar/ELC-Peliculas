@@ -9,7 +9,6 @@ window.addEventListener("load", async () => {
 		tapaElFondo: document.querySelector("#todoElMain #tapaElFondo"),
 		cartelGenerico: document.querySelector("#todoElMain #cartelGenerico"),
 		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
-		iconos: document.querySelector("#cartelGenerico #iconosCartel"),
 	};
 	let v = {
 		// Temas de horario y fechas

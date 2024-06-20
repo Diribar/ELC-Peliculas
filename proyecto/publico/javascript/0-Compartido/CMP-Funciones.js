@@ -293,9 +293,10 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 
 	// Une las partes
 	a.appendChild(i);
+	DOM.iconos = document.querySelector("#cartelGenerico #iconosCartel");
 	DOM.iconos.appendChild(a);
 	DOM.iconos.querySelector("a").focus();
 
 	// Fin
-	return
+	return;
 };
