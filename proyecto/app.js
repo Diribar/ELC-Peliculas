@@ -266,8 +266,7 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Urls que dependen de la variable 'global'
-	const rutaCRUD = require("./rutas_y_contrs/2.0-Familias/FM-Rutas");
-	app.use("/", rutaCRUD); // incluye algunas de 'revisión'
+	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión'
 	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas"));

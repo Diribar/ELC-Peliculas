@@ -30,7 +30,7 @@ p, li {line-height: 1.2rem;}
 
 /* Anchor */
 a {text-decoration: none;}
-a:has(img) {font-size: 1px;}
+/* a:has(img) {font-size: 1px;} */
 
 /* Cursor pointer */
 a[href], label[for], input[type="radio"], input[type="checkbox"] {cursor: pointer;}

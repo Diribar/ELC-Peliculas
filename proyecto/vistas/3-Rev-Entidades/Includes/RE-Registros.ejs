@@ -1,5 +1,9 @@
 <% if (regs && regs.length) { %>
-	<h3 class="pointer"><%= titulo %> (<%= regs.length %>)</h3>
+	<h3 class="pointer">
+		<%= titulo %>
+		(<%= regs.length %>)
+		<% if (locals.icono) { %><i class="fa-solid <%= icono %>"></i><% } %>
+	</h3>
 	<div class="bloqueRegistros <%- !DE || !DE[titulo.toLowerCase()] ? 'ocultar' : '' %>">
 		<% for (let reg of regs) { %>
 			<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>

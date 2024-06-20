@@ -11,7 +11,7 @@ main .cartelCentro {
 		#contenedorMensajes {
 			overflow-y: auto; scrollbar-width: none;
 			max-height: calc(var(--alturaViewPort) * 0.5);
-			&:not:empty {padding-block: 40px;}
+			&:not(:empty) {padding-block: 40px;}
 		}
 	}
 	&#cartelProgreso {
