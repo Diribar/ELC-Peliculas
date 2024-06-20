@@ -12,7 +12,7 @@
 			class="input <% if (numero) { %>numero<% } %>"
 			placeholder="<%- numero ? 'Sólo números' : 'Ingresá el texto' %>"
 		/>
-		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
+		<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

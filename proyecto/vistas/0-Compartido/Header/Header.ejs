@@ -3,12 +3,12 @@
 	<!-- Menú para Mobile -->
 	<div id="mostrarMenuMobile" class="grupos">
 		<i class="fa-solid fa-bars ayudaClick iconoHeader"></i>
-		<%- include("CMP-4MenuMobile") %>
+		<%- include("HR4-MenuMobile") %>
 	</div>
 	<!-- Menú de Home -->
 	<div class="grupos ocultoMobile">
 		<i class="fa-solid fa-house scale ayudaClick iconoHeader" title="Menú de Inicio"></i>
-		<%- include("CMP-1MenuHome") %>
+		<%- include("HR1-MenuHome") %>
 	</div>
 	<!-- Consultas -->
 	<a href="/consultas" tabindex="-1" class="grupos ocultoMobile">
@@ -19,7 +19,7 @@
 	<!-- Búsqueda rápida -->
 	<div id="busquedaRapida" class="grupos">
 		<i class="fa-solid fa-magnifying-glass scale ayudaClick iconoHeader ocultoMobileParado" title="Búsqueda rápida"></i>
-		<%- include("CMP-BusqRapida") %>
+		<%- include("HR-BusqRapida") %>
 	</div>
 	<!-- Agregar un Producto -->
 	<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoMobile">
@@ -38,14 +38,14 @@
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
 		<div class="grupos ocultoMobile">
 			<i class="fa-solid fa-user-graduate scale ayudaClick iconoHeader revision" title="Tableros para Revisores"></i>
-			<%- include("CMP-2MenuRevisores") %>
+			<%- include("HR2-MenuRevisores") %>
 		</div>
 	<% } %>
 	<!-- Gráficos -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 		<div class="grupos ocultoMobile">
 			<i class="fa-solid fa-chart-line scale ayudaClick iconoHeader revision" title="Menú de Gráficos"></i>
-			<%- include("CMP-3MenuGraficos") %>
+			<%- include("HR3-MenuGraficos") %>
 		</div>
 	<% } %>
 </section>
@@ -58,11 +58,11 @@
 	<!-- Videos de capacitación -->
 	<div class="grupos ocultoMobileParado">
 		<i class="fa-solid fa-circle-question scale ayudaClick iconoHeader" title="Videos de capacitación"></i>
-		<%- include("CMP-6MenuCapacitac") %>
+		<%- include("HR6-MenuCapacitac") %>
 	</div>
 	<!-- Usuario -->
 	<div class="grupos">
-		<%- include("CMP-IconoUsuario") %>
-		<%- include("CMP-5MenuUsuario") %>
+		<%- include("HR6-IconoUsuario") %>
+		<%- include("HR5-MenuUsuario") %>
 	</div>
 </section>

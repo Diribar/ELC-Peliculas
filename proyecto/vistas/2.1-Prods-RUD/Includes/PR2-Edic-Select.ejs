@@ -14,9 +14,9 @@
 		</select>
 
 		<% if (!campo.mensajes) campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec %>
-		<% if (campo.mensajes) { %><%- include("CMP-Ayuda", {mensajes: campo.mensajes}) %><% } %>
+		<% if (campo.mensajes) { %><%- include("MN-Ayuda", {mensajes: campo.mensajes}) %><% } %>
 
-		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
+		<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

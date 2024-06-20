@@ -7,7 +7,7 @@
 			<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 			<div class="inputError">
 				<input id="apodo" type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>" autofocus>
-				<%- include("CMP-Errores", {nombre: "apodo", ocultarOK: true}) %>
+				<%- include("MN-Errores", {nombre: "apodo", ocultarOK: true}) %>
 			</div>
 		</section>
 		<!--Sexo-->
@@ -21,7 +21,7 @@
 						<option value="<%= genero.id %>" <% if (genero.id == genero_id) {%>selected<% } %>><%= genero.pers %></option>
 					<% } %>
 				</select>
-				<%- include("CMP-Errores", {nombre: "genero_id", ocultarOK: true}) %>
+				<%- include("MN-Errores", {nombre: "genero_id", ocultarOK: true}) %>
 			</div>
 		</div>
 		<!--Pais de residencia-->
@@ -45,7 +45,7 @@
 						<% } %>
 					</optgroup>
 				</select>
-				<%- include("CMP-Errores", {nombre: "pais_id", ocultarOK: true}) %>
+				<%- include("MN-Errores", {nombre: "pais_id", ocultarOK: true}) %>
 			</div>
 		</section>
 		<!--Imagen de perfil-->

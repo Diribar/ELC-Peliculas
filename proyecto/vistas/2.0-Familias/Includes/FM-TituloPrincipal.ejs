@@ -1,4 +1,4 @@
-<% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-TimerContador') %><% } %>
+<% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('MN-TimerContador') %><% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
 	<% if (codigo == "visualizacion") { %>
@@ -8,6 +8,6 @@
 		</h2>
 	<% } %>
 	<% if (locals.ayudasTitulo) { %>
-		<%- include("CMP-Ayuda", {mensajes: ayudasTitulo}) %>
+		<%- include("MN-Ayuda", {mensajes: ayudasTitulo}) %>
 	<% } %>
 </div>

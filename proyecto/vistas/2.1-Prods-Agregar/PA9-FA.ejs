@@ -18,8 +18,8 @@
 					autocomplete="off"
 					autofocus
 				>
-				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["Buscá la película o colección en <a target='_blank' href='https://www.filmaffinity.com/es'><u>Film Affinity</u></a>.", "Seleccioná la dirección (url)", "Copiala", "Pegala en el casillero de la izquierda"]}) %>
-				<%- include("CMP-Errores", {nombre: campo, display}) %>
+				<%- include("MN-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["Buscá la película o colección en <a target='_blank' href='https://www.filmaffinity.com/es'><u>Film Affinity</u></a>.", "Seleccioná la dirección (url)", "Copiala", "Pegala en el casillero de la izquierda"]}) %>
+				<%- include("MN-Errores", {nombre: campo, display}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
 			<div class="inputError">
@@ -30,16 +30,16 @@
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 				>
-				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, hacé <b><em>click izquierdo</em></b> sobre la imagen de la película.", "Una vez que la imagen se agranda, hacé <b><em>click derecho</em></b> sobre ella.", "En el menú que aparece, hacé <b><em>click izquierdo</em></b> sobre la opción <em>'Copiar dirección de la imagen'</em> y pegala en el casillero de la izquierda."]}) %>
-				<%- include("CMP-Errores", {nombre: campo, display}) %>
+				<%- include("MN-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, hacé <b><em>click izquierdo</em></b> sobre la imagen de la película.", "Una vez que la imagen se agranda, hacé <b><em>click derecho</em></b> sobre ella.", "En el menú que aparece, hacé <b><em>click izquierdo</em></b> sobre la opción <em>'Copiar dirección de la imagen'</em> y pegala en el casillero de la izquierda."]}) %>
+				<%- include("MN-Errores", {nombre: campo, display}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="inputError">
 				<% campo = "contenido" %>
 				<!-- Data Entry -->
 				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry[campo] : "" %></textarea>
-				<%- include("CMP-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, seleccioná desde el <b><em><u>título en castellano</u></em></b> hasta el final de la <b><em><u>sinopsis</u></em></b>.", "Copialo.", "Pegalo en el casillero de la izquierda."]}) %>
-				<%- include("CMP-Errores", {nombre: campo, display}) %>
+				<%- include("MN-Ayuda", {parrafo: "<b><u>Pasos</u></b>:", mensajes: ["En la página de FA, seleccioná desde el <b><em><u>título en castellano</u></em></b> hasta el final de la <b><em><u>sinopsis</u></em></b>.", "Copialo.", "Pegalo en el casillero de la izquierda."]}) %>
+				<%- include("MN-Errores", {nombre: campo, display}) %>
 			</div>
 			<div id="resultado"><br></div>
 		</section>
