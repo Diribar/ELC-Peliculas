@@ -150,11 +150,11 @@ window.addEventListener("load", () => {
 		if (indice == -1) return;
 
 		// Quita la clase resaltar de donde estaba
-		DOM.muestraResultados.children[posicion].classList.remove("resaltar");
+		if (posicion !== null) DOM.muestraResultados.children[posicion].classList.remove("resaltar");
 		posicion = indice;
 		DOM.muestraResultados.children[posicion].classList.add("resaltar");
 
 		// Fin
-		return
+		return;
 	});
 });
