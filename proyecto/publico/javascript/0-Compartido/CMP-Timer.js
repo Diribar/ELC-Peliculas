@@ -1,23 +1,34 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// VARIABLES -------------------------------------------------------------------------
-	// Pointer del producto
-	const entID = new URL(location.href).searchParams.get("id");
-	let entidad = new URL(location.href).searchParams.get("entidad");
-	const productos = ["peliculas", "colecciones", "capitulos"].includes(entidad);
-	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
+	// Variables
+	let DOM = {
+		timer: document.querySelector("#timer"),
 
-	// Temas de horario y fechas
-	const unMinuto = 60 * 1000;
-	const mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+		// Partes del cartel
+		todoElMain: document.querySelector("#todoElMain"),
+		tapaElFondo: document.querySelector("#todoElMain #tapaElFondo"),
+		cartelGenerico: document.querySelector("#todoElMain #cartelGenerico"),
+		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
+		iconos: document.querySelector("#cartelGenerico #iconosCartel"),
+	};
+	let v = {
+		// Temas de horario y fechas
+		unMinuto: 60 * 1000,
+		mesesAbrev: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
 
-	// Otras variables
-	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
-	const codigo = location.pathname;
-	let timer = document.querySelector("#timer");
+		// Otras variables
+		tipoUsuario: location.pathname.startsWith("/revision/") ? "revisores" : "usuarios",
+		codigo: location.pathname,
+
+		// Pointer del producto
+		entID: new URL(location.href).searchParams.get("id"),
+		entidad: new URL(location.href).searchParams.get("entidad"),
+	};
+	const familia = ["peliculas", "colecciones", "capitulos"].includes(v.entidad) ? "producto" : "rclv";
+	if (!v.entidad && location.pathname.includes("/revision/usuarios")) v.entidad = "usuarios";
 
 	// Horario Inicial
-	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) => n.json());
+	let datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entID).then((n) => n.json());
 	let horarioInicial = false
 		? false
 		: !datos.capturadoEn
@@ -26,17 +37,17 @@ window.addEventListener("load", async () => {
 		? datos.capturadoEn
 		: new Date();
 
-	// Configurar el horario final
+	// Configura el horario final
 	let horarioFinal = new Date(horarioInicial);
 	horarioFinal.setHours(horarioFinal.getHours() + 1);
 
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
-	let tiempoMax = 60;
-	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / unMinuto);
+	let tiempoMax = 1;
+	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / v.unMinuto);
 
 	// Minutos y Segundos disponibles
-	let minutosDispon =
+	v.minutosDispon =
 		// ¿Hay tiempo restante?
 		tiempoRestante > 0
 			? tiempoRestante
@@ -44,106 +55,98 @@ window.addEventListener("load", async () => {
 			tiempoRestante <= -60
 			? tiempoMax
 			: 0;
-	let segundosDispon = Math.round((minutosDispon % 1) * 60);
+	v.segundosDispon = Math.round((v.minutosDispon % 1) * 60);
 
-	// FUNCIONES -------------------------------------------------------------
-	let fechaHorario = (horario) => {
-		return (
-			horario.getDate() +
-			"/" +
-			mesesAbrev[horario.getMonth()] +
-			" " +
-			horario.getHours() +
-			":" +
-			String(horario.getMinutes()).padStart(2, "0")
-		);
-	};
-	let funcionTimer = () => {
-		let actualizaTimer = setInterval(() => {
-			minutosDispon--;
-			if (minutosDispon < 0) minutosDispon = 0;
-			timer.innerHTML = minutosDispon + " min.";
-			if (minutosDispon == 0) {
-				clearInterval(actualizaTimer);
-				return funcionCartel();
-			} else formatoTimer(minutosDispon);
-		}, unMinuto);
-	};
-	let funcionCartel = () => {
-		// Partes del cartel
-		const todoElMain = document.querySelector("#todoElMain");
-		const tapaElFondo = todoElMain.querySelector("#tapaElFondo");
-		const cartelGenerico = todoElMain.querySelector("#cartelGenerico");
-		const cartelMensajes = cartelGenerico.querySelector("#mensajes");
-		const iconos = cartelGenerico.querySelector("#iconosCartel");
+	// Funciones
+	let FN = {
+		fechaHorario: (horario) => {
+			return (
+				horario.getDate() +
+				"/" +
+				v.mesesAbrev[horario.getMonth()] +
+				" " +
+				horario.getHours() +
+				":" +
+				String(horario.getMinutes()).padStart(2, "0")
+			);
+		},
+		// let actualizaTimer =
+		timer: setInterval(function () {
+			v.minutosDispon--;
+			if (v.minutosDispon < 0) v.minutosDispon = 0;
+			DOM.timer.innerHTML = v.minutosDispon + " min.";
+			if (v.minutosDispon == 0) {
+				clearInterval(FN.timer);
+				return FN.funcionCartel();
+			} else FN.formatoTimer();
+		}, v.unMinuto),
+		funcionCartel: () => {
+			// Variables
+			const horarioFinalTexto = FN.fechaHorario(horarioFinal);
+			const dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
+			const hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
+			const mensajes = datos.capturadoEn
+				? [
+						"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
+						"Quedó a disposición de los demás " + v.tipoUsuario + ".",
+						"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
+				  ]
+				: [
+						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
+						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+				  ];
 
-		// Mensajes
-		let horarioFinalTexto = fechaHorario(horarioFinal);
-		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
-		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
-		let mensajes = datos.capturadoEn
-			? [
-					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
-					"Quedó a disposición de los demás " + tipoUsuario + ".",
-					"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
-			  ]
-			: [
-					"Se cumplió el plazo de 1 hora desde que se creó el registro.",
-					"Estará disponible luego de ser revisado, en caso de ser aprobado.",
-			  ];
-		cartelMensajes.innerHTML = "";
-		for (let mensaje of mensajes) cartelMensajes.innerHTML += "<li>" + mensaje + "</li>";
+			// Mensajes
+			DOM.mensajes = document.createElement("ul");
+			DOM.mensajes.id = "mensajes";
+			DOM.mensajes.style.listStyleType = "disc";
+			DOM.contenedorMensajes.appendChild(DOM.mensajes);
+			DOM.mensajes.innerHTML = "";
+			for (let mensaje of mensajes) DOM.mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
-		// Iconos
-		let icono = false
-			? false
-			: codigo.startsWith("/revision/usuarios")
-			? {
-					link: "/revision/usuarios/tablero-de-usuarios",
-					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-			  }
-			: codigo.startsWith("/revision/")
-			? {
-					link: "/revision/tablero-de-entidades",
-					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-			  }
-			: productos
-			? {
-					link: "/producto/detalle/?entidad=" + entidad + "&id=" + entID,
-					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-			  }
-			: {
-					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + entID,
-					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-			  };
+			// Iconos
+			const [link, clase, titulo] = v.codigo.startsWith("/revision/usuarios")
+				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
+				: v.codigo.startsWith("/revision/")
+				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
+				: ["/" + familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entID, "fa-circle-info", "Ir a Detalle"];
+			// Icono
+			const i = document.createElement("i");
+			i.classList.add("fa-solid", clase);
+			i.title = titulo;
+			// Anchor
+			const a = document.createElement("a");
+			a.href = link;
+			// Une las partes
+			a.appendChild(i);
+			DOM.iconos.appendChild(a);
 
-		iconos.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
-
-		// Mostrar el cartel
-		todoElMain.classList.remove("ocultar");
-		tapaElFondo.classList.remove("ocultar");
-		cartelGenerico.classList.remove("ocultar");
-	};
-	let formatoTimer = (minutosDispon) => {
-		if (minutosDispon <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
-		else if (minutosDispon <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
+			// Muestra el cartel
+			DOM.todoElMain.classList.remove("ocultar");
+			DOM.tapaElFondo.classList.remove("ocultar");
+			DOM.cartelGenerico.classList.remove("ocultar");
+		},
+		formatoTimer: () => {
+			if (v.minutosDispon <= 15) DOM.timer.style.backgroundColor = "var(--rojo-oscuro)";
+			else if (v.minutosDispon <= 30) DOM.timer.style.backgroundColor = "var(--naranja-oscuro)";
+		},
 	};
 
 	// STARTUP -------------------------------------------------------------
-	// Mostrar el tiempo inicial
-	let minutosInicialesAMostrar = parseInt(minutosDispon) + (segundosDispon ? 1 : 0);
-	timer.innerHTML = minutosInicialesAMostrar + " min.";
-	formatoTimer(minutosDispon);
-	timer.classList.remove("ocultar");
+	// Muestra el tiempo inicial
+	DOM.timer.innerHTML = Math.ceil(v.minutosDispon) + " min.";
+	FN.formatoTimer();
+	DOM.timer.classList.remove("ocultar");
 
 	// Pausa hasta que se acaben los segundos del minuto inicial
 	setTimeout(() => {
-		// Actualizar los minutos disponibles
-		minutosDispon = parseInt(minutosDispon);
-		timer.innerHTML = minutosDispon + " min.";
-		formatoTimer(minutosDispon);
-		if (minutosDispon == 0) return funcionCartel();
-		// Ejecutar la rutina
-		funcionTimer();
-	}, segundosDispon * 1000);
+		// Actualiza los minutos disponibles
+		v.minutosDispon = parseInt(v.minutosDispon);
+		DOM.timer.innerHTML = v.minutosDispon + " min.";
+		if (v.minutosDispon == 0) return FN.funcionCartel();
+
+		// Ejecuta la rutina
+		FN.formatoTimer(v.minutosDispon);
+		FN.timer;
+	}, v.segundosDispon * 1000);
 });
