@@ -5,7 +5,7 @@
 			<% if (locals.parrafo) { %><p><%- parrafo %></p><% } %>
 			<% if (locals.mensaje || locals.mensajes) { %>
 				<% const tipoTexto = !!locals.mensaje %>
-				<ul type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'dots' %>">
+				<ul type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'disc' %>">
 					<% if (tipoTexto) { %>
 						<li><%- mensaje %></li>
 					<% } else for (let mensaje of mensajes) { %>

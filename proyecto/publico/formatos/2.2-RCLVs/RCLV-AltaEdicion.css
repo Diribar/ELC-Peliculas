@@ -92,7 +92,7 @@
 						:is(#sectorCarpetaAvatars select, #sectorPrioridad select) {width: 108px;}
 						#sectorPrioridad {
 							margin-top: 5px;
-							.ayuda ul[type="dots"] {padding: 7px;}
+							.ayuda ul[type="disc"] {padding: 7px;}
 						}
 						#sectorGenero {
 							/* margin-top: 10px; */
