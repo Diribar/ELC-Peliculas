@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 19/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Jue. 20/jun",
+	"HoraUTC": "10:25",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 17/jun",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-jun-24": {"leyenda": "Hoy recordamos Alberto Chmielowski", "entidad": "personajes", "id": 229},
 		"18-jun-24": {},
 		"19-jun-24": {},
 		"20-jun-24": {},
-		"21-jun-24": {}
+		"21-jun-24": {},
+		"22-jun-24": {"leyenda": "Hoy recordamos a santo Tomás Moro", "entidad": "personajes", "id": 102}
 	}
 }
