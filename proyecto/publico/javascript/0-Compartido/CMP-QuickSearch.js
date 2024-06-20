@@ -143,4 +143,12 @@ window.addEventListener("load", () => {
 		// Escape - Oculta el sector de muestraResultados
 		if (e.key == "Escape") DOM.ayudaMensMostrar.classList.add("ocultar");
 	});
+	DOM.muestraResultados.addEventListener("mouseover", (e) => {
+		// Variables
+		const opciones = Array.from(DOM.muestraResultados.children);
+		const indice = opciones.findIndex((n) => n == e.target.parentNode);
+		if (indice == -1) return;
+
+		//
+	});
 });
