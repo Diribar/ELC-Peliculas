@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		cartelGenerico: document.querySelector("#cartelGenerico"),
 		alerta: document.querySelector("#cartelGenerico #alerta"),
 		check: document.querySelector("#cartelGenerico #check"),
-		mensajes: document.querySelector("#cartelGenerico ul#mensajes"),
+		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
 		iconos: document.querySelector("#cartelGenerico #iconosCartel"),
 
 		// Otras variables
@@ -67,16 +67,15 @@ window.addEventListener("load", async () => {
 			// Acciones si está todo procesado
 			if (todoProcesado) {
 				DOM.datos.classList.add("ocultar");
-				this.cartelAveriguandoInconsistencias();
+				this.cartelTodoProcesado();
 			}
 
 			// Fin
 			return;
 		},
-		cartelAveriguandoInconsistencias: () => {
-			// Cambia el contenido del mensaje y los iconos
-			DOM.mensajes.innerHTML = "";
-			DOM.iconos.innerHTML = "";
+		cartelTodoProcesado: () => {
+			// Se asegura de tener vacío el 'contenedorMensajes'
+			DOM.contenedorMensajes.innerHTML = "";
 
 			// Formatos
 			DOM.cartelGenerico.classList.add("check");
@@ -103,19 +102,13 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		cartelHayInconsistencias: () => {
-			// Variables
+			// Crea el mensaje
 			const mensajes = [
 				"Se encontró una inconsistencia en el registro de edición.",
 				"Figura que está todo procesado, y a la vez quedan campos por procesar",
 			];
-			const icono = {
-				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
-				link: "/" + familia + "/edicion/" + v.cola,
-			};
-
-			// Cambia el contenido del mensaje y los iconos
-			for (let mensaje of mensajes) DOM.mensajes.innerHTML += "<li>" + mensaje + "</li>";
-			DOM.iconos.innerHTML = "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
+			const link = "/" + familia + "/edicion/" + v.cola;
+			contenidoDelCartelGenerico({DOM, mensajes, clase: "fa-thumbs-up", titulo: "Entendido", link});
 
 			// Formatos
 			DOM.cartelGenerico.classList.remove("check");
