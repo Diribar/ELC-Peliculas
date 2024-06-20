@@ -295,4 +295,7 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	a.appendChild(i);
 	DOM.iconos.appendChild(a);
 	DOM.iconos.querySelector("a").focus();
+
+	// Fin
+	return
 };
