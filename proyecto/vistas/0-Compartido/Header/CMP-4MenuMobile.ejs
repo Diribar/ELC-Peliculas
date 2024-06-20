@@ -4,11 +4,11 @@
 		<i class="fa-solid icono fa-magnifying-glass mm_busquedaRapida"></i>
 		<span class="mm_busquedaRapida">Búsqueda rápida</span>
 	</div>
-	<% if (tema != "institucional" || codigo != "inicio") { %>
+	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
 		<hr class=" soloAngosto">
 	<% } %>
 
-	<% if (locals.tema != "consultas" && (tema != "institucional" || codigo != "inicio")) { %>
+	<% if (locals.tema != "consultas" && (locals.tema != "institucional" || locals.codigo != "inicio")) { %>
 		<!-- Quiero elegir una película -->
 		<a href="/consultas" class="menuOpcion">
 			<div>
@@ -20,13 +20,11 @@
 	<% } %>
 	<!-- Demostración -->
 	<div class="menuOpcion mm_demo ocultar">
-		<div>
-			<i class="fa-solid fa-play icono mm_demo"></i>
-		</div>
+		<i class="fa-solid fa-play icono mm_demo"></i>
 		<span class="mm_demo">Ejemplo de uso</span>
 	</div>
 	<hr class="ocultar">
-	<% if (tema != "institucional" || codigo != "inicio") { %>
+	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
 		<!-- Quiénes somos -->
 		<a href="/institucional/quienes-somos" class="menuOpcion">
 			<i class="fa-solid icono fa-people-group"></i>
