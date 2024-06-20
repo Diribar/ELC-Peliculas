@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
-	let tiempoMax = 1;
+	let tiempoMax = 60;
 	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / v.unMinuto);
 
 	// Minutos y Segundos disponibles
@@ -71,20 +71,31 @@ window.addEventListener("load", async () => {
 			);
 		},
 		// let actualizaTimer =
-		timer: setInterval(function () {
+		timer: setInterval(() => {
+			// Si ya se mostró el cartel, interrumpe la función
+			if (!DOM.todoElMain.className.includes("ocultar")) return clearInterval(FN.timer);
+
+			// Actualiza los minutos disponibles
 			v.minutosDispon--;
 			if (v.minutosDispon < 0) v.minutosDispon = 0;
 			DOM.timer.innerHTML = v.minutosDispon + " min.";
+
+			// Acciones si se acabó el tiempo
 			if (v.minutosDispon == 0) {
 				clearInterval(FN.timer);
 				return FN.funcionCartel();
-			} else FN.formatoTimer();
+			}
+
+			// Si sigue habiendo tiempo, actualiza el formato
+			else FN.formatoTimer();
 		}, v.unMinuto),
 		funcionCartel: () => {
 			// Variables
 			const horarioFinalTexto = FN.fechaHorario(horarioFinal);
 			const dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
 			const hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
+
+			// Crea el mensaje
 			const mensajes = datos.capturadoEn
 				? [
 						"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
@@ -95,31 +106,12 @@ window.addEventListener("load", async () => {
 						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
 						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 				  ];
-
-			// Mensajes
-			DOM.mensajes = document.createElement("ul");
-			DOM.mensajes.id = "mensajes";
-			DOM.mensajes.style.listStyleType = "disc";
-			DOM.contenedorMensajes.appendChild(DOM.mensajes);
-			DOM.mensajes.innerHTML = "";
-			for (let mensaje of mensajes) DOM.mensajes.innerHTML += "<li>" + mensaje + "</li>";
-
-			// Iconos
 			const [link, clase, titulo] = v.codigo.startsWith("/revision/usuarios")
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: v.codigo.startsWith("/revision/")
 				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
 				: ["/" + familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entID, "fa-circle-info", "Ir a Detalle"];
-			// Icono
-			const i = document.createElement("i");
-			i.classList.add("fa-solid", clase);
-			i.title = titulo;
-			// Anchor
-			const a = document.createElement("a");
-			a.href = link;
-			// Une las partes
-			a.appendChild(i);
-			DOM.iconos.appendChild(a);
+			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
 
 			// Muestra el cartel
 			DOM.todoElMain.classList.remove("ocultar");
@@ -138,7 +130,7 @@ window.addEventListener("load", async () => {
 	FN.formatoTimer();
 	DOM.timer.classList.remove("ocultar");
 
-	// Pausa hasta que se acaben los segundos del minuto inicial
+	// Cuando se acaban los segundos del minuto inicial, actualiza el contador
 	setTimeout(() => {
 		// Actualiza los minutos disponibles
 		v.minutosDispon = parseInt(v.minutosDispon);
