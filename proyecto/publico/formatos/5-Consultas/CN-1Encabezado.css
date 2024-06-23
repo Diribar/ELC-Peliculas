@@ -1,31 +1,41 @@
 /* Compartir y mostrar preferencias */
-#tituloPrincipal #iconosDelTitulo {margin-top: 15px;}
-#iconosDelTitulo :is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
-#iconosDelTitulo .iconosAzules {display: flex; flex-direction: row; position: relative;}
-#iconosDelTitulo .iconosAzules {width: 25px; height: 25px; border-radius: 50%;}
-#iconosDelTitulo .iconosAzules {justify-content: center; align-items: center; z-index: 1;}
-#iconosDelTitulo .iconosAzules {border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);}
+#tituloPrincipal {
+	/* Ayuda y Actualizar */
+	:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
+		margin-left: 10px; align-self: flex-end; margin-bottom: 3px;
+		ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
+	}
 
-/* Compartir */
-#iconosDelTitulo #consCopiada {bottom: -2px; left: 15px; padding: 2px 5px;}
-#iconosDelTitulo #consCopiada {translate: 0 100%; text-wrap: nowrap; border-radius: 10px;}
-#iconosDelTitulo #consCopiada {background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);}
+	/* Layout */
+	#layoutAyuda select {
+		font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;
+		color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;
+		&:not(:valid) {background: var(--rojo-oscuro);}
+		&:valid {background: var(--verde-oscuro);}
+		optgroup {background: var(--azul-frances);}
+		optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
+	}
 
-/* Mostrar preferencias */
-#iconosDelTitulo #toggleFiltrosGlobal {display: none;}
-
-/* Layout */
-#tituloPrincipal select {font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;}
-#tituloPrincipal select {color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;}
-#tituloPrincipal select:not(:valid) {background: var(--rojo-oscuro);}
-#tituloPrincipal select:valid {background: var(--verde-oscuro);}
-#tituloPrincipal select optgroup {background: var(--azul-frances);}
-#tituloPrincipal select optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
-
-/* Ayuda y Actualizar */
-#tituloPrincipal .ayuda.consulta {margin-left: 10px; align-self: flex-end; margin-bottom: 3px;}
-#tituloPrincipal .ayuda.consulta ul li span {color: var(--amarillo-claro); font-variant: small-caps}
+	#iconosDelTitulo {
+		margin-top: 15px;
+		:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
+		.iconosAzules {
+			display: flex; flex-direction: row; position: relative;
+			width: 25px; height: 25px; border-radius: 50%;
+			justify-content: center; align-items: center; z-index: 0;
+			border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+		}
+		#consCopiada {
+			bottom: -2px; left: 15px; padding: 2px 5px;
+			translate: 0 100%; text-wrap: nowrap; border-radius: 10px;
+			background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
+		} /* Compartir */
+		#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
+	}
+}
 
 /* Contador */
-#derecha #contadorDeProds {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
-#derecha #contadorDeProds {font-size: 1.1rem; font-weight: bold; width: max-content;}
+#derecha #contadorDeProds {
+	padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;
+	font-size: 1.1rem; font-weight: bold; width: max-content;
+}
