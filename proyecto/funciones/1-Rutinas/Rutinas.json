@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 25/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mié. 26/jun",
+	"HoraUTC": "1:15",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 24/jun",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"23-jun-24": {},
 		"24-jun-24": {"leyenda": "Hoy recordamos a Juan el Bautista, santo", "entidad": "personajes", "id": 197},
 		"25-jun-24": {},
 		"26-jun-24": {"leyenda": "Hoy recordamos José María Escrivá", "entidad": "personajes", "id": 225},
-		"27-jun-24": {"leyenda": "Hoy recordamos Joao Pozzobon", "entidad": "personajes", "id": 220}
+		"27-jun-24": {"leyenda": "Hoy recordamos Joao Pozzobon", "entidad": "personajes", "id": 220},
+		"28-jun-24": {}
 	}
 }
