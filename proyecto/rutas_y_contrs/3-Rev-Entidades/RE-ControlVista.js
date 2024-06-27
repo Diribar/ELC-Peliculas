@@ -62,9 +62,9 @@ module.exports = {
 		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
 
 		// Productos
-		let prods = procesos.TM.obtieneProds(userID).then((n) => procesos.procesaCampos.prods(n));
-		let rclvs = procesos.TM.obtieneRCLVs(userID).then((n) => procesos.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.TM.obtieneLinksInactivos(userID).then((n) => procesos.procesaCampos.prods(n));
+		let prods = procesos.tablManten.obtieneProds(userID).then((n) => procesos.procesaCampos.prods(n));
+		let rclvs = procesos.tablManten.obtieneRCLVs(userID).then((n) => procesos.procesaCampos.rclvs(n));
+		let prodsConLinksInactivos = procesos.tablManten.obtieneLinksInactivos(userID).then((n) => procesos.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
