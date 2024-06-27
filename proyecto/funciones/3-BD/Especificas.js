@@ -5,9 +5,6 @@ const variables = require("../2-Procesos/Variables");
 
 module.exports = {
 	// Varios
-	obtieneELC_id: (entidad, objeto) => {
-		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
-	},
 	validaRepetidos: (campos, datos) => {
 		// El mismo valor para los campos
 		let condicion = {};
