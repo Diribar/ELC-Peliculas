@@ -212,7 +212,7 @@ module.exports = {
 		let FA_id = procesos.FA.obtieneFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
-	obtieneELC_id: async (req, res) => {
+	averiguaSiYaExisteEnBd: async (req, res) => {
 		const {entidad, campo, valor} = req.query;
 		const existe = await baseDeDatos.obtienePorCondicion(entidad, {[campo]: valor});
 		return res.json(existe);

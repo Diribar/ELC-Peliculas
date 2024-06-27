@@ -55,13 +55,13 @@ window.addEventListener("load", async () => {
 
 		// Averigua si existe el registro
 		url = "entidad=" + entidad + "&campo=FA_id&valor=" + FA_id;
-		existe = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
+		existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
 
 		// Si no existe y no es una colección, lo busca en la contraparte
 		if (!existe && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
 			url += "&campo=FA_id&valor=" + FA_id;
-			existe = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
+			existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
 		}
 
 		// Fin
