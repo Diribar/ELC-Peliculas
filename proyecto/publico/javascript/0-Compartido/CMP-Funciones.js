@@ -266,3 +266,37 @@ let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
 		};
 	};
 };
+
+let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
+	// Mensajes - crea el sector
+	DOM.mensajes = document.createElement("ul");
+	DOM.mensajes.id = "mensajes";
+	DOM.mensajes.style.listStyleType = "disc";
+	DOM.contenedorMensajes.appendChild(DOM.mensajes);
+
+	// Mensajes - contenido
+	for (let mensaje of mensajes) {
+		const li = document.createElement("li");
+		li.innerHTML = mensaje;
+		DOM.mensajes.appendChild(li);
+	}
+
+	// Crea el anchor
+	const a = document.createElement("a");
+	a.href = link;
+	a.tabIndex = "1";
+
+	// Crea el ícono
+	const i = document.createElement("i");
+	i.classList.add("fa-solid", clase);
+	i.title = titulo;
+
+	// Une las partes
+	a.appendChild(i);
+	DOM.iconos = document.querySelector("#cartelGenerico #iconosCartel");
+	DOM.iconos.appendChild(a);
+	DOM.iconos.querySelector("a").focus();
+
+	// Fin
+	return;
+};

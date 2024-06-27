@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
 		muestraResultados: document.querySelector("#busquedaRapida .ayudaMensMostrar #muestraResultados"),
 		escribiMas: document.querySelector("#busquedaRapida .ayudaMensMostrar #escribiMas"),
 	};
-	let producto = null;
+	let posicion = null;
 
 	// Funciones
 	let agregaResultados = (registros) => {
@@ -115,32 +115,46 @@ window.addEventListener("load", () => {
 		// Se desliza entre los productos
 		if (e.key == "ArrowUp") {
 			// Resalta el registro anterior
-			if (producto === null) producto = cantResultados - 1;
+			if (posicion === null) posicion = cantResultados - 1;
 			else {
-				DOM.muestraResultados.children[producto].classList.remove("resaltar");
-				if (producto === 0) producto = cantResultados - 1;
-				else producto--;
+				DOM.muestraResultados.children[posicion].classList.remove("resaltar");
+				if (posicion === 0) posicion = cantResultados - 1;
+				else posicion--;
 			}
-			DOM.muestraResultados.children[producto].classList.add("resaltar");
+			DOM.muestraResultados.children[posicion].classList.add("resaltar");
 		}
 		if (e.key == "ArrowDown") {
 			// Resalta el registro siguiente
-			if (producto === null) producto = 0;
+			if (posicion === null) posicion = 0;
 			else {
-				DOM.muestraResultados.children[producto].classList.remove("resaltar");
-				if (producto == cantResultados - 1) producto = 0;
-				else producto++;
+				DOM.muestraResultados.children[posicion].classList.remove("resaltar");
+				if (posicion == cantResultados - 1) posicion = 0;
+				else posicion++;
 			}
-			DOM.muestraResultados.children[producto].classList.add("resaltar");
+			DOM.muestraResultados.children[posicion].classList.add("resaltar");
 		}
 
 		// Redirige a la vista del hallazgo
 		if (e.key == "Enter") {
-			if (producto === null) producto = 0;
-			location.href = DOM.muestraResultados.children[producto].href;
+			if (posicion === null) posicion = 0;
+			location.href = DOM.muestraResultados.children[posicion].href;
 		}
 
 		// Escape - Oculta el sector de muestraResultados
 		if (e.key == "Escape") DOM.ayudaMensMostrar.classList.add("ocultar");
+	});
+	DOM.muestraResultados.addEventListener("mouseover", (e) => {
+		// Variables
+		const opciones = Array.from(DOM.muestraResultados.children);
+		const indice = opciones.findIndex((n) => n == e.target.parentNode);
+		if (indice == -1) return;
+
+		// Quita la clase resaltar de donde estaba
+		if (posicion !== null) DOM.muestraResultados.children[posicion].classList.remove("resaltar");
+		posicion = indice;
+		DOM.muestraResultados.children[posicion].classList.add("resaltar");
+
+		// Fin
+		return;
 	});
 });
