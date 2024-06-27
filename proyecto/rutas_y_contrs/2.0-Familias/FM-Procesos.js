@@ -384,6 +384,21 @@ module.exports = {
 			return grupos;
 		},
 	},
+	validaRepetidos: async (campos, datos) => {
+		// El mismo valor para los campos
+		let condicion = {};
+		for (let campo of campos) condicion[campo] = datos[campo];
+
+		// Si tiene ID, agrega la condición de que sea distinto
+		if (datos.id) condicion.id = {[Op.ne]: datos.id};
+		if (datos.coleccion_id) condicion.coleccion_id = datos.coleccion_id;
+
+		// Averigua si está repetido
+		const existe = await baseDeDatos.obtienePorCondicion(datos.entidad, condicion);
+
+		// Fin
+		return existe ? existe.id : false;
+	},
 
 	// CRUD y Revisión
 	obtieneAvatar: (original, edicion) => {
@@ -661,9 +676,9 @@ module.exports = {
 			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
 				prodsPorEnts.push(
-					baseDeDatos.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID}).then((n) =>
-						n.map((m) => ({...m, [campo_id]: 1}))
-					)
+					baseDeDatos
+						.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID})
+						.then((n) => n.map((m) => ({...m, [campo_id]: 1})))
 				);
 			prodsPorEnts = await Promise.all(prodsPorEnts);
 			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);

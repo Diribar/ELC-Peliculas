@@ -83,7 +83,7 @@ let validaLinkRepetidos = async (datos) => {
 	datos = {...datos, entidad: "links"};
 	let respuesta = "";
 	// Obtiene casos
-	let id = await BD_especificas.validaRepetidos(["url"], datos);
+	let id = await procsCRUD.validaRepetidos(["url"], datos);
 	if (id) {
 		let link = await baseDeDatos.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(link);
