@@ -5,6 +5,49 @@ const axios = require("axios");
 
 // Exportar
 module.exports = {
+	// Header
+	quickSearch: {
+		registros: (condiciones, dato) => {
+			// Obtiene los registros
+			return db[dato.entidad]
+				.findAll({where: condiciones, limit: 10})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) =>
+					n.map((m) => {
+						let respuesta = {
+							id: m.id,
+							nombre: m[dato.campos[0]],
+							entidad: dato.entidad,
+							familia: dato.familia,
+							avatar: m.avatar, // específicos para PA-Desambiguar
+						};
+						if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
+						if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
+
+						return respuesta;
+					})
+				);
+		},
+		ediciones: (condiciones, dato) => {
+			return db[dato.entidad]
+				.findAll({where: condiciones, limit: 10, include: dato.include})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) =>
+					n.map((m) => {
+						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
+						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
+						return {
+							entidad,
+							id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
+							anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
+							nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
+							familia: dato.familia,
+						};
+					})
+				);
+		},
+	},
+
 	// Entidades
 	obtieneDesdeFamilias: {
 		familia: (familias) => {

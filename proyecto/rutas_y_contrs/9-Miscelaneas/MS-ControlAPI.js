@@ -55,8 +55,8 @@ module.exports = {
 			// Obtiene los registros que cumplen las condiciones
 			aux.push(
 				dato.original
-					? BD_especificas.quickSearch.registros(condiciones, dato)
-					: BD_especificas.quickSearch.ediciones(condiciones, dato)
+					? comp.quickSearch.registros(condiciones, dato)
+					: comp.quickSearch.ediciones(condiciones, dato)
 			);
 		}
 		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
