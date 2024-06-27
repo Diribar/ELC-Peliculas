@@ -182,10 +182,10 @@ module.exports = {
 			// Acciones si el usuario elimina la edición
 			if (eliminarEdic) {
 				// Variables
-				const condiciones = {[campo_id]: id, editadoPor_id: userID};
+				const condicion = {[campo_id]: id, editadoPor_id: userID};
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
-				const edicion = await baseDeDatos.obtienePorCondicion("rclvsEdicion", condiciones);
+				const edicion = await baseDeDatos.obtienePorCondicion("rclvsEdicion", condicion);
 				if (edicion && edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", edicion.avatar);
 				if (edicion) await baseDeDatos.eliminaPorId("rclvsEdicion", edicion.id);
 

@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
 		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
 	};
 	let v = {
-		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
+		condicion: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
 		rutaAltaBaja: "/revision/api/link/alta-baja/",
 		rutaSigProd: "/revision/api/link/siguiente-producto/",
@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 		const fila = parseInt(indice / 2);
 		icono.addEventListener("click", async () => {
 			// Variables
-			let url = v.condiciones;
+			let url = v.condicion;
 
 			// Completa el url
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);

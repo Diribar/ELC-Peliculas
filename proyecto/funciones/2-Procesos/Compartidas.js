@@ -624,11 +624,11 @@ module.exports = {
 	linksEnColec: async (colID) => {
 		// Variables
 		const campos = variables.calidadLinks;
-		const condiciones = {coleccion_id: colID, statusRegistro_id: activos_ids};
+		const condicion = {coleccion_id: colID, statusRegistro_id: activos_ids};
 
 		// Obtiene los capítulos de la colección
 		const capitulos = await baseDeDatos
-			.obtieneTodosPorCondicion("capitulos", condiciones)
+			.obtieneTodosPorCondicion("capitulos", condicion)
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
 			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
 		if (!capitulos.length) return;
@@ -849,7 +849,7 @@ module.exports = {
 			const ahora = new Date();
 
 			// Condiciones y nuevo status
-			const condiciones = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
+			const condicion = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
 			const novedades = {
 				statusSugeridoPor_id: usAutom_id,
 				statusRegistro_id: creadoAprob_id,
@@ -857,7 +857,7 @@ module.exports = {
 			};
 
 			// Actualiza las novedades de los links
-			await baseDeDatos.actualizaTodosPorCondicion("links", condiciones, novedades);
+			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
 
 			// Fin
 			await this.actualizaLVPS();
@@ -869,8 +869,8 @@ module.exports = {
 			cantLinksVencPorSem = {}; // elimina los datos anteriores
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
-			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
-			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condiciones);
+			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
+			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion);
 
 			// Promedios semanales
 			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);

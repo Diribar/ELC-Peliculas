@@ -54,7 +54,7 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	condiciones: (link, userID, tema) => {
+	condicion: (link, userID, tema) => {
 		// Variables
 		let cond = {};
 		cond.propio = link.statusSugeridoPor_id == userID;

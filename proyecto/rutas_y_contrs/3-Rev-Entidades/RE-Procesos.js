@@ -1015,12 +1015,12 @@ let FN_links = {
 		const include = variables.entidades.asocProds;
 
 		// Obtiene los links en status 'a revisar'
-		const condiciones = {
+		const condicion = {
 			prodAprob: true,
 			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
 		};
 		const originales = baseDeDatos
-			.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+			.obtieneTodosPorCondicionConInclude("links", condicion, include)
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // lotes por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // capítulos por colección
 			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
