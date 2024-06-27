@@ -424,23 +424,19 @@ module.exports = {
 		return leadTime;
 	},
 	obtieneTodosLosCamposInclude: function (entidad) {
-		// Obtiene la familia
-		let familias = this.obtieneDesdeEntidad.familias(entidad);
-
 		// Obtiene todos los campos de la familia
-		let campos = [...variables.camposRevisar[familias]];
+		const familias = this.obtieneDesdeEntidad.familias(entidad);
+		const camposFamilia = [...variables.camposRevisar[familias]];
 
-		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
+		// Obtiene los campos include
+		const camposEntidad = camposFamilia.filter((n) => n[entidad] || n[familias]);
+		const camposInclude = camposEntidad.filter((n) => n.relacInclude);
 
-		// Deja solamente los campos con vínculo
-		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
-
-		// Obtiene una matriz con los vínculos
-		let include = camposConVinculo.map((n) => n.relacInclude);
+		// Genera un array con las asociaciones
+		const asociaciones = camposInclude.map((n) => n.relacInclude);
 
 		// Fin
-		return include;
+		return asociaciones;
 	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
