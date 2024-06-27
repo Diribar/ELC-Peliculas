@@ -6,64 +6,6 @@ const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	califics: {
-		delProducto: async (req, res) => {
-			// Variables
-			const {entidad, id: prodID} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-			let datos;
-			let calificaciones = [];
-
-			// Datos generales
-			datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
-				n.feValores,
-				n.entretiene,
-				n.calidadTecnica,
-				n.calificacion,
-			]);
-			calificaciones.push({autor: "Gral.", valores: datos});
-
-			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const include = ["feValores", "entretiene", "calidadTecnica"];
-			datos = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
-			if (datos) {
-				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
-				calificaciones.push({autor: "Tuya", valores: datos});
-			}
-
-			// Fin
-			return res.json(calificaciones);
-		},
-		delUsuarioProducto: async (req, res) => {
-			// Variables
-			const {entidad, id: prodID} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-
-			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
-
-			// Fin
-			return res.json({califGuardada, atributosCalific, calCriterios});
-		},
-		elimina: async (req, res) => {
-			// Variables
-			const {entidad, id: entidad_id} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-
-			// Elimina
-			const condics = {usuario_id: userID, entidad, entidad_id};
-			await BD_genericas.eliminaTodosPorCondicion("calRegistros", condics);
-
-			// Actualiza las calificaciones del producto
-			await procesos.actualizaCalifProd({entidad, entidad_id});
-
-			// Fin
-			return res.json();
-		},
-	},
-
 	// Edición del Producto
 	edicion: {
 		valida: async (req, res) => {
@@ -148,6 +90,64 @@ module.exports = {
 			if (req.query.avatar) delete req.query.avatar;
 			req.session.edicProd = req.query;
 			res.cookie("edicProd", req.query, {maxAge: unDia});
+			return res.json();
+		},
+	},
+
+	califics: {
+		delProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+			let datos;
+			let calificaciones = [];
+
+			// Datos generales
+			datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
+				n.feValores,
+				n.entretiene,
+				n.calidadTecnica,
+				n.calificacion,
+			]);
+			calificaciones.push({autor: "Gral.", valores: datos});
+
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const include = ["feValores", "entretiene", "calidadTecnica"];
+			datos = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
+			if (datos) {
+				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
+				calificaciones.push({autor: "Tuya", valores: datos});
+			}
+
+			// Fin
+			return res.json(calificaciones);
+		},
+		delUsuarioProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
+
+			// Fin
+			return res.json({califGuardada, atributosCalific, calCriterios});
+		},
+		elimina: async (req, res) => {
+			// Variables
+			const {entidad, id: entidad_id} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+
+			// Elimina
+			const condics = {usuario_id: userID, entidad, entidad_id};
+			await BD_genericas.eliminaTodosPorCondicion("calRegistros", condics);
+
+			// Actualiza las calificaciones del producto
+			await procesos.actualizaCalifProd({entidad, entidad_id});
+
+			// Fin
 			return res.json();
 		},
 	},
