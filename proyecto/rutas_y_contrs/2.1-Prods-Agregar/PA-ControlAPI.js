@@ -213,8 +213,8 @@ module.exports = {
 		return res.json(FA_id);
 	},
 	obtieneELC_id: async (req, res) => {
-		let {entidad, campo, valor} = req.query;
-		let elc_id = await BD_especificas.obtieneELC_id(entidad, {[campo]: valor});
-		return res.json(elc_id);
+		const {entidad, campo, valor} = req.query;
+		const existe = await baseDeDatos.obtienePorCondicion(entidad, {[campo]: valor});
+		return res.json(existe);
 	},
 };
