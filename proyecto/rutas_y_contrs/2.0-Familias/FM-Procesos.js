@@ -58,7 +58,7 @@ module.exports = {
 				for (let campo of camposEditables) {
 					const {nombre} = campo;
 					if (
-						(edicColec[nombre] != null && original[nombre] == null && (!edicion || edicion[nombre] == null)) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' da 'true' con el '=='
+						(edicColec[nombre] != null && original[nombre] == null && (!edicion || edicion[nombre] == null)) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
 						(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
 					)
 						edicion = {...edicion, [nombre]: edicColec[nombre]};
