@@ -1,4 +1,6 @@
 "use strict";
+// Variables
+const procesos = require("./FM-Procesos");
 
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
@@ -76,7 +78,7 @@ module.exports = {
 		const {coleccion_id, temporada} = req.query;
 
 		// Obtiene los datos
-		const datos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
+		const datos = await procsCRUD.obtieneCapitulos(coleccion_id, temporada);
 
 		// Fin
 		return res.json(datos);

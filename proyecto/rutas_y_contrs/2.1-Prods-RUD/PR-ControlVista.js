@@ -52,7 +52,7 @@ module.exports = {
 
 		// Lecturas de BD
 		if (entidad == "capitulos") {
-			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+			prodComb.capitulos = procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 			prodComb.colecAprob = baseDeDatos.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
 				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
@@ -105,7 +105,7 @@ module.exports = {
 			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 			const prodComb = {...original, ...edicion, ...edicSession, id};
 			if (entidad == "capitulos")
-				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
+				prodComb.capitulos = await procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
 
 			// Datos Duros
 			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
@@ -284,7 +284,7 @@ module.exports = {
 
 			// Info para la vista
 			if (entidad == "capitulos")
-				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+				prodComb.capitulos = await procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 			const status_id = original.statusRegistro_id;
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];

@@ -399,6 +399,22 @@ module.exports = {
 		// Fin
 		return existe ? existe.id : false;
 	},
+	obtieneCapitulos: async (coleccion_id, temporada) => {
+		// Obtiene registros
+		const condicion = {coleccion_id, temporada, statusRegistro_id: activos_ids};
+		const registros = await baseDeDatos
+			.obtieneTodosPorCondicion("capitulos", condicion)
+			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo))
+			.then((n) =>
+				n.map((m) => {
+					const nombre = m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal;
+					return {id: m.id, numero: m.capitulo, nombre};
+				})
+			);
+
+		// Fin
+		return registros;
+	},
 
 	// CRUD y Revisión
 	obtieneAvatar: (original, edicion) => {

@@ -1,9 +1,8 @@
 "use strict";
-// ************ Requires *************
+// Variables
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./FM-Procesos");
 
-// *********** Controlador ***********
 module.exports = {
 	inacRecupElim_form: async (req, res) => {
 		// Tema y Código
@@ -82,7 +81,7 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
-			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+			original.capitulos = await procsCRUD.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 
