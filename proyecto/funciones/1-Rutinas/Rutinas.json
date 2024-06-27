@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 20/jun",
-	"HoraUTC": "10:25",
+	"FechaUTC": "Jue. 27/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 17/jun",
-	"HoraSemUTC": "17:27",
-	"semanaUTC": 25,
+	"FechaSemUTC": "Lun. 24/jun",
+	"HoraSemUTC": "2:37",
+	"semanaUTC": 26,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -43,10 +43,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"18-jun-24": {},
-		"19-jun-24": {},
-		"20-jun-24": {},
-		"21-jun-24": {},
-		"22-jun-24": {"leyenda": "Hoy recordamos a santo Tomás Moro", "entidad": "personajes", "id": 102}
+		"25-jun-24": {},
+		"26-jun-24": {"leyenda": "Hoy recordamos José María Escrivá", "entidad": "personajes", "id": 225},
+		"27-jun-24": {"leyenda": "Hoy recordamos Joao Pozzobon", "entidad": "personajes", "id": 220},
+		"28-jun-24": {},
+		"29-jun-24": {"leyenda": "Hoy recordamos a los apóstoles Pedro y Pablo, santos", "entidad": "personajes", "id": 56}
 	}
 }
