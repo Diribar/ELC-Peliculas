@@ -5,10 +5,13 @@
 		position: relative;
 		.fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 	}
-
 	#cuerpoFooter #cuerpo {
 		flex-direction: column;
-
+		#tituloPrincipal .ayudaMensForm .fa-solid {
+			font-size: 0.8rem;
+			&.fa-triangle-exclamation {color: var(--naranja-oscuro);}
+			&.fa-circle-xmark {color: var(--rojo-oscuro); background: var(--backIcono);}
+		}
 		/* Zona del formulario */
 		#datos {
 			display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;
