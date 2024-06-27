@@ -38,7 +38,7 @@ module.exports = {
 			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Si es una colección, pule la cantidad de capítulos
-		if (entidad == "colecciones")
+		if (entidad == "colecciones" && original.capitulos)
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 
 		// Si es un capítulo y el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
