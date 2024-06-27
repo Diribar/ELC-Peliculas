@@ -6,26 +6,28 @@ module.exports = async (req, res, next) => {
 		// Generales
 		entidad: req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "",
 		entID: req.query.id,
+		origen: req.query.origen,
 		haceUnaHora: comp.fechaHora.nuevoHorario(-1),
 		haceDosHoras: comp.fechaHora.nuevoHorario(-2),
 		usuario: req.session.usuario,
 		userID: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
-		// Registro
 		include: ["statusRegistro", "capturadoPor"],
+		baseUrl: comp.reqBasePathUrl(req).baseUrl,
+
 		// Vistas
 		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
 		vistaInactivar: variables.vistaInactivar(req),
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
-	const {baseUrl} = comp.reqBasePathUrl(req);
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
 		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : "l ",
 		vistaAnteriorTablero: [v.vistaAnterior],
 		vistaAnteriorInactivar: [v.vistaAnterior, v.vistaInactivar],
+		familia: comp.obtieneDesdeEntidad.familia(v.entidad),
 	};
 
 	// Más variables
@@ -42,6 +44,13 @@ module.exports = async (req, res, next) => {
 	const creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userID;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	let informacion;
+
+	// Corrige el link de 'entendido'
+	if (req.originalUrl.startsWith("/" + v.familia + "/edicion"))
+		v.vistaEntendido.link =
+			v.origen == "TE"
+				? "/revision/tablero-de-entidades"
+				: "/" + v.familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entID;
 
 	// Fórmula
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
@@ -95,7 +104,7 @@ module.exports = async (req, res, next) => {
 		v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 		v.registro.statusRegistro_id == creado_id && // en status creado
 		!creadoPorElUsuario && // otro usuario quiere acceder
-		baseUrl != "/revision" // la ruta no es de revisión
+		v.baseUrl != "/revision" // la ruta no es de revisión
 	) {
 		let nombre = comp.nombresPosibles(v.registro);
 		if (nombre) nombre = "'" + nombre + "'";
