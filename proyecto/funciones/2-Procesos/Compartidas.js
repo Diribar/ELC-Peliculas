@@ -7,31 +7,31 @@ const axios = require("axios");
 module.exports = {
 	// Header
 	quickSearch: {
-		registros: (condiciones, dato) => {
+		registros: async (condicion, dato) => {
 			// Obtiene los registros
-			return db[dato.entidad]
-				.findAll({where: condiciones, limit: 10})
-				.then((n) => n.map((m) => m.toJSON()))
-				.then((n) =>
-					n.map((m) => {
-						let respuesta = {
-							id: m.id,
-							nombre: m[dato.campos[0]],
-							entidad: dato.entidad,
-							familia: dato.familia,
-							avatar: m.avatar, // específicos para PA-Desambiguar
-						};
-						if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
-						if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
+			const registros = await baseDeDatos.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10).then((n) =>
+				n.map((m) => {
+					let respuesta = {
+						id: m.id,
+						nombre: m[dato.campos[0]],
+						entidad: dato.entidad,
+						familia: dato.familia,
+						avatar: m.avatar, // específicos para PA-Desambiguar
+					};
+					if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
+					if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
 
-						return respuesta;
-					})
-				);
+					return respuesta;
+				})
+			);
+
+			// Fin
+			return registros;
 		},
-		ediciones: (condiciones, dato) => {
-			return db[dato.entidad]
-				.findAll({where: condiciones, limit: 10, include: dato.include})
-				.then((n) => n.map((m) => m.toJSON()))
+		ediciones: async (condicion, dato) => {
+			// Obtiene los registros
+			const registros = await baseDeDatos
+				.obtieneTodosPorCondicionConIncludeConLimite(dato.entidad, condicion, dato.include, 10)
 				.then((n) =>
 					n.map((m) => {
 						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
@@ -45,6 +45,9 @@ module.exports = {
 						};
 					})
 				);
+
+			// Fin
+			return registros;
 		},
 	},
 
@@ -624,7 +627,8 @@ module.exports = {
 		const condiciones = {coleccion_id: colID, statusRegistro_id: activos_ids};
 
 		// Obtiene los capítulos de la colección
-		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", condiciones)
+		const capitulos = await baseDeDatos
+			.obtieneTodosPorCondicion("capitulos", condiciones)
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
 			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
 		if (!capitulos.length) return;
@@ -681,7 +685,8 @@ module.exports = {
 		const includes = [...variables.entidades.prods];
 
 		// Obtiene los registros asociados con productos
-		const temas = await baseDeDatos.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
+		const temas = await baseDeDatos
+			.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
 			.then((n) => n.filter((m) => includes.some((p) => m[p].length)))
 			.then((n) => n.map((m) => ({id: m.id, nombre: m.nombre, cant: includes.reduce((acum, n) => acum + m[n].length, 0)})))
 			.then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)));

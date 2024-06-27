@@ -10,6 +10,10 @@ module.exports = {
 		db[entidad].findAll({where: condicion}).then((n) => n.map((m) => m.toJSON())),
 	obtieneTodosPorCondicionConInclude: (entidad, condicion, include) =>
 		db[entidad].findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON())),
+	obtieneTodosPorCondicionConLimite: (entidad, condicion, limite) =>
+		db[entidad].findAll({where: condicion, limit: limite}).then((n) => n.map((m) => m.toJSON())),
+	obtieneTodosPorCondicionConIncludeConLimite: (entidad, condicion, include, limite) =>
+		db[entidad].findAll({where: condicion, include, limit: limite}).then((n) => n.map((m) => m.toJSON())),
 
 	// Obtiene uno
 	obtienePorId: (entidad, id) => db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : null)),
