@@ -570,9 +570,9 @@ module.exports = {
 		prodAprobEnLink: async (coleccion_id, statusCol) => {
 			// Variables
 			const prodAprob = aprobados_ids.includes(statusCol);
-			const capsID = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id}).then((n) =>
-				n.map((m) => m.id)
-			);
+			const capsID = await baseDeDatos
+				.obtieneTodosPorCondicion("capitulos", {coleccion_id})
+				.then((n) => n.map((m) => m.id));
 
 			// Actualiza el campo 'prodAprob' a los links de la colección
 			await baseDeDatos.actualizaTodosPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
@@ -1229,17 +1229,16 @@ let TM = {
 		// Fin
 		return {LI};
 	},
-	obtienePorEntidad: async ({...condiciones}) => {
+	obtienePorEntidad: async function ({...condiciones}) {
 		// Variables
 		const {petitFamilias} = condiciones;
 		const entidades = variables.entidades[petitFamilias];
 		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = ["ediciones"]);
-
 		let resultados1 = [];
 		let resultados2 = [];
 
 		// Rutina
-		for (let entidad of entidades) resultados1.push(BD_especificas.MT_obtieneRegs({entidad, ...condiciones}));
+		for (let entidad of entidades) resultados1.push(this.obtieneRegs({entidad, ...condiciones}));
 
 		// Espera hasta tener todos los resultados
 		await Promise.all(resultados1).then((n) => n.map((m) => resultados2.push(...m)));
@@ -1250,13 +1249,70 @@ let TM = {
 		// Fin
 		return resultados2;
 	},
+	obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
+		// Variables
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+		const idMin = petitFamilias == "rclvs" ? 10 : 0;
+		let includeBD = [...include];
+		if (entidad == "colecciones") includeBD.push("csl");
+
+		// Condiciones
+		const condiciones = {
+			// Con status según parámetro
+			statusRegistro_id: status_id,
+			// Que cumpla alguno de los siguientes sobre la 'captura':
+			[Op.or]: [
+				// Que no esté capturado
+				{capturadoEn: null},
+				// Que esté capturado hace más de dos horas
+				{capturadoEn: {[Op.lt]: haceDosHoras}},
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+				// Que la captura haya sido por otro usuario y esté inactiva
+				{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
+				// Que esté capturado por este usuario hace menos de una hora
+				{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
+			],
+			// Si es un rclv, que su id > 10
+			id: {[Op.gt]: idMin},
+		};
+
+		const registros = await baseDeDatos
+			.obtieneTodosPorCondicionConInclude(entidad, condiciones, includeBD)
+			// Agrega la fechaRef y actualiza el original con la edición
+			.then((n) =>
+				n.map((m) => {
+					// Variables
+					const fechaRef = m[campoFecha];
+					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+
+					// Obtiene la edición del usuario
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condiciones.userID);
+					delete m.ediciones;
+
+					// Actualiza el original con la edición
+					if (edicion) {
+						edicion = purgaEdicion(edicion, entidad);
+						m = {...m, ...edicion};
+					}
+
+					// Fin
+					return {...m, entidad, fechaRef, fechaRefTexto};
+				})
+			);
+
+		// Fin
+		return registros;
+	},
 	obtieneSinEdicion: (entidad) => {
 		// Variables
 		const condiciones = {statusRegistro_id: creadoAprob_id};
 		if (entidad == "capitulos") condiciones.statusColeccion_id = aprobado_id;
 
 		// Obtiene la información
-		return baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
+		return baseDeDatos
+			.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {
