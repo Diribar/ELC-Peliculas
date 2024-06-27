@@ -203,12 +203,12 @@ module.exports = {
 		let consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatarsEdic = BD_especificas.nombresDeAvatarEnBD({entidad: entidadEdic});
+		if (entidadEdic) avatarsEdic = nombresDeAvatarEnBD({entidad: entidadEdic});
 
 		// Revisa los avatars que están en los originales
 		if (status_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
+				avatarsOrig.push(nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
 
 		// Espera y consolida los resultados
 		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
@@ -868,4 +868,22 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Fin
 	return;
+};
+let nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
+	// Variables
+	campoAvatar = campoAvatar ? campoAvatar : "avatar";
+	const condicion = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
+	if (status_id) condicion.statusRegistro_id = status_id;
+
+	// Obtiene los registros
+	const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+		n.map((m) => ({
+			imagen: m[campoAvatar],
+			nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
+			entidad,
+		}))
+	);
+
+	// Fin
+	return registros;
 };

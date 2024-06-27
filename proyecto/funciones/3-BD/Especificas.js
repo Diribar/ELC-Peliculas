@@ -88,28 +88,6 @@ module.exports = {
 		return db[entidad].update(objeto, {where: condicion});
 	},
 
-	// Otros
-	nombresDeAvatarEnBD: ({entidad, status_id, campoAvatar}) => {
-		// Variables
-		campoAvatar = campoAvatar ? campoAvatar : "avatar";
-		const condiciones = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
-		if (status_id) condiciones.statusRegistro_id = status_id;
-
-		// Fin
-		return db[entidad]
-			.findAll({where: condiciones})
-			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) =>
-				n.map((m) => {
-					return {
-						imagen: m[campoAvatar],
-						nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
-						entidad,
-					};
-				})
-			);
-	},
-
 	// USUARIOS ---------------------------------------------------------
 	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login
 	obtieneUsuarioPorMail: (email) => {
