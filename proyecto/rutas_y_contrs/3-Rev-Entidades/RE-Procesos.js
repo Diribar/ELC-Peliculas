@@ -1019,15 +1019,14 @@ let FN_links = {
 			prodAprob: true,
 			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
 		};
-		const originales = db.links
-			.findAll({where: condiciones, include})
-			.then((n) => n.map((m) => m.toJSON()))
+		const originales = baseDeDatos
+			.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // lotes por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // capítulos por colección
 			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
 
 		// Obtiene todas las ediciones
-		const ediciones = db.linksEdicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
+		const ediciones = baseDeDatos.obtieneTodosConInclude("linksEdicion",include)
 
 		// Los consolida
 		const links = await Promise.all([originales, ediciones]).then(([originales, ediciones]) => ({originales, ediciones}));
