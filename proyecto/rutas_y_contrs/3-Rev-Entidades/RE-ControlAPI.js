@@ -137,7 +137,7 @@ module.exports = {
 			if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente
-			if (sigProd) sigProd = await procesos.TC.obtieneSigProd_Links(revID);
+			if (sigProd) sigProd = await procesos.tablRevision.obtieneSigProd_Links(revID);
 
 			// Fin
 			return res.json(sigProd);

@@ -961,7 +961,7 @@ let FN_links = {
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
-		const {originales, ediciones} = await BD_especificas.TC.obtieneLinks(); // obtiene los links 'a revisar'
+		const {originales, ediciones} = await BD_especificas.tablRevision.obtieneLinks(); // obtiene los links 'a revisar'
 		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
 		const inacRecups = originales.filter((n) => inacRecup_ids.includes(n.statusRegistro_id));
 

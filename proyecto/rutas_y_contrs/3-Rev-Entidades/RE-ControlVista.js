@@ -16,16 +16,16 @@ module.exports = {
 		const revID = req.session.usuario.id;
 
 		// Productos y Ediciones
-		let prods1 = procesos.TC.obtieneProdsConEdic(revID); // Altas y Ediciones
-		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
-		let prods3 = procesos.TC.obtieneProdsRepetidos(); // películas y colecciones repetidas
+		let prods1 = procesos.tablRevision.obtieneProdsConEdic(revID); // Altas y Ediciones
+		let prods2 = procesos.tablRevision.obtieneProds_SE_IR(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
+		let prods3 = procesos.tablRevision.obtieneProdsRepetidos(); // películas y colecciones repetidas
 
 		// RCLV
-		let rclvs1 = procesos.TC.obtieneRCLVs(revID);
-		let rclvs2 = procesos.TC.obtieneRCLVsConEdic(revID);
+		let rclvs1 = procesos.tablRevision.obtieneRCLVs(revID);
+		let rclvs2 = procesos.tablRevision.obtieneRCLVsConEdic(revID);
 
 		// Links
-		let sigProd = procesos.TC.obtieneSigProd_Links(revID);
+		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
 		[prods1, prods2, prods3, rclvs1, rclvs2, sigProd] = await Promise.all([prods1, prods2, prods3, rclvs1, rclvs2, sigProd]);
