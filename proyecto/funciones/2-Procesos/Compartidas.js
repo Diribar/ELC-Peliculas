@@ -979,7 +979,7 @@ module.exports = {
 	},
 	obtieneUsuarioPorMail: async (email) => {
 		const include = ["rolUsuario", "statusRegistro", "genero"];
-		const usuario = await baseDeDatos.obtieneTodosPorCondicionConInclude("usuarios", {email}, include);
+		const usuario = await baseDeDatos.obtienePorCondicionConInclude("usuarios", {email}, include);
 		return usuario;
 	},
 
