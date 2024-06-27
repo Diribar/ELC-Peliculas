@@ -257,8 +257,7 @@ module.exports = {
 			registros.push(
 				baseDeDatos
 					.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
-					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "histEdics"})))
+					.then((n) => n.map((m) => ({...m, tabla: "histEdics"}))) // Agrega el nombre de la tabla
 			);
 
 			// Espera a que se reciba la info
