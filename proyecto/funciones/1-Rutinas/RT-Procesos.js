@@ -134,7 +134,8 @@ module.exports = {
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const registros = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+			const registros = await baseDeDatos
+				.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
 				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
@@ -145,7 +146,8 @@ module.exports = {
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
-			const registros = await baseDeDatos.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
+			const registros = await baseDeDatos
+				.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
@@ -162,7 +164,8 @@ module.exports = {
 		// regsLinks
 		condiciones = {...condiciones, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
-		const regsLinks = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+		const regsLinks = await baseDeDatos
+			.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
@@ -175,7 +178,8 @@ module.exports = {
 
 		// edicsLinks
 		include = ["editadoPor", ...variables.entidades.asocProds];
-		const edicsLinks = await baseDeDatos.obtieneTodosConInclude("linksEdicion", include)
+		const edicsLinks = await baseDeDatos
+			.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
@@ -243,15 +247,16 @@ module.exports = {
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
-				baseDeDatos.obtieneTodosPorCondicion("histStatus", condiciones).then((n) =>
-					n.map((m) => ({...m, tabla: "histStatus"}))
-				)
+				baseDeDatos
+					.obtieneTodosPorCondicion("histStatus", condiciones)
+					.then((n) => n.map((m) => ({...m, tabla: "histStatus"})))
 			);
 
 			// Obtiene los registros de "histEdics"
 			condiciones = {comunicadoEn: null};
 			registros.push(
-				baseDeDatos.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
+				baseDeDatos
+					.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
 					// Agrega el nombre de la tabla
 					.then((n) => n.map((m) => ({...m, tabla: "histEdics"})))
 			);
@@ -573,6 +578,19 @@ module.exports = {
 		// Fin
 		return;
 	},
+	actualizaElProximoValorDeID: async (entidad) => {
+		// Variables
+		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n++);
+
+		// Actualiza el autoincrement
+		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
+		const Sequelize = require("sequelize");
+		const sequelize = new Sequelize(config.database, config.username, config.password, config);
+		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
+
+		// Fin
+		return;
+	},
 };
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
@@ -752,9 +770,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
-		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
-			n.map((m) => ({...m, entidad}))
-		);
+		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) => n.map((m) => ({...m, entidad})));
 		rclvs.push(registros);
 	}
 	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));

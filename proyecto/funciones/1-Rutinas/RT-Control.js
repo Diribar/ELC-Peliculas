@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const cron = require("node-cron");
-const procsCRUD = require("../../rutas_y_contrs/2.0-Familias/FM-Procesos");
 const procesos = require("./RT-Procesos");
 
 // Exportar
@@ -502,7 +501,7 @@ module.exports = {
 				}
 
 				// Actualiza el próximo valor de ID
-				await BD_especificas.actualizaElProximoValorDeID(tabla);
+				await procesos.actualizaElProximoValorDeID(tabla);
 			}
 
 			// Fin
