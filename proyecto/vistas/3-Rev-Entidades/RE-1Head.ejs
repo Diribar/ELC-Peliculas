@@ -3,7 +3,7 @@
 
 <% if (codigo == "tableroControl") { %>
 	<!-- TABLERO -->
-	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-TableroControl.css">
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-TableroControl.css">
 	<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE1-TableroControl.css">
 	<script src="/publico/javascript//3-Rev-Entidades/RE0-TableroControl.js"></script>
 	<% if (tema == "revisionEnts") { %>
@@ -15,8 +15,8 @@
 <% } else { %>
 	<% if (["producto/alta", "rechazar", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
 		<!-- Compartido -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Encabezado.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
@@ -32,10 +32,10 @@
 
 	<% } else if (codigo == "rclv/alta" || codigo == "rclv/solapamiento") { %>
 		<!-- RCLV-Altas / Solapamiento -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-EdicionAvatar.css">
 		<link rel="stylesheet" href="/publico/formatos/2.2-RCLVs/RCLV-AltaEdicion.css">
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-DatosBreves.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 		<% if (codigo == "rclv/alta") { %>
 			<script src="/publico/javascript/2.2-RCLVs/RCLV-AltaEdicion.js"></script>
 		<% } else if (codigo == "rclv/solapamiento") { %>
@@ -61,7 +61,7 @@
 
 	<% } else if (codigo.endsWith("/edicion/avatar")) { %>
 		<!-- Prod-Avatar -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/CMP-MN-Iconos.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatar.css">
 		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatarRech.css">
 		<script src="/publico/javascript/3-Rev-Entidades/RE9-EdicionAvatar.js"></script>

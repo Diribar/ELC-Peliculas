@@ -2,7 +2,7 @@
 <div id="dataEntry" class="encimaDelFondo">
 	<form method="POST">
 		<!-- Cartel de progreso -->
-		<%- include('CMP-CartelProgreso', {tarea: "Enviando el mail"}) %>
+		<%- include('MN-CartelProgreso', {tarea: "Enviando el mail"}) %>
 
 		<!-- Título y Ayuda -->
 		<div id="tituloPrincipal">
@@ -16,7 +16,7 @@
 			<!--Datos perennes-->
 			<div id="datosPerennesTitulo">
 				<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
-				<%- include("CMP-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.", "Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña."]}) %>
+				<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.", "Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña."]}) %>
 			</div>
 
 			<%- include("US13-DatosPerennes") %>

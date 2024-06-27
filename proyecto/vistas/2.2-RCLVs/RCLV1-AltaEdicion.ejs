@@ -1,10 +1,10 @@
 <form id="cuerpoFooterImgDer" method="POST" enctype="multipart/form-data">
 	<section id="cuerpoFooter">
 		<div id="cuerpo">
-			<%- codigo != "agregar" ? include('CMP-TimerContador') : "" %>
+			<%- codigo != "agregar" ? include('MN-TimerContador') : "" %>
 			<div id="tituloPrincipal">
 				<h1 id="titulo"><%= titulo %></h1>
-				<%- include("CMP-Ayuda", {mensaje: "Al terminar, te pedimos que vayas a la vista <em>Detalle</em> para liberarlo."}) %>
+				<%- include("MN-Ayuda", {mensaje: "Al terminar, te pedimos que vayas a la vista <em>Detalle</em> para liberarlo."}) %>
 			</div>
 			<div id="datos" class="flexRow grow spaceEvenly">
 				<div id="dataEntry" class="bordeConSombra">

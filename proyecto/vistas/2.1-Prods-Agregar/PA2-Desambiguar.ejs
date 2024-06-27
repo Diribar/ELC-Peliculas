@@ -5,13 +5,13 @@
 	<div id="encabezado">
 		<div id="tituloSecundario">
 			<h2>Paso 2 de 5: Desambiguar - Elegí tu opción</h2>
-			<%- include("CMP-Ayuda", {mensajes: ["<u>Fondo verde</u>: películas que no tenemos en nuestra BD.", "<u>Fondo azul</u>: películas que ya tenemos en nuestra BD.", "Están ordenadas desde la más reciente a las más antigua."]}) %>
+			<%- include("MN-Ayuda", {mensajes: ["<u>Fondo verde</u>: películas que no tenemos en nuestra BD.", "<u>Fondo azul</u>: películas que ya tenemos en nuestra BD.", "Están ordenadas desde la más reciente a las más antigua."]}) %>
 		</div>
 		<p id="mensaje" class="flexRow"></p>
 		<p><u>Palabra/s clave</u>: <b><%= palabrasClave %></b></p>
 	</div>
 	<div id="cuadroDeResultados">
-		<%- include('CMP-CartelProgreso', {tarea: "Buscando las películas"}) %>
+		<%- include('MN-CartelProgreso', {tarea: "Buscando las películas"}) %>
 		<i class="fa-solid fa-caret-left mover inactivo"></i>
 		<ul type="none" id="listado">
 			<%- include("PA2-DS1-ProdsNuevos") %>
