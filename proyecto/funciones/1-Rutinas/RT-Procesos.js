@@ -134,7 +134,7 @@ module.exports = {
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+			const registros = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
 				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
@@ -145,7 +145,7 @@ module.exports = {
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
-			let registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
+			const registros = await baseDeDatos.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
@@ -162,7 +162,7 @@ module.exports = {
 		// regsLinks
 		condiciones = {...condiciones, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
-		const regsLinks = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+		const regsLinks = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
@@ -175,7 +175,7 @@ module.exports = {
 
 		// edicsLinks
 		include = ["editadoPor", ...variables.entidades.asocProds];
-		const edicsLinks = await BD_genericas.obtieneTodosConInclude("linksEdicion", include)
+		const edicsLinks = await baseDeDatos.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
@@ -243,7 +243,7 @@ module.exports = {
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones).then((n) =>
+				baseDeDatos.obtieneTodosPorCondicion("histStatus", condiciones).then((n) =>
 					n.map((m) => ({...m, tabla: "histStatus"}))
 				)
 			);
@@ -251,7 +251,7 @@ module.exports = {
 			// Obtiene los registros de "histEdics"
 			condiciones = {comunicadoEn: null};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
+				baseDeDatos.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
 					// Agrega el nombre de la tabla
 					.then((n) => n.map((m) => ({...m, tabla: "histEdics"})))
 			);
@@ -497,10 +497,10 @@ module.exports = {
 			const comunicadoEn = new Date();
 
 			// Elimina los que corresponda
-			BD_genericas.eliminaTodosPorCondicion("histStatus", condiciones);
+			baseDeDatos.eliminaTodosPorCondicion("histStatus", condiciones);
 
 			// Agrega la fecha 'comunicadoEn'
-			BD_genericas.actualizaTodosPorCondicion("histStatus", {id: ids}, {comunicadoEn});
+			baseDeDatos.actualizaTodosPorCondicion("histStatus", {id: ids}, {comunicadoEn});
 
 			// Fin
 			return;
@@ -512,8 +512,8 @@ module.exports = {
 			// Elimina los registros
 			for (let reg of regs) {
 				// Condición: sin duración
-				if (!reg.penalizac || reg.penalizac == "0.0") BD_genericas.eliminaPorId(reg.tabla, reg.id);
-				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
+				if (!reg.penalizac || reg.penalizac == "0.0") baseDeDatos.eliminaPorId(reg.tabla, reg.id);
+				else baseDeDatos.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
 			}
 
 			// Fin
@@ -699,7 +699,7 @@ let nombres = async (reg, familia) => {
 	// Fórmulas
 	if (reg.entidad != "links") {
 		// Obtiene el registro
-		const regEntidad = await BD_genericas.obtienePorId(reg.entidad, reg.entidad_id);
+		const regEntidad = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
 		if (!regEntidad) return {};
 
 		// Obtiene los nombres
@@ -719,7 +719,7 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, "prov"]);
+		const regEntidad = await baseDeDatos.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, "prov"]);
 		if (!regEntidad.id) return {};
 
 		// Obtiene el nombre
@@ -752,7 +752,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
-		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
 			n.map((m) => ({...m, entidad}))
 		);
 		rclvs.push(registros);

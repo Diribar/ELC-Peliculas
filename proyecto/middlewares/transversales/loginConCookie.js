@@ -53,7 +53,7 @@ module.exports = async (req, res, next) => {
 			};
 
 		// Actualiza la versión en el usuario
-		BD_genericas.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
+		baseDeDatos.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
 	}
 
 	// Fin

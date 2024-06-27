@@ -227,10 +227,10 @@ module.exports = {
 		let agregaInfoDesdeBD = async () => {
 			// Obtiene las películas y colecciones
 			const peliculas = productos.filter((n) => n.entidad == "peliculas").length
-				? BD_genericas.obtieneTodos("peliculas")
+				? baseDeDatos.obtieneTodos("peliculas")
 				: [];
 			const colecciones = productos.filter((n) => n.entidad == "colecciones").length
-				? BD_genericas.obtieneTodosConInclude("colecciones", "capitulos")
+				? baseDeDatos.obtieneTodosConInclude("colecciones", "capitulos")
 				: [];
 			const prodsBD = await Promise.all([peliculas, colecciones]).then(([peliculas, colecciones]) => [
 				...peliculas,
@@ -492,13 +492,13 @@ let FN = {
 	},
 	agregaQuitaCapsCollection: async (coleccion) => {
 		// Variables
-		const capitulosELC = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: coleccion.id});
+		const capitulosELC = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: coleccion.id});
 
 		// Recorre los capítulos ELC y si algún capítulo no existe en TMDB y está inactivo en ELC, lo elimina
 		for (let capituloELC of capitulosELC)
 			if (!coleccion.TMDB_ids_vTMDB.includes(capituloELC.TMDB_id) && capituloELC.statusRegistro_id == inactivo_id) {
 				await procsCRUD.eliminar.eliminaDependientes("capitulos", capituloELC.id, capituloELC);
-				BD_genericas.eliminaPorId("capitulos", capituloELC.id);
+				baseDeDatos.eliminaPorId("capitulos", capituloELC.id);
 			}
 
 		// Recorre los capítulos TMDB y si algún capítulo es nuevo, lo agrega
@@ -512,7 +512,7 @@ let FN = {
 	},
 	agregaCapsTV: async (coleccion) => {
 		// Obtiene los datos de la serieTV
-		coleccion = {...coleccion, ...(await BD_genericas.obtienePorId("colecciones", coleccion.id))};
+		coleccion = {...coleccion, ...(await baseDeDatos.obtienePorId("colecciones", coleccion.id))};
 
 		// Loop de TEMPORADAS
 		for (let numTemp = 1; numTemp <= coleccion.cantTemps; numTemp++) {
@@ -534,7 +534,7 @@ let FN = {
 					};
 
 					// Guarda el registro
-					await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
+					await baseDeDatos.agregaRegistro(datosCap.entidad, datosCap);
 				}
 		}
 

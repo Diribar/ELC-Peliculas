@@ -295,13 +295,13 @@ module.exports = {
 			if (edicID) edicion.id = edicID;
 
 			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+			if (edicID && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicID, camposNull);
 		} else {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 
 			// Si había una edición guardada en la BD, la elimina
-			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
+			if (edicID) await baseDeDatos.eliminaPorId(entidadEdic, edicID);
 		}
 
 		// Fin
@@ -544,7 +544,7 @@ module.exports = {
 	linksEnProd: async function ({entidad, id}) {
 		// Variables
 		const campo_id = this.obtieneDesdeEntidad.campo_id(entidad); // entidad del producto
-		const lectura = await BD_genericas.obtieneTodosPorCondicion("links", {[campo_id]: id});
+		const lectura = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id});
 
 		// Obtiene las películas y trailers
 		const linksTrailers = lectura.filter((n) => n.tipo_id == linkTrailer_id);
@@ -570,7 +570,7 @@ module.exports = {
 		};
 
 		// Actualiza el registro
-		await BD_genericas.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
+		await baseDeDatos.actualizaPorId(entidad, id, tiposDeLink); // con 'await', para que dé bien el cálculo para la colección
 
 		// Fin
 		return;
@@ -581,7 +581,7 @@ module.exports = {
 		const condiciones = {coleccion_id: colID, statusRegistro_id: activos_ids};
 
 		// Obtiene los capítulos de la colección
-		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", condiciones)
+		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", condiciones)
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
 			.then((n) => n.sort((a, b) => a.temporada - b.temporada)); // los ordena por temporada
 		if (!capitulos.length) return;
@@ -598,8 +598,8 @@ module.exports = {
 			const capID = capSinLink ? capSinLink.id : null;
 
 			// Actualiza el campo de la colección
-			BD_genericas.actualizaPorId("colecciones", colID, {[campo]: tieneLink});
-			BD_genericas.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[campo]: capID});
+			baseDeDatos.actualizaPorId("colecciones", colID, {[campo]: tieneLink});
+			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[campo]: capID});
 		}
 
 		// Fin
@@ -638,7 +638,7 @@ module.exports = {
 		const includes = [...variables.entidades.prods];
 
 		// Obtiene los registros asociados con productos
-		const temas = await BD_genericas.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
+		const temas = await baseDeDatos.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
 			.then((n) => n.filter((m) => includes.some((p) => m[p].length)))
 			.then((n) => n.map((m) => ({id: m.id, nombre: m.nombre, cant: includes.reduce((acum, n) => acum + m[n].length, 0)})))
 			.then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)));
@@ -662,7 +662,7 @@ module.exports = {
 
 		// 1. Averigua si existe algún producto aprobado, con ese rclv_id
 		for (let entidadProd of entidadesProds) {
-			prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+			prodsAprob = await baseDeDatos.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
 			if (prodsAprob) {
 				prodsAprob = conLinks;
 				break;
@@ -672,7 +672,7 @@ module.exports = {
 		// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
 		if (!prodsAprob)
 			for (let entidadProd of entidadesProds) {
-				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
+				prodsAprob = await baseDeDatos.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
 				if (prodsAprob) {
 					prodsAprob = linksTalVez;
 					break;
@@ -680,13 +680,13 @@ module.exports = {
 			}
 
 		// 3. Averigua si existe alguna edición con ese rclv_id
-		if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
+		if (!prodsAprob && (await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion))) prodsAprob = linksTalVez;
 
 		// 4. No encontró ningún caso
 		if (!prodsAprob) prodsAprob = sinLinks;
 
 		// Actualiza el campo en el RCLV
-		BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
+		baseDeDatos.actualizaPorId(entidad, id, {prodsAprob});
 
 		// Fin
 		return;
@@ -696,13 +696,13 @@ module.exports = {
 		let espera = [];
 
 		// Actualiza tablas
-		espera.push(BD_genericas.actualizaTodos("epocasDelAno", {solapamiento: false}));
-		espera.push(BD_genericas.actualizaTodos("fechasDelAno", {epocaDelAno_id: 1}));
+		espera.push(baseDeDatos.actualizaTodos("epocasDelAno", {solapamiento: false}));
+		espera.push(baseDeDatos.actualizaTodos("fechasDelAno", {epocaDelAno_id: 1}));
 		espera = await Promise.all(espera).then(() => []);
 
 		// Obtiene tablas
-		let epocasDelAno = BD_genericas.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
-		let fechasDelAnoSolap = BD_genericas.obtieneTodos("fechasDelAno");
+		let epocasDelAno = baseDeDatos.obtieneTodosPorCondicion("epocasDelAno", {diasDeDuracion: {[Op.ne]: null}});
+		let fechasDelAnoSolap = baseDeDatos.obtieneTodos("fechasDelAno");
 		[epocasDelAno, fechasDelAnoSolap] = await Promise.all([epocasDelAno, fechasDelAnoSolap]);
 
 		// Rutina para cada registro de epocaDelAno
@@ -726,16 +726,16 @@ module.exports = {
 			}
 
 			// Si corresponde, actualiza el solapamiento en la tabla - es crítico su 'await'
-			if (solapamiento) espera.push(BD_genericas.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true}));
+			if (solapamiento) espera.push(baseDeDatos.actualizaPorId("epocasDelAno", epocaDelAno.id, {solapamiento: true}));
 
 			// Actualiza la tabla 'fechasDelAno'
 			const IDs = fechasDelAnoSolap.filter((n) => n.epocaDelAno_id == epocaDelAno.id).map((n) => n.id); // obtiene los IDs de las fechas de la epocaDelAno
-			if (IDs.length) espera.push(BD_genericas.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id, anoFM})); // actualiza los registros de esos IDs
+			if (IDs.length) espera.push(baseDeDatos.actualizaPorId("fechasDelAno", IDs, {epocaDelAno_id, anoFM})); // actualiza los registros de esos IDs
 		}
 		espera = await Promise.all(espera);
 
 		// Actualiza la variable 'fechasDelAno'
-		fechasDelAno = await BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
+		fechasDelAno = await baseDeDatos.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
 
 		// Fin
 		return;
@@ -757,7 +757,7 @@ module.exports = {
 
 			// Actualiza el campo prodAprob a 'true' o 'false'
 			const prodAprob = aprobados_ids.includes(statusProd);
-			BD_genericas.actualizaPorId("links", link.id, {prodAprob});
+			baseDeDatos.actualizaPorId("links", link.id, {prodAprob});
 		}
 
 		// Fin
@@ -773,7 +773,7 @@ module.exports = {
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
 				const include = variables.entidades.asocProds;
-				links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+				links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condicion, include);
 			}
 
 			// Rutina por link
@@ -787,7 +787,7 @@ module.exports = {
 				// Se actualiza el link con el anoEstreno y la fechaVencim
 				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 				const anoEstreno = link[asocProd].anoEstreno;
-				espera.push(BD_genericas.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, categoria_id}));
+				espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, categoria_id}));
 			}
 			await Promise.all(espera);
 
@@ -809,7 +809,7 @@ module.exports = {
 			};
 
 			// Actualiza las novedades de los links
-			await BD_genericas.actualizaTodosPorCondicion("links", condiciones, novedades);
+			await baseDeDatos.actualizaTodosPorCondicion("links", condiciones, novedades);
 
 			// Fin
 			await this.actualizaLVPS();
@@ -822,7 +822,7 @@ module.exports = {
 
 			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
 			const condiciones = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
-			const links = await BD_genericas.obtieneTodosPorCondicion("links", condiciones);
+			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condiciones);
 
 			// Promedios semanales
 			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
@@ -913,7 +913,7 @@ module.exports = {
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", penalizac);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (penalizac > 1 && petitFamilias) {
@@ -924,7 +924,7 @@ module.exports = {
 		if (motivo.codigo == "bloqueoInput") objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
-		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
+		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userID, objeto);
 
 		// Fin
 		return;

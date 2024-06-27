@@ -98,7 +98,7 @@ module.exports = {
 		include.push("statusRegistro", "creadoPor", "statusSugeridoPor");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (entidad == "capitulos") include.push("coleccion");
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene avatar original
 		let imgDerPers = original.avatar;
@@ -249,14 +249,14 @@ module.exports = {
 		if (producto) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
 
 		// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
-		await BD_genericas.actualizaPorId(entidad, id, datos);
+		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
 			// 1. Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
 				? await procsCRUD.capsAprobs(id)
-				: await BD_genericas.actualizaTodosPorCondicion(
+				: await baseDeDatos.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
 						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
@@ -268,8 +268,8 @@ module.exports = {
 			// 3. Si la colección fue aprobada, actualiza sus status de links
 			if (aprobados_ids.includes(statusFinal_id)) {
 				// Si no existe su registro 'capsSinLink', lo agrega
-				if (!(await BD_genericas.obtienePorCondicion("capsSinLink", {coleccion_id: id})))
-					await BD_genericas.agregaRegistro("capsSinLink", {coleccion_id: id});
+				if (!(await baseDeDatos.obtienePorCondicion("capsSinLink", {coleccion_id: id})))
+					await baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: id});
 
 				// Actualiza su link
 				comp.linksEnColec(id);
@@ -284,8 +284,8 @@ module.exports = {
 
 		// CONSECUENCIAS - Elimina los registros provisorios del historial
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivos_ids};
-		const Ids = await BD_genericas.obtieneTodosPorCondicion("histStatus", condicion);
-		if (Ids.length) BD_genericas.eliminaPorId("histStatus", Ids);
+		const Ids = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condicion);
+		if (Ids.length) baseDeDatos.eliminaPorId("histStatus", Ids);
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
@@ -298,10 +298,10 @@ module.exports = {
 		const motivo =
 			codigo == "rechazar" || (!aprobado && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
-		BD_genericas.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
+		baseDeDatos.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
 
 		// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// CONSECUENCIAS - Penaliza al usuario si corresponde
 		if (datosHist.penalizac) comp.penalizacAcum(userID, motivo, petitFamilias);
@@ -354,10 +354,10 @@ module.exports = {
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
 			if (familia == "rclv") include.push(...variables.entidades.prods);
-			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+			let original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 
 			// Obtiene la edición
-			let edicion = await BD_genericas.obtienePorId(edicEntidad, edicID);
+			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID);
 
 			// Acciones si el avatar está presente en la edición
 			if (edicion.avatar) {
@@ -370,8 +370,8 @@ module.exports = {
 				// Reemplazo automático
 				if (reemplAvatarAutomaticam) {
 					await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob: true}); // Avatar: impacto en los archivos de avatar (original y edicion)
-					await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar}); // REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
-					await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatar: null, avatarUrl: null}); // REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
+					await baseDeDatos.actualizaPorId(entidad, original.id, {avatar: edicion.avatar}); // REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
+					await baseDeDatos.actualizaPorId("prodsEdicion", edicion.id, {avatar: null, avatarUrl: null}); // REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
 					return res.redirect(req.originalUrl); // Recarga la ruta
 				}
 
@@ -395,7 +395,7 @@ module.exports = {
 					// Actualiza el registro 'edición'
 					edicion.avatarUrl = null;
 					const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-					BD_genericas.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
+					baseDeDatos.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
 				}
 
 				// Variables
@@ -442,10 +442,10 @@ module.exports = {
 			const {entidad, id, edicID, rechazar, motivo_id} = {...req.query, ...req.body};
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const revID = req.session.usuario.id;
-			const original = await BD_genericas.obtienePorId(entidad, id);
+			const original = await baseDeDatos.obtienePorId(entidad, id);
 			const campo = "avatar";
 			const aprob = !rechazar;
-			let edicion = await BD_genericas.obtienePorId(entidadEdic, edicID);
+			let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
 			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
 			// 1. PROCESOS PARTICULARES PARA AVATAR
@@ -495,7 +495,7 @@ module.exports = {
 
 			// Actualiza el registro original
 			datos = {...datos, editadoPor_id: revID, editadoEn: ahora};
-			await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
+			await baseDeDatos.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
 			comp.actualizaSolapam();
@@ -522,7 +522,7 @@ module.exports = {
 		let include = ["links", "statusRegistro"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
-		const producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const producto = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 
 		// Errores del producto a verificar
 		const informacion = procesos.links.problemasProd(producto, req.session.urlAnterior);
@@ -531,7 +531,7 @@ module.exports = {
 		// Obtiene todos los links
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
+		const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url;

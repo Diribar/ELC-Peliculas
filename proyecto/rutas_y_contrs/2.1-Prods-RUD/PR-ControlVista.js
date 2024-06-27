@@ -53,14 +53,14 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") {
 			prodComb.capitulos = BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			prodComb.colecAprob = BD_genericas.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
+			prodComb.colecAprob = baseDeDatos.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
 				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
 		}
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts, origen});
 		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
-			? BD_genericas.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
+			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
 		[prodComb.capitulos, prodComb.colecAprob, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
@@ -193,7 +193,7 @@ module.exports = {
 					prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 
 					// Actualiza el registro original
-					await BD_genericas.actualizaPorId(entidad, id, prodComb);
+					await baseDeDatos.actualizaPorId(entidad, id, prodComb);
 
 					// Actualiza los campos de los capítulos de una colección
 					if (entidad == "colecciones") {
@@ -290,7 +290,7 @@ module.exports = {
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 			const condics = {usuario_id: userID, entidad, entidad_id: id};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
+			const califUsuario = await baseDeDatos.obtienePorCondicionConInclude("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
 			const iconoDL = "fa-chart-simple fa-rotate-90";
 			const iconoDB = "fa-chart-line";
@@ -340,21 +340,21 @@ module.exports = {
 
 			// Averigua si existe la calificacion
 			condics = {usuario_id: userID, entidad, entidad_id};
-			const existe = await BD_genericas.obtienePorCondicion("calRegistros", condics);
+			const existe = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
 			existe
-				? await BD_genericas.actualizaPorId("calRegistros", existe.id, valores)
-				: await BD_genericas.agregaRegistro("calRegistros", valores);
+				? await baseDeDatos.actualizaPorId("calRegistros", existe.id, valores)
+				: await baseDeDatos.agregaRegistro("calRegistros", valores);
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});
 
 			// Actualiza la ppp
 			condics = {usuario_id: userID, entidad, entidad_id};
-			const interesDelUsuario = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
+			const interesDelUsuario = await baseDeDatos.obtienePorCondicion("pppRegistros", condics);
 			const novedades = {usuario_id: userID, entidad, entidad_id, ppp_id: pppOpcsObj.yaLaVi.id};
 			interesDelUsuario
-				? await BD_genericas.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
-				: await BD_genericas.agregaRegistro("pppRegistros", novedades);
+				? await baseDeDatos.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
+				: await baseDeDatos.agregaRegistro("pppRegistros", novedades);
 
 			// Fin
 			return res.redirect(req.originalUrl);

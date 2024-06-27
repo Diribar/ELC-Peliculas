@@ -80,7 +80,7 @@ module.exports = {
 
 				// Averigua si existen los RCLV_id
 				if (RCLV_id && RCLV_id > 2) {
-					const registro = await BD_genericas.obtienePorId(entidad, RCLV_id);
+					const registro = await baseDeDatos.obtienePorId(entidad, RCLV_id);
 					if (!registro) {
 						existe = false;
 						break;
@@ -122,7 +122,7 @@ module.exports = {
 			await procsComp
 				.obtieneInfoDeMovie({TMDB_id: capTMDB_id}) // Obtiene los datos del capítulo
 				.then((n) => (n = {...datosCap, ...n})) // Le agrega los datos de cabecera
-				.then(async (n) => await BD_genericas.agregaRegistro("capitulos", n));
+				.then(async (n) => await baseDeDatos.agregaRegistro("capitulos", n));
 
 			// Fin
 			return;
@@ -146,7 +146,7 @@ module.exports = {
 			// Guarda los CAPITULOS
 			for (let datosCap of datosTemp.episodes) {
 				const capitulo = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
-				await BD_genericas.agregaRegistro("capitulos", capitulo); // Guarda el capítulo
+				await baseDeDatos.agregaRegistro("capitulos", capitulo); // Guarda el capítulo
 			}
 
 			// Fin

@@ -467,7 +467,7 @@ let regsRCLV = async (entidades, userID) => {
 
 	// Obtiene los registrosRCLV
 	for (let entidad of entidades)
-		valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
+		valores.push(baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
 	valores = await Promise.all(valores);
 
 	// Pule la información

@@ -67,7 +67,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
-		const link = await BD_genericas.obtienePorIdConInclude("links", link_id, "prov");
+		const link = await baseDeDatos.obtienePorIdConInclude("links", link_id, "prov");
 		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 

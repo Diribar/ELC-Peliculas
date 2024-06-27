@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Obtiene el statusActual
-	const registro = await BD_genericas.obtienePorId(entidad, id);
+	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const statusActual =
 		entidad == "usuarios"
 			? statusRegistrosUs.find((n) => n.id == registro.statusRegistro_id)

@@ -33,7 +33,7 @@ module.exports = {
 		},
 		prodsDelRCLV: async function (RCLV, userID) {
 			// Variables
-			const pppRegs = await BD_genericas.obtieneTodosPorCondicionConInclude(
+			const pppRegs = await baseDeDatos.obtieneTodosPorCondicionConInclude(
 				"pppRegistros",
 				{usuario_id: userID},
 				"detalle"
@@ -323,7 +323,7 @@ module.exports = {
 				// Guarda el nuevo registro
 				DE.creadoPor_id = userID;
 				DE.statusSugeridoPor_id = userID;
-				original = await BD_genericas.agregaRegistro(entidad, DE);
+				original = await baseDeDatos.agregaRegistro(entidad, DE);
 				id = original.id;
 
 				// Les agrega el 'rclv_id' a session y cookie de origen
@@ -340,12 +340,12 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
+				original = await baseDeDatos.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
 				if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id) {
-					await BD_genericas.actualizaPorId(entidad, id, DE);
+					await baseDeDatos.actualizaPorId(entidad, id, DE);
 					original = {...original, ...DE};
 				}
 				// Si no esta en status 'creado', guarda la edición
