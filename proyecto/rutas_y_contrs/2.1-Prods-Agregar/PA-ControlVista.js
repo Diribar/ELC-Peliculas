@@ -369,11 +369,7 @@ module.exports = {
 
 		// Prepara variables para la vista
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const tituloImgDerPers = origEdic.nombreCastellano
-			? origEdic.nombreCastellano
-			: origEdic.nombreOriginal
-			? origEdic.nombreOriginal
-			: "";
+		const tituloImgDerPers = origEdic.nombreCastellano;
 		const agregaste = true;
 
 		// Render del formulario
