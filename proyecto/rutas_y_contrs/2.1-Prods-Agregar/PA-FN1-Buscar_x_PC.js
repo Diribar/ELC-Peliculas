@@ -241,7 +241,12 @@ module.exports = {
 			for (let producto of productos) {
 				// Variables
 				const {TMDB_id, TMDB_entidad} = producto;
-				const prodBD = prodsBD.find((n) => n.TMDB_id == TMDB_id && (!TMDB_entidad || n.TMDB_entidad == TMDB_entidad)); // busca entre los productos de la BD
+				const prodBD = prodsBD.find(
+					(n) =>
+						n.TMDB_id == TMDB_id && // que coincida el TMDB_id
+						(!n.TMDB_entidad & (TMDB_entidad == "movie") || // que ambos sean una película
+							n.TMDB_entidad == TMDB_entidad) // o que coincida la TMDB_entidad
+				);
 
 				// prodYaEnBD
 				if (prodBD) {
