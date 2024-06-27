@@ -12,7 +12,7 @@ module.exports = {
 		novedades = {...novedades, statusRegistro_id: statusNuevo.id};
 
 		// Actualiza la info
-		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
+		await baseDeDatos.actualizaPorId("usuarios", usuario.id, novedades);
 		usuario = {...usuario, ...novedades};
 
 		// Fin
@@ -29,11 +29,11 @@ module.exports = {
 			fechaUltimoLogin = hoy;
 
 			// Actualiza el usuario
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
+			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
 
 			// Agrega un registro de login del día
-			BD_genericas.agregaRegistro("loginsDelDia", {usuario_id: usuario.id});
+			baseDeDatos.agregaRegistro("loginsDelDia", {usuario_id: usuario.id});
 		}
 
 		// Fin

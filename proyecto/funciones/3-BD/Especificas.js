@@ -187,7 +187,7 @@ module.exports = {
 			id: {[Op.gt]: idMin},
 		};
 
-		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, includeBD)
+		const registros = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, includeBD)
 			// Agrega las fechaRef
 			// Actualiza el original con la edición
 			.then((n) =>
@@ -239,7 +239,7 @@ module.exports = {
 		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
 		const Sequelize = require("sequelize");
 		const sequelize = new Sequelize(config.database, config.username, config.password, config);
-		const nuevoValor = await BD_genericas.maxValor(entidad, "id").then((n) => n + 1);
+		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n + 1);
 
 		// Actualiza el autoincrement
 		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");

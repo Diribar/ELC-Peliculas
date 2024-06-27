@@ -12,7 +12,7 @@ module.exports = {
 
 		// Obtiene los productos
 		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, {statusRegistro_id: aprobado_id}, "publico"));
+			productos.push(baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, {statusRegistro_id: aprobado_id}, "publico"));
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
 
 		// Cuenta las cantidades
@@ -31,7 +31,7 @@ module.exports = {
 
 		// Obtiene los productos
 		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(BD_genericas.obtieneTodosConInclude(entidad, "publico"));
+			productos.push(baseDeDatos.obtieneTodosConInclude(entidad, "publico"));
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
 
 		// Cuenta las cantidades
@@ -57,7 +57,7 @@ module.exports = {
 		let productos = [];
 
 		for (let entidad of ["peliculas", "colecciones"])
-			productos.push(...(await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)));
+			productos.push(...(await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion)));
 
 		for (let epoca of epocasInverso) {
 			const cantPelis = productos.filter((n) => n.anoEstreno >= epoca.desde && n.anoEstreno <= epoca.hasta);
@@ -72,7 +72,7 @@ module.exports = {
 		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar}),
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
-		let provs = await BD_genericas.obtieneTodosConInclude("linksProvs", "links");
+		let provs = await baseDeDatos.obtieneTodosConInclude("linksProvs", "links");
 
 		// Cuenta la cantidad de links
 		provs = provs.map((m) => {
@@ -111,7 +111,7 @@ let obtieneEfemerides = async () => {
 	let fechas;
 
 	// Obtiene las fechas con sus RCLV
-	fechas = await BD_genericas.obtieneTodosConInclude("fechasDelAno", include);
+	fechas = await baseDeDatos.obtieneTodosConInclude("fechasDelAno", include);
 	fechas = fechas.filter((n) => n.id < 400);
 
 	// Concentra los distintos RCLVs en el campo RCLV

@@ -30,8 +30,8 @@ module.exports = {
 		// Averigua la cantidad de prodsNuevos
 		if (cantProds) {
 			const TMDB_ids = productos.map((n) => n.TMDB_id);
-			let pelis = BD_genericas.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
-			let coles = BD_genericas.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
+			let pelis = baseDeDatos.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
+			let coles = baseDeDatos.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
 			[pelis, coles] = await Promise.all([pelis, coles]);
 			cantProdsNuevos = cantProds - pelis.length - coles.length;
 		} else cantProdsNuevos = 0;
@@ -190,7 +190,7 @@ module.exports = {
 	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
-		let datos = await BD_genericas.obtieneTodos("colecciones", "nombreCastellano");
+		let datos = await baseDeDatos.obtieneTodos("colecciones", "nombreCastellano");
 
 		// Deja solamente los campos 'id' y 'nombreCastellano'
 		datos = datos.map((n) => ({id: n.id, nombreCastellano: n.nombreCastellano + " (" + n.anoEstreno + ")"}));
@@ -199,7 +199,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguaCantTemps: async (req, res) => {
-		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then((n) => n.cantTemps);
+		let datos = await baseDeDatos.obtienePorId("colecciones", req.query.id).then((n) => n.cantTemps);
 		return res.json(datos);
 	},
 

@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	if (!link_id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 
 	// PROBLEMA 2: ID inválido
-	const registro = await BD_genericas.obtienePorId("links", link_id);
+	const registro = await baseDeDatos.obtienePorId("links", link_id);
 	if (!registro) informacion = {mensajes: ["No tenemos ese link"], iconos: [vistaAnterior]};
 
 	// Conclusiones

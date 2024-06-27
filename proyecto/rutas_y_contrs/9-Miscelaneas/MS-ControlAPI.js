@@ -9,7 +9,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 
 		// Obtiene el registro
-		const registro = await BD_genericas.obtienePorId(entidad, id);
+		const registro = await baseDeDatos.obtienePorId(entidad, id);
 		const datos = {
 			creadoEn: registro.creadoEn,
 			creadoPor_id: registro.creadoPor_id,

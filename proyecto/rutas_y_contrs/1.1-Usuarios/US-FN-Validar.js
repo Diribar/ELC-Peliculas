@@ -10,7 +10,7 @@ module.exports = {
 		let errores = formatoMail(email);
 
 		// Se fija si el mail ya existe
-		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email}))) {
+		if (!errores.email && (await baseDeDatos.obtienePorCondicion("usuarios", {email}))) {
 			errores.credenciales = "Esta dirección de email ya figura en nuestra base de datos";
 			errores.hay = !!errores.credenciales;
 		}
@@ -211,7 +211,7 @@ let perennesBE = async (datos) => {
 		for (let campo of camposPerennes) condicion[campo] = datos[campo];
 
 		// Averigua si el usuario existe en la base de datos
-		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion))
+		errores.credenciales = !!(await baseDeDatos.obtienePorCondicion("usuarios", condicion))
 			? procesos.comentarios.credsInvalidas.datosPer
 			: "";
 		errores.hay = !!errores.credenciales;

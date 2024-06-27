@@ -48,7 +48,7 @@ module.exports = {
 				creados_ids,
 			};
 			if (entidad == "capitulos")
-				datos.coleccion_id = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
+				datos.coleccion_id = await baseDeDatos.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 
 			// Fin
 			return res.json(datos);
@@ -81,7 +81,7 @@ module.exports = {
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", prodEdic.avatar);
-				BD_genericas.eliminaPorId("prodsEdicion", prodEdic.id);
+				baseDeDatos.eliminaPorId("prodsEdicion", prodEdic.id);
 			}
 			// Terminar
 			return res.json();
@@ -103,7 +103,7 @@ module.exports = {
 			let calificaciones = [];
 
 			// Datos generales
-			datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
+			datos = await baseDeDatos.obtienePorId(entidad, prodID).then((n) => [
 				n.feValores,
 				n.entretiene,
 				n.calidadTecnica,
@@ -114,7 +114,7 @@ module.exports = {
 			// Datos particulares
 			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			datos = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
+			datos = await baseDeDatos.obtienePorCondicionConInclude("calRegistros", condics, include);
 			if (datos) {
 				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
 				calificaciones.push({autor: "Tuya", valores: datos});
@@ -130,7 +130,7 @@ module.exports = {
 
 			// Datos particulares
 			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
+			const califGuardada = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
 
 			// Fin
 			return res.json({califGuardada, atributosCalific, calCriterios});
@@ -142,7 +142,7 @@ module.exports = {
 
 			// Elimina
 			const condics = {usuario_id: userID, entidad, entidad_id};
-			await BD_genericas.eliminaTodosPorCondicion("calRegistros", condics);
+			await baseDeDatos.eliminaTodosPorCondicion("calRegistros", condics);
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});
@@ -161,13 +161,13 @@ module.exports = {
 
 			// Si existe el registro, lo elimina
 			const condics = {entidad, entidad_id, usuario_id};
-			const registro = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
-			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
+			const registro = await baseDeDatos.obtienePorCondicion("pppRegistros", condics);
+			if (registro) baseDeDatos.eliminaPorId("pppRegistros", registro.id);
 
 			// Si la opción no es sinPref, agrega el registro
 			if (ppp_id != pppOpcsObj.sinPref.id) {
 				const datos = {entidad, entidad_id, usuario_id, ppp_id};
-				BD_genericas.agregaRegistro("pppRegistros", datos);
+				baseDeDatos.agregaRegistro("pppRegistros", datos);
 			}
 
 			// Fin

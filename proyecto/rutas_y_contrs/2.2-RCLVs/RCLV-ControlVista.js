@@ -94,7 +94,7 @@ module.exports = {
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) apMars = await BD_genericas.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
+			if (personajes) apMars = await baseDeDatos.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
@@ -185,9 +185,9 @@ module.exports = {
 				const condiciones = {[campo_id]: id, editadoPor_id: userID};
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
-				const edicion = await BD_genericas.obtienePorCondicion("rclvsEdicion", condiciones);
+				const edicion = await baseDeDatos.obtienePorCondicion("rclvsEdicion", condiciones);
 				if (edicion && edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", edicion.avatar);
-				if (edicion) await BD_genericas.eliminaPorId("rclvsEdicion", edicion.id);
+				if (edicion) await baseDeDatos.eliminaPorId("rclvsEdicion", edicion.id);
 
 				// Actualiza el 'originalUrl'
 				let posicion = req.originalUrl.indexOf("&edicID");

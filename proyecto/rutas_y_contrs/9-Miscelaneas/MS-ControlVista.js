@@ -90,7 +90,7 @@ module.exports = {
 			let resultado = {};
 
 			// Lectura
-			await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
+			await baseDeDatos.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
 				.then((n) =>
 					n.map((m) => {
 						rclvs[m.nombre] = 0;
@@ -118,7 +118,7 @@ module.exports = {
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
 				productos.push(
-					...(await BD_genericas.obtieneTodosConInclude(entidad, "links").then((n) =>
+					...(await baseDeDatos.obtieneTodosConInclude(entidad, "links").then((n) =>
 						n.filter((m) => m.links.length > 1)
 					))
 				);

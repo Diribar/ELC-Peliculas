@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	// 1. Acciones en caso de que exista el 'edicID' en el url
 	if (edicID) {
 		// Averigua si existe la edicID en la base de datos
-		let edicion = await BD_genericas.obtienePorId(entidadEdic, edicID);
+		let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
 
 		// En caso que no, mensaje de error
 		if (!edicion) {
@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 
 		if (revision) {
 			// Averigua si existe una edicion
-			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, {[campo_id]: id});
+			edicion = await baseDeDatos.obtienePorCondicion(entidadEdic, {[campo_id]: id});
 
 			// Mensaje si no existe una edición
 			if (!edicion) {
@@ -70,7 +70,7 @@ module.exports = async (req, res, next) => {
 		} else {
 			// Averigua si existe una edicion propia
 			const condicion = {[campo_id]: id, editadoPor_id: req.session.usuario.id};
-			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, condicion);
+			edicion = await baseDeDatos.obtienePorCondicion(entidadEdic, condicion);
 		}
 
 		// En caso que exista una edición, redirige incluyendo esa edicID en el url

@@ -11,8 +11,8 @@ module.exports = async (req, res, next) => {
 	if (req.session.usuario) {
 
 		// Obtiene el registro de la entidad
-		let registro = await BD_genericas.obtienePorId(entidad, id);
-		
+		let registro = await baseDeDatos.obtienePorId(entidad, id);
+
 		// Verificar que tenga una captura activa del usuario
 		if (
 			registro &&
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 			registro.capturaActiva
 		) {
 			// En caso afirmativo, inactivar la captura
-			await BD_genericas.actualizaPorId(entidad, id, {capturaActiva: false});
+			await baseDeDatos.actualizaPorId(entidad, id, {capturaActiva: false});
 		}
 	}
 	// Fin

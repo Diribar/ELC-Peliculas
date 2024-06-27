@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 	// Averigua el id del primer capítulo de la colección
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
-		res.locals.capID = await BD_genericas.obtienePorCondicion("capitulos", condicion).then((n) => n.id);
+		res.locals.capID = await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => n.id);
 	}
 
 	// Fin
