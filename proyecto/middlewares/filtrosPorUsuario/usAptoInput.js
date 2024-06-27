@@ -55,7 +55,7 @@ module.exports = async (req, res, next) => {
 				// Fin
 				return edicion
 					? // Cuenta registros de edición
-					  await BD_especificas.usuario_regsConEdicion(usuario.id)
+					  await regsConEdicion(usuario.id)
 					: // Cuenta registros originales con status 'a revisar'
 					  await regsConStatusARevisar(usuario.id, entidades);
 			},
@@ -170,7 +170,19 @@ let regsConStatusARevisar = async (userID, entidades) => {
 	};
 
 	let contarRegistros = 0;
-	for (let entidad of entidades) contarRegistros += await baseDeDatos.contarCasos(entidad,condicion)
+	for (let entidad of entidades) contarRegistros += await baseDeDatos.contarCasos(entidad, condicion);
+
+	// Fin
+	return contarRegistros;
+};
+let regsConEdicion = async (userID) => {
+	// Variables
+	const entidades = ["prodsEdicion", "rclvsEdicion", "linksEdicion"];
+	let contarRegistros = 0;
+
+	// Rutina para contar
+	let condicion = {editadoPor_id: userID};
+	for (let entidad of entidades) contarRegistros += await baseDeDatos.contarCasos(entidad, condicion);
 
 	// Fin
 	return contarRegistros;

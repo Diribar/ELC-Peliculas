@@ -88,16 +88,4 @@ module.exports = {
 		return db[entidad].update(objeto, {where: condicion});
 	},
 
-	usuario_regsConEdicion: async (userID) => {
-		// Variables
-		const entidades = ["prodsEdicion", "rclvsEdicion", "linksEdicion"];
-		let contarRegistros = 0;
-
-		// Rutina para contar
-		let condicion = {editadoPor_id: userID};
-		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});
-
-		// Fin
-		return contarRegistros;
-	},
 };
