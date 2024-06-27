@@ -57,7 +57,7 @@ module.exports = async (req, res, next) => {
 					? // Cuenta registros de edición
 					  await BD_especificas.usuario_regsConEdicion(usuario.id)
 					: // Cuenta registros originales con status 'a revisar'
-					  await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
+					  await regsConStatusARevisar(usuario.id, entidades);
 			},
 			// Obtiene el nivel de confianza
 			nivelDeConfianza: function () {
@@ -157,4 +157,21 @@ module.exports = async (req, res, next) => {
 	// Fin
 	if (informacion) res.render("CMP-0Estructura", {informacion});
 	else next();
+};
+
+let regsConStatusARevisar = async (userID, entidades) => {
+	// Variables
+	let condicion = {
+		[Op.or]: [
+			{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+			{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: userID}]},
+			{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: userID}]},
+		],
+	};
+
+	let contarRegistros = 0;
+	for (let entidad of entidades) contarRegistros += await baseDeDatos.contarCasos(entidad,condicion)
+
+	// Fin
+	return contarRegistros;
 };

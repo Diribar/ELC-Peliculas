@@ -88,23 +88,6 @@ module.exports = {
 		return db[entidad].update(objeto, {where: condicion});
 	},
 
-	// Middlewares - Usuario habilitado
-	usuario_regsConStatusARevisar: async (userID, entidades) => {
-		// Variables
-		let contarRegistros = 0;
-		// Rutina para contar
-		let condiciones = {
-			[Op.or]: [
-				{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
-				{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: userID}]},
-				{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: userID}]},
-			],
-		};
-		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
-
-		// Fin
-		return contarRegistros;
-	},
 	usuario_regsConEdicion: async (userID) => {
 		// Variables
 		const entidades = ["prodsEdicion", "rclvsEdicion", "linksEdicion"];
