@@ -125,10 +125,10 @@ module.exports = {
 	ABM_noRevs: async () => {
 		// Variables
 		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
-		let condicion = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
-		let entsPERL, include;
+		let entsPERL, include, condicion;
 
 		// regsPERL
+		condicion = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
 		entsPERL = [...variables.entidades.prods, ...variables.entidades.rclvs];
 		include = "statusSugeridoPor";
 		let regsPERL = [];
