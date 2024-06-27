@@ -90,41 +90,27 @@ module.exports = {
 	},
 	edicion: {
 		form: async (req, res) => {
-			// Tema y Código
+			// Variables
 			const tema = "prodRud";
 			const codigo = "edicion";
-
-			// Más variables
 			const {entidad, id} = req.query;
-			const origen = req.query.origen;
 			const userID = req.session.usuario.id;
-			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
-			// Configura el título de la vista
-			const titulo =
-				(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
-				" de" +
-				(entidad == "capitulos" ? " un " : " la ") +
-				entidadNombre;
-
-			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
-
-			// Procesa el session y cookie
+			// Procesa la session y cookie
 			const session = req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id;
 			const cookie = req.cookies.edicProd && req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id;
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 
-			// Obtiene la versión más completa del producto
+			// Obtiene la versión más completa posible del producto
+			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
 			const prodComb = {...original, ...edicion, ...edicSession, id};
 			if (entidad == "capitulos")
-				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);//
+				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
 
 			// Datos Duros
 			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
-			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 
 			// Datos Adicionales
@@ -132,20 +118,25 @@ module.exports = {
 			const gruposPers = procsCRUD.grupos.pers(camposDA);
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
-			// Obtiene datos para la vista
-			const ayudasTitulo = [
-				"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
-			];
+			// Otros datos para la vista
+			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+			const titulo =
+				(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
+				" de" +
+				(entidad == "capitulos" ? " un " : " la ") +
+				entidadNombre;
 			const status_id = original.statusRegistro_id;
+			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 			const familia = "producto";
 			const registro = prodComb;
 			const dataEntry = prodComb;
 			const prodEdic = true;
+			const origen = req.query.origen;
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic, imgDerPers, status_id},
+				...{tema, codigo, titulo, origen, prodEdic, imgDerPers, status_id},
 				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 				...{estrucPers: true, cartelGenerico: true},
