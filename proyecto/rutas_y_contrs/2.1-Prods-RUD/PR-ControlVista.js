@@ -109,13 +109,16 @@ module.exports = {
 
 			// Obtiene la versión más completa posible del producto
 			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
-			let prodComb = {...original, ...edicion, id};
+
+			// Procesa el session y cookie
 			const session = req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id;
-			delete req.session.edicProd;
 			const cookie = req.cookies.edicProd && req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id;
-			res.clearCookie("edicProd");
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
-			prodComb = {...prodComb, ...edicSession};
+
+			// Obtiene la versión más completa del producto
+			const prodComb = {...original, ...edicion, ...edicSession, id};
+			if (entidad == "capitulos")
+				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);//
 
 			// Datos Duros
 			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
@@ -130,8 +133,6 @@ module.exports = {
 			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
 
 			// Obtiene datos para la vista
-			if (entidad == "capitulos")
-				prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 			const ayudasTitulo = [
 				"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 			];
@@ -143,7 +144,6 @@ module.exports = {
 			const prodEdic = true;
 
 			// Va a la vista
-			// return res.send(prodComb);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen, prodEdic, imgDerPers, status_id},
 				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
