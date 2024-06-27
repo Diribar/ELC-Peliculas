@@ -145,7 +145,7 @@ module.exports = {
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
-			let registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
+			const registros = await BD_genericas.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {

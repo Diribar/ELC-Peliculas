@@ -199,7 +199,7 @@ module.exports = {
 			// Rutina por entidad
 			for (let entidad of entidadesRCLV) {
 				// Obtiene los ID de los registros de la entidad
-				let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+				const IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 				// Rutina por ID: ejecuta la función prodsEnRCLV
 				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
