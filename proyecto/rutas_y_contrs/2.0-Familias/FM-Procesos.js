@@ -41,11 +41,29 @@ module.exports = {
 		if (entidad == "colecciones" && original.capitulos)
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 
-		// Si es un capítulo y el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
-		if (entidad == "capitulos" && original.coleccion && userID) {
+		// Acciones si es un capítulo
+		if (entidad == "capitulos" && userID) {
+			// Variables
 			const condiciones = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
 			const edicColec = await BD_genericas.obtienePorCondicion("prodsEdicion", condiciones);
-			if (edicColec && edicColec.nombreCastellano) original.coleccion.nombreCastellano = edicColec.nombreCastellano;
+			if (!edicColec) return [original, edicion];
+
+			// Si el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
+			if (original.coleccion && edicColec.nombreCastellano)
+				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
+
+			// Si es un producto, reemplaza los campos vacíos del original y la edición
+			if (familia == "producto") {
+				const camposEditables = [...variables.camposDD, ...variables.camposDA];
+				for (let campo of camposEditables) {
+					const {nombre} = campo;
+					if (
+						(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor
+						(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor
+					)
+						edicion = {...edicion, [nombre]: edicColec[nombre]};
+				}
+			}
 		}
 
 		// Fin
