@@ -5,7 +5,7 @@ const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tableros
-	TC: {
+	tablRevision: {
 		obtieneProdsConEdic: async (revID) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
@@ -81,19 +81,21 @@ module.exports = {
 				revID,
 				include: "ediciones",
 			};
-			let AL_sinEdicion = obtieneRegs(campos)
+			let AL_sinEdicion = tablRevision
+				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
-			let SE = obtieneRegs(campos)
+			let SE = tablRevision
+				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = obtieneRegs(campos).then((regs) => {
+			let IN = tablRevision.obtieneRegs(campos).then((regs) => {
 				for (let i = regs.length - 1; i >= 0; i--)
 					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
 				return regs;
@@ -101,7 +103,7 @@ module.exports = {
 
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = obtieneRegs(campos).then((regs) => {
+			let RC = tablRevision.obtieneRegs(campos).then((regs) => {
 				for (let i = regs.length - 1; i >= 0; i--)
 					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
 				return regs;
@@ -158,19 +160,20 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
-			let AL = obtieneRegs(campos);
+			let AL = tablRevision.obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			let SL = tablRevision.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
-			let IR = obtieneRegs(campos);
+			let IR = tablRevision.obtieneRegs(campos);
 
 			// FM: Con fecha móvil
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let FM = obtieneRegs(campos)
+			let FM = tablRevision
+				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
 				.then((originales) =>
 					originales.map((original) => {
@@ -257,24 +260,24 @@ module.exports = {
 			return {ED: rclvs};
 		},
 	},
-	TM: {
+	tablManten: {
 		obtieneProds: async (userID) => {
 			// Variables
 			const petitFamilias = "prods";
-			let condiciones = {petitFamilias, userID};
+			let condicion = {petitFamilias, userID};
 
 			// Productos Inactivos
-			condiciones = {...condiciones, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let inactivos = TM.obtienePorEntidad(condiciones);
+			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			let inactivos = tablManten.obtienePorEntidad(condicion);
 
 			// Productos Aprobados
-			condiciones = {...condiciones, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let prodsAprob = TM.obtienePorEntidad(condiciones);
+			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			let prodsAprob = tablManten.obtienePorEntidad(condicion);
 
 			// Productos Sin Edición (en status creadoAprob)
-			let SE_pel = TM.obtieneSinEdicion("peliculas");
-			let SE_col = TM.obtieneSinEdicion("colecciones");
-			let SE_cap = TM.obtieneSinEdicion("capitulos");
+			let SE_pel = tablManten.obtieneSinEdicion("peliculas");
+			let SE_col = tablManten.obtieneSinEdicion("colecciones");
+			let SE_cap = tablManten.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
 			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
@@ -323,15 +326,15 @@ module.exports = {
 			// Variables
 			const objetoFijo = {petitFamilias: "rclvs", userID};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
-			let condiciones;
+			let condicion;
 
 			// Inactivos
-			condiciones = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let IN = TM.obtienePorEntidad(condiciones);
+			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			let IN = tablManten.obtienePorEntidad(condicion);
 
 			// Aprobados
-			condiciones = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let rclvsAprob = TM.obtienePorEntidad({...condiciones, include});
+			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			let rclvsAprob = tablManten.obtienePorEntidad({...condicion, include});
 
 			// Await
 			[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
@@ -359,7 +362,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? TM.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
+			let productos = linksInactivos.length ? tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
 
 			// Fin
 			return productos;
@@ -561,8 +564,8 @@ module.exports = {
 
 					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
 					if (entidadProd == "colecciones" && errores.impideAprobado) {
-						const condiciones = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
-						baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, statusCreadoAprob);
+						const condicion = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
+						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, statusCreadoAprob);
 					}
 				}
 			}
@@ -1118,28 +1121,70 @@ let FN_links = {
 		return resultado;
 	},
 };
-let obtieneRegs = async (campos) => {
-	// Variables
-	let lecturas = [];
-	let resultados = [];
+let tablRevision = {
+	obtieneRegs: async function (campos) {
+		// Variables
+		let lecturas = [];
+		let resultados = [];
 
-	// Obtiene el resultado por entidad
-	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC.obtieneRegs({entidad, ...campos}));
-	await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
+		// Obtiene el resultado por entidad
+		for (let entidad of campos.entidades) lecturas.push(this.lecturaBD({entidad, ...campos}));
+		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
 
-	if (resultados.length) {
-		resultados = resultados.map((n) => {
-			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-			const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
-			return {...n, fechaRef, fechaRefTexto};
-		});
+		if (resultados.length) {
+			resultados = resultados.map((n) => {
+				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
+				const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+				return {...n, fechaRef, fechaRefTexto};
+			});
 
-		// Ordena los resultados
-		resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-	}
+			// Ordena los resultados
+			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+		}
 
-	// Fin
-	return resultados;
+		// Fin
+		return resultados;
+	},
+	lecturaBD: async ({entidad, status_id, campoFecha, campoRevID, include, revID}) => {
+		// Variables
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+
+		// Condiciones de captura
+		const condicsCaptura = [
+			{capturadoEn: null}, // Que no esté capturado
+			{capturadoEn: {[Op.lt]: haceDosHoras}}, // Que esté capturado hace más de dos horas
+			{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}}, // Que la captura haya sido por otro usuario y hace más de una hora
+			{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}}, // Que la captura haya sido por otro usuario y esté inactiva
+			{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}}, // Que esté capturado por este usuario hace menos de una hora
+		];
+
+		// Condiciones
+		let condicion = {
+			statusRegistro_id: status_id, // Con status según parámetro
+			[Op.and]: [{[Op.or]: condicsCaptura}], // Es necesario el [Op.and], porque luego se le agregan condicion
+		};
+		if (campoFecha) {
+			if (campoRevID) {
+				// Que esté propuesto por el usuario
+				const condicsUsuario = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}];
+				condicion[Op.and].push({[Op.or]: condicsUsuario});
+			}
+			// Que esté propuesto hace más de una hora
+			else condicion[campoFecha] = {[Op.lt]: haceUnaHora};
+		}
+
+		// Excluye los registros RCLV cuyo ID es <= 10
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
+
+		// Resultado
+		const resultados = baseDeDatos
+			.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
+			.then((n) => n.map((m) => ({...m, entidad})));
+
+		// Fin
+		return resultados;
+	},
 };
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion) => {
 	// Variables
@@ -1206,7 +1251,7 @@ let actualizaLosProdsVinculadosNoAprobados = async ({entidad, campo_id, id}) => 
 	// Fin
 	return;
 };
-let TM = {
+let tablManten = {
 	obtieneProdsDeLinks: (links, userID) => {
 		// Variables
 		let LI = [];
@@ -1240,16 +1285,16 @@ let TM = {
 		// Fin
 		return {LI};
 	},
-	obtienePorEntidad: async function ({...condiciones}) {
+	obtienePorEntidad: async function ({...condicion}) {
 		// Variables
-		const {petitFamilias} = condiciones;
+		const {petitFamilias} = condicion;
 		const entidades = variables.entidades[petitFamilias];
-		condiciones.include ? condiciones.include.push("ediciones") : (condiciones.include = ["ediciones"]);
+		condicion.include ? condicion.include.push("ediciones") : (condicion.include = ["ediciones"]);
 		let resultados1 = [];
 		let resultados2 = [];
 
 		// Rutina
-		for (let entidad of entidades) resultados1.push(this.obtieneRegs({entidad, ...condiciones}));
+		for (let entidad of entidades) resultados1.push(this.obtieneRegs({entidad, ...condicion}));
 
 		// Espera hasta tener todos los resultados
 		await Promise.all(resultados1).then((n) => n.map((m) => resultados2.push(...m)));
@@ -1269,7 +1314,7 @@ let TM = {
 		if (entidad == "colecciones") includeBD.push("csl");
 
 		// Condiciones
-		const condiciones = {
+		const condicion = {
 			// Con status según parámetro
 			statusRegistro_id: status_id,
 			// Que cumpla alguno de los siguientes sobre la 'captura':
@@ -1290,7 +1335,7 @@ let TM = {
 		};
 
 		const registros = await baseDeDatos
-			.obtieneTodosPorCondicionConInclude(entidad, condiciones, includeBD)
+			.obtieneTodosPorCondicionConInclude(entidad, condicion, includeBD)
 			// Agrega la fechaRef y actualiza el original con la edición
 			.then((n) =>
 				n.map((m) => {
@@ -1299,7 +1344,7 @@ let TM = {
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condiciones.userID);
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userID);
 					delete m.ediciones;
 
 					// Actualiza el original con la edición
@@ -1318,12 +1363,12 @@ let TM = {
 	},
 	obtieneSinEdicion: (entidad) => {
 		// Variables
-		const condiciones = {statusRegistro_id: creadoAprob_id};
-		if (entidad == "capitulos") condiciones.statusColeccion_id = aprobado_id;
+		const condicion = {statusRegistro_id: creadoAprob_id};
+		if (entidad == "capitulos") condicion.statusColeccion_id = aprobado_id;
 
 		// Obtiene la información
 		return baseDeDatos
-			.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
+			.obtieneTodosPorCondicionConInclude(entidad, condicion, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {
