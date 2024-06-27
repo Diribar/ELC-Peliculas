@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
 
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
-		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
+		camposNombre: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
 		avatarInicial: DOM.imgAvatar.src,
 	};
 	let rutas = {
@@ -67,6 +67,8 @@ window.addEventListener("load", async () => {
 		variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + v.entidad + "&id=" + v.prodID,
 	};
 	v = {...v, ...(await fetch(rutas.variablesBE).then((n) => n.json()))};
+	v.camposTipo = {};
+	Array.from(DOM.inputsTodos).map((n) => (v.camposTipo[n.name] = n.type));
 
 	// Funciones Data-Entry
 	let FN = {
@@ -98,10 +100,10 @@ window.addEventListener("load", async () => {
 			const referencia = v.estamosEnEdicNueva ? "edicG" : "orig";
 
 			// Marca dónde están las diferencias con la versión original
-			v.camposTodos.forEach((campo, i) => {
+			v.camposNombre.forEach((campo, i) => {
 				v.versionActual != "orig" &&
 				version[v.versionActual][campo] != version[referencia][campo] &&
-				(version[v.versionActual][campo] || version[referencia][campo])
+				(version[v.versionActual][campo] || version[referencia][campo] || v.camposTipo[campo] == "radio") // algún campo debe tener un valor significativo o ser un 'radio'
 					? DOM.flechasDiferencia[i].classList.remove("ocultar")
 					: DOM.flechasDiferencia[i].classList.add("ocultar");
 			});
@@ -115,8 +117,8 @@ window.addEventListener("load", async () => {
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID + "&statusRegistro_id=" + statusRegistro_id;
 			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
-			for (let campo of v.camposTodos) {
-				const indice = camposResp.indexOf(campo);
+			for (let campoNombre of v.camposNombre) {
+				const indice = camposResp.indexOf(campoNombre);
 				const valor =
 					indice > -1
 						? inputsResp[indice].value != "on"
@@ -125,7 +127,7 @@ window.addEventListener("load", async () => {
 							? 1
 							: 0
 						: "";
-				if (campo != "avatar") objeto += "&" + campo + "=" + valor;
+				if (campoNombre != "avatar") objeto += "&" + campoNombre + "=" + valor;
 			}
 			if (v.estamosEnEdicNueva && (DOM.inputAvatar.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatar.value;
@@ -180,8 +182,8 @@ window.addEventListener("load", async () => {
 			// Averigua si los campos input son iguales entre la edicN y su referente anterior
 			const comparativa = version.edicG_existe ? version.edicG : version.orig;
 			let sonIguales = true;
-			for (let campo of v.camposTodos)
-				if (version.edicN[campo] != comparativa[campo] && (version.edicN[campo] || comparativa[campo]))
+			for (let campoNombre of v.camposNombre)
+				if (version.edicN[campoNombre] != comparativa[campoNombre] && (version.edicN[campoNombre] || comparativa[campoNombre]))
 					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
@@ -384,7 +386,7 @@ window.addEventListener("load", async () => {
 		boton.addEventListener("click", async () => {
 			// Si está inactivo interrumpe la operación
 			if (boton.className.includes("inactivo")) return;
-			boton.classList.add("inactivo")
+			boton.classList.add("inactivo");
 
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {

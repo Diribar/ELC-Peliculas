@@ -6,7 +6,7 @@ module.exports = {
 		cabeceras: async (userID) => {
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
 			const usuario_id = userID ? [1, userID] : 1;
-			const regsCabecera = await BD_genericas.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
+			const regsCabecera = await baseDeDatos.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
 			// Fin
@@ -42,7 +42,7 @@ module.exports = {
 
 			// Obtiene las preferencias
 			let prefs = {};
-			const registros = await BD_genericas.obtieneTodosPorCondicion("consRegsPrefs", {cabecera_id});
+			const registros = await baseDeDatos.obtieneTodosPorCondicion("consRegsPrefs", {cabecera_id});
 			for (let registro of registros) prefs[registro.campo] = registro.valor; // convierte el array en objeto literal
 
 			// Fin
@@ -75,7 +75,7 @@ module.exports = {
 			// Guarda la 'configCons_id' en el usuario
 			const configCons_id = configCons.id;
 			if (configCons_id && userID) {
-				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				baseDeDatos.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
@@ -115,7 +115,7 @@ module.exports = {
 				// Obtiene los productos
 				for (let entProd of entsProd)
 					productos.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+						baseDeDatos.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
 							n.map((m) => ({...m, entidad: entProd}))
 						)
 					);
@@ -236,7 +236,7 @@ module.exports = {
 						// Obtiene los registros
 						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
 						aux.push(
-							BD_genericas.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
+							baseDeDatos.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
@@ -247,7 +247,7 @@ module.exports = {
 				// Rutina para un sólo RCLV
 				else {
 					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
-					rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+					rclvs = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
 				}
@@ -323,7 +323,7 @@ module.exports = {
 
 					// Obtiene los registros y les agrega la entidadRCLV
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
+						baseDeDatos.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
 							n.map((m) => ({
 								...m,
 								entidad: entidadRCLV,
@@ -509,8 +509,8 @@ module.exports = {
 				if (!prods.length || !usuario_id) return [];
 
 				// Obtiene los registros del usuario
-				const misCalificadas = await BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id});
-				const yaVistas = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
+				const misCalificadas = await baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id});
+				const yaVistas = await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {
 					usuario_id,
 					ppp_id: pppOpcsObj.yaLaVi.id,
 				});
@@ -538,7 +538,7 @@ module.exports = {
 				if (!prods.length || !usuario_id) return [];
 
 				// Obtiene los registros del usuario
-				let misConsultas = await BD_genericas.obtieneTodosPorCondicion("misConsultas", {usuario_id});
+				let misConsultas = await baseDeDatos.obtieneTodosPorCondicion("misConsultas", {usuario_id});
 				if (!misConsultas.length) return [];
 				misConsultas.reverse();
 

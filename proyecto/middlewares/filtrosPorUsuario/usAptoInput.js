@@ -147,7 +147,7 @@ module.exports = async (req, res, next) => {
 			};
 
 			// Quita la necesidad del cartel
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {[cartel]: false});
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, {[cartel]: false});
 
 			// Vista
 			return res.render("CMP-0Estructura", objeto);

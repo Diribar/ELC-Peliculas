@@ -139,7 +139,7 @@ module.exports = {
 			// Actualiza el rol y status del usuario
 			const novedades = {...dataEntry, rolUsuario_id: rolPermInputs_id, statusRegistro_id: perennes_id}; // le sube el rol y el status
 			const usuario = req.session.usuario;
-			BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, novedades);
 			req.session.usuario = {...usuario, ...novedades};
 
 			// Redirecciona
@@ -220,7 +220,7 @@ module.exports = {
 				let intentosPendsBD = intentosBD;
 				if (usuario && errores.contr_BD) {
 					intentosLogin = usuario.intentosLogin + 1;
-					if (intentosLogin <= intentosBD) BD_genericas.actualizaPorId("usuarios", usuario.id, {intentosLogin});
+					if (intentosLogin <= intentosBD) baseDeDatos.actualizaPorId("usuarios", usuario.id, {intentosLogin});
 					intentosPendsBD = Math.max(0, intentosBD - intentosLogin);
 				}
 

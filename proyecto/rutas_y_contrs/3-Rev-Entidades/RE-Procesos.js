@@ -12,7 +12,7 @@ module.exports = {
 			let productos = [];
 
 			// Obtiene todas las ediciones
-			let ediciones = await BD_genericas.obtieneTodosConInclude("prodsEdicion", include);
+			let ediciones = await baseDeDatos.obtieneTodosConInclude("prodsEdicion", include);
 
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
@@ -117,8 +117,8 @@ module.exports = {
 			// Obtiene los datos clave de los registros
 			const statusRegistro_id = activos_ids;
 			let registros = await Promise.all([
-				BD_genericas.obtieneTodosPorCondicion("peliculas", {statusRegistro_id}),
-				BD_genericas.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
+				baseDeDatos.obtieneTodosPorCondicion("peliculas", {statusRegistro_id}),
+				baseDeDatos.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
 			])
 				.then((n) => [
 					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
@@ -223,7 +223,7 @@ module.exports = {
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_genericas.obtieneTodosConInclude("rclvsEdicion", include);
+			let ediciones = await baseDeDatos.obtieneTodosConInclude("rclvsEdicion", include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -277,8 +277,8 @@ module.exports = {
 			let SE_cap = TM.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
-			let cal = BD_genericas.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
-			let ppp = BD_genericas.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, ppp_id: pppOpcsObj.yaLaVi.id});
+			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
+			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, ppp_id: pppOpcsObj.yaLaVi.id});
 
 			// Espera las lecturas
 			[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -356,7 +356,7 @@ module.exports = {
 			let condicion = {statusRegistro_id: inactivo_id};
 
 			// Obtiene los links 'a revisar'
-			let linksInactivos = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condicion, include);
 
 			// Obtiene los productos
 			let productos = linksInactivos.length ? TM.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
@@ -391,7 +391,7 @@ module.exports = {
 
 			// Obtiene el RCLV actual
 			const include = comp.obtieneTodosLosCamposInclude(entidad);
-			const RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
+			const RCLV_actual = await baseDeDatos.obtienePorIdConInclude(entidad, original.id, include);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -420,7 +420,7 @@ module.exports = {
 				}
 
 				// Guarda los registros en "histEdics"
-				BD_genericas.agregaRegistro("histEdics", datosCompleto);
+				baseDeDatos.agregaRegistro("histEdics", datosCompleto);
 
 				// Aumenta la cantidad de edicsAprob / edicsRech
 				const aprobRech = valorAprob == valorDesc ? "Aprob" : "Rech";
@@ -434,7 +434,7 @@ module.exports = {
 					: ediciones.edicsAprob < ediciones.edicsRech
 					? "edicsRech"
 					: "";
-			if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
+			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
 
 			// Fin
 			return;
@@ -476,7 +476,7 @@ module.exports = {
 			// Obtiene el registro original y el subcodigo
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
 			if (producto) include.push("links");
-			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+			const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
 
 			// Obtiene el 'subcodigo'
@@ -544,7 +544,7 @@ module.exports = {
 
 				// Obtiene los productos aprobados vinculados
 				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
-				let prodsVinculados = await BD_genericas.obtieneTodosPorCondicion(entidadProd, condicion);
+				let prodsVinculados = await baseDeDatos.obtieneTodosPorCondicion(entidadProd, condicion);
 
 				// Actualiza los productos aprobados, quitándole el valor al 'campo_id' y fijándose si tiene errores
 				for (let prodVinculado of prodsVinculados) {
@@ -557,12 +557,12 @@ module.exports = {
 					if (errores.impideAprobado) objeto = {...objeto, ...statusCreadoAprob};
 
 					// Actualiza el registro del producto
-					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
+					baseDeDatos.actualizaPorId(entidadProd, prodVinculado.id, objeto);
 
 					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
 					if (entidadProd == "colecciones" && errores.impideAprobado) {
 						const condiciones = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
-						BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, statusCreadoAprob);
+						baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, statusCreadoAprob);
 					}
 				}
 			}
@@ -570,12 +570,12 @@ module.exports = {
 		prodAprobEnLink: async (coleccion_id, statusCol) => {
 			// Variables
 			const prodAprob = aprobados_ids.includes(statusCol);
-			const capsID = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id}).then((n) =>
+			const capsID = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id}).then((n) =>
 				n.map((m) => m.id)
 			);
 
 			// Actualiza el campo 'prodAprob' a los links de la colección
-			await BD_genericas.actualizaTodosPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
+			await baseDeDatos.actualizaTodosPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
 
 			// Fin
 			return;
@@ -613,7 +613,7 @@ module.exports = {
 				}
 
 				// 2. Borra el campo 'avatarUrl' en el registro de edicion
-				await BD_genericas.actualizaPorId("prodsEdicion", edicion.id, {avatarUrl: null});
+				await baseDeDatos.actualizaPorId("prodsEdicion", edicion.id, {avatarUrl: null});
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
@@ -709,7 +709,7 @@ module.exports = {
 				if (campo == "anoEstreno") datos.epocaEstreno_id = epocasEstreno.find((n) => n.desde <= edicion.anoEstreno).id;
 
 				// 2. Actualiza el registro 'original'
-				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+				await baseDeDatos.actualizaPorId(entidad, original.id, datos);
 
 				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
 				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
@@ -741,17 +741,17 @@ module.exports = {
 				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
-				BD_genericas.agregaRegistro("histEdics", datosEdic);
+				baseDeDatos.agregaRegistro("histEdics", datosEdic);
 
 				// 4. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
+				baseDeDatos.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
 				// 5. Si corresponde, penaliza al usuario
 				if (motivo) comp.penalizacAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
 			// Elimina el valor del campo en el registro de 'edición' y en la variable
-			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+			await baseDeDatos.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 			delete edicion[campo];
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
@@ -871,7 +871,7 @@ module.exports = {
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
 		// Actualiza el registro 'original'
-		await BD_genericas.actualizaPorId(entidad, original.id, {avatar});
+		await baseDeDatos.actualizaPorId(entidad, original.id, {avatar});
 
 		// Fin
 		return;
@@ -1154,7 +1154,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	let resultado = relacInclude
 		? registro[relacInclude] // El registro tiene un valor 'include'
 			? registro[relacInclude].nombre // Muestra el valor 'include'
-			: await BD_genericas.obtienePorId(campoRevisar.tabla, registro[campo]).then((n) => n.nombre) // Busca el valor include
+			: await baseDeDatos.obtienePorId(campoRevisar.tabla, registro[campo]).then((n) => n.nombre) // Busca el valor include
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
@@ -1256,7 +1256,7 @@ let TM = {
 		if (entidad == "capitulos") condiciones.statusColeccion_id = aprobado_id;
 
 		// Obtiene la información
-		return BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
+		return baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {

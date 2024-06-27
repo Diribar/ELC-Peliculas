@@ -19,11 +19,11 @@ module.exports = {
 		let statusAprob, reload;
 
 		// Obtiene el registro editado
-		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
+		let edicion = await baseDeDatos.obtienePorIdConInclude(nombreEdic, edicID, include);
 
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
+		const original = await baseDeDatos.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
 
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
@@ -31,8 +31,8 @@ module.exports = {
 		// Campos especiales - RCLVs
 		if (familias == "rclvs") {
 			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
-				await BD_genericas.actualizaPorId(entidad, entID, {anoFM: null}); // debe serlo por el eventual solapamiento
-				BD_genericas.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+				await baseDeDatos.actualizaPorId(entidad, entID, {anoFM: null}); // debe serlo por el eventual solapamiento
+				baseDeDatos.actualizaPorId(nombreEdic, edicID, {anoFM: null});
 				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
 			}
 		}
@@ -77,14 +77,14 @@ module.exports = {
 		altaBaja: async (req, res) => {
 			// Variables
 			const {url} = req.query;
-			const link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds);
+			const link = await baseDeDatos.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds);
 
 			// Más variables
 			const {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID} =
 				procesos.links.variables({link, req});
 
 			// CONSECUENCIAS - Actualiza el registro del link
-			await BD_genericas.actualizaPorId("links", id, datos);
+			await baseDeDatos.actualizaPorId("links", id, datos);
 
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
 			const statusOriginalPor_id = link.statusSugeridoPor_id;
@@ -107,10 +107,10 @@ module.exports = {
 					datosHist.duracion = Number(motivo.duracion);
 					datosHist.comentario = motivo.descripcion;
 				}
-				BD_genericas.agregaRegistro("histStatus", datosHist);
+				baseDeDatos.agregaRegistro("histStatus", datosHist);
 
 				// Aumenta el valor de linksAprob/rech en el registro del usuario
-				BD_genericas.aumentaElValorDeUnCampo("usuarios", statusOriginalPor_id, campoDecision, 1);
+				baseDeDatos.aumentaElValorDeUnCampo("usuarios", statusOriginalPor_id, campoDecision, 1);
 
 				// Penaliza al usuario si corresponde
 				if (motivo) comp.penalizacAcum(statusOriginalPor_id, motivo, "links");
@@ -130,11 +130,11 @@ module.exports = {
 			let sigProd = true;
 
 			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
-			const links = await BD_genericas.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
+			const links = await baseDeDatos.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
 			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
 			// Averigua si queda alguna edición de link del producto
-			if (sigProd) sigProd = !(await BD_genericas.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
+			if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente
 			if (sigProd) sigProd = await procesos.TC.obtieneSigProd_Links(revID);
@@ -148,8 +148,8 @@ module.exports = {
 
 			// Obtiene el link y el proveedor
 			const link = linkID
-				? await BD_genericas.obtienePorId("links", linkID)
-				: await BD_genericas.obtienePorCondicion("links", {url: linkUrl});
+				? await baseDeDatos.obtienePorId("links", linkID)
+				: await baseDeDatos.obtienePorCondicion("links", {url: linkUrl});
 			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 
 			// Acciones si es embeded

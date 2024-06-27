@@ -23,8 +23,8 @@ module.exports = {
 		}
 
 		// Obtiene el registro original con sus includes
-		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
-		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condiciones, includesEdic) : null;
+		let original = baseDeDatos.obtienePorIdConInclude(entidad, entID, includesOrig);
+		let edicion = userID ? baseDeDatos.obtienePorCondicionConInclude(entidadEdic, condiciones, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
@@ -41,11 +41,29 @@ module.exports = {
 		if (entidad == "colecciones" && original.capitulos)
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 
-		// Si es un capítulo y el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
-		if (entidad == "capitulos" && original.coleccion && userID) {
+		// Acciones si es un capítulo
+		if (entidad == "capitulos" && userID) {
+			// Variables
 			const condiciones = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
-			const edicColec = await BD_genericas.obtienePorCondicion("prodsEdicion", condiciones);
-			if (edicColec && edicColec.nombreCastellano) original.coleccion.nombreCastellano = edicColec.nombreCastellano;
+			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condiciones);
+			if (!edicColec) return [original, edicion];
+
+			// Si el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
+			if (original.coleccion && edicColec.nombreCastellano)
+				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
+
+			// Si es un producto, reemplaza los campos vacíos del original y la edición
+			if (familia == "producto") {
+				const camposEditables = [...variables.camposDD, ...variables.camposDA];
+				for (let campo of camposEditables) {
+					const {nombre} = campo;
+					if (
+						(edicColec[nombre] != null && original[nombre] == null && (!edicion || edicion[nombre] == null)) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
+						(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
+					)
+						edicion = {...edicion, [nombre]: edicColec[nombre]};
+				}
+			}
 		}
 
 		// Fin
@@ -61,7 +79,7 @@ module.exports = {
 		// Acciones si quedaron datos para actualizar
 		if (edicion) {
 			// Si existe el registro, lo actualiza
-			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
+			if (edicion.id) await baseDeDatos.actualizaPorId(entidadEdic, edicion.id, edicion);
 			// Si no existe el registro, lo agrega
 			else {
 				// campo_id, editadoPor_id
@@ -82,7 +100,7 @@ module.exports = {
 				if (entidad == "links") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
 
 				// Se agrega el registro
-				await BD_genericas.agregaRegistro(entidadEdic, edicion);
+				await baseDeDatos.agregaRegistro(entidadEdic, edicion);
 			}
 		}
 
@@ -102,7 +120,7 @@ module.exports = {
 			]; // no se incluye hacia 'inactivar_id', porque sería el único registro
 
 			// Obtiene el historial de status
-			let historialStatus = await BD_genericas.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
+			let historialStatus = await baseDeDatos.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
 			historialStatus = historialStatus
 				.map((n) => ({
 					...n,
@@ -210,7 +228,7 @@ module.exports = {
 
 			// Se fija si corresponde guardar el último registro en la BD
 			if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
-				await BD_genericas.agregaRegistro("histStatus", sigReg);
+				await baseDeDatos.agregaRegistro("histStatus", sigReg);
 
 			// Procesa el comentario
 			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
@@ -421,10 +439,10 @@ module.exports = {
 		const cond31 = campo == "epocaOcurrencia_id";
 		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
 		const novedad = {[campo]: edicion[campo]};
-		if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
 
 		// 3. Actualización condicional por valores
-		if (!cond1 && !cond21 && !cond31) await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
 		// Fin
 		return true;
@@ -438,7 +456,7 @@ module.exports = {
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condicion = {[campo_id]: id};
-		const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
+		const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
 
 		// Acciones si existen ediciones
 		if (ediciones.length) {
@@ -473,12 +491,12 @@ module.exports = {
 				statusSugeridoPor_id: usAutom_id,
 				statusSugeridoEn: ahora,
 			};
-		await BD_genericas.actualizaPorId(entidad, registro.id, datos);
+		await baseDeDatos.actualizaPorId(entidad, registro.id, datos);
 
 		// 2. Actualiza el campo 'prodAprob' en los links
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condicion = {[campo_id]: registro.id};
-		BD_genericas.actualizaTodosPorCondicion("links", condicion, {prodAprob: true});
+		baseDeDatos.actualizaTodosPorCondicion("links", condicion, {prodAprob: true});
 
 		// 3. Si es una colección, revisa si corresponde aprobar capítulos
 		if (entidad == "colecciones") await this.capsAprobs(registro.id);
@@ -500,7 +518,7 @@ module.exports = {
 		const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
 
 		// Obtiene los capitulos id
-		const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
 
 		// Actualiza el status de los capítulos
 		for (let capitulo of capitulos) {
@@ -517,7 +535,7 @@ module.exports = {
 			datos = errores.impideAprobado
 				? {...datosFijos, statusRegistro_id: creadoAprob_id}
 				: {...datosFijos, ...datosSugeridos, ...datosTerm};
-			espera.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+			espera.push(baseDeDatos.actualizaPorId("capitulos", capitulo.id, datos));
 		}
 
 		// Espera hasta que se revisen todos los capítulos
@@ -538,7 +556,7 @@ module.exports = {
 			// Actualiza prodAprob en sus links
 			if (registro.links && registro.links.length) {
 				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
-				await BD_genericas.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
+				await baseDeDatos.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
 			}
 
 			// Rutina por entidad RCLV
@@ -547,7 +565,7 @@ module.exports = {
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 				if (registro[campo_id] && registro[campo_id] != 1)
 					prodAprob
-						? BD_genericas.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
+						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
 						: comp.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
 			}
 		}
@@ -562,7 +580,7 @@ module.exports = {
 			// Actualiza el producto
 			await comp.linksEnProd({entidad: prodEntidad, id: prodID});
 			if (prodEntidad == "capitulos") {
-				const colID = await BD_genericas.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
+				const colID = await baseDeDatos.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
 				comp.linksEnColec(colID);
 			}
 		}
@@ -589,26 +607,26 @@ module.exports = {
 			}
 
 			// Acciones para las ediciones
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
+			const ediciones = await baseDeDatos.obtieneTodosPorCondicion(entidadEdic, condicion);
 			if (ediciones.length) {
 				// Elimina el archivo avatar de las ediciones
 				for (let edicion of ediciones)
 					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 				// Elimina las ediciones
-				await BD_genericas.eliminaTodosPorCondicion(entidadEdic, condicion);
+				await baseDeDatos.eliminaTodosPorCondicion(entidadEdic, condicion);
 			}
 
 			// Productos
 			if (familias == "productos") {
 				// Elimina los links
-				await BD_genericas.eliminaTodosPorCondicion("linksEdicion", condicion);
-				await BD_genericas.eliminaTodosPorCondicion("links", condicion);
+				await baseDeDatos.eliminaTodosPorCondicion("linksEdicion", condicion);
+				await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 
 				// Particularidades para colección
 				if (entidad == "colecciones") {
-					await BD_genericas.eliminaTodosPorCondicion("capitulos", {coleccion_id: id}); // elimina sus capítulos
-					await BD_genericas.eliminaTodosPorCondicion("capsSinLink", {coleccion_id: id}); // elimina su 'capSinLink'
+					await baseDeDatos.eliminaTodosPorCondicion("capitulos", {coleccion_id: id}); // elimina sus capítulos
+					await baseDeDatos.eliminaTodosPorCondicion("capsSinLink", {coleccion_id: id}); // elimina su 'capSinLink'
 				}
 			}
 
@@ -620,10 +638,10 @@ module.exports = {
 			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 
 			// Averigua si existen ediciones
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID});
+			const ediciones = await baseDeDatos.obtieneTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID});
 			if (ediciones.length) {
 				// Les borra el vínculo
-				await BD_genericas.actualizaTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
+				await baseDeDatos.actualizaTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
 
 				// Revisa si tiene que eliminar alguna edición - la rutina no necesita este resultado
 				FN.eliminaEdicionesVacias(ediciones, rclv_id);
@@ -643,7 +661,7 @@ module.exports = {
 			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
 				prodsPorEnts.push(
-					BD_genericas.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID}).then((n) =>
+					baseDeDatos.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID}).then((n) =>
 						n.map((m) => ({...m, [campo_id]: 1}))
 					)
 				);
@@ -654,7 +672,7 @@ module.exports = {
 			if (prods.length) {
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)
-					espera.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
+					espera.push(baseDeDatos.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
 				FN.siHayErroresBajaElStatus(prodsPorEnts);
@@ -695,7 +713,7 @@ module.exports = {
 	fichaDelUsuario: async (userID, petitFamilias) => {
 		// Variables
 		const ahora = comp.fechaHora.ahora();
-		const usuario = await BD_genericas.obtienePorId("usuarios", userID);
+		const usuario = await baseDeDatos.obtienePorId("usuarios", userID);
 		let bloque = [];
 
 		// Nombre
@@ -730,7 +748,7 @@ let FN = {
 			const prodID = edicion[campo_idProd];
 
 			// Obtiene el producto original
-			const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
+			const original = await baseDeDatos.obtienePorId(prodEntidad, prodID);
 
 			// Elimina la edición si está vacía
 			delete edicion[campo_idRCLV];
@@ -752,7 +770,7 @@ let FN = {
 					// Si hay errores, le cambia el status
 					const errores = await validaPR.consolidado({datos: {...original, entidad}});
 					if (errores.impideAprobado)
-						BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+						baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
 				}
 		});
 
@@ -812,7 +830,7 @@ let FN = {
 				statusFinal_id: [inactivar_id, inactivo_id],
 				comentario: {[Op.ne]: null},
 			};
-			let histStatus = await BD_genericas.obtieneTodosPorCondicion("histStatus", condiciones);
+			let histStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condiciones);
 			if (histStatus.length > 1)
 				histStatus.sort((a, b) => (a.statusFinalEn < b.statusFinalEn ? -1 : a.statusFinalEn > b.statusFinalEn ? 1 : 0));
 			if (histStatus.length) comentario = histStatus.slice(-1)[0].comentario;

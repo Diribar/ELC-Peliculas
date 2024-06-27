@@ -303,7 +303,7 @@ module.exports = {
 
 			// Guarda el registro original
 			const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
-			const registro = await BD_genericas.agregaRegistro(entidad, original);
+			const registro = await baseDeDatos.agregaRegistro(entidad, original);
 
 			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
@@ -411,7 +411,7 @@ module.exports = {
 						destino += "&temporada=" + IM.temporada;
 						if (IM.capitulo) {
 							const {coleccion_id, temporada, capitulo} = IM;
-							if (await BD_genericas.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})) {
+							if (await baseDeDatos.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})) {
 								IM.capitulo++;
 								destino += "&capitulo=" + IM.capitulo;
 							}
@@ -531,15 +531,15 @@ module.exports = {
 };
 let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	// Compara su temporada vs la cant. de temps. en la colección
-	const coleccion = await BD_genericas.obtienePorId("colecciones", datos.coleccion_id);
+	const coleccion = await baseDeDatos.obtienePorId("colecciones", datos.coleccion_id);
 	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))
-		await BD_genericas.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
+		await baseDeDatos.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
 
 	// Si no existe 'nombreCastellano', le asigna uno
 	if (!datos.nombreCastellano) datos.nombreCastellano = "Capítulo " + datos.capitulo;
 
 	// Guarda el registro original
-	const id = await BD_genericas.agregaRegistro("capitulos", datos).then((n) => n.id);
+	const id = await baseDeDatos.agregaRegistro("capitulos", datos).then((n) => n.id);
 
 	// Elimina todas las session y cookie del proceso AgregarProd
 	procesos.borraSessionCookies(req, res, "IM");

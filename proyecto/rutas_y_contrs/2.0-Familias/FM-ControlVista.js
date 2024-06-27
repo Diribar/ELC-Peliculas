@@ -27,7 +27,7 @@ module.exports = {
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidades.prods);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		let original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el subcodigo
 		const statusOriginal_id = original.statusRegistro_id;
@@ -117,7 +117,7 @@ module.exports = {
 			statusRegistro_id: statusFinal_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
-		await BD_genericas.actualizaPorId(entidad, id, datos);
+		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {
@@ -128,29 +128,29 @@ module.exports = {
 			comentario,
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
-		BD_genericas.agregaRegistro("histStatus", datosHist);
+		baseDeDatos.agregaRegistro("histStatus", datosHist);
 
 		// CONSECUENCIAS - Acciones si es un producto
 		if (familia == "producto") {
 			// 1. Actualiza en los links el campo 'prodAprob'
 			const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-			const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
+			const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
 			comp.prodAprobEnLink(links);
 
 			// 2. Acciones si es una colección
 			if (entidad == "colecciones") {
 				// 2.1. Actualiza sus capítulos con el mismo status
-				await BD_genericas.actualizaTodosPorCondicion(
+				await baseDeDatos.actualizaTodosPorCondicion(
 					"capitulos",
 					{coleccion_id: id},
 					{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 				);
 
 				// 2.2. Actualiza en los links de sus capítulos el campo 'prodAprob'
-				BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
+				baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
 					.then((n) => n.map((m) => m.id))
 					.then((ids) =>
-						BD_genericas.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo").then((links) =>
+						baseDeDatos.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo").then((links) =>
 							comp.prodAprobEnLink(links)
 						)
 					);
@@ -173,8 +173,8 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const original =
 			entidad == "colecciones"
-				? await BD_genericas.obtienePorIdConInclude("colecciones", id, "capitulos")
-				: await BD_genericas.obtienePorId(entidad, id);
+				? await baseDeDatos.obtienePorIdConInclude("colecciones", id, "capitulos")
+				: await baseDeDatos.obtienePorId(entidad, id);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
 
@@ -191,16 +191,16 @@ module.exports = {
 
 			// Borra el vínculo en los fechasDelAno
 			if (entidad == "epocasDelAno")
-				await BD_genericas.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
+				await baseDeDatos.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
 		}
 
 		// Elimina el registro
 		await Promise.all(espera);
-		await BD_genericas.eliminaPorId(entidad, id);
+		await baseDeDatos.eliminaPorId(entidad, id);
 
 		// Elimina registros vinculados
 		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
-		for (let tabla of tablas) BD_genericas.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
+		for (let tabla of tablas) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Actualiza solapamiento y la variable 'fechasDelAno'
 		if (entidad == "epocasDelAno") comp.actualizaSolapam();
@@ -263,7 +263,7 @@ let obtieneDatos = async (req) => {
 	const ahora = comp.fechaHora.ahora();
 	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 	const include = comp.obtieneTodosLosCamposInclude(entidad);
-	const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+	const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
 	const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 	// Fin

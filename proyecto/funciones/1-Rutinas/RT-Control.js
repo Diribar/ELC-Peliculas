@@ -159,7 +159,7 @@ module.exports = {
 	rutinasHorarias: {
 		ProdAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
-			const links = await BD_genericas.obtieneTodosConInclude("links", variables.entidades.asocProds);
+			const links = await baseDeDatos.obtieneTodosConInclude("links", variables.entidades.asocProds);
 
 			// Actualiza su valor
 			comp.prodAprobEnLink(links);
@@ -174,7 +174,7 @@ module.exports = {
 			// Rutina por peliculas y capitulos
 			for (let entidad of ["peliculas", "capitulos"]) {
 				// Obtiene los ID de los registros de la entidad
-				const IDs = await BD_genericas.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}).then((n) =>
+				const IDs = await baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}).then((n) =>
 					n.map((m) => m.id)
 				);
 
@@ -184,7 +184,7 @@ module.exports = {
 			await Promise.all(esperar);
 
 			// Rutina por colecciones
-			const IDs = await BD_genericas.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
+			const IDs = await baseDeDatos.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
 				n.map((m) => m.id)
 			);
 			for (let id of IDs) comp.linksEnColec(id);
@@ -199,7 +199,7 @@ module.exports = {
 			// Rutina por entidad
 			for (let entidad of entidadesRCLV) {
 				// Obtiene los ID de los registros de la entidad
-				let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 				// Rutina por ID: ejecuta la función prodsEnRCLV
 				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
@@ -221,7 +221,7 @@ module.exports = {
 
 			// Variables
 			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
-			const usuarios = await BD_genericas.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
+			const usuarios = await baseDeDatos.obtieneTodosPorCondicionConInclude("usuarios", {id: usuarios_id}, "pais");
 			const asunto = "Resultado de las sugerencias realizadas";
 			const ahora = new Date();
 			let mailsEnviados = [];
@@ -261,7 +261,7 @@ module.exports = {
 							if (n) {
 								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsHistStatus(regsStatus_user); // Borra los registros prescindibles
 								if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsHistEdics(regsEdic_user); // Borra los registros prescindibles
-								BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
+								baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
 								console.log("Mail enviado a " + email);
 							}
 							// Si el mail no fue enviado, lo avisa
@@ -283,7 +283,7 @@ module.exports = {
 			// Rastrilla las películas y colecciones
 			for (let entidad of ["peliculas", "colecciones"]) {
 				// Obtiene los productos
-				const productos = await BD_genericas.obtieneTodos(entidad);
+				const productos = await baseDeDatos.obtieneTodos(entidad);
 
 				// Rastrilla los productos
 				for (let producto of productos) {
@@ -292,7 +292,7 @@ module.exports = {
 						: null; // Para los demás, les limpia el campo azar
 
 					// Actualiza el campo en el registro
-					BD_genericas.actualizaPorId(entidad, producto.id, {azar});
+					baseDeDatos.actualizaPorId(entidad, producto.id, {azar});
 				}
 			}
 
@@ -368,8 +368,8 @@ module.exports = {
 			const cuerpoMail = procesos.mailDeFeedback.mensajeParaRevisores({regs, edics});
 
 			// Obtiene los usuarios revisorPERL y revisorLinks
-			let perl = BD_genericas.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
-			let links = BD_genericas.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
 			[perl, links] = await Promise.all([perl, links]);
 			const revisores = {perl, links};
 
@@ -392,13 +392,13 @@ module.exports = {
 			const hoy = new Date().toISOString().slice(0, 10);
 
 			// Logins diarios
-			const loginsDiarios = await BD_genericas.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
+			const loginsDiarios = await baseDeDatos.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
 			const fechaLoginsDiarios = loginsDiarios.length
 				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
 				: null;
 
 			// Logins acums
-			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 			let agregarFecha = loginsAcums.length // condición si hay logins acums
 				? sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
 				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
@@ -419,26 +419,26 @@ module.exports = {
 				const cantLogins = loginsDiarios.filter((n) => n.fecha == agregarFecha).length;
 
 				// Agrega la cantidad de logins
-				await BD_genericas.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
+				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
 				agregarFecha = sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
-			BD_genericas.eliminaTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
+			baseDeDatos.eliminaTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
 		},
 		RutinasEnUsuario: async () => {
 			// Lleva a cero el valor de algunos campos
-			await BD_genericas.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
+			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
 
 			// Elimina usuarios antiguos que no confirmaron su contraseña
 			const fechaDeCorte = new Date(new Date().getTime() - unDia);
 			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
-			await BD_genericas.eliminaTodosPorCondicion("usuarios", condicion);
+			await baseDeDatos.eliminaTodosPorCondicion("usuarios", condicion);
 
 			// Fin
 			return;
@@ -457,11 +457,11 @@ module.exports = {
 
 				// Descarga el avatar y actualiza el valor en el campo del registro original
 				descargas.push(
-					BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+					baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
 						n.map((m) => {
 							const nombre = Date.now() + path.extname(m.avatar);
 							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
-							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+							baseDeDatos.actualizaPorId(entidad, m.id, {avatar: nombre});
 						})
 					)
 				);
@@ -492,12 +492,12 @@ module.exports = {
 			// Actualiza los valores de ID
 			for (let tabla of tablas) {
 				// Variables
-				const registros = await BD_genericas.obtieneTodos(tabla);
+				const registros = await baseDeDatos.obtieneTodos(tabla);
 				let id = 1;
 
 				// Actualiza los IDs
 				for (let registro of registros) {
-					await BD_genericas.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
+					await baseDeDatos.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
 					id++;
 				}
 
@@ -510,19 +510,19 @@ module.exports = {
 		},
 		EliminaLinksInactivos: async () => {
 			const condicion = {statusRegistro_id: inactivo_id};
-			await BD_genericas.eliminaTodosPorCondicion("links", condicion);
+			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 			return;
 		},
 		EliminaCalifsSinPPP: async () => {
 			// Variables
-			const calRegistros = await BD_genericas.obtieneTodos("calRegistros");
-			const pppRegistros = await BD_genericas.obtieneTodos("pppRegistros");
+			const calRegistros = await baseDeDatos.obtieneTodos("calRegistros");
+			const pppRegistros = await baseDeDatos.obtieneTodos("pppRegistros");
 
 			// Si una calificación no tiene ppp, la elimina
 			for (let calRegistro of calRegistros) {
 				const {usuario_id, entidad, entidad_id} = calRegistro;
 				if (!pppRegistros.find((n) => n.usuario_id == usuario_id && n.entidad == entidad && n.entidad_id == entidad_id))
-					await BD_genericas.eliminaPorId("calRegistros", calRegistro.id);
+					await baseDeDatos.eliminaPorId("calRegistros", calRegistro.id);
 			}
 
 			// Fin
@@ -563,19 +563,19 @@ module.exports = {
 			let datos = [];
 
 			// Obtiene los registros por entidad
-			for (let entidad of entidades) datos.push(BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+			for (let entidad of entidades) datos.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
 			datos = await Promise.all(datos);
 			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array de arrays, los convierte en un objeto de arrays
 
 			// Elimina historial
 			for (let tabla of tablas) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const regsHistorial = await BD_genericas.obtieneTodos(tabla);
+				const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
 					if (!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id))
-						BD_genericas.eliminaPorId(tabla, regHistorial.id);
+						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
 			}
 
 			// Fin
@@ -590,7 +590,7 @@ module.exports = {
 			// Obtiene la frecuencia por país
 			for (let entidad of entidades) {
 				// Obtiene todos los registros de la entidad
-				await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion)
 					.then((n) => n.filter((m) => m.paises_id))
 					.then((n) =>
 						n.map((m) => {
@@ -603,7 +603,7 @@ module.exports = {
 			paises.forEach((pais, i) => {
 				const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
 				paises[i].cantProds = cantProds;
-				BD_genericas.actualizaPorId("paises", pais.id, {cantProds});
+				baseDeDatos.actualizaPorId("paises", pais.id, {cantProds});
 			});
 
 			// Fin
@@ -611,12 +611,12 @@ module.exports = {
 		},
 		LinksPorProv: async () => {
 			// Obtiene todos los links
-			const linksTotales = await BD_genericas.obtieneTodos("links");
+			const linksTotales = await baseDeDatos.obtieneTodos("links");
 
 			// Links por proveedor
 			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
 				let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				BD_genericas.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
+				baseDeDatos.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
 			}
 
 			// Fin
@@ -624,7 +624,7 @@ module.exports = {
 		},
 		LinksEnColes: async () => {
 			// Variables
-			const colecciones = await BD_genericas.obtieneTodos("colecciones");
+			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
 			// Rutina
 			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
@@ -641,7 +641,7 @@ module.exports = {
 		},
 		EliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
-			let misConsultas = await BD_genericas.obtieneTodos("misConsultas").then((n) => n.reverse());
+			let misConsultas = await baseDeDatos.obtieneTodos("misConsultas").then((n) => n.reverse());
 			const limite = 20;
 			while (misConsultas.length) {
 				// Obtiene los registros del primer usuario
@@ -651,7 +651,7 @@ module.exports = {
 				// Elimina los registros sobrantes en la BD
 				if (registros.length > limite) {
 					const idsBorrar = registros.map((n) => n.id).slice(limite);
-					BD_genericas.eliminaPorId("misConsultas", idsBorrar);
+					baseDeDatos.eliminaPorId("misConsultas", idsBorrar);
 				}
 
 				// Revisa las consultas de otro usuario
@@ -666,7 +666,7 @@ module.exports = {
 			const rclvs_id = variables.entidades.rclvs_id;
 
 			// Obtiene todas las colecciones
-			const colecciones = await BD_genericas.obtieneTodos("colecciones");
+			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
 			// Rutinas
 			for (let coleccion of colecciones) // Rutina por colección
@@ -677,7 +677,7 @@ module.exports = {
 						const objeto = {[rclv_id]: 1}; // En los casos que encuentra, convierte el rclv_id en 1
 
 						// Actualiza los capítulos que correspondan
-						BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, objeto);
+						baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, objeto);
 					}
 
 			// Fin
@@ -695,9 +695,9 @@ module.exports = {
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 				verificador.push(
-					BD_genericas.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
+					baseDeDatos.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
 						.then((n) =>
-							n.map((m) => BD_genericas.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null}))
+							n.map((m) => baseDeDatos.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null}))
 						)
 						.then(() => true)
 				);
@@ -709,13 +709,13 @@ module.exports = {
 		},
 		EliminaLoginsAcumsRepetidos: async () => {
 			// Variables
-			const loginsAcums = await BD_genericas.obtieneTodos("loginsAcums");
+			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 
 			// Elimina los loginsAcums repetidos
 			let registroAnterior;
 			for (let registro of loginsAcums) {
 				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					BD_genericas.eliminaPorId("loginsAcums", registro.id);
+					baseDeDatos.eliminaPorId("loginsAcums", registro.id);
 				registroAnterior = registro;
 			}
 
@@ -733,12 +733,12 @@ let actualizaLaEpocaDeEstreno = async () => {
 	// Rutina
 	for (let entidad of variables.entidades.prods) {
 		// Obtiene los productos
-		const productos = await BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+		const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
 
 		// Actualiza cada producto
 		for (let producto of productos) {
 			const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
-			BD_genericas.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+			baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
 		}
 	}
 
@@ -747,13 +747,13 @@ let actualizaLaEpocaDeEstreno = async () => {
 };
 let corrigeStatusColeccionEnCapitulo = async () => {
 	// Variables
-	const registros = await BD_genericas.obtieneTodosConInclude("capitulos", "coleccion");
+	const registros = await baseDeDatos.obtieneTodosConInclude("capitulos", "coleccion");
 
 	// Rutina por registro
 	for (let registro of registros) {
 		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
 		if (registro.statusColeccion_id != statusColeccion_id)
-			BD_genericas.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+			baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
 	}
 
 	// Fin
@@ -761,12 +761,12 @@ let corrigeStatusColeccionEnCapitulo = async () => {
 };
 let actualizaCategoriaLink = async () => {
 	// Variables
-	const links = await BD_genericas.obtieneTodos("links");
+	const links = await baseDeDatos.obtieneTodos("links");
 
 	// Actualiza todos los links
 	for (let link of links) {
 		const categoria_id = comp.linksVencPorSem.categoria_id(link);
-		await BD_genericas.actualizaPorId("links", link.id, {categoria_id});
+		await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
 	}
 
 	// Fin
@@ -774,10 +774,10 @@ let actualizaCategoriaLink = async () => {
 };
 let creaCapSinLink = async () => {
 	// Obtiene las colecciones
-	const colecciones = await BD_genericas.obtieneTodos("colecciones");
+	const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
 	// Rutina para agregar un registro
-	for (let coleccion of colecciones) BD_genericas.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
+	for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
 
 	// Fin
 	return;

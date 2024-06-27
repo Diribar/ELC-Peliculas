@@ -118,57 +118,57 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	global.BD_genericas = require("./funciones/2-Procesos/BaseDatos");
+	global.baseDeDatos = require("./funciones/2-Procesos/BaseDatos");
 	let datos = {
 		// Variables de usuario
-		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
-		rolesUs: BD_genericas.obtieneTodos("rolesUsuarios", "orden"),
+		statusRegistrosUs: baseDeDatos.obtieneTodos("statusRegistrosUs", "orden"),
+		rolesUs: baseDeDatos.obtieneTodos("rolesUsuarios", "orden"),
 
 		// Variable de entidades
-		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
-		generos: BD_genericas.obtieneTodos("generos", "orden"),
-		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
-		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
+		statusRegistros: baseDeDatos.obtieneTodos("statusRegistros", "orden"),
+		generos: baseDeDatos.obtieneTodos("generos", "orden"),
+		motivosStatus: baseDeDatos.obtieneTodos("motivosStatus", "orden"),
+		motivosEdics: baseDeDatos.obtieneTodos("motivosEdics", "orden"),
 
 		// Variables de productos
-		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
-		paises: BD_genericas.obtieneTodos("paises", "nombre"),
-		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
-		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
-		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
+		idiomas: baseDeDatos.obtieneTodos("idiomas", "nombre"),
+		paises: baseDeDatos.obtieneTodos("paises", "nombre"),
+		publicos: baseDeDatos.obtieneTodos("publicos", "orden"),
+		tiposActuacion: baseDeDatos.obtieneTodos("tiposActuacion", "orden"),
+		epocasEstreno: baseDeDatos.obtieneTodos("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
-		calCriterios: BD_genericas.obtieneTodos("calCriterios"),
-		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
-		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
-		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
+		calCriterios: baseDeDatos.obtieneTodos("calCriterios"),
+		feValores: baseDeDatos.obtieneTodos("feValores", "orden"),
+		entretiene: baseDeDatos.obtieneTodos("entretiene", "orden"),
+		calidadTecnica: baseDeDatos.obtieneTodos("calidadTecnica", "orden"),
 
 		// Variables de RCLVs
-		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
-		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
-		canons: BD_genericas.obtieneTodos("canons", "orden"),
-		hoyEstamos: BD_genericas.obtieneTodos("hoyEstamos").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
+		epocasOcurrencia: baseDeDatos.obtieneTodos("epocasOcurrencia", "orden"),
+		rolesIglesia: baseDeDatos.obtieneTodos("rolesIglesia", "orden"),
+		canons: baseDeDatos.obtieneTodos("canons", "orden"),
+		hoyEstamos: baseDeDatos.obtieneTodos("hoyEstamos").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
 
 		// Variables de links
-		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
-		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
-		linksCategs: BD_genericas.obtieneTodos("linksCategs"),
+		linksProvs: baseDeDatos.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
+		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
+		linksCategs: baseDeDatos.obtieneTodos("linksCategs"),
 
 		// Consultas
-		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
-		cn_layouts: BD_genericas.obtieneTodosConInclude("cn_layouts", "entidades")
+		cn_entidades: baseDeDatos.obtieneTodos("cn_entidades"),
+		cn_layouts: baseDeDatos.obtieneTodosConInclude("cn_layouts", "entidades")
 			.then((n) => n.filter((m) => m.activo))
 			.then((n) => n.sort((a, b) => a.orden - b.orden)),
-		pppOpcsArray: BD_genericas.obtieneTodos("pppOpciones"),
+		pppOpcsArray: baseDeDatos.obtieneTodos("pppOpciones"),
 
 		// Menús
-		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
-		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuCapacitac: baseDeDatos.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuUsuario: baseDeDatos.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
 
 		// Otros
-		meses: BD_genericas.obtieneTodos("meses"),
-		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
-		novedadesELC: BD_genericas.obtieneTodos("novedadesELC", "fecha"),
+		meses: baseDeDatos.obtieneTodos("meses"),
+		fechasDelAno: baseDeDatos.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
+		novedadesELC: baseDeDatos.obtieneTodos("novedadesELC", "fecha"),
 	};
 
 	// Procesa todas las lecturas
