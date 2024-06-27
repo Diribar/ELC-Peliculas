@@ -88,16 +88,6 @@ module.exports = {
 		return db[entidad].update(objeto, {where: condicion});
 	},
 
-	// USUARIOS ---------------------------------------------------------
-	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login
-	obtieneUsuarioPorMail: (email) => {
-		return db.usuarios
-			.findOne({
-				where: {email},
-				include: ["rolUsuario", "statusRegistro", "genero"],
-			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
 	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
 		// Variables

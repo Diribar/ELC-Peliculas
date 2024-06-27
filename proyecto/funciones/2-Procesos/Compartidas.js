@@ -977,6 +977,11 @@ module.exports = {
 		// Fin
 		return;
 	},
+	obtieneUsuarioPorMail: async (email) => {
+		const include = ["rolUsuario", "statusRegistro", "genero"];
+		const usuario = await baseDeDatos.obtieneTodosPorCondicionConInclude("usuarios", {email}, include);
+		return usuario;
+	},
 
 	// Varias
 	letras: {

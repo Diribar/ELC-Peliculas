@@ -4,7 +4,7 @@ const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
+	const usuario = await comp.obtieneUsuarioPorMail(req.session.usuario.email);
 	req.session.usuario = usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinPermInput);
 	let informacion;
