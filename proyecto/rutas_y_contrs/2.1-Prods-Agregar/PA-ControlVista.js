@@ -360,26 +360,22 @@ module.exports = {
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+		const origEdic = {...original, ...edicion, id: original.id};
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion);
-		imgDerPers = original.avatar ? imgDerPers.orig : imgDerPers.edic;
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Prepara variables para la vista
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const tituloImgDerPers = original.nombreCastellano
-			? original.nombreCastellano
-			: original.nombreOriginal
-			? original.nombreOriginal
-			: "";
+		const tituloImgDerPers = origEdic.nombreCastellano;
 		const agregaste = true;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, imagenMG, agregaste},
-			...{entidad, familia: "producto", id, dataEntry: original, entidadNombre, ruta: "/producto/"},
+			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},

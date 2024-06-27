@@ -9,12 +9,12 @@ module.exports = {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condicionEdic = {[campo_id]: entID, editadoPor_id: userID};
+		const condiciones = {[campo_id]: entID, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let includesOrig = "";
+		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
 
 		// Obtiene los campos include
-		let includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
+		let includesOrig = "";
 		if (!excluirInclude) {
 			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
@@ -24,12 +24,10 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
-		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic) : "";
+		let edicion = userID ? BD_genericas.obtienePorCondicionConInclude(entidadEdic, condiciones, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
-		if (includesOrig.includes("capitulos"))
-			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 
-		// Le quita los campos sin contenido
+		// Le quita al original los campos sin contenido
 		for (let prop in original) if (original[prop] === null) delete original[prop];
 
 		// Pule la edición
@@ -38,6 +36,17 @@ module.exports = {
 				? edicion
 				: await comp.puleEdicion(entidad, original, edicion) // El output puede ser 'null'
 			: {}; // Debe ser un objeto, porque más adelante se lo trata como tal
+
+		// Si es una colección, pule la cantidad de capítulos
+		if (entidad == "colecciones" && original.capitulos)
+			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
+
+		// Si es un capítulo y el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
+		if (entidad == "capitulos" && original.coleccion && userID) {
+			const condiciones = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
+			const edicColec = await BD_genericas.obtienePorCondicion("prodsEdicion", condiciones);
+			if (edicColec && edicColec.nombreCastellano) original.coleccion.nombreCastellano = edicColec.nombreCastellano;
+		}
 
 		// Fin
 		return [original, edicion];
