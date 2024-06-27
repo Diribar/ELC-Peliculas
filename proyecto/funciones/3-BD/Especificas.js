@@ -78,14 +78,5 @@ module.exports = {
 			return links;
 		},
 	},
-	// Revisar - Inactivo
-	actualizaLosProdsVinculadosNoAprobados: ({entidad, campo_id, id}) => {
-		// Variables
-		const condicion = {[campo_id]: id, statusRegistro_id: {[Op.ne]: aprobado_id}};
-		const objeto = {[campo_id]: 1};
-
-		// Fin
-		return db[entidad].update(objeto, {where: condicion});
-	},
 
 };

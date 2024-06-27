@@ -540,7 +540,7 @@ module.exports = {
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
-				BD_especificas.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
+				actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
 
 				// Obtiene los productos aprobados vinculados
 				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
@@ -1191,6 +1191,17 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 
 	// Rechazo - Elimina el archivo de edicion
 	else if (!aprob) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar/", avatarEdic);
+
+	// Fin
+	return;
+};
+let actualizaLosProdsVinculadosNoAprobados = async ({entidad, campo_id, id}) => {
+	// Variables
+	const condicion = {[campo_id]: id, statusRegistro_id: {[Op.ne]: aprobado_id}};
+	const datos = {[campo_id]: 1};
+
+	// Actualiza
+	await baseDeDatos.actualizaTodosPorCondicion(entidad, condicion, datos);
 
 	// Fin
 	return;
