@@ -5,7 +5,7 @@ const variables = require("../2-Procesos/Variables");
 
 module.exports = {
 	// Revisar - Tablero
-	TC: {
+	tablRevision: {
 		obtieneLinks: async () => {
 			// Variables
 			const include = variables.entidades.asocProds;
