@@ -5,7 +5,6 @@
         <option value="">Elegí un motivo</option>
         <% let grupoAnt %>
         <% for (let motivo of motivos) { %>
-            <% console.log(7,motivo.codigo , entidad); %>
             <% if (motivo.codigo && entidades.includes(motivo.codigo) && motivo.codigo != entidad) continue %>
             <% if (grupoAnt && motivo.grupo != grupoAnt) { %></optgroup><% } %>
             <% if (motivo.grupo != grupoAnt) { %><optgroup label="Motivos <%= motivo.grupo %>"><% } %>
