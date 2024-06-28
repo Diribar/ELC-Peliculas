@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Event listeners - cambios en el formulario
-	if (!DOM.selectMotivo)
+	if (DOM.selectMotivo)
 		DOM.form.addEventListener("change", async () => {
 			if (!DOM.selectMotivo.value) return;
 			// Obtiene el detalle del motivo
