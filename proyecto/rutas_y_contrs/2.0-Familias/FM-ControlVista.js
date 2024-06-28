@@ -88,12 +88,14 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 		const entidades = variables.entidades[petitFamilias];
+		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familia, historialStatus, urlActual, registro: original, entidades},
-			...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
+			...{entidad, entidadNombre, familia, id, registro: original, historialStatus},
+			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
+			...{entidades, entsNombre, motivos, urlActual},
 			cartelGenerico: true,
 		});
 	},
