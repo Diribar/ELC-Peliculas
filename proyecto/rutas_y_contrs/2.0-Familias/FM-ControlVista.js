@@ -59,7 +59,6 @@ module.exports = {
 		const {titulo,entidadNombre} = procesos.titulo({entidad, codigo});
 
 		// Render del formulario
-		console.log("OK");
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, entidadNombre, familia, id, registro: original, historialStatus},
