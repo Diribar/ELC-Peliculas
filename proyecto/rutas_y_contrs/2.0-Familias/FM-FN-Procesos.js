@@ -10,10 +10,10 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condEdic = {[campo_id]: entID, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
+		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : null;
 
 		// Obtiene los campos include
-		let includesOrig = "";
+		let includesOrig;
 		if (!excluirInclude) {
 			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
@@ -462,53 +462,6 @@ module.exports = {
 		// Fin
 		return true;
 	},
-	accionesPorCambioDeStatus: async (entidad, registro) => {
-		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-
-		// prodsEnRCLV
-		if (familias == "productos") {
-			// Variables
-			const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
-
-			// Actualiza prodAprob en sus links
-			if (registro.links && registro.links.length) {
-				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
-				await baseDeDatos.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
-			}
-
-			// Rutina por entidad RCLV
-			const entidadesRCLV = variables.entidades.rclvs;
-			for (let entidadRCLV of entidadesRCLV) {
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
-				if (registro[campo_id] && registro[campo_id] != 1)
-					prodAprob
-						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-						: comp.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
-			}
-		}
-
-		// linksEnProds
-		if (familias == "links") {
-			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
-			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
-			const prodID = registro[campo_id];
-
-			// Actualiza el producto
-			await comp.linksEnProd({entidad: prodEntidad, id: prodID});
-			if (prodEntidad == "capitulos") {
-				const colID = await baseDeDatos.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
-				comp.linksEnColec(colID);
-			}
-		}
-
-		// Actualiza la variable de links vencidos
-		await comp.linksVencPorSem.actualizaLVPS();
-
-		// Fin
-		return;
-	},
 	elimina: {
 		demasEdiciones: async ({entidad, original, id}) => {
 			// Revisa cada registro de edición y decide si corresponde:
@@ -531,7 +484,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-			dependientes: async (entidad, id, original) => {
+		dependientes: async (entidad, id, original) => {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);

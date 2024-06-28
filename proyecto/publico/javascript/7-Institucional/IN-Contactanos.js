@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
 		textArea: document.querySelector(".inputError textarea.input"),
-		pendiente: document.querySelector(".inputError #pendiente"),
+		pendiente: document.querySelector(".inputError #contador"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),

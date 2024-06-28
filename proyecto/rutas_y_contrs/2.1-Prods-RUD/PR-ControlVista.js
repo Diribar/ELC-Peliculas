@@ -54,9 +54,9 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") {
 			prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			prodComb.colecAprob = baseDeDatos.obtienePorId("capitulos", id, "coleccion").then((n) =>
-				aprobados_ids.includes(n.coleccion.statusRegistro_id)
-			);
+			prodComb.colecAprob = baseDeDatos
+				.obtienePorId("capitulos", id, "coleccion")
+				.then((n) => aprobados_ids.includes(n.coleccion.statusRegistro_id));
 		}
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts, origen});
 		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
@@ -203,24 +203,17 @@ module.exports = {
 
 						// Rutina por campo - sin 'await' y solo para los campos editados
 						for (let prop in req.body)
-							if (original[prop] != req.body[prop])
-								esperar.push(procsFM.transfiereDatos(original, req.body, prop));
+							if (original[prop] != req.body[prop]) esperar.push(procsFM.transfiereDatos(original, req.body, prop));
 
 						// Espera a que se corran todos los campos
 						await Promise.all(esperar);
 					}
 
-					// Elimina otras ediciones que tengan los mismos valores
-					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id});
-
-					// Se fija si corresponde cambiar el status
-					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb});
-
-					// Espera a que se completen las funciones con 'Promise'
+					// Varias
+					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
+					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb}); // Se fija si corresponde cambiar el status
 					await Promise.all([statusAprob, edicsEliminadas]);
-
-					// Limpia el valor de la edicion, para que no se recargue el url
-					edicion = null;
+					edicion = null; // Limpia el valor de la edicion, para que no se recargue el url
 				}
 				// De lo contrario, actualiza la edicion
 				else {

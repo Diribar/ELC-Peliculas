@@ -1,9 +1,24 @@
 /* Datos Largos */
 #datos #datosLargos {
-	#recuadroDL #informacion {
-		ul {
-			padding-right: 10px; max-width: 260px;
-			li {margin-top: 3px;}
+	#recuadroDL {
+		#encabezado #colCap button {background-color: inherit; border: none;}
+		#contenido #informacion {
+			justify-content: center;
+			#motivos {
+				align-items: flex-start; width: 240px;
+				select, input {border-radius: 7px;}
+				& > select {max-width: 100%;}
+				h3 {margin-bottom: 3px;}
+				#sectorDuplicado {
+					margin-top: 15px;
+					h3 {font-size: 1rem;}
+					input[name="idDuplicado"] {
+						margin-left: 10px; width: 50px; text-align: center; border: 1px solid var(--gris-oscuro);
+						&::placeholder {color: inherit;}
+					}
+					#resultadoDuplicado {margin-top: 5px; max-width: 100%; flex-wrap: wrap;}
+				}
+			}
 		}
 	}
 }

@@ -28,11 +28,9 @@
 	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Hover - scale */
-:where(#cuerpo a:has(i, img), .iconos :is(button, i), #iconosCartel a, .scale, .scaleCh) {
-	transition: 300ms;
-	&:hover {scale: 1.3;}
-}
-.scaleCh:hover {scale: 1.1}
+:where(#cuerpo a:has(i, img), .iconos :is(button, i), #iconosCartel a, .scale, .scaleCh, a button) {transition: 300ms;}
+:where(a button, .scaleCh):hover {scale: 1.1}
+:where(#cuerpo a:has(i, img), .iconos :is(button, i), #iconosCartel a, .scale):hover {scale: 1.3;}
 
 .iconos button:has(.inactivoVersion, .inactivo):hover {scale: 1;}
 .iconos :is(i.inactivoVersion, i.inactivo, button i):hover {scale: 1;}

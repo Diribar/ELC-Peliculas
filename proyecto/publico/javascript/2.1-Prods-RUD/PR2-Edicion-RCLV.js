@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodID=" + prodID + "&origen=EDP";
 
 	// Variables para guardar los datos
-	const rutaRQ = "/producto/api/envia-a-req-session/";
+	const rutaSession = "/producto/api/envia-a-req-session/";
 
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}
 		// Guardar los valores en session
-		fetch(rutaRQ + objeto); // Guarda el Data-Entry en session
+		fetch(rutaSession + objeto); // Guarda el Data-Entry en session
 		// Fin
 		return;
 	};

@@ -686,9 +686,6 @@ module.exports = {
 		RCLVsSinEpocaPSTyConAno: async () => {
 			// Variables
 			const entidades = ["personajes", "hechos"];
-			let verificador = [];
-
-			// Establece la condición
 			const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
 
 			// Busca

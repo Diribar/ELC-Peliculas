@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let form = document.querySelector("#datosLargos #recuadroDL form");
 	let comentario = document.querySelector("#comentario textarea");
-	let pendiente = document.querySelector("#comentario #pendiente");
+	let contador = document.querySelector("#comentario #contador");
 	let desaprueba = document.querySelector("#sectorIconos label[for='desaprueba']");
 
 	// Botón submit
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		if (comentario.value) comentario.value = comentario.value.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "").slice(0, 100);
 
 		// Actualiza el contador
-		pendiente.innerHTML = 100 - comentario.value.length;
+		contador.innerHTML = 100 - comentario.value.length;
 
 		// Actualiza el botón desaprobar
 		botonDesaprobar();

@@ -35,3 +35,9 @@ a {text-decoration: none;}
 /* Cursor pointer */
 a[href], label[for], input[type="radio"], input[type="checkbox"] {cursor: pointer;}
 a[href] *, label[for] * {cursor: pointer;}
+
+/* Quitar flechas del input */
+input[type=number] {
+	&::-webkit-outer-spin-button, &::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
+	-moz-appearance: textfield; /* Firefox */
+}

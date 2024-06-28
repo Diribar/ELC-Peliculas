@@ -7,12 +7,13 @@
 		margin-bottom: 20px;
 		#comentario {
 			margin-left: 15px;
+			&:has(textarea:read-only) {display: none;}
 			h3 {
 				margin-bottom: 3px;
 				span {font-weight: normal; font-size: 1rem;}
 			}
 			textarea {
-				padding: 10px; border-radius: 8px; resize: none; height: 80px; width: 250px;
+				padding: 10px; border-radius: 8px; resize: none; height: 100px; width: 250px;
 				background: snow; color: var(--gris-mas-oscuro);
 			}
 			textarea:read-only {background: var(--gris-intermedio);}
