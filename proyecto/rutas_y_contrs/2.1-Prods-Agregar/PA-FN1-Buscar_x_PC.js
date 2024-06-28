@@ -1,8 +1,8 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procesos = require("./PA-FN4-Procesos");
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
@@ -497,7 +497,7 @@ let FN = {
 		// Recorre los capítulos ELC y si algún capítulo no existe en TMDB y está inactivo en ELC, lo elimina
 		for (let capituloELC of capitulosELC)
 			if (!coleccion.TMDB_ids_vTMDB.includes(capituloELC.TMDB_id) && capituloELC.statusRegistro_id == inactivo_id) {
-				await procsCRUD.eliminar.eliminaDependientes("capitulos", capituloELC.id, capituloELC);
+				await procsFM.elimina.dependientes("capitulos", capituloELC.id, capituloELC);
 				baseDeDatos.eliminaPorId("capitulos", capituloELC.id);
 			}
 

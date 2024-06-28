@@ -1,6 +1,5 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
 const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
@@ -12,138 +11,6 @@ module.exports = {
 		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
-	},
-	// ControllerAPI (validaDatosDuros_input)
-	// ControllerVista (DD - Form y Grabar)
-	datosDuros: async (campos, datos) => {
-		// Variables
-		let errores = {};
-		if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
-		const cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
-		const cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
-		const camposPosibles = [
-			{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "guion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "musica", tipoIdioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-			{nombre: "produccion", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "actores", tipoIdioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
-			{nombre: "sinopsis", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 11, largo: 1004},
-		];
-		// Campos individuales estándar
-		for (let campo of camposPosibles) {
-			const nombre = campo.nombre;
-			const tipoIdioma = campo.tipoIdioma;
-			if (campos.includes(nombre)) {
-				// Variables
-				const dato = datos[nombre];
-				let respuesta = "";
-				// Validaciones
-				if (datos[nombre]) {
-					if (!respuesta) respuesta = comp.validacs.longitud(dato, campo.corto, campo.largo);
-					if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
-					if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
-				} else respuesta = variables.inputVacio;
-
-				// Fin
-				errores[nombre] = respuesta;
-			}
-		}
-
-		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
-		if (campos.includes("anoEstreno"))
-			errores.anoEstreno = !datos.anoEstreno
-				? variables.inputVacio
-				: formatoAno(datos.anoEstreno)
-				? "Debe ser un número de 4 dígitos"
-				: datos.anoEstreno < 1900
-				? "El año debe ser mayor a 1900"
-				: datos.anoEstreno > new Date().getFullYear()
-				? "El número no puede superar al año actual"
-				: "";
-		if (campos.includes("anoFin"))
-			errores.anoFin = !datos.anoFin
-				? variables.inputVacio
-				: formatoAno(datos.anoFin)
-				? "Debe ser un número de 4 dígitos"
-				: datos.anoFin < 1900
-				? "El año debe ser mayor a 1900"
-				: datos.anoFin > new Date().getFullYear()
-				? "El número no puede superar al año actual"
-				: "";
-		if (campos.includes("duracion"))
-			errores.duracion = !datos.duracion
-				? variables.inputVacio
-				: formatoNumero(datos.duracion, 20)
-				? formatoNumero(datos.duracion, 20)
-				: datos.duracion > 600
-				? "Debe ser un número menor"
-				: "";
-		if (campos.includes("paises_id"))
-			errores.paises_id = !datos.paises_id
-				? variables.inputVacio
-				: datos.paises_id.length > 2 * 1 + 3 * 4
-				? "Se aceptan hasta 4 países."
-				: "";
-		if (campos.includes("idiomaOriginal_id"))
-			errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
-
-		// Personas
-		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
-
-		// ***** CAMPOS COMBINADOS *******
-		// Año de Estreno y Año Fin
-		if (datos.anoEstreno && !errores.anoEstreno && datos.anoFin && !errores.anoFin && datos.anoEstreno > datos.anoFin) {
-			errores.anoEstreno = "El año de estreno debe ser menor o igual que el año de finalización";
-		}
-		// Nombre Original y Año de Estreno
-		if (datos.nombreOriginal && !errores.nombreOriginal && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
-			let id = await procsCRUD.validaRepetidos(["nombreOriginal", "anoEstreno"], datos);
-			if (id) errores.nombreOriginal = comp.validacs.cartelRepetido({...datos, id});
-		}
-		// Nombre Castellano y Año de Estreno
-		if (datos.nombreCastellano && !errores.nombreCastellano && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
-			let id = await procsCRUD.validaRepetidos(["nombreCastellano", "anoEstreno"], datos);
-			if (id) errores.nombreCastellano = comp.validacs.cartelRepetido({...datos, id});
-		}
-		// Actores y Tipo de Actuación
-		if (datos.tipoActuacion_id && !errores.actores) {
-			errores.actores =
-				datos.tipoActuacion_id == anime_id && datos.actores != "Dibujos Animados"
-					? 'Debe decir "Dibujos Animados"'
-					: datos.tipoActuacion_id == documental_id && datos.actores != "Documental"
-					? 'Debe decir "Documental"'
-					: datos.tipoActuacion_id == actuada_id && ["Dibujos Animados", "Documental"].includes(datos.actores)
-					? "Deben figurar los nombres de los actores y actrices"
-					: "";
-		}
-
-		// ***** RESUMEN *******
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
-	},
-	// ControllerAPI (validaDatosAdics)
-	datosAdics: (campos, datos) => {
-		// Definir variables
-		let errores = {};
-		let camposPosibles = ["cfc", "bhr", "tipoActuacion_id"];
-		// Datos generales
-		for (let campo of camposPosibles)
-			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
-
-		// RCLVs
-		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
-		if (campos.some((n) => rclvs_id.includes(n)))
-			errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
-				? variables.rclvSinElegir
-				: "";
-
-		// Consolida la información
-		errores.hay = Object.values(errores).some((n) => !!n);
-
-		// Fin
 		return errores;
 	},
 	// ControllerAPI (validaIngresoFA)
@@ -194,12 +61,3 @@ module.exports = {
 	},
 };
 
-// Variables **************************
-let formatoAno = (dato) => {
-	let formato = /^\d{4}$/;
-	return !formato.test(dato);
-};
-let formatoNumero = (dato, minimo) => {
-	let formato = /^\d+$/;
-	return !formato.test(dato) ? "Debe ser un número" : dato < minimo ? "Debe ser un número mayor a " + minimo : "";
-};

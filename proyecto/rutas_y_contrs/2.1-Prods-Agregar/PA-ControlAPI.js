@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const buscar_x_PC = require("./PA-FN1-Buscar_x_PC");
 const procsDesamb = require("./PA-FN2-Desambiguar");
 const valida = require("./PA-FN3-Validar");
@@ -131,7 +132,7 @@ module.exports = {
 			// Averigua si falta completar algún campo de Datos Duros
 			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 			let camposNombre = camposDD.map((n) => n.nombre);
-			let errores = await valida.datosDuros(camposNombre, datosDuros);
+			let errores = await validacsFM.validacs.datosDuros(camposNombre, datosDuros);
 
 			// Genera la session y cookie para DatosDuros
 			req.session.datosDuros = datosDuros;
@@ -156,7 +157,7 @@ module.exports = {
 		const campos = Object.keys(datos);
 
 		// Averigua los errores solamente para esos campos
-		let errores = await valida.datosDuros(campos, datos);
+		let errores = await validacsFM.validacs.datosDuros(campos, datos);
 
 		// Devuelve el resultado
 		return res.json(errores);
@@ -174,7 +175,7 @@ module.exports = {
 	validaDatosAdics: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		let errores = await valida.datosAdics(campos, req.query);
+		let errores = await validacsFM.validacs.datosAdics(campos, req.query);
 		return res.json(errores);
 	},
 	guardaDatosAdics: (req, res) => {
