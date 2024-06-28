@@ -27,14 +27,10 @@ window.addEventListener("load", async () => {
 	};
 	let botonSubmit = () => {
 		// Variables
-		const checked = document.querySelector("#motivos input:checked");
-		const comentNeces = checked && motivosConComentario_id.includes(Number(checked.id));
+		const comentNeces = !DOM.comentario.readOnly;
 
-		(DOM.inputs.length &&
-			checked && // hay inputs y alguno está chequeado
-			((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || // el motivo requiere comentario y lo tiene
-				(!comentNeces && !DOM.comentario.value))) || // el motivo no requiere comentario y no lo tiene
-		!DOM.inputs.length // no hay inputs a chequear (para sacar de inactivar o recuperar)
+		((DOM.selectMotivo && DOM.selectMotivo.value) || !DOM.selectMotivo) && // existe el select y se eligió un valor o no existe el select
+		((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || !comentNeces) // se necesita un comentario y lo tiene o no se necesita un comentario
 			? DOM.submit.classList.remove("inactivo")
 			: DOM.submit.classList.add("inactivo");
 
@@ -46,7 +42,7 @@ window.addEventListener("load", async () => {
 	if (DOM.selectMotivo)
 		DOM.selectMotivo.addEventListener("change", async () => {
 			// Obtiene el detalle del motivo
-			const motivoBD = motivosStatus.find((n) => n.id == motivo.value);
+			const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
 
 			// Completa el comentario
 			DOM.comentario.readOnly = !motivoBD.agregarComent;
