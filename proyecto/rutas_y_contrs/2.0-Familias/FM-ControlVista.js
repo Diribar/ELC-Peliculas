@@ -178,15 +178,15 @@ module.exports = {
 		let espera = [];
 
 		// Elimina sus archivos avatar y ediciones, y si es un producto, también sus links y capítulos
-		espera.push(procesos.eliminar.eliminaDependientes(entidad, id, original));
+		espera.push(procesos.elimina.dependientes(entidad, id, original));
 
 		// Acciones si es un RCLV
 		if (familia == "rclv") {
 			// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-			espera.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
+			espera.push(procesos.elimina.vinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
 
 			// Borra el vínculo en los productos y les cambia el status si corresponde
-			espera.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
+			espera.push(procesos.elimina.vinculoProds({entidadRCLV: entidad, rclvID: id}));
 
 			// Borra el vínculo en los fechasDelAno
 			if (entidad == "epocasDelAno")

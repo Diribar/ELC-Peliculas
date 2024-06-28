@@ -530,8 +530,8 @@ module.exports = {
 		// Fin
 		return;
 	},
-	eliminar: {
-		eliminaDependientes: async (entidad, id, original) => {
+	elimina: {
+		dependientes: async (entidad, id, original) => {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -572,7 +572,7 @@ module.exports = {
 			// Fin
 			return true;
 		},
-		borraVinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
+		vinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
 			// Variables
 			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 
@@ -589,7 +589,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		borraVinculoProds: async ({entidadRCLV, rclvID}) => {
+		vinculoProds: async ({entidadRCLV, rclvID}) => {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
