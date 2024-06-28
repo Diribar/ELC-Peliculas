@@ -18,14 +18,14 @@
         <h3>Datos del otro producto</h4>
         <div class="flexRow">
             <select name="entidad">
-                <option value="">Elegí una entidad</option>
-                <% for (let ent of entidades) { %>
-                    <option value="ent"><%= ent %></option>
-                <% } %>
+                <option value="">Entidad</option>
+                <% entsNombre.forEach((entNombre,i) => { %>
+                    <option value="<%= entidades[i] %>"><%= entNombre %></option>
+                <% }) %>
             </select>
             <input name="idDuplicado" type="number" placeholder="id">
         </div>
-        <div id="resultadoDuplicado">Resultado</div>
+        <div id="resultadoDuplicado">Resultado Resultado Resultado Resultado Resultado Resultado Resultado Resultado </div>
     </div>
 </section>
 <%- include("FM1-Comentario") %>
