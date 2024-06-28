@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
-const procesos = require("./FM-Procesos");
+const procesos = require("./FM-FN-Procesos");
 
 module.exports = {
 	inacRecupElim_form: async (req, res) => {
