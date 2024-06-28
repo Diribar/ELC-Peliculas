@@ -8,54 +8,55 @@ window.addEventListener("load", async () => {
 
 		// Motivo
 		selectMotivo: document.querySelector("#motivos select[name='motivo_id']"),
-		selectEntidad: document.querySelector("#motivos select[name='entidad']"),
-		inputId: document.querySelector("#motivos input[name='idDuplicado']"),
+		sectorDuplicado:document.querySelector("#motivos #sectorDuplicado"),
+		selectEntidad: document.querySelector("#motivos #sectorDuplicado select[name='entidad']"),
+		inputId: document.querySelector("#motivos #sectorDuplicado input[name='idDuplicado']"),
 
 		// Comentario
 		comentario: document.querySelector("#comentario textarea"),
-		pendiente: document.querySelector("#comentario #pendiente"),
+		contador: document.querySelector("#comentario #contador"),
 	};
 	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const motivosStatus = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
-	const motivosConComentario_id = motivosStatus.filter((n) => n.agregarComent).map((n) => n.id);
 
 	// Funciones
-	let contador = () => {
-		DOM.pendiente.innerHTML = 100 - DOM.comentario.value.length;
-		return;
-	};
-	let botonSubmit = () => {
-		// Variables
-		const checked = document.querySelector("#motivos input:checked");
-		const comentNeces = checked && motivosConComentario_id.includes(Number(checked.id));
+	let FN = {
+		botonSubmit: () => {
+			// Variables
+			const comentNeces = !DOM.comentario.readOnly;
 
-		(DOM.inputs.length &&
-			checked && // hay inputs y alguno está chequeado
-			((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || // el motivo requiere comentario y lo tiene
-				(!comentNeces && !DOM.comentario.value))) || // el motivo no requiere comentario y no lo tiene
-		!DOM.inputs.length // no hay inputs a chequear (para sacar de inactivar o recuperar)
-			? DOM.submit.classList.remove("inactivo")
-			: DOM.submit.classList.add("inactivo");
+			((DOM.selectMotivo && DOM.selectMotivo.value) || !DOM.selectMotivo) && // existe el select y se eligió un valor o no existe el select
+			((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || !comentNeces) // se necesita un comentario y lo tiene o no se necesita un comentario
+				? DOM.submit.classList.remove("inactivo")
+				: DOM.submit.classList.add("inactivo");
 
-		// Fin
-		return;
+			// Fin
+			return;
+		},
+		contador: () => {
+			DOM.contador.innerHTML = 100 - DOM.comentario.value.length;
+			return;
+		},
 	};
 
 	// Event listeners - cambia el motivo
 	if (DOM.selectMotivo)
 		DOM.selectMotivo.addEventListener("change", async () => {
 			// Obtiene el detalle del motivo
-			const motivoBD = motivosStatus.find((n) => n.id == motivo.value);
+			const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
 
-			// Completa el comentario
+			// Muestra u oculta el 'sectorDuplicado'
+			motivoBD.codigo=="duplicado"
+			?
+			:
+
+			// Muestra u oculta el 'comentario'
 			DOM.comentario.readOnly = !motivoBD.agregarComent;
-			DOM.comentario.placeholder = motivoBD.agregarComent ? "Agregá un comentario" : "";
 			if (motivoBD.agregarComent) DOM.comentario.focus();
 
-			// Actualiza el contador y el botón submit
-			contador();
-			botonSubmit();
+			// Actualiza el botón submit
+			FN.botonSubmit();
 		});
 	DOM.comentario.addEventListener("keypress", (e) => {
 		keyPressed(e);
@@ -66,8 +67,8 @@ window.addEventListener("load", async () => {
 		amplio.restringeCaracteres(e);
 
 		// Actualiza el contador y el botón submit
-		contador();
-		botonSubmit();
+		FN.contador();
+		FN.botonSubmit();
 
 		// Fin
 		return;
