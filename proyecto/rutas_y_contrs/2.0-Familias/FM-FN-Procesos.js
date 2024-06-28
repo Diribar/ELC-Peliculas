@@ -4,7 +4,7 @@ const validacsFM = require("./FM-FN-Validar");
 // Exportar ------------------------------------
 module.exports = {
 	// CRUD
-	obtieneOriginalEdicion: async ({entidad, entID, userID, edicID, excluirInclude, omitirPulirEdic}) => {
+	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -23,11 +23,7 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = baseDeDatos.obtienePorId(entidad, entID, includesOrig);
-		let edicion = userID
-			? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic)
-			: edicID
-			? baseDeDatos.obtienePorId(entidadEdic, edicID, includesEdic)
-			: null;
+		let edicion = userID ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
