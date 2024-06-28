@@ -338,14 +338,23 @@ module.exports = {
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
 
+			// Obtiene los include
+			const includeEdic = comp.obtieneTodosLosCamposInclude(entidad);
+			let includeOrig = [...includeEdic, "statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor"];
+			if (entidad == "capitulos") includeOrig.push("coleccion");
+			if (entidad == "colecciones") includeOrig.push("capitulos");
+			if (familia == "rclv") includeOrig.push(...variables.entidades.prods);
+
 			// Obtiene los registros
-			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, edicID});
-			// return res.send({original, edicion})
+			let original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
+			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID, includeEdic);
+			//return res.send({original, edicion})
 
 			// Si el avatar está presente en la edición, muestra esa vista
 			if (edicion.avatar) {
@@ -393,7 +402,7 @@ module.exports = {
 				baseDeDatos.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
 			}
 
-			// Variables
+			// Más variables
 			const prodsDelRCLV = familia == "rclv" ? await procsRCLV.detalle.prodsDelRCLV(original, userID) : null;
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
