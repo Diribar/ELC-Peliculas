@@ -5,7 +5,7 @@ const procesos = require("./FM-FN-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {
-	inactivarRechazar_form: async (req, res) => {
+	motivosForm: async (req, res) => {
 		// Tema
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
@@ -67,7 +67,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	inacRecupElim_form: async (req, res) => {
+	historialForm: async (req, res) => {
 		// Tema
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";

@@ -39,15 +39,15 @@ router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.motivosStatus);
 
 // Vistas - CRUD: Inactivar
-router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.inactivarRechazar_form);
+router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.motivosForm);
 router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup_guardar);
 
 // Vistas - CRUD: Recuperar
-router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
+router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecup_guardar);
 
 // Vistas -  CRUD: Eliminar
-router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.inacRecupElim_form);
+router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.historialForm);
 router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.elimina_guardar);
 
 // Vistas -  CRUD: Eliminado
@@ -55,8 +55,8 @@ router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_g
 router.get("/:familia/eliminado", vista.eliminado_form);
 
 // Vistas - Revisión: Rechazo
-router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.inactivarRechazar_form);
-router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.inacRecupElim_form);
+router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.motivosForm);
+router.get("/revision/:familia/inactivar-o-recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 
 // Fin
 module.exports = router;
