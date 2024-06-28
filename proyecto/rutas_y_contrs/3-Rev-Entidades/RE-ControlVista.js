@@ -65,7 +65,9 @@ module.exports = {
 		// Productos
 		let prods = procesos.tablManten.obtieneProds(userID).then((n) => procesos.procesaCampos.prods(n));
 		let rclvs = procesos.tablManten.obtieneRCLVs(userID).then((n) => procesos.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.tablManten.obtieneLinksInactivos(userID).then((n) => procesos.procesaCampos.prods(n));
+		let prodsConLinksInactivos = procesos.tablManten
+			.obtieneLinksInactivos(userID)
+			.then((n) => procesos.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
@@ -336,31 +338,16 @@ module.exports = {
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
 			const userID = req.session.usuario.id;
-			let avatarExterno, avatarsExternosPelis, avatar, imgDerPers, edicionAvatar, canonNombre;
-			let ingresos, reemplazos, bloqueDer, motivos, prodsDelRCLV, titulo, ayudasTitulo;
 
-			// Obtiene la versión original con include
-			let include = [
-				...comp.obtieneTodosLosCamposInclude(entidad),
-				"statusRegistro",
-				"creadoPor",
-				"statusSugeridoPor",
-				"altaRevisadaPor",
-			];
-			if (entidad == "capitulos") include.push("coleccion");
-			if (entidad == "colecciones") include.push("capitulos");
-			if (familia == "rclv") include.push(...variables.entidades.prods);
-			let original = await baseDeDatos.obtienePorId(entidad, id, include);
+			// Obtiene los registros
+			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, edicID});
+			// return res.send({original, edicion})
 
-			// Obtiene la edición
-			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID);
-
-			// Acciones si el avatar está presente en la edición
+			// Si el avatar está presente en la edición, muestra esa vista
 			if (edicion.avatar) {
 				// Averigua si se debe reemplazar el avatar en forma automática
 				const reemplAvatarAutomaticam =
@@ -378,64 +365,67 @@ module.exports = {
 
 				// Reemplazo manual - Variables
 				codigo += "/avatar";
-				edicionAvatar = true;
-				avatar = procsFM.obtieneAvatar(original, edicion);
-				motivos = motivosEdics.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.orig.includes("/Externa/");
-				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
-				avatarsExternosPelis = variables.avatarsExternosPelis(nombre);
-				titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
+				const avatar = procsFM.obtieneAvatar(original, edicion);
+				const motivos = motivosEdics.filter((m) => m.avatar_prods);
+				const avatarExterno = !avatar.orig.includes("/Externa/");
+				const nombre = original.nombreCastellano ? original.nombreCastellano : original.nombre;
+				const avatarsExternosPelis = variables.avatarsExternosPelis(nombre);
+				const titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
+
+				// Va a la vista
+				return res.render("CMP-0Estructura", {
+					...{tema, codigo, titulo, origen}, //title: nombre,
+					...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion},
+					...{entidadNombre, motivos, urlActual: req.session.urlActual},
+					...{avatar, avatarExterno, avatarsExternosPelis},
+					...{cartelGenerico: true, cartelRechazo: true, estrucPers: true},
+				});
 			}
-			// Acciones si el avatar no está presente en la edición
-			else if (!edicion.avatar) {
-				// Actualiza el avatar original si es un url
-				if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
-					// Descarga el archivo avatar y actualiza el registro 'original'
-					procesos.descargaAvatarOriginal(original, entidad);
 
-					// Actualiza el registro 'edición'
-					edicion.avatarUrl = null;
-					const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-					baseDeDatos.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
-				}
+			// Actualiza el avatar original si es un url
+			if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
+				// Descarga el archivo avatar y actualiza el registro 'original'
+				procesos.descargaAvatarOriginal(original, entidad);
 
-				// Variables
-				if (familia == "rclv") {
-					prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
-					canonNombre = comp.canonNombre(original);
-				}
-				bloqueDer = {
-					registro: await procsFM.bloqueRegistro({...original, entidad}),
-					usuario: await procsFM.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
-				};
-				imgDerPers = procsFM.obtieneAvatar(original).orig;
-				motivos = motivosEdics.filter((m) => m.prods);
-
-				// Achica la edición a su mínima expresión
-				edicion = await comp.puleEdicion(entidad, original, edicion);
-
-				// Fin, si no quedan campos
-				if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
-
-				// Obtiene los ingresos y reemplazos
-				[ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
-
-				// Variables para la vista
-				titulo = "Revisión de la Edición de" + articulo + entidadNombre;
-				ayudasTitulo = [
-					"Necesitamos que nos digas si estás de acuerdo con la información editada.",
-					"Si considerás que no, te vamos a pedir que nos digas el motivo.",
-				];
+				// Actualiza el registro 'edición'
+				edicion.avatarUrl = null;
+				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+				baseDeDatos.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
 			}
+
+			// Variables
+			const prodsDelRCLV = familia == "rclv" ? await procsRCLV.detalle.prodsDelRCLV(original, userID) : null;
+			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
+			const bloqueDer = {
+				registro: await procsFM.bloqueRegistro({...original, entidad}),
+				usuario: await procsFM.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
+			};
+			const imgDerPers = procsFM.obtieneAvatar(original).orig;
+			const motivos = motivosEdics.filter((m) => m.prods);
+
+			// Achica la edición a su mínima expresión
+			edicion = await comp.puleEdicion(entidad, original, edicion);
+
+			// Fin, si no quedan campos
+			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+
+			// Obtiene los ingresos y reemplazos
+			const [ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
+
+			// Variables para la vista
+			const titulo = "Revisión de la Edición de" + articulo + entidadNombre;
+			const ayudasTitulo = [
+				"Necesitamos que nos digas si estás de acuerdo con la información editada.",
+				"Si considerás que no, te vamos a pedir que nos digas el motivo.",
+			];
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen},
+				...{tema, codigo, titulo, ayudasTitulo, origen}, //title: original.nombreCastellano,
 				...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodsDelRCLV},
-				...{canonNombre, entidadNombre},
+				...{canonNombre, entidadNombre, imgDerPers},
 				...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
-				...{avatar, avatarExterno, avatarsExternosPelis, imgDerPers},
-				...{cartelGenerico: true, cartelRechazo: edicionAvatar, estrucPers: !!edicionAvatar},
+				...{cartelGenerico: true},
 			});
 		},
 		avatar: async (req, res) => {
