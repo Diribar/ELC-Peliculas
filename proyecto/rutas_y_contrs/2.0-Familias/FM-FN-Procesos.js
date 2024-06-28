@@ -399,6 +399,18 @@ module.exports = {
 		// Fin
 		return registros;
 	},
+	titulo: ({entidad, codigo}) => {
+		// Variables
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
+		// Título
+		let titulo = codigo == "inactivar" ? "Inactivar" : "Rechazar";
+		titulo += " " + comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
+		titulo += entidadNombre;
+
+		// Fin
+		return {titulo, entidadNombre};
+	},
 
 	// CRUD y Revisión
 	obtieneAvatar: (original, edicion) => {
@@ -579,53 +591,104 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: async (registro) => {
-		// Variable
-		let resultado = [];
+	bloques: {
+		consolidado: async function ({tema, familia, entidad, original}) {
+			return tema == "revisionEnts"
+				? {
+						registro: await this.bloqueRegistro({...original, entidad}),
+						usuario: await this.fichaDelUsuario(original.statusSugeridoPor_id, entidad),
+				  }
+				: familia == "producto"
+				? {producto: true, registro: await this.bloqueRegistro({...original, entidad})}
+				: familia == "rclv"
+				? {rclv: this.bloqueRCLV({...original, entidad}), registro: await this.bloqueRegistro({...original, entidad})}
+				: {};
+		},
+		bloqueRegistro: async (registro) => {
+			// Variable
+			let resultado = [];
 
-		// Datos CRUD
-		resultado.push(
-			!registro.altaRevisadaEn
-				? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
-				: {titulo: "Ingresado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
-		);
+			// Datos CRUD
+			resultado.push(
+				!registro.altaRevisadaEn
+					? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
+					: {titulo: "Ingresado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
+			);
 
-		// Status resumido
-		resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
+			// Status resumido
+			resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
-		// Si el registro está inactivo, le agrega el motivo
-		if (registro.statusRegistro_id == inactivo_id) {
-			const comentario = await FN.comentarioBR(registro);
-			resultado.push({comentario});
-		}
+			// Si el registro está inactivo, le agrega el motivo
+			if (registro.statusRegistro_id == inactivo_id) {
+				const comentario = await FN.comentarioBR(registro);
+				resultado.push({comentario});
+			}
 
-		// Fin
-		return resultado;
-	},
-	fichaDelUsuario: async (userID, petitFamilias) => {
-		// Variables
-		const ahora = comp.fechaHora.ahora();
-		const usuario = await baseDeDatos.obtienePorId("usuarios", userID);
-		let bloque = [];
+			// Fin
+			return resultado;
+		},
+		bloqueRCLV: (registro) => {
+			// Variables
+			let bloque = [];
 
-		// Nombre
-		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
+			// Información
+			bloque.push({titulo: "Nombre", valor: registro.nombre});
+			if (registro.nombreAltern) {
+				const articulo = comp.obtieneDesdeEntidad.oa(registro.entidad);
+				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.nombreAltern});
+			}
+			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
+				// Puede ser cualquier familia RCLV
+				const articulo = comp.letras.laLo(registro);
+				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
+			}
 
-		// Edad
-		if (usuario.fechaNacim) {
-			let edad = parseInt((ahora - new Date(usuario.fechaNacim).getTime()) / unAno);
-			bloque.push({titulo: "Edad", valor: edad + " años"});
-		}
+			// Particularidades para personajes
+			if (registro.entidad == "personajes") {
+				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
+				if (registro.canon_id && registro.canon_id != "NN" && registro.canon && registro.canon[registro.genero_id])
+					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
+				if (registro.rolIglesia_id && registro.rolIglesia_id != "NN" && registro.rolIglesia)
+					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia[registro.genero_id]});
+				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
+					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
+			}
 
-		// Tiempo en ELC
-		const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
-		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
+			// Particularidades para hechos
+			if (registro.entidad == "hechos") {
+				if (registro.anoComienzo) bloque.push({titulo: "Año", valor: registro.anoComienzo});
+				if (registro.ama) bloque.push({valor: "Es una aparición mariana"});
+			}
 
-		// Calidad de las altas
-		bloque.push(...FN.usuarioCalidad(usuario, petitFamilias));
+			// Fin
+			return bloque;
+		},
+		fichaDelUsuario: async (userID, entidad) => {
+			// Variables
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const ahora = comp.fechaHora.ahora();
+			const usuario = await baseDeDatos.obtienePorId("usuarios", userID);
+			let bloque = [];
 
-		// Fin
-		return bloque;
+			// Nombre
+			bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
+
+			// Edad
+			if (usuario.fechaNacim) {
+				let edad = parseInt((ahora - new Date(usuario.fechaNacim).getTime()) / unAno);
+				bloque.push({titulo: "Edad", valor: edad + " años"});
+			}
+
+			// Tiempo en ELC
+			const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
+			bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
+
+			// Calidad de las altas
+			bloque.push(...FN.usuarioCalidad(usuario, petitFamilias));
+
+			// Fin
+			return bloque;
+		},
 	},
 };
 
