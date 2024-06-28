@@ -462,27 +462,6 @@ module.exports = {
 		// Fin
 		return true;
 	},
-	eliminaDemasEdiciones: async ({entidad, original, id}) => {
-		// Revisa cada registro de edición y decide si corresponde:
-		// - Eliminar el registro
-		// - Elimina el valor del campo
-
-		// Variables
-		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condicion = {[campo_id]: id};
-		const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
-
-		// Acciones si existen ediciones
-		if (ediciones.length) {
-			let espera = [];
-			for (let edic of ediciones) espera.push(comp.puleEdicion(entidad, original, edic));
-			await Promise.all(espera);
-		}
-
-		// Fin
-		return;
-	},
 	accionesPorCambioDeStatus: async (entidad, registro) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -531,7 +510,28 @@ module.exports = {
 		return;
 	},
 	elimina: {
-		dependientes: async (entidad, id, original) => {
+		demasEdiciones: async ({entidad, original, id}) => {
+			// Revisa cada registro de edición y decide si corresponde:
+			// - Eliminar el registro
+			// - Elimina el valor del campo
+
+			// Variables
+			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const condicion = {[campo_id]: id};
+			const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
+
+			// Acciones si existen ediciones
+			if (ediciones.length) {
+				let espera = [];
+				for (let edic of ediciones) espera.push(comp.puleEdicion(entidad, original, edic));
+				await Promise.all(espera);
+			}
+
+			// Fin
+			return;
+		},
+			dependientes: async (entidad, id, original) => {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
