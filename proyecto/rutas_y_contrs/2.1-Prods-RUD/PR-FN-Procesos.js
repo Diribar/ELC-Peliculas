@@ -52,7 +52,7 @@ module.exports = {
 		let TR = [];
 
 		// Obtiene los links
-		const condiciones = statusLink_id
+		const condicion = statusLink_id
 			? {statusRegistro_id: statusLink_id}
 			: {
 					[Op.or]: [
@@ -62,7 +62,7 @@ module.exports = {
 							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
 					],
 			  };
-		const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condiciones}, include);
+		const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condicion}, include);
 
 		// Procesos si hay links
 		if (links.length) {

@@ -198,13 +198,13 @@ module.exports = {
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			let condiciones = comp.quickSearchCondics(palabrasClave, campos, userID);
+			let condicion = comp.quickSearchCondics(palabrasClave, campos, userID);
 
 			// Agrega la condición de que no provenga de 'TMDB'
-			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
+			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await comp.quickSearch.registros(condiciones, datos);
+			const resultadoPorEntidad = await comp.quickSearch.registros(condicion, datos);
 			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
 		}
 

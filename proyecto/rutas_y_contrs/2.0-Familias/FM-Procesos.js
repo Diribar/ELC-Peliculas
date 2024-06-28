@@ -9,7 +9,7 @@ module.exports = {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condiciones = {[campo_id]: entID, editadoPor_id: userID};
+		const condEdic = {[campo_id]: entID, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
 
@@ -24,7 +24,7 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = baseDeDatos.obtienePorIdConInclude(entidad, entID, includesOrig);
-		let edicion = userID ? baseDeDatos.obtienePorCondicionConInclude(entidadEdic, condiciones, includesEdic) : null;
+		let edicion = userID ? baseDeDatos.obtienePorCondicionConInclude(entidadEdic, condEdic, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
@@ -44,8 +44,8 @@ module.exports = {
 		// Acciones si es un capítulo
 		if (entidad == "capitulos" && userID) {
 			// Variables
-			const condiciones = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
-			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condiciones);
+			const condColec = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
+			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condColec);
 			if (!edicColec) return [original, edicion];
 
 			// Si el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
@@ -459,9 +459,9 @@ module.exports = {
 		if (camposQueNoRecibenDatos.includes(campo)) return;
 
 		// Condiciones
-		const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
-		const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
-		if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
+		const condicColec = {coleccion_id: original.id}; // que pertenezca a la colección
+		const condicCampoVacio = {...condicColec, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
+		if (original[campo]) condicCampoVacio[campo][Op.or].push(original[campo]); // o que coincida con el valor original
 
 		// 2. Actualización condicional por campo
 		const cond1 = campo == "tipoActuacion_id";
@@ -470,10 +470,10 @@ module.exports = {
 		const cond31 = campo == "epocaOcurrencia_id";
 		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
 		const novedad = {[campo]: edicion[campo]};
-		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicColec, novedad);
 
 		// 3. Actualización condicional por valores
-		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicCampoVacio, novedad);
 
 		// Fin
 		return true;
@@ -855,13 +855,13 @@ let FN = {
 
 		// Actualiza el comentario - histStatus
 		if (registro.motivo.agregarComent) {
-			const condiciones = {
+			const condicion = {
 				entidad,
 				entidad_id,
 				statusFinal_id: [inactivar_id, inactivo_id],
 				comentario: {[Op.ne]: null},
 			};
-			let histStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condiciones);
+			let histStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condicion);
 			if (histStatus.length > 1)
 				histStatus.sort((a, b) => (a.statusFinalEn < b.statusFinalEn ? -1 : a.statusFinalEn > b.statusFinalEn ? 1 : 0));
 			if (histStatus.length) comentario = histStatus.slice(-1)[0].comentario;

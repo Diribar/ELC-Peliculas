@@ -125,17 +125,17 @@ module.exports = {
 	ABM_noRevs: async () => {
 		// Variables
 		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
-		let condiciones = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
-		let entsPERL, include;
+		let entsPERL, include, condicion;
 
 		// regsPERL
+		condicion = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
 		entsPERL = [...variables.entidades.prods, ...variables.entidades.rclvs];
 		include = "statusSugeridoPor";
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+				.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
 				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
@@ -162,10 +162,10 @@ module.exports = {
 		}
 
 		// regsLinks
-		condiciones = {...condiciones, prodAprob: true};
+		condicion = {...condicion, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
 		const regsLinks = await baseDeDatos
-			.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+			.obtieneTodosPorCondicionConInclude("links", condicion, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
@@ -238,25 +238,25 @@ module.exports = {
 		obtieneElHistorial: async () => {
 			// Variables
 			let registros = [];
-			let condiciones;
+			let condicion;
 
 			// Obtiene los registros de "histStatus"
-			condiciones = {
+			condicion = {
 				statusOriginalPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
 				statusOriginal_id: [creado_id, inactivar_id, recuperar_id], // descarta los cambios que no sean revisiones
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
 				baseDeDatos
-					.obtieneTodosPorCondicion("histStatus", condiciones)
+					.obtieneTodosPorCondicion("histStatus", condicion)
 					.then((n) => n.map((m) => ({...m, tabla: "histStatus"})))
 			);
 
 			// Obtiene los registros de "histEdics"
-			condiciones = {comunicadoEn: null};
+			condicion = {comunicadoEn: null};
 			registros.push(
 				baseDeDatos
-					.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
+					.obtieneTodosPorCondicionConInclude("histEdics", condicion, "motivo")
 					.then((n) => n.map((m) => ({...m, tabla: "histEdics"}))) // Agrega el nombre de la tabla
 			);
 
@@ -493,7 +493,7 @@ module.exports = {
 		eliminaRegsHistStatus: (regs) => {
 			// Variables
 			const ids = regs.map((n) => n.id);
-			const condiciones = {
+			const condicion = {
 				id: ids,
 				statusOriginal_id: creado_id,
 				statusFinal_id: aprobados_ids,
@@ -501,7 +501,7 @@ module.exports = {
 			const comunicadoEn = new Date();
 
 			// Elimina los que corresponda
-			baseDeDatos.eliminaTodosPorCondicion("histStatus", condiciones);
+			baseDeDatos.eliminaTodosPorCondicion("histStatus", condicion);
 
 			// Agrega la fecha 'comunicadoEn'
 			baseDeDatos.actualizaTodosPorCondicion("histStatus", {id: ids}, {comunicadoEn});

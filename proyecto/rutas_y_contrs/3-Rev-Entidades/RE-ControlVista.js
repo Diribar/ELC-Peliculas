@@ -535,7 +535,7 @@ module.exports = {
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url;
-			link.cond = procsLinks.condiciones(link, revID, tema);
+			link.cond = procsLinks.condicion(link, revID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}
 

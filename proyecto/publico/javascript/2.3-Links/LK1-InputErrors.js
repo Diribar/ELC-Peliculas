@@ -281,8 +281,8 @@ window.addEventListener("load", async () => {
 				: ["", ""];
 
 		// Consolida la información y averigua si hay algún error
-		const condiciones = campoAnt + valorAnt + campo + "=" + valor;
-		const error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
+		const condicion = campoAnt + valorAnt + campo + "=" + valor;
+		const error = await fetch(v.rutaValidar + condicion).then((n) => n.json());
 
 		// Reemplaza el mensaje
 		let mensaje = error[campo];

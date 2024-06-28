@@ -672,11 +672,11 @@ module.exports = {
 				for (let rclv_id of rclvs_id) // Rutina por rclv_id
 					if (coleccion[rclv_id] > 10) {
 						// Variables
-						const condiciones = {coleccion_id: coleccion.id, [rclv_id]: coleccion[rclv_id]}; // Averigua si alguno de sus capítulos tiene el mismo rclv_id
+						const condicion = {coleccion_id: coleccion.id, [rclv_id]: coleccion[rclv_id]}; // Averigua si alguno de sus capítulos tiene el mismo rclv_id
 						const objeto = {[rclv_id]: 1}; // En los casos que encuentra, convierte el rclv_id en 1
 
 						// Actualiza los capítulos que correspondan
-						baseDeDatos.actualizaTodosPorCondicion("capitulos", condiciones, objeto);
+						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, objeto);
 					}
 
 			// Fin
