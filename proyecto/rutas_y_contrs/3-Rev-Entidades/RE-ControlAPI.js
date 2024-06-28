@@ -19,11 +19,11 @@ module.exports = {
 		let statusAprob, reload;
 
 		// Obtiene el registro editado
-		let edicion = await baseDeDatos.obtienePorIdConInclude(nombreEdic, edicID, include);
+		let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicID, include);
 
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
-		const original = await baseDeDatos.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
+		const original = await baseDeDatos.obtienePorId(entidad, entID, [...include, "statusRegistro"]);
 
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
@@ -77,7 +77,7 @@ module.exports = {
 		altaBaja: async (req, res) => {
 			// Variables
 			const {url} = req.query;
-			const link = await baseDeDatos.obtienePorCondicionConInclude("links", {url}, variables.entidades.asocProds);
+			const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocProds);
 
 			// Más variables
 			const {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID} =
@@ -130,7 +130,7 @@ module.exports = {
 			let sigProd = true;
 
 			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
-			const links = await baseDeDatos.obtienePorIdConInclude(entidad, id, "links").then((n) => n.links);
+			const links = await baseDeDatos.obtienePorId(entidad, id, "links").then((n) => n.links);
 			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
 			// Averigua si queda alguna edición de link del producto

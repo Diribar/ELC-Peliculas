@@ -340,7 +340,7 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				original = await baseDeDatos.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
+				original = await baseDeDatos.obtienePorId(entidad, id, ["statusRegistro", "ediciones"]);
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original

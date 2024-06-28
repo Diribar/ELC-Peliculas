@@ -736,7 +736,7 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEntidad = await baseDeDatos.obtienePorIdConInclude("links", reg.entidad_id, [...asocs, "prov"]);
+		const regEntidad = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
 		if (!regEntidad.id) return {};
 
 		// Obtiene el nombre

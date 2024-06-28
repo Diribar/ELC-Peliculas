@@ -26,7 +26,7 @@ module.exports = {
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidades.prods);
-		let original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+		let original = await baseDeDatos.obtienePorId(entidad, id, include);
 
 		// Obtiene el subcodigo
 		const statusOriginal_id = original.statusRegistro_id;
@@ -172,7 +172,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const original =
 			entidad == "colecciones"
-				? await baseDeDatos.obtienePorIdConInclude("colecciones", id, "capitulos")
+				? await baseDeDatos.obtienePorId("colecciones", id, "capitulos")
 				: await baseDeDatos.obtienePorId(entidad, id);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
@@ -262,7 +262,7 @@ let obtieneDatos = async (req) => {
 	const ahora = comp.fechaHora.ahora();
 	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 	const include = comp.obtieneTodosLosCamposInclude(entidad);
-	const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+	const original = await baseDeDatos.obtienePorId(entidad, id, include);
 	const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 	// Fin

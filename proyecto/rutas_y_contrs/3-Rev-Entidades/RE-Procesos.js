@@ -394,7 +394,7 @@ module.exports = {
 
 			// Obtiene el RCLV actual
 			const include = comp.obtieneTodosLosCamposInclude(entidad);
-			const RCLV_actual = await baseDeDatos.obtienePorIdConInclude(entidad, original.id, include);
+			const RCLV_actual = await baseDeDatos.obtienePorId(entidad, original.id, include);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -479,7 +479,7 @@ module.exports = {
 			// Obtiene el registro original y el subcodigo
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
 			if (producto) include.push("links");
-			const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+			const original = await baseDeDatos.obtienePorId(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
 
 			// Obtiene el 'subcodigo'

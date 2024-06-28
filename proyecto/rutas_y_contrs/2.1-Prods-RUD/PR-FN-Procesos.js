@@ -125,7 +125,7 @@ module.exports = {
 		const include = "detalle";
 
 		// Obtiene el interés del usuario
-		const registro = await baseDeDatos.obtienePorCondicionConInclude("pppRegistros", condics, include);
+		const registro = await baseDeDatos.obtienePorCondicion("pppRegistros", condics, include);
 		const interesDelUsuario = registro ? registro.detalle : pppOpcsObj.sinPref;
 
 		// Fin
