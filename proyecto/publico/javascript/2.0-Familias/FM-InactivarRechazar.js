@@ -1,4 +1,5 @@
 "use strict";
+
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
@@ -19,15 +20,15 @@ window.addEventListener("load", async () => {
 	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const motivosStatus = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
-	let comentNeces, duplicado;
+	let comentNeces, duplicadoOK;
 
 	// Funciones
 	let FN = {
 		botonSubmit: () => {
 			// Activa o inactiva el botón submit
-			((DOM.selectMotivo && DOM.selectMotivo.value) || !DOM.selectMotivo) && // existe el select y se eligió un valor o no existe el select
-			((duplicado && DOM.selectEntidad.value && DOM.inputId.value) || !duplicado) && //el motivo es duplicado y está contestado o no es duplicado
-			((comentNeces && DOM.comentario.value && DOM.comentario.value.length > 4) || !comentNeces) // se necesita un comentario y lo tiene o no se necesita un comentario
+			DOM.selectMotivo.value && //  se eligió un motivo
+			duplicadoOK && //el motivo no es duplicado o está contestado
+			(!comentNeces || (DOM.comentario.value && DOM.comentario.value.length > 4)) // el comentario no es necesario o está bien contestado
 				? DOM.submit.classList.remove("inactivo")
 				: DOM.submit.classList.add("inactivo");
 
@@ -40,29 +41,30 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// Event listeners - cambios en el formulario
-	if (DOM.selectMotivo)
-		DOM.form.addEventListener("change", async () => {
-			if (!DOM.selectMotivo.value) return;
-			// Obtiene el detalle del motivo
-			const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
+	// Event listener - cambios en el formulario
+	DOM.form.addEventListener("change", async (e) => {
+		// Acciones que interrumpen la función
+		if (!DOM.selectMotivo.value || e.target.name == "comentario") return;
 
-			// Muestra u oculta el 'sectorDuplicado'
-			duplicado = motivoBD.codigo == "duplicado";
-			duplicado ? sectorDuplicado.classList.remove("ocultar") : sectorDuplicado.classList.add("ocultar");
+		// Obtiene el detalle del motivo
+		const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
 
-			// Muestra u oculta el 'comentario'
-			comentNeces = motivoBD.agregarComent;
-			DOM.comentario.readOnly = !comentNeces;
-			if (motivoBD.agregarComent) DOM.comentario.focus();
+		// Muestra u oculta el 'comentario'
+		comentNeces = motivoBD.agregarComent;
+		DOM.comentario.readOnly = !comentNeces;
 
-			// Actualiza el botón submit
-			FN.botonSubmit();
-		});
-	DOM.comentario.addEventListener("keypress", (e) => {
-		keyPressed(e);
-		return;
+		// Muestra u oculta el 'sectorDuplicado'
+		const motivoDuplicado = motivoBD.codigo == "duplicado";
+		motivoDuplicado ? DOM.sectorDuplicado.classList.remove("ocultar") : DOM.sectorDuplicado.classList.add("ocultar");
+		duplicadoOK = !motivoDuplicado || (DOM.selectEntidad.value && DOM.inputId.value);
+
+		if (motivoBD.agregarComent) DOM.comentario.focus();
+
+		// Actualiza el botón submit
+		FN.botonSubmit();
 	});
+	// Event listener - cambios en el comentario
+	DOM.comentario.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.comentario.addEventListener("input", (e) => {
 		// Validaciones estándar
 		amplio.restringeCaracteres(e);
@@ -74,10 +76,11 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
+	// Event listener - cambios en el submit
 	DOM.form.addEventListener("submit", (e) => {
 		if (DOM.submit.className.includes("inactivo")) e.preventDefault();
 	});
 
-	// Si no hay inputs, focus en comentario
-	if (!DOM.selectMotivo) DOM.comentario.focus();
+	// Focus en el motivo
+	DOM.selectMotivo.focus();
 });
