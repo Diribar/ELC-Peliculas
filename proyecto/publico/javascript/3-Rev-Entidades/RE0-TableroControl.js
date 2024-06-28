@@ -11,11 +11,13 @@ window.addEventListener("load", async () => {
 
 	// Muestra u oculta
 	DOM.tituloRegs.forEach((tituloReg, i) => {
+		// Variables
+		const clave = tituloReg.id;
+
 		// Revisa para cada bloque
 		tituloReg.addEventListener("click", () => {
 			// Genera los datos a exportar
-			const titulo = tituloReg.id;
-			const familias = titulo.split("_")[0];
+			const [familias, titulo] = clave.split("_");
 			const desplegar = DOM.bloqueRegs[i].className.includes("ocultar"); // si están ocultos, se deben desplegar
 			const datos = {circuito, familias, titulo, desplegar};
 
