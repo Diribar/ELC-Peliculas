@@ -1,5 +1,5 @@
 <% if (regs && regs.length) { %>
-	<h3 id="<%= (familias + titulo).replace(/[-\s]/g, "") %>" class="pointer">
+	<h3 id="<%= (familias + "_" + titulo).replace(/[-\s]/g, "") %>" class="pointer">
 		<%= titulo %>
 		(<%= regs.length %>)
 		<% if (locals.icono) { %><i class="fa-solid <%= icono %>"></i><% } %>
