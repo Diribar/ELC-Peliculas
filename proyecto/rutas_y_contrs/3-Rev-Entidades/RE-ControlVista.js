@@ -50,8 +50,7 @@ module.exports = {
 		// return res.send(prods.RP);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Entidades"},
-			...{prods, rclvs, sigProd, origen: "TE"},
-			...{dataEntry},
+			...{prods, rclvs, sigProd, origen: "TE", dataEntry},
 		});
 	},
 	// Tablero de mantenimiento
