@@ -18,12 +18,12 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
 				<% if (omnipotente) { %>
-					<%- include("RE-Registros", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
 				<% } %>
 			</div>
 		</div>
@@ -41,13 +41,13 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Películas", regs: rclvs.SP, url: "rclv/detalle", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Películas", regs: rclvs.SP, url: "rclv/detalle", mostrarOrigen: true}) %>
 				<% if (usuario.rolUsuario.revisorPERL) { %>
-					<%- include("RE-Registros", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
 				<% } %>
 				<% if (omnipotente) { %>
-					<%- include("RE-Registros", {DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
 				<% } %>
 			</div>
 		</div>
@@ -63,12 +63,12 @@
 			<!-- Temas -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links - Peliculas", regs: prods.SL_pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links - Colecciones", regs: prods.SL_coles, url: "links/abm", mostrarOrigen: true, campo: "linksGral"}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_basico, url: "links/abm", mostrarOrigen: true, campo: "linksGratis"}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC_basico, url: "links/abm", mostrarOrigen: true, campo: "linksCast"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links - Peliculas", regs: prods.SL_pelis, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links - Colecciones", regs: prods.SL_coles, url: "links/abm", mostrarOrigen: true, campo: "linksGral"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links Gratuitos", regs: prods.SLG_basico, url: "links/abm", mostrarOrigen: true, campo: "linksGratis"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links en Castellano", regs: prods.SLC_basico, url: "links/abm", mostrarOrigen: true, campo: "linksCast"}) %>
 				<% if (usuario.rolUsuario.revisorPERL) { %>
-					<%- include("RE-Registros", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 				<% } %>
 			</div>
 		</div>
@@ -84,10 +84,10 @@
 			<!-- Temas -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links HD - Películas", regs: prods.SL_HD_pelis, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links HD - Colecciones", regs: prods.SL_HD_coles, url: "links/abm", mostrarOrigen: true, campo: "HD_Gral"}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links HD Gratuitos", regs: prods.SLG_HD, url: "links/abm", mostrarOrigen: true, campo: "HD_Gratis"}) %>
-				<%- include("RE-Registros", {DE, titulo: "Sin Links HD en Castellano", regs: prods.SLC_HD, url: "links/abm", mostrarOrigen: true, campo: "HD_Cast"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links HD - Películas", regs: prods.SL_HD_pelis, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links HD - Colecciones", regs: prods.SL_HD_coles, url: "links/abm", mostrarOrigen: true, campo: "HD_Gral"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links HD Gratuitos", regs: prods.SLG_HD, url: "links/abm", mostrarOrigen: true, campo: "HD_Gratis"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Links HD en Castellano", regs: prods.SLC_HD, url: "links/abm", mostrarOrigen: true, campo: "HD_Cast"}) %>
 			</div>
 		</div>
 	</div>
