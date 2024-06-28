@@ -12,8 +12,8 @@
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-DatosLargos.css">
 
-	<% if (["inactivar", "rechazar"].includes(codigo)) { %>
-		<!-- Inactivar, Rechazar -->
+	<% if (codigo == "inactivar") { %>
+		<!-- Inactivar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRech.css">
 		<script src="/publico/javascript/2.0-Familias/FM-PR-InactivarRech.js"></script>
 	<% } %>
