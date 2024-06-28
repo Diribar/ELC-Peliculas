@@ -4,6 +4,54 @@ const validacsFM = require("./FM-FN-Validar");
 // Exportar ------------------------------------
 module.exports = {
 	// CRUD
+	variables: async function (req) {
+		// Tema
+		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const codigo = ruta.slice(1, -1).replace("revision/", "");
+
+		// Más variables
+		const {entidad, id} = req.query;
+		const origen = req.query.origen;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const userID = req.session.usuario.id;
+
+		// Obtiene el registro
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
+		if (familia == "rclv") include.push(...variables.entidades.prods);
+		let original = await baseDeDatos.obtienePorId(entidad, id, include);
+		if (entidad == "capitulos") original.capitulos = await this.obtieneCapitulos(original.coleccion_id, original.temporada);
+
+		// Cantidad de productos asociados al RCLV
+		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
+		if (familia == "rclv") {
+			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
+			cantProds = prodsDelRCLV.length;
+			canonNombre = comp.canonNombre(original);
+			RCLVnombre = original.nombre;
+		}
+
+		// Obtiene datos para la vista
+		const status_id = original.statusRegistro_id;
+		const urlActual = req.originalUrl;
+		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
+		const {titulo, entidadNombre} = this.titulo({entidad, codigo});
+		const bloqueDer = await this.bloques.consolidado({tema, familia, entidad, original});
+		const imgDerPers = this.obtieneAvatar(original).orig;
+		const cartelGenerico = true;
+
+		// Fin
+		return {
+			...{tema, codigo, titulo, origen},
+			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original},
+			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
+			...{entsNombre, urlActual, cartelGenerico},
+		};
+	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -116,7 +164,7 @@ module.exports = {
 				{stOrig_id: 1, stFinal_id: 6},
 				{stOrig_id: 4, stFinal_id: 6},
 				{stOrig_id: 6, stFinal_id: 5},
-			]; // no se incluye hacia 'inactivar_id', porque sería el único registro
+			];
 
 			// Obtiene el historial de status
 			let historialStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condics, include);
