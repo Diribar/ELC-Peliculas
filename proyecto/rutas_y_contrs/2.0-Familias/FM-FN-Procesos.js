@@ -595,16 +595,16 @@ module.exports = {
 		consolidado: async function ({tema, familia, entidad, original}) {
 			return tema == "revisionEnts"
 				? {
-						registro: await this.bloqueRegistro({...original, entidad}),
-						usuario: await this.fichaDelUsuario(original.statusSugeridoPor_id, entidad),
+						registro: await this.registro({...original, entidad}),
+						usuario: await this.usuario(original.statusSugeridoPor_id, entidad),
 				  }
 				: familia == "producto"
-				? {producto: true, registro: await this.bloqueRegistro({...original, entidad})}
+				? {producto: true, registro: await this.registro({...original, entidad})}
 				: familia == "rclv"
-				? {rclv: this.bloqueRCLV({...original, entidad}), registro: await this.bloqueRegistro({...original, entidad})}
+				? {rclv: this.rclv({...original, entidad}), registro: await this.registro({...original, entidad})}
 				: {};
 		},
-		bloqueRegistro: async (registro) => {
+		registro: async (registro) => {
 			// Variable
 			let resultado = [];
 
@@ -627,7 +627,7 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		bloqueRCLV: (registro) => {
+		rclv: (registro) => {
 			// Variables
 			let bloque = [];
 
