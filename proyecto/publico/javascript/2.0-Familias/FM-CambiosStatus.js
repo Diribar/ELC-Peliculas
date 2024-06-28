@@ -41,23 +41,24 @@ window.addEventListener("load", async () => {
 	};
 
 	// Event listeners - cambios en el formulario
-	DOM.form.addEventListener("change", async () => {
-		if (!DOM.selectMotivo || !DOM.selectMotivo.value) return;
-		// Obtiene el detalle del motivo
-		const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
+	if (!DOM.selectMotivo)
+		DOM.form.addEventListener("change", async () => {
+			if (!DOM.selectMotivo.value) return;
+			// Obtiene el detalle del motivo
+			const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
 
-		// Muestra u oculta el 'sectorDuplicado'
-		duplicado = motivoBD.codigo == "duplicado";
-		duplicado ? sectorDuplicado.classList.remove("ocultar") : sectorDuplicado.classList.add("ocultar");
+			// Muestra u oculta el 'sectorDuplicado'
+			duplicado = motivoBD.codigo == "duplicado";
+			duplicado ? sectorDuplicado.classList.remove("ocultar") : sectorDuplicado.classList.add("ocultar");
 
-		// Muestra u oculta el 'comentario'
-		comentNeces = motivoBD.agregarComent;
-		DOM.comentario.readOnly = !comentNeces;
-		if (motivoBD.agregarComent) DOM.comentario.focus();
+			// Muestra u oculta el 'comentario'
+			comentNeces = motivoBD.agregarComent;
+			DOM.comentario.readOnly = !comentNeces;
+			if (motivoBD.agregarComent) DOM.comentario.focus();
 
-		// Actualiza el botón submit
-		FN.botonSubmit();
-	});
+			// Actualiza el botón submit
+			FN.botonSubmit();
+		});
 	DOM.comentario.addEventListener("keypress", (e) => {
 		keyPressed(e);
 		return;
