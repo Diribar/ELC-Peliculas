@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const procsCRUD = require("../2.0-Familias/FM-Procesos");
 const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
@@ -99,12 +100,12 @@ module.exports = {
 		}
 		// Nombre Original y Año de Estreno
 		if (datos.nombreOriginal && !errores.nombreOriginal && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
-			let id = await BD_especificas.validaRepetidos(["nombreOriginal", "anoEstreno"], datos);
+			let id = await procsCRUD.validaRepetidos(["nombreOriginal", "anoEstreno"], datos);
 			if (id) errores.nombreOriginal = comp.validacs.cartelRepetido({...datos, id});
 		}
 		// Nombre Castellano y Año de Estreno
 		if (datos.nombreCastellano && !errores.nombreCastellano && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
-			let id = await BD_especificas.validaRepetidos(["nombreCastellano", "anoEstreno"], datos);
+			let id = await procsCRUD.validaRepetidos(["nombreCastellano", "anoEstreno"], datos);
 			if (id) errores.nombreCastellano = comp.validacs.cartelRepetido({...datos, id});
 		}
 		// Actores y Tipo de Actuación

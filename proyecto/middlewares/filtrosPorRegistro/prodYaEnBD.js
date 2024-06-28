@@ -16,14 +16,15 @@ module.exports = async (req, res, next) => {
 			iconos: [variables.vistaEntendido(req.session.urlAnterior)],
 		};
 	else if (datos.fuente != "IM") {
+		// Averigua si existe
 		const fuente_id = datos.fuente + "_id";
-		const elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
-		if (elc_id) {
-			// Links
-			const linkAnterior = "/producto/agregar/desambiguar";
-			const linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
+		const existe = await baseDeDatos.obtienePorCondicion(datos.entidad, {[fuente_id]: datos[fuente_id]});
 
-			// Nombre de la entidad
+		// Acciones si existe
+		if (existe) {
+			// Variables
+			const linkAnterior = "/producto/agregar/desambiguar";
+			const linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + existe.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
 
 			// Información para el cartel

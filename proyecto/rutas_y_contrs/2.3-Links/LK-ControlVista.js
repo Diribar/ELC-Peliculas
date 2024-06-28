@@ -34,7 +34,7 @@ module.exports = {
 		if (entidad == "capitulos") {
 			const coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
 			const temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
-			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
+			producto.capitulos = await procsCRUD.obtieneCapitulos(coleccion_id, temporada);
 		}
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const status_id = original.statusRegistro_id;

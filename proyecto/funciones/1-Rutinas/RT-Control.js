@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const cron = require("node-cron");
-const procsCRUD = require("../../rutas_y_contrs/2.0-Familias/FM-Procesos");
 const procesos = require("./RT-Procesos");
 
 // Exportar
@@ -31,7 +30,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.FeedbackParaUsers();
-		// await this.rutinasDiarias.ImagenDerecha()
+		// await this.rutinasDiarias.IDdeTablas()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -502,7 +501,7 @@ module.exports = {
 				}
 
 				// Actualiza el próximo valor de ID
-				await BD_especificas.actualizaElProximoValorDeID(tabla);
+				await procesos.actualizaElProximoValorDeID(tabla);
 			}
 
 			// Fin

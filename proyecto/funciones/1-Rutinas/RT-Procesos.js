@@ -134,7 +134,8 @@ module.exports = {
 		let regsPERL = [];
 		for (let entidad of entsPERL) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const registros = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+			const registros = await baseDeDatos
+				.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
 				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
@@ -145,7 +146,8 @@ module.exports = {
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
-			const registros = await baseDeDatos.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
+			const registros = await baseDeDatos
+				.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
@@ -162,7 +164,8 @@ module.exports = {
 		// regsLinks
 		condiciones = {...condiciones, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
-		const regsLinks = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condiciones, include)
+		const regsLinks = await baseDeDatos
+			.obtieneTodosPorCondicionConInclude("links", condiciones, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
@@ -175,7 +178,8 @@ module.exports = {
 
 		// edicsLinks
 		include = ["editadoPor", ...variables.entidades.asocProds];
-		const edicsLinks = await baseDeDatos.obtieneTodosConInclude("linksEdicion", include)
+		const edicsLinks = await baseDeDatos
+			.obtieneTodosConInclude("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
@@ -199,12 +203,12 @@ module.exports = {
 		let consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatarsEdic = BD_especificas.nombresDeAvatarEnBD({entidad: entidadEdic});
+		if (entidadEdic) avatarsEdic = nombresDeAvatarEnBD({entidad: entidadEdic});
 
 		// Revisa los avatars que están en los originales
 		if (status_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatarsOrig.push(BD_especificas.nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
+				avatarsOrig.push(nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
 
 		// Espera y consolida los resultados
 		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
@@ -243,17 +247,17 @@ module.exports = {
 				comunicadoEn: null, // no fue comunicado
 			};
 			registros.push(
-				baseDeDatos.obtieneTodosPorCondicion("histStatus", condiciones).then((n) =>
-					n.map((m) => ({...m, tabla: "histStatus"}))
-				)
+				baseDeDatos
+					.obtieneTodosPorCondicion("histStatus", condiciones)
+					.then((n) => n.map((m) => ({...m, tabla: "histStatus"})))
 			);
 
 			// Obtiene los registros de "histEdics"
 			condiciones = {comunicadoEn: null};
 			registros.push(
-				baseDeDatos.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
-					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "histEdics"})))
+				baseDeDatos
+					.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
+					.then((n) => n.map((m) => ({...m, tabla: "histEdics"}))) // Agrega el nombre de la tabla
 			);
 
 			// Espera a que se reciba la info
@@ -573,6 +577,19 @@ module.exports = {
 		// Fin
 		return;
 	},
+	actualizaElProximoValorDeID: async (entidad) => {
+		// Variables
+		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n++);
+
+		// Actualiza el autoincrement
+		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
+		const Sequelize = require("sequelize");
+		const sequelize = new Sequelize(config.database, config.username, config.password, config);
+		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
+
+		// Fin
+		return;
+	},
 };
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
@@ -752,9 +769,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 
 		// Obtiene los RCLVs
-		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
-			n.map((m) => ({...m, entidad}))
-		);
+		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) => n.map((m) => ({...m, entidad})));
 		rclvs.push(registros);
 	}
 	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
@@ -852,4 +867,22 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Fin
 	return;
+};
+let nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
+	// Variables
+	campoAvatar = campoAvatar ? campoAvatar : "avatar";
+	const condicion = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
+	if (status_id) condicion.statusRegistro_id = status_id;
+
+	// Obtiene los registros
+	const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+		n.map((m) => ({
+			imagen: m[campoAvatar],
+			nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
+			entidad,
+		}))
+	);
+
+	// Fin
+	return registros;
 };

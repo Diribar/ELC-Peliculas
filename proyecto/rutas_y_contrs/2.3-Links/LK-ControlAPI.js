@@ -26,7 +26,9 @@ module.exports = {
 
 		// Obtiene el link y el id de la edicion
 		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
-		const edicID = link ? await BD_especificas.obtieneELC_id("linksEdicion", {link_id: link.id, editadoPor_id: userID}) : "";
+		const edicion = link
+			? await baseDeDatos.obtienePorCondicion("linksEdicion", {link_id: link.id, editadoPor_id: userID})
+			: null;
 
 		// Si el link no existía, lo crea
 		if (!link) {
@@ -45,7 +47,7 @@ module.exports = {
 		}
 		// Guarda la edición
 		else {
-			if (edicID) datos.id = edicID;
+			if (edicion) datos.id = edicion.id;
 			mensaje = await procsCRUD.guardaActEdic({entidad: "links", original: link, edicion: datos, userID});
 			if (mensaje) mensaje = "Edición guardada";
 		}

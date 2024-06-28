@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(inputs[i].value);
 		let mensaje = errores[campo];
 		// Verificar si el FA_id ya está en nuestra BD
-		if (campo == "direccion" && !mensaje) mensaje = await verificarRepetido_FA_id();
+		if (campo == "direccion" && !mensaje) mensaje = await verificaRepetido_FA_id();
 		// Agregar comentario en 'contenido'
 		if (campo == "contenido") comentarioContenido(errores.campos, valor);
 		// En caso de error
@@ -42,33 +42,35 @@ window.addEventListener("load", async () => {
 						: ""
 					: "";
 			}
-			sinErrores
-				? button.classList.remove("inactivo")
-				: button.classList.add("inactivo");
+			sinErrores ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 		}
 	};
 
 	// Revisar si el FA_id ya está en la BD
-	let verificarRepetido_FA_id = async () => {
-		let direccion = document.querySelector(".input[name='direccion']").value;
-		let FA_id = await fetch(pre + "FA-obtiene-fa-id/?direccion=" + direccion).then((n) => n.json());
-		let url = "entidad=" + entidad;
-		url += "&campo=FA_id";
-		url += "&valor=" + FA_id;
-		let elc_id = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
-		if (!elc_id && entidad != "colecciones") {
+	let verificaRepetido_FA_id = async () => {
+		// Variables
+		const direccion = document.querySelector(".input[name='direccion']").value;
+		const FA_id = await fetch(pre + "FA-obtiene-fa-id/?direccion=" + direccion).then((n) => n.json());
+		let url, existe;
+
+		// Averigua si existe el registro
+		url = "entidad=" + entidad + "&campo=FA_id&valor=" + FA_id;
+		existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
+
+		// Si no existe y no es una colección, lo busca en la contraparte
+		if (!existe && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
-			url += "&campo=FA_id";
-			url += "&valor=" + FA_id;
-			elc_id = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
+			url += "&campo=FA_id&valor=" + FA_id;
+			existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
 		}
-		// Definir el mensaje
-		return elc_id
+
+		// Fin
+		return existe
 			? "Esta " +
 					"<a href='/producto/detalle/?entidad=" +
 					entidad +
 					"&id=" +
-					elc_id +
+					existe.id +
 					"' target='_blank'><u><b>" +
 					entidad +
 					"</b></u></a>" +

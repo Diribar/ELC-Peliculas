@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	const vistaEntendido = variables.vistaEntendido(req.session.urlActual);
-	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
+	req.session.usuario = await comp.obtieneUsuarioPorMail(req.session.usuario.email);
 	let usuario = req.session.usuario;
 	let informacion;
 
