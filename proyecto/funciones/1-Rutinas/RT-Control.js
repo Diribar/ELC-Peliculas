@@ -694,14 +694,8 @@ module.exports = {
 			// Busca
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
-				verificador.push(
-					baseDeDatos
-						.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
-						.then((n) => n.map((m) => baseDeDatos.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null})))
-						.then(() => true)
-				);
+				baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
 			}
-			await Promise.all(verificador);
 
 			// Fin
 			return;
