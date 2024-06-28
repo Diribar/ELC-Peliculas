@@ -19,7 +19,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.cn_entsPorLayout, {as: "entidades", foreignKey: "layout_id"});
+		entidad.hasMany(n.cnEntsPorLayout, {as: "entidades", foreignKey: "layout_id"});
 	};
 	return entidad;
 };

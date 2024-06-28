@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cn_entsPorLayout";
+	const alias = "cnEntsPorLayout";
 	const columns = {
 		layout_id: {type: dt.INTEGER},
 		entidad_id: {type: dt.INTEGER},
