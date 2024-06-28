@@ -10,15 +10,9 @@ module.exports = {
 		db[entidad].findAll({where: condicion, include, limit: limite}).then((n) => n.map((m) => m.toJSON())),
 
 	// Obtiene uno
-	obtienePorId: (entidad, id) => db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : null)),
-	obtienePorIdConInclude: (entidad, id, include) => db[entidad].findByPk(id, {include}).then((n) => (n ? n.toJSON() : null)),
-	obtienePorCondicion: (entidad, condicion) => db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : null)),
-	obtienePorCondicionConInclude: (entidad, condicion, include) =>
+	obtienePorId: (entidad, id, include) => db[entidad].findByPk(id, {include}).then((n) => (n ? n.toJSON() : null)),
+	obtienePorCondicion: (entidad, condicion, include) =>
 		db[entidad].findOne({where: condicion, include}).then((n) => (n ? n.toJSON() : null)),
-	obtienePorCondicionElUltimo: (entidad, condicion, campoOrden) =>
-		db[entidad]
-			.findOne({where: condicion, order: [[campoOrden ? campoOrden : "id", "DESC"]]})
-			.then((n) => (n ? n.toJSON() : null)),
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
