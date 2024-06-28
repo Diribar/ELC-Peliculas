@@ -8,14 +8,6 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#sectorIconos button[type='submit']"),
 	};
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const petitFamilias = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "prods" : "rclvs";
-
-	// Busca los motivos
-	const motivosStatus = await fetch("/crud/api/motivos-status")
-		.then((n) => n.json())
-		.then((n) => n.filter((m) => m[petitFamilias]));
-	const motivosConComentario_id = motivosStatus.filter((n) => n.agregarComent).map((n) => n.id);
 
 	// Funciones
 	let contador = () => {
@@ -77,3 +69,8 @@ window.addEventListener("load", async () => {
 	// Si no hay inputs, focus en comentario
 	if (!DOM.inputs.length) DOM.comentario.focus();
 });
+
+// Variables
+const entidad = new URL(location.href).searchParams.get("entidad");
+const motivosStatus = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
+const motivosConComentario_id = motivosStatus.filter((n) => n.agregarComent).map((n) => n.id);
