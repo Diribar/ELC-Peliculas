@@ -99,7 +99,7 @@ module.exports = {
 		include.push("statusRegistro", "creadoPor", "statusSugeridoPor");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (entidad == "capitulos") include.push("coleccion");
-		const original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 
 		// Obtiene avatar original
 		let imgDerPers = original.avatar;
@@ -355,7 +355,7 @@ module.exports = {
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
 			if (familia == "rclv") include.push(...variables.entidades.prods);
-			let original = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+			let original = await baseDeDatos.obtienePorId(entidad, id, include);
 
 			// Obtiene la edición
 			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID);
@@ -523,7 +523,7 @@ module.exports = {
 		let include = ["links", "statusRegistro"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
-		const producto = await baseDeDatos.obtienePorIdConInclude(entidad, id, include);
+		const producto = await baseDeDatos.obtienePorId(entidad, id, include);
 
 		// Errores del producto a verificar
 		const informacion = procesos.links.problemasProd(producto, req.session.urlAnterior);

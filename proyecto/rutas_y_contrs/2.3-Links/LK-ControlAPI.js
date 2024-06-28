@@ -25,7 +25,7 @@ module.exports = {
 		let mensaje;
 
 		// Obtiene el link y el id de la edicion
-		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		let link = await baseDeDatos.obtienePorCondicion("links", {url: datos.url}, "statusRegistro");
 		const edicion = link
 			? await baseDeDatos.obtienePorCondicion("linksEdicion", {link_id: link.id, editadoPor_id: userID})
 			: null;
@@ -61,7 +61,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const revisorLinks = req.session.usuario.rolUsuario.revisorLinks;
 		const ahora = comp.fechaHora.ahora();
-		let link = url ? await baseDeDatos.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
+		let link = url ? await baseDeDatos.obtienePorCondicion("links", {url}, "statusRegistro") : "";
 		let respuesta = {};
 
 		// Si el campo 'url' no tiene valor, interrumpe la función
@@ -112,7 +112,7 @@ module.exports = {
 		let respuesta = {};
 
 		// Obtiene el link
-		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		let link = await baseDeDatos.obtienePorCondicion("links", {url: datos.url}, "statusRegistro");
 
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
@@ -145,7 +145,7 @@ module.exports = {
 		let respuesta = {};
 
 		// Obtiene el link
-		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		let link = await baseDeDatos.obtienePorCondicion("links", {url: datos.url}, "statusRegistro");
 
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe

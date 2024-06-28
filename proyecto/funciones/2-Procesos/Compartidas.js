@@ -31,7 +31,7 @@ module.exports = {
 		ediciones: async (condicion, dato) => {
 			// Obtiene los registros
 			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConIncludeConLimite(dato.entidad, condicion, dato.include, 10)
+				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
 				.then((n) =>
 					n.map((m) => {
 						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
@@ -979,7 +979,7 @@ module.exports = {
 	},
 	obtieneUsuarioPorMail: async (email) => {
 		const include = ["rolUsuario", "statusRegistro", "genero"];
-		const usuario = await baseDeDatos.obtienePorCondicionConInclude("usuarios", {email}, include);
+		const usuario = await baseDeDatos.obtienePorCondicion("usuarios", {email}, include);
 		return usuario;
 	},
 

@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
 	if (v.usuario.rolUsuario.autTablEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
-	v.registro = await baseDeDatos.obtienePorIdConInclude(v.entidad, v.entID, v.include);
+	v.registro = await baseDeDatos.obtienePorId(v.entidad, v.entID, v.include);
 	v.creadoEn = v.registro.creadoEn;
 	v.creadoEn.setSeconds(0);
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));

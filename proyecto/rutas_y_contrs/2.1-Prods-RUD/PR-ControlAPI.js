@@ -114,7 +114,7 @@ module.exports = {
 			// Datos particulares
 			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			datos = await baseDeDatos.obtienePorCondicionConInclude("calRegistros", condics, include);
+			datos = await baseDeDatos.obtienePorCondicion("calRegistros", condics, include);
 			if (datos) {
 				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
 				calificaciones.push({autor: "Tuya", valores: datos});

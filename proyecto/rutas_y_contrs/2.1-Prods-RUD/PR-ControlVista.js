@@ -54,7 +54,7 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") {
 			prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			prodComb.colecAprob = baseDeDatos.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
+			prodComb.colecAprob = baseDeDatos.obtienePorId("capitulos", id, "coleccion").then((n) =>
 				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
 		}
@@ -291,7 +291,7 @@ module.exports = {
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 			const condics = {usuario_id: userID, entidad, entidad_id: id};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
-			const califUsuario = await baseDeDatos.obtienePorCondicionConInclude("calRegistros", condics, include);
+			const califUsuario = await baseDeDatos.obtienePorCondicion("calRegistros", condics, include);
 			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
 			const iconoDL = "fa-chart-simple fa-rotate-90";
 			const iconoDB = "fa-chart-line";
