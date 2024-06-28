@@ -1225,7 +1225,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	let resultado = relacInclude
 		? registro[relacInclude] // El registro tiene un valor 'include'
 			? registro[relacInclude].nombre // Muestra el valor 'include'
-			: "(sin datos)"
+			: null
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
