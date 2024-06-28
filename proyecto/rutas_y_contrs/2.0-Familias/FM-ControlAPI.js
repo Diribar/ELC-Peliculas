@@ -1,6 +1,4 @@
 "use strict";
-// Variables
-const procesos = require("./FM-Procesos");
 
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
