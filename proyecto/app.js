@@ -150,7 +150,7 @@ app.set("views", [
 		hoyEstamos: baseDeDatos.obtieneTodosConOrden("hoyEstamos", "nombre"),
 
 		// Variables de links
-		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", true), // orden descendente
+		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", "DESC"), // orden descendente
 		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
 		linksCategs: baseDeDatos.obtieneTodos("linksCategs"),
 
