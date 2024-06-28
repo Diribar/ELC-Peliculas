@@ -694,7 +694,7 @@ module.exports = {
 			// Busca
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
-				baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
+				await baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
 			}
 
 			// Fin
