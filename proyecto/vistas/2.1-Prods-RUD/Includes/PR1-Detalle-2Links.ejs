@@ -4,7 +4,7 @@
 		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origen=" + rutaCRUD; %>
 		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino) %>
 		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
-			<button id="primerCap" type="button" class="scaleCh">Ir al primer capítulo</button>
+			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
 	<% } else if (links.existen) { %>
 		<!-- Ayuda -->
@@ -18,7 +18,7 @@
 				<% if (links[grupo].length == 1) { %>
 					<a href="<%= link0.url %>">
 						<button type="button"
-							class="<%= link0.idioma %> scaleCh"
+							class="<%= link0.idioma %>"
 							<% if (!autofocus) { %>autofocus<% autofocus = true %><% } %>
 						><%= link0.titulo %></button>
 					</a>
