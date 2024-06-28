@@ -11,7 +11,7 @@ main #familias {
 		.temas {
 			padding: 0 10px; width: 385px; max-width: 100%;
 			h3 {margin: 10px 0 2px;}
-			.bloqueRegistros {
+			.bloqueRegs {
 				overflow-y: hidden;
 				a:hover p {background-color: var(--gris-intermedio)}
 			}
