@@ -1,13 +1,15 @@
 <!-- Motivos -->
 <section id="motivos">
     <h3>Elegí el motivo de rechazo:</h3>
-    <ul type="none">
+    <select name="motivo_id" id="">
+        <% let grupoAnt %>
         <% for (let motivo of motivos) { %>
-            <li>
-                <input type="radio" id="<%= motivo.id %>" class="<%= motivo.agregarComent ? 'agregarComent' : '' %>" name="motivo_id" value="<%= motivo.id %>">
-                <label for="<%= motivo.id %>"><%= motivo.descripcion %></label>
-            </li>
+            <% if (grupoAnt && motivo.grupo != grupoAnt) { %></optgroup><% } %>
+            <% if (motivo.grupo != grupoAnt) { %><optgroup label="Motivos <%= motivo.grupo %>"><% } %>
+                <option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
+            <% grupoAnt = motivo.grupo %>
         <% } %>
-    </ul>
+        </optgroup>
+    </select>
 </section>
 <%- include("FM1-Comentario") %>
