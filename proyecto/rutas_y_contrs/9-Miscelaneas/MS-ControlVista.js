@@ -118,7 +118,7 @@ module.exports = {
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
 				productos.push(
-					...(await baseDeDatos.obtieneTodosConInclude(entidad, "links").then((n) =>
+					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) =>
 						n.filter((m) => m.links.length > 1)
 					))
 				);

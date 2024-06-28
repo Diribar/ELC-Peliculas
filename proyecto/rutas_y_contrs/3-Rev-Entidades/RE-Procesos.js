@@ -12,7 +12,7 @@ module.exports = {
 			let productos = [];
 
 			// Obtiene todas las ediciones
-			let ediciones = await baseDeDatos.obtieneTodosConInclude("prodsEdicion", include);
+			let ediciones = await baseDeDatos.obtieneTodos("prodsEdicion", include);
 
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
@@ -226,7 +226,7 @@ module.exports = {
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await baseDeDatos.obtieneTodosConInclude("rclvsEdicion", include);
+			let ediciones = await baseDeDatos.obtieneTodos("rclvsEdicion", include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -1026,7 +1026,7 @@ let FN_links = {
 			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
 
 		// Obtiene todas las ediciones
-		const ediciones = baseDeDatos.obtieneTodosConInclude("linksEdicion",include)
+		const ediciones = baseDeDatos.obtieneTodos("linksEdicion",include)
 
 		// Los consolida
 		const links = await Promise.all([originales, ediciones]).then(([originales, ediciones]) => ({originales, ediciones}));

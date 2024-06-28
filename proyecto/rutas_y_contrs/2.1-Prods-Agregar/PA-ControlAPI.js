@@ -190,7 +190,7 @@ module.exports = {
 	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
-		let datos = await baseDeDatos.obtieneTodos("colecciones", "nombreCastellano");
+		let datos = await baseDeDatos.obtieneTodosConOrden("colecciones", "nombreCastellano");
 
 		// Deja solamente los campos 'id' y 'nombreCastellano'
 		datos = datos.map((n) => ({id: n.id, nombreCastellano: n.nombreCastellano + " (" + n.anoEstreno + ")"}));

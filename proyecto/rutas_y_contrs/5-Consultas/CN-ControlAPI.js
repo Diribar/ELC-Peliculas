@@ -54,7 +54,7 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				...{layoutsBD: cn_layouts, entidadesBD: cn_entidades}, // Opciones y Entidades
+				...{layoutsBD: cnLayouts, entidadesBD: cnEntidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre},
 				...{filtrosConDefault, epocasEstreno, unDia, setTimeOutStd},
@@ -189,7 +189,7 @@ module.exports = {
 		// Variables
 		const prefs = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const layout = cn_layouts.find((n) => n.id == prefs.layout_id);
+		const layout = cnLayouts.find((n) => n.id == prefs.layout_id);
 		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = prefs;
 

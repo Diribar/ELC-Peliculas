@@ -94,7 +94,7 @@ module.exports = {
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) apMars = await baseDeDatos.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
+			if (personajes) apMars = await baseDeDatos.obtieneTodosConOrden("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {

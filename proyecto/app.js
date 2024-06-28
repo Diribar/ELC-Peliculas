@@ -121,54 +121,55 @@ app.set("views", [
 	global.baseDeDatos = require("./funciones/2-Procesos/BaseDatos");
 	let datos = {
 		// Variables de usuario
-		statusRegistrosUs: baseDeDatos.obtieneTodos("statusRegistrosUs", "orden"),
-		rolesUs: baseDeDatos.obtieneTodos("rolesUsuarios", "orden"),
+		statusRegistrosUs: baseDeDatos.obtieneTodosConOrden("statusRegistrosUs", "orden"),
+		rolesUs: baseDeDatos.obtieneTodosConOrden("rolesUsuarios", "orden"),
 
 		// Variable de entidades
-		statusRegistros: baseDeDatos.obtieneTodos("statusRegistros", "orden"),
-		generos: baseDeDatos.obtieneTodos("generos", "orden"),
-		motivosStatus: baseDeDatos.obtieneTodos("motivosStatus", "orden"),
-		motivosEdics: baseDeDatos.obtieneTodos("motivosEdics", "orden"),
+		statusRegistros: baseDeDatos.obtieneTodosConOrden("statusRegistros", "orden"),
+		generos: baseDeDatos.obtieneTodosConOrden("generos", "orden"),
+		motivosStatus: baseDeDatos.obtieneTodosConOrden("motivosStatus", "orden"),
+		motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
 
 		// Variables de productos
-		idiomas: baseDeDatos.obtieneTodos("idiomas", "nombre"),
-		paises: baseDeDatos.obtieneTodos("paises", "nombre"),
-		publicos: baseDeDatos.obtieneTodos("publicos", "orden"),
-		tiposActuacion: baseDeDatos.obtieneTodos("tiposActuacion", "orden"),
-		epocasEstreno: baseDeDatos.obtieneTodos("epocasEstreno", "hasta", "DESC"),
+		idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
+		paises: baseDeDatos.obtieneTodosConOrden("paises", "nombre"),
+		publicos: baseDeDatos.obtieneTodosConOrden("publicos", "orden"),
+		tiposActuacion: baseDeDatos.obtieneTodosConOrden("tiposActuacion", "orden"),
+		epocasEstreno: baseDeDatos.obtieneTodosConOrden("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
 		calCriterios: baseDeDatos.obtieneTodos("calCriterios"),
-		feValores: baseDeDatos.obtieneTodos("feValores", "orden"),
-		entretiene: baseDeDatos.obtieneTodos("entretiene", "orden"),
-		calidadTecnica: baseDeDatos.obtieneTodos("calidadTecnica", "orden"),
+		feValores: baseDeDatos.obtieneTodosConOrden("feValores", "orden"),
+		entretiene: baseDeDatos.obtieneTodosConOrden("entretiene", "orden"),
+		calidadTecnica: baseDeDatos.obtieneTodosConOrden("calidadTecnica", "orden"),
 
 		// Variables de RCLVs
-		epocasOcurrencia: baseDeDatos.obtieneTodos("epocasOcurrencia", "orden"),
-		rolesIglesia: baseDeDatos.obtieneTodos("rolesIglesia", "orden"),
-		canons: baseDeDatos.obtieneTodos("canons", "orden"),
-		hoyEstamos: baseDeDatos.obtieneTodos("hoyEstamos").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
+		epocasOcurrencia: baseDeDatos.obtieneTodosConOrden("epocasOcurrencia", "orden"),
+		rolesIglesia: baseDeDatos.obtieneTodosConOrden("rolesIglesia", "orden"),
+		canons: baseDeDatos.obtieneTodosConOrden("canons", "orden"),
+		hoyEstamos: baseDeDatos.obtieneTodosConOrden("hoyEstamos", "nombre"),
 
 		// Variables de links
-		linksProvs: baseDeDatos.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
+		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", true), // orden descendente
 		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
 		linksCategs: baseDeDatos.obtieneTodos("linksCategs"),
 
 		// Consultas
-		cn_entidades: baseDeDatos.obtieneTodos("cn_entidades"),
-		cn_layouts: baseDeDatos.obtieneTodosConInclude("cn_layouts", "entidades")
+		cnEntidades: baseDeDatos.obtieneTodos("cnEntidades"),
+		cnLayouts: baseDeDatos
+			.obtieneTodos("cnLayouts", "entidades")
 			.then((n) => n.filter((m) => m.activo))
 			.then((n) => n.sort((a, b) => a.orden - b.orden)),
 		pppOpcsArray: baseDeDatos.obtieneTodos("pppOpciones"),
 
 		// Menús
-		menuCapacitac: baseDeDatos.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
-		menuUsuario: baseDeDatos.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuCapacitac: baseDeDatos.obtieneTodosConOrden("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuUsuario: baseDeDatos.obtieneTodosConOrden("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
 
 		// Otros
 		meses: baseDeDatos.obtieneTodos("meses"),
-		fechasDelAno: baseDeDatos.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
-		novedadesELC: baseDeDatos.obtieneTodos("novedadesELC", "fecha"),
+		fechasDelAno: baseDeDatos.obtieneTodos("fechasDelAno", "epocaDelAno"),
+		novedadesELC: baseDeDatos.obtieneTodosConOrden("novedadesELC", "fecha"),
 	};
 
 	// Procesa todas las lecturas

@@ -31,7 +31,7 @@ module.exports = {
 
 		// Obtiene los productos
 		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(baseDeDatos.obtieneTodosConInclude(entidad, "publico"));
+			productos.push(baseDeDatos.obtieneTodos(entidad, "publico"));
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
 
 		// Cuenta las cantidades
@@ -72,7 +72,7 @@ module.exports = {
 		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar}),
 	linksPorProv: async (req, res) => {
 		// Obtiene los provs
-		let provs = await baseDeDatos.obtieneTodosConInclude("linksProvs", "links");
+		let provs = await baseDeDatos.obtieneTodos("linksProvs", "links");
 
 		// Cuenta la cantidad de links
 		provs = provs.map((m) => {
@@ -111,7 +111,7 @@ let obtieneEfemerides = async () => {
 	let fechas;
 
 	// Obtiene las fechas con sus RCLV
-	fechas = await baseDeDatos.obtieneTodosConInclude("fechasDelAno", include);
+	fechas = await baseDeDatos.obtieneTodos("fechasDelAno", include);
 	fechas = fechas.filter((n) => n.id < 400);
 
 	// Concentra los distintos RCLVs en el campo RCLV

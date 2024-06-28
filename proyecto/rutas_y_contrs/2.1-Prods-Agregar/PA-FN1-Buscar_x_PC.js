@@ -230,7 +230,7 @@ module.exports = {
 				? baseDeDatos.obtieneTodos("peliculas")
 				: [];
 			const colecciones = productos.filter((n) => n.entidad == "colecciones").length
-				? baseDeDatos.obtieneTodosConInclude("colecciones", "capitulos")
+				? baseDeDatos.obtieneTodos("colecciones", "capitulos")
 				: [];
 			const prodsBD = await Promise.all([peliculas, colecciones]).then(([peliculas, colecciones]) => [
 				...peliculas,

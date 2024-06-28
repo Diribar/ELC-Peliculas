@@ -147,7 +147,7 @@ module.exports = {
 		let edicsPERL = [];
 		for (let entPERL of entsPERL) {
 			const registros = await baseDeDatos
-				.obtieneTodosConInclude(entPERL, ["editadoPor", ...include[entPERL]])
+				.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 				.then((edics) =>
 					edics.map((edic) => {
@@ -179,7 +179,7 @@ module.exports = {
 		// edicsLinks
 		include = ["editadoPor", ...variables.entidades.asocProds];
 		const edicsLinks = await baseDeDatos
-			.obtieneTodosConInclude("linksEdicion", include)
+			.obtieneTodos("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {

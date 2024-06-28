@@ -158,7 +158,7 @@ module.exports = {
 	rutinasHorarias: {
 		ProdAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
-			const links = await baseDeDatos.obtieneTodosConInclude("links", variables.entidades.asocProds);
+			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
 
 			// Actualiza su valor
 			comp.prodAprobEnLink(links);
@@ -173,9 +173,9 @@ module.exports = {
 			// Rutina por peliculas y capitulos
 			for (let entidad of ["peliculas", "capitulos"]) {
 				// Obtiene los ID de los registros de la entidad
-				const IDs = await baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}).then((n) =>
-					n.map((m) => m.id)
-				);
+				const IDs = await baseDeDatos
+					.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids})
+					.then((n) => n.map((m) => m.id));
 
 				// Ejecuta la función linksEnProd
 				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
@@ -183,9 +183,9 @@ module.exports = {
 			await Promise.all(esperar);
 
 			// Rutina por colecciones
-			const IDs = await baseDeDatos.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids}).then((n) =>
-				n.map((m) => m.id)
-			);
+			const IDs = await baseDeDatos
+				.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
+				.then((n) => n.map((m) => m.id));
 			for (let id of IDs) comp.linksEnColec(id);
 
 			// Fin
@@ -589,7 +589,8 @@ module.exports = {
 			// Obtiene la frecuencia por país
 			for (let entidad of entidades) {
 				// Obtiene todos los registros de la entidad
-				await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion)
+				await baseDeDatos
+					.obtieneTodosPorCondicion(entidad, condicion)
 					.then((n) => n.filter((m) => m.paises_id))
 					.then((n) =>
 						n.map((m) => {
@@ -640,7 +641,7 @@ module.exports = {
 		},
 		EliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
-			let misConsultas = await baseDeDatos.obtieneTodos("misConsultas").then((n) => n.reverse());
+			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", true);
 			const limite = 20;
 			while (misConsultas.length) {
 				// Obtiene los registros del primer usuario
@@ -694,10 +695,9 @@ module.exports = {
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 				verificador.push(
-					baseDeDatos.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
-						.then((n) =>
-							n.map((m) => baseDeDatos.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null}))
-						)
+					baseDeDatos
+						.obtieneTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}})
+						.then((n) => n.map((m) => baseDeDatos.actualizaPorId(entidad, m.id, {anoNacim: null, anoComienzo: null})))
 						.then(() => true)
 				);
 			}
@@ -746,7 +746,7 @@ let actualizaLaEpocaDeEstreno = async () => {
 };
 let corrigeStatusColeccionEnCapitulo = async () => {
 	// Variables
-	const registros = await baseDeDatos.obtieneTodosConInclude("capitulos", "coleccion");
+	const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
 
 	// Rutina por registro
 	for (let registro of registros) {
