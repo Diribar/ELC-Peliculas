@@ -1,27 +1,29 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let inputs = document.querySelectorAll(".edicion .inputs");
-	let ediciones = document.querySelectorAll(".edicion .inputError");
-	let aprobs = document.querySelectorAll(".edicion .inputError .aprob");
-	let rechs = document.querySelectorAll(".edicion .inputError .rech");
-	let edicsID = document.querySelectorAll(".edicion .edicID");
-	let condiciones = "?entidad=links";
-	let motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
+	let DOM = {
+		inputs: document.querySelectorAll(".edicion .inputs"),
+		ediciones: document.querySelectorAll(".edicion .inputError"),
+		aprobs: document.querySelectorAll(".edicion .inputError .aprob"),
+		rechs: document.querySelectorAll(".edicion .inputError .rech"),
+		edicsID: document.querySelectorAll(".edicion .edicID"),
+	};
+	const condicion = "?entidad=links";
+	const motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
 
 	// Decisión tomada
-	for (let indice = 0; indice < ediciones.length; indice++) {
+	for (let indice = 0; indice < DOM.ediciones.length; indice++) {
 		// Variables
-		let url = condiciones;
-		url += "&edicID=" + edicsID[indice].innerHTML;
-		url += "&campo=" + inputs[indice].name;
+		let url = condicion;
+		url += "&edicID=" + DOM.edicsID[indice].innerHTML;
+		url += "&campo=" + DOM.inputs[indice].name;
 
 		// Eventos
-		aprobs[indice].addEventListener("click", async () => {
+		DOM.aprobs[indice].addEventListener("click", async () => {
 			url += "&aprob=SI";
 			await resultado(url);
 		});
-		rechs[indice].addEventListener("click", async () => {
+		DOM.rechs[indice].addEventListener("click", async () => {
 			url += "&motivo_id=" + motivoGenerico_id;
 			await resultado(url);
 		});

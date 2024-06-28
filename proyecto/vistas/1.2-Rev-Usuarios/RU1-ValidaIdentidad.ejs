@@ -1,8 +1,8 @@
-<%- include('CMP-TimerContador') %>
+<%- include('MN-TimerContador') %>
 <section id="tituloPrincipal">
 	<!-- Título y Ayuda -->
 	<h1 id="titulo"><%= titulo %></h1>
-	<%- include("CMP-Ayuda", {mensajes: ["Necesitamos que nos digas si los datos coinciden con el documento.", "Si el documento no corresponde, te vamos a pedir que nos digas el motivo."]}) %>
+	<%- include("MN-Ayuda", {mensajes: ["Necesitamos que nos digas si los datos coinciden con el documento.", "Si el documento no corresponde, te vamos a pedir que nos digas el motivo."]}) %>
 </section>
 <form method="POST" id="subCuerpo" class="flexCol">
 	<section id="datos" class="bordeConSombra">

@@ -1,69 +1,11 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procesos = require("./PR-FN-Procesos");
-const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	califics: {
-		delProducto: async (req, res) => {
-			// Variables
-			const {entidad, id: prodID} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-			let datos;
-			let calificaciones = [];
-
-			// Datos generales
-			datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
-				n.feValores,
-				n.entretiene,
-				n.calidadTecnica,
-				n.calificacion,
-			]);
-			calificaciones.push({autor: "Gral.", valores: datos});
-
-			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const include = ["feValores", "entretiene", "calidadTecnica"];
-			datos = await BD_genericas.obtienePorCondicionConInclude("calRegistros", condics, include);
-			if (datos) {
-				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
-				calificaciones.push({autor: "Tuya", valores: datos});
-			}
-
-			// Fin
-			return res.json(calificaciones);
-		},
-		delUsuarioProducto: async (req, res) => {
-			// Variables
-			const {entidad, id: prodID} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-
-			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			const califGuardada = await BD_genericas.obtienePorCondicion("calRegistros", condics);
-
-			// Fin
-			return res.json({califGuardada, atributosCalific, calCriterios});
-		},
-		elimina: async (req, res) => {
-			// Variables
-			const {entidad, id: entidad_id} = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : "";
-
-			// Elimina
-			const condics = {usuario_id: userID, entidad, entidad_id};
-			await BD_genericas.eliminaTodosPorCondicion("calRegistros", condics);
-
-			// Actualiza las calificaciones del producto
-			await procesos.actualizaCalifProd({entidad, entidad_id});
-
-			// Fin
-			return res.json();
-		},
-	},
-
 	// Edición del Producto
 	edicion: {
 		valida: async (req, res) => {
@@ -73,7 +15,7 @@ module.exports = {
 			// Averigua los errores solamente para esos campos
 			req.query.publico = req.session.usuario.rolUsuario.autTablEnts;
 			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.autTablEnts;
-			let errores = await valida.consolidado({campos, datos: req.query});
+			let errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
 
 			// Devuelve el resultado
 			return res.json(errores);
@@ -84,7 +26,7 @@ module.exports = {
 			let userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entID: prodID,
 				userID,
@@ -106,7 +48,7 @@ module.exports = {
 				creados_ids,
 			};
 			if (entidad == "capitulos")
-				datos.coleccion_id = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
+				datos.coleccion_id = await baseDeDatos.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 
 			// Fin
 			return res.json(datos);
@@ -126,7 +68,7 @@ module.exports = {
 			const userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entID: prodID,
 				userID,
@@ -139,7 +81,7 @@ module.exports = {
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", prodEdic.avatar);
-				BD_genericas.eliminaPorId("prodsEdicion", prodEdic.id);
+				baseDeDatos.eliminaPorId("prodsEdicion", prodEdic.id);
 			}
 			// Terminar
 			return res.json();
@@ -148,6 +90,64 @@ module.exports = {
 			if (req.query.avatar) delete req.query.avatar;
 			req.session.edicProd = req.query;
 			res.cookie("edicProd", req.query, {maxAge: unDia});
+			return res.json();
+		},
+	},
+
+	califics: {
+		delProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+			let datos;
+			let calificaciones = [];
+
+			// Datos generales
+			datos = await baseDeDatos.obtienePorId(entidad, prodID).then((n) => [
+				n.feValores,
+				n.entretiene,
+				n.calidadTecnica,
+				n.calificacion,
+			]);
+			calificaciones.push({autor: "Gral.", valores: datos});
+
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const include = ["feValores", "entretiene", "calidadTecnica"];
+			datos = await baseDeDatos.obtienePorCondicionConInclude("calRegistros", condics, include);
+			if (datos) {
+				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
+				calificaciones.push({autor: "Tuya", valores: datos});
+			}
+
+			// Fin
+			return res.json(calificaciones);
+		},
+		delUsuarioProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const califGuardada = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
+
+			// Fin
+			return res.json({califGuardada, atributosCalific, calCriterios});
+		},
+		elimina: async (req, res) => {
+			// Variables
+			const {entidad, id: entidad_id} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+
+			// Elimina
+			const condics = {usuario_id: userID, entidad, entidad_id};
+			await baseDeDatos.eliminaTodosPorCondicion("calRegistros", condics);
+
+			// Actualiza las calificaciones del producto
+			await procesos.actualizaCalifProd({entidad, entidad_id});
+
+			// Fin
 			return res.json();
 		},
 	},
@@ -161,13 +161,13 @@ module.exports = {
 
 			// Si existe el registro, lo elimina
 			const condics = {entidad, entidad_id, usuario_id};
-			const registro = await BD_genericas.obtienePorCondicion("pppRegistros", condics);
-			if (registro) BD_genericas.eliminaPorId("pppRegistros", registro.id);
+			const registro = await baseDeDatos.obtienePorCondicion("pppRegistros", condics);
+			if (registro) baseDeDatos.eliminaPorId("pppRegistros", registro.id);
 
 			// Si la opción no es sinPref, agrega el registro
 			if (ppp_id != pppOpcsObj.sinPref.id) {
 				const datos = {entidad, entidad_id, usuario_id, ppp_id};
-				BD_genericas.agregaRegistro("pppRegistros", datos);
+				baseDeDatos.agregaRegistro("pppRegistros", datos);
 			}
 
 			// Fin

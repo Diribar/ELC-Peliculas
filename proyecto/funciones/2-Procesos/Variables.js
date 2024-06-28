@@ -404,15 +404,9 @@ module.exports = {
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
-	vistaAnterior: (url) => {
-		return {nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"};
-	},
-	vistaActual: (req) => {
-		return {nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"};
-	},
-	vistaSiguiente: (url) => {
-		return {nombre: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"};
-	},
+	vistaAnterior: (url) => ({nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"}),
+	vistaActual: (req) => ({nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
+	vistaSiguiente: (url) => ({nombre: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
 	vistaInactivar: (req) => {
 		return req.originalUrl.startsWith("/revision/")
 			? {
@@ -443,9 +437,7 @@ module.exports = {
 		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
-	vistaEntendido: (url) => {
-		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
-	},
+	vistaEntendido: (url) => ({nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
 
 	// Varios
 	origenes: [
@@ -475,7 +467,7 @@ let regsRCLV = async (entidades, userID) => {
 
 	// Obtiene los registrosRCLV
 	for (let entidad of entidades)
-		valores.push(BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condics, "statusRegistro"));
+		valores.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condics, "statusRegistro"));
 	valores = await Promise.all(valores);
 
 	// Pule la información

@@ -23,7 +23,7 @@ module.exports = {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
 		let fechaDelAno_id = dia != "0" ? fechasDelAno.find((n) => n.dia == objeto.dia && n.mes_id == objeto.mes_id).id : 400;
-		let casos = await BD_genericas.obtieneTodosPorCondicion(entidad, {fechaDelAno_id})
+		let casos = await baseDeDatos.obtieneTodosPorCondicion(entidad, {fechaDelAno_id})
 			.then((n) => n.filter((m) => m.id != id))
 			.then((n) => n.filter((m) => m.id > 10))
 			.then((n) => n.map((m) => m.nombre));

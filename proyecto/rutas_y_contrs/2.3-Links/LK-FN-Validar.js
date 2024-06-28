@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
 	// ControllerAPI (validaLinks)
@@ -83,9 +83,9 @@ let validaLinkRepetidos = async (datos) => {
 	datos = {...datos, entidad: "links"};
 	let respuesta = "";
 	// Obtiene casos
-	let id = await BD_especificas.validaRepetidos(["url"], datos);
+	let id = await validacsFM.validacs.repetidos(["url"], datos);
 	if (id) {
-		let link = await BD_genericas.obtienePorId("links", id);
+		let link = await baseDeDatos.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(prodEntidad);
 		let prodID = link[campo_id];

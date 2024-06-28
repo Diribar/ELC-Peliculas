@@ -11,7 +11,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
+		let links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: prodID}, include);
 		links.sort((a, b) => (a.url < b.url ? -1 : 1));
 		links.sort((a, b) => a.parte - b.parte);
 
@@ -30,7 +30,7 @@ module.exports = {
 	},
 	datosLink: async (datos) => {
 		// Datos del producto
-		const regProd = await BD_genericas.obtienePorId(datos.prodEntidad, datos.prodID);
+		const regProd = await baseDeDatos.obtienePorId(datos.prodEntidad, datos.prodID);
 		datos.prodAprob = aprobados_ids.includes(regProd.statusRegistro_id);
 
 		// campo_id
@@ -54,7 +54,7 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	condiciones: (link, userID, tema) => {
+	condicion: (link, userID, tema) => {
 		// Variables
 		let cond = {};
 		cond.propio = link.statusSugeridoPor_id == userID;

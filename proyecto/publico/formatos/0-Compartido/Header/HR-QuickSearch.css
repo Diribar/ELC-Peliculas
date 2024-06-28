@@ -12,9 +12,9 @@
 		#muestraResultados {
 			border-top-left-radius: 0; overflow: hidden;
 			display: flex; flex-direction: column;
+			:is(p, a.prod:nth-of-type(odd)) {background: whitesmoke;}
 			a {
 				&.resaltar {background-color: var(--gris-intermedio) !important;}
-				&.prod:nth-of-type(odd) {background: whitesmoke;}
 				&.prod:nth-of-type(even) {background: var(--celeste-claro);}
 				&.rclv:nth-of-type(odd) {background: var(--amarillo-oscuro);}
 				&.rclv:nth-of-type(even) {background: var(--amarillo-claro);}

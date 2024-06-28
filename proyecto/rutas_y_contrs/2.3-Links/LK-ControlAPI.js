@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procesos = require("./LK-FN-Procesos");
 const valida = require("./LK-FN-Validar");
 
@@ -25,28 +25,30 @@ module.exports = {
 		let mensaje;
 
 		// Obtiene el link y el id de la edicion
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
-		const edicID = link ? await BD_especificas.obtieneELC_id("linksEdicion", {link_id: link.id, editadoPor_id: userID}) : "";
+		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		const edicion = link
+			? await baseDeDatos.obtienePorCondicion("linksEdicion", {link_id: link.id, editadoPor_id: userID})
+			: null;
 
 		// Si el link no existía, lo crea
 		if (!link) {
 			datos.creadoPor_id = userID;
 			datos.statusSugeridoPor_id = userID;
-			link = await BD_genericas.agregaRegistro("links", datos);
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			link = await baseDeDatos.agregaRegistro("links", datos);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza con la edición
 		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
-			await BD_genericas.actualizaPorId("links", link.id, datos);
+			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
 		else {
-			if (edicID) datos.id = edicID;
-			mensaje = await procsCRUD.guardaActEdic({entidad: "links", original: link, edicion: datos, userID});
+			if (edicion) datos.id = edicion.id;
+			mensaje = await procsFM.guardaActEdic({entidad: "links", original: link, edicion: datos, userID});
 			if (mensaje) mensaje = "Edición guardada";
 		}
 
@@ -59,7 +61,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const revisorLinks = req.session.usuario.rolUsuario.revisorLinks;
 		const ahora = comp.fechaHora.ahora();
-		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
+		let link = url ? await baseDeDatos.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
 		let respuesta = {};
 
 		// Si el campo 'url' no tiene valor, interrumpe la función
@@ -71,11 +73,11 @@ module.exports = {
 			(link.statusRegistro_id == creado_id && link.creadoPor_id == userID) || // El link está en status 'creado' y por el usuario
 			(link.statusRegistro_id == inactivo_id && revisorLinks) // El link está en status 'inactivo' y es un revisorLinks
 		) {
-			await BD_genericas.eliminaPorId("links", link.id); // Elimina el registro original
-			BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
-			BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
+			await baseDeDatos.eliminaPorId("links", link.id); // Elimina el registro original
+			baseDeDatos.eliminaTodosPorCondicion("histStatus", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
+			baseDeDatos.eliminaTodosPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
 			link.statusRegistro_id = inactivo_id;
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
@@ -93,9 +95,9 @@ module.exports = {
 				motivo_id,
 				statusRegistro_id: inactivar_id,
 			};
-			await BD_genericas.actualizaPorId("links", link.id, datos);
+			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 		}
 
@@ -110,7 +112,7 @@ module.exports = {
 		let respuesta = {};
 
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
 
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
@@ -127,9 +129,9 @@ module.exports = {
 				statusSugeridoPor_id: userID,
 				statusRegistro_id: recuperar_id,
 			};
-			await BD_genericas.actualizaPorId("links", link.id, datos);
+			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 
@@ -143,7 +145,7 @@ module.exports = {
 		let respuesta = {};
 
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+		let link = await baseDeDatos.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
 
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
@@ -166,11 +168,11 @@ module.exports = {
 					? {statusRegistro_id: aprobado_id, motivo_id: null}
 					: {statusRegistro_id: inactivo_id};
 			const categoria_id = comp.linksVencPorSem.categoria({...link, statusRegistro_id: nuevosDatos.statusRegistro_id});
-			await BD_genericas.actualizaPorId("links", link.id, {...nuevosDatos, categoria_id});
+			await baseDeDatos.actualizaPorId("links", link.id, {...nuevosDatos, categoria_id});
 
 			// Actualiza los campos del producto asociado
 			link = {...link, ...nuevosDatos};
-			await procsCRUD.accionesPorCambioDeStatus("links", link);
+			await procsFM.accionesPorCambioDeStatus("links", link);
 
 			// Respuesta
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};

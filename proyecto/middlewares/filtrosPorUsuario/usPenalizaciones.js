@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	const vistaEntendido = variables.vistaEntendido(req.session.urlActual);
-	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
+	req.session.usuario = await comp.obtieneUsuarioPorMail(req.session.usuario.email);
 	let usuario = req.session.usuario;
 	let informacion;
 
@@ -38,7 +38,7 @@ module.exports = async (req, res, next) => {
 		}
 
 		// Actualiza el usuario
-		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
+		await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 		usuario = {...usuario, ...datos};
 		req.session.usuario = usuario;
 
@@ -63,7 +63,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion && usuario.cartelFinPenaliz) {
 		// Actualiza el usuario
 		let datos = {cartelFinPenaliz: false};
-		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
+		await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 		usuario = {...usuario, ...datos};
 		req.session.usuario = usuario;
 

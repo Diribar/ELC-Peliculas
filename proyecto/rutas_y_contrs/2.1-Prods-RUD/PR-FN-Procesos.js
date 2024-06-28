@@ -52,7 +52,7 @@ module.exports = {
 		let TR = [];
 
 		// Obtiene los links
-		const condiciones = statusLink_id
+		const condicion = statusLink_id
 			? {statusRegistro_id: statusLink_id}
 			: {
 					[Op.or]: [
@@ -62,7 +62,7 @@ module.exports = {
 							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
 					],
 			  };
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condiciones}, include);
+		const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id, ...condicion}, include);
 
 		// Procesos si hay links
 		if (links.length) {
@@ -103,7 +103,7 @@ module.exports = {
 		// Obtiene las calificaciones
 		const condics = {entidad, entidad_id};
 		const include = ["feValores", "entretiene", "calidadTecnica"];
-		const califics = await BD_genericas.obtieneTodosPorCondicionConInclude("calRegistros", condics, include);
+		const califics = await baseDeDatos.obtieneTodosPorCondicion("calRegistros", condics, include);
 
 		// Si existen calificaciones, obtiene los promedios
 		if (califics.length)
@@ -114,7 +114,7 @@ module.exports = {
 						: Math.round(califics.map((n) => n.resultado).reduce((acum, i) => acum + i) / califics.length);
 
 		// Actualiza la calificación en el producto
-		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
+		await baseDeDatos.actualizaPorId(entidad, entidad_id, datos);
 
 		// Fin
 		return;
@@ -125,7 +125,7 @@ module.exports = {
 		const include = "detalle";
 
 		// Obtiene el interés del usuario
-		const registro = await BD_genericas.obtienePorCondicionConInclude("pppRegistros", condics, include);
+		const registro = await baseDeDatos.obtienePorCondicionConInclude("pppRegistros", condics, include);
 		const interesDelUsuario = registro ? registro.detalle : pppOpcsObj.sinPref;
 
 		// Fin

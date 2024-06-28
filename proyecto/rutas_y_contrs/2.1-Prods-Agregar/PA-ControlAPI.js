@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const buscar_x_PC = require("./PA-FN1-Buscar_x_PC");
 const procsDesamb = require("./PA-FN2-Desambiguar");
 const valida = require("./PA-FN3-Validar");
@@ -30,8 +31,8 @@ module.exports = {
 		// Averigua la cantidad de prodsNuevos
 		if (cantProds) {
 			const TMDB_ids = productos.map((n) => n.TMDB_id);
-			let pelis = BD_genericas.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
-			let coles = BD_genericas.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
+			let pelis = baseDeDatos.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
+			let coles = baseDeDatos.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
 			[pelis, coles] = await Promise.all([pelis, coles]);
 			cantProdsNuevos = cantProds - pelis.length - coles.length;
 		} else cantProdsNuevos = 0;
@@ -131,7 +132,7 @@ module.exports = {
 			// Averigua si falta completar algún campo de Datos Duros
 			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 			let camposNombre = camposDD.map((n) => n.nombre);
-			let errores = await valida.datosDuros(camposNombre, datosDuros);
+			let errores = await validacsFM.validacs.datosDuros(camposNombre, datosDuros);
 
 			// Genera la session y cookie para DatosDuros
 			req.session.datosDuros = datosDuros;
@@ -156,7 +157,7 @@ module.exports = {
 		const campos = Object.keys(datos);
 
 		// Averigua los errores solamente para esos campos
-		let errores = await valida.datosDuros(campos, datos);
+		let errores = await validacsFM.validacs.datosDuros(campos, datos);
 
 		// Devuelve el resultado
 		return res.json(errores);
@@ -174,7 +175,7 @@ module.exports = {
 	validaDatosAdics: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		let errores = await valida.datosAdics(campos, req.query);
+		let errores = await validacsFM.validacs.datosAdics(campos, req.query);
 		return res.json(errores);
 	},
 	guardaDatosAdics: (req, res) => {
@@ -190,7 +191,7 @@ module.exports = {
 	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
-		let datos = await BD_genericas.obtieneTodos("colecciones", "nombreCastellano");
+		let datos = await baseDeDatos.obtieneTodosConOrden("colecciones", "nombreCastellano");
 
 		// Deja solamente los campos 'id' y 'nombreCastellano'
 		datos = datos.map((n) => ({id: n.id, nombreCastellano: n.nombreCastellano + " (" + n.anoEstreno + ")"}));
@@ -199,7 +200,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguaCantTemps: async (req, res) => {
-		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then((n) => n.cantTemps);
+		let datos = await baseDeDatos.obtienePorId("colecciones", req.query.id).then((n) => n.cantTemps);
 		return res.json(datos);
 	},
 
@@ -212,9 +213,9 @@ module.exports = {
 		let FA_id = procesos.FA.obtieneFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
-	obtieneELC_id: async (req, res) => {
-		let {entidad, campo, valor} = req.query;
-		let elc_id = await BD_especificas.obtieneELC_id(entidad, {[campo]: valor});
-		return res.json(elc_id);
+	averiguaSiYaExisteEnBd: async (req, res) => {
+		const {entidad, campo, valor} = req.query;
+		const existe = await baseDeDatos.obtienePorCondicion(entidad, {[campo]: valor});
+		return res.json(existe);
 	},
 };

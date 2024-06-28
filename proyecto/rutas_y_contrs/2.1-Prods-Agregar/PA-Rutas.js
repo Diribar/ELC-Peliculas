@@ -44,7 +44,7 @@ router.get("/api/PC-cant-prods", API.cantProductos);
 router.get("/api/obtiene-colecciones", API.averiguaColecciones);
 router.get("/api/obtiene-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
-router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
+router.get("/api/averigua-si-ya-existe-en-bd", API.averiguaSiYaExisteEnBd);
 router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
 router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
 

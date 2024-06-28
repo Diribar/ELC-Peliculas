@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	detalle: {
@@ -16,13 +16,13 @@ module.exports = {
 
 				// Rutina por producto
 				for (let i = 0; i < prodsEnRCLV.length; i++) {
-					let [original, edicion] = await procsCRUD.obtieneOriginalEdicion({
+					let [original, edicion] = await procsFM.obtieneOriginalEdicion({
 						entidad: entProd,
 						entID: prodsEnRCLV[i].id,
 						userID,
 					});
 					if (edicion) {
-						const avatar = procsCRUD.obtieneAvatar(original, edicion).edic;
+						const avatar = procsFM.obtieneAvatar(original, edicion).edic;
 						RCLV[entProd][i] = {...original, ...edicion, avatar, id: original.id};
 					}
 				}
@@ -33,7 +33,7 @@ module.exports = {
 		},
 		prodsDelRCLV: async function (RCLV, userID) {
 			// Variables
-			const pppRegs = await BD_genericas.obtieneTodosPorCondicionConInclude(
+			const pppRegs = await baseDeDatos.obtieneTodosPorCondicion(
 				"pppRegistros",
 				{usuario_id: userID},
 				"detalle"
@@ -54,7 +54,7 @@ module.exports = {
 						let entID = edicion[campo_id];
 
 						// Obtiene los registros del producto original y su edición por el usuario
-						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({entidad: entProd, entID, userID});
+						let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({entidad: entProd, entID, userID});
 
 						// Actualiza la variable del registro original
 						let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
@@ -75,7 +75,7 @@ module.exports = {
 					if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id == userID) return null; // recuperar
 
 					// Variables
-					const avatar = procsCRUD.obtieneAvatar(registro).edic;
+					const avatar = procsFM.obtieneAvatar(registro).edic;
 					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 					const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
 					const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
@@ -323,7 +323,7 @@ module.exports = {
 				// Guarda el nuevo registro
 				DE.creadoPor_id = userID;
 				DE.statusSugeridoPor_id = userID;
-				original = await BD_genericas.agregaRegistro(entidad, DE);
+				original = await baseDeDatos.agregaRegistro(entidad, DE);
 				id = original.id;
 
 				// Les agrega el 'rclv_id' a session y cookie de origen
@@ -340,16 +340,16 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
+				original = await baseDeDatos.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
 				if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id) {
-					await BD_genericas.actualizaPorId(entidad, id, DE);
+					await baseDeDatos.actualizaPorId(entidad, id, DE);
 					original = {...original, ...DE};
 				}
 				// Si no esta en status 'creado', guarda la edición
-				else edicN = await procsCRUD.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
+				else edicN = await procsFM.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
 			}
 
 			// Fin

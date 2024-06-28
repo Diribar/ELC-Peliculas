@@ -1,6 +1,4 @@
 "use strict";
-// Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
 
 module.exports = {
 	// ControllerAPI (validaLinks)

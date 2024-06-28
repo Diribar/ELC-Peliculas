@@ -3,7 +3,7 @@
 	<!-- Título y Ayuda -->
 	<div id="tituloSecundario">
 		<h2>Paso 4 de 5: Datos Adicionales</h2>
-		<%- include("CMP-Ayuda", {mensajes: ayudas.tituloSecundario}) %>
+		<%- include("MN-Ayuda", {mensajes: ayudas.tituloSecundario}) %>
 	</div>
 	<!-- Datos -->
 	<section id="datos">
@@ -36,11 +36,11 @@
 			<div class="flexRowAlign inputError">
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!-- Ayuda para un RCLV -->
-				<%- include("CMP-Ayuda", {mensajes: ayudas.rclvs1, ayudaClass: "ayudaRclv"}) %>
+				<%- include("MN-Ayuda", {mensajes: ayudas.rclvs1, ayudaClass: "ayudaRclv"}) %>
 				<!-- Ayuda para más RCLVs -->
-				<%- include("CMP-Ayuda", {mensaje: ayudas.rclv2, ayudaClass: "ayudaRclv"}) %>
+				<%- include("MN-Ayuda", {mensaje: ayudas.rclv2, ayudaClass: "ayudaRclv"}) %>
 				<div id="errorRCLV" class="ocultar">
-					<%- include("CMP-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
+					<%- include("MN-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
 				</div>
 			</div>
 			<!--No lo voy a responder ahora-->

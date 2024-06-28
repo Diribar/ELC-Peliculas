@@ -8,14 +8,14 @@
 				<option value="<%= opcion.codigo %>" <% if (opcion.codigo==dataEntry.asunto) { %>selected<% } %>><%= opcion.descripcion %></option>
 			<% } %>
 		</select>
-		<%- include("CMP-Errores", {nombre: "asunto"}) %>
+		<%- include("MN-Errores", {nombre: "asunto"}) %>
 	</div>
 
 	<!-- Comentario -->
 	<div class="inputError">
         <p><span id="pendiente">500</span>/500</p>
 		<textarea name="comentario" class="input" placeholder="Escribinos tu comentario"><%= dataEntry.comentario %></textarea>
-		<%- include("CMP-Errores", {nombre: "comentario"}) %>
+		<%- include("MN-Errores", {nombre: "comentario"}) %>
 	</div>
 
 	<!-- Iconos -->

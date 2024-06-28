@@ -1,6 +1,6 @@
 <div id="tituloPrincipal" class="<%= tema %>">
 	<h1 id="titulo"><%= titulo %></h1>
-	<%- include("CMP-Ayuda", {mensajes: ["Estos registros están pendientes de revisar. Se necesita revisarlos a todos.", "En todos los casos, la novedad fue propuesta por otro usuario.", "Las <em>ediciones</em> a revisar son de registros aprobados."]}) %>
+	<%- include("MN-Ayuda", {mensajes: ["Estos registros están pendientes de revisar. Se necesita revisarlos a todos.", "En todos los casos, la novedad fue propuesta por otro usuario.", "Las <em>ediciones</em> a revisar son de registros aprobados."]}) %>
 </div>
 <!-- Datos -->
 <% let familias, DE %>
@@ -13,7 +13,7 @@
 				<!-- Título -->
 				<% familias = "productos" %>
 				<h2><%= familias.toUpperCase() %></h2>
-				<%- include("CMP-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de audiovisual", "Nombre del audiovisual", "Año de lanzamiento"]}) %>
+				<%- include("MN-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de audiovisual", "Nombre del audiovisual", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Registros -->
 			<div class="temas">
@@ -46,7 +46,7 @@
 						<!-- Título -->
 						<% familias = "rclvs" %>
 						<h2><%= familias.toUpperCase() %></h2>
-						<%- include("CMP-Ayuda", {mensajes: ["Si en las altas se le cambia el nombre a algún registro, debe seguir refiriéndose a la misma entidad."]}) %>
+						<%- include("MN-Ayuda", {mensajes: ["Si en las altas se le cambia el nombre a algún registro, debe seguir refiriéndose a la misma entidad."]}) %>
 					</div>
 					<!-- Registros -->
 					<div class="temas">
@@ -70,7 +70,7 @@
 						<% familias = "links" %>
 						<h2><%= familias.toUpperCase() %></h2>
 						<div id="linksPends">Pends: <%= prods %></div>
-						<%- include("CMP-Ayuda", {mensaje: "Son productos aprobados"}) %>
+						<%- include("MN-Ayuda", {mensaje: "Son productos aprobados"}) %>
 					</div>
 					<!-- Gráfico -->
 					<div class="temas">

@@ -54,7 +54,7 @@ module.exports = {
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
 			if (mailEnviado)
-				await BD_genericas.agregaRegistro("usuarios", {
+				await baseDeDatos.agregaRegistro("usuarios", {
 					email,
 					contrasena,
 					statusRegistro_id: mailPendValidar_id,
@@ -85,7 +85,7 @@ module.exports = {
 
 				// intentosDP - usuario
 				intentosDP = datos.usuario.intentosDP + 1;
-				if (intentosDP <= intentosBD) BD_genericas.actualizaPorId("usuarios", datos.usuario.id, {intentosDP});
+				if (intentosDP <= intentosBD) baseDeDatos.actualizaPorId("usuarios", datos.usuario.id, {intentosDP});
 				const intentosPendsBD = Math.max(0, intentosBD - intentosDP);
 
 				// Convierte el resultado en texto
@@ -104,14 +104,14 @@ module.exports = {
 		envioDeMail: async (req, res) => {
 			// Variables
 			const {email} = req.query;
-			const usuario = email ? await BD_genericas.obtienePorCondicion("usuarios", {email}) : "";
+			const usuario = email ? await baseDeDatos.obtienePorCondicion("usuarios", {email}) : "";
 
 			// Envía el mensaje con la contraseña
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email});
 
 			// Si no hubo errores con el envío del email, actualiza la contraseña del usuario
 			if (mailEnviado)
-				await BD_genericas.actualizaPorId("usuarios", usuario.id, {
+				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {
 					contrasena,
 					fechaContrasena: new Date().toISOString(),
 				});
@@ -128,7 +128,7 @@ module.exports = {
 
 		// Si está logueado, actualiza el usuario
 		if (userID && !usuario.videoConsVisto) {
-			BD_genericas.actualizaPorId("usuarios", userID, {videoConsVisto: true});
+			baseDeDatos.actualizaPorId("usuarios", userID, {videoConsVisto: true});
 			req.session.usuario.videoConsVisto = true;
 		}
 

@@ -18,7 +18,7 @@ module.exports = {
 
 			// Obtiene la cabecera
 			if (id && ["string", "number"].includes(typeof id)) {
-				cabecera = await BD_genericas.obtienePorId("consRegsCabecera", id);
+				cabecera = await baseDeDatos.obtienePorId("consRegsCabecera", id);
 				if (
 					!cabecera || // no se encontró una cabecera
 					(!userID && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
@@ -54,7 +54,7 @@ module.exports = {
 		variables: async (req, res) => {
 			// Variables
 			const datos = {
-				...{layoutsBD: cn_layouts, entidadesBD: cn_entidades}, // Opciones y Entidades
+				...{layoutsBD: cnLayouts, entidadesBD: cnEntidades}, // Opciones y Entidades
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre},
 				...{filtrosConDefault, epocasEstreno, unDia, setTimeOutStd},
@@ -64,7 +64,7 @@ module.exports = {
 			if (req.session.usuario && req.session.usuario.id) {
 				datos.userID = req.session.usuario.id;
 				datos.videoConsVisto = req.session.usuario.videoConsVisto;
-				datos.usuarioTienePPP = await BD_genericas.obtieneTodosPorCondicion("pppRegistros", {
+				datos.usuarioTienePPP = await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {
 					usuario_id: datos.userID,
 				}).then((n) => n.length);
 			}
@@ -91,7 +91,7 @@ module.exports = {
 
 			// Si está logueado, actualiza el usuario en la BD
 			if (userID) {
-				BD_genericas.actualizaPorId("usuarios", userID, {configCons_id});
+				baseDeDatos.actualizaPorId("usuarios", userID, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
@@ -105,7 +105,7 @@ module.exports = {
 
 			// Guarda el registro de cabecera
 			const objeto = {usuario_id, nombre: cabecera.nombre};
-			const {id} = await BD_genericas.agregaRegistro("consRegsCabecera", objeto);
+			const {id} = await baseDeDatos.agregaRegistro("consRegsCabecera", objeto);
 
 			// Fin
 			return res.json(id);
@@ -128,19 +128,19 @@ module.exports = {
 			for (let prop in prefs) if (prefs[prop] == filtrosConDefault[prop]) delete prefs[prop];
 
 			// Acciones para edición
-			if (cabecera.edicion) BD_genericas.actualizaPorId("consRegsCabecera", id, {nombre});
+			if (cabecera.edicion) baseDeDatos.actualizaPorId("consRegsCabecera", id, {nombre});
 			// Acciones para 'nuevo' y 'actualizar campos'
 			else {
 				// Si se guardan cambios, se eliminan session y cookie
 				procesos.varios.eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
-				if (!cabecera.nuevo) await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
+				if (!cabecera.nuevo) await baseDeDatos.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
 				for (let prop in prefs) {
 					const objeto = {cabecera_id: id, campo: prop, valor: prefs[prop]};
-					BD_genericas.agregaRegistro("consRegsPrefs", objeto);
+					baseDeDatos.agregaRegistro("consRegsPrefs", objeto);
 				}
 			}
 
@@ -151,10 +151,10 @@ module.exports = {
 			const {cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
-			await BD_genericas.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
+			await baseDeDatos.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
 
 			// Se elimina el registro de cabecera de la configuración
-			await BD_genericas.eliminaPorId("consRegsCabecera", cabecera_id);
+			await baseDeDatos.eliminaPorId("consRegsCabecera", cabecera_id);
 
 			// Fin
 			return res.json();
@@ -189,7 +189,7 @@ module.exports = {
 		// Variables
 		const prefs = JSON.parse(req.query.datos);
 		const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-		const layout = cn_layouts.find((n) => n.id == prefs.layout_id);
+		const layout = cnLayouts.find((n) => n.id == prefs.layout_id);
 		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = prefs;
 
@@ -197,7 +197,7 @@ module.exports = {
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...prefs, layout});
 		let pppRegistros = usuario_id
-			? BD_genericas.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
+			? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle")
 			: [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 

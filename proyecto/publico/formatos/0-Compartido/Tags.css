@@ -17,7 +17,7 @@ input[type="submit"] {display: none;}
 :disabled {cursor: default;}
 
 /* Listas */
-ul[type="dots"] {list-style-position: outside;}
+ul[type="disc"] {list-style-position: outside;}
 :is(ul, ol):not([type="none"]) li {margin-left: 15px;}
 ul ul {padding-left: 30px;}
 

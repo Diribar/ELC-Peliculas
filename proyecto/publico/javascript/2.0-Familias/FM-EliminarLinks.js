@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 		// pasivos: document.querySelector("#tabla #tags #inactivo"),
 	};
 	let v = {
-		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
+		condicion: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
 		rutaEliminar: revision ? "/revision/api/link/alta-baja" : "/links/api/inactiva-o-elimina/",
 		rutaSigProd: "/revision/api/link/siguiente-producto/",
@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 			if (botonOut.className.includes("fa-trash-can")) {
 				// Variables
 				let motivo_id = DOM.motivosSelect[fila].value;
-				let url = v.condiciones;
+				let url = v.condicion;
 				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
 				url += "&IN=NO";

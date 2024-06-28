@@ -10,7 +10,7 @@ module.exports = {
 		let errores = formatoMail(email);
 
 		// Se fija si el mail ya existe
-		if (!errores.email && (await BD_genericas.obtienePorCondicion("usuarios", {email}))) {
+		if (!errores.email && (await baseDeDatos.obtienePorCondicion("usuarios", {email}))) {
 			errores.credenciales = "Esta dirección de email ya figura en nuestra base de datos";
 			errores.hay = !!errores.credenciales;
 		}
@@ -25,7 +25,7 @@ module.exports = {
 			if (errores.hay) return {errores};
 
 			// 2. Mail - Verifica si no existe en la BD
-			const usuario = await BD_especificas.obtieneUsuarioPorMail(email);
+			const usuario = await comp.obtieneUsuarioPorMail(email);
 			if (!usuario) return {errores: {email: "Esta dirección de email no figura en nuestra base de datos.", hay: true}};
 
 			// 3. Mail - Detecta si ya se le envió una contraseña en las últimas 24hs
@@ -78,7 +78,7 @@ module.exports = {
 		// Sólo si no hay algún error previo, revisa las credenciales
 		if (!errores.hay) {
 			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
-			usuario = await BD_especificas.obtieneUsuarioPorMail(email);
+			usuario = await comp.obtieneUsuarioPorMail(email);
 			if (usuario.intentosLogin == intentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
 
 			// Valida el mail y la contraseña
@@ -211,7 +211,7 @@ let perennesBE = async (datos) => {
 		for (let campo of camposPerennes) condicion[campo] = datos[campo];
 
 		// Averigua si el usuario existe en la base de datos
-		errores.credenciales = !!(await BD_genericas.obtienePorCondicion("usuarios", condicion))
+		errores.credenciales = !!(await baseDeDatos.obtienePorCondicion("usuarios", condicion))
 			? procesos.comentarios.credsInvalidas.datosPer
 			: "";
 		errores.hay = !!errores.credenciales;

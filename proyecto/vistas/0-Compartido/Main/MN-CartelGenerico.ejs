@@ -14,23 +14,19 @@
 
 		<div id="contenedorMensajes">
 			<% if (locals.informacion) { %>
-				<!-- Si existe información, la muestra -->
 				<% if (informacion.ol) { %>
-				<ol id="mensajes" type="<%- informacion.mensajes.length > 1 ? '1' : 'none' %>">
-					<% for (mensaje of informacion.mensajes) { %>
-						<li><%- mensaje %></li>
-					<% } %>
-				</ol>
+					<ol id="mensajes" type="<%- informacion.mensajes.length > 1 ? '1' : 'none' %>">
+						<% for (mensaje of informacion.mensajes) { %>
+							<li><%- mensaje %></li>
+						<% } %>
+					</ol>
 				<% } else { %>
-				<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
-					<% for (mensaje of informacion.mensajes) { %>
-						<li><%- mensaje %></li>
-					<% } %>
-				</ul>
+					<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'disc' : 'none' %>">
+						<% for (mensaje of informacion.mensajes) { %>
+							<li><%- mensaje %></li>
+						<% } %>
+					</ul>
 				<% } %>
-			<% } else { %>
-				<!-- Si no existe información, se deja preparado el sector -->
-				<ul type="dots" id="mensajes"></ul>
 			<% } %>
 		</div>
 		<div id="iconosCartel">

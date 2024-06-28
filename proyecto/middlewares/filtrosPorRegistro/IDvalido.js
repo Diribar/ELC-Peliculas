@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	if (!id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 
 	// PROBLEMA 2: ID inválido
-	const registro = await BD_genericas.obtienePorId(entidad, id);
+	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones

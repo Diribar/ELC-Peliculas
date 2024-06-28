@@ -118,57 +118,58 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	const BD_genericas = require("./funciones/3-BD/Genericas");
+	global.baseDeDatos = require("./funciones/2-Procesos/BaseDatos");
 	let datos = {
 		// Variables de usuario
-		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
-		rolesUs: BD_genericas.obtieneTodos("rolesUsuarios", "orden"),
+		statusRegistrosUs: baseDeDatos.obtieneTodosConOrden("statusRegistrosUs", "orden"),
+		rolesUs: baseDeDatos.obtieneTodosConOrden("rolesUsuarios", "orden"),
 
 		// Variable de entidades
-		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
-		generos: BD_genericas.obtieneTodos("generos", "orden"),
-		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
-		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
+		statusRegistros: baseDeDatos.obtieneTodosConOrden("statusRegistros", "orden"),
+		generos: baseDeDatos.obtieneTodosConOrden("generos", "orden"),
+		motivosStatus: baseDeDatos.obtieneTodosConOrden("motivosStatus", "orden"),
+		motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
 
 		// Variables de productos
-		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
-		paises: BD_genericas.obtieneTodos("paises", "nombre"),
-		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
-		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
-		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "hasta", "DESC"),
+		idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
+		paises: baseDeDatos.obtieneTodosConOrden("paises", "nombre"),
+		publicos: baseDeDatos.obtieneTodosConOrden("publicos", "orden"),
+		tiposActuacion: baseDeDatos.obtieneTodosConOrden("tiposActuacion", "orden"),
+		epocasEstreno: baseDeDatos.obtieneTodosConOrden("epocasEstreno", "hasta", "DESC"),
 
 		// Calificación de productos
-		calCriterios: BD_genericas.obtieneTodos("calCriterios"),
-		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
-		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
-		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
+		calCriterios: baseDeDatos.obtieneTodos("calCriterios"),
+		feValores: baseDeDatos.obtieneTodosConOrden("feValores", "orden"),
+		entretiene: baseDeDatos.obtieneTodosConOrden("entretiene", "orden"),
+		calidadTecnica: baseDeDatos.obtieneTodosConOrden("calidadTecnica", "orden"),
 
 		// Variables de RCLVs
-		epocasOcurrencia: BD_genericas.obtieneTodos("epocasOcurrencia", "orden"),
-		rolesIglesia: BD_genericas.obtieneTodos("rolesIglesia", "orden"),
-		canons: BD_genericas.obtieneTodos("canons", "orden"),
-		hoyEstamos: BD_genericas.obtieneTodos("hoyEstamos").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
+		epocasOcurrencia: baseDeDatos.obtieneTodosConOrden("epocasOcurrencia", "orden"),
+		rolesIglesia: baseDeDatos.obtieneTodosConOrden("rolesIglesia", "orden"),
+		canons: baseDeDatos.obtieneTodosConOrden("canons", "orden"),
+		hoyEstamos: baseDeDatos.obtieneTodosConOrden("hoyEstamos", "nombre"),
 
 		// Variables de links
-		linksProvs: BD_genericas.obtieneTodos("linksProvs", "cantLinks", true), // orden descendente
-		linksTipos: BD_genericas.obtieneTodos("linksTipos"),
-		linksCategs: BD_genericas.obtieneTodos("linksCategs"),
+		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", "DESC"), // orden descendente
+		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
+		linksCategs: baseDeDatos.obtieneTodos("linksCategs"),
 
 		// Consultas
-		cn_entidades: BD_genericas.obtieneTodos("cn_entidades"),
-		cn_layouts: BD_genericas.obtieneTodosConInclude("cn_layouts", "entidades")
+		cnEntidades: baseDeDatos.obtieneTodos("cnEntidades"),
+		cnLayouts: baseDeDatos
+			.obtieneTodos("cnLayouts", "entidades")
 			.then((n) => n.filter((m) => m.activo))
 			.then((n) => n.sort((a, b) => a.orden - b.orden)),
-		pppOpcsArray: BD_genericas.obtieneTodos("pppOpciones"),
+		pppOpcsArray: baseDeDatos.obtieneTodos("pppOpciones"),
 
 		// Menús
-		menuCapacitac: BD_genericas.obtieneTodos("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
-		menuUsuario: BD_genericas.obtieneTodos("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuCapacitac: baseDeDatos.obtieneTodosConOrden("menuCapacitac", "orden").then((n) => n.filter((m) => m.actualizado)),
+		menuUsuario: baseDeDatos.obtieneTodosConOrden("menuUsuario", "orden").then((n) => n.filter((m) => m.actualizado)),
 
 		// Otros
-		meses: BD_genericas.obtieneTodos("meses"),
-		fechasDelAno: BD_genericas.obtieneTodosConInclude("fechasDelAno", "epocaDelAno"),
-		novedadesELC: BD_genericas.obtieneTodos("novedadesELC", "fecha"),
+		meses: baseDeDatos.obtieneTodos("meses"),
+		fechasDelAno: baseDeDatos.obtieneTodos("fechasDelAno", "epocaDelAno"),
+		novedadesELC: baseDeDatos.obtieneTodosConOrden("novedadesELC", "fecha"),
 	};
 
 	// Procesa todas las lecturas
@@ -245,8 +246,6 @@ app.set("views", [
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");
 	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
-	global.BD_genericas = require("./funciones/3-BD/Genericas");
-	global.BD_especificas = require("./funciones/3-BD/Especificas");
 	const procesos = require("./funciones/1-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;

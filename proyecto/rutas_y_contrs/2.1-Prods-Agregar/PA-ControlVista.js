@@ -1,6 +1,7 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const valida = require("./PA-FN3-Validar");
 const procesos = require("./PA-FN4-Procesos");
 
@@ -89,7 +90,7 @@ module.exports = {
 			// Obtiene los errores
 			const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 			const camposDD_nombre = camposDD.map((n) => n.nombre);
-			const errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+			const errores = await validacsFM.validacs.datosDuros(camposDD_nombre, datosDuros);
 
 			// Variables
 			const camposInput = camposDD.filter((n) => n.campoInput);
@@ -154,7 +155,7 @@ module.exports = {
 			// Acciones si hay errores de validación
 			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 			let camposDD_nombre = camposDD.map((n) => n.nombre);
-			let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+			let errores = await validacsFM.validacs.datosDuros(camposDD_nombre, datosDuros);
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Guarda session y cookie de Datos Adicionales
@@ -196,8 +197,8 @@ module.exports = {
 			const camposDE = Object.keys(datosAdics);
 
 			// Grupos RCLV
-			const gruposPers = procsCRUD.grupos.pers(camposDA);
-			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
+			const gruposPers = procsFM.grupos.pers(camposDA);
+			const gruposHechos = procsFM.grupos.hechos(camposDA);
 
 			// Datos para la vista
 			const imgDerPers = datosAdics.avatar ? "/Externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
@@ -237,7 +238,7 @@ module.exports = {
 
 			// Si hay errores de validación, redirecciona
 			let camposDA = variables.camposDA.map((m) => m.nombre);
-			let errores = await valida.datosAdics(camposDA, datosAdics);
+			let errores = await validacsFM.validacs.datosAdics(camposDA, datosAdics);
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Guarda el data entry en session y cookie para el siguiente paso
@@ -303,7 +304,7 @@ module.exports = {
 
 			// Guarda el registro original
 			const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
-			const registro = await BD_genericas.agregaRegistro(entidad, original);
+			const registro = await baseDeDatos.agregaRegistro(entidad, original);
 
 			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
@@ -323,11 +324,11 @@ module.exports = {
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
-			await procsCRUD.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, userID});
+			await procsFM.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
 			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-				procsCRUD.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
+				procsFM.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 			// SESSION Y COOKIES
 			// Establece como vista anterior la vista del primer paso
@@ -359,27 +360,23 @@ module.exports = {
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+		const origEdic = {...original, ...edicion, id: original.id};
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion);
-		imgDerPers = original.avatar ? imgDerPers.orig : imgDerPers.edic;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Prepara variables para la vista
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const tituloImgDerPers = original.nombreCastellano
-			? original.nombreCastellano
-			: original.nombreOriginal
-			? original.nombreOriginal
-			: "";
+		const tituloImgDerPers = origEdic.nombreCastellano;
 		const agregaste = true;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, imagenMG, agregaste},
-			...{entidad, familia: "producto", id, dataEntry: original, entidadNombre, ruta: "/producto/"},
+			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},
@@ -415,7 +412,7 @@ module.exports = {
 						destino += "&temporada=" + IM.temporada;
 						if (IM.capitulo) {
 							const {coleccion_id, temporada, capitulo} = IM;
-							if (await BD_genericas.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})) {
+							if (await baseDeDatos.obtienePorCondicion("capitulos", {coleccion_id, temporada, capitulo})) {
 								IM.capitulo++;
 								destino += "&capitulo=" + IM.capitulo;
 							}
@@ -535,15 +532,15 @@ module.exports = {
 };
 let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	// Compara su temporada vs la cant. de temps. en la colección
-	const coleccion = await BD_genericas.obtienePorId("colecciones", datos.coleccion_id);
+	const coleccion = await baseDeDatos.obtienePorId("colecciones", datos.coleccion_id);
 	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))
-		await BD_genericas.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
+		await baseDeDatos.actualizaPorId("colecciones", datos.coleccion_id, {cantTemps: datos.temporada});
 
 	// Si no existe 'nombreCastellano', le asigna uno
 	if (!datos.nombreCastellano) datos.nombreCastellano = "Capítulo " + datos.capitulo;
 
 	// Guarda el registro original
-	const id = await BD_genericas.agregaRegistro("capitulos", datos).then((n) => n.id);
+	const id = await baseDeDatos.agregaRegistro("capitulos", datos).then((n) => n.id);
 
 	// Elimina todas las session y cookie del proceso AgregarProd
 	procesos.borraSessionCookies(req, res, "IM");

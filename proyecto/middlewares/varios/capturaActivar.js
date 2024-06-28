@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
 	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const entID = req.query.id;
 	const userID = req.session.usuario.id;
-	const registro = await BD_genericas.obtienePorId(entidad, entID);
+	const registro = await baseDeDatos.obtienePorId(entidad, entID);
 	const {baseUrl} = comp.reqBasePathUrl(req);
 	// Variables - De tiempo
 	let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 		(registro.capturadoPor_id != userID || registro.capturadoEn < haceDosHoras) // No está capturado por el usuario o lo está desde hace más de 2 horas
 	) {
 		const datos = {capturaActiva: true, capturadoPor_id: userID, capturadoEn: ahora};
-		await BD_genericas.actualizaPorId(entidad, entID, datos);
+		await baseDeDatos.actualizaPorId(entidad, entID, datos);
 	}
 
 	// Continuar

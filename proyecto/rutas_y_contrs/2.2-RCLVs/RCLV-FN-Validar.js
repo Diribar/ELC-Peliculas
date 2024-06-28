@@ -1,4 +1,6 @@
 "use strict";
+// Variables
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -251,7 +253,7 @@ let nombreApodo = async ({datos, campo}) => {
 
 		// Nombre repetido
 		if (!mensaje) {
-			let id = await BD_especificas.validaRepetidos([campo], datos);
+			let id = await validacsFM.validacs.repetidos([campo], datos);
 			if (id) mensaje = comp.validacs.cartelRepetido({...datos, id});
 		}
 	}

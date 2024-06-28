@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	if (!req.cookies || !req.cookies.email) return next();
 
 	// Obtiene los datos del usuario
-	usuario = await BD_especificas.obtieneUsuarioPorMail(req.cookies.email);
+	usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
 	if (!usuario) return next(); // si no existe el usuario, saltea la rutina
 
 	// Notifica al contador de logins y actualiza session, cookie y locals
@@ -53,7 +53,7 @@ module.exports = async (req, res, next) => {
 			};
 
 		// Actualiza la versión en el usuario
-		BD_genericas.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
+		baseDeDatos.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
 	}
 
 	// Fin

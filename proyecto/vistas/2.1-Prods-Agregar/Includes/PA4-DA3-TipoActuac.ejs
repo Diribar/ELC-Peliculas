@@ -9,6 +9,6 @@
 				<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 			<% } %>
 		</select>
-		<%- include("CMP-Errores", {nombre, ocultarOK: true}) %>
+		<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
 	</div>
 </section>

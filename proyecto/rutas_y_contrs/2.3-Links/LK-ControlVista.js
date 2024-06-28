@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procesos = require("./LK-FN-Procesos");
 
 // *********** Controlador ***********
@@ -15,7 +15,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 		let producto = {...original, ...edicion, id}; // Combina los datos Editados con la versión Original
 
 		// Obtiene información de BD
@@ -23,7 +23,7 @@ module.exports = {
 		links.sort((a, b) => a.tipo_id - b.tipo_id); // primero los links de trailer, luego la película
 		for (let link of links) {
 			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url; // prepara el url para usarse en la web
-			link.cond = procesos.condiciones(link, userID, tema);
+			link.cond = procesos.condicion(link, userID, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}
 
@@ -34,11 +34,11 @@ module.exports = {
 		if (entidad == "capitulos") {
 			const coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
 			const temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
-			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
+			producto.capitulos = await procsFM.obtieneCapitulos(coleccion_id, temporada);
 		}
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const status_id = original.statusRegistro_id;
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
 		const sigProd = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;
 		const ayudasTitulo = [
 			"Sé muy cuidadoso de incluir links que respeten los derechos de autor",
@@ -67,16 +67,16 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
-		const link = await BD_genericas.obtienePorIdConInclude("links", link_id, "prov");
+		const link = await baseDeDatos.obtienePorIdConInclude("links", link_id, "prov");
 		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Configura el título de la vista
 		const nombre = prodComb.nombreCastellano ? prodComb.nombreCastellano : prodComb.nombreOriginal;

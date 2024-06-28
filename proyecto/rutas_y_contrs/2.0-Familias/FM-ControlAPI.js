@@ -1,4 +1,6 @@
 "use strict";
+// Variables
+const procesos = require("./FM-FN-Procesos");
 
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
@@ -7,8 +9,8 @@ module.exports = {
 		const objeto = {coleccion_id: id, temporada: 1, capitulo: 1};
 		const ID =
 			entidad == "colecciones"
-				? await BD_genericas.obtienePorCondicion("capitulos", objeto).then((n) => n.id)
-				: await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
+				? await baseDeDatos.obtienePorCondicion("capitulos", objeto).then((n) => n.id)
+				: await baseDeDatos.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 
 		// Fin
 		return res.json(ID);
@@ -16,7 +18,7 @@ module.exports = {
 	obtieneCapAntPostID: async (req, res) => {
 		// Variables
 		let {id} = req.query;
-		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtienePorId("capitulos", id);
+		let {coleccion_id, temporada, capitulo} = await baseDeDatos.obtienePorId("capitulos", id);
 
 		// Obtiene la temporada y capítulo anteriores
 		let tempAnt = temporada;
@@ -27,14 +29,14 @@ module.exports = {
 			// Obtiene el último número de capítulo de la temporada anterior
 			tempAnt = temporada - 1;
 			const objeto = {coleccion_id, temporada: tempAnt};
-			capAnt = await BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo");
+			capAnt = await baseDeDatos.maxValorPorCondicion("capitulos", objeto, "capitulo");
 		}
 
 		// Obtiene la temporada y capítulo posteriores
 		let objeto = {coleccion_id, temporada};
 		let [ultCap, ultTemp] = await Promise.all([
-			BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo"), // Último número de capítulo de la temporada actual
-			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps), // Último número de temporada de la colección
+			baseDeDatos.maxValorPorCondicion("capitulos", objeto, "capitulo"), // Último número de capítulo de la temporada actual
+			baseDeDatos.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps), // Último número de temporada de la colección
 		]);
 		let tempPost = temporada;
 		let capPost = 0;
@@ -50,8 +52,8 @@ module.exports = {
 		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
 		let [capAnt_id, capPost_id] = await Promise.all([
 			// Obtiene el ID del capítulo anterior
-			capAnt ? BD_genericas.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : null,
-			capPost ? BD_genericas.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : null,
+			capAnt ? baseDeDatos.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : null,
+			capPost ? baseDeDatos.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : null,
 		]);
 
 		// Envia el resultado
@@ -62,7 +64,7 @@ module.exports = {
 		const {coleccion_id, temporada, capitulo} = req.query;
 
 		// Obtiene el ID
-		const ID = await BD_genericas.obtienePorCondicion("capitulos", {
+		const ID = await baseDeDatos.obtienePorCondicion("capitulos", {
 			coleccion_id: coleccion_id,
 			temporada: temporada,
 			capitulo: capitulo,
@@ -76,7 +78,7 @@ module.exports = {
 		const {coleccion_id, temporada} = req.query;
 
 		// Obtiene los datos
-		const datos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
+		const datos = await procesos.obtieneCapitulos(coleccion_id, temporada);
 
 		// Fin
 		return res.json(datos);

@@ -9,8 +9,8 @@
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
 				<% if (codigo != "rclv/solapamiento") { %>
-					<%- include("CMP-Ayuda", {mensajes: ayudas.nombre}) %>
-					<%- include("CMP-Errores", {nombre: "nombre", ocultarOK: true}) %>
+					<%- include("MN-Ayuda", {mensajes: ayudas.nombre}) %>
+					<%- include("MN-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
 			<% if (codigo != "rclv/solapamiento") { %>
@@ -47,8 +47,8 @@
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
 					<% } %>
 				</select>
-				<% if (personajes || hechos) { %><%- include("CMP-Ayuda", {mensajes: ayudas.fecha}) %><% } %>
-				<%- include("CMP-Errores", {nombre: "fecha", ocultarOK: true}) %>
+				<% if (personajes || hechos) { %><%- include("MN-Ayuda", {mensajes: ayudas.fecha}) %><% } %>
+				<%- include("MN-Errores", {nombre: "fecha", ocultarOK: true}) %>
 			</div>
 			<!-- Mes y Día -->
 			<div id="mesDia" class="flexRowAlign margenDebajo">
@@ -141,8 +141,8 @@
 							<option value="<%= carpeta %>" <% if (dataEntry.carpetaAvatars == carpeta) { %>selected<% } %>><%= carpeta %></option>
 						<% } %>
 					</select>
-					<%- include("CMP-Ayuda", {mensaje: "Es la carpeta en la que se guardan las imagenes."}) %>
-					<%- include("CMP-Errores", {nombre: "carpetaAvatars", ocultarOK: true}) %>
+					<%- include("MN-Ayuda", {mensaje: "Es la carpeta en la que se guardan las imagenes."}) %>
+					<%- include("MN-Errores", {nombre: "carpetaAvatars", ocultarOK: true}) %>
 				</div>
 			<% } %>
 		<% } else { %>
@@ -152,8 +152,8 @@
 				<div class="margenDebajo inputError">
 					<!-- Título -->
 					<h3>Nombres con esa fecha</h3>
-					<%- include("CMP-Ayuda", {mensaje: "Destildalos si no coinciden con el tuyo."}) %>
-					<%- include("CMP-Errores", {nombre: "repetidos", ocultarOK: true}) %>
+					<%- include("MN-Ayuda", {mensaje: "Destildalos si no coinciden con el tuyo."}) %>
+					<%- include("MN-Errores", {nombre: "repetidos", ocultarOK: true}) %>
 				</div>
 				<!-- Valores -->
 				<ul type="none" id="posiblesRepetidos"></ul>
@@ -169,8 +169,8 @@
 						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
 					<% } %>
 				</select>
-				<%- include("CMP-Ayuda", {mensajes: ayudas.prioridad}) %>
-				<%- include("CMP-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
+				<%- include("MN-Ayuda", {mensajes: ayudas.prioridad}) %>
+				<%- include("MN-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
 			</div>
 		<% } %>
 		<% if (codigo != "rclv/solapamiento") { %>
@@ -189,7 +189,7 @@
 						<label for="<%= genero.id %>"><%= personajes ? genero.pers : genero.rclvs %></label>
 					</div>
 				<% } %>
-				<%- include("CMP-Errores", {nombre:"genero_id", ocultarOK: true}) %>
+				<%- include("MN-Errores", {nombre:"genero_id", ocultarOK: true}) %>
 			</div>
 		<% } %>
 	</div>
@@ -202,8 +202,8 @@
 			<!-- Título -->
 			<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
-			<% if (hechos) { %><%- include("CMP-Ayuda", {mensaje: ayudas.epoca}) %><% } %>
-			<%- include("CMP-Errores", {nombre: "epocaOcurrencia", ocultarOK: true}) %>
+			<% if (hechos) { %><%- include("MN-Ayuda", {mensaje: ayudas.epoca}) %><% } %>
+			<%- include("MN-Errores", {nombre: "epocaOcurrencia", ocultarOK: true}) %>
 		</div>
 		<!-- Valores -->
 		<div class="flexRowAlign grow spaceBetween">
@@ -214,7 +214,7 @@
 				<div class="flexRowAlign opciones" style=<%= zIndex %>>
 					<input type="radio" name="epocaOcurrencia_id" value="<%= epocaOcurrencia.id %>" id="<%= epocaOcurrencia.id %>" <% if (dataEntry.epocaOcurrencia_id==epocaOcurrencia.id) { %>checked<% } %> class="input<%= epocaOcurrencia.id!="pst"?" noPST":"" %>">
 					<label for="<%= epocaOcurrencia.id %>"><%= epocaOcurrencia.nombre %></label>
-					<% if (epocaOcurrencia["ayuda" + ent]) { %><%- include("CMP-Ayuda", {mensaje: epocaOcurrencia["ayuda" + ent] + "."}) %><% } %>
+					<% if (epocaOcurrencia["ayuda" + ent]) { %><%- include("MN-Ayuda", {mensaje: epocaOcurrencia["ayuda" + ent] + "."}) %><% } %>
 				</div>
 			<% }) %>
 			<!-- Año de Nacimiento/Comienzo -->
@@ -222,7 +222,7 @@
 				<% const ano = personajes ? "anoNacim" : "anoComienzo" %>
 				<label for="<%= ano %>">Año de <%= personajes ? "Nacim." : "Comienzo" %></label>
 				<input id="<%= ano %>" type="text" name="<%= ano %>" class="input angosto" value="<%= dataEntry[ano] %>" autocomplete="off">
-				<%- include("CMP-Ayuda", {mensajes: ayudas.ano}) %>
+				<%- include("MN-Ayuda", {mensajes: ayudas.ano}) %>
 			</div>
 		</div>
 	</section>
@@ -232,7 +232,7 @@
 		<div class="inputError">
 			<!-- Título -->
 			<h3>Relación con la Iglesia Católica</h3>
-			<%- include("CMP-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
+			<%- include("MN-Errores", {nombre: "RCLIC", ocultarOK: true}) %>
 		</div>
 		<% if (personajes) { %>
 			<div class="personajes">
@@ -303,8 +303,8 @@
 		<div class="inputError">
 			<!-- Título -->
 			<h3>Leyenda</h3>
-			<%- include("CMP-Ayuda", {mensaje: "Se necesita armar la leyenda que acompaña la imagen derecha"}) %>
-			<%- include("CMP-Errores", {nombre: "leyenda", ocultarOK: true}) %>
+			<%- include("MN-Ayuda", {mensaje: "Se necesita armar la leyenda que acompaña la imagen derecha"}) %>
+			<%- include("MN-Errores", {nombre: "leyenda", ocultarOK: true}) %>
 		</div>
 		<!-- Data Entry -->
 		<div id="datosLeyenda" class="flexRowAlign">
