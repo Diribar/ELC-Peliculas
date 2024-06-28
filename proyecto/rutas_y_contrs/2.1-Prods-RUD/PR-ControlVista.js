@@ -209,17 +209,11 @@ module.exports = {
 						await Promise.all(esperar);
 					}
 
-					// Elimina otras ediciones que tengan los mismos valores
-					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id});
-
-					// Se fija si corresponde cambiar el status
-					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb});
-
-					// Espera a que se completen las funciones con 'Promise'
+					// Varias
+					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
+					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb}); // Se fija si corresponde cambiar el status
 					await Promise.all([statusAprob, edicsEliminadas]);
-
-					// Limpia el valor de la edicion, para que no se recargue el url
-					edicion = null;
+					edicion = null; // Limpia el valor de la edicion, para que no se recargue el url
 				}
 				// De lo contrario, actualiza la edicion
 				else {
