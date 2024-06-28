@@ -53,7 +53,7 @@ module.exports = {
 			let resultado = [];
 
 			// Obtiene las ayudas sin repetir
-			cn_layouts
+			cnLayouts
 				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
 				.filter((n) => (!userID ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
 				.map((n) => {

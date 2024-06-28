@@ -783,7 +783,7 @@ module.exports = {
 		espera = await Promise.all(espera);
 
 		// Actualiza la variable 'fechasDelAno'
-		fechasDelAno = await baseDeDatos.obtieneTodosConInclude("fechasDelAno", "epocaDelAno");
+		fechasDelAno = await baseDeDatos.obtieneTodos("fechasDelAno", "epocaDelAno");
 
 		// Fin
 		return;

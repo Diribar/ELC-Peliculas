@@ -1,6 +1,7 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
@@ -20,7 +21,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
@@ -47,12 +48,12 @@ module.exports = {
 		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
-		const bloqueDer = {producto: true, registro: await procsCRUD.bloqueRegistro({...prodComb, entidad})};
-		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		const bloqueDer = {producto: true, registro: await procsFM.bloqueRegistro({...prodComb, entidad})};
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Lecturas de BD
 		if (entidad == "capitulos") {
-			prodComb.capitulos = procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+			prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 			prodComb.colecAprob = baseDeDatos.obtienePorIdConInclude("capitulos", id, "coleccion").then((n) =>
 				aprobados_ids.includes(n.coleccion.statusRegistro_id)
 			);
@@ -102,21 +103,21 @@ module.exports = {
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 			const prodComb = {...original, ...edicion, ...edicSession, id};
 			if (entidad == "capitulos")
-				prodComb.capitulos = await procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
+				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
 
 			// Datos Duros
 			const camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
-			const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
+			const imgDerPers = procsFM.obtieneAvatar(original, {...edicion, ...edicSession});
 
 			// Datos Adicionales
 			const camposDA = await variables.camposDA_conValores(userID);
-			const gruposPers = procsCRUD.grupos.pers(camposDA);
-			const gruposHechos = procsCRUD.grupos.hechos(camposDA);
+			const gruposPers = procsFM.grupos.pers(camposDA);
+			const gruposHechos = procsFM.grupos.hechos(camposDA);
 
 			// Otros datos para la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -166,7 +167,7 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -182,7 +183,7 @@ module.exports = {
 			let prodComb = {...original, ...edicion, ...req.body, id};
 			prodComb.epocaOcurrencia = revisorPERL; // si es un revisorPERL, agrega la obligatoriedad de que haya completado los campos 'epocaOcurrencia_id' y 'publico_id'
 			prodComb.publico = revisorPERL;
-			const errores = await valida.consolidado({datos: {...prodComb, entidad}});
+			const errores = await validacsFM.validacs.consolidado({datos: {...prodComb, entidad}});
 
 			// Acciones si no hay errores sensibles
 			if (!errores.sensible) {
@@ -203,17 +204,17 @@ module.exports = {
 						// Rutina por campo - sin 'await' y solo para los campos editados
 						for (let prop in req.body)
 							if (original[prop] != req.body[prop])
-								esperar.push(procsCRUD.transfiereDatos(original, req.body, prop));
+								esperar.push(procsFM.transfiereDatos(original, req.body, prop));
 
 						// Espera a que se corran todos los campos
 						await Promise.all(esperar);
 					}
 
 					// Elimina otras ediciones que tengan los mismos valores
-					let edicsEliminadas = procsCRUD.eliminaDemasEdiciones({entidad, original: prodComb, id});
+					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id});
 
 					// Se fija si corresponde cambiar el status
-					let statusAprob = procsCRUD.statusAprob({entidad, registro: prodComb});
+					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb});
 
 					// Espera a que se completen las funciones con 'Promise'
 					await Promise.all([statusAprob, edicsEliminadas]);
@@ -226,7 +227,7 @@ module.exports = {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
 					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
-					edicion = await procsCRUD.guardaActEdic({entidad, original, edicion, userID});
+					edicion = await procsFM.guardaActEdic({entidad, original, edicion, userID});
 				}
 
 				// Acciones sobre el archivo avatar, si recibimos uno
@@ -275,16 +276,16 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho
-			const bloqueDer = {producto: true, registro: await procsCRUD.bloqueRegistro({...prodComb, entidad})};
-			const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+			const bloqueDer = {producto: true, registro: await procsFM.bloqueRegistro({...prodComb, entidad})};
+			const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 			// Info para la vista
 			if (entidad == "capitulos")
-				prodComb.capitulos = await procsCRUD.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 			const status_id = original.statusRegistro_id;
 			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];

@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
 
@@ -19,7 +19,7 @@ module.exports = {
 		let imgDerPers, ayudasTitulo;
 
 		// Obtiene RCLV y sus productos
-		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 		let rclv = {...original, ...edicion, id};
 		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
@@ -35,7 +35,7 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...rclv, entidad}),
-			registro: await procsCRUD.bloqueRegistro({...rclv, entidad}),
+			registro: await procsFM.bloqueRegistro({...rclv, entidad}),
 		};
 
 		// Imagen derecha
@@ -44,7 +44,7 @@ module.exports = {
 			const existe = comp.gestionArchivos.existe(rutaNombre);
 			if (existe) imgDerPers = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg";
 		}
-		if (!imgDerPers) imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		if (!imgDerPers) imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Datos para la vista
 		const status_id = original.statusRegistro_id;
@@ -94,12 +94,12 @@ module.exports = {
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) apMars = await baseDeDatos.obtieneTodos("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
+			if (personajes) apMars = await baseDeDatos.obtieneTodosConOrden("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
 				// Obtiene el original y edicion
-				const [original, edicion] = await procsCRUD.obtieneOriginalEdicion({entidad, entID: id, userID});
+				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 				edicID = edicion.id;
 
 				// Actualiza el data entry de session
@@ -117,8 +117,8 @@ module.exports = {
 				// Datos Breves
 				if (tema == "revisionEnts")
 					bloqueDer = {
-						registro: await procsCRUD.bloqueRegistro({...original, entidad}),
-						usuario: await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+						registro: await procsFM.bloqueRegistro({...original, entidad}),
+						usuario: await procsFM.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 					};
 			}
 
@@ -127,7 +127,7 @@ module.exports = {
 			if (!dataEntry.prioridad_id) dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
 
 			// Imagen Personalizada
-			const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
+			const imgDerPers = procsFM.obtieneAvatar(dataEntry).edic;
 
 			// Info para la vista
 			const statusCreado = tema == "revisionEnts" && dataEntry.statusRegistro_id == creado_id;
@@ -230,7 +230,7 @@ module.exports = {
 				// Si el origen es "Edición de Producto", crea o actualiza la edición
 				if (origen == "EDP") {
 					// Obtiene el registro original del producto, y su edición ya creada (si existe)
-					let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+					let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 						entidad: prodEntidad,
 						entID: prodID,
 						userID,
@@ -241,7 +241,7 @@ module.exports = {
 					prodEdic = {...prodEdic, [campo_id]: original.id};
 
 					// Crea o actualiza la edición
-					await procsCRUD.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userID});
+					await procsFM.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userID});
 				}
 			}
 

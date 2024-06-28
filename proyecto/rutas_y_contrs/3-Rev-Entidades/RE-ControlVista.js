@@ -1,11 +1,12 @@
 "use strict";
 // Variables
-const procesos = require("./RE-Procesos");
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const validaRCLV = require("../2.2-RCLVs/RCLV-FN-Validar");
 const procsLinks = require("../2.3-Links/LK-FN-Procesos");
+const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Tablero
@@ -121,8 +122,8 @@ module.exports = {
 
 		// Bloque Derecho
 		const bloqueDer = {
-			registro: await procsCRUD.bloqueRegistro({...original, entidad}),
-			usuario: await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+			registro: await procsFM.bloqueRegistro({...original, entidad}),
+			usuario: await procsFM.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 		};
 
 		// Info para la vista
@@ -220,7 +221,7 @@ module.exports = {
 			// Acciones si es un RCLV inactivo
 			if (statusFinal_id == inactivo_id) {
 				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id});
+				procsFM.elimina.vinculoEdicsProds({entidadRCLV: entidad, rclvID: id});
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
@@ -255,7 +256,7 @@ module.exports = {
 		if (entidad == "colecciones") {
 			// 1. Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
-				? await procsCRUD.capsAprobs(id)
+				? await validacsFM.capsAprobs(id)
 				: await baseDeDatos.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
@@ -307,7 +308,7 @@ module.exports = {
 		if (datosHist.penalizac) comp.penalizacAcum(userID, motivo, petitFamilias);
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
-		if (producto) await procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+		if (producto) await procsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 		// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && entidad != "capitulo" && aprobado && original.avatar && original.avatar.includes("/"))
@@ -378,7 +379,7 @@ module.exports = {
 				// Reemplazo manual - Variables
 				codigo += "/avatar";
 				edicionAvatar = true;
-				avatar = procsCRUD.obtieneAvatar(original, edicion);
+				avatar = procsFM.obtieneAvatar(original, edicion);
 				motivos = motivosEdics.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/Externa/");
 				const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
@@ -404,10 +405,10 @@ module.exports = {
 					canonNombre = comp.canonNombre(original);
 				}
 				bloqueDer = {
-					registro: await procsCRUD.bloqueRegistro({...original, entidad}),
-					usuario: await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
+					registro: await procsFM.bloqueRegistro({...original, entidad}),
+					usuario: await procsFM.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
 				};
-				imgDerPers = procsCRUD.obtieneAvatar(original).orig;
+				imgDerPers = procsFM.obtieneAvatar(original).orig;
 				motivos = motivosEdics.filter((m) => m.prods);
 
 				// Achica la edición a su mínima expresión
@@ -465,7 +466,7 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion") await procsCRUD.statusAprob({entidad, registro: originalGuardado});
+			if (!edicion && entidadEdic == "prodsEdicion") await validacsFM.statusAprob({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
@@ -557,7 +558,7 @@ module.exports = {
 			: "/publico/imagenes/Avatar/Prod-Generico.jpg";
 		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
-		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
+		const imgDerPers = procsFM.obtieneAvatar(producto).orig;
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
 
 		// Va a la vista

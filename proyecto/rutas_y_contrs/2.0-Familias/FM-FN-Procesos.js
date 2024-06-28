@@ -1,6 +1,5 @@
 "use strict";
-// Variables
-const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
+const validacsFM = require("./FM-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -384,21 +383,6 @@ module.exports = {
 			return grupos;
 		},
 	},
-	validaRepetidos: async (campos, datos) => {
-		// El mismo valor para los campos
-		let condicion = {};
-		for (let campo of campos) condicion[campo] = datos[campo];
-
-		// Si tiene ID, agrega la condición de que sea distinto
-		if (datos.id) condicion.id = {[Op.ne]: datos.id};
-		if (datos.coleccion_id) condicion.coleccion_id = datos.coleccion_id;
-
-		// Averigua si está repetido
-		const existe = await baseDeDatos.obtienePorCondicion(datos.entidad, condicion);
-
-		// Fin
-		return existe ? existe.id : false;
-	},
 	obtieneCapitulos: async (coleccion_id, temporada) => {
 		// Obtiene registros
 		const condicion = {coleccion_id, temporada, statusRegistro_id: activos_ids};
@@ -478,103 +462,6 @@ module.exports = {
 		// Fin
 		return true;
 	},
-	eliminaDemasEdiciones: async ({entidad, original, id}) => {
-		// Revisa cada registro de edición y decide si corresponde:
-		// - Eliminar el registro
-		// - Elimina el valor del campo
-
-		// Variables
-		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condicion = {[campo_id]: id};
-		const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
-
-		// Acciones si existen ediciones
-		if (ediciones.length) {
-			let espera = [];
-			for (let edic of ediciones) espera.push(comp.puleEdicion(entidad, original, edic));
-			await Promise.all(espera);
-		}
-
-		// Fin
-		return;
-	},
-	statusAprob: async function ({entidad, registro}) {
-		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-
-		// Primera respuesta
-		let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
-		if (statusAprob) return true;
-
-		// Si hay errores, devuelve falso e interrumpe la función
-		const errores = await validaPR.consolidado({datos: {...registro, entidad}});
-		if (errores.impideAprobado) return false;
-
-		// 1. Cambia el status del registro
-		const ahora = comp.fechaHora.ahora();
-		let datos = {statusRegistro_id: aprobado_id};
-		if (!registro.altaTermEn)
-			datos = {
-				...datos,
-				altaTermEn: ahora,
-				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-				statusSugeridoPor_id: usAutom_id,
-				statusSugeridoEn: ahora,
-			};
-		await baseDeDatos.actualizaPorId(entidad, registro.id, datos);
-
-		// 2. Actualiza el campo 'prodAprob' en los links
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condicion = {[campo_id]: registro.id};
-		baseDeDatos.actualizaTodosPorCondicion("links", condicion, {prodAprob: true});
-
-		// 3. Si es una colección, revisa si corresponde aprobar capítulos
-		if (entidad == "colecciones") await this.capsAprobs(registro.id);
-
-		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
-		this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
-
-		// Fin
-		return true;
-	},
-	capsAprobs: async (colID) => {
-		// Variables
-		const ahora = comp.fechaHora.ahora();
-		let espera = [];
-		let datos;
-
-		// Prepara los datos
-		const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-		const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
-
-		// Obtiene los capitulos id
-		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-
-		// Actualiza el status de los capítulos
-		for (let capitulo of capitulos) {
-			// Variables
-			const datosTerm = !capitulo.altaTermEn
-				? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
-				: {};
-
-			// Revisa si cada capítulo supera el test de errores
-			datos = {entidad: "capitulos", ...capitulo};
-			const errores = await validaPR.consolidado({datos});
-
-			// Actualiza los datos
-			datos = errores.impideAprobado
-				? {...datosFijos, statusRegistro_id: creadoAprob_id}
-				: {...datosFijos, ...datosSugeridos, ...datosTerm};
-			espera.push(baseDeDatos.actualizaPorId("capitulos", capitulo.id, datos));
-		}
-
-		// Espera hasta que se revisen todos los capítulos
-		await Promise.all(espera);
-
-		// Fin
-		return;
-	},
 	accionesPorCambioDeStatus: async (entidad, registro) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -622,8 +509,29 @@ module.exports = {
 		// Fin
 		return;
 	},
-	eliminar: {
-		eliminaDependientes: async (entidad, id, original) => {
+	elimina: {
+		demasEdiciones: async ({entidad, original, id}) => {
+			// Revisa cada registro de edición y decide si corresponde:
+			// - Eliminar el registro
+			// - Elimina el valor del campo
+
+			// Variables
+			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const condicion = {[campo_id]: id};
+			const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
+
+			// Acciones si existen ediciones
+			if (ediciones.length) {
+				let espera = [];
+				for (let edic of ediciones) espera.push(comp.puleEdicion(entidad, original, edic));
+				await Promise.all(espera);
+			}
+
+			// Fin
+			return;
+		},
+			dependientes: async (entidad, id, original) => {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -664,7 +572,7 @@ module.exports = {
 			// Fin
 			return true;
 		},
-		borraVinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
+		vinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
 			// Variables
 			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 
@@ -681,7 +589,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		borraVinculoProds: async ({entidadRCLV, rclvID}) => {
+		vinculoProds: async ({entidadRCLV, rclvID}) => {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
@@ -706,7 +614,7 @@ module.exports = {
 					espera.push(baseDeDatos.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				FN.siHayErroresBajaElStatus(prodsPorEnts);
+				validacsFM.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
@@ -785,26 +693,6 @@ let FN = {
 			delete edicion[campo_idRCLV];
 			await comp.puleEdicion(prodEntidad, original, edicion);
 		}
-		// Fin
-		return;
-	},
-	siHayErroresBajaElStatus: (prodsPorEnts) => {
-		// Variables
-		const entidades = variables.entidades.prods;
-
-		// Acciones por cada ENTIDAD
-		entidades.forEach(async (entidad, i) => {
-			// Averigua si existen registros por cada entidad
-			if (prodsPorEnts[i].length)
-				// Acciones por cada PRODUCTO
-				for (let original of prodsPorEnts[i]) {
-					// Si hay errores, le cambia el status
-					const errores = await validaPR.consolidado({datos: {...original, entidad}});
-					if (errores.impideAprobado)
-						baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
-				}
-		});
-
 		// Fin
 		return;
 	},
