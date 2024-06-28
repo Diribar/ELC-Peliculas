@@ -88,7 +88,7 @@ module.exports = {
 	motivosStatus: (req, res) => {
 		// Variables
 		const {entidad} = req.query;
-		const petitFamilias = comp.obtieneDesdeEntidad(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const motivos = motivosStatus.filter((m) => m[petitFamilias]);
 
 		// Fin
