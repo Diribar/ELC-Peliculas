@@ -127,7 +127,9 @@ app.set("views", [
 		// Variable de entidades
 		statusRegistros: baseDeDatos.obtieneTodosConOrden("statusRegistros", "orden"),
 		generos: baseDeDatos.obtieneTodosConOrden("generos", "orden"),
-		motivosStatus: baseDeDatos.obtieneTodosConOrden("motivosStatus", "orden"),
+		motivosStatus: baseDeDatos
+			.obtieneTodosConOrden("motivosStatus", "orden")
+			.then((n) => n.sort((a, b) => (a.grupo < b.grupo ? -1 : a.grupo > b.grupo ? 1 : 0))),
 		motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
 
 		// Variables de productos
@@ -175,6 +177,10 @@ app.set("views", [
 	// Procesa todas las lecturas
 	const valores = await Promise.all(Object.values(datos));
 	Object.keys(datos).forEach((campo, i) => (global[campo] = valores[i]));
+	console.log(
+		180,
+		motivosStatus.map((n) => [n.grupo, n.orden])
+	);
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos - Simples
