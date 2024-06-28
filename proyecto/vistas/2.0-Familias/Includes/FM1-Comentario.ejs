@@ -1,5 +1,5 @@
 <!-- Comentario -->
-<section id="comentario" class="flexCol">
+<section id="comentario" class="flexCol <% if (["inactivar", "eliminar", "rechazar"].includes(codigo)) { %>invisible<% } %>">
     <div class="flexRow spaceBetween">
         <h3>Comentario</h3>
         <p><span id="pendiente">100</span>/100</p>
