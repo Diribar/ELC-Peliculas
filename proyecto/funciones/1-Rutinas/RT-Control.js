@@ -641,7 +641,7 @@ module.exports = {
 		},
 		EliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
-			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", true);
+			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
 			const limite = 20;
 			while (misConsultas.length) {
 				// Obtiene los registros del primer usuario
