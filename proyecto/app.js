@@ -177,10 +177,6 @@ app.set("views", [
 	// Procesa todas las lecturas
 	const valores = await Promise.all(Object.values(datos));
 	Object.keys(datos).forEach((campo, i) => (global[campo] = valores[i]));
-	console.log(
-		180,
-		motivosStatus.map((n) => [n.grupo, n.orden])
-	);
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos - Simples
