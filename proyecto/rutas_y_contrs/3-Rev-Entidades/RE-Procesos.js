@@ -1,7 +1,7 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
-const validaPR = require("../2.1-Prods-RUD/PR-FN-Validar");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
 	// Tableros
@@ -501,7 +501,9 @@ module.exports = {
 					? inactivo_id
 					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
 					? aprobado_id // si es un RCLV, se aprueba
-					: (await validaPR.consolidado({datos: {entidad, ...original, ...adicionales}}).then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
+					: (await validacsFM.validacs
+							.consolidado({datos: {entidad, ...original, ...adicionales}})
+							.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
 					? creadoAprob_id
 					: entidad == "capitulos"
 					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
@@ -554,7 +556,7 @@ module.exports = {
 					// Averigua si el producto tiene errores cuando se le actualiza el 'campo_id'
 					let objeto = {[campo_id]: 1};
 					prodVinculado = {...prodVinculado, ...objeto, publico: true, epocaOcurrencia: true};
-					const errores = await validaPR.consolidado({datos: prodVinculado});
+					const errores = await validacsFM.validacs.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creadoAprob'
 					if (errores.impideAprobado) objeto = {...objeto, ...statusCreadoAprob};
@@ -715,7 +717,7 @@ module.exports = {
 				await baseDeDatos.actualizaPorId(entidad, original.id, datos);
 
 				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
-				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
+				if (entidad == "colecciones") await procsFM.transfiereDatos(original, edicion, campo);
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
@@ -1026,7 +1028,7 @@ let FN_links = {
 			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
 
 		// Obtiene todas las ediciones
-		const ediciones = baseDeDatos.obtieneTodos("linksEdicion",include)
+		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
 
 		// Los consolida
 		const links = await Promise.all([originales, ediciones]).then(([originales, ediciones]) => ({originales, ediciones}));

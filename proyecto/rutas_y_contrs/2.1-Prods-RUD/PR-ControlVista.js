@@ -211,7 +211,7 @@ module.exports = {
 					}
 
 					// Elimina otras ediciones que tengan los mismos valores
-					let edicsEliminadas = procsFM.eliminaDemasEdiciones({entidad, original: prodComb, id});
+					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id});
 
 					// Se fija si corresponde cambiar el status
 					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb});

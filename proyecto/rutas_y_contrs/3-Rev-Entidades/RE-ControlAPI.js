@@ -1,9 +1,9 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procesos = require("./RE-Procesos");
 
-// *********** Controlador ***********
 module.exports = {
 	// Productos y RCLV
 	obtieneMotivoGenerico: (req, res) => {
@@ -43,8 +43,8 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			let edicsEliminadas = procsCRUD.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
-			statusAprob = procsCRUD.statusAprob({entidad, registro: originalGuardado});
+			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
+			statusAprob = validacsFM.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
@@ -117,7 +117,7 @@ module.exports = {
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
-			await procsCRUD.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
+			await procsFM.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
 
 			// Fin
 			return res.json("");
