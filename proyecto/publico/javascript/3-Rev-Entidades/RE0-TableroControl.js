@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 		bloqueRegs: document.querySelectorAll(".bloques .temas .bloqueRegs"),
 	};
 	const actualizaVisibles = "/revision/api/actualiza-visibles/?datos=";
-	const circuito = location.pathname.replace("tablero-de-", "");
+	const circuito = location.pathname.split("tablero-de-")[1];
 
 	// Muestra u oculta
 	DOM.tituloRegs.forEach((tituloReg, i) => {
