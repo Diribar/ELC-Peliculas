@@ -10,7 +10,9 @@ module.exports = {
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const codigo1 = ruta.slice(1, -1);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = baseUrl == "/revision" ? codigo1.slice(codigo1.indexOf("/") + 1) : codigo1; // Resultados  posibles: 'inactivar', 'recuperar', 'eliminar', 'rechazar', 'inactivar-o-recuperar'
+
+		// Resultados  posibles: 'inactivar', 'recuperar', 'eliminar', 'rechazar', 'inactivar-o-recuperar'
+		const codigo = baseUrl == "/revision" ? codigo1.slice(codigo1.indexOf("/") + 1) : codigo1;
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
@@ -85,11 +87,12 @@ module.exports = {
 			original.capitulos = await procesos.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
+		const entidades = variables.entidades[petitFamilias];
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familia, historialStatus, urlActual, registro: original},
+			...{entidad, id, entidadNombre, familia, historialStatus, urlActual, registro: original, entidades},
 			...{imgDerPers, bloqueDer, motivos, canonNombre, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
@@ -147,12 +150,13 @@ module.exports = {
 				);
 
 				// 2.2. Actualiza en los links de sus capítulos el campo 'prodAprob'
-				baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
+				baseDeDatos
+					.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
 					.then((n) => n.map((m) => m.id))
 					.then((ids) =>
-						baseDeDatos.obtieneTodosPorCondicion("links", {capitulo_id: ids}, "capitulo").then((links) =>
-							comp.prodAprobEnLink(links)
-						)
+						baseDeDatos
+							.obtieneTodosPorCondicion("links", {capitulo_id: ids}, "capitulo")
+							.then((links) => comp.prodAprobEnLink(links))
 					);
 			}
 
