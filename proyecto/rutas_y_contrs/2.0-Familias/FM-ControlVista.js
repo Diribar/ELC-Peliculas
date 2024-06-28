@@ -81,7 +81,7 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
-			original.capitulos = await procsCRUD.obtieneCapitulos(original.coleccion_id, original.temporada);
+			original.capitulos = await procesos.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 

@@ -1,4 +1,5 @@
 "use strict";
+const validacsFM = require("./FM-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -613,7 +614,7 @@ module.exports = {
 					espera.push(baseDeDatos.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				FN.siHayErroresBajaElStatus(prodsPorEnts);
+				validacsFM.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
