@@ -19,8 +19,8 @@ module.exports = {
 	actualizaTodos: (entidad, datos) => db[entidad].update(datos, {where: {}}),
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}),
 	actualizaPorId: (entidad, id, datos) => db[entidad].update(datos, {where: {id}}),
-	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}),
 	eliminaPorId: (entidad, id) => db[entidad].destroy({where: {id}}),
+	eliminaTodosPorCondicion: (entidad, condicion) => db[entidad].destroy({where: condicion}),
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) =>
 		db[entidad].increment(campo, {by: aumento ? aumento : 1, where: {id}}),
 
