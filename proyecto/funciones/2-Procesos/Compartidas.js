@@ -686,7 +686,7 @@ module.exports = {
 
 		// Obtiene los registros asociados con productos
 		const temas = await baseDeDatos
-			.obtieneTodosPorCondicionConInclude("temas", condicion, includes)
+			.obtieneTodosPorCondicion("temas", condicion, includes)
 			.then((n) => n.filter((m) => includes.some((p) => m[p].length)))
 			.then((n) => n.map((m) => ({id: m.id, nombre: m.nombre, cant: includes.reduce((acum, n) => acum + m[n].length, 0)})))
 			.then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)));
@@ -821,7 +821,7 @@ module.exports = {
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
 				const include = variables.entidades.asocProds;
-				links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condicion, include);
+				links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 			}
 
 			// Rutina por link

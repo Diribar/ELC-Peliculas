@@ -532,7 +532,7 @@ module.exports = {
 		// Obtiene todos los links
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
-		const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
+		const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url;

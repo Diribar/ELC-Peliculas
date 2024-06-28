@@ -12,7 +12,7 @@ module.exports = {
 
 		// Obtiene los productos
 		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, {statusRegistro_id: aprobado_id}, "publico"));
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobado_id}, "publico"));
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
 
 		// Cuenta las cantidades

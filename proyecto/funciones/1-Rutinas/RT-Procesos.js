@@ -135,7 +135,7 @@ module.exports = {
 		for (let entidad of entsPERL) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
+				.obtieneTodosPorCondicion(entidad, condicion, include)
 				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
 				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
 			regsPERL.push(...registros);
@@ -165,7 +165,7 @@ module.exports = {
 		condicion = {...condicion, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
 		const regsLinks = await baseDeDatos
-			.obtieneTodosPorCondicionConInclude("links", condicion, include)
+			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
@@ -256,7 +256,7 @@ module.exports = {
 			condicion = {comunicadoEn: null};
 			registros.push(
 				baseDeDatos
-					.obtieneTodosPorCondicionConInclude("histEdics", condicion, "motivo")
+					.obtieneTodosPorCondicion("histEdics", condicion, "motivo")
 					.then((n) => n.map((m) => ({...m, tabla: "histEdics"}))) // Agrega el nombre de la tabla
 			);
 

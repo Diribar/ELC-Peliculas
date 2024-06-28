@@ -115,7 +115,7 @@ module.exports = {
 				// Obtiene los productos
 				for (let entProd of entsProd)
 					productos.push(
-						baseDeDatos.obtieneTodosPorCondicionConInclude(entProd, condiciones, include).then((n) =>
+						baseDeDatos.obtieneTodosPorCondicion(entProd, condiciones, include).then((n) =>
 							n.map((m) => ({...m, entidad: entProd}))
 						)
 					);
@@ -236,7 +236,7 @@ module.exports = {
 						// Obtiene los registros
 						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
 						aux.push(
-							baseDeDatos.obtieneTodosPorCondicionConInclude(rclvEnt, condiciones, include)
+							baseDeDatos.obtieneTodosPorCondicion(rclvEnt, condiciones, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
@@ -247,7 +247,7 @@ module.exports = {
 				// Rutina para un sólo RCLV
 				else {
 					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
-					rclvs = await baseDeDatos.obtieneTodosPorCondicionConInclude(entidad, condiciones, include)
+					rclvs = await baseDeDatos.obtieneTodosPorCondicion(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
 				}
@@ -323,7 +323,7 @@ module.exports = {
 
 					// Obtiene los registros y les agrega la entidadRCLV
 					registros.push(
-						baseDeDatos.obtieneTodosPorCondicionConInclude(entidadRCLV, condicion, includes).then((n) =>
+						baseDeDatos.obtieneTodosPorCondicion(entidadRCLV, condicion, includes).then((n) =>
 							n.map((m) => ({
 								...m,
 								entidad: entidadRCLV,

@@ -11,7 +11,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 
 		// Obtiene los linksOriginales
-		let links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
+		let links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: prodID}, include);
 		links.sort((a, b) => (a.url < b.url ? -1 : 1));
 		links.sort((a, b) => a.parte - b.parte);
 
