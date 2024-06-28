@@ -359,7 +359,7 @@ module.exports = {
 			let condicion = {statusRegistro_id: inactivo_id};
 
 			// Obtiene los links 'a revisar'
-			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", condicion, include);
+			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
 			let productos = linksInactivos.length ? tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
@@ -1022,7 +1022,7 @@ let FN_links = {
 			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
 		};
 		const originales = baseDeDatos
-			.obtieneTodosPorCondicionConInclude("links", condicion, include)
+			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // lotes por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // capítulos por colección
 			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
@@ -1205,7 +1205,7 @@ let tablRevision = {
 
 		// Resultado
 		const resultados = baseDeDatos
-			.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
+			.obtieneTodosPorCondicion(entidad, condicion, include)
 			.then((n) => n.map((m) => ({...m, entidad})));
 
 		// Fin
@@ -1361,7 +1361,7 @@ let tablManten = {
 		};
 
 		const registros = await baseDeDatos
-			.obtieneTodosPorCondicionConInclude(entidad, condicion, includeBD)
+			.obtieneTodosPorCondicion(entidad, condicion, includeBD)
 			// Agrega la fechaRef y actualiza el original con la edición
 			.then((n) =>
 				n.map((m) => {
@@ -1394,7 +1394,7 @@ let tablManten = {
 
 		// Obtiene la información
 		return baseDeDatos
-			.obtieneTodosPorCondicionConInclude(entidad, condicion, "ediciones")
+			.obtieneTodosPorCondicion(entidad, condicion, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {

@@ -1,14 +1,12 @@
 "use strict";
 module.exports = {
 	// Obtiene todos
-	obtieneTodos: (entidad, campoOrden, desc) =>
+	obtieneTodos: (entidad, include) => db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON())),
+	obtieneTodosConOrden: (entidad, campoOrden, desc) =>
 		db[entidad]
 			.findAll({order: [[campoOrden ? campoOrden : "id", desc ? "DESC" : "ASC"]]})
 			.then((n) => n.map((m) => m.toJSON())),
-	obtieneTodosConInclude: (entidad, include) => db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON())),
-	obtieneTodosPorCondicion: (entidad, condicion) =>
-		db[entidad].findAll({where: condicion}).then((n) => n.map((m) => m.toJSON())),
-	obtieneTodosPorCondicionConInclude: (entidad, condicion, include) =>
+	obtieneTodosPorCondicion: (entidad, condicion, include) =>
 		db[entidad].findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON())),
 	obtieneTodosPorCondicionConLimite: (entidad, condicion, limite) =>
 		db[entidad].findAll({where: condicion, limit: limite}).then((n) => n.map((m) => m.toJSON())),

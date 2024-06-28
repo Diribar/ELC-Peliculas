@@ -90,7 +90,7 @@ module.exports = {
 			let resultado = {};
 
 			// Lectura
-			await baseDeDatos.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
+			await baseDeDatos.obtieneTodosPorCondicion(rclv, condicion, include)
 				.then((n) =>
 					n.map((m) => {
 						rclvs[m.nombre] = 0;

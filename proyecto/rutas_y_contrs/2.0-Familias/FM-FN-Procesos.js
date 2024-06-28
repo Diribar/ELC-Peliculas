@@ -119,7 +119,7 @@ module.exports = {
 			]; // no se incluye hacia 'inactivar_id', porque sería el único registro
 
 			// Obtiene el historial de status
-			let historialStatus = await baseDeDatos.obtieneTodosPorCondicionConInclude("histStatus", condics, include);
+			let historialStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condics, include);
 			historialStatus = historialStatus
 				.map((n) => ({
 					...n,

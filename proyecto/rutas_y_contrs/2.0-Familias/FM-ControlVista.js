@@ -133,7 +133,7 @@ module.exports = {
 		if (familia == "producto") {
 			// 1. Actualiza en los links el campo 'prodAprob'
 			const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-			const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, asoc);
+			const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id}, asoc);
 			comp.prodAprobEnLink(links);
 
 			// 2. Acciones si es una colección
@@ -149,7 +149,7 @@ module.exports = {
 				baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: id})
 					.then((n) => n.map((m) => m.id))
 					.then((ids) =>
-						baseDeDatos.obtieneTodosPorCondicionConInclude("links", {capitulo_id: ids}, "capitulo").then((links) =>
+						baseDeDatos.obtieneTodosPorCondicion("links", {capitulo_id: ids}, "capitulo").then((links) =>
 							comp.prodAprobEnLink(links)
 						)
 					);

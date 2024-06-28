@@ -33,7 +33,7 @@ module.exports = {
 		},
 		prodsDelRCLV: async function (RCLV, userID) {
 			// Variables
-			const pppRegs = await baseDeDatos.obtieneTodosPorCondicionConInclude(
+			const pppRegs = await baseDeDatos.obtieneTodosPorCondicion(
 				"pppRegistros",
 				{usuario_id: userID},
 				"detalle"

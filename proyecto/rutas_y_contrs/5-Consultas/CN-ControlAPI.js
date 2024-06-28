@@ -197,7 +197,7 @@ module.exports = {
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...prefs, layout});
 		let pppRegistros = usuario_id
-			? baseDeDatos.obtieneTodosPorCondicionConInclude("pppRegistros", {usuario_id}, "detalle")
+			? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle")
 			: [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 

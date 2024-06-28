@@ -62,7 +62,7 @@ module.exports = {
 							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
 					],
 			  };
-		const links = await baseDeDatos.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condicion}, include);
+		const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id, ...condicion}, include);
 
 		// Procesos si hay links
 		if (links.length) {
@@ -103,7 +103,7 @@ module.exports = {
 		// Obtiene las calificaciones
 		const condics = {entidad, entidad_id};
 		const include = ["feValores", "entretiene", "calidadTecnica"];
-		const califics = await baseDeDatos.obtieneTodosPorCondicionConInclude("calRegistros", condics, include);
+		const califics = await baseDeDatos.obtieneTodosPorCondicion("calRegistros", condics, include);
 
 		// Si existen calificaciones, obtiene los promedios
 		if (califics.length)
