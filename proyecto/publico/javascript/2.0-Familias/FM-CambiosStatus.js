@@ -2,19 +2,22 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
+		// Formulario
 		form: document.querySelector("#datosLargos #recuadroDL form"),
-		inputs: document.querySelectorAll("#motivos input"),
+		submit: document.querySelector("#sectorIconos button[type='submit']"),
+
+		// Motivo
+		selectMotivo: document.querySelector("#motivos select[name='motivo_id']"),
+		selectEntidad: document.querySelector("#motivos select[name='entidad']"),
+		inputId: document.querySelector("#motivos input[name='idDuplicado']"),
+
+		// Comentario
 		comentario: document.querySelector("#comentario textarea"),
 		pendiente: document.querySelector("#comentario #pendiente"),
-		submit: document.querySelector("#sectorIconos button[type='submit']"),
 	};
+	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
-	const petitFamilias = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "prods" : "rclvs";
-
-	// Busca los motivos
-	const motivosStatus = await fetch("/crud/api/motivos-status")
-		.then((n) => n.json())
-		.then((n) => n.filter((m) => m[petitFamilias]));
+	const motivosStatus = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
 	const motivosConComentario_id = motivosStatus.filter((n) => n.agregarComent).map((n) => n.id);
 
 	// Funciones
@@ -39,22 +42,21 @@ window.addEventListener("load", async () => {
 		return;
 	};
 
-	// Event listeners
-	if (DOM.inputs.length)
-		for (let motivo of DOM.inputs)
-			motivo.addEventListener("change", async () => {
-				// Obtiene el detalle del motivo
-				const motivoRechAltas = motivosStatus.find((n) => n.id == motivo.value);
+	// Event listeners - cambia el motivo
+	if (DOM.selectMotivo)
+		DOM.selectMotivo.addEventListener("change", async () => {
+			// Obtiene el detalle del motivo
+			const motivoBD = motivosStatus.find((n) => n.id == motivo.value);
 
-				// Completa el comentario
-				DOM.comentario.readOnly = !motivoRechAltas.agregarComent;
-				DOM.comentario.placeholder = motivoRechAltas.agregarComent ? "Agregá un comentario" : "";
-				if (motivoRechAltas.agregarComent) DOM.comentario.focus();
+			// Completa el comentario
+			DOM.comentario.readOnly = !motivoBD.agregarComent;
+			DOM.comentario.placeholder = motivoBD.agregarComent ? "Agregá un comentario" : "";
+			if (motivoBD.agregarComent) DOM.comentario.focus();
 
-				// Actualiza el contador y el botón submit
-				contador();
-				botonSubmit();
-			});
+			// Actualiza el contador y el botón submit
+			contador();
+			botonSubmit();
+		});
 	DOM.comentario.addEventListener("keypress", (e) => {
 		keyPressed(e);
 		return;
@@ -75,5 +77,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Si no hay inputs, focus en comentario
-	if (!DOM.inputs.length) DOM.comentario.focus();
+	if (!DOM.selectMotivo) DOM.comentario.focus();
 });
