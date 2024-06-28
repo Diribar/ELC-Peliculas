@@ -56,10 +56,7 @@
 							textarea {padding: 2px 5px; height: 34px; resize: none;}
 							#diasDeDuracion {
 								margin-top: 7px;
-								input {
-									width: 30px; text-align: center;
-									&::-webkit-outer-spin-button, &::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
-								}
+								input {width: 30px; text-align: center;}
 							}
 
 						}

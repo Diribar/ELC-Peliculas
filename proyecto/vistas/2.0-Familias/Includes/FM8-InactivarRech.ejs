@@ -1,13 +1,30 @@
 <!-- Motivos -->
-<section id="motivos">
-    <h3>Elegí el motivo de rechazo:</h3>
-    <ul type="none">
+<section id="motivos" class="flexCol">
+    <h3>Elegí el motivo de rechazo</h3>
+    <select name="motivo_id" id="">
+        <option value="">Elegí un motivo</option>
+        <% let grupoAnt %>
         <% for (let motivo of motivos) { %>
-            <li>
-                <input type="radio" id="<%= motivo.id %>" class="<%= motivo.agregarComent ? 'agregarComent' : '' %>" name="motivo_id" value="<%= motivo.id %>">
-                <label for="<%= motivo.id %>"><%= motivo.descripcion %></label>
-            </li>
+            <% if (motivo.codigo && entidades.includes(motivo.codigo) && motivo.codigo != entidad) continue %>
+            <% if (grupoAnt && motivo.grupo != grupoAnt) { %></optgroup><% } %>
+            <% if (motivo.grupo != grupoAnt) { %><optgroup label="Motivos <%= motivo.grupo %>"><% } %>
+                <option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
+            <% grupoAnt = motivo.grupo %>
         <% } %>
-    </ul>
+        </optgroup>
+    </select>
+    <div id="sectorDuplicado" class="flexCol">
+        <h3>Datos del otro producto</h4>
+        <div class="flexRow">
+            <select name="entidad">
+                <option value="">Entidad</option>
+                <% entsNombre.forEach((entNombre,i) => { %>
+                    <option value="<%= entidades[i] %>"><%= entNombre %></option>
+                <% }) %>
+            </select>
+            <input name="idDuplicado" type="number" placeholder="id">
+        </div>
+        <div id="resultadoDuplicado">Resultado Resultado Resultado Resultado Resultado Resultado Resultado Resultado </div>
+    </div>
 </section>
 <%- include("FM1-Comentario") %>

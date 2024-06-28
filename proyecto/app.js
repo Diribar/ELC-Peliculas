@@ -127,7 +127,9 @@ app.set("views", [
 		// Variable de entidades
 		statusRegistros: baseDeDatos.obtieneTodosConOrden("statusRegistros", "orden"),
 		generos: baseDeDatos.obtieneTodosConOrden("generos", "orden"),
-		motivosStatus: baseDeDatos.obtieneTodosConOrden("motivosStatus", "orden"),
+		motivosStatus: baseDeDatos
+			.obtieneTodosConOrden("motivosStatus", "orden")
+			.then((n) => n.sort((a, b) => (a.grupo < b.grupo ? -1 : a.grupo > b.grupo ? 1 : 0))),
 		motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
 
 		// Variables de productos

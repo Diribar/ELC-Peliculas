@@ -55,12 +55,12 @@ module.exports = {
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
-		prodsNombre: ["Película", "Colección", "Capítulo de una colección"],
+		prodsNombre: ["Película", "Colección", "Capítulo"],
 		asocProds: ["pelicula", "coleccion", "capitulo"],
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
 		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
-		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 
