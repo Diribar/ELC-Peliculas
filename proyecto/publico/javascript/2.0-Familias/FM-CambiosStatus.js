@@ -50,7 +50,6 @@ window.addEventListener("load", async () => {
 
 			// Completa el comentario
 			DOM.comentario.readOnly = !motivoBD.agregarComent;
-			DOM.comentario.placeholder = motivoBD.agregarComent ? "Agregá un comentario" : "";
 			if (motivoBD.agregarComent) DOM.comentario.focus();
 
 			// Actualiza el contador y el botón submit
