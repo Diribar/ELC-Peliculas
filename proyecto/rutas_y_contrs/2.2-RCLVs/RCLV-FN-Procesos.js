@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	detalle: {
@@ -16,13 +16,13 @@ module.exports = {
 
 				// Rutina por producto
 				for (let i = 0; i < prodsEnRCLV.length; i++) {
-					let [original, edicion] = await procsCRUD.obtieneOriginalEdicion({
+					let [original, edicion] = await procsFM.obtieneOriginalEdicion({
 						entidad: entProd,
 						entID: prodsEnRCLV[i].id,
 						userID,
 					});
 					if (edicion) {
-						const avatar = procsCRUD.obtieneAvatar(original, edicion).edic;
+						const avatar = procsFM.obtieneAvatar(original, edicion).edic;
 						RCLV[entProd][i] = {...original, ...edicion, avatar, id: original.id};
 					}
 				}
@@ -54,7 +54,7 @@ module.exports = {
 						let entID = edicion[campo_id];
 
 						// Obtiene los registros del producto original y su edición por el usuario
-						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({entidad: entProd, entID, userID});
+						let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({entidad: entProd, entID, userID});
 
 						// Actualiza la variable del registro original
 						let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
@@ -75,7 +75,7 @@ module.exports = {
 					if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id == userID) return null; // recuperar
 
 					// Variables
-					const avatar = procsCRUD.obtieneAvatar(registro).edic;
+					const avatar = procsFM.obtieneAvatar(registro).edic;
 					const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 					const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
 					const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
@@ -349,7 +349,7 @@ module.exports = {
 					original = {...original, ...DE};
 				}
 				// Si no esta en status 'creado', guarda la edición
-				else edicN = await procsCRUD.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
+				else edicN = await procsFM.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
 			}
 
 			// Fin
