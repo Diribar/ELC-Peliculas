@@ -1,6 +1,14 @@
 /* Datos Largos */
 #datos #datosLargos {
 	#recuadroDL #informacion {
-		#motivos select {border-radius: 7px;}
+		#motivos {
+			align-items: flex-start;
+			select, input {border-radius: 7px;}
+			h3 {margin-bottom: 3px;}
+			#sectorDuplicado {
+				margin-top: 15px;
+				input {margin-left: 5px; width: 50px; text-align: center;}
+			}
+		}
 	}
 }
