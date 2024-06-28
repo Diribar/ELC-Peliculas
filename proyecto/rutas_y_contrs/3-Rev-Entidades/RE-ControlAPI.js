@@ -117,7 +117,7 @@ module.exports = {
 			}
 
 			// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
-			await procsFM.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
+			await validacsFM.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
 
 			// Fin
 			return res.json("");

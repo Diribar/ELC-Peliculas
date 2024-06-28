@@ -2,6 +2,7 @@
 // Variables
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./FM-FN-Procesos");
+const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	inacRecupElim_form: async (req, res) => {
@@ -159,7 +160,7 @@ module.exports = {
 			if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
 
 			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
-			procesos.accionesPorCambioDeStatus(entidad, original);
+			validacs.accionesPorCambioDeStatus(entidad, original);
 		}
 
 		// Fin
