@@ -1,9 +1,6 @@
 /* Datos Largos */
 #datos #datosLargos {
 	#recuadroDL #informacion {
-		ul {
-			padding-right: 10px; max-width: 260px;
-			li {margin-top: 3px;}
-		}
+		#motivos select {border-radius: 7px;}
 	}
 }
