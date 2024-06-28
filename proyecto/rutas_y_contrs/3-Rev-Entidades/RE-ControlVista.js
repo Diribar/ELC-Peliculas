@@ -354,7 +354,6 @@ module.exports = {
 			// Obtiene los registros
 			let original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
 			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID, includeEdic);
-			//return res.send({original, edicion})
 
 			// Si el avatar está presente en la edición, muestra esa vista
 			if (edicion.avatar) {
