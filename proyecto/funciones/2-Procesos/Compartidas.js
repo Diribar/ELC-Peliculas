@@ -31,7 +31,7 @@ module.exports = {
 		ediciones: async (condicion, dato) => {
 			// Obtiene los registros
 			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConIncludeConLimite(dato.entidad, condicion, dato.include, 10)
+				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
 				.then((n) =>
 					n.map((m) => {
 						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);

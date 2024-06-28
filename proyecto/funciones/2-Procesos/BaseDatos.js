@@ -3,14 +3,10 @@ module.exports = {
 	// Obtiene todos
 	obtieneTodos: (entidad, include) => db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON())),
 	obtieneTodosConOrden: (entidad, campoOrden, desc) =>
-		db[entidad]
-			.findAll({order: [[campoOrden ? campoOrden : "id", desc ? "DESC" : "ASC"]]})
-			.then((n) => n.map((m) => m.toJSON())),
+		db[entidad].findAll({order: [[campoOrden, desc ? "DESC" : "ASC"]]}).then((n) => n.map((m) => m.toJSON())),
 	obtieneTodosPorCondicion: (entidad, condicion, include) =>
 		db[entidad].findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON())),
-	obtieneTodosPorCondicionConLimite: (entidad, condicion, limite) =>
-		db[entidad].findAll({where: condicion, limit: limite}).then((n) => n.map((m) => m.toJSON())),
-	obtieneTodosPorCondicionConIncludeConLimite: (entidad, condicion, include, limite) =>
+	obtieneTodosPorCondicionConLimite: (entidad, condicion, limite, include) =>
 		db[entidad].findAll({where: condicion, include, limit: limite}).then((n) => n.map((m) => m.toJSON())),
 
 	// Obtiene uno
