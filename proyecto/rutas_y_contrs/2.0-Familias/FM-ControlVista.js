@@ -6,160 +6,30 @@ const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	motivosForm: async (req, res) => {
-		// Tema
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = ruta.slice(1, -1).replace("revision/", ""); // 'inactivar', 'rechazar'
-
-		// Más variables
-		const {entidad, id} = req.query;
-		const origen = req.query.origen;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const userID = req.session.usuario.id;
-		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, historialStatus;
-
-		// Obtiene el registro
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
-		if (entidad == "capitulos") include.push("coleccion");
-		if (entidad == "colecciones") include.push("capitulos");
-		if (familia == "rclv") include.push(...variables.entidades.prods);
-		let original = await baseDeDatos.obtienePorId(entidad, id, include);
-
-		// Cantidad de productos asociados al RCLV
-		if (familia == "rclv") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
-			cantProds = prodsDelRCLV.length;
-			canonNombre = comp.canonNombre(original);
-			RCLVnombre = original.nombre;
-		}
-
-		// Datos Breves
-		bloqueDer = await procesos.bloques.consolidado({tema, familia, entidad, original});
-
-		// Imagen Derecha
-		imgDerPers = procesos.obtieneAvatar(original).orig;
-
-		// Motivos de rechazo
-		if (["inactivar", "rechazar"].includes(codigo)) motivos = motivosStatus.filter((n) => n[petitFamilias]);
-
-		// Recuperar/Eliminar y Revisiones - completa el historial de status
-		if (!activos_ids.includes(original.statusRegistro_id))
-			historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...original});
+		// Variables varias
+		const datos = await procesos.variables(req);
 
 		// Obtiene datos para la vista
-		if (entidad == "capitulos")
-			original.capitulos = await procesos.obtieneCapitulos(original.coleccion_id, original.temporada);
-		const status_id = original.statusRegistro_id;
-		const urlActual = req.originalUrl;
-		const entidades = variables.entidades[petitFamilias];
-		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
-		const ayudasTitulo = "Por favor decinos por qué sugerís " + codigo + " este registro.";
-		const {titulo,entidadNombre} = procesos.titulo({entidad, codigo});
+		const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
+		const motivos = motivosStatus.filter((n) => n[datos.petitFamilias]);
+		const entidades = variables.entidades[datos.petitFamilias];
 
 		// Render del formulario
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, familia, id, registro: original, historialStatus},
-			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
-			...{entidades, entsNombre, motivos, urlActual},
-			cartelGenerico: true,
-		});
+		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, motivos, entidades});
 	},
 	historialForm: async (req, res) => {
-		// Tema
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-
-		// Código
-		let codigo = ruta.slice(1, -1).replace("revision/", ""); // 'inactivar', 'rechazar', 'recuperar', 'eliminar', 'inactivar-o-recuperar'
-		if (["inactivar", "rechazar"].includes(codigo)) codigo = "aInactivo";
-		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
-
-		// Más variables
-		const {entidad, id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "TE";
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const userID = req.session.usuario.id;
-		let imgDerPers, bloqueDer, cantProds, motivos, canonNombre, RCLVnombre, prodsDelRCLV, historialStatus;
-
-		// Obtiene el registro
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
-		if (entidad == "capitulos") include.push("coleccion");
-		if (entidad == "colecciones") include.push("capitulos");
-		if (familia == "rclv") include.push(...variables.entidades.prods);
-		let original = await baseDeDatos.obtienePorId(entidad, id, include);
-
-		// Obtiene el subcodigo
-		const statusOriginal_id = original.statusRegistro_id;
-		const subcodigo = statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
-
-		// Obtiene el título
-		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const preTitulo = !inactivarRecuperar
-			? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
-			: "Revisión de " + subcodigo.slice(0, 1).toUpperCase() + subcodigo.slice(1);
-		const titulo = preTitulo + " un" + a + entidadNombre;
-
-		// Ayuda para el titulo
-		const ayudasTitulo = inactivarRecuperar
-			? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
-			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
-
-		// Cantidad de productos asociados al RCLV
-		if (familia == "rclv") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
-			cantProds = prodsDelRCLV.length;
-			canonNombre = comp.canonNombre(original);
-			RCLVnombre = original.nombre;
-		}
-
-		// Datos Breves
-		bloqueDer =
-			tema == "revisionEnts"
-				? {
-						registro: await procesos.bloques.registro({...original, entidad}),
-						usuario: await procesos.bloques.usuario(original.statusSugeridoPor_id, petitFamilias),
-				  }
-				: familia == "producto"
-				? {producto: true, registro: await procesos.bloques.registro({...original, entidad})}
-				: familia == "rclv"
-				? {
-						rclv: procesos.bloques.rclv({...original, entidad}),
-						registro: await procesos.bloques.registro({...original, entidad}),
-				  }
-				: {};
-
-		// Imagen Derecha
-		imgDerPers = procesos.obtieneAvatar(original).orig;
-
-		// Motivos de rechazo
-		if (["inactivar", "rechazar"].includes(codigo)) motivos = motivosStatus.filter((n) => n[petitFamilias]);
-
-		// Recuperar/Eliminar y Revisiones - completa el historial de status
-		if (!activos_ids.includes(original.statusRegistro_id))
-			historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...original});
+		// Variables varias
+		const datos = await procesos.variables(req);
 
 		// Obtiene datos para la vista
-		if (entidad == "capitulos")
-			original.capitulos = await procesos.obtieneCapitulos(original.coleccion_id, original.temporada);
-		const status_id = original.statusRegistro_id;
-		const urlActual = req.originalUrl;
-		const entidades = variables.entidades[petitFamilias];
-		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
+		const ayudasTitulo =
+			datos.tema == "revisionEnts"
+				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
+				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
+		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 
 		// Render del formulario
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, familia, id, registro: original, historialStatus},
-			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
-			...{entidades, entsNombre, motivos, urlActual},
-			cartelGenerico: true,
-		});
+		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus});
 	},
 
 	inacRecup_guardar: async (req, res) => {
