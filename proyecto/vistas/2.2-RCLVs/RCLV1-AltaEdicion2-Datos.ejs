@@ -311,7 +311,7 @@
 			<!-- hoyEstamos -->
 			<% if (hechos || eventos) { %>
 				<div id="hoyEstamos">
-					<select name="hoyEstamos_id" class="input sinFlecha">
+					<select name="hoyEstamos_id" class="input selectSinFlecha">
 						<option value="">Elegí una opción</option>
 						<% for (let opcion of opcsHoyEstamos) { %>
 							<option value="<%= opcion.id %>" <% if (opcion.id == dataEntry.hoyEstamos_id) { %>selected<% } %>><%= opcion.nombre %></option>
@@ -325,7 +325,7 @@
 			<!-- Resto -->
 			<% if (personajes || hechos) { %>
 				<div id="leyNombre">
-					<select name="leyNombre" class="input sinFlecha">
+					<select name="leyNombre" class="input selectSinFlecha">
 						<option value="">Elegí una opción</option>
 						<% for (let opcion of opcsLeyNombre) { %>
 							<option value="<%= opcion %>" <% if (opcion == dataEntry.leyNombre) { %>selected<% } %>><%= opcion %></option>
