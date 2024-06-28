@@ -11,8 +11,8 @@
 
     <!-- AMBOS -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
-    <% } else if (["inactivar", "rechazar"].includes(codigo)) { %><%- include("FM8-InactivarRech") %>
-    <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM8-HistorialStatus") %>
+    <% } else if (["inactivar", "rechazar"].includes(codigo)) { %><%- include("FM-PR-InactivarRech") %>
+    <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
 
     <!-- Fin -->
     <% } %>
