@@ -44,11 +44,11 @@ module.exports = {
 		const asocs = variables.entidades.asocRclvs;
 		for (let i = 0; i < asocs.length; i++)
 			if (prodComb[rclvs_id[i]] != 1)
-				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
+				bloqueIzq[asocs[i]] = procsFM.bloques.rclv({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
 		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
-		const bloqueDer = {producto: true, registro: await procsFM.bloqueRegistro({...prodComb, entidad})};
+		const bloqueDer = {producto: true, registro: await procsFM.bloques.registro({...prodComb, entidad})};
 		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Lecturas de BD
@@ -273,7 +273,7 @@ module.exports = {
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho
-			const bloqueDer = {producto: true, registro: await procsFM.bloqueRegistro({...prodComb, entidad})};
+			const bloqueDer = {producto: true, registro: await procsFM.bloques.registro({...prodComb, entidad})};
 			const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 			// Info para la vista

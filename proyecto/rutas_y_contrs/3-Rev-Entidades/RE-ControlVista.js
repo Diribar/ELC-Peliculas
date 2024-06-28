@@ -123,8 +123,8 @@ module.exports = {
 
 		// Bloque Derecho
 		const bloqueDer = {
-			registro: await procsFM.bloqueRegistro({...original, entidad}),
-			usuario: await procsFM.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+			registro: await procsFM.bloques.registro({...original, entidad}),
+			usuario: await procsFM.bloques.usuario(original.statusSugeridoPor_id, entidad),
 		};
 
 		// Info para la vista
@@ -403,8 +403,8 @@ module.exports = {
 			const prodsDelRCLV = familia == "rclv" ? await procsRCLV.detalle.prodsDelRCLV(original, userID) : null;
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
-				registro: await procsFM.bloqueRegistro({...original, entidad}),
-				usuario: await procsFM.fichaDelUsuario(edicion.editadoPor_id, petitFamilias),
+				registro: await procsFM.bloques.registro({...original, entidad}),
+				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, entidad),
 			};
 			const imgDerPers = procsFM.obtieneAvatar(original).orig;
 			const motivos = motivosEdics.filter((m) => m.prods);
