@@ -663,7 +663,7 @@ module.exports = {
 			// Fin
 			return bloque;
 		},
-		fichaDelUsuario: async (userID, entidad) => {
+		usuario: async (userID, entidad) => {
 			// Variables
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const ahora = comp.fechaHora.ahora();
