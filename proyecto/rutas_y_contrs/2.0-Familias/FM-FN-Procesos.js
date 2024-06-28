@@ -4,16 +4,16 @@ const validacsFM = require("./FM-FN-Validar");
 // Exportar ------------------------------------
 module.exports = {
 	// CRUD
-	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
+	obtieneOriginalEdicion: async ({entidad, entID, userID, edicID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condEdic = {[campo_id]: entID, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : "";
+		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : null;
 
 		// Obtiene los campos include
-		let includesOrig = "";
+		let includesOrig;
 		if (!excluirInclude) {
 			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
@@ -23,7 +23,11 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = baseDeDatos.obtienePorId(entidad, entID, includesOrig);
-		let edicion = userID ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
+		let edicion = userID
+			? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic)
+			: edicID
+			? baseDeDatos.obtienePorId(entidadEdic, edicID, includesEdic)
+			: null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
@@ -531,7 +535,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-			dependientes: async (entidad, id, original) => {
+		dependientes: async (entidad, id, original) => {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
