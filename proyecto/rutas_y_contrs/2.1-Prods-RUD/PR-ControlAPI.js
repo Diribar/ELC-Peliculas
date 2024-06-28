@@ -1,8 +1,8 @@
 "use strict";
 // Variables
-const procsCRUD = require("../2.0-Familias/FM-Procesos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procesos = require("./PR-FN-Procesos");
-const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 			// Averigua los errores solamente para esos campos
 			req.query.publico = req.session.usuario.rolUsuario.autTablEnts;
 			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.autTablEnts;
-			let errores = await valida.consolidado({campos, datos: req.query});
+			let errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
 
 			// Devuelve el resultado
 			return res.json(errores);
@@ -26,7 +26,7 @@ module.exports = {
 			let userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entID: prodID,
 				userID,
@@ -68,7 +68,7 @@ module.exports = {
 			const userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion({
+			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entID: prodID,
 				userID,
