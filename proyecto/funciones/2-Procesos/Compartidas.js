@@ -130,6 +130,7 @@ module.exports = {
 		},
 		oa: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o"),
 		ea: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e"),
+		unaUn: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "una" : "un"),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
 				? "pelicula_id"
