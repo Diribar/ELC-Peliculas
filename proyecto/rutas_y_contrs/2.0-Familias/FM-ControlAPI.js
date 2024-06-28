@@ -64,11 +64,13 @@ module.exports = {
 		const {coleccion_id, temporada, capitulo} = req.query;
 
 		// Obtiene el ID
-		const ID = await baseDeDatos.obtienePorCondicion("capitulos", {
-			coleccion_id: coleccion_id,
-			temporada: temporada,
-			capitulo: capitulo,
-		}).then((n) => n.id);
+		const ID = await baseDeDatos
+			.obtienePorCondicion("capitulos", {
+				coleccion_id: coleccion_id,
+				temporada: temporada,
+				capitulo: capitulo,
+			})
+			.then((n) => n.id);
 
 		// Fin
 		return res.json(ID);
@@ -83,7 +85,13 @@ module.exports = {
 		// Fin
 		return res.json(datos);
 	},
-	motivosRechAltas: (req, res) => {
-		return res.json(motivosStatus);
+	motivosStatus: (req, res) => {
+		// Variables
+		const {entidad} = req.query;
+		const petitFamilias = comp.obtieneDesdeEntidad(entidad);
+		const motivos = motivosStatus.filter((m) => m[petitFamilias]);
+
+		// Fin
+		return res.json(motivos);
 	},
 };
