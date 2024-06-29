@@ -1,13 +1,13 @@
 <!-- General -->
-<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE0-Revision.css">
+<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-0-Revision.css">
 
 <% if (codigo == "tableroControl") { %>
 	<!-- TABLERO -->
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-TableroControl.css">
-	<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE1-TableroControl.css">
-	<script src="/publico/javascript//3-Rev-Entidades/RE0-TableroControl.js"></script>
+	<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-0-TableroControl.css">
+	<script src="/publico/javascript//3-Rev-Entidades/RE-0-TableroControl.js"></script>
 	<% if (tema == "revisionEnts") { %>
-		<script src="/publico/javascript/3-Rev-Entidades/RE0-UnaSolaPestana.js"></script>
+		<script src="/publico/javascript/3-Rev-Entidades/RE-0-UnaSolaPestana.js"></script>
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 		<script src="/publico/javascript/6-Graficos/GR2-linksVencim.js"></script>
 	<% } %>
@@ -45,26 +45,26 @@
 	<% } else if (codigo == "rechazar") { %>
 		<!-- Rechazos - Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-InactivarRech.css">
-		<script src="/publico/javascript/2.0-Familias/FM-PR-InactivarRech.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-Motivos.css">
+		<script src="/publico/javascript/2.0-Familias/FM-PR-Motivos.js"></script>
 
 	<% } else if (codigo == "inactivar-o-recuperar") { %>
 		<!-- Revisión de Inactivar o Recuperar - Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
-		<script src="/publico/javascript/3-Rev-Entidades/RE8-InacRecup.js"></script>
+		<script src="/publico/javascript/3-Rev-Entidades/RE-PR-InacRecup.js"></script>
 
 	<% } else if (codigo.endsWith("/edicion")) { %>
 		<!-- Ediciones - Particular -->
-		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-Edicion.css">
-		<script src="/publico/javascript/3-Rev-Entidades/RE9-Edicion.js"></script>
+		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-Edicion.css">
+		<script src="/publico/javascript/3-Rev-Entidades/RE-PR-Edicion.js"></script>
 
 	<% } else if (codigo.endsWith("/edicion/avatar")) { %>
 		<!-- Prod-Avatar -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
-		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatar.css">
+		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-EdicionAvatar.css">
 		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE9-EdicionAvatarRech.css">
-		<script src="/publico/javascript/3-Rev-Entidades/RE9-EdicionAvatar.js"></script>
+		<script src="/publico/javascript/3-Rev-Entidades/RE-PR-EdicionAvatar.js"></script>
 		<script src="/publico/javascript/3-Rev-Entidades/RE9-EdicionAvatarRech.js"></script>
 
 	<% } else if (codigo == "abmLinks") { %>
