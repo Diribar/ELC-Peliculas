@@ -9,7 +9,7 @@
 		<!-- Salir -->
 		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
 		<% const ID = locals.prodID || locals.id ? ('&id='+(locals.prodID || locals.id)) : '' %>
-		<a href="/inactivar-captura/?<%= ENTIDAD + ID + ORIGEN %>">
+		<a href="/inactivar-captura/?<%= ENTIDAD + ID + ORIGEN %>" tabindex="-1">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>

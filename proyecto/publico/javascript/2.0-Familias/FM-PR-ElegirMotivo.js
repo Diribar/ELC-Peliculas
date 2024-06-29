@@ -68,7 +68,9 @@ window.addEventListener("load", async () => {
 			// Si la 'entidad' y el 'id' están ingresados, busca el registro
 			if (entIdOK) {
 				let innerText;
-				const registro = await fetch("/crud/api/obtiene-registro/?entidad=" + entDupl + "&id=" + idDupl);
+				const registro = await fetch("/crud/api/obtiene-registro/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
+					n.json()
+				);
 				if (registro) {
 					const {nombre, nombreAltern, nombreCastellano, nombreOriginal} = registro;
 					innerText = nombre
@@ -85,7 +87,7 @@ window.addEventListener("load", async () => {
 					innerText = "No tenemos un registro con esos datos";
 					duplicadoOK = false;
 				}
-				DOM.resultadoDuplicado.innerText = innerText;
+				DOM.resultadoDuplicado.innerHTML = "<u>Duplicado con</u>: <em>" + innerText + "</em>";
 			} else duplicadoOK = false;
 		} else duplicadoOK = true;
 
