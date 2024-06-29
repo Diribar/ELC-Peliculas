@@ -4,7 +4,7 @@ const validacsFM = require("./FM-FN-Validar");
 // Exportar ------------------------------------
 module.exports = {
 	// CRUD
-	variables: async function (req) {
+	obtieneDatosForm: async function (req) {
 		// Tema
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
@@ -51,6 +51,21 @@ module.exports = {
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
+	},
+	obtieneDatosGuardar: async (req) => {
+		const {entidad, id, motivo_id} = {...req.query, ...req.body};
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const {ruta} = comp.reqBasePathUrl(req);
+		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+		const userID = req.session.usuario.id;
+		const ahora = comp.fechaHora.ahora();
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const include = comp.obtieneTodosLosCamposInclude(entidad);
+		const original = await baseDeDatos.obtienePorId(entidad, id, include);
+		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+		// Fin
+		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables

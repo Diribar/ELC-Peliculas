@@ -7,7 +7,7 @@ const validacs = require("./FM-FN-Validar");
 module.exports = {
 	motivosForm: async (req, res) => {
 		// Variables varias
-		const datos = await procesos.variables(req);
+		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
 		const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
@@ -19,7 +19,7 @@ module.exports = {
 	},
 	historialForm: async (req, res) => {
 		// Variables varias
-		const datos = await procesos.variables(req);
+		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
 		const ayudasTitulo =
@@ -31,10 +31,9 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus});
 	},
-
 	inacRecup_guardar: async (req, res) => {
-		//  iniciales
-		let datos = await obtieneDatos(req);
+		//  Variables
+		let datos = await procesos.obtieneDatosGuardar(req);
 		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
 
 		// Acciones con comentario
@@ -192,19 +191,4 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion, titulo});
 	},
-};
-let obtieneDatos = async (req) => {
-	const {entidad, id, motivo_id} = {...req.query, ...req.body};
-	const familia = comp.obtieneDesdeEntidad.familia(entidad);
-	const {ruta} = comp.reqBasePathUrl(req);
-	const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
-	const userID = req.session.usuario.id;
-	const ahora = comp.fechaHora.ahora();
-	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-	const include = comp.obtieneTodosLosCamposInclude(entidad);
-	const original = await baseDeDatos.obtienePorId(entidad, id, include);
-	const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-	// Fin
-	return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
 };
