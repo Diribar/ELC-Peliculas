@@ -34,8 +34,8 @@ module.exports = {
 
 		// Bloque de la derecha
 		const bloqueDer = {
-			rclv: procesos.detalle.bloqueRCLV({...rclv, entidad}),
-			registro: await procsFM.bloqueRegistro({...rclv, entidad}),
+			rclv: procsFM.bloques.rclv({...rclv, entidad}),
+			registro: await procsFM.bloques.registro({...rclv, entidad}),
 		};
 
 		// Imagen derecha
@@ -117,8 +117,8 @@ module.exports = {
 				// Datos Breves
 				if (tema == "revisionEnts")
 					bloqueDer = {
-						registro: await procsFM.bloqueRegistro({...original, entidad}),
-						usuario: await procsFM.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
+						registro: await procsFM.bloques.registro({...original, entidad}),
+						usuario: await procsFM.bloques.usuario(original.statusSugeridoPor_id, entidad),
 					};
 			}
 

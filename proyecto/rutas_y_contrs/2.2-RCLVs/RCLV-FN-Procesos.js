@@ -116,42 +116,6 @@ module.exports = {
 			// Fin
 			return prodsDelRCLV;
 		},
-		bloqueRCLV: (registro) => {
-			// Variables
-			let bloque = [];
-
-			// Información
-			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.nombreAltern) {
-				const articulo = comp.obtieneDesdeEntidad.oa(registro.entidad);
-				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.nombreAltern});
-			}
-			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
-				// Puede ser cualquier familia RCLV
-				const articulo = comp.letras.laLo(registro);
-				bloque.push({titulo: "Se " + articulo + " recuerda el", valor: registro.fechaDelAno.nombre});
-			}
-
-			// Particularidades para personajes
-			if (registro.entidad == "personajes") {
-				if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
-				if (registro.canon_id && registro.canon_id != "NN" && registro.canon && registro.canon[registro.genero_id])
-					bloque.push({titulo: "Status Canoniz.", valor: registro.canon[registro.genero_id]});
-				if (registro.rolIglesia_id && registro.rolIglesia_id != "NN" && registro.rolIglesia)
-					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia[registro.genero_id]});
-				if (registro.apMar_id && registro.apMar_id != 10 && registro.apMar)
-					bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
-			}
-
-			// Particularidades para hechos
-			if (registro.entidad == "hechos") {
-				if (registro.anoComienzo) bloque.push({titulo: "Año", valor: registro.anoComienzo});
-				if (registro.ama) bloque.push({valor: "Es una aparición mariana"});
-			}
-
-			// Fin
-			return bloque;
-		},
 	},
 	altaEdicForm: {
 		tipoFecha_id: (dataEntry, entidad) => {

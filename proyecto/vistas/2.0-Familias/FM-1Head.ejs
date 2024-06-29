@@ -15,12 +15,13 @@
 	<% if (["inactivar", "rechazar"].includes(codigo)) { %>
 		<!-- Inactivar, Rechazar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-InactivarRech.css">
-	<% } else { %>
+		<script src="/publico/javascript/2.0-Familias/FM-PR-InactivarRech.js"></script>
+	<% } %>
+	<% if (["recuperar", "eliminar"].includes(codigo)) { %>
 		<!-- Recuperar, Eliminar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM8-HistorialStatus.css">
-	<% } %>
-	<% if (codigo != "eliminar") { %>
-		<!-- Inactivar, Recuperar, Rechazar -->
-		<script src="/publico/javascript/2.0-Familias/FM-CambiosStatus.js"></script>
+		<% if (codigo == "recuperar") { %>
+			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
+		<% } %>
 	<% } %>
 <% } %>
