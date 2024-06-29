@@ -12,6 +12,7 @@ window.addEventListener("load", async () => {
 		sectorDuplicado: document.querySelector("#motivos #sectorDuplicado"),
 		selectEntidad: document.querySelector("#motivos #sectorDuplicado select[name='entidad']"),
 		inputId: document.querySelector("#motivos #sectorDuplicado input[name='idDuplicado']"),
+		resultadoDuplicado: document.querySelector("#motivos #sectorDuplicado #resultadoDuplicado"),
 
 		// Comentario
 		comentario: document.querySelector("#comentario textarea"),
@@ -56,7 +57,39 @@ window.addEventListener("load", async () => {
 		// Muestra u oculta el 'sectorDuplicado'
 		const motivoDuplicado = motivoBD.codigo == "duplicado";
 		motivoDuplicado ? DOM.sectorDuplicado.classList.remove("ocultar") : DOM.sectorDuplicado.classList.add("ocultar");
-		duplicadoOK = !motivoDuplicado || (DOM.selectEntidad.value && DOM.inputId.value);
+
+		// Si el motivo es duplicado, busca el registro
+		if (motivoDuplicado) {
+			// Variables
+			const entDupl = DOM.selectEntidad.value;
+			const idDupl = DOM.inputId.value;
+			const entIdOK = entDupl && idDupl;
+
+			// Si la 'entidad' y el 'id' están ingresados, busca el registro
+			if (entIdOK) {
+				let innerText;
+				const registro = await fetch("/crud/api/obtiene-registro/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
+					n.json()
+				);
+				if (registro) {
+					const {nombre, nombreAltern, nombreCastellano, nombreOriginal} = registro;
+					innerText = nombre
+						? nombre
+						: nombreAltern
+						? nombreAltern
+						: nombreCastellano
+						? nombreCastellano
+						: nombreOriginal
+						? nombreOriginal
+						: "Encontramos el registro, pero no tiene nombre";
+					duplicadoOK = true;
+				} else {
+					innerText = "No tenemos un registro con esos datos";
+					duplicadoOK = false;
+				}
+				DOM.resultadoDuplicado.innerHTML = "<u>Duplicado con</u>: <em>" + innerText + "</em>";
+			} else duplicadoOK = false;
+		} else duplicadoOK = true;
 
 		if (motivoBD.agregarComent) DOM.comentario.focus();
 

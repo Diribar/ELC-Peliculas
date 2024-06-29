@@ -94,4 +94,9 @@ module.exports = {
 		// Fin
 		return res.json(motivos);
 	},
+	obtieneRegistro: async (req, res) => {
+		const {entidad, id} = req.query;
+		const registro = await baseDeDatos.obtienePorId(entidad, id);
+		return res.json(registro);
+	},
 };

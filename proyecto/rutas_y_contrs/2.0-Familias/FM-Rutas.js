@@ -31,12 +31,13 @@ const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
 
-// APIs - Detalle, Edición, Links
+// APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/crud/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/crud/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.motivosStatus);
+router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
 
 // Vistas - CRUD: Inactivar
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.motivosForm);
