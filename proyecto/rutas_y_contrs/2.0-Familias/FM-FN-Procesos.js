@@ -5,15 +5,16 @@ const validacsFM = require("./FM-FN-Validar");
 module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
-		// Tema
+		// Variables
+		const {entidad, id} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = ruta.slice(1, -1).replace("revision/", "");
-
-		// Más variables
-		const {entidad, id} = req.query;
+		const codigo = ruta
+			.replace("revision/", "")
+			.replace(familia + "/", "")
+			.replaceAll("/", "");
 		const origen = req.query.origen;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const userID = req.session.usuario.id;
 
