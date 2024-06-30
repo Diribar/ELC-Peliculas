@@ -282,9 +282,9 @@ module.exports = {
 		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revID);
 
-		// CONSECUENCIAS - Elimina los registros provisorios del historial, que no tengan comentarios
-		const condicion = {entidad, entidad_id: id, statusFinal_id: inacRecup_ids, comentario: null};
-		await baseDeDatos.eliminaTodosPorCondicion("histStatus", condicion);
+		// CONSECUENCIAS - Si el registro 'inactivar_id' del historial no tiene comentarios, lo elimina
+		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
+		baseDeDatos.eliminaTodosPorCondicion("histStatus", condicion);
 
 		// CONSECUENCIAS - Agrega un registro en el histStatus
 		let datosHist = {

@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Si el motivo es 'duplicado', se fija si se informó la 'entidad' y el 'id'
-	if (!mensajes && motivo.codigo == "duplicado") {
+	if (!mensajes && motivo_id == motivoDuplicado_id) {
 		if (!entDupl && !idDupl)
 			mensajes = ["Necesitamos que nos informes la entidad y el id del producto con el que está duplicado"];
 		else if (!entDupl) mensajes = ["Necesitamos que nos informes la entidad del producto con el que está duplicado"];

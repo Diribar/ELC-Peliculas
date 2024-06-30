@@ -85,7 +85,7 @@ module.exports = {
 		// Fin
 		return {titulo, entidadNombre};
 	},
-	obtieneDatosGuardar: async (req) => {
+	obtieneDatosGuardar: async function (req) {
 		// Variables
 		const {entidad, id, motivo_id} = {...req.query, ...req.body};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -100,10 +100,21 @@ module.exports = {
 
 		// Comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
+		if (!comentario && motivo_id == motivoDuplicado_id) comentario = this.duplicadoCon(req.boy);
 		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
+	},
+	duplicadoCon: (datos) => {
+		// Variables
+		const {entDupl, idDupl} = datos;
+		const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
+
+		// Fin
+		const respuesta = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
+		return respuesta;
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
@@ -845,10 +856,10 @@ let FN = {
 		const {entidad, id: entidad_id} = registro;
 		const condicion = {entidad, entidad_id, statusFinal_id: inactivo_id};
 
-		// Obtiene el historial de status y el motivo
-		const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", condicion, "statusFinalEn");
+		// Obtiene el motivo del último histStatus
+		const histStatus = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
 		const motivo = motivosStatus.find((n) => n.id == histStatus.motivo_id);
-		const motivoDetalle = motivo.comentNeces ? histStatus.comentario : motivo.descripcion;
+		const motivoDetalle = histStatus.comentario ? histStatus.comentario : motivo.descripcion;
 
 		// Fin
 		return {motivoDetalle};

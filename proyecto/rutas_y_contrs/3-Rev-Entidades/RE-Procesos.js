@@ -503,11 +503,12 @@ module.exports = {
 				statusFinal_id == inactivo_id
 					? codigo == "rechazar"
 						? req.body.motivo_id
-						: await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id: id}, "statusFinalEn")
+						: await baseDeDatos.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: id}, "statusFinalEn")
 					: null;
 
 			// Obtiene el comentario
-			let comentario = req.body.comentario ? req.body.comentario : "";
+			let {comentario} = req.body.comentario;
+			if (!comentario && motivo_id == motivoDuplicado_id) comentario = procsFM.duplicadoCon(req.boy);
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Datos para la controladora
