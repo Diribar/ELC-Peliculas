@@ -149,7 +149,7 @@ module.exports = {
 		// Variables
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
-		const {codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
+		const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
 		const {cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
 		datos = {}; // limpia la variable 'datos'
 		let destino;
@@ -160,7 +160,7 @@ module.exports = {
 			datos.avatar = req.file ? req.file.filename : original.avatar;
 
 			// Acciones para alta
-			if (subcodigo == "alta") {
+			if (codigo == "alta") {
 				// Obtiene los datos
 				datos = {...datos, ...req.body, ...req.query, revisorPERL, imgOpcionalnal: true};
 
@@ -209,7 +209,7 @@ module.exports = {
 			}
 
 			// Acciones para avatar por rechazo
-			if (subcodigo == "rechazar") {
+			if (codigo == "rechazar") {
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina(carpetaExterna + "9-Provisorio/", datos.avatar);
 
@@ -279,8 +279,8 @@ module.exports = {
 		// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
 		if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
 
-		// CONSECUENCIAS - Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-		if (rclv && subcodigo == "alta" && aprobado) procesos.rclv.edicAprobRech(entidad, original, revID);
+		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revID);
 
 		// CONSECUENCIAS - Elimina los registros provisorios del historial, que no tengan comentarios
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inacRecup_ids, comentario: null};
@@ -294,8 +294,7 @@ module.exports = {
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
 		};
-		const motivo =
-			codigo == "rechazar" || (!aprobado && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
+		const motivo = motivo_id ? motivosStatus.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		baseDeDatos.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
 
@@ -309,7 +308,7 @@ module.exports = {
 		if (producto) await validacsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 		// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
-		if (subcodigo == "recuperar" && entidad != "capitulo" && aprobado && original.avatar && original.avatar.includes("/"))
+		if (codigo == "recuperar" && aprobado && entidad != "capitulo" && original.avatar && original.avatar.includes("/"))
 			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Opciones de redireccionamiento
