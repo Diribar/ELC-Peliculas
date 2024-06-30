@@ -19,7 +19,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
+		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidades.prods);
@@ -122,7 +122,7 @@ module.exports = {
 		// Obtiene los campos include
 		let includesOrig;
 		if (!excluirInclude) {
-			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
+			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
 			if (entidad == "colecciones") includesOrig.push("capitulos");
 			if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
