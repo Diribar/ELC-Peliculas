@@ -6,7 +6,7 @@ const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	motivosForm: async (req, res) => {
-		// Variables varias
+		// Variables
 		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
@@ -18,7 +18,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, motivos, entidades});
 	},
 	historialForm: async (req, res) => {
-		// Variables varias
+		// Variables
 		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
