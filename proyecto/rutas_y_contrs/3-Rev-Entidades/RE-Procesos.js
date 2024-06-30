@@ -6,7 +6,7 @@ const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 module.exports = {
 	// Tableros
 	tablRevision: {
-		obtieneProdsConEdic: async (revID) => {
+		obtieneProds1: async (revID) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
 			let productos = [];
@@ -67,7 +67,7 @@ module.exports = {
 			// Fin
 			return {AL_conEdicion, ED};
 		},
-		obtieneProds_SE_IR: async (revID) => {
+		obtieneProds2: async (revID) => {
 			// Variables
 			const entidades = [...variables.entidades.prods];
 			let campos;
@@ -113,9 +113,9 @@ module.exports = {
 			[AL_sinEdicion, SE, IN, RC] = await Promise.all([AL_sinEdicion, SE, IN, RC]);
 
 			// Fin
-			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
+			return {AL_sinEdicion, SE, IN, RC};
 		},
-		obtieneProdsRepetidos: async () => {
+		obtieneProds3: async () => {
 			// Obtiene los datos clave de los registros
 			const statusRegistro_id = activos_ids;
 			let registros = await Promise.all([
@@ -152,7 +152,7 @@ module.exports = {
 			return {RP: repetidos};
 		},
 		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
-		obtieneRCLVs: async (revID) => {
+		obtieneRCLVs1: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
 			const include = [...variables.entidades.prods, "prodsEdiciones"];
@@ -162,13 +162,17 @@ module.exports = {
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
 			let AL = tablRevision.obtieneRegs(campos);
 
+			// IN: En staus 'inactivar'
+			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
+			let IN = tablRevision.obtieneRegs(campos);
+
+			// RC: En staus 'recuperar'
+			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
+			let RC = tablRevision.obtieneRegs(campos);
+
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
 			let SL = tablRevision.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
-
-			// IR: En staus 'inactivar' o 'recuperar'
-			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
-			let IR = tablRevision.obtieneRegs(campos);
 
 			// FM: Con fecha móvil
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -215,12 +219,12 @@ module.exports = {
 				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
-			[AL, SL, IR, FM] = await Promise.all([AL, SL, IR, FM]);
+			[AL, SL, IN, RC, FM] = await Promise.all([AL, SL, IN, RC, FM]);
 
 			// Fin
-			return {AL, SL, IR, FM};
+			return {AL, SL, IN, RC, FM};
 		},
-		obtieneRCLVsConEdic: async function (revID) {
+		obtieneRCLVs2: async function (revID) {
 			// 1. Variables
 			let include = variables.entidades.asocRclvs;
 			let rclvs = [];

@@ -17,13 +17,13 @@ module.exports = {
 		const revID = req.session.usuario.id;
 
 		// Productos y Ediciones
-		let prods1 = procesos.tablRevision.obtieneProdsConEdic(revID); // Altas y Ediciones
-		let prods2 = procesos.tablRevision.obtieneProds_SE_IR(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
-		let prods3 = procesos.tablRevision.obtieneProdsRepetidos(); // películas y colecciones repetidas
+		let prods1 = procesos.tablRevision.obtieneProds1(revID); // Altas y Ediciones
+		let prods2 = procesos.tablRevision.obtieneProds2(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
+		let prods3 = procesos.tablRevision.obtieneProds3(); // películas y colecciones repetidas
 
 		// RCLV
-		let rclvs1 = procesos.tablRevision.obtieneRCLVs(revID);
-		let rclvs2 = procesos.tablRevision.obtieneRCLVsConEdic(revID);
+		let rclvs1 = procesos.tablRevision.obtieneRCLVs1(revID);
+		let rclvs2 = procesos.tablRevision.obtieneRCLVs2(revID);
 
 		// Links
 		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revID);
@@ -151,10 +151,8 @@ module.exports = {
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
 		const {cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
-
-		// Otras variables
-		let destino;
 		datos = {}; // limpia la variable 'datos'
+		let destino;
 
 		// Acciones si es un RCLV
 		if (rclv) {
