@@ -60,7 +60,6 @@ module.exports = {
 		if (codigo.includes(familia)) {
 			codigo = codigo.replace(familia, "");
 			codigo = "revisar" + comp.letras.inicialMayus(codigo);
-			console.log(31, codigo);
 		}
 
 		// Fin
