@@ -843,13 +843,10 @@ let FN = {
 	obtieneMotivoDetalle: async (registro) => {
 		// Variables
 		const {entidad, id: entidad_id} = registro;
+		const condicion = {entidad, entidad_id, statusFinal_id: inactivo_id};
 
 		// Obtiene el historial de status y el motivo
-		const histStatus = await baseDeDatos.obtieneElUltimo(
-			"histStatus",
-			{entidad, entidad_id, statusFinal_id: inactivo_id},
-			"statusFinalEn"
-		);
+		const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", condicion, "statusFinalEn");
 		const motivo = motivosStatus.find((n) => n.id == histStatus.motivo_id);
 		const motivoDetalle = motivo.comentNeces ? histStatus.comentario : motivo.descripcion;
 
