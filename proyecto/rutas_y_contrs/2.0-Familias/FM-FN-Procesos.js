@@ -77,6 +77,7 @@ module.exports = {
 		return {titulo, entidadNombre};
 	},
 	obtieneDatosGuardar: async (req) => {
+		// Variables
 		const {entidad, id, motivo_id} = {...req.query, ...req.body};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {ruta} = comp.reqBasePathUrl(req);
@@ -88,8 +89,17 @@ module.exports = {
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
+		// Comentario
+		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
+		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+		if (codigo == "inactivar") {
+			// Si el comentario está restringido, lo descarta
+			const motivo = motivosStatus.find((n) => n.id == motivo_id);
+			if (!motivo.agregarComent) comentario = "";
+		}
+
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
+		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables

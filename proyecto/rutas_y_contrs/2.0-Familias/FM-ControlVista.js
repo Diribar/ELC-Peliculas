@@ -34,18 +34,7 @@ module.exports = {
 	inacRecup_guardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id} = datos;
-
-		// Acciones con comentario
-		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
-		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
-
-		// Acciones particulares si el nuevo status es 'inactivar_id'
-		if (codigo == "inactivar") {
-			// Si el comentario está restringido, lo descarta
-			const motivo = motivosStatus.find((n) => n.id == motivo_id);
-			if (!motivo.agregarComent) comentario = "";
-		}
+		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario} = datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
