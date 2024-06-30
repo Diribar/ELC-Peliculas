@@ -66,9 +66,10 @@ router.get("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.a
 
 // Vistas - Cambios de status
 router.post("/producto/alta", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar);
-router.post("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.cambioStatusGuardar);
-router.post("/:familia/rechazar", aptoCRUD, m.usRolRevPERL, m.motivoNecesario, m.capturaInactivar, vista.cambioStatusGuardar);
-router.post("/:familia/inactivar-o-recuperar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.post("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar);
+router.post("/:familia/rechazar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+router.post("/:familia/inactivar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.post("/:familia/recuperar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
 router.get("/rclv/solapamiento", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
