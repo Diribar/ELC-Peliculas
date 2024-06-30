@@ -708,14 +708,7 @@ module.exports = {
 			resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 			// Si el registro está inactivo, le agrega el motivo
-			if (registro.statusRegistro_id == inactivo_id) {
-				const {entidad, id: entidad_id} = registro;
-				const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id}, "statusFinalEn");
-				if (histStatus) {
-					const motivoDetalle = motivosStatus.find((n) => n.id == histStatus.motivo_id);
-					resultado.push({motivoDetalle});
-				}
-			}
+			if (registro.statusRegistro_id == inactivo_id)resultado.push(await FN.obtieneMotivoDetalle(registro));
 
 			// Fin
 			return resultado;
@@ -846,5 +839,21 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+	obtieneMotivoDetalle: async (registro) => {
+		// Variables
+		const {entidad, id: entidad_id} = registro;
+
+		// Obtiene el historial de status y el motivo
+		const histStatus = await baseDeDatos.obtieneElUltimo(
+			"histStatus",
+			{entidad, entidad_id, statusFinal_id: inactivo_id},
+			"statusFinalEn"
+		);
+		const motivo = motivosStatus.find((n) => n.id == histStatus.motivo_id);
+		const motivoDetalle = motivo.comentNeces ? histStatus.comentario : motivo.descripcion;
+
+		// Fin
+		return {motivoDetalle};
 	},
 };
