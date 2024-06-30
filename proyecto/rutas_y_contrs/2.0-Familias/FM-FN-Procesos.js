@@ -6,13 +6,16 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
+		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const origen = req.query.origen;
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const origen = req.query.origen;
 		const userID = req.session.usuario.id;
+
+		// Obtiene el tema y código
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const codigo = this.codigo({ruta,familia})
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -22,13 +25,6 @@ module.exports = {
 		if (familia == "rclv") include.push(...variables.entidades.prods);
 		let original = await baseDeDatos.obtienePorId(entidad, id, include);
 		if (entidad == "capitulos") original.capitulos = await this.obtieneCapitulos(original.coleccion_id, original.temporada);
-
-		// Obtiene el código
-		const codigoAux = ruta.replace(familia + "/", "").replaceAll("/", "");
-		const codigo =
-			codigoAux != "inactivar-o-recuperar"
-				? codigoAux
-				: "revisar" + (original.statusRegistro_id == inactivar_id ? "Inactivar" : "Recuperar");
 
 		// Cantidad de productos asociados al RCLV
 		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
@@ -55,6 +51,20 @@ module.exports = {
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
+	},
+	codigo: ({ruta, familia}) => {
+		// Obtiene el código a partir de la familia
+		let codigo = ruta.replaceAll("/", "");
+
+		// Pule el código
+		if (codigo.includes(familia)) {
+			codigo = codigo.replace(familia, "");
+			codigo = "revisar" + comp.letras.inicialMayus(codigo);
+			console.log(31, codigo);
+		}
+
+		// Fin
+		return codigo;
 	},
 	titulo: ({entidad, codigo}) => {
 		// Variables
@@ -811,8 +821,10 @@ let FN = {
 				? "/revision/" + familia + "/alta" + cola
 				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
 				? "/revision/" + familia + "/edicion" + cola
-				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
-				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
+				: registro.statusRegistro_id == inactivar_id
+				? "/revision/" + familia + "/inactivar" + cola
+				: registro.statusRegistro_id == recuperar_id
+				? "/revision/" + familia + "/recuperar" + cola
 				: "";
 
 		// Fin
