@@ -15,7 +15,7 @@ module.exports = {
 
 		// Obtiene el tema y código
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = this.codigo({ruta,familia})
+		const codigo = this.codigo({ruta, familia});
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -709,8 +709,12 @@ module.exports = {
 
 			// Si el registro está inactivo, le agrega el motivo
 			if (registro.statusRegistro_id == inactivo_id) {
-				const comentario = await FN.comentarioBR(registro);
-				resultado.push({comentario});
+				const {entidad, id: entidad_id} = registro;
+				const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id}, "statusFinalEn");
+				if (histStatus) {
+					const motivoDetalle = motivosStatus.find((n) => n.id == histStatus.motivo_id);
+					resultado.push({motivoDetalle});
+				}
 			}
 
 			// Fin
@@ -842,30 +846,5 @@ let FN = {
 
 		// Fin
 		return resultados;
-	},
-	comentarioBR: async (registro) => {
-		// Variables
-		const {entidad, id: entidad_id} = registro;
-		let comentario;
-
-		// Actualiza el comentario - histStatus
-		if (registro.motivo.agregarComent) {
-			const condicion = {
-				entidad,
-				entidad_id,
-				statusFinal_id: [inactivar_id, inactivo_id],
-				comentario: {[Op.ne]: null},
-			};
-			let histStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condicion);
-			if (histStatus.length > 1)
-				histStatus.sort((a, b) => (a.statusFinalEn < b.statusFinalEn ? -1 : a.statusFinalEn > b.statusFinalEn ? 1 : 0));
-			if (histStatus.length) comentario = histStatus.slice(-1)[0].comentario;
-		}
-
-		// Actualiza el comentario - motivo
-		if (!comentario) comentario = registro.motivo.descripcion;
-
-		// Fin
-		return comentario;
 	},
 };
