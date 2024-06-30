@@ -13,9 +13,9 @@ module.exports = {
 	obtienePorId: (entidad, id, include) => db[entidad].findByPk(id, {include}).then((n) => (n ? n.toJSON() : null)),
 	obtienePorCondicion: (entidad, condicion, include) =>
 		db[entidad].findOne({where: condicion, include}).then((n) => (n ? n.toJSON() : null)),
-	obtieneElUltimo: (entidad, campoOrden) =>
+	obtieneElUltimo: (entidad, condicion, campoOrden) =>
 		db[entidad]
-			.findAll({order: [[campoOrden ? campoOrden : "id", "DESC"]]})
+			.findAll({where: condicion, order: [[campoOrden ? campoOrden : "id", "DESC"]]})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => (n.length ? n[0] : null)),
 

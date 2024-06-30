@@ -503,7 +503,7 @@ module.exports = {
 				statusFinal_id == inactivo_id
 					? codigo == "rechazar"
 						? req.body.motivo_id
-						: await baseDeDatos.obtieneElUltimo(entidad, {statusFinalEn})
+						: await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id: id}, "statusFinalEn")
 					: null;
 
 			// Obtiene el comentario

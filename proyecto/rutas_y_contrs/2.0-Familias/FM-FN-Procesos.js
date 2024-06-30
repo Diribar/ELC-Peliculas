@@ -101,11 +101,6 @@ module.exports = {
 		// Comentario
 		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
 		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
-		if (codigo == "inactivar") {
-			// Si el comentario está restringido, lo descarta
-			const motivo = motivosStatus.find((n) => n.id == motivo_id);
-			if (!motivo.agregarComent) comentario = "";
-		}
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
