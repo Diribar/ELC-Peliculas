@@ -15,9 +15,6 @@ module.exports = async (req, res, next) => {
 		if (!motivo) mensajes = ["No reconocemos ese motivo"];
 	}
 
-	// Si correspondía un comentario y no se completó, redirige
-	if (!mensajes && motivo.agregarComent && !comentario) mensajes = ["Necesitamos que nos des un comentario"];
-
 	// Si el motivo es 'duplicado', se fija si se informó la 'entidad' y el 'id'
 	if (!mensajes && motivo.codigo == "duplicado") {
 		if (!entDupl && !idDupl)
@@ -29,6 +26,10 @@ module.exports = async (req, res, next) => {
 			if (!producto) mensajes = ["No tenemos ningún producto con esa combinación de entidad e id"];
 		}
 	}
+
+	// Si correspondía un comentario y no se completó, redirige
+	if (!mensajes && motivo.agregarComent && !comentario) mensajes = ["Necesitamos que nos des un comentario"];
+	if (!mensajes && !motivo.agregarComent && comentario) delete req.body.comentario
 
 	// Conclusiones
 	if (mensajes) return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: [variables.vistaEntendido(link)]}});
