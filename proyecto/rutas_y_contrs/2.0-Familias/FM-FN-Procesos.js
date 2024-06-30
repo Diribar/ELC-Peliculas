@@ -708,7 +708,7 @@ module.exports = {
 			resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 			// Si el registro está inactivo, le agrega el motivo
-			if (registro.statusRegistro_id == inactivo_id)resultado.push(await FN.obtieneMotivoDetalle(registro));
+			if (registro.statusRegistro_id == inactivo_id) resultado.push(await FN.obtieneMotivoDetalle(registro));
 
 			// Fin
 			return resultado;
