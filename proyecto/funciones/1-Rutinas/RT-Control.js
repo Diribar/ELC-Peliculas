@@ -29,7 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.FeedbackParaUsers();
+		// await this.rutinasHorarias.feedbackParaUsers();
 		// await this.rutinasDiarias.IDdeTablas()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -156,7 +156,7 @@ module.exports = {
 
 	// Rutinas
 	rutinasHorarias: {
-		ProdAprobEnLink: async () => {
+		prodAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
 			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
 
@@ -166,7 +166,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnProd: async () => {
+		linksEnProd: async () => {
 			// Variables
 			let esperar = [];
 
@@ -191,7 +191,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProdsEnRCLV: async () => {
+		prodsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 
@@ -207,14 +207,14 @@ module.exports = {
 			// Fin
 			return;
 		},
-		FeedbackParaUsers: async () => {
+		feedbackParaUsers: async () => {
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
 			const regsTodos = [...regsStatus, ...regsEdic];
 
 			// Si no hay registros a comunicar, termina el proceso
 			if (!regsTodos.length) {
-				procesos.finRutinasHorarias("FeedbackParaUsers");
+				procesos.finRutinasHorarias("feedbackParaUsers");
 				return;
 			}
 
@@ -278,7 +278,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProductosAlAzar: async () => {
+		productosAlAzar: async () => {
 			// Rastrilla las películas y colecciones
 			for (let entidad of ["peliculas", "colecciones"]) {
 				// Obtiene los productos
@@ -300,8 +300,8 @@ module.exports = {
 		},
 	},
 	rutinasDiarias: {
-		ActualizaSolapam: async () => await comp.actualizaSolapam(),
-		ImagenDerecha: async () => {
+		actualizaSolapam: async () => await comp.actualizaSolapam(),
+		imagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
@@ -632,6 +632,7 @@ module.exports = {
 			// Fin
 			return;
 		},
+		// ValidacionStatus
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
