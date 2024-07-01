@@ -12,10 +12,22 @@ module.exports = {
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
 		const userID = req.session.usuario.id;
+		let comentario;
 
 		// Obtiene el tema y código
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = this.codigo({ruta, familia});
+
+		// Comentario para 'revisarInactivar'
+		if (codigo == "revisarInactivar") {
+			const ultimoRegHist = await baseDeDatos.obtienePorCondicionElUltimo(
+				"histStatus",
+				{entidad, entidad_id: id},
+				"statusFinalEn"
+			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
+
+			if (ultimoRegHist.motivo_id != motivoDupl_id && ultimoRegHist.comentario) comentario = ultimoRegHist.comentario;
+		}
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -35,7 +47,7 @@ module.exports = {
 			RCLVnombre = original.nombre;
 		}
 
-		// Obtiene datos para la vista
+		// Más variables
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
@@ -47,7 +59,7 @@ module.exports = {
 		// Fin
 		return {
 			...{tema, codigo, titulo, origen},
-			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original},
+			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
@@ -97,24 +109,24 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Comentario
-		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
-		if (!comentario && motivo_id == motivoDuplicado_id) comentario = this.duplicadoCon(req.boy);
-		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+		const comentario = this.comentario(req.body, motivo_id);
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
-	duplicadoCon: (datos) => {
-		// Variables
-		const {entDupl, idDupl} = datos;
-		const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
+	comentario: (datos, motivo_id) => {
+		let comentario = datos ? datos.comentario : "";
+		if (!comentario && motivo_id == motivoDupl_id) {
+			// Variables
+			const {entDupl, idDupl} = datos;
+			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
+			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
+			comentario = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
+		}
+		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 		// Fin
-		const respuesta = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
-		return respuesta;
+		return comentario;
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
