@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 30/jun",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Lun. 1/jul",
+	"HoraUTC": "2:05",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 24/jun",
-	"HoraSemUTC": "2:37",
-	"semanaUTC": 26,
+	"FechaSemUTC": "Lun. 1/jul",
+	"HoraSemUTC": "2:06",
+	"semanaUTC": 27,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -43,7 +43,6 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-jun-24": {},
 		"29-jun-24": {"leyenda": "Hoy recordamos a los apóstoles Pedro y Pablo, santos", "entidad": "personajes", "id": 56},
 		"30-jun-24": {},
 		"01-jul-24": {},
@@ -51,6 +50,7 @@
 			"leyenda": "Hoy recordamos el comienzo de las Apariciones de María en Garabandal",
 			"entidad": "hechos",
 			"id": 57
-		}
+		},
+		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59}
 	}
 }
