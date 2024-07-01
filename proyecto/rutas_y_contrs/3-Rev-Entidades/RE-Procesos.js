@@ -187,7 +187,7 @@ module.exports = {
 
 						// Actualiza el original con la edición
 						if (edicion) {
-							edicion = purgaEdicionRclv(edicion, original.entidad);
+							edicion = FN.purgaEdicionRclv(edicion, original.entidad);
 							original = {...original, ...edicion};
 						}
 
@@ -472,7 +472,7 @@ module.exports = {
 			const {entidad, id, origen, desaprueba} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.reqBasePathUrl(req);
-			const codigo = procsFM({ruta, familia}); // 'revisarInactivar', 'revisarRecuperar', 'rechazar'
+			const codigo = procsFM.codigo({ruta, familia}); // 'revisarInactivar', 'revisarRecuperar', 'rechazar'
 			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
@@ -481,39 +481,13 @@ module.exports = {
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
 			if (producto) include.push("links");
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
+
+			// Obtiene el status final, motivo_id, y comentario
+			const {statusFinal_id, motivo_id} = await FN.statusFinalMasMotivo({codigo, desaprueba, rclv, entidad, original, req});
+			const comentario = procsFM.comentario(req.body, motivo_id);
+
+			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
-
-			// Obtiene el status final
-			const adicionales = {publico: true, epocaOcurrencia: true};
-			const statusFinal_id =
-				codigo == "alta" || (codigo == "revisarInactivar" && desaprueba) || (codigo == "revisarRecuperar" && aprobado) // condiciones para aprobado
-					? rclv // si es un RCLV, se aprueba
-						? aprobado_id
-						: (await validacsFM.validacs
-								.consolidado({datos: {entidad, ...original, ...adicionales}})
-								.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
-						? creadoAprob_id // si tiene errores que impiden el aprobado
-						: entidad == "capitulos"
-						? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
-						: aprobado_id // si no tiene errores
-					: inactivo_id;
-
-			// Obtiene el motivo_id
-			const motivo_id =
-				statusFinal_id == inactivo_id
-					? codigo == "rechazar"
-						? req.body.motivo_id
-						: await baseDeDatos
-								.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: id}, "statusFinalEn")
-								.then((n) => n.motivo_id)
-					: null;
-
-			// Obtiene el comentario
-			let {comentario} = req.body.comentario;
-			if (!comentario && motivo_id == motivoDuplicado_id) comentario = procsFM.duplicadoCon(req.boy);
-			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
-
-			// Datos para la controladora
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			const revID = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
@@ -541,7 +515,7 @@ module.exports = {
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
-				actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
+				FN.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
 
 				// Obtiene los productos aprobados vinculados
 				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
@@ -618,7 +592,7 @@ module.exports = {
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
-			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
+			await edicion.actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
 			// Si es un registro de 'epocasDelAno', guarda el avatar en la carpeta tematica
 			if (entidad == "epocasDelAno" && aprob) {
@@ -652,8 +626,8 @@ module.exports = {
 
 				// Criterio para determinar qué valores mostrar
 				const esEdicion = true;
-				campoRevisar.mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
+				campoRevisar.mostrarOrig = await edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
+				campoRevisar.mostrarEdic = await edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
 				if (!campoRevisar.mostrarEdic) campoRevisar.mostrarEdic = "(vacío)";
 
 				// Consolida los resultados
@@ -737,8 +711,8 @@ module.exports = {
 					datosEdic.motivo_id = motivo.id;
 				}
 				// Asigna los valores 'aprob' y 'rech'
-				let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-				let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+				let mostrarOrig = await edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
+				let mostrarEdic = await edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar);
 				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
@@ -939,18 +913,6 @@ module.exports = {
 };
 
 // Funciones
-let purgaEdicionRclv = (edicion, entidad) => {
-	// Quita de edición los campos 'null'
-	for (let prop in edicion) if (edicion[prop] === null) delete edicion[prop];
-
-	// Quita de edición los campos que no se comparan
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
-	for (let prop in edicion) if (!campos.includes(prop)) delete edicion[prop];
-
-	// Fin
-	return edicion;
-};
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
@@ -1208,71 +1170,6 @@ let tablRevision = {
 		return resultados;
 	},
 };
-let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion) => {
-	// Variables
-	const campo = campoRevisar.nombre;
-	const casosEspeciales = [
-		...["cfc", "bhr", "musical", "color", "deporte"], // productos
-		...["fechaMovil", "soloCfc", "ama"], // rclvs
-		...["castellano", "subtitulos", "gratuito"], // links
-	];
-
-	// Obtiene una primera respuesta
-	let resultado = relacInclude
-		? registro[relacInclude] // El registro tiene un valor 'include'
-			? registro[relacInclude].nombre // Muestra el valor 'include'
-			: null
-		: registro[campo]; // Muestra el valor 'simple'
-
-	// Casos especiales
-	if (casosEspeciales.includes(campo)) resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	// Prioridad
-	else if (campo == "prioridad_id") resultado = variables.prioridadesRCLV.find((n) => n.id == resultado).nombre;
-	// Reemplaza 'Ninguno' por 'null'
-	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
-
-	// Últimas correcciones
-	if (resultado === "") resultado = null;
-
-	// Fin
-	return resultado;
-};
-let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
-	// Variables
-	const avatarOrig = original.avatar;
-	const url = avatarOrig && avatarOrig.includes("/");
-	const avatarEdic = edicion.avatar;
-	const familias = comp.obtieneDesdeEntidad.familias(entidad);
-	const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
-
-	// Reemplazo
-	if (aprob) {
-		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		const rutaFinal = carpetaExterna + carpeta + "/Final/";
-		if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
-			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
-
-		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
-	}
-
-	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar/", avatarEdic);
-
-	// Fin
-	return;
-};
-let actualizaLosProdsVinculadosNoAprobados = async ({entidad, campo_id, id}) => {
-	// Variables
-	const condicion = {[campo_id]: id, statusRegistro_id: {[Op.ne]: aprobado_id}};
-	const datos = {[campo_id]: 1};
-
-	// Actualiza
-	await baseDeDatos.actualizaTodosPorCondicion(entidad, condicion, datos);
-
-	// Fin
-	return;
-};
 let tablManten = {
 	obtieneProdsDeLinks: (links, userID) => {
 		// Variables
@@ -1406,5 +1303,115 @@ let tablManten = {
 					return datos;
 				})
 			);
+	},
+};
+let edicion = {
+	valoresParaMostrar: async (registro, relacInclude, campoRevisar, esEdicion) => {
+		// Variables
+		const campo = campoRevisar.nombre;
+		const casosEspeciales = [
+			...["cfc", "bhr", "musical", "color", "deporte"], // productos
+			...["fechaMovil", "soloCfc", "ama"], // rclvs
+			...["castellano", "subtitulos", "gratuito"], // links
+		];
+
+		// Obtiene una primera respuesta
+		let resultado = relacInclude
+			? registro[relacInclude] // El registro tiene un valor 'include'
+				? registro[relacInclude].nombre // Muestra el valor 'include'
+				: null
+			: registro[campo]; // Muestra el valor 'simple'
+
+		// Casos especiales
+		if (casosEspeciales.includes(campo)) resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+		// Prioridad
+		else if (campo == "prioridad_id") resultado = variables.prioridadesRCLV.find((n) => n.id == resultado).nombre;
+		// Reemplaza 'Ninguno' por 'null'
+		else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
+
+		// Últimas correcciones
+		if (resultado === "") resultado = null;
+
+		// Fin
+		return resultado;
+	},
+	actualizaArchivoAvatar: async ({entidad, original, edicion, aprob}) => {
+		// Variables
+		const avatarOrig = original.avatar;
+		const url = avatarOrig && avatarOrig.includes("/");
+		const avatarEdic = edicion.avatar;
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const carpeta = familias == "productos" ? "2-Productos" : "3-RCLVs";
+
+		// Reemplazo
+		if (aprob) {
+			// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+			const rutaFinal = carpetaExterna + carpeta + "/Final/";
+			if (avatarOrig && !url && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
+				comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
+
+			// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+			comp.gestionArchivos.mueveImagen(avatarEdic, carpeta + "/Revisar", carpeta + "/Final");
+		}
+
+		// Rechazo - Elimina el archivo de edicion
+		else if (!aprob) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar/", avatarEdic);
+
+		// Fin
+		return;
+	},
+};
+let FN = {
+	purgaEdicionRclv: (edicion, entidad) => {
+		// Quita de edición los campos 'null'
+		for (let prop in edicion) if (edicion[prop] === null) delete edicion[prop];
+
+		// Quita de edición los campos que no se comparan
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const campos = variables.camposRevisar[familias].map((n) => n.nombre);
+		for (let prop in edicion) if (!campos.includes(prop)) delete edicion[prop];
+
+		// Fin
+		return edicion;
+	},
+	actualizaLosProdsVinculadosNoAprobados: async ({entidad, campo_id, id}) => {
+		// Variables
+		const condicion = {[campo_id]: id, statusRegistro_id: {[Op.ne]: aprobado_id}};
+		const datos = {[campo_id]: 1};
+
+		// Actualiza
+		await baseDeDatos.actualizaTodosPorCondicion(entidad, condicion, datos);
+
+		// Fin
+		return;
+	},
+	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
+		// Obtiene el status final
+		const adicionales = {publico: true, epocaOcurrencia: true};
+		const statusFinal_id =
+			codigo == "alta" || (codigo == "revisarInactivar" && desaprueba) || (codigo == "revisarRecuperar" && !desaprueba) // condiciones para aprobado
+				? rclv // si es un RCLV, se aprueba
+					? aprobado_id
+					: (await validacsFM.validacs
+							.consolidado({datos: {entidad, ...original, ...adicionales}})
+							.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
+					? creadoAprob_id // si tiene errores que impiden el aprobado
+					: entidad == "capitulos"
+					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
+					: aprobado_id // si no tiene errores
+				: inactivo_id;
+
+		// Obtiene el motivo - si es un rechazo, del body; si es una revisionInactivar o revisionRecuperar, del registro anterior
+		const motivo_id =
+			statusFinal_id == inactivo_id
+				? codigo == "rechazar"
+					? req.body.motivo_id
+					: await baseDeDatos
+							.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: original.id}, "statusFinalEn")
+							.then((n) => n.motivo_id)
+				: null;
+
+		// Fin
+		return {statusFinal_id, motivo_id};
 	},
 };
