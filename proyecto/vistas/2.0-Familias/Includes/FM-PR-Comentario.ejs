@@ -8,5 +8,5 @@
         name="comentario"
         <% if (["inactivar", "eliminar", "rechazar"].includes(codigo)) { %>readonly<% } %>
         placeholder="Agregá un comentario"
-    ></textarea>
+    ><%- locals.comentario ? comentario : "" %></textarea>
 </section>
