@@ -221,7 +221,7 @@ module.exports = {
 			// Variables
 			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
 			const usuarios = await baseDeDatos.obtieneTodosPorCondicion("usuarios", {id: usuarios_id}, "pais");
-			const asunto = "Resultado de las sugerencias realizadas";
+			const asunto = "Revisión de las sugerencias realizadas";
 			const ahora = new Date();
 			let mailsEnviados = [];
 
