@@ -6,7 +6,7 @@
 				<tbody>
 					<% for (campo of ingresos) { %>
 						<tr class="fila">
-							<%- include("RE9-Edicion-Ingresos", {campo}) %> 
+							<%- include("RE-PR-Edicion-Ingresos", {campo}) %>
 						</tr>
 					<% } %>
 				</tbody>
@@ -19,7 +19,7 @@
 			<h2>Información a reemplazar</h2>
 			<% for (campo of reemplazos) { %>
 				<div class="fila">
-					<%- include("RE9-Edicion-Reemp", {campo}) %>
+					<%- include("RE-PR-Edicion-Reemp", {campo}) %>
 				</div>
 			<% } %>
 		</div>
