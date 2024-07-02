@@ -573,13 +573,13 @@ module.exports = {
 	},
 	actualizaElProximoValorDeID: async (entidad) => {
 		// Variables
-		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => (n ? n++ : 1));
+		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) =>  n++ );
 
 		// Actualiza el autoincrement
 		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
 		const Sequelize = require("sequelize");
 		const sequelize = new Sequelize(config.database, config.username, config.password, config);
-		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
+		await sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin
 		return;
