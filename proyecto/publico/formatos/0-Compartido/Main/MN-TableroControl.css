@@ -26,9 +26,10 @@ main #familias {
 
 
 /* Bloques - Título */
-#cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); color: var(--gris-claro);}
-#cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
-#cuerpo:has(.revisionUs) .bloques .tituloSecundario h2 {background: var(--gris-oscuro); color: var(--gris-claro);}
+#cuerpo:has(.revisionEnts, .mantenimiento, .revisionUs) .bloques .tituloSecundario h2 {color: var(--gris-claro);}
+#cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); }
+#cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron);}
+#cuerpo:has(.revisionUs) .bloques .tituloSecundario h2 {background: var(--gris-oscuro);}
 
 /* Particulares */
 #linksPends {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}
