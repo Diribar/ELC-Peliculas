@@ -1,22 +1,23 @@
 main #familias {
 	display: flex; flex-direction: row; justify-content: space-around;
-	padding: 40px 0px 20px 0px; max-height: var(--altoCuerpoMenosTitulo);
+	padding: 40px 0px; max-height: var(--altoCuerpoMenosTitulo);
 	.columna {
 		max-height: 100%;
-		overflow-y: auto;
-		/* overflow-x: hidden; */
 		.bloques {
 			max-width: 30vw;
 			&:nth-child(n+2) {margin-top: 20px;}
 			.tituloSecundario {
-				position: sticky; top: 0px; z-index: 1;
 				h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
 			}
 			/* Bloques - Registros */
 			.temas {
 				padding: 0 10px; width: 385px; max-width: 100%;
+				&:not(:has(#grafico)) {
+					overflow-y: auto; max-height: calc(var(--altoCuerpoMenosTitulo) / 2 - 40px - 26.8px); /* 40 es el padding de la familia, 26.8 es la altura del título */
+					scrollbar-gutter: stable; /* para que el ancho del scroll-bar sea parte del padding */
+				}
 				.bloqueRegs {
-					h3 {padding: 10px 0 2px; background: var(--gris-claro); position: sticky; top: 27px;}
+					h3 {padding: 10px 0 2px; background: var(--gris-claro); position: sticky; top: 0;}
 					.registros a:hover p {background-color: var(--gris-intermedio)}
 				}
 			}
