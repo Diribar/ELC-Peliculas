@@ -3,7 +3,7 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	corregir: {
+	correccion: {
 		motivoForm: async (req, res) => {
 			// Variables
 			const tema = "correccion";
