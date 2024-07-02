@@ -8,7 +8,14 @@
 		</div>
 		<h4>Comentario</h4>
 		<textarea name="" id="" class="oculta"></textarea>
-		<input type="submit" formaction="<%= urlActual + cola + "familia" %>" formmethod="post">
+		<div id="sectorIconos">
+			<div class="iconos">
+				<label>
+					<i class="fa-solid fa-circle-check"></i>
+					<input type="submit" formaction="<%= urlActual + cola + "familia" %>" formmethod="post">
+				</label>
+			</div>
+		</div>
 	 </div>
 
 	<!-- Historial -->
@@ -19,8 +26,15 @@
 			<div><%= motivoHist.descripcion %></div>
 		</div>
 		<h4>Comentario</h4>
-		<textarea name="" id="" class="oculta"></textarea>
-		<input type="submit" formaction="<%= urlActual + cola + "historial" %>" formmethod="post">
+		<textarea name="" id="" class="oculta"><%= ultimoHist.comentario %></textarea>
+		<div id="sectorIconos">
+			<div class="iconos">
+				<label>
+					<i class="fa-solid fa-circle-check"></i>
+					<input type="submit" formaction="<%= urlActual + cola + "historial" %>" formmethod="post">
+				</label>
+			</div>
+		</div>
 	 </div>
 
 </section>

@@ -28,8 +28,8 @@ module.exports = {
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, familia, entidad, id, urlActual},
-				...{registro: regEntidad, motivoProd, motivoHist, imgDerPers, cola},
+				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
+				...{registro: regEntidad, motivoProd, motivoHist, ultimoHist},
 				cartelGenerico: true,
 			});
 		},
