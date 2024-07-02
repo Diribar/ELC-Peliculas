@@ -1,11 +1,11 @@
 <section id="correccion">
-	<!-- Familia -->
+	<!-- Registro -->
 	 <div id="producto" class="columna">
 		<div class="flexCol">
 			<h3><%= comp.letras.inicialMayus(familia) %></h3>
 			<h4>Motivo:</h4>
-			<div class="motivo"><%= motivoProd.descripcion %></div>
-			<% if (motivoProd.comentNeces) { %>
+			<div class="motivo"><%= motivoReg.descripcion %></div>
+			<% if (motivoReg.comentNeces) { %>
 				<h4>Comentario</h4>
 				<textarea name="" id="" class="oculta"></textarea>
 			<% } %>
@@ -14,7 +14,7 @@
 			<div class="iconos">
 				<label>
 					<i class="fa-solid fa-circle-check"></i>
-					<input type="submit" formaction="<%= urlActual + cola + "familia" %>" formmethod="post">
+					<input type="submit" formaction="<%= urlActual + cola + "registro" %>" formmethod="post">
 				</label>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 		<div class="motivo"><%= motivoHist.descripcion %></div>
 		<% if (motivoHist.comentNeces) { %>
 			<h4>Comentario</h4>
-			<textarea name="" id="" class="oculta"><%= ultimoHist.comentario %></textarea>
+			<textarea name="" id="" class="oculta"><%= ultHist.comentario %></textarea>
 		<% } %>
 		<div id="sectorIconos">
 			<div class="iconos">
