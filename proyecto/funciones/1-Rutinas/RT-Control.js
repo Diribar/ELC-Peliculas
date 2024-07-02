@@ -410,12 +410,13 @@ module.exports = {
 		},
 		revisaStatusMotivo: async () => {
 			// Elimina todos los registros de las tablas 'correcMotivo' y 'correcStatus'
-			await baseDeDatos
+			let aux1 = baseDeDatos
 				.eliminaTodosPorCondicion("correcMotivo", {id: {[Op.not]: null}})
-				.then(() => procesos.actualizaElProximoValorDeID("correcMotivo"));
-			await baseDeDatos
+				.then(async () => await procesos.actualizaElProximoValorDeID("correcMotivo"));
+			let aux2 = baseDeDatos
 				.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}})
-				.then(() => procesos.actualizaElProximoValorDeID("correcStatus"));
+				.then(async () => await procesos.actualizaElProximoValorDeID("correcStatus"));
+			[aux1, aux2] = await Promise.all([aux1, aux2]);
 
 			// Variables
 			const ultsRegs = await FN.ultRegHistStatus();
