@@ -299,8 +299,8 @@ module.exports = {
 			return;
 		},
 		revisaStatusMotivo: async () => {
-			// Elimina todos los registros de las tablas 'correcMotivo' y 'correcStatus'
-			let aux1 = baseDeDatos.eliminaTodosPorCondicion("correcMotivo", {id: {[Op.not]: null}});
+			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
+			let aux1 = baseDeDatos.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}});
 			let aux2 = baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
 			[aux1, aux2] = await Promise.all([aux1, aux2]);
 
@@ -316,8 +316,8 @@ module.exports = {
 				const nombre = comp.nombresPosibles(prodRclv);
 				const datos = {entidad, entidad_id, nombre};
 
-				// Si el motivo es distinto, agrega el registro a 'correcMotivo'
-				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivo", datos);
+				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
 				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
 				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
 			}
@@ -409,10 +409,10 @@ module.exports = {
 			return;
 		},
 		revisaStatusMotivo: async () => {
-			// Elimina todos los registros de las tablas 'correcMotivo' y 'correcStatus'
+			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
 			let aux1 = baseDeDatos
-				.eliminaTodosPorCondicion("correcMotivo", {id: {[Op.not]: null}})
-				.then(async () => await procesos.actualizaElProximoValorDeID("correcMotivo"));
+				.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}})
+				.then(async () => await procesos.actualizaElProximoValorDeID("correcMotivos"));
 			let aux2 = baseDeDatos
 				.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}})
 				.then(async () => await procesos.actualizaElProximoValorDeID("correcStatus"));
@@ -430,8 +430,8 @@ module.exports = {
 				const nombre = comp.nombresPosibles(prodRclv);
 				const datos = {entidad, entidad_id, nombre};
 
-				// Si el motivo es distinto, agrega el registro a 'correcMotivo'
-				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivo", datos);
+				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
 				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
 				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
 			}
