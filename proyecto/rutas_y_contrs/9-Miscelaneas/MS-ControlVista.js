@@ -3,7 +3,28 @@
 // *********** Controlador ***********
 module.exports = {
 	corregir: {
-		motivoForm: (req, res) => {},
+		motivoForm: async (req, res) => {
+			// Variables
+			const tema = "correccion";
+			const codigo = "motivpo";
+			const titulo = "Corrección de Motivo";
+			const {entidad, id} = req.query;
+
+			// Obtiene el motivo del producto
+			const producto = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+			const {motivo: motivoProd} = producto;
+
+			// Obtiene el motivo del historial
+			const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
+			const ultimoHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
+			const motivoHist = ultimoHist.motivo_id ? motivosStatus.find((n) => n.id == ultimoHist.motivo_id) : null;
+
+			// Envía la info a la vista
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo,titulo},
+				...{producto, motivoProd, motivoHist},
+			});
+		},
 		statusForm: (req, res) => {},
 	},
 
