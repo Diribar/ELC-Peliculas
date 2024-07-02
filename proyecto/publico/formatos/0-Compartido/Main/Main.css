@@ -1,6 +1,6 @@
 /* General */
 main {height: var(--altoMain);}
-main {display: flex; flex-direction: row; overflow-y: hidden; position: relative;}
+main {display: flex; flex-direction: row; position: relative;}
 #cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
 /* Tapar el fondo */
@@ -11,7 +11,7 @@ main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; wi
 /* Consolidado, Cuerpo y Footer */
 main #cuerpoFooterImgDer {flex-direction: row;}
 #cuerpoFooterImgDer #cuerpoFooter {flex-direction: column;}
-#cuerpoFooter #cuerpo {max-height: var(--altoCuerpo); overflow-y: hidden;}
+#cuerpoFooter #cuerpo {max-height: var(--altoCuerpo);}
 
 /* Imagen Derecha */
 #cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center; align-items: center;}
