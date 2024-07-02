@@ -9,7 +9,7 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "motivo";
 			const titulo = "Corrección de Motivo";
-			const {entidad, id} = req.query;
+			const {entidad, id, origen} = req.query;
 
 			// Obtiene el motivo del producto
 			const regEntidad = await baseDeDatos.obtienePorId(entidad, id, "motivo");
@@ -29,7 +29,7 @@ module.exports = {
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
-				...{registro: regEntidad, motivoProd, motivoHist, ultimoHist},
+				...{registro: regEntidad, motivoProd, motivoHist, ultimoHist, origen},
 				cartelGenerico: true,
 			});
 		},
