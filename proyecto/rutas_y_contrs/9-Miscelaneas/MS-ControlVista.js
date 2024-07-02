@@ -9,10 +9,11 @@ module.exports = {
 			const codigo = "motivpo";
 			const titulo = "Corrección de Motivo";
 			const {entidad, id} = req.query;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Obtiene el motivo del producto
-			const producto = await baseDeDatos.obtienePorId(entidad, id, "motivo");
-			const {motivo: motivoProd} = producto;
+			const regEntidad = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+			const {motivo: motivoProd} = regEntidad;
 
 			// Obtiene el motivo del historial
 			const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
@@ -21,8 +22,9 @@ module.exports = {
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo,titulo},
-				...{producto, motivoProd, motivoHist},
+				...{tema, codigo, titulo,familia, entidad, id},
+				...{registro: regEntidad, motivoProd, motivoHist},
+				cartelGenerico: true,
 			});
 		},
 		statusForm: (req, res) => {},
