@@ -9,9 +9,6 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 
-// Middlewares - Varios
-const institucional = require("../../middlewares/varios/urlInstitDescon");
-
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 
@@ -24,8 +21,8 @@ router.post("/contactanos", aptoUsuario, vista.contactanos.guardar);
 router.get("/contactanos/envio-exitoso", aptoUsuario, vista.contactanos.envioExitoso);
 router.get("/contactanos/envio-fallido", aptoUsuario, vista.contactanos.envioFallido);
 
-router.get("/inicio", institucional, vista.redireccionaInicio);
-router.get("/:id", institucional, vista.institucional); // institucional
+router.get("/inicio", vista.redireccionaInicio);
+router.get("/:id", vista.institucional); // institucional
 
 // Fin
 module.exports = router;

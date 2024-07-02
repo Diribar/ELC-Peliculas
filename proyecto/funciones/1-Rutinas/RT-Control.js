@@ -29,8 +29,8 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.FeedbackParaUsers();
-		// await this.rutinasDiarias.IDdeTablas()
+		// await this.rutinasHorarias.feedbackParaUsers();
+		// await this.rutinasDiarias.revisaStatusMotivo();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -156,7 +156,7 @@ module.exports = {
 
 	// Rutinas
 	rutinasHorarias: {
-		ProdAprobEnLink: async () => {
+		prodAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
 			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
 
@@ -166,7 +166,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnProd: async () => {
+		linksEnProd: async () => {
 			// Variables
 			let esperar = [];
 
@@ -191,7 +191,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProdsEnRCLV: async () => {
+		prodsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 
@@ -207,21 +207,21 @@ module.exports = {
 			// Fin
 			return;
 		},
-		FeedbackParaUsers: async () => {
+		feedbackParaUsers: async () => {
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
 			const regsTodos = [...regsStatus, ...regsEdic];
 
 			// Si no hay registros a comunicar, termina el proceso
 			if (!regsTodos.length) {
-				procesos.finRutinasHorarias("FeedbackParaUsers");
+				procesos.finRutinasHorarias("feedbackParaUsers");
 				return;
 			}
 
 			// Variables
 			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
 			const usuarios = await baseDeDatos.obtieneTodosPorCondicion("usuarios", {id: usuarios_id}, "pais");
-			const asunto = "Resultado de las sugerencias realizadas";
+			const asunto = "Revisión de las sugerencias realizadas";
 			const ahora = new Date();
 			let mailsEnviados = [];
 
@@ -278,7 +278,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		ProductosAlAzar: async () => {
+		productosAlAzar: async () => {
 			// Rastrilla las películas y colecciones
 			for (let entidad of ["peliculas", "colecciones"]) {
 				// Obtiene los productos
@@ -298,10 +298,37 @@ module.exports = {
 			// Fin
 			return;
 		},
+		revisaStatusMotivo: async () => {
+			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
+			let aux1 = baseDeDatos.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}});
+			let aux2 = baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
+			[aux1, aux2] = await Promise.all([aux1, aux2]);
+
+			// Variables
+			const ultsRegs = await FN.ultRegHistStatus();
+			if (!ultsRegs.length) return;
+
+			// Acciones por registro del historial
+			for (let ultReg of ultsRegs) {
+				// Obtiene el prodRclv del historial
+				const {entidad, entidad_id} = ultReg;
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const nombre = comp.nombresPosibles(prodRclv);
+				const datos = {entidad, entidad_id, nombre};
+
+				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
+				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
+				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
+			}
+
+			// Fin
+			return;
+		},
 	},
 	rutinasDiarias: {
-		ActualizaSolapam: async () => await comp.actualizaSolapam(),
-		ImagenDerecha: async () => {
+		actualizaSolapam: async () => await comp.actualizaSolapam(),
+		imagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
@@ -351,20 +378,13 @@ module.exports = {
 			// Fin
 			return;
 		},
-		FeedbackParaRevisores: async () => {
-			// Variables
-			const asunto = {
-				perl: "Productos y RCLVs prioritarios a revisar",
-				links: "Links prioritarios a revisar",
-			};
-			const {regs, edics} = await procesos.ABM_noRevs();
-			let mailsEnviados = [];
-
+		infoRevsTablero: async () => {
 			// Si no hay casos, termina
-			if (regs.perl.length + edics.perl.length + regs.links.length + edics.links.length == 0) return;
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
 
 			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensajeParaRevisores({regs, edics});
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
 
 			// Obtiene los usuarios revisorPERL y revisorLinks
 			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
@@ -373,6 +393,8 @@ module.exports = {
 			const revisores = {perl, links};
 
 			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
 			for (let tipo of ["perl", "links"])
 				if (regs[tipo].length || edics[tipo].length)
 					for (let revisor of revisores[tipo])
@@ -386,7 +408,38 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LoginsAcums: async () => {
+		revisaStatusMotivo: async () => {
+			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
+			let aux1 = baseDeDatos
+				.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}})
+				.then(async () => await procesos.actualizaElProximoValorDeID("correcMotivos"));
+			let aux2 = baseDeDatos
+				.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}})
+				.then(async () => await procesos.actualizaElProximoValorDeID("correcStatus"));
+			[aux1, aux2] = await Promise.all([aux1, aux2]);
+
+			// Variables
+			const ultsRegs = await FN.ultRegHistStatus();
+			if (!ultsRegs.length) return;
+
+			// Acciones por registro del historial
+			for (let ultReg of ultsRegs) {
+				// Obtiene el prodRclv del historial
+				const {entidad, entidad_id} = ultReg;
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const nombre = comp.nombresPosibles(prodRclv);
+				const datos = {entidad, entidad_id, nombre};
+
+				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
+				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
+				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
+			}
+
+			// Fin
+			return;
+		},
+		loginsAcums: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
@@ -399,7 +452,7 @@ module.exports = {
 			// Logins acums
 			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 			let agregarFecha = loginsAcums.length // condición si hay logins acums
-				? sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				? FN.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
 				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
 				? fechaLoginsDiarios // la fecha del primer registro
 				: hoy; // la fecha de hoy
@@ -421,7 +474,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				agregarFecha = sumaUnDia(agregarFecha);
+				agregarFecha = FN.sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
@@ -430,7 +483,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		RutinasEnUsuario: async () => {
+		rutinasEnUsuario: async () => {
 			// Lleva a cero el valor de algunos campos
 			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
 
@@ -442,7 +495,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		AprobadoConAvatarLink: async () => {
+		aprobadoConAvatarLink: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
 			let descargas = [];
@@ -470,7 +523,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		IDdeTablas: async () => {
+		iDdeTablas: async () => {
 			// Variables
 			const tablas = [
 				"calRegistros",
@@ -507,12 +560,12 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaLinksInactivos: async () => {
+		eliminaLinksInactivos: async () => {
 			const condicion = {statusRegistro_id: inactivo_id};
 			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 			return;
 		},
-		EliminaCalifsSinPPP: async () => {
+		eliminaCalifsSinPPP: async () => {
 			// Variables
 			const calRegistros = await baseDeDatos.obtieneTodos("calRegistros");
 			const pppRegistros = await baseDeDatos.obtieneTodos("pppRegistros");
@@ -527,7 +580,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaImagenesSinRegistro: async () => {
+		eliminaImagenesSinRegistro: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
 			const statusCualquiera_id = {[Op.ne]: null};
@@ -554,7 +607,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaRegsSinEntidad_id: async () => {
+		eliminaRegsSinEntidad_id: async () => {
 			// Variables
 			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
@@ -580,7 +633,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		PaisesConMasProductos: async () => {
+		paisesConMasProductos: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id};
 			const entidades = ["peliculas", "colecciones"];
@@ -609,7 +662,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksPorProv: async () => {
+		linksPorProv: async () => {
 			// Obtiene todos los links
 			const linksTotales = await baseDeDatos.obtieneTodos("links");
 
@@ -622,7 +675,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnColes: async () => {
+		linksEnColes: async () => {
 			// Variables
 			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
@@ -716,59 +769,80 @@ module.exports = {
 };
 
 // Funciones
-let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
-let actualizaLaEpocaDeEstreno = async () => {
-	const condicion = {anoEstreno: {[Op.ne]: null}};
+let FN = {
+	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
+	ultRegHistStatus: async () => {
+		// Obtiene el último registro de status de cada producto
+		let histStatus = [];
+		await baseDeDatos
+			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
+			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
+			.then((n) => n.sort((a, b) => a.id - b.id))
+			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
+			.then((n) =>
+				n.map((m) =>
+					!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id) ? histStatus.push(m) : null
+				)
+			); // retiene sólo el último de cada producto
 
-	// Rutina
-	for (let entidad of variables.entidades.prods) {
-		// Obtiene los productos
-		const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+		// Fin
+		return histStatus;
+	},
+};
+let obsoletas = {
+	actualizaLaEpocaDeEstreno: async () => {
+		const condicion = {anoEstreno: {[Op.ne]: null}};
 
-		// Actualiza cada producto
-		for (let producto of productos) {
-			const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
-			baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+		// Rutina
+		for (let entidad of variables.entidades.prods) {
+			// Obtiene los productos
+			const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+
+			// Actualiza cada producto
+			for (let producto of productos) {
+				const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
+				baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+			}
 		}
-	}
 
-	// Fin
-	return;
-};
-let corrigeStatusColeccionEnCapitulo = async () => {
-	// Variables
-	const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
+		// Fin
+		return;
+	},
+	corrigeStatusColeccionEnCapitulo: async () => {
+		// Variables
+		const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
 
-	// Rutina por registro
-	for (let registro of registros) {
-		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
-		if (registro.statusColeccion_id != statusColeccion_id)
-			baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
-	}
+		// Rutina por registro
+		for (let registro of registros) {
+			const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
+			if (registro.statusColeccion_id != statusColeccion_id)
+				baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+		}
 
-	// Fin
-	return;
-};
-let actualizaCategoriaLink = async () => {
-	// Variables
-	const links = await baseDeDatos.obtieneTodos("links");
+		// Fin
+		return;
+	},
+	actualizaCategoriaLink: async () => {
+		// Variables
+		const links = await baseDeDatos.obtieneTodos("links");
 
-	// Actualiza todos los links
-	for (let link of links) {
-		const categoria_id = comp.linksVencPorSem.categoria_id(link);
-		await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
-	}
+		// Actualiza todos los links
+		for (let link of links) {
+			const categoria_id = comp.linksVencPorSem.categoria_id(link);
+			await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
+		}
 
-	// Fin
-	return;
-};
-let creaCapSinLink = async () => {
-	// Obtiene las colecciones
-	const colecciones = await baseDeDatos.obtieneTodos("colecciones");
+		// Fin
+		return;
+	},
+	creaCapSinLink: async () => {
+		// Obtiene las colecciones
+		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
-	// Rutina para agregar un registro
-	for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
+		// Rutina para agregar un registro
+		for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
 
-	// Fin
-	return;
+		// Fin
+		return;
+	},
 };

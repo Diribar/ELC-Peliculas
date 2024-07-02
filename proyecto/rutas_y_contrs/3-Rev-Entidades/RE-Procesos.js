@@ -6,6 +6,14 @@ const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 module.exports = {
 	// Tableros
 	tablRevision: {
+		obtieneProdsRclvs: async () => {
+			let CM = baseDeDatos.obtieneTodos("correcMotivos");
+			let CS = baseDeDatos.obtieneTodos("correcStatus");
+			[CM, CS] = await Promise.all([CM, CS]);
+
+			// Fin
+			return {CM, CS};
+		},
 		obtieneProds1: async (revID) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
@@ -908,6 +916,22 @@ module.exports = {
 
 			// Fin
 			return rclvs;
+		},
+		prodsRclvs: (registros) => {
+			// Variables
+			const anchoMax = 32;
+
+			// Reconvierte los elementos
+			for (let rubro in registros)
+				registros[rubro] = registros[rubro].map((n) => ({
+					id: n.entidad_id,
+					entidad: n.entidad,
+					nombre: n.nombre,
+					abrev: n.entidad.slice(0, 3).toUpperCase(),
+				}));
+
+			// Fin
+			return registros;
 		},
 	},
 };

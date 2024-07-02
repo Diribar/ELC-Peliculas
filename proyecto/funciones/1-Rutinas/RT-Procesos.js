@@ -396,7 +396,7 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		mensajeParaRevisores: ({regs, edics}) => {
+		mensRevsTablero: ({regs, edics}) => {
 			// Variables
 			let cuerpoMail = {perl: "", links: ""};
 			let registros, prods, rclvs;
@@ -554,7 +554,7 @@ module.exports = {
 	finRutinasHorarias: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		if (campo != "FeedbackParaUsers" || nodeEnv != "development") console.log(FechaUTC, HoraUTC + "hs. -", campo);
+		if (campo != "feedbackParaUsers" || nodeEnv != "development") console.log(FechaUTC, HoraUTC + "hs. -", campo);
 
 		// Fin
 		return;
@@ -579,7 +579,7 @@ module.exports = {
 		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
 		const Sequelize = require("sequelize");
 		const sequelize = new Sequelize(config.database, config.username, config.password, config);
-		sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
+		await sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin
 		return;

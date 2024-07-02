@@ -6,18 +6,37 @@
 <% let familias, DE %>
 <section id="familias">
 	<div id="primeraColumna">
+		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
+		<% if (revisorPERL && (prodsRclvs.CM.length || prodsRclvs.CS.length)) { %>
+			<!-- PRODUCTOS Y RCLVS -->
+			<div class="bloques">
+				<!-- Título y ayuda -->
+				<% familias = "prodsRclvs" %>
+				<div class="tituloSecundario">
+					<!-- Título -->
+					<h2>PRODUCTOS Y RCLVS</h2>
+					<%- include("MN-Ayuda", {mensajes: ["Para unificar el motivo o el status"]}) %>
+				</div>
+				<!-- Registros -->
+				<div class="temas">
+					<% const cr = "corregir/" %>
+					<% DE = dataEntry[familias] %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Motivos c/difs", regs: prodsRclvs.CM, url: cr + "motivo", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.CS, url: cr + "status", mostrarOrigen: true}) %>
+				</div>
+			</div>
+		<% } %>
 		<!-- PRODUCTOS -->
 		<div class="bloques">
 			<!-- Título y ayuda -->
+			<% familias = "productos" %>
 			<div class="tituloSecundario">
 				<!-- Título -->
-				<% familias = "productos" %>
 				<h2><%= familias.toUpperCase() %></h2>
 				<%- include("MN-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de audiovisual", "Nombre del audiovisual", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Registros -->
 			<div class="temas">
-				<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
 				<% const dt = "producto/detalle" %>
 				<% const ed = "producto/edicion" %>
 				<% const rp = "revision/producto/" %>
@@ -39,7 +58,7 @@
 	</div>
 	<% if (usuario.rolUsuario.revisorEnts) { %>
 		<div id="segundaColumna">
-			<% if (usuario.rolUsuario.revisorPERL) { %>
+			<% if (revisorPERL) { %>
 				<!-- RCLVs -->
 				<div class="bloques" id="rclv">
 					<!-- Título y ayuda -->
@@ -63,7 +82,7 @@
 				</div>
 			<% } %>
 			<% if (usuario.rolUsuario.revisorLinks) { %>
-				<!-- Links -->
+				<!-- LINKS -->
 				<div class="bloques" id="links">
 					<% const {prods} = cantLinksVencPorSem.paraProc; %>
 					<!-- Título y ayuda -->

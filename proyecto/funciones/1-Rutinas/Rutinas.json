@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 1/jul",
-	"HoraUTC": "2:05",
+	"FechaUTC": "Mar. 2/jul",
+	"HoraUTC": "0:51",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/jul",
@@ -11,25 +11,32 @@
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
-	"RutinasHorarias": ["ProdAprobEnLink", "LinksEnProd", "ProdsEnRCLV", "FeedbackParaUsers", "ProductosAlAzar"],
+	"RutinasHorarias": [
+		"prodAprobEnLink",
+		"linksEnProd",
+		"prodsEnRCLV",
+		"feedbackParaUsers",
+		"productosAlAzar",
+		"revisaStatusMotivo"
+	],
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que alcanza o se necesita que sea diaria",
 	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
-		"ActualizaSolapam": "SI",
-		"ImagenDerecha": "SI",
-		"FeedbackParaRevisores": "SI",
-		"LoginsAcums": "SI",
-		"RutinasEnUsuario": "SI",
-		"AprobadoConAvatarLink": "SI",
-		"IDdeTablas": "SI",
-		"EliminaLinksInactivos": "SI",
-		"EliminaCalifsSinPPP": "SI",
-		"EliminaImagenesSinRegistro": "SI",
-		"EliminaRegsSinEntidad_id": "SI",
-		"PaisesConMasProductos": "SI",
-		"LinksPorProv": "SI",
-		"LinksEnColes": "SI"
+		"actualizaSolapam": "SI",
+		"imagenDerecha": "SI",
+		"infoRevsTablero": "SI",
+		"loginsAcums": "SI",
+		"rutinasEnUsuario": "SI",
+		"aprobadoConAvatarLink": "SI",
+		"iDdeTablas": "SI",
+		"eliminaLinksInactivos": "SI",
+		"eliminaCalifsSinPPP": "SI",
+		"eliminaImagenesSinRegistro": "SI",
+		"eliminaRegsSinEntidad_id": "SI",
+		"paisesConMasProductos": "SI",
+		"linksPorProv": "SI",
+		"linksEnColes": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
@@ -43,7 +50,6 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-jun-24": {"leyenda": "Hoy recordamos a los apóstoles Pedro y Pablo, santos", "entidad": "personajes", "id": 56},
 		"30-jun-24": {},
 		"01-jul-24": {},
 		"02-jul-24": {
@@ -51,6 +57,7 @@
 			"entidad": "hechos",
 			"id": 57
 		},
-		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59}
+		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59},
+		"04-jul-24": {"leyenda": "Hoy recordamos Isabel de Portugal", "entidad": "personajes", "id": 117}
 	}
 }
