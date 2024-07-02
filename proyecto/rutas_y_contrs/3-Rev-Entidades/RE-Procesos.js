@@ -924,7 +924,7 @@ module.exports = {
 			// Reconvierte los elementos
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => ({
-					id: n.id,
+					id: n.entidad_id,
 					entidad: n.entidad,
 					nombre: n.nombre,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
