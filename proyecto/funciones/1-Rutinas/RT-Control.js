@@ -30,7 +30,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.feedbackParaUsers();
-		// await this.rutinasDiarias.IDdeTablas()
+		await this.rutinasDiarias.infoRevsStatusMotivo();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -351,7 +351,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		FeedbackParaRevisores: async () => {
+		infoRevsTablero: async () => {
 			// Variables
 			const asunto = {
 				perl: "Productos y RCLVs prioritarios a revisar",
@@ -364,7 +364,7 @@ module.exports = {
 			if (regs.perl.length + edics.perl.length + regs.links.length + edics.links.length == 0) return;
 
 			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensajeParaRevisores({regs, edics});
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
 
 			// Obtiene los usuarios revisorPERL y revisorLinks
 			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
@@ -386,7 +386,35 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LoginsAcums: async () => {
+		infoRevsStatusMotivo: async () => {
+			// Variables
+			const ultsRegs = await FN.ultRegHistStatus();
+			if (!ultsRegs.length) return;
+			let mensStatus = [];
+			let mensMotivo = [];
+
+			// Acciones por registro del historial
+			for (let ultReg of ultsRegs) {
+				// Obtiene el prodRclv del historial
+				const prodRclv = await baseDeDatos.obtienePorId(ultReg.entidad, ultReg.entidad_id, ["statusRegistro", "motivo"]);
+
+				// Si el status es distinto, mail a revisores
+				if (ultReg.statusFinal_id != prodRclv.statusRegistro_id)
+					mensStatus.push(FN.mensStatusDistinto({ultReg, prodRclv}));
+
+				// Si el motivo es distinto, mail a revisores
+				if (ultReg.motivo_id != prodRclv.motivo_id) mensMotivo.push(FN.mensMotivoDistinto({ultReg, prodRclv}));
+			}
+
+			// Envío del mail
+			if (mensStatus.length + mensMotivo.length) {
+
+			}
+
+			// Fin
+			return;
+		},
+		loginsAcums: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
@@ -399,7 +427,7 @@ module.exports = {
 			// Logins acums
 			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 			let agregarFecha = loginsAcums.length // condición si hay logins acums
-				? sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				? FN.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
 				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
 				? fechaLoginsDiarios // la fecha del primer registro
 				: hoy; // la fecha de hoy
@@ -421,7 +449,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				agregarFecha = sumaUnDia(agregarFecha);
+				agregarFecha = FN.sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
@@ -430,7 +458,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		RutinasEnUsuario: async () => {
+		rutinasEnUsuario: async () => {
 			// Lleva a cero el valor de algunos campos
 			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
 
@@ -442,7 +470,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		AprobadoConAvatarLink: async () => {
+		aprobadoConAvatarLink: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
 			let descargas = [];
@@ -470,7 +498,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		IDdeTablas: async () => {
+		iDdeTablas: async () => {
 			// Variables
 			const tablas = [
 				"calRegistros",
@@ -507,12 +535,12 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaLinksInactivos: async () => {
+		eliminaLinksInactivos: async () => {
 			const condicion = {statusRegistro_id: inactivo_id};
 			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 			return;
 		},
-		EliminaCalifsSinPPP: async () => {
+		eliminaCalifsSinPPP: async () => {
 			// Variables
 			const calRegistros = await baseDeDatos.obtieneTodos("calRegistros");
 			const pppRegistros = await baseDeDatos.obtieneTodos("pppRegistros");
@@ -527,7 +555,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaImagenesSinRegistro: async () => {
+		eliminaImagenesSinRegistro: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
 			const statusCualquiera_id = {[Op.ne]: null};
@@ -554,7 +582,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaRegsSinEntidad_id: async () => {
+		eliminaRegsSinEntidad_id: async () => {
 			// Variables
 			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
@@ -580,7 +608,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		PaisesConMasProductos: async () => {
+		paisesConMasProductos: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id};
 			const entidades = ["peliculas", "colecciones"];
@@ -609,7 +637,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksPorProv: async () => {
+		linksPorProv: async () => {
 			// Obtiene todos los links
 			const linksTotales = await baseDeDatos.obtieneTodos("links");
 
@@ -622,7 +650,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		LinksEnColes: async () => {
+		linksEnColes: async () => {
 			// Variables
 			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
@@ -632,7 +660,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// ValidacionStatus
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
@@ -717,59 +744,121 @@ module.exports = {
 };
 
 // Funciones
-let sumaUnDia = (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10);
-let actualizaLaEpocaDeEstreno = async () => {
-	const condicion = {anoEstreno: {[Op.ne]: null}};
+let FN = {
+	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
+	ultRegHistStatus: async () => {
+		// Obtiene el último registro de status de cada producto
+		let histStatus = [];
+		await baseDeDatos
+			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
+			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id))
+			.then((n) => n.sort((a, b) => a.id - b.id))
+			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
+			.then((n) =>
+				n.map((m) =>
+					!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id) ? histStatus.push(m) : null
+				)
+			); // retiene sólo el último de cada producto
 
-	// Rutina
-	for (let entidad of variables.entidades.prods) {
-		// Obtiene los productos
-		const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+		// Fin
+		return histStatus;
+	},
+	mensStatusDistinto: ({ultReg, prodRclv}) => {
+		// Variables
+		const {entidad} = ultReg;
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const elLa = comp.letras.inicialMayus(comp.obtieneDesdeEntidad.elLa(entidad));
+		const nombre = comp.nombresPosibles(prodRclv);
 
-		// Actualiza cada producto
-		for (let producto of productos) {
-			const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
-			baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+		// Frase
+		const frase =
+			entidadNombre +
+			" " +
+			nombre +
+			", id " +
+			prodRclv.id +
+			". Registro: " +
+			prodRclv.statusRegistro.nombre +
+			". Historial: " +
+			ultReg.statusFinal.nombre;
+		// Fin
+		return frase;
+	},
+	mensMotivoDistinto: ({ultReg, prodRclv}) => {
+		// Variables
+		const {entidad} = ultReg;
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const nombre = comp.nombresPosibles(prodRclv);
+
+		// Frase
+		const frase =
+			entidadNombre +
+			" " +
+			nombre +
+			", id " +
+			prodRclv.id +
+			". Registro: " +
+			(prodRclv.motivo ? prodRclv.motivo.descripcion : "ninguno") +
+			". Historial: " +
+			(ultReg.motivo ? ultReg.motivo.descripcion : "ninguno");
+		// Fin
+		return frase;
+	},
+};
+let obsoletas = {
+	actualizaLaEpocaDeEstreno: async () => {
+		const condicion = {anoEstreno: {[Op.ne]: null}};
+
+		// Rutina
+		for (let entidad of variables.entidades.prods) {
+			// Obtiene los productos
+			const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+
+			// Actualiza cada producto
+			for (let producto of productos) {
+				const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
+				baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
+			}
 		}
-	}
 
-	// Fin
-	return;
-};
-let corrigeStatusColeccionEnCapitulo = async () => {
-	// Variables
-	const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
+		// Fin
+		return;
+	},
+	corrigeStatusColeccionEnCapitulo: async () => {
+		// Variables
+		const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
 
-	// Rutina por registro
-	for (let registro of registros) {
-		const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
-		if (registro.statusColeccion_id != statusColeccion_id)
-			baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
-	}
+		// Rutina por registro
+		for (let registro of registros) {
+			const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
+			if (registro.statusColeccion_id != statusColeccion_id)
+				baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
+		}
 
-	// Fin
-	return;
-};
-let actualizaCategoriaLink = async () => {
-	// Variables
-	const links = await baseDeDatos.obtieneTodos("links");
+		// Fin
+		return;
+	},
+	actualizaCategoriaLink: async () => {
+		// Variables
+		const links = await baseDeDatos.obtieneTodos("links");
 
-	// Actualiza todos los links
-	for (let link of links) {
-		const categoria_id = comp.linksVencPorSem.categoria_id(link);
-		await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
-	}
+		// Actualiza todos los links
+		for (let link of links) {
+			const categoria_id = comp.linksVencPorSem.categoria_id(link);
+			await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
+		}
 
-	// Fin
-	return;
-};
-let creaCapSinLink = async () => {
-	// Obtiene las colecciones
-	const colecciones = await baseDeDatos.obtieneTodos("colecciones");
+		// Fin
+		return;
+	},
+	creaCapSinLink: async () => {
+		// Obtiene las colecciones
+		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
-	// Rutina para agregar un registro
-	for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
+		// Rutina para agregar un registro
+		for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
 
-	// Fin
-	return;
+		// Fin
+		return;
+	},
 };
