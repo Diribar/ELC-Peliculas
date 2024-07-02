@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		comentNeces: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "cam_motivos_status",
+		tableName: "cam_status_motivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
