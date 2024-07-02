@@ -5,8 +5,10 @@
 			<h3><%= comp.letras.inicialMayus(familia) %></h3>
 			<h4>Motivo:</h4>
 			<div class="motivo"><%= motivoProd.descripcion %></div>
-			<h4>Comentario</h4>
-			<textarea name="" id="" class="oculta"></textarea>
+			<% if (motivoProd.comentNeces) { %>
+				<h4>Comentario</h4>
+				<textarea name="" id="" class="oculta"></textarea>
+			<% } %>
 		</div>
 		<div id="sectorIconos">
 			<div class="iconos">
@@ -23,8 +25,10 @@
 		<h3>Historial</h3>
 		<h4>Motivo:</h4>
 		<div class="motivo"><%= motivoHist.descripcion %></div>
-		<h4>Comentario</h4>
-		<textarea name="" id="" class="oculta"><%= ultimoHist.comentario %></textarea>
+		<% if (motivoHist.comentNeces) { %>
+			<h4>Comentario</h4>
+			<textarea name="" id="" class="oculta"><%= ultimoHist.comentario %></textarea>
+		<% } %>
 		<div id="sectorIconos">
 			<div class="iconos">
 				<label>
