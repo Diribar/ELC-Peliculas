@@ -52,10 +52,10 @@ module.exports = {
 		const dataEntry = req.session.tableros && req.session.tableros.entidades ? req.session.tableros.entidades : {};
 
 		// Va a la vista
-		return res.send(prodsRclvs);
+		//return res.send(prodsRclvs);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Entidades"},
-			...{prods, rclvs, sigProd, origen: "TE", dataEntry},
+			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry},
 		});
 	},
 	// Tablero de mantenimiento
