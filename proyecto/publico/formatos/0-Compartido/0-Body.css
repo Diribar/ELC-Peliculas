@@ -25,13 +25,15 @@
 
 /* Variables */
 body {
-	/* Sectores del cuerpo */
+	/* Ancho */
 	--anchoImgDer: 32vw;
+	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
+	/* Alto */
 	--altoHeader: clamp(52px, calc(var(--alturaViewPort) * 0.08), 60px);
 	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
 	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
-	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
 	--altoTituloPrincipal: 37px;
+	--altoCuerpoMenosTitulo: calc(var(--altoCuerpo) - var(--altoTituloPrincipal));
 
 	/* Desplazamiento horizontal */
 	--altoBoton: 200px;
