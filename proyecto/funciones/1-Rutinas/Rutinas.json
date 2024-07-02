@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 1/jul",
-	"HoraUTC": "2:05",
+	"FechaUTC": "Mar. 2/jul",
+	"HoraUTC": "0:51",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/jul",
@@ -18,8 +18,8 @@
 	"RutinasDiarias": {
 		"actualizaSolapam": "SI",
 		"imagenDerecha": "SI",
-		"FeedbackParaRevisores": "SI",
-		"LoginsAcums": "SI",
+		"feedbackParaRevisores": "SI",
+		"loginsAcums": "SI",
 		"RutinasEnUsuario": "SI",
 		"AprobadoConAvatarLink": "SI",
 		"IDdeTablas": "SI",
@@ -30,7 +30,7 @@
 		"PaisesConMasProductos": "SI",
 		"LinksPorProv": "SI",
 		"LinksEnColes": "SI",
-		"ValidacionStatus":"NO"
+		"validacHistStatusConRegsEnts": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
@@ -44,7 +44,6 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-jun-24": {"leyenda": "Hoy recordamos a los apóstoles Pedro y Pablo, santos", "entidad": "personajes", "id": 56},
 		"30-jun-24": {},
 		"01-jul-24": {},
 		"02-jul-24": {
@@ -52,6 +51,7 @@
 			"entidad": "hechos",
 			"id": 57
 		},
-		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59}
+		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59},
+		"04-jul-24": {"leyenda": "Hoy recordamos Isabel de Portugal", "entidad": "personajes", "id": 117}
 	}
 }
