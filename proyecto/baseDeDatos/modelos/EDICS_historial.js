@@ -19,7 +19,7 @@ module.exports = (sequelize, dt) => {
 		comunicadoEn: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "edics_hist",
+		tableName: "edics_historial",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
