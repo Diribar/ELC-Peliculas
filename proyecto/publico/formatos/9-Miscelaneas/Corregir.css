@@ -16,11 +16,11 @@
 				padding: 10px; border-radius: 10px;
 				height: 80px; width: 220px; resize: none;
 			}
-			#sectorIconos {margin-top: 20px; justify-self: flex-end; margin-bottom: 15px;}
+			#sectorIconos {margin-top: 20px; justify-self: flex-end; margin-bottom: 20px;}
 		}
 
 	}
 	& > #sectorIconos {
-		position: absolute; bottom: 0; left: 50%; translate: -50% 0;
+		position: absolute; bottom: 5px; left: 50%; translate: -50% 0;
 	}
 }
