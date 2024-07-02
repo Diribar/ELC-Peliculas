@@ -12,6 +12,10 @@ const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
 router.get("/api/horario-inicial/", API.horarioInicial);
 router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
+// Correcciones
+router.get("/corregir/motivo", vista.corregir.motivoForm);
+router.get("/corregir/status", vista.corregir.statusForm);
+
 // Redireciona
 router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);
 router.get("/inicio", vista.redirecciona.redireccionaInicio);

@@ -2,7 +2,12 @@
 
 // *********** Controlador ***********
 module.exports = {
-	// Redireccionar después de inactivar una captura
+	corregir: {
+		motivoForm: (req, res) => {},
+		statusForm: (req, res) => {},
+	},
+
+	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
 			// Variables
@@ -90,7 +95,8 @@ module.exports = {
 			let resultado = {};
 
 			// Lectura
-			await baseDeDatos.obtieneTodosPorCondicion(rclv, condicion, include)
+			await baseDeDatos
+				.obtieneTodosPorCondicion(rclv, condicion, include)
 				.then((n) =>
 					n.map((m) => {
 						rclvs[m.nombre] = 0;
@@ -118,9 +124,7 @@ module.exports = {
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
 				productos.push(
-					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) =>
-						n.filter((m) => m.links.length > 1)
-					))
+					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) => n.filter((m) => m.links.length > 1)))
 				);
 
 			// Separa entre links TR, GR y CC
