@@ -396,7 +396,7 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		mensajeParaRevisores: ({regs, edics}) => {
+		mensRevsTablero: ({regs, edics}) => {
 			// Variables
 			let cuerpoMail = {perl: "", links: ""};
 			let registros, prods, rclvs;
