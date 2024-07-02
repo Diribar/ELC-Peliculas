@@ -13,7 +13,7 @@
 	<% } %>
 
 <% } else { %>
-	<% if (["producto/alta", "rechazar", "inactivar-o-recuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
+	<% if (["producto/alta", "rechazar", "revisarInactivar", "revisarRecuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
 		<!-- Compartido -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
@@ -48,7 +48,7 @@
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-ElegirMotivo.css">
 		<script src="/publico/javascript/2.0-Familias/FM-PR-ElegirMotivo.js"></script>
 
-	<% } else if (codigo == "inactivar-o-recuperar") { %>
+	<% } else if (["revisarInactivar", "revisarRecuperar"].includes(codigo)) { %>
 		<!-- Revisión de Inactivar o Recuperar - Particular -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">

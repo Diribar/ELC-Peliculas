@@ -22,7 +22,7 @@
 
 	/* Condicionales */
 	#recuadroDL {
-		&:has(.inactivar, .rechazar, .eliminar) {
+		&:has(.inactivar, .rechazar, .eliminar, .revisarInactivar) {
 			background: var(--rojo-claro) !important;
 			#encabezado {background: var(--rojo-oscuro);}
 			:is(#informacion, select) {color: var(--rojo-oscuro);}

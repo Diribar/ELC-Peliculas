@@ -4,16 +4,13 @@ const validacsFM = require("./FM-FN-Validar");
 // Exportar ------------------------------------
 module.exports = {
 	// CRUD
-	variables: async function (req) {
-		// Tema
+	obtieneDatosForm: async function (req) {
+		// Variables
+		const {entidad, id} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = ruta.slice(1, -1).replace("revision/", "");
-
-		// Más variables
-		const {entidad, id} = req.query;
 		const origen = req.query.origen;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const userID = req.session.usuario.id;
 
@@ -25,6 +22,13 @@ module.exports = {
 		if (familia == "rclv") include.push(...variables.entidades.prods);
 		let original = await baseDeDatos.obtienePorId(entidad, id, include);
 		if (entidad == "capitulos") original.capitulos = await this.obtieneCapitulos(original.coleccion_id, original.temporada);
+
+		// Obtiene el código
+		const codigoAux = ruta.replace(familia + "/", "").replaceAll("/", "");
+		const codigo =
+			codigoAux != "inactivar-o-recuperar"
+				? codigoAux
+				: "revisar" + (original.statusRegistro_id == inactivar_id ? "Inactivar" : "Recuperar");
 
 		// Cantidad de productos asociados al RCLV
 		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
@@ -51,6 +55,41 @@ module.exports = {
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
+	},
+	titulo: ({entidad, codigo}) => {
+		// Variables
+		const opcionesDeTitulo = {
+			inactivar: "Inactivar",
+			rechazar: "Rechazar",
+			recuperar: "Recuperar",
+			eliminar: "Eliminar",
+			revisarInactivar: "Revisión de Inactivar",
+			revisarRecuperar: "Revisión de Recuperar",
+		};
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+
+		// Título
+		let titulo = opcionesDeTitulo[codigo] + " ";
+		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
+		titulo += entidadNombre;
+
+		// Fin
+		return {titulo, entidadNombre};
+	},
+	obtieneDatosGuardar: async (req) => {
+		const {entidad, id, motivo_id} = {...req.query, ...req.body};
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const {ruta} = comp.reqBasePathUrl(req);
+		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+		const userID = req.session.usuario.id;
+		const ahora = comp.fechaHora.ahora();
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const include = comp.obtieneTodosLosCamposInclude(entidad);
+		const original = await baseDeDatos.obtienePorId(entidad, id, include);
+		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+		// Fin
+		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
@@ -446,18 +485,6 @@ module.exports = {
 
 		// Fin
 		return registros;
-	},
-	titulo: ({entidad, codigo}) => {
-		// Variables
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-
-		// Título
-		let titulo = codigo == "inactivar" ? "Inactivar" : "Rechazar";
-		titulo += " " + comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
-		titulo += entidadNombre;
-
-		// Fin
-		return {titulo, entidadNombre};
 	},
 
 	// CRUD y Revisión

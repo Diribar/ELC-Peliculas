@@ -1,6 +1,3 @@
-/* Colores */
-#cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
-
 /* Encabezado */
 #cuerpo #encabezado {
 	display: flex; flex-direction: row; justify-content: space-between; align-items: center;
