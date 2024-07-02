@@ -1,18 +1,20 @@
 <% if (regs && regs.length) { %>
-	<h3 id="<%= (familias + "_" + titulo).replace(/[-\s]/g, "") %>" class="pointer">
-		<%= titulo %>
-		(<%= regs.length %>)
-		<% if (locals.icono) { %><i class="fa-solid <%= icono %>"></i><% } %>
-	</h3>
-	<div class="bloqueRegs <%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? 'ocultar' : '' %>">
-		<% for (let reg of regs) { %>
-			<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>
-			<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
-			<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
-			<% const corresponde_id = reg.entidad != "colecciones" || locals.grupo == "inactivo" || locals.origen == "TE" || !locals.campo %>
-			<a href="<%='/' + url + '/?entidad=' + (corresponde_id ? reg.entidad : "capitulos") + '&id=' + (corresponde_id ? reg.id : reg.csl[campo]) + EDIC_ID + ORIGEN + GRUPO %>">
-				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
-			</a>
-		<% } %>
+	<div class="bloqueRegs">
+		<h3 id="<%= (familias + "_" + titulo).replace(/[-\s]/g, "") %>" class="pointer">
+			<%= titulo %>
+			(<%= regs.length %>)
+			<% if (locals.icono) { %><i class="fa-solid <%= icono %>"></i><% } %>
+		</h3>
+		<div class="registros <%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? 'ocultar' : '' %>">
+			<% for (let reg of regs) { %>
+				<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>
+				<% const ORIGEN = locals.mostrarOrigen ? ('&origen=' + locals.origen) : '' %>
+				<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
+				<% const corresponde_id = reg.entidad != "colecciones" || locals.grupo == "inactivo" || locals.origen == "TE" || !locals.campo %>
+				<a href="<%='/' + url + '/?entidad=' + (corresponde_id ? reg.entidad : "capitulos") + '&id=' + (corresponde_id ? reg.id : reg.csl[campo]) + EDIC_ID + ORIGEN + GRUPO %>">
+					<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
+				</a>
+			<% } %>
+		</div>
 	</div>
 <% } %>
