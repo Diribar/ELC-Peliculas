@@ -2,7 +2,7 @@
 #datos #datosLargos {
 	/* Condicionales */
 	#recuadroDL {
-		&:has(.recuperar, .revisarRecuperar) {
+		&:has(.recuperar, .revisionRecuperar) {
 			background: var(--verde-claro) !important;
 			#encabezado {background: var(--verde-oscuro);}
 			:is(#informacion) {color: var(--verde-oscuro);}
