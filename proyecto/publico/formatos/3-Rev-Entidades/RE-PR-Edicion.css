@@ -1,31 +1,41 @@
 /* Datos Largos */
-#datos {--anchoRecuadro: 675px;}
+#datos {
+	--anchoRecuadro: 675px;
 
-/* Informacion */
-#contenido #informacion {max-height: calc(var(--alturaViewPort) * 0.4); overflow-y: auto;}
-/* Oculta la 'side-bar' */
-/* #contenido #informacion::-webkit-scrollbar {display: none; Safari and Chrome} */
-/* #contenido #informacion {-ms-overflow-style: none; Internet Explorer 10+scrollbar-width: none; Firefox} */
-/* Ingresos y Reemplazos */
-#contenido #informacion h2 {margin-top: 15px; font-variant: small-caps}
-#contenido #informacion p {line-height: 1;}
-#contenido #informacion .campoTitulo {font-weight: bold; color: var(--gris-oscuro);}
-#contenido #informacion .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px;}
-#contenido #informacion .infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
-#contenido #informacion .infoMostrar :is(.fa-circle-xmark.rechazar, .muestraMotivos) {margin-left: 5px;}
-#contenido #informacion .infoMostrar .edic {background: var(--verde-oscuro); color: white;}
-/* Ingresos */
-#informacion #ingrs {margin-top: 5px;}
-#informacion #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
-#informacion #ingrs tr #cartelRechazo select {background: inherit;}
-#informacion #ingrs .aprobar {margin-left: 5px; }
+	/* Informacion */
+	#contenido #informacion {
+		max-height: calc(var(--alturaViewPort) * 0.4); overflow-y: auto;
+		/* Oculta la 'side-bar' */
+		/* #contenido #informacion::-webkit-scrollbar {display: none; Safari and Chrome} */
+		/* #contenido #informacion {-ms-overflow-style: none; Internet Explorer 10+scrollbar-width: none; Firefox} */
 
-/* Reemplazos */
-#informacion #reemps .fa-trash-can {color: var(--rojo-oscuro);}
-#informacion #reemps .infoMostrar .orig {background: var(--rojo-oscuro); color: white;}
-#informacion #reemps .infoMostrar.ocultar {display: block;}
-#informacion #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
-#informacion #reemps #cartelRechazo select {margin: 0;}
+		/* Ingresos y Reemplazos */
+		h2 {margin-top: 15px; font-variant: small-caps}
+		p {line-height: 1;}
+		.campoTitulo {font-weight: bold; color: var(--gris-oscuro);}
+		.infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px;}
+		.infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
+		.infoMostrar :is(.fa-circle-xmark.rechazar, .muestraMotivos) {margin-left: 5px;}
+		.infoMostrar .edic {background: var(--verde-oscuro); color: white;}
 
-/* Datos Breves */
-#datos #datosBreves {min-width: 210px;}
+		/* Ingresos */
+		#ingrs {
+			margin-top: 5px;
+			tr:nth-of-type(even) {background: var(--amarillo-claro);}
+			tr #cartelRechazo select {background: inherit;}
+			.aprobar {margin-left: 5px; }
+		}
+
+		/* Reemplazos */
+		#reemps {
+			.fa-trash-can {color: var(--rojo-oscuro);}
+			.infoMostrar .orig {background: var(--rojo-oscuro); color: white;}
+			.infoMostrar.ocultar {display: block;}
+			#cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
+			#cartelRechazo select {margin: 0;}
+		}
+	}
+
+	/* Datos Breves */
+	#datosBreves {min-width: 210px;}
+}
