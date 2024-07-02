@@ -30,7 +30,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.feedbackParaUsers();
-		await this.rutinasDiarias.infoRevsStatusMotivo();
+		// await this.rutinasDiarias.revisaStatusMotivo();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -298,6 +298,33 @@ module.exports = {
 			// Fin
 			return;
 		},
+		revisaStatusMotivo: async () => {
+			// Elimina todos los registros de las tablas 'correcMotivo' y 'correcStatus'
+			let aux1 = baseDeDatos.eliminaTodosPorCondicion("correcMotivo", {id: {[Op.not]: null}});
+			let aux2 = baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
+			[aux1, aux2] = await Promise.all([aux1, aux2]);
+
+			// Variables
+			const ultsRegs = await FN.ultRegHistStatus();
+			if (!ultsRegs.length) return;
+
+			// Acciones por registro del historial
+			for (let ultReg of ultsRegs) {
+				// Obtiene el prodRclv del historial
+				const {entidad, entidad_id} = ultReg;
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const nombre = comp.nombresPosibles(prodRclv);
+				const datos = {entidad, entidad_id, nombre};
+
+				// Si el motivo es distinto, agrega el registro a 'correcMotivo'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivo", datos);
+				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
+				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
+			}
+
+			// Fin
+			return;
+		},
 	},
 	rutinasDiarias: {
 		actualizaSolapam: async () => await comp.actualizaSolapam(),
@@ -352,16 +379,9 @@ module.exports = {
 			return;
 		},
 		infoRevsTablero: async () => {
-			// Variables
-			const asunto = {
-				perl: "Productos y RCLVs prioritarios a revisar",
-				links: "Links prioritarios a revisar",
-			};
-			const {regs, edics} = await procesos.ABM_noRevs();
-			let mailsEnviados = [];
-
 			// Si no hay casos, termina
-			if (regs.perl.length + edics.perl.length + regs.links.length + edics.links.length == 0) return;
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
 
 			// Arma el cuerpo del mensaje
 			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
@@ -373,6 +393,8 @@ module.exports = {
 			const revisores = {perl, links};
 
 			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
 			for (let tipo of ["perl", "links"])
 				if (regs[tipo].length || edics[tipo].length)
 					for (let revisor of revisores[tipo])
@@ -386,29 +408,31 @@ module.exports = {
 			// Fin
 			return;
 		},
-		infoRevsStatusMotivo: async () => {
+		revisaStatusMotivo: async () => {
+			// Elimina todos los registros de las tablas 'correcMotivo' y 'correcStatus'
+			await baseDeDatos
+				.eliminaTodosPorCondicion("correcMotivo", {id: {[Op.not]: null}})
+				.then(() => procesos.actualizaElProximoValorDeID("correcMotivo"));
+			await baseDeDatos
+				.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}})
+				.then(() => procesos.actualizaElProximoValorDeID("correcStatus"));
+
 			// Variables
 			const ultsRegs = await FN.ultRegHistStatus();
 			if (!ultsRegs.length) return;
-			let mensStatus = [];
-			let mensMotivo = [];
 
 			// Acciones por registro del historial
 			for (let ultReg of ultsRegs) {
 				// Obtiene el prodRclv del historial
-				const prodRclv = await baseDeDatos.obtienePorId(ultReg.entidad, ultReg.entidad_id, ["statusRegistro", "motivo"]);
+				const {entidad, entidad_id} = ultReg;
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const nombre = comp.nombresPosibles(prodRclv);
+				const datos = {entidad, entidad_id, nombre};
 
-				// Si el status es distinto, mail a revisores
-				if (ultReg.statusFinal_id != prodRclv.statusRegistro_id)
-					mensStatus.push(FN.mensStatusDistinto({ultReg, prodRclv}));
-
-				// Si el motivo es distinto, mail a revisores
-				if (ultReg.motivo_id != prodRclv.motivo_id) mensMotivo.push(FN.mensMotivoDistinto({ultReg, prodRclv}));
-			}
-
-			// Envío del mail
-			if (mensStatus.length + mensMotivo.length) {
-
+				// Si el motivo es distinto, agrega el registro a 'correcMotivo'
+				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivo", datos);
+				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
+				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
 			}
 
 			// Fin
@@ -751,7 +775,7 @@ let FN = {
 		let histStatus = [];
 		await baseDeDatos
 			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
-			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id))
+			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
 			.then((n) => n.sort((a, b) => a.id - b.id))
 			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
 			.then((n) =>
@@ -762,47 +786,6 @@ let FN = {
 
 		// Fin
 		return histStatus;
-	},
-	mensStatusDistinto: ({ultReg, prodRclv}) => {
-		// Variables
-		const {entidad} = ultReg;
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const elLa = comp.letras.inicialMayus(comp.obtieneDesdeEntidad.elLa(entidad));
-		const nombre = comp.nombresPosibles(prodRclv);
-
-		// Frase
-		const frase =
-			entidadNombre +
-			" " +
-			nombre +
-			", id " +
-			prodRclv.id +
-			". Registro: " +
-			prodRclv.statusRegistro.nombre +
-			". Historial: " +
-			ultReg.statusFinal.nombre;
-		// Fin
-		return frase;
-	},
-	mensMotivoDistinto: ({ultReg, prodRclv}) => {
-		// Variables
-		const {entidad} = ultReg;
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const nombre = comp.nombresPosibles(prodRclv);
-
-		// Frase
-		const frase =
-			entidadNombre +
-			" " +
-			nombre +
-			", id " +
-			prodRclv.id +
-			". Registro: " +
-			(prodRclv.motivo ? prodRclv.motivo.descripcion : "ninguno") +
-			". Historial: " +
-			(ultReg.motivo ? ultReg.motivo.descripcion : "ninguno");
-		// Fin
-		return frase;
 	},
 };
 let obsoletas = {
