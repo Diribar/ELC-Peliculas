@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Si el motivo es 'duplicado', se fija si se informó la 'entidad' y el 'id'
-	if (!mensajes && motivo.codigo == "duplicado") {
+	if (!mensajes && motivo_id == motivoDupl_id) {
 		if (!entDupl && !idDupl)
 			mensajes = ["Necesitamos que nos informes la entidad y el id del producto con el que está duplicado"];
 		else if (!entDupl) mensajes = ["Necesitamos que nos informes la entidad del producto con el que está duplicado"];
@@ -28,8 +28,8 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Si correspondía un comentario y no se completó, redirige
-	if (!mensajes && motivo.agregarComent && !comentario) mensajes = ["Necesitamos que nos des un comentario"];
-	if (!mensajes && !motivo.agregarComent && comentario) delete req.body.comentario
+	if (!mensajes && motivo.comentNeces && !comentario) mensajes = ["Necesitamos que nos des un comentario"];
+	if (!mensajes && !motivo.comentNeces && comentario) delete req.body.comentario
 
 	// Conclusiones
 	if (mensajes) return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: [variables.vistaEntendido(link)]}});

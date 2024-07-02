@@ -26,13 +26,13 @@
 
 	<h3>Datos del Registro</h3>
 	<div id="texto">
-		<% const {comentario} = bloqueDer.registro.slice(-1)[0] %>
+		<% const {motivoDetalle} = bloqueDer.registro.slice(-1)[0] %>
 		<% for (campo of bloqueDer.registro) { %>
 			<% if (!campo.titulo) continue %>
 			<div <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
 				<b><%= campo.titulo %>:</b>
 				<span><%= campo.valor %></span>
-				<%- (campo.titulo.startsWith("Status") && comentario) ? include("MN-Ayuda", {mensaje: comentario, ayudaClass: "nada"}) : null %>
+				<%- (campo.titulo.startsWith("Status") && motivoDetalle ) ? include("MN-Ayuda", {mensaje: motivoDetalle , ayudaClass: "nada"}) : null %>
 			</div>
 		<% } %>
 	</div>

@@ -96,7 +96,7 @@ main {
 #cuerpo .iconos a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
 
 /* Colores de los bordes de logos */
-#datosLargos tbody td a img {border: solid 4px; box-sizing: content-box;}
-#datosLargos tbody td a img.enCast {border-color: var(--verde-oscuro);}
-#datosLargos tbody td a img.subtCast {border-color: gold;}
-#datosLargos tbody td a img.otroIdioma {border-color: var(--rojo-oscuro);}
+#datosLargos tbody td :where(a, div) img {border: solid 4px; box-sizing: content-box;}
+#datosLargos tbody td :where(a, div) img.enCast {border-color: var(--verde-oscuro);}
+#datosLargos tbody td :where(a, div) img.subtCast {border-color: gold;}
+#datosLargos tbody td :where(a, div) img.otroIdioma {border-color: var(--rojo-oscuro);}

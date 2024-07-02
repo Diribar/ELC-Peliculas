@@ -12,10 +12,22 @@ module.exports = {
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
 		const userID = req.session.usuario.id;
+		let comentario;
 
 		// Obtiene el tema y código
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = this.codigo({ruta, familia});
+
+		// Comentario para 'revisarInactivar'
+		if (codigo == "revisarInactivar") {
+			const ultimoRegHist = await baseDeDatos.obtienePorCondicionElUltimo(
+				"histStatus",
+				{entidad, entidad_id: id},
+				"statusFinalEn"
+			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
+
+			if (ultimoRegHist.motivo_id != motivoDupl_id && ultimoRegHist.comentario) comentario = ultimoRegHist.comentario;
+		}
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -35,7 +47,7 @@ module.exports = {
 			RCLVnombre = original.nombre;
 		}
 
-		// Obtiene datos para la vista
+		// Más variables
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
@@ -47,7 +59,7 @@ module.exports = {
 		// Fin
 		return {
 			...{tema, codigo, titulo, origen},
-			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original},
+			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
@@ -85,7 +97,7 @@ module.exports = {
 		// Fin
 		return {titulo, entidadNombre};
 	},
-	obtieneDatosGuardar: async (req) => {
+	obtieneDatosGuardar: async function (req) {
 		// Variables
 		const {entidad, id, motivo_id} = {...req.query, ...req.body};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -97,13 +109,24 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Comentario
-		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
-		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+		const comentario = this.comentario(req.body, motivo_id);
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
+	},
+	comentario: (datos, motivo_id) => {
+		let comentario = datos ? datos.comentario : "";
+		if (!comentario && motivo_id == motivoDupl_id) {
+			// Variables
+			const {entDupl, idDupl} = datos;
+			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
+			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
+			comentario = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
+		}
+		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Fin
+		return comentario;
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
@@ -708,14 +731,7 @@ module.exports = {
 			resultado.push({titulo: "Status", ...FN.statusRegistro(registro)});
 
 			// Si el registro está inactivo, le agrega el motivo
-			if (registro.statusRegistro_id == inactivo_id) {
-				const {entidad, id: entidad_id} = registro;
-				const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id}, "statusFinalEn");
-				if (histStatus) {
-					const motivoDetalle = motivosStatus.find((n) => n.id == histStatus.motivo_id);
-					resultado.push({motivoDetalle});
-				}
-			}
+			if (registro.statusRegistro_id == inactivo_id) resultado.push(await FN.obtieneMotivoDetalle(registro));
 
 			// Fin
 			return resultado;
@@ -846,5 +862,18 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+	obtieneMotivoDetalle: async (registro) => {
+		// Variables
+		const {entidad, id: entidad_id} = registro;
+		const condicion = {entidad, entidad_id, statusFinal_id: inactivo_id};
+
+		// Obtiene el motivo del último histStatus
+		const histStatus = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
+		const motivo = motivosStatus.find((n) => n.id == histStatus.motivo_id);
+		const motivoDetalle = histStatus.comentario ? histStatus.comentario : motivo.descripcion;
+
+		// Fin
+		return {motivoDetalle};
 	},
 };

@@ -51,7 +51,7 @@ window.addEventListener("load", async () => {
 		const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
 
 		// Muestra u oculta el 'comentario'
-		comentNeces = motivoBD.agregarComent;
+		comentNeces = motivoBD.comentNeces;
 		DOM.comentario.readOnly = !comentNeces;
 
 		// Muestra u oculta el 'sectorDuplicado'
@@ -91,7 +91,7 @@ window.addEventListener("load", async () => {
 			} else duplicadoOK = false;
 		} else duplicadoOK = true;
 
-		if (motivoBD.agregarComent) DOM.comentario.focus();
+		if (motivoBD.comentNeces) DOM.comentario.focus();
 
 		// Actualiza el botón submit
 		FN.botonSubmit();
