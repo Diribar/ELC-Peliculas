@@ -7,7 +7,7 @@
 <section id="familias">
 	<div id="primeraColumna">
 		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
-		<% if (revisorPERL) { %>
+		<% if (revisorPERL && (prodsRclvs.CM.length || prodsRclvs.CS.length)) { %>
 			<!-- PRODUCTOS Y RCLVS -->
 			<div class="bloques">
 				<!-- Título y ayuda -->
