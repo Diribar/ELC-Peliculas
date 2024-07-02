@@ -1,19 +1,24 @@
 main #familias {
-	display: flex; flex-direction: row; justify-content: space-around; padding: 40px 0px 20px 0px;
-	.bloques {
-		max-width: 30vw;
-		&:nth-child(n+2) {margin-top: 20px;}
-		.tituloSecundario {
-			position: relative;
-			h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
-		}
-		/* Bloques - Registros */
-		.temas {
-			padding: 0 10px; width: 385px; max-width: 100%;
-			h3 {margin: 10px 0 2px;}
-			.bloqueRegs {
-				overflow-y: hidden;
-				a:hover p {background-color: var(--gris-intermedio)}
+	display: flex; flex-direction: row; justify-content: space-around;
+	padding: 40px 0px 20px 0px; max-height: var(--altoCuerpoMenosTitulo);
+	.columna {
+		max-height: 100%;
+		overflow-y: auto;
+		/* overflow-x: hidden; */
+		.bloques {
+			max-width: 30vw;
+			&:nth-child(n+2) {margin-top: 20px;}
+			.tituloSecundario {
+				position: sticky; top: 0px; z-index: 1;
+				h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
+			}
+			/* Bloques - Registros */
+			.temas {
+				padding: 0 10px; width: 385px; max-width: 100%;
+				.bloqueRegs {
+					h3 {padding: 10px 0 2px; background: var(--gris-claro); position: sticky; top: 27px;}
+					.registros a:hover p {background-color: var(--gris-intermedio)}
+				}
 			}
 		}
 	}
@@ -24,12 +29,6 @@ main #familias {
 #cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); color: var(--gris-claro);}
 #cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 #cuerpo:has(.revisionUs) .bloques .tituloSecundario h2 {background: var(--gris-oscuro); color: var(--gris-claro);}
-
-
-/* Scroll */
-#primeraColumna .temas {max-height: calc(var(--alturaViewPort) * 0.6); overflow-y: auto;}
-#segundaColumna .temas:not(:has(#grafico)) {max-height: calc(var(--alturaViewPort) * 0.3); overflow-y: auto;}
-#segundaColumna:has(#linksHD) .temas {max-height: calc(var(--alturaViewPort) * 0.2);}
 
 /* Particulares */
 #linksPends {position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--gris-claro);}
