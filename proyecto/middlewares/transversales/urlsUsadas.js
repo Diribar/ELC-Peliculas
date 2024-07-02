@@ -31,6 +31,7 @@ module.exports = (req, res, next) => {
 		"/consultas",
 		"/institucional",
 		"/graficos",
+		"/correccion",
 	];
 
 	// Si no es una ruta aceptada, interrumpe la función
@@ -70,7 +71,7 @@ module.exports = (req, res, next) => {
 	if (
 		!urlAnterior.startsWith("/usuarios/") &&
 		!urlAnterior.startsWith("/links/") &&
-		(!urlAnterior.startsWith("/revision/tablero-de-entidades")) &&
+		!urlAnterior.startsWith("/revision/tablero-de-entidades") &&
 		!urlAnterior.includes("/edicion/")
 	)
 		activaSessionCookie("urlSinCaptura", true);
