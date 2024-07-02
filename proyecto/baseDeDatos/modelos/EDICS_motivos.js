@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		penalizac: {type: dt.DECIMAL},
 	};
 	const config = {
-		tableName: "cam_motivos_edics",
+		tableName: "edics_motivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
