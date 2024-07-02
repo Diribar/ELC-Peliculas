@@ -305,7 +305,7 @@ module.exports = {
 			[aux1, aux2] = await Promise.all([aux1, aux2]);
 
 			// Variables
-			const ultsRegs = await FN.ultRegHistStatus();
+			const ultsRegs = await procesos.ultRegHistStatus();
 			if (!ultsRegs.length) return;
 
 			// Acciones por registro del historial
@@ -408,37 +408,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		revisaStatusMotivo: async () => {
-			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
-			let aux1 = baseDeDatos
-				.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}})
-				.then(async () => await procesos.actualizaElProximoValorDeID("correcMotivos"));
-			let aux2 = baseDeDatos
-				.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}})
-				.then(async () => await procesos.actualizaElProximoValorDeID("correcStatus"));
-			[aux1, aux2] = await Promise.all([aux1, aux2]);
-
-			// Variables
-			const ultsRegs = await FN.ultRegHistStatus();
-			if (!ultsRegs.length) return;
-
-			// Acciones por registro del historial
-			for (let ultReg of ultsRegs) {
-				// Obtiene el prodRclv del historial
-				const {entidad, entidad_id} = ultReg;
-				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
-				const nombre = comp.nombresPosibles(prodRclv);
-				const datos = {entidad, entidad_id, nombre};
-
-				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
-				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
-				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
-				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
-			}
-
-			// Fin
-			return;
-		},
 		loginsAcums: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
@@ -452,7 +421,7 @@ module.exports = {
 			// Logins acums
 			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 			let agregarFecha = loginsAcums.length // condición si hay logins acums
-				? FN.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				? procesos.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
 				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
 				? fechaLoginsDiarios // la fecha del primer registro
 				: hoy; // la fecha de hoy
@@ -474,7 +443,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				agregarFecha = FN.sumaUnDia(agregarFecha);
+				agregarFecha = procesos.sumaUnDia(agregarFecha);
 			}
 
 			// Elimina los logins anteriores
@@ -769,26 +738,6 @@ module.exports = {
 };
 
 // Funciones
-let FN = {
-	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
-	ultRegHistStatus: async () => {
-		// Obtiene el último registro de status de cada producto
-		let histStatus = [];
-		await baseDeDatos
-			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
-			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
-			.then((n) => n.sort((a, b) => a.id - b.id))
-			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
-			.then((n) =>
-				n.map((m) =>
-					!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id) ? histStatus.push(m) : null
-				)
-			); // retiene sólo el último de cada producto
-
-		// Fin
-		return histStatus;
-	},
-};
 let obsoletas = {
 	actualizaLaEpocaDeEstreno: async () => {
 		const condicion = {anoEstreno: {[Op.ne]: null}};
