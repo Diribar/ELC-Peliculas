@@ -480,7 +480,7 @@ module.exports = {
 			const {entidad, id, origen, desaprueba} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.reqBasePathUrl(req);
-			const codigo = procsFM.codigo({ruta, familia}); // 'revisarInactivar', 'revisarRecuperar', 'rechazar'
+			const codigo = procsFM.codigo({ruta, familia}); // 'revisionInactivar', 'revisionRecuperar', 'rechazar'
 			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
@@ -600,7 +600,7 @@ module.exports = {
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
-			await edicion.actualizaArchivoAvatar({entidad, original, edicion, aprob});
+			await FN_edicion.actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
 			// Si es un registro de 'epocasDelAno', guarda el avatar en la carpeta tematica
 			if (entidad == "epocasDelAno" && aprob) {
@@ -634,8 +634,8 @@ module.exports = {
 
 				// Criterio para determinar qué valores mostrar
 				const esEdicion = true;
-				campoRevisar.mostrarOrig = await edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
-				campoRevisar.mostrarEdic = await edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
+				campoRevisar.mostrarOrig = await FN_edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
+				campoRevisar.mostrarEdic = await FN_edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
 				if (!campoRevisar.mostrarEdic) campoRevisar.mostrarEdic = "(vacío)";
 
 				// Consolida los resultados
@@ -719,8 +719,8 @@ module.exports = {
 					datosEdic.motivo_id = motivo.id;
 				}
 				// Asigna los valores 'aprob' y 'rech'
-				let mostrarOrig = await edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
-				let mostrarEdic = await edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar);
+				let mostrarOrig = await FN_edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
+				let mostrarEdic = await FN_edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar);
 				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
@@ -1329,7 +1329,7 @@ let tablManten = {
 			);
 	},
 };
-let edicion = {
+let FN_edicion = {
 	valoresParaMostrar: async (registro, relacInclude, campoRevisar, esEdicion) => {
 		// Variables
 		const campo = campoRevisar.nombre;
@@ -1413,7 +1413,7 @@ let FN = {
 		// Obtiene el status final
 		const adicionales = {publico: true, epocaOcurrencia: true};
 		const statusFinal_id =
-			codigo == "alta" || (codigo == "revisarInactivar" && desaprueba) || (codigo == "revisarRecuperar" && !desaprueba) // condiciones para aprobado
+			codigo == "alta" || (codigo == "revisionInactivar" && desaprueba) || (codigo == "revisionRecuperar" && !desaprueba) // condiciones para aprobado
 				? rclv // si es un RCLV, se aprueba
 					? aprobado_id
 					: (await validacsFM.validacs
@@ -1425,14 +1425,14 @@ let FN = {
 					: aprobado_id // si no tiene errores
 				: inactivo_id;
 
-		// Obtiene el motivo - si es un rechazo, del body; si es una revisionInactivar o revisionRecuperar, del registro anterior
+		// Obtiene el motivo - si es un rechazo, del body; si es un revisionInactivar o revisionRecuperar, del registro anterior
 		const motivo_id =
-			statusFinal_id == inactivo_id
-				? codigo == "rechazar"
-					? req.body.motivo_id
-					: await baseDeDatos
-							.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: original.id}, "statusFinalEn")
-							.then((n) => n.motivo_id)
+			codigo == "rechazar"
+				? req.body.motivo_id
+				: ["revisionInactivar", "revisionRecuperar"].includes(codigo)
+				? await baseDeDatos
+						.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: original.id}, "statusFinalEn")
+						.then((n) => n.motivo_id)
 				: null;
 
 		// Fin
