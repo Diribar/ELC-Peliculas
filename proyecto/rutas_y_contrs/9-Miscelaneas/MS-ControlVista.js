@@ -10,7 +10,6 @@ module.exports = {
 			const codigo = "motivo";
 			const titulo = "Corrección de Motivo";
 			const {entidad, id} = req.query;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Obtiene el motivo del producto
 			const regEntidad = await baseDeDatos.obtienePorId(entidad, id, "motivo");
@@ -22,10 +21,15 @@ module.exports = {
 			const ultimoHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
 			const motivoHist = ultimoHist.motivo_id ? motivosStatus.find((n) => n.id == ultimoHist.motivo_id) : null;
 
+			// Datos para la vista
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const cola = "&respuesta=";
+			const urlActual = req.session.urlActual;
+
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, familia, entidad, id},
-				...{registro: regEntidad, motivoProd, motivoHist, imgDerPers},
+				...{tema, codigo, titulo, familia, entidad, id, urlActual},
+				...{registro: regEntidad, motivoProd, motivoHist, imgDerPers, cola},
 				cartelGenerico: true,
 			});
 		},
