@@ -573,7 +573,7 @@ module.exports = {
 	},
 	actualizaElProximoValorDeID: async (entidad) => {
 		// Variables
-		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n++);
+		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => (n ? n++ : 1));
 
 		// Actualiza el autoincrement
 		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
