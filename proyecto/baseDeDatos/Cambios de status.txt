@@ -1,0 +1,28 @@
+1. Rutina
+- Para los registros con historial, el status del producto y el motivo deben coincidir con el último del historial.
+- Para los registros en status posterior a aprobado y sin historial, se crea el historial. El motivo en el producto es un resguardo por si se pierde el historial
+
+Detalle
+- Se muestra el motivo sólo si está inactivo
+- Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
+
+Historial
+- Se muestra el motivo, salvo para 'duplicado' y 'otro'
+- Si existe un comentario, se muestra
+- Oculta el motivo si se repite con el anterior
+- Oculta el comentario, si se repite con el anterior
+
+
+Revisión de Inactivar
+- Form: toma el comentario del movimiento anterior
+- Post:
+    - si se pasa a inactivo, toma el motivo del movimiento anterior
+    - si se pasa a aprobado, no toma nada del movimiento anterior
+
+Recuperar
+- Post: toma el motivo del movimiento anterior
+
+Revisión de Recuperar
+- Post:
+    - si se pasa a inactivo, toma el motivo del movimiento anterior
+    - si se pasa a aprobado, no toma nada del movimiento anterior
