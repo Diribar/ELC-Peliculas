@@ -1,0 +1,26 @@
+<section class="flexRow">
+	<!-- Familia -->
+	 <div id="producto" class="flexCol">
+		<h3><%= comp.letras.inicialMayus(familia) %></h3>
+		<div class="motivo">
+			<h4>Motivo:</h4>
+			<div><%= motivoProd.descripcion %></div>
+		</div>
+		<h4>Comentario</h4>
+		<textarea name="" id="" class="oculta"></textarea>
+		<input type="submit" formaction="<%= urlActual + cola + "familia" %>" formmethod="post">
+	 </div>
+
+	<!-- Historial -->
+	<div id="historial" class="flexCol">
+		<h3>Historial</h3>
+		<div class="motivo">
+			<h4>Motivo:</h4>
+			<div><%= motivoHist.descripcion %></div>
+		</div>
+		<h4>Comentario</h4>
+		<textarea name="" id="" class="oculta"></textarea>
+		<input type="submit" formaction="<%= urlActual + cola + "historial" %>" formmethod="post">
+	 </div>
+
+</section>
