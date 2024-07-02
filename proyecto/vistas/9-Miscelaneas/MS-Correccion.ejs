@@ -1,13 +1,13 @@
-<section class="flexRow">
+<section id="correccion">
 	<!-- Familia -->
-	 <div id="producto" class="flexCol">
-		<h3><%= comp.letras.inicialMayus(familia) %></h3>
-		<div class="motivo">
+	 <div id="producto" class="columna">
+		<div class="flexCol">
+			<h3><%= comp.letras.inicialMayus(familia) %></h3>
 			<h4>Motivo:</h4>
-			<div><%= motivoProd.descripcion %></div>
+			<div class="motivo"><%= motivoProd.descripcion %></div>
+			<h4>Comentario</h4>
+			<textarea name="" id="" class="oculta"></textarea>
 		</div>
-		<h4>Comentario</h4>
-		<textarea name="" id="" class="oculta"></textarea>
 		<div id="sectorIconos">
 			<div class="iconos">
 				<label>
@@ -19,12 +19,10 @@
 	 </div>
 
 	<!-- Historial -->
-	<div id="historial" class="flexCol">
+	<div id="historial" class="columna">
 		<h3>Historial</h3>
-		<div class="motivo">
-			<h4>Motivo:</h4>
-			<div><%= motivoHist.descripcion %></div>
-		</div>
+		<h4>Motivo:</h4>
+		<div class="motivo"><%= motivoHist.descripcion %></div>
 		<h4>Comentario</h4>
 		<textarea name="" id="" class="oculta"><%= ultimoHist.comentario %></textarea>
 		<div id="sectorIconos">
