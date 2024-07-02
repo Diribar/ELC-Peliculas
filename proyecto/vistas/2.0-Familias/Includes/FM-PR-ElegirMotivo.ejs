@@ -16,13 +16,13 @@
     <div id="sectorDuplicado" class="flexCol ocultar">
         <h3>Datos del otro producto</h4>
         <div class="flexRow">
-            <select name="entidad">
+            <select name="entDupl">
                 <option value="">Entidad</option>
                 <% entsNombre.forEach((entNombre,i) => { %>
                     <option value="<%= entidades[i] %>"><%= entNombre %></option>
                 <% }) %>
             </select>
-            <input name="idDuplicado" type="number" placeholder="id">
+            <input name="idDupl" type="number" placeholder="id">
         </div>
         <div id="resultadoDuplicado"></div>
     </div>

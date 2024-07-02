@@ -12,7 +12,7 @@
 				#sectorDuplicado {
 					margin-top: 15px;
 					h3 {font-size: 1rem;}
-					input[name="idDuplicado"] {
+					input[name="idDupl"] {
 						margin-left: 10px; width: 50px; text-align: center; border: 1px solid var(--gris-oscuro);
 						&::placeholder {color: inherit;}
 					}

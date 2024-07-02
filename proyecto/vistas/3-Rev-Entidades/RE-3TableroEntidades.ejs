@@ -23,7 +23,8 @@
 				<% const rp = "revision/producto/" %>
 				<% DE = dataEntry[familias] %>
 				<% if (revisorPERL) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar y Recuperar", regs: prods.IR, url: rp + "inactivar-o-recuperar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prods.IN, url: rp + "inactivar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prods.RC, url: rp + "recuperar"}) %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
 				<% } %>
 				<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt, mostrarOrigen: true}) %>
@@ -52,7 +53,8 @@
 					<div class="temas">
 						<% let rr = "revision/rclv/" %>
 						<% DE = dataEntry[familias] %>
-						<%- include("RE-Registros", {familias, DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: rclvs.IN, url: rr + "inactivar"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: rclvs.RC, url: rr + "recuperar"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>

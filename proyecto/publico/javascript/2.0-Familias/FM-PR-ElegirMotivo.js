@@ -10,8 +10,8 @@ window.addEventListener("load", async () => {
 		// Motivo
 		selectMotivo: document.querySelector("#motivos select[name='motivo_id']"),
 		sectorDuplicado: document.querySelector("#motivos #sectorDuplicado"),
-		selectEntidad: document.querySelector("#motivos #sectorDuplicado select[name='entidad']"),
-		inputId: document.querySelector("#motivos #sectorDuplicado input[name='idDuplicado']"),
+		entDupl: document.querySelector("#motivos #sectorDuplicado select[name='entDupl']"),
+		idDupl: document.querySelector("#motivos #sectorDuplicado input[name='idDupl']"),
 		resultadoDuplicado: document.querySelector("#motivos #sectorDuplicado #resultadoDuplicado"),
 
 		// Comentario
@@ -61,8 +61,8 @@ window.addEventListener("load", async () => {
 		// Si el motivo es duplicado, busca el registro
 		if (motivoDuplicado) {
 			// Variables
-			const entDupl = DOM.selectEntidad.value;
-			const idDupl = DOM.inputId.value;
+			const entDupl = DOM.entDupl.value;
+			const idDupl = DOM.idDupl.value;
 			const entIdOK = entDupl && idDupl;
 
 			// Si la 'entidad' y el 'id' están ingresados, busca el registro

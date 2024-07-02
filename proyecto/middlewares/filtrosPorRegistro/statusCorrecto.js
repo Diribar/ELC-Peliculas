@@ -62,16 +62,16 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 		: baseUrl == "/links" && ruta == "/abm/" // Preguntas para 'Links'
 		? activos_ids
 		: baseUrl == "/revision" // Preguntas para 'Revisión'
-		? ruta.includes("/alta/") // para 'producto' y 'rclv'
+		? ruta.includes("/alta/") || ruta.includes("/rechazar/") // para 'producto' y 'rclv'
 			? [creado_id]
 			: ruta.includes("/edicion/")
 			? aprobados_ids
-			: ruta.includes("/inactivar-o-recuperar/")
-			? [inactivar_id, recuperar_id]
+			: ruta.includes("/inactivar/")
+			? [inactivar_id]
+			: ruta.includes("/recuperar/")
+			? [recuperar_id]
 			: ruta.includes("/links/")
 			? aprobados_ids
-			: ruta.includes("/rechazar/")
-			? [creado_id]
 			: ruta.includes("/solapamiento/")
 			? activos_ids
 			: []

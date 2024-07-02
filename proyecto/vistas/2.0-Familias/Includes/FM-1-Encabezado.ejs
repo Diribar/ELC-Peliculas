@@ -32,12 +32,12 @@
 		<% if (entidad == "capitulos") { %>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p id="coleccionTitulo"><b>Colección:</b></p>
-				<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
+				<p id="coleccionTitulo">Colección:</p>
+				<% if (["prodRud", "linksCRUD"].includes(tema)) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>"><% } %>
 					<button type="button"><%= registro.coleccion.nombreCastellano %></button>
-				</a>
+				<% if (["prodRud", "linksCRUD"].includes(tema)) { %></a><% } %>
 			</div>
-			<!-- Cambiar de capítulo -->
+			<!-- Cambiar de temporada o capítulo -->
 			<div id="tempCapS">
 				<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
 					<!-- Avanza/Retrocede un capítulo -->
@@ -61,13 +61,9 @@
 							<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>
 						<% } %>
 					</select>
-				<% } else { %>
+				<% } else if (registro.coleccion.cantTemps > 1) { %>
 					<!-- Información de temporada -->
-					<% if (registro.coleccion.cantTemps > 1) { %>
-						<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
-					<% } %>
-					<!-- Información de capítulo -->
-					<p><b>Capítulo:</b> <%= registro.capitulo %></p>
+					<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
 				<% } %>
 			</div>
 		<% } %>

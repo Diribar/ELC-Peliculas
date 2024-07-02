@@ -5,7 +5,7 @@
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
 		<% if ([...inacRecup_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
 			<!-- Revisar -->
-			<% const url = status_id == creado_id ? "alta" : "inactivar-o-recuperar" %>
+			<% const url = status_id == creado_id ? "alta" : status_id == inactivar_id ? "inactivar" : "recuperar" %>
 			<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>

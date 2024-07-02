@@ -6,7 +6,7 @@ const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 module.exports = {
 	// Tableros
 	tablRevision: {
-		obtieneProdsConEdic: async (revID) => {
+		obtieneProds1: async (revID) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
 			let productos = [];
@@ -67,7 +67,7 @@ module.exports = {
 			// Fin
 			return {AL_conEdicion, ED};
 		},
-		obtieneProds_SE_IR: async (revID) => {
+		obtieneProds2: async (revID) => {
 			// Variables
 			const entidades = [...variables.entidades.prods];
 			let campos;
@@ -113,9 +113,9 @@ module.exports = {
 			[AL_sinEdicion, SE, IN, RC] = await Promise.all([AL_sinEdicion, SE, IN, RC]);
 
 			// Fin
-			return {AL_sinEdicion, SE, IR: [...IN, ...RC]};
+			return {AL_sinEdicion, SE, IN, RC};
 		},
-		obtieneProdsRepetidos: async () => {
+		obtieneProds3: async () => {
 			// Obtiene los datos clave de los registros
 			const statusRegistro_id = activos_ids;
 			let registros = await Promise.all([
@@ -152,7 +152,7 @@ module.exports = {
 			return {RP: repetidos};
 		},
 		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
-		obtieneRCLVs: async (revID) => {
+		obtieneRCLVs1: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
 			const include = [...variables.entidades.prods, "prodsEdiciones"];
@@ -162,13 +162,17 @@ module.exports = {
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
 			let AL = tablRevision.obtieneRegs(campos);
 
+			// IN: En staus 'inactivar'
+			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
+			let IN = tablRevision.obtieneRegs(campos);
+
+			// RC: En staus 'recuperar'
+			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
+			let RC = tablRevision.obtieneRegs(campos);
+
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
 			let SL = tablRevision.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
-
-			// IR: En staus 'inactivar' o 'recuperar'
-			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
-			let IR = tablRevision.obtieneRegs(campos);
 
 			// FM: Con fecha móvil
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -215,12 +219,12 @@ module.exports = {
 				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
-			[AL, SL, IR, FM] = await Promise.all([AL, SL, IR, FM]);
+			[AL, SL, IN, RC, FM] = await Promise.all([AL, SL, IN, RC, FM]);
 
 			// Fin
-			return {AL, SL, IR, FM};
+			return {AL, SL, IN, RC, FM};
 		},
-		obtieneRCLVsConEdic: async function (revID) {
+		obtieneRCLVs2: async function (revID) {
 			// 1. Variables
 			let include = variables.entidades.asocRclvs;
 			let rclvs = [];
@@ -467,51 +471,40 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen, desaprueba} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const {ruta} = comp.reqBasePathUrl(req);
+			const codigo = procsFM({ruta, familia}); // 'revisarInactivar', 'revisarRecuperar', 'rechazar'
+			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
 
-			// Obtiene el código
-			const {ruta} = comp.reqBasePathUrl(req);
-			let codigo = ruta.slice(1, -1); // códigos posibles: 'rechazar', 'inactivar-o-recuperar'
-			codigo = codigo.slice(codigo.indexOf("/") + 1);
-			const inacRecups = codigo == "inactivar-o-recuperar";
-
-			// Obtiene el registro original y el subcodigo
+			// Obtiene el registro original
 			let include = comp.obtieneTodosLosCamposInclude(entidad);
 			if (producto) include.push("links");
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
 			const statusOriginal_id = original.statusRegistro_id;
 
-			// Obtiene el 'subcodigo'
-			const subcodigo = inacRecups
-				? statusOriginal_id == inactivar_id
-					? "inactivar"
-					: "recuperar"
-				: ruta.endsWith("/alta/")
-				? "alta"
-				: "rechazar";
-
-			// Averigua si la sugerencia fue aprobada
-			const aprobado = subcodigo != "rechazar" && !desaprueba;
-
 			// Obtiene el status final
 			const adicionales = {publico: true, epocaOcurrencia: true};
 			const statusFinal_id =
-				(!aprobado && subcodigo != "inactivar") || (aprobado && subcodigo == "inactivar") // si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
-					? inactivo_id
-					: rclv // demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
-					? aprobado_id // si es un RCLV, se aprueba
-					: (await validacsFM.validacs
-							.consolidado({datos: {entidad, ...original, ...adicionales}})
-							.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
-					? creadoAprob_id
-					: entidad == "capitulos"
-					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
-					: aprobado_id;
+				codigo == "alta" || (codigo == "revisarInactivar" && desaprueba) || (codigo == "revisarRecuperar" && aprobado) // condiciones para aprobado
+					? rclv // si es un RCLV, se aprueba
+						? aprobado_id
+						: (await validacsFM.validacs
+								.consolidado({datos: {entidad, ...original, ...adicionales}})
+								.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
+						? creadoAprob_id // si tiene errores que impiden el aprobado
+						: entidad == "capitulos"
+						? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
+						: aprobado_id // si no tiene errores
+					: inactivo_id;
 
 			// Obtiene el motivo_id
 			const motivo_id =
-				subcodigo == "rechazar" ? req.body.motivo_id : statusFinal_id == inactivo_id ? original.motivo_id : null;
+				statusFinal_id == inactivo_id
+					? codigo == "rechazar"
+						? req.body.motivo_id
+						: await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id: id}, "statusFinalEn")
+					: null;
 
 			// Obtiene el comentario
 			let comentario = req.body.comentario ? req.body.comentario : "";
@@ -530,7 +523,7 @@ module.exports = {
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
-				...{codigo, subcodigo, producto, rclv, motivo_id, comentario, aprobado},
+				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
 				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},

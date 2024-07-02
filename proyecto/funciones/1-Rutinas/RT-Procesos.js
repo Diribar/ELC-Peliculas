@@ -409,12 +409,10 @@ module.exports = {
 				let mensajes = "";
 				for (let registro of registros) {
 					// Variables
-					const status_id = registro.statusRegistro_id;
-					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
 					let mensaje = registro.nombreCastellano ? registro.nombreCastellano : registro.nombreOriginal;
 
 					// Formatos
-					mensaje = formatos.a(mensaje, registro, operacion);
+					mensaje = formatos.a(mensaje, registro);
 					mensajes += formatos.li(mensaje);
 				}
 				cuerpoMail.perl += formatos.ol(mensajes);
@@ -444,12 +442,8 @@ module.exports = {
 				rclvs = true;
 				let mensajes = "";
 				for (let registro of registros) {
-					// Variables
-					const status_id = registro.statusRegistro_id;
-					const operacion = status_id == creado_id ? "alta/" : "inactivar-o-recuperar/";
-
 					// Formatos
-					let mensaje = formatos.a(registro.nombre, registro, operacion);
+					let mensaje = formatos.a(registro.nombre, registro);
 					mensajes += formatos.li(mensaje);
 				}
 				cuerpoMail.perl += formatos.ol(mensajes);
@@ -699,9 +693,13 @@ let formatos = {
 		if (color) formato = formato.replace("rgb(37,64,97)", color);
 		return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
 	},
-	a: (texto, registro, operacion) => {
+	a: (texto, registro) => {
+		// Variables
+		const operacion = {[creado_id]: "alta", [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"};
+
+		// Arma la respuesta
 		let respuesta = '<a href="' + urlHost + "/revision/" + registro.familia + "/";
-		respuesta += operacion;
+		respuesta += operacion[registro.statusRegistro_id];
 		respuesta += "?entidad=" + registro.entidad + "&id=" + registro.id;
 		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
 

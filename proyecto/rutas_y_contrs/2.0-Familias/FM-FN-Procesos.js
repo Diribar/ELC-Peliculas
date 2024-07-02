@@ -6,29 +6,25 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
+		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const origen = req.query.origen;
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const origen = req.query.origen;
 		const userID = req.session.usuario.id;
+
+		// Obtiene el tema y código
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const codigo = this.codigo({ruta, familia});
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor", "motivo");
+		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidades.prods);
 		let original = await baseDeDatos.obtienePorId(entidad, id, include);
 		if (entidad == "capitulos") original.capitulos = await this.obtieneCapitulos(original.coleccion_id, original.temporada);
-
-		// Obtiene el código
-		const codigoAux = ruta.replace(familia + "/", "").replaceAll("/", "");
-		const codigo =
-			codigoAux != "inactivar-o-recuperar"
-				? codigoAux
-				: "revisar" + (original.statusRegistro_id == inactivar_id ? "Inactivar" : "Recuperar");
 
 		// Cantidad de productos asociados al RCLV
 		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
@@ -56,6 +52,19 @@ module.exports = {
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
+	codigo: ({ruta, familia}) => {
+		// Obtiene el código a partir de la familia
+		let codigo = ruta.replaceAll("/", "");
+
+		// Pule el código
+		if (codigo.includes(familia)) {
+			codigo = codigo.replace(familia, "");
+			codigo = "revisar" + comp.letras.inicialMayus(codigo);
+		}
+
+		// Fin
+		return codigo;
+	},
 	titulo: ({entidad, codigo}) => {
 		// Variables
 		const opcionesDeTitulo = {
@@ -77,6 +86,7 @@ module.exports = {
 		return {titulo, entidadNombre};
 	},
 	obtieneDatosGuardar: async (req) => {
+		// Variables
 		const {entidad, id, motivo_id} = {...req.query, ...req.body};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {ruta} = comp.reqBasePathUrl(req);
@@ -88,8 +98,12 @@ module.exports = {
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
+		// Comentario
+		let comentario = req.body && req.body.comentario ? req.body.comentario : "";
+		if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id};
+		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
@@ -102,7 +116,7 @@ module.exports = {
 		// Obtiene los campos include
 		let includesOrig;
 		if (!excluirInclude) {
-			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro", "motivo"];
+			includesOrig = [...includesEdic, "creadoPor", "altaRevisadaPor", "statusSugeridoPor", "statusRegistro"];
 			if (entidad == "capitulos") includesOrig.push("coleccion");
 			if (entidad == "colecciones") includesOrig.push("capitulos");
 			if (familia == "rclv") includesOrig.push("prodsEdiciones", ...variables.entidades.prods);
@@ -695,8 +709,12 @@ module.exports = {
 
 			// Si el registro está inactivo, le agrega el motivo
 			if (registro.statusRegistro_id == inactivo_id) {
-				const comentario = await FN.comentarioBR(registro);
-				resultado.push({comentario});
+				const {entidad, id: entidad_id} = registro;
+				const histStatus = await baseDeDatos.obtieneElUltimo("histStatus", {entidad, entidad_id}, "statusFinalEn");
+				if (histStatus) {
+					const motivoDetalle = motivosStatus.find((n) => n.id == histStatus.motivo_id);
+					resultado.push({motivoDetalle});
+				}
 			}
 
 			// Fin
@@ -801,8 +819,10 @@ let FN = {
 				? "/revision/" + familia + "/alta" + cola
 				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
 				? "/revision/" + familia + "/edicion" + cola
-				: [inactivar_id, recuperar_id].includes(registro.statusRegistro_id)
-				? "/revision/" + familia + "/inactivar-o-recuperar" + cola
+				: registro.statusRegistro_id == inactivar_id
+				? "/revision/" + familia + "/inactivar" + cola
+				: registro.statusRegistro_id == recuperar_id
+				? "/revision/" + familia + "/recuperar" + cola
 				: "";
 
 		// Fin
@@ -826,30 +846,5 @@ let FN = {
 
 		// Fin
 		return resultados;
-	},
-	comentarioBR: async (registro) => {
-		// Variables
-		const {entidad, id: entidad_id} = registro;
-		let comentario;
-
-		// Actualiza el comentario - histStatus
-		if (registro.motivo.agregarComent) {
-			const condicion = {
-				entidad,
-				entidad_id,
-				statusFinal_id: [inactivar_id, inactivo_id],
-				comentario: {[Op.ne]: null},
-			};
-			let histStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condicion);
-			if (histStatus.length > 1)
-				histStatus.sort((a, b) => (a.statusFinalEn < b.statusFinalEn ? -1 : a.statusFinalEn > b.statusFinalEn ? 1 : 0));
-			if (histStatus.length) comentario = histStatus.slice(-1)[0].comentario;
-		}
-
-		// Actualiza el comentario - motivo
-		if (!comentario) comentario = registro.motivo.descripcion;
-
-		// Fin
-		return comentario;
 	},
 };
