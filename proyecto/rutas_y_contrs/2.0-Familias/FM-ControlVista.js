@@ -185,7 +185,7 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
 			const titulo = "Cambiar el Motivo";
-			const {entidad, id} = req.query;
+			const {entidad, id, origen} = req.query;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// Obtiene los registros
@@ -201,7 +201,7 @@ module.exports = {
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo},
+				...{tema, codigo, titulo, origen},
 				...{familia, entidad, id, registro: regEnt, motivo, ultHist, imgDerPers},
 				...{entidades,entsNombre, motivos},
 				cartelGenerico: true,
