@@ -21,12 +21,11 @@ Eliminar campo 'DM' del statusHistorial
     - Dos columnas:
         - Izquierda: actual del historial
         - Derecha: select con los motivos posibles
-    - Post
-        - Se actualiza en el regEnt y en el último registro de 'statusHistorial'
-            - motivo
-            - usuario
-            - fecha
-            - si corresponde, el comentario
+    - Post: se actualiza en el regEnt y en el último registro de 'statusHistorial'
+        - motivo
+        - usuario
+        - fecha
+        - si corresponde, el comentario
 
 Detalle
 - Ícono a la derecha:
