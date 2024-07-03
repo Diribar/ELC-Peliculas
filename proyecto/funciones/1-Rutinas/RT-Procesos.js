@@ -620,7 +620,13 @@ module.exports = {
 				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
 
 				// Valida el status
-				if (ultHist.statusFinal_id != prodRclv.statusRegistro_id) regsAgregar.push({...datos, SD: true});
+				if (
+					ultHist.statusFinal_id != prodRclv.statusRegistro_id && // status distinto
+					(ultHist.statusFinal_id != creadoAprob_id || prodRclv.statusRegistro_id != aprobado_id) // descarta que la diferencia se deba a que se completó la revisión de la edición
+				)
+					regsAgregar.push({...datos, SD: true});
+				else if (ultHist.statusFinal_id == inactivar_id) regsAgregar.push({...datos, IN: true});
+				else if (ultHist.statusFinal_id == recuperar_id) regsAgregar.push({...datos, RC: true});
 			}
 
 			// Fin
@@ -646,19 +652,10 @@ module.exports = {
 					const {entidad, id, statusSugeridoEn: fechaRef} = regEnt;
 					const nombre = comp.nombresPosibles(regEnt);
 					const datos = {entidad, entidad_id: id, nombre, fechaRef};
-					const regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
 
-					// Acciones si se encuentra en el historial
-					if (regHist) {
-						// Si el registro ya está en la tabla de errores, saltea la rutina
-						if (errores.find((n) => n.entidad == entidad && n.entidad_id == id)) continue;
-						// status distinto - tanto los que difieren como los que no están en el 'statusHistorial'
-						else if (regEnt.statusRegistro_id != regHist.statusFinal_id) regsAgregar.push({...datos, SD: true});
-						// status distinto a 'inactivo'
-						else if (ST != "IO") regsAgregar.push({...datos, [ST]: true});
-					}
-					// Si no lo encuentra, lo agrega a status
-					else regsAgregar.push({...datos, SD: true});
+					// Si no lo encuentra en el historial, lo agrega a status
+					const regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
+					if (!regHist) regsAgregar.push({...datos, SD: true});
 				}
 			}
 

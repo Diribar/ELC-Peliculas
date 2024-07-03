@@ -1,11 +1,3 @@
-1. Detectar errores
-- Cruce de historial con regEnt:
-    - Debe coincidir el status entre el último registro del historial y el regEnt. Si no coincide, se lo agrega como error DS
-    - Si coincide y es 'inactivar', se lo agrega como IN
-    - Si coincide y es 'recuperar', se lo agrega como RC
-- Cruce de regEnt con historial:
-    - Si está en un status > aprobado_id y no existe en el historial, se lo agrega como error DS
-
 2. Tablero --> Error DS:
     - Si se aprueba el del producto:
         - Elimina el historial
