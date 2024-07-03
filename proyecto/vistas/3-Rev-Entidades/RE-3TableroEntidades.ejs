@@ -7,7 +7,7 @@
 <section id="familias">
 	<div id="primeraColumna" class="columna">
 		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
-		<% if (revisorPERL && (prodsRclvs.CM.length || prodsRclvs.CS.length)) { %>
+		<% if (revisorPERL && (prodsRclvs.MD.length || prodsRclvs.SD.length)) { %>
 			<!-- PRODUCTOS Y RCLVS -->
 			<div class="bloques">
 				<!-- Título y ayuda -->
@@ -21,8 +21,8 @@
 				<div class="temas">
 					<% const cr = "correccion/" %>
 					<% DE = dataEntry[familias] %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Motivos c/difs", regs: prodsRclvs.CM, url: cr + "motivo", mostrarOrigen: true}) %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.CS, url: cr + "status", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Motivos c/difs", regs: prodsRclvs.MD, url: cr + "motivo", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.SD, url: cr + "status", mostrarOrigen: true}) %>
 				</div>
 			</div>
 		<% } %>
@@ -42,8 +42,8 @@
 				<% const rp = "revision/producto/" %>
 				<% DE = dataEntry[familias] %>
 				<% if (revisorPERL) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prods.IN, url: rp + "inactivar"}) %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prods.RC, url: rp + "recuperar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prodsRclvs.IN, url: rp + "inactivar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prodsRclvs.RC, url: rp + "recuperar"}) %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
 				<% } %>
 				<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt, mostrarOrigen: true}) %>
