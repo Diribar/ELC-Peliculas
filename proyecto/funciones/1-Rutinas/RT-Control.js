@@ -628,16 +628,16 @@ module.exports = {
 		},
 		revisaStatus: async () => {
 			// Variables
-			const ultsHist = await procesos.revisaStatusMotivo.ultsRegsHistStatus();
+			const ultsHist = await procesos.revisaStatus.ultsRegsHistStatus();
 
 			// Elimina todos los registros de la tabla 'statusErrores'
 			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
 
 			// Historial vs registro de la entidad
-			const histRegEnt = await procesos.revisaStatusMotivo.historialVsRegEnt(ultsHist);
+			const histRegEnt = await procesos.revisaStatus.historialVsRegEnt(ultsHist);
 
 			// Registro de la entidad vs historial
-			const regEntHist = await procesos.revisaStatusMotivo.regEntVsHistorial(ultsHist, histRegEnt);
+			const regEntHist = await procesos.revisaStatus.regEntVsHistorial(ultsHist, histRegEnt);
 
 			// Consolida
 			const regsAgregar = [...histRegEnt, ...regEntHist];

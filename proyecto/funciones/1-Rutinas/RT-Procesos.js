@@ -584,7 +584,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	revisaStatusMotivo: {
+	revisaStatus: {
 		ultsRegsHistStatus: async () => {
 			// Variables
 			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};
@@ -592,12 +592,7 @@ module.exports = {
 			// Obtiene el último registro de status de cada producto
 			let statusHistorial = [];
 			await baseDeDatos
-				.obtieneTodosPorCondicion("statusHistorial", condicion, ["statusFinal", "motivo"])
-				.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
-				.then((n) => n.sort((a, b) => a.id - b.id))
-				.then((n) =>
-					n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0))
-				)
+				.obtieneTodosPorCondicion("statusHistorial", condicion, "statusFinal")
 				.then((n) =>
 					n.map((m) =>
 						!statusHistorial.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
@@ -609,27 +604,29 @@ module.exports = {
 			// Fin
 			return statusHistorial;
 		},
-		historialContraRegEnt: async (ultsHist) => {
+		historialVsRegEnt: async (ultsHist) => {
 			// Variables
 			let regsAgregar = [];
 			if (!ultsHist.length) return regsAgregar;
 
-			// Historial vs Registro de la Entidad
+			// Rutina
 			for (let ultHist of ultsHist) {
 				// Obtiene el prodRclv del historial
 				const {entidad, entidad_id, statusFinalEn} = ultHist;
-				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, "statusRegistro");
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
+
+				// Obtiene los datos del prodRclv
 				const nombre = comp.nombresPosibles(prodRclv);
 				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
 
 				// Valida el status
-				ultHist.statusFinal_id != prodRclv.statusRegistro_id ? regsAgregar.push({...datos, SD: true}) : null;
+				if (ultHist.statusFinal_id != prodRclv.statusRegistro_id) regsAgregar.push({...datos, SD: true});
 			}
 
 			// Fin
 			return regsAgregar;
 		},
-		regEntContraHistorial: async (ultsHist, errores) => {
+		regEntVsHistorial: async (ultsHist, errores) => {
 			// Variables
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
 			let regsAgregar = [];
@@ -655,9 +652,7 @@ module.exports = {
 					if (regHist) {
 						// Si el registro ya está en la tabla de errores, saltea la rutina
 						if (errores.find((n) => n.entidad == entidad && n.entidad_id == id)) continue;
-						// motivo distinto
-						else if (regEnt.motivo_id != regHist.motivo_id) regsAgregar.push({...datos, MD: true});
-						// status distinto
+						// status distinto - tanto los que difieren como los que no están en el 'statusHistorial'
 						else if (regEnt.statusRegistro_id != regHist.statusFinal_id) regsAgregar.push({...datos, SD: true});
 						// status distinto a 'inactivo'
 						else if (ST != "IO") regsAgregar.push({...datos, [ST]: true});
