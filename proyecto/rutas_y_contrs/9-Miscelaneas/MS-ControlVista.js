@@ -4,18 +4,17 @@ const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	statusForm: (req, res) => {},
-	cambioDeMotivo: {
+	correccionDeMotivo: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "correccion";
-			const codigo = "motivo";
+			const codigo = "cambioMotivo";
 			const titulo = "Corrección de Motivo";
 			const {entidad, id, origen} = req.query;
 
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivo = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
 			// Datos para la vista
 			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
@@ -26,7 +25,7 @@ module.exports = {
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
-				...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
+				...{registro: regEnt, motivo, ultHist, origen},
 				cartelGenerico: true,
 			});
 		},
@@ -195,7 +194,7 @@ module.exports = {
 };
 let obtieneRegs = async ({entidad, id}) => {
 	// Obtiene el motivo del producto
-	let include = ["motivo"];
+	let include = [];
 	if (entidad == "capitulos") include.push("coleccion");
 	if (entidad == "colecciones") include.push("capitulos");
 	const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
