@@ -1,4 +1,4 @@
-3. Cambio de motivo
+3. Detalle --> ícono historial --> Cambio de motivo
     - Sólo se permite para regEnt 'inactivos' y sin error de status
     - Dos columnas:
         - Izquierda: actual del historial
