@@ -185,14 +185,11 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
 			const titulo = "Cambiar el Motivo";
-			const {entidad, id, origen} = req.query;
+			const {entidad, id, origen, regEnt, ultHist} = {...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
-			// Obtiene los registros
-			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-			const motivo = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
-
 			// Datos para la vista
+			const motivo = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
 			const entidades = variables.entidades[petitFamilias];
 			const entsNombre = variables.entidades[petitFamilias + "Nombre"];
@@ -203,50 +200,20 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen},
 				...{familia, entidad, id, registro: regEnt, motivo, ultHist, imgDerPers},
-				...{entidades,entsNombre, motivos},
+				...{entidades, entsNombre, motivos},
 				cartelGenerico: true,
 			});
 		},
-		guardar: async (req, res) => {
+		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, respuesta} = req.query;
+			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
-			// Obtiene los registros
-			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
-
-			// Acciones si se aprobó el motivo del regEnt
-			if (respuesta == "registro") {
-			}
-			// Acciones si se aprobó el motivo del historial
-			else if (respuesta == "historial") {
-				const motivo_id = motivoHist.id;
-				await baseDeDatos.actualizaPorId(entidad, id, {motivo_id});
-			}
+			// Actualiza el motivo en el último registro del historial
+			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Fin
-			return res.redirect("/revision/tablero-de-entidades");
+			return res.redirect("/" + familia + "/historial");
 		},
 	},
-
-};
-let obtieneRegs = async ({entidad, id}) => {
-	// Obtiene el motivo del producto
-	let include = [];
-	if (entidad == "capitulos") include.push("coleccion");
-	if (entidad == "colecciones") include.push("capitulos");
-	const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
-
-	// Obtiene el motivo del historial
-	const condicion = {
-		entidad,
-		entidad_id: id,
-		[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-	};
-
-	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
-
-	// Fin
-	return {regEnt, ultHist};
 };

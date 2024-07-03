@@ -111,9 +111,7 @@ module.exports = {
 				? "prods"
 				: "";
 		},
-		entidadNombre: (entidad) => {
-			return FN.entidadNombre(entidad);
-		},
+		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		delLa: (entidad) => {
 			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
 				? " de la "

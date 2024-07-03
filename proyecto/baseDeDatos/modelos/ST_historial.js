@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		entidad_id: {type: dt.INTEGER},
 
 		motivo_id: {type: dt.INTEGER},
-		comentario: {type: dt.STRING(150)},
+		comentario: {type: dt.STRING(largoComentario)},
 		penalizac: {type: dt.DECIMAL},
 
 		statusOriginal_id: {type: dt.INTEGER},
