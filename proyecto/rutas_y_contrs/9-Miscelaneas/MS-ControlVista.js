@@ -3,8 +3,9 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	correccion: {
-		motivoForm: async (req, res) => {
+	statusForm: (req, res) => {},
+	cambioDeMotivo: {
+		form: async (req, res) => {
 			// Variables
 			const tema = "correccion";
 			const codigo = "motivo";
@@ -29,13 +30,13 @@ module.exports = {
 				cartelGenerico: true,
 			});
 		},
-		statusForm: (req, res) => {},
-		motivoGuardar: async (req, res) => {
+		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, respuesta} = req.query;
 
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
+
 			const {motivo: motivoReg} = regEnt;
 			const motivoHist = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
@@ -52,7 +53,6 @@ module.exports = {
 			return res.redirect("/revision/tablero-de-entidades");
 		},
 	},
-
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
