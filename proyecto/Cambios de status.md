@@ -20,14 +20,24 @@ Eliminar campo 'DM' del statusHistorial
         - fecha
         - si corresponde, el comentario
 
-Error DS:
-    - Si se aprueba el del producto:
-        - Elimina el historial
-        - Si está en status mayor a aprobado,
-            - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
-            - Luego, quedará en manos del usuario seguir avanzando
-    - Si se aprueba el del historial, actualiza el status del producto
-    - En ambos casos, se actualiza la tabla de 'statusErrores'
+3. Error DS
+    - HTML:
+        - Columna 1: Status del registro
+        - Columna 2: Historial
+            - Se muestra el motivo
+            - Si existe un comentario, se muestra
+            - Oculta el motivo si se repite con el anterior
+            - Oculta el comentario, si se repite con el anterior
+            - Ícono cambio de motivo
+        - Columna 3: oculta (comentario)
+    - Post:
+        - Si se aprueba el del producto:
+            - Elimina el historial
+            - Si está en status mayor a aprobado,
+                - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
+                - Luego, quedará en manos del usuario seguir avanzando
+        - Si se aprueba el del historial, actualiza el status del producto
+        - En ambos casos, se actualiza la tabla de 'statusErrores'
 
 Detalle
 - Ícono a la derecha:
@@ -44,13 +54,6 @@ Detalle
     - Motivo:
         - sólo si está inactivo, el del historial
         - Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
-
-Historial
-- Se muestra el motivo
-- Si existe un comentario, se muestra
-- Oculta el motivo si se repite con el anterior
-- Oculta el comentario, si se repite con el anterior
-- Ícono cambio de motivo
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
