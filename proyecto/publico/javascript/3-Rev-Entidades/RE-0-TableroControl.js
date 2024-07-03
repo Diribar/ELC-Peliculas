@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		tituloRegs: document.querySelectorAll(".bloques .temas h3"),
-		bloqueRegs: document.querySelectorAll(".bloques .temas .bloqueRegs"),
+		registros: document.querySelectorAll(".bloques .temas .registros"),
 	};
 	const actualizaVisibles = "/revision/api/actualiza-visibles/?datos=";
 	const circuito = location.pathname.split("tablero-de-")[1];
@@ -18,14 +18,14 @@ window.addEventListener("load", async () => {
 		tituloReg.addEventListener("click", () => {
 			// Genera los datos a exportar
 			const [familias, titulo] = clave.split("_");
-			const desplegar = DOM.bloqueRegs[i].className.includes("ocultar"); // si están ocultos, se deben desplegar
+			const desplegar = DOM.registros[i].className.includes("ocultar"); // si están ocultos, se deben desplegar
 			const datos = {circuito, familias, titulo, desplegar};
 
 			// Exporta los datos
 			fetch(actualizaVisibles + JSON.stringify(datos));
 
-			// Muestra u oculta el bloque de registros
-			DOM.bloqueRegs[i].classList.toggle("ocultar");
+			// Muestra u oculta los registros
+			DOM.registros[i].classList.toggle("ocultar");
 		});
 	});
 });

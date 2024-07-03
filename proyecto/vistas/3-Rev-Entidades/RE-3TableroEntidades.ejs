@@ -5,7 +5,7 @@
 <!-- Datos -->
 <% let familias, DE %>
 <section id="familias">
-	<div id="primeraColumna">
+	<div id="primeraColumna" class="columna">
 		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
 		<% if (revisorPERL && (prodsRclvs.CM.length || prodsRclvs.CS.length)) { %>
 			<!-- PRODUCTOS Y RCLVS -->
@@ -33,7 +33,7 @@
 			<div class="tituloSecundario">
 				<!-- Título -->
 				<h2><%= familias.toUpperCase() %></h2>
-				<%- include("MN-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de audiovisual", "Nombre del audiovisual", "Año de lanzamiento"]}) %>
+				<%- include("MN-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de producto", "Nombre del producto", "Año de lanzamiento"]}) %>
 			</div>
 			<!-- Registros -->
 			<div class="temas">
@@ -57,7 +57,7 @@
 		</div>
 	</div>
 	<% if (usuario.rolUsuario.revisorEnts) { %>
-		<div id="segundaColumna">
+		<div id="segundaColumna" class="columna">
 			<% if (revisorPERL) { %>
 				<!-- RCLVs -->
 				<div class="bloques" id="rclv">
