@@ -3,33 +3,54 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	corregir: {
+	correccion: {
 		motivoForm: async (req, res) => {
 			// Variables
 			const tema = "correccion";
 			const codigo = "motivo";
 			const titulo = "Corrección de Motivo";
-			const {entidad, id} = req.query;
+			const {entidad, id, origen} = req.query;
+
+			// Obtiene los registros
+			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
+			const {motivo: motivoReg} = regEnt;
+			const motivoHist = ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
+
+			// Datos para la vista
+			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-
-			// Obtiene el motivo del producto
-			const regEntidad = await baseDeDatos.obtienePorId(entidad, id, "motivo");
-			const {motivo: motivoProd} = regEntidad;
-			const imgDerPers = procsFM.obtieneAvatar(regEntidad).orig;
-
-			// Obtiene el motivo del historial
-			const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
-			const ultimoHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
-			const motivoHist = ultimoHist.motivo_id ? motivosStatus.find((n) => n.id == ultimoHist.motivo_id) : null;
+			const cola = "&respuesta=";
+			const urlActual = req.session.urlActual;
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, familia, entidad, id},
-				...{registro: regEntidad, motivoProd, motivoHist, imgDerPers},
+				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
+				...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
 				cartelGenerico: true,
 			});
 		},
 		statusForm: (req, res) => {},
+		motivoGuardar: async (req, res) => {
+			// Variables
+			const {entidad, id, respuesta} = req.query;
+
+			// Obtiene los registros
+			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
+			const {motivo: motivoReg} = regEnt;
+			const motivoHist = ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
+
+			// Acciones si se aprobó el motivo del regEnt
+			if (respuesta == "registro") {
+			}
+			// Acciones si se aprobó el motivo del historial
+			else if (respuesta == "historial") {
+				const motivo_id = motivoHist.id;
+				await baseDeDatos.actualizaPorId(entidad, id, {motivo_id});
+			}
+
+			// Fin
+			return res.redirect("/revision/tablero-de-entidades");
+		},
 	},
 
 	// Redirecciona después de inactivar una captura
@@ -171,4 +192,15 @@ module.exports = {
 			return res.send({TR, GR, CC});
 		},
 	},
+};
+let obtieneRegs = async () => {
+	// Obtiene el motivo del producto
+	const regEnt = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+
+	// Obtiene el motivo del historial
+	const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
+	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
+
+	// Fin
+	return {regEnt, ultHist};
 };

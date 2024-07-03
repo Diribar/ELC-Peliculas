@@ -13,8 +13,8 @@ router.get("/api/horario-inicial/", API.horarioInicial);
 router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
 // Correcciones
-router.get("/corregir/motivo", vista.corregir.motivoForm);
-router.get("/corregir/status", vista.corregir.statusForm);
+router.get("/correccion/motivo", vista.correccion.motivoForm);
+router.get("/correccion/status", vista.correccion.statusForm);
 
 // Redireciona
 router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);

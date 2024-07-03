@@ -732,11 +732,11 @@ let nombres = async (reg, familia) => {
 	// Fórmulas
 	if (reg.entidad != "links") {
 		// Obtiene el registro
-		const regEntidad = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
-		if (!regEntidad) return {};
+		const regEnt = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
+		if (!regEnt) return {};
 
 		// Obtiene los nombres
-		nombre = comp.nombresPosibles(regEntidad);
+		nombre = comp.nombresPosibles(regEnt);
 		anchor =
 			"<a href='" +
 			urlHost +
@@ -752,18 +752,18 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEntidad = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
-		if (!regEntidad.id) return {};
+		const regEnt = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
+		if (!regEnt.id) return {};
 
 		// Obtiene el nombre
-		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEntidad);
-		nombre = comp.nombresPosibles(regEntidad[asocProd]);
+		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEnt);
+		nombre = comp.nombresPosibles(regEnt[asocProd]);
 
 		// Obtiene el anchor
-		regEntidad.href = regEntidad.prov.embededPoner
-			? urlHost + "/links/visualizacion/?link_id=" + regEntidad.id
-			: "//" + regEntidad.url;
-		anchor = "<a href='" + regEntidad.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
+		regEnt.href = regEnt.prov.embededPoner
+			? urlHost + "/links/visualizacion/?link_id=" + regEnt.id
+			: "//" + regEnt.url;
+		anchor = "<a href='" + regEnt.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 	}
 
 	// Fin

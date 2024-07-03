@@ -61,7 +61,7 @@
 						<img id="logoFA" src="/publico/imagenes/Logos/BD-FA.jpg" alt="FA">
 					</label>
 					<% const cola = (!urlActual.includes("/?") ? "/?" : "&") + "ingreso_fa=true" %>
-					<input id="inputSubmit" type="submit" class="submit" formaction="<%= urlActual + cola %>" formmethod="post" >
+					<input id="inputSubmit" type="submit" class="submit" formaction="<%= urlActual + cola %>" formmethod="post">
 				<% } %>
 			</div>
 		</section>
