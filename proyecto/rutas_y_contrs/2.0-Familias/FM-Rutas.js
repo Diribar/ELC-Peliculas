@@ -18,6 +18,7 @@ const creadoPorUsuario = require("../../middlewares/filtrosPorRegistro/creadoPor
 const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const comentNecesario = require("../../middlewares/filtrosPorRegistro/comentNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
+const mismoStatus = require("../../middlewares/filtrosPorRegistro/mismoStatus");
 
 // Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
@@ -30,7 +31,7 @@ const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
-const cambioMotivo = [entValida, IDvalido, statusCorrecto, aptoUsuario, permUserReg, usRolRevPERL];
+const cambioMotivo = [entValida, IDvalido, statusCorrecto, mismoStatus, aptoUsuario, permUserReg, usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
@@ -62,7 +63,8 @@ router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.histo
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 
 // Vistas - Correcciones
-router.get("/correccion/cambiar-motivo", cambioMotivo, vista.correcciones.motivoForm);
+router.get("/correccion/cambiar-motivo", cambioMotivo, capturaActivar, vista.correcciones.motivoForm);
+router.post("/correccion/cambiar-motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
 
 // Fin
 module.exports = router;

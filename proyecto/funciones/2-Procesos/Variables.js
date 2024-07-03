@@ -404,7 +404,7 @@ module.exports = {
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
-	vistaAnterior: (url) => ({nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"}),
+	vistaAnterior: (url) => ({nombre: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
 	vistaSiguiente: (url) => ({nombre: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
 	vistaInactivar: (req) => {

@@ -361,6 +361,32 @@ module.exports = {
 			return historialStatus;
 		},
 	},
+	cambioMotivo: {
+		regEnt: async ({entidad, id}) => {
+			// Obtiene el motivo del producto
+			let include = [];
+			if (entidad == "capitulos") include.push("coleccion");
+			if (entidad == "colecciones") include.push("capitulos");
+			const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
+
+			// Fin
+			return regEnt;
+		},
+		ultHist: async ({entidad, id}) => {
+			// Obtiene el motivo del historial
+			const condicion = {
+				entidad,
+				entidad_id: id,
+				[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+			};
+
+			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+
+			// Fin
+			return ultHist;
+		},
+	},
+
 	grupos: {
 		pers: (camposDA) => {
 			// Variables
