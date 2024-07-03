@@ -6,7 +6,7 @@
 			<!-- Cuerpo -->
 			<div id="cuerpo">
 				<% if (!locals.tema) { %>
-				<% } else if (["prodRud", "rclvCrud", "fmCrud"].includes(tema)) { %><%- include("FM-Detalle") %>
+				<% } else if (["prodRud", "rclvCrud", "fmCrud", "correccion"].includes(tema)) { %><%- include("FM-Detalle") %>
 				<% } else if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 				<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
 				<% } else if (tema == "linksCRUD") { %><%- include("LK-2Cuerpo") %>

@@ -18,8 +18,8 @@ module.exports = {
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = this.codigo({ruta, familia});
 
-		// Comentario para 'revisarInactivar'
-		if (codigo == "revisarInactivar") {
+		// Comentario para 'revisionInactivar'
+		if (codigo == "revisionInactivar") {
 			const ultimoRegHist = await baseDeDatos.obtienePorCondicionElUltimo(
 				"histStatus",
 				{entidad, entidad_id: id},
@@ -69,10 +69,11 @@ module.exports = {
 		let codigo = ruta.replaceAll("/", "");
 
 		// Pule el código
-		if (codigo.includes(familia)) {
-			codigo = codigo.replace(familia, "");
-			codigo = "revisar" + comp.letras.inicialMayus(codigo);
-		}
+		const esRevision = codigo.includes(familia);
+		codigo = codigo.replace(familia, "");
+
+		// Actualiza el código
+		if (esRevision && ["inactivar", "recuperar"].includes(codigo)) codigo = "revision" + comp.letras.inicialMayus(codigo);
 
 		// Fin
 		return codigo;
@@ -84,8 +85,8 @@ module.exports = {
 			rechazar: "Rechazar",
 			recuperar: "Recuperar",
 			eliminar: "Eliminar",
-			revisarInactivar: "Revisión de Inactivar",
-			revisarRecuperar: "Revisión de Recuperar",
+			revisionInactivar: "Revisión de Inactivar",
+			revisionRecuperar: "Revisión de Recuperar",
 		};
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 

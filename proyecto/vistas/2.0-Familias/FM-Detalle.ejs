@@ -22,7 +22,11 @@
 			<% } %>
 		</div>
 	</div>
-	<div id="datosBreves" class="toggle">
-		<%- include("FM-Breves") %>
-	</div>
+	<% if (locals.datosBreves) { %>
+		<div id="datosBreves" class="toggle">
+			<div id="recuadroDB" class="sectorConDesplV bordeConSombra aparece">
+				<%- include("FM-Breves") %>
+			</div>
+		</div>
+	<% } %>
 </section>

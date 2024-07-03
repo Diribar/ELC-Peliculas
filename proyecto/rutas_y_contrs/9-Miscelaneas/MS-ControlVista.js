@@ -1,8 +1,38 @@
 "use strict";
+// Variables
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
-// *********** Controlador ***********
 module.exports = {
-	// Redireccionar después de inactivar una captura
+	corregir: {
+		motivoForm: async (req, res) => {
+			// Variables
+			const tema = "correccion";
+			const codigo = "motivo";
+			const titulo = "Corrección de Motivo";
+			const {entidad, id} = req.query;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+			// Obtiene el motivo del producto
+			const regEntidad = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+			const {motivo: motivoProd} = regEntidad;
+			const imgDerPers = procsFM.obtieneAvatar(regEntidad).orig;
+
+			// Obtiene el motivo del historial
+			const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
+			const ultimoHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
+			const motivoHist = ultimoHist.motivo_id ? motivosStatus.find((n) => n.id == ultimoHist.motivo_id) : null;
+
+			// Envía la info a la vista
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo, titulo, familia, entidad, id},
+				...{registro: regEntidad, motivoProd, motivoHist, imgDerPers},
+				cartelGenerico: true,
+			});
+		},
+		statusForm: (req, res) => {},
+	},
+
+	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
 			// Variables
@@ -90,7 +120,8 @@ module.exports = {
 			let resultado = {};
 
 			// Lectura
-			await baseDeDatos.obtieneTodosPorCondicion(rclv, condicion, include)
+			await baseDeDatos
+				.obtieneTodosPorCondicion(rclv, condicion, include)
 				.then((n) =>
 					n.map((m) => {
 						rclvs[m.nombre] = 0;
@@ -118,9 +149,7 @@ module.exports = {
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
 				productos.push(
-					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) =>
-						n.filter((m) => m.links.length > 1)
-					))
+					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) => n.filter((m) => m.links.length > 1)))
 				);
 
 			// Separa entre links TR, GR y CC

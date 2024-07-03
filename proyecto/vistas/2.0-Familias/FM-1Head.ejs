@@ -1,16 +1,21 @@
 <% if (tema == "responsabilidad") { %>
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM9-Responsab.css">
 
-<% } else if (tema == "fmCrud") { %>
-	<!-- Inactivar, Recuperar, Rechazar, Eliminar -->
+<% } else if (["fmCrud", "correccion"].includes(tema)) { %>
+	<!-- fmCrud: Inactivar, Recuperar, Rechazar, Eliminar -->
 
 	<!-- Compartido -->
-	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
-	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-1-Encabezado.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
-	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
+	<% if (tema == "fmCrud") { %>
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
+	<% } %>
+	<% if (tema == "correccion") { %>
+		<link rel="stylesheet" href="/publico/formatos/9-Miscelaneas/Corregir.css">
+	<% } %>
 
 	<% if (codigo == "inactivar") { %>
 		<!-- Inactivar -->
@@ -25,3 +30,4 @@
 		<% } %>
 	<% } %>
 <% } %>
+<% console.log(28) %>

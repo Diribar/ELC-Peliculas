@@ -584,6 +584,24 @@ module.exports = {
 		// Fin
 		return;
 	},
+	ultRegHistStatus: async () => {
+		// Obtiene el último registro de status de cada producto
+		let histStatus = [];
+		await baseDeDatos
+			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
+			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
+			.then((n) => n.sort((a, b) => a.id - b.id))
+			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
+			.then((n) =>
+				n.map((m) =>
+					!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id) ? histStatus.push(m) : null
+				)
+			); // retiene sólo el último de cada producto
+
+		// Fin
+		return histStatus;
+	},
+	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
 };
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
