@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(35)},
+		fechaRef: {type: dt.DATE},
 
 		// Anomalía
 		MD: {type: dt.BOOLEAN},
