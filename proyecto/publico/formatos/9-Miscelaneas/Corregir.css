@@ -6,11 +6,11 @@
 			.columna {
 				display: flex; flex-direction: column;
 				width: 240px;
-				h3 {
+				h2 {
 					padding: 5px 10px; align-self: center; border-radius: 15px;
 					background: var(--azul-oscuro); color: var(--gris-claro);
 				}
-				h4 {margin-top: 10px; margin-bottom: 3px;}
+				h3 {margin-top: 10px; margin-bottom: 3px;}
 			}
 
 			#actual #motivo {font-style: italic;}
