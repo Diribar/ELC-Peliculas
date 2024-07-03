@@ -3,8 +3,9 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	correccion: {
-		motivoForm: async (req, res) => {
+	statusForm: (req, res) => {},
+	cambioDeMotivo: {
+		form: async (req, res) => {
 			// Variables
 			const tema = "correccion";
 			const codigo = "motivo";
@@ -29,8 +30,7 @@ module.exports = {
 				cartelGenerico: true,
 			});
 		},
-		statusForm: (req, res) => {},
-		motivoGuardar: async (req, res) => {
+		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, respuesta} = req.query;
 
