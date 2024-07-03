@@ -28,8 +28,11 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Si correspondía un comentario y no se completó, redirige
-	if (!mensajes && motivo.comentNeces && !comentario) mensajes = ["Necesitamos que nos des un comentario"];
-	if (!mensajes && !motivo.comentNeces && comentario) delete req.body.comentario
+	if (!mensajes && motivo.comentNeces) {
+		if (!comentario) mensajes = ["Necesitamos que nos des un comentario"];
+		if (!mensajes && comentario.length > largoComentario) ["Necesitamos un comentario más corto"];
+	}
+	if (!mensajes && !motivo.comentNeces) delete req.body.comentario;
 
 	// Conclusiones
 	if (mensajes) return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: [variables.vistaEntendido(link)]}});

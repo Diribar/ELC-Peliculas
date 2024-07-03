@@ -206,11 +206,11 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, ultHist} = {...req.query, ...req.body};
+			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Actualiza el motivo en el último registro del historial
-			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id});
+			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Fin
 			return res.redirect("/" + familia + "/historial");
