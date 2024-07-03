@@ -8,7 +8,6 @@ module.exports = (sequelize, dt) => {
 		fechaRef: {type: dt.DATE},
 
 		// Anomalía
-		MD: {type: dt.BOOLEAN},
 		SD: {type: dt.BOOLEAN},
 		IN: {type: dt.BOOLEAN},
 		RC: {type: dt.BOOLEAN},
