@@ -4,9 +4,9 @@
 		#encabezado #colCap button {background-color: inherit; border: none;}
 		#contenido #informacion {
 			#motivos {
-				align-items: flex-start; width: 240px;
+				align-items: flex-start; width: 250px;
 				select, input {border-radius: 7px;}
-				& > select {max-width: 100%;}
+				& > select {width: 100%;}
 				h3 {margin-bottom: 3px;}
 				#sectorDuplicado {
 					margin-top: 15px;
@@ -17,6 +17,7 @@
 					}
 					#resultadoDuplicado {margin-top: 5px; max-width: 100%; flex-wrap: wrap;}
 				}
+				#comentario {margin-top: 10px; width: 100%;}
 			}
 		}
 	}
