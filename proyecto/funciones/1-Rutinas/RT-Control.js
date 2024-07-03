@@ -29,7 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		await this.rutinasHorarias.revisaStatusMotivo();
+		// await this.rutinasHorarias.revisaStatusMotivo();
 		// await this.rutinasDiarias.revisaStatusMotivo();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 

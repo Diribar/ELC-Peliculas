@@ -618,16 +618,12 @@ module.exports = {
 			for (let ultHist of ultsHist) {
 				// Obtiene el prodRclv del historial
 				const {entidad, entidad_id, statusFinalEn} = ultHist;
-				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, "statusRegistro");
 				const nombre = comp.nombresPosibles(prodRclv);
 				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
 
-				// Valida el motivo y el status
-				ultHist.motivo_id != prodRclv.motivo_id
-					? regsAgregar.push({...datos, MD: true}) // motivo distinto
-					: ultHist.statusFinal_id != prodRclv.statusRegistro_id
-					? regsAgregar.push({...datos, SD: true}) // status distinto
-					: null;
+				// Valida el status
+				ultHist.statusFinal_id != prodRclv.statusRegistro_id ? regsAgregar.push({...datos, SD: true}) : null;
 			}
 
 			// Fin
