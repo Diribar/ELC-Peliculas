@@ -16,7 +16,7 @@
 			p {line-height: 1;}
 			textarea {
 				padding: 10px; border-radius: 8px; resize: none; height: 100px; width: 100%;
-				background: snow; color: var(--gris-mas-oscuro);
+				background: snow;
 			}
 			textarea:read-only {background: var(--gris-intermedio);}
 		}
