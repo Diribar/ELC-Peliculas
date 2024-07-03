@@ -3,7 +3,6 @@
 	#recuadroDL {
 		#encabezado #colCap button {background-color: inherit; border: none;}
 		#contenido #informacion {
-			justify-content: center;
 			#motivos {
 				align-items: flex-start; width: 240px;
 				select, input {border-radius: 7px;}
