@@ -8,6 +8,7 @@
 			:is(#informacion) {color: var(--verde-oscuro);}
 		}
 		#informacion {
+			justify-content: space-between;
 			#comentario {margin-left: 15px; width: 250px;}
 			table {
 				border-spacing: 5px 8px;

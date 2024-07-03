@@ -3,6 +3,7 @@
 	#recuadroDL {
 		#encabezado #colCap button {background-color: inherit; border: none;}
 		#contenido #informacion {
+			justify-content: center;
 			#motivos {
 				display: flex; flex-direction: column; align-items: flex-start; width: 250px;
 				select, input {border-radius: 7px;}
@@ -15,10 +16,7 @@
 					}
 					#resultadoDuplicado {margin-top: 5px; max-width: 100%; flex-wrap: wrap;}
 				}
-				#comentario {
-					width: 100%;
-					h3 {margin-top: 0;}
-				}
+				#comentario {width: 100%;}
 			}
 		}
 	}
