@@ -1,12 +1,3 @@
-2. Tablero --> Error DS:
-    - Si se aprueba el del producto:
-        - Elimina el historial
-        - Si está en status mayor a aprobado,
-            - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
-            - Luego, quedará en manos del usuario seguir avanzando
-    - Si se aprueba el del historial, actualiza el status del producto
-    - En ambos casos, se actualiza la tabla de 'statusErrores'
-
 3. Cambio de motivo
     - Sólo se permite para regEnt 'inactivos' y sin error de status
     - Dos columnas:
@@ -17,6 +8,15 @@
         - usuario
         - fecha
         - si corresponde, el comentario
+
+2. Tablero --> Error DS:
+    - Si se aprueba el del producto:
+        - Elimina el historial
+        - Si está en status mayor a aprobado,
+            - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
+            - Luego, quedará en manos del usuario seguir avanzando
+    - Si se aprueba el del historial, actualiza el status del producto
+    - En ambos casos, se actualiza la tabla de 'statusErrores'
 
 Detalle
 - Ícono a la derecha:
