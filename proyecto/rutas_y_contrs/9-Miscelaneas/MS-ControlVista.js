@@ -4,6 +4,7 @@ const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	statusForm: (req, res) => {},
+
 	correccionDeMotivo: {
 		form: async (req, res) => {
 			// Variables
@@ -11,12 +12,14 @@ module.exports = {
 			const codigo = "cambioMotivo";
 			const titulo = "Corrección de Motivo";
 			const {entidad, id, origen} = req.query;
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
 			const motivo = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
 			// Datos para la vista
+			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
 			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "&respuesta=";
@@ -24,8 +27,8 @@ module.exports = {
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
-				...{registro: regEnt, motivo, ultHist, origen},
+				...{tema, codigo, titulo, urlActual, imgDerPers, cola, origen},
+				...{familia, entidad, id, registro: regEnt, motivo, ultHist, motivos},
 				cartelGenerico: true,
 			});
 		},
