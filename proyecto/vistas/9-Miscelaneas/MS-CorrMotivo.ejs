@@ -3,15 +3,16 @@
 	<div id="historial" class="columna">
 		<div class="flexCol">
 			<h3>Actual</h3>
-			<h4><%- motivoHist ? 'Motivo:' : "Sin motivo" %></h4>
-			<% if (motivoHist) { %>
-				<div class="info"><%= motivoHist.descripcion %></div>
+			<h4><%- motivo ? 'Motivo:' : "Sin motivo" %></h4>
+			<% if (motivo) { %>
+				<div class="info"><%= motivo.descripcion %></div>
 			<% } %>
-			<h4><%- motivoHist && motivoHist.comentNeces ? 'Comentario:' : "Sin comentario" %></h4>
-			<% if (motivoHist && motivoHist.comentNeces) { %>
+			<h4><%- motivo && motivo.comentNeces ? 'Comentario:' : "Sin comentario" %></h4>
+			<% if (motivo && motivo.comentNeces) { %>
 				<div class="info"><%= ultHist.comentario %></div>
 			<% } %>
 		</div>
+	</div>
 	<!-- Nuevo -->
 	<div id="historial" class="columna">
 		<div class="flexCol">
@@ -25,4 +26,5 @@
 			<h4 class="comentario ocultar">Comentario</h4>
 			<textarea name="comentario" class="comentario ocultar"></textarea>
 		</div>
+	</div>
 </section>
