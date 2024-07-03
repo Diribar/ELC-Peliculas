@@ -11,7 +11,7 @@
 
     <!-- AMBOS -->
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE-PR-Edic-Largos") %>
-    <% } else if (["inactivar", "rechazar", "cambioMotivo"].includes(codigo)) { %><%- include("FM-PR-ElegirMotivo") %>
+    <% } else if (["inactivar", "rechazar", "cambiarMotivo"].includes(codigo)) { %><%- include("FM-PR-ElegirMotivo") %>
     <% } else if (["recuperar", "eliminar", "revisionInactivar", "revisionRecuperar"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
 
     <!-- Fin -->
