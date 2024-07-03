@@ -5,12 +5,13 @@
 			padding: 5px 10px; align-self: center; border-radius: 15px;
 			background: var(--azul-oscuro); color: var(--gris-claro);
 		}
+		h3 {margin-bottom: 3px;}
 		&#motivoActual {
 			width: 240px;
 			h3 {margin-top: 10px;}
 			#motivo {font-style: italic;}
 		}
-		h3 {margin-bottom: 3px;}
+		&#motivos > h3 {margin-top: 10px;}
 	}
 
 }
