@@ -7,7 +7,7 @@ Detalle
 - Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
 
 Historial
-- Se muestra el motivo, salvo para 'duplicado' y 'otro'
+- Se muestra el motivo
 - Si existe un comentario, se muestra
 - Oculta el motivo si se repite con el anterior
 - Oculta el comentario, si se repite con el anterior
@@ -15,14 +15,10 @@ Historial
 
 Revisión de Inactivar
 - Form: toma el comentario del movimiento anterior
-- Post:
-    - si se pasa a inactivo, toma el motivo del movimiento anterior
-    - si se pasa a aprobado, no toma nada del movimiento anterior
+- Post: toma el motivo del movimiento anterior
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
 
 Revisión de Recuperar
-- Post:
-    - si se pasa a inactivo, toma el motivo del movimiento anterior
-    - si se pasa a aprobado, no toma nada del movimiento anterior
+- Post: toma el motivo del movimiento anterior
