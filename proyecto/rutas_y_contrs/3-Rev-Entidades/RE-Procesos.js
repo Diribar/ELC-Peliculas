@@ -12,7 +12,7 @@ module.exports = {
 			let respuesta = {};
 
 			// Convierte el array en un objeto
-			for (let ST of ["MD", "SD", "IN", "RC"]) respuesta[ST] = registros.filter((n) => n[ST]);
+			for (let ST of ["SD", "IN", "RC"]) respuesta[ST] = registros.filter((n) => n[ST]);
 
 			// Fin
 			return respuesta;
