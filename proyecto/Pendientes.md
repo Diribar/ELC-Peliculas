@@ -1,9 +1,4 @@
 3. Detalle (ícono historial) --> Historial --> Cambio de motivo
-    - Post: se actualiza en el regEnt y en el último registro de 'statusHistorial'
-        - motivo
-        - usuario
-        - fecha
-        - si corresponde, el comentario
 
 2. Tablero --> Error DS:
     - Si se aprueba el del producto:
