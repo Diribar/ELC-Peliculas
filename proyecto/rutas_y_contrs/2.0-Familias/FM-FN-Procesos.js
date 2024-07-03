@@ -280,7 +280,7 @@ module.exports = {
 			// Variables
 			const {entidad, id: entidad_id, motivo} = prodRclv;
 			const {altaRevisadaEn, altaTermEn} = prodRclv;
-			const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = prodRclv;
+			const {statusSugeridoEn, statusRegistro_id} = prodRclv;
 			const regAct = historialStatus[contador];
 			const statusAct = regAct.statusFinal_id;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
