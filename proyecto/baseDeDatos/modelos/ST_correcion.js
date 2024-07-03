@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(35)},
 	};
 	const config = {
-		tableName: "st_correc_status",
+		tableName: "st_correcion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
