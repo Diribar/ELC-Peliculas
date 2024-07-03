@@ -2,7 +2,7 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	let entidad = req.query.entidad;
+	const entidad = req.query.entidad;
 	let informacion;
 
 	// Verifica los datos
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
 		// Entidad inexistente
 		const familia1 = comp.obtieneDesdeEntidad.familia(entidad);
 		const familia2 = req.baseUrl + req.path;
-		const rutasStd = ["/crud/", familia1];
+		const rutasStd = ["/crud/", familia1, "/correccion/cambiar-motivo/"];
 		const rutasPorFamilia = {
 			producto: [...rutasStd, "/links/"],
 			rclv: [...rutasStd],
