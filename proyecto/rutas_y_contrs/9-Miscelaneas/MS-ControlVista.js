@@ -23,11 +23,6 @@ module.exports = {
 			const urlActual = req.session.urlActual;
 
 			// Envía la info a la vista
-			// return res.send({
-			// 	...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
-			// 	...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
-			// 	cartelGenerico: true,
-			// })
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
 				...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
