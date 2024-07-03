@@ -1,6 +1,3 @@
-Eliminar campo 'motivo_id' del regEnt
-Eliminar campo 'DM' del statusHistorial
-
 1. Detectar errores
 - Cruce de historial con regEnt:
     - Debe coincidir el status entre el último registro del historial y el regEnt. Si no coincide, se lo agrega como error DS
