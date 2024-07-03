@@ -7,12 +7,15 @@ module.exports = {
 	// Tableros
 	tablRevision: {
 		obtieneProdsRclvs: async () => {
-			let CM = baseDeDatos.obtieneTodos("correcMotivos");
-			let CS = baseDeDatos.obtieneTodos("correcStatus");
-			[CM, CS] = await Promise.all([CM, CS]);
+			// Variables
+			const registros = await baseDeDatos.obtieneTodos("correcStatus");
+			let respuesta = {};
+
+			// Convierte el array en un objeto
+			for (let ST of ["MD", "SD", "IN", "RC"]) respuesta[ST] = registros.filter((n) => n[ST]);
 
 			// Fin
-			return {CM, CS};
+			return respuesta;
 		},
 		obtieneProds1: async (revID) => {
 			// Variables
@@ -101,27 +104,11 @@ module.exports = {
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
-			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = comp.obtieneRegs(campos).then((regs) => {
-				for (let i = regs.length - 1; i >= 0; i--)
-					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
-				return regs;
-			});
-
-			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = comp.obtieneRegs(campos).then((regs) => {
-				for (let i = regs.length - 1; i >= 0; i--)
-					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
-				return regs;
-			});
-
 			// Espera los resultados
-			[AL_sinEdicion, SE, IN, RC] = await Promise.all([AL_sinEdicion, SE, IN, RC]);
+			[AL_sinEdicion, SE] = await Promise.all([AL_sinEdicion, SE]);
 
 			// Fin
-			return {AL_sinEdicion, SE, IN, RC};
+			return {AL_sinEdicion, SE};
 		},
 		obtieneProds3: async () => {
 			// Obtiene los datos clave de los registros
@@ -169,14 +156,6 @@ module.exports = {
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
 			let AL = comp.obtieneRegs(campos);
-
-			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = comp.obtieneRegs(campos);
-
-			// RC: En staus 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -227,10 +206,10 @@ module.exports = {
 				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
-			[AL, SL, IN, RC, FM] = await Promise.all([AL, SL, IN, RC, FM]);
+			[AL, SL, FM] = await Promise.all([AL, SL, FM]);
 
 			// Fin
-			return {AL, SL, IN, RC, FM};
+			return {AL, SL, FM};
 		},
 		obtieneRCLVs2: async function (revID) {
 			// 1. Variables
@@ -860,6 +839,24 @@ module.exports = {
 		return;
 	},
 	procesaCampos: {
+		prodsRclvs: (registros) => {
+			// Variables
+			const anchoMax = 32;
+
+			// Reconvierte los elementos
+			for (let rubro in registros)
+				registros[rubro] = registros[rubro].map((n) => ({
+					id: n.entidad_id,
+					entidad: n.entidad,
+					nombre: n.nombre,
+					abrev: n.entidad.slice(0, 3).toUpperCase(),
+					fechaRef: n.fechaRef,
+					fechaRefTexto: comp.fechaHora.diaMes(n.fechaRef),
+				}));
+
+			// Fin
+			return registros;
+		},
 		prods: (productos) => {
 			// Variables
 			const anchoMax = 32;
@@ -916,22 +913,6 @@ module.exports = {
 
 			// Fin
 			return rclvs;
-		},
-		prodsRclvs: (registros) => {
-			// Variables
-			const anchoMax = 32;
-
-			// Reconvierte los elementos
-			for (let rubro in registros)
-				registros[rubro] = registros[rubro].map((n) => ({
-					id: n.entidad_id,
-					entidad: n.entidad,
-					nombre: n.nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-				}));
-
-			// Fin
-			return registros;
 		},
 	},
 };
