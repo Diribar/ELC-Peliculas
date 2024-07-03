@@ -3,6 +3,9 @@
 - Para los registros en status posterior a aprobado y sin historial, se crea el historial. El motivo en el producto es un resguardo por si se pierde el historial
 
 Detalle
+- Se fija que el status del producto esté alineado a statusErrores
+    - Creado, OK
+    - aprobs, no en
 - Se muestra el motivo sólo si está inactivo
 - Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
 

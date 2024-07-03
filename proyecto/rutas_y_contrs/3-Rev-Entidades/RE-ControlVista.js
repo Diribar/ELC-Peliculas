@@ -289,9 +289,9 @@ module.exports = {
 
 		// CONSECUENCIAS - Si el registro 'inactivar_id' del historial no tiene comentarios, lo elimina
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
-		baseDeDatos.eliminaTodosPorCondicion("histStatus", condicion);
+		baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 
-		// CONSECUENCIAS - Agrega un registro en el histStatus
+		// CONSECUENCIAS - Agrega un registro en el statusHistorial
 		let datosHist = {
 			...{entidad, entidad_id: id, aprobado}, // entidad
 			...{statusOriginalPor_id: userID, statusFinalPor_id: revID}, // personas
@@ -299,9 +299,9 @@ module.exports = {
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
 		};
-		const motivo = motivo_id ? motivosStatus.find((n) => n.id == motivo_id) : {};
+		const motivo = motivo_id ? statusMotivos.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
-		baseDeDatos.agregaRegistro("histStatus", datosHist); // Guarda los datos históricos
+		baseDeDatos.agregaRegistro("statusHistorial", datosHist); // Guarda los datos históricos
 
 		// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'
 		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
@@ -554,7 +554,7 @@ module.exports = {
 		const avatar = producto.avatar
 			? (!producto.avatar.includes("/") ? "/Externa/2-Productos/Final/" : "") + producto.avatar
 			: "/publico/imagenes/Avatar/Prod-Generico.jpg";
-		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = statusMotivos.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsFM.obtieneAvatar(producto).orig;
 		const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];

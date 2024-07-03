@@ -302,8 +302,8 @@ module.exports = {
 			// Variables
 			const ultsHist = await procesos.revisaStatusMotivo.ultsRegsHistStatus();
 
-			// Elimina todos los registros de la tabla 'correcStatus'
-			await baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
+			// Elimina todos los registros de la tabla 'statusErrores'
+			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
 
 			// Historial vs registro de la entidad
 			const regsAgregar1 = await procesos.revisaStatusMotivo.historialContraRegEnt(ultsHist);
@@ -313,7 +313,7 @@ module.exports = {
 
 			// Consolida
 			const regsAgregar = [...regsAgregar1, ...regsAgregar2];
-			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("correcStatus", {id: i + 1, ...regAgregar}));
+			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
 
 			// Fin
 			return;
@@ -492,7 +492,7 @@ module.exports = {
 				"capsSinLink",
 				"consRegsPrefs",
 				"histEdics",
-				"histStatus",
+				"statusHistorial",
 				"linksEdicion",
 				"loginsAcums",
 				"loginsDelDia",
@@ -571,7 +571,7 @@ module.exports = {
 		},
 		eliminaRegsSinEntidad_id: async () => {
 			// Variables
-			const tablas = ["histEdics", "histStatus", "misConsultas", "calRegistros"];
+			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
 			let regsVinculados = {};
 			let datos = [];

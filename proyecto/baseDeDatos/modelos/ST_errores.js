@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "correcStatus";
+	const alias = "statusErrores";
 	const columns = {
 		// Datos del registro
 		entidad: {type: dt.STRING(20)},
@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		RC: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "st_correcion",
+		tableName: "st_errores",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
