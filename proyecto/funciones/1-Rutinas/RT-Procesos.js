@@ -240,7 +240,7 @@ module.exports = {
 			let registros = [];
 			let condicion;
 
-			// Obtiene los registros de "histStatus"
+			// Obtiene los registros de "statusHistorial"
 			condicion = {
 				statusOriginalPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
 				statusOriginal_id: [creado_id, inactivar_id, recuperar_id], // descarta los cambios que no sean revisiones
@@ -248,8 +248,8 @@ module.exports = {
 			};
 			registros.push(
 				baseDeDatos
-					.obtieneTodosPorCondicion("histStatus", condicion)
-					.then((n) => n.map((m) => ({...m, tabla: "histStatus"})))
+					.obtieneTodosPorCondicion("statusHistorial", condicion)
+					.then((n) => n.map((m) => ({...m, tabla: "statusHistorial"})))
 			);
 
 			// Obtiene los registros de "histEdics"
@@ -290,7 +290,7 @@ module.exports = {
 				// Motivo
 				let motivo;
 				if (!aprobado) {
-					const motivoAux = motivosStatus.find((n) => n.id == regStatus.motivo_id);
+					const motivoAux = statusMotivos.find((n) => n.id == regStatus.motivo_id);
 					motivo = regStatus.comentario ? regStatus.comentario : motivoAux ? motivoAux.descripcion : "";
 				}
 
@@ -495,10 +495,10 @@ module.exports = {
 			const comunicadoEn = new Date();
 
 			// Elimina los que corresponda
-			baseDeDatos.eliminaTodosPorCondicion("histStatus", condicion);
+			baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 
 			// Agrega la fecha 'comunicadoEn'
-			baseDeDatos.actualizaTodosPorCondicion("histStatus", {id: ids}, {comunicadoEn});
+			baseDeDatos.actualizaTodosPorCondicion("statusHistorial", {id: ids}, {comunicadoEn});
 
 			// Fin
 			return;
@@ -590,9 +590,9 @@ module.exports = {
 			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};
 
 			// Obtiene el último registro de status de cada producto
-			let histStatus = [];
+			let statusHistorial = [];
 			await baseDeDatos
-				.obtieneTodosPorCondicion("histStatus", condicion, ["statusFinal", "motivo"])
+				.obtieneTodosPorCondicion("statusHistorial", condicion, ["statusFinal", "motivo"])
 				.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
 				.then((n) => n.sort((a, b) => a.id - b.id))
 				.then((n) =>
@@ -600,14 +600,14 @@ module.exports = {
 				)
 				.then((n) =>
 					n.map((m) =>
-						!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
-							? histStatus.push(m)
+						!statusHistorial.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
+							? statusHistorial.push(m)
 							: null
 					)
 				); // retiene sólo el último de cada producto
 
 			// Fin
-			return histStatus;
+			return statusHistorial;
 		},
 		historialContraRegEnt: async (ultsHist) => {
 			// Variables
@@ -666,8 +666,8 @@ module.exports = {
 						// status distinto a 'inactivo'
 						else if (ST != "IO") regsAgregar.push({...datos, [ST]: true});
 					}
-					// Si no lo encuentra, lo agrega a motivo
-					else regsAgregar.push({...datos, MD: true});
+					// Si no lo encuentra, lo agrega a status
+					else regsAgregar.push({...datos, SD: true});
 				}
 			}
 

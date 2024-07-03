@@ -20,7 +20,7 @@ module.exports = {
 		// Comentario para 'revisionInactivar'
 		if (codigo == "revisionInactivar") {
 			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo(
-				"histStatus",
+				"statusHistorial",
 				{entidad, entidad_id: id},
 				"statusFinalEn"
 			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
@@ -243,7 +243,7 @@ module.exports = {
 			];
 
 			// Obtiene el historial de status
-			let historialStatus = await baseDeDatos.obtieneTodosPorCondicion("histStatus", condics, include);
+			let historialStatus = await baseDeDatos.obtieneTodosPorCondicion("statusHistorial", condics, include);
 			historialStatus = historialStatus
 				.map((n) => ({
 					...n,
@@ -351,7 +351,7 @@ module.exports = {
 
 			// Se fija si corresponde guardar el último registro en la BD
 			if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
-				await baseDeDatos.agregaRegistro("histStatus", sigReg);
+				await baseDeDatos.agregaRegistro("statusHistorial", sigReg);
 
 			// Procesa el comentario
 			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
@@ -868,10 +868,10 @@ let FN = {
 		const {entidad, id: entidad_id} = registro;
 		const condicion = {entidad, entidad_id, statusFinal_id: inactivo_id};
 
-		// Obtiene el motivo del último histStatus
-		const histStatus = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
-		const motivo = motivosStatus.find((n) => n.id == histStatus.motivo_id);
-		const motivoDetalle = histStatus.comentario ? histStatus.comentario : motivo.descripcion;
+		// Obtiene el motivo del último statusHistorial
+		const statusHistorial = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+		const motivo = statusMotivos.find((n) => n.id == statusHistorial.motivo_id);
+		const motivoDetalle = statusHistorial.comentario ? statusHistorial.comentario : motivo.descripcion;
 
 		// Fin
 		return {motivoDetalle};

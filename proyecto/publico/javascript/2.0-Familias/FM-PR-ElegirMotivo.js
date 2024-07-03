@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	};
 	// Variables
 	const entidad = new URL(location.href).searchParams.get("entidad");
-	const motivosStatus = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
+	const statusMotivos = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
 	let comentNeces, duplicadoOK;
 
 	// Funciones
@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 		if (!DOM.selectMotivo.value || e.target.name == "comentario") return;
 
 		// Obtiene el detalle del motivo
-		const motivoBD = motivosStatus.find((n) => n.id == DOM.selectMotivo.value);
+		const motivoBD = statusMotivos.find((n) => n.id == DOM.selectMotivo.value);
 
 		// Muestra u oculta el 'comentario'
 		comentNeces = motivoBD.comentNeces;

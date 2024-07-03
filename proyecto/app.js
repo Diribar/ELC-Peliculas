@@ -128,8 +128,8 @@ app.set("views", [
 		// Variable de entidades
 		statusRegistros: baseDeDatos.obtieneTodosConOrden("statusRegistros", "orden"),
 		generos: baseDeDatos.obtieneTodosConOrden("generos", "orden"),
-		motivosStatus: baseDeDatos
-			.obtieneTodosConOrden("motivosStatus", "orden")
+		statusMotivos: baseDeDatos
+			.obtieneTodosConOrden("statusMotivos", "orden")
 			.then((n) => n.sort((a, b) => (a.grupo < b.grupo ? -1 : a.grupo > b.grupo ? 1 : 0))),
 		motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
 
@@ -244,7 +244,7 @@ app.set("views", [
 	global.mesesAbrev = meses.map((n) => n.abrev);
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
-	global.motivoDupl_id = motivosStatus.find((n) => n.codigo == "duplicado");
+	global.motivoDupl_id = statusMotivos.find((n) => n.codigo == "duplicado");
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");

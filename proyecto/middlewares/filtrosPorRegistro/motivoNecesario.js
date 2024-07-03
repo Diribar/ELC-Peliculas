@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 
 	// Si no se reconoce el motivo, redirige
 	if (!mensajes) {
-		motivo = motivosStatus.find((n) => n.id == motivo_id);
+		motivo = statusMotivos.find((n) => n.id == motivo_id);
 		if (!motivo) mensajes = ["No reconocemos ese motivo"];
 	}
 

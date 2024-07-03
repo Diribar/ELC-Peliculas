@@ -75,7 +75,7 @@ module.exports = {
 			(link.statusRegistro_id == inactivo_id && revisorLinks) // El link está en status 'inactivo' y es un revisorLinks
 		) {
 			await baseDeDatos.eliminaPorId("links", link.id); // Elimina el registro original
-			baseDeDatos.eliminaTodosPorCondicion("histStatus", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
+			baseDeDatos.eliminaTodosPorCondicion("statusHistorial", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
 			baseDeDatos.eliminaTodosPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
 			link.statusRegistro_id = inactivo_id;
 			await validacsFM.accionesPorCambioDeStatus("links", link);

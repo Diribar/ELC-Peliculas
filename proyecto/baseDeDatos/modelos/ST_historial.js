@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "histStatus";
+	const alias = "statusHistorial";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
@@ -28,7 +28,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "statusOriginalPor", foreignKey: "statusOriginalPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "statusFinalPor", foreignKey: "statusFinalPor_id"});
 
-		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.statusMotivos, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.statusRegistros, {as: "statusOriginal", foreignKey: "statusOriginal_id"});
 		entidad.belongsTo(n.statusRegistros, {as: "statusFinal", foreignKey: "statusFinal_id"});
 	};

@@ -85,11 +85,11 @@ module.exports = {
 		// Fin
 		return res.json(datos);
 	},
-	motivosStatus: (req, res) => {
+	statusMotivos: (req, res) => {
 		// Variables
 		const {entidad} = req.query;
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const motivos = motivosStatus.filter((m) => m[petitFamilias]);
+		const motivos = statusMotivos.filter((m) => m[petitFamilias]);
 
 		// Fin
 		return res.json(motivos);

@@ -14,7 +14,7 @@ module.exports = {
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
 			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivoHist = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
 			// Datos para la vista
 			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
@@ -37,7 +37,7 @@ module.exports = {
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
 			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivoHist = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
 			// Acciones si se aprobó el motivo del regEnt
 			if (respuesta == "registro") {
@@ -193,9 +193,12 @@ module.exports = {
 		},
 	},
 };
-let obtieneRegs = async () => {
+let obtieneRegs = async ({entidad, id}) => {
 	// Obtiene el motivo del producto
-	const regEnt = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+	let include = ["motivo"];
+	if (entidad == "capitulos") include.push("coleccion");
+	if (entidad == "colecciones") include.push("capitulos");
+	const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
 
 	// Obtiene el motivo del historial
 	const condicion = {
@@ -204,7 +207,7 @@ let obtieneRegs = async () => {
 		[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
 	};
 
-	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
+	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
 
 	// Fin
 	return {regEnt, ultHist};

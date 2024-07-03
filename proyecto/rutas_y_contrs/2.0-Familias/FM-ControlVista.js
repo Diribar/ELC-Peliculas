@@ -10,7 +10,7 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
-		const motivos = motivosStatus.filter((n) => n[datos.petitFamilias]);
+		const motivos = statusMotivos.filter((n) => n[datos.petitFamilias]);
 		const entidades = variables.entidades[datos.petitFamilias];
 
 		// Render del formulario
@@ -44,7 +44,7 @@ module.exports = {
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
-		// CONSECUENCIAS - Agrega un registro en el histStatus
+		// CONSECUENCIAS - Agrega un registro en el statusHistorial
 		let datosHist = {
 			...{entidad, entidad_id: id}, // entidad
 			...{statusOriginalPor_id: original.statusSugeridoPor_id, statusFinalPor_id: userID}, // personas
@@ -53,7 +53,7 @@ module.exports = {
 			comentario,
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
-		baseDeDatos.agregaRegistro("histStatus", datosHist);
+		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
 		// CONSECUENCIAS - Acciones si es un producto
 		if (familia == "producto") {
@@ -125,7 +125,7 @@ module.exports = {
 		await baseDeDatos.eliminaPorId(entidad, id);
 
 		// Elimina registros vinculados
-		const tablas = ["histStatus", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
+		const tablas = ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
 		for (let tabla of tablas) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Actualiza solapamiento y la variable 'fechasDelAno'

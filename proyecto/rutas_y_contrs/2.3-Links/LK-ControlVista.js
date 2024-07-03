@@ -36,7 +36,7 @@ module.exports = {
 			const temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await procsFM.obtieneCapitulos(coleccion_id, temporada);
 		}
-		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = statusMotivos.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const status_id = original.statusRegistro_id;
 		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic; // Obtiene el avatar
 		const sigProd = grupo == "inactivo" ? await procesos.sigProdInactivo({producto, entidad, userID}) : null;

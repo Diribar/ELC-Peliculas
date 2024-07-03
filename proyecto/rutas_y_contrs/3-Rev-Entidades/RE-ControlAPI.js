@@ -89,7 +89,7 @@ module.exports = {
 			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
 			const statusOriginalPor_id = link.statusSugeridoPor_id;
 			if (statusOriginalPor_id != usAutom_id) {
-				// Agrega un registro en el histStatus
+				// Agrega un registro en el statusHistorial
 				let datosHist = {
 					entidad_id: id,
 					entidad: "links",
@@ -102,12 +102,12 @@ module.exports = {
 				};
 				let motivo;
 				if (motivo_id) {
-					motivo = motivosStatus.find((n) => n.id == motivo_id);
+					motivo = statusMotivos.find((n) => n.id == motivo_id);
 					datosHist.motivo_id = motivo_id;
 					datosHist.duracion = Number(motivo.duracion);
 					datosHist.comentario = motivo.descripcion;
 				}
-				baseDeDatos.agregaRegistro("histStatus", datosHist);
+				baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
 				// Aumenta el valor de linksAprob/rech en el registro del usuario
 				baseDeDatos.aumentaElValorDeUnCampo("usuarios", statusOriginalPor_id, campoDecision, 1);

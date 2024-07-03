@@ -8,7 +8,7 @@ module.exports = {
 	tablRevision: {
 		obtieneProdsRclvs: async () => {
 			// Variables
-			const registros = await baseDeDatos.obtieneTodos("correcStatus");
+			const registros = await baseDeDatos.obtieneTodos("statusErrores");
 			let respuesta = {};
 
 			// Convierte el array en un objeto
@@ -1347,7 +1347,7 @@ let FN = {
 				? req.body.motivo_id
 				: ["revisionInactivar", "revisionRecuperar"].includes(codigo)
 				? await baseDeDatos
-						.obtienePorCondicionElUltimo("histStatus", {entidad, entidad_id: original.id}, "statusFinalEn")
+						.obtienePorCondicionElUltimo("statusHistorial", {entidad, entidad_id: original.id}, "statusFinalEn")
 						.then((n) => n.motivo_id)
 				: null;
 
