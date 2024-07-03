@@ -592,7 +592,7 @@ module.exports = {
 			// Obtiene el último registro de status de cada producto
 			let statusHistorial = [];
 			await baseDeDatos
-				.obtieneTodosPorCondicion("statusHistorial", condicion, "statusFinal")
+				.obtieneTodosPorCondicion("statusHistorial", condicion)
 				.then((n) =>
 					n.map((m) =>
 						!statusHistorial.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
