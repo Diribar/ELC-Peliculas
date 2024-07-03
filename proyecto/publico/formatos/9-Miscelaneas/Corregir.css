@@ -20,7 +20,4 @@
 		}
 
 	}
-	& > #sectorIconos {
-		position: absolute; bottom: 5px; left: 50%; translate: -50% 0;
-	}
 }
