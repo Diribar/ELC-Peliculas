@@ -6,7 +6,6 @@
 		display: flex; flex-direction: row; justify-content: space-between;
 		margin-bottom: 20px;
 		#comentario {
-			width: 100%;
 			&:has(textarea:read-only) {display: none;}
 			h3 {
 				margin-bottom: 3px;
