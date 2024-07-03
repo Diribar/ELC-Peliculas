@@ -1,30 +1,36 @@
 <section id="correccion">
 	<!-- Actual -->
-	<div id="historial" class="columna">
-		<div class="flexCol">
-			<h3>Actual</h3>
-			<h4><%- motivo ? 'Motivo:' : "Sin motivo" %></h4>
-			<% if (motivo) { %>
-				<div class="info"><%= motivo.descripcion %></div>
-			<% } %>
-			<h4><%- motivo && motivo.comentNeces ? 'Comentario:' : "Sin comentario" %></h4>
-			<% if (motivo && motivo.comentNeces) { %>
-				<div class="info"><%= ultHist.comentario %></div>
-			<% } %>
-		</div>
+	<div id="actual" class="columna">
+		<h3>Actual</h3>
+		<h4><%- motivo ? 'Motivo:' : "Sin motivo" %></h4>
+		<% if (motivo) { %>
+			<div id="motivo" class="info"><%= motivo.descripcion %></div>
+		<% } %>
+		<h4><%- motivo && motivo.comentNeces ? 'Comentario:' : "Sin comentario" %></h4>
+		<% if (motivo && motivo.comentNeces) { %>
+			<div class="info"><%= ultHist.comentario %></div>
+		<% } %>
 	</div>
 	<!-- Nuevo -->
-	<div id="historial" class="columna">
-		<div class="flexCol">
-			<h3>Nuevo</h3>
-			<h4>Motivo</h4>
-			<select name="motivo_id">
-				<% for (let motivo of motivos) { %>
-					<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
-				<% } %>
-			</select>
-			<h4 class="comentario ocultar">Comentario</h4>
-			<textarea name="comentario" class="comentario ocultar"></textarea>
-		</div>
+	<div id="nuevo" class="columna">
+		<h3>Nuevo</h3>
+		<h4>Motivo</h4>
+		<select name="motivo_id">
+			<% for (let motivo of motivos) { %>
+				<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
+			<% } %>
+		</select>
+		<h4 class="comentario ocultar">Comentario</h4>
+		<textarea name="comentario" class="comentario ocultar"></textarea>
 	</div>
 </section>
+<div id="sectorIconos">
+	<div class="iconos">
+		<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=HT" tabindex="-1">
+			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+		</a>
+		<button type="submit">
+			<i class="fa-solid fa-circle-check inactivo"></i>
+		</button>
+	</div>
+</div>
