@@ -270,7 +270,7 @@ module.exports = {
 			// Procesa los comentarios
 			historialStatus = historialStatus.map((n) => ({
 				...n,
-				comentario: n.comentario ? n.comentario : n.motivo ? n.motivo.descripcion : "",
+				comentario: (n.motivo ? n.motivo.descripcion : "") + (n.comentario ? ": " + n.comentario : ""),
 			}));
 
 			// Fin
@@ -279,8 +279,8 @@ module.exports = {
 		agregaUnMov: async ({historialStatus, prodRclv, contador}) => {
 			// Variables
 			const {entidad, id: entidad_id, motivo} = prodRclv;
-			const {altaRevisadaPor_id, altaRevisadaEn, altaTermEn} = prodRclv;
-			const {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id} = prodRclv;
+			const {altaRevisadaEn, altaTermEn} = prodRclv;
+			const {statusSugeridoEn, statusRegistro_id} = prodRclv;
 			const regAct = historialStatus[contador];
 			const statusAct = regAct.statusFinal_id;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -297,10 +297,6 @@ module.exports = {
 
 			// Algoritmos por status
 			if (statusAct == creado_id) {
-				// Variables - Los datos finales son los de la revisión
-				statusFinalPor_id = altaRevisadaPor_id;
-				statusFinalEn = altaRevisadaEn;
-
 				statusFinal_id =
 					altaRevisadaEn == statusSugeridoEn // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
 						? statusRegistro_id
@@ -327,31 +323,13 @@ module.exports = {
 			const {codigo} = statusRegistros.find((n) => n.id == statusFinal_id);
 			statusFinal = {nombre, codigo};
 
-			// Agrega 'statusFinalPor_id' y 'statusFinalEn'
-			if (statusFinal_id == statusSig && !statusFinalPor_id)
-				statusFinalPor_id = buscarDelProdRCLV
-					? statusSugeridoPor_id // del producto
-					: historialStatus[contador + 1].statusOriginalPor_id; // del siguiente registro
-			if (statusFinal_id == statusSig && !statusFinalEn)
-				statusFinalEn = buscarDelProdRCLV
-					? statusSugeridoEn // del producto
-					: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
-
 			// Arma el registro a agregarle al historial
 			const statusOriginal_id = regAct.statusFinal_id;
 			const statusOriginal = {nombre: regAct.statusFinal.nombre};
-			const statusOriginalPor_id = regAct.statusFinalPor_id;
-			const statusOriginalEn = regAct.statusFinalEn;
-			if (!statusFinalEn) statusFinalEn = statusOriginalEn;
 			let sigReg = {
 				...{entidad, entidad_id},
-				...{statusOriginal_id, statusOriginal, statusOriginalPor_id, statusOriginalEn},
-				...{statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn},
+				...{statusOriginal_id, statusOriginal, statusFinal_id, statusFinal},
 			};
-
-			// Se fija si corresponde guardar el último registro en la BD
-			if (statusFinal_id == inactivo_id || inactivos_ids.includes(statusOriginal_id))
-				await baseDeDatos.agregaRegistro("statusHistorial", sigReg);
 
 			// Procesa el comentario
 			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;

@@ -29,8 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		await this.rutinasHorarias.revisaStatusMotivo();
-		// await this.rutinasDiarias.revisaStatusMotivo();
+		// await this.rutinasDiarias.revisaStatus();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -294,26 +293,6 @@ module.exports = {
 					baseDeDatos.actualizaPorId(entidad, producto.id, {azar});
 				}
 			}
-
-			// Fin
-			return;
-		},
-		revisaStatusMotivo: async () => {
-			// Variables
-			const ultsHist = await procesos.revisaStatusMotivo.ultsRegsHistStatus();
-
-			// Elimina todos los registros de la tabla 'statusErrores'
-			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
-
-			// Historial vs registro de la entidad
-			const regsAgregar1 = await procesos.revisaStatusMotivo.historialContraRegEnt(ultsHist);
-
-			// Registro de la entidad vs historial
-			const regsAgregar2 = await procesos.revisaStatusMotivo.regEntContraHistorial(ultsHist, regsAgregar1);
-
-			// Consolida
-			const regsAgregar = [...regsAgregar1, ...regsAgregar2];
-			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
 
 			// Fin
 			return;
@@ -643,6 +622,26 @@ module.exports = {
 
 			// Rutina
 			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
+
+			// Fin
+			return;
+		},
+		revisaStatus: async () => {
+			// Variables
+			const ultsHist = await procesos.revisaStatus.ultsRegsHistStatus();
+
+			// Elimina todos los registros de la tabla 'statusErrores'
+			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
+
+			// Historial vs registro de la entidad
+			const histRegEnt = await procesos.revisaStatus.historialVsRegEnt(ultsHist);
+
+			// Registro de la entidad vs historial
+			const regEntHist = await procesos.revisaStatus.regEntVsHistorial(ultsHist, histRegEnt);
+
+			// Consolida
+			const regsAgregar = [...histRegEnt, ...regEntHist];
+			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
 
 			// Fin
 			return;
