@@ -10,7 +10,7 @@
     <% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV-1DT-Largos") %>
 
     <!-- AMBOS -->
-    <% } else if (tema == "correccion") { %><%- include("MS-Correccion") %>
+    <% } else if (tema == "correccion" && codigo == "cambioMotivo") { %><%- include("MS-CorrMotivo") %>
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE-PR-Edic-Largos") %>
     <% } else if (["inactivar", "rechazar"].includes(codigo)) { %><%- include("FM-PR-ElegirMotivo") %>
     <% } else if (["recuperar", "eliminar", "revisionInactivar", "revisionRecuperar"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
