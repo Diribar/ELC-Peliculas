@@ -189,7 +189,7 @@ module.exports = {
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// Datos para la vista
-			const motivo = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivo = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
 			const entidades = variables.entidades[petitFamilias];
 			const entsNombre = variables.entidades[petitFamilias + "Nombre"];
