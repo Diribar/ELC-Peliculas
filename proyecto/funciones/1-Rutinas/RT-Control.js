@@ -313,9 +313,7 @@ module.exports = {
 
 			// Consolida
 			const regsAgregar = [...regsAgregar1, ...regsAgregar2];
-			regsAgregar.forEach((regAgregar, i) => {
-				baseDeDatos.agregaRegistro("correcStatus", {id: i + 1, ...regAgregar});
-			});
+			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("correcStatus", {id: i + 1, ...regAgregar}));
 
 			// Fin
 			return;
