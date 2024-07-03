@@ -183,8 +183,8 @@ module.exports = {
 		motivoForm: async (req, res) => {
 			// Variables
 			const tema = "correccion";
-			const codigo = "cambioMotivo";
-			const titulo = "Corrección de Motivo";
+			const codigo = "cambiarMotivo";
+			const titulo = "Cambiar el Motivo";
 			const {entidad, id} = req.query;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
@@ -196,7 +196,7 @@ module.exports = {
 			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
 			const entidades = variables.entidades[petitFamilias];
 			const entsNombre = variables.entidades[petitFamilias + "Nombre"];
-			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
+			const imgDerPers = procesos.obtieneAvatar(regEnt).orig;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Envía la info a la vista
