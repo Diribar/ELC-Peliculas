@@ -9,15 +9,10 @@
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
-	<% if (tema == "fmCrud") { %>
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
-	<% } %>
-	<% if (tema == "correccion") { %>
-		<link rel="stylesheet" href="/publico/formatos/9-Miscelaneas/Corregir.css">
-	<% } %>
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 
-	<% if (codigo == "inactivar") { %>
+	<% if (["inactivar", "cambiarMotivo"].includes(codigo)) { %>
 		<!-- Inactivar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-ElegirMotivo.css">
 		<script src="/publico/javascript/2.0-Familias/FM-PR-ElegirMotivo.js"></script>
@@ -28,5 +23,8 @@
 		<% if (codigo == "recuperar") { %>
 			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
 		<% } %>
+	<% } %>
+	<% if (codigo == "cambiarMotivo") { %>
+		<link rel="stylesheet" href="/publico/formatos/9-Miscelaneas/Corregir.css">
 	<% } %>
 <% } %>
