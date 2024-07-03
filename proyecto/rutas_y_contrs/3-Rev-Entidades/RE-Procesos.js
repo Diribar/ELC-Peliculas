@@ -7,12 +7,15 @@ module.exports = {
 	// Tableros
 	tablRevision: {
 		obtieneProdsRclvs: async () => {
-			let CM = baseDeDatos.obtieneTodos("correcMotivos");
-			let CS = baseDeDatos.obtieneTodos("correcStatus");
-			[CM, CS] = await Promise.all([CM, CS]);
+			// Variables
+			const registros = await baseDeDatos.obtieneTodos("correcStatus");
+			let respuesta = {};
+
+			// Convierte el array en un objeto
+			for (let ST of ["MD", "SD", "IN", "RC"]) respuesta[ST] = registros.filter((n) => n[ST]);
 
 			// Fin
-			return {CM, CS};
+			return respuesta;
 		},
 		obtieneProds1: async (revID) => {
 			// Variables
@@ -89,39 +92,23 @@ module.exports = {
 				revID,
 				include: "ediciones",
 			};
-			let AL_sinEdicion = tablRevision
+			let AL_sinEdicion = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
-			let SE = tablRevision
+			let SE = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
-			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = tablRevision.obtieneRegs(campos).then((regs) => {
-				for (let i = regs.length - 1; i >= 0; i--)
-					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
-				return regs;
-			});
-
-			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = tablRevision.obtieneRegs(campos).then((regs) => {
-				for (let i = regs.length - 1; i >= 0; i--)
-					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
-				return regs;
-			});
-
 			// Espera los resultados
-			[AL_sinEdicion, SE, IN, RC] = await Promise.all([AL_sinEdicion, SE, IN, RC]);
+			[AL_sinEdicion, SE] = await Promise.all([AL_sinEdicion, SE]);
 
 			// Fin
-			return {AL_sinEdicion, SE, IN, RC};
+			return {AL_sinEdicion, SE};
 		},
 		obtieneProds3: async () => {
 			// Obtiene los datos clave de los registros
@@ -168,23 +155,15 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
-			let AL = tablRevision.obtieneRegs(campos);
-
-			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = tablRevision.obtieneRegs(campos);
-
-			// RC: En staus 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = tablRevision.obtieneRegs(campos);
+			let AL = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let SL = tablRevision.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			let SL = comp.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// FM: Con fecha móvil
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let FM = tablRevision
+			let FM = comp
 				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
 				.then((originales) =>
@@ -227,10 +206,10 @@ module.exports = {
 				.then((n) => n.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id));
 
 			// Espera los resultados
-			[AL, SL, IN, RC, FM] = await Promise.all([AL, SL, IN, RC, FM]);
+			[AL, SL, FM] = await Promise.all([AL, SL, FM]);
 
 			// Fin
-			return {AL, SL, IN, RC, FM};
+			return {AL, SL, FM};
 		},
 		obtieneRCLVs2: async function (revID) {
 			// 1. Variables
@@ -860,6 +839,24 @@ module.exports = {
 		return;
 	},
 	procesaCampos: {
+		prodsRclvs: (registros) => {
+			// Variables
+			const anchoMax = 32;
+
+			// Reconvierte los elementos
+			for (let rubro in registros)
+				registros[rubro] = registros[rubro].map((n) => ({
+					id: n.entidad_id,
+					entidad: n.entidad,
+					nombre: n.nombre,
+					abrev: n.entidad.slice(0, 3).toUpperCase(),
+					fechaRef: n.fechaRef,
+					fechaRefTexto: comp.fechaHora.diaMes(n.fechaRef),
+				}));
+
+			// Fin
+			return registros;
+		},
 		prods: (productos) => {
 			// Variables
 			const anchoMax = 32;
@@ -916,22 +913,6 @@ module.exports = {
 
 			// Fin
 			return rclvs;
-		},
-		prodsRclvs: (registros) => {
-			// Variables
-			const anchoMax = 32;
-
-			// Reconvierte los elementos
-			for (let rubro in registros)
-				registros[rubro] = registros[rubro].map((n) => ({
-					id: n.entidad_id,
-					entidad: n.entidad,
-					nombre: n.nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-				}));
-
-			// Fin
-			return registros;
 		},
 	},
 };
@@ -1127,71 +1108,6 @@ let FN_links = {
 
 		// Fin
 		return resultado;
-	},
-};
-let tablRevision = {
-	obtieneRegs: async function (campos) {
-		// Variables
-		let lecturas = [];
-		let resultados = [];
-
-		// Obtiene el resultado por entidad
-		for (let entidad of campos.entidades) lecturas.push(this.lecturaBD({entidad, ...campos}));
-		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
-
-		if (resultados.length) {
-			resultados = resultados.map((n) => {
-				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-				const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
-				return {...n, fechaRef, fechaRefTexto};
-			});
-
-			// Ordena los resultados
-			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-		}
-
-		// Fin
-		return resultados;
-	},
-	lecturaBD: async ({entidad, status_id, campoFecha, campoRevID, include, revID}) => {
-		// Variables
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
-
-		// Condiciones de captura
-		const condicsCaptura = [
-			{capturadoEn: null}, // Que no esté capturado
-			{capturadoEn: {[Op.lt]: haceDosHoras}}, // Que esté capturado hace más de dos horas
-			{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}}, // Que la captura haya sido por otro usuario y hace más de una hora
-			{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}}, // Que la captura haya sido por otro usuario y esté inactiva
-			{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}}, // Que esté capturado por este usuario hace menos de una hora
-		];
-
-		// Condiciones
-		let condicion = {
-			statusRegistro_id: status_id, // Con status según parámetro
-			[Op.and]: [{[Op.or]: condicsCaptura}], // Es necesario el [Op.and], porque luego se le agregan condicion
-		};
-		if (campoFecha) {
-			if (campoRevID) {
-				// Que esté propuesto por el usuario
-				const condicsUsuario = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}];
-				condicion[Op.and].push({[Op.or]: condicsUsuario});
-			}
-			// Que esté propuesto hace más de una hora
-			else condicion[campoFecha] = {[Op.lt]: haceUnaHora};
-		}
-
-		// Excluye los registros RCLV cuyo ID es <= 10
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
-
-		// Resultado
-		const resultados = baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, include)
-			.then((n) => n.map((m) => ({...m, entidad})));
-
-		// Fin
-		return resultados;
 	},
 };
 let tablManten = {

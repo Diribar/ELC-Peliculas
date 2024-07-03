@@ -1,6 +1,5 @@
 "use strict";
 
-// Exportar ------------------------------------
 module.exports = {
 	validacs: {
 		consolidado: async function ({campos, datos}) {

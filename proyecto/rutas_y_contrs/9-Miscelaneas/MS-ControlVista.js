@@ -198,7 +198,12 @@ let obtieneRegs = async () => {
 	const regEnt = await baseDeDatos.obtienePorId(entidad, id, "motivo");
 
 	// Obtiene el motivo del historial
-	const condicion = {entidad, entidad_id: id, statusFinal_id: {[Op.gte]: aprobado_id}};
+	const condicion = {
+		entidad,
+		entidad_id: id,
+		[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+	};
+
 	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("histStatus", condicion, "statusFinalEn");
 
 	// Fin
