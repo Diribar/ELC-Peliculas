@@ -1,28 +1,16 @@
-#contenido {
-	position: relative;
-	#informacion {
-		#correccion {
-			display: flex; flex-direction: row;
-			.columna {
-				display: flex; flex-direction: column;
-				width: 240px;
-				h2 {
-					padding: 5px 10px; align-self: center; border-radius: 15px;
-					background: var(--azul-oscuro); color: var(--gris-claro);
-				}
-				h3 {margin-top: 10px; margin-bottom: 3px;}
-			}
-
-			#actual #motivo {font-style: italic;}
-			#nuevo {
-				margin-left: 20px;
-				select {border-radius: 7px;}
-				textarea {
-					padding: 10px; border-radius: 10px;
-					height: 80px; width: 220px; resize: none;
-				}
-			}
+#informacion {
+	.columna {
+		display: flex; flex-direction: column;
+		h2 {
+			padding: 5px 10px; align-self: center; border-radius: 15px;
+			background: var(--azul-oscuro); color: var(--gris-claro);
 		}
-		#sectorIconos {margin-top: 20px; justify-self: flex-end; margin-bottom: 20px;}
+		&#motivoActual {
+			width: 240px;
+			h3 {margin-top: 10px;}
+			#motivo {font-style: italic;}
+		}
+		h3 {margin-bottom: 3px;}
 	}
+
 }
