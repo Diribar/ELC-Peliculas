@@ -29,7 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.feedbackParaUsers();
+		await this.rutinasHorarias.revisaStatusMotivo();
 		// await this.rutinasDiarias.revisaStatusMotivo();
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -299,28 +299,23 @@ module.exports = {
 			return;
 		},
 		revisaStatusMotivo: async () => {
-			// Elimina todos los registros de las tablas 'correcMotivos' y 'correcStatus'
-			let aux1 = baseDeDatos.eliminaTodosPorCondicion("correcMotivos", {id: {[Op.not]: null}});
-			let aux2 = baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
-			[aux1, aux2] = await Promise.all([aux1, aux2]);
-
 			// Variables
-			const ultsRegs = await procesos.ultRegHistStatus();
-			if (!ultsRegs.length) return;
+			const ultsHist = await procesos.revisaStatusMotivo.ultsRegsHistStatus();
 
-			// Acciones por registro del historial
-			for (let ultReg of ultsRegs) {
-				// Obtiene el prodRclv del historial
-				const {entidad, entidad_id} = ultReg;
-				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
-				const nombre = comp.nombresPosibles(prodRclv);
-				const datos = {entidad, entidad_id, nombre};
+			// Elimina todos los registros de la tabla 'correcStatus'
+			await baseDeDatos.eliminaTodosPorCondicion("correcStatus", {id: {[Op.not]: null}});
 
-				// Si el motivo es distinto, agrega el registro a 'correcMotivos'
-				if (ultReg.motivo_id != prodRclv.motivo_id) baseDeDatos.agregaRegistro("correcMotivos", datos);
-				// Si el status es distinto, agrega el registro a 'correcStatus' - es clave el uso del 'else', para que el registro no pueda estar en ambas tablas
-				else if (ultReg.statusFinal_id != prodRclv.statusRegistro_id) baseDeDatos.agregaRegistro("correcStatus", datos);
-			}
+			// Historial vs registro de la entidad
+			const regsAgregar1 = await procesos.revisaStatusMotivo.historialContraRegEnt(ultsHist);
+
+			// Registro de la entidad vs historial
+			const regsAgregar2 = await procesos.revisaStatusMotivo.regEntContraHistorial(ultsHist, regsAgregar1);
+
+			// Consolida
+			const regsAgregar = [...regsAgregar1, ...regsAgregar2];
+			regsAgregar.forEach((regAgregar, i) => {
+				baseDeDatos.agregaRegistro("correcStatus", {id: i + 1, ...regAgregar});
+			});
 
 			// Fin
 			return;

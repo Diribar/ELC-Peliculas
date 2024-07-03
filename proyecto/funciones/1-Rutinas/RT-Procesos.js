@@ -584,25 +584,101 @@ module.exports = {
 		// Fin
 		return;
 	},
-	ultRegHistStatus: async () => {
-		// Obtiene el último registro de status de cada producto
-		let histStatus = [];
-		await baseDeDatos
-			.obtieneTodos("histStatus", ["statusFinal", "motivo"])
-			.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
-			.then((n) => n.sort((a, b) => a.id - b.id))
-			.then((n) => n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0)))
-			.then((n) =>
-				n.map((m) =>
-					!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id) ? histStatus.push(m) : null
-				)
-			); // retiene sólo el último de cada producto
+	revisaStatusMotivo: {
+		ultsRegsHistStatus: async () => {
+			// Variables
+			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};
 
-		// Fin
-		return histStatus;
+			// Obtiene el último registro de status de cada producto
+			let histStatus = [];
+			await baseDeDatos
+				.obtieneTodosPorCondicion("histStatus", condicion, ["statusFinal", "motivo"])
+				.then((n) => n.filter((m) => m.statusFinal_id >= aprobado_id)) // se deben excluir sobretodo los que pasan a 'creadoAprob_id'
+				.then((n) => n.sort((a, b) => a.id - b.id))
+				.then((n) =>
+					n.sort((a, b) => (b.statusFinalEn > a.statusFinalEn ? -1 : b.statusFinalEn < a.statusFinalEn ? 1 : 0))
+				)
+				.then((n) =>
+					n.map((m) =>
+						!histStatus.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
+							? histStatus.push(m)
+							: null
+					)
+				); // retiene sólo el último de cada producto
+
+			// Fin
+			return histStatus;
+		},
+		historialContraRegEnt: async (ultsHist) => {
+			// Variables
+			let regsAgregar = [];
+			if (!ultsHist.length) return regsAgregar;
+
+			// Historial vs Registro de la Entidad
+			for (let ultHist of ultsHist) {
+				// Obtiene el prodRclv del historial
+				const {entidad, entidad_id, statusFinalEn} = ultHist;
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id, ["statusRegistro", "motivo"]);
+				const nombre = comp.nombresPosibles(prodRclv);
+				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
+
+				// Valida el motivo y el status
+				ultHist.motivo_id != prodRclv.motivo_id
+					? regsAgregar.push({...datos, MD: true}) // motivo distinto
+					: ultHist.statusFinal_id != prodRclv.statusRegistro_id
+					? regsAgregar.push({...datos, SD: true}) // status distinto
+					: null;
+			}
+
+			// Fin
+			return regsAgregar;
+		},
+		regEntContraHistorial: async (ultsHist, errores) => {
+			// Variables
+			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
+			let regsAgregar = [];
+
+			// Obtiene los Inactivos y Recuperar
+			let IN = comp.obtieneRegs({entidades, status_id: inactivar_id});
+			let RC = comp.obtieneRegs({entidades, status_id: recuperar_id});
+			let IO = comp.obtieneRegs({entidades, status_id: inactivo_id});
+			[IN, RC, IO] = await Promise.all([IN, RC, IO]);
+			let regsEnt = {IN, RC, IO};
+
+			// Revisa en 'IN, RC, IO'
+			for (let ST in regsEnt) {
+				// Revisa en cada registro
+				for (let regEnt of regsEnt[ST]) {
+					// Variables
+					const {entidad, id, statusSugeridoEn: fechaRef} = regEnt;
+					const nombre = comp.nombresPosibles(regEnt);
+					const datos = {entidad, entidad_id: id, nombre, fechaRef};
+					const regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
+
+					// Acciones si se encuentra en el historial
+					if (regHist) {
+						// Si el registro ya está en la tabla de errores, saltea la rutina
+						if (errores.find((n) => n.entidad == entidad && n.entidad_id == id)) continue;
+						// motivo distinto
+						else if (regEnt.motivo_id != regHist.motivo_id) regsAgregar.push({...datos, MD: true});
+						// status distinto
+						else if (regEnt.statusRegistro_id != regHist.statusFinal_id) regsAgregar.push({...datos, SD: true});
+						// status distinto a 'inactivo'
+						else if (ST != "IO") regsAgregar.push({...datos, [ST]: true});
+					}
+					// Si no lo encuentra, lo agrega a motivo
+					else regsAgregar.push({...datos, MD: true});
+				}
+			}
+
+			// Fin
+			return regsAgregar;
+		},
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
 };
+
+// Variables
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
 // Funciones
@@ -760,9 +836,7 @@ let nombres = async (reg, familia) => {
 		nombre = comp.nombresPosibles(regEnt[asocProd]);
 
 		// Obtiene el anchor
-		regEnt.href = regEnt.prov.embededPoner
-			? urlHost + "/links/visualizacion/?link_id=" + regEnt.id
-			: "//" + regEnt.url;
+		regEnt.href = regEnt.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + regEnt.id : "//" + regEnt.url;
 		anchor = "<a href='" + regEnt.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 	}
 
