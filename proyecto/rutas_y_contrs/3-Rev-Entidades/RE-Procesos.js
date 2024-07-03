@@ -89,21 +89,21 @@ module.exports = {
 				revID,
 				include: "ediciones",
 			};
-			let AL_sinEdicion = procsFM.tablRevision
+			let AL_sinEdicion = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
-			let SE = procsFM.tablRevision
+			let SE = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los registros sin edición
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = procsFM.tablRevision.obtieneRegs(campos).then((regs) => {
+			let IN = comp.obtieneRegs(campos).then((regs) => {
 				for (let i = regs.length - 1; i >= 0; i--)
 					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
 				return regs;
@@ -111,7 +111,7 @@ module.exports = {
 
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = procsFM.tablRevision.obtieneRegs(campos).then((regs) => {
+			let RC = comp.obtieneRegs(campos).then((regs) => {
 				for (let i = regs.length - 1; i >= 0; i--)
 					if (regs[i].coleccion_id && regs.find((n) => n.id == regs[i].coleccion_id)) regs.splice(i, 1);
 				return regs;
@@ -168,23 +168,23 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
-			let AL = procsFM.tablRevision.obtieneRegs(campos);
+			let AL = comp.obtieneRegs(campos);
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let IN = procsFM.tablRevision.obtieneRegs(campos);
+			let IN = comp.obtieneRegs(campos);
 
 			// RC: En staus 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
-			let RC = procsFM.tablRevision.obtieneRegs(campos);
+			let RC = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let SL = procsFM.tablRevision.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			let SL = comp.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// FM: Con fecha móvil
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			let FM = procsFM.tablRevision
+			let FM = comp
 				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
 				.then((originales) =>
