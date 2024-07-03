@@ -47,7 +47,9 @@ module.exports = async (req, res, next) => {
 
 // Funciones
 let FN_statusEsperados_id = (baseUrl, ruta) => {
-	return baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
+	return false
+		? false
+		: baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
 		? ruta == "/edicion/"
 			? activos_ids
 			: ruta == "/inactivar/"
@@ -75,5 +77,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta.includes("/solapamiento/")
 			? activos_ids
 			: []
+		: baseUrl == "/correccion" && ruta == "/cambiar-motivo/"
+		? [inactivo_id]
 		: [];
 };
