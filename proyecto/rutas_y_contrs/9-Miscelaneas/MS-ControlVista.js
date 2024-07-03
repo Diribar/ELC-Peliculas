@@ -36,7 +36,6 @@ module.exports = {
 
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-
 			const {motivo: motivoReg} = regEnt;
 			const motivoHist = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
 
