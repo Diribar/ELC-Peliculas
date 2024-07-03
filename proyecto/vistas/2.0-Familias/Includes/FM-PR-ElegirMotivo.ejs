@@ -1,6 +1,21 @@
+<% if (codigo == "cambiarMotivo") { %>
+    <!-- Motivo Actual -->
+    <div id="motivoActual" class="columna">
+        <h2>Actual</h3>
+        <h3><%- motivo ? 'Motivo:' : "Sin motivo" %></h4>
+        <% if (motivo) { %>
+            <div id="motivo" class="info"><%= motivo.descripcion %></div>
+        <% } %>
+        <h3><%- motivo && motivo.comentNeces ? 'Comentario:' : "Sin comentario" %></h4>
+        <% if (motivo && motivo.comentNeces) { %>
+            <div class="info"><%= ultHist.comentario %></div>
+        <% } %>
+    </div>
+<% } %>
+
 <!-- Motivos -->
-<section id="motivos" class="flexCol">
-    <h3>Elegí el motivo</h3>
+<section id="motivos" class="columna">
+    <h2 class="ocultar">Nuevo</h2>
     <select name="motivo_id" id="">
         <option value="">Elegí un motivo</option>
         <% let grupoAnt %>

@@ -1,5 +1,4 @@
 3. Detalle (ícono historial) --> Historial --> Cambio de motivo
-    - Sólo se permite para regEnt 'inactivos' y sin error de status
     - Post: se actualiza en el regEnt y en el último registro de 'statusHistorial'
         - motivo
         - usuario
