@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
 	if (regEnt.statusRegistro_id != ultHist.statusFinal_id) {
 		// Variables
 		const {urlAnterior} = req.session;
-		const urlStatus = "/correccion/cambiar-status/?entidad=" + entidad + "&id=" + id + "&origen=TE";
+		const urlStatus = "/correccion/cambiar-status/?entidad=" + entidad + "&id=" + id;
 		const tituloStatus = "Ir a la vista de Cambio de Status";
 		const nombre = comp.nombresPosibles(regEnt);
 
