@@ -13,16 +13,16 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		const familia1 = comp.obtieneDesdeEntidad.familia(entidad);
-		const familia2 = req.baseUrl + req.path;
-		const rutasStd = ["/crud/", familia1, "/correccion/cambiar-motivo/"];
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const url = req.baseUrl + req.path;
+		const rutasStd = [familia, "/correccion/"];
 		const rutasPorFamilia = {
 			producto: [...rutasStd, "/links/"],
 			rclv: [...rutasStd],
 		};
 		if (
-			!familia1 || // la entidad no pertenece a una familia
-			!rutasPorFamilia[familia1].some((n) => familia2.includes(n)) // la familia no está presente en el url
+			!familia || // la entidad no pertenece a una familia
+			!rutasPorFamilia[familia].some((n) => url.includes(n)) // la familia no está presente en el url
 		)
 			informacion = {
 				mensajes: ["La entidad ingresada es inválida."],
