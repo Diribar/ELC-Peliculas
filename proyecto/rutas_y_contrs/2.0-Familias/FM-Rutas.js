@@ -60,5 +60,8 @@ router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.motivo
 router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 
+// Vistas - Correcciones
+router.get("/correccion/cambiar-motivo", vista.correcciones.motivoForm);
+
 // Fin
 module.exports = router;

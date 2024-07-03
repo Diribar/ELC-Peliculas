@@ -4,54 +4,7 @@ const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	statusForm: (req, res) => {},
-	cambioDeMotivo: {
-		form: async (req, res) => {
-			// Variables
-			const tema = "correccion";
-			const codigo = "motivo";
-			const titulo = "Corrección de Motivo";
-			const {entidad, id, origen} = req.query;
 
-			// Obtiene los registros
-			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist && ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
-
-			// Datos para la vista
-			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const cola = "&respuesta=";
-			const urlActual = req.session.urlActual;
-
-			// Envía la info a la vista
-			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
-				...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
-				cartelGenerico: true,
-			});
-		},
-		guardar: async (req, res) => {
-			// Variables
-			const {entidad, id, respuesta} = req.query;
-
-			// Obtiene los registros
-			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
-			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
-
-			// Acciones si se aprobó el motivo del regEnt
-			if (respuesta == "registro") {
-			}
-			// Acciones si se aprobó el motivo del historial
-			else if (respuesta == "historial") {
-				const motivo_id = motivoHist.id;
-				await baseDeDatos.actualizaPorId(entidad, id, {motivo_id});
-			}
-
-			// Fin
-			return res.redirect("/revision/tablero-de-entidades");
-		},
-	},
 
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
@@ -192,23 +145,4 @@ module.exports = {
 			return res.send({TR, GR, CC});
 		},
 	},
-};
-let obtieneRegs = async ({entidad, id}) => {
-	// Obtiene el motivo del producto
-	let include = ["motivo"];
-	if (entidad == "capitulos") include.push("coleccion");
-	if (entidad == "colecciones") include.push("capitulos");
-	const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
-
-	// Obtiene el motivo del historial
-	const condicion = {
-		entidad,
-		entidad_id: id,
-		[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-	};
-
-	const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
-
-	// Fin
-	return {regEnt, ultHist};
 };

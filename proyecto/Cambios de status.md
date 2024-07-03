@@ -18,7 +18,7 @@ Eliminar campo 'DM' del statusHistorial
     - Si se aprueba el del historial, actualiza el status del producto
     - En ambos casos, se actualiza la tabla de 'statusErrores'
 
-3. Cambio de motivo
+3. Detalle (ícono historial) --> Historial --> Cambio de motivo
     - Sólo se permite para regEnt 'inactivos' y sin error de status
     - Dos columnas:
         - Izquierda: actual del historial

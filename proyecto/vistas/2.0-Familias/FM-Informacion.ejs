@@ -1,5 +1,5 @@
 <!-- Información -->
-<div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
+<div id="informacion" class="<%= codigo %>">
     <% if (false) { %>
 
     <!-- PRODUCTO -->
@@ -10,18 +10,19 @@
     <% } else if (tema == "rclvCrud" || tema == "revisionEnts" && codigo == "rclv/alta") { %><%- include("RCLV-1DT-Largos") %>
 
     <!-- AMBOS -->
-    <% } else if (tema == "correccion") { %><%- include("MS-Correccion") %>
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE-PR-Edic-Largos") %>
-    <% } else if (["inactivar", "rechazar"].includes(codigo)) { %><%- include("FM-PR-ElegirMotivo") %>
+    <% } else if (["inactivar", "rechazar", "cambiarMotivo"].includes(codigo)) { %><%- include("FM-PR-ElegirMotivo") %>
     <% } else if (["recuperar", "eliminar", "revisionInactivar", "revisionRecuperar"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
 
     <!-- Fin -->
     <% } %>
 </div>
-<!-- Botones -->
-<div id="sectorIconos">
-    <%- include("Iconos-1Estandar") %>
-    <%- include("Iconos-2ProdRUD") %>
-    <%- include("Iconos-3CambioStatus") %>
-    <%- include("Iconos-4LogosPortales") %>
-</div>
+<% if (tema != "correccion") { %>
+    <!-- Botones -->
+    <div id="sectorIconos">
+        <%- include("Iconos-1Estandar") %>
+        <%- include("Iconos-2ProdRUD") %>
+        <%- include("Iconos-3CambioStatus") %>
+        <%- include("Iconos-4LogosPortales") %>
+    </div>
+<% } %>
