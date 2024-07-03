@@ -1,7 +1,6 @@
 "use strict";
 const validacsFM = require("./FM-FN-Validar");
 
-// Exportar ------------------------------------
 module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
@@ -20,13 +19,13 @@ module.exports = {
 
 		// Comentario para 'revisionInactivar'
 		if (codigo == "revisionInactivar") {
-			const ultimoRegHist = await baseDeDatos.obtienePorCondicionElUltimo(
+			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo(
 				"histStatus",
 				{entidad, entidad_id: id},
 				"statusFinalEn"
 			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
 
-			if (ultimoRegHist.motivo_id != motivoDupl_id && ultimoRegHist.comentario) comentario = ultimoRegHist.comentario;
+			if (ultHist.motivo_id != motivoDupl_id && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
 		// Obtiene el registro
