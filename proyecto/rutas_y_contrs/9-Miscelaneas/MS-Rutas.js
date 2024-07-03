@@ -14,7 +14,6 @@ router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
 // Correcciones
 router.get("/correccion/status", vista.statusForm);
-router.get("/correccion/motivo", vista.correccionDeMotivo.form);
 
 // Redireciona
 router.get("/inactivar-captura", capturaInactivar, vista.redirecciona.rutaAnterior);
