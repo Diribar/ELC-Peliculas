@@ -215,5 +215,6 @@ module.exports = {
 			// Fin
 			return res.redirect("/" + familia + "/historial");
 		},
+		statusForm: (req, res) => {},
 	},
 };
