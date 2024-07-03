@@ -14,7 +14,7 @@ module.exports = {
 			// Obtiene los registros
 			const {regEnt, ultHist} = await obtieneRegs({entidad, id});
 			const {motivo: motivoReg} = regEnt;
-			const motivoHist = ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivoHist = ultHist && ultHist.motivo_id ? motivosStatus.find((n) => n.id == ultHist.motivo_id) : null;
 
 			// Datos para la vista
 			const imgDerPers = procsFM.obtieneAvatar(regEnt).orig;
@@ -23,6 +23,11 @@ module.exports = {
 			const urlActual = req.session.urlActual;
 
 			// Envía la info a la vista
+			// return res.send({
+			// 	...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
+			// 	...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
+			// 	cartelGenerico: true,
+			// })
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, familia, entidad, id, urlActual, imgDerPers, cola},
 				...{registro: regEnt, motivoReg, motivoHist, ultHist, origen},
@@ -193,9 +198,12 @@ module.exports = {
 		},
 	},
 };
-let obtieneRegs = async () => {
+let obtieneRegs = async ({entidad, id}) => {
 	// Obtiene el motivo del producto
-	const regEnt = await baseDeDatos.obtienePorId(entidad, id, "motivo");
+	let include = ["motivo"];
+	if (entidad == "capitulos") include.push("coleccion");
+	if (entidad == "colecciones") include.push("capitulos");
+	const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
 
 	// Obtiene el motivo del historial
 	const condicion = {
