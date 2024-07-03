@@ -666,8 +666,8 @@ module.exports = {
 						// status distinto a 'inactivo'
 						else if (ST != "IO") regsAgregar.push({...datos, [ST]: true});
 					}
-					// Si no lo encuentra, lo agrega a motivo
-					else regsAgregar.push({...datos, MD: true});
+					// Si no lo encuentra, lo agrega a status
+					else regsAgregar.push({...datos, SD: true});
 				}
 			}
 
