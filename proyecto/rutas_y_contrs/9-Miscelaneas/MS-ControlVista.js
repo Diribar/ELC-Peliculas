@@ -52,6 +52,7 @@ module.exports = {
 			return res.redirect("/revision/tablero-de-entidades");
 		},
 	},
+
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
