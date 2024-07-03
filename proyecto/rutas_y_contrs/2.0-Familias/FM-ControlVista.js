@@ -17,6 +17,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, motivos, entidades});
 	},
 	historialForm: async (req, res) => {
+		return res.send("Hola");
 		// Variables
 		const datos = await procesos.obtieneDatosForm(req);
 
@@ -208,12 +209,13 @@ module.exports = {
 			// Variables
 			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const cola = "/?entidad=" + entidad + "&id=" + id;
 
 			// Actualiza el motivo en el último registro del historial
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Fin
-			return res.redirect("/" + familia + "/historial");
+			return res.redirect("/" + familia + "/historial" + cola);
 		},
 		statusForm: (req, res) => {},
 	},

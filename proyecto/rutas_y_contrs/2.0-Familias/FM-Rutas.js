@@ -67,5 +67,8 @@ router.get("/correccion/cambiar-motivo", cambioMotivo, capturaActivar, vista.cor
 router.post("/correccion/cambiar-motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
 router.get("/correccion/status", vista.correcciones.statusForm);
 
+// Vistas -  Historial
+router.get("/:familia/historial", vista.historialForm);
+
 // Fin
 module.exports = router;
