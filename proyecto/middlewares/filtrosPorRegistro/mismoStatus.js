@@ -7,8 +7,6 @@ module.exports = async (req, res, next) => {
 	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim()
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	elLa = comp.letras.inicialMayus(elLa);
-	console.log(10,elLa);
-
 	let informacion;
 
 	// Obtiene los registros
