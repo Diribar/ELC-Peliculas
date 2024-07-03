@@ -1,8 +1,5 @@
-3. Detalle --> ícono historial --> Cambio de motivo
+3. Detalle (ícono historial) --> Historial --> Cambio de motivo
     - Sólo se permite para regEnt 'inactivos' y sin error de status
-    - Dos columnas:
-        - Izquierda: actual del historial
-        - Derecha: select con los motivos posibles
     - Post: se actualiza en el regEnt y en el último registro de 'statusHistorial'
         - motivo
         - usuario
