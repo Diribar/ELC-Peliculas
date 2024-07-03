@@ -17,7 +17,6 @@ module.exports = {
 		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, motivos, entidades});
 	},
 	historialForm: async (req, res) => {
-		return res.send("Hola");
 		// Variables
 		const datos = await procesos.obtieneDatosForm(req);
 
