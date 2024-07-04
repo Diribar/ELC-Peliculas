@@ -585,6 +585,26 @@ module.exports = {
 		return;
 	},
 	revisaStatus: {
+		consolidado: async function () {
+			// Variables
+			const ultsHist = await this.ultsRegsHistStatus();
+
+			// Elimina todos los registros de la tabla 'statusErrores'
+			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
+
+			// Historial vs registro de la entidad
+			const histRegEnt = await this.historialVsRegEnt(ultsHist);
+
+			// Registro de la entidad vs historial
+			const regEntHist = await this.regEntVsHistorial(ultsHist, histRegEnt);
+
+			// Consolida
+			const regsAgregar = [...histRegEnt, ...regEntHist];
+			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
+
+			// Fin
+			return;
+		},
 		ultsRegsHistStatus: async () => {
 			// Variables
 			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};

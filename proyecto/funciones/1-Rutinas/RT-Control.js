@@ -626,26 +626,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		revisaStatus: async () => {
-			// Variables
-			const ultsHist = await procesos.revisaStatus.ultsRegsHistStatus();
-
-			// Elimina todos los registros de la tabla 'statusErrores'
-			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
-
-			// Historial vs registro de la entidad
-			const histRegEnt = await procesos.revisaStatus.historialVsRegEnt(ultsHist);
-
-			// Registro de la entidad vs historial
-			const regEntHist = await procesos.revisaStatus.regEntVsHistorial(ultsHist, histRegEnt);
-
-			// Consolida
-			const regsAgregar = [...histRegEnt, ...regEntHist];
-			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
-
-			// Fin
-			return;
-		},
+		revisaStatus: async () => procesos.revisaStatus.consolidado(),
 	},
 	rutinasSemanales: {
 		ActualizaFechaVencimLinks: async () => {
