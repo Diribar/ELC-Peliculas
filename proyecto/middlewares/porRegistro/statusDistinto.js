@@ -31,6 +31,6 @@ module.exports = async (req, res, next) => {
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else req.body = {...req.body, prodRclv};
+	else req.body = {...req.body, prodRclv, ultHist};
 	return next();
 };
