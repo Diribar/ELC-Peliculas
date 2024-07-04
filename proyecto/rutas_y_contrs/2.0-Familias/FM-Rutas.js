@@ -33,6 +33,7 @@ const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
 const cambioMotivo = [entValida, IDvalido, statusCorrecto, statusIgual, aptoUsuario, permUserReg, usRolRevPERL];
+const cambioStatus = [entValida, IDvalido, statusDistinto, aptoUsuario, permUserReg, usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
@@ -66,7 +67,7 @@ router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.histo
 // Vistas - Correcciones
 router.get("/correccion/cambiar-motivo", cambioMotivo, capturaActivar, vista.correcciones.motivoForm);
 router.post("/correccion/cambiar-motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
-router.get("/correccion/cambiar-status", vista.correcciones.statusForm);
+router.get("/correccion/status", cambioStatus, vista.correcciones.statusForm);
 
 // Vistas -  Historial
 router.get("/:familia/historial", vista.historialForm);
