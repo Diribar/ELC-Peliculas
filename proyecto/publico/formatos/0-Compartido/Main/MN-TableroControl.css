@@ -7,6 +7,7 @@ main #familias {
 			max-width: 30vw;
 			&:nth-child(n+2) {margin-top: 20px;}
 			.tituloSecundario {
+				position: relative;
 				h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
 			}
 			/* Bloques - Registros */
