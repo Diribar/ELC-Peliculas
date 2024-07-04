@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const procesos = require("./FM-FN-Procesos");
+const procsRT = require("../../funciones/1-Rutinas/RT-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {
@@ -258,7 +259,7 @@ module.exports = {
 			}
 
 			// En ambos casos, se actualiza la tabla de 'statusErrores'
-
+			procsRT.revisaStatus.consolidado() // no hace falta el 'await'
 
 			// Actualiza el motivo en el último registro del historial
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
