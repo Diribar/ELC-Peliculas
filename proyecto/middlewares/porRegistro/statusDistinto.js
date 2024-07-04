@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 	[prodRclv, ultHist] = await Promise.all([prodRclv, ultHist]);
 
 	// Compara los status
-	if (prodRclv.statusRegistro_id == ultHist.statusFinal_id) {
+	if (ultHist && prodRclv.statusRegistro_id == ultHist.statusFinal_id) {
 		// Variables
 		const {urlAnterior} = req.session;
 		const nombre = comp.nombresPosibles(prodRclv);
