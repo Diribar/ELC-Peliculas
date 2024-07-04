@@ -284,7 +284,7 @@ module.exports = {
 			const regAct = historialStatus[contador];
 			const statusAct = regAct.statusFinal_id;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			let statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn, comentario;
+			let statusFinal_id, statusFinal;
 
 			// Obtiene el siguiente status
 			const buscarDelProdRCLV = contador == historialStatus.length - 1; // no hay un registro posterior en el historial
@@ -309,7 +309,6 @@ module.exports = {
 							? aprobado_id
 							: inactivo_id
 						: null;
-				if (statusFinal_id == inactivo_id) comentario = motivo.descripcion;
 			}
 			if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
 			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
@@ -331,10 +330,6 @@ module.exports = {
 				...{statusOriginal_id, statusOriginal, statusFinal_id, statusFinal},
 			};
 
-			// Procesa el comentario
-			if (statusFinal_id == inactivar_id) comentario = motivo.descripcion;
-			if (comentario) sigReg.comentario = comentario;
-
 			// Agrega el registro al historial
 			historialStatus.splice(contador + 1, 0, sigReg);
 
@@ -345,16 +340,19 @@ module.exports = {
 			historialStatus.forEach((reg, i) => {
 				// Variables
 				const {statusFinalEn} = reg;
+				let fecha;
+				if (statusFinalEn) {
+					const dia = statusFinalEn.getDate();
+					const mes = statusFinalEn.getMonth() + 1;
+					const ano = String(statusFinalEn.getFullYear()).slice(-2);
+					const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
+					const fechaNombre = fechaDelAno.nombre;
+					fecha = fechaNombre + "/" + ano;
+				}
 				const statusCodigo = reg.statusFinal.codigo;
-				const dia = statusFinalEn.getDate();
-				const mes = statusFinalEn.getMonth() + 1;
-				const ano = String(statusFinalEn.getFullYear()).slice(-2);
-				const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
-				const fechaNombre = fechaDelAno.nombre;
-				const fecha = fechaNombre + "/" + ano;
 				const statusNombre = reg.statusFinal.nombre;
 				const comentario = reg.comentario ? " - " + reg.comentario : "";
-				historialStatus[i] = {statusCodigo, fecha, statusNombre, comentario};
+				historialStatus[i] = {statusCodigo, statusNombre, fecha, comentario};
 			});
 
 			// Fin
