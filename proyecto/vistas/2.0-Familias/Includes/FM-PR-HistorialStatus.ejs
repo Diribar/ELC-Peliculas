@@ -1,8 +1,8 @@
 <section id="historial">
 	<% if (codigo == "corregirStatus") { %>
-		<!-- Status del Registro -->
+		<!-- Status del Producto o RCLV -->
 		<div id="statusRegistro" class="flexRow">
-			<input type="radio" name="opcion" value="registro">
+			<input type="radio" name="opcion" value="prodRclv">
 			<h3>Status del Registro:</h3>
 			<div id="<%= registro.statusRegistro.codigo %>" class="status">
 				<b><%= registro.statusRegistro.nombre %></b>
