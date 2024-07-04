@@ -18,7 +18,8 @@ const creadoPorUsuario = require("../../middlewares/porRegistro/creadoPorUsuario
 const motivoNecesario = require("../../middlewares/porRegistro/motivoNecesario");
 const comentNecesario = require("../../middlewares/porRegistro/comentNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const mismoStatus = require("../../middlewares/porRegistro/mismoStatus");
+const statusIgual = require("../../middlewares/porRegistro/statusIgual");
+const statusDistinto = require("../../middlewares/porRegistro/statusDistinto");
 
 // Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/porRegistro/permUserReg");
@@ -31,7 +32,7 @@ const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
-const cambioMotivo = [entValida, IDvalido, statusCorrecto, mismoStatus, aptoUsuario, permUserReg, usRolRevPERL];
+const cambioMotivo = [entValida, IDvalido, statusCorrecto, statusIgual, aptoUsuario, permUserReg, usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
