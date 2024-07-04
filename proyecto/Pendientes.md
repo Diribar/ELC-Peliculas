@@ -1,14 +1,5 @@
 Error DS
     - Post:
-        - Si se aprueba el del producto:
-            - Elimina el historial
-            - Si está en status mayor a aprobado,
-                - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
-                - Luego, quedará en manos del usuario seguir avanzando
-        - Si se aprueba el del historial, actualiza el status del producto
-        - En ambos casos, se actualiza la tabla de 'statusErrores'
-        - Redirecciona a Detalle, mantiene el origen
-
 Detalle
 - Ícono a la derecha:
     - Se fija que el status del producto esté alineado a 'statusErrores'
@@ -24,6 +15,10 @@ Detalle
     - Motivo:
         - sólo si está inactivo, el del historial
         - Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
+
+Historial
+    - Sólo el historial
+    - Ícono cambio de motivo (sólo si está en status inactivo, el del historial)
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
