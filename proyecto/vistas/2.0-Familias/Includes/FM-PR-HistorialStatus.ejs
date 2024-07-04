@@ -2,12 +2,19 @@
 	<h3>Historial de status:</h3>
 	<table>
 		<tbody>
+			<% let regAnt = {} %>
 			<% for (let reg of historialStatus) { %>
-			<tr>
-				<td class="fecha"><%= reg.fecha %></td>
-				<td>-</td>
-				<td id="<%= reg.statusCodigo %>" class="status"><b><%= reg.statusNombre %></b><em><%= reg.comentario %></em></td>
-			</tr>
+				<tr>
+					<td class="fecha"><%= reg.fecha %></td>
+					<td>-</td>
+					<td id="<%= reg.statusCodigo %>" class="status">
+						<b><%= reg.statusNombre %></b>
+						<% if (reg.comentario != regAnt.comentario) { %>
+							<em><%= reg.comentario %></em>
+						<% } %>
+					</td>
+				</tr>
+				<% regAnt = reg %>
 			<% } %>
 		</tbody>
 	</table>
