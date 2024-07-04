@@ -208,12 +208,14 @@ module.exports = {
 			// Variables
 			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const cola = "/?entidad=" + entidad + "&id=" + id;
 
 			// Actualiza el motivo en el último registro del historial
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Fin
-			return res.redirect("/" + familia + "/historial");
+			return res.redirect("/" + familia + "/historial" + cola);
 		},
+		statusForm: (req, res) => {},
 	},
 };

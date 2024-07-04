@@ -3,9 +3,6 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	statusForm: (req, res) => {},
-
-
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
