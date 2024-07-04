@@ -220,21 +220,22 @@ module.exports = {
 		statusForm: async (req, res) => {
 			// Variables
 			const tema = "correccion";
-			const codigo = "cambiarStatus";
-			const titulo = "Cambiar el Status";
+			const codigo = "corregirStatus";
+			const titulo = "Corregir el Status";
 			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
 
 			// Obtiene el historial
-			const historial = await procesos.historialDeStatus.obtiene(prodRclv);
+			const historial = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
 
 			// Datos para la vista
 			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Fin
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen},
 				...{entidad, id, registro: prodRclv, imgDerPers},
-				historial,
+				...{historial, familia},
 				cartelGenerico: true,
 			});
 		},
