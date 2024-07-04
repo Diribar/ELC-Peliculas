@@ -261,16 +261,18 @@ module.exports = {
 			});
 
 			// Completa el historial - rutina para los siguientes
-			let contador = 0;
-			while (contador < historialStatus.length) {
-				historialStatus = await this.agregaUnMov({historialStatus, prodRclv, contador});
-				contador++;
-			}
+			// let contador = 0;
+			// while (contador < historialStatus.length) {
+			// 	historialStatus = await this.agregaUnMov({historialStatus, prodRclv, contador});
+			// 	contador++;
+			// }
 
 			// Procesa los comentarios
 			historialStatus = historialStatus.map((n) => ({
 				...n,
-				comentario: (n.motivo ? n.motivo.descripcion : "") + (n.comentario ? ": " + n.comentario : ""),
+				comentario:
+					(n.motivo && [inactivar_id, inactivo_id].includes(n.statusFinal_id) ? n.motivo.descripcion : "") +
+					(n.comentario ? ": " + n.comentario : ""),
 			}));
 
 			// Fin
@@ -278,13 +280,13 @@ module.exports = {
 		},
 		agregaUnMov: async ({historialStatus, prodRclv, contador}) => {
 			// Variables
-			const {entidad, id: entidad_id, motivo} = prodRclv;
+			const {entidad, id: entidad_id} = prodRclv;
 			const {altaRevisadaEn, altaTermEn} = prodRclv;
 			const {statusSugeridoEn, statusRegistro_id} = prodRclv;
 			const regAct = historialStatus[contador];
 			const statusAct = regAct.statusFinal_id;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			let statusFinal_id, statusFinal;
+			let statusFinal_id, statusFinal, statusFinalEn;
 
 			// Obtiene el siguiente status
 			const buscarDelProdRCLV = contador == historialStatus.length - 1; // no hay un registro posterior en el historial
@@ -297,11 +299,12 @@ module.exports = {
 
 			// Algoritmos por status
 			if (statusAct == creado_id) {
+				statusFinalEn = altaRevisadaEn;
 				statusFinal_id =
-					altaRevisadaEn == statusSugeridoEn // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
+					String(altaRevisadaEn) == String(statusSugeridoEn) // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
 						? statusRegistro_id
 						: familia == "producto"
-						? altaRevisadaEn != altaTermEn // si la fecha no coincide, es porque fue aprobado
+						? String(altaRevisadaEn) != String(altaTermEn) // si la fecha no coincide, es porque fue aprobado
 							? creadoAprob_id
 							: inactivo_id // si la fecha coincide, es porque fue rechazado
 						: familia == "rclv"
@@ -310,7 +313,10 @@ module.exports = {
 							: inactivo_id
 						: null;
 			}
-			if (statusAct == creadoAprob_id) statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+			if (statusAct == creadoAprob_id) {
+				statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+				if (altaTermEn) statusFinalEn = altaTermEn;
+			}
 			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
 			if (statusAct == inactivar_id) statusFinal_id = statusSig != aprobado_id ? inactivo_id : aprobado_id;
 			if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
@@ -322,12 +328,18 @@ module.exports = {
 			const {codigo} = statusRegistros.find((n) => n.id == statusFinal_id);
 			statusFinal = {nombre, codigo};
 
+			if (statusFinal_id == statusSig && !statusFinalEn) {
+			}
+			statusFinalEn = buscarDelProdRCLV
+				? statusSugeridoEn // del producto
+				: historialStatus[contador + 1].statusOriginalEn; // del siguiente producto
+
 			// Arma el registro a agregarle al historial
 			const statusOriginal_id = regAct.statusFinal_id;
 			const statusOriginal = {nombre: regAct.statusFinal.nombre};
 			let sigReg = {
 				...{entidad, entidad_id},
-				...{statusOriginal_id, statusOriginal, statusFinal_id, statusFinal},
+				...{statusOriginal_id, statusOriginal, statusFinal_id, statusFinalEn, statusFinal},
 			};
 
 			// Agrega el registro al historial
