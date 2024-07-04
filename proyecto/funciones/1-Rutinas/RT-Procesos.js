@@ -647,10 +647,10 @@ module.exports = {
 			// Revisa en 'IN, RC, IO'
 			for (let ST in regsEnt) {
 				// Revisa en cada registro
-				for (let regEnt of regsEnt[ST]) {
+				for (let prodRclv of regsEnt[ST]) {
 					// Variables
-					const {entidad, id, statusSugeridoEn: fechaRef} = regEnt;
-					const nombre = comp.nombresPosibles(regEnt);
+					const {entidad, id, statusSugeridoEn: fechaRef} = prodRclv;
+					const nombre = comp.nombresPosibles(prodRclv);
 					const datos = {entidad, entidad_id: id, nombre, fechaRef};
 
 					// Si no lo encuentra en el historial, lo agrega a status
@@ -796,11 +796,11 @@ let nombres = async (reg, familia) => {
 	// Fórmulas
 	if (reg.entidad != "links") {
 		// Obtiene el registro
-		const regEnt = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
-		if (!regEnt) return {};
+		const prodRclv = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
+		if (!prodRclv) return {};
 
 		// Obtiene los nombres
-		nombre = comp.nombresPosibles(regEnt);
+		nombre = comp.nombresPosibles(prodRclv);
 		anchor =
 			"<a href='" +
 			urlHost +
@@ -816,16 +816,16 @@ let nombres = async (reg, familia) => {
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
-		const regEnt = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
-		if (!regEnt.id) return {};
+		const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
+		if (!link.id) return {};
 
 		// Obtiene el nombre
-		const asocProd = comp.obtieneDesdeCampo_id.asocProd(regEnt);
-		nombre = comp.nombresPosibles(regEnt[asocProd]);
+		const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+		nombre = comp.nombresPosibles(link[asocProd]);
 
 		// Obtiene el anchor
-		regEnt.href = regEnt.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + regEnt.id : "//" + regEnt.url;
-		anchor = "<a href='" + regEnt.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
+		link.href = link.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
+		anchor = "<a href='" + link.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 	}
 
 	// Fin

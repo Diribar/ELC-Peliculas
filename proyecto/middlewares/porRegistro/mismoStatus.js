@@ -10,17 +10,17 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Obtiene los registros
-	let regEnt = procsFM.cambioMotivo.regEnt({entidad, id});
+	let prodRclv = procsFM.cambioMotivo.prodRclv({entidad, id});
 	let ultHist = procsFM.cambioMotivo.ultHist({entidad, id});
-	[regEnt, ultHist] = await Promise.all([regEnt, ultHist]);
+	[prodRclv, ultHist] = await Promise.all([prodRclv, ultHist]);
 
 	// Compara los status
-	if (regEnt.statusRegistro_id != ultHist.statusFinal_id) {
+	if (prodRclv.statusRegistro_id != ultHist.statusFinal_id) {
 		// Variables
 		const {urlAnterior} = req.session;
 		const urlStatus = "/correccion/cambiar-status/?entidad=" + entidad + "&id=" + id;
 		const tituloStatus = "Ir a la vista de Cambio de Status";
-		const nombre = comp.nombresPosibles(regEnt);
+		const nombre = comp.nombresPosibles(prodRclv);
 
 		// Información
 		informacion = {
@@ -34,6 +34,6 @@ module.exports = async (req, res, next) => {
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else req.body = {...req.body, regEnt, ultHist};
+	else req.body = {...req.body, prodRclv, ultHist};
 	return next();
 };

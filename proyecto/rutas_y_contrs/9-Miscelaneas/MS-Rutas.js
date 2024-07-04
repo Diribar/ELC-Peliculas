@@ -6,7 +6,7 @@ const vista = require("./MS-ControlVista");
 
 // Middlewares - Varios
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
-const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
+const entidadRclv = require("../../middlewares/porRegistro/entidadRclv");
 
 // APIs
 router.get("/api/horario-inicial/", API.horarioInicial);

@@ -5,23 +5,23 @@ const vista = require("./FM-ControlVista");
 const API = require("./FM-ControlAPI");
 
 // Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-const usRolRevPERL = require("../../middlewares/filtrosPorUsuario/usRolRevPERL");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+const usRolRevPERL = require("../../middlewares/porUsuario/usRolRevPERL");
 
 // Middlewares - Específicos del registro
-const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
-const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
-const creadoPorUsuario = require("../../middlewares/filtrosPorRegistro/creadoPorUsuario");
-const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
-const comentNecesario = require("../../middlewares/filtrosPorRegistro/comentNecesario");
+const entValida = require("../../middlewares/porRegistro/entidadValida");
+const IDvalido = require("../../middlewares/porRegistro/IDvalido");
+const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
+const creadoPorUsuario = require("../../middlewares/porRegistro/creadoPorUsuario");
+const motivoNecesario = require("../../middlewares/porRegistro/motivoNecesario");
+const comentNecesario = require("../../middlewares/porRegistro/comentNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const mismoStatus = require("../../middlewares/filtrosPorRegistro/mismoStatus");
+const mismoStatus = require("../../middlewares/porRegistro/mismoStatus");
 
 // Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
+const permUserReg = require("../../middlewares/porRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 
@@ -65,7 +65,7 @@ router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.histo
 // Vistas - Correcciones
 router.get("/correccion/cambiar-motivo", cambioMotivo, capturaActivar, vista.correcciones.motivoForm);
 router.post("/correccion/cambiar-motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
-router.get("/correccion/status", vista.correcciones.statusForm);
+router.get("/correccion/cambiar-status", vista.correcciones.statusForm);
 
 // Vistas -  Historial
 router.get("/:familia/historial", vista.historialForm);

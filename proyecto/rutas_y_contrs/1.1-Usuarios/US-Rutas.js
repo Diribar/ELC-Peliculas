@@ -5,14 +5,14 @@ const API = require("./US-ControlAPI");
 const vista = require("./US-ControlVista");
 
 // Middlewares - Particulares
-const visitas = require("../../middlewares/filtrosPorUsuario/visitas");
-const statusCorrecto = require("../../middlewares/filtrosPorUsuario/usStatusCorrecto");
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const visitas = require("../../middlewares/porUsuario/visitas");
+const statusCorrecto = require("../../middlewares/porUsuario/usStatusCorrecto");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
-const intentosAltaMail = require("../../middlewares/filtrosPorUsuario/intentosAltaMail");
-const intentosLogin = require("../../middlewares/filtrosPorUsuario/intentosLogin");
-const intentosOlvidoContr = require("../../middlewares/filtrosPorUsuario/intentosOlvidoContr");
+const intentosAltaMail = require("../../middlewares/porUsuario/intentosAltaMail");
+const intentosLogin = require("../../middlewares/porUsuario/intentosLogin");
+const intentosOlvidoContr = require("../../middlewares/porUsuario/intentosOlvidoContr");
 
 // Middlewares - Consolidados
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
