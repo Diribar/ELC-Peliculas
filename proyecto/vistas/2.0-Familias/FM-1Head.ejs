@@ -23,7 +23,7 @@
 	<% if (["recuperar", "eliminar", "corregirStatus"].includes(codigo)) { %>
 		<!-- Recuperar, Eliminar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
-		<% if (codigo == "recuperar") { %>
+		<% if (["recuperar", "corregirStatus"].includes(codigo)) { %>
 			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
 		<% } %>
 	<% } %>
