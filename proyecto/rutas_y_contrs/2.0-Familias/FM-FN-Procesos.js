@@ -363,7 +363,7 @@ module.exports = {
 				}
 				const statusCodigo = reg.statusFinal.codigo;
 				const statusNombre = reg.statusFinal.nombre;
-				const comentario = reg.comentario ? " - " + reg.comentario : "";
+				const {comentario} = reg;
 				historialStatus[i] = {statusCodigo, statusNombre, fecha, comentario};
 			});
 
@@ -374,7 +374,7 @@ module.exports = {
 	cambioMotivo: {
 		prodRclv: async ({entidad, id}) => {
 			// Obtiene el motivo del producto
-			let include = [];
+			let include = ["statusRegistro"]; // se necesita para la vista de 'cambiarStatus'
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
 			const prodRclv = await baseDeDatos.obtienePorId(entidad, id, include);
