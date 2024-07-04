@@ -261,9 +261,6 @@ module.exports = {
 			// En ambos casos, se actualiza la tabla de 'statusErrores'
 			procsRT.revisaStatus.consolidado() // no hace falta el 'await'
 
-			// Actualiza el motivo en el último registro del historial
-			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
-
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
 		},
