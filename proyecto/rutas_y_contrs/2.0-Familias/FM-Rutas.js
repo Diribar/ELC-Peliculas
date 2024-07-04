@@ -67,7 +67,8 @@ router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.histo
 // Vistas - Correcciones
 router.get("/correccion/motivo", cambioMotivo, capturaActivar, vista.correcciones.motivoForm);
 router.post("/correccion/motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
-router.get("/correccion/status", cambioStatus, vista.correcciones.statusForm);
+router.get("/correccion/status", cambioStatus, capturaActivar, vista.correcciones.statusForm);
+router.post("/correccion/status", cambioStatus, capturaInactivar, vista.correcciones.statusGuardar);
 
 // Vistas -  Historial
 router.get("/:familia/historial", vista.historialForm);
