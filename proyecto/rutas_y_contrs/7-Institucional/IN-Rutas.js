@@ -5,9 +5,9 @@ const API = require("./IN-ControlAPI");
 const vista = require("./IN-ControlVista");
 
 // Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];

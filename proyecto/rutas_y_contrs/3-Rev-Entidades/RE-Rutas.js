@@ -8,27 +8,27 @@ const vistaRCLV = require("../2.2-RCLVs/RCLV-ControlVista");
 // Middlewares particulares
 const m = {
 	// Específicos de usuarios
-	usAltaTerm: require("../../middlewares/filtrosPorUsuario/usAltaTerm"),
-	usAptoInput: require("../../middlewares/filtrosPorUsuario/usAptoInput"),
-	usPenalizaciones: require("../../middlewares/filtrosPorUsuario/usPenalizaciones"),
-	usRolAutTablEnts: require("../../middlewares/filtrosPorUsuario/usRolAutTablEnts"),
-	usRolRevPERL: require("../../middlewares/filtrosPorUsuario/usRolRevPERL"),
-	usRolRevLinks: require("../../middlewares/filtrosPorUsuario/usRolRevLinks"),
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usRolAutTablEnts: require("../../middlewares/porUsuario/usRolAutTablEnts"),
+	usRolRevPERL: require("../../middlewares/porUsuario/usRolRevPERL"),
+	usRolRevLinks: require("../../middlewares/porUsuario/usRolRevLinks"),
 
 	// Específicos del registro
-	entValida: require("../../middlewares/filtrosPorRegistro/entidadValida"),
-	IDvalido: require("../../middlewares/filtrosPorRegistro/IDvalido"),
-	linkAltaBaja: require("../../middlewares/filtrosPorRegistro/linkAltaBaja"),
+	entValida: require("../../middlewares/porRegistro/entidadValida"),
+	IDvalido: require("../../middlewares/porRegistro/IDvalido"),
+	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
-	statusCorrecto: require("../../middlewares/filtrosPorRegistro/statusCorrecto"),
-	edicionAPI: require("../../middlewares/filtrosPorRegistro/edicionAPI"),
-	edicionVista: require("../../middlewares/filtrosPorRegistro/edicionVista"),
-	linksEnSemana: require("../../middlewares/filtrosPorRegistro/linksEnSemana"),
-	motivoNecesario: require("../../middlewares/filtrosPorRegistro/motivoNecesario"),
-	motivoOpcional: require("../../middlewares/filtrosPorRegistro/motivoOpcional"),
+	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
+	edicionAPI: require("../../middlewares/porRegistro/edicionAPI"),
+	edicionVista: require("../../middlewares/porRegistro/edicionVista"),
+	linksEnSemana: require("../../middlewares/porRegistro/linksEnSemana"),
+	motivoNecesario: require("../../middlewares/porRegistro/motivoNecesario"),
+	motivoOpcional: require("../../middlewares/porRegistro/motivoOpcional"),
 
 	// Temas de captura
-	permUserReg: require("../../middlewares/filtrosPorRegistro/permUserReg"),
+	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
 	capturaActivar: require("../../middlewares/varios/capturaActivar"),
 	capturaInactivar: require("../../middlewares/varios/capturaInactivar"),
 

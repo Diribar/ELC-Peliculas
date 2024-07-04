@@ -5,18 +5,18 @@ const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
 
 // Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 
 // Middlewares - Específicos del registro
-const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
-const linkIDvalido = require("../../middlewares/filtrosPorRegistro/linkIDvalido");
-const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
+const entValida = require("../../middlewares/porRegistro/entidadValida");
+const IDvalido = require("../../middlewares/porRegistro/IDvalido");
+const linkIDvalido = require("../../middlewares/porRegistro/linkIDvalido");
+const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
 
 // Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
+const permUserReg = require("../../middlewares/porRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
 
 // Middlewares - Otros

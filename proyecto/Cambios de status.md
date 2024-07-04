@@ -1,20 +1,20 @@
-Eliminar campo 'motivo_id' del regEnt
+Eliminar campo 'motivo_id' del prodRclv
 Eliminar campo 'DM' del statusHistorial
 
 1. Detectar errores
-- Cruce de historial con regEnt:
-    - Debe coincidir el status entre el último registro del historial y el regEnt. Si no coincide, se lo agrega como error DS
+- Cruce de historial con prodRclv:
+    - Debe coincidir el status entre el último registro del historial y el prodRclv. Si no coincide, se lo agrega como error DS
     - Si coincide y es 'inactivar', se lo agrega como IN
     - Si coincide y es 'recuperar', se lo agrega como RC
-- Cruce de regEnt con historial:
+- Cruce de prodRclv con historial:
     - Si está en un status > aprobado_id y no existe en el historial, se lo agrega como error DS
 
 2. Cambio de motivo
-    - Sólo se permite para regEnt 'inactivos' y sin error de status
+    - Sólo se permite para prodRclv 'inactivos' y sin error de status
     - Dos columnas:
         - Izquierda: actual del historial
         - Derecha: select con los motivos posibles
-    - Post: se actualiza en el regEnt y en el último registro de 'statusHistorial'
+    - Post: se actualiza en el prodRclv y en el último registro de 'statusHistorial'
         - motivo
         - usuario
         - fecha

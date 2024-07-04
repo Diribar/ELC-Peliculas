@@ -5,8 +5,8 @@ const API = require("./GR-ControlAPI");
 const vista = require("./GR-ControlVista");
 
 // Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usRolAutTablEnts = require("../../middlewares/filtrosPorUsuario/usRolAutTablEnts");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts");
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
 // API

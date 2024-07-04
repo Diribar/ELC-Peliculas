@@ -17,6 +17,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, motivos, entidades});
 	},
 	historialForm: async (req, res) => {
+		return res.send("Hola");
 		// Variables
 		const datos = await procesos.obtieneDatosForm(req);
 
@@ -185,7 +186,7 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
 			const titulo = "Cambiar el Motivo";
-			const {entidad, id, origen, regEnt, ultHist} = {...req.query, ...req.body};
+			const {entidad, id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// Datos para la vista
@@ -193,13 +194,13 @@ module.exports = {
 			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
 			const entidades = variables.entidades[petitFamilias];
 			const entsNombre = variables.entidades[petitFamilias + "Nombre"];
-			const imgDerPers = procesos.obtieneAvatar(regEnt).orig;
+			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Envía la info a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen},
-				...{familia, entidad, id, registro: regEnt, motivo, ultHist, imgDerPers},
+				...{familia, entidad, id, registro: prodRclv, motivo, ultHist, imgDerPers},
 				...{entidades, entsNombre, motivos},
 				cartelGenerico: true,
 			});
@@ -216,6 +217,26 @@ module.exports = {
 			// Fin
 			return res.redirect("/" + familia + "/historial" + cola);
 		},
-		statusForm: (req, res) => {},
+		statusForm: async (req, res) => {
+			// Variables
+			const tema = "correccion";
+			const codigo = "cambiarStatus";
+			const titulo = "Cambiar el Status";
+			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
+
+			// Obtiene el historial
+			const historial = await procesos.historialDeStatus.obtiene(prodRclv);
+
+			// Datos para la vista
+			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
+
+			// Fin
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo, titulo, origen},
+				...{entidad, id, registro: prodRclv, imgDerPers},
+				historial,
+				cartelGenerico: true,
+			});
+		},
 	},
 };

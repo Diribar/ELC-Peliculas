@@ -362,15 +362,15 @@ module.exports = {
 		},
 	},
 	cambioMotivo: {
-		regEnt: async ({entidad, id}) => {
+		prodRclv: async ({entidad, id}) => {
 			// Obtiene el motivo del producto
 			let include = [];
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
-			const regEnt = await baseDeDatos.obtienePorId(entidad, id, include);
+			const prodRclv = await baseDeDatos.obtienePorId(entidad, id, include);
 
 			// Fin
-			return regEnt;
+			return prodRclv;
 		},
 		ultHist: async ({entidad, id}) => {
 			// Obtiene el motivo del historial

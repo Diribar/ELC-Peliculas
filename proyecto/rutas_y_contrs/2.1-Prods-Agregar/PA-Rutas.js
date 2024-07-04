@@ -5,14 +5,14 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 // Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 const circuitoProdAgregar = require("../../middlewares/varios/circuitoProdAgregar");
-const usAutorizFA = require("../../middlewares/filtrosPorUsuario/usAutorizFA");
+const usAutorizFA = require("../../middlewares/porUsuario/usAutorizFA");
 
 // Middlewares - Específicos del registro
-const prodYaEnBD = require("../../middlewares/filtrosPorRegistro/prodYaEnBD");
+const prodYaEnBD = require("../../middlewares/porRegistro/prodYaEnBD");
 
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
