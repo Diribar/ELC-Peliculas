@@ -225,7 +225,7 @@ module.exports = {
 			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
 
 			// Obtiene el historial
-			const historial = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
+			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
 
 			// Datos para la vista
 			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
@@ -235,7 +235,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen},
 				...{entidad, id, registro: prodRclv, imgDerPers},
-				...{historial, familia},
+				...{historialStatus, familia},
 				cartelGenerico: true,
 			});
 		},
