@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 4/jul",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Vie. 5/jul",
+	"HoraUTC": "16:57",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 1/jul",
@@ -44,14 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-jul-24": {
-			"leyenda": "Hoy recordamos el comienzo de las Apariciones de María en Garabandal",
-			"entidad": "hechos",
-			"id": 57
-		},
 		"03-jul-24": {"leyenda": "Hoy recordamos Tomás apóstol", "entidad": "personajes", "id": 59},
 		"04-jul-24": {"leyenda": "Hoy recordamos Isabel de Portugal", "entidad": "personajes", "id": 117},
 		"05-jul-24": {},
-		"06-jul-24": {"leyenda": "Hoy recordamos María Goretti", "entidad": "personajes", "id": 92}
+		"06-jul-24": {"leyenda": "Hoy recordamos María Goretti", "entidad": "personajes", "id": 92},
+		"07-jul-24": {}
 	}
 }
