@@ -1,15 +1,39 @@
-<section>
-	<h3>Historial de status:</h3>
+<section id="historial">
+	<% if (codigo == "corregirStatus") { %>
+		<!-- Status del Registro -->
+		<div id="statusRegistro" class="flexRow">
+			<input type="radio" name="opcion" value="registro">
+			<h3>Status del Registro:</h3>
+			<div id="<%= registro.statusRegistro.codigo %>" class="status">
+				<b><%= registro.statusRegistro.nombre %></b>
+			</div>
+		</div>
+	<% } %>
+
+	<!-- Historial de status -->
+	<div class="flexRow">
+		<% if (codigo == "corregirStatus") { %>
+			<input type="radio" name="opcion" value="historial">
+		<% } %>
+		<h3>Historial de status</h3>
+	</div>
 	<table>
 		<tbody>
+			<% let regAnt = {} %>
 			<% for (let reg of historialStatus) { %>
-			<tr>
-				<td class="fecha"><%= reg.fecha %></td>
-				<td>-</td>
-				<td id="<%= reg.statusCodigo %>" class="status"><b><%= reg.statusNombre %></b><em><%= reg.comentario %></em></td>
-			</tr>
+				<tr>
+					<td class="fecha"><%= reg.fecha %></td>
+					<td>-</td>
+					<td id="<%= reg.statusCodigo %>" class="status">
+						<b><%= reg.statusNombre %></b>
+						<% if (reg.comentario && reg.comentario != regAnt.comentario) { %>
+							<span><em><%= reg.comentario %></em></span>
+						<% } %>
+					</td>
+				</tr>
+				<% regAnt = reg %>
 			<% } %>
 		</tbody>
 	</table>
 </section>
-<%- codigo != "eliminar" ? include("FM-PR-Comentario") : null %>
+<%- !["eliminar", "corregirStatus"].includes(codigo) ? include("FM-PR-Comentario") : null %>

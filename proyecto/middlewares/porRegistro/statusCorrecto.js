@@ -77,7 +77,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta.includes("/solapamiento/")
 			? activos_ids
 			: []
-		: baseUrl == "/correccion" && ruta == "/cambiar-motivo/"
+		: baseUrl == "/correccion" && ruta == "/motivo/"
 		? [inactivo_id]
 		: [];
 };

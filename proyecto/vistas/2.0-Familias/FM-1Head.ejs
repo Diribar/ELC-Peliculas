@@ -16,15 +16,15 @@
 		<!-- Inactivar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-ElegirMotivo.css">
 		<script src="/publico/javascript/2.0-Familias/FM-PR-ElegirMotivo.js"></script>
-	<% } %>
-	<% if (["recuperar", "eliminar"].includes(codigo)) { %>
-		<!-- Recuperar, Eliminar -->
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
-		<% if (codigo == "recuperar") { %>
-			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
+		<% if (codigo == "cambiarMotivo") { %>
+			<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-Corregir.css">
 		<% } %>
 	<% } %>
-	<% if (codigo == "cambiarMotivo") { %>
-		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-Corregir.css">
+	<% if (["recuperar", "eliminar", "corregirStatus"].includes(codigo)) { %>
+		<!-- Recuperar, Eliminar -->
+		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
+		<% if (["recuperar", "corregirStatus"].includes(codigo)) { %>
+			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
+		<% } %>
 	<% } %>
 <% } %>

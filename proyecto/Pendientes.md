@@ -1,13 +1,4 @@
 Error DS
-    - HTML:
-        - Columna 1: Status del registro
-        - Columna 2: Historial
-            - Se muestra el motivo
-            - Si existe un comentario, se muestra
-            - Oculta el motivo si se repite con el anterior
-            - Oculta el comentario, si se repite con el anterior
-            - Ícono cambio de motivo
-        - Columna 3: oculta (comentario)
     - Post:
         - Si se aprueba el del producto:
             - Elimina el historial
@@ -16,6 +7,7 @@ Error DS
                 - Luego, quedará en manos del usuario seguir avanzando
         - Si se aprueba el del historial, actualiza el status del producto
         - En ambos casos, se actualiza la tabla de 'statusErrores'
+        - Redirecciona a Detalle, mantiene el origen
 
 Detalle
 - Ícono a la derecha:

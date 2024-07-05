@@ -1,7 +1,7 @@
 /* Encabezado */
 #cuerpo #encabezado {
 	display: flex; flex-direction: row; justify-content: space-between; align-items: center;
-	border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);
+	background: var(--azul-oscuro); color: snow;
 	padding: 10px 20px;
 	#nombres {
 		max-width: 290px;
