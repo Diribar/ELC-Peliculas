@@ -180,7 +180,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion, titulo});
 	},
-	correcciones: {
+	correcs: {
 		motivoForm: async (req, res) => {
 			// Variables
 			const tema = "correccion";
