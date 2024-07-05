@@ -23,7 +23,7 @@
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
 			<% } %>
-		<% } else { %>
+		<% } else if (locals.revisorPERL) { %>
 			<!-- Corregir Status -->
 			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Corregir Status'"></i>
