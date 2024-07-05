@@ -236,34 +236,19 @@ module.exports = {
 			const {entidad, id: entidad_id, creadoPor_id, creadoEn} = prodRclv;
 			const condics = {entidad, entidad_id};
 			const include = ["statusOriginal", "statusFinal", "motivo"];
-			const ordenMovs = [
-				{stOrig_id: 1, stFinal_id: 6},
-				{stOrig_id: 4, stFinal_id: 6},
-				{stOrig_id: 6, stFinal_id: 5},
-			];
 
 			// Obtiene el historial de status
-			let historialStatus = await baseDeDatos.obtieneTodosPorCondicion("statusHistorial", condics, include);
-			historialStatus = historialStatus
-				.map((n) => ({
-					...n,
-					orden: ordenMovs.findIndex((m) => m.stOrig_id == n.statusOriginal_id && m.stFinal_id == n.statusFinal_id),
-				}))
-				.sort((a, b) => a.orden - b.orden)
-				.sort((a, b) => (a.statusOriginalEn < b.statusOriginalEn ? -1 : a.statusOriginalEn > b.statusOriginalEn ? 1 : 0));
+			let historialStatus = await baseDeDatos
+				.obtieneTodosPorCondicion("statusHistorial", condics, include)
+				.then((n) => n.sort((a, b) => a.statusFinalEn - b.statusFinalEn));
 
-			// Agrega el primer registro, con status 'creado_id'
-			historialStatus.unshift({
-				statusFinal_id: creado_id,
-				statusFinal: {nombre: "Creado", codigo: "creado"},
-				statusFinalPor_id: creadoPor_id,
-				statusFinalEn: creadoEn,
-			});
+			// Agrega los registros anteriores al historial
+			historialStatus = this.movimsAntsAlHist({prodRclv, historialStatus});
 
 			// Completa el historial - rutina para los siguientes
 			// let contador = 0;
 			// while (contador < historialStatus.length) {
-			// 	historialStatus = await this.agregaUnMov({historialStatus, prodRclv, contador});
+			// 	historialStatus = await this.movimsDelHist({historialStatus, prodRclv, contador});
 			// 	contador++;
 			// }
 
@@ -278,14 +263,90 @@ module.exports = {
 			// Fin
 			return this.formato(historialStatus);
 		},
-		agregaUnMov: async ({historialStatus, prodRclv, contador}) => {
+		movimsAntsAlHist: ({prodRclv, historialStatus}) => {
+			// Variables
+			const {
+				entidad,
+				id: entidad_id,
+				creadoPor_id,
+				creadoEn,
+				altaRevisadaEn,
+				altaTermEn,
+				statusSugeridoEn,
+				statusRegistro_id,
+			} = prodRclv;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			let statusOriginal_id, regHistorial;
+
+			// Agrega el primer registro con status 'creado_id'
+			let statusFinal_id = creado_id;
+			let statusFinal = {nombre: "Creado", codigo: "creado"};
+			let statusFinalPor_id = creadoPor_id;
+			let statusFinalEn = creadoEn;
+			historialStatus.unshift({statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn});
+
+			// Agrega los registros anteriores al historial
+			if (
+				statusRegistro_id > creado_id && // el prodRclv está en un status posterior al anterior
+				historialStatus[1].statusOriginal_id != statusFinal_id // el siguiente registro en el historial no continúa del anterior
+			) {
+				// statusFinalEn
+				statusOriginal_id = creado_id;
+
+				// statusFinal_id
+				statusFinal_id =
+					altaRevisadaEn.getTime() >= statusSugeridoEn.getTime() // si la fecha de revisión es mayor o igual que la sugerida => statusRegistro_id; debería ser 'igual', pero originalmente la revisión no impacta en la de sugerido
+						? statusRegistro_id
+						: altaTermEn // si se terminó de revisar, es porque fue aprobado
+						? familia == "producto"
+							? creadoAprob_id
+							: aprobado_id
+						: historialStatus.length > 1
+						? historialStatus[1].statusOriginal_id // si el historial tiene un registro siguiente, ese registro
+						: statusRegistro_id; // de lo contrario, el status del producto
+
+				// Si el movimiento ya corresponde al historial, interrumpe la función
+				if (statusFinal_id > aprobado_id) return historialStatus;
+
+				// Agrega el registro al historial
+				statusFinalEn = altaRevisadaEn;
+				statusFinal = FN.statusFinal(statusFinal_id);
+				regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
+				historialStatus.splice(1, 0, regHistorial);
+
+				// Agrega el registro con el siguiente status
+				if (
+					prodRclv.statusRegistro_id > creadoAprob_id && // el prodRclv está en un status posterior al anterior
+					historialStatus[1].statusOriginal_id != statusFinal_id && // el siguiente registro en el historial no continúa del anterior
+					statusFinal_id == creadoAprob_id // el registro anterior terminó en 'creadoAprob_id'
+				) {
+					// Si el movimiento ya corresponde al historial, interrumpe la función
+					statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+					if (statusFinal_id > aprobado_id) return historialStatus;
+
+					statusFinalEn = altaTermEn
+						? altaTermEn // si se completó el alta, esa fecha
+						: historialStatus.length > 2
+						? historialStatus[2].statusOriginalEn // si el historial tiene un registro siguiente, ese registro
+						: statusSugeridoEn; // de lo contrario, el status del producto
+
+					// Agrega el registro al historial
+					statusOriginal_id = creadoAprob_id;
+					statusFinal = FN.statusFinal(statusFinal_id);
+					regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
+					historialStatus.splice(2, 0, regHistorial);
+				}
+			}
+
+			// Fin
+			return historialStatus;
+		},
+		movimsDelHist: async ({historialStatus, prodRclv, contador}) => {
 			// Variables
 			const {entidad, id: entidad_id} = prodRclv;
-			const {altaRevisadaEn, altaTermEn} = prodRclv;
 			const {statusSugeridoEn, statusRegistro_id} = prodRclv;
 			const regAct = historialStatus[contador];
 			const statusAct = regAct.statusFinal_id;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			let statusFinal_id, statusFinal, statusFinalEn;
 
 			// Obtiene el siguiente status
@@ -297,26 +358,6 @@ module.exports = {
 			// Si el status coincide, interrumpe la función
 			if (statusAct == statusSig) return historialStatus;
 
-			// Algoritmos por status
-			if (statusAct == creado_id) {
-				statusFinalEn = altaRevisadaEn;
-				statusFinal_id =
-					String(altaRevisadaEn) == String(statusSugeridoEn) // si la fecha de revisión es la misma que la sugerida => statusRegistro_id
-						? statusRegistro_id
-						: familia == "producto"
-						? String(altaRevisadaEn) != String(altaTermEn) // si la fecha no coincide, es porque fue aprobado
-							? creadoAprob_id
-							: inactivo_id // si la fecha coincide, es porque fue rechazado
-						: familia == "rclv"
-						? statusSig == inactivar_id // Rclvs - si está en inactivar, pasó por aprobado, de lo contrario está o pasó por inactivo_id
-							? aprobado_id
-							: inactivo_id
-						: null;
-			}
-			if (statusAct == creadoAprob_id) {
-				statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
-				if (altaTermEn) statusFinalEn = altaTermEn;
-			}
 			if (statusAct == aprobado_id) statusFinal_id = inactivar_id;
 			if (statusAct == inactivar_id) statusFinal_id = statusSig != aprobado_id ? inactivo_id : aprobado_id;
 			if (statusAct == inactivo_id) statusFinal_id = recuperar_id;
@@ -889,5 +930,10 @@ let FN = {
 
 		// Fin
 		return {motivoDetalle};
+	},
+	statusFinal: (statusFinal_id) => {
+		const {nombre} = statusRegistros.find((n) => n.id == statusFinal_id);
+		const {codigo} = statusRegistros.find((n) => n.id == statusFinal_id);
+		return {nombre, codigo};
 	},
 };
