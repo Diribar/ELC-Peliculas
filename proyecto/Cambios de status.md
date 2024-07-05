@@ -50,10 +50,10 @@ Detalle
             - inactivar o recuperar, ícono revisión (sólo revisores)
             - else, ícono historial
 - Datos Breves:
-    - Status: el del historial
+    - Status: sólo se muestra si están alineados
     - Motivo:
-        - sólo si está inactivo, el del historial
-        - Se muestra el motivo, salvo para duplicado y otro, en los que se muestra el comentario
+        - Se muestra sólo si está inactivo
+        - Se muestra el motivo
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
