@@ -76,13 +76,13 @@ module.exports = {
 		const creadoPor_id = prodComb.creadoPor_id;
 		const iconoDL = "fa-circle-info";
 		const iconoDB = "fa-chart-line";
-		const ultHist = procsFM.cambioMotivo.ultHist({entidad, id});
+		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: prodComb});
 
 		// Va a la vista
 		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
-			...{entidad, id, familia: "producto", status_id, creadoPor_id, ultHist},
+			...{entidad, id, familia: "producto", status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
