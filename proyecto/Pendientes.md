@@ -1,7 +1,4 @@
 Detalle
-- Ícono a la derecha:
-    - Luego,
-        - Si hay errores, ícono error a cambiarStatus (sólo revisores)
 - Datos Breves:
     - Status: el del historial
     - Motivo:
