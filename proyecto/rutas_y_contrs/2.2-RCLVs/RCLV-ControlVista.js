@@ -57,11 +57,12 @@ module.exports = {
 		const iconoDL = "fa-video";
 		const iconoDB = "fa-child";
 		const ea = comp.obtieneDesdeEntidad.ea(entidad);
+		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: rclv});
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL, usuario},
-			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv},
+			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv, statusAlineado},
 			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre, ea},
 			...{iconosMobile: true, iconoDL, iconoDB},
 		});
@@ -94,7 +95,8 @@ module.exports = {
 				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 			// Variables específicas para personajes
-			if (personajes) apMars = await baseDeDatos.obtieneTodosConOrden("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
+			if (personajes)
+				apMars = await baseDeDatos.obtieneTodosConOrden("hechos", "anoComienzo").then((n) => n.filter((m) => m.ama));
 
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
