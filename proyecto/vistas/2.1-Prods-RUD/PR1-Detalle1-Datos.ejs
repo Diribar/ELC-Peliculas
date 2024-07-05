@@ -1,4 +1,4 @@
-<% if (registro.statusRegistro_id != inactivo_id) { %>
+<% if (activos_ids.includes(registro.statusRegistro_id)) { %>
 	<!-- Links -->
 	<div id="tituloInfoDetalle" class="relative">
 		<% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
