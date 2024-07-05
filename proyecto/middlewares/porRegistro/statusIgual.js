@@ -9,13 +9,9 @@ module.exports = async (req, res, next) => {
 	elLa = comp.letras.inicialMayus(elLa);
 	let informacion;
 
-	// Obtiene los registros
-	let prodRclv = procsFM.cambioMotivo.prodRclv({entidad, id});
-	let ultHist = procsFM.cambioMotivo.ultHist({entidad, id});
-	[prodRclv, ultHist] = await Promise.all([prodRclv, ultHist]);
-
 	// Compara los status
-	if (prodRclv.statusRegistro_id != ultHist.statusFinal_id) {
+	const {statusAlineado,prodRclv, ultHist} = await procsFM.statusAlineado({entidad, id});
+	if (!statusAlineado) {
 		// Variables
 		const {urlAnterior} = req.session;
 		const urlStatus = "/correccion/cambiar-status/?entidad=" + entidad + "&id=" + id;
