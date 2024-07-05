@@ -412,7 +412,7 @@ module.exports = {
 			return historialStatus;
 		},
 	},
-	statusAlineado: async function ({entidad, id, prodRclv}) {
+	statusAlineado: async ({entidad, id, prodRclv}) => {
 		// Obtiene el 'prodRclv'
 		if (!prodRclv) {
 			let include = ["statusRegistro"]; // se necesita para la vista de 'cambiarStatus'
@@ -887,20 +887,8 @@ let FN = {
 		const origen = familia == "producto" ? "P" : "R";
 		const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=DT" + origen;
 
-		// Genera el href
-		const href =
-			registro.statusRegistro_id == creado_id
-				? "/revision/" + familia + "/alta" + cola
-				: registro.statusRegistro_id == creadoAprob_id // sólo aplica para productos
-				? "/revision/" + familia + "/edicion" + cola
-				: registro.statusRegistro_id == inactivar_id
-				? "/revision/" + familia + "/inactivar" + cola
-				: registro.statusRegistro_id == recuperar_id
-				? "/revision/" + familia + "/recuperar" + cola
-				: "";
-
 		// Fin
-		return {codigo, valor: nombre, href};
+		return {codigo, valor: nombre};
 	},
 	usuarioCalidad: (usuario, prefijo) => {
 		// Contar los casos aprobados y rechazados
@@ -929,7 +917,7 @@ let FN = {
 		// Obtiene el motivo del último statusHistorial
 		const statusHistorial = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
 		const motivo = statusHistorial.motivo_id ? statusMotivos.find((n) => n.id == statusHistorial.motivo_id) : null;
-		const motivoDetalle = statusHistorial.comentario ? statusHistorial.comentario : motivo ? motivo.descripcion : null;
+		const motivoDetalle = motivo ? motivo.descripcion : null;
 
 		// Fin
 		return {motivoDetalle};
