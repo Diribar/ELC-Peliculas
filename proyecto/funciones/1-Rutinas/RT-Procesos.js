@@ -585,54 +585,77 @@ module.exports = {
 		return;
 	},
 	revisaStatus: {
+		consolidado: async function () {
+			// Variables
+			const ultsHist = await this.ultsRegsHistStatus();
+
+			// Elimina todos los registros de la tabla 'statusErrores'
+			await baseDeDatos.eliminaTodosPorCondicion("statusErrores", {id: {[Op.not]: null}});
+
+			// Historial vs registro de la entidad
+			const histRegEnt = await this.historialVsProdRclv(ultsHist);
+
+			// Registro de la entidad vs historial
+			const regEntHist = await this.prodRclvVsHistorial(ultsHist, histRegEnt);
+
+			// Consolida
+			const regsAgregar = [...histRegEnt, ...regEntHist];
+			regsAgregar.forEach((regAgregar, i) => baseDeDatos.agregaRegistro("statusErrores", {id: i + 1, ...regAgregar}));
+
+			// Fin
+			return;
+		},
 		ultsRegsHistStatus: async () => {
 			// Variables
 			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};
 
 			// Obtiene el último registro de status de cada producto
-			let statusHistorial = [];
+			let ultsHist = [];
 			await baseDeDatos
 				.obtieneTodosPorCondicion("statusHistorial", condicion)
+				.then((n) => n.sort((a, b) => b.statusFinalEn - a.statusFinalEn))
 				.then((n) =>
-					n.map((m) =>
-						!statusHistorial.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)
-							? statusHistorial.push(m)
-							: null
-					)
+					n.map((m) => {
+						if (!ultsHist.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id))
+							ultsHist.push(m);
+					})
 				); // retiene sólo el último de cada producto
 
 			// Fin
-			return statusHistorial;
+			return ultsHist;
 		},
-		historialVsRegEnt: async (ultsHist) => {
+		historialVsProdRclv: async (ultsHist) => {
 			// Variables
 			let regsAgregar = [];
 			if (!ultsHist.length) return regsAgregar;
 
-			// Rutina
+			// Rutina historial vs prodRclv
 			for (let ultHist of ultsHist) {
-				// Obtiene el prodRclv del historial
-				const {entidad, entidad_id, statusFinalEn} = ultHist;
-				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
+				// Obtiene los datos del historial
+				const {entidad, entidad_id, statusFinalEn, statusFinal_id} = ultHist;
 
 				// Obtiene los datos del prodRclv
+				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
 				const nombre = comp.nombresPosibles(prodRclv);
+				const {statusRegistro_id} = prodRclv;
+
+				// Asigna lo datos a guardar
 				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
 
 				// Valida el status
 				if (
-					ultHist.statusFinal_id != prodRclv.statusRegistro_id && // status distinto
-					(ultHist.statusFinal_id != creadoAprob_id || prodRclv.statusRegistro_id != aprobado_id) // descarta que la diferencia se deba a que se completó la revisión de la edición
+					statusFinal_id != statusRegistro_id && // status distinto
+					(statusFinal_id != creadoAprob_id || statusRegistro_id != aprobado_id) // descarta que la diferencia se deba a que se completó la revisión de la edición
 				)
 					regsAgregar.push({...datos, SD: true});
-				else if (ultHist.statusFinal_id == inactivar_id) regsAgregar.push({...datos, IN: true});
-				else if (ultHist.statusFinal_id == recuperar_id) regsAgregar.push({...datos, RC: true});
+				else if (statusFinal_id == inactivar_id) regsAgregar.push({...datos, IN: true});
+				else if (statusFinal_id == recuperar_id) regsAgregar.push({...datos, RC: true});
 			}
 
 			// Fin
 			return regsAgregar;
 		},
-		regEntVsHistorial: async (ultsHist, errores) => {
+		prodRclvVsHistorial: async (ultsHist, errores) => {
 			// Variables
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
 			let regsAgregar = [];

@@ -10,13 +10,21 @@ module.exports = async (req, res, next) => {
 
 	// Obtiene el statusActual
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
+	const {statusRegistro_id} = registro;
 	const statusActual =
 		entidad == "usuarios"
 			? statusRegistrosUs.find((n) => n.id == registro.statusRegistro_id)
 			: statusRegistros.find((n) => n.id == registro.statusRegistro_id);
 
-	// Verifica si el registro está en un status incorrecto
-	if (!statusEsperados_id.includes(statusActual.id)) {
+	// Obtiene un registro del historial
+	const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
+
+	// Acciones si el status del registro no es el esperado
+	if (
+		!statusEsperados_id.includes(statusActual.id) && // el status del registro no es el esperado
+		statusRegistro_id > aprobado_id && // el status del registro es mayor que aprobado
+		!!regHistorial // existe historial
+	) {
 		// Variables para el mensaje
 		const statusActualNombre = statusActual.nombre;
 

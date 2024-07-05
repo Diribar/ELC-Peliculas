@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 	[prodRclv, ultHist] = await Promise.all([prodRclv, ultHist]);
 
 	// Compara los status
-	if (prodRclv.statusRegistro_id == ultHist.statusFinal_id) {
+	if (ultHist && prodRclv.statusRegistro_id == ultHist.statusFinal_id) {
 		// Variables
 		const {urlAnterior} = req.session;
 		const nombre = comp.nombresPosibles(prodRclv);
@@ -31,6 +31,6 @@ module.exports = async (req, res, next) => {
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else req.body = {...req.body, prodRclv};
+	else req.body = {...req.body, prodRclv, ultHist};
 	return next();
 };

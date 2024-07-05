@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const procesos = require("./FM-FN-Procesos");
+const procsRT = require("../../funciones/1-Rutinas/RT-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {
@@ -237,6 +238,31 @@ module.exports = {
 				...{historialStatus, familia},
 				cartelGenerico: true,
 			});
+		},
+		statusGuardar: async (req, res) => {
+			// Variables
+			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			let destino;
+
+			// Acciones si se aprueba el status del producto
+			if (opcion == "prodRclv") {
+				await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclv'
+				if (prodRclv.statusRegistro_id > aprobado_id) destino = "inactivar"; // establece que se redireccione a 'inactivar'
+			}
+
+			// Acciones si se aprueba el status del historial
+			if (opcion == "historial") {
+				await baseDeDatos.actualizaPorId(entidad, id, {statusRegistro_id: ultHist.statusFinal_id});
+				destino = "detalle";
+			}
+
+			// En ambos casos, se actualiza la tabla de 'statusErrores'
+			procsRT.revisaStatus.consolidado() // no hace falta el 'await'
+
+			// Fin
+			return res.redirect("/" + familia + "/" + destino + cola);
 		},
 	},
 };
