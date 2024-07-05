@@ -2,7 +2,6 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
-const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -77,12 +76,13 @@ module.exports = {
 		const creadoPor_id = prodComb.creadoPor_id;
 		const iconoDL = "fa-circle-info";
 		const iconoDB = "fa-chart-line";
+		const ultHist = procsFM.cambioMotivo.ultHist({entidad, id});
 
 		// Va a la vista
 		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
-			...{entidad, id, familia: "producto", status_id, creadoPor_id},
+			...{entidad, id, familia: "producto", status_id, creadoPor_id, ultHist},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
