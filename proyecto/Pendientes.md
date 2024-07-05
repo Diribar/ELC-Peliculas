@@ -1,13 +1,7 @@
 Detalle
 - Ícono a la derecha:
-    - Se fija que el status del producto esté alineado a 'statusErrores'
-        - Inactivar/Recuperar: en ese campo de 'statusErrores'
-        - else, no en statusErrores
     - Luego,
-        - Si hay errores, ícono error (sólo revisores)
-        - else,
-            - inactivar o recuperar, ícono revisión (sólo revisores)
-            - else, ícono historial
+        - Si hay errores, ícono error a cambiarStatus (sólo revisores)
 - Datos Breves:
     - Status: el del historial
     - Motivo:

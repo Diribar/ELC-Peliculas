@@ -41,7 +41,7 @@ Eliminar campo 'DM' del statusHistorial
 
 Detalle
 - Ícono a la derecha:
-    - Se fija que el status del producto esté alineado a 'statusErrores'
+    - Se fija que el status del producto esté alineado al historial
         - Inactivar/Recuperar: en ese campo de 'statusErrores'
         - else, no en statusErrores
     - Luego,
