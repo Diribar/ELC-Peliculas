@@ -145,6 +145,7 @@ module.exports = {
 					? procesos.altaEdicForm.opcsLeyNombre({...dataEntry, personajes, hechos})
 					: [];
 			const ayudas = procesos.altaEdicForm.ayudas(entidad);
+			const statusAlineado = codigo == "rclv/alta";
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
@@ -152,7 +153,7 @@ module.exports = {
 				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
-				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre},
+				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
 				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 				estrucPers: true,
 			});
