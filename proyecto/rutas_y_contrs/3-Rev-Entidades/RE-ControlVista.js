@@ -98,7 +98,6 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
