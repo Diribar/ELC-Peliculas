@@ -1,5 +1,3 @@
-Error DS
-    - Post:
 Detalle
 - Ícono a la derecha:
     - Se fija que el status del producto esté alineado a 'statusErrores'
