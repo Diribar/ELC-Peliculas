@@ -28,6 +28,7 @@
 	<% const {motivoDetalle} = bloqueDer.registro.slice(-1)[0] %>
 	<% for (campo of bloqueDer.registro) { %>
 		<% if (!campo.titulo) continue %>
+		<% if (campo.titulo.startsWith("Status") && !locals.statusAlineado) continue %>
 		<div <% if (campo.titulo.startsWith("Status")) { %>id="<%= campo.codigo %>" class="status"<% } %>>
 			<b><%= campo.titulo %>:</b>
 			<span><%= campo.valor %></span>
