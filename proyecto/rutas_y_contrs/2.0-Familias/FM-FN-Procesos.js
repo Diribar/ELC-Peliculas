@@ -424,7 +424,7 @@ module.exports = {
 			return prodRclv;
 		},
 		ultHist: async ({entidad, id}) => {
-			// Obtiene el motivo del historial
+			// Variables
 			const condicion = {
 				entidad,
 				entidad_id: id,
