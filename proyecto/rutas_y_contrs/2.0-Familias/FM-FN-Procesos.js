@@ -412,30 +412,33 @@ module.exports = {
 			return historialStatus;
 		},
 	},
-	cambioMotivo: {
-		prodRclv: async ({entidad, id}) => {
-			// Obtiene el motivo del producto
+	statusAlineado: async function ({entidad, id, prodRclv}) {
+		// Obtiene el 'prodRclv'
+		if (!prodRclv) {
 			let include = ["statusRegistro"]; // se necesita para la vista de 'cambiarStatus'
 			if (entidad == "capitulos") include.push("coleccion");
 			if (entidad == "colecciones") include.push("capitulos");
-			const prodRclv = await baseDeDatos.obtienePorId(entidad, id, include);
+			prodRclv = await baseDeDatos.obtienePorId(entidad, id, include);
+		} else id = prodRclv.id;
+		const {statusRegistro_id} = prodRclv;
 
-			// Fin
-			return prodRclv;
-		},
-		ultHist: async ({entidad, id}) => {
-			// Variables
-			const condicion = {
-				entidad,
-				entidad_id: id,
-				[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-			};
+		// Obtiene el 'ultHist'
+		const condicion = {
+			entidad,
+			entidad_id: id,
+			[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+		};
+		const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+		const statusFinal_id = ultHist ? ultHist.statusFinal_id : null;
 
-			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+		// Compara los status
+		const statusAlineado =
+			(statusRegistro_id == creado_id && !ultHist) || // creado
+			(aprobados_ids.includes(statusRegistro_id) && (!ultHist || aprobados_ids.includes(statusRegistro_id))) || // creadoAprob, aprobado
+			([...inacRecup_ids, inactivo_id].includes(statusRegistro_id) && statusRegistro_id == statusFinal_id); // inactivar, recuperar, inactivo
 
-			// Fin
-			return ultHist;
-		},
+		// Fin
+		return {statusAlineado, prodRclv, ultHist};
 	},
 
 	grupos: {
