@@ -1,6 +1,6 @@
 Historial
     - Sólo el historial
-    - Ícono cambio de motivo (sólo si está en status inactivo, el del historial)
+    - Ícono cambio de motivo (sólo si está en status inactivo)
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
