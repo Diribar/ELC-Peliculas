@@ -31,9 +31,10 @@
 		<% } %>
 	<% } %>
 
-	<% condicRclvCrud = tema == "rclvCrud" && (codigo == "agregar" || codigo == "edicion") %>
+	<% condicRclvCrud = tema == "rclvCrud" && (["agregar", "edicion"].includes(codigo)) %>
+	<% condicRevision = tema == "revisionEnts" && codigo == "rclv/alta" %>
 	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
-	<% if (condicRclvCrud || condicRevSolapam) { %>
+	<% if (condicRclvCrud || condicRevision || condicRevSolapam) { %>
 		<!-- CRUD - Aprobar -->
 		<button type="submit" autofocus class="inactivo">
 			<i class="fa-solid fa-circle-check" title="Guardar"></i>
