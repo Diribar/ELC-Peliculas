@@ -42,7 +42,9 @@
 			<% } %>
 		<% } %>
 	<% } %>
+	<!-- Cambiar el motivo -->
 	<i class="fa-regular fa-circle-question" title="Cambiar el motivo"></i>
+
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>
 		<!-- Link para Revisión -->
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (ORIGEN_DIF_DT.includes("TE") ? ORIGEN_DIF_DT.replace("TE","RL") : ORIGEN_DIF_DT) %>">
