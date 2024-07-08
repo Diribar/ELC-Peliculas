@@ -10,7 +10,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
-		const userID = req.session.usuario.id;
+		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 		let comentario;
 
 		// Obtiene el tema y código
@@ -53,7 +53,7 @@ module.exports = {
 		const {titulo, entidadNombre} = this.titulo({entidad, codigo});
 		const bloqueDer = await this.bloques.consolidado({tema, familia, entidad, original});
 		const imgDerPers = this.obtieneAvatar(original).orig;
-		const cartelGenerico = true;
+		const cartelGenerico = codigo != "historial";
 
 		// Fin
 		return {
@@ -443,11 +443,7 @@ module.exports = {
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
 		// Variables
-		const pppRegs = await baseDeDatos.obtieneTodosPorCondicion(
-			"pppRegistros",
-			{usuario_id: userID},
-			"detalle"
-		);
+		const pppRegs = userID ? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID}, "detalle") : [];
 		for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 		// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
@@ -480,9 +476,9 @@ module.exports = {
 			// Completa la información de cada producto dentro del tipo de producto
 			const prodsPorEnt = RCLV[entidad].map((registro) => {
 				// Causas para descartar el registro
-				if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
 				if (inactivos_ids.includes(registro.statusRegistro_id)) return null; // status inactivar o inactivo
-				if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id == userID) return null; // recuperar
+				if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
+				if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id != userID) return null; // status recuperar
 
 				// Variables
 				const avatar = this.obtieneAvatar(registro).edic;
@@ -526,7 +522,6 @@ module.exports = {
 		// Fin
 		return prodsDelRCLV;
 	},
-
 
 	grupos: {
 		pers: (camposDA) => {
