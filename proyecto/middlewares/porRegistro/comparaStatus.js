@@ -42,8 +42,10 @@ module.exports = async (req, res, next) => {
 		};
 	}
 
-	// Fin
+	// Si hubo errores, lo avisa
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else req.body = {...req.body, prodRclv, ultHist};
+
+	// Fin
+	else req.body = {...req.body, prodRclv, ultHist, statusAlineado};
 	return next();
 };
