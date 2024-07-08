@@ -246,7 +246,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
 
 			// Acciones si se aprueba el status del producto
