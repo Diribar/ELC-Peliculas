@@ -1,6 +1,3 @@
-Historial
-    - Sólo si está en status inactivo y para revisores: ícono cambio de motivo
-
 Recuperar
 - Post: toma el motivo del movimiento anterior
 

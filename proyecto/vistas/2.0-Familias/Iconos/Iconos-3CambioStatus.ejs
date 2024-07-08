@@ -4,14 +4,14 @@
 	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
 	<% condicHistorial = [...aprobados_ids, inactivo_id].includes(locals.status_id) %>
 
-	<% if (statusAlineado && condicHistorial && condicRegistro && condicDetalle) { %>
-		<!-- Historial -->
+	<% if (locals.statusAlineado && condicHistorial && condicRegistro && condicDetalle) { %>
+		<!-- Ir al historial -->
 		<a href="<%= '/' + familia + '/historial/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ir al historial"></i>
 		</a>
 	<% } %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
-		<% if (statusAlineado) { %>
+		<% if (locals.statusAlineado) { %>
 			<% if (locals.status_id == creado_id && locals.creadoPor_id == usuario.id) { %>
 				<!-- Eliminarlo definitivamente: Status creado y si fue creado por el usuario -->
 				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
@@ -25,10 +25,24 @@
 					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
 				</a>
 			<% } %>
-		<% } else if (!statusAlineado) { %>
+		<% } else if (!locals.statusAlineado && locals.revisorPERL) { %>
 			<!-- Corregir Status -->
 			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Corregir Status'"></i>
+			</a>
+		<% } %>
+	<% } %>
+	<% if (condicUsuario && condicRegistro && codigo == "historial" ) { %>
+		<% if (locals.status_id == aprobado_id) { %>
+			<!-- Inactivar -->
+			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
+		<% } %>
+		<% if (locals.status_id == inactivo_id) { %>
+			<!-- Recuperar -->
+			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 		<% } %>
 	<% } %>
