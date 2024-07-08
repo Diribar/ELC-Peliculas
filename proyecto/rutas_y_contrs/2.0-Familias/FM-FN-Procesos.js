@@ -917,7 +917,8 @@ let FN = {
 
 		// Obtiene el motivo del último statusHistorial
 		const statusHistorial = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
-		const motivo = statusHistorial.motivo_id ? statusMotivos.find((n) => n.id == statusHistorial.motivo_id) : null;
+		const motivo =
+			statusHistorial && statusHistorial.motivo_id ? statusMotivos.find((n) => n.id == statusHistorial.motivo_id) : null;
 		const motivoDetalle = motivo ? motivo.descripcion : null;
 
 		// Fin
