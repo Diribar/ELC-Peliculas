@@ -20,8 +20,8 @@
 		</a>
 	<% } %>
 	<% if (terminaste || detalle) { %>
-		<!-- Edición, Links y Calificar -->
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
+			<!-- Edición, Links y Calificar - con link -->
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
@@ -34,6 +34,7 @@
 				</a>
 			<% } %>
 		<% } else { %>
+			<!-- Edición, Links y Calificar - inactivos -->
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			<% if (familia == "producto") { %>
 				<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
@@ -41,6 +42,7 @@
 			<% } %>
 		<% } %>
 	<% } %>
+	<i class="fa-regular fa-circle-question" title="Cambiar el motivo"></i>
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>
 		<!-- Link para Revisión -->
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (ORIGEN_DIF_DT.includes("TE") ? ORIGEN_DIF_DT.replace("TE","RL") : ORIGEN_DIF_DT) %>">
