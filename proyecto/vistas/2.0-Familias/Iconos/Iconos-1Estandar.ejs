@@ -3,7 +3,7 @@
 <% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
 <% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
-<% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? !!ORIGEN : '' %>
+<% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
 <div id="estandar" class="iconos">
 	<% if (locals.origen && (!detalle || !["DTP", "DTR"].includes(origen))) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
