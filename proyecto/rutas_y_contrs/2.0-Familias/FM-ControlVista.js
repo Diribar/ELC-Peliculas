@@ -257,7 +257,8 @@ module.exports = {
 
 			// Acciones si se aprueba el status del historial
 			if (opcion == "historial") {
-				await baseDeDatos.actualizaPorId(entidad, id, {statusRegistro_id: ultHist.statusFinal_id});
+				const datos = {statusRegistro_id: ultHist.statusFinal_id, statusSugeridoEn: ultHist.statusFinalEn};
+				await baseDeDatos.actualizaPorId(entidad, id, datos);
 				destino = "detalle";
 			}
 
