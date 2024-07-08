@@ -23,7 +23,9 @@ module.exports = {
 
 		// Obtiene datos para la vista
 		const ayudasTitulo =
-			datos.tema == "revisionEnts"
+			datos.codigo == "historial"
+				? false
+				: datos.tema == "revisionEnts"
 				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
 				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
@@ -259,7 +261,7 @@ module.exports = {
 			}
 
 			// En ambos casos, se actualiza la tabla de 'statusErrores'
-			procsRT.revisaStatus.consolidado() // no hace falta el 'await'
+			procsRT.revisaStatus.consolidado(); // no hace falta el 'await'
 
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
