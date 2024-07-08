@@ -86,6 +86,7 @@ module.exports = {
 			eliminar: "Eliminar",
 			revisionInactivar: "Revisión de Inactivar",
 			revisionRecuperar: "Revisión de Recuperar",
+			historial:"Historial de"
 		};
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
@@ -288,7 +289,7 @@ module.exports = {
 			// Agrega los registros anteriores al historial
 			if (
 				statusRegistro_id > creado_id && // el prodRclv está en un status posterior al anterior
-				historialStatus[1].statusOriginal_id != statusFinal_id // el siguiente registro en el historial no continúa del anterior
+				(historialStatus.length == 1 || historialStatus[1].statusOriginal_id != statusFinal_id) // el siguiente registro en el historial no continúa del anterior
 			) {
 				// statusFinalEn
 				statusOriginal_id = creado_id;
