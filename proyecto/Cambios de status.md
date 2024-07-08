@@ -36,7 +36,7 @@
         - Si se aprueba el del historial, actualiza el status del producto
         - En ambos casos, se actualiza la tabla de 'statusErrores'
 
-Detalle
+4. Detalle
 - Ícono a la derecha:
     - Se fija que el status del producto esté alineado al historial
         - Si hay errores, ícono error (sólo revisores)
@@ -48,6 +48,10 @@ Detalle
     - Motivo:
         - Se muestra sólo si está inactivo
         - Se muestra el motivo
+
+Historial
+    - Sólo el historial
+    - Sólo si está en status inactivo y para revisores: ícono cambio de motivo
 
 Recuperar
 - Post: toma el motivo del movimiento anterior
