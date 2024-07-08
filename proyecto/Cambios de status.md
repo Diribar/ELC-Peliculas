@@ -1,6 +1,3 @@
-Eliminar campo 'motivo_id' del prodRclv
-Eliminar campo 'DM' del statusHistorial
-
 1. Detectar errores
 - Cruce de historial con prodRclv:
     - Debe coincidir el status entre el último registro del historial y el prodRclv. Si no coincide, se lo agrega como error DS
@@ -42,13 +39,10 @@ Eliminar campo 'DM' del statusHistorial
 Detalle
 - Ícono a la derecha:
     - Se fija que el status del producto esté alineado al historial
-        - Inactivar/Recuperar: en ese campo de 'statusErrores'
-        - else, no en statusErrores
-    - Luego,
         - Si hay errores, ícono error (sólo revisores)
-        - else,
-            - inactivar o recuperar, ícono revisión (sólo revisores)
-            - else, ícono historial
+        - Si no hay errores,
+            - inactivar o recuperar, y revisores: ícono revisión
+            - demás: ícono historial
 - Datos Breves:
     - Status: sólo se muestra si están alineados
     - Motivo:
