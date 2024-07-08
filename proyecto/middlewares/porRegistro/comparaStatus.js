@@ -6,9 +6,10 @@ module.exports = async (req, res, next) => {
 	const {entidad, id} = req.query;
 	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	elLa = comp.letras.inicialMayus(elLa);
 	const statusDistinto = req.path == "/correccion/status/";
-	const statusIgual = req.path == "/correccion/motivo/";
+	const statusIgual = ["/correccion/motivo/", "/" + familia + "/historial/"].includes(req.path);
 	let informacion;
 
 	// Compara los status
@@ -44,7 +45,6 @@ module.exports = async (req, res, next) => {
 
 	// Si hubo errores, lo avisa
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-
 	// Fin
 	else req.body = {...req.body, prodRclv, ultHist, statusAlineado};
 	return next();
