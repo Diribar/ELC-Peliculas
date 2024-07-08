@@ -2,14 +2,15 @@
 	<% condicUsuario = locals.usuario && locals.usuario.statusRegistro_id == perennes_id %>
 	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
 	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
-	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
-		<% if (statusAlineado) { %>
-			<% if (aprobados_ids.includes(locals.status_id) || locals.status_id == inactivo_id && codigo != "eliminar") { %>
-				<!-- Historial -->
-				<a href="<%= '/' + familia + '/historial/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-					<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ir al historial"></i>
-				</a>
-			<% } %>
+
+	<% if (statusAlineado) { %>
+		<% if (aprobados_ids.includes(locals.status_id) || locals.status_id == inactivo_id && codigo != "eliminar") { %>
+			<!-- Historial -->
+			<a href="<%= '/' + familia + '/historial/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ir al historial"></i>
+			</a>
+		<% } %>
+		<% if (condicUsuario && condicRegistro && condicDetalle) { %>
 			<% if ([...inacRecup_ids, creado_id].includes(locals.status_id) && locals.revisorPERL) { %>
 				<!-- Revisar: Alta, Inactivar, Recuperar -->
 				<% const url = status_id == creado_id ? "alta" : status_id == inactivar_id ? "inactivar" : "recuperar" %>
@@ -23,12 +24,12 @@
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
 			<% } %>
-		<% } else if (locals.revisorPERL) { %>
-			<!-- Corregir Status -->
-			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Corregir Status'"></i>
-			</a>
 		<% } %>
+	<% } else if (locals.revisorPERL) { %>
+		<!-- Corregir Status -->
+		<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Corregir Status'"></i>
+		</a>
 	<% } %>
 
 	<% condicRclvCrud = tema == "rclvCrud" && (["agregar", "edicion"].includes(codigo)) %>

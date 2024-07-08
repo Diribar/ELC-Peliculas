@@ -21,8 +21,8 @@ module.exports = {
 		// Obtiene RCLV y sus productos
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
 		let rclv = {...original, ...edicion, id};
-		rclv = await procesos.detalle.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
-		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(rclv, userID);
+		rclv = await procesos.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
+		const prodsDelRCLV = await procsFM.prodsDelRCLV(rclv, userID);
 
 		// Ayuda para el titulo
 		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."];

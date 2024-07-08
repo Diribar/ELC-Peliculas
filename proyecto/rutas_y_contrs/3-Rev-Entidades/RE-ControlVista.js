@@ -401,7 +401,7 @@ module.exports = {
 			}
 
 			// Más variables
-			const prodsDelRCLV = familia == "rclv" ? await procsRCLV.detalle.prodsDelRCLV(original, userID) : null;
+			const prodsDelRCLV = familia == "rclv" ? await procsFM.prodsDelRCLV(original, userID) : null;
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
 				registro: await procsFM.bloques.registro({...original, entidad}),

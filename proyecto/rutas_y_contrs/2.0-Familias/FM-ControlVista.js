@@ -19,7 +19,7 @@ module.exports = {
 	},
 	historialForm: async (req, res) => {
 		// Variables
-		const {statusAlineado} = req.body;
+		const {statusAlineado, prodRclv} = req.body;
 		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
@@ -30,9 +30,11 @@ module.exports = {
 				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
 				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
+		const {usuario} = req.session;
+		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 
 		// Render del formulario
-		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus, statusAlineado});
+		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus, statusAlineado, revisorPERL, prodRclv});
 	},
 	inacRecup_guardar: async (req, res) => {
 		//  Variables
