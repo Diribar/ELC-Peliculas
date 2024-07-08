@@ -16,6 +16,7 @@ ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP FOREIGN KEY rclv_5epocas_del_an
 ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP COLUMN motivo_id;
 
 RENAME TABLE c19353_elc.cam_hist_status TO c19353_elc.st_historial;
+ALTER TABLE c19353_elc.st_historial MODIFY COLUMN statusFinalEn datetime DEFAULT utc_timestamp() NOT NULL;
 RENAME TABLE c19353_elc.cam_hist_edics TO c19353_elc.edics_historial;
 RENAME TABLE c19353_elc.cam_motivos_edics TO c19353_elc.edics_motivos;
 RENAME TABLE c19353_elc.cam_motivos_status TO c19353_elc.st_motivos;
