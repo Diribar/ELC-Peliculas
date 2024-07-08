@@ -86,7 +86,7 @@ module.exports = {
 			eliminar: "Eliminar",
 			revisionInactivar: "Revisión de Inactivar",
 			revisionRecuperar: "Revisión de Recuperar",
-			historial:"Historial de"
+			historial: "Historial de",
 		};
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
@@ -435,7 +435,7 @@ module.exports = {
 		// Compara los status
 		const statusAlineado =
 			(statusRegistro_id == creado_id && !ultHist) || // creado
-			(aprobados_ids.includes(statusRegistro_id) && (!ultHist || aprobados_ids.includes(statusRegistro_id))) || // creadoAprob, aprobado
+			(aprobados_ids.includes(statusRegistro_id) && (!ultHist || aprobados_ids.includes(statusFinal_id))) || // creadoAprob, aprobado
 			([...inacRecup_ids, inactivo_id].includes(statusRegistro_id) && statusRegistro_id == statusFinal_id); // inactivar, recuperar, inactivo
 
 		// Fin
