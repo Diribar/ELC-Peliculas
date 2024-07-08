@@ -77,7 +77,7 @@
 <% condicCrud = tema == "fmCrud" %>
 <% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
 <% condicRevRech = tema == "revisionEnts" && codigo == "rechazar" %>
-<% if (condicCrud || condicRevRech || tema == "correccion") {  %>
+<% if (condicCrud && codigo != "historial" || condicRevRech || tema == "correccion") {  %>
 	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<% if (condicCrud && !condicCrudEliminar || condicRevRech || tema == "correccion") {  %>
 			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
@@ -90,4 +90,3 @@
 		<% } %>
 	</button>
 <% } %>
-
