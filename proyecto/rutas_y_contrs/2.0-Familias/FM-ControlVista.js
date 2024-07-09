@@ -48,6 +48,10 @@ module.exports = {
 			statusRegistro_id: statusFinal_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
+		else if ((codigo = "recuperar")) {
+			const ultHist = await procesos.obtieneUltHist(entidad, id);
+			if (ultHist) datos.motivo_id = ultHist.motivo_id;
+		}
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
