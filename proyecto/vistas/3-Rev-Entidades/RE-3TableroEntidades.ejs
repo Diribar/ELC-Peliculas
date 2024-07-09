@@ -7,7 +7,7 @@
 <section id="familias">
 	<div id="primeraColumna" class="columna">
 		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
-		<% if (revisorPERL && prodsRclvs.SD.length) { %>
+		<% if (revisorPERL && prodsRclvs.ST.length) { %>
 			<!-- PRODUCTOS Y RCLVS -->
 			<div class="bloques">
 				<!-- Título y ayuda -->
@@ -21,7 +21,7 @@
 				<div class="temas">
 					<% const cr = "correccion/" %>
 					<% DE = dataEntry[familias] %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.SD, url: cr + "status", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.ST, url: cr + "status", mostrarOrigen: true}) %>
 				</div>
 			</div>
 		<% } %>
