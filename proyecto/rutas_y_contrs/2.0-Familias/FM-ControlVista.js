@@ -65,7 +65,6 @@ module.exports = {
 		else if (codigo == "recuperar") {
 			const ultHist = await procesos.obtieneUltHist(entidad, id);
 			if (ultHist) datosHist.motivo_id = ultHist.motivo_id;
-			console.log(60,datosHist);
 		}
 		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
