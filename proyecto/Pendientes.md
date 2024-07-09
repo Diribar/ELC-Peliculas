@@ -1,6 +1,5 @@
-Revisión de Inactivar
-- Form: toma el comentario del movimiento anterior
+Revisión de Inactivar/Recuperar
 - Post: toma el motivo del movimiento anterior
 
-Revisión de Recuperar
-- Post: toma el motivo del movimiento anterior
+Revisión de Inactivar
+- Si no tiene comentario, lo toma del movimiento anterior
