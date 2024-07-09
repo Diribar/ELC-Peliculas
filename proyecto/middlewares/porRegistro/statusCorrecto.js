@@ -22,8 +22,9 @@ module.exports = async (req, res, next) => {
 	// Acciones si el status del registro no es el esperado
 	if (
 		!statusEsperados_id.includes(statusActual.id) && // el status del registro no es el esperado
-		statusRegistro_id > aprobado_id && // el status del registro es mayor que aprobado
-		!!regHistorial // existe historial
+		((statusRegistro_id > aprobado_id && // el status del registro es mayor que aprobado
+			!!regHistorial) || // existe historial
+			statusRegistro_id <= aprobado_id)
 	) {
 		// Variables para el mensaje
 		const statusActualNombre = statusActual.nombre;

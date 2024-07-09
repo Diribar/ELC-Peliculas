@@ -18,8 +18,7 @@ const creadoPorUsuario = require("../../middlewares/porRegistro/creadoPorUsuario
 const motivoNecesario = require("../../middlewares/porRegistro/motivoNecesario");
 const comentNecesario = require("../../middlewares/porRegistro/comentNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const statusIgual = require("../../middlewares/porRegistro/statusIgual");
-const statusDistinto = require("../../middlewares/porRegistro/statusDistinto");
+const comparaStatus = require("../../middlewares/porRegistro/comparaStatus");
 
 // Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/porRegistro/permUserReg");
@@ -32,8 +31,7 @@ const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
-const cambioMotivo = [entValida, IDvalido, statusCorrecto, statusIgual, aptoUsuario, permUserReg, usRolRevPERL];
-const cambioStatus = [entValida, IDvalido, statusDistinto, aptoUsuario, permUserReg, usRolRevPERL];
+const correcs = [entValida, IDvalido, comparaStatus, aptoUsuario, permUserReg, usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
@@ -65,10 +63,10 @@ router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.histo
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 
 // Vistas - Correcciones
-router.get("/correccion/motivo", cambioMotivo, capturaActivar, vista.correcciones.motivoForm);
-router.post("/correccion/motivo", cambioMotivo, motivoNecesario, capturaInactivar, vista.correcciones.motivoGuardar);
-router.get("/correccion/status", cambioStatus, capturaActivar, vista.correcciones.statusForm);
-router.post("/correccion/status", cambioStatus, capturaInactivar, vista.correcciones.statusGuardar);
+router.get("/correccion/motivo", correcs, statusCorrecto, capturaActivar, vista.correcs.motivoForm);
+router.post("/correccion/motivo", correcs, statusCorrecto, motivoNecesario, capturaInactivar, vista.correcs.motivoGuardar);
+router.get("/correccion/status", correcs, capturaActivar, vista.correcs.statusForm);
+router.post("/correccion/status", correcs, capturaInactivar, vista.correcs.statusGuardar);
 
 // Vistas -  Historial
 router.get("/:familia/historial", vista.historialForm);
