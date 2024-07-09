@@ -28,7 +28,7 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
-const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoCRUD = [...aptoDetalle, statusCorrecto, comparaStatus, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
 const correcs = [entValida, IDvalido, comparaStatus, aptoUsuario, permUserReg, usRolRevPERL];
