@@ -4,10 +4,6 @@ module.exports = (sequelize, dt) => {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
 
-		motivo_id: {type: dt.INTEGER},
-		comentario: {type: dt.STRING(largoComentario)},
-		penalizac: {type: dt.DECIMAL},
-
 		statusOriginal_id: {type: dt.INTEGER},
 		statusFinal_id: {type: dt.INTEGER},
 
@@ -16,6 +12,10 @@ module.exports = (sequelize, dt) => {
 
 		statusOriginalEn: {type: dt.DATE},
 		statusFinalEn: {type: dt.DATE},
+
+		motivo_id: {type: dt.INTEGER},
+		comentario: {type: dt.STRING(largoComentario)},
+		penalizac: {type: dt.DECIMAL},
 
 		comunicadoEn: {type: dt.DATE},
 	};
