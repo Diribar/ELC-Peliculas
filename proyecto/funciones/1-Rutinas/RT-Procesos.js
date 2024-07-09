@@ -616,8 +616,7 @@ module.exports = {
 				.then((n) => n.sort((a, b) => b.statusFinalEn - a.statusFinalEn))
 				.then((n) =>
 					n.map((m) => {
-						if (!ultsHist.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id))
-							ultsHist.push(m);
+						if (!ultsHist.find((o) => o.entidad == m.entidad && o.entidad_id == m.entidad_id)) ultsHist.push(m);
 					})
 				); // retiene sólo el último de cada producto
 
@@ -647,7 +646,7 @@ module.exports = {
 					statusFinal_id != statusRegistro_id && // status distinto
 					(statusFinal_id != creadoAprob_id || statusRegistro_id != aprobado_id) // descarta que la diferencia se deba a que se completó la revisión de la edición
 				)
-					regsAgregar.push({...datos, SD: true});
+					regsAgregar.push({...datos, ST: true});
 				else if (statusFinal_id == inactivar_id) regsAgregar.push({...datos, IN: true});
 				else if (statusFinal_id == recuperar_id) regsAgregar.push({...datos, RC: true});
 			}
@@ -678,7 +677,7 @@ module.exports = {
 
 					// Si no lo encuentra en el historial, lo agrega a status
 					const regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
-					if (!regHist) regsAgregar.push({...datos, SD: true});
+					if (!regHist) regsAgregar.push({...datos, ST: true});
 				}
 			}
 
