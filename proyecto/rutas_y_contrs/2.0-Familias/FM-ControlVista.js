@@ -51,11 +51,6 @@ module.exports = {
 			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
 		};
-		if (codigo == "inactivar") datos.motivo_id = motivo_id;
-		else if ((codigo = "recuperar")) {
-			const ultHist = await procesos.obtieneUltHist(entidad, id);
-			if (ultHist) datos.motivo_id = ultHist.motivo_id;
-		}
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
@@ -66,7 +61,12 @@ module.exports = {
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			comentario,
 		};
-		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
+		if (codigo == "inactivar") datosHist.motivo_id = motivo_id;
+		else if (codigo == "recuperar") {
+			const ultHist = await procesos.obtieneUltHist(entidad, id);
+			if (ultHist) datosHist.motivo_id = ultHist.motivo_id;
+			console.log(60,datosHist);
+		}
 		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
 		// CONSECUENCIAS - Acciones si es un producto
