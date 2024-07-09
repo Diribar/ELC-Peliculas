@@ -59,9 +59,5 @@
 
 6. Recuperar: post, toma el motivo del movimiento anterior
 
-Revisión de Inactivar
-- Form: toma el comentario del movimiento anterior
-- Post: toma el motivo del movimiento anterior
-
-Revisión de Recuperar
+7. Revisión de Inactivar/Recuperar
 - Post: toma el motivo del movimiento anterior
