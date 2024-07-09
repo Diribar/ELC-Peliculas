@@ -28,7 +28,11 @@ module.exports = {
 				? false
 				: datos.tema == "revisionEnts"
 				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
-				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
+				: ["inactivar", "recuperar"].includes(datos.codigo)
+				? ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."]
+				: datos.codigo == "eliminar"
+				? ["Este registro se eliminará en forma definitiva"]
+				: null;
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 		const {usuario} = req.session;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
