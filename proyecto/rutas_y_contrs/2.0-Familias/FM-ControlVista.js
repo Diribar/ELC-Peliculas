@@ -19,17 +19,20 @@ module.exports = {
 	},
 	historialForm: async (req, res) => {
 		// Variables
+		const {statusAlineado} = req.body;
 		const datos = await procesos.obtieneDatosForm(req);
 
 		// Obtiene datos para la vista
 		const ayudasTitulo =
-			datos.tema == "revisionEnts"
+			datos.codigo == "historial"
+				? false
+				: datos.tema == "revisionEnts"
 				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
 				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 
 		// Render del formulario
-		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus});
+		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus, statusAlineado});
 	},
 	inacRecup_guardar: async (req, res) => {
 		//  Variables
@@ -243,7 +246,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const cola = "/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
 
 			// Acciones si se aprueba el status del producto
@@ -254,12 +257,13 @@ module.exports = {
 
 			// Acciones si se aprueba el status del historial
 			if (opcion == "historial") {
-				await baseDeDatos.actualizaPorId(entidad, id, {statusRegistro_id: ultHist.statusFinal_id});
+				const datos = {statusRegistro_id: ultHist.statusFinal_id, statusSugeridoEn: ultHist.statusFinalEn};
+				await baseDeDatos.actualizaPorId(entidad, id, datos);
 				destino = "detalle";
 			}
 
 			// En ambos casos, se actualiza la tabla de 'statusErrores'
-			procsRT.revisaStatus.consolidado() // no hace falta el 'await'
+			procsRT.revisaStatus.consolidado(); // no hace falta el 'await'
 
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);

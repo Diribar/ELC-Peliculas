@@ -41,26 +41,25 @@ router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/motivos-status", API.statusMotivos);
 router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
 
-// Vistas - CRUD: Inactivar
+// Vistas form - Motivos
 router.get("/:familia/inactivar", aptoCRUD, capturaActivar, vista.motivosForm);
-router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup_guardar);
+router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.motivosForm);
 
-// Vistas - CRUD: Recuperar
+// Vistas form - Historial
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
-router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecup_guardar);
-
-// Vistas -  CRUD: Eliminar
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.historialForm);
-router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.elimina_guardar);
+router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
+router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
+router.get("/:familia/historial", comparaStatus, vista.historialForm);
 
 // Vistas -  CRUD: Eliminado
 router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_guardar);
 router.get("/:familia/eliminado", vista.eliminado_form);
 
-// Vistas - Revisión: Rechazo
-router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.motivosForm);
-router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
-router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
+// Vistas post
+router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup_guardar);
+router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecup_guardar);
+router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.elimina_guardar);
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", correcs, statusCorrecto, capturaActivar, vista.correcs.motivoForm);
@@ -69,7 +68,6 @@ router.get("/correccion/status", correcs, capturaActivar, vista.correcs.statusFo
 router.post("/correccion/status", correcs, capturaInactivar, vista.correcs.statusGuardar);
 
 // Vistas -  Historial
-router.get("/:familia/historial", vista.historialForm);
 
 // Fin
 module.exports = router;
