@@ -296,7 +296,10 @@ module.exports = {
 			historialStatus.unshift({statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn});
 
 			// Acciones para el status posterior a 'creado_id'
-			if (statusRegistro_id > creado_id) {
+			if (
+				statusRegistro_id > creado_id &&
+				(historialStatus.length == 1 || historialStatus[1].statusOriginal_id != creado_id) // no hay registro siguiente (ej: porque se eliminó c/feedback a usuarios) o sí existe y comienza con un status distinto a como termina el anterior
+			) {
 				statusOriginal_id = creado_id;
 				statusFinal_id =
 					altaRevisadaEn.getTime() >= statusSugeridoEn.getTime() // si la fecha de revisión es mayor o igual que la sugerida => statusRegistro_id; debería ser 'igual', pero originalmente la revisión no impacta en la de sugerido
@@ -312,7 +315,7 @@ module.exports = {
 				// Si el movimiento ya corresponde al historial, interrumpe la función
 				if (statusFinal_id > aprobado_id) return historialStatus;
 				// Si el siguiente registro en el historial no continúa del anterior, agrega el movimiento al historial
-				else if (historialStatus.length == 1 || historialStatus[1].statusFinal_id != statusFinal_id) {
+				else {
 					statusFinalEn = altaRevisadaEn;
 					statusFinal = FN.statusFinal(statusFinal_id);
 					regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
@@ -320,15 +323,17 @@ module.exports = {
 				}
 			}
 
-			// Agrega el registro con el status siguiente a 'creadoAprob_id'
+			// Acciones para el status posterior a 'creadoAprob_id'
 			if (
-				statusFinal_id == creadoAprob_id && // el registro anterior terminó en 'creadoAprob_id'
-				statusRegistro_id > creadoAprob_id // el prodRclv está en un status posterior al anterior
+				statusRegistro_id > creadoAprob_id &&
+				historialStatus.length >= 2 && // existen por lo menos dos registros
+				historialStatus[1].statusFinal_id == creadoAprob_id // el registro anterior terminó en 'creadoAprob_id'
 			) {
 				// Si el movimiento ya corresponde al historial, interrumpe la función
 				statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
 				if (statusFinal_id > aprobado_id) return historialStatus;
 
+				// Averigua el 'statusFinalEn'
 				statusFinalEn = altaTermEn
 					? altaTermEn // si se completó el alta, esa fecha
 					: historialStatus.length > 2
