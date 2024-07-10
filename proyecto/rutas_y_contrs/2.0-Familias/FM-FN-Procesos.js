@@ -108,17 +108,17 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		const comentario = await this.comentario(req.body, motivo_id);
+		const comentario = await this.comentario({...req.body, motivo_id, statusFinal_id, entidad, id});
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
-	comentario: async (datos, motivo_id) => {
+	comentario: async (datos) => {
 		// Variables
 		let comentario;
 
 		// Si el motivo es 'duplicado', genera el comentario
-		if (!comentario && motivo_id == motivoDupl_id) {
+		if (!comentario && datos.motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
@@ -130,8 +130,8 @@ module.exports = {
 		if (!comentario && datos && datos.comentario) comentario = datos.comentario;
 
 		// Si corresponde, lo obtiene del movimiento anterior
-		if (!comentario && statusFinal_id == inactivo_id) {
-			const ultHist = await this.obtieneUltHist(entidad, id);
+		if (!comentario && datos.statusFinal_id == inactivo_id) {
+			const ultHist = await this.obtieneUltHist(datos.entidad, datos.id);
 			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
