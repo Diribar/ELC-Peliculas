@@ -113,7 +113,7 @@ module.exports = {
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
-	comentario: async (datos) => {
+	comentario: async function (datos) {
 		// Variables
 		let comentario;
 
@@ -260,12 +260,15 @@ module.exports = {
 			historialStatus = this.revisaElHist(historialStatus);
 
 			// Procesa los comentarios
-			historialStatus = historialStatus.map((n) => ({
-				...n,
-				comentario:
-					(n.motivo && [inactivar_id, inactivo_id].includes(n.statusFinal_id) ? n.motivo.descripcion : "") +
-					(n.comentario ? ": " + n.comentario : ""),
-			}));
+			historialStatus = historialStatus.map((n) => {
+				const correspondeMotivo = [inactivar_id, inactivo_id].includes(n.statusFinal_id);
+				return {
+					...n,
+					comentario:
+						(n.motivo && correspondeMotivo ? n.motivo.descripcion : "") +
+						(n.comentario ? (correspondeMotivo ? ": " : "") + n.comentario : ""),
+				};
+			});
 
 			// Fin
 			return this.formato(historialStatus);
