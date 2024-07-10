@@ -306,7 +306,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	siHayErroresBajaElStatus: function(prodsPorEnts) {
+	siHayErroresBajaElStatus: function (prodsPorEnts) {
 		// Variables
 		const entidades = variables.entidades.prods;
 
