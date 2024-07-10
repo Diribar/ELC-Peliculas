@@ -18,7 +18,7 @@ const creadoPorUsuario = require("../../middlewares/porRegistro/creadoPorUsuario
 const motivoNecesario = require("../../middlewares/porRegistro/motivoNecesario");
 const comentNecesario = require("../../middlewares/porRegistro/comentNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const comparaStatus = require("../../middlewares/porRegistro/comparaStatus");
+const statusCompara = require("../../middlewares/porRegistro/statusCompara");
 
 // Middlewares - Temas de captura
 const permUserReg = require("../../middlewares/porRegistro/permUserReg");
@@ -28,10 +28,10 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
-const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoCRUD = [...aptoDetalle, statusCorrecto, statusCompara, ...aptoUsuario, permUserReg];
 const aptoEliminar = [...aptoCRUD, usRolRevPERL];
 const eliminadoPorCreador = [...aptoUsuario, entValida, IDvalido, statusCorrecto, creadoPorUsuario];
-const correcs = [entValida, IDvalido, comparaStatus, aptoUsuario, permUserReg, usRolRevPERL];
+const correcs = [entValida, IDvalido, statusCompara, aptoUsuario, permUserReg, usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
@@ -50,7 +50,7 @@ router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm)
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
-router.get("/:familia/historial", aptoDetalle, comparaStatus, vista.historialForm);
+router.get("/:familia/historial", aptoDetalle, statusCompara, vista.historialForm);
 
 // Vistas -  CRUD: Eliminado
 router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_guardar);

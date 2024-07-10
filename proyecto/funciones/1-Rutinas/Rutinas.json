@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 8/jul",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 9/jul",
+	"HoraUTC": "11:24",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 8/jul",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"06-jul-24": {"leyenda": "Hoy recordamos María Goretti", "entidad": "personajes", "id": 92},
 		"07-jul-24": {},
 		"08-jul-24": {},
 		"09-jul-24": {},
-		"10-jul-24": {}
+		"10-jul-24": {},
+		"11-jul-24": {"leyenda": "Hoy recordamos Benito de Nursia", "entidad": "personajes", "id": 172}
 	}
 }

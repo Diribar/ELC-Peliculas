@@ -30,7 +30,7 @@ CREATE TABLE c19353_elc.st_errores (
 	entidad_id int(10) unsigned NOT NULL,
 	nombre varchar(35) NOT NULL,
 	fechaRef datetime NOT NULL,
-	`SD` tinyint(1) DEFAULT NULL,
+	`ST` tinyint(1) DEFAULT NULL,
   	`IN` tinyint(1) DEFAULT NULL,
   	`RC` tinyint(1) DEFAULT NULL,
 	CONSTRAINT `PRIMARY` PRIMARY KEY (id)

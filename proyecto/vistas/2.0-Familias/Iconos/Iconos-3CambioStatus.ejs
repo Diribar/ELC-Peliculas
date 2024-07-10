@@ -33,17 +33,23 @@
 		<% } %>
 	<% } %>
 	<% if (condicUsuario && condicRegistro && codigo == "historial" ) { %>
-		<% if (locals.status_id == aprobado_id) { %>
+		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
-		<% if (locals.status_id == inactivo_id) { %>
+		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
 			<!-- Recuperar -->
 			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
+			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
+				<!-- Eliminar -->
+				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+				</a>
+			<% } %>
 		<% } %>
 	<% } %>
 

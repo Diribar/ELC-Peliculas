@@ -413,7 +413,7 @@ module.exports = {
 			return historialStatus;
 		},
 	},
-	statusAlineado: async ({entidad, id, prodRclv}) => {
+	statusAlineado: async function ({entidad, id, prodRclv}) {
 		// Obtiene el 'prodRclv'
 		if (!prodRclv) {
 			let include = ["statusRegistro"]; // se necesita para la vista de 'cambiarStatus'
@@ -424,12 +424,7 @@ module.exports = {
 		const {statusRegistro_id} = prodRclv;
 
 		// Obtiene el 'ultHist'
-		const condicion = {
-			entidad,
-			entidad_id: id,
-			[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-		};
-		const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+		const ultHist = await this.obtieneUltHist(entidad, id);
 		const statusFinal_id = ultHist ? ultHist.statusFinal_id : null;
 
 		// Compara los status
@@ -440,6 +435,18 @@ module.exports = {
 
 		// Fin
 		return {statusAlineado, prodRclv, ultHist};
+	},
+	obtieneUltHist: async (entidad, entidad_id) => {
+		// Obtiene el 'ultHist'
+		const condicion = {
+			entidad,
+			entidad_id,
+			[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+		};
+		const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+
+		// Fin
+		return ultHist;
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
 		// Variables

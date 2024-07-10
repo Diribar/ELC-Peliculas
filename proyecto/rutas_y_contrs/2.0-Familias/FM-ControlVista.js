@@ -28,7 +28,11 @@ module.exports = {
 				? false
 				: datos.tema == "revisionEnts"
 				? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
-				: ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."];
+				: ["inactivar", "recuperar"].includes(datos.codigo)
+				? ["Por favor decinos por qué sugerís " + datos.codigo + " este registro."]
+				: datos.codigo == "eliminar"
+				? ["Este registro se eliminará en forma definitiva"]
+				: null;
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 		const {usuario} = req.session;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
@@ -47,7 +51,6 @@ module.exports = {
 			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
 		};
-		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
@@ -58,7 +61,11 @@ module.exports = {
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			comentario,
 		};
-		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
+		if (codigo == "inactivar") datosHist.motivo_id = motivo_id;
+		else if (codigo == "recuperar") {
+			const ultHist = await procesos.obtieneUltHist(entidad, id);
+			if (ultHist) datosHist.motivo_id = ultHist.motivo_id;
+		}
 		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
 		// CONSECUENCIAS - Acciones si es un producto

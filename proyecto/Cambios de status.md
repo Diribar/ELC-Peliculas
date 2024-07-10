@@ -50,13 +50,14 @@
 
 5. Historial
     - Muestra el historial
-    - Sólo si está en status inactivo y para revisores: ícono cambio de motivo
+    - Para revisores y sólo si está en status inactivo
+        - Ícono cambio de motivo
+        - Ícono eliminar
     - Para usuarios aptoInput
         - En status aprobado: ícono inactivar
         - En status inactivo: ícono recuperar
 
-Recuperar
-- Post: toma el motivo del movimiento anterior
+6. Recuperar: post, toma el motivo del movimiento anterior
 
 Revisión de Inactivar
 - Form: toma el comentario del movimiento anterior
