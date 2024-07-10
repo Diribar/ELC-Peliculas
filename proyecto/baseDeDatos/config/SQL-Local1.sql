@@ -15,8 +15,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE IF NOT EXISTS `c19353_elc_backup` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `c19353_elc_backup`;
+CREATE DATABASE IF NOT EXISTS `c19353_elc1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `c19353_elc1`;
 --
 -- Table structure for table `aux_fechas_del_ano`
 --
