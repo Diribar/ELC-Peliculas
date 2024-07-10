@@ -106,7 +106,7 @@ module.exports = {
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(destino);
 	},
-	elimina_guardar: async (req, res) => {
+	eliminaForm: async (req, res) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -144,22 +144,8 @@ module.exports = {
 		// Actualiza solapamiento y la variable 'fechasDelAno'
 		if (entidad == "epocasDelAno") comp.actualizaSolapam();
 
-		// Guarda la información para la próxima vista durante 5 segundos
+		// Variables para la vista
 		const nombre = comp.nombresPosibles(original);
-		let objeto = {entidad, nombre};
-		if (origen) objeto.origen = origen;
-		res.cookie("eliminado", objeto, {maxAge: 5000});
-
-		// Fin
-		return res.redirect("/" + familia + "/eliminado");
-	},
-	eliminado_form: (req, res) => {
-		// Variables
-		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
-		if (!entidad) return res.redirect("/");
-		else res.clearCookie("eliminado");
-
-		// Más variables
 		const articFinal = comp.obtieneDesdeEntidad.oa(entidad);
 		const articInicial = articFinal == "a" ? "La " : "El ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
