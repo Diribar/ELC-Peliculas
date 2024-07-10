@@ -50,7 +50,7 @@ router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm)
 router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
-router.get("/:familia/historial", comparaStatus, vista.historialForm);
+router.get("/:familia/historial", aptoDetalle, comparaStatus, vista.historialForm);
 
 // Vistas -  CRUD: Eliminado
 router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_guardar);

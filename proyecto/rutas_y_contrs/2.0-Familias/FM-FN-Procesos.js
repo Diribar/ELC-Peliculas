@@ -10,7 +10,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
-		const userID = req.session.usuario.id;
+		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 		let comentario;
 
 		// Obtiene el tema y código
@@ -40,7 +40,7 @@ module.exports = {
 		// Cantidad de productos asociados al RCLV
 		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
 		if (familia == "rclv") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, userID);
+			prodsDelRCLV = await this.prodsDelRCLV(original, userID);
 			cantProds = prodsDelRCLV.length;
 			canonNombre = comp.canonNombre(original);
 			RCLVnombre = original.nombre;
@@ -53,7 +53,7 @@ module.exports = {
 		const {titulo, entidadNombre} = this.titulo({entidad, codigo});
 		const bloqueDer = await this.bloques.consolidado({tema, familia, entidad, original});
 		const imgDerPers = this.obtieneAvatar(original).orig;
-		const cartelGenerico = true;
+		const cartelGenerico = codigo != "historial";
 
 		// Fin
 		return {
@@ -440,6 +440,87 @@ module.exports = {
 
 		// Fin
 		return {statusAlineado, prodRclv, ultHist};
+	},
+	prodsDelRCLV: async function (RCLV, userID) {
+		// Variables
+		const pppRegs = userID ? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID}, "detalle") : [];
+		for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
+
+		// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
+		if (userID && RCLV.prodsEdiciones) {
+			// Obtiene las ediciones propias
+			const edicionesPropias = RCLV.prodsEdiciones.filter((n) => n.editadoPor_id == userID);
+
+			// Obtiene los productos de las ediciones propias
+			if (edicionesPropias.length)
+				for (let edicion of edicionesPropias) {
+					// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
+					let entProd = comp.obtieneDesdeCampo_id.entidadProd(edicion);
+					let campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
+					let entID = edicion[campo_id];
+
+					// Obtiene los registros del producto original y su edición por el usuario
+					let [prodOrig, prodEdic] = await this.obtieneOriginalEdicion({entidad: entProd, entID, userID});
+
+					// Actualiza la variable del registro original
+					let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
+
+					// Fin
+					RCLV[entProd].push(producto);
+				}
+		}
+
+		// Completa la información de cada tipo de producto y une los productos en una sola array
+		let prodsDelRCLV = [];
+		for (let entidad of variables.entidades.prods) {
+			// Completa la información de cada producto dentro del tipo de producto
+			const prodsPorEnt = RCLV[entidad].map((registro) => {
+				// Causas para descartar el registro
+				if (inactivos_ids.includes(registro.statusRegistro_id)) return null; // status inactivar o inactivo
+				if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
+				if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id != userID) return null; // status recuperar
+
+				// Variables
+				const avatar = this.obtieneAvatar(registro).edic;
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+				const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
+				const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
+
+				// Agrega la entidad, el avatar, y el nombre de la entidad
+				return {...registro, entidad, avatar, entidadNombre, ppp};
+			});
+
+			// Consolida la información
+			prodsDelRCLV.push(...prodsPorEnt);
+		}
+
+		// Descarta los productos eliminados
+		prodsDelRCLV = prodsDelRCLV.filter((n) => !!n);
+
+		// Separa entre capitulos y resto
+		let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
+		let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
+
+		// Elimina capitulos si las colecciones están presentes
+		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
+		let coleccionesId = colecciones.map((n) => n.id);
+		capitulos = capitulos.filter((n) => !coleccionesId.find((m) => m == n.coleccion_id));
+
+		// Operaciones varias
+		prodsDelRCLV = [...capitulos, ...noCapitulos]; // consolida los productos
+		if (prodsDelRCLV.length) {
+			for (let prod of prodsDelRCLV)
+				if (prod.direccion.includes(",")) {
+					prod.direccion = prod.direccion.split(", ");
+					prod.direccion.splice(2);
+					prod.direccion = prod.direccion.join(", ");
+				}
+			prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno); // Ordena por año (decreciente)
+			prodsDelRCLV = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id); // Quita los inactivos
+		}
+
+		// Fin
+		return prodsDelRCLV;
 	},
 
 	grupos: {

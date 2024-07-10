@@ -36,18 +36,24 @@
         - Si se aprueba el del historial, actualiza el status del producto
         - En ambos casos, se actualiza la tabla de 'statusErrores'
 
-Detalle
-- Ícono a la derecha:
-    - Se fija que el status del producto esté alineado al historial
-        - Si hay errores, ícono error (sólo revisores)
-        - Si no hay errores,
-            - inactivar o recuperar, y revisores: ícono revisión
-            - demás: ícono historial
+4. Detalle
+- Ícono a la derecha, se fija que el status del producto esté alineado al historial
+    - Si hay errores, ícono corregir status (sólo revisores)
+    - Si no hay errores,
+        - inactivar o recuperar, y revisores: ícono revisión
+        - demás: ícono historial
 - Datos Breves:
     - Status: sólo se muestra si están alineados
     - Motivo:
         - Se muestra sólo si está inactivo
         - Se muestra el motivo
+
+5. Historial
+    - Muestra el historial
+    - Sólo si está en status inactivo y para revisores: ícono cambio de motivo
+    - Para usuarios aptoInput
+        - En status aprobado: ícono inactivar
+        - En status inactivo: ícono recuperar
 
 Recuperar
 - Post: toma el motivo del movimiento anterior

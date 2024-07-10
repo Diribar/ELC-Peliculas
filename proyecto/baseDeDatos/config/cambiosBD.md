@@ -52,10 +52,10 @@ INSERT INTO c19353_elc.st_motivos VALUES(32, 32, 'Tenemos otro link mejor', '-',
 INSERT INTO c19353_elc.st_motivos VALUES(33, 33, 'Pertenece a otra película', '-', NULL, 0, 0, 1, 0.2, 0);
 INSERT INTO c19353_elc.st_motivos VALUES(34, 34, 'No respeta los derechos de autor', '-', NULL, 0, 0, 1, 0.0, 0);
 INSERT INTO c19353_elc.st_motivos VALUES(35, 35, 'Mala calidad', '-', NULL, 0, 0, 1, 0.0, 0);
-UPDATE c19353_elc_backup.st_motivos SET orden=18, descripcion='No pertenece a esta colección', grupo='técnicos', codigo='capitulos', prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=11;
-UPDATE c19353_elc_backup.st_motivos SET orden=11, descripcion='Distorsiona la memoria del personaje', grupo='generales', codigo=NULL, prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=12;
-UPDATE c19353_elc_backup.st_motivos SET orden=17, descripcion='Duplicado', grupo='técnicos', codigo='duplicado', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=0 WHERE id=13;
-UPDATE c19353_elc_backup.st_motivos SET orden=13, descripcion='Sensualidad vulgar', grupo='generales', codigo=NULL, prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=14;
-UPDATE c19353_elc_backup.st_motivos SET orden=18, descripcion='Es un capítulo de una colección', grupo='técnicos', codigo='peliculas', prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=15;
-UPDATE c19353_elc_backup.st_motivos SET orden=31, descripcion='Video no disponible', grupo='-', codigo=NULL, prods=0, rclvs=0, links=1, penalizac=0.0, comentNeces=0 WHERE id=31;
-UPDATE c19353_elc_backup.st_motivos SET orden=90, descripcion='Otro motivo no técnico', grupo='generales', codigo='otro', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=1 WHERE id=90;
+UPDATE c19353_elc.st_motivos SET orden=18, descripcion='No pertenece a esta colección', grupo='técnicos', codigo='capitulos', prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=11;
+UPDATE c19353_elc.st_motivos SET orden=11, descripcion='Distorsiona la memoria del personaje', grupo='generales', codigo=NULL, prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=12;
+UPDATE c19353_elc.st_motivos SET orden=17, descripcion='Duplicado', grupo='técnicos', codigo='duplicado', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=0 WHERE id=13;
+UPDATE c19353_elc.st_motivos SET orden=13, descripcion='Sensualidad vulgar', grupo='generales', codigo=NULL, prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=14;
+UPDATE c19353_elc.st_motivos SET orden=18, descripcion='Es un capítulo de una colección', grupo='técnicos', codigo='peliculas', prods=1, rclvs=0, links=0, penalizac=0.0, comentNeces=1 WHERE id=15;
+UPDATE c19353_elc.st_motivos SET orden=31, descripcion='Video no disponible', grupo='-', codigo=NULL, prods=0, rclvs=0, links=1, penalizac=0.0, comentNeces=0 WHERE id=31;
+UPDATE c19353_elc.st_motivos SET orden=90, descripcion='Otro motivo no técnico', grupo='generales', codigo='otro', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=1 WHERE id=90;
