@@ -189,25 +189,13 @@ module.exports = {
 			if (!errores.sensible) {
 				// Acciones si corresponde actualizar el original
 				if (actualizaOrig) {
-					// Completa los datos a guardar
-					prodComb.altaRevisadaPor_id = userID;
-					prodComb.altaRevisadaEn = comp.fechaHora.ahora();
-
 					// Actualiza el registro original
 					await baseDeDatos.actualizaPorId(entidad, id, prodComb);
 
-					// Actualiza los campos de los capítulos de una colección
-					if (entidad == "colecciones") {
-						// Variables
-						let esperar = [];
-
-						// Rutina por campo - sin 'await' y solo para los campos editados
+					// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
+					if (entidad == "colecciones")
 						for (let prop in req.body)
-							if (original[prop] != req.body[prop]) esperar.push(procsFM.transfiereDatos(original, req.body, prop));
-
-						// Espera a que se corran todos los campos
-						await Promise.all(esperar);
-					}
+							if (original[prop] != req.body[prop]) await procsFM.transfiereDatos(original, req.body, prop);
 
 					// Varias
 					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
