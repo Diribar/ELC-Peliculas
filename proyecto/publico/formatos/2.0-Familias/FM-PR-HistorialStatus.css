@@ -8,6 +8,8 @@
 			:is(#informacion) {color: var(--verde-oscuro);}
 		}
 		#informacion {
+			max-height: 250px;
+			overflow-y: auto;
 			#historial {
 				input[type="radio"] {margin-right: 3px;}
 				max-width: 600px;
