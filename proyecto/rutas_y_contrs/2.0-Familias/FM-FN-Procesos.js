@@ -321,7 +321,7 @@ module.exports = {
 				}
 			}
 
-			// Agrega el registro con el siguiente status
+			// Agrega el registro con el status siguiente a 'creadoAprob_id'
 			if (
 				statusFinal_id == creadoAprob_id && // el registro anterior terminó en 'creadoAprob_id'
 				statusRegistro_id > creadoAprob_id // el prodRclv está en un status posterior al anterior
