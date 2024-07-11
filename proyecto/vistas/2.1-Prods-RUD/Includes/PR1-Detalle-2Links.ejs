@@ -1,8 +1,8 @@
 <div id="links" class="marco toggle">
 	<% if (entidad == "colecciones") { %>
 		<!-- Sólo colección -->
-		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origen=" + rutaCRUD; %>
-		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino) %>
+		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origenUrl=" + rutaCRUD; %>
+		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino); %>
 		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
 			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
