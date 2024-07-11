@@ -16,7 +16,7 @@ module.exports = {
 
 			// Rutina para encontrar el destino
 			for (let origen of variables.origenes)
-				if (origenCodigo == origen.codigo || origenUrl == origen.url) {
+				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
 					destino = origen.url;
 					if (origen.cola)
 						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id);
