@@ -19,28 +19,27 @@
 			<% if (entidad == "colecciones") { %>
 				<!-- Cantidad de Temporadas y de Capítulos -->
 				<div id="coleccion">
-					<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
-					<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
+					<% if (locals.anchorEncab) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
 						<button type="button">
 							<% if (registro.cantTemps > 1) { %>
 								<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
 							<% } %>
 							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 						</button>
-					<% if (anchor) { %></a><% } %>
+					<% if (locals.anchorEncab) { %></a><% } %>
 				</div>
 			<% } %>
 			<% if (entidad == "capitulos") { %>
 				<!-- Ir a la colección -->
 				<div id="tempCapI">
 					<p id="coleccionTitulo">Colección:</p>
-					<% if (["prodRud", "linksCRUD"].includes(tema)) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>"><% } %>
+					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>"><% } %>
 						<button type="button"><%= registro.coleccion.nombreCastellano %></button>
-					<% if (["prodRud", "linksCRUD"].includes(tema)) { %></a><% } %>
+					<% if (locals.anchorEncab) { %></a><% } %>
 				</div>
 				<!-- Cambiar de temporada o capítulo -->
 				<div id="tempCapS">
-					<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
+					<% if (locals.anchorEncab) { %>
 						<!-- Avanza/Retrocede un capítulo -->
 						<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
 						<div class="pack">
