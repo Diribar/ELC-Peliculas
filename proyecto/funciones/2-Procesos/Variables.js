@@ -443,20 +443,20 @@ module.exports = {
 	origenes: [
 		// Productos
 		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
-		{codigo: "DTP", url: "/producto/detalle"},
-		{codigo: "EDP", url: "/producto/edicion"},
-		{codigo: "CAL", url: "/producto/calificar"},
-		{codigo: "RAP", url: "/revision/producto/alta"},
-		{codigo: "REP", url: "/revision/producto/edicion"},
-		// RCLVs
-		{codigo: "DTR", url: "/rclv/detalle"},
-		// Links
-		{codigo: "RL", url: "/revision/links"},
-		// Usuarios
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
+		{codigo: "DTP", url: "/producto/detalle", cola: true},
+		{codigo: "EDP", url: "/producto/edicion", cola: true},
+		{url: "/producto/calificar", cola: true},
+		{url: "/producto/historial", cola: true},
+		{codigo: "RAP", url: "/revision/producto/alta", cola: true},
+		{codigo: "REP", url: "/revision/producto/edicion", cola: true},
 		// Tableros
 		{codigo: "TE", url: "/revision/tablero-de-entidades"},
 		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
+		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
+		{codigo: "CN", url: "/consultas"},
+		// Otros
+		{codigo: "DTR", url: "/rclv/detalle", cola: true},
+		{codigo: "RL", url: "/revision/links", cola: true},
 	],
 };
 
@@ -466,8 +466,7 @@ let regsRCLV = async (entidades, userID) => {
 	let registrosRCLV = {};
 
 	// Obtiene los registrosRCLV
-	for (let entidad of entidades)
-		valores.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condics, "statusRegistro"));
+	for (let entidad of entidades) valores.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condics, "statusRegistro"));
 	valores = await Promise.all(valores);
 
 	// Pule la información
