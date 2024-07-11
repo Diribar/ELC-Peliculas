@@ -116,7 +116,7 @@ module.exports = {
 			const gruposPers = procsFM.grupos.pers(camposDA);
 			const gruposHechos = procsFM.grupos.hechos(camposDA);
 
-			// Otros datos para la vista
+			// Datos para la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const titulo =
 				(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
@@ -131,12 +131,13 @@ module.exports = {
 			const dataEntry = prodComb;
 			const prodEdic = true;
 			const origen = req.query.origen;
+			const anchorEncab = true;
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen, prodEdic, imgDerPers, status_id},
 				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
-				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
+				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos, anchorEncab},
 				...{estrucPers: true, cartelGenerico: true},
 			});
 		},
