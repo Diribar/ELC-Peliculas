@@ -60,16 +60,3 @@ UPDATE c19353_elc.st_motivos SET orden=18, descripcion='Es un capítulo de una c
 UPDATE c19353_elc.st_motivos SET orden=31, descripcion='Video no disponible', grupo='-', codigo=NULL, prods=0, rclvs=0, links=1, penalizac=0.0, comentNeces=0 WHERE id=31;
 UPDATE c19353_elc.st_motivos SET orden=90, descripcion='Otro motivo no técnico', grupo='generales', codigo='otro', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=1 WHERE id=90;
 
-INSERT INTO c19353_elc.aux_novedades VALUES(11, 'Actualizamos los motivos para inactivar una película', '2024-07-10', '1.09', 1, 0, 0, 0, 0, 0);
-
-UPDATE c19353_elc.prod_1peliculas SET altaRevisadaEn = DATE_SUB(altaTermEn, INTERVAL 1 SECOND) WHERE altaTermEn IS NOT NULL and altaRevisadaEn = altaTermEn;
-UPDATE c19353_elc.prod_2colecciones SET altaRevisadaEn = DATE_SUB(altaTermEn, INTERVAL 1 SECOND) WHERE altaTermEn IS NOT NULL and altaRevisadaEn = altaTermEn;
-UPDATE c19353_elc.prod_3capitulos SET altaRevisadaEn = DATE_SUB(altaTermEn, INTERVAL 1 SECOND) WHERE altaTermEn IS NOT NULL and altaRevisadaEn = altaTermEn;
-UPDATE c19353_elc.prod_1peliculas SET statusSugeridoEn = altaTermEn WHERE altaTermEn IS NOT NULL and statusSugeridoEn < altaTermEn;
-UPDATE c19353_elc.prod_2colecciones SET statusSugeridoEn = altaTermEn WHERE altaTermEn IS NOT NULL and statusSugeridoEn < altaTermEn;
-UPDATE c19353_elc.prod_3capitulos SET statusSugeridoEn = altaTermEn WHERE altaTermEn IS NOT NULL and statusSugeridoEn < altaTermEn;
-UPDATE c19353_elc.rclv_1personajes SET statusSugeridoEn = altaRevisadaEn WHERE altaRevisadaEn IS NOT NULL and altaRevisadaEn <> statusSugeridoEn;
-UPDATE c19353_elc.rclv_2hechos SET statusSugeridoEn = altaRevisadaEn WHERE altaRevisadaEn IS NOT NULL and altaRevisadaEn <> statusSugeridoEn;
-UPDATE c19353_elc.rclv_3temas SET statusSugeridoEn = altaRevisadaEn WHERE altaRevisadaEn IS NOT NULL and altaRevisadaEn <> statusSugeridoEn;
-UPDATE c19353_elc.rclv_4eventos SET statusSugeridoEn = altaRevisadaEn WHERE altaRevisadaEn IS NOT NULL and altaRevisadaEn <> statusSugeridoEn;
-UPDATE c19353_elc.rclv_5epocas_del_ano SET statusSugeridoEn = altaRevisadaEn WHERE altaRevisadaEn IS NOT NULL and altaRevisadaEn <> statusSugeridoEn;
