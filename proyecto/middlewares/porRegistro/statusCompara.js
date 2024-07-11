@@ -4,9 +4,9 @@ const procsFM = require("../../rutas_y_contrs/2.0-Familias/FM-FN-Procesos");
 module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id} = req.query;
-	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
+	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	elLa = comp.letras.inicialMayus(elLa);
 	const statusDistinto = req.path == "/correccion/status/";
 	const statusIgual = ["/correccion/motivo/", "/" + familia + "/historial/"].includes(req.path);
