@@ -22,7 +22,7 @@ module.exports = {
 		const {statusAlineado, prodRclv} = req.body;
 		const datos = await procesos.obtieneDatosForm(req);
 
-		// Obtiene datos para la vista
+		// Obtiene el ayuda para el título
 		const ayudasTitulo =
 			datos.codigo == "historial"
 				? false
@@ -33,12 +33,18 @@ module.exports = {
 				: datos.codigo == "eliminar"
 				? ["Este registro se eliminará en forma definitiva"]
 				: null;
+
+		// Obtiene datos para la vista
 		const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 		const {usuario} = req.session;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
+		const anchorEncab = true;
 
 		// Render del formulario
-		return res.render("CMP-0Estructura", {...datos, ayudasTitulo, historialStatus, statusAlineado, revisorPERL, prodRclv});
+		return res.render("CMP-0Estructura", {
+			...{...datos, ayudasTitulo, revisorPERL},
+			...{historialStatus, statusAlineado, prodRclv, anchorEncab},
+		});
 	},
 	inacRecup_guardar: async (req, res) => {
 		//  Variables
