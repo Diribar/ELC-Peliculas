@@ -445,10 +445,10 @@ module.exports = {
 		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
 		{codigo: "DTP", url: "/producto/detalle", cola: true},
 		{codigo: "EDP", url: "/producto/edicion", cola: true},
+		{codigo: "RAP", url: "/revision/producto/alta", cola: true},
 		{url: "/producto/calificar", cola: true},
 		{url: "/producto/historial", cola: true},
-		{codigo: "RAP", url: "/revision/producto/alta", cola: true},
-		{codigo: "REP", url: "/revision/producto/edicion", cola: true},
+		{url: "/revision/producto/edicion", cola: true},
 		// Tableros
 		{codigo: "TE", url: "/revision/tablero-de-entidades"},
 		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
