@@ -33,10 +33,10 @@
 				</div>
 			<% }) %>
 		</div>
-		<div id="sector2">
+		<div id="sectorResultado">
 			<div id="consolidado">
 				<div id="resultado">Resultado</div>
-				<div id="valor"><%= califUsuario ? (califUsuario.resultado + "%") : "-" %></div>
+				<div id="valor"><%= califUsuario.resultado ? (califUsuario.resultado + "%") : "-" %></div>
 			</div>
 			<%- include("PR3-CalificarButtons") %>
 		</div>
