@@ -8,7 +8,7 @@
 		max-width: var(--datosBreves); width: max-content; max-height: 80%;
 
 		h3 {
-			background: var(--gris-oscuro); color: snow; border-radius: 10px;
+			background: var(--azul-oscuro); color: snow; border-radius: 10px;
 			padding: 3px 5px; text-align: center;  text-wrap: balance;
 			&:nth-child(n+2) {margin-top: 20px;}
 		}
@@ -29,6 +29,7 @@
 						top: -1px; right: 50%; translate: 50% -100%; max-width: 100%;
 						padding-block: 0px;
 						&::before {content: unset;}
+						li {text-align: center;}
 					}
 				}
 			}
