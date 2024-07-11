@@ -1,6 +1,6 @@
 <div id="cambioStatus" class="iconos">
 	<% condicUsuario = locals.usuario && locals.usuario.statusRegistro_id == perennes_id %>
-	<% condicRegistro = locals.registro && (entidad != "capitulos" || registro.colecAprob) %>
+	<% condicRegistro = !!locals.registro && !!(entidad != "capitulos" || aprobados_ids.includes(registro.statusColeccion_id)) %>
 	<% condicDetalle = ["prodRud", "rclvCrud"].includes(tema) && codigo == "detalle" %>
 	<% condicHistorial = [...aprobados_ids, inactivo_id].includes(locals.status_id) %>
 	<% const origenHTML = (locals.origen ? ('&origen=' + origen) : '') %>
@@ -34,7 +34,7 @@
 			</a>
 		<% } %>
 	<% } %>
-	<% if (condicUsuario && condicRegistro && codigo == "historial" ) { %>
+	<% if (condicUsuario && condicRegistro && codigo == "historial") { %>
 		<!-- HISTORIAL -->
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
