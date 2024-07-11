@@ -2,21 +2,9 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(1, -1);
+	const codigo = location.pathname.slice(0, -1);
 	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
 	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
-
-	const origen = false
-		? null
-		: codigo == "producto/detalle"
-		? "DTP"
-		: codigo == "producto/edicion"
-		? "EDP"
-		: codigo == "links/abm"
-		? "LK"
-		: codigo == "revision/links"
-		? "RL"
-		: "";
 	const ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
 	const [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
 
@@ -29,8 +17,8 @@ window.addEventListener("load", async () => {
 				prodID +
 				"&prodEntidad=capitulos&prodID=" +
 				capAntID +
-				"&origen=" +
-				origen;
+				"&origenUrl=" +
+				encodeURIComponent(codigo);
 		});
 	} else botonCapAnt.classList.add("inactivo");
 
@@ -43,8 +31,8 @@ window.addEventListener("load", async () => {
 				prodID +
 				"&prodEntidad=capitulos&prodID=" +
 				capPostID +
-				"&origen=" +
-				origen;
+				"&origenUrl=" +
+				encodeURIComponent(codigo);
 		});
 	} else botonCapPost.classList.add("inactivo");
 });
