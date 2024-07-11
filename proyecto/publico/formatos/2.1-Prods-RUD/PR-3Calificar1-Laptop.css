@@ -1,8 +1,12 @@
 @media (orientation: landscape) and (height > 600px) {
 	/* Información */
-	.marco #calificaciones {flex-direction: row;}
-	#calificaciones #sectorIndivs > div {flex-direction: row; align-items: center;}
-	#calificaciones #sectorIndivs div h4 {margin-right: 10px; white-space: nowrap;}
+	.marco #calificaciones {
+		flex-direction: row;
+		#sectorIndivs {
+			& > div {flex-direction: row; align-items: center;}
+			div h4 {margin-right: 10px; white-space: nowrap;}
+		}
+	}
 
 	/* Botones submit */
 	#contenido .marco #sectorIconos {margin: 25px 0 0;}
