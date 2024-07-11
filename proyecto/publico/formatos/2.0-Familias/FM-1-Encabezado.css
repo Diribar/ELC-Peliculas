@@ -1,18 +1,28 @@
 /* Encabezado */
 #cuerpo #encabezado {
 	display: flex; flex-direction: row; justify-content: space-between; align-items: center;
-	background: var(--azul-oscuro); color: snow;
-	padding: 10px 20px;
+	padding: 10px 20px; color: snow;
+	background: var(--azul-oscuro);
+	button {background: transparent; border: none;}
+
+	&.inactivar, &.rechazar, &.eliminar, &.revisionInactivar, &.cambiarMotivo {
+		background: var(--rojo-oscuro);
+		select {color: var(--rojo-oscuro);}
+	}
+	&.recuperar, &.revisionRecuperar {
+		background: var(--verde-oscuro);
+		select {color: var(--verde-oscuro);}
+	}
+
 	#nombres {
 		max-width: 290px;
 		h3 {font-weight: normal; font-size: 1rem; margin-top: 3px;}
 	}
 	#colCap {
 		display: flex; flex-direction: column; align-items: flex-end;
-		#coleccion button {
-			border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
-			padding: 5px 10px; border-radius: 10px; text-align: center;
-			color: fieldtext;
+		#coleccion a button {
+			border-radius: 10px; padding: 5px 10px; text-align: center;
+			background: var(--gris-claro); color: var(--azul-oscuro);
 		}
 		#tempCapI {
 			margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
