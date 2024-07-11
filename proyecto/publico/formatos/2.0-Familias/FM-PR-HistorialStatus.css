@@ -2,11 +2,6 @@
 #datos #datosLargos {
 	/* Condicionales */
 	#recuadroDL {
-		&:has(.recuperar, .revisionRecuperar) {
-			background: var(--verde-claro) !important;
-			#encabezado {background: var(--verde-oscuro);}
-			:is(#informacion) {color: var(--verde-oscuro);}
-		}
 		#informacion {
 			max-height: 250px;
 			overflow-y: auto;
