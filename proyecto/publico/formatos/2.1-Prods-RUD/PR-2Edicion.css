@@ -19,7 +19,7 @@
 			.altoFila {height: 21px;}
 			#encabezado {border-radius: 15px;}
 			#info {
-				display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;
+				display: flex; flex-direction: row; justify-content: space-between; padding: 10px 15px;
 
 				/* Partes del formulario */
 				.labelInput .inputError .input {width: 100%;}
