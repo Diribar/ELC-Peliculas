@@ -108,17 +108,17 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		const comentario = await this.comentario(req.body, motivo_id);
+		const comentario = await this.comentario({...req.body, motivo_id, statusFinal_id, entidad, id});
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
-	comentario: async (datos, motivo_id) => {
+	comentario: async (datos) => {
 		// Variables
 		let comentario;
 
 		// Si el motivo es 'duplicado', genera el comentario
-		if (!comentario && motivo_id == motivoDupl_id) {
+		if (!comentario && datos.motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
@@ -130,8 +130,8 @@ module.exports = {
 		if (!comentario && datos && datos.comentario) comentario = datos.comentario;
 
 		// Si corresponde, lo obtiene del movimiento anterior
-		if (!comentario && statusFinal_id == inactivo_id) {
-			const ultHist = await this.obtieneUltHist(entidad, id);
+		if (!comentario && datos.statusFinal_id == inactivo_id) {
+			const ultHist = await this.obtieneUltHist(datos.entidad, datos.id);
 			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
@@ -296,15 +296,9 @@ module.exports = {
 			let statusFinalEn = creadoEn;
 			historialStatus.unshift({statusFinal_id, statusFinal, statusFinalPor_id, statusFinalEn});
 
-			// Agrega los registros anteriores al historial
-			if (
-				statusRegistro_id > creado_id && // el prodRclv está en un status posterior al anterior
-				(historialStatus.length == 1 || historialStatus[1].statusOriginal_id != statusFinal_id) // el siguiente registro en el historial no continúa del anterior
-			) {
-				// statusFinalEn
+			// Acciones para el status posterior a 'creado_id'
+			if (statusRegistro_id > creado_id) {
 				statusOriginal_id = creado_id;
-
-				// statusFinal_id
 				statusFinal_id =
 					altaRevisadaEn.getTime() >= statusSugeridoEn.getTime() // si la fecha de revisión es mayor o igual que la sugerida => statusRegistro_id; debería ser 'igual', pero originalmente la revisión no impacta en la de sugerido
 						? statusRegistro_id
@@ -318,35 +312,35 @@ module.exports = {
 
 				// Si el movimiento ya corresponde al historial, interrumpe la función
 				if (statusFinal_id > aprobado_id) return historialStatus;
-
-				// Agrega el registro al historial
-				statusFinalEn = altaRevisadaEn;
-				statusFinal = FN.statusFinal(statusFinal_id);
-				regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
-				historialStatus.splice(1, 0, regHistorial);
-
-				// Agrega el registro con el siguiente status
-				if (
-					prodRclv.statusRegistro_id > creadoAprob_id && // el prodRclv está en un status posterior al anterior
-					historialStatus[1].statusOriginal_id != statusFinal_id && // el siguiente registro en el historial no continúa del anterior
-					statusFinal_id == creadoAprob_id // el registro anterior terminó en 'creadoAprob_id'
-				) {
-					// Si el movimiento ya corresponde al historial, interrumpe la función
-					statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
-					if (statusFinal_id > aprobado_id) return historialStatus;
-
-					statusFinalEn = altaTermEn
-						? altaTermEn // si se completó el alta, esa fecha
-						: historialStatus.length > 2
-						? historialStatus[2].statusOriginalEn // si el historial tiene un registro siguiente, ese registro
-						: statusSugeridoEn; // de lo contrario, el status del producto
-
-					// Agrega el registro al historial
-					statusOriginal_id = creadoAprob_id;
+				// Si el siguiente registro en el historial no continúa del anterior, agrega el movimiento al historial
+				else if (historialStatus.length == 1 || historialStatus[1].statusFinal_id != statusFinal_id) {
+					statusFinalEn = altaRevisadaEn;
 					statusFinal = FN.statusFinal(statusFinal_id);
 					regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
-					historialStatus.splice(2, 0, regHistorial);
+					historialStatus.splice(1, 0, regHistorial);
 				}
+			}
+
+			// Agrega el registro con el status siguiente a 'creadoAprob_id'
+			if (
+				statusFinal_id == creadoAprob_id && // el registro anterior terminó en 'creadoAprob_id'
+				statusRegistro_id > creadoAprob_id // el prodRclv está en un status posterior al anterior
+			) {
+				// Si el movimiento ya corresponde al historial, interrumpe la función
+				statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
+				if (statusFinal_id > aprobado_id) return historialStatus;
+
+				statusFinalEn = altaTermEn
+					? altaTermEn // si se completó el alta, esa fecha
+					: historialStatus.length > 2
+					? historialStatus[2].statusOriginalEn // si el historial tiene un registro siguiente, ese registro
+					: statusSugeridoEn; // de lo contrario, el status del producto
+
+				// Agrega el registro al historial
+				statusOriginal_id = creadoAprob_id;
+				statusFinal = FN.statusFinal(statusFinal_id);
+				regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
+				historialStatus.splice(2, 0, regHistorial);
 			}
 
 			// Fin
