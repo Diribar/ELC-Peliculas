@@ -1,7 +1,7 @@
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#imgDerecha :is(#links, #sectorIconos).toggle {display: none;}
-	#calificaciones #individuales > div {flex-direction: column; align-items: flex-start; text-align: left;}
+	#calificaciones #sectorIndivs > div {flex-direction: column; align-items: flex-start; text-align: left;}
 	#contenido #sectorResultado #sectorIconos {display: flex !important; margin: 25px 0 0;} /* debe tener 3 ids, por prioridades */
 }
 
@@ -17,7 +17,7 @@
 			padding-block: 20px !important;
 			#calificaciones {
 				flex-direction: column;
-				#individuales .ayudaMensForm {
+				#sectorIndivs .ayudaMensForm {
 					max-width: 50vw; top: -7px; translate: 100% 0;
 					&::before {top: 7px; translate: -100% 0;}
 				}
