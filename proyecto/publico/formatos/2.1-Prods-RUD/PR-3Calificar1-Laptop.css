@@ -8,5 +8,5 @@
 	#contenido .marco #sectorIconos {margin: 25px 0 0;}
 
 	/* Ocultar */
-	#calificaciones #sector2 #sectorIconos {display: none;}
+	#calificaciones #sectorResultado #sectorIconos {display: none;}
 }
