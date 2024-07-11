@@ -9,9 +9,10 @@
 	}
 	#colCap {
 		display: flex; flex-direction: column; align-items: flex-end;
-		#coleccion a button {
+		#coleccion button {
 			border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
 			padding: 5px 10px; border-radius: 10px; text-align: center;
+			color: fieldtext;
 		}
 		#tempCapI {
 			margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
