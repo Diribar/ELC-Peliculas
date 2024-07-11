@@ -73,6 +73,7 @@ module.exports = {
 		const iconoDB = "fa-chart-line";
 		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: prodComb});
 		const familia = "producto";
+		const anchorEncab = true;
 
 		// Va a la vista
 		// return res.send(links);
@@ -82,7 +83,7 @@ module.exports = {
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
-			...{iconosMobile: true, iconoDL, iconoDB},
+			...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 		});
 	},
 	edicion: {
@@ -260,18 +261,9 @@ module.exports = {
 			const bloqueDer = {producto: true, registro: await procsFM.bloques.registro({...prodComb, entidad})};
 			const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
-			// Info para la vista
-			if (entidad == "capitulos")
-				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
-			const status_id = original.statusRegistro_id;
-			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
-			const condics = {usuario_id: userID, entidad, entidad_id: id};
-			const include = ["feValores", "entretiene", "calidadTecnica"];
-			const califUsuario = await baseDeDatos.obtienePorCondicion("calRegistros", condics, include);
-			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condics);
-			const iconoDL = "fa-chart-simple fa-rotate-90";
-			const iconoDB = "fa-chart-line";
+			// Más variables
+			const condicion = {usuario_id: userID, entidad, entidad_id: id};
+			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condicion);
 
 			// Ayuda para el título
 			const ayudasTitulo = [];
@@ -281,22 +273,34 @@ module.exports = {
 				ayudasTitulo.push("Si la calificás, cambiaremos tu preferencia como 'Ya vista'");
 			ayudasTitulo.push("Necesitamos saber TU opinión, no la de otras personas.");
 
+			// Datos para la vista
+			if (entidad == "capitulos")
+				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+			const titulo = "Calificá " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
+			const status_id = original.statusRegistro_id;
+			const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
+			const include = ["feValores", "entretiene", "calidadTecnica"];
+			const iconoDL = "fa-chart-simple fa-rotate-90";
+			const iconoDB = "fa-chart-line";
+			const anchorEncab = true;
+			let califUsuario = await baseDeDatos.obtienePorCondicion("calRegistros", condicion, include);
+			if (!califUsuario) califUsuario = {};
+
 			// Va a la vista
-			// return res.send({tema})
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, familia: "producto", status_id},
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
-				...{iconosMobile: true, iconoDL, iconoDB},
+				...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 			});
 		},
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
 			const userID = req.session.usuario.id;
-			let condics;
+			let condicion;
 
 			// Verifica errores
 			const errores = valida.calificar({feValores_id, entretiene_id, calidadTecnica_id});
@@ -317,8 +321,8 @@ module.exports = {
 			valores.resultado = Math.round(resultado);
 
 			// Averigua si existe la calificacion
-			condics = {usuario_id: userID, entidad, entidad_id};
-			const existe = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
+			condicion = {usuario_id: userID, entidad, entidad_id};
+			const existe = await baseDeDatos.obtienePorCondicion("calRegistros", condicion);
 			existe
 				? await baseDeDatos.actualizaPorId("calRegistros", existe.id, valores)
 				: await baseDeDatos.agregaRegistro("calRegistros", valores);
@@ -327,8 +331,8 @@ module.exports = {
 			await procesos.actualizaCalifProd({entidad, entidad_id});
 
 			// Actualiza la ppp
-			condics = {usuario_id: userID, entidad, entidad_id};
-			const interesDelUsuario = await baseDeDatos.obtienePorCondicion("pppRegistros", condics);
+			condicion = {usuario_id: userID, entidad, entidad_id};
+			const interesDelUsuario = await baseDeDatos.obtienePorCondicion("pppRegistros", condicion);
 			const novedades = {usuario_id: userID, entidad, entidad_id, ppp_id: pppOpcsObj.yaLaVi.id};
 			interesDelUsuario
 				? await baseDeDatos.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
