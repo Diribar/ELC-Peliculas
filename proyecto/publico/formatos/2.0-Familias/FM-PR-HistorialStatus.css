@@ -17,11 +17,13 @@
 			max-width: 220px; text-wrap: wrap;
 			b {padding-inline: 5px; border-radius: 8px;}
 		}
-		#creado b, #creadoAprob b, #recuperar b
-			{background: var(--verde-claro); color: var(--verde-oscuro); border: 1px var(--verde-oscuro) solid;}
-		#inactivar b {background: var(--rojo-claro); color: var(--rojo-oscuro); border: 1px var(--rojo-oscuro) solid;}
-		#aprobado b {background: var(--verde-oscuro); color: snow;}
-		#inactivo b {background: var(--rojo-oscuro); color: snow;}
+		#creado b, #creadoAprob b, #recuperar b, #aprobado b {border: 1px var(--verde-oscuro) solid;}
+		#inactivar b, #inactivo b {border: 1px var(--rojo-oscuro) solid;}
+		#creado b, #creadoAprob b, #recuperar b {background: var(--verde-claro); color: var(--verde-oscuro);}
+		#inactivar b {background: var(--rojo-claro); color: var(--rojo-oscuro);}
+		#aprobado b, #inactivo b {color: snow; }
+		#aprobado b {background: var(--verde-oscuro);}
+		#inactivo b {background: var(--rojo-oscuro);}
 
 		#statusRegistro {
 			display: flex; flex-direction: row; align-items: center; margin-bottom: 6px;
