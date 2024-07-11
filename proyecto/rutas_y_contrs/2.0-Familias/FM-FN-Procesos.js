@@ -24,8 +24,6 @@ module.exports = {
 				{entidad, entidad_id: id},
 				"statusFinalEn"
 			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
-
-			if (ultHist.motivo_id != motivoDupl_id && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
 		// Obtiene el registro
@@ -110,13 +108,16 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		const comentario = this.comentario(req.body, motivo_id);
+		const comentario = await this.comentario(req.body, motivo_id);
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
-	comentario: (datos, motivo_id) => {
-		let comentario = datos ? datos.comentario : "";
+	comentario: async (datos, motivo_id) => {
+		// Variables
+		let comentario;
+
+		// Si el motivo es 'duplicado', genera el comentario
 		if (!comentario && motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
@@ -124,9 +125,18 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
 			comentario = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
 		}
-		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Lo obtiene del formulario
+		if (!comentario && datos && datos.comentario) comentario = datos.comentario;
+
+		// Si corresponde, lo obtiene del movimiento anterior
+		if (!comentario && statusFinal_id == inactivo_id) {
+			const ultHist = await this.obtieneUltHist(entidad, id);
+			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
+		}
 
 		// Fin
+		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 		return comentario;
 	},
 	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {

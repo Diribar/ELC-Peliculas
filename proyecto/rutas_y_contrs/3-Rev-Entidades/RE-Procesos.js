@@ -471,7 +471,7 @@ module.exports = {
 
 			// Obtiene el status final, motivo_id, y comentario
 			const {statusFinal_id, motivo_id} = await FN.statusFinalMasMotivo({codigo, desaprueba, rclv, entidad, original, req});
-			const comentario = procsFM.comentario(req.body, motivo_id);
+			const comentario = await procsFM.comentario(req.body, motivo_id);
 
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
