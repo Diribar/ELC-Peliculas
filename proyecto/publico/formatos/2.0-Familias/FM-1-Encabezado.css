@@ -25,13 +25,13 @@
 			.pack {
 				line-height: 1; margin-right: 5px; white-space: nowrap;
 				i {
-					font-size: 1.1rem;
+					font-size: 1.1rem; background-color: transparent;
 					&:first-child {margin-right: 3px;}
 				}
 			}
 			:is(#temporada, #capitulo) {border-radius: 5px;}
 			#temporada {margin-right: 8px;}
-			select#capitulo {width: 20px;}
+			select#capitulo {width: 20px; color: fieldtext;}
 		}
 	}
 }
