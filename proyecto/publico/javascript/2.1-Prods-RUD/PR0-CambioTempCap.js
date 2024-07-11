@@ -2,16 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(1, -1);
-	const origen = false
-		? null
-		: codigo == "producto/detalle"
-		? "DTP"
-		: codigo == "producto/edicion"
-		? "EDP"
-		: codigo == "links/abm"
-		? "LK"
-		: "";
+	const codigo = location.pathname.slice(0, -1);
 	let ruta;
 
 	// Obtiene el ID de la colección
@@ -39,8 +30,8 @@ window.addEventListener("load", async () => {
 				prodID +
 				"&prodEntidad=capitulos&prodID=" +
 				capID +
-				"&origen=" +
-				origen;
+				"&origenUrl=" +
+				encodeURIComponent(codigo);
 		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
@@ -57,6 +48,6 @@ window.addEventListener("load", async () => {
 
 		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + origen;
+			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + encodeURIComponent(codigo);
 	});
 });
