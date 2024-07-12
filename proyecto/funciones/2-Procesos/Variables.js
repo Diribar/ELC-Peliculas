@@ -407,29 +407,25 @@ module.exports = {
 	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
 	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
-	vistaInactivar: (req, link) => {
-		return req.originalUrl.startsWith("/revision/")
-			? {
-					clase: "fa-spell-check",
-					link: "/inactivar-captura/?entidad=" + req.query.entidad + "&id=" + req.query.id + "&origen=TE",
-					titulo: "Ir al 'Tablero de Control' de Revisiones",
-					autofocus: true,
-			  }
-			: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
-			? {
-					clase: "fa-circle-info",
-					link: link ? link : "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
-					titulo: "Ir a la vista Detalle",
-					autofocus: true,
-			  }
-			: req.originalUrl.startsWith("/rclv/")
-			? {
-					clase: "fa-circle-info",
-					link: "/rclv/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
-					titulo: "Ir al 'Detalle de RCLV'",
-					autofocus: true,
-			  }
-			: {};
+	vistaInactivar: {
+		revision: (entidad, id) => ({
+			clase: "fa-spell-check",
+			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
+			titulo: "Ir al 'Tablero de Control' de Entidades",
+			autofocus: true,
+		}),
+		producto: (entidad, id, link) => ({
+			clase: "fa-circle-info",
+			link: link ? link : "/producto/detalle/?entidad=" + entidad + "&id=" + id,
+			titulo: "Ir a la vista Detalle",
+			autofocus: true,
+		}),
+		rclv: (entidad, id) => ({
+			clase: "fa-circle-info",
+			link: "/rclv/detalle/?entidad=" + entidad + "&id=" + id,
+			titulo: "Ir al 'Detalle de RCLV'",
+			autofocus: true,
+		}),
 	},
 	vistaTablero: {
 		clase: "fa-spell-check",
