@@ -178,7 +178,6 @@ module.exports = {
 					" de nuestra base de datos.",
 			],
 			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
-			check: true,
 		};
 
 		// Fin
