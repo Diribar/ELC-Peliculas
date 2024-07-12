@@ -403,28 +403,28 @@ module.exports = {
 	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 
 	// Links a vistas
-	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
-	vistaAnterior: (url) => ({nombre: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
-	vistaActual: (req) => ({nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
-	vistaSiguiente: (url) => ({nombre: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
+	vistaInicio: {clase: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
+	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
+	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
+	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
 	vistaInactivar: (req) => {
 		return req.originalUrl.startsWith("/revision/")
 			? {
-					nombre: "fa-spell-check",
+					clase: "fa-spell-check",
 					link: "/inactivar-captura/?entidad=" + req.query.entidad + "&id=" + req.query.id + "&origen=TE",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 					autofocus: true,
 			  }
 			: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
 			? {
-					nombre: "fa-circle-info",
+					clase: "fa-circle-info",
 					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
 					titulo: "Ir al 'Detalle de Producto'",
 					autofocus: true,
 			  }
 			: req.originalUrl.startsWith("/rclv/")
 			? {
-					nombre: "fa-circle-info",
+					clase: "fa-circle-info",
 					link: "/rclv/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
 					titulo: "Ir al 'Detalle de RCLV'",
 					autofocus: true,
@@ -432,12 +432,12 @@ module.exports = {
 			: {};
 	},
 	vistaTablero: {
-		nombre: "fa-spell-check",
+		clase: "fa-spell-check",
 		link: "/revision/tablero-de-entidades",
 		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
-	vistaEntendido: (url) => ({nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
+	vistaEntendido: (url) => ({clase: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
 
 	// Varios
 	origenes: [
