@@ -414,9 +414,9 @@ module.exports = {
 			titulo: "Ir al 'Tablero de Control' de Entidades",
 			autofocus: true,
 		}),
-		producto: (entidad, id, link) => ({
+		producto: (entidad, id) => ({
 			clase: "fa-circle-info",
-			link: link ? link : "/producto/detalle/?entidad=" + entidad + "&id=" + id,
+			link: "/producto/detalle/?entidad=" + entidad + "&id=" + id,
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
