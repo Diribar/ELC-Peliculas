@@ -21,7 +21,7 @@
 				<div class="temas">
 					<% const cr = "correccion/" %>
 					<% DE = dataEntry[familias] %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.ST, url: cr + "status", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.ST, url: cr + "status"}) %>
 				</div>
 			</div>
 		<% } %>
@@ -45,12 +45,12 @@
 					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prodsRclvs.RC, url: rp + "recuperar"}) %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
 				<% } %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt, mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed, mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed, mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed}) %>
 				<% if (revisorPERL) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta", mostrarOrigen: !!dt}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta"}) %>
 				<% } %>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 						<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
-						<%- include("RE-Registros", {familias, DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion"}) %>
 					</div>
 				</div>
 			<% } %>
