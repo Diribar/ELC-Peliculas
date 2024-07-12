@@ -6,12 +6,13 @@ module.exports = async (req, res, next) => {
 	const {ruta} = comp.reqBasePathUrl(req);
 	const indice = ruta.lastIndexOf("/");
 	const rclv = ruta.slice(indice + 1);
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 
 	// Valida la entidad
 	if (!rclvs.includes(rclv)) {
 		let informacion = {
 			mensajes: ["No se reconoce esa entidad."],
-			iconos: [vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+			iconos: [vistaAnterior, variables.vistaInicio],
 		};
 		return res.render("CMP-0Estructura", {informacion});
 	}
