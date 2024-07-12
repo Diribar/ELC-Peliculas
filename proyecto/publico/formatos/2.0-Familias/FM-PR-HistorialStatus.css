@@ -8,7 +8,7 @@
 			overflow-y: auto; position: relative;
 			.titulos {
 				display: flex; flex-direction: row;
-				position: sticky; top: 0; background-color: inherit;
+				position: sticky; top: 0;
 				input[type="radio"] {margin-right: 3px;}
 			}
 			table {
