@@ -10,24 +10,20 @@ module.exports = async (req, res, next) => {
 	// 1. Acciones en caso de que exista el 'edicID' en el url
 	if (edicID) {
 		// Averigua si existe la edicID en la base de datos
-		let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
+		const edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
 
 		// En caso que no, mensaje de error
 		if (!edicion) {
+			// Acciones si no tiene origen
 			if (!origen) {
 				const {baseUrl} = comp.reqBasePathUrl(req);
 				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
 			}
-			informacion = {
-				mensajes: ["No encontramos esa edición."],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen,
-						titulo: "Regresar",
-					},
-				],
-			};
+
+			// Información
+			const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			const vistaAnterior = variables.vistaAnterior(link);
+			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
 		}
 	}
 
@@ -37,8 +33,9 @@ module.exports = async (req, res, next) => {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const {baseUrl} = comp.reqBasePathUrl(req);
 		const revision = baseUrl == "/revision";
-		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
+		const vistaAnterior = variables.vistaAnterior("/inactivar-captura/" + cola);
 		let edicion;
 
 		if (revision) {
@@ -54,13 +51,9 @@ module.exports = async (req, res, next) => {
 				informacion = {
 					mensajes: ["No encontramos ninguna edición para revisar"],
 					iconos: [
+						vistaAnterior,
 						{
-							nombre: "fa-solid fa-circle-left",
-							link: "/inactivar-captura/" + cola,
-							titulo: "Entendido",
-						},
-						{
-							nombre: "fa-solid fa-pen",
+							clase: "fa-solid fa-pen",
 							link: "/" + familia + "/edicion/" + cola,
 							titulo: "Edición",
 						},
