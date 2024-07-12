@@ -17,7 +17,7 @@
 			<% if (locals.status_id == creado_id && locals.creadoPor_id == usuario.id) { %>
 				<!-- Eliminarlo definitivamente: Status creado y si fue creado por el usuario -->
 				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + origenHTML %>">
-					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+					<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
 				</a>
 			<% } %>
 			<% if (locals.revisorPERL && [...inacRecup_ids, creado_id].includes(locals.status_id)) { %>
@@ -50,7 +50,7 @@
 			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 				<!-- Eliminar -->
 				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + origenHTML %>">
-					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
+					<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
 				</a>
 			<% } %>
 		<% } %>
