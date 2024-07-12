@@ -77,7 +77,13 @@ module.exports = {
 
 			// Más variables
 			const {entidad, id, prodEntidad, prodID} = req.query;
-			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
+			const origen = req.query.origen
+				? req.query.origen
+				: tema == "revisionEnts"
+				? codigo == "rclv/alta"
+					? "RRA"
+					: "TE"
+				: "";
 			const userID = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -226,7 +232,7 @@ module.exports = {
 			// Acciones si se agregó un registro 'rclv'
 			if (codigo == "/rclv/agregar/") {
 				// Si el origen es "Datos Adicionales", actualiza su session y cookie
-				if (origen == "DA") {
+				if (origen == "PDA") {
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 				}
@@ -270,7 +276,7 @@ module.exports = {
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-			if (origen == "EDP" || origen == "DTP") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+			if (origen == "EDP" || origen == "PDT") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);
