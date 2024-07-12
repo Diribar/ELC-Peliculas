@@ -37,7 +37,7 @@ module.exports = (req, res, next) => {
 
 	// Si no es una ruta aceptada, interrumpe la función
 	const diferenteRutaAnterior = urlActual != urlAnterior; // Es diferente a la ruta urlAnterior
-	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)); // Pertenece a las rutas aceptadas
+	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)) || urlActual == "/"; // Pertenece a las rutas aceptadas
 	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
