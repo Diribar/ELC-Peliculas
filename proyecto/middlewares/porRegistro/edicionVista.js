@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 			// Acciones si no tiene origen
 			if (!origen) {
 				const {baseUrl} = comp.reqBasePathUrl(req);
-				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "PDT";
+				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
 			}
 
 			// Información

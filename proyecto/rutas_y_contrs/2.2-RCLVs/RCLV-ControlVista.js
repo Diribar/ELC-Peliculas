@@ -10,7 +10,7 @@ module.exports = {
 		const tema = "rclvCrud";
 		const codigo = "detalle";
 		const {entidad, id, hoyLocal} = req.query;
-		const origen = req.query.origen ? req.query.origen : "DTR";
+		const origen = req.query.origen ? req.query.origen : "RDT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const userID = usuario ? usuario.id : null;
 		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
@@ -169,7 +169,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const origen = req.query.origen ? req.query.origen : "DTR";
+			const origen = req.query.origen ? req.query.origen : "RDT";
 			const codigo = req.baseUrl + req.path;
 			const userID = req.session.usuario.id;
 			let errores;
@@ -237,7 +237,7 @@ module.exports = {
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 				}
 				// Si el origen es "Edición de Producto", crea o actualiza la edición
-				if (origen == "EDP") {
+				if (origen == "PED") {
 					// Obtiene el registro original del producto, y su edición ya creada (si existe)
 					let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 						entidad: prodEntidad,
@@ -276,7 +276,7 @@ module.exports = {
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-			if (origen == "EDP" || origen == "PDT") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+			if (origen == "PED" || origen == "PDT") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);
