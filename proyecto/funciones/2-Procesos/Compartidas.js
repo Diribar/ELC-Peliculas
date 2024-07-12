@@ -1069,7 +1069,7 @@ module.exports = {
 				.replace(/[ŔŖŘ]/g, "R")
 				.replace(/[ŕŗř]/g, "r")
 				.replace(/[ŚŜŞŠ]/g, "S")
-				.replace(/[śŝşš]/g, "s")
+				.replace(/[śŝşšș]/g, "s")
 				.replace(/[ŢŤŦȚ]/g, "T")
 				.replace(/[țţťŧ]/g, "t")
 				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
