@@ -47,19 +47,17 @@ router.get("/revision/:familia/rechazar", aptoCRUD, capturaActivar, vista.motivo
 
 // Vistas form - Historial
 router.get("/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
-router.get("/:familia/eliminar", aptoEliminar, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/inactivar", aptoCRUD, capturaActivar, vista.historialForm);
 router.get("/revision/:familia/recuperar", aptoCRUD, capturaActivar, vista.historialForm);
 router.get("/:familia/historial", aptoDetalle, statusCompara, vista.historialForm);
 
 // Vistas -  CRUD: Eliminado
-router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.elimina_guardar);
-router.get("/:familia/eliminado", vista.eliminado_form);
+router.get("/:familia/eliminadoPorCreador", eliminadoPorCreador, vista.eliminaForm);
+router.get("/:familia/eliminar", aptoEliminar, vista.eliminaForm);
 
 // Vistas post
 router.post("/:familia/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vista.inacRecup_guardar);
 router.post("/:familia/recuperar", aptoCRUD, comentNecesario, capturaInactivar, vista.inacRecup_guardar);
-router.post("/:familia/eliminar", aptoEliminar, capturaInactivar, vista.elimina_guardar);
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", correcs, statusCorrecto, capturaActivar, vista.correcs.motivoForm);

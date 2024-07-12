@@ -96,7 +96,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "producto/alta";
 		const {entidad, id} = req.query;
-		const origen = "TE";
+		const origen = req.query.origen ? req.query.origen : "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 		// Obtiene el registro original

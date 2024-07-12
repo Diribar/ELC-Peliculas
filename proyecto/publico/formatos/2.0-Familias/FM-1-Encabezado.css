@@ -9,9 +9,10 @@
 	}
 	#colCap {
 		display: flex; flex-direction: column; align-items: flex-end;
-		#coleccion a button {
+		#coleccion button {
 			border: 1px solid var(--azul-oscuro); background: var(--gris-claro);
 			padding: 5px 10px; border-radius: 10px; text-align: center;
+			color: fieldtext;
 		}
 		#tempCapI {
 			margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
@@ -25,13 +26,13 @@
 			.pack {
 				line-height: 1; margin-right: 5px; white-space: nowrap;
 				i {
-					font-size: 1.1rem;
+					font-size: 1.1rem; background-color: transparent;
 					&:first-child {margin-right: 3px;}
 				}
 			}
 			:is(#temporada, #capitulo) {border-radius: 5px;}
 			#temporada {margin-right: 8px;}
-			select#capitulo {width: 20px;}
+			select#capitulo {width: 20px; color: fieldtext;}
 		}
 	}
 }

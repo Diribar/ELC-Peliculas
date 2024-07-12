@@ -51,20 +51,15 @@ module.exports = {
 		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Lecturas de BD
-		if (entidad == "capitulos") {
-			prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-			prodComb.colecAprob = baseDeDatos
-				.obtienePorId("capitulos", id, "coleccion")
-				.then((n) => aprobados_ids.includes(n.coleccion.statusRegistro_id));
-		}
+		if (entidad == "capitulos") prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+
 		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts, origen});
 		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 		let yaCalificada = userID
 			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
-		[prodComb.capitulos, prodComb.colecAprob, links, interesDelUsuario, yaCalificada] = await Promise.all([
+		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
-			prodComb.colecAprob,
 			links,
 			interesDelUsuario,
 			yaCalificada,

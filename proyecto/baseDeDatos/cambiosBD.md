@@ -60,4 +60,3 @@ UPDATE c19353_elc.st_motivos SET orden=18, descripcion='Es un capítulo de una c
 UPDATE c19353_elc.st_motivos SET orden=31, descripcion='Video no disponible', grupo='-', codigo=NULL, prods=0, rclvs=0, links=1, penalizac=0.0, comentNeces=0 WHERE id=31;
 UPDATE c19353_elc.st_motivos SET orden=90, descripcion='Otro motivo no técnico', grupo='generales', codigo='otro', prods=1, rclvs=1, links=0, penalizac=0.0, comentNeces=1 WHERE id=90;
 
-INSERT INTO c19353_elc.aux_novedades VALUES(11, 'Actualizamos los motivos para inactivar una película', '2024-07-10', '1.09', 1, 0, 0, 0, 0, 0);
