@@ -407,7 +407,7 @@ module.exports = {
 	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
 	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
-	vistaInactivar: (req) => {
+	vistaInactivar: (req, link) => {
 		return req.originalUrl.startsWith("/revision/")
 			? {
 					clase: "fa-spell-check",
@@ -418,8 +418,8 @@ module.exports = {
 			: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
 			? {
 					clase: "fa-circle-info",
-					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
-					titulo: "Ir al 'Detalle de Producto'",
+					link: link ? link : "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
+					titulo: "Ir a la vista Detalle",
 					autofocus: true,
 			  }
 			: req.originalUrl.startsWith("/rclv/")
