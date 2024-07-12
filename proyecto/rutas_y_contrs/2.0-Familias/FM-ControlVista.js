@@ -158,8 +158,8 @@ module.exports = {
 		const capitulos = entidad == "colecciones" ? "y sus capítulos, " : "";
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
-		const link = origen == "TM" ? "/revision/tablero-de-mantenimiento" : "/";
 		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
+		const vistaEntendido = variables.vistaEntendido(req.session.urlSinEntidadId);
 
 		// Cartel de registro eliminado
 		const informacion = {
@@ -177,8 +177,7 @@ module.exports = {
 					plural2 +
 					" de nuestra base de datos.",
 			],
-			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
-			check: true,
+			iconos: [vistaEntendido],
 		};
 
 		// Fin

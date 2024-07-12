@@ -4,20 +4,21 @@
 module.exports = (req, res, next) => {
 	// Aborta si es una API
 	if (req.originalUrl.includes("/api/")) return next();
+	if (req.originalMethod != "GET") return next();
 
 	// Valores de startup
 	const urlsGuardadas = [
 		"urlSinLogin",
 		"urlFueraDeUsuarios",
 		"urlFueraDeContactanos",
-		"urlSinPermInput",
 		"urlSinCaptura",
+		"urlSinPermInput",
+		"urlSinEntidadId",
 		"urlAnterior",
 		"urlActual",
 	];
-	urlsGuardadas.forEach((url) => {
+	for (let url of urlsGuardadas)
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
-	});
 
 	// Variables
 	const urlAnterior = req.session.urlActual;
@@ -45,8 +46,8 @@ module.exports = (req, res, next) => {
 	if (!rutaAceptada) return next();
 
 	// Función
-	let activaSessionCookie = (url, anterior) => {
-		req.session[url] = anterior ? urlAnterior : urlActual;
+	let activaSessionCookie = (url, actual) => {
+		req.session[url] = actual ? urlActual : urlAnterior;
 		res.cookie(url, req.session[url], {maxAge: unDia});
 	};
 
@@ -58,14 +59,14 @@ module.exports = (req, res, next) => {
 		!urlAnterior.includes("/agregar/") &&
 		!urlAnterior.includes("/edicion/")
 	)
-		activaSessionCookie("urlSinLogin", true);
+		activaSessionCookie("urlSinLogin");
 
 	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
-	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios", true);
+	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
 
 	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
 	if (!urlAnterior.startsWith("/usuarios/") && !urlAnterior.includes("/contactanos"))
-		activaSessionCookie("urlFueraDeContactanos", true);
+		activaSessionCookie("urlFueraDeContactanos");
 
 	// urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
@@ -74,7 +75,7 @@ module.exports = (req, res, next) => {
 		!urlAnterior.startsWith("/revision/tablero-de-entidades") &&
 		!urlAnterior.includes("/edicion/")
 	)
-		activaSessionCookie("urlSinCaptura", true);
+		activaSessionCookie("urlSinCaptura");
 
 	// urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
@@ -83,15 +84,18 @@ module.exports = (req, res, next) => {
 		!urlAnterior.startsWith("/links/") &&
 		!urlAnterior.startsWith("/revision/")
 	)
-		activaSessionCookie("urlSinPermInput", true);
+		activaSessionCookie("urlSinPermInput");
 
-	// Actualiza la url 'urlAnterior'
-	activaSessionCookie("urlAnterior", true);
+	// urlSinEntidadId
+	if (!Object.keys(req.query).length) activaSessionCookie("urlSinEntidadId", true);
 
-	// Actualiza la url 'urlActual'
-	activaSessionCookie("urlActual");
-	res.locals.urlActual = urlActual;
+	// urlAnterior
+	activaSessionCookie("urlAnterior");
+
+	// urlActual
+	activaSessionCookie("urlActual", true);
 
 	// Fin
+	res.locals.urlActual = urlActual;
 	next();
 };

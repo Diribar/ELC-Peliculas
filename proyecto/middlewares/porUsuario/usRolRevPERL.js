@@ -5,6 +5,7 @@ const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
 module.exports = (req, res, next) => {
 	// Variables
 	const usuario = req.session.usuario;
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion;
 
 	// Revisa si el usuario tiene el status perenne
@@ -14,7 +15,7 @@ module.exports = (req, res, next) => {
 	if (!informacion && !usuario.rolUsuario.revisorPERL)
 		informacion = {
 			mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
+			iconos: [vistaAnterior],
 		};
 
 	// Si corresponde, muestra el mensaje de error

@@ -6,7 +6,7 @@
     </div>
     <textarea
         name="comentario"
-        <% if (["inactivar", "eliminar", "rechazar"].includes(codigo)) { %>readonly<% } %>
+        <% if (["inactivar", "eliminar", "rechazar", "cambiarMotivo"].includes(codigo)) { %>readonly<% } %>
         placeholder="Agregá un comentario"
     ><%- locals.comentario ? comentario : "" %></textarea>
 </section>
