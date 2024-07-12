@@ -72,7 +72,7 @@ module.exports = {
 		// Actualiza el código
 		if (esRevision && ["inactivar", "recuperar"].includes(codigo)) codigo = "revision" + comp.letras.inicialMayus(codigo);
 
-		// Fin
+		// Fin - revisionInactivar - revisionRecuperar - recuperar - historial
 		return codigo;
 	},
 	titulo: ({entidad, codigo}) => {
