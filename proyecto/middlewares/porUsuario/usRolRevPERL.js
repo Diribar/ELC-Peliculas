@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
 	if (!informacion && !usuario.rolUsuario.revisorPERL)
 		informacion = {
 			mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
+			iconos: [vistaAnterior(req.session.urlAnterior)],
 		};
 
 	// Si corresponde, muestra el mensaje de error

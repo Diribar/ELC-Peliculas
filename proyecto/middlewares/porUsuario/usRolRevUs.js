@@ -13,13 +13,12 @@ module.exports = (req, res, next) => {
 	// Revisa si el usuario tiene el rol necesario
 	const usuarioSinRolDeRevisor = {
 		mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
-		iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
+		iconos: [vistaAnterior(req.session.urlAnterior)],
 	};
 	if (!informacion && !usuario.rolUsuario.revisorUs) informacion = usuarioSinRolDeRevisor;
 
 	// Si corresponde, muestra el mensaje de error
 	if (informacion) res.render("CMP-0Estructura", {informacion});
-
 	// Fin
 	else next();
 };

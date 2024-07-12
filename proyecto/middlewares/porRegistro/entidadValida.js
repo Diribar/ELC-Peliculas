@@ -21,16 +21,7 @@ module.exports = (req, res, next) => {
 			!familia || // la entidad no pertenece a una familia
 			!rutasPorFamilia[familia].some((n) => url.includes(n)) // la familia no está presente en el url
 		)
-			informacion = {
-				mensajes: ["La entidad ingresada es inválida."],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-				],
-			};
+			informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior(req.session.urlAnterior)]};
 	}
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

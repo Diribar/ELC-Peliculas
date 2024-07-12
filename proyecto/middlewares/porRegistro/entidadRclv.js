@@ -11,10 +11,7 @@ module.exports = async (req, res, next) => {
 	if (!rclvs.includes(rclv)) {
 		let informacion = {
 			mensajes: ["No se reconoce esa entidad."],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-				variables.vistaInicio,
-			],
+			iconos: [vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 		};
 		return res.render("CMP-0Estructura", {informacion});
 	}

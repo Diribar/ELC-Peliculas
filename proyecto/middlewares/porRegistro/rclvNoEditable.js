@@ -10,13 +10,7 @@ module.exports = (req, res, next) => {
 	if (id && id < 10)
 		informacion = {
 			mensajes: ["El acceso para este registro está bloqueado por los administradores."],
-			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: req.session.urlAnterior,
-					titulo: "Ir a la vista anterior",
-				},
-			],
+			iconos: [vistaAnterior(req.session.urlAnterior)],
 		};
 	// Bloquea la edición de los ID menores que 20
 	else if (req.originalUrl.includes("/edicion/") && id && id < 2 && !revisorPERL)
@@ -25,13 +19,7 @@ module.exports = (req, res, next) => {
 				"Este registro es de alta sensibilidad.",
 				"Su acceso para editarlo está bloqueado por los administradores.",
 			],
-			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: req.session.urlAnterior,
-					titulo: "Ir a la vista anterior",
-				},
-			],
+			iconos: [vistaAnterior(req.session.urlAnterior)],
 		};
 
 	// Conclusiones

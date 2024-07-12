@@ -95,11 +95,7 @@ module.exports = {
 				"Podés gestionar el permiso con la flecha hacia la derecha.",
 			],
 			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: linkVolver,
-					titulo: "Ir a la vista anterior",
-				},
+				vistaAnterior(linkVolver),
 				{
 					nombre: "fa-circle-right",
 					link: "/usuarios/perennes",
