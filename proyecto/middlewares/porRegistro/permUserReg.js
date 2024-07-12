@@ -2,6 +2,14 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
+	const rubro = req.originalUrl.startsWith("/revision/")
+		? "revision"
+		: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
+		? "producto"
+		: req.originalUrl.startsWith("/rclv/")
+		? "rclv"
+		: null;
+
 	let v = {
 		// Generales
 		entidad: req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "",
@@ -17,10 +25,10 @@ module.exports = async (req, res, next) => {
 
 		// Vistas
 		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
-		vistaInactivar: variables.vistaInactivar(req),
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
+	v.vistaInactivar = rubro ? variables.vistaInactivar[rubro](v.entidad, v.entID) : {};
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
