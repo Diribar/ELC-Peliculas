@@ -5,15 +5,14 @@
 	<!-- fmCrud: Inactivar, Recuperar, Rechazar, Eliminar -->
 
 	<!-- Compartido -->
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
+	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
+	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-1-Encabezado.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
-	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
-	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-DatosLargos.css">
-	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 
 	<% if (["inactivar", "cambiarMotivo"].includes(codigo)) { %>
-		<!-- Inactivar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-ElegirMotivo.css">
 		<script src="/publico/javascript/2.0-Familias/FM-PR-ElegirMotivo.js"></script>
 		<% if (codigo == "cambiarMotivo") { %>
@@ -21,9 +20,8 @@
 		<% } %>
 	<% } %>
 	<% if (["recuperar", "eliminar", "corregirStatus", "historial"].includes(codigo)) { %>
-		<!-- Recuperar, Eliminar -->
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
-		<% if (["recuperar", "corregirStatus"].includes(codigo)) { %>
+		<% if (["recuperar"].includes(codigo)) { %>
 			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
 		<% } %>
 	<% } %>

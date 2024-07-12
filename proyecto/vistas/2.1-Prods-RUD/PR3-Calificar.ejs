@@ -4,7 +4,7 @@
 </div>
 <form method="POST" class="marco">
 	<div id="calificaciones">
-		<div id="individuales">
+		<div id="sectorIndivs">
 			<% const atributos = Object.keys(atributosCalific) %>
 			<% atributos.forEach(function(atributo, i) { %>
 				<% const atributo_id = atributo + "_id" %>
@@ -33,10 +33,10 @@
 				</div>
 			<% }) %>
 		</div>
-		<div id="sector2">
+		<div id="sectorResultado">
 			<div id="consolidado">
 				<div id="resultado">Resultado</div>
-				<div id="valor"><%= califUsuario ? (califUsuario.resultado + "%") : "-" %></div>
+				<div id="valor"><%= califUsuario.resultado ? (califUsuario.resultado + "%") : "-" %></div>
 			</div>
 			<%- include("PR3-CalificarButtons") %>
 		</div>

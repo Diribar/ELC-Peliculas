@@ -7,60 +7,31 @@ module.exports = {
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
 			// Variables
-			const {origen, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
 			if (urlDestino) return res.redirect(urlDestino);
-			if (!origen) return res.redirect("/");
+			if (!origenCodigo && !origenUrl) return res.redirect("/");
 
-			// Producto
-			destino = destino
-				? destino
-				: origen == "DA"
-				? "/producto/agregar/datos-adicionales"
-				: origen == "DTP"
-				? "/producto/detalle/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: origen == "EDP"
-				? "/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: origen == "CAL"
-				? "/producto/calificar/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: origen == "RAP"
-				? "/revision/producto/alta/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: origen == "REP"
-				? "/revision/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: "";
-
-			// RCLV
-			if (origen == "DTR") destino = "/rclv/detalle/?entidad=" + entidad + "&id=" + id;
+			// Rutina para encontrar el destino
+			for (let origen of variables.origenes)
+				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
+					destino = origen.url;
+					if (origen.cola)
+						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id);
+					break;
+				}
 
 			// Links
-			destino = destino
-				? destino
-				: ["LK", "LKM"].includes(origen)
-				? "/links/abm/?entidad=" +
-				  (prodEntidad ? prodEntidad : entidad) +
-				  "&id=" +
-				  (prodID ? prodID : id) +
-				  (origen == "LKM" ? "&origen=TM" : "") +
-				  (grupo ? "&grupo=inactivo" : "")
-				: origen == "RL"
-				? "/revision/links/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: "";
-
-			// Usuarios
-			if (origen == "TU") destino = "/revision/usuarios/tablero-de-usuarios";
-
-			// Entidades
-			destino = destino
-				? destino
-				: origen == "TE"
-				? "/revision/tablero-de-entidades"
-				: origen == "TM"
-				? "/revision/tablero-de-mantenimiento"
-				: origen == "CN"
-				? "/consultas"
-				: "";
+			if (!destino && ["LK", "LKM"].includes(origen))
+				destino =
+					"/links/abm/?entidad=" +
+					(prodEntidad ? prodEntidad : entidad) +
+					"&id=" +
+					(prodID ? prodID : id) +
+					(origen == "LKM" ? "&origen=TM" : "") +
+					(grupo ? "&grupo=inactivo" : "");
 
 			// Redirecciona a la vista que corresponda
 			if (!destino) destino = "/";

@@ -1,74 +1,75 @@
-<!-- Izquierda -->
-<div id="nombres">
-	<% if (codigo != "detalle") { %><a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= id %><%= locals.origen && !origen.startsWith("DT") ? '&origen=' + origen : '' %>"><% } %>
-		<h2>
-			<%= registro.capitulo ? (registro.capitulo + ". ") : "" %>
-			<%= registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : (locals.canonNombre + registro.nombre) %>
-		</h2>
-		<% const nombre2 = registro.nombreOriginal ? registro.nombreOriginal : registro.nombreAltern %>
-		<% if (nombre2) { %>
-			<h3><em><%= nombre2 %></em></h3>
-		<% } %>
-	<% if (codigo != "detalle") { %></a><% } %>
-</div>
+<div id="encabezado" class="<%= codigo %>">
+	<!-- Izquierda -->
+	<div id="nombres">
+		<% if (codigo != "detalle") { %><a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= id %><%= locals.origen && !origen.startsWith("DT") ? '&origen=' + origen : '' %>"><% } %>
+			<h2>
+				<%= registro.capitulo ? (registro.capitulo + ". ") : "" %>
+				<%= registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : (locals.canonNombre + registro.nombre) %>
+			</h2>
+			<% const nombre2 = registro.nombreOriginal ? registro.nombreOriginal : registro.nombreAltern %>
+			<% if (nombre2) { %>
+				<h3><em><%= nombre2 %></em></h3>
+			<% } %>
+		<% if (codigo != "detalle") { %></a><% } %>
+	</div>
 
-<!-- Derecha -->
-<% if (familia == "producto" && entidad != "peliculas") { %>
-	<div id="colCap">
-		<% if (entidad == "colecciones") { %>
-			<!-- Cantidad de Temporadas y de Capítulos -->
-			<div id="coleccion">
-				<% const anchor = ["prodRud", "linksCRUD", "revisionEnts"].includes(tema) %>
-				<% if (anchor) { %><a href="/inactivar-captura/?entidad=colecciones&id=<%= id %>&prodEntidad=capitulos&prodID=<%= capID %>&origen=<%= rutaCRUD %>"><% } %>
-					<button type="button">
-						<% if (registro.cantTemps > 1) { %>
-							<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
+	<!-- Derecha -->
+	<% if (familia == "producto" && entidad != "peliculas") { %>
+		<div id="colCap">
+			<% if (entidad == "colecciones") { %>
+				<!-- Cantidad de Temporadas y de Capítulos -->
+				<div id="coleccion">
+					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + 'prodEntidad=capitulos&prodID=' + capID + '&origenUrl=' + rutaCRUD %>"><% } %>
+						<button type="button">
+							<% if (registro.cantTemps > 1) { %>
+								<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
+							<% } %>
+							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
+						</button>
+					<% if (locals.anchorEncab) { %></a><% } %>
+				</div>
+			<% } %>
+			<% if (entidad == "capitulos") { %>
+				<!-- Ir a la colección -->
+				<div id="tempCapI">
+					<p id="coleccionTitulo">Colección:</p>
+					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origenUrl=' + rutaCRUD %>"><% } %>
+						<button type="button"><%= registro.coleccion.nombreCastellano %></button>
+					<% if (locals.anchorEncab) { %></a><% } %>
+				</div>
+				<!-- Cambiar de temporada o capítulo -->
+				<div id="tempCapS">
+					<% if (locals.anchorEncab) { %>
+						<!-- Avanza/Retrocede un capítulo -->
+						<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
+						<div class="pack">
+							<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
+							<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
+						</div>
+						<!-- Elige una temporada o capítulo -->
+						<script src="/publico/javascript/2.1-Prods-RUD/PR0-CambioTempCap.js"></script>
+						<% if (registro.coleccion.cantTemps > 1) { %>
+							<select id="temporada">
+								<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
+									<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+								<% } %>
+							</select>
 						<% } %>
-						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
-					</button>
-				<% if (anchor) { %></a><% } %>
-			</div>
-		<% } %>
-		<% if (entidad == "capitulos") { %>
-			<!-- Ir a la colección -->
-			<div id="tempCapI">
-				<p id="coleccionTitulo">Colección:</p>
-				<% if (["prodRud", "linksCRUD"].includes(tema)) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>"><% } %>
-					<button type="button"><%= registro.coleccion.nombreCastellano %></button>
-				<% if (["prodRud", "linksCRUD"].includes(tema)) { %></a><% } %>
-			</div>
-			<!-- Cambiar de temporada o capítulo -->
-			<div id="tempCapS">
-				<% if (["prodRud", "linksCRUD"].includes(tema)) { %>
-					<!-- Avanza/Retrocede un capítulo -->
-					<script src="/publico/javascript/2.1-Prods-RUD/PR0-AvanzaRetrCap.js"></script>
-					<div class="pack">
-						<i class="fa-solid fa-circle-left inactivo pointer" tabindex="-1" title="Ir al capítulo anterior"></i>
-						<i class="fa-solid fa-circle-right inactivo pointer" tabindex="-1" title="Ir al capítulo posterior"></i>
-					</div>
-					<!-- Elige una temporada o capítulo -->
-					<script src="/publico/javascript/2.1-Prods-RUD/PR0-CambioTempCap.js"></script>
-					<% if (registro.coleccion.cantTemps > 1) { %>
-						<select id="temporada">
-							<% for (let temp = 1; temp <= registro.coleccion.cantTemps; temp++) { %>
-								<option value="<%= temp %>" <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+						<!-- Elige un capítulo -->
+						<select id="capitulo">
+							<% for (let capitulo of registro.capitulos) { %>
+								<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>
 							<% } %>
 						</select>
+					<% } else if (registro.coleccion.cantTemps > 1) { %>
+						<!-- Información de temporada -->
+						<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
 					<% } %>
-					<!-- Elige un capítulo -->
-					<select id="capitulo">
-						<% for (let capitulo of registro.capitulos) { %>
-							<option value="<%= capitulo.numero %>" <% if (registro.capitulo == capitulo.numero) { %>selected<% } %> ><%= capitulo.numero + ". " + capitulo.nombre %></option>
-						<% } %>
-					</select>
-				<% } else if (registro.coleccion.cantTemps > 1) { %>
-					<!-- Información de temporada -->
-					<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
-				<% } %>
-			</div>
-		<% } %>
-	</div>
-<% } %>
-<% if (familia == "rclv" && codigo == "detalle" && prodsDelRCLV.length) { %>
-	<div id="vinculadas">Películas: <%= prodsDelRCLV.length %></div>
-<% } %>
+				</div>
+			<% } %>
+		</div>
+	<% } %>
+	<% if (familia == "rclv" && codigo == "detalle" && prodsDelRCLV.length) { %>
+		<div id="vinculadas">Películas: <%= prodsDelRCLV.length %></div>
+	<% } %>
+</div>

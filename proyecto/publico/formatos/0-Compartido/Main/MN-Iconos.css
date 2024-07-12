@@ -14,11 +14,13 @@
 		&:not(:has(*)) {display: none}
 
 		/* Grupos */
-		:is(i, img, button) {font-size: 1.75rem; background: transparent; border: none;}
-		:where(i, img, button) {margin: 0 10px; border-radius: 50%; cursor: pointer;}
-		:is(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
-		:is(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
-		:is(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
+		:where(i, img, button) {
+			font-size: 1.75rem; background: transparent; border: none;
+			margin: 0 10px; border-radius: 50%; cursor: pointer;
+		}
+		:where(.pack, .pack :where(i, img, button)) {margin: 0 5px;}
+		:where(.fa-circle-left, .fa-circle-right) {color: var(--bordeFlechas); border: none;}
+		:where(button, a) {display: flex; flex-direction: row; align-items: center; height: min-content;}
 
 		/* Particularidades */
 		.pack {display: flex; flex-direction: row; align-items: center;}
