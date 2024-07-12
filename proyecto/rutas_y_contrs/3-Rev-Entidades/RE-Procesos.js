@@ -459,7 +459,7 @@ module.exports = {
 			const {entidad, id, origen, desaprueba} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.reqBasePathUrl(req);
-			const codigo = procsFM.codigo({ruta, familia}); // 'revisionInactivar', 'revisionRecuperar', 'rechazar'
+			const codigo = procsFM.codigo({ruta, familia}); // 'alta', 'rechazar', 'revisionInactivar', 'revisionRecuperar'
 			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
