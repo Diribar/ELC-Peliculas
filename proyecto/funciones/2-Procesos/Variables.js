@@ -407,6 +407,13 @@ module.exports = {
 	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
 	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
+	vistaEntendido: (url) => ({clase: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
+	vistaTablero: {
+		clase: "fa-spell-check",
+		link: "/revision/tablero-de-entidades",
+		titulo: "Ir al 'Tablero de Control' de Entidades",
+		autofocus: true,
+	},
 	vistaInactivar: {
 		revision: (entidad, id) => ({
 			clase: "fa-spell-check",
@@ -427,13 +434,6 @@ module.exports = {
 			autofocus: true,
 		}),
 	},
-	vistaTablero: {
-		clase: "fa-spell-check",
-		link: "/revision/tablero-de-entidades",
-		titulo: "Ir al 'Tablero de Control' de Entidades",
-		autofocus: true,
-	},
-	vistaEntendido: (url) => ({clase: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
 
 	// Varios
 	origenes: [
