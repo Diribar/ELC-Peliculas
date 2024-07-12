@@ -726,13 +726,7 @@ module.exports = {
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
-			iconos: [
-				{
-					nombre: "fa-spell-check",
-					link: "/revision/tablero-de-entidades",
-					titulo: "Ir al 'Tablero de Control' de Revisiones",
-				},
-			],
+			iconos: [variables.vistaTablero],
 		},
 		// RCLV-Edición Form
 		RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
