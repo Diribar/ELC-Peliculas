@@ -59,7 +59,7 @@
 	<% condicRclvCrud = tema == "rclvCrud" && (["agregar", "edicion"].includes(codigo)) %>
 	<% condicRevision = tema == "revisionEnts" && codigo == "rclv/alta" %>
 	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
-	<% if (condicRclvCrud || condicRevision || condicRevSolapam) { %>
+	<% if (condicRclvCrud || condicRevision && !locals.statusCreado || condicRevSolapam) { %>
 		<!-- CRUD - Aprobar -->
 		<button type="submit" autofocus class="inactivo">
 			<i class="fa-solid fa-circle-check" title="Guardar"></i>
