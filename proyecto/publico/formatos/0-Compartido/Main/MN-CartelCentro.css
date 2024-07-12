@@ -1,11 +1,14 @@
-/* Formato general del cartel */
 main .cartelCentro {
+	/* Formato general */
 	width: max-content; max-width: min(600px, 95vw);
 	max-height: 95%; color: var(--gris-claro);
 	padding: 20px; border-radius: 15px; border: 6px double white;
-	background: var(--rojo-oscuro);
-	&.check {background: var(--verde-oscuro);}
-	&.trabajando {background: var(--azul-oscuro);}
+
+	/* Color de fondo */
+	&:not(:has(#alerta.ocultar)) {background: var(--rojo-oscuro);}
+	&:not(:has(#check.ocultar)) {background: var(--verde-oscuro);}
+	&:not(:has(#trabajando.ocultar)) {background: var(--azul-oscuro);}
+
 	&#cartelGenerico {
 		&:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
 		#contenedorMensajes {
@@ -14,6 +17,7 @@ main .cartelCentro {
 			&:not(:empty) {padding-block: 40px;}
 		}
 	}
+
 	&#cartelProgreso {
 		min-width: 250px;
 		.inicio {margin-bottom: 40px;}
