@@ -3,14 +3,11 @@
 module.exports = (req, res, next) => {
 	// Variables
 	const entidad = req.query.entidad;
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion;
 
 	// Verifica los datos
-	if (!entidad)
-		informacion = {
-			mensajes: ["Falta el dato de la 'entidad'"],
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
-		};
+	if (!entidad) informacion = {mensajes: ["Falta el dato de la 'entidad'"], iconos: [vistaAnterior]};
 	else {
 		// Entidad inexistente
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
