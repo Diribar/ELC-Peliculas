@@ -146,7 +146,7 @@ module.exports = async (req, res, next) => {
 			const linkInactivar =
 				"/inactivar-captura/?entidad=" + pc_entidad + "&id=" + pc_entidadID + "&urlDestino=" + originalUrl;
 			const liberar = {
-				nombre: "fa-circle-check",
+				clase: "fa-circle-check",
 				link: linkInactivar,
 				titulo: "Liberar automáticamente",
 				autofocus: true,
