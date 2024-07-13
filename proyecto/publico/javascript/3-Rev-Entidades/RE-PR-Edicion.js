@@ -107,7 +107,8 @@ window.addEventListener("load", async () => {
 				"Figura que está todo procesado, y a la vez quedan campos por procesar",
 			];
 			const link = "/" + familia + "/edicion/" + v.cola;
-			contenidoDelCartelGenerico({DOM, mensajes, clase: "fa-thumbs-up", titulo: "Entendido", link});
+			const vistaEntendido = variables.vistaEntendido(link);
+			contenidoDelCartelGenerico({DOM, mensajes, ...vistaEntendido});
 
 			// Formatos
 			DOM.cartelGenerico.classList.remove("check");
