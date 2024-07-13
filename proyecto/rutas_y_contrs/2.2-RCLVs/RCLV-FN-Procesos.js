@@ -204,11 +204,11 @@ module.exports = {
 				id = original.id;
 
 				// Les agrega el 'rclv_id' a session y cookie de origen
-				if (origen == "DA") {
+				if (origen == "PDA") {
 					req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: id};
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
-				} else if (origen == "EDP") {
+				} else if (origen == "PED") {
 					req.session.edicProd = req.session.edicProd ? req.session.edicProd : req.cookies.edicProd;
 					req.session.edicProd = {...req.session.edicProd, [campo_id]: id};
 					res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});

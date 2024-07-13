@@ -135,7 +135,7 @@ module.exports = {
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
 		const statusLink_id = [creado_id, aprobado_id, recuperar_id];
-		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RAP"});
+		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RPA"});
 		const status_id = statusRegistro_id;
 		const asocs = variables.entidades.asocRclvs;
 

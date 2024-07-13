@@ -37,8 +37,8 @@ module.exports = async (req, res, next) => {
 			: baseUrl == "/revision"
 			? "TE"
 			: baseUrl == "/rclv"
-			? "DTR"
-			: "DTP";
+			? "RDT"
+			: "PDT";
 		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 

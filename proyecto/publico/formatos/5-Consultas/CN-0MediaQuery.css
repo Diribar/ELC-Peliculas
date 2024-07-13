@@ -3,14 +3,55 @@
 	#cuerpoFooterImgDer {
 		#cuerpo {
 			#vistaDeResults {#scroll #botones:has(li) {flex-wrap: wrap;}}
-			#iconosDelTitulo .ayuda.consulta {display: none;}
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
 		}
-		#imgDerecha {position: relative;}
+		@media (width > 1350px) {
+			#imgDerecha {position: relative;}
+		}
+		@media (width <= 1350px) {
+			#imgDerecha {display: none;}
+		}
+		@media (width > 900px) {
+			#iconosDelTitulo .ayuda.consulta {display: none;}
+		}
 	}
 }
 
 /* Ambos */
+@media ((orientation: landscape) and (height > 600px) and (width <= 900px)) or (orientation: portrait) {
+	#cuerpoFooterImgDer #cuerpo {
+		/* Sector Configuración de la Consulta */
+		#configCons {
+			position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);
+			#toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
+
+			/* Sector filtros */
+			#configFiltros #palabrasClave i {scale: 1.5;}
+
+		}
+
+		/* Sector Encabezado más películas */
+		#encabMasPelis {
+			justify-content: space-between;
+
+			/* Encabezado */
+			#tituloPrincipal {
+				#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
+				#layoutAyuda .ayuda.consulta {display: none;} /* oculta la ayuda al lado del título */
+				#iconosDelTitulo .ayuda.consulta {
+					i.ayudaIconoForm {font-size: 1.6rem;}
+					.ayudaMensForm {
+						max-width: 82vw; top: -20px;
+						&::before {top: 25px;}
+					}
+				}
+			}
+			footer {z-index: 1; background: var(--gris-claro);}
+		}
+
+		#listados caption {text-align: left;}
+	}
+}
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
 	#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - var(--anchoBoton))/2))}
@@ -26,49 +67,15 @@
 	/* Alturas y anchos */
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			/* General */
-			:is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
-
-			/* Sector Configuración de la Consulta */
-			#configCons {
-				position: absolute; transform-origin: left; transform: scaleX(0); max-height: var(--altoCuerpo);
-				#toggleFiltros {display: none;} /* oculta el botón muestra/oculta filtros */
-
-				/* Sector filtros */
-				#configFiltros #palabrasClave i {scale: 1.5;}
-
+			& :is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
+			#encabMasPelis #zonaDisponible #vistaDeResults {
+				max-height: 80%; z-index: 1;
+				&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
+				#actualizar {display: none;} /* oculta el botón de actualizar prods */
+				img#telonFondo {display: none;} /* oculta el telón de fondo */
+				&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 			}
-
-			/* Sector Encabezado más películas */
-			#encabMasPelis {
-				justify-content: space-between;
-
-				/* Encabezado */
-				#tituloPrincipal {
-					#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
-					#layoutAyuda .ayuda.consulta {display: none;} /* oculta la ayuda al lado del título */
-					#iconosDelTitulo .ayuda.consulta {
-						i.ayudaIconoForm {font-size: 1.6rem;}
-						.ayudaMensForm {
-							max-width: 82vw; top: -20px;
-							&::before {top: 25px;}
-						}
-					}
-				}
-				#zonaDisponible #vistaDeResults {
-					max-height: 80%; z-index: 1;
-					&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
-					#actualizar {display: none;} /* oculta el botón de actualizar prods */
-					img#telonFondo {display: none;} /* oculta el telón de fondo */
-					&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
-				}
-				footer {z-index: 1; background: var(--gris-claro);}
-			}
-
-			#listados caption {text-align: left;}
 		}
-
-		/* Imagen derecha */
 		#imgDerecha {
 			position: absolute; top: 50%; left: 50%; translate: -50% -50%;
 			img {max-width: 100vw; max-height: none;}
@@ -79,7 +86,7 @@
 }
 
 /* Acostado */
-@media (orientation: landscape) and (height <= 600px) {
+@media (orientation: landscape) and (height <= 600px)  {
 	/* Vista de resultados */
 	#zonaDisponible #vistaDeResults {
 		min-width: min(330px, 100%) !important;

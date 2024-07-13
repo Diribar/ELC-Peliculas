@@ -438,20 +438,22 @@ module.exports = {
 	// Varios
 	origenes: [
 		// Productos
-		{codigo: "DA", url: "/producto/agregar/datos-adicionales"},
-		{codigo: "DTP", url: "/producto/detalle", cola: true},
-		{codigo: "EDP", url: "/producto/edicion", cola: true},
-		{codigo: "RAP", url: "/revision/producto/alta", cola: true},
+		{codigo: "PDA", url: "/producto/agregar/datos-adicionales"},
+		{codigo: "PDT", url: "/producto/detalle", cola: true},
+		{codigo: "PED", url: "/producto/edicion", cola: true},
+		{codigo: "RPA", url: "/revision/producto/alta", cola: true},
 		{url: "/producto/calificar", cola: true},
 		{url: "/producto/historial", cola: true},
 		{url: "/revision/producto/edicion", cola: true},
+		// RCLVs
+		{codigo: "RDT", url: "/rclv/detalle", cola: true},
+		{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
 		// Tableros
 		{codigo: "TE", url: "/revision/tablero-de-entidades"},
 		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		{codigo: "CN", url: "/consultas"},
 		// Otros
-		{codigo: "DTR", url: "/rclv/detalle", cola: true},
 		{codigo: "RL", url: "/revision/links", cola: true},
 	],
 };

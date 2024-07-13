@@ -37,7 +37,7 @@ module.exports = (req, res, next) => {
 
 	// Si no es una ruta aceptada, interrumpe la función
 	const diferenteRutaAnterior = urlActual != urlAnterior; // Es diferente a la ruta urlAnterior
-	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)); // Pertenece a las rutas aceptadas
+	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)) || urlActual == "/"; // Pertenece a las rutas aceptadas
 	const noContieneCiertasPalabras =
 		!urlActual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!urlActual.startsWith("/usuarios/logout") &&
@@ -46,54 +46,51 @@ module.exports = (req, res, next) => {
 	if (!rutaAceptada) return next();
 
 	// Función
-	let activaSessionCookie = (url, actual) => {
-		req.session[url] = actual ? urlActual : urlAnterior;
+	let activaSessionCookie = (url, anterior) => {
+		req.session[url] = anterior ? urlAnterior : urlActual;
 		res.cookie(url, req.session[url], {maxAge: unDia});
 	};
 
 	// urlSinLogin - cualquier ruta que no requiera login
 	if (
-		!urlAnterior.startsWith("/usuarios/") &&
-		!urlAnterior.startsWith("/links/") &&
-		!urlAnterior.startsWith("/revision/") &&
-		!urlAnterior.includes("/agregar/") &&
-		!urlAnterior.includes("/edicion/")
+		!urlActual.startsWith("/usuarios/") &&
+		!urlActual.startsWith("/links/") &&
+		!urlActual.startsWith("/revision/") &&
+		!urlActual.includes("/agregar/") &&
+		!urlActual.includes("/edicion/")
 	)
 		activaSessionCookie("urlSinLogin");
 
 	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
-	if (!urlAnterior.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
+	if (!urlActual.startsWith("/usuarios/")) activaSessionCookie("urlFueraDeUsuarios");
 
 	// urlFueraDeUsuarios - cualquier ruta fuera del circuito de usuarios
-	if (!urlAnterior.startsWith("/usuarios/") && !urlAnterior.includes("/contactanos"))
-		activaSessionCookie("urlFueraDeContactanos");
+	if (!urlActual.startsWith("/usuarios/") && !urlActual.includes("/contactanos")) activaSessionCookie("urlFueraDeContactanos");
 
-	// urlSinCaptura - cualquier ruta fuera del circuito de usuarios y que no genere una captura
+	// urlSinCaptura - cualquier ruta que no genere una captura
 	if (
-		!urlAnterior.startsWith("/usuarios/") &&
-		!urlAnterior.startsWith("/links/") &&
-		!urlAnterior.startsWith("/revision/tablero-de-entidades") &&
-		!urlAnterior.includes("/edicion/")
+		!Object.keys(req.query).length || // no tiene parámetros
+		["/detalle/", "/historial/"].some((n) => urlActual.includes(n)) // rutas que no capturan
 	)
 		activaSessionCookie("urlSinCaptura");
 
 	// urlSinPermInput - cualquier ruta fuera del circuito de usuarios y que no genere una captura
 	if (
-		!urlAnterior.startsWith("/usuarios/") &&
-		((!urlAnterior.startsWith("/producto/") && !urlAnterior.startsWith("/rclv/")) || urlAnterior.includes("/detalle/")) &&
-		!urlAnterior.startsWith("/links/") &&
-		!urlAnterior.startsWith("/revision/")
+		!urlActual.startsWith("/usuarios/") &&
+		((!urlActual.startsWith("/producto/") && !urlActual.startsWith("/rclv/")) || urlActual.includes("/detalle/")) &&
+		!urlActual.startsWith("/links/") &&
+		!urlActual.startsWith("/revision/")
 	)
 		activaSessionCookie("urlSinPermInput");
 
 	// urlSinEntidadId
-	if (!Object.keys(req.query).length) activaSessionCookie("urlSinEntidadId", true);
+	if (!Object.keys(req.query).length) activaSessionCookie("urlSinEntidadId");
 
 	// urlAnterior
-	activaSessionCookie("urlAnterior");
+	activaSessionCookie("urlAnterior", true);
 
 	// urlActual
-	activaSessionCookie("urlActual", true);
+	activaSessionCookie("urlActual");
 
 	// Fin
 	res.locals.urlActual = urlActual;
