@@ -6,7 +6,8 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const usuario = await comp.obtieneUsuarioPorMail(req.session.usuario.email);
 	req.session.usuario = usuario;
-	const vistaAnterior = variables.vistaAnterior(req.session.urlSinPermInput);
+	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
+	const vistaEntendido = variables.vistaEntendido(req.session.urlSinLogin);
 	let informacion;
 
 	// VERIFICACIÓN 1: Revisa si el usuario tiene el status perenne
@@ -17,9 +18,9 @@ module.exports = async (req, res, next) => {
 		informacion = {
 			mensajes: [
 				"Se te quitó el permiso para ingresar información pública.",
-				"Se te debe hacer comunicado el motivo vía mail.",
+				"Se te debe haber comunicado el motivo vía mail.",
 			],
-			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+			iconos: [vistaEntendido],
 			titulo: "Aviso",
 		};
 
