@@ -147,17 +147,21 @@ module.exports = {
 		},
 		bienvenido: (req, res) => {
 			// Variables
-			let usuario = req.session.usuario;
-			let letra = comp.letras.oa(usuario);
-			let informacion = {
+			const usuario = req.session.usuario;
+			const letra = comp.letras.oa(usuario);
+			const vistaEntendido = variables.vistaEntendido(req.session.urlSinLogin);
+
+			// Información
+			const informacion = {
 				titulo: "Permiso otorgado",
 				mensajes: [
 					"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
 					"Ya podés ingresar información para compartir con el público.",
 				],
-				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+				iconos: [vistaEntendido],
 				check: true,
 			};
+
 			// Fin
 			return res.render("CMP-0Estructura", {informacion});
 		},
