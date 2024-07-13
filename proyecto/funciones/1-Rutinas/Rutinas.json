@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 12/jul",
-	"HoraUTC": "13:59",
+	"FechaUTC": "Sáb. 13/jul",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 8/jul",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-jul-24": {},
 		"11-jul-24": {"leyenda": "Hoy recordamos a san Benito de Nursia", "entidad": "personajes", "id": 172},
 		"12-jul-24": {"leyenda": "Hoy recordamos a Celia y Luis Martin, santos", "entidad": "personajes", "id": 150},
 		"13-jul-24": {"leyenda": "Hoy recordamos a santa Teresa de los Andes", "entidad": "personajes", "id": 108},
-		"14-jul-24": {"leyenda": "Hoy recordamos la Revolución Francesa", "entidad": "hechos", "id": 75}
+		"14-jul-24": {"leyenda": "Hoy recordamos la Revolución Francesa", "entidad": "hechos", "id": 75},
+		"15-jul-24": {"leyenda": "Hoy recordamos san Pompilio Maria Pirrotti", "entidad": "personajes", "id": 188}
 	}
 }
