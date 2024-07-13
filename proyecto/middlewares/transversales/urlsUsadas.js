@@ -70,7 +70,7 @@ module.exports = (req, res, next) => {
 	// urlSinCaptura - cualquier ruta que no genere una captura
 	if (
 		!Object.keys(req.query).length || // no tiene parámetros
-		["/detalle/", "historial"].some((n) => urlActual.includes(n)) // rutas que no capturan
+		["/detalle/", "/historial/"].some((n) => urlActual.includes(n)) // rutas que no capturan
 	)
 		activaSessionCookie("urlSinCaptura");
 
