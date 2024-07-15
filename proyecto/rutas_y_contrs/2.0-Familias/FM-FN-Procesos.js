@@ -123,7 +123,7 @@ module.exports = {
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
-			comentario = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
+			comentario = "con " + elLa + " " + entidadNombre + " id " + idDupl;
 		}
 
 		// Lo obtiene del formulario
