@@ -27,7 +27,7 @@
 						h3 span {font-weight: normal; font-size: 1rem;}
 						p {line-height: 1;}
 						textarea {
-							padding: 10px; border-radius: 8px; resize: none; height: 100px; width: 100%;
+							padding: 10px; border-radius: 8px; resize: none; height: 80px; width: 100%;
 							background: snow;
 						}
 						textarea:read-only {background: var(--gris-intermedio);}
