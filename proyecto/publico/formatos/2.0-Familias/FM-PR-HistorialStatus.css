@@ -18,11 +18,11 @@
 					&.fecha {min-width: 65px; text-align: right;}
 					&.status {
 						max-width: 220px; text-wrap: wrap;
-						b {padding-inline: 5px; border-radius: 8px;}
 						span {line-height: 1.1; font-style: italic;}
 					}
 				}
 			}
+			.status b {padding-inline: 5px; border-radius: 8px;}
 			#creado b, #creadoAprob b, #recuperar b, #aprobado b {border: 1px var(--verde-oscuro) solid;}
 			#inactivar b, #inactivo b {border: 1px var(--rojo-oscuro) solid;}
 			#creado b, #creadoAprob b, #recuperar b {background: var(--verde-claro); color: var(--verde-oscuro);}
