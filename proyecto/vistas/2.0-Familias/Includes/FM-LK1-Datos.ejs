@@ -21,7 +21,6 @@
 	<td colspan="7" class="motivo ancho_motivo ocultar">
 		<b>Motivo:</b>
 		<select name="motivo_id">
-			<option value="" selected>Elejí el motivo</option>
 			<% for (let motivo of motivos) { %>
 				<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
 			<% } %>
