@@ -34,8 +34,14 @@
 			</a>
 		<% } %>
 	<% } %>
-	<% if (condicUsuario && condicRegistro && codigo == "historial") { %>
+	<% if (codigo == "historial" && condicUsuario && locals.revisorPERL && condicRegistro) { %>
 		<!-- HISTORIAL -->
+		<% if (prodRclv.statusRegistro_id == inactivo_id ) { %>
+			<!-- Cambiar el motivo -->
+			<a href="<%= '/correccion/motivo/?entidad=' + entidad + '&id=' + id + origenHTML %>">
+				<i class="fa-solid fa-circle-question" title="Cambiar el motivo"></i>
+			</a>
+		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + origenHTML %>">

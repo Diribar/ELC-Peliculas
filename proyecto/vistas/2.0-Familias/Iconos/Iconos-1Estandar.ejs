@@ -42,12 +42,6 @@
 			<% } %>
 		<% } %>
 	<% } %>
-	<% if (codigo == "historial" && locals.revisorPERL && prodRclv.statusRegistro_id == inactivo_id ) { %>
-		<!-- Cambiar el motivo -->
-		<a href="<%= '/correccion/motivo/?entidad=' + entidad + '&id=' + id + ORIGEN %>">
-			<i class="fa-solid fa-circle-question" title="Cambiar el motivo"></i>
-		</a>
-	<% } %>
 
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>
 		<!-- Link para Revisión -->
