@@ -9,6 +9,8 @@ window.addEventListener("load", async () => {
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
 	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
+	const {capitulosPromSem, pelisColesPromSem} = cantLinks[0];
+	const promSem = Math.round((capitulosPromSem + pelisColesPromSem) * 0.15) * 10;
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -52,7 +54,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(37,64,97)", "rgb(31,73,125)","rgb(79,98,40)","firebrick"],
+			colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)", "firebrick"],
 			legend: "none",
 			hAxis: {
 				scaleType: "number",
@@ -62,7 +64,7 @@ window.addEventListener("load", async () => {
 			},
 			vAxis: {
 				fontSize: 20,
-				viewWindow: {min: 0},
+				viewWindow: {min: 0, max: promSem},
 				// gridlines: {count: 8},
 			},
 			isStacked: true, // columnas apiladas
