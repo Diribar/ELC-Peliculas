@@ -1069,6 +1069,7 @@ let FN_links = {
 		// Variables
 		const ahoraTiempo = ahora.getTime();
 
+		// Resultados 'no estándar'
 		let resultado =
 			IN != "SI"
 				? null
@@ -1079,26 +1080,22 @@ let FN_links = {
 				: null;
 
 		if (!resultado) {
-			// Si es una categoría estándar, averigua su semana
-			let semana;
+			// Variables - si es una categoría estándar, averigua su semana
+			const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
+			const piso = corte + 1;
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 
-			// Semana para capítulo
-			if (link.capitulo_id) semana = linksSemsEstandar;
-			// Semana para los demás
-			else {
-				// Variables
-				const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
-				const piso = corte + 1;
+			// Obtiene la cantidad de links que vence cada semana
+			const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+				.slice(piso) // descarta los registros de la semanas anteriores al piso
+				.slice(0, -3) // descarta los registros que no pertenecen a semanas
+				.map((n) => n[entidad]);
 
-				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
-				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-					.slice(piso) // descarta los registros de la semanas anteriores al piso
-					.slice(0, -3) // descarta los registros que no pertenecen a semanas
-					.map((n) => n.prods);
-				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
-				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
-			}
+			// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+			const semana =
+				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem[0][entidad + "PromSem"]) + piso;
 
+			// Obtiene el resultado
 			resultado = new Date(ahoraTiempo + semana * unaSemana);
 		}
 

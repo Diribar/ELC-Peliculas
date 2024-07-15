@@ -916,7 +916,7 @@ module.exports = {
 
 			// Promedio semanal para links 'estándar'
 			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
-			const capsPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
+			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 			const pelisColesPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 
 			// Otros datos
@@ -924,7 +924,7 @@ module.exports = {
 			const prods = linksRevisar.length;
 			cantLinksVencPorSem["0"] = {
 				...{pelisColes, capitulos, sinLimite, irPelisColes, irCapitulos, prods},
-				...{capsPromSem, pelisColesPromSem},
+				...{capitulosPromSem, pelisColesPromSem},
 			};
 
 			// Fin
@@ -933,14 +933,14 @@ module.exports = {
 		},
 		paramsVencPorSem: () => {
 			// Averigua la cantidad total de pendientes
-			const {capitulos: capsPends, capsPromSem, irCapitulos, sinLimite} = cantLinksVencPorSem[0];
+			const {capitulos: capsPends, capitulosPromSem, irCapitulos, sinLimite} = cantLinksVencPorSem[0];
 			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
 
 			// Averigua la cantidad de links que se pueden agregar cada semana
 			let capsPosibles = 0;
 			let pelisColesPosibles = 0;
 			for (let semana = linksSemsPrimRev + 1; semana < linksSemsEstandar; semana++) {
-				capsPosibles += Math.max(0, capsPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
+				capsPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
 				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
 			}
 
@@ -957,7 +957,7 @@ module.exports = {
 			cantLinksVencPorSem = {
 				...cantLinksVencPorSem,
 				paraProc,
-				prodsPromSem: capsPromSem + pelisColesPromSem,
+				prodsPromSem: capitulosPromSem + pelisColesPromSem,
 			};
 
 			// Fin
