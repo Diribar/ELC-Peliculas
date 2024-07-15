@@ -85,7 +85,7 @@ module.exports = {
 		// Fin
 		return res.json(datos);
 	},
-	statusMotivos: (req, res) => {
+	obtieneInfo: (req, res) => {
 		// Variables
 		const {entidad} = req.query;
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
