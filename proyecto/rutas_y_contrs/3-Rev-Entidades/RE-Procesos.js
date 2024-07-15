@@ -1092,7 +1092,7 @@ let FN_links = {
 				.slice(0, -2) // descarta los registros que no pertenecen a semanas
 				.map((n) => n[entidad]);
 
-			// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+			// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
 			const semana =
 				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem[0][entidad + "PromSem"]) + piso;
 
