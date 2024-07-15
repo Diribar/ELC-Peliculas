@@ -931,15 +931,17 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Categoría "no estándar"
-		registros = originales.filter((n) => n.statusRegistro_id == creado_id); // Altas
+		// Sin restricción - Altas
+		registros = originales.filter((n) => n.statusRegistro_id == creado_id);
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id); // Inactivar/Recuperar
+		// Sin restricción - Inactivar/Recuperar
+		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id);
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
+		// Sin restricción - creadoAprob
 		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id); // creadoAprob
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
@@ -1071,9 +1073,9 @@ let FN_links = {
 			IN != "SI"
 				? null
 				: categoria_id == linksPrimRev_id
-				? new Date(ahoraTiempo + linksVU_primRev)
+				? new Date(ahoraTiempo + linksVU_primRev) // para links que estaban en status 'aprobado'
 				: categoria_id == linksEstrRec_id
-				? new Date(ahoraTiempo + linksVU_estrRec)
+				? new Date(ahoraTiempo + linksVU_estrRec) // para links de estreno reciente
 				: null;
 
 		if (!resultado) {
@@ -1091,7 +1093,7 @@ let FN_links = {
 				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
 				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
 					.slice(piso) // descarta los registros de la semanas anteriores al piso
-					.slice(0, -3) // descarta los registros finales
+					.slice(0, -3) // descarta los registros que no pertenecen a semanas
 					.map((n) => n.prods);
 				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
 				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
