@@ -936,9 +936,11 @@ module.exports = {
 			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
 
 			// Averigua la cantidad de links que se pueden agregar cada semana
+			const semanaInicial = linksSemsPrimRev + 2; // se suman 2, para saltear la semana de 'estrenoReciente'
 			let capitulosPosibles = 0;
 			let pelisColesPosibles = 0;
-			for (let semana = linksSemsPrimRev + 1; semana < linksSemsEstandar; semana++) {
+
+			for (let semana = semanaInicial; semana < linksSemsEstandar; semana++) {
 				capitulosPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
 				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
 			}
