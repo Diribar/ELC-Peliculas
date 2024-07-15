@@ -89,10 +89,12 @@ module.exports = {
 		// Variables
 		const {entidad} = req.query;
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+
+		// Obtiene los motivos
 		const motivos = statusMotivos.filter((m) => m[petitFamilias]);
 
 		// Fin
-		return res.json(motivos);
+		return res.json({motivos, largoComentario});
 	},
 	obtieneRegistro: async (req, res) => {
 		const {entidad, id} = req.query;
