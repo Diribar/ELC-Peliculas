@@ -921,9 +921,8 @@ module.exports = {
 
 			// Otros datos
 			const sinLimite = linksSinLimite.length;
-			const prods = linksRevisar.length;
 			cantLinksVencPorSem["0"] = {
-				...{pelisColes, capitulos, sinLimite, irPelisColes, irCapitulos, prods},
+				...{capitulos, pelisColes, sinLimite, irPelisColes, irCapitulos},
 				...{capitulosPromSem, pelisColesPromSem},
 			};
 
