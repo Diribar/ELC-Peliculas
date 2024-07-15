@@ -917,7 +917,7 @@ module.exports = {
 			// Promedio semanal para links 'estándar'
 			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
 			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
-			const pelisColesPromSem = Math.trunc(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
+			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
 
 			// Otros datos
 			const sinLimite = linksSinLimite.length;
@@ -936,22 +936,22 @@ module.exports = {
 			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
 
 			// Averigua la cantidad de links que se pueden agregar cada semana
-			let capsPosibles = 0;
+			let capitulosPosibles = 0;
 			let pelisColesPosibles = 0;
 			for (let semana = linksSemsPrimRev + 1; semana < linksSemsEstandar; semana++) {
-				capsPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
+				capitulosPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
 				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
 			}
 
 			// Averigua la combinación entre 'posibles' y 'pendientes'
-			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
+			const capitulosParaProc = Math.min(capitulosPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
 
 			// Agrega la información
 			const paraProc = {
 				pelisColes: pelisColesParaProc,
-				capitulos: capsParaProc,
-				prods: pelisColesParaProc + capsParaProc + sinLimite,
+				capitulos: capitulosParaProc,
+				prods: pelisColesParaProc + capitulosParaProc + sinLimite,
 			};
 			cantLinksVencPorSem = {
 				...cantLinksVencPorSem,

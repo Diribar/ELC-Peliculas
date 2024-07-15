@@ -916,7 +916,7 @@ let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
 		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
-		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos;
+		const capitulosParaProc = cantLinksVencPorSem.paraProc.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -942,7 +942,7 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
-		if (capsParaProc) {
+		if (capitulosParaProc) {
 			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
@@ -985,6 +985,7 @@ let FN_links = {
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // ordenados por colección
+			//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
 
 		// Obtiene todas las ediciones
 		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
