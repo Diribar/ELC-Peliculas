@@ -931,16 +931,13 @@ let FN_links = {
 		respuesta = this.obtieneProdLink({links: ediciones, datos});
 		if (respuesta) return respuesta;
 
-		// Categoría "no estándar"
-		registros = originales.filter((n) => n.statusRegistro_id == creado_id); // Altas
+		// Sin restricción - Altas
+		registros = originales.filter((n) => n.statusRegistro_id == creado_id);
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
-		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id); // Inactivar/Recuperar
-		respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
-
-		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id); // creadoAprob
+		// Sin restricción - Inactivar/Recuperar estreno reciente
+		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id);
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
@@ -966,6 +963,11 @@ let FN_links = {
 			if (respuesta) return respuesta;
 		}
 
+		// Sin restricción - creadoAprob estreno reciente
+		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id);
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
+
 		// Fin
 		return null;
 	},
@@ -980,9 +982,9 @@ let FN_links = {
 		};
 		const originales = baseDeDatos
 			.obtieneTodosPorCondicion("links", condicion, include)
-			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // lotes por capítulos y no capítulos
-			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // capítulos por colección
-			.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1))); // lotes por 'statusSugeridoEn'
+			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
+			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
+			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // ordenados por colección
 
 		// Obtiene todas las ediciones
 		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
@@ -1067,36 +1069,33 @@ let FN_links = {
 		// Variables
 		const ahoraTiempo = ahora.getTime();
 
+		// Resultados 'no estándar'
 		let resultado =
 			IN != "SI"
 				? null
 				: categoria_id == linksPrimRev_id
-				? new Date(ahoraTiempo + linksVU_primRev)
+				? new Date(ahoraTiempo + linksVU_primRev) // para links que estaban en status 'aprobado'
 				: categoria_id == linksEstrRec_id
-				? new Date(ahoraTiempo + linksVU_estrRec)
+				? new Date(ahoraTiempo + linksVU_estrRec) // para links de estreno reciente
 				: null;
 
 		if (!resultado) {
-			// Si es una categoría estándar, averigua su semana
-			let semana;
+			// Variables - si es una categoría estándar, averigua su semana
+			const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
+			const piso = corte + 1;
+			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 
-			// Semana para capítulo
-			if (link.capitulo_id) semana = linksSemsEstandar;
-			// Semana para los demás
-			else {
-				// Variables
-				const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
-				const piso = corte + 1;
+			// Obtiene la cantidad de links que vence cada semana
+			const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+				.slice(piso) // descarta los registros de la semanas anteriores al piso
+				.slice(0, -2) // descarta los registros que no pertenecen a semanas
+				.map((n) => n[entidad]);
 
-				// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
-				const cantLinksVencPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-					.slice(piso) // descarta los registros de la semanas anteriores al piso
-					.slice(0, -3) // descarta los registros finales
-					.map((n) => n.prods);
-				const cantMin = Math.min(...cantLinksVencPorSemMayorCorte);
-				semana = cantLinksVencPorSemMayorCorte.lastIndexOf(cantMin) + piso;
-			}
+			// Obtiene la semana a la cual agregarle una fecha de vencimiento (método 'flat')
+			const semana =
+				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem[0][entidad + "PromSem"]) + piso;
 
+			// Obtiene el resultado
 			resultado = new Date(ahoraTiempo + semana * unaSemana);
 		}
 

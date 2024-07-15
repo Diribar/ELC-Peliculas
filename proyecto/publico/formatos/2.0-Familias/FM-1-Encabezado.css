@@ -14,7 +14,7 @@
 		select {color: var(--verde-oscuro);}
 	}
 
-	&:has(#colCap) #nombres {max-width: 290px;}
+	/* &:has(#colCap) #nombres {max-width: 290px;} */
 	#nombres h3 {font-weight: normal; font-size: 1rem; margin-top: 3px;}
 	#colCap {
 		display: flex; flex-direction: column; align-items: flex-end;

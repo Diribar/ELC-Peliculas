@@ -895,11 +895,6 @@ module.exports = {
 			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion);
 
-			// Promedios semanales
-			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
-			const cantPromSem = Math.trunc((linksEstandar.length / linksSemsEstandar) * 10) / 10; // deja un decimal
-			const capsPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
-
 			// Cantidad de 'linksAprob' por semana
 			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
 			FN.cantLinksAprobPorSemana(linksAprob);
@@ -909,22 +904,26 @@ module.exports = {
 			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linksEstandar_id); // links de corto plazo
 			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linksEstandar_id); // links de plazo estándar
 
-			// Links con límite - pelisColes
-			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
-			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
-			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
-
 			// Links con límite - capitulos
 			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
 			const capitulos = capitulosRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
 			const irCapitulos = capitulosRegs.length - capitulos; // inactivarRecuperar
 
+			// Links con límite - pelisColes
+			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
+			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
+			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
+
+			// Promedio semanal para links 'estándar'
+			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
+			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
+			const pelisColesPromSem = Math.trunc(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
+
 			// Otros datos
 			const sinLimite = linksSinLimite.length;
-			const prods = linksRevisar.length;
 			cantLinksVencPorSem["0"] = {
-				...{pelisColes, capitulos, sinLimite, irPelisColes, irCapitulos, prods},
-				...{cantPromSem, capsPromSem},
+				...{capitulos, pelisColes, sinLimite, irPelisColes, irCapitulos},
+				...{capitulosPromSem, pelisColesPromSem},
 			};
 
 			// Fin
@@ -933,22 +932,19 @@ module.exports = {
 		},
 		paramsVencPorSem: () => {
 			// Averigua la cantidad total de pendientes
-			const {pelisColes: pelisColesPends, capitulos: capsPends, prods: cantPends} = cantLinksVencPorSem[0];
-			const {capsPromSem, cantPromSem, sinLimite, irPelisColes, irCapitulos} = cantLinksVencPorSem[0];
+			const {capitulos: capsPends, capitulosPromSem, irCapitulos, sinLimite} = cantLinksVencPorSem[0];
+			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
 
-			// Variables
-			const cantPromSemEntero = Math.trunc(cantPromSem);
-			const prodsPosibles = Math.max(0, cantPromSemEntero - cantLinksVencPorSem[linksSemsEstandar].prods);
-
-			// Capítulos
-			const capsPosibles = Math.max(0, capsPromSem - cantLinksVencPorSem[linksSemsEstandar].prods); // se disminuye para que no 'sature' la semana con capítulos
-			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
-
-			// Películas y Colecciones
+			// Averigua la cantidad de links que se pueden agregar cada semana
+			let capsPosibles = 0;
 			let pelisColesPosibles = 0;
-			for (let i = linksSemsPrimRev + 1; i < linksSemsEstandar; i++)
-				pelisColesPosibles += Math.max(0, cantPromSemEntero - cantLinksVencPorSem[i].prods); // todos menos la última semana
-			pelisColesPosibles += Math.max(0, prodsPosibles - capsParaProc); // en la última semana, menos los capítulos
+			for (let semana = linksSemsPrimRev + 1; semana < linksSemsEstandar; semana++) {
+				capsPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
+				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
+			}
+
+			// Averigua la combinación entre 'posibles' y 'pendientes'
+			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
 
 			// Agrega la información
@@ -957,7 +953,11 @@ module.exports = {
 				capitulos: capsParaProc,
 				prods: pelisColesParaProc + capsParaProc + sinLimite,
 			};
-			cantLinksVencPorSem = {...cantLinksVencPorSem, paraProc, cantPromSem, cantPromSemEntero};
+			cantLinksVencPorSem = {
+				...cantLinksVencPorSem,
+				paraProc,
+				prodsPromSem: capitulosPromSem + pelisColesPromSem,
+			};
 
 			// Fin
 			return;
@@ -1381,7 +1381,7 @@ let FN = {
 	},
 	cantLinksAprobPorSemana: (links) => {
 		// Se asegura de tener un valor para cada semana y entidad
-		for (let i = 1; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {pelisColes: 0, capitulos: 0, prods: 0};
+		for (let i = 1; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0};
 
 		// Crea las semanas dentro de la variable
 		for (let link of links) {
@@ -1393,7 +1393,6 @@ let FN = {
 			// Agrega al conteo
 			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 			cantLinksVencPorSem[semVencim][entidad]++;
-			cantLinksVencPorSem[semVencim].prods++;
 		}
 
 		// Fin

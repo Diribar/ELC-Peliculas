@@ -15,13 +15,11 @@ module.exports = (req, res, next) => {
 		: "/";
 	const urlsBasicas = {urlAnterior, urlActual};
 
-	// Condiciones
+	// Condiciones para las 'urlsGuardadas'
 	const urlFueraDeUsuarios = !urlActual.startsWith("/usuarios/");
 	const urlSinEntidadId = !Object.keys(req.query).length;
 	const urlSinCaptura = urlSinEntidadId || ["/detalle/", "/historial/"].some((n) => urlActual.includes(n));
 	const noAgregar = !urlActual.includes("/agregar");
-
-	// Valores de startup
 	const urlsGuardadas = {
 		// Temas de usuario
 		urlFueraDeUsuarios,
@@ -35,6 +33,7 @@ module.exports = (req, res, next) => {
 	// Averigua si es una ruta aceptada
 	const rutaAceptada = FN_rutaAceptada(urlActual, urlAnterior);
 
+	// Asigna las sessions
 	for (let url in urlsGuardadas) {
 		req.session[url] =
 			rutaAceptada && urlsGuardadas[url]
