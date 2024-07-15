@@ -916,7 +916,7 @@ module.exports = {
 
 			// Promedio semanal para links 'estándar'
 			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
-			const capitulosPromSem = Math.round(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
+			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
 
 			// Otros datos
