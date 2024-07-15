@@ -52,7 +52,7 @@ window.addEventListener("load", () => {
 
 				// Reemplaza por el tacho
 				botonOut.classList.replace("fa-circle-xmark", "fa-trash-can");
-				botonOut.classList.add("inactivo");
+				// botonOut.classList.add("inactivo"); quitamos lo de inactivo, porque pusimos un motivo 'default'
 
 				// Oculta los 6 campos
 				for (let columna = 0; columna < v.columnas; columna++)

@@ -985,6 +985,7 @@ let FN_links = {
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // ordenados por colección
+			//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
 
 		// Obtiene todas las ediciones
 		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
