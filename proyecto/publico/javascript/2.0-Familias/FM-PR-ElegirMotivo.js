@@ -99,6 +99,9 @@ window.addEventListener("load", async () => {
 	// Event listener - cambios en el comentario
 	DOM.comentario.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.comentario.addEventListener("input", (e) => {
+		// Si se excedió el largo permitido, corta el sobrante
+		if (DOM.comentario.value.length > largoComentario) DOM.comentario.value = DOM.comentario.value.slice(0, largoComentario);
+
 		// Validaciones estándar
 		amplio.restringeCaracteres(e);
 
