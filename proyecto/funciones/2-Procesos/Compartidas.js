@@ -944,14 +944,14 @@ module.exports = {
 			}
 
 			// Averigua la combinación entre 'posibles' y 'pendientes'
-			const capsParaProc = Math.min(capitulosPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
+			const capitulosParaProc = Math.min(capitulosPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
 
 			// Agrega la información
 			const paraProc = {
 				pelisColes: pelisColesParaProc,
-				capitulos: capsParaProc,
-				prods: pelisColesParaProc + capsParaProc + sinLimite,
+				capitulos: capitulosParaProc,
+				prods: pelisColesParaProc + capitulosParaProc + sinLimite,
 			};
 			cantLinksVencPorSem = {
 				...cantLinksVencPorSem,

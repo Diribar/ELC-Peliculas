@@ -916,7 +916,7 @@ let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
 		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
-		const capsParaProc = cantLinksVencPorSem.paraProc.capitulos;
+		const capitulosParaProc = cantLinksVencPorSem.paraProc.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -942,7 +942,7 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
-		if (capsParaProc) {
+		if (capitulosParaProc) {
 			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
