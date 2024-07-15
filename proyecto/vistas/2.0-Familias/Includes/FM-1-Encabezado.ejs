@@ -1,7 +1,7 @@
 <div id="encabezado" class="<%= codigo %>">
 	<!-- Izquierda -->
 	<div id="nombres">
-		<% if (codigo != "detalle") { %><a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= id %><%= locals.origen && !origen.startsWith("DT") ? '&origen=' + origen : '' %>"><% } %>
+		<% if (codigo != "detalle") { %><a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= id %><%= locals.origen && !origen.endsWith("DT") ? '&origen=' + origen : '' %>"><% } %>
 			<h2>
 				<%= registro.capitulo ? (registro.capitulo + ". ") : "" %>
 				<%= registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : (locals.canonNombre + registro.nombre) %>
