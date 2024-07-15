@@ -210,7 +210,8 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
+			const {entidad, id, motivo_id, ultHist} = {...req.query, ...req.body};
+			const comentario = req.body.comentario ? req.body.comentario : null;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id;
 

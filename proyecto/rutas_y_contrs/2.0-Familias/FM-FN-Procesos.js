@@ -369,11 +369,6 @@ module.exports = {
 						statusFinalEn: siguiente.statusOriginalEn,
 						statusFinal: FN.statusFinal(siguiente.statusOriginal_id),
 					};
-					// Si corresponde, agrega el motivo
-					if ([inactivar_id, inactivo_id].includes(actual.statusFinal_id)) {
-						actual.motivo_id = siguiente.motivo_id;
-						actual.motivo = statusMotivos.find((n) => n.id == actual.motivo_id);
-					}
 
 					// Agrega el registro
 					historialStatus.splice(contador, 0, actual);
