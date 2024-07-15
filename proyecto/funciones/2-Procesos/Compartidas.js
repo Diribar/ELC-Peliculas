@@ -936,15 +936,15 @@ module.exports = {
 			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
 
 			// Averigua la cantidad de links que se pueden agregar cada semana
-			let capsPosibles = 0;
+			let capitulosPosibles = 0;
 			let pelisColesPosibles = 0;
 			for (let semana = linksSemsPrimRev + 1; semana < linksSemsEstandar; semana++) {
-				capsPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
+				capitulosPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
 				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
 			}
 
 			// Averigua la combinación entre 'posibles' y 'pendientes'
-			const capsParaProc = Math.min(capsPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
+			const capsParaProc = Math.min(capitulosPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
 			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
 
 			// Agrega la información
