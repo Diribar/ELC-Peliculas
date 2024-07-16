@@ -24,13 +24,13 @@ module.exports = {
 				}
 
 			// Links
-			if (!destino && ["LK", "LKM"].includes(origen))
+			if (!destino && ["LK", "LKM"].includes(origenCodigo))
 				destino =
 					"/links/abm/?entidad=" +
 					(prodEntidad ? prodEntidad : entidad) +
 					"&id=" +
 					(prodID ? prodID : id) +
-					(origen == "LKM" ? "&origen=TM" : "") +
+					(origenCodigo == "LKM" ? "&origen=TM" : "") +
 					(grupo ? "&grupo=inactivo" : "");
 
 			// Redirecciona a la vista que corresponda
