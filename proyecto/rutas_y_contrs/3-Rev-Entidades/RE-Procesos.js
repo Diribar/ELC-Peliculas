@@ -790,7 +790,7 @@ module.exports = {
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
-			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando está recién creado es 'linksPrimRev_id', cuando es "creadoAprob" es 'linksEstrRec_id/linksEstandar_id'
+			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando se revisó el alta es 'linksPrimRev_id', luego es 'linksEstrRec_id/linksEstandar_id'
 			const fechaVencim = FN_links.fechaVencim({link, categoria_id, IN, ahora});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 			const statusCreado = link.statusRegistro_id == creado_id;
@@ -800,7 +800,6 @@ module.exports = {
 				categoria_id,
 				fechaVencim,
 				anoEstreno,
-				yaTuvoPrimRev: !statusCreado, // sólo el status 'creado_id' es sin primera revisión
 				statusSugeridoPor_id: revID,
 				statusSugeridoEn: ahora,
 				statusRegistro_id,
@@ -984,8 +983,8 @@ let FN_links = {
 			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
 			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
-			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))) // ordenados por colección
-			//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
+			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))); // ordenados por colección
+		//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
 
 		// Obtiene todas las ediciones
 		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
