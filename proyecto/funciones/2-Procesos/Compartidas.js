@@ -915,7 +915,7 @@ module.exports = {
 			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
 
 			// Promedio semanal para links 'estándar'
-			const linksEstandar = links.filter((n) => !this.condicReciente(link));
+			const linksEstandar = links.filter((link) => !this.condicReciente(link));
 			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
 
