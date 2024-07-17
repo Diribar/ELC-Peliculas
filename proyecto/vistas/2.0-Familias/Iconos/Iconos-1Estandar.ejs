@@ -3,7 +3,7 @@
 <% const revLinks = tema == "revisionEnts" && codigo == "abmLinks" %>
 <% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
-<% const ORIGEN_DIF_DT= locals.origen && !origen.startsWith("DT") ? ORIGEN : '' %>
+<% const ORIGEN_DIF_DT= locals.origen && !origen.endsWith("DT") ? ORIGEN : '' %>
 <div id="estandar" class="iconos">
 	<% if (locals.origen && (!detalle || !["PDT", "RDT"].includes(origen))) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
@@ -13,7 +13,7 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (ORIGEN_DIF_DT && !revLinks && tema != "correccion" || !detalle && !locals.origen) { %>
+	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks && tema != "correccion" || !locals.origen)) { %>
 		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
@@ -41,12 +41,6 @@
 				<i class="fa-solid fa-chart-simple fa-rotate-90 inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			<% } %>
 		<% } %>
-	<% } %>
-	<% if (codigo == "historial" && locals.revisorPERL && prodRclv.statusRegistro_id == inactivo_id ) { %>
-		<!-- Cambiar el motivo -->
-		<a href="<%= '/correccion/motivo/?entidad=' + entidad + '&id=' + id + ORIGEN %>">
-			<i class="fa-solid fa-circle-question" title="Cambiar el motivo"></i>
-		</a>
 	<% } %>
 
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>

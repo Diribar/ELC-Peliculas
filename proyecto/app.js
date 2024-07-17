@@ -244,7 +244,7 @@ app.set("views", [
 	global.mesesAbrev = meses.map((n) => n.abrev);
 	global.motivoInfoErronea = motivosEdics.find((n) => n.codigo == "infoErronea");
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
-	global.motivoDupl_id = statusMotivos.find((n) => n.codigo == "duplicado");
+	global.motivoDupl_id = statusMotivos.find((n) => n.codigo == "duplicado").id;
 
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");

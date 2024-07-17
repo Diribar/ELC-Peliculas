@@ -210,12 +210,20 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, ultHist, comentario} = {...req.query, ...req.body};
+			const {entidad, id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
+			const {statusFinal_id} = ultHist;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const cola = "/?entidad=" + entidad + "&id=" + id;
+
+			// Genera el comentario
+			let {comentario} = req.body;
+			comentario = await procesos.comentario({entidad, id, motivo_id, comentario, entDupl, idDupl, statusFinal_id});
 
 			// Actualiza el motivo en el último registro del historial
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
+
+			// Genera la 'cola'
+			let cola = "/?entidad=" + entidad + "&id=" + id;
+			if (origen) cola += "&origen=" + origen;
 
 			// Fin
 			return res.redirect("/" + familia + "/historial" + cola);

@@ -98,7 +98,8 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {entidad, id, motivo_id} = {...req.query, ...req.body};
+		const {entidad, id, motivo_id, entDupl, idDupl} = {...req.query, ...req.body};
+		let {comentario} = req.body;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {ruta} = comp.reqBasePathUrl(req);
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
@@ -108,31 +109,33 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		const comentario = await this.comentario({...req.body, motivo_id, statusFinal_id, entidad, id});
+		comentario = await this.comentario({entidad, id, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	comentario: async function (datos) {
 		// Variables
-		let comentario;
+		let comentario = null;
 
 		// Si el motivo es 'duplicado', genera el comentario
-		if (!comentario && datos.motivo_id == motivoDupl_id) {
+		if (datos.motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
-			comentario = "Duplicado con " + elLa + " " + entidadNombre + ", id " + idDupl;
+			comentario = "con " + elLa + " " + entidadNombre + " id " + idDupl;
+			return comentario;
 		}
 
 		// Lo obtiene del formulario
-		if (!comentario && datos && datos.comentario) comentario = datos.comentario;
+		if (datos && datos.comentario) comentario = datos.comentario;
 
 		// Si corresponde, lo obtiene del movimiento anterior
-		if (!comentario && datos.statusFinal_id == inactivo_id) {
-			const ultHist = await this.obtieneUltHist(datos.entidad, datos.id);
-			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
+		if (!comentario) {
+			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
+			if (!comentario && comentNeces && datos.statusFinal_id == inactivo_id && datos.ultHist && datos.ultHist.comentario)
+				comentario = datos.ultHist.comentario;
 		}
 
 		// Fin
@@ -369,11 +372,6 @@ module.exports = {
 						statusFinalEn: siguiente.statusOriginalEn,
 						statusFinal: FN.statusFinal(siguiente.statusOriginal_id),
 					};
-					// Si corresponde, agrega el motivo
-					if ([inactivar_id, inactivo_id].includes(actual.statusFinal_id)) {
-						actual.motivo_id = siguiente.motivo_id;
-						actual.motivo = statusMotivos.find((n) => n.id == actual.motivo_id);
-					}
 
 					// Agrega el registro
 					historialStatus.splice(contador, 0, actual);
