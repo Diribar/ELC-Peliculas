@@ -19,7 +19,6 @@ module.exports = (sequelize, dt) => {
 		parte: {type: dt.INTEGER},
 
 		anoEstreno: {type: dt.INTEGER},
-		categoria_id: {type: dt.INTEGER},
 		fechaVencim: {type: dt.DATE},
 
 		creadoPor_id: {type: dt.INTEGER},
