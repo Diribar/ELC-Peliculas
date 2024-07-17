@@ -963,19 +963,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		categoria_id: (link) => {
-			// Variables
-			const anoReciente = anoHoy - linkAnoReciente;
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
-
-			// Fin
-			return link.statusRegistro_id == creado_id
-				? linksPrimRev_id
-				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
-				? linksEstrRec_id
-				: linksEstandar_id;
-		},
 		condicReciente: (link) => {
 			const anoReciente = anoHoy - linkAnoReciente;
 			const anoEstreno = link.anoEstreno;
