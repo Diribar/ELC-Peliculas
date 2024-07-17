@@ -74,6 +74,9 @@ window.addEventListener("load", () => {
 					url +
 					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
 					"&origen=RL";
+
+			// Fin
+			return
 		});
 	});
 
