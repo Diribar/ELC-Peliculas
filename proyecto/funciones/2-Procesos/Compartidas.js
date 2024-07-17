@@ -868,6 +868,7 @@ module.exports = {
 		},
 		actualizaStatusVencido: async function () {
 			// Variables
+			const anoReciente = anoHoy - linkAnoReciente;
 			const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 			const ahora = new Date();
 
@@ -879,8 +880,24 @@ module.exports = {
 				statusSugeridoEn: ahora,
 			};
 
-			// Actualiza las novedades de los links
-			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
+			// Estreno reciente
+			const condicEstrRec = {
+				...condicion,
+				anoEstreno: {[Op.ne]: null},
+				anoEstreno: {[Op.gt]: anoReciente},
+				tipo_id: {[Op.ne]: linkTrailer_id},
+			};
+			const novsEstrRec = {...novedades, categoria_id: linksEstrRec_id};
+			await baseDeDatos.actualizaTodosPorCondicion("links", condicEstrRec, novsEstrRec);
+
+			// Estándar
+			const condicEstandar = {
+				...condicion,
+				anoEstreno: {[Op.ne]: null},
+				[Op.or]: [{anoEstreno: {[Op.lte]: anoReciente}}, {tipo_id: linkTrailer_id}],
+			};
+			const novsEstandar = {...novedades, categoria_id: linksEstandar_id};
+			await baseDeDatos.actualizaTodosPorCondicion("links", condicEstandar, novsEstandar);
 
 			// Fin
 			await this.actualizaLVPS();
@@ -950,8 +967,8 @@ module.exports = {
 
 			// Agrega la información
 			const paraProc = {
-				pelisColes: pelisColesParaProc,
 				capitulos: capitulosParaProc,
+				pelisColes: pelisColesParaProc,
 				prods: pelisColesParaProc + capitulosParaProc + sinLimite,
 			};
 			cantLinksVencPorSem = {
