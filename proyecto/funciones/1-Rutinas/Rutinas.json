@@ -36,11 +36,11 @@
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
-		"ActualizaFechaVencimLinks": "SI",
-		"EliminaMisConsultasExcedente": "SI",
-		"RCLV_idEnCapitulos": "SI",
-		"RCLVsSinEpocaPSTyConAno": "SI",
-		"EliminaLoginsAcumsRepetidos": "SI"
+		"actualizaFechaVencimLinks": "SI",
+		"eliminaMisConsultasExcedente": "SI",
+		"rclv_idEnCapitulos": "SI",
+		"rclvsSinEpocaPSTyConAno": "SI",
+		"eliminaLoginsAcumsRepetidos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
