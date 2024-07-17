@@ -607,7 +607,7 @@ module.exports = {
 		},
 		ultsRegsHistStatus: async () => {
 			// Variables
-			const condicion = {[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}}};
+			const condicion = {[Op.or]: [{statusOriginal_id: {[Op.gt]: aprobado_id}}, {statusFinal_id: {[Op.gt]: aprobado_id}}]};
 
 			// Obtiene el último registro de status de cada producto
 			let ultsHist = [];
