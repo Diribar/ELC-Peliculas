@@ -851,7 +851,7 @@ module.exports = {
 			for (let link of links) {
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 				const desde = link.statusSugeridoEn.getTime();
-				const linksVU = this.condicReciente(link) ? linksVU_estrRec : linksVU_estandar;
+				const linksVU = this.condicEstrRec(link) ? linksVU_estrRec : linksVU_estandar;
 				const fechaVencim = new Date(desde + linksVU);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
@@ -901,8 +901,8 @@ module.exports = {
 
 			// Links a revisar
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
-			const linksSinLimite = linksRevisar.filter((link) => this.condicReciente(link)); // links de corto plazo
-			const linksConLimite = linksRevisar.filter((link) => !this.condicReciente(link)); // links de plazo estándar
+			const linksSinLimite = linksRevisar.filter((link) => this.condicEstrRec(link)); // links de corto plazo
+			const linksConLimite = linksRevisar.filter((link) => !this.condicEstrRec(link)); // links de plazo estándar
 
 			// Links con límite - capitulos
 			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
@@ -914,8 +914,8 @@ module.exports = {
 			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
 			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
 
-			// Promedio semanal para links 'estándar'
-			const linksEstandar = links.filter((link) => !this.condicReciente(link));
+			// Promedio semanal para links 'de no estreno reciente'
+			const linksEstandar = links.filter((link) => !this.condicEstrRec(link));
 			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
 
@@ -963,10 +963,14 @@ module.exports = {
 			// Fin
 			return;
 		},
-		condicReciente: (link) => {
+		condicCreado: (link) => link.statusRegistro_id == creado_id,
+		condicEstrRec: (link) => {
 			const anoReciente = anoHoy - linkAnoReciente;
 			const anoEstreno = link.anoEstreno;
 			return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
+		},
+		condicEstandar: function (link) {
+			return !this.condicCreado && !this.condicEstrRec;
 		},
 	},
 

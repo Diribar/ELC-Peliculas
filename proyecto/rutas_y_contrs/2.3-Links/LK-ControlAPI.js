@@ -90,7 +90,6 @@ module.exports = {
 		else {
 			// Inactivar
 			const datos = {
-				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id: inactivar_id}),
 				statusSugeridoPor_id: userID,
 				statusSugeridoEn: ahora,
 				motivo_id,
@@ -125,7 +124,6 @@ module.exports = {
 		// Acciones si no hay ningún error
 		if (!respuesta.mensaje) {
 			datos = {
-				categoria_id: comp.linksVencPorSem.categoria_id({...link, statusRegistro_id: recuperar_id}),
 				statusSugeridoEn: ahora,
 				statusSugeridoPor_id: userID,
 				statusRegistro_id: recuperar_id,
@@ -168,8 +166,7 @@ module.exports = {
 				link.statusRegistro_id == inactivar_id
 					? {statusRegistro_id: aprobado_id, motivo_id: null}
 					: {statusRegistro_id: inactivo_id};
-			const categoria_id = comp.linksVencPorSem.categoria({...link, statusRegistro_id: nuevosDatos.statusRegistro_id});
-			await baseDeDatos.actualizaPorId("links", link.id, {...nuevosDatos, categoria_id});
+			await baseDeDatos.actualizaPorId("links", link.id, nuevosDatos);
 
 			// Actualiza los campos del producto asociado
 			link = {...link, ...nuevosDatos};
