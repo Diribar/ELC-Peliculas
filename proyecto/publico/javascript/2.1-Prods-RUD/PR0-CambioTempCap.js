@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(0, -1);
+	const origenUrl = location.pathname.slice(0, -1);
 	let ruta;
 
 	// Obtiene el ID de la colección
@@ -31,23 +31,28 @@ window.addEventListener("load", async () => {
 				"&prodEntidad=capitulos&prodID=" +
 				capID +
 				"&origenUrl=" +
-				encodeURIComponent(codigo);
+				encodeURIComponent(origenUrl);
 		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
 	capSelect.addEventListener("change", async () => {
-		// Obtiene los datos para conseguir el capID
+		// Variables
 		const tempNum = tempSelect ? tempSelect.value : 1;
 		const capNum = capitulo.value;
+		const ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
 
 		// Obtiene el capID
-		const ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
 		const capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
 			n.json()
 		);
 
 		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/?entidad=capitulos&id=" + prodID + "&prodEntidad=capitulos&prodID=" + capID + "&origen=" + encodeURIComponent(codigo);
+			"/inactivar-captura/?entidad=capitulos&id=" +
+			prodID +
+			"&prodEntidad=capitulos&prodID=" +
+			capID +
+			"&origenUrl=" +
+			encodeURIComponent(origenUrl);
 	});
 });

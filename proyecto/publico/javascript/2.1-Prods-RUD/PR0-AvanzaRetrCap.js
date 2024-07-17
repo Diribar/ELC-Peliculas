@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const prodID = new URL(location.href).searchParams.get("id");
-	const codigo = location.pathname.slice(0, -1);
+	const origenUrl = location.pathname.slice(0, -1);
 	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
 	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
 	const ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 				"&prodEntidad=capitulos&prodID=" +
 				capAntID +
 				"&origenUrl=" +
-				encodeURIComponent(codigo);
+				encodeURIComponent(origenUrl);
 		});
 	} else botonCapAnt.classList.add("inactivo");
 
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 				"&prodEntidad=capitulos&prodID=" +
 				capPostID +
 				"&origenUrl=" +
-				encodeURIComponent(codigo);
+				encodeURIComponent(origenUrl);
 		});
 	} else botonCapPost.classList.add("inactivo");
 });

@@ -448,13 +448,14 @@ module.exports = {
 		// RCLVs
 		{codigo: "RDT", url: "/rclv/detalle", cola: true},
 		{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
+		// Links
+		{url: "/links/abm", cola: true},
+		{codigo: "RL", url: "/revision/links", cola: true},
 		// Tableros
 		{codigo: "TE", url: "/revision/tablero-de-entidades"},
 		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		{codigo: "CN", url: "/consultas"},
-		// Otros
-		{codigo: "RL", url: "/revision/links", cola: true},
 	],
 };
 
