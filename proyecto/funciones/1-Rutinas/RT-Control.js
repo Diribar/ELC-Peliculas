@@ -633,7 +633,7 @@ module.exports = {
 	rutinasSemanales: {
 		actualizaFechaVencimLinks: async () => {
 			// actualiza solamente la fecha de los links sin fecha
-			await comp.linksVencPorSem.actualizaFechaVencim();
+			await comp.linksVencPorSem.actualizaFechaVencimNull();
 			return;
 		},
 		eliminaMisConsultasExcedente: async () => {
