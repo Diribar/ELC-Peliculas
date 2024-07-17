@@ -18,9 +18,9 @@ window.addEventListener("load", async () => {
 		comentario: document.querySelector("#comentario textarea"),
 		contador: document.querySelector("#comentario #contador"),
 	};
-	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const statusMotivos = await fetch("/crud/api/motivos-status/?entidad=" + entidad).then((n) => n.json());
+	const {motivos: statusMotivos, largoComentario} = await fetch("/crud/api/obtiene-info-del-be/?entidad=" + entidad).then((n) =>
+		n.json()
+	);
 	let comentNeces, duplicadoOK;
 
 	// Funciones
@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		contador: () => {
-			DOM.contador.innerHTML = 100 - DOM.comentario.value.length;
+			DOM.contador.innerHTML = largoComentario - DOM.comentario.value.length;
 			return;
 		},
 	};
@@ -99,6 +99,9 @@ window.addEventListener("load", async () => {
 	// Event listener - cambios en el comentario
 	DOM.comentario.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.comentario.addEventListener("input", (e) => {
+		// Si se excedió el largo permitido, corta el sobrante
+		if (DOM.comentario.value.length > largoComentario) DOM.comentario.value = DOM.comentario.value.slice(0, largoComentario);
+
 		// Validaciones estándar
 		amplio.restringeCaracteres(e);
 
@@ -117,3 +120,6 @@ window.addEventListener("load", async () => {
 	// Focus en el motivo
 	DOM.selectMotivo.focus();
 });
+
+// Variables
+const entidad = new URL(location.href).searchParams.get("entidad");

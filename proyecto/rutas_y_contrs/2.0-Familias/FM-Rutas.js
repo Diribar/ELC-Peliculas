@@ -38,7 +38,7 @@ router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/crud/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/crud/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
-router.get("/crud/api/motivos-status", API.statusMotivos);
+router.get("/crud/api/obtiene-info-del-be", API.obtieneInfo);
 router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
 
 // Vistas form - Motivos

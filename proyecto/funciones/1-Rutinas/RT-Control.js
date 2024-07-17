@@ -29,7 +29,9 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.revisaStatus();
+		// await this.rutinasDiarias.imagenDerecha();
+		// await this.rutinasSemanales.actualizaFechaVencimLinks();
+		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
 		// Fin
@@ -629,12 +631,12 @@ module.exports = {
 		revisaStatus: async () => procesos.revisaStatus.consolidado(),
 	},
 	rutinasSemanales: {
-		ActualizaFechaVencimLinks: async () => {
+		actualizaFechaVencimLinks: async () => {
 			// actualiza solamente la fecha de los links sin fecha
 			await comp.linksVencPorSem.actualizaFechaVencim();
 			return;
 		},
-		EliminaMisConsultasExcedente: async () => {
+		eliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
 			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
 			const limite = 20;
@@ -656,7 +658,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		RCLV_idEnCapitulos: async () => {
+		rclv_idEnCapitulos: async () => {
 			// Variables
 			const rclvs_id = variables.entidades.rclvs_id;
 
@@ -678,7 +680,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		RCLVsSinEpocaPSTyConAno: async () => {
+		rclvsSinEpocaPSTyConAno: async () => {
 			// Variables
 			const entidades = ["personajes", "hechos"];
 			const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
@@ -692,7 +694,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		EliminaLoginsAcumsRepetidos: async () => {
+		eliminaLoginsAcumsRepetidos: async () => {
 			// Variables
 			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 
@@ -746,13 +748,27 @@ let obsoletas = {
 	},
 	actualizaCategoriaLink: async () => {
 		// Variables
-		const links = await baseDeDatos.obtieneTodos("links");
+		const condicion = {statusRegistro_id: creadoAprob_id};
+		const anoReciente = anoHoy - linkAnoReciente;
 
-		// Actualiza todos los links
-		for (let link of links) {
-			const categoria_id = comp.linksVencPorSem.categoria_id(link);
-			await baseDeDatos.actualizaPorId("links", link.id, {categoria_id});
-		}
+		// Estreno reciente
+		const condicEstrRec = {
+			...condicion,
+			anoEstreno: {[Op.ne]: null},
+			anoEstreno: {[Op.gt]: anoReciente},
+			tipo_id: {[Op.ne]: linkTrailer_id},
+		};
+		const novsEstrRec = {categoria_id: linksEstrRec_id};
+		await baseDeDatos.actualizaTodosPorCondicion("links", condicEstrRec, novsEstrRec);
+
+		// Estándar
+		const condicEstandar = {
+			...condicion,
+			anoEstreno: {[Op.ne]: null},
+			[Op.or]: [{anoEstreno: {[Op.lte]: anoReciente}}, {tipo_id: linkTrailer_id}],
+		};
+		const novsEstandar = {categoria_id: linksEstandar_id};
+		await baseDeDatos.actualizaTodosPorCondicion("links", condicEstandar, novsEstandar);
 
 		// Fin
 		return;

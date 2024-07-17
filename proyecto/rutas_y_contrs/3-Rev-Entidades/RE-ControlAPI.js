@@ -133,7 +133,7 @@ module.exports = {
 			const links = await baseDeDatos.obtienePorId(entidad, id, "links").then((n) => n.links);
 			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
-			// Averigua si queda alguna edición de link del producto
+			// Si queda alguna edición de link del producto, indica que no se debe pasar al siguiente producto
 			if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente

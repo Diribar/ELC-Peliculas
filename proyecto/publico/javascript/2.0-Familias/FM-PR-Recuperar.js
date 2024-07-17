@@ -14,6 +14,7 @@ window.addEventListener("load", async () => {
 		comentario: document.querySelector("#comentario textarea"),
 		contador: document.querySelector("#comentario #contador"),
 	};
+	const {largoComentario} = await fetch("/crud/api/obtiene-info-del-be/?entidad=" + entidad).then((n) => n.json());
 
 	// Funciones
 	let FN = {
@@ -27,7 +28,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		contador: () => {
-			DOM.contador.innerHTML = 100 - DOM.comentario.value.length;
+			DOM.contador.innerHTML = largoComentario - DOM.comentario.value.length;
 			return;
 		},
 	};
@@ -35,23 +36,21 @@ window.addEventListener("load", async () => {
 	// Event listener - cambios en el formulario
 	if (DOM.inputs) for (let input of DOM.inputs) input.addEventListener("change", () => DOM.submit.classList.remove("inactivo"));
 
-	if (DOM.comentario) {
-		DOM.comentario.addEventListener("keypress", (e) => {
-			keyPressed(e);
-			return;
-		});
-		DOM.comentario.addEventListener("input", (e) => {
-			// Validaciones estándar
-			amplio.restringeCaracteres(e);
+	DOM.comentario.addEventListener("keypress", (e) => keyPressed(e));
+	DOM.comentario.addEventListener("input", (e) => {
+		// Si se excedió el largo permitido, corta el sobrante
+		if (DOM.comentario.value.length > largoComentario) DOM.comentario.value = DOM.comentario.value.slice(0, largoComentario);
 
-			// Actualiza el contador y el botón submit
-			FN.contador();
-			FN.botonSubmit();
+		// Validaciones estándar
+		amplio.restringeCaracteres(e);
 
-			// Fin
-			return;
-		});
-	}
+		// Actualiza el contador y el botón submit
+		FN.contador();
+		FN.botonSubmit();
+
+		// Fin
+		return;
+	});
 	DOM.form.addEventListener("submit", (e) => {
 		if (DOM.submit.className.includes("inactivo")) e.preventDefault();
 	});

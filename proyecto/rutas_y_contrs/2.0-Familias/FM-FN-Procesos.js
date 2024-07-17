@@ -115,6 +115,9 @@ module.exports = {
 		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	comentario: async function (datos) {
+		// Stopper
+		if (!datos.motivo_id) return null
+
 		// Variables
 		let comentario = null;
 
