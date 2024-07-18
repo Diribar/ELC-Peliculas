@@ -22,7 +22,6 @@
 		"loginsAcums": "SI",
 		"rutinasEnUsuario": "SI",
 		"aprobadoConAvatarLink": "SI",
-		"iDdeTablas": "SI",
 		"eliminaLinksInactivos": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaImagenesSinRegistro": "SI",
@@ -30,7 +29,8 @@
 		"paisesConMasProductos": "SI",
 		"linksPorProv": "SI",
 		"linksEnColes": "SI",
-		"revisaStatus": "SI"
+		"revisaStatus": "SI",
+		"iDdeTablas": "SI"
 	},
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
