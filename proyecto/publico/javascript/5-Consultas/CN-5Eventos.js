@@ -267,24 +267,29 @@ window.addEventListener("load", async () => {
 			if (!seHicieronCambios) DOM.vistaDeResults.classList.remove("toggle");
 		}
 	});
-	DOM.cuerpo.addEventListener("keydown", (e) => {
-		// Enter
-		if (e.key == "Enter") {
-			// Variables
-			const elemento = e.target;
-			const padre = elemento.parentNode;
-			const nombre = elemento.id ? elemento.id : padre.id;
+	DOM.cuerpo.addEventListener("keydown", async (e) => {
+		// Variables
+		const elemento = e.target;
+		const padre = elemento.parentNode;
+		const nombre = elemento.id ? elemento.id : padre.id;
 
-			// Acciones
-			if (nombre == "palabrasClave") palabrasClave();
-			else if (nombre == "configNueva") guardarBotonera();
+		// Teclas - Enter
+		if (e.key == "Enter") {
+			if (nombre == "palabrasClave") {
+				DOM.palClaveAprob.classList.add("inactivo");
+				await estandarParaInputs();
+			} else if (nombre == "configNueva") await guardarBotonera();
 		}
-		// Escape
+
+		// Teclas - Escape
 		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n))) {
 			DOM.configNuevaNombre.classList.remove("nuevo", "edicion"); // Oculta el input
 			v.nombreOK = false; // Variables
 			actualiza.botoneraActivaInactiva(); // Actualiza la botonera
 		}
+
+		// Fin
+		return;
 	});
 });
 // Funciones
