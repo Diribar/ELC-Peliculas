@@ -93,7 +93,7 @@ module.exports = {
 	},
 	sigProdInactivo: async ({producto, entidad, userID}) => {
 		// Variables
-		const productos = await procsRE.obtieneLinksInactivos(userID).then((n) => n.LI);
+		const productos = await procsRE.tablManten.obtieneLinksInactivos(userID).then((n) => n.LI);
 
 		// Obtiene el siguiente producto
 		const sigProd = productos.find((n) => n.entidad != entidad || n.id != producto.id);
