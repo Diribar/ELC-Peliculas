@@ -45,6 +45,7 @@ module.exports = {
 			"Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto",
 			"Si hay datos en rojo, es porque están editados por otro usuario",
 		];
+		const anchorEncab = true;
 
 		// Va a la vista
 		// return res.send(links);
@@ -54,7 +55,7 @@ module.exports = {
 			...{registro: producto, links, status_id},
 			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
 			...{userID, imgDerPers, cartelGenerico: true, sigProd, grupo},
-			vista: req.baseUrl + req.path,
+			...{vista: req.baseUrl + req.path, anchorEncab},
 		});
 	},
 	visualizacion: async (req, res) => {

@@ -836,7 +836,7 @@ module.exports = {
 	},
 
 	linksVencPorSem: {
-		actualizaFechaVencim: async function (links) {
+		actualizaFechaVencimNull: async function (links) {
 			// Variables
 			let espera = [];
 
@@ -851,14 +851,13 @@ module.exports = {
 			for (let link of links) {
 				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
 				const desde = link.statusSugeridoEn.getTime();
-				const linksVU = [linksVU_primRev, linksVU_estrRec, linksVU_estandar];
-				const categoria_id = this.categoria_id(link);
-				const fechaVencim = new Date(desde + linksVU[categoria_id]);
+				const linksVU = this.condicEstrRec(link) ? linksVU_estrRec : linksVU_estandar;
+				const fechaVencim = new Date(desde + linksVU);
 
 				// Se actualiza el link con el anoEstreno y la fechaVencim
 				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-				const anoEstreno = link[asocProd].anoEstreno;
-				espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim, categoria_id}));
+				const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
+				espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 			}
 			await Promise.all(espera);
 
@@ -881,23 +880,7 @@ module.exports = {
 			};
 
 			// Estreno reciente
-			const condicEstrRec = {
-				...condicion,
-				anoEstreno: {[Op.ne]: null},
-				anoEstreno: {[Op.gt]: anoReciente},
-				tipo_id: {[Op.ne]: linkTrailer_id},
-			};
-			const novsEstrRec = {...novedades, categoria_id: linksEstrRec_id};
-			await baseDeDatos.actualizaTodosPorCondicion("links", condicEstrRec, novsEstrRec);
-
-			// Estándar
-			const condicEstandar = {
-				...condicion,
-				anoEstreno: {[Op.ne]: null},
-				[Op.or]: [{anoEstreno: {[Op.lte]: anoReciente}}, {tipo_id: linkTrailer_id}],
-			};
-			const novsEstandar = {...novedades, categoria_id: linksEstandar_id};
-			await baseDeDatos.actualizaTodosPorCondicion("links", condicEstandar, novsEstandar);
+			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
 
 			// Fin
 			await this.actualizaLVPS();
@@ -918,8 +901,8 @@ module.exports = {
 
 			// Links a revisar
 			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
-			const linksSinLimite = linksRevisar.filter((n) => n.categoria_id != linksEstandar_id); // links de corto plazo
-			const linksConLimite = linksRevisar.filter((n) => n.categoria_id == linksEstandar_id); // links de plazo estándar
+			const linksSinLimite = linksRevisar.filter((link) => this.condicEstrRec(link)); // links de corto plazo
+			const linksConLimite = linksRevisar.filter((link) => !this.condicEstrRec(link)); // links de plazo estándar
 
 			// Links con límite - capitulos
 			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
@@ -931,8 +914,8 @@ module.exports = {
 			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
 			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
 
-			// Promedio semanal para links 'estándar'
-			const linksEstandar = links.filter((n) => n.categoria_id == linksEstandar_id);
+			// Promedio semanal para links 'de no estreno reciente'
+			const linksEstandar = links.filter((link) => !this.condicEstrRec(link));
 			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
 			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
 
@@ -980,18 +963,14 @@ module.exports = {
 			// Fin
 			return;
 		},
-		categoria_id: (link) => {
-			// Variables
+		condicCreado: (link) => link.statusRegistro_id == creado_id,
+		condicEstrRec: (link) => {
 			const anoReciente = anoHoy - linkAnoReciente;
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
-
-			// Fin
-			return link.statusRegistro_id == creado_id
-				? linksPrimRev_id
-				: anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id
-				? linksEstrRec_id
-				: linksEstandar_id;
+			const anoEstreno = link.anoEstreno;
+			return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
+		},
+		condicEstandar: function (link) {
+			return !this.condicCreado && !this.condicEstrRec;
 		},
 	},
 

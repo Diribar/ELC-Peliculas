@@ -790,14 +790,12 @@ module.exports = {
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
 			const anoEstreno = link[asocProd].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
-			const categoria_id = comp.linksVencPorSem.categoria_id(link); // cuando se revisó el alta es 'linksPrimRev_id', luego es 'linksEstrRec_id/linksEstandar_id'
-			const fechaVencim = FN_links.fechaVencim({link, categoria_id, IN, ahora});
+			const fechaVencim = FN_links.fechaVencim({link, IN, ahora});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 			const statusCreado = link.statusRegistro_id == creado_id;
 
 			// Arma los datos
 			let datos = {
-				categoria_id,
 				fechaVencim,
 				anoEstreno,
 				statusSugeridoPor_id: revID,
@@ -931,39 +929,39 @@ let FN_links = {
 		if (respuesta) return respuesta;
 
 		// Sin restricción - Altas
-		registros = originales.filter((n) => n.statusRegistro_id == creado_id);
-		respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
-
-		// Sin restricción - Inactivar/Recuperar estreno reciente
-		registros = inacRecups.filter((n) => n.categoria_id != linksEstandar_id);
+		registros = originales.filter((link) => comp.linksVencPorSem.condicCreado(link));
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
 		// Categoría "estándar" - Capítulos
 		if (capitulosParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => comp.linksVencPorSem.condicEstandar(n) && n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => comp.linksVencPorSem.condicEstandar(n) && n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
 
 		// Categoría "estándar" - Películas y Colecciones
 		if (pelisColesParaProc) {
-			registros = inacRecups.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // Inactivar/Recuperar
+			registros = inacRecups.filter((n) => comp.linksVencPorSem.condicEstandar(n) && !n.capitulo_id); // Inactivar/Recuperar
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 
-			registros = creadoAprobs.filter((n) => n.categoria_id == linksEstandar_id && !n.capitulo_id); // creadoAprob
+			registros = creadoAprobs.filter((n) => comp.linksVencPorSem.condicEstandar(n) && !n.capitulo_id); // creadoAprob
 			respuesta = this.obtieneProdLink({links: registros, datos});
 			if (respuesta) return respuesta;
 		}
 
+		// Sin restricción - Inactivar/Recuperar estreno reciente
+		registros = inacRecups.filter((link) => comp.linksVencPorSem.condicEstrRec(link));
+		respuesta = this.obtieneProdLink({links: registros, datos});
+		if (respuesta) return respuesta;
+
 		// Sin restricción - creadoAprob estreno reciente
-		registros = creadoAprobs.filter((n) => n.categoria_id != linksEstandar_id);
+		registros = creadoAprobs.filter((link) => comp.linksVencPorSem.condicEstrRec(link));
 		respuesta = this.obtieneProdLink({links: registros, datos});
 		if (respuesta) return respuesta;
 
@@ -1065,7 +1063,7 @@ let FN_links = {
 		// Fin
 		return sigProd;
 	},
-	fechaVencim: ({link, ahora, IN, categoria_id}) => {
+	fechaVencim: ({link, ahora, IN}) => {
 		// Variables
 		const ahoraTiempo = ahora.getTime();
 
@@ -1073,9 +1071,9 @@ let FN_links = {
 		let resultado =
 			IN != "SI"
 				? null
-				: categoria_id == linksPrimRev_id
+				: comp.linksVencPorSem.condicCreado(link)
 				? new Date(ahoraTiempo + linksVU_primRev) // para links que estaban en status 'aprobado'
-				: categoria_id == linksEstrRec_id
+				: comp.linksVencPorSem.condicEstrRec(link)
 				? new Date(ahoraTiempo + linksVU_estrRec) // para links de estreno reciente
 				: null;
 

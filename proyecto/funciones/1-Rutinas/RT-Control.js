@@ -633,7 +633,7 @@ module.exports = {
 	rutinasSemanales: {
 		actualizaFechaVencimLinks: async () => {
 			// actualiza solamente la fecha de los links sin fecha
-			await comp.linksVencPorSem.actualizaFechaVencim();
+			await comp.linksVencPorSem.actualizaFechaVencimNull();
 			return;
 		},
 		eliminaMisConsultasExcedente: async () => {
@@ -748,27 +748,16 @@ let obsoletas = {
 	},
 	actualizaCategoriaLink: async () => {
 		// Variables
-		const condicion = {statusRegistro_id: creadoAprob_id};
 		const anoReciente = anoHoy - linkAnoReciente;
 
-		// Estreno reciente
-		const condicEstrRec = {
-			...condicion,
+		// Actualiza
+		const condicion = {
 			anoEstreno: {[Op.ne]: null},
 			anoEstreno: {[Op.gt]: anoReciente},
 			tipo_id: {[Op.ne]: linkTrailer_id},
+			statusRegistro_id: creadoAprob_id,
 		};
-		const novsEstrRec = {categoria_id: linksEstrRec_id};
 		await baseDeDatos.actualizaTodosPorCondicion("links", condicEstrRec, novsEstrRec);
-
-		// Estándar
-		const condicEstandar = {
-			...condicion,
-			anoEstreno: {[Op.ne]: null},
-			[Op.or]: [{anoEstreno: {[Op.lte]: anoReciente}}, {tipo_id: linkTrailer_id}],
-		};
-		const novsEstandar = {categoria_id: linksEstandar_id};
-		await baseDeDatos.actualizaTodosPorCondicion("links", condicEstandar, novsEstandar);
 
 		// Fin
 		return;

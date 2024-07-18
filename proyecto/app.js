@@ -155,7 +155,6 @@ app.set("views", [
 		// Variables de links
 		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", "DESC"), // orden descendente
 		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
-		linksCategs: baseDeDatos.obtieneTodos("linksCategs"),
 
 		// Consultas
 		cnEntidades: baseDeDatos.obtieneTodos("cnEntidades"),
@@ -232,11 +231,6 @@ app.set("views", [
 	global.linkPelicula_id = linksTipos.find((n) => n.pelicula).id;
 	global.linkTrailer_id = linksTipos.find((n) => n.trailer).id;
 	global.provsEmbeded = linksProvs.filter((n) => n.embededPoner);
-
-	// Links - categorías
-	global.linksPrimRev_id = linksCategs.find((n) => n.nombre == "primRev").id;
-	global.linksEstrRec_id = linksCategs.find((n) => n.nombre == "estrRec").id;
-	global.linksEstandar_id = linksCategs.find((n) => n.nombre == "estandar").id;
 
 	// Otros
 	global.epocasVarias = epocasOcurrencia.find((n) => n.id == "var");

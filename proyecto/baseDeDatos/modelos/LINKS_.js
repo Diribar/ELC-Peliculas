@@ -19,7 +19,6 @@ module.exports = (sequelize, dt) => {
 		parte: {type: dt.INTEGER},
 
 		anoEstreno: {type: dt.INTEGER},
-		categoria_id: {type: dt.INTEGER},
 		fechaVencim: {type: dt.DATE},
 
 		creadoPor_id: {type: dt.INTEGER},
@@ -51,7 +50,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 		entidad.belongsTo(n.linksTipos, {as: "tipo", foreignKey: "tipo_id"});
 		entidad.belongsTo(n.linksProvs, {as: "prov", foreignKey: "prov_id"});
-		entidad.belongsTo(n.linksCategs, {as: "categ", foreignKey: "categoria_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creadoPor", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "altaRevisadaPor", foreignKey: "altaRevisadaPor_id"});
