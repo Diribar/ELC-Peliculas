@@ -551,22 +551,23 @@ module.exports = {
 		// Fin
 		return hora;
 	},
-	finRutinasHorarias: function (campo) {
+	finRutinasHorarias: function (campo, duracion) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		if (campo != "feedbackParaUsers" || nodeEnv != "development") console.log(FechaUTC, HoraUTC + "hs. -", campo);
+		if (campo != "feedbackParaUsers" || nodeEnv != "development")
+			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(5, " ") + " -", campo);
 
 		// Fin
 		return;
 	},
-	finRutinasDiariasSemanales: function (campo, menu) {
+	finRutinasDiariasSemanales: function (campo, menu, duracion) {
 		// Actualiza el archivo JSON
 		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		const novedades = sonIguales ? ", sin novedades" : "";
-		console.log(FechaUTC, HoraUTC + "hs. -", campo + novedades);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(5, " ") + " -", campo + novedades);
 
 		// Fin
 		return;

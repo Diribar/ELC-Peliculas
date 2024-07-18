@@ -53,11 +53,7 @@ module.exports = {
 			const condicion = comp.quickSearchCondics(palabras, dato.campos, userID, dato.original);
 
 			// Obtiene los registros que cumplen las condiciones
-			aux.push(
-				dato.original
-					? comp.quickSearch.registros(condicion, dato)
-					: comp.quickSearch.ediciones(condicion, dato)
-			);
+			aux.push(dato.original ? comp.quickSearch.registros(condicion, dato) : comp.quickSearch.ediciones(condicion, dato));
 		}
 		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
 

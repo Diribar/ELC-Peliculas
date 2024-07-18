@@ -29,8 +29,8 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.imagenDerecha();
-		// await this.rutinasSemanales.actualizaFechaVencimLinks();
+		// await this.rutinasDiarias.eliminaLinksInactivos();
+		// await this.RutinasDiarias();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -65,8 +65,10 @@ module.exports = {
 
 		// Actualiza todas las rutinas diarias
 		for (let rutinaDiaria in rutinasDiarias) {
+			const comienzo = Date.now();
 			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
-			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias"); // actualiza el archivo JSON
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
 		}
 		console.log("Fin de rutinas diarias");
 
@@ -80,8 +82,10 @@ module.exports = {
 
 		// Actualiza las rutinasSemanales
 		for (let rutinaSemanal in rutinasSemanales) {
+			const comienzo = Date.now();
 			await this.rutinasSemanales[rutinaSemanal]();
-			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales");
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
 		}
 		console.log("Fin de rutinas semanales");
 
@@ -490,9 +494,9 @@ module.exports = {
 				const registros = await baseDeDatos.obtieneTodos(tabla);
 				let id = 1;
 
-				// Actualiza los IDs
+				// Actualiza los IDs - es crítico que sea un 'for', porque el 'forEach' no respeta el 'await'
 				for (let registro of registros) {
-					await baseDeDatos.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
+					if (registro.id != id) await baseDeDatos.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
 					id++;
 				}
 
