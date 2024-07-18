@@ -29,7 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.imagenDerecha();
+		// await this.rutinasDiarias.eliminaLinksInactivos();
 		// await this.rutinasSemanales.actualizaFechaVencimLinks();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
