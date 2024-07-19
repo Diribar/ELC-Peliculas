@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 18/jul",
-	"HoraUTC": "11:46",
+	"FechaUTC": "Vie. 19/jul",
+	"HoraUTC": "4:34",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 15/jul",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-jul-24": {"leyenda": "Hoy recordamos la Ap. Mar. - Virgen del Carmen", "entidad": "hechos", "id": 77},
 		"17-jul-24": {"leyenda": "Hoy recordamos la Guerra Civil Española", "entidad": "hechos", "id": 56},
 		"18-jul-24": {},
 		"19-jul-24": {},
-		"20-jul-24": {"leyenda": "Hoy es el día de la Amistad", "entidad": "temas", "id": 14}
+		"20-jul-24": {"leyenda": "Hoy es el día de la Amistad", "entidad": "temas", "id": 14},
+		"21-jul-24": {"leyenda": "Hoy recordamos Daniel", "entidad": "personajes", "id": 178}
 	}
 }
