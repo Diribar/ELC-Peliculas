@@ -575,6 +575,7 @@ module.exports = {
 	actualizaElProximoValorDeID: async (entidad) => {
 		// Variables
 		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n++);
+		return;
 
 		// Actualiza el autoincrement
 		const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
@@ -583,7 +584,6 @@ module.exports = {
 		await sequelize.query("ALTER TABLE `" + db[entidad].tableName + "` AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin
-		return;
 	},
 	revisaStatus: {
 		consolidado: async function () {

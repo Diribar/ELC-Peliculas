@@ -29,8 +29,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.eliminaLinksInactivos();
-		// await this.RutinasDiarias();
+		await this.rutinasDiarias.iDdeTablas();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -470,43 +469,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		iDdeTablas: async () => {
-			// Variables
-			const tablas = [
-				"calRegistros",
-				"capsSinLink",
-				"consRegsPrefs",
-				"histEdics",
-				"statusHistorial",
-				"linksEdicion",
-				"loginsAcums",
-				"loginsDelDia",
-				"misConsultas",
-				"novedadesELC",
-				"pppRegistros",
-				"prodsEdicion",
-				"rclvsEdicion",
-			];
-
-			// Actualiza los valores de ID
-			for (let tabla of tablas) {
-				// Variables
-				const registros = await baseDeDatos.obtieneTodos(tabla);
-				let id = 1;
-
-				// Actualiza los IDs - es crítico que sea un 'for', porque el 'forEach' no respeta el 'await'
-				for (let registro of registros) {
-					if (registro.id != id) await baseDeDatos.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
-					id++;
-				}
-
-				// Actualiza el próximo valor de ID
-				await procesos.actualizaElProximoValorDeID(tabla);
-			}
-
-			// Fin
-			return;
-		},
 		eliminaLinksInactivos: async () => {
 			const condicion = {statusRegistro_id: inactivo_id};
 			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
@@ -633,6 +595,43 @@ module.exports = {
 			return;
 		},
 		revisaStatus: async () => procesos.revisaStatus.consolidado(),
+		iDdeTablas: async () => {
+			// Variables
+			const tablas = [
+				"calRegistros",
+				"capsSinLink",
+				"consRegsPrefs",
+				"histEdics",
+				"statusHistorial",
+				"linksEdicion",
+				"loginsAcums",
+				"loginsDelDia",
+				"misConsultas",
+				"novedadesELC",
+				"pppRegistros",
+				"prodsEdicion",
+				"rclvsEdicion",
+			];
+
+			// Actualiza los valores de ID
+			for (let tabla of tablas) {
+				// Variables
+				const registros = await baseDeDatos.obtieneTodos(tabla);
+				let id = 1;
+
+				// Actualiza los IDs - es crítico que sea un 'for', porque el 'forEach' no respeta el 'await'
+				for (let registro of registros) {
+					if (registro.id != id) await baseDeDatos.actualizaPorId(tabla, registro.id, {id}); // tiene que ser 'await' para no duplicar ids
+					id++;
+				}
+
+				// Actualiza el próximo valor de ID
+				await procesos.actualizaElProximoValorDeID(tabla);
+			}
+
+			// Fin
+			return;
+		},
 	},
 	rutinasSemanales: {
 		actualizaFechaVencimLinks: async () => {
