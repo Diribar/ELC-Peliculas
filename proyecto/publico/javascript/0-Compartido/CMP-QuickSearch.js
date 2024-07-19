@@ -137,7 +137,8 @@ window.addEventListener("load", () => {
 		// Redirige a la vista del hallazgo
 		if (e.key == "Enter") {
 			if (posicion === null) posicion = 0;
-			location.href = DOM.muestraResultados.children[posicion].href;
+			const href = DOM.muestraResultados.children[posicion].href;
+			if (href) location.href = href;
 		}
 
 		// Escape - Oculta el sector de muestraResultados
