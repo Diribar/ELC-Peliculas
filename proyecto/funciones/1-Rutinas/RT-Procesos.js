@@ -581,8 +581,7 @@ module.exports = {
 		// const Sequelize = require("sequelize");
 		// const sequelize = new Sequelize(config.database, config.username, config.password, config);
 		const texto = process.env.DB_NAME + "." + db[entidad].tableName;
-		// console.log(584, texto, nuevoValor);
-		await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = " + nuevoValor + ";");
+		// await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin
 		return;
