@@ -36,7 +36,7 @@
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
 	"MotivoSemanales3": "Solución de errores con curva de aprendizaje madura",
 	"RutinasSemanales": {
-		"actualizaFechaVencimLinks": "SI",
+		"actualizaStatusLinks": "SI",
 		"eliminaMisConsultasExcedente": "SI",
 		"rclv_idEnCapitulos": "SI",
 		"rclvsSinEpocaPSTyConAno": "SI",

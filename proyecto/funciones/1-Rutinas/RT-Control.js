@@ -640,7 +640,7 @@ module.exports = {
 		},
 	},
 	rutinasSemanales: {
-		actualizaLinksVencidos: async () => {
+		actualizaStatusLinks: async () => {
 			await comp.linksVencPorSem.actualizaFechaVencimNull();// actualiza la fecha de los links sin fecha
 			await comp.linksVencPorSem.actualizaStatus();// pasa a 'creadoAprob' los links con fechaVencim < semActual
 			await comp.linksVencPorSem.actualizaCantLinksPorSem();
