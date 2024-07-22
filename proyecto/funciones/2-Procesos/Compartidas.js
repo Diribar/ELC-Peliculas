@@ -1426,10 +1426,9 @@ let FN_links = {
 		const {capitulos: capsPromSem, pelisColes: pelisColesPromSem} = promSem;
 
 		// Averigua la cantidad de links posibles por semana
-		const semanaInicial = linksSemsPrimRev + 2; // se suman 2, para saltear la semana de 'estrenoReciente'
 		let capitulosPosibles = 0;
 		let pelisColesPosibles = 0;
-		for (let semana = semanaInicial; semana <= linksSemsEstandar; semana++) {
+		for (let semana = linkSemanaInicial; semana <= linksSemsEstandar; semana++) {
 			capitulosPosibles += Math.max(0, capsPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
 			pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
 		}
