@@ -912,8 +912,8 @@ module.exports = {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
-		const capitulosParaProc = cantLinksVencPorSem.paraProc.capitulos;
+		const pelisColesParaProc = cantLinksVencPorSem.paraRevisar.pelisColes;
+		const capitulosParaProc = cantLinksVencPorSem.paraRevisar.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
