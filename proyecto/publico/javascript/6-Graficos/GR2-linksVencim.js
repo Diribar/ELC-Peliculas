@@ -79,6 +79,6 @@ window.addEventListener("load", async () => {
 		imagenDelGrafico.draw(data, options);
 
 		// Agrega algunos datos relevantes
-		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.prodsPromSem;
+		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.promSem.prods;
 	}
 });
