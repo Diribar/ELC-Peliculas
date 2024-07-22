@@ -862,16 +862,15 @@ module.exports = {
 			await Promise.all(espera);
 
 			// Fin
-			await this.actualizaStatusVencido();
+			await this.actualizaStatus();
 			return;
 		},
-		actualizaStatusVencido: async function () {
+		actualizaStatus: async function () {
 			// Variables
-			const anoReciente = anoHoy - linkAnoReciente;
 			const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 			const ahora = new Date();
 
-			// Condiciones y nuevo status
+			// Condiciones y novedades
 			const condicion = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
 			const novedades = {
 				statusSugeridoPor_id: usAutom_id,
@@ -879,7 +878,7 @@ module.exports = {
 				statusSugeridoEn: ahora,
 			};
 
-			// Estreno reciente
+			// Actualiza el status
 			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
 
 			// Fin
@@ -970,7 +969,7 @@ module.exports = {
 			return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
 		},
 		condicEstandar: function (link) {
-			return !this.condicCreado && !this.condicEstrRec;
+			return !this.condicCreado(link) && !this.condicEstrRec(link);
 		},
 	},
 
