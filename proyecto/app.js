@@ -15,7 +15,7 @@ global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
 global.linkAnoReciente = 3; // cantidad de años
-global.linkSemanaInicial = linksVU_estrRec / unaSemana;
+global.linkSemanaInicial = 1;
 global.cantLinksVencPorSem = null;
 
 // Variable 'global' - Otras
