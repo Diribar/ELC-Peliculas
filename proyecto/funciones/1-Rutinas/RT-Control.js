@@ -10,7 +10,7 @@ module.exports = {
 		// Variables
 		procesos.variablesDiarias();
 		comp.variablesSemanales();
-		await comp.linksVencPorSem.actualizaLVPS();
+		await comp.linksVencPorSem.actualizaCantLinksPorSem();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -640,9 +640,12 @@ module.exports = {
 		},
 	},
 	rutinasSemanales: {
-		actualizaFechaVencimLinks: async () => {
-			// actualiza solamente la fecha de los links sin fecha
-			await comp.linksVencPorSem.actualizaFechaVencimNull();
+		actualizaLinksVencidos: async () => {
+			await comp.linksVencPorSem.actualizaFechaVencimNull();// actualiza la fecha de los links sin fecha
+			await comp.linksVencPorSem.actualizaStatus();// pasa a 'creadoAprob' los links con fechaVencim < semActual
+			await comp.linksVencPorSem.actualizaCantLinksPorSem();
+
+			// Fin
 			return;
 		},
 		eliminaMisConsultasExcedente: async () => {
