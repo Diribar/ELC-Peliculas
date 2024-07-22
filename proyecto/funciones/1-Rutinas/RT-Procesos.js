@@ -562,7 +562,7 @@ module.exports = {
 	},
 	finRutinasDiariasSemanales: function (campo, menu, duracion) {
 		// Actualiza el archivo JSON
-		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
+		const sonIguales = menu ? this.guardaArchivoDeRutinas({[campo]: "SI"}, menu) : null;
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
@@ -581,7 +581,7 @@ module.exports = {
 		// const Sequelize = require("sequelize");
 		// const sequelize = new Sequelize(config.database, config.username, config.password, config);
 		const texto = process.env.DB_NAME + "." + db[entidad].tableName;
-		console.log(584, texto, nuevoValor);
+		// console.log(584, texto, nuevoValor);
 		await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = " + nuevoValor + ";");
 
 		// Fin

@@ -1,13 +1,13 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 19/jul",
-	"HoraUTC": "4:34",
-	"FechaHoraUTC": "SI",
+	"FechaUTC": "Lun. 22/jul",
+	"HoraUTC": "10:56",
+	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 15/jul",
-	"HoraSemUTC": "1:13",
-	"semanaUTC": 29,
-	"SemanaUTC": "SI",
+	"FechaSemUTC": "Lun. 22/jul",
+	"HoraSemUTC": "10:56",
+	"semanaUTC": 30,
+	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-jul-24": {"leyenda": "Hoy recordamos la Guerra Civil Española", "entidad": "hechos", "id": 56},
-		"18-jul-24": {},
-		"19-jul-24": {},
 		"20-jul-24": {"leyenda": "Hoy es el día de la Amistad", "entidad": "temas", "id": 14},
-		"21-jul-24": {"leyenda": "Hoy recordamos Daniel", "entidad": "personajes", "id": 178}
+		"21-jul-24": {"leyenda": "Hoy recordamos Daniel", "entidad": "personajes", "id": 178},
+		"22-jul-24": {"leyenda": "Hoy recordamos a María Magdalena, santa", "entidad": "personajes", "id": 58},
+		"23-jul-24": {},
+		"24-jul-24": {}
 	}
 }

@@ -47,8 +47,10 @@ module.exports = {
 		console.log();
 		console.log("Rutinas horarias:");
 		for (let rutina of rutinas) {
+			const comienzo = Date.now();
 			await this.rutinasHorarias[rutina]();
-			procesos.finRutinasHorarias(rutina);
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasHorarias(rutina, duracion);
 		}
 		console.log("Fin de rutinas horarias");
 
@@ -108,8 +110,10 @@ module.exports = {
 		console.log();
 		console.log("Rutinas diarias:");
 		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
+		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
-		procesos.finRutinasDiariasSemanales("FechaHoraUTC"); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
+		const duracion = Date.now() - comienzo;
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC", null, duracion); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
@@ -145,8 +149,10 @@ module.exports = {
 		console.log();
 		console.log("Rutinas semanales:");
 		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'finRutinasDiariasSemanales', se actualiza a 'SI'
+		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback);
-		procesos.finRutinasDiariasSemanales("SemanaUTC");
+		const duracion = Date.now() - comienzo;
+		procesos.finRutinasDiariasSemanales("SemanaUTC", null, duracion);
 
 		// Actualiza los campos de Rutinas Semanales
 		const feedback_RS = {};
@@ -218,7 +224,7 @@ module.exports = {
 
 			// Si no hay registros a comunicar, termina el proceso
 			if (!regsTodos.length) {
-				procesos.finRutinasHorarias("feedbackParaUsers");
+				procesos.finRutinasHorarias("feedbackParaUsers", 0);
 				return;
 			}
 
