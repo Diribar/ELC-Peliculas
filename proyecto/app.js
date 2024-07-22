@@ -52,12 +52,17 @@ global.carpetaPublica = path.join(__dirname, "publico");
 global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
 // Otros requires
-global.fs = require("fs");
-global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
-global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
-global.Op = db.Sequelize.Op;
 global.express = require("express");
 const app = express();
+global.fs = require("fs");
+global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
+
+// Base de datos
+global.config = require("./baseDeDatos/config/config.js")[nodeEnv];
+global.Sequelize = require("sequelize");
+global.sequelize = new Sequelize(config.database, config.username, config.password, config);
+global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
+global.Op = db.Sequelize.Op;
 
 // Crea carpetas públicas - omit the first arg if you do not want the '/public' prefix for these assets
 app.use("/publico", express.static(carpetaPublica));
