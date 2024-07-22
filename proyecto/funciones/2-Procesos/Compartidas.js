@@ -906,6 +906,9 @@ module.exports = {
 				pelisColes,
 				prods: capitulos + pelisColes + sinLimite,
 			};
+
+			// Fin
+			return;
 		},
 		condicCreado: (link) => FN_links.condicCreado(link),
 		condicEstrRec: (link) => FN_links.condicEstrRec(link),
@@ -1359,7 +1362,7 @@ let FN = {
 let FN_links = {
 	obtieneCantPorSem: async function () {
 		// Se asegura tener un valor por semana y entidad
-		for (let i = 0; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0};
+		for (let i = 0; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0, sinLimite: 0};
 
 		// Obtiene todos los links en status distinto a 'inactivo' y con producto 'aprobado'
 		const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
@@ -1404,8 +1407,8 @@ let FN_links = {
 
 		// Links con límite
 		const linksConLimite = linksRevisar.filter((link) => this.condicEstandar(link)); // links de plazo estándar
-		const capitulos = linksConLimite.filter((n) => n.capitulo_id);
-		const pelisColes = linksConLimite.filter((n) => !n.capitulo_id);
+		const capitulos = linksConLimite.filter((n) => n.capitulo_id).length;
+		const pelisColes = linksConLimite.filter((n) => !n.capitulo_id).length;
 
 		// Links sin límite
 		const linksSinLimite = linksRevisar.filter((link) => !this.condicEstandar(link)); // links de corto plazo
