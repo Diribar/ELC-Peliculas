@@ -1083,8 +1083,8 @@ let FN_links = {
 
 			// Obtiene la cantidad de links que vence cada semana
 			const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-				.slice(linkSemanaInicial) // descarta los registros de las semanas anteriores a linkSemanaInicial
 				.slice(0, -2) // descarta los registros que no pertenecen a semanas
+				.slice(linkSemanaInicial) // descarta los registros de las semanas anteriores a linkSemanaInicial
 				.map((n) => n[entidad]);
 
 			// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
