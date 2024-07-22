@@ -9,8 +9,8 @@ window.addEventListener("load", async () => {
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
 	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
-	const {capitulosPromSem, pelisColesPromSem} = cantLinks[0];
-	const promSem = Math.round((capitulosPromSem + pelisColesPromSem) * 0.15) * 10;
+	const {promSem} = cantLinks;
+	const maxEjeY = Math.round(promSem.prods * 0.15) * 10;
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const lunesSemana53 = primerLunesDelAno + unaSemana * 53;
 		const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
-		let resultado = [["Semana", "Caps.", "PelisColes.", "Ilimitado", "InacRecup", {role: "annotation"}]];
+		let resultado = [["Semana", "Caps.", "PelisColes.", "Ilimitado", {role: "annotation"}]];
 		let restar = 0;
 		let ticks = [];
 
@@ -37,8 +37,7 @@ window.addEventListener("load", async () => {
 			const capitulos = cantLinks[ejeX].capitulos;
 			const pelisColes = cantLinks[ejeX].pelisColes;
 			const sinLimite = cantLinks[ejeX].sinLimite;
-			const inacRecup = cantLinks[ejeX].irPelisColes + cantLinks[ejeX].irCapitulos;
-			resultado.push([ejeX, capitulos, pelisColes, sinLimite, inacRecup, ""]);
+			resultado.push([ejeX, capitulos, pelisColes, sinLimite, ""]);
 		}
 
 		// Especifica la información
@@ -54,7 +53,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)", "firebrick"],
+			colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"],
 			legend: "none",
 			hAxis: {
 				scaleType: "number",
@@ -64,7 +63,7 @@ window.addEventListener("load", async () => {
 			},
 			vAxis: {
 				fontSize: 20,
-				viewWindow: {min: 0, max: promSem},
+				viewWindow: {min: 0, max: maxEjeY},
 				// gridlines: {count: 8},
 			},
 			isStacked: true, // columnas apiladas
