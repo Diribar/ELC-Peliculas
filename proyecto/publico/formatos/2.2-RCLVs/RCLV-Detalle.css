@@ -15,13 +15,14 @@
 				button {
 					#infoPeli {
 						display: flex; flex-direction: column; justify-content: space-between; height: 100%;
-						#ppp {
+						#inferior{
 							i {font-size: 1.25rem;}
-							#texto {
-								margin-left: 5px; text-wrap: nowrap; border-radius: 10px;
+							#ppp #texto {
+								right: -7px; translate: 100% 0; text-wrap: nowrap; border-radius: 10px;
 								background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
 								padding: 0px 5px; line-height: 1.06;
 							}
+							#prodConLink {margin-top: 5px; margin-left: 15px;}
 						}
 					}
 					&:hover #infoPeli #ppp i {color: inherit;}
