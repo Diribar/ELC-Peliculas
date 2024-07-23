@@ -18,8 +18,7 @@ module.exports = (req, res, next) => {
 	const urlFueraDeUsuarios = !urlAnterior.startsWith("/usuarios/");
 
 	// Condiciones - urlSinParametros y urlSinCaptura
-	const parametros = new URL(req.protocol + "://" + req.headers.host + urlAnterior).searchParams;
-	const urlSinParametros = !parametros.get("entidad") && !parametros.get("id") && urlFueraDeUsuarios;
+	const urlSinParametros = urlAnterior.split("/?").length == 1 && urlFueraDeUsuarios;
 	const urlSinCaptura = urlSinParametros || ["/detalle/", "/historial/"].some((n) => urlAnterior.includes(n)); // sin captura
 
 	// Condiciones - urlSinLogin
