@@ -17,13 +17,13 @@
 		<!-- Inormación general -->
 		<div id="masInfo" class="datosParcial" style="display: none">
 			<% if (!bloqueIzq.infoGral.length) { %>
-			<p>No disponemos de esa información</p>
+				<p>No disponemos de esa información</p>
 			<% } else { %>
-			<ul id="infoGral">
-				<% for (let campo of bloqueIzq.infoGral) { %>
-					<li><%- campo.titulo ? (campo.titulo + ': ') : '' %><b><%= campo.valor %></b></li>
-				<% } %>
-			</ul>
+				<ul id="infoGral">
+					<% for (let campo of bloqueIzq.infoGral) { %>
+						<li><%- campo.titulo ? (campo.titulo + ': ') : '' %><b><%= campo.valor %></b></li>
+					<% } %>
+				</ul>
 			<% } %>
 		</div>
 		<!-- Actores -->
