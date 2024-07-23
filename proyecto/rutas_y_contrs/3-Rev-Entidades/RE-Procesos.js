@@ -912,8 +912,8 @@ module.exports = {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraProc.pelisColes;
-		const capitulosParaProc = cantLinksVencPorSem.paraProc.capitulos;
+		const pelisColesParaProc = cantLinksVencPorSem.paraRevisar.pelisColes;
+		const capitulosParaProc = cantLinksVencPorSem.paraRevisar.capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -1079,19 +1079,17 @@ let FN_links = {
 
 		if (!resultado) {
 			// Variables - si es una categoría estándar, averigua su semana
-			const corte = linksSemsPrimRev + 1; // 'semsPrimRev'--> nuevos, '+1'--> estreno reciente
-			const piso = corte + 1;
 			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
 
 			// Obtiene la cantidad de links que vence cada semana
 			const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-				.slice(piso) // descarta los registros de la semanas anteriores al piso
 				.slice(0, -2) // descarta los registros que no pertenecen a semanas
+				.slice(linkSemanaInicial) // descarta los registros de las semanas anteriores a linkSemanaInicial
 				.map((n) => n[entidad]);
 
 			// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
 			const semana =
-				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem[0][entidad + "PromSem"]) + piso;
+				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemanaInicial;
 
 			// Obtiene el resultado
 			resultado = new Date(ahoraTiempo + semana * unaSemana);

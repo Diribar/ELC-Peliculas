@@ -848,30 +848,30 @@ module.exports = {
 			}
 
 			// Rutina por link
-			for (let link of links) {
-				// Calcula la fechaVencim - primRev o reciente o null, 4 sems
-				const desde = link.statusSugeridoEn.getTime();
-				const linksVU = this.condicEstrRec(link) ? linksVU_estrRec : linksVU_estandar;
-				const fechaVencim = new Date(desde + linksVU);
+			if (links.length) {
+				for (let link of links) {
+					// Calcula la fechaVencim - primRev o reciente o null, 4 sems
+					const desde = link.statusSugeridoEn.getTime();
+					const linksVU = this.condicEstrRec(link) ? linksVU_estrRec : linksVU_estandar;
+					const fechaVencim = new Date(desde + linksVU);
 
-				// Se actualiza el link con el anoEstreno y la fechaVencim
-				const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-				const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
-				espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
+					// Se actualiza el link con el anoEstreno y la fechaVencim
+					const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+					const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
+					espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
+				}
+				await Promise.all(espera);
 			}
-			await Promise.all(espera);
 
 			// Fin
-			await this.actualizaStatusVencido();
 			return;
 		},
-		actualizaStatusVencido: async function () {
+		actualizaStatus: async () => {
 			// Variables
-			const anoReciente = anoHoy - linkAnoReciente;
 			const fechaDeCorte = new Date(lunesDeEstaSemana + unaSemana);
 			const ahora = new Date();
 
-			// Condiciones y nuevo status
+			// Condiciones y novedades
 			const condicion = {fechaVencim: {[Op.lt]: fechaDeCorte}, statusRegistro_id: aprobado_id};
 			const novedades = {
 				statusSugeridoPor_id: usAutom_id,
@@ -879,99 +879,40 @@ module.exports = {
 				statusSugeridoEn: ahora,
 			};
 
-			// Estreno reciente
+			// Actualiza el status en los links
 			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
 
 			// Fin
-			await this.actualizaLVPS();
 			return;
 		},
-		actualizaLVPS: async function () {
-			// Variables - Links vencidos por semana
-			if (!semanaUTC) this.variablesSemanales(); // para asegurarse de tener el 'primerLunesDelAno' y la 'semanaUTC'
-			cantLinksVencPorSem = {}; // elimina los datos anteriores
+		actualizaCantLinksPorSem: async () => {
+			// Elimina los datos anteriores
+			cantLinksVencPorSem = {};
 
-			// Obtiene todos los links con producto aprobado y en status distinto a inactivo
-			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
-			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion);
-
-			// Cantidad de 'linksAprob' por semana
-			const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
-			FN.cantLinksAprobPorSemana(linksAprob);
-
-			// Links a revisar
-			const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
-			const linksSinLimite = linksRevisar.filter((link) => this.condicEstrRec(link)); // links de corto plazo
-			const linksConLimite = linksRevisar.filter((link) => !this.condicEstrRec(link)); // links de plazo estándar
-
-			// Links con límite - capitulos
-			const capitulosRegs = linksConLimite.filter((n) => n.capitulo_id);
-			const capitulos = capitulosRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
-			const irCapitulos = capitulosRegs.length - capitulos; // inactivarRecuperar
-
-			// Links con límite - pelisColes
-			const pelisColesRegs = linksConLimite.filter((n) => !n.capitulo_id);
-			const pelisColes = pelisColesRegs.filter((n) => n.statusRegistro_id == creadoAprob_id).length;
-			const irPelisColes = pelisColesRegs.length - pelisColes; // inactivarRecuperar
-
-			// Promedio semanal para links 'de no estreno reciente'
-			const linksEstandar = links.filter((link) => !this.condicEstrRec(link));
-			const capitulosPromSem = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
-			const pelisColesPromSem = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
-
-			// Otros datos
-			const sinLimite = linksSinLimite.length;
-			cantLinksVencPorSem["0"] = {
-				...{capitulos, pelisColes, sinLimite, irPelisColes, irCapitulos},
-				...{capitulosPromSem, pelisColesPromSem},
-			};
-
-			// Fin
-			this.paramsVencPorSem();
-			return;
-		},
-		paramsVencPorSem: () => {
-			// Averigua la cantidad total de pendientes
-			const {capitulos: capsPends, capitulosPromSem, irCapitulos, sinLimite} = cantLinksVencPorSem[0];
-			const {pelisColes: pelisColesPends, pelisColesPromSem, irPelisColes} = cantLinksVencPorSem[0];
-
-			// Averigua la cantidad de links que se pueden agregar cada semana
-			const semanaInicial = linksSemsPrimRev + 2; // se suman 2, para saltear la semana de 'estrenoReciente'
-			let capitulosPosibles = 0;
-			let pelisColesPosibles = 0;
-			for (let semana = semanaInicial; semana < linksSemsEstandar; semana++) {
-				capitulosPosibles += Math.max(0, capitulosPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
-				pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
-			}
+			// Funciones
+			const links = await FN_links.obtieneCantPorSem();
+			FN_links.obtienePromedios(links);
+			FN_links.obtienePendientes(links);
+			const {capitulosPosibles, pelisColesPosibles} = FN_links.obtienePosibles(links);
 
 			// Averigua la combinación entre 'posibles' y 'pendientes'
-			const capitulosParaProc = Math.min(capitulosPosibles, capsPends + irCapitulos); // Averigua la cantidad para procesar
-			const pelisColesParaProc = Math.min(pelisColesPosibles, pelisColesPends + irPelisColes); // Averigua la cantidad para procesar
+			const {capitulos: capitulosPends, pelisColes: pelisColesPends, sinLimite} = cantLinksVencPorSem["0"];
+			const capitulos = Math.min(capitulosPosibles, capitulosPends);
+			const pelisColes = Math.min(pelisColesPosibles, pelisColesPends);
 
 			// Agrega la información
-			const paraProc = {
-				capitulos: capitulosParaProc,
-				pelisColes: pelisColesParaProc,
-				prods: pelisColesParaProc + capitulosParaProc + sinLimite,
-			};
-			cantLinksVencPorSem = {
-				...cantLinksVencPorSem,
-				paraProc,
-				prodsPromSem: capitulosPromSem + pelisColesPromSem,
+			cantLinksVencPorSem.paraRevisar = {
+				capitulos,
+				pelisColes,
+				prods: capitulos + pelisColes + sinLimite,
 			};
 
 			// Fin
 			return;
 		},
-		condicCreado: (link) => link.statusRegistro_id == creado_id,
-		condicEstrRec: (link) => {
-			const anoReciente = anoHoy - linkAnoReciente;
-			const anoEstreno = link.anoEstreno;
-			return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
-		},
-		condicEstandar: function (link) {
-			return !this.condicCreado && !this.condicEstrRec;
-		},
+		condicCreado: (link) => FN_links.condicCreado(link),
+		condicEstrRec: (link) => FN_links.condicEstrRec(link),
+		condicEstandar: (link) => FN_links.condicEstandar(link),
 	},
 
 	// Usuarios
@@ -1376,25 +1317,6 @@ let FN = {
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
-	cantLinksAprobPorSemana: (links) => {
-		// Se asegura de tener un valor para cada semana y entidad
-		for (let i = 1; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0};
-
-		// Crea las semanas dentro de la variable
-		for (let link of links) {
-			// Obtiene la semana de vencimiento
-			const fechaVencim = new Date(link.fechaVencim).getTime();
-			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
-			if (semVencim < 1 || semVencim > linksSemsEstandar) continue; // saltea la semana actual y las que tengan un error
-
-			// Agrega al conteo
-			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
-			cantLinksVencPorSem[semVencim][entidad]++;
-		}
-
-		// Fin
-		return;
-	},
 	lecturaBD: async ({entidad, status_id, campoFecha, campoRevID, include, revID}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
@@ -1435,5 +1357,92 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+};
+let FN_links = {
+	obtieneCantPorSem: async function () {
+		// Se asegura tener un valor por semana y entidad
+		for (let i = 0; i <= linksSemsEstandar; i++) cantLinksVencPorSem[i] = {capitulos: 0, pelisColes: 0, sinLimite: 0};
+
+		// Obtiene todos los links en status distinto a 'inactivo' y con producto 'aprobado'
+		const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
+		const links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion);
+
+		// Obtiene el valor por semana
+		const linksAprob = links.filter((n) => n.statusRegistro_id == aprobado_id);
+		for (let link of linksAprob) {
+			// Obtiene la semana de vencimiento
+			const fechaVencim = new Date(link.fechaVencim).getTime();
+			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
+			if (semVencim < 1 || semVencim > linksSemsEstandar) {
+				await baseDeDatos.actualizaPorId("links", link.id, {statusRegistro_id: creadoAprob_id}); // le cambia el status a los links con semana errónea
+				continue;
+			}
+
+			// Agrega al conteo
+			const entidad = this.condicEstrRec(link) ? "sinLimite" : link.capitulo_id ? "capitulos" : "pelisColes";
+			cantLinksVencPorSem[semVencim][entidad]++;
+		}
+
+		// Fin
+		return links;
+	},
+	obtienePromedios: function (links) {
+		// Variables
+		const linksEstandar = links.filter((link) => this.condicEstandar(link)); // creadoAprob, inactivar, recuperar con fecha de estreno 'no reciente'
+
+		// Promedio semanal para links de plazo estándar
+		const capitulos = Math.trunc(linksEstandar.filter((n) => n.capitulo_id).length / linksSemsEstandar);
+		const pelisColes = Math.round(linksEstandar.filter((n) => !n.capitulo_id).length / linksSemsEstandar);
+
+		// Actualiza la variable 'cantLinksVencPorSem'
+		cantLinksVencPorSem.promSem = {capitulos, pelisColes, prods: capitulos + pelisColes};
+
+		// Fin
+		return;
+	},
+	obtienePendientes: function (links) {
+		// Links a revisar
+		const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
+
+		// Links con límite
+		const linksConLimite = linksRevisar.filter((link) => this.condicEstandar(link)); // links de plazo estándar
+		const capitulos = linksConLimite.filter((n) => n.capitulo_id).length;
+		const pelisColes = linksConLimite.filter((n) => !n.capitulo_id).length;
+
+		// Links sin límite
+		const linksSinLimite = linksRevisar.filter((link) => !this.condicEstandar(link)); // links de corto plazo
+		const sinLimite = linksSinLimite.length;
+
+		// Asigna las cantidades a la semana actual
+		cantLinksVencPorSem["0"] = {capitulos, pelisColes, sinLimite};
+
+		// Fin
+		return;
+	},
+	obtienePosibles: () => {
+		// Variables
+		const {promSem} = cantLinksVencPorSem;
+		const {capitulos: capsPromSem, pelisColes: pelisColesPromSem} = promSem;
+
+		// Averigua la cantidad de links posibles por semana
+		let capitulosPosibles = 0;
+		let pelisColesPosibles = 0;
+		for (let semana = linkSemanaInicial; semana <= linksSemsEstandar; semana++) {
+			capitulosPosibles += Math.max(0, capsPromSem - cantLinksVencPorSem[semana].capitulos); // todos menos la última semana
+			pelisColesPosibles += Math.max(0, pelisColesPromSem - cantLinksVencPorSem[semana].pelisColes); // todos menos la última semana
+		}
+
+		// Fin
+		return {capitulosPosibles, pelisColesPosibles};
+	},
+	condicCreado: (link) => link.statusRegistro_id == creado_id,
+	condicEstrRec: (link) => {
+		const anoReciente = anoHoy - linkAnoReciente;
+		const anoEstreno = link.anoEstreno;
+		return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
+	},
+	condicEstandar: function (link) {
+		return !this.condicCreado(link) && !this.condicEstrRec(link);
 	},
 };

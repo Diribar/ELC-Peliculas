@@ -20,8 +20,8 @@ module.exports = async (req, res, next) => {
 		!respuesta &&
 		IN == "SI" &&
 		comp.linksVencPorSem.condicEstandar(link) &&
-		((link.capitulo_id && !cantLinksVencPorSem.paraProc.capitulos) || // es un capítulo y no queda lugar
-			(!link.capitulo_id && !cantLinksVencPorSem.paraProc.pelisColes)) // no es un capítulo y no queda lugar
+		((link.capitulo_id && !cantLinksVencPorSem.paraRevisar.capitulos) || // es un capítulo y no queda lugar
+			(!link.capitulo_id && !cantLinksVencPorSem.paraRevisar.pelisColes)) // no es un capítulo y no queda lugar
 	)
 		respuesta = "En esta semana ya no se puede revisar este link";
 
