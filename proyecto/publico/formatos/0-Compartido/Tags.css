@@ -5,7 +5,8 @@ h3 {font-size: 1.10rem;}
 h4 {font-size: 1.00rem;}
 
 /* Formularios */
-select, option, optgroup, input, textarea, label img, label {font-size: inherit; color: inherit; line-height: inherit;}
+select, option, optgroup, input, textarea {font-size: inherit; line-height: inherit;}
+label img, label {color: inherit;}
 select:has(option) {cursor: pointer;}
 select optgroup {margin-top: 3px;}
 select option {font-style: normal;}
