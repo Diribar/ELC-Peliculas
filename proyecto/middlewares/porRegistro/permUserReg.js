@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
 		baseUrl: comp.reqBasePathUrl(req).baseUrl,
 
 		// Vistas
-		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
+		vistaSinCaptura: variables.vistaAnterior(req.session.urlSinCaptura),
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
@@ -33,15 +33,13 @@ module.exports = async (req, res, next) => {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
 		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : "l ",
-		vistaAnteriorTablero: [v.vistaAnterior],
-		vistaAnteriorInactivar: [v.vistaAnterior, v.vistaInactivar],
+		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 		familia: comp.obtieneDesdeEntidad.familia(v.entidad),
 	};
 
 	// Más variables
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	if (v.usuario.rolUsuario.autTablEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	v.registro = await baseDeDatos.obtienePorId(v.entidad, v.entID, v.include);
 	v.creadoEn = v.registro.creadoEn;
 	v.creadoEn.setSeconds(0);
@@ -102,10 +100,10 @@ module.exports = async (req, res, next) => {
 	if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
 		informacion = {
 			mensajes: [
-				"Por ahora, el registro sólo está accesible para su creador.",
+				"Por ahora, "+v.entidadNombreMinuscula+" sólo está accesible para su creador.",
 				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
 			],
-			iconos: [v.vistaAnterior],
+			iconos: [v.vistaEntendido],
 		};
 	// 2. El registro fue creado hace más de una hora, está en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
 	else if (
@@ -117,20 +115,20 @@ module.exports = async (req, res, next) => {
 		let nombre = comp.nombresPosibles(v.registro);
 		if (nombre) nombre = "'" + nombre + "'";
 		let mensajes = [
-			"El registro todavía no está revisado.",
+			"El "+v.entidadNombreMinuscula+" todavía no está revisado.",
 			"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 		];
-		informacion = {mensajes, iconos: [v.vistaAnterior]};
+		informacion = {mensajes, iconos: [v.vistaEntendido]};
 	}
 
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
 	else if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
 		informacion = {
 			mensajes: [
-				"El registro está capturado por " + v.registro.capturadoPor.apodo + ".",
+				"El "+v.entidadNombreMinuscula+" está capturado por " + v.registro.capturadoPor.apodo + ".",
 				"Estará liberado a más tardar el " + v.horarioFinalCaptura,
 			],
-			iconos: v.vistaAnteriorInactivar,
+			iconos: [v.vistaSinCaptura, v.vistaInactivar],
 		};
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	else if (v.capturadoEn < v.haceUnaHora && v.capturadoEn > v.haceDosHoras && v.registro.capturadoPor_id == v.userID)
@@ -147,12 +145,16 @@ module.exports = async (req, res, next) => {
 		let prodCapturado = await buscaOtrasCapturasActivasDelUsuario();
 		if (prodCapturado) {
 			// Datos para el mensaje
-			const pc_entidad = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(pc_entidad);
-			const pc_entidadID = prodCapturado.id;
+			const pc={
+				entidad : prodCapturado.entidad,
+				id : prodCapturado.id,
+				entidadNombre : comp.obtieneDesdeEntidad.entidadNombre(prodCapturado.entidad),
+				elLa: comp.obtieneDesdeEntidad.elLa(prodCapturado.entidad),
+				oa: comp.obtieneDesdeEntidad.oa(prodCapturado.entidad),
+			}
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
-				"/inactivar-captura/?entidad=" + pc_entidad + "&id=" + pc_entidadID + "&urlDestino=" + originalUrl;
+				"/inactivar-captura/?entidad=" + pc.entidad + "&id=" + pc.id + "&urlDestino=" + originalUrl;
 			const liberar = {
 				clase: "fa-circle-check",
 				link: linkInactivar,
@@ -161,25 +163,20 @@ module.exports = async (req, res, next) => {
 			};
 			const horario = comp.fechaHora.fechaHorario(prodCapturado.capturadoEn);
 			// Preparar la información
-			const terminacion = {
-				entidad: comp.obtieneDesdeEntidad.elLa(pc_entidad),
-				reservado: comp.obtieneDesdeEntidad.oa(pc_entidad),
-			};
-
 			const nombre = comp.nombresPosibles(prodCapturado);
 			informacion = {
 				mensajes: [
 					"Tenés que liberar" +
-						terminacion.entidad +
-						pc_entidadNombre.toLowerCase() +
+						pc.elLa +
+						pc.entidadNombre.toLowerCase() +
 						" '" +
 						nombre +
 						"', que está reservad" +
-						terminacion.reservado +
+						pc.oa +
 						" desde el " +
 						horario,
 				],
-				iconos: [v.vistaAnterior, liberar],
+				iconos: [v.vistaSinCaptura, liberar],
 			};
 		}
 	}
