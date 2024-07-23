@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
 	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const id = req.query.id;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	const vistaEntendido = variables.vistaEntendido(req.session.urlSinEntidadId);
+	const vistaEntendido = variables.vistaEntendido(req.session.urlSinParametros);
 	let informacion;
 
 	// PROBLEMA 1: No existe el ID
