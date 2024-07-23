@@ -21,7 +21,11 @@
 					}
 					}
 				.inputError {
-					.input {width: 170px; text-align: center;}
+					.input {
+						width: 170px;
+						&:not(#paisNacim_id) {text-align: center;}
+						&#paisNacim_id {text-align-last: center;}
+					}
 					.mensajeError {max-width: 200px;}
 				}
 			}
