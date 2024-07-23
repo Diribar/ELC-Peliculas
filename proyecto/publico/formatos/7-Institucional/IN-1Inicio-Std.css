@@ -30,7 +30,7 @@
 		#sectorIconos {
 			display: flex; justify-content: space-evenly; align-items: center; width: 100%;
 			a {
-				border-radius: 50%; overflow: hidden; transition: var(--transicion);
+				border-radius: 50%; overflow: hidden;
 				border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);
 				button {
 					width: 200px; padding: 20px; border-radius: 50%; background: var(--gris-claro);
