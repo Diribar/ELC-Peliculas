@@ -19,13 +19,13 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		prodEntidad: new URL(location.href).searchParams.get("entidad"),
-		prodID: new URL(location.href).searchParams.get("id"),
+		prodId: new URL(location.href).searchParams.get("id"),
 		columnas: DOM.inputs.length / (DOM.filasDatos.length + 1),
 	};
 
 	// Formulas
 	let obtieneDataEntry = (fila) => {
-		let objeto = "?prodEntidad=" + v.prodEntidad + "&prodID=" + v.prodID;
+		let objeto = "?prodEntidad=" + v.prodEntidad + "&prodId=" + v.prodId;
 		for (let columna = 0; columna < v.columnas; columna++) {
 			let indice = fila * v.columnas + columna;
 			objeto += "&" + DOM.inputs[indice].name + "=" + encodeURIComponent(DOM.inputs[indice].value);
@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 			if (botonRecuperar.className.includes("inactivo")) return;
 			botonRecuperar.classList.add("inactivo");
 			// Obtiene los datos del link
-			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodID=" + v.prodID;
+			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
 			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
@@ -76,7 +76,7 @@ window.addEventListener("load", async () => {
 			if (botonDeshacer.className.includes("inactivo")) return;
 			botonDeshacer.classList.add("inactivo");
 			// Obtiene los datos del link
-			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodID=" + v.prodID;
+			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
 			let respuesta = await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());

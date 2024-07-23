@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	let v = {
 		// Generales
 		entidad: req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "",
-		entID: req.query.id,
+		entId: req.query.id,
 		origen: req.query.origen,
 		haceUnaHora: comp.fechaHora.nuevoHorario(-1),
 		haceDosHoras: comp.fechaHora.nuevoHorario(-2),
@@ -28,7 +28,7 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
-	v.vistaInactivar = rubro ? variables.vistaInactivar[rubro](v.entidad, v.entID) : {};
+	v.vistaInactivar = rubro ? variables.vistaInactivar[rubro](v.entidad, v.entId) : {};
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 	// Más variables
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	v.registro = await baseDeDatos.obtienePorId(v.entidad, v.entID, v.include);
+	v.registro = await baseDeDatos.obtienePorId(v.entidad, v.entId, v.include);
 	v.creadoEn = v.registro.creadoEn;
 	v.creadoEn.setSeconds(0);
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
 		v.vistaEntendido.link =
 			v.origen == "TE"
 				? "/revision/tablero-de-entidades"
-				: "/" + v.familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entID;
+				: "/" + v.familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entId;
 
 	// Fórmula
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
@@ -74,13 +74,13 @@ module.exports = async (req, res, next) => {
 			let registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, {capturadoPor_id: v.userID});
 			for (let registro of registros) {
 				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
-				if (registro.capturadoEn < v.haceDosHoras && registro.id != v.entID)
+				if (registro.capturadoEn < v.haceDosHoras && registro.id != v.entId)
 					baseDeDatos.actualizaPorId(entidad, registro.id, objetoNull);
 				// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
 				else if (
 					registro.capturadoEn > v.haceUnaHora &&
 					registro.capturaActiva &&
-					(entidad != v.entidad || registro.id != v.entID)
+					(entidad != v.entidad || registro.id != v.entId)
 				) {
 					resultado = {
 						entidad,

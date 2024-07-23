@@ -13,8 +13,8 @@ window.addEventListener("load", async () => {
 
 	// Variables para el ruteo del origen
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
-	const prodID = new URL(location.href).searchParams.get("id");
-	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodID=" + prodID + "&origen=EDP";
+	const prodId = new URL(location.href).searchParams.get("id");
+	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodId=" + prodId + "&origen=EDP";
 
 	// Variables para guardar los datos
 	const rutaSession = "/producto/api/envia-a-req-session/";
@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 	//
 	// Guardar los valores del formulario
 	let guardarLosValoresEnSession = () => {
-		let objeto = "?entidad=" + prodEntidad + "&id=" + prodID;
+		let objeto = "?entidad=" + prodEntidad + "&id=" + prodId;
 		for (let input of DOM.inputs) {
 			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}

@@ -21,13 +21,13 @@ window.addEventListener("load", async () => {
 
 		// Pointer del producto
 		entidad: new URL(location.href).searchParams.get("entidad"),
-		entID: new URL(location.href).searchParams.get("id"),
+		entId: new URL(location.href).searchParams.get("id"),
 	};
 	const familia = ["peliculas", "colecciones", "capitulos"].includes(v.entidad) ? "producto" : "rclv";
 	if (!v.entidad && location.pathname.includes("/revision/usuarios")) v.entidad = "usuarios";
 
 	// Horario Inicial
-	let datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entID).then((n) => n.json());
+	let datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entId).then((n) => n.json());
 	let horarioInicial = false
 		? false
 		: !datos.capturadoEn
@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: v.codigo.startsWith("/revision/")
 				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
-				: ["/" + familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entID, "fa-circle-info", "Ir a Detalle"];
+				: ["/" + familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entId, "fa-circle-info", "Ir a Detalle"];
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
 
 			// Muestra el cartel
