@@ -19,11 +19,11 @@
 			<% if (!bloqueIzq.infoGral.length) { %>
 			<p>No disponemos de esa información</p>
 			<% } else { %>
-			<div id="infoGral">
+			<ul id="infoGral">
 				<% for (let campo of bloqueIzq.infoGral) { %>
-				<p><%- campo.titulo ? (campo.titulo + ': ') : '' %><b><%= campo.valor %></b></p>
+					<li><%- campo.titulo ? (campo.titulo + ': ') : '' %><b><%= campo.valor %></b></li>
 				<% } %>
-			</div>
+			</ul>
 			<% } %>
 		</div>
 		<!-- Actores -->
