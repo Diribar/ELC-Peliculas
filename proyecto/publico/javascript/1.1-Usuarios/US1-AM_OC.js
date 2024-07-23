@@ -38,7 +38,10 @@ window.addEventListener("load", async () => {
 	let mail = {
 		valida: async () => {
 			// Variables
-			v.datos = {email: olvidoContr ? v.datosDeSession.datos.email : DOM.email.value}; // toma el mail dependiendo de la ruta
+			const email = olvidoContr // toma el mail dependiendo de la ruta
+				? v.datosDeSession.datos.email // lo toma del BE, no de la vista
+				: DOM.email.value;
+			v.datos = {email};
 
 			// Obtiene la información de los datos perennes
 			if (olvidoContr && v.datosDeSession.validarDatosPerennes)
@@ -170,9 +173,9 @@ window.addEventListener("load", async () => {
 
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.button.className.includes("inactivo") || v.errores.hay) return;
+		else DOM.button.classList.add("inactivo");
 
 		// Redirige
-		DOM.button.classList.add("inactivo");
 		await mail.envia();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
