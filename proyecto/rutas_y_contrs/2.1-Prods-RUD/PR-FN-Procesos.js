@@ -4,7 +4,7 @@ module.exports = {
 	// Producto
 	bloqueIzq: (producto) => {
 		// Variables
-		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : "";
+		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : null;
 		let infoGral = [];
 		let actores = [];
 
@@ -20,9 +20,9 @@ module.exports = {
 		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		}
-		if (producto.color !== null) infoGral.push({valor: producto.color ? "" : "Es en blanco y negro"});
-		if (producto.musical !== null) infoGral.push({valor: producto.musical ? "Es un musical" : ""});
-		if (producto.deporte !== null) infoGral.push({titulo: "", valor: producto.deporte ? "Tiene deporte" : ""});
+		if (producto.color !== null && !producto.color) infoGral.push({valor: "Es en blanco y negro"});
+		if (producto.musical) infoGral.push({valor: "Es un musical"});
+		if (producto.deporte) infoGral.push({valor: "Tiene deporte"});
 
 		infoGral.push({
 			titulo: "País" + (paisesNombre && paisesNombre.includes(",") ? "es" : ""),
