@@ -73,7 +73,8 @@
 			&#masInfo {
 				flex-direction: row; justify-content: space-between;
 				#infoGral {
-					column-count: 2; column-gap: 25px; column-rule: solid 1px; list-style-type: none;
+					column-count: 2; column-width: 160px; /* máximo: 2 columnas, ancho mínimo: 160px */
+					column-gap: 25px; column-rule: solid 1px; list-style-type: none;
 					li {
 						position: relative;
 						&:before {content: "-"; left: -12px; position: absolute;}
