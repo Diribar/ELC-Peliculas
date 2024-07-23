@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 			mensajes: ["El registro no fue creado por vos."],
 			iconos: [vistaAnterior],
 		};
-	// El registro está capturado en forma 'activa' por otra persona
+	// Revisa si está capturado en forma 'activa' por otra persona
 	else if (registro.capturadoEn > haceUnaHora && registro.capturadoPor_id != userID && registro.capturaActiva)
 		informacion = {
 			mensajes: [
