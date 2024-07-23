@@ -24,7 +24,7 @@
 				<!-- Revisar: Alta, Inactivar, Recuperar -->
 				<% const url = status_id == creado_id ? "alta" : status_id == inactivar_id ? "inactivar" : "recuperar" %>
 				<a href="<%= '/revision/' + familia + '/' + url + '/?entidad=' + entidad + '&id=' + id + origenHTML %>">
-					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Inactivar'"></i>
+					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Ir a 'Revisión de <%= url %>'"></i>
 				</a>
 			<% } %>
 		<% } else if (!locals.statusAlineado && locals.revisorPERL) { %>
