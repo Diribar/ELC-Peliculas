@@ -159,7 +159,7 @@ module.exports = {
 		const plural1 = entidad == "colecciones" ? "ron" : "";
 		const plural2 = entidad == "colecciones" ? "s" : "";
 		const titulo = comp.letras.inicialMayus(entidadNombre) + " eliminad" + articFinal + plural2;
-		const vistaEntendido = variables.vistaEntendido(req.session.urlSinEntidadId);
+		const vistaEntendido = variables.vistaEntendido(req.session.urlSinParametros);
 
 		// Cartel de registro eliminado
 		const informacion = {
