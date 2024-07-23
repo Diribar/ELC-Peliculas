@@ -11,22 +11,20 @@ module.exports = async (req, res, next) => {
 	// Obtiene el statusActual
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const {statusRegistro_id} = registro;
-	const statusActual =
-		entidad == "usuarios"
-			? statusRegistrosUs.find((n) => n.id == registro.statusRegistro_id)
-			: statusRegistros.find((n) => n.id == registro.statusRegistro_id);
-
-	// Obtiene un registro del historial
-	const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
 
 	// Acciones si el status del registro no es el esperado
-	if (
-		!statusEsperados_id.includes(statusActual.id) && // el status del registro no es el esperado
-		((statusRegistro_id > aprobado_id && // el status del registro es mayor que aprobado
-			!!regHistorial) || // existe historial
-			statusRegistro_id <= aprobado_id)
-	) {
+	if (!statusEsperados_id.includes(statusRegistro_id)) {
+		// Si no existe un historial, saltea el mensaje
+		if (statusRegistro_id > aprobado_id) {
+			const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
+			if (!regHistorial) return next();
+		}
+
 		// Variables para el mensaje
+		const statusActual =
+			entidad == "usuarios"
+				? statusRegistrosUs.find((n) => n.id == statusRegistro_id)
+				: statusRegistros.find((n) => n.id == statusRegistro_id);
 		const statusActualNombre = statusActual.nombre;
 
 		// Variables para el ícono
@@ -51,7 +49,7 @@ module.exports = async (req, res, next) => {
 
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+	else return next();
 };
 
 // Funciones
