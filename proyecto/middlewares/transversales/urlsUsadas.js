@@ -42,6 +42,17 @@ module.exports = (req, res, next) => {
 	const rutaAceptada = FN_rutaAceptada(urlActual, urlAnterior);
 
 	// Asigna las sessions
+	const urlsBasicas = {urlActual, urlAnterior};
+	for (let url in urlsBasicas) {
+		req.session[url] = rutaAceptada
+			? urlsBasicas[url]
+			: req.session[url]
+			? req.session[url]
+			: req.cookies && req.cookies[url]
+			? req.cookies[url]
+			: "/";
+		res.cookie(url, req.session[url], {maxAge: unDia});
+	}
 	for (let url in urlsGuardadas) {
 		req.session[url] =
 			rutaAceptada && urlsGuardadas[url]
@@ -51,17 +62,6 @@ module.exports = (req, res, next) => {
 				: req.cookies && req.cookies[url]
 				? req.cookies[url]
 				: "/";
-		res.cookie(url, req.session[url], {maxAge: unDia});
-	}
-	const urlsBasicas = {urlAnterior, urlActual};
-	for (let url in urlsBasicas) {
-		req.session[url] = rutaAceptada
-			? urlsBasicas[url]
-			: req.session[url]
-			? req.session[url]
-			: req.cookies && req.cookies[url]
-			? req.cookies[url]
-			: "/";
 		res.cookie(url, req.session[url], {maxAge: unDia});
 	}
 
