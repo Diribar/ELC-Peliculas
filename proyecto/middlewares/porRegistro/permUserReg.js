@@ -32,9 +32,12 @@ module.exports = async (req, res, next) => {
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
-		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : "l ",
-		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 		familia: comp.obtieneDesdeEntidad.familia(v.entidad),
+		elLa: comp.obtieneDesdeEntidad.elLa(v.entidad),
+		oa: comp.obtieneDesdeEntidad.oa(v.entidad),
+		ea: comp.obtieneDesdeEntidad.oa(v.entidad),
+
+		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 	};
 
 	// Más variables
@@ -100,7 +103,7 @@ module.exports = async (req, res, next) => {
 	if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
 		informacion = {
 			mensajes: [
-				"Por ahora, "+v.entidadNombreMinuscula+" sólo está accesible para su creador.",
+				"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
 				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
 			],
 			iconos: [v.vistaEntendido],
@@ -115,8 +118,8 @@ module.exports = async (req, res, next) => {
 		let nombre = comp.nombresPosibles(v.registro);
 		if (nombre) nombre = "'" + nombre + "'";
 		let mensajes = [
-			"El "+v.entidadNombreMinuscula+" todavía no está revisado.",
-			"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+			"Est" + v.ea + " " + v.entidadNombreMinuscula + " todavía no está revisad" + v.oa + ".",
+			"En caso de ser aprobad" + v.oa + " cuando se l" + v.oa + " revise, estará disponible.",
 		];
 		informacion = {mensajes, iconos: [v.vistaEntendido]};
 	}
@@ -125,8 +128,15 @@ module.exports = async (req, res, next) => {
 	else if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
 		informacion = {
 			mensajes: [
-				"El "+v.entidadNombreMinuscula+" está capturado por " + v.registro.capturadoPor.apodo + ".",
-				"Estará liberado a más tardar el " + v.horarioFinalCaptura,
+				"Est" +
+					v.ea +
+					" " +
+					v.entidadNombreMinuscula +
+					" está capturad" +
+					v.oa +
+					" por el usuario " +
+					v.registro.capturadoPor.apodo,
+				"Estará liberad" + v.oa + " a más tardar el " + v.horarioFinalCaptura,
 			],
 			iconos: [v.vistaSinCaptura, v.vistaInactivar],
 		};
@@ -136,7 +146,7 @@ module.exports = async (req, res, next) => {
 			mensajes: [
 				"Esta captura terminó el " + v.horarioFinalCaptura,
 				"Quedó a disposición de los demás " + v.tipoUsuario + ".",
-				"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
+				"Si nadie lo captura hasta 1 hora después, podrás volver a capturarl" + v.oa + ".",
 			],
 			iconos: [v.vistaEntendido],
 		};
@@ -145,16 +155,15 @@ module.exports = async (req, res, next) => {
 		let prodCapturado = await buscaOtrasCapturasActivasDelUsuario();
 		if (prodCapturado) {
 			// Datos para el mensaje
-			const pc={
-				entidad : prodCapturado.entidad,
-				id : prodCapturado.id,
-				entidadNombre : comp.obtieneDesdeEntidad.entidadNombre(prodCapturado.entidad),
+			const pc = {
+				entidad: prodCapturado.entidad,
+				id: prodCapturado.id,
+				entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(prodCapturado.entidad),
 				elLa: comp.obtieneDesdeEntidad.elLa(prodCapturado.entidad),
 				oa: comp.obtieneDesdeEntidad.oa(prodCapturado.entidad),
-			}
+			};
 			const originalUrl = encodeURIComponent(req.originalUrl);
-			const linkInactivar =
-				"/inactivar-captura/?entidad=" + pc.entidad + "&id=" + pc.id + "&urlDestino=" + originalUrl;
+			const linkInactivar = "/inactivar-captura/?entidad=" + pc.entidad + "&id=" + pc.id + "&urlDestino=" + originalUrl;
 			const liberar = {
 				clase: "fa-circle-check",
 				link: linkInactivar,
