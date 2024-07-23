@@ -7,7 +7,7 @@ module.exports = {
 	redirecciona: {
 		rutaAnterior: async (req, res) => {
 			// Variables
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodID, entidad, id, urlDestino, grupo} = req.query;
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
@@ -19,7 +19,7 @@ module.exports = {
 				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
 					destino = origen.url;
 					if (origen.cola)
-						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id);
+						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodId ? prodId : id);
 					break;
 				}
 
@@ -29,7 +29,7 @@ module.exports = {
 					"/links/abm/?entidad=" +
 					(prodEntidad ? prodEntidad : entidad) +
 					"&id=" +
-					(prodID ? prodID : id) +
+					(prodId ? prodId : id) +
 					(origenCodigo == "LKM" ? "&origen=TM" : "") +
 					(grupo ? "&grupo=inactivo" : "");
 

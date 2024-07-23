@@ -19,7 +19,7 @@
 			<% if (entidad == "colecciones") { %>
 				<!-- Cantidad de Temporadas y de Capítulos -->
 				<div id="coleccion">
-					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + capID + '&origenUrl=' + rutaCRUD %>"><% } %>
+					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodId=' + capID + '&origenUrl=' + rutaCRUD %>"><% } %>
 						<button type="button">
 							<% if (registro.cantTemps > 1) { %>
 								<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
@@ -33,7 +33,7 @@
 				<!-- Ir a la colección -->
 				<div id="tempCapI">
 					<p id="coleccionTitulo">Colección:</p>
-					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origenUrl=' + rutaCRUD %>"><% } %>
+					<% if (locals.anchorEncab) { %><a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodId=' + registro.coleccion_id + '&origenUrl=' + rutaCRUD %>"><% } %>
 						<button type="button"><%= registro.coleccion.nombreCastellano %></button>
 					<% if (locals.anchorEncab) { %></a><% } %>
 				</div>
