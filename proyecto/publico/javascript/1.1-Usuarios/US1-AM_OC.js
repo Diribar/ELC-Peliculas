@@ -41,10 +41,8 @@ window.addEventListener("load", async () => {
 			v.datos = {email: olvidoContr ? v.datosDeSession.datos.email : DOM.email.value}; // toma el mail dependiendo de la ruta
 
 			// Obtiene la información de los datos perennes
-			if (olvidoContr && v.datosDeSession.validarDatosPerennes) {
+			if (olvidoContr && v.datosDeSession.validarDatosPerennes)
 				for (let campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
-				v.datos.usuario = v.datosDeSession.usuario;
-			}
 
 			// Averigua si hay errores
 			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());

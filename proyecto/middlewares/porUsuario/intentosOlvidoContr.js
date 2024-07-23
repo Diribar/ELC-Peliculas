@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	const datos = req.session && req.session.olvidoContr ? {...req.session.olvidoContr.datos, email} : {email};
 
 	// Crea la session de 'olvidoContr'
-	req.session.olvidoContr = {datos, errores, usuario, validarDatosPerennes};
+	req.session.olvidoContr = {datos, errores, validarDatosPerennes};
 
 	// Fin
 	next();
