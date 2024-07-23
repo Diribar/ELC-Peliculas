@@ -19,7 +19,7 @@ module.exports = {
 		let imgDerPers, ayudasTitulo;
 
 		// Obtiene RCLV y sus productos
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
 		let rclv = {...original, ...edicion, id};
 		rclv = await procesos.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
 		const prodsDelRCLV = await procsFM.prodsDelRCLV(rclv, userID);
@@ -76,7 +76,7 @@ module.exports = {
 			const codigo = ruta.slice(1, -1); // resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/alta', 'rclv/solapamiento'
 
 			// Más variables
-			const {entidad, id, prodEntidad, prodID} = req.query;
+			const {entidad, id, prodEntidad, prodId} = req.query;
 			const origen = req.query.origen
 				? req.query.origen
 				: tema == "revisionEnts"
@@ -107,7 +107,7 @@ module.exports = {
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
 				// Obtiene el original y edicion
-				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
+				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
 				edicID = edicion.id;
 
 				// Actualiza el data entry de session
@@ -156,7 +156,7 @@ module.exports = {
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
-				...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
+				...{entidad, id, prodEntidad, prodId, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
@@ -167,7 +167,7 @@ module.exports = {
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;
+			const {entidad, id, prodEntidad, prodId, eliminarEdic} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "RDT";
 			const codigo = req.baseUrl + req.path;
@@ -241,7 +241,7 @@ module.exports = {
 					// Obtiene el registro original del producto, y su edición ya creada (si existe)
 					let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 						entidad: prodEntidad,
-						entID: prodID,
+						entId: prodId,
 						userID,
 						excluirInclude: true,
 					});
@@ -276,7 +276,7 @@ module.exports = {
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodId=" + prodId;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);

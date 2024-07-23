@@ -145,11 +145,11 @@ module.exports = {
 		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 		return comentario;
 	},
-	obtieneOriginalEdicion: async ({entidad, entID, userID, excluirInclude, omitirPulirEdic}) => {
+	obtieneOriginalEdicion: async ({entidad, entId, userID, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condEdic = {[campo_id]: entID, editadoPor_id: userID};
+		const condEdic = {[campo_id]: entId, editadoPor_id: userID};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : null;
 
@@ -163,7 +163,7 @@ module.exports = {
 		}
 
 		// Obtiene el registro original con sus includes
-		let original = baseDeDatos.obtienePorId(entidad, entID, includesOrig);
+		let original = baseDeDatos.obtienePorId(entidad, entId, includesOrig);
 		let edicion = userID ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
@@ -460,10 +460,10 @@ module.exports = {
 					// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
 					let entProd = comp.obtieneDesdeCampo_id.entidadProd(edicion);
 					let campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
-					let entID = edicion[campo_id];
+					let entId = edicion[campo_id];
 
 					// Obtiene los registros del producto original y su edición por el usuario
-					let [prodOrig, prodEdic] = await this.obtieneOriginalEdicion({entidad: entProd, entID, userID});
+					let [prodOrig, prodEdic] = await this.obtieneOriginalEdicion({entidad: entProd, entId, userID});
 
 					// Actualiza la variable del registro original
 					let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
@@ -952,10 +952,10 @@ let FN = {
 			// Variables
 			const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(edicion);
 			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(edicion);
-			const prodID = edicion[campo_idProd];
+			const prodId = edicion[campo_idProd];
 
 			// Obtiene el producto original
-			const original = await baseDeDatos.obtienePorId(prodEntidad, prodID);
+			const original = await baseDeDatos.obtienePorId(prodEntidad, prodId);
 
 			// Elimina la edición si está vacía
 			delete edicion[campo_idRCLV];

@@ -20,7 +20,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
@@ -100,7 +100,7 @@ module.exports = {
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
 			const prodComb = {...original, ...edicion, ...edicSession, id};
 			if (entidad == "capitulos")
 				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
@@ -165,7 +165,7 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID, excluirInclude: true});
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -255,7 +255,7 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho

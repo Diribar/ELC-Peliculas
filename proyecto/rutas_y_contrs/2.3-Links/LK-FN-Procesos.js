@@ -4,14 +4,14 @@ const procsRE = require("../3-Rev-Entidades/RE-Procesos");
 
 module.exports = {
 	// Links - Controlador Vista
-	obtieneLinksConEdicion: async (entidad, prodID, userID) => {
+	obtieneLinksConEdicion: async (entidad, prodId, userID) => {
 		// Variables
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 
 		// Obtiene los linksOriginales
-		let links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: prodID}, include);
+		let links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: prodId}, include);
 		links.sort((a, b) => (a.url < b.url ? -1 : 1));
 		links.sort((a, b) => a.parte - b.parte);
 
@@ -30,7 +30,7 @@ module.exports = {
 	},
 	datosLink: async (datos) => {
 		// Datos del producto
-		const regProd = await baseDeDatos.obtienePorId(datos.prodEntidad, datos.prodID);
+		const regProd = await baseDeDatos.obtienePorId(datos.prodEntidad, datos.prodId);
 		datos.prodAprob = aprobados_ids.includes(regProd.statusRegistro_id);
 
 		// campo_id
@@ -106,7 +106,7 @@ module.exports = {
 			  producto.id +
 			  "&prodEntidad=" +
 			  sigProd.entidad +
-			  "&prodID=" +
+			  "&prodId=" +
 			  sigProd.id +
 			  "&origen=LKM&grupo=inactivo"
 			: "";

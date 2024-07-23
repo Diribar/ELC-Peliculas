@@ -17,7 +17,7 @@ module.exports = {
 			for (let i = 0; i < prodsEnRCLV.length; i++) {
 				let [original, edicion] = await procsFM.obtieneOriginalEdicion({
 					entidad: entProd,
-					entID: prodsEnRCLV[i].id,
+					entId: prodsEnRCLV[i].id,
 					userID,
 				});
 				if (edicion) {

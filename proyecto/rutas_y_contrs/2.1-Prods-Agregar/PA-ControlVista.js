@@ -361,7 +361,7 @@ module.exports = {
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entID: id, userID, excluirInclude: true});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID, excluirInclude: true});
 		const origEdic = {...original, ...edicion, id: original.id};
 
 		// Prepara las imágenes
