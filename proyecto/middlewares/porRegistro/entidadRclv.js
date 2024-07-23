@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 
 	// Valida la entidad
 	if (!rclvs.includes(rclv)) {
-		let informacion = {
+		const informacion = {
 			mensajes: ["No se reconoce esa entidad."],
 			iconos: [vistaAnterior, variables.vistaInicio],
 		};
