@@ -8,15 +8,23 @@ module.exports = {
 		let infoGral = [];
 		let actores = [];
 
-		// Informacion General
+		// Informacion sin títulos
 		if (producto.cfc !== null)
 			infoGral.push({valor: producto.cfc ? "Relacionada con la Fe Católica" : "Sin relación con la Fe Católica"});
 		if (producto.bhr !== null)
 			infoGral.push({valor: producto.bhr ? "Basada en Hechos Reales" : "No está basada en Hechos Reales"});
+		if (producto.tipoActuacion) infoGral.push({valor: producto.tipoActuacion.nombre});
+		if (producto.epocaOcurrencia_id)
+			infoGral.push(
+				producto.epocaOcurrencia.nombre == "Varias"
+					? {titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre}
+					: {valor: producto.epocaOcurrencia.nombre + " a Cristo"}
+			);
+
+		// Información con títulos
 		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
 		if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
-		if (producto.tipoActuacion) infoGral.push({valor: producto.tipoActuacion.nombre});
 		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		}
@@ -33,8 +41,6 @@ module.exports = {
 		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
 		if (producto.musica) infoGral.push({titulo: "Música", valor: producto.musica});
 		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
-		if (producto.epocaOcurrencia_id)
-			infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre});
 
 		// Actores
 		if (producto.actores) actores = producto.actores;
