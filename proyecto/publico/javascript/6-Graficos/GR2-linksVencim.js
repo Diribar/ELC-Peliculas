@@ -36,8 +36,8 @@ window.addEventListener("load", async () => {
 			// Agrega los valores Y
 			const capitulos = cantLinks[ejeX].capitulos;
 			const pelisColes = cantLinks[ejeX].pelisColes;
-			const sinLimite = cantLinks[ejeX].sinLimite;
-			resultado.push([ejeX, capitulos, pelisColes, sinLimite, ""]);
+			const estrRec = cantLinks[ejeX].estrRec;
+			resultado.push([ejeX, capitulos, pelisColes, estrRec, ""]);
 		}
 
 		// Especifica la información
