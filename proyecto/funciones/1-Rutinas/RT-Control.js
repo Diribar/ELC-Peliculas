@@ -31,7 +31,8 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.feedbackParaUsers();
-		// await this.rutinasDiarias.feedbackParaUsers();
+		// await this.rutinasDiarias.qqq();
+		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -259,33 +260,22 @@ module.exports = {
 
 				// Variables
 				const email = usuario.email;
-				const regsStatus_user = regsStatus.filter((n) => n.statusOriginalPor_id == usuario.id);
-				const regsEdic_user = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
+				const regsStatusUs = regsStatus.filter((n) => n.statusOriginalPor_id == usuario.id);
+				const regsEdicUs = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
 				let cuerpoMail = "";
 
 				// Arma el cuerpo del mail
-				if (regsStatus_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeStatus(regsStatus_user);
-				if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdicion(regsEdic_user);
+				if (regsStatusUs.length) cuerpoMail += await procesos.mailDeFeedback.mensajeStatus(regsStatusUs);
+				if (regsEdicUs.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdicion(regsEdicUs);
 
 				// Envía el mail y actualiza la BD
-				mailsEnviados.push(
-					comp
-						.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
-						.then((n) => {
-							// Acciones si el mail fue enviado
-							if (n) {
-								if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsHistStatus(regsStatus_user); // Borra los registros prescindibles
-								if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsHistEdics(regsEdic_user); // Borra los registros prescindibles
-								baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
-								console.log("Mail enviado a " + email);
-							}
-							// Si el mail no fue enviado, lo avisa
-							else console.log("Mail no enviado a " + email);
-
-							// Fin
-							return;
-						})
-				);
+				const mailEnviado =
+					usuario.id != usAutom_id
+						? comp
+								.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
+								.then((mailEnviado) => procesos.eliminaRegs.consolidado({mailEnviado, regsStatusUs, regsEdicUs}))
+						: procesos.eliminaRegs.consolidado({mailEnviado: true, regsStatusUs, regsEdicUs});
+				mailsEnviados.push(mailEnviado);
 			}
 
 			// Espera a que se procese el envío de todos los emails
@@ -724,6 +714,11 @@ module.exports = {
 			}
 
 			// Fin
+			return;
+		},
+		eliminaRegsHistStatusIncorrectos: async () => {
+			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
+			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 			return;
 		},
 	},
