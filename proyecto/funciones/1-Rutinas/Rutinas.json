@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 23/jul",
-	"HoraUTC": "1:24",
+	"FechaUTC": "Mié. 24/jul",
+	"HoraUTC": "0:08",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 22/jul",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-jul-24": {"leyenda": "Hoy recordamos Daniel", "entidad": "personajes", "id": 178},
 		"22-jul-24": {"leyenda": "Hoy recordamos a María Magdalena, santa", "entidad": "personajes", "id": 58},
 		"23-jul-24": {},
 		"24-jul-24": {},
-		"25-jul-24": {"leyenda": "Hoy recordamos Santiago apóstol", "entidad": "personajes", "id": 95}
+		"25-jul-24": {"leyenda": "Hoy recordamos al apóstol Santiago, santo", "entidad": "personajes", "id": 95},
+		"26-jul-24": {}
 	}
 }
