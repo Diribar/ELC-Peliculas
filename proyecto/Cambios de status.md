@@ -34,7 +34,7 @@
                 - Redirecciona a la vista 'inactivar' para que se cree el registro 'statusHistorial'
                 - Luego, quedará en manos del usuario seguir avanzando
         - Si se aprueba el del historial, actualiza el status del producto
-        - En ambos casos, se actualiza la tabla de 'statusErrores'
+        - En ambos casos, se actualiza 'statusErrores'
 
 4. Detalle
 - Ícono a la derecha, se fija que el status del producto esté alineado al historial
