@@ -2,7 +2,7 @@
 window.addEventListener("load", () => {
 	// Variables
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
-	const prodID = new URL(location.href).searchParams.get("id");
+	const prodId = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Íconos addEventListeners
 		iconosRevision: document.querySelectorAll(".yaExistentes .revision"),
@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
 		ancho_status: document.querySelectorAll(".yaExistentes .ancho_status"),
 	};
 	let v = {
-		condicion: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
+		condicion: "?prodEntidad=" + prodEntidad + "&prodId=" + prodId,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
 		rutaAltaBaja: "/revision/api/link/alta-baja/",
 		rutaSigProd: "/revision/api/link/siguiente-producto/",
@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
 			}
 
 			// Averigua si ya no hay más nada más para revisar sobre este producto
-			url = "?entidad=" + prodEntidad + "&id=" + prodID;
+			url = "?entidad=" + prodEntidad + "&id=" + prodId;
 			respuesta = await fetch(v.rutaSigProd + url).then((n) => n.json());
 
 			// Si la API devuelve una respuesta, redirecciona
@@ -72,7 +72,7 @@ window.addEventListener("load", () => {
 				location.href =
 					"/inactivar-captura/" +
 					url +
-					("&prodEntidad=" + respuesta.entidad + "&prodID=" + respuesta.id) +
+					("&prodEntidad=" + respuesta.entidad + "&prodId=" + respuesta.id) +
 					"&origen=RL";
 
 			// Fin

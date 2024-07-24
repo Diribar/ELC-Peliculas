@@ -2,7 +2,7 @@
 window.addEventListener("load", () => {
 	// Variables
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
-	const prodID = new URL(location.href).searchParams.get("id");
+	const prodId = new URL(location.href).searchParams.get("id");
 	const revision = location.pathname.includes("/revision/");
 	let DOM = {
 		yaExistentes: document.querySelectorAll(".yaExistentes"),
@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 		// pasivos: document.querySelector("#tabla #tags #inactivo"),
 	};
 	let v = {
-		condicion: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
+		condicion: "?prodEntidad=" + prodEntidad + "&prodId=" + prodId,
 		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
 		rutaEliminar: revision ? "/revision/api/link/alta-baja" : "/links/api/inactiva-o-elimina/",
 		rutaSigProd: "/revision/api/link/siguiente-producto/",

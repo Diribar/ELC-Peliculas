@@ -546,7 +546,7 @@ module.exports = {
 				: null;
 		const linkSigProd = sigProd
 			? "/inactivar-captura/?entidad=".concat(entidad, "&id=", id) +
-			  "&prodEntidad=".concat(sigProd.entidad, "&prodID=", sigProd.id, "&origen=RL")
+			  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 			: null;
 
 		// Información para la vista

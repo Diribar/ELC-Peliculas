@@ -22,8 +22,8 @@ module.exports = {
 		let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicID, include);
 
 		// Obtiene la versión original con include
-		const entID = entidad == "links" ? edicion.link_id : req.query.id;
-		const original = await baseDeDatos.obtienePorId(entidad, entID, [...include, "statusRegistro"]);
+		const entId = entidad == "links" ? edicion.link_id : req.query.id;
+		const original = await baseDeDatos.obtienePorId(entidad, entId, [...include, "statusRegistro"]);
 
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
@@ -31,7 +31,7 @@ module.exports = {
 		// Campos especiales - RCLVs
 		if (familias == "rclvs") {
 			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
-				await baseDeDatos.actualizaPorId(entidad, entID, {anoFM: null}); // debe serlo por el eventual solapamiento
+				await baseDeDatos.actualizaPorId(entidad, entId, {anoFM: null}); // debe serlo por el eventual solapamiento
 				baseDeDatos.actualizaPorId(nombreEdic, edicID, {anoFM: null});
 				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
 			}
@@ -43,7 +43,7 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entID}); // elimina las demás ediciones
+			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entId}); // elimina las demás ediciones
 			statusAprob = validacsFM.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}

@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		// Pointer del producto
 		entidad: new URL(location.href).searchParams.get("entidad"),
-		prodID: new URL(location.href).searchParams.get("id"),
+		prodId: new URL(location.href).searchParams.get("id"),
 		origen: new URL(location.href).searchParams.get("origen"),
 		paisesListado: Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
 			return {id: n.value, nombre: n.innerHTML};
@@ -63,8 +63,8 @@ window.addEventListener("load", async () => {
 	};
 	let rutas = {
 		validar: "/producto/api/valida/?",
-		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodID,
-		variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + v.entidad + "&id=" + v.prodID,
+		versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + v.entidad + "&id=" + v.prodId,
+		variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + v.entidad + "&id=" + v.prodId,
 	};
 	v = {...v, ...(await fetch(rutas.variablesBE).then((n) => n.json()))};
 	v.camposTipo = {};
@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
-			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID + "&statusRegistro_id=" + statusRegistro_id;
+			let objeto = "entidad=" + v.entidad + "&id=" + v.prodId + "&statusRegistro_id=" + statusRegistro_id;
 			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
 			for (let campoNombre of v.camposNombre) {
 				const indice = camposResp.indexOf(campoNombre);
@@ -409,11 +409,11 @@ window.addEventListener("load", async () => {
 			// 2. Acciones exclusivas para edicG
 			else {
 				// Elimina los datos de edicG en la BD
-				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodId);
 
 				// Recarga la vista para quitar el ID de la edición en el url
 				const origen = v.origen ? "&origen=" + v.origen : "";
-				location.href = location.pathname + "?entidad=" + v.entidad + "&id=" + v.prodID + origen;
+				location.href = location.pathname + "?entidad=" + v.entidad + "&id=" + v.prodId + origen;
 			}
 
 			// Fin

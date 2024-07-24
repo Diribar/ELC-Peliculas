@@ -22,13 +22,13 @@ module.exports = {
 		},
 		obtieneVersionesProd: async (req, res) => {
 			// Variables
-			let {entidad: producto, id: prodID} = req.query;
+			let {entidad: producto, id: prodId} = req.query;
 			let userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
-				entID: prodID,
+				entId: prodId,
 				userID,
 				excluirInclude: true,
 			});
@@ -64,13 +64,13 @@ module.exports = {
 		eliminaGuardada: async (req, res) => {
 			// Obtiene los datos identificatorios del producto
 			const producto = req.query.entidad;
-			const prodID = req.query.id;
+			const prodId = req.query.id;
 			const userID = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
-				entID: prodID,
+				entId: prodId,
 				userID,
 				excluirInclude: true,
 				omitirPulirEdic: true,
@@ -97,13 +97,13 @@ module.exports = {
 	califics: {
 		delProducto: async (req, res) => {
 			// Variables
-			const {entidad, id: prodID} = req.query;
+			const {entidad, id: prodId} = req.query;
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			let datos;
 			let calificaciones = [];
 
 			// Datos generales
-			datos = await baseDeDatos.obtienePorId(entidad, prodID).then((n) => [
+			datos = await baseDeDatos.obtienePorId(entidad, prodId).then((n) => [
 				n.feValores,
 				n.entretiene,
 				n.calidadTecnica,
@@ -112,7 +112,7 @@ module.exports = {
 			calificaciones.push({autor: "Gral.", valores: datos});
 
 			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const condics = {usuario_id: userID, entidad, entidad_id: prodId};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			datos = await baseDeDatos.obtienePorCondicion("calRegistros", condics, include);
 			if (datos) {
@@ -125,11 +125,11 @@ module.exports = {
 		},
 		delUsuarioProducto: async (req, res) => {
 			// Variables
-			const {entidad, id: prodID} = req.query;
+			const {entidad, id: prodId} = req.query;
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 
 			// Datos particulares
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const condics = {usuario_id: userID, entidad, entidad_id: prodId};
 			const califGuardada = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
 
 			// Fin

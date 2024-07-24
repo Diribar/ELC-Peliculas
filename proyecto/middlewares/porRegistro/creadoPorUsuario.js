@@ -3,9 +3,9 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = req.query.entidad;
-	const entID = req.query.id;
+	const entId = req.query.id;
 	const userID = req.session.usuario.id;
-	const registro = await baseDeDatos.obtienePorId(entidad, entID);
+	const registro = await baseDeDatos.obtienePorId(entidad, entId);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 	const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, registro.capturadoEn));

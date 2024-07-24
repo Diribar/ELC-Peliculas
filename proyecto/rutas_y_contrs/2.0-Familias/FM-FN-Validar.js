@@ -253,12 +253,12 @@ module.exports = {
 			// Obtiene los datos identificatorios del producto
 			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
 			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
-			const prodID = registro[campo_id];
+			const prodId = registro[campo_id];
 
 			// Actualiza el producto
-			await comp.linksEnProd({entidad: prodEntidad, id: prodID});
+			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
 			if (prodEntidad == "capitulos") {
-				const colID = await baseDeDatos.obtienePorId("capitulos", prodID).then((n) => n.coleccion_id);
+				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
 				comp.linksEnColec(colID);
 			}
 		}

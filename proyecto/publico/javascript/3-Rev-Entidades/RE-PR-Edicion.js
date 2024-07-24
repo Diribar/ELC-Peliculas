@@ -38,8 +38,8 @@ window.addEventListener("load", async () => {
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
-		rutaEdicion: rutaEdicion + entidad + "&id=" + entID + "&edicID=" + edicID,
-		cola: "?entidad=" + entidad + "&id=" + entID + "&origen=" + (origen ? origen : "TE"),
+		rutaEdicion: rutaEdicion + entidad + "&id=" + entId + "&edicID=" + edicID,
+		cola: "?entidad=" + entidad + "&id=" + entId + "&origen=" + (origen ? origen : "TE"),
 	};
 
 	// Funciones
@@ -185,7 +185,7 @@ window.addEventListener("load", async () => {
 
 // Datos del registro
 const entidad = new URL(location.href).searchParams.get("entidad");
-const entID = new URL(location.href).searchParams.get("id");
+const entId = new URL(location.href).searchParams.get("id");
 const origen = new URL(location.href).searchParams.get("origen");
 const edicID = new URL(location.href).searchParams.get("edicID");
 
