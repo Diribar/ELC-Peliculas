@@ -61,7 +61,7 @@ router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.table
 router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
-router.get("/producto/alta", aptoCRUD, m.rutaCRUD_ID, m.usRolRevPERL, m.capturaActivar, vista.altaProdForm);
+router.get("/producto/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
 router.get("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
 
 // Vistas - Cambios de status

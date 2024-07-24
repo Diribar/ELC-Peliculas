@@ -10,8 +10,10 @@ module.exports = async (req, res, next) => {
 
 	// Problema 1: No existe la edición
 	if (!edicion) return res.json({mensaje: "No se encuentra la edición"});
+
 	// Problema 2: No existe el campo a analizar
 	if (edicion[campo] === null) return res.json({mensaje: "El campo no está pendiente para procesar"});
+
 	// Problema 3: Rechazado sin motivo
 	if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
 

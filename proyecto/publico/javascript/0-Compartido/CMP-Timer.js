@@ -20,8 +20,8 @@ window.addEventListener("load", async () => {
 		codigo: location.pathname,
 
 		// Pointer del producto
-		entID: new URL(location.href).searchParams.get("id"),
 		entidad: new URL(location.href).searchParams.get("entidad"),
+		entID: new URL(location.href).searchParams.get("id"),
 	};
 	const familia = ["peliculas", "colecciones", "capitulos"].includes(v.entidad) ? "producto" : "rclv";
 	if (!v.entidad && location.pathname.includes("/revision/usuarios")) v.entidad = "usuarios";
