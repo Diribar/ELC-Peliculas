@@ -32,7 +32,7 @@
 			#inactivo b {background: var(--rojo-oscuro);}
 
 			#statusRegistro {
-				display: flex; flex-direction: row; align-items: center; margin-bottom: 6px;
+				display: flex; flex-direction: row; align-items: center; margin: 2px 0 6px;
 				h3 {margin-right: 3px;}
 			}
 		}

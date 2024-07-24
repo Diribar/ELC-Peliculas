@@ -6,16 +6,17 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 // Variable 'global' - Links
+global.linkSemInicial = 1;
 global.linksSemsPrimRev = 4;
+global.linksSemsEstrRec = 5;
 global.linksSemsEstandar = 26;
 global.linksVU_primRev = unaSemana * linksSemsPrimRev;
-global.linksVU_estrRec = unaSemana * (linksSemsPrimRev + 1);
+global.linksVU_estrRec = unaSemana * linksSemsEstrRec;
 global.linksVU_estandar = unaSemana * linksSemsEstandar;
 global.sinLinks = 0;
 global.linksTalVez = 1;
 global.conLinks = 2;
-global.linkAnoReciente = 3; // cantidad de años
-global.linkSemanaInicial = 1;
+global.linkAnoReciente = 2; // cantidad de años
 global.cantLinksVencPorSem = null;
 
 // Variable 'global' - Otras

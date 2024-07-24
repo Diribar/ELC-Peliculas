@@ -23,7 +23,7 @@ const m = {
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 	edicionAPI: require("../../middlewares/porRegistro/edicionAPI"),
 	edicionVista: require("../../middlewares/porRegistro/edicionVista"),
-	prodSinRclvCreado: require("../../middlewares/porRegistro/prodSinRclvCreado"),
+	prodSinRclvAprob: require("../../middlewares/porRegistro/prodSinRclvAprob"),
 	linksEnSemana: require("../../middlewares/porRegistro/linksEnSemana"),
 	motivoNecesario: require("../../middlewares/porRegistro/motivoNecesario"),
 	motivoOpcional: require("../../middlewares/porRegistro/motivoOpcional"),
@@ -62,7 +62,7 @@ router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.table
 router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
-router.get("/producto/alta", aptoCRUD, m.prodSinRclvCreado, m.usRolRevPERL, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
+router.get("/producto/alta", aptoCRUD, m.prodSinRclvAprob, m.usRolRevPERL, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
 router.get("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
 
 // Vistas - Cambios de status

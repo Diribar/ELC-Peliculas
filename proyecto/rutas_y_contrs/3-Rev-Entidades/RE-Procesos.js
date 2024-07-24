@@ -917,86 +917,69 @@ module.exports = {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraRevisar.pelisColes;
-		const capitulosParaProc = cantLinksVencPorSem.paraRevisar.capitulos;
-		let respuesta, registros;
+		const {ediciones: edicsPend, prods} = cantLinksVencPorSem["0"];
+		if (!prods) return; // si no hay nada para revisar, interrumpe la función
+		let respuesta;
 
-		// Obtiene los links a revisar
-		const {originales, ediciones} = await this.obtieneLinks(); // obtiene los links 'a revisar'
-		const creadoAprobs = originales.filter((n) => n.statusRegistro_id == creadoAprob_id);
-		const inacRecups = originales.filter((n) => inacRecup_ids.includes(n.statusRegistro_id));
-
-		// Si no hay links, interrumpe la función
-		if (!ediciones.length && !originales.length) return;
-
-		// Sin restricción - Ediciones
-		respuesta = this.obtieneProdLink({links: ediciones, datos});
-		if (respuesta) return respuesta;
-
-		// Sin restricción - Altas
-		registros = originales.filter((link) => comp.linksVencPorSem.condicCreado(link));
-		respuesta = this.obtieneProdLink({links: registros, datos});
-		if (respuesta) return respuesta;
-
-		// Categoría "estándar" - Capítulos
-		if (capitulosParaProc) {
-			registros = inacRecups.filter((n) => comp.linksVencPorSem.condicEstandar(n) && n.capitulo_id); // Inactivar/Recuperar
-			respuesta = this.obtieneProdLink({links: registros, datos});
-			if (respuesta) return respuesta;
-
-			registros = creadoAprobs.filter((n) => comp.linksVencPorSem.condicEstandar(n) && n.capitulo_id); // creadoAprob
-			respuesta = this.obtieneProdLink({links: registros, datos});
+		// Ediciones
+		if (edicsPend) {
+			const ediciones = await this.obtieneLinks.ediciones();
+			respuesta = this.obtieneProdLink({links: ediciones, datos});
 			if (respuesta) return respuesta;
 		}
 
-		// Categoría "estándar" - Películas y Colecciones
-		if (pelisColesParaProc) {
-			registros = inacRecups.filter((n) => comp.linksVencPorSem.condicEstandar(n) && !n.capitulo_id); // Inactivar/Recuperar
-			respuesta = this.obtieneProdLink({links: registros, datos});
-			if (respuesta) return respuesta;
+		// Obtiene los links
+		const links = await this.obtieneLinks.links(); // obtiene los links 'a revisar'
+		if (!links.length) return; // Si no hay links, interrumpe la función
 
-			registros = creadoAprobs.filter((n) => comp.linksVencPorSem.condicEstandar(n) && !n.capitulo_id); // creadoAprob
-			respuesta = this.obtieneProdLink({links: registros, datos});
-			if (respuesta) return respuesta;
-		}
-
-		// Sin restricción - Inactivar/Recuperar estreno reciente
-		registros = inacRecups.filter((link) => comp.linksVencPorSem.condicEstrRec(link));
-		respuesta = this.obtieneProdLink({links: registros, datos});
+		// Altas
+		const creados = links.filter((n) => n.statusRegistro_id == creado_id);
+		respuesta = this.obtieneProdLink({links: creados, datos});
 		if (respuesta) return respuesta;
 
-		// Sin restricción - creadoAprob estreno reciente
-		registros = creadoAprobs.filter((link) => comp.linksVencPorSem.condicEstrRec(link));
-		respuesta = this.obtieneProdLink({links: registros, datos});
+		// Estándar - Capítulos
+		const capitulos = links.filter((n) => n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
+		respuesta = this.obtieneProdLink({links: capitulos, datos});
+		if (respuesta) return respuesta;
+
+		// Estándar - Películas y Colecciones
+		const pelisColes = links.filter((n) => !n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
+		respuesta = this.obtieneProdLink({links: pelisColes, datos});
+		if (respuesta) return respuesta;
+
+		// Estreno reciente
+		const estrRec = links.filter((n) => comp.linksVencPorSem.condicEstrRec(n));
+		respuesta = this.obtieneProdLink({links: estrRec, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
 		return null;
 	},
-	obtieneLinks: async () => {
-		// Variables
-		const include = variables.entidades.asocProds;
+	obtieneLinks: {
+		ediciones: async () => {
+			const include = variables.entidades.asocProds;
+			const ediciones = await baseDeDatos.obtieneTodos("linksEdicion", include);
+			return ediciones;
+		},
+		links: async () => {
+			// Variables
+			const include = variables.entidades.asocProds;
 
-		// Obtiene los links en status 'a revisar'
-		const condicion = {
-			prodAprob: true,
-			statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
-		};
-		const originales = baseDeDatos
-			.obtieneTodosPorCondicion("links", condicion, include)
-			.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
-			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
-			.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))); // ordenados por colección
-		//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
+			// Obtiene los links en status 'a revisar'
+			const condicion = {
+				prodAprob: true,
+				statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
+			};
+			const originales = await baseDeDatos
+				.obtieneTodosPorCondicion("links", condicion, include)
+				.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos
+				.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.capitulo_id - b.capitulo_id : 0))) // ordenados por capítulos
+				.then((n) => n.sort((a, b) => (a.capitulo_id && b.capitulo_id ? a.grupoCol_id - b.grupoCol_id : 0))); // ordenados por colección
+			//.then((n) => n.sort((a, b) => (a.statusSugeridoEn < b.statusSugeridoEn ? -1 : 1)));
 
-		// Obtiene todas las ediciones
-		const ediciones = baseDeDatos.obtieneTodos("linksEdicion", include);
-
-		// Los consolida
-		const links = await Promise.all([originales, ediciones]).then(([originales, ediciones]) => ({originales, ediciones}));
-
-		// Fin
-		return links;
+			// Fin
+			return originales;
+		},
 	},
 	obtieneProdLink: function ({links, datos}) {
 		if (!links.length) return;
@@ -1069,39 +1052,27 @@ let FN_links = {
 		return sigProd;
 	},
 	fechaVencim: ({link, ahora, IN}) => {
-		// Variables
+		// Resultado para rechazado
+		if (IN != "SI") return null;
+
+		// Resultado para 'creado'
 		const ahoraTiempo = ahora.getTime();
+		if (comp.linksVencPorSem.condicCreado(link)) return new Date(ahoraTiempo + linksVU_primRev);
 
-		// Resultados 'no estándar'
-		let resultado =
-			IN != "SI"
-				? null
-				: comp.linksVencPorSem.condicCreado(link)
-				? new Date(ahoraTiempo + linksVU_primRev) // para links que estaban en status 'aprobado'
-				: comp.linksVencPorSem.condicEstrRec(link)
-				? new Date(ahoraTiempo + linksVU_estrRec) // para links de estreno reciente
-				: null;
+		// Variables - si es una categoría estándar, averigua su semana
+		const entidad = comp.linksVencPorSem.condicEstrRec(link) ? "estrRec" : link.capitulo_id ? "capitulos" : "pelisColes";
 
-		if (!resultado) {
-			// Variables - si es una categoría estándar, averigua su semana
-			const entidad = link.capitulo_id ? "capitulos" : "pelisColes";
+		// Obtiene la cantidad de links que vence cada semana
+		const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
+			.slice(0, -2) // descarta los registros que no pertenecen a semanas
+			.slice(linkSemInicial) // descarta los registros de las semanas anteriores a linkSemInicial
+			.map((n) => n[entidad]);
 
-			// Obtiene la cantidad de links que vence cada semana
-			const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-				.slice(0, -2) // descarta los registros que no pertenecen a semanas
-				.slice(linkSemanaInicial) // descarta los registros de las semanas anteriores a linkSemanaInicial
-				.map((n) => n[entidad]);
-
-			// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
-			const semana =
-				cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemanaInicial;
-
-			// Obtiene el resultado
-			resultado = new Date(ahoraTiempo + semana * unaSemana);
-		}
+		// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
+		const semana = cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemInicial;
 
 		// Fin
-		return resultado;
+		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
 let tablManten = {
