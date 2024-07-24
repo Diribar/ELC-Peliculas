@@ -291,6 +291,22 @@ module.exports = {
 				: "";
 		},
 	},
+	obtieneDesdeAsoc: {
+		entidad: (asoc) => {
+			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
+			const entidad = indice > -1 ? [...variables.entidades.prods, ...variables.entidades.rclvs][indice] : null;
+			return entidad;
+		},
+		entidadNombre: (asoc) => {
+			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
+			const entNombre =
+				indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
+			return entNombre;
+		},
+		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
+		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
+	},
+
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -1255,27 +1271,9 @@ let FN = {
 		return nuevoHorario;
 	},
 	entidadNombre: (entidad) => {
-		return entidad == "peliculas"
-			? "Película"
-			: entidad == "colecciones"
-			? "Colección"
-			: entidad == "capitulos"
-			? "Capítulo"
-			: entidad == "personajes"
-			? "Personaje"
-			: entidad == "hechos"
-			? "Hecho"
-			: entidad == "temas"
-			? "Tema"
-			: entidad == "eventos"
-			? "Evento en el Año"
-			: entidad == "epocasDelAno"
-			? "Época del Año"
-			: entidad == "links"
-			? "Link"
-			: entidad == "usuarios"
-			? "Usuarios"
-			: "";
+		const indice = [...variables.entidades.prods, ...variables.entidades.rclvs].indexOf(entidad);
+		const entNombre = indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
+		return entNombre;
 	},
 	familia: (entidad) => {
 		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)

@@ -456,7 +456,7 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
-			const {entidad, id, origen, desaprueba} = req.query;
+			const {entidad, id, origen, desaprueba, prodEntidad, prodId} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.reqBasePathUrl(req);
 			const codigo = procsFM.codigo({ruta, familia}); // 'alta', 'rechazar', 'revisionInactivar', 'revisionRecuperar'
@@ -475,7 +475,12 @@ module.exports = {
 
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
-			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const cola =
+				"/?entidad=" +
+				(entidad + "&id=" + id) +
+				(prodEntidad ? "&prodEntidad=" + prodEntidad : "") +
+				(prodId ? "&prodId=" + prodId : "") +
+				(origen ? "&origen=" + origen : "");
 			const revID = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
