@@ -583,6 +583,7 @@ module.exports = {
 		let resultados = [];
 
 		// Obtiene el resultado por entidad
+		delete campos.entidades
 		for (let entidad of entidades) lecturas.push(FN.lecturaBD({entidad, ...campos}));
 		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
 
