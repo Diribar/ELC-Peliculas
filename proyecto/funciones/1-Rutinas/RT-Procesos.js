@@ -242,7 +242,6 @@ module.exports = {
 
 			// Obtiene los registros de "statusHistorial"
 			condicion = {
-				statusOriginalPor_id: {[Op.ne]: usAutom_id}, // sugerido por una persona
 				statusOriginal_id: [creado_id, inactivar_id, recuperar_id], // descarta los cambios que no sean revisiones
 				comunicadoEn: null, // no fue comunicado
 			};
@@ -484,38 +483,56 @@ module.exports = {
 			// Fin
 			return cuerpoMail;
 		},
-		eliminaRegsHistStatus: (regs) => {
-			// Variables
-			const ids = regs.map((n) => n.id);
-			const condicion = {
-				id: ids,
-				statusOriginal_id: creado_id,
-				statusFinal_id: aprobados_ids,
-			};
-			const comunicadoEn = new Date();
+		eliminaRegs: {
+			consolidado: async function ({mailEnviado, regsStatusUs, regsEdicUs}) {
+				// Si el mail no fue enviado, lo avisa
+				if (!mailEnviado) {
+					console.log("Mail no enviado a " + email);
+					return;
+				}
 
-			// Elimina los que corresponda
-			baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
+				// Acciones si el mail fue enviado
+				if (regsStatusUs.length) await this.histStatus(regsStatusUs); // Borra los registros prescindibles
+				if (regsEdicUs.length) await this.histEdics(regsEdicUs); // Borra los registros prescindibles
+				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
+				console.log("Mail enviado a " + email);
 
-			// Agrega la fecha 'comunicadoEn'
-			baseDeDatos.actualizaTodosPorCondicion("statusHistorial", {id: ids}, {comunicadoEn});
+				// Fin
+				return;
+			},
+			histStatus: async (regs) => {
+				// Variables
+				const ids = regs.map((n) => n.id);
+				const condicion = {
+					id: ids,
+					statusOriginal_id: creado_id,
+					statusFinal_id: aprobados_ids,
+				};
+				const comunicadoEn = new Date();
 
-			// Fin
-			return;
-		},
-		eliminaRegsHistEdics: (regs) => {
-			// Variables
-			const comunicadoEn = new Date();
+				// Elimina los que corresponda
+				await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 
-			// Elimina los registros
-			for (let reg of regs) {
-				// Condición: sin duración
-				if (!reg.penalizac || reg.penalizac == "0.0") baseDeDatos.eliminaPorId(reg.tabla, reg.id);
-				else baseDeDatos.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
-			}
+				// Agrega la fecha 'comunicadoEn'
+				await baseDeDatos.actualizaTodosPorCondicion("statusHistorial", {id: ids}, {comunicadoEn});
 
-			// Fin
-			return;
+				// Fin
+				return;
+			},
+			histEdics: async (regs) => {
+				// Variables
+				const comunicadoEn = new Date();
+
+				// Elimina los registros
+				for (let reg of regs) {
+					// Condición: sin duración
+					if (!reg.penalizac || reg.penalizac == "0.0") await baseDeDatos.eliminaPorId(reg.tabla, reg.id);
+					else await baseDeDatos.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
+				}
+
+				// Fin
+				return;
+			},
 		},
 	},
 
