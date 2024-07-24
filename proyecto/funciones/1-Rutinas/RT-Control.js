@@ -758,22 +758,6 @@ let obsoletas = {
 		// Fin
 		return;
 	},
-	actualizaCategoriaLink: async () => {
-		// Variables
-		const anoReciente = anoHoy - linkAnoReciente;
-
-		// Actualiza
-		const condicion = {
-			anoEstreno: {[Op.ne]: null},
-			anoEstreno: {[Op.gt]: anoReciente},
-			tipo_id: {[Op.ne]: linkTrailer_id},
-			statusRegistro_id: creadoAprob_id,
-		};
-		await baseDeDatos.actualizaTodosPorCondicion("links", condicEstrRec, novsEstrRec);
-
-		// Fin
-		return;
-	},
 	creaCapSinLink: async () => {
 		// Obtiene las colecciones
 		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
