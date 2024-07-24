@@ -80,15 +80,15 @@ module.exports = {
 			const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocProds);
 
 			// Más variables
-			const {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID} =
-				procesos.links.variables({link, req});
+			const datos = procesos.links.variables({link, req});
+			const {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision} = datos;
+			const {motivo_id, revID, statusOriginalPor_id, statusOriginal_id, statusFinal_id} = datos;
 
 			// CONSECUENCIAS - Actualiza el registro del link
-			await baseDeDatos.actualizaPorId("links", id, datos);
+			await baseDeDatos.actualizaPorId("links", id, datosLink);
 
-			// CONSECUENCIAS - Acciones si es un link sugerido por un usuario distinto a'automático'
-			const statusOriginalPor_id = link.statusSugeridoPor_id;
-			if (statusOriginalPor_id != usAutom_id) {
+			// CONSECUENCIAS - Acciones si no es un 'creadoAprob' convertido en 'aprobado'
+			if (statusOriginal_id != creadoAprob_id || statusFinal_id != creado_id) {
 				// Agrega un registro en el statusHistorial
 				let datosHist = {
 					entidad_id: id,

@@ -34,7 +34,7 @@ module.exports = {
 		// Espera a que se actualicen todos los resultados
 		let datos = [prods1, prods2, prods3, rclvs1, rclvs2, sigProd];
 		[prods1, prods2, prods3, rclvs1, rclvs2, sigProd] = await Promise.all(datos);
-		let prods = {...prods1, ...prods2, AL, ...prods3};
+		let prods = {...prods1, ...prods2, ...prods3};
 		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Consolida las altas de productos
@@ -42,6 +42,7 @@ module.exports = {
 		delete prods1.AL_conEdicion;
 		delete prods2.AL_sinEdicion;
 		AL.sort((a, b) => b.fechaRef - a.fechaRef);
+		prods.AL = AL;
 
 		// Consolida y procesa los productos y RCLVs
 		prodsRclvs = procesos.procesaCampos.prodsRclvs(prodsRclvs);
