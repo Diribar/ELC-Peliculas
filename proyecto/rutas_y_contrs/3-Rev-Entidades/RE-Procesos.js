@@ -917,8 +917,8 @@ module.exports = {
 let FN_links = {
 	obtieneSigProd: async function (datos) {
 		// Variables
-		const pelisColesParaProc = cantLinksVencPorSem.paraRevisar.pelisColes;
-		const capitulosParaProc = cantLinksVencPorSem.paraRevisar.capitulos;
+		const pelisColesParaProc = cantLinksVencPorSem['0'].pelisColes;
+		const capitulosParaProc = cantLinksVencPorSem['0'].capitulos;
 		let respuesta, registros;
 
 		// Obtiene los links a revisar
@@ -930,8 +930,10 @@ let FN_links = {
 		if (!ediciones.length && !originales.length) return;
 
 		// Sin restricción - Ediciones
-		respuesta = this.obtieneProdLink({links: ediciones, datos});
-		if (respuesta) return respuesta;
+		if (ediciones.length){
+			respuesta = this.obtieneProdLink({links: ediciones, datos});
+			if (respuesta) return respuesta;
+		}
 
 		// Sin restricción - Altas
 		registros = originales.filter((link) => comp.linksVencPorSem.condicCreado(link));

@@ -904,13 +904,14 @@ module.exports = {
 		actualizaCantLinksPorSem: async () => {
 			// Obtiene todos los links en status distinto a 'inactivo' y con producto 'aprobado'
 			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
-			const links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion);
+			let links = baseDeDatos.obtieneTodosPorCondicion("links", condicion);
+			let edics = baseDeDatos.obtieneTodos("linksEdicion");
+			[links, edics] = await Promise.all([links, edics]);
 
 			// Funciones
-			await FN_links.obtieneCantPorSem(links);
+			FN_links.obtieneCantPorSem(links);
 			FN_links.obtienePromedios(links);
-			// console.log(911, cantLinksVencPorSem.promSem);
-			FN_links.obtienePendientes(links);
+			FN_links.obtienePendientes(links, edics);
 			// const {capitulosPosibles, pelisColesPosibles, estrRecPosibles} = FN_links.obtienePosibles(links);
 
 			// Averigua la combinación entre 'posibles' y 'pendientes'
@@ -1361,7 +1362,7 @@ let FN = {
 	},
 };
 let FN_links = {
-	obtieneCantPorSem: async function (links) {
+	obtieneCantPorSem: function (links) {
 		// Elimina los datos anteriores
 		cantLinksVencPorSem = {};
 
@@ -1375,7 +1376,7 @@ let FN_links = {
 			const fechaVencim = new Date(link.fechaVencim).getTime();
 			const semVencim = parseInt((fechaVencim - lunesDeEstaSemana) / unaSemana); // es la semana relativa a la semana actual
 			if (semVencim < 1 || semVencim > linksSemsEstandar) {
-				await baseDeDatos.actualizaPorId("links", link.id, {statusRegistro_id: creadoAprob_id}); // le cambia el status a los links con semana errónea
+				baseDeDatos.actualizaPorId("links", link.id, {statusRegistro_id: creadoAprob_id}); // le cambia el status a los links con semana errónea
 				continue;
 			}
 
@@ -1403,7 +1404,7 @@ let FN_links = {
 		// Fin
 		return;
 	},
-	obtienePendientes: function (links) {
+	obtienePendientes: function (links, edics) {
 		// Links a revisar
 		const linksRevisar = links.filter((n) => n.statusRegistro_id != aprobado_id);
 		const linksEstandar = linksRevisar.filter((link) => !this.condicEstrRec(link)); // links de plazo estándar
@@ -1413,10 +1414,11 @@ let FN_links = {
 		const capitulos = linksEstandar.filter((n) => n.capitulo_id).length;
 		const pelisColes = linksEstandar.filter((n) => !n.capitulo_id).length;
 		const estrRec = linksEstrRec.length;
-		const prods = capitulos + pelisColes + estrRec;
+		const ediciones = edics.length;
+		const prods = capitulos + pelisColes + ediciones + estrRec;
 
 		// Asigna las cantidades a la semana actual
-		cantLinksVencPorSem["0"] = {capitulos, pelisColes, estrRec, prods};
+		cantLinksVencPorSem["0"] = {capitulos, pelisColes, estrRec, ediciones, prods};
 
 		// Fin
 		return;
