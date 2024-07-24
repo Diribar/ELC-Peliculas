@@ -1071,11 +1071,8 @@ let FN_links = {
 		// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
 		const semana = cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemInicial;
 
-		// Obtiene el resultado
-		resultado = new Date(ahoraTiempo + semana * unaSemana);
-
 		// Fin
-		return resultado;
+		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
 let tablManten = {
