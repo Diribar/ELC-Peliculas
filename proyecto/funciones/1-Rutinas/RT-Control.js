@@ -11,7 +11,7 @@ module.exports = {
 		procesos.variablesDiarias();
 		comp.variablesSemanales();
 		await comp.linksVencPorSem.actualizaCantLinksPorSem();
-		await comp.revisaStatus.consolidado()
+		await comp.revisaStatus.consolidado();
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -240,10 +240,14 @@ module.exports = {
 			for (let usuario of usuarios) {
 				if (!usuario.pais || !usuario.email) continue;
 
-				// Si para el usuario no son las 0hs, lo saltea
+				// Acciones para saltear la rutina, dependiendo de la hora
 				const zonaHoraria = usuario.pais.zonaHoraria;
 				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-				if (new Date(ahoraUsuario).getUTCHours()) continue;
+				if (
+					(new Date(ahoraUsuario).getUTCHours() && nodeEnv != "development") || // Producción: si para el usuario no son las 0hs
+					(!new Date(ahoraUsuario).getUTCHours() && nodeEnv == "development") // Development: si para el usuario son las 0hs
+				)
+					continue;
 
 				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
 				const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
@@ -641,8 +645,8 @@ module.exports = {
 	},
 	rutinasSemanales: {
 		actualizaStatusLinks: async () => {
-			await comp.linksVencPorSem.actualizaFechaVencimNull();// actualiza la fecha de los links sin fecha
-			await comp.linksVencPorSem.actualizaStatus();// pasa a 'creadoAprob' los links con fechaVencim < semActual
+			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
+			await comp.linksVencPorSem.actualizaStatus(); // pasa a 'creadoAprob' los links con fechaVencim < semActual
 			await comp.linksVencPorSem.actualizaCantLinksPorSem();
 
 			// Fin
