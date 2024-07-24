@@ -798,23 +798,25 @@ module.exports = {
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 			const statusCreado = link.statusRegistro_id == creado_id;
 
+			// Variables para el historial
+			const {statusRegistro_id: statusOriginal_id, statusSugeridoPor_id: statusOriginalPor_id} = link;
+			const statusFinal_id = statusRegistro_id;
+
 			// Arma los datos
-			let datos = {
-				fechaVencim,
-				anoEstreno,
-				statusSugeridoPor_id: revID,
-				statusSugeridoEn: ahora,
-				statusRegistro_id,
+			let datosLink = {
+				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revID, statusSugeridoEn: ahora, statusRegistro_id},
 				motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : link.motivo_id) : null,
 			};
 			if (statusCreado) {
-				datos.altaRevisadaPor_id = revID;
-				datos.altaRevisadaEn = ahora;
-				datos.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
+				datosLink.altaRevisadaPor_id = revID;
+				datosLink.altaRevisadaEn = ahora;
+				datosLink.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
 			}
 
 			// Fin
-			return {id, statusRegistro_id, statusCreado, decisAprob, datos, campoDecision, motivo_id, revID};
+			let respuesta = {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision};
+			respuesta = {...respuesta, motivo_id, revID, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
+			return respuesta;
 		},
 	},
 
