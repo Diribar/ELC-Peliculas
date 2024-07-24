@@ -270,8 +270,8 @@ module.exports = {
 				destino = "detalle";
 			}
 
-			// En ambos casos, se actualiza la tabla de 'statusErrores'
-			procsRT.revisaStatus.consolidado(); // no hace falta el 'await'
+			// En ambos casos, se actualiza 'statusErrores'
+			await comp.revisaStatus.consolidado();
 
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);

@@ -21,7 +21,7 @@ module.exports = {
 
 		// Productos y Ediciones
 		let prods1 = procesos.tablRevision.obtieneProds1(revID); // Altas y Ediciones
-		let prods2 = procesos.tablRevision.obtieneProds2(revID); // Pendientes de aprobar sinEdición, Inactivar/Recuperar
+		let prods2 = procesos.tablRevision.obtieneProds2(revID); // Pendientes de aprobar sinEdición,
 		let prods3 = procesos.tablRevision.obtieneProds3(); // películas y colecciones repetidas
 
 		// RCLV
@@ -32,8 +32,10 @@ module.exports = {
 		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revID);
 
 		// Espera a que se actualicen todos los resultados
-		let datos = [prodsRclvs, prods1, prods2, prods3, rclvs1, rclvs2, sigProd];
-		[prodsRclvs, prods1, prods2, prods3, rclvs1, rclvs2, sigProd] = await Promise.all(datos);
+		let datos = [prods1, prods2, prods3, rclvs1, rclvs2, sigProd];
+		[prods1, prods2, prods3, rclvs1, rclvs2, sigProd] = await Promise.all(datos);
+		let prods = {...prods1, ...prods2, AL, ...prods3};
+		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Consolida las altas de productos
 		let AL = [...prods1.AL_conEdicion, ...prods2.AL_sinEdicion];
@@ -43,9 +45,7 @@ module.exports = {
 
 		// Consolida y procesa los productos y RCLVs
 		prodsRclvs = procesos.procesaCampos.prodsRclvs(prodsRclvs);
-		let prods = {...prods1, ...prods2, AL, ...prods3};
 		prods = procesos.procesaCampos.prods(prods);
-		let rclvs = {...rclvs1, ...rclvs2};
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
 
 		// Obtiene información para la vista

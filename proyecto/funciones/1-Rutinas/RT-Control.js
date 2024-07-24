@@ -11,6 +11,7 @@ module.exports = {
 		procesos.variablesDiarias();
 		comp.variablesSemanales();
 		await comp.linksVencPorSem.actualizaCantLinksPorSem();
+		await comp.revisaStatus.consolidado()
 
 		// Rutinas programadas
 		const info = {...rutinasJSON};
@@ -29,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasDiarias.iDdeTablas();
+		// await this.rutinasDiarias.revisaStatu();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
 
@@ -600,7 +601,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		revisaStatus: async () => procesos.revisaStatus.consolidado(),
 		iDdeTablas: async () => {
 			// Variables
 			const tablas = [
