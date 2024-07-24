@@ -640,7 +640,7 @@ module.exports = {
 				const nombre = comp.nombresPosibles(prodRclv);
 				const {statusRegistro_id} = prodRclv;
 
-				// Asigna lo datos a guardar
+				// Asigna los datos a guardar
 				const datos = {entidad, entidad_id, nombre, fechaRef: statusFinalEn};
 
 				// Valida el status
@@ -656,7 +656,7 @@ module.exports = {
 			// Fin
 			return regsAgregar;
 		},
-		prodRclvVsHistorial: async (ultsHist, errores) => {
+		prodRclvVsHistorial: async (ultsHist) => {
 			// Variables
 			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
 			let regsAgregar = [];
@@ -668,17 +668,24 @@ module.exports = {
 			[IN, RC, IO] = await Promise.all([IN, RC, IO]);
 			let regsEnt = {IN, RC, IO};
 
-			// Revisa en 'IN, RC, IO'
+			// Revisa en 'IN, RC, IO' (inactivo)
 			for (let ST in regsEnt) {
 				// Revisa en cada registro
 				for (let prodRclv of regsEnt[ST]) {
 					// Variables
-					const {entidad, id, statusSugeridoEn: fechaRef} = prodRclv;
+					const {entidad, id, coleccion_id, statusSugeridoEn: fechaRef} = prodRclv;
 					const nombre = comp.nombresPosibles(prodRclv);
+
+					// Genera los datos a guardar
 					const datos = {entidad, entidad_id: id, nombre, fechaRef};
 
+					// Averigua si se encuentra en el historial - general
+					let regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
+					// Averigua si se encuentra en el historial - específico para colecciones
+					if (!regHist && entidad == "capitulos" && coleccion_id)
+						regHist = ultsHist.find((n) => n.entidad == "colecciones" && n.entidad_id == coleccion_id);
+
 					// Si no lo encuentra en el historial, lo agrega a status
-					const regHist = ultsHist.find((n) => n.entidad == entidad && n.entidad_id == id);
 					if (!regHist) regsAgregar.push({...datos, ST: true});
 				}
 			}
