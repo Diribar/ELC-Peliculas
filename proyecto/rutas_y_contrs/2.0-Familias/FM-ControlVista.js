@@ -270,7 +270,7 @@ module.exports = {
 				destino = "detalle";
 			}
 
-			// En ambos casos, se actualiza la tabla de 'statusErrores'
+			// En ambos casos, se actualiza 'statusErrores'
 			await comp.revisaStatus.consolidado();
 
 			// Fin

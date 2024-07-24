@@ -6,13 +6,12 @@ const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 module.exports = {
 	// Tableros
 	tablRevision: {
-		obtieneProdsRclvs: async () => {
+		obtieneProdsRclvs: () => {
 			// Variables
-			const registros = await baseDeDatos.obtieneTodos("statusErrores");
 			let respuesta = {};
 
 			// Convierte el array en un objeto
-			for (let opcion of ["ST", "IN", "RC"]) respuesta[opcion] = registros.filter((n) => n[opcion]);
+			for (let opcion of ["ST", "IN", "RC"]) respuesta[opcion] = statusErrores.filter((n) => n[opcion]);
 
 			// Fin
 			return respuesta;
@@ -121,7 +120,7 @@ module.exports = {
 					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
 					...n[1].map((m) => ({entidad: "capitulos", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
 				])
-				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id));
+				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id)); // excluye los que no tengan alguno de esos códigos
 
 			// Obtiene los repetidos
 			let repetidos = [];
