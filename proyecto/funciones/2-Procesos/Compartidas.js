@@ -1438,7 +1438,7 @@ let FN_links = {
 	condicEstrRec: (link) => {
 		const anoReciente = anoHoy - linkAnoReciente;
 		const anoEstreno = link.anoEstreno;
-		return anoEstreno && anoEstreno > anoReciente && link.tipo_id != linkTrailer_id;
+		return anoEstreno && anoEstreno >= anoReciente && link.tipo_id != linkTrailer_id;
 	},
 	condicEstandar: function (link) {
 		return !this.condicCreado(link) && !this.condicEstrRec(link);
