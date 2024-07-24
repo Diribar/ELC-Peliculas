@@ -1,14 +1,21 @@
 /* Aspectos generales */
-#dataEntry {min-height: 180px; }
-#dataEntry #tituloSecundario {margin-bottom: 20px;}
+#dataEntry {
+	min-height: 180px;
+	#tituloSecundario {margin-bottom: 20px;}
 
-/* Partes específicas del formulario */
-#dataEntry #datos .inputError input {width: 250px; padding: 5px 5px; }
-#dataEntry #datos .inputError .ayudaMensForm {max-width: none;}
-#dataEntry #fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
+	/* Partes específicas del formulario */
+	#datos {
+		.inputError {
+			input {width: 250px; padding: 5px 5px; }
+			.ayudaMensForm {max-width: none;}
+		}
 
-/* Submit button */
-#dataEntry #submit {align-self: center; font-size: 2rem; font-weight: bold; border-radius: 50%;}
-
-#dataEntry #submit.verde {color: var(--verde-oscuro)}
-#dataEntry #submit.naranja {color: var(--naranja-oscuro)}
+		/* Submit button */
+		#submit {
+			align-self: center; font-size: 2rem; font-weight: bold; border-radius: 50%;
+			&.verde {color: var(--verde-oscuro)}
+			&.naranja {color: var(--naranja-oscuro)}
+		}
+	}
+	#fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
+}

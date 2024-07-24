@@ -330,13 +330,14 @@ module.exports = {
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
 				validacsFM.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
-			// SESSION Y COOKIES
-			// Establece como vista anterior la vista del primer paso
+			// SESSION Y COOKIES - Establece como vista anterior la vista del primer paso
 			req.session.urlActual = "/";
 			res.cookie("urlActual", "/", {maxAge: unDia});
-			// Elimina todas las session y cookie del proceso AgregarProd
+
+			// SESSION Y COOKIES - Elimina todas las session y cookie del proceso AgregarProd
 			procesos.borraSessionCookies(req, res, "borrarTodo");
-			// Crea la cookie para 'Terminaste' para la vista siguiente
+
+			// SESSION Y COOKIES - Crea la cookie 'Terminaste' para la vista siguiente
 			const terminaste = {entidad, id: registro.id};
 			req.session.terminaste = terminaste;
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
@@ -366,7 +367,7 @@ module.exports = {
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).orig;
 
 		// Prepara variables para la vista
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);

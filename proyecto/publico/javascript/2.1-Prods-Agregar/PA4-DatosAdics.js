@@ -301,7 +301,7 @@ window.addEventListener("load", async () => {
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
-			location.href = "/rclv/agregar/" + entidad + "&origen=DA";
+			location.href = "/rclv/agregar/" + entidad + "&origen=PDA";
 		});
 	});
 	// Links a RCLV - Edición
@@ -314,7 +314,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el RCLV_id
 			let id = "&id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			location.href = "/rclv/edicion/" + entidad + id + "&origen=DA";
+			location.href = "/rclv/edicion/" + entidad + id + "&origen=PDA";
 		});
 	});
 
