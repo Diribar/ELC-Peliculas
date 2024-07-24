@@ -4,25 +4,33 @@ module.exports = {
 	// Producto
 	bloqueIzq: (producto) => {
 		// Variables
-		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : "";
+		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : null;
 		let infoGral = [];
 		let actores = [];
 
-		// Informacion General
+		// Informacion sin títulos
 		if (producto.cfc !== null)
 			infoGral.push({valor: producto.cfc ? "Relacionada con la Fe Católica" : "Sin relación con la Fe Católica"});
 		if (producto.bhr !== null)
 			infoGral.push({valor: producto.bhr ? "Basada en Hechos Reales" : "No está basada en Hechos Reales"});
+		if (producto.tipoActuacion) infoGral.push({valor: producto.tipoActuacion.nombre});
+		if (producto.epocaOcurrencia_id)
+			infoGral.push(
+				producto.epocaOcurrencia.nombre == "Varias"
+					? {titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre}
+					: {valor: producto.epocaOcurrencia.nombre + " a Cristo"}
+			);
+
+		// Información con títulos
 		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
 		if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
-		if (producto.tipoActuacion) infoGral.push({valor: producto.tipoActuacion.nombre});
 		if (producto.cantTemps) {
 			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		}
-		if (producto.color !== null) infoGral.push({valor: producto.color ? "" : "Es en blanco y negro"});
-		if (producto.musical !== null) infoGral.push({valor: producto.musical ? "Es un musical" : ""});
-		if (producto.deporte !== null) infoGral.push({titulo: "", valor: producto.deporte ? "Tiene deporte" : ""});
+		if (producto.color !== null && !producto.color) infoGral.push({valor: "Es en blanco y negro"});
+		if (producto.musical) infoGral.push({valor: "Es un musical"});
+		if (producto.deporte) infoGral.push({valor: "Tiene deporte"});
 
 		infoGral.push({
 			titulo: "País" + (paisesNombre && paisesNombre.includes(",") ? "es" : ""),
@@ -33,8 +41,6 @@ module.exports = {
 		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
 		if (producto.musica) infoGral.push({titulo: "Música", valor: producto.musica});
 		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
-		if (producto.epocaOcurrencia_id)
-			infoGral.push({titulo: "Época respecto a Cristo", valor: producto.epocaOcurrencia.nombre});
 
 		// Actores
 		if (producto.actores) actores = producto.actores;

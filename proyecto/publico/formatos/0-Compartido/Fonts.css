@@ -1,5 +1,5 @@
 /* FONTS */
-body {--Calibri: Calibri, 'Trebuchet MS', sans-serif}
-body {--Arial: Arial, Helvetica, sans-serif}
+body {--Calibri: 'Calibri', 'Trebuchet MS', 'sans-serif'}
+body {--Arial: 'Arial', 'Helvetica', 'sans-serif'}
 body {color: var(--azul-oscuro);}
 * {font-family: var(--Calibri); font-size: 14px;}
