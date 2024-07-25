@@ -293,7 +293,7 @@ module.exports = {
 	},
 	obtieneDesdeAsoc: {
 		entidad: (asoc) => {
-			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
+			const indice = [...variables.entidades.asocProdsRclvs].indexOf(asoc);
 			const entidad = indice > -1 ? [...variables.entidades.prodsRclvs][indice] : null;
 			return entidad;
 		},
@@ -1379,8 +1379,7 @@ let FN = {
 	},
 	entidadNombre: (entidad) => {
 		const indice = [...variables.entidades.todos].indexOf(entidad);
-		const entNombre =
-			indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre, "Link"][indice] : null;
+		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
 	familia: (entidad) => {

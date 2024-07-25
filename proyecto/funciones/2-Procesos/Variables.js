@@ -32,6 +32,10 @@ const camposDA = [
 ];
 const prods = ["peliculas", "colecciones", "capitulos"];
 const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
+const prodsNombre = ["Película", "Colección", "Capítulo"];
+const rclvsNombre = ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"];
+const asocProds = ["pelicula", "coleccion", "capitulo"];
+const asocRclvs = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 
 module.exports = {
 	// Institucional
@@ -56,18 +60,16 @@ module.exports = {
 
 	// Todos
 	entidades: {
-		// Productos
-		prods,
-		prodsNombre: ["Película", "Colección", "Capítulo"],
-		asocProds: ["pelicula", "coleccion", "capitulo"],
-		// RCLVs
-		rclvs,
-		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
-		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
+		// Productos y RCLVs
+		...{prods, prodsNombre, asocProds},
+		...{rclvs, rclvsNombre, asocRclvs},
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
-		prodsRclvs: [...prods, ...rclvs],
+
 		// Otros
+		prodsRclvs: [...prods, ...rclvs],
+		asocProdsRclvs: [...asocProds, ...asocRclvs],
 		todos: [...prods, ...rclvs, "links"],
+		todosNombre: [...prodsNombre, ...rclvsNombre, "Link"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 
