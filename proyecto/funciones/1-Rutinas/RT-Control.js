@@ -30,7 +30,7 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		await this.rutinasHorarias.feedbackParaUsers();
+		// await this.rutinasHorarias.feedbackParaUsers();
 		// await this.rutinasDiarias.qqq();
 		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
