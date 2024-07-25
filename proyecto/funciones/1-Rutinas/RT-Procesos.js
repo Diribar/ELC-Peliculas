@@ -484,18 +484,18 @@ module.exports = {
 			return cuerpoMail;
 		},
 		eliminaRegs: {
-			consolidado: async function ({mailEnviado, regsStatusUs, regsEdicUs}) {
+			consolidado: async function ({mailEnv, regsStatusUs, regsEdicUs, usuario}) {
 				// Si el mail no fue enviado, lo avisa
-				if (!mailEnviado) {
+				if (!mailEnv) {
 					console.log("Mail no enviado a " + email);
 					return;
 				}
 
 				// Acciones si el mail fue enviado
-				if (regsStatusUs.length) await this.histStatus(regsStatusUs); // Borra los registros prescindibles
-				if (regsEdicUs.length) await this.histEdics(regsEdicUs); // Borra los registros prescindibles
-				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
-				console.log("Mail enviado a " + email);
+				// if (regsStatusUs.length) await this.histStatus(regsStatusUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				// if (regsEdicUs.length) await this.histEdics(regsEdicUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // actualiza el registro de usuario en el campo fecha_revisor
+				if (usuario.id != usAutom_id) console.log("Mail enviado a " + usuario.email);
 
 				// Fin
 				return;
