@@ -51,7 +51,7 @@ module.exports = {
 		// Rutina
 		for (let dato of datos) {
 			// Obtiene las condiciones
-			const condicion = comp.quickSearchCondics(palabras, dato.campos, userID, dato.original);
+			const condicion = procsFM.quickSearch.condicion(palabras, dato.campos, userID, dato.original);
 
 			// Obtiene los registros que cumplen las condiciones
 			aux.push(
