@@ -130,7 +130,7 @@ module.exports = {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
 			if (comentNeces && datos.statusFinal_id == inactivo_id) {
 				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
-				if (ultHist && ultHist.statusOriginal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
+				if (ultHist && ultHist.statusFinal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
 			}
 		}
 
