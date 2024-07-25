@@ -129,7 +129,7 @@ module.exports = {
 		if (!comentario) {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
 			if (comentNeces && datos.statusFinal_id == inactivo_id) {
-				const ultHist = await this.historialDeStatus.obtieneElUltimo(datos.entidad, datos.id);
+				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
 				if (ultHist && ultHist.statusOriginal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
 			}
 		}
@@ -401,7 +401,7 @@ module.exports = {
 			// Fin
 			return historialStatus;
 		},
-		obtieneElUltimo: async (entidad, entidad_id) => {
+		ultimoRegistro: async (entidad, entidad_id) => {
 			// Obtiene el 'ultHist'
 			const condicion = {
 				entidad,
@@ -425,7 +425,7 @@ module.exports = {
 		const {statusRegistro_id} = prodRclv;
 
 		// Obtiene el 'ultHist'
-		const ultHist = await this.historialDeStatus.obtieneElUltimo(entidad, id);
+		const ultHist = await this.historialDeStatus.ultimoRegistro(entidad, id);
 		const statusFinal_id = ultHist ? ultHist.statusFinal_id : null;
 
 		// Compara los status
