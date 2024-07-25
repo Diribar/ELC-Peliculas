@@ -492,8 +492,8 @@ module.exports = {
 				}
 
 				// Acciones si el mail fue enviado
-				// if (regsStatusUs.length) await this.histStatus(regsStatusUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
-				// if (regsEdicUs.length) await this.histEdics(regsEdicUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				if (regsStatusUs.length) await this.histStatus(regsStatusUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				if (regsEdicUs.length) await this.histEdics(regsEdicUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
 				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // actualiza el registro de usuario en el campo fecha_revisor
 				if (usuario.id != usAutom_id) console.log("Mail enviado a " + usuario.email);
 
