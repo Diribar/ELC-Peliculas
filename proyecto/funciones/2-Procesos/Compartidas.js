@@ -5,52 +5,6 @@ const axios = require("axios");
 
 // Exportar
 module.exports = {
-	// Header
-	quickSearch: {
-		registros: async (condicion, dato) => {
-			// Obtiene los registros
-			const registros = await baseDeDatos.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10).then((n) =>
-				n.map((m) => {
-					let respuesta = {
-						id: m.id,
-						nombre: m[dato.campos[0]],
-						entidad: dato.entidad,
-						familia: dato.familia,
-						avatar: m.avatar, // específicos para PA-Desambiguar
-					};
-					if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
-					if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
-
-					return respuesta;
-				})
-			);
-
-			// Fin
-			return registros;
-		},
-		ediciones: async (condicion, dato) => {
-			// Obtiene los registros
-			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
-				.then((n) =>
-					n.map((m) => {
-						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
-						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-						return {
-							entidad,
-							id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
-							anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
-							nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
-							familia: dato.familia,
-						};
-					})
-				);
-
-			// Fin
-			return registros;
-		},
-	},
-
 	// Entidades
 	obtieneDesdeFamilias: {
 		familia: (familias) => {
@@ -307,10 +261,10 @@ module.exports = {
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
 
-	puleEdicion: async (entidad, original, edicion) => {
+	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const familias = this.obtieneDesdeEntidad.familias(entidad);
+		const entidadEdic = this.obtieneDesdeEntidad.entidadEdic(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
 		let camposRevisar = [];
@@ -576,7 +530,7 @@ module.exports = {
 		// Fin
 		return {[Op.and]: [condicPalabras, original ? condicStatus : condicEdicion]};
 	},
-	obtieneRegs: async (campos) => {
+	obtieneRegs: async function (campos) {
 		// Variables
 		const {entidades} = campos;
 		let lecturas = [];
@@ -590,7 +544,7 @@ module.exports = {
 		if (resultados.length) {
 			resultados = resultados.map((n) => {
 				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-				const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+				const fechaRefTexto = this.fechaHora.diaMes(fechaRef);
 				return {...n, fechaRef, fechaRefTexto};
 			});
 
@@ -836,7 +790,7 @@ module.exports = {
 		// Fin
 		return temas;
 	},
-	prodsEnRCLV: async ({entidad, id}) => {
+	prodsEnRCLV: async function ({entidad, id}) {
 		// Variables
 		const entidadesProds = variables.entidades.prods;
 		const statusAprobado = {statusRegistro_id: aprobado_id};
@@ -847,7 +801,7 @@ module.exports = {
 		if (id && id <= 10) return;
 
 		// Establece la condición perenne
-		const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const rclv_id = this.obtieneDesdeEntidad.campo_id(entidad);
 		const condicion = {[rclv_id]: id};
 
 		// 1. Averigua si existe algún producto aprobado, con ese rclv_id

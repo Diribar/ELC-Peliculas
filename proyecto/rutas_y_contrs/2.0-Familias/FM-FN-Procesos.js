@@ -2,6 +2,52 @@
 const validacsFM = require("./FM-FN-Validar");
 
 module.exports = {
+	// Header
+	quickSearch: {
+		registros: async (condicion, dato) => {
+			// Obtiene los registros
+			const registros = await baseDeDatos.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10).then((n) =>
+				n.map((m) => {
+					let respuesta = {
+						id: m.id,
+						nombre: m[dato.campos[0]],
+						entidad: dato.entidad,
+						familia: dato.familia,
+						avatar: m.avatar, // específicos para PA-Desambiguar
+					};
+					if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
+					if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
+
+					return respuesta;
+				})
+			);
+
+			// Fin
+			return registros;
+		},
+		ediciones: async (condicion, dato) => {
+			// Obtiene los registros
+			const registros = await baseDeDatos
+				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
+				.then((n) =>
+					n.map((m) => {
+						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
+						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
+						return {
+							entidad,
+							id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
+							anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
+							nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
+							familia: dato.familia,
+						};
+					})
+				);
+
+			// Fin
+			return registros;
+		},
+	},
+
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables

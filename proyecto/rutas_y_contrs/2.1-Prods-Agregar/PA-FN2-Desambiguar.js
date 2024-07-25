@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
@@ -204,7 +205,7 @@ module.exports = {
 			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await comp.quickSearch.registros(condicion, datos);
+			const resultadoPorEntidad = await procsFM.quickSearch.registros(condicion, datos);
 			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
 		}
 
