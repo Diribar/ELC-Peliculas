@@ -46,6 +46,9 @@ module.exports = {
 			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entId}); // elimina las demás ediciones
 			statusAprob = validacsFM.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
+
+			// Específico de links
+			if (entidad == "links") await comp.linksVencPorSem.actualizaCantLinksPorSem();
 		}
 
 		// Actualiza el solapamiento

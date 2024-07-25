@@ -30,6 +30,12 @@ const camposDA = [
 	{titulo: "Época del año", nombre: "epocaDelAno_id", relacInclude: "epocaDelAno", tabla: "epocasDelAno", rclv: true},
 	{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
 ];
+const prods = ["peliculas", "colecciones", "capitulos"];
+const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
+const prodsNombre = ["Película", "Colección", "Capítulo"];
+const rclvsNombre = ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"];
+const asocProds = ["pelicula", "coleccion", "capitulo"];
+const asocRclvs = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 
 module.exports = {
 	// Institucional
@@ -52,15 +58,18 @@ module.exports = {
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 
-	// Productos y RCLVs
+	// Todos
 	entidades: {
-		prods: ["peliculas", "colecciones", "capitulos"],
-		prodsNombre: ["Película", "Colección", "Capítulo"],
-		asocProds: ["pelicula", "coleccion", "capitulo"],
-		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
-		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
-		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
+		// Productos y RCLVs
+		...{prods, prodsNombre, asocProds},
+		...{rclvs, rclvsNombre, asocRclvs},
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
+
+		// Otros
+		prodsRclvs: [...prods, ...rclvs],
+		asocProdsRclvs: [...asocProds, ...asocRclvs],
+		todos: [...prods, ...rclvs, "links"],
+		todosNombre: [...prodsNombre, ...rclvsNombre, "Link"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 

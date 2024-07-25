@@ -5,52 +5,6 @@ const axios = require("axios");
 
 // Exportar
 module.exports = {
-	// Header
-	quickSearch: {
-		registros: async (condicion, dato) => {
-			// Obtiene los registros
-			const registros = await baseDeDatos.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10).then((n) =>
-				n.map((m) => {
-					let respuesta = {
-						id: m.id,
-						nombre: m[dato.campos[0]],
-						entidad: dato.entidad,
-						familia: dato.familia,
-						avatar: m.avatar, // específicos para PA-Desambiguar
-					};
-					if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
-					if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
-
-					return respuesta;
-				})
-			);
-
-			// Fin
-			return registros;
-		},
-		ediciones: async (condicion, dato) => {
-			// Obtiene los registros
-			const registros = await baseDeDatos
-				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
-				.then((n) =>
-					n.map((m) => {
-						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
-						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
-						return {
-							entidad,
-							id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
-							anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
-							nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
-							familia: dato.familia,
-						};
-					})
-				);
-
-			// Fin
-			return registros;
-		},
-	},
-
 	// Entidades
 	obtieneDesdeFamilias: {
 		familia: (familias) => {
@@ -257,15 +211,7 @@ module.exports = {
 				? rclv_id
 				: "";
 		},
-		asocProd: (registro) => {
-			return registro.pelicula_id
-				? "pelicula"
-				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-				? "capitulo"
-				: registro.coleccion_id
-				? "coleccion"
-				: "";
-		},
+		asocProd: (registro) => FN.asocProd(registro),
 		asocRCLV: (registro) => {
 			return registro.personaje_id
 				? "personaje"
@@ -293,8 +239,8 @@ module.exports = {
 	},
 	obtieneDesdeAsoc: {
 		entidad: (asoc) => {
-			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
-			const entidad = indice > -1 ? [...variables.entidades.prods, ...variables.entidades.rclvs][indice] : null;
+			const indice = [...variables.entidades.asocProdsRclvs].indexOf(asoc);
+			const entidad = indice > -1 ? [...variables.entidades.prodsRclvs][indice] : null;
 			return entidad;
 		},
 		entidadNombre: (asoc) => {
@@ -307,10 +253,10 @@ module.exports = {
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
 
-	puleEdicion: async (entidad, original, edicion) => {
+	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const familias = this.obtieneDesdeEntidad.familias(entidad);
+		const entidadEdic = this.obtieneDesdeEntidad.entidadEdic(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
 		let camposRevisar = [];
@@ -502,15 +448,7 @@ module.exports = {
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
-	nombresPosibles: (registro) => {
-		return registro.nombreCastellano
-			? registro.nombreCastellano
-			: registro.nombreOriginal
-			? registro.nombreOriginal
-			: registro.nombre
-			? registro.nombre
-			: "";
-	},
+	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	sinProblemasDeCaptura: function (familia, revID) {
 		// Variables
 		const ahora = this.fechaHora.ahora();
@@ -532,75 +470,7 @@ module.exports = {
 				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
 		);
 	},
-	quickSearchCondics: (palabras, campos, userID, original) => {
-		// Variables
-		let todasLasPalabrasEnAlgunCampo = [];
-
-		// Convierte las palabras en un array
-		palabras = palabras.split(" ");
-
-		// Rutina para cada campo
-		for (let campo of campos) {
-			// Variables
-			let palabrasEnElCampo = [];
-
-			// Dónde debe buscar cada palabra dentro del campo
-			for (let palabra of palabras) {
-				const palabraEnElCampo = {
-					[Op.or]: [
-						{[campo]: {[Op.like]: palabra + "%"}}, // En el comienzo del texto
-						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // En el comienzo de una palabra
-					],
-				};
-				palabrasEnElCampo.push(palabraEnElCampo);
-			}
-
-			// Exige que cada palabra del conjunto esté presente
-			const todasLasPalabrasEnElCampo = {[Op.and]: palabrasEnElCampo};
-
-			// Consolida el resultado
-			todasLasPalabrasEnAlgunCampo.push(todasLasPalabrasEnElCampo);
-		}
-
-		// Se fija que 'la condición de palabras' se cumpla en alguno de los campos
-		const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
-
-		// Se fija que el registro esté en statusAprobado, o status 'creados_ids' y por el usuario
-		const condicStatus = {
-			[Op.or]: [{statusRegistro_id: aprobados_ids}, {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]}],
-		};
-
-		// Se fija que una edición sea del usuario
-		const condicEdicion = {editadoPor_id: userID};
-
-		// Fin
-		return {[Op.and]: [condicPalabras, original ? condicStatus : condicEdicion]};
-	},
-	obtieneRegs: async (campos) => {
-		// Variables
-		const {entidades} = campos;
-		let lecturas = [];
-		let resultados = [];
-
-		// Obtiene el resultado por entidad
-		delete campos.entidades;
-		for (let entidad of entidades) lecturas.push(FN.lecturaBD({entidad, ...campos}));
-		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
-
-		if (resultados.length) {
-			resultados = resultados.map((n) => {
-				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-				const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
-				return {...n, fechaRef, fechaRefTexto};
-			});
-
-			// Ordena los resultados
-			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-		}
-
-		// Fin
-		return resultados;
-	},
+	obtieneRegs: async (campos) => FN.obtieneRegs(campos),
 	revisaStatus: {
 		consolidado: async function () {
 			// Variables
@@ -646,7 +516,7 @@ module.exports = {
 
 				// Obtiene los datos del prodRclv
 				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
-				const nombre = comp.nombresPosibles(prodRclv);
+				const nombre = FN.nombresPosibles(prodRclv);
 				const {statusRegistro_id} = prodRclv;
 
 				// Asigna los datos a guardar
@@ -667,13 +537,13 @@ module.exports = {
 		},
 		prodRclvVsHistorial: async (ultsHist) => {
 			// Variables
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
+			const entidades = [...variables.entidades.prodsRclvs];
 			let regsAgregar = [];
 
 			// Obtiene los Inactivos y Recuperar
-			let IN = comp.obtieneRegs({entidades, status_id: inactivar_id});
-			let RC = comp.obtieneRegs({entidades, status_id: recuperar_id});
-			let IO = comp.obtieneRegs({entidades, status_id: inactivo_id});
+			let IN = FN.obtieneRegs({entidades, status_id: inactivar_id});
+			let RC = FN.obtieneRegs({entidades, status_id: recuperar_id});
+			let IO = FN.obtieneRegs({entidades, status_id: inactivo_id});
 			[IN, RC, IO] = await Promise.all([IN, RC, IO]);
 			let regsEnt = {IN, RC, IO};
 
@@ -683,7 +553,7 @@ module.exports = {
 				for (let prodRclv of regsEnt[ST]) {
 					// Variables
 					const {entidad, id, coleccion_id, statusSugeridoEn: fechaRef} = prodRclv;
-					const nombre = comp.nombresPosibles(prodRclv);
+					const nombre = FN.nombresPosibles(prodRclv);
 
 					// Genera los datos a guardar
 					const datos = {entidad, entidad_id: id, nombre, fechaRef};
@@ -836,7 +706,7 @@ module.exports = {
 		// Fin
 		return temas;
 	},
-	prodsEnRCLV: async ({entidad, id}) => {
+	prodsEnRCLV: async function ({entidad, id}) {
 		// Variables
 		const entidadesProds = variables.entidades.prods;
 		const statusAprobado = {statusRegistro_id: aprobado_id};
@@ -847,7 +717,7 @@ module.exports = {
 		if (id && id <= 10) return;
 
 		// Establece la condición perenne
-		const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const rclv_id = this.obtieneDesdeEntidad.campo_id(entidad);
 		const condicion = {[rclv_id]: id};
 
 		// 1. Averigua si existe algún producto aprobado, con ese rclv_id
@@ -975,7 +845,7 @@ module.exports = {
 					const fechaVencim = new Date(desde + linksVU);
 
 					// Se actualiza el link con el anoEstreno y la fechaVencim
-					const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+					const asocProd = FN.asocProd(link);
 					const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
 					espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 				}
@@ -1168,13 +1038,7 @@ module.exports = {
 		nuevoHorario: (delay, horario) => {
 			return FN.nuevoHorario(delay, horario);
 		},
-		diaMes: (fecha) => {
-			fecha = new Date(fecha);
-			let dia = fecha.getUTCDate();
-			let mes = mesesAbrev[fecha.getUTCMonth()];
-			fecha = dia + "/" + mes;
-			return fecha;
-		},
+		diaMes: (fecha) => FN.diaMes(fecha),
 		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
 			let ano = fecha.getUTCFullYear().toString().slice(-2);
@@ -1371,15 +1235,15 @@ module.exports = {
 // Funciones
 let FN = {
 	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en 'horario local'
-	nuevoHorario: (delay, horario) => {
-		horario = horario ? horario : FN.ahora();
+	nuevoHorario: function (delay, horario) {
+		horario = horario ? horario : this.ahora();
 		let nuevoHorario = new Date(horario);
 		nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 		return nuevoHorario;
 	},
 	entidadNombre: (entidad) => {
-		const indice = [...variables.entidades.prods, ...variables.entidades.rclvs].indexOf(entidad);
-		const entNombre = indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
+		const indice = [...variables.entidades.todos].indexOf(entidad);
+		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
 	familia: (entidad) => {
@@ -1405,8 +1269,10 @@ let FN = {
 		if (diasAdicsPorLunes < 0) diasAdicsPorLunes += 7;
 		primerLunesDelAno = comienzoAnoUTC + diasAdicsPorLunes * unDia;
 
-		// Fin
+		// Si el primer lunes del año es posterior al presente, se resta una semana para que tome el primer lunes del año anterior
 		if (primerLunesDelAno > fecha.getTime()) this.primerLunesDelAno(fecha.getTime() - unaSemana);
+
+		// Fin
 		return;
 	},
 	averiguaTipoDeLink: (links, condicion) => {
@@ -1422,10 +1288,10 @@ let FN = {
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
-	lecturaBD: async ({entidad, status_id, campoFecha, campoRevID, include, revID}) => {
+	lecturaBD: async function ({entidad, status_id, campoFecha, campoRevID, include, revID}) {
 		// Variables
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+		const haceUnaHora = this.nuevoHorario(-1);
+		const haceDosHoras = this.nuevoHorario(-2);
 		if (!revID) revID = 0;
 
 		// Condiciones de captura
@@ -1462,6 +1328,56 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+	nombresPosibles: (registro) => {
+		return registro.nombreCastellano
+			? registro.nombreCastellano
+			: registro.nombreOriginal
+			? registro.nombreOriginal
+			: registro.nombre
+			? registro.nombre
+			: "";
+	},
+	obtieneRegs: async function (campos) {
+		// Variables
+		const {entidades} = campos;
+		let lecturas = [];
+		let resultados = [];
+
+		// Obtiene el resultado por entidad
+		delete campos.entidades;
+		for (let entidad of entidades) lecturas.push(this.lecturaBD({entidad, ...campos}));
+		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
+
+		if (resultados.length) {
+			resultados = resultados.map((n) => {
+				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
+				const fechaRefTexto = this.diaMes(fechaRef);
+				return {...n, fechaRef, fechaRefTexto};
+			});
+
+			// Ordena los resultados
+			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+		}
+
+		// Fin
+		return resultados;
+	},
+	diaMes: (fecha) => {
+		fecha = new Date(fecha);
+		let dia = fecha.getUTCDate();
+		let mes = mesesAbrev[fecha.getUTCMonth()];
+		fecha = dia + "/" + mes;
+		return fecha;
+	},
+	asocProd: (registro) => {
+		return registro.pelicula_id
+			? "pelicula"
+			: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+			? "capitulo"
+			: registro.coleccion_id
+			? "coleccion"
+			: "";
 	},
 };
 let FN_links = {

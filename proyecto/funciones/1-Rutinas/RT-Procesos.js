@@ -125,14 +125,14 @@ module.exports = {
 	ABM_noRevs: async () => {
 		// Variables
 		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
-		let entsPERL, include, condicion;
+		let entsProdsRclvs, include, condicion;
 
 		// regsPERL
 		condicion = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
-		entsPERL = [...variables.entidades.prods, ...variables.entidades.rclvs];
+		entsProdsRclvs = [...variables.entidades.prodsRclvs];
 		include = "statusSugeridoPor";
 		let regsPERL = [];
-		for (let entidad of entsPERL) {
+		for (let entidad of entsProdsRclvs) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await baseDeDatos
 				.obtieneTodosPorCondicion(entidad, condicion, include)
@@ -142,10 +142,10 @@ module.exports = {
 		}
 
 		// edicsPERL
-		entsPERL = ["prodsEdicion", "rclvsEdicion"];
+		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
-		for (let entPERL of entsPERL) {
+		for (let entPERL of entsProdsRclvs) {
 			const registros = await baseDeDatos
 				.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
@@ -484,18 +484,18 @@ module.exports = {
 			return cuerpoMail;
 		},
 		eliminaRegs: {
-			consolidado: async function ({mailEnviado, regsStatusUs, regsEdicUs}) {
+			consolidado: async function ({mailEnv, regsStatusUs, regsEdicUs, usuario}) {
 				// Si el mail no fue enviado, lo avisa
-				if (!mailEnviado) {
+				if (!mailEnv) {
 					console.log("Mail no enviado a " + email);
 					return;
 				}
 
 				// Acciones si el mail fue enviado
-				if (regsStatusUs.length) await this.histStatus(regsStatusUs); // Borra los registros prescindibles
-				if (regsEdicUs.length) await this.histEdics(regsEdicUs); // Borra los registros prescindibles
-				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // Actualiza el registro de usuario en el campo fecha_revisor
-				console.log("Mail enviado a " + email);
+				if (regsStatusUs.length) await this.histStatus(regsStatusUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				if (regsEdicUs.length) await this.histEdics(regsEdicUs); // agrega la fecha de comunicado a los que quedan y elimina los demás
+				await baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaRevisores: new Date()}); // actualiza el registro de usuario en el campo fecha_revisor
+				if (usuario.id != usAutom_id) console.log("Mail enviado a " + usuario.email);
 
 				// Fin
 				return;

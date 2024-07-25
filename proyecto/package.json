@@ -1,7 +1,7 @@
 {
 	"name": "elc-peliculas",
-	"version": "1.0.0",
-	"description": "",
+	"version": "1.09",
+	"description": "Recomendación de películas",
 	"main": "app.js",
 	"scripts": {
 		"start": "nodemon -e js app.js"

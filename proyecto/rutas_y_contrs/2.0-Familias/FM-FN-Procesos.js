@@ -2,6 +2,99 @@
 const validacsFM = require("./FM-FN-Validar");
 
 module.exports = {
+	// Header
+	quickSearch: {
+		condicion: (palabras, campos, userID, original) => {
+			// Variables
+			let todasLasPalabrasEnAlgunCampo = [];
+
+			// Convierte las palabras en un array
+			palabras = palabras.split(" ");
+
+			// Rutina para cada campo
+			for (let campo of campos) {
+				// Variables
+				let palabrasEnElCampo = [];
+
+				// Dónde debe buscar cada palabra dentro del campo
+				for (let palabra of palabras) {
+					const palabraEnElCampo = {
+						[Op.or]: [
+							{[campo]: {[Op.like]: palabra + "%"}}, // En el comienzo del texto
+							{[campo]: {[Op.like]: "% " + palabra + "%"}}, // En el comienzo de una palabra
+						],
+					};
+					palabrasEnElCampo.push(palabraEnElCampo);
+				}
+
+				// Exige que cada palabra del conjunto esté presente
+				const todasLasPalabrasEnElCampo = {[Op.and]: palabrasEnElCampo};
+
+				// Consolida el resultado
+				todasLasPalabrasEnAlgunCampo.push(todasLasPalabrasEnElCampo);
+			}
+
+			// Se fija que 'la condición de palabras' se cumpla en alguno de los campos
+			const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
+
+			// Se fija que el registro esté en statusAprobado, o status 'creados_ids' y por el usuario
+			const condicStatus = {
+				[Op.or]: [
+					{statusRegistro_id: aprobados_ids},
+					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+				],
+			};
+
+			// Se fija que una edición sea del usuario
+			const condicEdicion = {editadoPor_id: userID};
+
+			// Fin
+			return {[Op.and]: [condicPalabras, original ? condicStatus : condicEdicion]};
+		},
+		registros: async (condicion, dato) => {
+			// Obtiene los registros
+			const registros = await baseDeDatos.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10).then((n) =>
+				n.map((m) => {
+					let respuesta = {
+						id: m.id,
+						nombre: m[dato.campos[0]],
+						entidad: dato.entidad,
+						familia: dato.familia,
+						avatar: m.avatar, // específicos para PA-Desambiguar
+					};
+					if (m.anoEstreno) respuesta.anoEstreno = m.anoEstreno;
+					if (m.nombreOriginal) respuesta.nombreOriginal = m.nombreOriginal; // específicos para PA-Desambiguar
+
+					return respuesta;
+				})
+			);
+
+			// Fin
+			return registros;
+		},
+		ediciones: async (condicion, dato) => {
+			// Obtiene los registros
+			const registros = await baseDeDatos
+				.obtieneTodosPorCondicionConLimite(dato.entidad, condicion, 10, dato.include)
+				.then((n) =>
+					n.map((m) => {
+						const entidad = comp.obtieneDesdeCampo_id.entidad(m, dato.entidad);
+						const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
+						return {
+							entidad,
+							id: m[comp.obtieneDesdeEntidad.campo_id(entidad)],
+							anoEstreno: m.anoEstreno ? m.anoEstreno : m[asoc].anoEstreno,
+							nombre: m[dato.campos[0]] ? m[dato.campos[0]] : m[dato.campos[1]],
+							familia: dato.familia,
+						};
+					})
+				);
+
+			// Fin
+			return registros;
+		},
+	},
+
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
@@ -16,15 +109,6 @@ module.exports = {
 		// Obtiene el tema y código
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = this.codigo({ruta, familia});
-
-		// Comentario para 'revisionInactivar'
-		if (codigo == "revisionInactivar") {
-			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo(
-				"statusHistorial",
-				{entidad, entidad_id: id},
-				"statusFinalEn"
-			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
-		}
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -116,7 +200,7 @@ module.exports = {
 	},
 	comentario: async function (datos) {
 		// Stopper
-		if (!datos.motivo_id) return null
+		if (!datos.motivo_id) return null;
 
 		// Variables
 		let comentario = null;
@@ -137,8 +221,10 @@ module.exports = {
 		// Si corresponde, lo obtiene del movimiento anterior
 		if (!comentario) {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
-			if (!comentario && comentNeces && datos.statusFinal_id == inactivo_id && datos.ultHist && datos.ultHist.comentario)
-				comentario = datos.ultHist.comentario;
+			if (comentNeces && datos.statusFinal_id == inactivo_id) {
+				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
+				if (ultHist && ultHist.statusFinal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
+			}
 		}
 
 		// Fin
@@ -408,6 +494,18 @@ module.exports = {
 			// Fin
 			return historialStatus;
 		},
+		ultimoRegistro: async (entidad, entidad_id) => {
+			// Obtiene el 'ultHist'
+			const condicion = {
+				entidad,
+				entidad_id,
+				[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+			};
+			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+
+			// Fin
+			return ultHist;
+		},
 	},
 	statusAlineado: async function ({entidad, id, prodRclv}) {
 		// Obtiene el 'prodRclv'
@@ -420,7 +518,7 @@ module.exports = {
 		const {statusRegistro_id} = prodRclv;
 
 		// Obtiene el 'ultHist'
-		const ultHist = await this.obtieneUltHist(entidad, id);
+		const ultHist = await this.historialDeStatus.ultimoRegistro(entidad, id);
 		const statusFinal_id = ultHist ? ultHist.statusFinal_id : null;
 
 		// Compara los status
@@ -431,18 +529,6 @@ module.exports = {
 
 		// Fin
 		return {statusAlineado, prodRclv, ultHist};
-	},
-	obtieneUltHist: async (entidad, entidad_id) => {
-		// Obtiene el 'ultHist'
-		const condicion = {
-			entidad,
-			entidad_id,
-			[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-		};
-		const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
-
-		// Fin
-		return ultHist;
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
 		// Variables

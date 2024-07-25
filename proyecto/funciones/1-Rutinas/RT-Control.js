@@ -235,28 +235,13 @@ module.exports = {
 			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
 			const usuarios = await baseDeDatos.obtieneTodosPorCondicion("usuarios", {id: usuarios_id}, "pais");
 			const asunto = "Revisión de las sugerencias realizadas";
-			const ahora = new Date();
 			let mailsEnviados = [];
 
 			// Rutina por usuario
 			for (let usuario of usuarios) {
-				if (!usuario.pais || !usuario.email) continue;
-
-				// Acciones para saltear la rutina, dependiendo de la hora
-				const zonaHoraria = usuario.pais.zonaHoraria;
-				const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
-				if (
-					(new Date(ahoraUsuario).getUTCHours() && nodeEnv != "development") || // Producción: si para el usuario no son las 0hs
-					(!new Date(ahoraUsuario).getUTCHours() && nodeEnv == "development") // Development: si para el usuario son las 0hs
-				)
-					continue;
-
-				// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
-				const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
-				const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
-				const horaUsuario = ahora.getUTCHours();
-				const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
-				if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) continue;
+				// Si corresponde, saltea la rutina
+				const stopper = stoppers(usuario);
+				// if (stopper) continue;
 
 				// Variables
 				const email = usuario.email;
@@ -269,12 +254,13 @@ module.exports = {
 				if (regsEdicUs.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdicion(regsEdicUs);
 
 				// Envía el mail y actualiza la BD
+				const otrosDatos = {regsStatusUs, regsEdicUs, usuario};
 				const mailEnviado =
 					usuario.id != usAutom_id
 						? comp
 								.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
-								.then((mailEnviado) => procesos.eliminaRegs.consolidado({mailEnviado, regsStatusUs, regsEdicUs}))
-						: procesos.eliminaRegs.consolidado({mailEnviado: true, regsStatusUs, regsEdicUs});
+								.then((mailEnv) => procesos.mailDeFeedback.eliminaRegs.consolidado({mailEnv, ...otrosDatos}))
+						: procesos.mailDeFeedback.eliminaRegs.consolidado({mailEnv: true, ...otrosDatos});
 				mailsEnviados.push(mailEnviado);
 			}
 
@@ -521,7 +507,7 @@ module.exports = {
 		eliminaRegsSinEntidad_id: async () => {
 			// Variables
 			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
+			const entidades = [...variables.entidades.todos, "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
 
@@ -725,6 +711,29 @@ module.exports = {
 };
 
 // Funciones
+const stoppers = (usuario) => {
+	if (!usuario.pais || !usuario.email) return true;
+
+	// Acciones para saltear la rutina, dependiendo de la hora
+	const ahora = new Date();
+	const zonaHoraria = usuario.pais.zonaHoraria;
+	const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
+	if (
+		(new Date(ahoraUsuario).getUTCHours() && nodeEnv != "development") || // Producción: si para el usuario no son las 0hs
+		(!new Date(ahoraUsuario).getUTCHours() && nodeEnv == "development") // Development: si para el usuario son las 0hs
+	)
+		return true;
+
+	// Si ya se envió un comunicado en el día y en la misma franja horaria, saltea el usuario
+	const hoyUsuario = comp.fechaHora.diaMesAno(ahora);
+	const fechaRevisores = usuario.fechaRevisores ? comp.fechaHora.diaMesAno(usuario.fechaRevisores) : null;
+	const horaUsuario = ahora.getUTCHours();
+	const horaRevisores = usuario.fechaRevisores ? usuario.fechaRevisores.getUTCHours() : null;
+	if (hoyUsuario === fechaRevisores && horaUsuario === horaRevisores) return true;
+
+	// Fin
+	return false;
+};
 let obsoletas = {
 	actualizaLaEpocaDeEstreno: async () => {
 		const condicion = {anoEstreno: {[Op.ne]: null}};

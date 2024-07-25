@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
@@ -198,13 +199,13 @@ module.exports = {
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			let condicion = comp.quickSearchCondics(palabrasClave, campos, userID);
+			let condicion = procsFM.quickSearch.condicion(palabrasClave, campos, userID);
 
 			// Agrega la condición de que no provenga de 'TMDB'
 			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await comp.quickSearch.registros(condicion, datos);
+			const resultadoPorEntidad = await procsFM.quickSearch.registros(condicion, datos);
 			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
 		}
 

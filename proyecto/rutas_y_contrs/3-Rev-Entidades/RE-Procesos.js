@@ -1292,30 +1292,35 @@ let FN = {
 		return;
 	},
 	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
-		// Obtiene el status final
-		const adicionales = {publico: true, epocaOcurrencia: true};
-		const statusFinal_id =
-			codigo == "alta" || (codigo == "revisionInactivar" && desaprueba) || (codigo == "revisionRecuperar" && !desaprueba) // condiciones para aprobado
-				? rclv // si es un RCLV, se aprueba
-					? aprobado_id
-					: (await validacsFM.validacs
-							.consolidado({datos: {entidad, ...original, ...adicionales}})
-							.then((n) => n.impideAprobado)) // si es un producto, se revisa si tiene errores
-					? creadoAprob_id // si tiene errores que impiden el aprobado
-					: entidad == "capitulos"
-					? original.statusColeccion_id // si es un capítulo y fue aprobado, toma el status de su colección
-					: aprobado_id // si no tiene errores
-				: inactivo_id;
+		// Variables
+		const statusAprob =
+			codigo == "alta" || (codigo == "revisionInactivar" && desaprueba) || (codigo == "revisionRecuperar" && !desaprueba);
+		const datos = {entidad, ...original, publico: true, epocaOcurrencia: true};
+		const prodCreadoAprob =
+			statusAprob && !rclv ? await validacsFM.validacs.consolidado({datos}).then((n) => n.impideAprobado) : null;
 
-		// Obtiene el motivo - si es un rechazo, del body; si es un revisionInactivar o revisionRecuperar, del registro anterior
-		const motivo_id =
-			codigo == "rechazar"
-				? req.body.motivo_id
-				: ["revisionInactivar", "revisionRecuperar"].includes(codigo)
-				? await baseDeDatos
-						.obtienePorCondicionElUltimo("statusHistorial", {entidad, entidad_id: original.id}, "statusFinalEn")
-						.then((n) => n.motivo_id)
-				: null;
+		// Obtiene el status final
+		const statusFinal_id = statusAprob
+			? rclv
+				? aprobado_id // si es un RCLV, se aprueba
+				: prodCreadoAprob // si es un producto, revisa si tiene errores
+				? creadoAprob_id // si tiene errores que impiden el aprobado, status 'creadoAprob'
+				: entidad == "capitulos"
+				? original.statusColeccion_id // capítulo sin errores, toma el status de su colección
+				: aprobado_id // película/colección sin errores, queda aprobado
+			: inactivo_id;
+
+		// Obtiene el motivo
+		const motivoRegAnt = ["revisionInactivar", "revisionRecuperar"].includes(codigo)
+			? await baseDeDatos
+					.obtienePorCondicionElUltimo("statusHistorial", {entidad, entidad_id: original.id}, "statusFinalEn")
+					.then((n) => n.motivo_id)
+			: null;
+		const motivo_id = motivoRegAnt
+			? motivoRegAnt // si es un revisionInactivar o revisionRecuperar, lo toma del registro anterior
+			: codigo == "rechazar"
+			? req.body.motivo_id // si es un rechazo, lo toma del formulario
+			: null;
 
 		// Fin
 		return {statusFinal_id, motivo_id};
