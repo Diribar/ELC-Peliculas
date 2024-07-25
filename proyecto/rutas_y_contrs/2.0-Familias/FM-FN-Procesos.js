@@ -17,15 +17,6 @@ module.exports = {
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = this.codigo({ruta, familia});
 
-		// Comentario para 'revisionInactivar'
-		if (codigo == "revisionInactivar") {
-			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo(
-				"statusHistorial",
-				{entidad, entidad_id: id},
-				"statusFinalEn"
-			); // no debe filtrar por 'comentario not null', porque el de inactivar puede estar vacío
-		}
-
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("statusRegistro", "creadoPor", "statusSugeridoPor", "altaRevisadaPor");
@@ -116,7 +107,7 @@ module.exports = {
 	},
 	comentario: async function (datos) {
 		// Stopper
-		if (!datos.motivo_id) return null
+		if (!datos.motivo_id) return null;
 
 		// Variables
 		let comentario = null;
@@ -137,8 +128,10 @@ module.exports = {
 		// Si corresponde, lo obtiene del movimiento anterior
 		if (!comentario) {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
-			if (!comentario && comentNeces && datos.statusFinal_id == inactivo_id && datos.ultHist && datos.ultHist.comentario)
-				comentario = datos.ultHist.comentario;
+			if (comentNeces && datos.statusFinal_id == inactivo_id) {
+				const ultHist = await this.obtieneUltHist(datos.entidad, datos.id);
+				if (ultHist && ultHist.statusOriginal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
+			}
 		}
 
 		// Fin
