@@ -294,7 +294,7 @@ module.exports = {
 	obtieneDesdeAsoc: {
 		entidad: (asoc) => {
 			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
-			const entidad = indice > -1 ? [...variables.entidades.prods, ...variables.entidades.rclvs][indice] : null;
+			const entidad = indice > -1 ? [...variables.entidades.prodsRclvs][indice] : null;
 			return entidad;
 		},
 		entidadNombre: (asoc) => {
@@ -667,7 +667,7 @@ module.exports = {
 		},
 		prodRclvVsHistorial: async (ultsHist) => {
 			// Variables
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs];
+			const entidades = [...variables.entidades.prodsRclvs];
 			let regsAgregar = [];
 
 			// Obtiene los Inactivos y Recuperar
@@ -1378,8 +1378,9 @@ let FN = {
 		return nuevoHorario;
 	},
 	entidadNombre: (entidad) => {
-		const indice = [...variables.entidades.prods, ...variables.entidades.rclvs].indexOf(entidad);
-		const entNombre = indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
+		const indice = [...variables.entidades.todos].indexOf(entidad);
+		const entNombre =
+			indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre, "Link"][indice] : null;
 		return entNombre;
 	},
 	familia: (entidad) => {

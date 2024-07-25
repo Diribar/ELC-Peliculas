@@ -507,7 +507,7 @@ module.exports = {
 		eliminaRegsSinEntidad_id: async () => {
 			// Variables
 			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs, "links", "usuarios"];
+			const entidades = [...variables.entidades.todos, "usuarios"];
 			let regsVinculados = {};
 			let datos = [];
 

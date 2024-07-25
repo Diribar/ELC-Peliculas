@@ -30,6 +30,8 @@ const camposDA = [
 	{titulo: "Época del año", nombre: "epocaDelAno_id", relacInclude: "epocaDelAno", tabla: "epocasDelAno", rclv: true},
 	{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
 ];
+const prods = ["peliculas", "colecciones", "capitulos"];
+const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
 
 module.exports = {
 	// Institucional
@@ -52,15 +54,20 @@ module.exports = {
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 
-	// Productos y RCLVs
+	// Todos
 	entidades: {
-		prods: ["peliculas", "colecciones", "capitulos"],
+		// Productos
+		prods,
 		prodsNombre: ["Película", "Colección", "Capítulo"],
 		asocProds: ["pelicula", "coleccion", "capitulo"],
-		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+		// RCLVs
+		rclvs,
 		rclvsNombre: ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"],
 		asocRclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
+		prodsRclvs: [...prods, ...rclvs],
+		// Otros
+		todos: [...prods, ...rclvs, "links"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
 	},
 

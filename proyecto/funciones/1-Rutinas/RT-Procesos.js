@@ -125,14 +125,14 @@ module.exports = {
 	ABM_noRevs: async () => {
 		// Variables
 		const statusProvisorios = [creado_id, inactivar_id, recuperar_id];
-		let entsPERL, include, condicion;
+		let entsProdsRclvs, include, condicion;
 
 		// regsPERL
 		condicion = {statusRegistro_id: statusProvisorios, statusSugeridoPor_id: {[Op.ne]: usAutom_id}};
-		entsPERL = [...variables.entidades.prods, ...variables.entidades.rclvs];
+		entsProdsRclvs = [...variables.entidades.prodsRclvs];
 		include = "statusSugeridoPor";
 		let regsPERL = [];
-		for (let entidad of entsPERL) {
+		for (let entidad of entsProdsRclvs) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const registros = await baseDeDatos
 				.obtieneTodosPorCondicion(entidad, condicion, include)
@@ -142,10 +142,10 @@ module.exports = {
 		}
 
 		// edicsPERL
-		entsPERL = ["prodsEdicion", "rclvsEdicion"];
+		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
-		for (let entPERL of entsPERL) {
+		for (let entPERL of entsProdsRclvs) {
 			const registros = await baseDeDatos
 				.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
 				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
