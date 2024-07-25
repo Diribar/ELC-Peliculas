@@ -241,7 +241,7 @@ module.exports = {
 			for (let usuario of usuarios) {
 				// Si corresponde, saltea la rutina
 				const stopper = stoppers(usuario);
-				// if (stopper) continue;
+				if (stopper) continue;
 
 				// Variables
 				const email = usuario.email;
@@ -256,7 +256,8 @@ module.exports = {
 				// Envía el mail y actualiza la BD
 				const otrosDatos = {regsStatusUs, regsEdicUs, usuario};
 				const mailEnviado =
-					usuario.id != usAutom_id
+					usuario.id != usAutom_id && // si es el usuario automático, no envía el mail
+					(nodeEnv != "development" || [1, 11].includes(usuario.id)) // en development, sólo envía el mail a los usuarios del programador
 						? comp
 								.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 								.then((mailEnv) => procesos.mailDeFeedback.eliminaRegs.consolidado({mailEnv, ...otrosDatos}))
@@ -719,8 +720,8 @@ const stoppers = (usuario) => {
 	const zonaHoraria = usuario.pais.zonaHoraria;
 	const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
 	if (
-		(new Date(ahoraUsuario).getUTCHours() && nodeEnv != "development") || // Producción: si para el usuario no son las 0hs
-		(!new Date(ahoraUsuario).getUTCHours() && nodeEnv == "development") // Development: si para el usuario son las 0hs
+		(nodeEnv != "development" && new Date(ahoraUsuario).getUTCHours()) || // Producción: saltea si para el usuario no son las 0hs
+		(nodeEnv == "development" && !new Date(ahoraUsuario).getUTCHours()) // Development: saltea si para el usuario son las 0hs
 	)
 		return true;
 
