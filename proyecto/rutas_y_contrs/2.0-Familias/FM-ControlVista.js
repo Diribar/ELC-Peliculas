@@ -69,7 +69,7 @@ module.exports = {
 		};
 		if (codigo == "inactivar") datosHist.motivo_id = motivo_id;
 		else if (codigo == "recuperar") {
-			const ultHist = await procesos.obtieneUltHist(entidad, id);
+			const ultHist = await procesos.historialDeStatus.ultimoRegistro(entidad, id);
 			if (ultHist) datosHist.motivo_id = ultHist.motivo_id;
 		}
 		baseDeDatos.agregaRegistro("statusHistorial", datosHist);

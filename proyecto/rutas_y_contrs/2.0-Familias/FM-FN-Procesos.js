@@ -129,7 +129,7 @@ module.exports = {
 		if (!comentario) {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
 			if (comentNeces && datos.statusFinal_id == inactivo_id) {
-				const ultHist = await this.obtieneUltHist(datos.entidad, datos.id);
+				const ultHist = await this.historialDeStatus.obtieneElUltimo(datos.entidad, datos.id);
 				if (ultHist && ultHist.statusOriginal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
 			}
 		}
@@ -401,6 +401,18 @@ module.exports = {
 			// Fin
 			return historialStatus;
 		},
+		obtieneElUltimo: async (entidad, entidad_id) => {
+			// Obtiene el 'ultHist'
+			const condicion = {
+				entidad,
+				entidad_id,
+				[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
+			};
+			const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
+
+			// Fin
+			return ultHist;
+		},
 	},
 	statusAlineado: async function ({entidad, id, prodRclv}) {
 		// Obtiene el 'prodRclv'
@@ -413,7 +425,7 @@ module.exports = {
 		const {statusRegistro_id} = prodRclv;
 
 		// Obtiene el 'ultHist'
-		const ultHist = await this.obtieneUltHist(entidad, id);
+		const ultHist = await this.historialDeStatus.obtieneElUltimo(entidad, id);
 		const statusFinal_id = ultHist ? ultHist.statusFinal_id : null;
 
 		// Compara los status
@@ -424,18 +436,6 @@ module.exports = {
 
 		// Fin
 		return {statusAlineado, prodRclv, ultHist};
-	},
-	obtieneUltHist: async (entidad, entidad_id) => {
-		// Obtiene el 'ultHist'
-		const condicion = {
-			entidad,
-			entidad_id,
-			[Op.or]: {statusOriginal_id: {[Op.gt]: aprobado_id}, statusFinal_id: {[Op.gt]: aprobado_id}},
-		};
-		const ultHist = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
-
-		// Fin
-		return ultHist;
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
 		// Variables
