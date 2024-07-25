@@ -39,7 +39,7 @@ module.exports = {
 			await validacsFM.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
-		// Si es un link propio y en status creado, lo actualiza con la edición
+		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
@@ -51,6 +51,7 @@ module.exports = {
 			if (edicion) datos.id = edicion.id;
 			mensaje = await procsFM.guardaActEdic({entidad: "links", original: link, edicion: datos, userID});
 			if (mensaje) mensaje = "Edición guardada";
+			await comp.linksVencPorSem.actualizaCantLinksPorSem();
 		}
 
 		// Fin
