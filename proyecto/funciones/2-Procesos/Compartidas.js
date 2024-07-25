@@ -211,15 +211,7 @@ module.exports = {
 				? rclv_id
 				: "";
 		},
-		asocProd: (registro) => {
-			return registro.pelicula_id
-				? "pelicula"
-				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-				? "capitulo"
-				: registro.coleccion_id
-				? "coleccion"
-				: "";
-		},
+		asocProd: (registro) => FN.asocProd(registro),
 		asocRCLV: (registro) => {
 			return registro.personaje_id
 				? "personaje"
@@ -549,9 +541,9 @@ module.exports = {
 			let regsAgregar = [];
 
 			// Obtiene los Inactivos y Recuperar
-			let IN = comp.obtieneRegs({entidades, status_id: inactivar_id});
-			let RC = comp.obtieneRegs({entidades, status_id: recuperar_id});
-			let IO = comp.obtieneRegs({entidades, status_id: inactivo_id});
+			let IN = FN.obtieneRegs({entidades, status_id: inactivar_id});
+			let RC = FN.obtieneRegs({entidades, status_id: recuperar_id});
+			let IO = FN.obtieneRegs({entidades, status_id: inactivo_id});
 			[IN, RC, IO] = await Promise.all([IN, RC, IO]);
 			let regsEnt = {IN, RC, IO};
 
@@ -853,7 +845,7 @@ module.exports = {
 					const fechaVencim = new Date(desde + linksVU);
 
 					// Se actualiza el link con el anoEstreno y la fechaVencim
-					const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+					const asocProd = FN.asocProd(link);
 					const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
 					espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 				}
@@ -1377,6 +1369,15 @@ let FN = {
 		let mes = mesesAbrev[fecha.getUTCMonth()];
 		fecha = dia + "/" + mes;
 		return fecha;
+	},
+	asocProd: (registro) => {
+		return registro.pelicula_id
+			? "pelicula"
+			: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+			? "capitulo"
+			: registro.coleccion_id
+			? "coleccion"
+			: "";
 	},
 };
 let FN_links = {
