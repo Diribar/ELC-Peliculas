@@ -39,7 +39,8 @@
 		"eliminaMisConsultasExcedente": "SI",
 		"rclv_idEnCapitulos": "SI",
 		"rclvsSinEpocaPSTyConAno": "SI",
-		"eliminaLoginsAcumsRepetidos": "SI"
+		"eliminaLoginsAcumsRepetidos": "SI",
+		"eliminaRegsHistStatusIncorrectos": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
