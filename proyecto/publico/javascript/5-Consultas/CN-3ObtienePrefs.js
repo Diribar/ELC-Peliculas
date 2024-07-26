@@ -80,7 +80,11 @@ let actualizaConfigCons = {
 		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
 		// Actualiza el valor de 'palabrasClave'
-		if (DOM.palClaveAprob.className.includes("inactivo") && DOM.palClave.value) prefs.palabrasClave = DOM.palClave.value;
+		if (
+			DOM.palClaveIcono.className.includes("fa-circle-xmark") && // se confirmaron las palabras clave
+			DOM.palClaveInput.value // tienen algún valor
+		)
+			prefs.palabrasClave = DOM.palClaveInput.value;
 
 		// Fin
 		return;
