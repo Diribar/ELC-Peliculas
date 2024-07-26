@@ -137,17 +137,10 @@ let actualiza = {
 				: "";
 
 		// 'palClaveIcono' si 'palClaveInput' tiene valor
-		if (DOM.palClaveInput.value) {
-			DOM.palClaveIcono.classList.remove("inactivo");
-			DOM.palClaveIcono.classList.remove("fa-circle-right");
-			DOM.palClaveIcono.classList.add("fa-circle-xmark");
-		}
-		// 'palClaveIcono' si 'palClaveInput' no tiene valor
-		else {
-			DOM.palClaveIcono.classList.add("inactivo");
-			DOM.palClaveIcono.classList.add("fa-circle-right");
-			DOM.palClaveIcono.classList.remove("fa-circle-xmark");
-		}
+		DOM.palClaveIcono.classList.remove("fa-circle-right");
+		DOM.palClaveInput.value
+			? DOM.palClaveIcono.classList.add("fa-circle-xmark")
+			: DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 
 		// Si session está activa, lo informa
 		if (prefsDeCabecera.cambios) v.hayCambiosDeCampo = true;
