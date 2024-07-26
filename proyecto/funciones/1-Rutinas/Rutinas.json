@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 25/jul",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Vie. 26/jul",
+	"HoraUTC": "7:52",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 22/jul",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"23-jul-24": {},
 		"24-jul-24": {},
 		"25-jul-24": {"leyenda": "Hoy recordamos al apóstol Santiago, santo", "entidad": "personajes", "id": 95},
 		"26-jul-24": {},
-		"27-jul-24": {}
+		"27-jul-24": {},
+		"28-jul-24": {"leyenda": "Hoy recordamos a san Pedro Poveda", "entidad": "personajes", "id": 134}
 	}
 }
