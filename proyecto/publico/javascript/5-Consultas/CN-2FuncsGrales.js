@@ -136,8 +136,18 @@ let actualiza = {
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
 
-		// Actualiza ícono Palabras Clave
-		DOM.palClaveAprob.classList.add("inactivo");
+		// 'palClaveIcono' si 'palClaveInput' tiene valor
+		if (DOM.palClaveInput.value) {
+			DOM.palClaveIcono.classList.remove("inactivo");
+			DOM.palClaveIcono.classList.remove("fa-circle-right");
+			DOM.palClaveIcono.classList.add("fa-circle-xmark");
+		}
+		// 'palClaveIcono' si 'palClaveInput' no tiene valor
+		else {
+			DOM.palClaveIcono.classList.add("inactivo");
+			DOM.palClaveIcono.classList.add("fa-circle-right");
+			DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+		}
 
 		// Si session está activa, lo informa
 		if (prefsDeCabecera.cambios) v.hayCambiosDeCampo = true;
@@ -177,12 +187,13 @@ let actualiza = {
 		}
 
 		// Palabras clave - sólo sirve para el start-up
-		if (v.muestraFiltros || DOM.palClave.value) DOM.palClave.parentNode.classList.replace("ocultaFiltro", "aparece");
+		if (v.muestraFiltros || DOM.palClaveInput.value)
+			DOM.palClaveInput.parentNode.classList.replace("ocultaFiltro", "aparece");
 
 		// Palabras clave - sirve en régimen
-		v.muestraFiltros || DOM.palClave.value
-			? DOM.palClave.parentNode.classList.replace("desaparece", "aparece") // Se muestra
-			: DOM.palClave.parentNode.classList.replace("aparece", "desaparece"); // Se oculta
+		v.muestraFiltros || DOM.palClaveInput.value
+			? DOM.palClaveInput.parentNode.classList.replace("desaparece", "aparece") // Se muestra
+			: DOM.palClaveInput.parentNode.classList.replace("aparece", "desaparece"); // Se oculta
 
 		// Fin
 		return;
@@ -257,7 +268,7 @@ let cambiosEnBD = {
 		if (!v.userID) return;
 
 		// Variables
-		let cabecera_id
+		let cabecera_id;
 
 		// Elimina la configuración
 		const rutaCompleta = ruta + "elimina-configuracion-de-consulta/?cabecera_id=";
