@@ -136,10 +136,10 @@ let actualiza = {
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
 
-		// 'palClaveIcono' si 'palClaveInput' tiene valor
-		DOM.palClaveIcono.classList.remove("fa-circle-right");
+		// 'palClaveIcono'
+		DOM.palClaveIcono.classList.remove("fa-circle-right"); // siempre oculto
 		DOM.palClaveInput.value
-			? DOM.palClaveIcono.classList.add("fa-circle-xmark")
+			? DOM.palClaveIcono.classList.add("fa-circle-xmark") // si 'palClaveInput' tiene valor
 			: DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 
 		// Si session está activa, lo informa
