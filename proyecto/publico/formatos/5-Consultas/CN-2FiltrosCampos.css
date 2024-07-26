@@ -7,7 +7,6 @@
 			/* General */
 			position: absolute; width: 220px;
 			* {font-size: 1rem;}
-			> *:hover {scale: 1;}
 			:is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 			/* Filtros Campos - Contenedor de Select e Input */
