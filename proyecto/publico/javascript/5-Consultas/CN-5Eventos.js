@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Restringe el uso de caracteres a los aceptados
-			else basico.restringeCaracteres(e, true);
+			else if (basico.validaCaracteres(e.key)) e.preventDefault();
 		}
 
 		// Teclas - Enter
