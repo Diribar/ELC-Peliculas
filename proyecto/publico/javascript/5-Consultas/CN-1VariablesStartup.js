@@ -41,8 +41,8 @@ window.addEventListener("load", async () => {
 		nav: DOM.configFiltros.querySelector("nav"),
 		filtrosPresenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configFiltros.querySelectorAll("select"),
-		palClave: DOM.configFiltros.querySelector("#palabrasClave input"),
-		palClaveAprob: DOM.configFiltros.querySelector("#palabrasClave i#palClaveAprob"),
+		palClaveInput: DOM.configFiltros.querySelector("#palabrasClave input"),
+		palClaveIcono: DOM.configFiltros.querySelector("#palabrasClave i#palClaveIcono"),
 
 		// Muestra / Oculta filtros
 		toggleFiltros: DOM.configCons.querySelector("#toggleFiltros"),
