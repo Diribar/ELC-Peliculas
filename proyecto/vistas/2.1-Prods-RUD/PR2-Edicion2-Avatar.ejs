@@ -14,7 +14,7 @@
 	<!-- Aviso de cambio en el data-entry -->
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	<!-- Links a sitios externos para buscar imágenes alternativas -->
-	<nav class="agregados">
+	<nav class="agregados scaleChildren">
 		<% const nombre = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : registro.nombreOriginal ? registro.nombreOriginal.toLowerCase() : "" %>
 		<a href="<%= '//google.com/search?q=' + nombre + '&tbm=isch&tbs=isz:l&hl=es-419' %>" target="_blank">
 			<img src="/publico/imagenes/Logos/BD-Google.jpg" title="Buscar en Google" class="scale">

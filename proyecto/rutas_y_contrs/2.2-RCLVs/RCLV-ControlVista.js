@@ -212,7 +212,7 @@ module.exports = {
 
 			// Acciones si hay errores o se eliminó la edición
 			if (eliminarEdic || (errores && errores.hay)) {
-				if (errores.hay) {
+				if (errores && errores.hay) {
 					// Guarda session y cookie
 					const session = {...req.body};
 					req.session[entidad] = session;

@@ -31,7 +31,7 @@
 header *, main * {transition: 200ms;}
 :where(.scaleCh, #encabezado a button, #links a):hover {scale: 1.1}
 #sectorIconos .iconos > *:not(.inactivo, .inactivoVersion):hover {scale: 1.3;}
-:where(.scale:not(.inactivo), nav > *, #iconosCartel a):hover {scale: 1.3;}
+:where(.scale:not(.inactivo), nav.scaleChildren > *, #iconosCartel a):hover {scale: 1.3;}
 
 /* :where(a button):hover {scale: 1.1} */
 /* :where(#cuerpo a:has(> i, > img)):hover {scale: 1.3;} */

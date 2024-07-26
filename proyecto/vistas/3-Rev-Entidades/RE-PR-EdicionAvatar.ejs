@@ -4,7 +4,7 @@
 		<div id="izquierda" class="imagenes">
 			<!-- Imagen sugerida -->
 			<img src="<%= avatar.edic %>" title="Imagen sugerida">
-			<nav class="agregados">
+			<nav class="agregados scaleChildren">
 				<% for (let registro of avatarsExternosPelis) { %>
 					<a href="<%= registro.href %>" target="_blank">
 						<img src="<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
