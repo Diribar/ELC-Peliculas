@@ -70,14 +70,20 @@ window.addEventListener("load", async () => {
 		// Particularidades para 'palabrasClave'
 		if (nombre == "palabrasClave") {
 			// Tecla 'Enter'
-			if (
-				e.key == "Enter" &&
-				DOM.palClaveIcono.className.includes("fa-circle-right") && // está habilitado para confirmar
-				!DOM.palClaveIcono.className.includes("inactivo") // está habilitado para confirmar
-			) {
-				DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
-				await estandarParaInputs();
+			if (e.key == "Enter") {
+				// Si está habilitado para confirmar
+				if (DOM.palClaveIcono.className.includes("fa-circle-right")) {
+					DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
+					await estandarParaInputs();
+				}
+				// Si se cancelan las 'palabrasClave'
+				else if (DOM.palClaveIcono.className.includes("fa-circle-xmark")) {
+					DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+					DOM.palClaveInput.value = "";
+					await estandarParaInputs();
+				}
 			}
+
 			// Restringe el uso de caracteres a los aceptados
 			else basico.restringeCaracteres(e, true);
 		}
