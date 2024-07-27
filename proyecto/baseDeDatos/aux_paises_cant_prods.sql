@@ -24,18 +24,14 @@
 CREATE TABLE `aux_paises_cant_prods` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `pais_id` varchar(2) NOT NULL,
-  `cantProds` tinyint(4) NOT NULL DEFAULT 0,
+  `cantidad` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `aux_paises_cant_prods_unique1` (`pais_id`)
+  UNIQUE KEY `aux_paisesCantProdsPais_id` (`pais_id`)
+  CONSTRAINT `aux_paisesCantProdsPais` FOREIGN KEY (`pais_id`) REFERENCES `aux_paises` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `aux_paises_cant_prods`
---
-
 LOCK TABLES `aux_paises_cant_prods` WRITE;
-/*!40000 ALTER TABLE `aux_paises_cant_prods` DISABLE KEYS */;
 INSERT INTO `aux_paises_cant_prods` VALUES (1,'AD',0);
 INSERT INTO `aux_paises_cant_prods` VALUES (2,'AE',0);
 INSERT INTO `aux_paises_cant_prods` VALUES (3,'AF',0);
@@ -287,7 +283,6 @@ INSERT INTO `aux_paises_cant_prods` VALUES (248,'YT',0);
 INSERT INTO `aux_paises_cant_prods` VALUES (249,'ZA',0);
 INSERT INTO `aux_paises_cant_prods` VALUES (250,'ZM',0);
 INSERT INTO `aux_paises_cant_prods` VALUES (251,'ZW',0);
-/*!40000 ALTER TABLE `aux_paises_cant_prods` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -300,3 +295,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-07-27 14:23:37
+ALTER TABLE c19353_elc.aux_paises DROP COLUMN cantProds;
