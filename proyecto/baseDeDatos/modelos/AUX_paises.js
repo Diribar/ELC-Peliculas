@@ -7,7 +7,6 @@ module.exports = (sequelize, dt) => {
 		idioma_id: {type: dt.STRING(2)},
 		zonaHoraria: {type: dt.STRING(10)},
 		// bandera: {type: dt.STRING(10)},
-		cantProds: {type: dt.INTEGER}
 	};
 	const config = {
 		tableName: "aux_paises",
@@ -16,6 +15,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.idiomas, {as: "idioma", foreignKey: "idioma_id"});
+		entidad.hasOne(n.paisesCantProds, {as: "cantProds", foreignKey: "pais_id"});
 		entidad.hasMany(n.usuarios, {as: "usuarios", foreignKey: "pais_id"});
 	};
 	return entidad;
