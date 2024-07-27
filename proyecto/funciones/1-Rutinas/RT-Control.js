@@ -552,9 +552,9 @@ module.exports = {
 
 			// Actualiza la frecuencia por país
 			paises.forEach((pais, i) => {
-				const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds = cantProds;
-				baseDeDatos.actualizaPorId("paises", pais.id, {cantProds});
+				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
+				paises[i].cantProds.cantidad = cantidad;
+				baseDeDatos.actualizaTodosPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
 			});
 
 			// Fin

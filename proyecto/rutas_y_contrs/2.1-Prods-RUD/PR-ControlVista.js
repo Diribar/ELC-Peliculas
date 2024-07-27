@@ -124,7 +124,7 @@ module.exports = {
 				(entidad == "capitulos" ? " un " : " la ") +
 				entidadNombre;
 			const status_id = original.statusRegistro_id;
-			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
+			const paisesTop5 = [...paises].sort((a, b) => b.cantProds.cantidad - a.cantProds.cantidad).slice(0, 5);
 			const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 			const familia = "producto";
 			const registro = prodComb;

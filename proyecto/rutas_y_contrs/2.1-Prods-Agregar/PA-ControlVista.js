@@ -95,7 +95,7 @@ module.exports = {
 			// Variables
 			const camposInput = camposDD.filter((n) => n.campoInput);
 			const paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
-			const paisesTop5 = [...paises].sort((a, b) => b.cantProds - a.cantProds).slice(0, 5); // 'paises' va entre corchetes, para no alterar su orden
+			const paisesTop5 = [...paises].sort((a, b) => b.cantProds.cantidad - a.cantProds.cantidad).slice(0, 5); // 'paises' va entre corchetes, para no alterar su orden
 
 			// Imagen derecha
 			const imgDerPers = datosDuros.avatar
