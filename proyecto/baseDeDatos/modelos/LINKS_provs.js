@@ -14,9 +14,7 @@ module.exports = (sequelize, dt) => {
 		pelicula: {type: dt.BOOLEAN},
 		generico: {type: dt.BOOLEAN},
 		mostrarSiempre: {type: dt.BOOLEAN},
-
 		calidad: {type: dt.INTEGER},
-		cantLinks: {type: dt.INTEGER},
 
 		urlBuscarPre: {type: dt.STRING(25)},
 		urlBuscarPost: {type: dt.STRING(20)},
@@ -33,6 +31,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.hasMany(n.links, {as: "links", foreignKey: "prov_id"});
+		entidad.hasOne(n.linksProvsCantLinks, {as: "cantLinks", foreignKey: "link_id"});
 	};
 	return entidad;
 };

@@ -31,7 +31,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.feedbackParaUsers();
-		// await this.rutinasDiarias.qqq();
+		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
@@ -566,8 +566,8 @@ module.exports = {
 
 			// Links por proveedor
 			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
-				let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				baseDeDatos.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
+				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
+				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
 			}
 
 			// Fin
