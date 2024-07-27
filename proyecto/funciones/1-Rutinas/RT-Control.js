@@ -509,13 +509,13 @@ module.exports = {
 			// Variables
 			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.todos, "usuarios"];
-			let regsVinculados = {};
-			let datos = [];
+			let idsPorEntidad = {};
+			let aux = [];
 
 			// Obtiene los registros por entidad
-			for (let entidad of entidades) datos.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array de arrays, los convierte en un objeto de arrays
+			for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+			aux = await Promise.all(aux);
+			entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
 
 			// Elimina historial
 			for (let tabla of tablas) {
@@ -524,7 +524,7 @@ module.exports = {
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id))
+					if (!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id))
 						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
 			}
 
