@@ -143,7 +143,7 @@ app.set("views", [
 
 		// Variables de productos
 		idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
-		paises: baseDeDatos.obtieneTodosConOrden("paises", "nombre"),
+		paises: baseDeDatos.obtieneTodos("paises", "cantProds").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
 		publicos: baseDeDatos.obtieneTodosConOrden("publicos", "orden"),
 		tiposActuacion: baseDeDatos.obtieneTodosConOrden("tiposActuacion", "orden"),
 		epocasEstreno: baseDeDatos.obtieneTodosConOrden("epocasEstreno", "hasta", "DESC"),
