@@ -93,7 +93,6 @@ module.exports = {
 			comun: async function (prefs) {
 				// Variables
 				const {entidad, layout} = prefs;
-				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null;
 				const entsProd = layout.caps ? [...variables.entidades.prods] : ["peliculas", "colecciones"];
 				let productos = [];
 				let resultados = [];
@@ -110,6 +109,7 @@ module.exports = {
 				const filtros = this.filtros(prefs);
 				let condiciones = {statusRegistro_id: aprobados_ids, ...filtros};
 				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
 				if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 				// Obtiene los productos
@@ -642,7 +642,7 @@ module.exports = {
 				// Variables
 				const campo = false
 					? false
-					: layout.codigo == "nombre"
+					: ["nombre", "catalogo"].includes(layout.codigo)
 					? "nombreCastellano"
 					: layout.codigo == "misCalificadas"
 					? "calificacion"
