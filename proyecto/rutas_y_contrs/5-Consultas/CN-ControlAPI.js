@@ -192,6 +192,7 @@ module.exports = {
 		const layout = cnLayouts.find((n) => n.id == prefs.layout_id);
 		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = prefs;
+		console.log(195, prefs);
 
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
@@ -211,13 +212,15 @@ module.exports = {
 			prods = procesos.resultados.orden.prods({prods, layout}); // Ordena los productos
 			prods = procesos.resultados.botonesListado({resultados: prods, layout, prefs});
 			prods = procesos.resultados.camposNecesarios.prods({prods, layout}); // Deja sólo los campos necesarios
+			prods = procesos.resultados.descartaCapitulosSiColeccionPresente.prods(prods);
 			return res.json(prods);
 		} else {
-			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave, cantResults}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.orden.rclvs({rclvs, layout}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.botonesListado({resultados: rclvs, layout, prefs});
 			rclvs = procesos.resultados.camposNecesarios.rclvs(rclvs); // Deja sólo los campos necesarios
+			rclvs = procesos.resultados.descartaCapitulosSiColeccionPresente.rclvs(rclvs);
 			return res.json(rclvs);
 		}
 	},
