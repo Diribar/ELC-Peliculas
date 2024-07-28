@@ -471,12 +471,11 @@ module.exports = {
 				// Fin
 				return prodsCruzadosConRCLVs;
 			},
-			prodsConPalsClave: ({entidad, prods, palabrasClave}) => {
+			prodsConPalsClave: ({prods, palabrasClave}) => {
 				if (!prods.length) return [];
 				if (!palabrasClave) return prods;
 
 				// Variables
-				const camposInclude = variables.entidades.asocRclvs;
 				palabrasClave = palabrasClave.toLowerCase();
 
 				// Rutina por producto
@@ -497,16 +496,14 @@ module.exports = {
 
 					// Busca las 'palsClave' dentro de sus campos include
 					if (!prods[i].palsClave)
-						for (let campoInclude of camposInclude)
-							for (let campo in campoInclude)
+						for (let entRclv of variables.entidades.asocRclvs)
+							for (let campo in entRclv)
 								if (
-									prod[campoInclude][campo] && // que tenga un valor
-									typeof prod[campoInclude][campo] == "string" &&
-									prod[campoInclude][campo].toLowerCase().includes(palabrasClave)
-								) {
+									prod[entRclv][campo] && // que tenga un valor
+									typeof prod[entRclv][campo] == "string" &&
+									prod[entRclv][campo].toLowerCase().includes(palabrasClave)
+								)
 									prods[i].palsClave = true;
-									break;
-								}
 
 					// Si el producto no tiene las palsClave, lo elimina
 					if (!prods[i].palsClave) prods.splice(i, 1);
@@ -583,9 +580,6 @@ module.exports = {
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
-						// Si el usuario busca por 'palabrasClave' y el rclv no las tiene, deja solamente los productos que las tienen
-						if (palabrasClave && !rclv.palsClave) rclvs[i].productos = rclv.productos.filter((n) => n.palsClave);
-
 						// Ordena los productos por su año de estreno
 						rclvs[i].productos.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
@@ -631,19 +625,37 @@ module.exports = {
 
 					// Busca las 'palsClave' dentro de sus campos simples
 					for (let campo in rclv)
-						if (rclv[campo] && rclv[campo].toLowerCase().includes(palabrasClave)) {
+						if (
+							rclv[campo] && // tiene un valor
+							typeof rclv[campo] == "string" &&
+							rclv[campo].toLowerCase().includes(palabrasClave)
+						) {
 							rclvs[i].palsClave = true;
 							break;
 						}
 
 					// Busca las 'palsClave' dentro de sus productos
 					if (!rclvs[i].palsClave)
-						for (let producto of productos)
-							for (let campo in producto)
-								if (typeof producto[campo] == "string" && producto[campo].toLowerCase().includes(palabrasClave)) {
+						for (let j = rclv.productos.length - 1; j >= 0; j--) {
+							// Variables
+							const producto = rclv.productos[j];
+
+							// Acciones si el producto tiene las 'palabrasClave'
+							for (let campo in producto) {
+								if (
+									producto[campo] && // tiene un valor
+									typeof producto[campo] == "string" &&
+									producto[campo].toLowerCase().includes(palabrasClave)
+								) {
 									rclvs[i].palsClave = true;
+									producto.palsClave = true;
 									break;
 								}
+							}
+
+							// Si el producto no tiene las 'palabrasClave', lo elimina del rclv
+							// if (!producto.palsClave) rclvs[i].productos.splice(j, 1);
+						}
 
 					// Si el rclv no tiene las palsClave, lo elimina
 					if (!rclvs[i].palsClave) rclvs.splice(i, 1);
@@ -835,15 +847,23 @@ module.exports = {
 		},
 		descartaCapitulosSiColeccionPresente: {
 			prods: (resultados) => {
+				// Rutina por producto
 				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
 				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+
+				// Fin
 				return resultados;
 			},
 			rclvs: (rclvs) => {
-				for (let rclv of rclvs) {
-					const colecciones = rclvs.prods.filter((n) => n.entidad == "colecciones");
-					for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
-				}
+				// Rutina por rclv
+				rclvs.forEach((rclv, i) => {
+					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
+					for (let coleccion of colecciones)
+						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
+				});
+
+				// Fin
+				return rclvs;
 			},
 		},
 	},
