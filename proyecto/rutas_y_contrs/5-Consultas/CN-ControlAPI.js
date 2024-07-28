@@ -64,9 +64,9 @@ module.exports = {
 			if (req.session.usuario && req.session.usuario.id) {
 				datos.userID = req.session.usuario.id;
 				datos.videoConsVisto = req.session.usuario.videoConsVisto;
-				datos.usuarioTienePPP = await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {
-					usuario_id: datos.userID,
-				}).then((n) => n.length);
+				datos.usuarioTienePPP = await baseDeDatos
+					.obtieneTodosPorCondicion("pppRegistros", {usuario_id: datos.userID})
+					.then((n) => n.length);
 			}
 
 			// Fin
@@ -196,9 +196,7 @@ module.exports = {
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...prefs, layout});
-		let pppRegistros = usuario_id
-			? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle")
-			: [];
+		let pppRegistros = usuario_id ? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle") : [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Cruces que siempre se deben realizar
