@@ -654,7 +654,7 @@ module.exports = {
 							}
 
 							// Si el producto no tiene las 'palabrasClave', lo elimina del rclv
-							// if (!producto.palsClave) rclvs[i].productos.splice(j, 1);
+							if (!producto.palsClave) rclvs[i].productos.splice(j, 1);
 						}
 
 					// Si el rclv no tiene las palsClave, lo elimina
