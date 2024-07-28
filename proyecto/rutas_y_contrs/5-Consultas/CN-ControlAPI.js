@@ -192,7 +192,6 @@ module.exports = {
 		const layout = cnLayouts.find((n) => n.id == prefs.layout_id);
 		const cantResults = layout.cantidad;
 		const {entidad, palabrasClave} = prefs;
-		console.log(195, prefs);
 
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
@@ -206,7 +205,7 @@ module.exports = {
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
-			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
+			prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave});
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, layout});
 			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, layout});
 			prods = procesos.resultados.orden.prods({prods, layout}); // Ordena los productos
