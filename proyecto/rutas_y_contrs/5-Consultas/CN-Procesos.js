@@ -93,7 +93,7 @@ module.exports = {
 			comun: async function (prefs) {
 				// Variables
 				const {entidad, layout} = prefs;
-				const entsProd = layout.caps ? [...variables.entidades.prods] : ["peliculas", "colecciones"];
+				const entsProd = variables.entidades.prods;
 				let productos = [];
 				let resultados = [];
 
@@ -136,7 +136,7 @@ module.exports = {
 				// Transfiere las preferencias simples a las condiciones
 				for (let prop in prefs) {
 					const campoFiltro = filtrosCons[prop] ? filtrosCons[prop].campoFiltro : null;
-					if (campoFiltro) filtros[campoFiltro] = prefs[prop];
+					if (campoFiltro) filtros[campoFiltro] = prefs[prop]; // sólo los filtros que tienen un 'campoFiltro'
 				}
 
 				// Conversión de 'idiomas'
@@ -437,40 +437,6 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConPalsClave: ({entidad, prods, palabrasClave}) => {
-				if (!prods.length) return [];
-				if (!palabrasClave) return prods;
-
-				// Variables
-				let campos = ["nombreOriginal", "nombreCastellano", "sinopsis"];
-				campos.push("direccion", "guion", "musica", "actores", "produccion");
-				const camposInclude = variables.entidades.asocRclvs;
-				palabrasClave = palabrasClave.toLowerCase();
-
-				// Rutina por producto
-				for (let i = prods.length - 1; i >= 0; i--) {
-					// Variables
-					const prod = prods[i];
-
-					// Rutina por campo: si encuentra las palsClave => le agrega al producto el campo palsClave = true
-					for (let campo of campos)
-						if (prod[campo] && prod[campo].toLowerCase().includes(palabrasClave)) {
-							prods[i].palsClave = true;
-							break;
-						}
-
-					if (!prods[i].palsClave)
-						for (let campo of camposInclude)
-							if (prod[campo].nombre && prod[campo].nombre.toLowerCase().includes(palabrasClave))
-								prods[i].palsClave = true;
-
-					// Si la entidad es 'productos' y el producto no tiene las palsClave, lo elimina
-					if (entidad == "productos" && !prods[i].palsClave) prods.splice(i, 1);
-				}
-
-				// Fin
-				return prods;
-			},
 			prodsConRCLVs: ({prods, rclvs}) => {
 				// Si no se pidió cruzar contra RCLVs, devuelve la variable intacta
 				if (!rclvs) return prods;
@@ -504,6 +470,50 @@ module.exports = {
 
 				// Fin
 				return prodsCruzadosConRCLVs;
+			},
+			prodsConPalsClave: ({entidad, prods, palabrasClave}) => {
+				if (!prods.length) return [];
+				if (!palabrasClave) return prods;
+
+				// Variables
+				const camposInclude = variables.entidades.asocRclvs;
+				palabrasClave = palabrasClave.toLowerCase();
+
+				// Rutina por producto
+				for (let i = prods.length - 1; i >= 0; i--) {
+					// Variables
+					const prod = prods[i];
+
+					// Busca las 'palsClave' dentro de sus campos simples
+					for (let campo in prod)
+						if (
+							prod[campo] && // que tenga un valor
+							typeof prod[campo] == "string" &&
+							prod[campo].toLowerCase().includes(palabrasClave)
+						) {
+							prods[i].palsClave = true;
+							break;
+						}
+
+					// Busca las 'palsClave' dentro de sus campos include
+					if (!prods[i].palsClave)
+						for (let campoInclude of camposInclude)
+							for (let campo in campoInclude)
+								if (
+									prod[campoInclude][campo] && // que tenga un valor
+									typeof prod[campoInclude][campo] == "string" &&
+									prod[campoInclude][campo].toLowerCase().includes(palabrasClave)
+								) {
+									prods[i].palsClave = true;
+									break;
+								}
+
+					// Si el producto no tiene las palsClave, lo elimina
+					if (!prods[i].palsClave) prods.splice(i, 1);
+				}
+
+				// Fin
+				return prods;
 			},
 			prodsConMisCalifs: async ({prods, usuario_id, layout}) => {
 				// Interrupciones de la función
@@ -555,27 +565,6 @@ module.exports = {
 				return prods;
 			},
 			// RCLVs
-			rclvsConPalsClave: ({rclvs, palabrasClave}) => {
-				if (!rclvs.length) return [];
-				if (!palabrasClave) return rclvs;
-
-				// Variables
-				let campos = ["nombre", "nombreAltern"];
-				palabrasClave = palabrasClave.toLowerCase();
-
-				// Rutina por rclv
-				for (let i = rclvs.length - 1; i >= 0; i--) {
-					// Variables
-					const rclv = rclvs[i];
-
-					// Rutina por campo: si encuentra las palsClave => le agrega al rclv el campo palsClave = true
-					for (let campo of campos)
-						if (rclv[campo] && rclv[campo].toLowerCase().includes(palabrasClave)) rclvs[i].palsClave = true;
-				}
-
-				// Fin
-				return rclvs;
-			},
 			rclvsConProds: ({rclvs, prods, palabrasClave, cantResults}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
@@ -592,8 +581,6 @@ module.exports = {
 
 					// Si el rclv no tiene productos, lo elimina
 					if (!rclvs[i].productos.length) rclvs.splice(i, 1);
-					// Si el usuario busca por 'palabrasClave' y ni el rclv ni sus productos la tienen, elimina el rclv
-					else if (palabrasClave && !rclv.palsClave && !rclv.productos.find((n) => n.palsClave)) rclvs.splice(i, 1);
 					// Acciones en caso contrario
 					else {
 						// Si el usuario busca por 'palabrasClave' y el rclv no las tiene, deja solamente los productos que las tienen
@@ -625,6 +612,41 @@ module.exports = {
 						// Aumenta el índice para analizar el siguiente registro
 						i++;
 					}
+				}
+
+				// Fin
+				return rclvs;
+			},
+			rclvsConPalsClave: ({rclvs, palabrasClave}) => {
+				if (!rclvs.length) return [];
+				if (!palabrasClave) return rclvs;
+
+				// Variables
+				palabrasClave = palabrasClave.toLowerCase();
+
+				// Rutina por rclv
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					// Variables
+					const rclv = rclvs[i];
+
+					// Busca las 'palsClave' dentro de sus campos simples
+					for (let campo in rclv)
+						if (rclv[campo] && rclv[campo].toLowerCase().includes(palabrasClave)) {
+							rclvs[i].palsClave = true;
+							break;
+						}
+
+					// Busca las 'palsClave' dentro de sus productos
+					if (!rclvs[i].palsClave)
+						for (let producto of productos)
+							for (let campo in producto)
+								if (typeof producto[campo] == "string" && producto[campo].toLowerCase().includes(palabrasClave)) {
+									rclvs[i].palsClave = true;
+									break;
+								}
+
+					// Si el rclv no tiene las palsClave, lo elimina
+					if (!rclvs[i].palsClave) rclvs.splice(i, 1);
 				}
 
 				// Fin
@@ -809,6 +831,19 @@ module.exports = {
 
 				// Fin
 				return rclvs;
+			},
+		},
+		descartaCapitulosSiColeccionPresente: {
+			prods: (resultados) => {
+				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
+				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+				return resultados;
+			},
+			rclvs: (rclvs) => {
+				for (let rclv of rclvs) {
+					const colecciones = rclvs.prods.filter((n) => n.entidad == "colecciones");
+					for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+				}
 			},
 		},
 	},
