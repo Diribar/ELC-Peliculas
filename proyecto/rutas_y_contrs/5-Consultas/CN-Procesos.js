@@ -115,9 +115,9 @@ module.exports = {
 				// Obtiene los productos
 				for (let entProd of entsProd)
 					productos.push(
-						baseDeDatos.obtieneTodosPorCondicion(entProd, condiciones, include).then((n) =>
-							n.map((m) => ({...m, entidad: entProd}))
-						)
+						baseDeDatos
+							.obtieneTodosPorCondicion(entProd, condiciones, include)
+							.then((n) => n.map((m) => ({...m, entidad: entProd})))
 					);
 				await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
 
@@ -236,7 +236,8 @@ module.exports = {
 						// Obtiene los registros
 						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
 						aux.push(
-							baseDeDatos.obtieneTodosPorCondicion(rclvEnt, condiciones, include)
+							baseDeDatos
+								.obtieneTodosPorCondicion(rclvEnt, condiciones, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
@@ -247,7 +248,8 @@ module.exports = {
 				// Rutina para un sólo RCLV
 				else {
 					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
-					rclvs = await baseDeDatos.obtieneTodosPorCondicion(entidad, condiciones, include)
+					rclvs = await baseDeDatos
+						.obtieneTodosPorCondicion(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
 				}
