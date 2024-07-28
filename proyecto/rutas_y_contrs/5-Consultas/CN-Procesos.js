@@ -325,13 +325,9 @@ module.exports = {
 
 					// Obtiene los registros y les agrega la entidadRCLV
 					registros.push(
-						baseDeDatos.obtieneTodosPorCondicion(entidadRCLV, condicion, includes).then((n) =>
-							n.map((m) => ({
-								...m,
-								entidad: entidadRCLV,
-								anoOcurrencia: m.anoNacim ? m.anoNacim : m.anoComienzo ? m.anoComienzo : null,
-							}))
-						)
+						baseDeDatos
+							.obtieneTodosPorCondicion(entidadRCLV, condicion, includes)
+							.then((n) => n.map((m) => ({...m, entidad: entidadRCLV})))
 					);
 				}
 				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
