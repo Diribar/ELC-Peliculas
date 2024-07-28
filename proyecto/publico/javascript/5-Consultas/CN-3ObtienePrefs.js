@@ -38,7 +38,7 @@ let actualizaConfigCons = {
 
 		// Redirige a la siguiente instancia
 		if (v.layout_id) {
-			const metodos = Object.keys(this).slice(3);
+			const metodos = Object.keys(this).slice(3); // saltea 'consolidado', 'layout', 'muestraOcultaBloques'
 			for (let metodo of metodos) this[metodo]();
 		}
 
@@ -157,7 +157,7 @@ let actualizaConfigCons = {
 	canons: () => {
 		// Sólo se muestra si se cumplen ciertas condiciones
 		const seMuestra =
-			DOM.cfc.value == "1" && // se eligió 'con relación con la Iglesia Católica'
+			prefs.cfc == "1" && // se eligió 'con relación con la Iglesia Católica'
 			["productos", "rclvs", "personajes"].includes(v.entidad) && // la entidad es alguna de esas
 			DOM.bhr.value !== "0"; // no hay certeza de que sea ficticio
 
