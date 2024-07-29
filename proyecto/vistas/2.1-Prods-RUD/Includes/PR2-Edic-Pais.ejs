@@ -4,7 +4,7 @@
 		<!-- Lugar donde almacenar los ID -->
 		<input name="paises_id" type="text" value="<%= registro.paises_id %>" class="ocultar input">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" value="<%= paisesNombre %>" readonly tabindex="-1" placeholder="Elegí un país">
+		<div id="mostrarPaises" class="flexRowAlign" data-text="Elegí un país"><%= paisesNombre ? paisesNombre : "" %></div>
 		<!-- Opciones de países -->
 		<select>
 			<option value="borrar">Borrar todo/s</option>

@@ -183,7 +183,10 @@ window.addEventListener("load", async () => {
 			const comparativa = version.edicG_existe ? version.edicG : version.orig;
 			let sonIguales = true;
 			for (let campoNombre of v.camposNombre)
-				if (version.edicN[campoNombre] != comparativa[campoNombre] && (version.edicN[campoNombre] || comparativa[campoNombre]))
+				if (
+					version.edicN[campoNombre] != comparativa[campoNombre] && // son distintos
+					(version.edicN[campoNombre] || comparativa[campoNombre]) // alguno tiene un valor significativo
+				)
 					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
@@ -258,7 +261,9 @@ window.addEventListener("load", async () => {
 				if (input.checked) v.estamosEnEdicNueva ? input.classList.remove("inactivar") : input.classList.add("inactivar");
 
 				if (input.name == "paises_id") {
-					DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
+					v.estamosEnEdicNueva
+						? DOM.paisesMostrar.style.removeProperty("background-color") // quita el color establecido por js
+						: (DOM.paisesMostrar.style.backgroundColor = "var(--amarillo-claro) !important"); // cambia el color
 					DOM.paisesSelect.disabled = !v.estamosEnEdicNueva;
 				}
 			}
@@ -278,7 +283,7 @@ window.addEventListener("load", async () => {
 				});
 			}
 			// Convertir array en string
-			DOM.paisesMostrar.value = paisesNombre.join(", ");
+			DOM.paisesMostrar.innerHTML = paisesNombre.join(", ");
 			// Fin
 			return;
 		},
@@ -304,7 +309,7 @@ window.addEventListener("load", async () => {
 			// Verificar si figura en paisesID
 			if (paisID == "borrar") {
 				DOM.paisesSelect.value = "";
-				DOM.paisesMostrar.value = "";
+				DOM.paisesMostrar.innerHTML = "";
 				DOM.paisesID.value = "";
 				return;
 			}

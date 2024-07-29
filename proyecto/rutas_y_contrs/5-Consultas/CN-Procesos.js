@@ -103,7 +103,7 @@ module.exports = {
 				if (layout.codigo == "anoEstreno") include.push("epocaEstreno");
 				if (layout.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
 				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
-				if (layout.codigo == "apMar") include.push("hecho");
+				if (prefs.apMar) include.push("hecho");
 
 				// Condiciones
 				const filtros = this.filtros(prefs);
@@ -163,11 +163,35 @@ module.exports = {
 				const {apMar, rolesIgl, canons, entidad, cfc} = prefs;
 
 				// Filtros generales
-				if (rolesIgl || canons) resultados = resultados.filter((n) => n.personaje_id > 10);
-				if (apMar) resultados = resultados.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+				if (rolesIgl || canons) {
+					// Quita los personajes menores que 11
+					resultados = resultados.filter((n) => n.personaje_id > 10);
+
+					// Filtra por rolesIgl
+					if (rolesIgl)
+						resultados =
+							rolesIgl == "RS"
+								? resultados.filter((n) => ["RE", "SC"].some((m) => n.personaje.rolIglesia_id.startsWith(m)))
+								: resultados.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
+
+					// Filtra por canons
+					if (canons)
+						resultados =
+							canons == "SB"
+								? resultados.filter((n) => ["ST", "BT"].some((m) => n.personaje.canon_id.startsWith(m))) // Santos y Beatos
+								: canons == "VS"
+								? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
+								: canons == "TD"
+								? resultados.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
+								: resultados.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
+				}
 
 				// Filtra por apMar
-				if (apMar)
+				if (apMar) {
+					// Quita los personajes y hechos menores que 11
+					resultados = resultados.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+
+					// Ajustes más finos
 					resultados =
 						apMar == "SI"
 							? resultados.filter(
@@ -176,24 +200,7 @@ module.exports = {
 							: resultados.filter(
 									(n) => (n.personaje && n.personaje.apMar_id == 10) || (n.hecho && n.hecho.ama == 0)
 							  );
-
-				// Filtra por rolesIgl
-				if (rolesIgl)
-					resultados =
-						rolesIgl == "RS"
-							? resultados.filter((n) => ["RE", "SC"].some((m) => n.personaje.rolIglesia_id.startsWith(m)))
-							: resultados.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
-
-				// Filtra por canons
-				if (canons)
-					resultados =
-						canons == "SB"
-							? resultados.filter((n) => ["ST", "BT"].some((m) => n.personaje.canon_id.startsWith(m))) // Santos y Beatos
-							: canons == "VS"
-							? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
-							: canons == "TD"
-							? resultados.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
-							: resultados.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
+				}
 
 				// cfc / vpc
 				if (cfc) resultados = resultados.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
@@ -325,13 +332,9 @@ module.exports = {
 
 					// Obtiene los registros y les agrega la entidadRCLV
 					registros.push(
-						baseDeDatos.obtieneTodosPorCondicion(entidadRCLV, condicion, includes).then((n) =>
-							n.map((m) => ({
-								...m,
-								entidad: entidadRCLV,
-								anoOcurrencia: m.anoNacim ? m.anoNacim : m.anoComienzo ? m.anoComienzo : null,
-							}))
-						)
+						baseDeDatos
+							.obtieneTodosPorCondicion(entidadRCLV, condicion, includes)
+							.then((n) => n.map((m) => ({...m, entidad: entidadRCLV})))
 					);
 				}
 				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
@@ -562,7 +565,7 @@ module.exports = {
 				return prods;
 			},
 			// RCLVs
-			rclvsConProds: ({rclvs, prods, palabrasClave, cantResults}) => {
+			rclvsConProds: ({rclvs, prods, cantResults}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
