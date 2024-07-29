@@ -64,9 +64,9 @@ module.exports = {
 			if (req.session.usuario && req.session.usuario.id) {
 				datos.userID = req.session.usuario.id;
 				datos.videoConsVisto = req.session.usuario.videoConsVisto;
-				datos.usuarioTienePPP = await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {
-					usuario_id: datos.userID,
-				}).then((n) => n.length);
+				datos.usuarioTienePPP = await baseDeDatos
+					.obtieneTodosPorCondicion("pppRegistros", {usuario_id: datos.userID})
+					.then((n) => n.length);
 			}
 
 			// Fin
@@ -196,9 +196,7 @@ module.exports = {
 		// Obtiene los productos, rclvs y registros ppp del usuario
 		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...prefs, layout});
-		let pppRegistros = usuario_id
-			? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle")
-			: [];
+		let pppRegistros = usuario_id ? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle") : [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);
 
 		// Cruces que siempre se deben realizar
@@ -207,19 +205,21 @@ module.exports = {
 		// Acciones varias
 		if (entidad == "productos") {
 			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
-			prods = procesos.resultados.cruce.prodsConPalsClave({entidad, prods, palabrasClave});
+			prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave});
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, layout});
 			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, layout});
 			prods = procesos.resultados.orden.prods({prods, layout}); // Ordena los productos
 			prods = procesos.resultados.botonesListado({resultados: prods, layout, prefs});
 			prods = procesos.resultados.camposNecesarios.prods({prods, layout}); // Deja sólo los campos necesarios
+			prods = procesos.resultados.descartaCapitulosSiColeccionPresente.prods(prods);
 			return res.json(prods);
 		} else {
-			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, palabrasClave, cantResults}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.orden.rclvs({rclvs, layout}); // Si quedaron vigentes algunos RCLV, los ordena
 			rclvs = procesos.resultados.botonesListado({resultados: rclvs, layout, prefs});
 			rclvs = procesos.resultados.camposNecesarios.rclvs(rclvs); // Deja sólo los campos necesarios
+			rclvs = procesos.resultados.descartaCapitulosSiColeccionPresente.rclvs(rclvs);
 			return res.json(rclvs);
 		}
 	},

@@ -402,7 +402,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-		if (layout == "nombre") {
+		if (["nombre", "catalogo"].includes(layout)) {
 			// Variables
 			const nombreAnt = v.registroAnt.nombre ? v.registroAnt.nombre : v.registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
