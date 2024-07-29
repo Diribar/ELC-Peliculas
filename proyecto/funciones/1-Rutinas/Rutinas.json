@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 28/jul",
-	"HoraUTC": "12:01",
+	"FechaUTC": "Lun. 29/jul",
+	"HoraUTC": "16:40",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 22/jul",
-	"HoraSemUTC": "10:56",
-	"semanaUTC": 30,
+	"FechaSemUTC": "Lun. 29/jul",
+	"HoraSemUTC": "16:40",
+	"semanaUTC": 31,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-jul-24": {},
 		"27-jul-24": {},
 		"28-jul-24": {"leyenda": "Hoy recordamos a san Pedro Poveda", "entidad": "personajes", "id": 134},
 		"29-jul-24": {},
-		"30-jul-24": {"leyenda": "Hoy recordamos Leopoldo Mandic de Castelnuovo", "entidad": "personajes", "id": 189}
+		"30-jul-24": {"leyenda": "Hoy recordamos Leopoldo Mandic de Castelnuovo", "entidad": "personajes", "id": 189},
+		"31-jul-24": {"leyenda": "Hoy recordamos a san Ignacio de Loyola", "entidad": "personajes", "id": 75}
 	}
 }
