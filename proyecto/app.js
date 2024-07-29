@@ -143,7 +143,7 @@ app.set("views", [
 
 		// Variables de productos
 		idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
-		paises: baseDeDatos.obtieneTodosConOrden("paises", "nombre"),
+		paises: baseDeDatos.obtieneTodos("paises", "cantProds").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
 		publicos: baseDeDatos.obtieneTodosConOrden("publicos", "orden"),
 		tiposActuacion: baseDeDatos.obtieneTodosConOrden("tiposActuacion", "orden"),
 		epocasEstreno: baseDeDatos.obtieneTodosConOrden("epocasEstreno", "hasta", "DESC"),
@@ -161,7 +161,9 @@ app.set("views", [
 		hoyEstamos: baseDeDatos.obtieneTodosConOrden("hoyEstamos", "nombre"),
 
 		// Variables de links
-		linksProvs: baseDeDatos.obtieneTodosConOrden("linksProvs", "cantLinks", "DESC"), // orden descendente
+		linksProvs: baseDeDatos
+			.obtieneTodos("linksProvs", "cantLinks")
+			.then((n) => n.sort((a, b) => b.cantLinks.cantidad - a.cantLinks.cantidad)),
 		linksTipos: baseDeDatos.obtieneTodos("linksTipos"),
 
 		// Consultas

@@ -31,7 +31,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		console.log();
 		// await this.rutinasHorarias.feedbackParaUsers();
-		// await this.rutinasDiarias.qqq();
+		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
 		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
@@ -509,13 +509,13 @@ module.exports = {
 			// Variables
 			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.todos, "usuarios"];
-			let regsVinculados = {};
-			let datos = [];
+			let idsPorEntidad = {};
+			let aux = [];
 
 			// Obtiene los registros por entidad
-			for (let entidad of entidades) datos.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-			datos = await Promise.all(datos);
-			entidades.forEach((entidad, i) => (regsVinculados[entidad] = datos[i])); // de un array de arrays, los convierte en un objeto de arrays
+			for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+			aux = await Promise.all(aux);
+			entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
 
 			// Elimina historial
 			for (let tabla of tablas) {
@@ -524,7 +524,7 @@ module.exports = {
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (!regsVinculados[regHistorial.entidad].includes(regHistorial.entidad_id))
+					if (!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id))
 						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
 			}
 
@@ -552,9 +552,9 @@ module.exports = {
 
 			// Actualiza la frecuencia por país
 			paises.forEach((pais, i) => {
-				const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds = cantProds;
-				baseDeDatos.actualizaPorId("paises", pais.id, {cantProds});
+				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
+				paises[i].cantProds.cantidad = cantidad;
+				baseDeDatos.actualizaTodosPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
 			});
 
 			// Fin
@@ -566,8 +566,8 @@ module.exports = {
 
 			// Links por proveedor
 			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
-				let cantLinks = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				baseDeDatos.actualizaPorId("linksProvs", linkProv.id, {cantLinks});
+				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
+				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
 			}
 
 			// Fin
