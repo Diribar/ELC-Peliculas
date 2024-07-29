@@ -365,7 +365,7 @@ module.exports = {
 					  ext.slice(1).toUpperCase() +
 					  "'. Las extensiones válidas son JPG, JPEG y PNG"
 					: tamano && tamano > tamMaxImagen // Valida el tamaño
-					? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
+					? "El archivo tiene " + Math.ceil(tamano / tamMaxImagen * 100) / 100 + " MB. Necesitamos que no supere 1 MB"
 					: ""
 				: imgOpcional == "NO" || imgOpcional === false // Mensajes si no existe un avatar
 				? "Necesitamos que agregues una imagen"
