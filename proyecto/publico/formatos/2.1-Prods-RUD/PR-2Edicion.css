@@ -40,9 +40,9 @@
 						label {margin-right: 20px; font-weight: bold;}
 						.inputError {
 							display: flex; flex-direction: row; margin-left: 5px; width: 100%;
-							:is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
+							:is(.input, #mostrarPaises) {border-radius: 5px; border: .7px var(--gris-oscuro) solid; color: black;}
 							.ayuda {right: -5px;}
-							.input {align-self: center;}
+							.input {align-self: center; background: white;}
 							.input.numero {text-align: right;}
 							input {padding: 0px 5px;}
 							select {padding: 0;}
@@ -67,9 +67,9 @@
 						&#paises_id {
 							align-items: center;
 							.inputError {
-								:is(input#mostrarPaises, select) {position: absolute; top: 0; translate: 0 -50%; height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-								input#mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px;}
-								select {width: 100%; padding: 0;}
+								:is(#mostrarPaises, select) {position: absolute; top: 0; translate: 0 -50%; height: 18px; border-radius: 5px;}
+								#mostrarPaises {max-width: 180px; width: 100%; padding: 0 5px; background-color: var(--gris-claro); border-top-right-radius: 0; border-bottom-right-radius: 0;}
+								select {width: 100%; padding: 0; border-top-left-radius: 0; border-bottom-left-radius: 0;}
 							}
 						}
 					}
