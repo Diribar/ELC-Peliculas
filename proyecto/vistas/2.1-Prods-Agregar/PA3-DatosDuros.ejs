@@ -9,7 +9,7 @@
 		<!-- Links a otras páginas de consulta -->
 		<div class="flexCol" id="links">
 			<p>Si necesitás consultar algún dato</p>
-			<nav class="flexRow">
+			<nav class="flexRow scaleChildren">
 				<!-- TMDB -->
 				<% tmdb = dataEntry.nombreOriginal ? "search?language=es&query=" + dataEntry.nombreOriginal : "" %>
 				<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank" tabindex="-1">

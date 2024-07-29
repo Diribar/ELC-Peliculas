@@ -38,15 +38,15 @@ window.addEventListener("load", async () => {
 		}
 		// Palabras clave
 		else if (nombre == "palabrasClave") {
-			// Restringe el uso de caracteres a los aceptados
-			basico.restringeCaracteres(e, true);
-
 			// Valida los caracteres ingresados
-			const nombre = DOM.palClave.value;
-			const errores = nombre.length ? basico.validaCaracteres(nombre) : false;
+			const palabrasClave = DOM.palClaveInput.value;
+			const errores = palabrasClave.length ? basico.validaCaracteres(palabrasClave) : false;
 
-			// Activa/Inactiva el ícono de confirmación
-			errores ? DOM.palClaveAprob.classList.add("inactivo") : DOM.palClaveAprob.classList.remove("inactivo");
+			// Acciones
+			DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+			palabrasClave.length && !errores
+				? DOM.palClaveIcono.classList.add("fa-circle-right") // si se puede confirmar
+				: DOM.palClaveIcono.classList.remove("fa-circle-right"); // si no se puede confirmar
 
 			// Fin
 			return;
@@ -56,6 +56,45 @@ window.addEventListener("load", async () => {
 			// Reemplaza entre las opciones sin valor
 			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 			await estandarParaInputs();
+		}
+
+		// Fin
+		return;
+	});
+	DOM.cuerpo.addEventListener("keydown", async (e) => {
+		// Variables
+		const elemento = e.target;
+		const padre = elemento.parentNode;
+		const nombre = elemento.id ? elemento.id : padre.id;
+
+		// Particularidades para 'palabrasClave'
+		if (nombre == "palabrasClave") {
+			// Tecla 'Enter'
+			if (e.key == "Enter") {
+				// Si está habilitado para confirmar
+				if (DOM.palClaveIcono.className.includes("fa-circle-right")) {
+					DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
+					await estandarParaInputs();
+				}
+				// Si se cancelan las 'palabrasClave'
+				else if (DOM.palClaveIcono.className.includes("fa-circle-xmark")) {
+					DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+					DOM.palClaveInput.value = "";
+					await estandarParaInputs();
+				}
+			}
+
+			// Restringe el uso de caracteres a los aceptados
+			else if (basico.validaCaracteres(e.key)) e.preventDefault();
+		}
+
+		// Teclas - Enter
+		if (e.key == "Enter" && nombre == "configNueva") await guardarBotonera();
+		// Teclas - Escape
+		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n))) {
+			DOM.configNuevaNombre.classList.remove("nuevo", "edicion"); // Oculta el input
+			v.nombreOK = false; // Variables
+			actualiza.botoneraActivaInactiva(); // Actualiza la botonera
 		}
 
 		// Fin
@@ -108,8 +147,14 @@ window.addEventListener("load", async () => {
 		}
 
 		// Filtros - 'palabrasClave'
-		else if (nombre == "palClaveAprob") {
-			DOM.palClaveAprob.classList.add("inactivo");
+		else if (nombre == "palClaveIcono") {
+			if (DOM.palClaveIcono.className.includes("fa-circle-xmark")) {
+				DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+				DOM.palClaveInput.value = "";
+			} else if (DOM.palClaveIcono.className.includes("fa-circle-right"))
+				DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
+
+			// Actualiza el input
 			await estandarParaInputs();
 
 			// Fin
@@ -267,30 +312,6 @@ window.addEventListener("load", async () => {
 			if (!seHicieronCambios) DOM.vistaDeResults.classList.remove("toggle");
 		}
 	});
-	DOM.cuerpo.addEventListener("keydown", async (e) => {
-		// Variables
-		const elemento = e.target;
-		const padre = elemento.parentNode;
-		const nombre = elemento.id ? elemento.id : padre.id;
-
-		// Teclas - Enter
-		if (e.key == "Enter") {
-			if (nombre == "palabrasClave") {
-				DOM.palClaveAprob.classList.add("inactivo");
-				await estandarParaInputs();
-			} else if (nombre == "configNueva") await guardarBotonera();
-		}
-
-		// Teclas - Escape
-		else if (e.key == "Escape" && DOM.configNuevaNombre.className.split(" ").some((n) => ["nuevo", "edicion"].includes(n))) {
-			DOM.configNuevaNombre.classList.remove("nuevo", "edicion"); // Oculta el input
-			v.nombreOK = false; // Variables
-			actualiza.botoneraActivaInactiva(); // Actualiza la botonera
-		}
-
-		// Fin
-		return;
-	});
 });
 // Funciones
 let guardarBotonera = async () => {
@@ -313,7 +334,7 @@ let guardarBotonera = async () => {
 	await cambiosEnBD.guardaConfig();
 
 	// Acciones particulares
-	if (v.nuevo || v.propio) DOM.palClaveAprob.classList.add("inactivo");
+	if (v.nuevo || v.propio) DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
 	if (v.nuevo) await actualiza.valoresInicialesDeVariables();
 	if (v.propio) v.hayCambiosDeCampo = false;
 

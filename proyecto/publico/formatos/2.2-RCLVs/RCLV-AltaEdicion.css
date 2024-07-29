@@ -45,10 +45,10 @@
 							}
 						}
 						#sectorFecha {
+							:is(select[name="tipoFecha"], select[name="dia"], select[name="anoFM"], #inputDias) {margin-left: 15px;}
 							h3 {align-self: flex-start; margin-top: 1px;}
-							:is(select[name=tipoFecha], select[name=dia], select[name=anoFM], #inputDias) {margin-left: 15px;}
-							nav {
-								margin-left: 10px; width: 50px;
+							#mesDia nav#logos {
+								margin-left: 10px; width: 50px; justify-content: space-between;
 								&:has(a[href=""]) {display: none;}
 								a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
 							}

@@ -15,10 +15,10 @@ window.addEventListener("load", () => {
 
 	// Comparaciones de ratio
 	// 1. Mejor imagen nueva
-	if (imagenNueva.ratio > imagenActual.ratio && !imagenActual.ratioAdecuado) resultados[0].push("Mejor relación de alto/ancho");
+	const altoAncho = "Mejor relación de alto y ancho";
+	if (imagenNueva.ratio > imagenActual.ratio && !imagenActual.ratioAdecuado) resultados[0].push(altoAncho);
 	// 2. Mejor imagen actual
-	else if (imagenActual.ratio > imagenNueva.ratio && !imagenNueva.ratioAdecuado)
-		resultados[1].push("Mejor relación de alto/ancho");
+	else if (imagenActual.ratio > imagenNueva.ratio && !imagenNueva.ratioAdecuado) resultados[1].push(altoAncho);
 
 	// Comparaciones de calidad
 	if (imagenNueva.alto > imagenActual.alto && imagenActual.alto < 700) resultados[0].push("Mayor tamaño");

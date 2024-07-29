@@ -243,7 +243,7 @@ let opcsLeyNombrePers = {
 		if (!genero) return [];
 
 		// Canon
-		if (nombre == registro.nombre && rolIglesia_id != "PP") opciones.push(this.canonAlPrinc(nombre, registro, genero));
+		if (rolIglesia_id != "PP") opciones.push(this.canonAlPrinc(nombre, registro, genero));
 		opciones.push(...this.canonAlFinal(nombre, registro, genero));
 
 		// Fin
@@ -275,7 +275,8 @@ let opcsLeyNombrePers = {
 
 		// Singular
 		frase += (rolIglesia_id == "PP" ? "al papa " : "a ") + nombre;
-		if (frase.startsWith("a El")) frase = frase.replace("a El", "al");
+		if (frase.startsWith("a El ")) frase = frase.replace("a El ", "al ");
+		if (frase.startsWith("a La ")) frase = frase.replace("a La ", "a la ");
 		if (canon) frase += ", " + canon;
 		opciones.push(frase);
 
