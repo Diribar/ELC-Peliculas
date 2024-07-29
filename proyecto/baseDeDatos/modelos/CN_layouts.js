@@ -9,7 +9,6 @@ module.exports = (sequelize, dt) => {
 		ascDes: {type: dt.STRING(6)},
 		boton: {type: dt.INTEGER},
 		loginNeces: {type: dt.BOOLEAN},
-		caps: {type: dt.BOOLEAN},
 		activo: {type: dt.BOOLEAN},
 		ayuda: {type: dt.STRING(60)},
 	};
