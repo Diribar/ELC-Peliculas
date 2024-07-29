@@ -261,7 +261,6 @@ window.addEventListener("load", async () => {
 				if (input.checked) v.estamosEnEdicNueva ? input.classList.remove("inactivar") : input.classList.add("inactivar");
 
 				if (input.name == "paises_id") {
-					// DOM.paisesMostrar.disabled = !v.estamosEnEdicNueva;
 					v.estamosEnEdicNueva
 						? DOM.paisesMostrar.style.removeProperty("background-color") // quita el color establecido por js
 						: (DOM.paisesMostrar.style.backgroundColor = "var(--amarillo-claro) !important"); // cambia el color
