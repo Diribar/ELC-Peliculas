@@ -169,32 +169,6 @@ module.exports = {
 
 	// Rutinas
 	rutinasHorarias: {
-		prodAprobEnLink: async () => {
-			// Obtiene todos los links con su producto asociado
-			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
-
-			// Actualiza su valor
-			comp.prodAprobEnLink(links);
-
-			// Fin
-			return;
-		},
-		prodsEnRCLV: async () => {
-			// Obtiene las entidadesRCLV
-			const entidadesRCLV = variables.entidades.rclvs;
-
-			// Rutina por entidad
-			for (let entidad of entidadesRCLV) {
-				// Obtiene los ID de los registros de la entidad
-				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
-
-				// Rutina por ID: ejecuta la función prodsEnRCLV
-				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
-			}
-
-			// Fin
-			return;
-		},
 		feedbackParaUsers: async () => {
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -705,6 +679,32 @@ module.exports = {
 					.then((n) => n.map((m) => m.id));
 				for (let id of IDs) await comp.linksEnColec(id);
 			});
+
+			// Fin
+			return;
+		},
+		prodAprobEnLink: async () => {
+			// Obtiene todos los links con su producto asociado
+			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
+
+			// Actualiza su valor
+			comp.prodAprobEnLink(links);
+
+			// Fin
+			return;
+		},
+		prodsEnRCLV: async () => {
+			// Obtiene las entidadesRCLV
+			const entidadesRCLV = variables.entidades.rclvs;
+
+			// Rutina por entidad
+			for (let entidad of entidadesRCLV) {
+				// Obtiene los ID de los registros de la entidad
+				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+
+				// Rutina por ID: ejecuta la función prodsEnRCLV
+				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
+			}
 
 			// Fin
 			return;
