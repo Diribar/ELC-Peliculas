@@ -4,6 +4,7 @@ window.addEventListener("load", async () => {
 	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
 	const grafico = document.querySelector("#cuadro #grafico");
 	const revision = location.pathname.includes("/revision");
+	if (!algunosDatos || !grafico || !revision) return;
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());

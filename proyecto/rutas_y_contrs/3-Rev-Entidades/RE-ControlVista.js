@@ -51,12 +51,13 @@ module.exports = {
 
 		// Obtiene información para la vista
 		const dataEntry = req.session.tableros && req.session.tableros.entidades ? req.session.tableros.entidades : {};
+		const mostrarRclvs = Object.values(rclvs).reduce((acum, i) => acum + i.length, 0);
 
 		// Va a la vista
 		//return res.send(prodsRclvs);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Entidades"},
-			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry},
+			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry, mostrarRclvs},
 		});
 	},
 	// Tablero de mantenimiento
