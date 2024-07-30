@@ -11,7 +11,7 @@
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
-	"RutinasHorarias": ["prodAprobEnLink", "linksEnProd", "prodsEnRCLV", "feedbackParaUsers", "productosAlAzar"],
+	"RutinasHorarias": ["prodAprobEnLink", "prodsEnRCLV", "feedbackParaUsers", "productosAlAzar"],
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que alcanza o se necesita que sea diaria",
 	"MotivoDiarias3": "Est☺adísticas que alcanza con que se actualicen en forma diaria",
@@ -40,7 +40,8 @@
 		"rclv_idEnCapitulos": "SI",
 		"rclvsSinEpocaPSTyConAno": "SI",
 		"eliminaLoginsAcumsRepetidos": "SI",
-		"eliminaRegsHistStatusIncorrectos": "SI"
+		"eliminaRegsHistStatusIncorrectos": "SI",
+		"linksEnProd": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {

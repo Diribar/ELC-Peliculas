@@ -179,31 +179,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		linksEnProd: async () => {
-			// Variables
-			let esperar = [];
-
-			// Rutina por peliculas y capitulos
-			for (let entidad of ["peliculas", "capitulos"]) {
-				// Obtiene los ID de los registros de la entidad
-				const IDs = await baseDeDatos
-					.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids})
-					.then((n) => n.map((m) => m.id));
-
-				// Ejecuta la función linksEnProd
-				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
-			}
-			await Promise.all(esperar);
-
-			// Rutina por colecciones
-			const IDs = await baseDeDatos
-				.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
-				.then((n) => n.map((m) => m.id));
-			for (let id of IDs) comp.linksEnColec(id);
-
-			// Fin
-			return;
-		},
 		prodsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
@@ -706,6 +681,32 @@ module.exports = {
 		eliminaRegsHistStatusIncorrectos: async () => {
 			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
 			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
+			return;
+		},
+		linksEnProd: async () => {
+			// Variables
+			let esperar = [];
+			let IDs;
+
+			// Rutina por peliculas y capitulos
+			for (let entidad of ["peliculas", "capitulos"]) {
+				// Obtiene los ID de los registros de la entidad
+				IDs = await baseDeDatos
+					.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids})
+					.then((n) => n.map((m) => m.id));
+
+				// Ejecuta la función linksEnProd
+				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
+			}
+			await Promise.all(esperar).then(async () => {
+				// Rutina por colecciones
+				IDs = await baseDeDatos
+					.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
+					.then((n) => n.map((m) => m.id));
+				for (let id of IDs) await comp.linksEnColec(id);
+			});
+
+			// Fin
 			return;
 		},
 	},
