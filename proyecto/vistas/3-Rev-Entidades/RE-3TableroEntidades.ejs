@@ -44,12 +44,12 @@
 					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prodsRclvs.IN, url: rp + "inactivar"}) %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prodsRclvs.RC, url: rp + "recuperar"}) %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt}) %>
 				<% } %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: ed}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: ed}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: rp + "alta"}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: rp + "alta"}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: !revisorPERL ? dt : ed}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: !revisorPERL ? dt : ed}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: !revisorPERL ? dt : (rp + "alta")}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta")}) %>
 				<% if (revisorPERL) { %>
 				<% } %>
 			</div>
