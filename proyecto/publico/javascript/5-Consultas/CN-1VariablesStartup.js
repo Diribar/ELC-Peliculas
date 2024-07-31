@@ -72,17 +72,6 @@ window.addEventListener("load", async () => {
 		// Otros
 		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
-	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
-	for (let campo of DOM.selects) DOM[campo.name] = campo;
-
-	// Variables - Títulos botonera
-	titulo = {
-		nuevo: DOM.nuevo.title,
-		deshacer: DOM.deshacer.title,
-		guardar: DOM.guardar.title,
-		edicion: DOM.edicion.title,
-		eliminar: DOM.eliminar.title,
-	};
 
 	// Variables - General
 	v = {
@@ -93,7 +82,15 @@ window.addEventListener("load", async () => {
 		enCast: "enCast",
 		muestraFiltros: false,
 		contadorDeMostrarResults: 0,
+		titulo: {},
 	};
+
+	// Variables de botonera
+	for (let icono of DOM.iconosBotonera) {
+		DOM[icono.id] = icono;
+		v.titulo[icono.id] = icono.title;
+	}
+	for (let campo of DOM.selects) DOM[campo.name] = campo;
 
 	// Start-up
 	await cambioDeConfig_id("start-up");
@@ -104,4 +101,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let DOM, v, cabecera, prefs, titulo;
+let DOM, v, cabecera, prefs;
