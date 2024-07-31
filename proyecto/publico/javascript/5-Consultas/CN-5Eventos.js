@@ -112,9 +112,14 @@ window.addEventListener("load", async () => {
 		else if (padre.id == "iconosBotonera") {
 			if (false) {
 			} else if (nombre == "sinFiltros") {
-				// await actualiza.valoresInicialesDeVariables();
-				// await actualiza.statusInicialCampos("deshacer");
-				await cambioDePrefs();
+				// Quita los filtros de los campos
+				for (let campo of v.camposConDefault) DOM[campo].value = "todos";
+				for (let campo of v.camposSinDefault) DOM[campo].value = "";
+
+				// Actualiza los resultados
+
+				// Actualiza la botonera
+
 			} else if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
