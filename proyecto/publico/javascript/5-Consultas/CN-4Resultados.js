@@ -402,7 +402,7 @@ let auxiliares = {
 			// Fin
 			if (titulo) titulo += " Trimestre";
 		}
-		if (["nombre", "catalogo"].includes(layout)) {
+		if (["nombre", "catalogoNombre"].includes(layout)) {
 			// Variables
 			const nombreAnt = v.registroAnt.nombre ? v.registroAnt.nombre : v.registroAnt.nombreCastellano;
 			const nombreActual = registroAct.nombre ? registroAct.nombre : registroAct.nombreCastellano;
@@ -468,7 +468,7 @@ let auxiliares = {
 			// Resultado
 			if (nombreAnt != nombreActual) titulo = nombreActual;
 		}
-		if (layout == "anoEstreno") {
+		if (layout == "catalogoEstreno") {
 			// Variables
 			const nombreAnt = v.registroAnt.epocaEstreno;
 			const nombreActual = registroAct.epocaEstreno;

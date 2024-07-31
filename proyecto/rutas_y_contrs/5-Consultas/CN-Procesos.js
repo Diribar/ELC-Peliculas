@@ -100,7 +100,7 @@ module.exports = {
 				// Includes
 				let include = [];
 				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
-				if (layout.codigo == "anoEstreno") include.push("epocaEstreno");
+				if (layout.codigo == "catalogoEstreno") include.push("epocaEstreno");
 				if (layout.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
 				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
 				if (prefs.apMar) include.push("hecho");
@@ -679,8 +679,10 @@ module.exports = {
 				// Variables
 				const campo = false
 					? false
-					: ["nombre", "catalogo"].includes(layout.codigo)
+					: ["nombre", "catalogoNombre"].includes(layout.codigo)
 					? "nombreCastellano"
+					: layout.codigo == "catalogoEstreno"
+					? "anoEstreno"
 					: layout.codigo == "misCalificadas"
 					? "calificacion"
 					: layout.codigo == "misConsultas"
@@ -771,14 +773,15 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, ppp, avatar, cfc} = prod;
+					const {entidad, id, nombreCastellano, ppp, avatar, cfc, epocaEstreno, coleccion_id} = prod;
 					let {direccion, anoEstreno} = prod;
 					if (!direccion) direccion = "desconocido";
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
 					let datosProd = {entidad, id, nombreCastellano, ppp};
 					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
 					if (Object.keys(prod).includes("calificacion")) datosProd.calificacion = prod.calificacion;
-					if (prod.epocaEstreno) datosProd.epocaEstreno = prod.epocaEstreno.nombre;
+					if (epocaEstreno) datosProd.epocaEstreno = epocaEstreno.nombre;
+					if (coleccion_id) datosProd.coleccion_id = coleccion_id;
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));

@@ -6,10 +6,10 @@ module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
 	obtieneColCap: async (req, res) => {
 		const {entidad, id} = req.query;
-		const objeto = {coleccion_id: id, temporada: 1, capitulo: 1};
+		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
 		const ID =
 			entidad == "colecciones"
-				? await baseDeDatos.obtienePorCondicion("capitulos", objeto).then((n) => n.id)
+				? await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => n.id)
 				: await baseDeDatos.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 
 		// Fin
@@ -28,14 +28,14 @@ module.exports = {
 		else {
 			// Obtiene el último número de capítulo de la temporada anterior
 			tempAnt = temporada - 1;
-			const objeto = {coleccion_id, temporada: tempAnt};
-			capAnt = await baseDeDatos.maxValorPorCondicion("capitulos", objeto, "capitulo");
+			const condicion = {coleccion_id, temporada: tempAnt};
+			capAnt = await baseDeDatos.maxValorPorCondicion("capitulos", condicion, "capitulo");
 		}
 
 		// Obtiene la temporada y capítulo posteriores
-		let objeto = {coleccion_id, temporada};
-		let [ultCap, ultTemp] = await Promise.all([
-			baseDeDatos.maxValorPorCondicion("capitulos", objeto, "capitulo"), // Último número de capítulo de la temporada actual
+		const condicion = {coleccion_id, temporada, statusRegistro_id: activos_ids};
+		const [ultCap, ultTemp] = await Promise.all([
+			baseDeDatos.maxValorPorCondicion("capitulos", condicion, "capitulo"), // Último número de capítulo de la temporada actual
 			baseDeDatos.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps), // Último número de temporada de la colección
 		]);
 		let tempPost = temporada;
