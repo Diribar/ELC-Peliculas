@@ -88,7 +88,6 @@ module.exports = {
 		},
 		envioParaSession: async (req, res) => {
 			if (req.query.avatar) delete req.query.avatar;
-			console.log(91, req.query);
 			req.session.edicProd = req.query;
 			res.cookie("edicProd", req.query, {maxAge: unDia});
 			return res.json();
