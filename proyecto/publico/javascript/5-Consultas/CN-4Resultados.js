@@ -16,7 +16,7 @@ let resultados = {
 		v.resultados = null;
 
 		// Acciones si el usuario no está logueado y es requerido
-		if (!v.userID && v.layoutBD.loginNeces) {
+		if (!v.userID && v.layoutBD.grupo == "loginNeces") {
 			DOM.loginNecesario.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
@@ -44,7 +44,7 @@ let resultados = {
 		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
-		if (v.resultados && !v.layoutBD.boton) this.contador();
+		if (v.resultados && v.layoutBD.grupo != "boton") this.contador();
 
 		// Fin
 		return;
@@ -57,7 +57,7 @@ let resultados = {
 		// Contador para Productos
 		if (v.entidad == "productos") {
 			// Contador para vista 'botones'
-			if (v.layoutBD.boton) return;
+			if (v.layoutBD.grupo == "boton") return;
 
 			// Contador para 'Todos los productos'
 			DOM.contadorDeProds.innerHTML = total;
@@ -97,7 +97,7 @@ let resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			v.layoutBD.boton ? this.botones() : this.listados();
+			v.layoutBD.grupo == "boton" ? this.botones() : this.listados();
 
 			// Quita el cartel de 'esperandoResultados'
 			DOM.esperandoResultados.classList.add("ocultar");
