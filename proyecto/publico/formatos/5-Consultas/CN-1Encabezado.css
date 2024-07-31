@@ -12,8 +12,10 @@
 		color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;
 		&:not(:valid) {background: var(--rojo-oscuro);}
 		&:valid {background: var(--verde-oscuro);}
-		optgroup {background: var(--gris-oscuro);}
-		optgroup option {background: var(--gris-claro); color: var(--azul-oscuro); cursor: pointer;}
+		optgroup {
+			background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
+			option {cursor: pointer; font-style: normal;}
+		}
 	}
 
 	#iconosDelTitulo {
