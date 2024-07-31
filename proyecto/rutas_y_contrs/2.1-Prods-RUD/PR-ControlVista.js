@@ -148,14 +148,15 @@ module.exports = {
 			const userID = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
-			const camposCheckBox = variables.camposDA.filter((n) => n.chkBox).map((n) => n.nombre);
 
 			// Reemplaza valores
 			for (let prop in req.body)
 				if (!req.body[prop]) req.body[prop] = null; // elimina los campos vacíos
-				else if (req.body[prop] == "on") req.body[prop] = "1"; // corrige el valor de los checkbox
 				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim(); // pule los espacios innecesarios
-			for (let campo of camposCheckBox) if (!Object.keys(req.body).includes(campo)) req.body[campo] = "0"; // completa el valor de los checkbox
+
+			// Corrige/completa el valor de los checkbox
+			const camposCheckBox = variables.camposDA.filter((n) => n.chkBox).map((n) => n.nombre);
+			for (let campo of camposCheckBox) req.body[campo] = req.body[campo] ? "1" : "0";
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
@@ -224,8 +225,9 @@ module.exports = {
 							comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", avatarEdicInicial);
 					}
 
-				// Elimina los datos de la session
+				// Elimina los datos de la session y cookie
 				delete req.session.edicProd;
+				res.clearCookie("edicProd");
 			} else {
 				// Si recibimos un archivo avatar editado, lo elimina
 				if (req.file) comp.gestionArchivos.elimina(carpetaExterna + "9-Provisorio/", req.file.filename);
