@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
 
 		// Encabezado
 		tituloPrincipal: document.querySelector("#encabMasPelis #encabezado #tituloPrincipal"),
-		contadorDeProds: document.querySelector("#encabMasPelis #encabezado #derecha #contadorDeProds"),
+		contadorDeProds: document.querySelector("#encabMasPelis #encabezado #contadorDeProds"),
 
 		// Zona de Productos
 		zonaDisponible: document.querySelector("#encabMasPelis #zonaDisponible"),
