@@ -116,7 +116,6 @@ module.exports = {
 			],
 		},
 		publicos: {
-			//titulo: "Público Recomendado",
 			default: "MC",
 			opciones: [
 				{id: "todos", nombre: "Todos los públicos"},

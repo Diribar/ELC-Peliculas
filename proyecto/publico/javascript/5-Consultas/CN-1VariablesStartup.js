@@ -72,17 +72,6 @@ window.addEventListener("load", async () => {
 		// Otros
 		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
-	for (let icono of DOM.iconosBotonera) DOM[icono.id] = icono;
-	for (let campo of DOM.selects) DOM[campo.name] = campo;
-
-	// Variables - Títulos botonera
-	titulo = {
-		nuevo: DOM.nuevo.title,
-		deshacer: DOM.deshacer.title,
-		guardar: DOM.guardar.title,
-		edicion: DOM.edicion.title,
-		eliminar: DOM.eliminar.title,
-	};
 
 	// Variables - General
 	v = {
@@ -93,15 +82,26 @@ window.addEventListener("load", async () => {
 		enCast: "enCast",
 		muestraFiltros: false,
 		contadorDeMostrarResults: 0,
+		titulo: {},
 	};
+	v.camposFiltros = Array.from(DOM.selects).map((n) => n.name);
+	v.camposConDefault = Object.keys(v.filtrosConDefault);
+	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
+
+	// Variables de botonera
+	for (let icono of DOM.iconosBotonera) {
+		DOM[icono.id] = icono;
+		v.titulo[icono.id] = icono.title;
+	}
+	for (let campo of DOM.selects) DOM[campo.name] = campo;
 
 	// Start-up
 	await cambioDeConfig_id("start-up");
 	actualiza.cartelQuieroVerVisible();
-	await cambioDePrefs();
+	await accionesPorCambioDePrefs();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
 });
 
 // Variables
 const ruta = "/consultas/api/";
-let DOM, v, cabecera, prefs, titulo;
+let DOM, v, cabecera, prefs;
