@@ -121,7 +121,7 @@ window.addEventListener("load", async () => {
 				DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 				DOM.palClaveIcono.classList.remove("fa-circle-right");
 
-				await accionesPorCambioDePrefs();
+				await estandarParaInputs();
 			} else if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
