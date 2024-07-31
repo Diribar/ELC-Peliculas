@@ -430,7 +430,6 @@ let obtieneLosValoresEdicN = () => {
 	const inputsRadioChecked = Array.from(DOM.inputsRadio).filter((n) => n.checked);
 
 	// Obtiene los valores
-	// const inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
 	const inputs = [...inputsSimples, ...inputsRadioChecked];
 
 	// Almacena los valores
