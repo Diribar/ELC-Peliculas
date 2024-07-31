@@ -42,10 +42,13 @@ let actualiza = {
 		v.edicion = claseEdicion && v.nombreOK && v.filtroPropio;
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
+		// Sin filtros
+		DOM.sinFiltros.title = !DOM.sinFiltros.className.includes("inactivo") ? v.titulo.sinFiltros : "No hay filtros aplicados";
+
 		// Ícono Nuevo
 		v.layout_id && !claseEdicion && v.userID ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
-			? titulo.nuevo
+			? v.titulo.nuevo
 			: !v.userID
 			? "Necesitamos que estés logueado para crear una configuración"
 			: !v.layout_id
@@ -60,7 +63,7 @@ let actualiza = {
 			: DOM.deshacer.classList.add("inactivo");
 		// Ícono Deshacer - ayuda
 		DOM.deshacer.title = !DOM.deshacer.className.includes("inactivo")
-			? titulo.deshacer
+			? v.titulo.deshacer
 			: claseNuevo || claseEdicion
 			? "No está permitido deshacer cuando se está cambiando el nombre"
 			: !v.hayCambiosDeCampo
@@ -74,7 +77,7 @@ let actualiza = {
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
-			? titulo.guardar
+			? v.titulo.guardar
 			: !v.userID
 			? "Necesitamos que estés logueado para guardar una configuración"
 			: !v.layout_id
@@ -96,7 +99,7 @@ let actualiza = {
 			? DOM.edicion.classList.remove("inactivo")
 			: DOM.edicion.classList.add("inactivo");
 		DOM.edicion.title = !DOM.edicion.className.includes("inactivo")
-			? titulo.edicion
+			? v.titulo.edicion
 			: claseNuevo
 			? "No se puede editar el nombre de una configuración que todavía no está creada"
 			: !v.filtroPropio
@@ -112,7 +115,7 @@ let actualiza = {
 			? DOM.eliminar.classList.remove("inactivo")
 			: DOM.eliminar.classList.add("inactivo");
 		DOM.eliminar.title = !DOM.eliminar.className.includes("inactivo")
-			? titulo.eliminar
+			? v.titulo.eliminar
 			: claseNuevo || claseEdicion
 			? "No está permitido eliminar cuando se está cambiando el nombre"
 			: !v.filtroPropio
