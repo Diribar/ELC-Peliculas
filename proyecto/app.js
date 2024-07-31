@@ -250,6 +250,7 @@ app.set("views", [
 	global.motivoVersionActual = motivosEdics.find((n) => n.codigo == "versionActual");
 	global.motivoDupl_id = statusMotivos.find((n) => n.codigo == "duplicado").id;
 
+
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/2-Procesos/Variables");
 	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
