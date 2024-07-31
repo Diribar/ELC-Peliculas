@@ -357,7 +357,7 @@ let cambioDeConfig_id = async (texto) => {
 	// Fin
 	return;
 };
-let estandarParaInputs = async () => {
+let accionesEstandarPorInputs = async () => {
 	// Cambios de campo
 	v.hayCambiosDeCampo = true;
 	await accionesPorCambioDePrefs();

@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 		// Reemplaza 'Quitar la opción elegida' por el placeholder
 		else {
 			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
-			await estandarParaInputs();
+			await accionesEstandarPorInputs();
 		}
 
 		// Fin
@@ -73,13 +73,13 @@ window.addEventListener("load", async () => {
 				// Si está habilitado para confirmar
 				if (DOM.palClaveIcono.className.includes("fa-circle-right")) {
 					DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
-					await estandarParaInputs();
+					await accionesEstandarPorInputs();
 				}
 				// Si se cancelan las 'palabrasClave'
 				else if (DOM.palClaveIcono.className.includes("fa-circle-xmark")) {
 					DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 					DOM.palClaveInput.value = "";
-					await estandarParaInputs();
+					await accionesEstandarPorInputs();
 				}
 			}
 
@@ -121,7 +121,7 @@ window.addEventListener("load", async () => {
 				DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 				DOM.palClaveIcono.classList.remove("fa-circle-right");
 
-				await accionesPorCambioDePrefs();
+				await accionesEstandarPorInputs();
 			} else if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
@@ -166,7 +166,7 @@ window.addEventListener("load", async () => {
 				DOM.palClaveIcono.classList.replace("fa-circle-right", "fa-circle-xmark");
 
 			// Actualiza el input
-			await estandarParaInputs();
+			await accionesEstandarPorInputs();
 
 			// Fin
 			return;
