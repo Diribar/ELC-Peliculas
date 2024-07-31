@@ -43,6 +43,8 @@ let actualiza = {
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Sin filtros
+		for (let campo of v.camposFiltros)
+			if (DOM[campo].value && DOM[campo].value != "todos") DOM.sinFiltros.classList.remove("inactivo");
 		DOM.sinFiltros.title = !DOM.sinFiltros.className.includes("inactivo") ? v.titulo.sinFiltros : "No hay filtros aplicados";
 
 		// Ícono Nuevo
@@ -57,11 +59,10 @@ let actualiza = {
 			? "No está permitido crear una configuración cuando se está editando el nombre de otra"
 			: "";
 
-		// Ícono Deshacer - clase
+		// Ícono Deshacer
 		!claseNuevo && !claseEdicion && v.hayCambiosDeCampo && cabecera.id
 			? DOM.deshacer.classList.remove("inactivo")
 			: DOM.deshacer.classList.add("inactivo");
-		// Ícono Deshacer - ayuda
 		DOM.deshacer.title = !DOM.deshacer.className.includes("inactivo")
 			? v.titulo.deshacer
 			: claseNuevo || claseEdicion
