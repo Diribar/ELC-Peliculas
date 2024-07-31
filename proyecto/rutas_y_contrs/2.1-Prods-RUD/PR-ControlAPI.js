@@ -88,6 +88,7 @@ module.exports = {
 		},
 		envioParaSession: async (req, res) => {
 			if (req.query.avatar) delete req.query.avatar;
+			console.log(91, req.query);
 			req.session.edicProd = req.query;
 			res.cookie("edicProd", req.query, {maxAge: unDia});
 			return res.json();
@@ -103,12 +104,9 @@ module.exports = {
 			let calificaciones = [];
 
 			// Datos generales
-			datos = await baseDeDatos.obtienePorId(entidad, prodId).then((n) => [
-				n.feValores,
-				n.entretiene,
-				n.calidadTecnica,
-				n.calificacion,
-			]);
+			datos = await baseDeDatos
+				.obtienePorId(entidad, prodId)
+				.then((n) => [n.feValores, n.entretiene, n.calidadTecnica, n.calificacion]);
 			calificaciones.push({autor: "Gral.", valores: datos});
 
 			// Datos particulares
