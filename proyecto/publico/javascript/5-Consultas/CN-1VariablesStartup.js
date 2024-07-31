@@ -84,10 +84,9 @@ window.addEventListener("load", async () => {
 		contadorDeMostrarResults: 0,
 		titulo: {},
 	};
+	v.camposFiltros = Array.from(DOM.selects).map((n) => n.name);
 	v.camposConDefault = Object.keys(v.filtrosConDefault);
-	v.camposSinDefault = Array.from(DOM.selects)
-		.map((n) => n.name)
-		.filter((n) => !v.camposConDefault.includes(n));
+	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
 
 	// Variables de botonera
 	for (let icono of DOM.iconosBotonera) {
