@@ -43,6 +43,7 @@ let actualiza = {
 		v.propio = !claseNuevo && !claseEdicion && v.filtroPropio && v.hayCambiosDeCampo;
 
 		// Sin filtros
+		DOM.sinFiltros.classList.add("inactivo");
 		for (let campo of v.camposFiltros)
 			if (DOM[campo].value && DOM[campo].value != "todos") DOM.sinFiltros.classList.remove("inactivo");
 		DOM.sinFiltros.title = !DOM.sinFiltros.className.includes("inactivo") ? v.titulo.sinFiltros : "No hay filtros aplicados";
@@ -356,18 +357,24 @@ let cambioDeConfig_id = async (texto) => {
 	// Fin
 	return;
 };
-let cambioDePrefs = async () => {
+let accionesPorCambioDePrefs = async () => {
+	// Cambios de campo
+	v.hayCambiosDeCampo = true;
+
 	// Cambio de clases
 	DOM.configNuevaNombre.classList.remove("nuevo");
 	DOM.configNuevaNombre.classList.remove("edicion");
 
 	// Funciones
-	actualizaConfigCons.consolidado(); // obtiene los resultados
+	actualizaConfigCons.consolidado(); // obtiene las preferencias
 	actualiza.botoneraActivaInactiva(); // actualiza la botonera
 	if (v.layout_id) {
 		await resultados.obtiene(); // obtiene los resultados
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
+
+	// Guarda la configuración en session y cookie
+	sessionCookie.guardaConfig();
 
 	// Fin
 	return;

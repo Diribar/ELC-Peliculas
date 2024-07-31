@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 
 			// Novedades
 			await cambioDeConfig_id();
-			await cambioDePrefs();
+			await accionesPorCambioDePrefs();
 		}
 		// Nombre de configuración
 		else if (nombre == "nombreNuevo") {
@@ -116,10 +116,12 @@ window.addEventListener("load", async () => {
 				for (let campo of v.camposConDefault) DOM[campo].value = "todos";
 				for (let campo of v.camposSinDefault) DOM[campo].value = "";
 
-				// Actualiza los resultados
+				// Actualiza las palabras clave
+				DOM.palClaveInput.value = "";
+				DOM.palClaveIcono.classList.remove("fa-circle-xmark");
+				DOM.palClaveIcono.classList.remove("fa-circle-right");
 
-				// Actualiza la botonera
-
+				await accionesPorCambioDePrefs();
 			} else if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
@@ -139,7 +141,7 @@ window.addEventListener("load", async () => {
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeVariables();
 				await actualiza.statusInicialCampos("deshacer");
-				await cambioDePrefs();
+				await accionesPorCambioDePrefs();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
 				const existe = await verificaConfigCons_id();
@@ -148,7 +150,7 @@ window.addEventListener("load", async () => {
 				// Acciones si existe
 				await cambiosEnBD.eliminaConfig();
 				await cambioDeConfig_id();
-				await cambioDePrefs();
+				await accionesPorCambioDePrefs();
 			} else if (nombre == "guardar") guardarBotonera();
 
 			// Fin
@@ -372,7 +374,7 @@ let verificaConfigCons_id = async () => {
 let estandarParaInputs = async () => {
 	// Cambios de campo
 	v.hayCambiosDeCampo = true;
-	await cambioDePrefs();
+	await accionesPorCambioDePrefs();
 
 	// Guarda la configuración en session y cookie
 	sessionCookie.guardaConfig();
