@@ -2,11 +2,12 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let errores;
-	let DOM = {
+	DOM = {
 		// Datos del formulario
 		form: document.querySelector("form"),
-		inputsSimples: document.querySelectorAll(".inputError .input"),
 		inputsTodos: document.querySelectorAll(".inputError :is(.input, input[type='radio'])"),
+		inputsSimples: document.querySelectorAll(".inputError .input"),
+		inputsRadio: document.querySelectorAll(".inputError input[type='radio']"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -74,26 +75,10 @@ window.addEventListener("load", async () => {
 	let FN = {
 		// Grupo "Novedades de Data Entry"
 		actualizaVarios: async function () {
-			this.obtieneLosValoresEdicN();
+			obtieneLosValoresEdicN();
 			this.senalaLasDiferencias();
 			await this.averiguaMuestraLosErrores();
 			this.actualizaBotones();
-		},
-		obtieneLosValoresEdicN: () => {
-			// Obtiene los valores
-			let inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
-			let inputs = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsRadioChecked);
-
-			// Almacena los valores
-			version.edicN = {};
-			for (let input of inputs) {
-				if (input.name != "avatar")
-					version.edicN[input.name] = input.type == "checkbox" ? (input.checked ? 1 : 0) : input.value;
-				else version.edicN.avatar = DOM.inputAvatar.files[0] ? DOM.inputAvatar.files[0].name : version.edicG.avatar;
-			}
-
-			// Fin
-			return;
 		},
 		senalaLasDiferencias: () => {
 			// Variables
@@ -427,11 +412,40 @@ window.addEventListener("load", async () => {
 	});
 
 	// Startup - Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
-	let version = await FN.versiones(rutas.versiones);
+	version = await FN.versiones(rutas.versiones);
 	const statusRegistro_id = version.orig.statusRegistro_id;
 
 	// Startup - Otras
-	FN.obtieneLosValoresEdicN();
+	obtieneLosValoresEdicN();
 	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
 	FN.actualizaBotones();
 });
+
+// Variables
+let DOM, version;
+
+let obtieneLosValoresEdicN = () => {
+	// Variables
+	const inputsSimples = Array.from(DOM.inputsSimples);
+	const inputsRadioChecked = Array.from(DOM.inputsRadio).filter((n) => n.checked);
+
+	// Obtiene los valores
+	// const inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
+	const inputs = [...inputsSimples, ...inputsRadioChecked];
+
+	// Almacena los valores
+	version.edicN = {};
+	for (let input of inputs)
+		version.edicN[input.name] = ["radio", "checkbox"].includes(input.type)
+			? input.checked
+				? 1
+				: 0
+			: input.name != "avatar"
+			? input.value
+			: DOM.inputAvatar.files[0]
+			? DOM.inputAvatar.files[0].name
+			: version.edicG.avatar;
+
+	// Fin
+	return;
+};
