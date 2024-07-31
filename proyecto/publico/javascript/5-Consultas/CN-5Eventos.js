@@ -52,8 +52,8 @@ window.addEventListener("load", async () => {
 			return;
 		}
 		// Reemplaza 'Quitar la opción elegida' por el placeholder
-		else if (e.target.tagName == "SELECT" && !e.target.value) {
-			e.target.value = "";
+		else {
+			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
 			await estandarParaInputs();
 		}
 
