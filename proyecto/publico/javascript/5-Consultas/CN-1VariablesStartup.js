@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 	// Start-up
 	await cambioDeConfig_id("start-up");
 	actualiza.cartelQuieroVerVisible();
-	await cambioDePrefs();
+	await accionesPorCambioDePrefs();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
 });
 
