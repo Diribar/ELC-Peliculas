@@ -14,7 +14,7 @@ main #familias {
 			.temas {
 				padding: 0 10px; width: 385px; max-width: 100%;
 				&:not(:has(#grafico)) {
-					overflow-y: auto; max-height: calc(var(--altoCuerpoMenosTitulo) / 2 - 40px - 26.8px); /* 40 es el padding de la familia, 26.8 es la altura del título */
+					overflow-y: auto; max-height: calc((var(--altoCuerpoMenosTitulo) - 80px - 20px) / 2 - 26.8px); /* 80 es el padding de familias, 20 es el margen entre familias, 26.8 es la altura del título */
 					scrollbar-gutter: stable; /* para que el ancho del scroll-bar sea parte del padding */
 				}
 				.bloqueRegs {
@@ -24,6 +24,7 @@ main #familias {
 			}
 		}
 	}
+	#primeraColumna:not(:has(#prodsRclvs)) .bloques .temas {max-height: calc((var(--altoCuerpoMenosTitulo) - 80px) - 26.8px); /* 80 es el padding de familias, 26.8 es la altura del título secundario */}
 }
 
 

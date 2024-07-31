@@ -365,7 +365,7 @@ module.exports = {
 					  ext.slice(1).toUpperCase() +
 					  "'. Las extensiones válidas son JPG, JPEG y PNG"
 					: tamano && tamano > tamMaxImagen // Valida el tamaño
-					? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
+					? "El archivo tiene " + Math.ceil((tamano / tamMaxImagen) * 100) / 100 + " MB. Necesitamos que no supere 1 MB"
 					: ""
 				: imgOpcional == "NO" || imgOpcional === false // Mensajes si no existe un avatar
 				? "Necesitamos que agregues una imagen"
@@ -377,12 +377,7 @@ module.exports = {
 		cartelRepetido: function (datos) {
 			// Variables
 			const {entidad, id} = datos;
-
-			const entidadNombre = (
-				datos.entidadNombre
-					? datos.entidadNombre // Para links
-					: FN.entidadNombre(entidad)
-			).toLowerCase();
+			const entidadNombre = (datos.entidadNombre ? datos.entidadNombre : FN.entidadNombre(entidad)).toLowerCase(); // la primera opción es para links
 
 			// 1. Inicio
 			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
