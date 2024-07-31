@@ -6,18 +6,23 @@
 			<select name="layout_id" class="prefSimple" required>
 				<option value="" selected class="ocultar">Buscando el layout...</option>
 				<optgroup id="cuatroPelis" label="Cuatro Películas">
-					<% for (let layout of cnLayouts.filter(n => n.boton)) { %>
+					<% for (let layout of cnLayouts.filter(n => n.grupo == "boton")) { %>
 						<option value="<%= layout.id %>"><%= layout.nombre %></option>
 					<% } %>
 				</optgroup>
-				<optgroup label="Listados">
-					<% for (let layout of cnLayouts.filter(n => !n.boton && !n.loginNeces)) { %>
+				<optgroup label="Listados de películas">
+					<% for (let layout of cnLayouts.filter(n => n.grupo == "productos")) { %>
+						<option value="<%= layout.id %>"><%= layout.nombre %></option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Relación con la vida">
+					<% for (let layout of cnLayouts.filter(n => n.grupo == "rclvs")) { %>
 						<option value="<%= layout.id %>"><%= layout.nombre %></option>
 					<% } %>
 				</optgroup>
 				<% if (locals.usuario) { %>
 				<optgroup label="Mis listados">
-					<% for (let layout of cnLayouts.filter(n => !n.boton && n.loginNeces)) { %>
+					<% for (let layout of cnLayouts.filter(n => n.grupo == "loginNeces")) { %>
 						<option value="<%= layout.id %>"><%= layout.nombre %></option>
 					<% } %>
 				</optgroup>
