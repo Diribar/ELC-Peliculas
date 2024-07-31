@@ -1,7 +1,26 @@
 1. aux_paises.cantProds
 2. links_provs.cantLinks
 
-3. usuarios
+prod_1peliculas.azar
+	linksTrailer
+	linksGral
+	linksGratis
+	linksCast
+	linksSubt
+	HD_Gral
+	HD_Gratis
+	HD_Cast
+	HD_Subt
+	feValores
+	entretiene
+	calidadTecnica
+	calificacion
+	azar
+	capturadoPor_id
+	capturadoEn
+	capturaActiva
+
+usuarios
 	diasLogin
 	versionElcUltimoLogin
 	configCons_id
@@ -32,6 +51,5 @@
 	edicsAprob
 	edicsRech
 
-prod_1peliculas.azar
 prod_2colecciones.azar
 prod_3capitulos.azar

@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 30/jul",
-	"HoraUTC": "15:01",
+	"FechaUTC": "Mié. 31/jul",
+	"HoraUTC": "11:28",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 29/jul",
@@ -9,12 +9,12 @@
 	"semanaUTC": 31,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
-	"MotivoHorarias1": "Solución de errores con impacto en el usuario",
+	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
-	"RutinasHorarias": ["prodAprobEnLink", "linksEnProd", "prodsEnRCLV", "feedbackParaUsers", "productosAlAzar"],
+	"RutinasHorarias": ["feedbackParaUsers", "productosAlAzar"],
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que alcanza o se necesita que sea diaria",
-	"MotivoDiarias3": "Est☺adísticas que alcanza con que se actualicen en forma diaria",
+	"MotivoDiarias3": "Estadísticas que alcanza con que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"actualizaSolapam": "SI",
 		"imagenDerecha": "SI",
@@ -40,14 +40,17 @@
 		"rclv_idEnCapitulos": "SI",
 		"rclvsSinEpocaPSTyConAno": "SI",
 		"eliminaLoginsAcumsRepetidos": "SI",
-		"eliminaRegsHistStatusIncorrectos": "SI"
+		"eliminaRegsHistStatusIncorrectos": "SI",
+		"linksEnProd": "SI",
+		"prodAprobEnLink": "SI",
+		"prodsEnRCLV": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-jul-24": {"leyenda": "Hoy recordamos a san Pedro Poveda", "entidad": "personajes", "id": 134},
 		"29-jul-24": {},
 		"30-jul-24": {"leyenda": "Hoy recordamos a san Leopoldo Mandic de Castelnuovo", "entidad": "personajes", "id": 189},
 		"31-jul-24": {"leyenda": "Hoy recordamos a san Ignacio de Loyola", "entidad": "personajes", "id": 75},
-		"01-ago-24": {}
+		"01-ago-24": {},
+		"02-ago-24": {"leyenda": "Hoy recordamos a Alexander Graham Bell", "entidad": "personajes", "id": 191}
 	}
 }
