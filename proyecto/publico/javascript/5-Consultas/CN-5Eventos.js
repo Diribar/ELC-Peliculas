@@ -51,10 +51,9 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		}
-		// Reemplaza 'quitar la opción elegida' por el 'placeholder'
-		else {
-			// Reemplaza entre las opciones sin valor
-			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = "";
+		// Reemplaza 'Quitar la opción elegida' por el placeholder
+		else if (e.target.tagName == "SELECT" && !e.target.value) {
+			e.target.value = "";
 			await estandarParaInputs();
 		}
 
@@ -111,7 +110,12 @@ window.addEventListener("load", async () => {
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
-			if (["nuevo", "edicion"].includes(nombre)) {
+			if (false) {
+			} else if (nombre == "sinFiltros") {
+				// await actualiza.valoresInicialesDeVariables();
+				// await actualiza.statusInicialCampos("deshacer");
+				await cambioDePrefs();
+			} else if (["nuevo", "edicion"].includes(nombre)) {
 				// Variables
 				v.nombreOK = false; // cuando se elige el ícono, se debe empezar a escribir el nombre
 
