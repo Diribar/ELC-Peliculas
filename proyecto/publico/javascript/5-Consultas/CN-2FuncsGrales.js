@@ -358,9 +358,6 @@ let cambioDeConfig_id = async (texto) => {
 	return;
 };
 let accionesPorCambioDePrefs = async () => {
-	// Cambios de campo
-	v.hayCambiosDeCampo = true;
-
 	// Cambio de clases
 	DOM.configNuevaNombre.classList.remove("nuevo");
 	DOM.configNuevaNombre.classList.remove("edicion");
@@ -372,9 +369,6 @@ let accionesPorCambioDePrefs = async () => {
 		await resultados.obtiene(); // obtiene los resultados
 		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
 	}
-
-	// Guarda la configuración en session y cookie
-	sessionCookie.guardaConfig();
 
 	// Fin
 	return;
