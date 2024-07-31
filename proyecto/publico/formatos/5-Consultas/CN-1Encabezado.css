@@ -1,43 +1,44 @@
-/* Compartir y mostrar preferencias */
-#tituloPrincipal {
-	/* Ayuda y Actualizar */
-	:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
-		margin-left: 10px; align-self: flex-end; margin-bottom: 3px;
-		ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
-	}
+#encabezado {
+	#tituloPrincipal {
+		/* Ayuda y Actualizar */
+		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
+			margin-left: 10px; align-self: flex-end; margin-bottom: 3px;
+			ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
+		}
 
-	/* Layout */
-	#layoutAyuda select {
-		font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;
-		color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;
-		&:not(:valid) {background: var(--rojo-oscuro);}
-		&:valid {background: var(--verde-oscuro);}
-		optgroup {
-			background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
-			option {cursor: pointer; font-style: normal;}
+		/* Layout */
+		#layoutAyuda select {
+			font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;
+			color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;
+			&:not(:valid) {background: var(--rojo-oscuro);}
+			&:valid {background: var(--verde-oscuro);}
+			optgroup {
+				background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
+				option {cursor: pointer; font-style: normal;}
+			}
+		}
+
+		#iconosDelTitulo {
+			margin-top: 15px;
+			:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
+			.iconosAzules {
+				display: flex; flex-direction: row; position: relative;
+				width: 25px; height: 25px; border-radius: 50%;
+				justify-content: center; align-items: center; z-index: 0;
+				border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+			}
+			#consCopiada {
+				bottom: -2px; left: 15px; padding: 2px 5px;
+				translate: 0 100%; text-wrap: nowrap; border-radius: 10px;
+				background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
+			} /* Compartir */
+			#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
 		}
 	}
 
-	#iconosDelTitulo {
-		margin-top: 15px;
-		:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
-		.iconosAzules {
-			display: flex; flex-direction: row; position: relative;
-			width: 25px; height: 25px; border-radius: 50%;
-			justify-content: center; align-items: center; z-index: 0;
-			border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
-		}
-		#consCopiada {
-			bottom: -2px; left: 15px; padding: 2px 5px;
-			translate: 0 100%; text-wrap: nowrap; border-radius: 10px;
-			background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
-		} /* Compartir */
-		#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
+	#contadorDeProds {
+		padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;
+		font-size: 1.1rem; font-weight: bold; width: max-content;
+		align-self: flex-start;
 	}
-}
-
-/* Contador */
-#derecha #contadorDeProds {
-	padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;
-	font-size: 1.1rem; font-weight: bold; width: max-content;
 }
