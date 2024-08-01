@@ -1,43 +1,6 @@
 module.exports = (sequelize, dt) => {
-	const alias = "colecciones";
+	const alias = "prod_9complem";
 	const columns = {
-		TMDB_id: {type: dt.STRING(10)},
-		FA_id: {type: dt.STRING(10)},
-		TMDB_entidad: {type: dt.STRING(10)},
-		fuente: {type: dt.STRING(5)},
-
-		nombreCastellano: {type: dt.STRING(70)},
-		nombreOriginal: {type: dt.STRING(70)},
-		paises_id: {type: dt.STRING(14)},
-		idiomaOriginal_id: {type: dt.STRING(2)},
-		anoEstreno: {type: dt.INTEGER},
-		anoFin: {type: dt.INTEGER},
-		cantTemps: {type: dt.INTEGER},
-		direccion: {type: dt.STRING(100)},
-		guion: {type: dt.STRING(100)},
-		musica: {type: dt.STRING(100)},
-		actores: {type: dt.STRING(500)},
-		produccion: {type: dt.STRING(50)},
-		sinopsis: {type: dt.STRING(1004)},
-		avatar: {type: dt.STRING(100)},
-
-		cfc: {type: dt.BOOLEAN},
-		bhr: {type: dt.BOOLEAN},
-		color: {type: dt.BOOLEAN},
-		musical: {type: dt.BOOLEAN},
-		deporte: {type: dt.BOOLEAN},
-		violencia: {type: dt.BOOLEAN},
-		tipoActuacion_id: {type: dt.INTEGER},
-		publico_id: {type: dt.INTEGER},
-
-		personaje_id: {type: dt.INTEGER},
-		hecho_id: {type: dt.INTEGER},
-		tema_id: {type: dt.INTEGER},
-		evento_id: {type: dt.INTEGER},
-		epocaDelAno_id: {type: dt.INTEGER},
-
-		epocaOcurrencia_id: {type: dt.STRING(3)},
-		epocaEstreno_id: {type: dt.INTEGER},
 
 		linksTrailer: {type: dt.INTEGER},
 		linksGral: {type: dt.INTEGER},
@@ -78,7 +41,7 @@ module.exports = (sequelize, dt) => {
 		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "prod_2colecciones",
+		tableName: "prod_1peliculas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
@@ -104,12 +67,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.statusRegistros, {as: "statusRegistro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturadoPor", foreignKey: "capturadoPor_id"});
 
-		// Dependientes
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "coleccion_id"});
-		entidad.hasMany(n.prodsEdicion, {as: "ediciones", foreignKey: "coleccion_id"});
-		entidad.hasMany(n.links, {as: "links", foreignKey: "coleccion_id"});
-		entidad.hasMany(n.linksEdicion, {as: "links_edic", foreignKey: "coleccion_id"});
-		entidad.hasOne(n.capsSinLink, {as: "csl", foreignKey: "coleccion_id"})
+		entidad.hasMany(n.prodsEdicion, {as: "ediciones", foreignKey: "pelicula_id"});
+		entidad.hasMany(n.links, {as: "links", foreignKey: "pelicula_id"});
+		entidad.hasMany(n.linksEdicion, {as: "links_edic", foreignKey: "pelicula_id"});
 	};
 	return entidad;
 };
