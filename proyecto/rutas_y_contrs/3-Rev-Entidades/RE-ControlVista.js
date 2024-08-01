@@ -278,12 +278,12 @@ module.exports = {
 					await baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: id});
 
 				// Actualiza su link
-				comp.actualizaLinksEnColec(id);
+				comp.actualizaCalidadesDeLinkEnCole(id);
 			}
 		}
 
 		// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
-		if (entidad == "capitulos") comp.actualizaLinksEnColec(original.coleccion_id);
+		if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revID);

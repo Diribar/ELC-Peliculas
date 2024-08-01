@@ -259,7 +259,7 @@ module.exports = {
 			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
 			if (prodEntidad == "capitulos") {
 				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
-				comp.actualizaLinksEnColec(colID);
+				comp.actualizaCalidadesDeLinkEnCole(colID);
 			}
 		}
 
