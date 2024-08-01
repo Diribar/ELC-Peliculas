@@ -87,7 +87,6 @@ module.exports = {
 			const userID = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const personajes = entidad == "personajes";
 			const hechos = entidad == "hechos";
 			const temas = entidad == "temas";
@@ -152,6 +151,8 @@ module.exports = {
 					: [];
 			const ayudas = procesos.altaEdicForm.ayudas(entidad);
 			const statusAlineado = codigo == "rclv/alta";
+			const cartelGenerico = codigo == "edicion";
+			const cartelRechazo = tema == "revisionEnts";
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
@@ -160,8 +161,7 @@ module.exports = {
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
-				...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-				estrucPers: true,
+				...{cartelGenerico, cartelRechazo, estrucPers: true},
 			});
 		},
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
