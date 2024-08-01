@@ -679,16 +679,12 @@ module.exports = {
 		iDdeTablas: async () => {
 			// Variables
 			const tablas = [
-				"calRegistros",
-				"capsSinLink",
-				"consRegsPrefs",
-				...["histEdics","statusHistorial"],
-				...["prodsEdicion","rclvsEdicion","linksEdicion"],
-				...["loginsAcums","loginsDelDia"],
-				"misConsultas",
-				"pppRegistros",
-				"novedadesELC",
-				...["prodsComplem","rclvsComplem"],
+				...["histEdics", "statusHistorial"],
+				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
+				...["loginsAcums", "loginsDelDia"],
+				...["prodsComplem", "rclvsComplem"],
+				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
+				...["capsSinLink", "novedadesELC"],
 			];
 
 			// Actualiza los valores de ID
