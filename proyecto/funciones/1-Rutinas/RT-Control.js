@@ -41,61 +41,6 @@ module.exports = {
 	},
 
 	// Consolidados
-	RutinasHorarias: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinas = info.RutinasHorarias;
-
-		// Actualiza todas las rutinas horarias
-		console.log();
-		console.log("Rutinas horarias:");
-		for (let rutina of rutinas) {
-			const comienzo = Date.now();
-			await this.rutinasHorarias[rutina]();
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasHorarias(rutina, duracion);
-		}
-		console.log("Fin de rutinas horarias");
-
-		// Fin
-		return;
-	},
-	RutinasDiarias: async function () {
-		procesos.variablesDiarias();
-
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinasDiarias = info.RutinasDiarias;
-
-		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in rutinasDiarias) {
-			const comienzo = Date.now();
-			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
-		}
-		console.log("Fin de rutinas diarias");
-
-		// Fin
-		return;
-	},
-	RutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinasSemanales = info.RutinasSemanales;
-
-		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in rutinasSemanales) {
-			const comienzo = Date.now();
-			await this.rutinasSemanales[rutinaSemanal]();
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
-		}
-		console.log("Fin de rutinas semanales");
-
-		// Fin
-		return;
-	},
 	FechaHoraUTC: async function () {
 		// Variables
 		const info = {...rutinasJSON};
@@ -166,6 +111,61 @@ module.exports = {
 		// Fin
 		return;
 	},
+	RutinasHorarias: async function () {
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinas = info.RutinasHorarias;
+
+		// Actualiza todas las rutinas horarias
+		console.log();
+		console.log("Rutinas horarias:");
+		for (let rutina of rutinas) {
+			const comienzo = Date.now();
+			await this.rutinasHorarias[rutina]();
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasHorarias(rutina, duracion);
+		}
+		console.log("Fin de rutinas horarias");
+
+		// Fin
+		return;
+	},
+	RutinasDiarias: async function () {
+		procesos.variablesDiarias();
+
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinasDiarias = info.RutinasDiarias;
+
+		// Actualiza todas las rutinas diarias
+		for (let rutinaDiaria in rutinasDiarias) {
+			const comienzo = Date.now();
+			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
+		}
+		console.log("Fin de rutinas diarias");
+
+		// Fin
+		return;
+	},
+	RutinasSemanales: async function () {
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinasSemanales = info.RutinasSemanales;
+
+		// Actualiza las rutinasSemanales
+		for (let rutinaSemanal in rutinasSemanales) {
+			const comienzo = Date.now();
+			await this.rutinasSemanales[rutinaSemanal]();
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
+		}
+		console.log("Fin de rutinas semanales");
+
+		// Fin
+		return;
+	},
 
 	// Rutinas
 	rutinasHorarias: {
@@ -189,7 +189,7 @@ module.exports = {
 			// Rutina por usuario
 			for (let usuario of usuarios) {
 				// Si corresponde, saltea la rutina
-				const stopper = stoppers(usuario);
+				const stopper = stoppersFeedbackParaUsers(usuario);
 				if (stopper) continue;
 
 				// Variables
@@ -717,7 +717,7 @@ module.exports = {
 };
 
 // Funciones
-const stoppers = (usuario) => {
+const stoppersFeedbackParaUsers = (usuario) => {
 	if (!usuario.pais || !usuario.email) return true;
 
 	// Acciones para saltear la rutina, dependiendo de la hora
