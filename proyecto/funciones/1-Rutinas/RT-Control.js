@@ -464,9 +464,9 @@ module.exports = {
 			return;
 		},
 
-		// Repetición de actualizaciones por seguridad
-		actualizaSolapam: async () => await comp.actualizaSolapam(),
-		actualizaLinksEnProd: async () => {
+		// Correcciones desvíos del estándar
+		revisaCorrigeSolapam: async () => await comp.actualizaSolapam(),
+		revisaCorrigeLinksEnProd: async () => {
 			// Variables
 			let esperar = [];
 			let IDs;
@@ -492,7 +492,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		actualizaCalidadesDeLinkEnColes: async () => {
+		revisaCorrigeCalidadesDeLinkEnColes: async () => {
 			// Variables
 			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
@@ -502,7 +502,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		actualizaProdAprobEnLink: async () => {
+		revisaCorrigeProdAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
 			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
 
@@ -512,7 +512,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		actualizaProdsEnRCLV: async () => {
+		revisaCorrigeProdsEnRCLV: async () => {
 			// Obtiene las entidadesRCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 
@@ -528,9 +528,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-
-		// Correcciones desvíos del estándar
-		corrigeAprobadoConAvatarLink: async () => {
+		revisaCorrigeAprobadoConAvatarLink: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
 			let descargas = [];
@@ -558,7 +556,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		corrigeRclv_idEnCapsSiLaColeTieneUnValor: async () => {
+		revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor: async () => {
 			// Variables
 			const rclvs_id = variables.entidades.rclvs_id;
 
@@ -577,7 +575,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		corrigeRclvsSinEpocaPSTyConAno: async () => {
+		revisaCorrigeRclvsSinEpocaPSTyConAno: async () => {
 			// Variables
 			const entidades = ["personajes", "hechos"];
 			const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};

@@ -33,15 +33,14 @@
 		"eliminaLinksInactivos": "SI",
 		"eliminaImagenesSinRegistro": "SI",
 
-		"actualizaSolapam": "SI",
-		"actualizaLinksEnProd": "SI",
-		"actualizaCalidadesDeLinkEnColes": "SI",
-		"actualizaProdAprobEnLink": "SI",
-		"actualizaProdsEnRCLV": "SI",
-
-		"corrigeAprobadoConAvatarLink": "SI",
-		"corrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
-		"corrigeRclvsSinEpocaPSTyConAno": "SI",
+		"revisaCorrigeSolapam": "SI",
+		"revisaCorrigeLinksEnProd": "SI",
+		"revisaCorrigeCalidadesDeLinkEnColes": "SI",
+		"revisaCorrigeProdAprobEnLink": "SI",
+		"revisaCorrigeProdsEnRCLV": "SI",
+		"revisaCorrigeAprobadoConAvatarLink": "SI",
+		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
+		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
 
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
