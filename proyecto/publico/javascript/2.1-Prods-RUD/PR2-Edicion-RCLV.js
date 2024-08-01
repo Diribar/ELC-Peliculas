@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	// Variables para el ruteo del origen
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodId = new URL(location.href).searchParams.get("id");
-	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodId=" + prodId + "&origen=EDP";
+	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodId=" + prodId + "&origen=PED";
 
 	// Variables para guardar los datos
 	const rutaSession = "/producto/api/envia-a-req-session/";
@@ -33,12 +33,19 @@ window.addEventListener("load", async () => {
 	//
 	// Guardar los valores del formulario
 	let guardarLosValoresEnSession = () => {
+		// Variables
 		let objeto = "?entidad=" + prodEntidad + "&id=" + prodId;
-		for (let input of DOM.inputs) {
-			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
-		}
+
+		// Actualiza los valores
+		obtieneLosValoresEdicN()
+
+		// Completa los valores
+		for (let campo in version.edicN)
+			if (campo != "avatar") objeto += "&" + campo + "=" + version.edicN[campo];
+
 		// Guardar los valores en session
 		fetch(rutaSession + objeto); // Guarda el Data-Entry en session
+
 		// Fin
 		return;
 	};
@@ -48,12 +55,18 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
 			if (link.className.includes("inactivo")) return;
+
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
+
 			// Obtiene la RCLV_entidad
-			let entidad = "?entidad=" + entidades(link);
+			const entidad = "?entidad=" + entidades(link);
+
 			// Para ir a la vista RCLV
 			location.href = "/rclv/agregar/" + entidad + paramsOrigen;
+
+			// Fin
+			return
 		});
 	});
 
@@ -64,10 +77,13 @@ window.addEventListener("load", async () => {
 			if (link.className.includes("inactivo")) return;
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
+
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
+
 			// Obtiene el RCLV_id
 			let id = "&id=" + DOM.inputsRCLV[i].value;
+
 			// Para ir a la vista RCLV
 			location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
 		});

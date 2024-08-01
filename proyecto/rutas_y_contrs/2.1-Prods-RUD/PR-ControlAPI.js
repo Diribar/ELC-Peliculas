@@ -103,12 +103,9 @@ module.exports = {
 			let calificaciones = [];
 
 			// Datos generales
-			datos = await baseDeDatos.obtienePorId(entidad, prodId).then((n) => [
-				n.feValores,
-				n.entretiene,
-				n.calidadTecnica,
-				n.calificacion,
-			]);
+			datos = await baseDeDatos
+				.obtienePorId(entidad, prodId)
+				.then((n) => [n.feValores, n.entretiene, n.calidadTecnica, n.calificacion]);
 			calificaciones.push({autor: "Gral.", valores: datos});
 
 			// Datos particulares
