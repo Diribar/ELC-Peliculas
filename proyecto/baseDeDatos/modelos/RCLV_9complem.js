@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "rclvComplem";
+	const alias = "rclvsComplem";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
