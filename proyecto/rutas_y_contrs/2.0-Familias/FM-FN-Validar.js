@@ -244,7 +244,7 @@ module.exports = {
 				if (registro[campo_id] && registro[campo_id] != 1)
 					prodAprob
 						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-						: comp.prodsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
+						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
 			}
 		}
 
@@ -259,7 +259,7 @@ module.exports = {
 			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
 			if (prodEntidad == "capitulos") {
 				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
-				comp.linksEnColec(colID);
+				comp.actualizaLinksEnColec(colID);
 			}
 		}
 

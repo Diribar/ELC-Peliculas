@@ -79,7 +79,7 @@ module.exports = {
 			// 1. Actualiza en los links el campo 'prodAprob'
 			const asoc = comp.obtieneDesdeEntidad.asociacion(entidad);
 			const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id}, asoc);
-			comp.prodAprobEnLink(links);
+			comp.actualizaProdAprobEnLink(links);
 
 			// 2. Acciones si es una colección
 			if (entidad == "colecciones") {
@@ -97,12 +97,12 @@ module.exports = {
 					.then((ids) =>
 						baseDeDatos
 							.obtieneTodosPorCondicion("links", {capitulo_id: ids}, "capitulo")
-							.then((links) => comp.prodAprobEnLink(links))
+							.then((links) => comp.actualizaProdAprobEnLink(links))
 					);
 			}
 
 			// 3. Si es un capítulo, actualiza el status de link de su colección
-			if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
+			if (entidad == "capitulos") comp.actualizaLinksEnColec(original.coleccion_id);
 
 			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
 			validacs.accionesPorCambioDeStatus(entidad, original);
