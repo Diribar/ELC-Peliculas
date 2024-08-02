@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 1/ago",
-	"HoraUTC": "9:01",
+	"FechaUTC": "Vie. 2/ago",
+	"HoraUTC": "18:36",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 29/jul",
@@ -16,12 +16,7 @@
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
-	"RutinasDiarias": {
-		"imagenDerecha": "SI",
-		"ABM_noRevisores": "SI",
-		"loginsPorDia": "SI",
-		"rutinasDiariasEnUsuario": "SI"
-	},
+	"RutinasDiarias": {"imagenDerecha": "SI", "ABM_noRevisores": "SI", "loginsPorDia": "SI", "rutinasDiariasEnUsuario": "SI"},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
 	"MotivoSemanales2": "Limpieza de información que se necesita que sea semanal",
@@ -32,7 +27,6 @@
 		"actualizaLinksPorProv": "SI",
 		"eliminaLinksInactivos": "SI",
 		"eliminaImagenesSinRegistro": "SI",
-
 		"revisaCorrigeSolapam": "SI",
 		"revisaCorrigeLinksEnProd": "SI",
 		"revisaCorrigeCalidadesDeLinkEnColes": "SI",
@@ -41,7 +35,7 @@
 		"revisaCorrigeAprobadoConAvatarLink": "SI",
 		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
 		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
-
+		"revisaAgregaComplementosPR": "SI",
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaRegsSinEntidad_id": "SI",
@@ -51,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"30-jul-24": {"leyenda": "Hoy recordamos a san Leopoldo Mandic de Castelnuovo", "entidad": "personajes", "id": 189},
 		"31-jul-24": {"leyenda": "Hoy recordamos a san Ignacio de Loyola", "entidad": "personajes", "id": 75},
 		"01-ago-24": {},
 		"02-ago-24": {"leyenda": "Hoy recordamos a Alexander Graham Bell", "entidad": "personajes", "id": 191},
-		"03-ago-24": {}
+		"03-ago-24": {},
+		"04-ago-24": {"leyenda": "Hoy recordamos a san Juan María Vianney, el cura de Ars", "entidad": "personajes", "id": 162}
 	}
 }
