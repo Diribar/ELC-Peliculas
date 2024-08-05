@@ -25,7 +25,7 @@ module.exports = {
 		const condicEstandar = {coleccion_id, temporada, statusRegistro_id: activos_ids};
 
 		// Obtiene datos de la colección
-		const ultTemp = await baseDeDatos.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps); // Último número de temporada de la colección
+		const ultTemp = await baseDeDatos.maxValorPorCondicion("capitulos", condicEstandar, "temporada"); // Último número de temporada de la colección
 		const ultCap = await baseDeDatos.maxValorPorCondicion("capitulos", condicEstandar, "capitulo"); // Último número de capítulo de la temporada actual
 
 		// Obtiene la temporada y capítulo anteriores
