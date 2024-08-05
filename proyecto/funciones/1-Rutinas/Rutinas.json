@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 2/ago",
-	"HoraUTC": "18:36",
+	"FechaUTC": "Sáb. 3/ago",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 29/jul",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"31-jul-24": {"leyenda": "Hoy recordamos a san Ignacio de Loyola", "entidad": "personajes", "id": 75},
 		"01-ago-24": {},
 		"02-ago-24": {"leyenda": "Hoy recordamos a Alexander Graham Bell", "entidad": "personajes", "id": 191},
 		"03-ago-24": {},
-		"04-ago-24": {"leyenda": "Hoy recordamos a san Juan María Vianney, el cura de Ars", "entidad": "personajes", "id": 162}
+		"04-ago-24": {"leyenda": "Hoy recordamos a san Juan María Vianney, el cura de Ars", "entidad": "personajes", "id": 162},
+		"05-ago-24": {"leyenda": "Hoy recordamos al padre Juan María Lustiger", "entidad": "personajes", "id": 106}
 	}
 }
