@@ -18,12 +18,11 @@ module.exports = {
 	obtieneCapAntPostID: async (req, res) => {
 		// Variables
 		const {id} = req.query;
-		const statusRegistro_id = activos_ids;
 		let condicAnt, condicPost;
 
 		// Obtiene datos del capítulo actual
 		const {coleccion_id, temporada, capitulo} = await baseDeDatos.obtienePorId("capitulos", id);
-		const condicEstandar = {coleccion_id, temporada, statusRegistro_id};
+		const condicEstandar = {coleccion_id, temporada, statusRegistro_id: activos_ids};
 
 		// Obtiene datos de la colección
 		const ultTemp = await baseDeDatos.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps); // Último número de temporada de la colección
