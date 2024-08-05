@@ -226,14 +226,16 @@ window.addEventListener("load", async () => {
 
 			// Rutina para cada campo
 			for (let input of DOM.inputsTodos) {
-				// Oculta y muestra los avatar que correspondan
+				// Avatar
 				if (input.name == "avatar")
 					DOM.imgsAvatar.forEach((imgAvatar, indice) => {
 						v.versiones[indice] == v.versionActual
 							? imgAvatar.classList.remove("ocultar")
 							: imgAvatar.classList.add("ocultar");
 					});
+				// Radio
 				else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
+				// Checkbox
 				else if (input.type == "checkbox") input.checked = version[v.versionActual][input.name] == 1;
 				// Reemplaza los valores que no sean el avatar
 				else
@@ -309,14 +311,10 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// ADD EVENT LISTENERS --------------------------------------------------
-	// Revisa los campos
+	// Cambios en algún campo
 	DOM.form.addEventListener("input", async (e) => {
 		// Acciones si la versión actual no es la edición nueva
-		if (!v.estamosEnEdicNueva) {
-			if ((e.target.type = "checkbox")) e.target.checked = !e.target.checked;
-			return;
-		}
+		if (!v.estamosEnEdicNueva) return;
 
 		// Validaciones estándar (función genérica)
 		amplio.restringeCaracteres(e);
@@ -337,6 +335,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió el avatar
 		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
+		// Acciones si no se cambió el avatar
 		else FN.actualizaVarios();
 
 		// Fin
@@ -427,7 +426,7 @@ let DOM, version;
 let obtieneLosValoresEdicN = () => {
 	// Variables
 	const inputsSimples = Array.from(DOM.inputsSimples);
-	const inputsRadioChecked = Array.from(DOM.inputsRadio).filter((n) => n.checked);
+	const inputsRadioChecked = Array.from(DOM.inputsRadio).filter((n) => n.checked); // descarta los 'radio' que no están 'checked'
 
 	// Obtiene los valores
 	const inputs = [...inputsSimples, ...inputsRadioChecked];
@@ -435,15 +434,16 @@ let obtieneLosValoresEdicN = () => {
 	// Almacena los valores
 	version.edicN = {};
 	for (let input of inputs)
-		version.edicN[input.name] = ["radio", "checkbox"].includes(input.type)
-			? input.checked
-				? 1
-				: 0
-			: input.name != "avatar"
-			? input.value
-			: DOM.inputAvatar.files[0]
-			? DOM.inputAvatar.files[0].name
-			: version.edicG.avatar;
+		version.edicN[input.name] =
+			input.type == "checkbox" // específico para checkbox
+				? input.checked
+					? 1
+					: 0
+				: input.name != "avatar" // incluye los 'radio', porque están filtrados (incluye sólo los 'checked')
+				? input.value
+				: DOM.inputAvatar.files[0]
+				? DOM.inputAvatar.files[0].name
+				: version.edicG.avatar;
 
 	// Fin
 	return;
