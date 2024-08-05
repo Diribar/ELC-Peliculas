@@ -43,6 +43,7 @@ module.exports = {
 
 	// Lectura
 	contarCasos: (entidad, condicion) => db[entidad].count({where: condicion}),
+	minValorPorCondicion: (entidad, condicion, campo) => db[entidad].min(campo, {where: condicion}),
 	maxValor: (entidad, campo) => db[entidad].max(campo),
 	maxValorPorCondicion: (entidad, condicion, campo) => db[entidad].max(campo, {where: condicion}),
 };
