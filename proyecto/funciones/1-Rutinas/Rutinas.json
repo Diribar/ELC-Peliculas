@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 3/ago",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Lun. 5/ago",
+	"HoraUTC": "10:45",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 29/jul",
-	"HoraSemUTC": "16:40",
-	"semanaUTC": 31,
+	"FechaSemUTC": "Lun. 5/ago",
+	"HoraSemUTC": "10:45",
+	"semanaUTC": 32,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-ago-24": {},
-		"02-ago-24": {"leyenda": "Hoy recordamos a Alexander Graham Bell", "entidad": "personajes", "id": 191},
 		"03-ago-24": {},
 		"04-ago-24": {"leyenda": "Hoy recordamos a san Juan María Vianney, el cura de Ars", "entidad": "personajes", "id": 162},
-		"05-ago-24": {"leyenda": "Hoy recordamos al padre Juan María Lustiger", "entidad": "personajes", "id": 106}
+		"05-ago-24": {"leyenda": "Hoy recordamos al padre Juan María Lustiger", "entidad": "personajes", "id": 106},
+		"06-ago-24": {"leyenda": "Hoy recordamos la Transfiguración de Nuestro Señor", "entidad": "eventos", "id": 28},
+		"07-ago-24": {}
 	}
 }
