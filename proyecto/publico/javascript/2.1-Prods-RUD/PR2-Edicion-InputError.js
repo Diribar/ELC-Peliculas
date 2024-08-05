@@ -245,8 +245,6 @@ window.addEventListener("load", async () => {
 
 				// Impide/permite que el usuario haga cambios según la versión
 				input.disabled = !v.estamosEnEdicNueva ;
-				// if (input.type == "radio")
-				// 	v.estamosEnEdicNueva ? input.classList.remove("inactivar") : input.classList.add("inactivar");
 
 				if (input.name == "paises_id") {
 					v.estamosEnEdicNueva

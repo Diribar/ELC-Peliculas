@@ -51,7 +51,7 @@
 
 					/* Disabled */
 					input[type="text"]:read-only, :disabled {background-color: var(--amarillo-claro) !important; opacity: 1;}
-					input.inactivar {accent-color: var(--amarillo-oscuro);} /* radio-buttons y checkboxes */
+					/* input:disabled {accent-color: var(--amarillo-oscuro) !important;} radio-buttons y checkboxes */
 				}
 
 				/* Columnas */
