@@ -681,7 +681,10 @@ module.exports = {
 		orden: {
 			prods: ({prods, layout}) => {
 				// Si corresponde, interrumpe la función y ordena por el azar decreciente
-				if (layout.codigo == "azar") return prods.sort((a, b) => b.prodComplem.azar - a.prodComplem.azar);
+				if (layout.codigo == "azar")
+					return prods.sort((a, b) =>
+						b.prodComplem && a.prodComplem ? b.prodComplem.azar - a.prodComplem.azar : b.prodComplem ? -1 : 1
+					);
 
 				// Variables
 				const campo = false
