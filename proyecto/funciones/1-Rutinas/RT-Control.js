@@ -601,31 +601,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		revisaAgregaComplementosPR: async () => {
-			return;
-			// Variables
-			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs]; // Obtiene las entidades a revisar
-
-			// Obtiene los registros de los complementos
-			const complems = {
-				prods: await baseDeDatos.obtieneTodos("prodsComplem"),
-				rclvs: await baseDeDatos.obtieneTodos("rclvsComplem"),
-			};
-
-			// Rutina por entidad
-			for (let entidad of entidades) {
-				// Variables
-				const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-				const registrosPR = await baseDeDatos.obtieneTodos(entidad);
-
-				// Rutina por registro
-				for (let registroPR of registrosPR) {
-					// if (!complems[])
-				}
-			}
-			// Fin
-			for (let entidad of entidades) return;
-		},
 
 		// Eliminaciones de mantenimiento
 		eliminaMisConsultasExcedente: async () => {
