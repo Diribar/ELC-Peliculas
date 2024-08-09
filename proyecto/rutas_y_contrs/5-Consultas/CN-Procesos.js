@@ -407,7 +407,13 @@ module.exports = {
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
 					// Averigua si el producto tiene un registro de preferencia del usuario
-					const pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					let pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+
+					// Si no tiene pppRegistro y es un capítulo, asume el de la colección
+					if (!pppRegistro && prods[i].entidad == "capitulos")
+						pppRegistro = pppRegistros.find(
+							(n) => n.entidad == "colecciones" && n.entidad_id == prods[i].coleccion_id
+						);
 
 					// Acciones si se eligió un tipo de preferencia
 					if (pppOpcion && pppOpcion != "todos") {
