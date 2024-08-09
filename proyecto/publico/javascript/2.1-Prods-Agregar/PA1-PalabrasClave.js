@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
-		submit: document.querySelector("#dataEntry #submit"),
+		botonSubmit: document.querySelector("#dataEntry #botonSubmit"),
 		resultado: document.querySelector("#dataEntry #resultado"),
 
 		// Datos
@@ -21,11 +21,11 @@ window.addEventListener("load", async () => {
 	};
 
 	// FUNCIONES *******************************************
-	let FN = {
+	const FN = {
 		particsInput: async (e) => {
-			// Actualiza el botón 'submit' a 'Verificar'
-			DOM.submit.classList.replace("verdeOscuro", "verdeClaro");
-			DOM.submit.innerHTML = "Buscar";
+			// Actualiza el 'botonSubmit' a 'Verificar'
+			DOM.botonSubmit.classList.replace("verdeOscuro", "verdeClaro");
+			DOM.botonSubmit.innerHTML = "Buscar";
 
 			// Actualiza el resultado
 			DOM.resultado.innerHTML = "<br>";
@@ -81,8 +81,8 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add(formatoVigente);
 		},
 		avanzar: () => {
-			DOM.submit.classList.replace("verdeClaro", "verdeOscuro");
-			DOM.submit.innerHTML = v.resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
+			DOM.botonSubmit.innerHTML = v.resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
 			return;
 		},
 		statusInicial: async function (mostrarIconoError) {
@@ -126,32 +126,32 @@ window.addEventListener("load", async () => {
 				.map((n) => n.className)
 				.some((n) => n.includes("error"));
 			// Consecuencias
-			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
+			hayErrores ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
 		},
 		submitForm: async function (e) {
-			// e.preventDefault();
+			e.preventDefault();
 
 			// Acciones si el botón está inactivo
-			if (DOM.submit.className.includes("inactivo")) return this.statusInicial(true);
+			if (DOM.botonSubmit.className.includes("inactivo")) return this.statusInicial(true);
 
 			// Acciones si el botón está listo para buscar
-			if (DOM.submit.className.includes("verdeClaro")) {
+			if (DOM.botonSubmit.className.includes("verdeClaro")) {
 				// Obtiene los resultados
-				DOM.submit.classList.add("inactivo");
+				DOM.botonSubmit.classList.add("inactivo");
 				const palabrasClave = FN.palabrasClave(DOM.inputs[0].value);
 				v.resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
 
 				// Muestra los resultados
 				FN.muestraResultados();
 				FN.avanzar();
-				DOM.submit.classList.remove("inactivo");
+				DOM.botonSubmit.classList.remove("inactivo");
 
 				// Fin
 				return;
 			}
 
 			// Acciones si el botón está listo para avanzar
-			if (DOM.submit.className.includes("verdeOscuro"))
+			if (DOM.botonSubmit.className.includes("verdeOscuro"))
 				return v.resultados.cantProds
 					? DOM.form.submit() // Desambiguar
 					: (location.href = "ingreso-manual"); // Ingreso Manual
@@ -179,10 +179,10 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("submit", async (e) => {
 		FN.submitForm(e);
 	});
-	DOM.submit.addEventListener("click", async (e) => {
+	DOM.botonSubmit.addEventListener("click", async (e) => {
 		FN.submitForm(e);
 	});
-	DOM.submit.addEventListener("keydown", async (e) => {
+	DOM.botonSubmit.addEventListener("keydown", async (e) => {
 		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
 	});
 

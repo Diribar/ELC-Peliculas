@@ -11,7 +11,7 @@
 		}
 
 		/* Submit button */
-		#submit {
+		#botonSubmit {
 			align-self: center; padding: 2px 8px; line-height: normal;
 			border-radius: 15px; border: none;
 			font-size: 1.25rem; font-weight: bold;
