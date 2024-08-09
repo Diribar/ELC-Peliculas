@@ -13,10 +13,10 @@
 				value="<%= dataEntry.palabrasClave %>"
 				autofocus autocomplete="off" tabindex="1"
 			>
-			<%- include("MN-Ayuda", {mensajes: ["Ingresá palabras del <b><u>Título de la Película</u></b>, en el idioma <b><em>original</em></b> o en <b><em>castellano</em></b>.", "Escribí de manera precisa todas las palabras que sepas."]}) %>
+			<%- include("MN-Ayuda", {mensajes: mensajesAyuda}) %>
 			<%- include("MN-Errores", {nombre:"palabrasClave"}) %>
 		</div>
-		<i id="submit" class="fa-solid fa-circle-question naranja inactivo pointer scale" title="Verificar" tabindex="2"></i>
+		<button id="submit" type="button" class="inactivo pointer scaleCh verdeClaro flexRowAlign" tabindex="2">Buscar</button>
 	</section>
 	<!-- Comentarios generales -->
 	<section>
@@ -29,6 +29,5 @@
 				para conseguir la información
 			</li>
 		</ul>
-
 	</section>
 </form>
