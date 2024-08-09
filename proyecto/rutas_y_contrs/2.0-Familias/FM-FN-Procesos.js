@@ -976,7 +976,10 @@ module.exports = {
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
 			if (registro.nombreAltern) {
-				const articulo = comp.obtieneDesdeEntidad.oa(registro.entidad);
+				const articulo =
+					registro.entidad == "personajes"
+						? (registro.genero_id.includes("M") ? "o" : "a") + (registro.genero_id.includes("P") ? "s" : "")
+						: comp.obtieneDesdeEntidad.oa(registro.entidad);
 				bloque.push({titulo: "También conocid" + articulo + " como", valor: registro.nombreAltern});
 			}
 			if (registro.fechaDelAno && registro.fechaDelAno.id < 400) {
