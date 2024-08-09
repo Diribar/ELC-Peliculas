@@ -9,8 +9,8 @@ const procesos = require("./PA-FN4-Procesos");
 module.exports = {
 	// Vista (palabrasClave)
 	validaPalabrasClave: (req, res) => {
-		let palabrasClave = req.query.palabrasClave;
-		let errores = valida.palabrasClave(palabrasClave);
+		const palabrasClave = req.query.palabrasClave;
+		const errores = valida.palabrasClave(palabrasClave);
 		return res.json(errores);
 	},
 	cantProductos: async (req, res) => {
