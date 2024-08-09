@@ -858,21 +858,25 @@ module.exports = {
 				for (let edicion of ediciones)
 					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
-				// Elimina las ediciones
+				// Elimina las ediciones (colecciones y capítulos)
 				await baseDeDatos.eliminaTodosPorCondicion(entidadEdic, condicion);
 			}
 
 			// Productos
 			if (familias == "productos") {
+				let espera = [];
+
 				// Elimina los links
-				await baseDeDatos.eliminaTodosPorCondicion("linksEdicion", condicion);
-				await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+				for (let entDepen of ["prodsComplem", "linksEdicion", "links"])
+					espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, condicion));
 
 				// Particularidades para colección
-				if (entidad == "colecciones") {
-					await baseDeDatos.eliminaTodosPorCondicion("capitulos", {coleccion_id: id}); // elimina sus capítulos
-					await baseDeDatos.eliminaTodosPorCondicion("capsSinLink", {coleccion_id: id}); // elimina su 'capSinLink'
-				}
+				if (entidad == "colecciones")
+					for (let entDepen of ["capitulos", "capsSinLink"])
+						espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, condicion));
+
+				// Fin
+				espera = await Promise.all(espera);
 			}
 
 			// Fin
