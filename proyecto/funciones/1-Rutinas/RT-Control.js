@@ -30,11 +30,12 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.feedbackParaUsers();
+		await this.rutinasHorarias.productosAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
-		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
+		const tiempoTranscurrido = (Date.now() - rutinasDeInicio).toLocaleString("pt"); // 'es' no coloca el separador de miles
+		console.log("Rutinas de inicio terminadas en " + tiempoTranscurrido + " mseg., el " + new Date().toLocaleString());
 
 		// Fin
 		return;
@@ -229,18 +230,21 @@ module.exports = {
 			for (let entidad of variables.entidades.prods) {
 				// Variables
 				const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
-				const campo_id = comp.obtieneDesdeEntidad(entidad);
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 				// Rastrilla los productos
 				for (let producto of productos) {
-					// Variables
+					// Crea los datos
 					const azar = comp.azar();
-					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
+					const datos = {[campo_id]: producto.id, azar};
+					if (entidad != "peliculas")
+						datos.grupoCol_id = entidad == "colecciones" ? producto.id : producto.coleccion_id;
 
 					// Actualiza o agrega un registro
+					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
 					prodComplem
 						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo en el registro
-						: await baseDeDatos.agregaRegistro("prodsComplem", {[campo_id]: producto.id, azar}); // agrega un registro; necesario con 'await'
+						: baseDeDatos.agregaRegistro("prodsComplem", datos); // agrega un registro; necesario con 'await'
 				}
 			}
 
