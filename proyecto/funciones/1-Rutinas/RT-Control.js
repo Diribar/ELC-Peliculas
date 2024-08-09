@@ -244,8 +244,8 @@ module.exports = {
 					// Actualiza o agrega un registro
 					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
 					prodComplem
-						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo en el registro
-						: baseDeDatos.agregaRegistro("prodsComplem", datos); // agrega un registro; necesario con 'await'
+						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo 'azar' en el registro
+						: baseDeDatos.agregaRegistro("prodsComplem", datos); // agrega un registro
 				}
 			}
 
