@@ -224,10 +224,11 @@ module.exports = {
 		productosAlAzar: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobados_ids};
+			const entidades = variables.entidades.prods;
 			const prodsComplem = await baseDeDatos.obtieneTodos("prodsComplem");
 
 			// Rastrilla los productos
-			for (let entidad of variables.entidades.prods) {
+			for (let entidad of entidades) {
 				// Variables
 				const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
