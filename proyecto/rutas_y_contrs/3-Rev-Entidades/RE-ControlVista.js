@@ -258,7 +258,7 @@ module.exports = {
 		if (producto && statusFinal_id.includes(aprobados_ids)) {
 			// Variables
 			const azar = comp.azar();
-			const campo_id = comp.obtieneDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
 
 			// Actualiza o agrega un registro
