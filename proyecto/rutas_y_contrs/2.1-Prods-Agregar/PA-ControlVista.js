@@ -16,9 +16,15 @@ module.exports = {
 			// Obtiene el Data Entry de session y cookies
 			const palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 
+			// Variables para la vista
+			const mensajesAyuda = [
+				"Ingresá palabras del <b><u>Título de la Película</u></b>, en el idioma <b><em>original</em></b> o en <b><em>castellano</em></b>.",
+				"Escribí de manera precisa todas las palabras que sepas.",
+			];
+
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo},
+				...{tema, codigo, titulo, mensajesAyuda},
 				dataEntry: {palabrasClave},
 			});
 		},
