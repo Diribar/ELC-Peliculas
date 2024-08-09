@@ -63,12 +63,11 @@ module.exports = async (req, res, next) => {
 
 	// Fórmula
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
-		// Se revisa solamente en esa familia de entidades
-		// Asociaciones
-		let entidades = variables.entidades.prods.includes(v.entidad) ? variables.entidades.prods : variables.entidades.rclvs;
-		// Variables
-		let objetoNull = {capturadoEn: null, capturadoPor_id: null, capturaActiva: null};
+		// Variables - se revisa solamente en esa familia de entidades
+		const entidades = variables.entidades[variables.entidades.prods.includes(v.entidad) ? "prods" : "rclvs"];
+		const objetoNull = {capturadoEn: null, capturadoPor_id: null, capturaActiva: null};
 		let resultado;
+
 		// Rutina por cada asociación
 		for (let entidad of entidades) {
 			let registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, {capturadoPor_id: v.userID});
