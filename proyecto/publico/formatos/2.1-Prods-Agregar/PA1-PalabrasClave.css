@@ -12,9 +12,11 @@
 
 		/* Submit button */
 		#submit {
-			align-self: center; font-size: 2rem; font-weight: bold; border-radius: 50%;
-			&.verde {color: var(--verde-oscuro)}
-			&.naranja {color: var(--naranja-oscuro)}
+			align-self: center; padding: 2px 8px; line-height: normal;
+			border-radius: 15px; border: none;
+			font-size: 1.25rem; font-weight: bold;
+			&.verdeOscuro {background: var(--verde-oscuro); color: snow;}
+			&.verdeClaro {background: var(--verde-claro); color: var(--verde-oscuro); border: 3px solid var(--verde-oscuro);}
 		}
 	}
 	#fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
