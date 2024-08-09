@@ -251,11 +251,20 @@ module.exports = {
 			if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
 
-		// Datos sólo si es un producto
-		if (producto) datos.azar = comp.azar();
-
 		// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
+
+		// CONSECUENCIAS - Si corresponde, actualiza o crea el campo 'azar'
+		if (producto && statusFinal_id.includes(aprobados_ids)) {
+			// Variables
+			const azar = comp.azar();
+			const campo_id = comp.obtieneDesdeEntidad(entidad);
+			const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
+
+			// Actualiza o agrega un registro
+			if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", {[campo_id]: id, azar});
+			else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
+		}
 
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {

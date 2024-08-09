@@ -221,19 +221,26 @@ module.exports = {
 			return;
 		},
 		productosAlAzar: async () => {
-			// Rastrilla las películas y colecciones
-			for (let entidad of ["peliculas", "colecciones"]) {
-				// Obtiene los productos
-				const productos = await baseDeDatos.obtieneTodos(entidad);
+			// Variables
+			const condicion = {statusRegistro_id: aprobados_ids};
+			const prodsComplem = await baseDeDatos.obtieneTodos("prodsComplem");
+
+			// Rastrilla los productos
+			for (let entidad of variables.entidades.prods) {
+				// Variables
+				const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+				const campo_id = comp.obtieneDesdeEntidad(entidad);
 
 				// Rastrilla los productos
 				for (let producto of productos) {
-					let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
-						? comp.azar()
-						: null; // Para los demás, les limpia el campo azar
+					// Variables
+					const azar = comp.azar();
+					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
 
-					// Actualiza el campo en el registro
-					baseDeDatos.actualizaPorId(entidad, producto.id, {azar});
+					// Actualiza o agrega un registro
+					prodComplem
+						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo en el registro
+						: await baseDeDatos.agregaRegistro("prodsComplem", {[campo_id]: producto.id, azar}); // agrega un registro; necesario con 'await'
 				}
 			}
 
@@ -588,6 +595,31 @@ module.exports = {
 
 			// Fin
 			return;
+		},
+		revisaAgregaComplementosPR: async () => {
+			return;
+			// Variables
+			const entidades = [...variables.entidades.prods, ...variables.entidades.rclvs]; // Obtiene las entidades a revisar
+
+			// Obtiene los registros de los complementos
+			const complems = {
+				prods: await baseDeDatos.obtieneTodos("prodsComplem"),
+				rclvs: await baseDeDatos.obtieneTodos("rclvsComplem"),
+			};
+
+			// Rutina por entidad
+			for (let entidad of entidades) {
+				// Variables
+				const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+				const registrosPR = await baseDeDatos.obtieneTodos(entidad);
+
+				// Rutina por registro
+				for (let registroPR of registrosPR) {
+					// if (!complems[])
+				}
+			}
+			// Fin
+			for (let entidad of entidades) return;
 		},
 
 		// Eliminaciones de mantenimiento
