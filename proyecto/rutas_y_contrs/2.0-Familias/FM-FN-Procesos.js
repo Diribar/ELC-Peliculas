@@ -858,7 +858,7 @@ module.exports = {
 				for (let edicion of ediciones)
 					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
-				// Elimina las ediciones (colecciones y capítulos)
+				// Elimina las ediciones
 				await baseDeDatos.eliminaTodosPorCondicion(entidadEdic, condicion);
 			}
 
