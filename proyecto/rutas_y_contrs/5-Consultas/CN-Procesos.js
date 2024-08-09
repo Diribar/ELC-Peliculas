@@ -748,6 +748,27 @@ module.exports = {
 				return rclvs;
 			},
 		},
+		descartaCapitulosSiColeccionPresente: {
+			prods: (resultados) => {
+				// Rutina por producto
+				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
+				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+
+				// Fin
+				return resultados;
+			},
+			rclvs: (rclvs) => {
+				// Rutina por rclv
+				rclvs.forEach((rclv, i) => {
+					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
+					for (let coleccion of colecciones)
+						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
+				});
+
+				// Fin
+				return rclvs;
+			},
+		},
 		botonesListado: ({resultados, layout, prefs}) => {
 			// Variables
 			const cantResults = layout.cantidad;
@@ -839,27 +860,6 @@ module.exports = {
 
 					// Fin
 					return datosRclv;
-				});
-
-				// Fin
-				return rclvs;
-			},
-		},
-		descartaCapitulosSiColeccionPresente: {
-			prods: (resultados) => {
-				// Rutina por producto
-				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
-				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
-
-				// Fin
-				return resultados;
-			},
-			rclvs: (rclvs) => {
-				// Rutina por rclv
-				rclvs.forEach((rclv, i) => {
-					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
-					for (let coleccion of colecciones)
-						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
 				});
 
 				// Fin
