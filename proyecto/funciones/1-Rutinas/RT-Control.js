@@ -229,7 +229,7 @@ module.exports = {
 				// Rastrilla los productos
 				for (let producto of productos) {
 					let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
-						? parseInt(Math.random() * Math.pow(10, 6)) // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
+						? comp.azar()
 						: null; // Para los demás, les limpia el campo azar
 
 					// Actualiza el campo en el registro
