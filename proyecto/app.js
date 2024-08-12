@@ -1,4 +1,5 @@
 // Variable 'global' - Tiempo
+global.rutinasDeInicio = Date.now();
 global.unaHora = 60 * 60 * 1000;
 global.unDia = unaHora * 24;
 global.unaSemana = unDia * 7;

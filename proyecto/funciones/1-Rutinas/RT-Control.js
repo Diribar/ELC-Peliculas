@@ -30,11 +30,12 @@ module.exports = {
 
 		// Comunica el fin de las rutinas
 		console.log();
-		// await this.rutinasHorarias.feedbackParaUsers();
+		// await this.rutinasHorarias.productosAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
 		// await obsoletas.actualizaCategoriaLink()
-		console.log("Rutinas de inicio terminadas en " + new Date().toLocaleString());
+		const tiempoTranscurrido = (Date.now() - rutinasDeInicio).toLocaleString("pt"); // 'es' no coloca el separador de miles
+		console.log("Rutinas de inicio terminadas en " + tiempoTranscurrido + " mseg., el " + new Date().toLocaleString());
 
 		// Fin
 		return;
@@ -221,19 +222,30 @@ module.exports = {
 			return;
 		},
 		productosAlAzar: async () => {
-			// Rastrilla las películas y colecciones
-			for (let entidad of ["peliculas", "colecciones"]) {
-				// Obtiene los productos
-				const productos = await baseDeDatos.obtieneTodos(entidad);
+			// Variables
+			const condicion = {statusRegistro_id: aprobados_ids};
+			const entidades = variables.entidades.prods;
+			const prodsComplem = await baseDeDatos.obtieneTodos("prodsComplem");
+
+			// Rastrilla los productos
+			for (let entidad of entidades) {
+				// Variables
+				const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 				// Rastrilla los productos
 				for (let producto of productos) {
-					let azar = aprobados_ids.includes(producto.statusRegistro_id) // Averigua si el producto está aprobado
-						? comp.azar()
-						: null; // Para los demás, les limpia el campo azar
+					// Crea los datos
+					const azar = comp.azar();
+					const datos = {[campo_id]: producto.id, azar};
+					if (entidad != "peliculas")
+						datos.grupoCol_id = entidad == "colecciones" ? producto.id : producto.coleccion_id;
 
-					// Actualiza el campo en el registro
-					baseDeDatos.actualizaPorId(entidad, producto.id, {azar});
+					// Actualiza o agrega un registro
+					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
+					prodComplem
+						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo 'azar' en el registro
+						: baseDeDatos.agregaRegistro("prodsComplem", datos); // agrega un registro
 				}
 			}
 

@@ -1,22 +1,3 @@
-prod_1peliculas.azar
-	linksTrailer
-	linksGral
-	linksGratis
-	linksCast
-	linksSubt
-	HD_Gral
-	HD_Gratis
-	HD_Cast
-	HD_Subt
-	feValores
-	entretiene
-	calidadTecnica
-	calificacion
-	azar
-	capturadoPor_id
-	capturadoEn
-	capturaActiva
-
 usuarios
 	diasLogin
 	versionElcUltimoLogin
@@ -47,6 +28,3 @@ usuarios
 	linksRech
 	edicsAprob
 	edicsRech
-
-prod_2colecciones.azar
-prod_3capitulos.azar

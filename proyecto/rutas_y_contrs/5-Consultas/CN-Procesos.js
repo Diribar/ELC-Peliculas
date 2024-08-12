@@ -97,14 +97,17 @@ module.exports = {
 				const entsProd = variables.entidades.prods;
 				let productos = [];
 				let resultados = [];
-
-				// Includes
 				let include = [];
-				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
+
+				// Include - simple
 				if (layout.codigo == "catalogoEstreno") include.push("epocaEstreno");
 				if (layout.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
-				if (["rolesIgl", "canons", "apMar"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
-				if (prefs.apMar) include.push("hecho");
+				if (layout.codigo == "azar") include.push("prodComplem");
+
+				// Include - complejo
+				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
+				if (["rolesIgl", "canons"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
+				if (prefs.apMar) include.push("personaje", "hecho");
 
 				// Condiciones
 				const filtros = this.filtros(prefs);
@@ -404,7 +407,13 @@ module.exports = {
 				// Rutina por producto
 				for (let i = prods.length - 1; i >= 0; i--) {
 					// Averigua si el producto tiene un registro de preferencia del usuario
-					const pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+					let pppRegistro = pppRegistros.find((n) => n.entidad == prods[i].entidad && n.entidad_id == prods[i].id);
+
+					// Si no tiene pppRegistro y es un capítulo, asume el de la colección
+					if (!pppRegistro && prods[i].entidad == "capitulos")
+						pppRegistro = pppRegistros.find(
+							(n) => n.entidad == "colecciones" && n.entidad_id == prods[i].coleccion_id
+						);
 
 					// Acciones si se eligió un tipo de preferencia
 					if (pppOpcion && pppOpcion != "todos") {
@@ -671,11 +680,8 @@ module.exports = {
 		},
 		orden: {
 			prods: ({prods, layout}) => {
-				// Ordena por el azar decreciente
-				prods.sort((a, b) => b.azar - a.azar);
-
-				// Si corresponde, interrumpe la función
-				if (layout.codigo == "azar") return prods;
+				// Si corresponde, interrumpe la función y ordena por el azar decreciente
+				if (layout.codigo == "azar") return prods.sort((a, b) => b.prodComplem.azar - a.prodComplem.azar);
 
 				// Variables
 				const campo = false
@@ -693,24 +699,17 @@ module.exports = {
 					: layout.codigo;
 
 				// Ordena
+				const menorPrimero = layout.ascDes == "ASC" ? -1 : 1;
 				prods.sort((a, b) =>
 					false
 						? false
 						: typeof a[campo] == "string" && b[campo] == "string"
-						? layout.ascDes == "ASC" // acciones para strings
-							? a[campo].toLowerCase() < b[campo].toLowerCase()
-								? -1
-								: 1
-							: a[campo].toLowerCase() > b[campo].toLowerCase()
-							? -1
-							: 1
-						: layout.ascDes == "ASC" // acciones para 'no strings'
-						? a[campo] < b[campo]
-							? -1
-							: 1
-						: a[campo] > b[campo]
-						? -1
-						: 1
+						? a[campo].toLowerCase() < b[campo].toLowerCase() // acciones para strings
+							? menorPrimero
+							: -menorPrimero
+						: a[campo] < b[campo] // acciones para 'no strings'
+						? menorPrimero
+						: -menorPrimero
 				);
 
 				// Orden adicional para "misPrefs"
@@ -750,6 +749,27 @@ module.exports = {
 							? -1
 							: 1
 					);
+
+				// Fin
+				return rclvs;
+			},
+		},
+		descartaCapitulosSiColeccionPresente: {
+			prods: (resultados) => {
+				// Rutina por producto
+				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
+				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+
+				// Fin
+				return resultados;
+			},
+			rclvs: (rclvs) => {
+				// Rutina por rclv
+				rclvs.forEach((rclv, i) => {
+					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
+					for (let coleccion of colecciones)
+						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
+				});
 
 				// Fin
 				return rclvs;
@@ -846,27 +866,6 @@ module.exports = {
 
 					// Fin
 					return datosRclv;
-				});
-
-				// Fin
-				return rclvs;
-			},
-		},
-		descartaCapitulosSiColeccionPresente: {
-			prods: (resultados) => {
-				// Rutina por producto
-				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
-				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
-
-				// Fin
-				return resultados;
-			},
-			rclvs: (rclvs) => {
-				// Rutina por rclv
-				rclvs.forEach((rclv, i) => {
-					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
-					for (let coleccion of colecciones)
-						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
 				});
 
 				// Fin

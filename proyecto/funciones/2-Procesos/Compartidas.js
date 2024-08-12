@@ -450,7 +450,7 @@ module.exports = {
 		// Fin
 		return asociaciones;
 	},
-	valorNombre: (valor, alternativa) => valor ? valor.nombre : alternativa,
+	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	sinProblemasDeCaptura: function (familia, revID) {
 		// Variables
@@ -637,11 +637,8 @@ module.exports = {
 		return;
 	},
 	actualizaCalidadesDeLinkEnCole: async (colID) => {
-		// Variables
-		const calidadesDeLink = variables.calidadesDeLink;
-		const condicion = {coleccion_id: colID, statusRegistro_id: activos_ids};
-
 		// Obtiene los capítulos de la colección
+		const condicion = {coleccion_id: colID, statusRegistro_id: activos_ids};
 		const capitulos = await baseDeDatos
 			.obtieneTodosPorCondicion("capitulos", condicion)
 			.then((n) => n.sort((a, b) => a.capitulo - b.capitulo)) // los ordena por capitulo
@@ -649,6 +646,7 @@ module.exports = {
 		if (!capitulos.length) return;
 
 		// Actualiza cada campo de la colección
+		const calidadesDeLink = variables.calidadesDeLink;
 		for (let calidadDeLink of calidadesDeLink) {
 			// Variables
 			const capSinLink = capitulos.find((n) => n[calidadDeLink] == sinLinks); // busca un capítulo que no tenga link
@@ -656,8 +654,8 @@ module.exports = {
 			const capConLinks = capitulos.find((n) => n[calidadDeLink] == conLinks);
 
 			// Obtiene los resultados
-			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null;
-			const capID = capSinLink ? capSinLink.id : null;
+			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null; // opción pesimista
+			const capID = capSinLink ? capSinLink.id : null; // capítulo sin link
 
 			// Actualiza cada 'calidadDeLink' en la colección
 			baseDeDatos.actualizaPorId("colecciones", colID, {[calidadDeLink]: tieneLink});
