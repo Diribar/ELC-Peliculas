@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
-		capturaActiva: {type: dt.BOOLEAN},
+		activa: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_capturas",
