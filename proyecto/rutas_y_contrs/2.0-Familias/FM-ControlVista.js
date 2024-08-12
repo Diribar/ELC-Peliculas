@@ -116,10 +116,8 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const original =
-			entidad == "colecciones"
-				? await baseDeDatos.obtienePorId("colecciones", id, "capitulos")
-				: await baseDeDatos.obtienePorId(entidad, id);
+		const include = entidad == "colecciones" ? "capitulos" : "";
+		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
 
