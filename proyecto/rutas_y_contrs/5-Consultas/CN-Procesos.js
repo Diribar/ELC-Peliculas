@@ -775,7 +775,7 @@ module.exports = {
 			rclvs: (rclvs) => {
 				// Rutina por rclv
 				rclvs.forEach((rclv, i) => {
-					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
+					const colecciones = rclv.productos ? rclv.productos.filter((n) => n.entidad == "colecciones") : [];
 					for (let coleccion of colecciones)
 						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
 				});
