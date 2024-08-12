@@ -12,7 +12,7 @@
 		/* Ingresos y Reemplazos */
 		h2 {margin-top: 15px; font-variant: small-caps}
 		p {line-height: 1;}
-		.campoTitulo {font-weight: bold; color: var(--gris-oscuro);}
+		.campoTitulo {font-weight: bold; color: var(--gris-oscuro); vertical-align: baseline; padding-top: 2px;}
 		.infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px;}
 		.infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
 		.infoMostrar :is(.fa-circle-xmark.rechazar, .muestraMotivos) {margin-left: 5px;}
