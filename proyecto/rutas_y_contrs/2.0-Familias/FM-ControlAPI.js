@@ -17,43 +17,49 @@ module.exports = {
 	},
 	obtieneCapAntPostID: async (req, res) => {
 		// Variables
-		let {id} = req.query;
-		let {coleccion_id, temporada, capitulo} = await baseDeDatos.obtienePorId("capitulos", id);
+		const {id} = req.query;
+		let condicAnt, condicPost;
+
+		// Obtiene datos del capítulo actual
+		const {coleccion_id, temporada, capitulo} = await baseDeDatos.obtienePorId("capitulos", id);
+		const condicUltTemp = {coleccion_id, statusRegistro_id: activos_ids};
+		const condicEstandar = {coleccion_id, temporada, statusRegistro_id: activos_ids};
+
+		// Obtiene datos de la colección
+		const ultTemp = await baseDeDatos.maxValorPorCondicion("capitulos", condicUltTemp, "temporada"); // Último número de temporada de la colección
+		const ultCap = await baseDeDatos.maxValorPorCondicion("capitulos", condicEstandar, "capitulo"); // Último número de capítulo de la temporada actual
 
 		// Obtiene la temporada y capítulo anteriores
-		let tempAnt = temporada;
-		let capAnt = 0;
-		if (temporada == 1 && capitulo == 1) capAnt = null;
-		else if (capitulo > 1) capAnt = capitulo - 1;
-		else {
-			// Obtiene el último número de capítulo de la temporada anterior
-			tempAnt = temporada - 1;
-			const condicion = {coleccion_id, temporada: tempAnt};
-			capAnt = await baseDeDatos.maxValorPorCondicion("capitulos", condicion, "capitulo");
+		let capAnt = null;
+		if (temporada > 1 || capitulo > 1) {
+			// Establece la condición
+			condicAnt = {...condicEstandar};
+			if (capitulo == 1) condicAnt.temporada = temporada - 1;
+			else condicAnt.capitulo = {[Op.lt]: capitulo};
+
+			// Busca el capítulo anterior
+			capAnt = baseDeDatos.maxValorPorCondicion("capitulos", condicAnt, "capitulo").then((n) => (n ? n : null));
 		}
 
 		// Obtiene la temporada y capítulo posteriores
-		const condicion = {coleccion_id, temporada, statusRegistro_id: activos_ids};
-		const [ultCap, ultTemp] = await Promise.all([
-			baseDeDatos.maxValorPorCondicion("capitulos", condicion, "capitulo"), // Último número de capítulo de la temporada actual
-			baseDeDatos.obtienePorId("colecciones", coleccion_id).then((n) => n.cantTemps), // Último número de temporada de la colección
-		]);
-		let tempPost = temporada;
-		let capPost = 0;
-		if (temporada == ultTemp && capitulo == ultCap) capPost = null;
-		else if (capitulo < ultCap) capPost = capitulo + 1;
-		else {
-			tempPost = temporada + 1;
-			capPost = 1;
+		let capPost = null;
+		if (temporada != ultTemp || capitulo != ultCap) {
+			// Establece la condición
+			condicPost = {...condicEstandar};
+			if (capitulo == ultCap) condicPost.temporada = temporada + 1;
+			else condicPost.capitulo = {[Op.gt]: capitulo};
+
+			// Busca el capítulo posterior
+			capPost = baseDeDatos.minValorPorCondicion("capitulos", condicPost, "capitulo").then((n) => (n ? n : null));
 		}
+		[capAnt, capPost] = await Promise.all([capAnt, capPost]);
 
 		// Obtiene los ID
-		let objetoAnt = {coleccion_id, temporada: tempAnt, capitulo: capAnt};
-		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
-		let [capAnt_id, capPost_id] = await Promise.all([
-			// Obtiene el ID del capítulo anterior
-			capAnt ? baseDeDatos.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : null,
-			capPost ? baseDeDatos.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : null,
+		if (capAnt) condicAnt.capitulo = capAnt;
+		if (capPost) condicPost.capitulo = capPost;
+		const [capAnt_id, capPost_id] = await Promise.all([
+			capAnt ? baseDeDatos.obtienePorCondicion("capitulos", condicAnt).then((n) => n.id) : null,
+			capPost ? baseDeDatos.obtienePorCondicion("capitulos", condicPost).then((n) => n.id) : null,
 		]);
 
 		// Envia el resultado
