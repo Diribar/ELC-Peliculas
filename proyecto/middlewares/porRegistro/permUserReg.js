@@ -28,7 +28,6 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
-	v.vistaInactivar = rubro ? variables.vistaInactivar[rubro](v.entidad, v.entId) : {};
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
@@ -37,6 +36,8 @@ module.exports = async (req, res, next) => {
 		oa: comp.obtieneDesdeEntidad.oa(v.entidad),
 		ea: comp.obtieneDesdeEntidad.oa(v.entidad),
 
+		// Vistas
+		vistaInactivar: rubro ? variables.vistaInactivar[rubro](v.entidad, v.entId) : {},
 		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 	};
 
@@ -65,18 +66,14 @@ module.exports = async (req, res, next) => {
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
 		// Variables - se revisa solamente en esa familia de entidades
 		const entidades = variables.entidades[variables.entidades.prods.includes(v.entidad) ? "prods" : "rclvs"];
-		const objetoNull = {capturadoEn: null, capturadoPor_id: null, capturaActiva: null};
 		let resultado;
 
 		// Rutina por cada asociación
 		for (let entidad of entidades) {
 			let registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, {capturadoPor_id: v.userID});
-			for (let registro of registros) {
-				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
-				if (registro.capturadoEn < v.haceDosHoras && registro.id != v.entId)
-					baseDeDatos.actualizaPorId(entidad, registro.id, objetoNull);
-				// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
-				else if (
+			// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
+			for (let registro of registros)
+				if (
 					registro.capturadoEn > v.haceUnaHora &&
 					registro.capturaActiva &&
 					(entidad != v.entidad || registro.id != v.entId)
@@ -91,7 +88,6 @@ module.exports = async (req, res, next) => {
 					};
 					break;
 				}
-			}
 		}
 		// Fin
 		return resultado;
