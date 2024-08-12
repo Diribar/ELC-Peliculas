@@ -842,7 +842,7 @@ let datosImgDerecha = (resultado) => {
 		// hoyEstamos
 		const hoyEstamosFinal = hoyEstamos_id
 			? hoyEstamos.find((n) => n.id == hoyEstamos_id).nombre
-			: hoyEstamos.find((n) => n.entidad == entidad).nombre;
+			: hoyEstamos.find((n) => n.entidad == entidad || !n.entidad).nombre;
 
 		// leyNombre
 		const leyNombreFinal = leyNombre ? leyNombre : nombre;

@@ -52,7 +52,6 @@ module.exports = (sequelize, dt) => {
 		entretiene: {type: dt.INTEGER},
 		calidadTecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
-		azar: {type: dt.INTEGER},
 
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
@@ -106,6 +105,8 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.prodsEdicion, {as: "ediciones", foreignKey: "pelicula_id"});
 		entidad.hasMany(n.links, {as: "links", foreignKey: "pelicula_id"});
 		entidad.hasMany(n.linksEdicion, {as: "links_edic", foreignKey: "pelicula_id"});
+
+		entidad.hasOne(n.prodsComplem, {as: "prodComplem", foreignKey: "pelicula_id"});
 	};
 	return entidad;
 };
