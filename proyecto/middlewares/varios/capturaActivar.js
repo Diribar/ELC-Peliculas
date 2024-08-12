@@ -19,13 +19,15 @@ module.exports = async (req, res, next) => {
 	const condicion = {...condicStd, capturadoPor_id: userID, capturadoEn: {[Op.gte]: haceDosHoras}}; // está capturado por el usuario desde hace menos de 2 horas
 	const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion);
 
-	// Acciones si no lo tiene capturado
-	if (!captura) {
+	// Acciones si existe una captura
+	const activa = true;
+	if (captura) baseDeDatos.actualizaPorId("capturas", captura.id, {activa});
+	// Acciones si no existe
+	else {
 		// Variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const capturadoPor_id = userID;
 		const capturadoEn = ahora;
-		const activa = true;
 		const datos = {...condicStd, familia, capturadoPor_id, capturadoEn, activa};
 
 		// Captura
