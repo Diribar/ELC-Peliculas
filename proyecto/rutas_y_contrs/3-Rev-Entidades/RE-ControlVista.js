@@ -255,7 +255,7 @@ module.exports = {
 		await baseDeDatos.actualizaPorId(entidad, id, datos);
 
 		// CONSECUENCIAS - Si corresponde, actualiza o crea el campo 'azar'
-		if (producto && statusFinal_id.includes(aprobados_ids)) {
+		if (producto && aprobados_ids.includes(statusFinal_id)) {
 			// Variables
 			const azar = comp.azar();
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
