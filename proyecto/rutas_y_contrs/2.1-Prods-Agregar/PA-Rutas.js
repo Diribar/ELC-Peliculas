@@ -40,7 +40,7 @@ router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actu
 router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
 
 // APIs - Varias
-router.get("/api/PC-cant-prods", API.cantProductos);
+router.get("/api/PC-obtiene-la-cantidad-de-prods", API.cantProductos);
 router.get("/api/obtiene-colecciones", API.averiguaColecciones);
 router.get("/api/obtiene-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);

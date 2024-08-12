@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
-		submit: document.querySelector("#dataEntry #submit"),
+		botonSubmit: document.querySelector("#dataEntry #botonSubmit"),
 		resultado: document.querySelector("#dataEntry #resultado"),
 
 		// Datos
@@ -16,19 +16,16 @@ window.addEventListener("load", async () => {
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
 	let v = {
-		validaDatos: "/producto/agregar/api/valida/palabras-clave/?",
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 		resultados: {},
 	};
 
 	// FUNCIONES *******************************************
-	let FN = {
+	const FN = {
 		particsInput: async (e) => {
-			// Actualiza el botón 'submit' a 'Verificar'
-			DOM.submit.classList.remove("fa-circle-check", "verde");
-			DOM.submit.classList.add("fa-circle-question", "naranja");
-			DOM.submit.title = "Verificar";
-			DOM.submit.style = "background";
+			// Actualiza el 'botonSubmit' a 'Verificar'
+			DOM.botonSubmit.classList.replace("verdeOscuro", "verdeClaro");
+			DOM.botonSubmit.innerHTML = "Buscar";
 
 			// Actualiza el resultado
 			DOM.resultado.innerHTML = "<br>";
@@ -45,16 +42,19 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		rutaObtieneCantProds: (input) => {
+		palabrasClave: (input) => {
+			// Variables
 			let palabrasClave = input.trim();
+
 			// Procesando la información
 			DOM.resultado.innerHTML = "Procesando la información...";
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
 			DOM.resultado.classList.add("resultadoEnEspera");
+
 			// Obtiene el link
-			return "/producto/agregar/api/PC-cant-prods/?palabrasClave=" + palabrasClave;
+			return palabrasClave;
 		},
-		mostrarResultados: async () => {
+		muestraResultados: async () => {
 			// Variables
 			let {cantProds, cantProdsNuevos, hayMas} = v.resultados;
 			// Determinar oracion y formato
@@ -81,9 +81,8 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add(formatoVigente);
 		},
 		avanzar: () => {
-			DOM.submit.classList.remove("fa-circle-question", "naranja");
-			DOM.submit.classList.add("fa-circle-check", "verde");
-			DOM.submit.title = "Avanzar";
+			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
+			DOM.botonSubmit.innerHTML = v.resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
 			return;
 		},
 		statusInicial: async function (mostrarIconoError) {
@@ -102,7 +101,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		muestraLosErrores: async (datos, mostrarIconoError) => {
-			let errores = await fetch(v.validaDatos + datos).then((n) => n.json());
+			const errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
 			v.campos.forEach((campo, indice) => {
 				if (errores[campo] !== undefined) {
 					DOM.mensajesError[indice].innerHTML = errores[campo];
@@ -127,29 +126,35 @@ window.addEventListener("load", async () => {
 				.map((n) => n.className)
 				.some((n) => n.includes("error"));
 			// Consecuencias
-			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
+			hayErrores ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (DOM.submit.className.includes("fa-circle-question")) {
-				// Acciones si el botón está activo
-				if (!DOM.submit.className.includes("inactivo")) {
-					// Obtiene los resultados
-					DOM.submit.classList.add("inactivo");
-					let ruta = FN.rutaObtieneCantProds(DOM.inputs[0].value);
-					v.resultados = await fetch(ruta).then((n) => n.json());
 
-					// Muestra los resultados
-					FN.mostrarResultados();
-					FN.avanzar();
-					DOM.submit.classList.remove("inactivo");
-				}
-				// Acciones si el botón está inactivo
-				else this.statusInicial(true);
+			// Acciones si el botón está inactivo
+			if (DOM.botonSubmit.className.includes("inactivo")) return this.statusInicial(true);
+
+			// Acciones si el botón está listo para buscar
+			if (DOM.botonSubmit.className.includes("verdeClaro")) {
+				// Obtiene los resultados
+				DOM.botonSubmit.classList.add("inactivo");
+				const palabrasClave = FN.palabrasClave(DOM.inputs[0].value);
+				v.resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
+
+				// Muestra los resultados
+				FN.muestraResultados();
+				FN.avanzar();
+				DOM.botonSubmit.classList.remove("inactivo");
+
+				// Fin
+				return;
 			}
-			// Acciones si el botón es 'OK'
-			else if (!v.resultados.cantProds) location.href = "ingreso-manual";
-			else DOM.form.submit();
+
+			// Acciones si el botón está listo para avanzar
+			if (DOM.botonSubmit.className.includes("verdeOscuro"))
+				return v.resultados.cantProds
+					? DOM.form.submit() // Desambiguar
+					: (location.href = "ingreso-manual"); // Ingreso Manual
 		},
 	};
 
@@ -174,13 +179,17 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("submit", async (e) => {
 		FN.submitForm(e);
 	});
-	DOM.submit.addEventListener("click", async (e) => {
+	DOM.botonSubmit.addEventListener("click", async (e) => {
 		FN.submitForm(e);
 	});
-	DOM.submit.addEventListener("keydown", async (e) => {
+	DOM.botonSubmit.addEventListener("keydown", async (e) => {
 		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
 	});
 
 	// STATUS INICIAL *************************************
 	FN.statusInicial();
 });
+const rutas = {
+	cantProductos: "/producto/agregar/api/PC-obtiene-la-cantidad-de-prods/?palabrasClave=",
+	validaDatos: "/producto/agregar/api/valida/palabras-clave/?",
+};
