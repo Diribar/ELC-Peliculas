@@ -252,6 +252,17 @@ module.exports = {
 			// Fin
 			return;
 		},
+		eliminaCapturasVencidas: async () => {
+			// Variables
+			const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+			const condicion = {capturadoEn: {[Op.lt]: haceDosHoras}};
+
+			// Actualiza la BD
+			baseDeDatos.eliminaTodosPorCondicion("capturas", condicion);
+
+			// Fin
+			return;
+		},
 	},
 	rutinasDiarias: {
 		imagenDerecha: async () => {
