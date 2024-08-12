@@ -269,7 +269,7 @@ module.exports = {
 				  );
 
 			// 2. Actualiza el campo 'prodAprob' en los links de sus capítulos
-			procesos.guardar.prodAprobEnLink(id, statusFinal_id);
+			procesos.guardar.actualizaProdAprobEnLink(id, statusFinal_id);
 
 			// 3. Si la colección fue aprobada, actualiza sus status de links
 			if (aprobados_ids.includes(statusFinal_id)) {
@@ -278,12 +278,12 @@ module.exports = {
 					await baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: id});
 
 				// Actualiza su link
-				comp.linksEnColec(id);
+				comp.actualizaLinksEnColec(id);
 			}
 		}
 
 		// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
-		if (entidad == "capitulos") comp.linksEnColec(original.coleccion_id);
+		if (entidad == "capitulos") comp.actualizaLinksEnColec(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revID);

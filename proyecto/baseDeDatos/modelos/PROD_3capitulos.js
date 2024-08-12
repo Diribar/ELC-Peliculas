@@ -31,6 +31,8 @@ module.exports = (sequelize, dt) => {
 		violencia: {type: dt.BOOLEAN},
 		tipoActuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
+		epocaEstreno_id: {type: dt.INTEGER},
+		epocaOcurrencia_id: {type: dt.STRING(3)},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
@@ -38,10 +40,7 @@ module.exports = (sequelize, dt) => {
 		evento_id: {type: dt.INTEGER},
 		epocaDelAno_id: {type: dt.INTEGER},
 
-		epocaOcurrencia_id: {type: dt.STRING(3)},
-		epocaEstreno_id: {type: dt.INTEGER},
 		linksTrailer: {type: dt.INTEGER},
-
 		linksGral: {type: dt.INTEGER},
 		linksGratis: {type: dt.INTEGER},
 		linksCast: {type: dt.INTEGER},

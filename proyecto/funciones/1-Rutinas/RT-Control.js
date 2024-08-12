@@ -41,61 +41,6 @@ module.exports = {
 	},
 
 	// Consolidados
-	RutinasHorarias: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinas = info.RutinasHorarias;
-
-		// Actualiza todas las rutinas horarias
-		console.log();
-		console.log("Rutinas horarias:");
-		for (let rutina of rutinas) {
-			const comienzo = Date.now();
-			await this.rutinasHorarias[rutina]();
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasHorarias(rutina, duracion);
-		}
-		console.log("Fin de rutinas horarias");
-
-		// Fin
-		return;
-	},
-	RutinasDiarias: async function () {
-		procesos.variablesDiarias();
-
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinasDiarias = info.RutinasDiarias;
-
-		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in rutinasDiarias) {
-			const comienzo = Date.now();
-			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
-		}
-		console.log("Fin de rutinas diarias");
-
-		// Fin
-		return;
-	},
-	RutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-		const rutinasSemanales = info.RutinasSemanales;
-
-		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in rutinasSemanales) {
-			const comienzo = Date.now();
-			await this.rutinasSemanales[rutinaSemanal]();
-			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
-		}
-		console.log("Fin de rutinas semanales");
-
-		// Fin
-		return;
-	},
 	FechaHoraUTC: async function () {
 		// Variables
 		const info = {...rutinasJSON};
@@ -166,6 +111,61 @@ module.exports = {
 		// Fin
 		return;
 	},
+	RutinasHorarias: async function () {
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinas = info.RutinasHorarias;
+
+		// Actualiza todas las rutinas horarias
+		console.log();
+		console.log("Rutinas horarias:");
+		for (let rutina of rutinas) {
+			const comienzo = Date.now();
+			await this.rutinasHorarias[rutina]();
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasHorarias(rutina, duracion);
+		}
+		console.log("Fin de rutinas horarias");
+
+		// Fin
+		return;
+	},
+	RutinasDiarias: async function () {
+		procesos.variablesDiarias();
+
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinasDiarias = info.RutinasDiarias;
+
+		// Actualiza todas las rutinas diarias
+		for (let rutinaDiaria in rutinasDiarias) {
+			const comienzo = Date.now();
+			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
+		}
+		console.log("Fin de rutinas diarias");
+
+		// Fin
+		return;
+	},
+	RutinasSemanales: async function () {
+		// Obtiene la información del archivo JSON
+		const info = {...rutinasJSON};
+		const rutinasSemanales = info.RutinasSemanales;
+
+		// Actualiza las rutinasSemanales
+		for (let rutinaSemanal in rutinasSemanales) {
+			const comienzo = Date.now();
+			await this.rutinasSemanales[rutinaSemanal]();
+			const duracion = Date.now() - comienzo;
+			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
+		}
+		console.log("Fin de rutinas semanales");
+
+		// Fin
+		return;
+	},
 
 	// Rutinas
 	rutinasHorarias: {
@@ -189,7 +189,7 @@ module.exports = {
 			// Rutina por usuario
 			for (let usuario of usuarios) {
 				// Si corresponde, saltea la rutina
-				const stopper = stoppers(usuario);
+				const stopper = stoppersFeedbackParaUsers(usuario);
 				if (stopper) continue;
 
 				// Variables
@@ -242,7 +242,6 @@ module.exports = {
 		},
 	},
 	rutinasDiarias: {
-		actualizaSolapam: async () => await comp.actualizaSolapam(),
 		imagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
@@ -293,7 +292,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		infoRevsTablero: async () => {
+		ABM_noRevisores: async () => {
 			// Si no hay casos, termina
 			const {regs, edics} = await procesos.ABM_noRevs();
 			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
@@ -323,7 +322,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		loginsAcums: async () => {
+		loginsPorDia: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
@@ -367,7 +366,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		rutinasEnUsuario: async () => {
+		rutinasDiariasEnUsuario: async () => {
 			// Lleva a cero el valor de algunos campos
 			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
 
@@ -379,7 +378,159 @@ module.exports = {
 			// Fin
 			return;
 		},
-		aprobadoConAvatarLink: async () => {
+	},
+	rutinasSemanales: {
+		// Gestiones semanales
+		estableceLosNuevosLinksVencidos: async () => {
+			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
+			await comp.linksVencPorSem.actualizaStatus(); // pasa a 'creadoAprob' los links con fechaVencim < semActual
+			await comp.linksVencPorSem.actualizaCantLinksPorSem();
+
+			// Fin
+			return;
+		},
+		actualizaPaisesConMasProductos: async () => {
+			// Variables
+			const condicion = {statusRegistro_id: aprobado_id};
+			const entidades = ["peliculas", "colecciones"];
+			let paisesID = {};
+
+			// Obtiene la frecuencia por país
+			for (let entidad of entidades) {
+				// Obtiene todos los registros de la entidad
+				await baseDeDatos
+					.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) => n.filter((m) => m.paises_id))
+					.then((n) =>
+						n.map((m) => {
+							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
+						})
+					);
+			}
+
+			// Actualiza la frecuencia por país
+			paises.forEach((pais, i) => {
+				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
+				paises[i].cantProds.cantidad = cantidad;
+				baseDeDatos.actualizaTodosPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
+			});
+
+			// Fin
+			return;
+		},
+		actualizaLinksPorProv: async () => {
+			// Obtiene todos los links
+			const linksTotales = await baseDeDatos.obtieneTodos("links");
+
+			// Links por proveedor
+			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
+				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
+				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
+			}
+
+			// Fin
+			return;
+		},
+		eliminaLinksInactivos: async () => {
+			const condicion = {statusRegistro_id: inactivo_id};
+			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+			return;
+		},
+		eliminaImagenesSinRegistro: async () => {
+			// Variables
+			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+			const statusCualquiera_id = {[Op.ne]: null};
+
+			const objetos = [
+				// Carpetas REVISAR
+				{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+
+				// Carpetas FINAL
+				{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
+				{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
+
+				// Carpetas USUARIOS
+				{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
+			];
+
+			// Elimina las imágenes de las carpetas "Revisar" y "Final"
+			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+			// Elimina las imágenes de "Provisorio"
+			procesos.eliminaImagenesProvisorio();
+
+			// Fin
+			return;
+		},
+
+		// Repetición de actualizaciones por seguridad
+		actualizaSolapam: async () => await comp.actualizaSolapam(),
+		actualizaLinksEnProd: async () => {
+			// Variables
+			let esperar = [];
+			let IDs;
+
+			// Rutina por peliculas y capitulos
+			for (let entidad of ["peliculas", "capitulos"]) {
+				// Obtiene los ID de los registros de la entidad
+				IDs = await baseDeDatos
+					.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids})
+					.then((n) => n.map((m) => m.id));
+
+				// Ejecuta la función linksEnProd
+				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
+			}
+			await Promise.all(esperar).then(async () => {
+				// Rutina por colecciones
+				IDs = await baseDeDatos
+					.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
+					.then((n) => n.map((m) => m.id));
+				for (let id of IDs) await comp.actualizaLinksEnColec(id);
+			});
+
+			// Fin
+			return;
+		},
+		actualizaLinksEnColec: async () => {
+			// Variables
+			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
+
+			// Rutina
+			for (let coleccion of colecciones) await comp.actualizaLinksEnColec(coleccion.id);
+
+			// Fin
+			return;
+		},
+		actualizaProdAprobEnLink: async () => {
+			// Obtiene todos los links con su producto asociado
+			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
+
+			// Actualiza su valor
+			comp.actualizaProdAprobEnLink(links);
+
+			// Fin
+			return;
+		},
+		actualizaProdsEnRCLV: async () => {
+			// Obtiene las entidadesRCLV
+			const entidadesRCLV = variables.entidades.rclvs;
+
+			// Rutina por entidad
+			for (let entidad of entidadesRCLV) {
+				// Obtiene los ID de los registros de la entidad
+				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
+
+				// Rutina por ID
+				for (let id of IDs) comp.actualizaProdsEnRCLV({entidad, id});
+			}
+
+			// Fin
+			return;
+		},
+
+		// Correcciones desvíos del estándar
+		corrigeAprobadoConAvatarLink: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
 			let descargas = [];
@@ -407,9 +558,61 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaLinksInactivos: async () => {
-			const condicion = {statusRegistro_id: inactivo_id};
-			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+		corrigeRclv_idEnCapsSiLaColeTieneUnValor: async () => {
+			// Variables
+			const rclvs_id = variables.entidades.rclvs_id;
+
+			// Obtiene todas las colecciones
+			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
+
+			// Rutinas
+			for (let coleccion of colecciones) // Rutina por colección
+				for (let rclv_id of rclvs_id) // Rutina por rclv_id
+					if (coleccion[rclv_id] > 10) {
+						const condicion = {coleccion_id: coleccion.id};
+						const datos = {[rclv_id]: 1};
+						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, datos);
+					}
+
+			// Fin
+			return;
+		},
+		corrigeRclvsSinEpocaPSTyConAno: async () => {
+			// Variables
+			const entidades = ["personajes", "hechos"];
+			const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
+
+			// Busca
+			for (let entidad of entidades) {
+				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
+				await baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
+			}
+
+			// Fin
+			return;
+		},
+
+		// Eliminaciones de mantenimiento
+		eliminaMisConsultasExcedente: async () => {
+			// Elimina misConsultas > límite
+			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
+			const limite = 20;
+			while (misConsultas.length) {
+				// Obtiene los registros del primer usuario
+				const usuario_id = misConsultas[0].usuario_id;
+				const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
+
+				// Elimina los registros sobrantes en la BD
+				if (registros.length > limite) {
+					const idsBorrar = registros.map((n) => n.id).slice(limite);
+					baseDeDatos.eliminaPorId("misConsultas", idsBorrar);
+				}
+
+				// Revisa las consultas de otro usuario
+				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
+			}
+
+			// Fin
 			return;
 		},
 		eliminaCalifsSinPPP: async () => {
@@ -423,33 +626,6 @@ module.exports = {
 				if (!pppRegistros.find((n) => n.usuario_id == usuario_id && n.entidad == entidad && n.entidad_id == entidad_id))
 					await baseDeDatos.eliminaPorId("calRegistros", calRegistro.id);
 			}
-
-			// Fin
-			return;
-		},
-		eliminaImagenesSinRegistro: async () => {
-			// Variables
-			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-			const statusCualquiera_id = {[Op.ne]: null};
-
-			const objetos = [
-				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
-
-				// Carpetas FINAL
-				{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
-				{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
-
-				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
-			];
-
-			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
-
-			// Elimina las imágenes de "Provisorio"
-			procesos.eliminaImagenesProvisorio();
 
 			// Fin
 			return;
@@ -480,56 +656,24 @@ module.exports = {
 			// Fin
 			return;
 		},
-		paisesConMasProductos: async () => {
+		eliminaLoginsAcumsRepetidos: async () => {
 			// Variables
-			const condicion = {statusRegistro_id: aprobado_id};
-			const entidades = ["peliculas", "colecciones"];
-			let paisesID = {};
+			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
 
-			// Obtiene la frecuencia por país
-			for (let entidad of entidades) {
-				// Obtiene todos los registros de la entidad
-				await baseDeDatos
-					.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) => n.filter((m) => m.paises_id))
-					.then((n) =>
-						n.map((m) => {
-							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
-						})
-					);
-			}
-
-			// Actualiza la frecuencia por país
-			paises.forEach((pais, i) => {
-				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds.cantidad = cantidad;
-				baseDeDatos.actualizaTodosPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
-			});
-
-			// Fin
-			return;
-		},
-		linksPorProv: async () => {
-			// Obtiene todos los links
-			const linksTotales = await baseDeDatos.obtieneTodos("links");
-
-			// Links por proveedor
-			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
-				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
+			// Elimina los loginsAcums repetidos
+			let registroAnterior;
+			for (let registro of loginsAcums) {
+				if (registroAnterior && registro.fecha == registroAnterior.fecha)
+					baseDeDatos.eliminaPorId("loginsAcums", registro.id);
+				registroAnterior = registro;
 			}
 
 			// Fin
 			return;
 		},
-		linksEnColes: async () => {
-			// Variables
-			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
-
-			// Rutina
-			for (let coleccion of colecciones) await comp.linksEnColec(coleccion.id);
-
-			// Fin
+		eliminaRegsDelHistStatus: async () => {
+			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
+			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 			return;
 		},
 		iDdeTablas: async () => {
@@ -570,150 +714,10 @@ module.exports = {
 			return;
 		},
 	},
-	rutinasSemanales: {
-		actualizaStatusLinks: async () => {
-			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
-			await comp.linksVencPorSem.actualizaStatus(); // pasa a 'creadoAprob' los links con fechaVencim < semActual
-			await comp.linksVencPorSem.actualizaCantLinksPorSem();
-
-			// Fin
-			return;
-		},
-		eliminaMisConsultasExcedente: async () => {
-			// Elimina misConsultas > límite
-			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
-			const limite = 20;
-			while (misConsultas.length) {
-				// Obtiene los registros del primer usuario
-				const usuario_id = misConsultas[0].usuario_id;
-				const registros = misConsultas.filter((n) => n.usuario_id == usuario_id);
-
-				// Elimina los registros sobrantes en la BD
-				if (registros.length > limite) {
-					const idsBorrar = registros.map((n) => n.id).slice(limite);
-					baseDeDatos.eliminaPorId("misConsultas", idsBorrar);
-				}
-
-				// Revisa las consultas de otro usuario
-				misConsultas = misConsultas.filter((n) => n.usuario_id != usuario_id);
-			}
-
-			// Fin
-			return;
-		},
-		rclv_idEnCapitulos: async () => {
-			// Variables
-			const rclvs_id = variables.entidades.rclvs_id;
-
-			// Obtiene todas las colecciones
-			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
-
-			// Rutinas
-			for (let coleccion of colecciones) // Rutina por colección
-				for (let rclv_id of rclvs_id) // Rutina por rclv_id
-					if (coleccion[rclv_id] > 10) {
-						// Variables
-						const condicion = {coleccion_id: coleccion.id, [rclv_id]: coleccion[rclv_id]}; // Averigua si alguno de sus capítulos tiene el mismo rclv_id
-						const objeto = {[rclv_id]: 1}; // En los casos que encuentra, convierte el rclv_id en 1
-
-						// Actualiza los capítulos que correspondan
-						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, objeto);
-					}
-
-			// Fin
-			return;
-		},
-		rclvsSinEpocaPSTyConAno: async () => {
-			// Variables
-			const entidades = ["personajes", "hechos"];
-			const condicion = {statusRegistro_id: aprobado_id, epocaOcurrencia_id: {[Op.ne]: "pst"}};
-
-			// Busca
-			for (let entidad of entidades) {
-				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
-				await baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
-			}
-
-			// Fin
-			return;
-		},
-		eliminaLoginsAcumsRepetidos: async () => {
-			// Variables
-			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
-
-			// Elimina los loginsAcums repetidos
-			let registroAnterior;
-			for (let registro of loginsAcums) {
-				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("loginsAcums", registro.id);
-				registroAnterior = registro;
-			}
-
-			// Fin
-			return;
-		},
-		eliminaRegsHistStatusIncorrectos: async () => {
-			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
-			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
-			return;
-		},
-		linksEnProd: async () => {
-			// Variables
-			let esperar = [];
-			let IDs;
-
-			// Rutina por peliculas y capitulos
-			for (let entidad of ["peliculas", "capitulos"]) {
-				// Obtiene los ID de los registros de la entidad
-				IDs = await baseDeDatos
-					.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids})
-					.then((n) => n.map((m) => m.id));
-
-				// Ejecuta la función linksEnProd
-				for (let id of IDs) esperar.push(comp.linksEnProd({entidad, id}));
-			}
-			await Promise.all(esperar).then(async () => {
-				// Rutina por colecciones
-				IDs = await baseDeDatos
-					.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
-					.then((n) => n.map((m) => m.id));
-				for (let id of IDs) await comp.linksEnColec(id);
-			});
-
-			// Fin
-			return;
-		},
-		prodAprobEnLink: async () => {
-			// Obtiene todos los links con su producto asociado
-			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocProds);
-
-			// Actualiza su valor
-			comp.prodAprobEnLink(links);
-
-			// Fin
-			return;
-		},
-		prodsEnRCLV: async () => {
-			// Obtiene las entidadesRCLV
-			const entidadesRCLV = variables.entidades.rclvs;
-
-			// Rutina por entidad
-			for (let entidad of entidadesRCLV) {
-				// Obtiene los ID de los registros de la entidad
-				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
-
-				// Rutina por ID: ejecuta la función prodsEnRCLV
-				for (let id of IDs) comp.prodsEnRCLV({entidad, id});
-			}
-
-			// Fin
-			return;
-		},
-	},
 };
 
 // Funciones
-const stoppers = (usuario) => {
+const stoppersFeedbackParaUsers = (usuario) => {
 	if (!usuario.pais || !usuario.email) return true;
 
 	// Acciones para saltear la rutina, dependiendo de la hora

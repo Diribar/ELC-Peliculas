@@ -628,7 +628,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	linksEnColec: async (colID) => {
+	actualizaLinksEnColec: async (colID) => {
 		// Variables
 		const campos = variables.calidadLinks;
 		const condicion = {coleccion_id: colID, statusRegistro_id: activos_ids};
@@ -701,7 +701,7 @@ module.exports = {
 		// Fin
 		return temas;
 	},
-	prodsEnRCLV: async function ({entidad, id}) {
+	actualizaProdsEnRCLV: async function ({entidad, id}) {
 		// Variables
 		const entidadesProds = variables.entidades.prods;
 		const statusAprobado = {statusRegistro_id: aprobado_id};
@@ -797,7 +797,7 @@ module.exports = {
 	},
 
 	// Links
-	prodAprobEnLink: (links) => {
+	actualizaProdAprobEnLink: (links) => {
 		// Rutina por link
 		for (let link of links) {
 			// Averigua el status de su producto

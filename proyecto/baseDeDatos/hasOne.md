@@ -1,6 +1,3 @@
-1. aux_paises.cantProds
-2. links_provs.cantLinks
-
 prod_1peliculas.azar
 	linksTrailer
 	linksGral

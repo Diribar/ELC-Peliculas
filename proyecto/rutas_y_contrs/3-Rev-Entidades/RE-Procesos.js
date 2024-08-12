@@ -533,7 +533,7 @@ module.exports = {
 				}
 			}
 		},
-		prodAprobEnLink: async (coleccion_id, statusCol) => {
+		actualizaProdAprobEnLink: async (coleccion_id, statusCol) => {
 			// Variables
 			const prodAprob = aprobados_ids.includes(statusCol);
 			const capsID = await baseDeDatos
