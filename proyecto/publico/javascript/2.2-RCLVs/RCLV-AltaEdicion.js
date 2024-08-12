@@ -85,7 +85,8 @@ window.addEventListener("load", async () => {
 		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
-	v.hoyEstamos = v.hoyEstamos.filter((n) => n.entidad == entidad);
+	v.hoyEstamos = v.hoyEstamos.filter((n) => !n.entidad || n.entidad == entidad);
+
 	// Por entidad
 	if (personajes || hechos) {
 		// sectorRCLIC
@@ -392,7 +393,8 @@ window.addEventListener("load", async () => {
 
 				// Opciones
 				let opciones = [];
-				if (sector == "hoyEstamos_id") opciones = v.hoyEstamos.filter((n) => v.genero_id && n.genero_id == v.genero_id);
+				if (sector == "hoyEstamos_id")
+					opciones = v.hoyEstamos.filter((n) => !n.genero_id || (v.genero_id && n.genero_id == v.genero_id));
 				else if (sector == "leyNombre" && DOM.nombre.value) {
 					// Obtiene la info - nombre, genero_id, canon_id
 					let info = "&nombre=" + DOM.nombre.value;

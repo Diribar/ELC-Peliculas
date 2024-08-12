@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	const revision = location.pathname.includes("/revision");
 	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
 	const grafico = document.querySelector("#cuadro #grafico");
-	const revision = location.pathname.includes("/revision");
-	if (!algunosDatos || !grafico || !revision) return;
+	if (!algunosDatos || !grafico) return;
 
 	// Obtiene información del backend
 	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());

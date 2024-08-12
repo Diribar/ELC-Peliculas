@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 5/ago",
-	"HoraUTC": "10:45",
+	"FechaUTC": "Vie. 9/ago",
+	"HoraUTC": "13:14",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 5/ago",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"03-ago-24": {},
-		"04-ago-24": {"leyenda": "Hoy recordamos a san Juan María Vianney, el cura de Ars", "entidad": "personajes", "id": 162},
-		"05-ago-24": {"leyenda": "Hoy recordamos al padre Juan María Lustiger", "entidad": "personajes", "id": 106},
-		"06-ago-24": {"leyenda": "Hoy recordamos la Transfiguración de Nuestro Señor", "entidad": "eventos", "id": 28},
-		"07-ago-24": {}
+		"07-ago-24": {},
+		"08-ago-24": {"leyenda": "Hoy recordamos a santo Domingo de Guzmán", "entidad": "personajes", "id": 187},
+		"09-ago-24": {"leyenda": "Hoy recordamos a santa Teresa Benedicta de la Cruz", "entidad": "personajes", "id": 107},
+		"10-ago-24": {},
+		"11-ago-24": {"leyenda": "Hoy recordamos a santa Clara de Asís", "entidad": "personajes", "id": 111}
 	}
 }
