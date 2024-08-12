@@ -25,8 +25,8 @@ module.exports = async (req, res, next) => {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const capturadoPor_id = userID;
 		const capturadoEn = ahora;
-		const capturaActiva = true;
-		const datos = {...condicStd, familia, capturadoPor_id, capturadoEn, capturaActiva};
+		const activa = true;
+		const datos = {...condicStd, familia, capturadoPor_id, capturadoEn, activa};
 
 		// Captura
 		await baseDeDatos.agregaRegistro("capturas", datos);

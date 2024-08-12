@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 		const condicion = {
 			capturadoEn: {[Op.gt]: haceUnaHora},
 			capturadoPor_id: {[Op.ne]: userID},
-			capturaActiva: {[Op.ne]: 1},
+			activa: {[Op.ne]: 1},
 		};
 
 		// Acciones si existe una captura activa
