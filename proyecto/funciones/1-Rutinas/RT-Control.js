@@ -466,15 +466,15 @@ module.exports = {
 
 			const objetos = [
 				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familia: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familia: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
 
 				// Carpetas FINAL
-				{carpeta: "2-Productos/Final", familia: "productos", status_id: statusDistintoCreado_id},
-				{carpeta: "3-RCLVs/Final", familia: "rclvs", status_id: statusDistintoCreado_id},
+				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},
+				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
 
 				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familia: "usuarios", status_id: statusCualquiera_id},
+				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
 			];
 
 			// Elimina las imágenes de las carpetas "Revisar" y "Final"
