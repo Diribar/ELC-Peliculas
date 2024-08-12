@@ -692,7 +692,7 @@ module.exports = {
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
 				...["loginsAcums", "loginsDelDia"],
-				...["prodsComplem", "rclvsComplem"],
+				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
 			];
