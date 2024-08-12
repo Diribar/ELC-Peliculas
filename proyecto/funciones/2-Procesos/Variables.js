@@ -253,7 +253,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	calidadLinks: [
+	calidadesDeLink: [
 		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
 		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
 	],

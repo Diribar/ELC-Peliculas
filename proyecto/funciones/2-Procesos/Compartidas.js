@@ -628,9 +628,9 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaLinksEnColec: async (colID) => {
+	actualizaCalidadesDeLinkEnCole: async (colID) => {
 		// Variables
-		const campos = variables.calidadLinks;
+		const calidadesDeLink = variables.calidadesDeLink;
 		const condicion = {coleccion_id: colID, statusRegistro_id: activos_ids};
 
 		// Obtiene los capítulos de la colección
@@ -641,19 +641,19 @@ module.exports = {
 		if (!capitulos.length) return;
 
 		// Actualiza cada campo de la colección
-		for (let campo of campos) {
+		for (let calidadDeLink of calidadesDeLink) {
 			// Variables
-			const capSinLink = capitulos.find((n) => n[campo] == sinLinks); // busca un capítulo que no tenga link
-			const capTalVez = capitulos.find((n) => n[campo] == linksTalVez);
-			const capConLinks = capitulos.find((n) => n[campo] == conLinks);
+			const capSinLink = capitulos.find((n) => n[calidadDeLink] == sinLinks); // busca un capítulo que no tenga link
+			const capTalVez = capitulos.find((n) => n[calidadDeLink] == linksTalVez);
+			const capConLinks = capitulos.find((n) => n[calidadDeLink] == conLinks);
 
 			// Obtiene los resultados
 			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null;
 			const capID = capSinLink ? capSinLink.id : null;
 
-			// Actualiza el campo de la colección
-			baseDeDatos.actualizaPorId("colecciones", colID, {[campo]: tieneLink});
-			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[campo]: capID});
+			// Actualiza cada 'calidadDeLink' en la colección
+			baseDeDatos.actualizaPorId("colecciones", colID, {[calidadDeLink]: tieneLink});
+			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[calidadDeLink]: capID});
 		}
 
 		// Fin

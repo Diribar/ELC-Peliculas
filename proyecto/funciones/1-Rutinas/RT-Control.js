@@ -486,18 +486,18 @@ module.exports = {
 				IDs = await baseDeDatos
 					.obtieneTodosPorCondicion("colecciones", {statusRegistro_id: aprobados_ids})
 					.then((n) => n.map((m) => m.id));
-				for (let id of IDs) await comp.actualizaLinksEnColec(id);
+				for (let id of IDs) await comp.actualizaCalidadesDeLinkEnCole(id);
 			});
 
 			// Fin
 			return;
 		},
-		actualizaLinksEnColec: async () => {
+		actualizaCalidadesDeLinkEnColes: async () => {
 			// Variables
 			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
 			// Rutina
-			for (let coleccion of colecciones) await comp.actualizaLinksEnColec(coleccion.id);
+			for (let coleccion of colecciones) await comp.actualizaCalidadesDeLinkEnCole(coleccion.id);
 
 			// Fin
 			return;
@@ -679,19 +679,12 @@ module.exports = {
 		iDdeTablas: async () => {
 			// Variables
 			const tablas = [
-				"calRegistros",
-				"capsSinLink",
-				"consRegsPrefs",
-				"histEdics",
-				"statusHistorial",
-				"linksEdicion",
-				"loginsAcums",
-				"loginsDelDia",
-				"misConsultas",
-				"novedadesELC",
-				"pppRegistros",
-				"prodsEdicion",
-				"rclvsEdicion",
+				...["histEdics", "statusHistorial"],
+				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
+				...["loginsAcums", "loginsDelDia"],
+				...["prodsComplem", "rclvsComplem"],
+				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
+				...["capsSinLink", "novedadesELC"],
 			];
 
 			// Actualiza los valores de ID
