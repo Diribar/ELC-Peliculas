@@ -252,7 +252,7 @@ module.exports = {
 		}
 
 		// Datos sólo si es un producto
-		if (producto) datos.azar = parseInt(Math.random() * Math.pow(10, 6));
+		if (producto) datos.azar = comp.azar();
 
 		// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
 		await baseDeDatos.actualizaPorId(entidad, id, datos);

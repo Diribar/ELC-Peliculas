@@ -40,6 +40,7 @@ module.exports = {
 		},
 	},
 	obtieneDesdeEntidad: {
+		// Familia y derivados
 		familia: (entidad) => {
 			return FN.familia(entidad);
 		},
@@ -66,23 +67,6 @@ module.exports = {
 				: "";
 		},
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
-		delLa: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
-				? " de la "
-				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
-				? " del "
-				: "";
-		},
-		elLa: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
-				? " la "
-				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
-				? " el "
-				: "";
-		},
-		oa: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o"),
-		ea: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e"),
-		unaUn: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "una" : "un"),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
 				? "pelicula_id"
@@ -134,8 +118,28 @@ module.exports = {
 				? "linksEdicion"
 				: "";
 		},
+
+		// Masculino / Femenino
+		delLa: (entidad) => {
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+				? " de la "
+				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
+				? " del "
+				: "";
+		},
+		elLa: (entidad) => {
+			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+				? " la "
+				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
+				? " el "
+				: "";
+		},
+		oa: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o"),
+		ea: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e"),
+		unaUn: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "una" : "un"),
 	},
 	obtieneDesdeCampo_id: {
+		// Entidad
 		entidadProd: (registro) => {
 			return registro.pelicula_id
 				? "peliculas"
@@ -175,6 +179,8 @@ module.exports = {
 				? entRCLV
 				: "";
 		},
+
+		// campo_id
 		campo_idProd: (registro) => {
 			return registro.pelicula_id
 				? "pelicula_id"
@@ -211,6 +217,8 @@ module.exports = {
 				? rclv_id
 				: "";
 		},
+
+		// Asociación
 		asocProd: (registro) => FN.asocProd(registro),
 		asocRCLV: (registro) => {
 			return registro.personaje_id
@@ -238,6 +246,7 @@ module.exports = {
 		},
 	},
 	obtieneDesdeAsoc: {
+		// Entidad
 		entidad: (asoc) => {
 			const indice = [...variables.entidades.asocProdsRclvs].indexOf(asoc);
 			const entidad = indice > -1 ? [...variables.entidades.prodsRclvs][indice] : null;
@@ -249,10 +258,13 @@ module.exports = {
 				indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
 			return entNombre;
 		},
+
+		// Masculino y Femenino
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
 
+	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
 		const familias = this.obtieneDesdeEntidad.familias(entidad);
@@ -314,8 +326,6 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
-
-	// Productos y RCLVs
 	validacs: {
 		longitud: (dato, corto, largo) => {
 			return dato.length < corto
@@ -440,9 +450,7 @@ module.exports = {
 		// Fin
 		return asociaciones;
 	},
-	valorNombre: (valor, alternativa) => {
-		return valor ? valor.nombre : alternativa;
-	},
+	valorNombre: (valor, alternativa) => valor ? valor.nombre : alternativa,
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	sinProblemasDeCaptura: function (familia, revID) {
 		// Variables
@@ -659,6 +667,7 @@ module.exports = {
 		// Fin
 		return;
 	},
+	azar: () => parseInt(Math.random() * Math.pow(10, 6)), // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
 
 	// RCLVs
 	canonNombre: (rclv) => {
@@ -818,7 +827,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-
 	linksVencPorSem: {
 		actualizaFechaVencimNull: async function (links) {
 			// Variables
@@ -1229,26 +1237,13 @@ module.exports = {
 
 // Funciones
 let FN = {
+	// Fecha y hora
 	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en 'horario local'
 	nuevoHorario: function (delay, horario) {
 		horario = horario ? horario : this.ahora();
 		let nuevoHorario = new Date(horario);
 		nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 		return nuevoHorario;
-	},
-	entidadNombre: (entidad) => {
-		const indice = [...variables.entidades.todos].indexOf(entidad);
-		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
-		return entNombre;
-	},
-	familia: (entidad) => {
-		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-			? "producto"
-			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-			? "rclv"
-			: ["links", "linksEdicion"].includes(entidad)
-			? "link"
-			: "";
 	},
 	primerLunesDelAno: function (fecha) {
 		// Obtiene el primer día del año
@@ -1270,6 +1265,40 @@ let FN = {
 		// Fin
 		return;
 	},
+	diaMes: (fecha) => {
+		fecha = new Date(fecha);
+		let dia = fecha.getUTCDate();
+		let mes = mesesAbrev[fecha.getUTCMonth()];
+		fecha = dia + "/" + mes;
+		return fecha;
+	},
+
+	// Entidad
+	entidadNombre: (entidad) => {
+		const indice = [...variables.entidades.todos].indexOf(entidad);
+		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
+		return entNombre;
+	},
+	familia: (entidad) => {
+		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+			? "producto"
+			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+			? "rclv"
+			: ["links", "linksEdicion"].includes(entidad)
+			? "link"
+			: "";
+	},
+	asocProd: (registro) => {
+		return registro.pelicula_id
+			? "pelicula"
+			: registro.capitulo_id // debe ir antes de la colección por sus ediciones
+			? "capitulo"
+			: registro.coleccion_id
+			? "coleccion"
+			: "";
+	},
+
+	// Otras
 	averiguaTipoDeLink: (links, condicion) => {
 		// Filtro inicial
 		if (condicion) links = links.filter((n) => n[condicion]);
@@ -1357,22 +1386,6 @@ let FN = {
 
 		// Fin
 		return resultados;
-	},
-	diaMes: (fecha) => {
-		fecha = new Date(fecha);
-		let dia = fecha.getUTCDate();
-		let mes = mesesAbrev[fecha.getUTCMonth()];
-		fecha = dia + "/" + mes;
-		return fecha;
-	},
-	asocProd: (registro) => {
-		return registro.pelicula_id
-			? "pelicula"
-			: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-			? "capitulo"
-			: registro.coleccion_id
-			? "coleccion"
-			: "";
 	},
 };
 let FN_links = {
