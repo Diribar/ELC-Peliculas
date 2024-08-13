@@ -453,19 +453,16 @@ module.exports = {
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	obtieneRegs: async function (campos) {
-		// Variables
-		let registros;
-
-		// Obtiene los registros
-		registros = await FN.obtieneRegs(campos);
+		// Obtiene los resultados
+		let resultados = await FN.obtieneRegs(campos);
 
 		// Quita los comprometidos por capturas
-		registros = await this.sinProblemasDeCaptura(registros, campos.revId);
+		resultados = await this.sinProblemasDeCaptura(resultados, campos.revId);
 
 		// Fin
-		return registros;
+		return resultados;
 	},
-	sinProblemasDeCaptura: async (registros, revId) => {
+	sinProblemasDeCaptura: async (prodsRclvs, revId) => {
 		// Variables
 		const ahora = FN.ahora();
 		const haceUnaHora = FN.nuevoHorario(-1, ahora);
@@ -474,8 +471,16 @@ module.exports = {
 		// Obtiene las capturas ordenadas por fecha decreciente
 		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
 
-		// Fin
-		return registros.filter((prodRclv) => {
+		// Flitra según los criterios de captura
+		prodsRclvs = prodsRclvs.filter((prodRclv) => {
+			// Restricciones si está recién creado
+			if (
+				 prodRclv.statusRegistro_id == creado_id && // está en status 'creado'
+				![revId,usAutom_id].includes(prodRclv.statusRegistro_id) && // no fue creado por el usuario ni en forma automática
+				prodRclv.statusSugeridoEn > haceUnaHora // fue creado hace menos de una hora
+			)
+				return false;
+
 			// Sin captura vigente
 			const capturaProdRclv = capturas.filter((m) => m.entidad == prodRclv.entidad && m.entidad_id == prodRclv.id);
 			if (
@@ -505,6 +510,9 @@ module.exports = {
 			// Fin
 			return false;
 		});
+
+		// Fin
+		return prodsRclvs;
 	},
 	revisaStatus: {
 		consolidado: async function () {
@@ -1328,7 +1336,6 @@ let FN = {
 	obtieneRegs: async function (campos) {
 		// Variables
 		const {entidades} = campos;
-		delete campos.entidades;
 		let resultados = [];
 
 		// Obtiene los resultados
@@ -1348,7 +1355,7 @@ let FN = {
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv};// Excluye los registros RCLV cuyo ID es <= idMinRclv
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv}; // Excluye los registros RCLV cuyo ID es <= idMinRclv
 
 		// Resultado
 		const resultados = await baseDeDatos
