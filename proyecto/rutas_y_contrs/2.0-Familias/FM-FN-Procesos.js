@@ -532,7 +532,12 @@ module.exports = {
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
 		// Variables
-		const pppRegs = userID ? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID}, "detalle") : [];
+		let prodsDelRCLV = [];
+		const pppRegs = userID
+			? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID}, "detalle") // si existe usuario
+			: [];
+
+		// Crea un array para cada asociación de producto del RCLV
 		for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 		// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
@@ -560,31 +565,27 @@ module.exports = {
 		}
 
 		// Completa la información de cada tipo de producto y une los productos en una sola array
-		let prodsDelRCLV = [];
 		for (let entidad of variables.entidades.prods) {
-			// Completa la información de cada producto dentro del tipo de producto
-			const prodsPorEnt = RCLV[entidad].map((registro) => {
+			// Completa la información de cada producto
+			for (let producto of RCLV[entidad]) {
 				// Causas para descartar el registro
-				if (inactivos_ids.includes(registro.statusRegistro_id)) return null; // status inactivar o inactivo
-				if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
-				if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id != userID) return null; // status recuperar
+				if (
+					inactivos_ids.includes(producto.statusRegistro_id) || // status inactivar o inactivo
+					(producto.statusRegistro_id == creado_id && producto.creadoPor_id != userID) || // status creado
+					(producto.statusRegistro_id == recuperar_id && producto.statusSugeridoPor_id != userID) // status recuperar
+				)
+					continue;
 
 				// Variables
-				const avatar = this.obtieneAvatar(registro).edic;
+				const avatar = this.obtieneAvatar(producto).edic;
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-				const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
+				const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == producto.id);
 				const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
 
 				// Agrega la entidad, el avatar, y el nombre de la entidad
-				return {...registro, entidad, avatar, entidadNombre, ppp};
-			});
-
-			// Consolida la información
-			prodsDelRCLV.push(...prodsPorEnt);
+				prodsDelRCLV.push({...producto, entidad, avatar, entidadNombre, ppp});
+			}
 		}
-
-		// Descarta los productos eliminados
-		prodsDelRCLV = prodsDelRCLV.filter((n) => !!n);
 
 		// Separa entre capitulos y resto
 		let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
