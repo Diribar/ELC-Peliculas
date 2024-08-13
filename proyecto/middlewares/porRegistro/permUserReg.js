@@ -95,17 +95,14 @@ module.exports = async (req, res, next) => {
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
+	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == entidad_id);
+	const captsEsteUsuario = capturas.filter(
+		(n) => n.familia == familia && n.capturadoPor_id == v.userId && n.capturadoEn > v.haceUnaHora && n.activa == true
+	);
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
-	captura = capturas.find(
-		(n) =>
-			n.entidad == entidad &&
-			n.entidad_id == entidad_id &&
-			n.capturadoEn > v.haceUnaHora &&
-			n.capturadoPor_id != v.userId &&
-			n.capturaActiva
-	);
+	captura = captsEsteProdRclv.find((n) => n.capturadoEn > v.haceUnaHora && n.capturadoPor_id != v.userId && n.activa);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
 		informacion = {
@@ -119,13 +116,8 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: el usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
-	captura = capturas.find(
-		(n) =>
-			n.entidad == entidad &&
-			n.entidad_id == entidad_id &&
-			n.capturadoEn < v.haceUnaHora &&
-			n.capturadoEn > v.haceDosHoras &&
-			n.capturadoPor_id == v.userId
+	captura = captsEsteProdRclv.find(
+		(n) => n.capturadoEn < v.haceUnaHora && n.capturadoEn > v.haceDosHoras && n.capturadoPor_id == v.userId
 	);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
@@ -141,14 +133,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: averigua si el usuario tiene otro registro capturado en forma activa
-	captura = capturas.find(
-		(n) =>
-			(n.entidad != entidad || n.entidad_id != entidad_id) &&
-			n.familia == familia &&
-			n.capturadoPor_id == v.userId &&
-			n.capturadoEn > v.haceUnaHora &&
-			n.activa == true
-	);
+	captura = captsEsteUsuario.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
 	if (captura) {
 		// Prepara el mensaje
 		const registroCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
