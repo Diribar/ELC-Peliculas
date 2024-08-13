@@ -1325,6 +1325,42 @@ let FN = {
 	},
 
 	// Otras
+	obtieneRegs: async function (campos) {
+		// Variables
+		const {entidades} = campos;
+		delete campos.entidades;
+		let resultados = [];
+
+		// Obtiene los resultados
+		for (let entidad of entidades) resultados.push(this.lecturaBD({entidad, ...campos}));
+
+		// Consolida y completa la información
+		resultados = await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) => n.sort((a, b) => b.statusSugeridoEn - a.statusSugeridoEn));
+
+		// Fin
+		return resultados;
+	},
+	lecturaBD: async function (campos) {
+		// Variables
+		const {entidad, status_id, campoRevId, include} = campos;
+		const idMin = petitFamilias == "rclvs" ? 10 : 0;
+		const haceUnaHora = this.nuevoHorario(-1);
+		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
+
+		// Condiciones
+		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMin};// Excluye los registros RCLV cuyo ID es <= idMin
+
+		// Resultado
+		const resultados = await baseDeDatos
+			.obtieneTodosPorCondicion(entidad, condicion, include)
+			.then((n) => n.map((m) => ({...m, entidad})));
+
+		// Fin
+		return resultados;
+	},
 	averiguaTipoDeLink: (links, condicion) => {
 		// Filtro inicial
 		if (condicion) links = links.filter((n) => n[condicion]);
@@ -1337,54 +1373,6 @@ let FN = {
 
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
-	},
-	obtieneRegs: async function (campos) {
-		// Variables
-		const {entidades, campoFecha} = campos;
-		delete campos.entidades;
-		let resultados = [];
-
-		// Obtiene el resultado por entidad
-		for (let entidad of entidades) resultados.push(this.lecturaBD({entidad, ...campos}));
-
-		// Consolida y completa la información
-		resultados = await Promise.all(resultados)
-			.then((n) => n.flat())
-			.then((n) =>
-				n.map((m) => {
-					const fechaRef = campoFecha ? m[campoFecha] : m.statusSugeridoEn;
-					const fechaRefTexto = this.diaMes(fechaRef);
-					return {...m, fechaRef, fechaRefTexto};
-				})
-			)
-			.then((n) => n.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)));
-
-		// Fin
-		return resultados;
-	},
-	lecturaBD: async function (campos) {
-		// Variables
-		const {entidad, status_id, campoFecha, campoRevId, include} = campos;
-		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
-
-		// Condiciones
-		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (campoFecha)
-			campoRevId
-				? (condicion[Op.or] = [{[campoRevId]: [revId, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]) // Que esté propuesto por el usuario o hace más de una hora
-				: (condicion[campoFecha] = {[Op.lt]: haceUnaHora}); // Que esté propuesto hace más de una hora
-
-		// Excluye los registros RCLV cuyo ID es <= 10
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
-
-		// Resultado
-		const resultados = await baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, include)
-			.then((n) => n.map((m) => ({...m, entidad})));
-
-		// Fin
-		return resultados;
 	},
 	nombresPosibles: (registro) => {
 		return registro.nombreCastellano
