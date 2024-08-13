@@ -30,9 +30,8 @@ module.exports = {
 		let productos = [];
 
 		// Obtiene los productos
-		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(baseDeDatos.obtieneTodos(entidad, "publico"));
-		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+		for (const entidad of ["peliculas", "colecciones"]) productos.push(baseDeDatos.obtieneTodos(entidad, "publico"));
+		productos = await Promise.all(productos).then((n) => n.flat());
 
 		// Cuenta las cantidades
 		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
@@ -57,7 +56,8 @@ module.exports = {
 		let productos = [];
 
 		for (let entidad of ["peliculas", "colecciones"])
-			productos.push(...(await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion)));
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condicion));
+		productos = await Promise.all(productos).then((n) => n.flat());
 
 		for (let epoca of epocasInverso) {
 			const cantPelis = productos.filter((n) => n.anoEstreno >= epoca.desde && n.anoEstreno <= epoca.hasta);

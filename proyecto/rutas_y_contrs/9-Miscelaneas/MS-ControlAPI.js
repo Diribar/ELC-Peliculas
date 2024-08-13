@@ -32,7 +32,6 @@ module.exports = {
 		const camposRclvs = ["nombre", "nombreAltern"];
 		const original = true;
 		let datos = [];
-		let aux = [];
 		let resultados = [];
 
 		// Armado de la variable 'datos' para productos originales
@@ -54,13 +53,13 @@ module.exports = {
 			const condicion = procsFM.quickSearch.condicion(palabras, dato.campos, userID, dato.original);
 
 			// Obtiene los registros que cumplen las condiciones
-			aux.push(
+			resultados.push(
 				dato.original
 					? procsFM.quickSearch.registros(condicion, dato) // originales
 					: procsFM.quickSearch.ediciones(condicion, dato) // ediciones
 			);
 		}
-		await Promise.all(aux).then((n) => n.map((m) => resultados.push(...m)));
+		resultados = await Promise.all(resultados).then((n) => n.flat());
 
 		// Acciones si hay más de un resultado
 		if (resultados.length > 1) {
