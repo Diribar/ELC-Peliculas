@@ -454,15 +454,16 @@ module.exports = {
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	obtieneRegs: async (campos) => {
 		// Variables
-
 		let registros;
 
 		// Obtiene los registros
 		registros = await FN.obtieneRegs(campos);
 
 		// Quita los comprometidos por capturas
-		registros =await this.sinProblemasDeCaptura(registros, campos.revId)
+		registros = await this.sinProblemasDeCaptura(registros, campos.revId);
 
+		// Fin
+		return registros;
 	},
 	sinProblemasDeCaptura: async (registros, revId) => {
 		// Variables
@@ -1365,7 +1366,7 @@ let FN = {
 		// Variables
 		const {entidad, status_id, campoFecha, campoRevId, include} = campos;
 		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = campos.revId ? campos.revId : 0;// Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
+		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
