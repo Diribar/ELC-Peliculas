@@ -911,7 +911,7 @@ module.exports = {
 						.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID})
 						.then((n) => n.map((m) => ({...m, [campo_id]: 1})))
 				);
-			prods = await Promise.all(prods).then(n=>n.flat())
+			prods = await Promise.all(prods).then((n) => n.flat());
 
 			// Averigua si existían productos vinculados al RCLV
 			if (prods.length) {
