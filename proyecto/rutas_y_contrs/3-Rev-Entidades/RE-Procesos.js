@@ -1092,13 +1092,12 @@ let FN_tablManten = {
 	},
 	lecturaBD: async ({petitFamilias, userId, status_id, include, entidad}) => {
 		// Variables
-		const idMin = petitFamilias == "rclvs" ? 10 : 0;
 		let includeBD = [...include];
 		if (entidad == "colecciones") includeBD.push("csl");
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMin}; // Excluye los registros RCLV cuyo ID es <= idMin
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv}; // Excluye los registros RCLV cuyo ID es <= idMinRclv
 
 		// Resultado
 		const resultados = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion, includeBD).then((n) =>
