@@ -838,7 +838,6 @@ module.exports = {
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => {
 					// Variables
-					console.log(841,n);
 					const {entidad, entidad_id: id, nombre, fechaRef} = n;
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 					const abrev = n.entidad.slice(0, 3).toUpperCase();
