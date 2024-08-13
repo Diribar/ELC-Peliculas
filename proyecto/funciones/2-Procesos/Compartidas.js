@@ -452,14 +452,14 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	sinProblemasDeCaptura: async (registros, revID) => {
+	sinProblemasDeCaptura: async (registros, revId) => {
 		// Variables
 		const ahora = FN.ahora();
 		const haceUnaHora = FN.nuevoHorario(-1, ahora);
 		const haceDosHoras = FN.nuevoHorario(-2, ahora);
 
 		// Obtiene las capturas ordenadas por fecha decreciente
-		const capturas = await baseDeDatos.obtieneTodos("capturas").then((n) => n.sort((a, b) => b.capturadoEn - a.capturadoEn));
+		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
 
 		// Fin
 		return registros.filter((prodRclv) => {
@@ -475,13 +475,13 @@ module.exports = {
 			const activa = capturaProdRclv.find((m) => m.activa);
 			if (
 				activa &&
-				((activa.capturadoPor_id == revID && activa.capturadoEn > haceUnaHora) || // hecha por este usuario, hace menos de una hora
-					(activa.capturadoPor_id != revID && activa.capturadoEn < haceUnaHora)) // hecha por otro usuario, hace más de una hora
+				((activa.capturadoPor_id == revId && activa.capturadoEn > haceUnaHora) || // hecha por este usuario, hace menos de una hora
+					(activa.capturadoPor_id != revId && activa.capturadoEn < haceUnaHora)) // hecha por otro usuario, hace más de una hora
 			)
 				return true;
 
 			// Sin captura activa
-			const esteUsuario = capturaProdRclv.find((m) => m.capturadoPor_id == revID);
+			const esteUsuario = capturaProdRclv.find((m) => m.capturadoPor_id == revId);
 			if (
 				!activa &&
 				(!esteUsuario || // este usuario no la haya capturado
@@ -1328,13 +1328,14 @@ let FN = {
 	},
 	obtieneRegs: async function (campos) {
 		// Variables
+		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
 		const {entidades} = campos;
+		delete campos.entidades;
 		let lecturas = [];
 		let resultados = [];
 
 		// Obtiene el resultado por entidad
-		delete campos.entidades;
-		for (let entidad of entidades) lecturas.push(this.lecturaBD({entidad, ...campos}));
+		for (let entidad of entidades) lecturas.push(this.lecturaBD({entidad, ...campos, capturas}));
 		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
 
 		if (resultados.length) {
@@ -1351,29 +1352,34 @@ let FN = {
 		// Fin
 		return resultados;
 	},
-	lecturaBD: async function ({entidad, status_id, campoFecha, campoRevID, include, revID}) {
+	lecturaBD: async function (datos) {
 		// Variables
+		const {entidad, status_id, campoFecha, campoRevId, include, capturas} = datos;
 		const haceUnaHora = this.nuevoHorario(-1);
-		const haceDosHoras = this.nuevoHorario(-2);
-		if (!revID) revID = 0;
+		const revId = datos.revId ? datos.revId : 0;
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
 		if (campoFecha)
-			campoRevID
-				? (condicion[Op.or] = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]) // Que esté propuesto por el usuario o hace más de una hora
+			campoRevId
+				? (condicion[Op.or] = [{[campoRevId]: [revId, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]) // Que esté propuesto por el usuario o hace más de una hora
 				: (condicion[campoFecha] = {[Op.lt]: haceUnaHora}); // Que esté propuesto hace más de una hora
 
 		// Excluye los registros RCLV cuyo ID es <= 10
 		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
 
 		// Resultado
-		const resultados = baseDeDatos
+		const resultados = await baseDeDatos
 			.obtieneTodosPorCondicion(entidad, condicion, include)
-			.then((n) => n.map((m) => ({...m, entidad})));
+			.then((n) => n.map((m) => ({...m, entidad})))
+			.then(async (n) => this.capturas(n, capturas));
 
 		// Fin
 		return resultados;
+	},
+	capturas: (registros, capturas) => {
+		// Variables
+		// Aplica filtros
 	},
 	nombresPosibles: (registro) => {
 		return registro.nombreCastellano

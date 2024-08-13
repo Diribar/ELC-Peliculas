@@ -12,7 +12,7 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const revID = req.session.usuario.id;
+		const revId = req.session.usuario.id;
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -38,7 +38,7 @@ module.exports = {
 		}
 
 		// Entre otras tareas, actualiza el original si fue aprobada la sugerencia, y obtiene la edición en su mínima expresión
-		const objeto = {entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id};
+		const objeto = {entidad, original, edicion, originalGuardado, revId, campo, aprob, motivo_id};
 		edicion = await procesos.edicion.edicAprobRech(objeto);
 
 		// Acciones si se terminó de revisar la edición
@@ -85,7 +85,7 @@ module.exports = {
 			// Más variables
 			const datos = procesos.links.variables({link, req});
 			const {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision} = datos;
-			const {motivo_id, revID, statusOriginalPor_id, statusOriginal_id, statusFinal_id} = datos;
+			const {motivo_id, revId, statusOriginalPor_id, statusOriginal_id, statusFinal_id} = datos;
 
 			// CONSECUENCIAS - Actualiza el registro del link
 			await baseDeDatos.actualizaPorId("links", id, datosLink);
@@ -99,7 +99,7 @@ module.exports = {
 					statusOriginal_id: link.statusRegistro_id,
 					statusFinal_id: statusRegistro_id,
 					statusOriginalPor_id,
-					statusFinalPor_id: revID,
+					statusFinalPor_id: revId,
 					statusOriginalEn: statusCreado ? link.creadoEn : link.statusSugeridoEn,
 					aprobado: decisAprob,
 				};
@@ -129,7 +129,7 @@ module.exports = {
 			// Variables
 			const {entidad, id} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			let sigProd = true;
 
 			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
@@ -140,7 +140,7 @@ module.exports = {
 			if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
 			// Averigua el producto siguiente
-			if (sigProd) sigProd = await procesos.tablRevision.obtieneSigProd_Links(revID);
+			if (sigProd) sigProd = await procesos.tablRevision.obtieneSigProd_Links(revId);
 
 			// Fin
 			return res.json(sigProd);

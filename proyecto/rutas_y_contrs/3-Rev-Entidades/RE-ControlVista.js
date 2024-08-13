@@ -14,22 +14,22 @@ module.exports = {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
-		const revID = req.session.usuario.id;
+		const revId = req.session.usuario.id;
 
 		// Productos y RCLVs
 		let prodsRclvs = procesos.tablRevision.obtieneProdsRclvs(); // Correcciones de Motivo y Status
 
 		// Productos y Ediciones
-		let prods1 = procesos.tablRevision.obtieneProds1(revID); // Altas y Ediciones
-		let prods2 = procesos.tablRevision.obtieneProds2(revID); // Pendientes de aprobar sinEdición,
+		let prods1 = procesos.tablRevision.obtieneProds1(revId); // Altas y Ediciones
+		let prods2 = procesos.tablRevision.obtieneProds2(revId); // Pendientes de aprobar sinEdición,
 		let prods3 = procesos.tablRevision.obtieneProds3(); // películas y colecciones repetidas
 
 		// RCLV
-		let rclvs1 = procesos.tablRevision.obtieneRCLVs1(revID);
-		let rclvs2 = procesos.tablRevision.obtieneRCLVs2(revID);
+		let rclvs1 = procesos.tablRevision.obtieneRCLVs1(revId);
+		let rclvs2 = procesos.tablRevision.obtieneRCLVs2(revId);
 
 		// Links
-		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revID);
+		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revId);
 
 		// Espera a que se actualicen todos los resultados
 		let datos = [prods1, prods2, prods3, rclvs1, rclvs2, sigProd];
@@ -156,7 +156,7 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
-		const {cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
+		const {cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision} = datos;
 		datos = {}; // limpia la variable 'datos'
 		let destino;
 
@@ -240,13 +240,13 @@ module.exports = {
 			...datos,
 			motivo_id,
 			statusRegistro_id: statusFinal_id,
-			statusSugeridoPor_id: revID,
+			statusSugeridoPor_id: revId,
 			statusSugeridoEn: ahora,
 		};
 
 		// Datos sólo si es un alta
 		if (!original.altaRevisadaEn) {
-			datos.altaRevisadaPor_id = revID;
+			datos.altaRevisadaPor_id = revId;
 			datos.altaRevisadaEn = ahora;
 			if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
@@ -295,7 +295,7 @@ module.exports = {
 		if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
 		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revID);
+		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
 		// CONSECUENCIAS - Si el registro 'inactivar_id' del historial no tiene comentarios, lo elimina
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
@@ -304,7 +304,7 @@ module.exports = {
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
 		let datosHist = {
 			...{entidad, entidad_id: id, aprobado}, // entidad
-			...{statusOriginalPor_id: userID, statusFinalPor_id: revID}, // personas
+			...{statusOriginalPor_id: userID, statusFinalPor_id: revId}, // personas
 			...{statusOriginal_id: statusOriginal_id, statusFinal_id}, // status
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
@@ -450,7 +450,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, edicID, rechazar, motivo_id} = {...req.query, ...req.body};
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const original = await baseDeDatos.obtienePorId(entidad, id);
 			const campo = "avatar";
 			const aprob = !rechazar;
@@ -467,7 +467,7 @@ module.exports = {
 				original,
 				originalGuardado,
 				edicion,
-				revID,
+				revId,
 				campo,
 				aprob,
 				motivo_id,
@@ -483,7 +483,7 @@ module.exports = {
 		solapam: async (req, res) => {
 			// Variables
 			const {entidad, id} = req.query;
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			let datos = {...req.body, entidad}; // la 'entidad' hace falta para una función posterior
 
@@ -503,7 +503,7 @@ module.exports = {
 			for (let prop in datos) if (datos[prop] === null) delete datos[prop];
 
 			// Actualiza el registro original
-			datos = {...datos, editadoPor_id: revID, editadoEn: ahora};
+			datos = {...datos, editadoPor_id: revId, editadoEn: ahora};
 			await baseDeDatos.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
@@ -520,7 +520,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
 		const {entidad, id} = req.query;
-		const revID = req.session.usuario.id;
+		const revId = req.session.usuario.id;
 		const origen = req.query.origen ? req.query.origen : "TE";
 
 		// Configura el título
@@ -544,7 +544,7 @@ module.exports = {
 		links.sort((a, b) => a.tipo_id - b.tipo_id);
 		for (let link of links) {
 			if (!link.prov.embededPoner || !link.gratuito) link.href = "//" + link.url;
-			link.cond = procsLinks.condicion(link, revID, tema);
+			link.cond = procsLinks.condicion(link, revId, tema);
 			link.idioma = link.castellano ? "enCast" : link.subtitulos ? "subtCast" : "otroIdioma";
 		}
 
@@ -553,7 +553,7 @@ module.exports = {
 			origen == "TE"
 				? req.sigProd // aprovecha el dato disponible
 					? req.sigProd
-					: await procesos.links.obtieneSigProd({entidad, id, revID})
+					: await procesos.links.obtieneSigProd({entidad, id, revId})
 				: null;
 		const linkSigProd = sigProd
 			? "/inactivar-captura/?entidad=".concat(entidad, "&id=", id) +
@@ -572,7 +572,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
+			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revId, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
 			...{imgDerPers, cartelGenerico: true, linkSigProd},
