@@ -838,14 +838,13 @@ module.exports = {
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => {
 					// Variables
-					const {entidad, entidad_id: id, nombre, statusSugeridoEn: fechaRef} = n;
+					console.log(841,n);
+					const {entidad, entidad_id: id, nombre, fechaRef} = n;
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+					const abrev = n.entidad.slice(0, 3).toUpperCase();
 
 					// Fin
-					return {
-						...{entidad, id, nombre, fechaRef, fechaRefTexto},
-						...{abrev: n.entidad.slice(0, 3).toUpperCase()},
-					};
+					return {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
 				});
 
 			// Fin
@@ -858,18 +857,16 @@ module.exports = {
 					// Variables
 					const {entidad, id} = n;
 					const nombre =
-						(n.nombreCastellano.length > anchoMaxTableroTablero
+						(n.nombreCastellano.length > anchoMaxTablero
 							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+					const links = n.linksGral || n.linksTrailer;
 
 					// Comienza el armado de los datos
-					let datos = {
-						...{entidad, id, nombre, fechaRef, fechaRefTexto},
-						...{abrev: n.entidad.slice(0, 3).toUpperCase()},
-						links: n.linksGral || n.linksTrailer,
-					};
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev, links};
 
 					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
@@ -891,12 +888,10 @@ module.exports = {
 					const nombre = n.nombre.length > anchoMaxTablero ? n.nombre.slice(0, anchoMaxTablero - 1) + "…" : n.nombre;
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
 
 					// Comienza el armado de los datos
-					let datos = {
-						...{entidad, id, nombre, fechaRef, fechaRefTexto},
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-					};
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
 
 					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
