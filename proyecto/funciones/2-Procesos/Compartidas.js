@@ -452,17 +452,18 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	obtieneRegs: async (campos) => {
+	obtieneRegs: async function (campos) {
 		// Variables
-
 		let registros;
 
 		// Obtiene los registros
 		registros = await FN.obtieneRegs(campos);
 
 		// Quita los comprometidos por capturas
-		registros =await this.sinProblemasDeCaptura(registros, revId)
+		registros = await this.sinProblemasDeCaptura(registros, campos.revId);
 
+		// Fin
+		return registros;
 	},
 	sinProblemasDeCaptura: async (registros, revId) => {
 		// Variables
@@ -478,26 +479,26 @@ module.exports = {
 			// Sin captura vigente
 			const capturaProdRclv = capturas.filter((m) => m.entidad == prodRclv.entidad && m.entidad_id == prodRclv.id);
 			if (
-				!capturaProdRclv.length || // que no esté capturado
-				capturaProdRclv[0].capturadoEn < haceDosHoras // que la captura más reciente haya sido hace más de dos horas
+				!capturaProdRclv.length || // no está capturado
+				capturaProdRclv[0].capturadoEn < haceDosHoras // la captura más reciente fue hace más de dos horas
 			)
 				return true;
 
 			// Con captura activa
 			const activa = capturaProdRclv.find((m) => m.activa);
 			if (
-				activa &&
-				((activa.capturadoPor_id == revId && activa.capturadoEn > haceUnaHora) || // hecha por este usuario, hace menos de una hora
-					(activa.capturadoPor_id != revId && activa.capturadoEn < haceUnaHora)) // hecha por otro usuario, hace más de una hora
+				activa && // existe una captura activa
+				((activa.capturadoPor_id == revId && activa.capturadoEn > haceUnaHora) || // fue hecha por este usuario, hace menos de una hora
+					(activa.capturadoPor_id != revId && activa.capturadoEn < haceUnaHora)) // fue hecha por otro usuario, hace más de una hora
 			)
 				return true;
 
 			// Sin captura activa
 			const esteUsuario = capturaProdRclv.find((m) => m.capturadoPor_id == revId);
 			if (
-				!activa &&
-				(!esteUsuario || // este usuario no la haya capturado
-					esteUsuario.capturadoEn > haceUnaHora) // este usuario la haya capturado hace menos de una hora
+				!activa && // sin captura activa
+				(!esteUsuario || // sin captura por este usuario
+					esteUsuario.capturadoEn > haceUnaHora) // con captura de este usuario hace menos de una hora
 			)
 				return true;
 
@@ -1361,11 +1362,11 @@ let FN = {
 		// Fin
 		return resultados;
 	},
-	lecturaBD: async function (datos) {
+	lecturaBD: async function (campos) {
 		// Variables
-		const {entidad, status_id, campoFecha, campoRevId, include, capturas} = datos;
+		const {entidad, status_id, campoFecha, campoRevId, include} = campos;
 		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = datos.revId ? datos.revId : 0;
+		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
