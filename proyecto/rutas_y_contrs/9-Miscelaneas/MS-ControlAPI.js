@@ -9,15 +9,17 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const userId = req.session.usuario.id;
 
-		// Obtiene el registro
+		// Datos de captura
+		const condicion = {entidad, entidad_id: id, activa: true};
+		const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion);
+		const {capturadoEn, capturadoPor_id} = captura;
+
+		// Datos del registro
 		const registro = await baseDeDatos.obtienePorId(entidad, id);
-		const datos = {
-			creadoEn: registro.creadoEn,
-			creadoPor_id: registro.creadoPor_id,
-			capturadoEn: registro.capturadoEn,
-			capturadoPor_id: registro.capturadoPor_id,
-			userId,
-		};
+		const {creadoEn, creadoPor_id} = registro;
+
+		// Genera los datos
+		const datos = {creadoEn, creadoPor_id, capturadoEn, capturadoPor_id, userId};
 
 		// Fin
 		return res.json(datos);
