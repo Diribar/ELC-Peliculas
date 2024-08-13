@@ -1347,10 +1347,10 @@ let FN = {
 		resultados = await Promise.all(resultados)
 			.then((n) => n.flat())
 			.then((n) =>
-				n.map((n) => {
-					const fechaRef = campoFecha ? n[campoFecha] : n.statusSugeridoEn;
+				n.map((m) => {
+					const fechaRef = campoFecha ? m[campoFecha] : m.statusSugeridoEn;
 					const fechaRefTexto = this.diaMes(fechaRef);
-					return {...n, fechaRef, fechaRefTexto};
+					return {...m, fechaRef, fechaRefTexto};
 				})
 			)
 			.then((n) => n.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)));
