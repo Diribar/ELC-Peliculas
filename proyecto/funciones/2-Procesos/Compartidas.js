@@ -1346,8 +1346,6 @@ let FN = {
 		// Variables
 		const {entidad, status_id, campoRevId, include} = campos;
 		const idMin = petitFamilias == "rclvs" ? 10 : 0;
-		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro

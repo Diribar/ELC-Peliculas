@@ -1101,20 +1101,17 @@ let FN_tablManten = {
 		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMin}; // Excluye los registros RCLV cuyo ID es <= idMin
 
 		// Resultado
-		const resultados = await baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, includeBD)
-			.then((n) =>
-				n.map((m) => {
-					// Actualiza el original con la edición
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
-					delete m.ediciones;
-					if (edicion) {
-						edicion = purgaEdicion(edicion, entidad);
-						m = {...m, ...edicion};
-					}
-					return {...m, entidad};
-				})
-			);
+		const resultados = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion, includeBD).then((n) =>
+			n.map((m) => {
+				let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
+				delete m.ediciones;
+				if (edicion) {
+					edicion = purgaEdicion(edicion, entidad);
+					m = {...m, ...edicion}; // Actualiza el original con la edición
+				}
+				return {...m, entidad};
+			})
+		);
 
 		// Fin
 		return resultados;
@@ -1128,20 +1125,7 @@ let FN_tablManten = {
 		return baseDeDatos
 			.obtieneTodosPorCondicion(entidad, condicion, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const datos = {
-						...m,
-						entidad,
-						fechaRef: m.statusSugeridoEn,
-						fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn),
-					};
-
-					// Fin
-					return datos;
-				})
-			);
+			.then((n) => n.map((m) => ({...m, entidad})));
 	},
 	obtieneProdsDeLinks: async (links, userId) => {
 		// Variables
