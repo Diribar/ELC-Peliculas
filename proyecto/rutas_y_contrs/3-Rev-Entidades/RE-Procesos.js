@@ -258,16 +258,16 @@ module.exports = {
 
 			// Productos Inactivos
 			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let inactivos = tablManten.obtienePorEntidad(condicion);
+			let inactivos = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Aprobados
 			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let prodsAprob = tablManten.obtienePorEntidad(condicion);
+			let prodsAprob = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Sin Edición (en status creadoAprob)
-			let SE_pel = tablManten.obtieneSinEdicion("peliculas");
-			let SE_col = tablManten.obtieneSinEdicion("colecciones");
-			let SE_cap = tablManten.obtieneSinEdicion("capitulos");
+			let SE_pel = FN_tablManten.obtieneSinEdicion("peliculas");
+			let SE_col = FN_tablManten.obtieneSinEdicion("colecciones");
+			let SE_cap = FN_tablManten.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
 			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
@@ -320,11 +320,11 @@ module.exports = {
 
 			// Inactivos
 			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let IN = tablManten.obtienePorEntidad(condicion);
+			let IN = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Aprobados
 			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let rclvsAprob = tablManten.obtienePorEntidad({...condicion, include});
+			let rclvsAprob = FN_tablManten.obtienePorEntidad({...condicion, include});
 
 			// Await
 			[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
@@ -352,7 +352,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? await tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
+			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
 
 			// Fin
 			return productos;
@@ -1076,7 +1076,7 @@ let FN_links = {
 		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
-let tablManten = {
+let FN_tablManten = {
 	obtieneProdsDeLinks: async (links, userID) => {
 		// Variables
 		let LI = [];
@@ -1110,7 +1110,7 @@ let tablManten = {
 		// Fin
 		return {LI};
 	},
-	obtienePorEntidad: async function ({...condicion}) {
+	obtienePorEntidad: async function (condicion) {
 		// Variables
 		const {petitFamilias} = condicion;
 		const entidades = variables.entidades[petitFamilias];
