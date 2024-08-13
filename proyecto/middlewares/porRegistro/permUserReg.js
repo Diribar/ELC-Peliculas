@@ -137,7 +137,7 @@ module.exports = async (req, res, next) => {
 			],
 			iconos: [v.vistaEntendido],
 		};
-		return res.render("CMP-0Estructura", {});
+		return res.render("CMP-0Estructura", {informacion});
 	}
 
 	// CRITERIO: averigua si el usuario tiene otro registro capturado en forma activa
