@@ -95,8 +95,6 @@ module.exports = async (req, res, next) => {
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
-	console.log(95, capturas);
-
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
