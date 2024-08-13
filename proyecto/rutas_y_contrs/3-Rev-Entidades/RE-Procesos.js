@@ -1113,14 +1113,14 @@ let FN_tablManten = {
 		let resultados = [];
 
 		// Obtiene todos los resultados
-		for (let entidad of entidades) resultados.push(this.obtieneRegs({entidad, ...condicion}));
+		for (let entidad of entidades) resultados.push(this.obtieneRegsMT({entidad, ...condicion}));
 
 		// Consolida los resultados y los ordena
 		return await Promise.all(resultados)
 			.then((n) => n.flat())
 			.then((n) => n.sort((a, b) => b.fechaRef - a.fechaRef));
 	},
-	obtieneRegs: async ({petitFamilias, userId, campoFecha, status_id, include, entidad}) => {
+	obtieneRegsMT: async ({petitFamilias, userId, campoFecha, status_id, include, entidad}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
