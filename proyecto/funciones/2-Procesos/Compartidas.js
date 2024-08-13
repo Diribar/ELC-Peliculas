@@ -1328,56 +1328,6 @@ let FN = {
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
-	lecturaBD: async function ({entidad, status_id, campoFecha, campoRevID, include, revID}) {
-		// Variables
-		const haceUnaHora = this.nuevoHorario(-1);
-		const haceDosHoras = this.nuevoHorario(-2);
-		if (!revID) revID = 0;
-
-		// Condiciones de captura
-		const condicsCaptura = [
-			{capturadoEn: null}, // Que no esté capturado
-			{capturadoEn: {[Op.lt]: haceDosHoras}}, // Que esté capturado hace más de dos horas
-			{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}}, // Que la captura haya sido por otro usuario y hace más de una hora
-			{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}}, // Que la captura haya sido por otro usuario y esté inactiva
-			{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}}, // Que esté capturado por este usuario hace menos de una hora
-		];
-
-		// Condiciones
-		let condicion = {
-			statusRegistro_id: status_id, // Con status según parámetro
-			[Op.and]: [{[Op.or]: condicsCaptura}], // Es necesario el [Op.and], porque luego se le agregan condiciones
-		};
-		if (campoFecha) {
-			if (campoRevID) {
-				// Que esté propuesto por el usuario
-				const condicsUsuario = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}];
-				condicion[Op.and].push({[Op.or]: condicsUsuario});
-			}
-			// Que esté propuesto hace más de una hora
-			else condicion[campoFecha] = {[Op.lt]: haceUnaHora};
-		}
-
-		// Excluye los registros RCLV cuyo ID es <= 10
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
-
-		// Resultado
-		const resultados = baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, include)
-			.then((n) => n.map((m) => ({...m, entidad})));
-
-		// Fin
-		return resultados;
-	},
-	nombresPosibles: (registro) => {
-		return registro.nombreCastellano
-			? registro.nombreCastellano
-			: registro.nombreOriginal
-			? registro.nombreOriginal
-			: registro.nombre
-			? registro.nombre
-			: "";
-	},
 	obtieneRegs: async function (campos) {
 		// Variables
 		const {entidades} = campos;
@@ -1402,6 +1352,39 @@ let FN = {
 
 		// Fin
 		return resultados;
+	},
+	lecturaBD: async function ({entidad, status_id, campoFecha, campoRevID, include, revID}) {
+		// Variables
+		const haceUnaHora = this.nuevoHorario(-1);
+		const haceDosHoras = this.nuevoHorario(-2);
+		if (!revID) revID = 0;
+
+		// Condiciones
+		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
+		if (campoFecha)
+			campoRevID
+				? (condicion[Op.or] = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]) // Que esté propuesto por el usuario o hace más de una hora
+				: (condicion[campoFecha] = {[Op.lt]: haceUnaHora}); // Que esté propuesto hace más de una hora
+
+		// Excluye los registros RCLV cuyo ID es <= 10
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
+
+		// Resultado
+		const resultados = baseDeDatos
+			.obtieneTodosPorCondicion(entidad, condicion, include)
+			.then((n) => n.map((m) => ({...m, entidad})));
+
+		// Fin
+		return resultados;
+	},
+	nombresPosibles: (registro) => {
+		return registro.nombreCastellano
+			? registro.nombreCastellano
+			: registro.nombreOriginal
+			? registro.nombreOriginal
+			: registro.nombre
+			? registro.nombre
+			: "";
 	},
 };
 let FN_links = {
