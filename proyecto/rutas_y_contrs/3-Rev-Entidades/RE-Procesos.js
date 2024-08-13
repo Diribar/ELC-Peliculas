@@ -79,7 +79,7 @@ module.exports = {
 		},
 		obtieneProds2: async (revId) => {
 			// Variables
-			const entidades = [...variables.entidades.prods];
+			const entidades = variables.entidades.prods;
 			let campos;
 
 			// AL: En staus 'creado'
@@ -1115,20 +1115,15 @@ let FN_tablManten = {
 		const {petitFamilias} = condicion;
 		const entidades = variables.entidades[petitFamilias];
 		condicion.include ? condicion.include.push("ediciones") : (condicion.include = ["ediciones"]);
-		let resultados1 = [];
-		let resultados2 = [];
+		let resultados = [];
 
-		// Rutina
-		for (let entidad of entidades) resultados1.push(this.obtieneRegs({entidad, ...condicion}));
+		// Obtiene todos los resultados
+		for (let entidad of entidades) resultados.push(this.obtieneRegs({entidad, ...condicion}));
 
-		// Espera hasta tener todos los resultados
-		await Promise.all(resultados1).then((n) => n.map((m) => resultados2.push(...m)));
-
-		// Ordena
-		resultados2.sort((a, b) => b.fechaRef - a.fechaRef);
-
-		// Fin
-		return resultados2;
+		// Consolida los resultados y los ordena
+		return await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) => n.sort((a, b) => b.fechaRef - a.fechaRef));
 	},
 	obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
 		// Variables
