@@ -11,6 +11,7 @@ module.exports = async (req, res, next) => {
 		: null;
 	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const entidad_id = req.query.id;
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 	let v = {
 		// Generales
@@ -20,7 +21,7 @@ module.exports = async (req, res, next) => {
 		usuario: req.session.usuario,
 		userId: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
-		include: ["statusRegistro", "capturadoPor"],
+		include: ["statusRegistro"],
 		baseUrl: comp.reqBasePathUrl(req).baseUrl,
 
 		// Vistas
@@ -31,7 +32,6 @@ module.exports = async (req, res, next) => {
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase(),
-		familia: comp.obtieneDesdeEntidad.familia(entidad),
 		elLa: comp.obtieneDesdeEntidad.elLa(entidad),
 		oa: comp.obtieneDesdeEntidad.oa(entidad),
 		ea: comp.obtieneDesdeEntidad.oa(entidad),
@@ -49,51 +49,52 @@ module.exports = async (req, res, next) => {
 	v.creadoEn.setSeconds(0);
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
 
-	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userId;
-	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
-	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
-
 	// Corrige el link de 'entendido'
-	if (req.originalUrl.startsWith("/" + v.familia + "/edicion"))
+	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
 		v.vistaEntendido.link =
 			v.origen == "TE"
 				? "/revision/tablero-de-entidades"
-				: "/" + v.familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
+				: "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
 
 	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y no transcurrió una hora
+	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userId;
+	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
+	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	if (
 		v.registro.statusRegistro_id == creado_id && // en status creado
 		!creadoPorElUsuario && // otro usuario quiere acceder
 		v.creadoEn > v.haceUnaHora && // no transcurrió una hora
 		entidad != "usuarios"
-	)
-		return res.render("CMP-0Estructura", {
+	) {
+		informacionm = {
 			mensajes: [
 				"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
 				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
 			],
 			iconos: [v.vistaEntendido],
-		});
+		};
+		return res.render("CMP-0Estructura", {informacion});
+	}
 
 	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
 	if (
 		v.registro.statusRegistro_id == creado_id && // en status creado
 		!creadoPorElUsuario && // otro usuario quiere acceder
 		v.baseUrl != "/revision" // la ruta no es de revisión
-	)
-		return res.render("CMP-0Estructura", {
+	) {
+		informacion = {
 			mensajes: [
 				"Este registro todavía no está revisado.",
 				"En caso de ser aprobado cuando se lo revise, estará disponible.",
 			],
 			iconos: [v.vistaEntendido],
-		});
+		};
+		return res.render("CMP-0Estructura", {informacion});
+	}
 
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
-	console.log(95,capturas);
-
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
@@ -107,13 +108,14 @@ module.exports = async (req, res, next) => {
 	);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
-		return res.render("CMP-0Estructura", {
+		informacion = {
 			mensajes: [
 				"Este registro está capturado por el usuario " + captura.capturadoPor.apodo,
 				"Estará liberado a más tardar el " + horarioFinalCaptura,
 			],
 			iconos: [v.vistaSinCaptura, v.vistaInactivar],
-		});
+		};
+		return res.render("CMP-0Estructura", {informacion});
 	}
 
 	// CRITERIO: el usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
@@ -125,23 +127,24 @@ module.exports = async (req, res, next) => {
 			n.capturadoEn > v.haceDosHoras &&
 			n.capturadoPor_id == v.userId
 	);
-	if (captura){
+	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
-		return res.render("CMP-0Estructura", {
+		informacion = {
 			mensajes: [
 				"Esta captura terminó el " + horarioFinalCaptura,
 				"Quedó a disposición de los demás " + v.tipoUsuario + ".",
 				"Si nadie l" + v.oa + " captura hasta 1 hora después, podrás volver a capturarl" + v.oa + ".",
 			],
 			iconos: [v.vistaEntendido],
-		});
+		};
+		return res.render("CMP-0Estructura", {informacion});
 	}
 
 	// CRITERIO: averigua si el usuario tiene otro registro capturado en forma activa
 	captura = capturas.find(
 		(n) =>
 			(n.entidad != entidad || n.entidad_id != entidad_id) &&
-			n.familia == v.familia &&
+			n.familia == familia &&
 			n.capturadoPor_id == v.userId &&
 			n.capturadoEn > v.haceUnaHora &&
 			n.activa == true
@@ -174,9 +177,11 @@ module.exports = async (req, res, next) => {
 		const iconos = [v.vistaSinCaptura, liberar];
 
 		// Fin
-		return res.render("CMP-0Estructura", {mensajes, iconos});
+		return res.render("CMP-0Estructura", {informacion: {mensajes, iconos}});
 	}
 
 	// Fin
 	next();
 };
+// Variables
+let informacion;
