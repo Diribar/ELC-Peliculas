@@ -251,17 +251,18 @@ module.exports = {
 		},
 	},
 	tablManten: {
-		obtieneProds: async (userID) => {
+		obtieneProds: async (userId) => {
 			// Variables
 			const petitFamilias = "prods";
-			let condicion = {petitFamilias, userID};
+			const condicionFija = {petitFamilias, userId};
+			let condicion
 
 			// Productos Inactivos
-			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
 			let inactivos = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Aprobados
-			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
 			let prodsAprob = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Sin Edición (en status creadoAprob)
@@ -270,8 +271,8 @@ module.exports = {
 			let SE_cap = FN_tablManten.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
-			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
-			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, ppp_id: pppOpcsObj.yaLaVi.id});
+			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userId});
+			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userId, ppp_id: pppOpcsObj.yaLaVi.id});
 
 			// Espera las lecturas
 			[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -312,18 +313,18 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRCLVs: async (userID) => {
+		obtieneRCLVs: async (userId) => {
 			// Variables
-			const objetoFijo = {petitFamilias: "rclvs", userID};
+			const condicionFija = {petitFamilias: "rclvs", userId};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
 			let condicion;
 
 			// Inactivos
-			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
 			let IN = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Aprobados
-			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
 			let rclvsAprob = FN_tablManten.obtienePorEntidad({...condicion, include});
 
 			// Await
@@ -343,7 +344,7 @@ module.exports = {
 			// Fin
 			return {IN, SA, SF, SP};
 		},
-		obtieneLinksInactivos: async (userID) => {
+		obtieneLinksInactivos: async (userId) => {
 			// Variables
 			let include = variables.entidades.asocProds;
 			let condicion = {statusRegistro_id: inactivo_id};
@@ -352,7 +353,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
+			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, userId) : {LI: []};
 
 			// Fin
 			return productos;
@@ -364,7 +365,7 @@ module.exports = {
 		// Alta Guardar
 		edicAprobRech: async function (entidad, original, revId) {
 			// Variables
-			const userID = original.creadoPor_id;
+			const userId = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 			const ahora = comp.fechaHora.ahora();
@@ -427,7 +428,7 @@ module.exports = {
 					: ediciones.edicsAprob < ediciones.edicsRech
 					? "edicsRech"
 					: "";
-			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
+			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, campoEdic, 1);
 
 			// Fin
 			return;
@@ -485,14 +486,14 @@ module.exports = {
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const {baseUrl} = comp.reqBasePathUrl(req);
-			const userID = original.statusSugeridoPor_id;
+			const userId = original.statusSugeridoPor_id;
 			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userId, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
@@ -1077,7 +1078,7 @@ let FN_links = {
 	},
 };
 let FN_tablManten = {
-	obtieneProdsDeLinks: async (links, userID) => {
+	obtieneProdsDeLinks: async (links, userId) => {
 		// Variables
 		let LI = [];
 
@@ -1105,7 +1106,7 @@ let FN_tablManten = {
 		if (LI.length) LI = LI.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 		// Deja solamente los prods sin problemas de captura
-		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, userID);
+		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, userId);
 
 		// Fin
 		return {LI};
@@ -1125,7 +1126,7 @@ let FN_tablManten = {
 			.then((n) => n.flat())
 			.then((n) => n.sort((a, b) => b.fechaRef - a.fechaRef));
 	},
-	obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
+	obtieneRegs: async ({petitFamilias, userId, campoFecha, status_id, include, entidad}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
@@ -1144,11 +1145,11 @@ let FN_tablManten = {
 				// Que esté capturado hace más de dos horas
 				{capturadoEn: {[Op.lt]: haceDosHoras}},
 				// Que la captura haya sido por otro usuario y hace más de una hora
-				{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+				{capturadoPor_id: {[Op.ne]: userId}, capturadoEn: {[Op.lt]: haceUnaHora}},
 				// Que la captura haya sido por otro usuario y esté inactiva
-				{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
+				{capturadoPor_id: {[Op.ne]: userId}, capturaActiva: {[Op.ne]: 1}},
 				// Que esté capturado por este usuario hace menos de una hora
-				{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
+				{capturadoPor_id: userId, capturadoEn: {[Op.gt]: haceUnaHora}},
 			],
 			// Si es un rclv, que su id > 10
 			id: {[Op.gt]: idMin},
@@ -1164,7 +1165,7 @@ let FN_tablManten = {
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userID);
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
 					delete m.ediciones;
 
 					// Actualiza el original con la edición

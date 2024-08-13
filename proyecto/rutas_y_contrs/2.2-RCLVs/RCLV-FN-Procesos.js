@@ -3,9 +3,9 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	actualizaProdsRCLV_conEdicionPropia: async (RCLV, userID) => {
+	actualizaProdsRCLV_conEdicionPropia: async (RCLV, userId) => {
 		// Si el usuario no está logueado, devuelve el RCLV intacto
-		if (!userID) return RCLV;
+		if (!userId) return RCLV;
 
 		// Actualiza los registros de productos
 		for (let entProd of variables.entidades.prods) {
@@ -18,7 +18,7 @@ module.exports = {
 				let [original, edicion] = await procsFM.obtieneOriginalEdicion({
 					entidad: entProd,
 					entId: prodsEnRCLV[i].id,
-					userID,
+					userId,
 				});
 				if (edicion) {
 					const avatar = procsFM.obtieneAvatar(original, edicion).edic;
@@ -192,15 +192,15 @@ module.exports = {
 			const {entidad, origen} = req.query;
 			let {id} = req.query; // Si es un 'agregar', el 'id' es undefined
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
 			let original, edicion, edicN;
 
 			// Tareas para un nuevo registro
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
-				DE.creadoPor_id = userID;
-				DE.statusSugeridoPor_id = userID;
+				DE.creadoPor_id = userId;
+				DE.statusSugeridoPor_id = userId;
 				original = await baseDeDatos.agregaRegistro(entidad, DE);
 				id = original.id;
 
@@ -219,13 +219,13 @@ module.exports = {
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
 				original = await baseDeDatos.obtienePorId(entidad, id, ["statusRegistro", "ediciones"]);
-				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
+				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userId);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
-				if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id)
+				if (original.creadoPor_id == userId && original.statusRegistro_id == creado_id)
 					await baseDeDatos.actualizaPorId(entidad, id, DE);
 				// Si no esta en status 'creado', guarda la edición
-				else edicN = await procsFM.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userID});
+				else edicN = await procsFM.guardaActEdic({entidad, original, edicion: {...edicion, ...DE}, userId});
 			}
 
 			// Fin

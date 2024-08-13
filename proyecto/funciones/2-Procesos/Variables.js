@@ -213,10 +213,10 @@ module.exports = {
 	// Productos
 	camposDD: [...camposDD],
 	camposDA: [...camposDA],
-	camposDA_conValores: async function (userID) {
+	camposDA_conValores: async function (userId) {
 		// Variables
 		const entidadesRCLV = this.entidades.rclvs;
-		const registrosRCLV = await regsRCLV(entidadesRCLV, userID);
+		const registrosRCLV = await regsRCLV(entidadesRCLV, userId);
 		const mensajes = {
 			publico: [
 				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
@@ -467,8 +467,8 @@ module.exports = {
 	],
 };
 
-let regsRCLV = async (entidades, userID) => {
-	const condics = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userID}}};
+let regsRCLV = async (entidades, userId) => {
+	const condics = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userId}}};
 	let valores = [];
 	let registrosRCLV = {};
 
