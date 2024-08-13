@@ -452,26 +452,48 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	sinProblemasDeCaptura: function (registros, revID) {
+	sinProblemasDeCaptura: async (registros, revID) => {
 		// Variables
-		const ahora = this.fechaHora.ahora();
-		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
-		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
+		const ahora = FN.ahora();
+		const haceUnaHora = FN.nuevoHorario(-1, ahora);
+		const haceDosHoras = FN.nuevoHorario(-2, ahora);
+
+		// Obtiene las capturas ordenadas por fecha decreciente
+		const capturas = await baseDeDatos.obtieneTodos("capturas").then((n) => n.sort((a, b) => b.capturadoEn - a.capturadoEn));
+
+		// Filtros
 
 		// Fin
-		return registros.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturadoEn ||
-				// Que esté capturado hace más de dos horas
-				n.capturadoEn < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturadoPor_id != revID && n.capturadoEn < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturadoPor_id != revID && !n.capturaActiva) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
-		);
+		return registros.filter((n) => {
+			// Sin captura vigente
+			const esteRegistro = capturas.filter((m) => m.entidad == n.entidad && m.entidad_id == n.id);
+			if (
+				!esteRegistro.length || // que no esté capturado
+				esteRegistro[0].capturadoEn < haceDosHoras // que la captura más reciente haya sido hace más de dos horas
+			)
+				return true;
+
+			// Con captura activa
+			const activa = esteRegistro.find((m) => m.activa);
+			if (
+				activa &&
+				((activa.capturadoPor_id == revID && activa.capturadoEn > haceUnaHora) || // hecha por este usuario, hace menos de una hora
+					(activa.capturadoPor_id != revID && activa.capturadoEn < haceUnaHora)) // hecha por otro usuario, hace más de una hora
+			)
+				return true;
+
+			// Sin captura activa
+			const esteUsuario = esteRegistro.find((m) => m.capturadoPor_id == revID);
+			if (
+				!activa &&
+				(!esteUsuario || // este usuario no la haya capturado
+					esteUsuario.capturadoEn > haceUnaHora) // este usuario la haya capturado hace menos de una hora
+			)
+				return true;
+
+			// Fin
+			return false;
+		});
 	},
 	obtieneRegs: async (campos) => FN.obtieneRegs(campos),
 	revisaStatus: {
@@ -1033,12 +1055,8 @@ module.exports = {
 		},
 	},
 	fechaHora: {
-		ahora: () => {
-			return FN.ahora();
-		},
-		nuevoHorario: (delay, horario) => {
-			return FN.nuevoHorario(delay, horario);
-		},
+		ahora: () => FN.ahora(),
+		nuevoHorario: (delay, horario) => FN.nuevoHorario(delay, horario),
 		diaMes: (fecha) => FN.diaMes(fecha),
 		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
