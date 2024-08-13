@@ -1357,7 +1357,6 @@ let FN = {
 		const {entidad, status_id, campoFecha, campoRevId, include, capturas} = datos;
 		const haceUnaHora = this.nuevoHorario(-1);
 		const revId = datos.revId ? datos.revId : 0;
-		0;
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
