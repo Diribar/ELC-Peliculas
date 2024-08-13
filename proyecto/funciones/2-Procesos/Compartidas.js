@@ -452,7 +452,7 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	obtieneRegs: async (campos) => {
+	obtieneRegs: async function (campos) {
 		// Variables
 		let registros;
 
