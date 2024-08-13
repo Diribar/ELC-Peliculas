@@ -134,12 +134,11 @@ module.exports = {
 		let regsPERL = [];
 		for (let entidad of entsProdsRclvs) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			regsPERL.push(
-				baseDeDatos
-					.obtieneTodosPorCondicion(entidad, condicion, include)
-					.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
-					.then((regs) => regs.map((reg) => ({...reg, entidad, familia})))
-			);
+			const registros = baseDeDatos
+				.obtieneTodosPorCondicion(entidad, condicion, include)
+				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
+				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
+			regsPERL.push(registros);
 		}
 		regsPERL = await Promise.all(regsPERL).then((n) => n.flat());
 
@@ -148,20 +147,19 @@ module.exports = {
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsProdsRclvs) {
-			edicsPERL.push(
-				baseDeDatos
-					.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
-					.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
-					.then((edics) =>
-						edics.map((edic) => {
-							const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
-							const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
-							const familia = comp.obtieneDesdeEntidad.familia(entidad);
-							return {...edic[asociacion], entidad, familia};
-						})
-					)
-					.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)))
-			);
+			const registros = baseDeDatos
+				.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
+				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
+				.then((edics) =>
+					edics.map((edic) => {
+						const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
+						const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
+						const familia = comp.obtieneDesdeEntidad.familia(entidad);
+						return {...edic[asociacion], entidad, familia};
+					})
+				)
+				.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)));
+			edicsPERL.push(registros);
 		}
 		edicsPERL = await Promise.all(edicsPERL).then((n) => n.flat());
 
