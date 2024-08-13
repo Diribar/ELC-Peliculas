@@ -464,17 +464,17 @@ module.exports = {
 		// Filtros
 
 		// Fin
-		return registros.filter((n) => {
+		return registros.filter((prodRclv) => {
 			// Sin captura vigente
-			const esteRegistro = capturas.filter((m) => m.entidad == n.entidad && m.entidad_id == n.id);
+			const capturaProdRclv = capturas.filter((m) => m.entidad == prodRclv.entidad && m.entidad_id == prodRclv.id);
 			if (
-				!esteRegistro.length || // que no esté capturado
-				esteRegistro[0].capturadoEn < haceDosHoras // que la captura más reciente haya sido hace más de dos horas
+				!capturaProdRclv.length || // que no esté capturado
+				capturaProdRclv[0].capturadoEn < haceDosHoras // que la captura más reciente haya sido hace más de dos horas
 			)
 				return true;
 
 			// Con captura activa
-			const activa = esteRegistro.find((m) => m.activa);
+			const activa = capturaProdRclv.find((m) => m.activa);
 			if (
 				activa &&
 				((activa.capturadoPor_id == revID && activa.capturadoEn > haceUnaHora) || // hecha por este usuario, hace menos de una hora
@@ -483,7 +483,7 @@ module.exports = {
 				return true;
 
 			// Sin captura activa
-			const esteUsuario = esteRegistro.find((m) => m.capturadoPor_id == revID);
+			const esteUsuario = capturaProdRclv.find((m) => m.capturadoPor_id == revID);
 			if (
 				!activa &&
 				(!esteUsuario || // este usuario no la haya capturado
