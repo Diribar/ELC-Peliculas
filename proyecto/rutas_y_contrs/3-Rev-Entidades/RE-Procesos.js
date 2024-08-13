@@ -80,24 +80,18 @@ module.exports = {
 		obtieneProds2: async (revId) => {
 			// Variables
 			const entidades = variables.entidades.prods;
+			const camposFijos = {entidades, revId, include: "ediciones"};
 			let campos;
 
 			// AL: En staus 'creado'
-			campos = {
-				entidades,
-				status_id: creado_id,
-				campoFecha: "creadoEn",
-				campoRevId: "creadoPor_id",
-				revId,
-				include: "ediciones",
-			};
+			campos = {...camposFijos, status_id: creado_id};
 			let AL_sinEdicion = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
-			campos = {entidades, status_id: creadoAprob_id, revId, include: "ediciones"};
+			campos = {...camposFijos, status_id: creadoAprob_id};
 			let SE = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
@@ -149,19 +143,19 @@ module.exports = {
 		obtieneRCLVs1: async (revId) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
-			const include = [...variables.entidades.prods, "prodsEdiciones"];
+			const camposFijos = {entidades, revId};
 			let campos;
 
 			// AL: Altas
-			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevId: "creadoPor_id", revId, include};
+			campos = {...camposFijos, status_id: creado_id, include: [...variables.entidades.prods, "prodsEdiciones"]};
 			let AL = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
-			campos = {entidades, status_id: aprobado_id, revId, include: "ediciones"};
+			campos = {...camposFijos, status_id: aprobado_id, include: "ediciones"};
 			let SL = comp.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// FM: Con fecha móvil
-			campos = {entidades, status_id: aprobado_id, revId, include: "ediciones"};
+			campos = {...camposFijos, status_id: aprobado_id, include: "ediciones"};
 			let FM = comp
 				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
@@ -255,7 +249,7 @@ module.exports = {
 			// Variables
 			const petitFamilias = "prods";
 			const condicionFija = {petitFamilias, userId};
-			let condicion
+			let condicion;
 
 			// Productos Inactivos
 			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};

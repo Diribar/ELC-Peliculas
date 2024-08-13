@@ -1361,11 +1361,11 @@ let FN = {
 		// Fin
 		return resultados;
 	},
-	lecturaBD: async function (datos) {
+	lecturaBD: async function (campos) {
 		// Variables
-		const {entidad, status_id, campoFecha, campoRevId, include, capturas} = datos;
+		const {entidad, status_id, campoFecha, campoRevId, include} = campos;
 		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = datos.revId ? datos.revId : 0;
+		const revId = campos.revId ? campos.revId : 0;
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
