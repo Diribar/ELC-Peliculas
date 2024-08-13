@@ -840,7 +840,7 @@ module.exports = {
 					// Variables
 					const {entidad, entidad_id: id, nombre, fechaRef} = n;
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
-					const abrev = n.entidad.slice(0, 3).toUpperCase();
+					const abrev = entidad.slice(0, 3).toUpperCase();
 
 					// Fin
 					return {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
