@@ -901,19 +901,17 @@ module.exports = {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
-			let prodsPorEnts = [];
 			let prods = [];
 			let espera = [];
 
 			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
-				prodsPorEnts.push(
+				prods.push(
 					baseDeDatos
 						.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID})
 						.then((n) => n.map((m) => ({...m, [campo_id]: 1})))
 				);
-			prodsPorEnts = await Promise.all(prodsPorEnts);
-			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
+			prods = await Promise.all(prods).then(n=>n.flat())
 
 			// Averigua si existían productos vinculados al RCLV
 			if (prods.length) {
