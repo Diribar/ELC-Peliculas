@@ -11,7 +11,7 @@
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
-	"RutinasHorarias": ["feedbackParaUsers", "productosAlAzar"],
+	"RutinasHorarias": ["feedbackParaUsers", "productosAlAzar", "eliminaCapturasVencidas"],
 	"Subtitulo4": "-------------- RUTINAS DIARIAS ----------------",
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",

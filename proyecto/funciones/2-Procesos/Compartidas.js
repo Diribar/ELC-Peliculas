@@ -452,14 +452,14 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	sinProblemasDeCaptura: function (familia, revID) {
+	sinProblemasDeCaptura: function (registros, revID) {
 		// Variables
 		const ahora = this.fechaHora.ahora();
 		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
 		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
 
 		// Fin
-		return familia.filter(
+		return registros.filter(
 			(n) =>
 				// Que no esté capturado
 				!n.capturadoEn ||

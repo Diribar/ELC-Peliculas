@@ -5,27 +5,39 @@ module.exports = async (req, res, next) => {
 	const entidad = req.query.entidad;
 	const entId = req.query.id;
 	const userID = req.session.usuario.id;
-	const registro = await baseDeDatos.obtienePorId(entidad, entId);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-	const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, registro.capturadoEn));
 	let informacion;
 
 	// Revisa si fue creado por el usuario
+	const registro = await baseDeDatos.obtienePorId(entidad, entId);
 	if (registro.creadoPor_id != userID)
 		informacion = {
 			mensajes: ["El registro no fue creado por vos."],
 			iconos: [vistaAnterior],
 		};
 	// Revisa si está capturado en forma 'activa' por otra persona
-	else if (registro.capturadoEn > haceUnaHora && registro.capturadoPor_id != userID && registro.capturaActiva)
-		informacion = {
-			mensajes: [
-				"El registro está capturado por " + registro.capturadoPor.apodo + ".",
-				"Estará liberado a más tardar el " + horarioFinalCaptura,
-			],
-			iconos: [vistaAnterior],
+	else {
+		// Variables
+		const condicion = {
+			capturadoEn: {[Op.gt]: haceUnaHora},
+			capturadoPor_id: {[Op.ne]: userID},
+			activa: {[Op.ne]: 1},
 		};
+
+		// Acciones si existe una captura activa
+		const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion, "capturadoPor");
+		if (captura) {
+			const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
+			informacion = {
+				mensajes: [
+					"El registro está capturado por " + captura.capturadoPor.apodo + ".",
+					"Estará liberado a más tardar el " + horarioFinalCaptura,
+				],
+				iconos: [vistaAnterior],
+			};
+		}
+	}
 
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

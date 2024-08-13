@@ -195,9 +195,9 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesSinRegistro: async ({carpeta, familia, entidadEdic, status_id, campoAvatar}) => {
+	eliminaImagenesSinRegistro: async ({carpeta, familias, entidadEdic, status_id, campoAvatar}) => {
 		// Variables
-		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familia);
+		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		let avatarsEdic = [];
 		let avatarsOrig = [];
 		let consolidado = [];
