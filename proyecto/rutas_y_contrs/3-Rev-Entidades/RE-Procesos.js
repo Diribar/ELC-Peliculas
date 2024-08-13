@@ -843,8 +843,8 @@ module.exports = {
 
 					// Fin
 					return {
-						...{entidad, fechaRef, fechaRefTexto, nombre},
-						...{id, abrev: n.entidad.slice(0, 3).toUpperCase()},
+						...{entidad, id, nombre, fechaRef, fechaRefTexto},
+						...{abrev: n.entidad.slice(0, 3).toUpperCase()},
 					};
 				});
 
