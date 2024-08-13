@@ -16,7 +16,7 @@ module.exports = {
 			// Fin
 			return respuesta;
 		},
-		obtieneProds1: async (revID) => {
+		obtieneProds1: async (revId) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
 			let productos = [];
@@ -52,7 +52,7 @@ module.exports = {
 				productos = productos.filter(
 					(n) =>
 						n.statusRegistro_id != creado_id || // status distinto a 'creado'
-						n.creadoPor_id == revID || // creado por el revisor
+						n.creadoPor_id == revId || // creado por el revisor
 						n.creadoEn < comp.fechaHora.nuevoHorario(-1) // hace más de una hora
 				);
 
@@ -60,7 +60,7 @@ module.exports = {
 				productos = comp.eliminaRepetidos(productos);
 
 				// Elimina los productos con problemas de captura
-				productos = await comp.sinProblemasDeCaptura(productos, revID);
+				productos = await comp.sinProblemasDeCaptura(productos, revId);
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => b.fechaRef - a.fechaRef);
@@ -77,7 +77,7 @@ module.exports = {
 			// Fin
 			return {AL_conEdicion, ED};
 		},
-		obtieneProds2: async (revID) => {
+		obtieneProds2: async (revId) => {
 			// Variables
 			const entidades = [...variables.entidades.prods];
 			let campos;
@@ -87,8 +87,8 @@ module.exports = {
 				entidades,
 				status_id: creado_id,
 				campoFecha: "creadoEn",
-				campoRevID: "creadoPor_id",
-				revID,
+				campoRevId: "creadoPor_id",
+				revId,
 				include: "ediciones",
 			};
 			let AL_sinEdicion = comp
@@ -97,7 +97,7 @@ module.exports = {
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
-			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
+			campos = {entidades, status_id: creadoAprob_id, revId, include: "ediciones"};
 			let SE = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
@@ -145,30 +145,30 @@ module.exports = {
 			// Fin
 			return {RP: repetidos};
 		},
-		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
-		obtieneRCLVs1: async (revID) => {
+		obtieneSigProd_Links: async (revId) => FN_links.obtieneSigProd({revId}),
+		obtieneRCLVs1: async (revId) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
 			const include = [...variables.entidades.prods, "prodsEdiciones"];
 			let campos;
 
 			// AL: Altas
-			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
+			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevId: "creadoPor_id", revId, include};
 			let AL = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
-			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			campos = {entidades, status_id: aprobado_id, revId, include: "ediciones"};
 			let SL = comp.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// FM: Con fecha móvil
-			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			campos = {entidades, status_id: aprobado_id, revId, include: "ediciones"};
 			let FM = comp
 				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
 				.then((originales) =>
 					originales.map((original) => {
 						// Obtiene la edición del usuario
-						let edicion = original.ediciones.find((n) => n.editadoPor_id == revID);
+						let edicion = original.ediciones.find((n) => n.editadoPor_id == revId);
 						delete original.ediciones;
 
 						// Actualiza el original con la edición
@@ -210,7 +210,7 @@ module.exports = {
 			// Fin
 			return {AL, SL, FM};
 		},
-		obtieneRCLVs2: async (revID) => {
+		obtieneRCLVs2: async (revId) => {
 			// Variables
 			let include = variables.entidades.asocRclvs;
 			let rclvs = [];
@@ -244,7 +244,7 @@ module.exports = {
 			}
 
 			// Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = await comp.sinProblemasDeCaptura(rclvs, revID);
+			if (rclvs.length) rclvs = await comp.sinProblemasDeCaptura(rclvs, revId);
 
 			// Fin
 			return {ED: rclvs};
@@ -362,7 +362,7 @@ module.exports = {
 	// Alta
 	rclv: {
 		// Alta Guardar
-		edicAprobRech: async function (entidad, original, revID) {
+		edicAprobRech: async function (entidad, original, revId) {
 			// Variables
 			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
@@ -377,7 +377,7 @@ module.exports = {
 				entidad_id: original.id,
 				sugeridoPor_id: original.creadoPor_id,
 				sugeridoEn: original.creadoEn,
-				revisadoPor_id: revID,
+				revisadoPor_id: revId,
 				revisadoEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
 			};
@@ -480,7 +480,7 @@ module.exports = {
 				(prodEntidad ? "&prodEntidad=" + prodEntidad : "") +
 				(prodId ? "&prodId=" + prodId : "") +
 				(origen ? "&origen=" + origen : "");
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
@@ -492,7 +492,7 @@ module.exports = {
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
@@ -647,7 +647,7 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id}) {
+		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revId, campo, aprob, motivo_id}) {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -663,7 +663,7 @@ module.exports = {
 			let datos = {
 				editadoPor_id: edicion.editadoPor_id,
 				editadoEn: edicion.editadoEn,
-				edicRevisadaPor_id: revID,
+				edicRevisadaPor_id: revId,
 				edicRevisadaEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
@@ -692,7 +692,7 @@ module.exports = {
 					...datosEdic,
 					sugeridoPor_id: edicion.editadoPor_id,
 					sugeridoEn: edicion.editadoEn,
-					revisadoPor_id: revID,
+					revisadoPor_id: revId,
 					revisadoEn: ahora,
 				};
 				// Agrega el motivo del rechazo
@@ -788,7 +788,7 @@ module.exports = {
 		variables: ({link, req}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
@@ -804,18 +804,18 @@ module.exports = {
 
 			// Arma los datos
 			let datosLink = {
-				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revID, statusSugeridoEn: ahora, statusRegistro_id},
+				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revId, statusSugeridoEn: ahora, statusRegistro_id},
 				motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : link.motivo_id) : null,
 			};
 			if (statusCreado) {
-				datosLink.altaRevisadaPor_id = revID;
+				datosLink.altaRevisadaPor_id = revId;
 				datosLink.altaRevisadaEn = ahora;
 				datosLink.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
 			}
 
 			// Fin
 			let respuesta = {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision};
-			respuesta = {...respuesta, motivo_id, revID, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
+			respuesta = {...respuesta, motivo_id, revId, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
 			return respuesta;
 		},
 	},
@@ -986,12 +986,12 @@ let FN_links = {
 		if (!links.length) return;
 
 		// Variables
-		const {entidad, id, revID} = datos;
+		const {entidad, id, revId} = datos;
 		let productos;
 
 		// Obtiene los productos
 		productos = this.obtieneProds(links);
-		productos = await this.puleLosResultados({productos, revID});
+		productos = await this.puleLosResultados({productos, revId});
 
 		// Devuelve un producto o link
 		if (productos.length) {
@@ -1023,9 +1023,9 @@ let FN_links = {
 		// Fin
 		return productos;
 	},
-	puleLosResultados: async ({productos, revID}) => {
+	puleLosResultados: async ({productos, revId}) => {
 		// Deja solamente los registros sin problemas de captura
-		if (productos.length) productos = await comp.sinProblemasDeCaptura(productos, revID);
+		if (productos.length) productos = await comp.sinProblemasDeCaptura(productos, revId);
 
 		// Acciones si hay más de un producto
 		if (productos.length > 1) {
