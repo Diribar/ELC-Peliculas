@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 12/ago",
-	"HoraUTC": "4:11",
+	"FechaUTC": "Mar. 13/ago",
+	"HoraUTC": "0:36",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 12/ago",
@@ -44,10 +44,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-ago-24": {},
 		"11-ago-24": {"leyenda": "Hoy recordamos a santa Clara de Asís", "entidad": "personajes", "id": 111},
 		"12-ago-24": {"leyenda": "Hoy recordamos a santa Juana Francisca de Chantal", "entidad": "personajes", "id": 170},
 		"13-ago-24": {},
-		"14-ago-24": {"leyenda": "Hoy recordamos al padre Maximiliano Kolbe, santo", "entidad": "personajes", "id": 112}
+		"14-ago-24": {"leyenda": "Hoy recordamos al padre Maximiliano Kolbe, santo", "entidad": "personajes", "id": 112},
+		"15-ago-24": {"leyenda": "Hoy recordamos la Asunción de María", "entidad": "hechos", "id": 68}
 	}
 }
