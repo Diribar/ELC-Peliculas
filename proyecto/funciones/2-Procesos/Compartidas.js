@@ -461,8 +461,6 @@ module.exports = {
 		// Obtiene las capturas ordenadas por fecha decreciente
 		const capturas = await baseDeDatos.obtieneTodos("capturas").then((n) => n.sort((a, b) => b.capturadoEn - a.capturadoEn));
 
-		// Filtros
-
 		// Fin
 		return registros.filter((prodRclv) => {
 			// Sin captura vigente
