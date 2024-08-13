@@ -60,7 +60,7 @@ module.exports = {
 				productos = comp.eliminaRepetidos(productos);
 
 				// Elimina los productos con problemas de captura
-				productos = comp.sinProblemasDeCaptura(productos, revID);
+				productos = await comp.sinProblemasDeCaptura(productos, revID);
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => b.fechaRef - a.fechaRef);
@@ -210,15 +210,15 @@ module.exports = {
 			// Fin
 			return {AL, SL, FM};
 		},
-		obtieneRCLVs2: async function (revID) {
-			// 1. Variables
+		obtieneRCLVs2: async (revID) => {
+			// Variables
 			let include = variables.entidades.asocRclvs;
 			let rclvs = [];
 
-			// 2. Obtiene todas las ediciones ajenas
+			// Obtiene todas las ediciones ajenas
 			let ediciones = await baseDeDatos.obtieneTodos("rclvsEdicion", include);
 
-			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
+			// Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
@@ -237,14 +237,14 @@ module.exports = {
 				rclvs = rclvs.filter((n) => n.statusRegistro_id == aprobado_id);
 			}
 
-			// 4. Elimina los repetidos
+			// Elimina los repetidos
 			if (rclvs.length) {
 				rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 				rclvs = comp.eliminaRepetidos(rclvs);
 			}
 
-			// 5. Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = comp.sinProblemasDeCaptura(rclvs, revID);
+			// Deja solamente los sin problemas de captura
+			if (rclvs.length) rclvs = await comp.sinProblemasDeCaptura(rclvs, revID);
 
 			// Fin
 			return {ED: rclvs};
@@ -352,7 +352,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
+			let productos = linksInactivos.length ? await tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
 
 			// Fin
 			return productos;
@@ -925,7 +925,7 @@ let FN_links = {
 		// Ediciones
 		if (edicsPend) {
 			const ediciones = await this.obtieneLinks.ediciones();
-			respuesta = this.obtieneProdLink({links: ediciones, datos});
+			respuesta = await this.obtieneProdLink({links: ediciones, datos});
 			if (respuesta) return respuesta;
 		}
 
@@ -935,22 +935,22 @@ let FN_links = {
 
 		// Altas
 		const creados = links.filter((n) => n.statusRegistro_id == creado_id);
-		respuesta = this.obtieneProdLink({links: creados, datos});
+		respuesta = await this.obtieneProdLink({links: creados, datos});
 		if (respuesta) return respuesta;
 
 		// Estándar - Capítulos
 		const capitulos = links.filter((n) => n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
-		respuesta = this.obtieneProdLink({links: capitulos, datos});
+		respuesta = await this.obtieneProdLink({links: capitulos, datos});
 		if (respuesta) return respuesta;
 
 		// Estándar - Películas y Colecciones
 		const pelisColes = links.filter((n) => !n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
-		respuesta = this.obtieneProdLink({links: pelisColes, datos});
+		respuesta = await this.obtieneProdLink({links: pelisColes, datos});
 		if (respuesta) return respuesta;
 
 		// Estreno reciente
 		const estrRec = links.filter((n) => comp.linksVencPorSem.condicEstrRec(n));
-		respuesta = this.obtieneProdLink({links: estrRec, datos});
+		respuesta = await this.obtieneProdLink({links: estrRec, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
@@ -982,7 +982,7 @@ let FN_links = {
 			return originales;
 		},
 	},
-	obtieneProdLink: function ({links, datos}) {
+	obtieneProdLink: async function ({links, datos}) {
 		if (!links.length) return;
 
 		// Variables
@@ -991,7 +991,7 @@ let FN_links = {
 
 		// Obtiene los productos
 		productos = this.obtieneProds(links);
-		productos = this.puleLosResultados({productos, revID});
+		productos = await this.puleLosResultados({productos, revID});
 
 		// Devuelve un producto o link
 		if (productos.length) {
@@ -1023,9 +1023,9 @@ let FN_links = {
 		// Fin
 		return productos;
 	},
-	puleLosResultados: ({productos, revID}) => {
+	puleLosResultados: async ({productos, revID}) => {
 		// Deja solamente los registros sin problemas de captura
-		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
+		if (productos.length) productos = await comp.sinProblemasDeCaptura(productos, revID);
 
 		// Acciones si hay más de un producto
 		if (productos.length > 1) {
@@ -1077,7 +1077,7 @@ let FN_links = {
 	},
 };
 let tablManten = {
-	obtieneProdsDeLinks: (links, userID) => {
+	obtieneProdsDeLinks: async (links, userID) => {
 		// Variables
 		let LI = [];
 
@@ -1105,7 +1105,7 @@ let tablManten = {
 		if (LI.length) LI = LI.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 		// Deja solamente los prods sin problemas de captura
-		if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
+		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, userID);
 
 		// Fin
 		return {LI};
