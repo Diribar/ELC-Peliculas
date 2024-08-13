@@ -252,19 +252,19 @@ module.exports = {
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
 					}
+					rclvs = await Promise.all(rclvs).then((n) => n.flat());
 				}
 
 				// Rutina para un sólo RCLV
 				else {
 					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
-					rclvs = baseDeDatos
+					rclvs = await baseDeDatos
 						.obtieneTodosPorCondicion(entidad, condiciones, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
 				}
 
 				// Para la opción 'Año de Ocurrencia' estandariza el campo
-				rclvs = await Promise.all(rclvs).then((n) => n.flat());
 				if (layout.codigo == "anoOcurrencia")
 					rclvs = rclvs.map((n) => ({
 						...n,
@@ -464,8 +464,8 @@ module.exports = {
 
 					// Acciones si se encontraron hallazgos
 					if (hallazgos.length) {
-						prodsCruzadosConRCLVs.push(...hallazgos.map((n) => ({...n, [asoc]: {...n[asoc], fechaDelAno}})));// los agrega
-						prods = prods.filter((n) => n[campo_id] != rclv.id);// los elimina de prods para que no se dupliquen
+						prodsCruzadosConRCLVs.push(...hallazgos.map((n) => ({...n, [asoc]: {...n[asoc], fechaDelAno}}))); // los agrega
+						prods = prods.filter((n) => n[campo_id] != rclv.id); // los elimina de prods para que no se dupliquen
 					}
 				}
 
