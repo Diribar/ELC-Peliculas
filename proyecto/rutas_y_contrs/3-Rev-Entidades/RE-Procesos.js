@@ -247,17 +247,17 @@ module.exports = {
 	tablManten: {
 		obtieneProds: async (userId) => {
 			// Variables
-			const petitFamilias = "prods";
-			const condicionFija = {petitFamilias, userId};
-			let condicion;
+			const entidades = variables.entidades.prods;
+			const camposFijos = {entidades, userId};
+			let campos;
 
 			// Productos Inactivos
-			condicion = {...condicionFija, status_id: inactivo_id};
-			let inactivos = FN_tablManten.obtieneRegs(condicion);
+			campos = {...camposFijos, status_id: inactivo_id};
+			let inactivos = FN_tablManten.obtieneRegs(campos);
 
 			// Productos Aprobados
-			condicion = {...condicionFija, status_id: aprobado_id};
-			let prodsAprob = FN_tablManten.obtieneRegs(condicion);
+			campos = {...camposFijos, status_id: aprobado_id};
+			let prodsAprob = FN_tablManten.obtieneRegs(campos);
 
 			// Productos Sin Edición (en status creadoAprob)
 			let SE_pel = FN_tablManten.obtieneSinEdicion("peliculas");
@@ -309,17 +309,18 @@ module.exports = {
 		},
 		obtieneRCLVs: async (userId) => {
 			// Variables
-			const condicionFija = {petitFamilias: "rclvs", userId};
+			const entidades = variables.entidades.rclvs;
+			const camposFijos = {entidades, userId};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
-			let condicion;
+			let campos;
 
 			// Inactivos
-			condicion = {...condicionFija, status_id: inactivo_id};
-			let IN = FN_tablManten.obtieneRegs(condicion);
+			campos = {...camposFijos, status_id: inactivo_id};
+			let IN = FN_tablManten.obtieneRegs(campos);
 
 			// Aprobados
-			condicion = {...condicionFija, status_id: aprobado_id};
-			let rclvsAprob = FN_tablManten.obtieneRegs({...condicion, include});
+			campos = {...camposFijos, status_id: aprobado_id};
+			let rclvsAprob = FN_tablManten.obtieneRegs({...campos, include});
 
 			// Await
 			[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
@@ -1074,8 +1075,7 @@ let FN_links = {
 let FN_tablManten = {
 	obtieneRegs: async function (campos) {
 		// Variables
-		const {petitFamilias} = campos;
-		const entidades = variables.entidades[petitFamilias];
+		const {entidades} = campos;
 		campos.include ? campos.include.push("ediciones") : (campos.include = ["ediciones"]);
 		let resultados = [];
 
@@ -1090,7 +1090,7 @@ let FN_tablManten = {
 		// Fin
 		return resultados;
 	},
-	lecturaBD: async ({petitFamilias, userId, status_id, include, entidad}) => {
+	lecturaBD: async ({status_id, include, entidad}) => {
 		// Variables
 		let includeBD = [...include];
 		if (entidad == "colecciones") includeBD.push("csl");
