@@ -838,13 +838,13 @@ module.exports = {
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => {
 					// Variables
-					const {entidad, nombre, statusSugeridoEn: fechaRef} = n;
+					const {entidad, entidad_id: id, nombre, statusSugeridoEn: fechaRef} = n;
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Fin
 					return {
 						...{entidad, fechaRef, fechaRefTexto, nombre},
-						...{id: n.entidad_id, abrev: n.entidad.slice(0, 3).toUpperCase()},
+						...{id, abrev: n.entidad.slice(0, 3).toUpperCase()},
 					};
 				});
 
