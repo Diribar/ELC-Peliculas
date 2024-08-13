@@ -71,9 +71,6 @@ module.exports = (sequelize, dt) => {
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		capturadoPor_id: {type: dt.INTEGER},
-		capturadoEn: {type: dt.DATE},
-
 		statusColeccion_id: {type: dt.INTEGER},
 		statusRegistro_id: {type: dt.INTEGER},
 	};

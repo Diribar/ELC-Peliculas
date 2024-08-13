@@ -69,9 +69,6 @@ module.exports = (sequelize, dt) => {
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		capturadoPor_id: {type: dt.INTEGER},
-		capturadoEn: {type: dt.DATE},
-
 		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
