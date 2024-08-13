@@ -35,6 +35,7 @@ global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 global.setTimeOutStd = 1000;
 global.largoComentario = 150;
 global.statusErrores = [];
+global.idMinRclv = 10;
 
 // Require 'path'
 global.path = require("path");

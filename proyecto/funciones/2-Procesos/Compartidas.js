@@ -1345,13 +1345,10 @@ let FN = {
 	lecturaBD: async function (campos) {
 		// Variables
 		const {entidad, status_id, campoRevId, include} = campos;
-		const idMin = petitFamilias == "rclvs" ? 10 : 0;
-		const haceUnaHora = this.nuevoHorario(-1);
-		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMin};// Excluye los registros RCLV cuyo ID es <= idMin
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv};// Excluye los registros RCLV cuyo ID es <= idMinRclv
 
 		// Resultado
 		const resultados = await baseDeDatos
