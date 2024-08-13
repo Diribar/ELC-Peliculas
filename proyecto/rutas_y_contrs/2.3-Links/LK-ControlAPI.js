@@ -21,26 +21,26 @@ module.exports = {
 	// ABM
 	guarda: async (req, res) => {
 		// Variables
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 		const datos = await procesos.datosLink(req.query);
 		let mensaje;
 
 		// Obtiene el link y el id de la edicion
 		let link = await baseDeDatos.obtienePorCondicion("links", {url: datos.url}, "statusRegistro");
 		const edicion = link
-			? await baseDeDatos.obtienePorCondicion("linksEdicion", {link_id: link.id, editadoPor_id: userID})
+			? await baseDeDatos.obtienePorCondicion("linksEdicion", {link_id: link.id, editadoPor_id: userId})
 			: null;
 
 		// Si el link no existía, lo crea
 		if (!link) {
-			datos.creadoPor_id = userID;
-			datos.statusSugeridoPor_id = userID;
+			datos.creadoPor_id = userId;
+			datos.statusSugeridoPor_id = userId;
 			link = await baseDeDatos.agregaRegistro("links", datos);
 			await validacsFM.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
-		else if (link.creadoPor_id == userID && link.statusRegistro_id == creado_id) {
+		else if (link.creadoPor_id == userId && link.statusRegistro_id == creado_id) {
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			await validacsFM.accionesPorCambioDeStatus("links", link);
@@ -49,7 +49,7 @@ module.exports = {
 		// Guarda la edición
 		else {
 			if (edicion) datos.id = edicion.id;
-			mensaje = await procsFM.guardaActEdic({entidad: "links", original: link, edicion: datos, userID});
+			mensaje = await procsFM.guardaActEdic({entidad: "links", original: link, edicion: datos, userId});
 			if (mensaje) mensaje = "Edición guardada";
 			await comp.linksVencPorSem.actualizaCantLinksPorSem();
 		}
@@ -60,7 +60,7 @@ module.exports = {
 	inactivaElimina: async (req, res) => {
 		// Variables
 		const {url, motivo_id} = req.query;
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 		const revisorLinks = req.session.usuario.rolUsuario.revisorLinks;
 		const ahora = comp.fechaHora.ahora();
 		let link = url ? await baseDeDatos.obtienePorCondicion("links", {url}, "statusRegistro") : "";
@@ -72,7 +72,7 @@ module.exports = {
 		else if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 		// El link se elimina definitivamente
 		else if (
-			(link.statusRegistro_id == creado_id && link.creadoPor_id == userID) || // El link está en status 'creado' y por el usuario
+			(link.statusRegistro_id == creado_id && link.creadoPor_id == userId) || // El link está en status 'creado' y por el usuario
 			(link.statusRegistro_id == inactivo_id && revisorLinks) // El link está en status 'inactivo' y es un revisorLinks
 		) {
 			await baseDeDatos.eliminaPorId("links", link.id); // Elimina el registro original
@@ -91,7 +91,7 @@ module.exports = {
 		else {
 			// Inactivar
 			const datos = {
-				statusSugeridoPor_id: userID,
+				statusSugeridoPor_id: userId,
 				statusSugeridoEn: ahora,
 				motivo_id,
 				statusRegistro_id: inactivar_id,
@@ -108,7 +108,7 @@ module.exports = {
 	recupera: async (req, res) => {
 		// Variables
 		let datos = req.query;
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		let respuesta = {};
 
@@ -126,7 +126,7 @@ module.exports = {
 		if (!respuesta.mensaje) {
 			datos = {
 				statusSugeridoEn: ahora,
-				statusSugeridoPor_id: userID,
+				statusSugeridoPor_id: userId,
 				statusRegistro_id: recuperar_id,
 			};
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
@@ -141,7 +141,7 @@ module.exports = {
 	deshace: async (req, res) => {
 		// Variables
 		const datos = req.query;
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 		let respuesta = {};
 
 		// Obtiene el link
@@ -156,7 +156,7 @@ module.exports = {
 			? {mensaje: "El link está en status aprobado", reload: true}
 			: link.statusRegistro_id == inactivo_id
 			? {mensaje: "El link está en status inactivo", reload: true}
-			: link.statusSugeridoPor_id != userID
+			: link.statusSugeridoPor_id != userId
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 

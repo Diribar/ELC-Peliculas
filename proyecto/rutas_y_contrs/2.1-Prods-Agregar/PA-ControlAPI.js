@@ -87,11 +87,11 @@ module.exports = {
 		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
 			const {palabrasClave} = req.session.desambiguar;
-			const userID = req.session.usuario ? req.session.usuario.id : 0;
+			const userId = req.session.usuario ? req.session.usuario.id : 0;
 			let {prodsYaEnBD} = req.session.desambiguar;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
-			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
+			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userId});
 
 			// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
 			prodsYaEnBD = [...prodsYaEnBD, ...prodsIMFA];

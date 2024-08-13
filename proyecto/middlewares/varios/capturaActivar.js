@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const entId = req.query.id;
-	const userID = req.session.usuario.id;
+	const userId = req.session.usuario.id;
 	const registro = await baseDeDatos.obtienePorId(entidad, entId);
 	const {baseUrl} = comp.reqBasePathUrl(req);
 	const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 	// Averigua si el usuario ya lo tiene capturado
 	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
 	const condicStd = {entidad, entidad_id: entId};
-	const condicion = {...condicStd, capturadoPor_id: userID, capturadoEn: {[Op.gte]: haceDosHoras}}; // está capturado por el usuario desde hace menos de 2 horas
+	const condicion = {...condicStd, capturadoPor_id: userId, capturadoEn: {[Op.gte]: haceDosHoras}}; // está capturado por el usuario desde hace menos de 2 horas
 	const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion);
 
 	// Acciones si existe una captura
@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 	else {
 		// Variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const capturadoPor_id = userID;
+		const capturadoPor_id = userId;
 		const capturadoEn = ahora;
 		const datos = {...condicStd, familia, capturadoPor_id, capturadoEn, activa};
 

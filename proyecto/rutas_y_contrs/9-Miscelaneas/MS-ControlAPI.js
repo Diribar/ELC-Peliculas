@@ -7,7 +7,7 @@ module.exports = {
 	horarioInicial: async (req, res) => {
 		// Variables
 		const {entidad, id} = req.query;
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 
 		// Obtiene el registro
 		const registro = await baseDeDatos.obtienePorId(entidad, id);
@@ -16,7 +16,7 @@ module.exports = {
 			creadoPor_id: registro.creadoPor_id,
 			capturadoEn: registro.capturadoEn,
 			capturadoPor_id: registro.capturadoPor_id,
-			userID,
+			userId,
 		};
 
 		// Fin
@@ -25,7 +25,7 @@ module.exports = {
 	busquedaRapida: async (req, res) => {
 		// Variables
 		const palabras = req.query.palabras;
-		const userID = req.session.usuario ? req.session.usuario.id : 0;
+		const userId = req.session.usuario ? req.session.usuario.id : 0;
 		const entidadesProd = variables.entidades.prods;
 		const entidadesRCLV = variables.entidades.rclvs;
 		const camposProds = ["nombreCastellano", "nombreOriginal"];
@@ -50,7 +50,7 @@ module.exports = {
 		// Rutina
 		for (let dato of datos) {
 			// Obtiene las condiciones
-			const condicion = procsFM.quickSearch.condicion(palabras, dato.campos, userID, dato.original);
+			const condicion = procsFM.quickSearch.condicion(palabras, dato.campos, userId, dato.original);
 
 			// Obtiene los registros que cumplen las condiciones
 			resultados.push(

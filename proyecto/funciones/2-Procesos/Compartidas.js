@@ -454,12 +454,15 @@ module.exports = {
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
 	obtieneRegs: async (campos) => {
 		// Variables
+
 		let registros;
 
 		// Obtiene los registros
 		registros = await FN.obtieneRegs(campos);
 
-		// Pul
+		// Quita los comprometidos por capturas
+		registros =await this.sinProblemasDeCaptura(registros, revId)
+
 	},
 	sinProblemasDeCaptura: async (registros, revId) => {
 		// Variables
@@ -938,13 +941,13 @@ module.exports = {
 	},
 
 	// Usuarios
-	penalizacAcum: (userID, motivo, petitFamilias) => {
+	penalizacAcum: (userId, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", penalizac);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (penalizac > 1 && petitFamilias) {
@@ -955,7 +958,7 @@ module.exports = {
 		if (motivo.codigo == "bloqueoInput") objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
-		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userID, objeto);
+		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userId, objeto);
 
 		// Fin
 		return;

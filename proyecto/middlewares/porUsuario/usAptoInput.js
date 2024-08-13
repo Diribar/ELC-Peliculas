@@ -160,13 +160,13 @@ module.exports = async (req, res, next) => {
 	else next();
 };
 
-let regsConStatusARevisar = async (userID, entidades) => {
+let regsConStatusARevisar = async (userId, entidades) => {
 	// Variables
 	let condicion = {
 		[Op.or]: [
-			{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
-			{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: userID}]},
-			{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: userID}]},
+			{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userId}]},
+			{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: userId}]},
+			{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: userId}]},
 		],
 	};
 
@@ -176,13 +176,13 @@ let regsConStatusARevisar = async (userID, entidades) => {
 	// Fin
 	return contarRegistros;
 };
-let regsConEdicion = async (userID) => {
+let regsConEdicion = async (userId) => {
 	// Variables
 	const entidades = ["prodsEdicion", "rclvsEdicion", "linksEdicion"];
 	let contarRegistros = 0;
 
 	// Rutina para contar
-	let condicion = {editadoPor_id: userID};
+	let condicion = {editadoPor_id: userId};
 	for (let entidad of entidades) contarRegistros += await baseDeDatos.contarCasos(entidad, condicion);
 
 	// Fin

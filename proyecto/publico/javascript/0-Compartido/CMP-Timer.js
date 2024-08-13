@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 		? false
 		: !datos.capturadoEn
 		? datos.creadoEn
-		: datos.capturadoPor_id == datos.userID
+		: datos.capturadoPor_id == datos.userId
 		? datos.capturadoEn
 		: new Date();
 
