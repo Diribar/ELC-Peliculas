@@ -838,8 +838,7 @@ module.exports = {
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => {
 					// Variables
-					const {entidad, nombre} = n;
-					const fechaRef = n.statusSugeridoEn;
+					const {entidad, nombre, statusSugeridoEn: fechaRef} = n;
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Fin
