@@ -205,9 +205,9 @@ module.exports = {
 			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await procsFM.quickSearch.registros(condicion, datos);
-			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
+			resultados.push(procsFM.quickSearch.registros(condicion, datos));
 		}
+		resultados = await Promise.all(resultados).then((n) => n.flat());
 
 		// Rutina por producto
 		if (resultados.length)

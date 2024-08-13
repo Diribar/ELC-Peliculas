@@ -56,41 +56,33 @@ module.exports = async (req, res, next) => {
 				? "/revision/tablero-de-entidades"
 				: "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
 
-	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y no transcurrió una hora
+	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userId;
 	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
-	if (
-		v.registro.statusRegistro_id == creado_id && // en status creado
-		!creadoPorElUsuario && // otro usuario quiere acceder
-		v.creadoEn > v.haceUnaHora && // no transcurrió una hora
-		entidad != "usuarios"
-	) {
-		informacionm = {
-			mensajes: [
-				"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
-				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
-			],
-			iconos: [v.vistaEntendido],
-		};
-		return res.render("CMP-0Estructura", {informacion});
-	}
-
-	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
-	if (
-		v.registro.statusRegistro_id == creado_id && // en status creado
-		!creadoPorElUsuario && // otro usuario quiere acceder
-		v.baseUrl != "/revision" // la ruta no es de revisión
-	) {
-		informacion = {
-			mensajes: [
-				"Este registro todavía no está revisado.",
-				"En caso de ser aprobado cuando se lo revise, estará disponible.",
-			],
-			iconos: [v.vistaEntendido],
-		};
-		return res.render("CMP-0Estructura", {informacion});
-	}
+	if (v.registro.statusRegistro_id == creado_id && !creadoPorElUsuario)
+		// No transcurrió una hora
+		if (v.creadoEn > v.haceUnaHora) {
+			informacionm = {
+				mensajes: [
+					"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
+					"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
+				],
+				iconos: [v.vistaEntendido],
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
+		// Transcurrió una hora y la ruta no es de revisión
+		else if (v.baseUrl != "/revision") {
+			informacion = {
+				mensajes: [
+					"Este registro todavía no está revisado.",
+					"En caso de ser aprobado cuando se lo revise, estará disponible.",
+				],
+				iconos: [v.vistaEntendido],
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
 
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};

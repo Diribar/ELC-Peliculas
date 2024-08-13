@@ -452,6 +452,15 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
+	obtieneRegs: async (campos) => {
+		// Variables
+		let registros;
+
+		// Obtiene los registros
+		registros = await FN.obtieneRegs(campos);
+
+		// Pul
+	},
 	sinProblemasDeCaptura: async (registros, revId) => {
 		// Variables
 		const ahora = FN.ahora();
@@ -493,7 +502,6 @@ module.exports = {
 			return false;
 		});
 	},
-	obtieneRegs: async (campos) => FN.obtieneRegs(campos),
 	revisaStatus: {
 		consolidado: async function () {
 			// Variables
@@ -1328,26 +1336,24 @@ let FN = {
 	},
 	obtieneRegs: async function (campos) {
 		// Variables
-		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
-		const {entidades} = campos;
+		const {entidades, campoFecha} = campos;
 		delete campos.entidades;
-		let lecturas = [];
 		let resultados = [];
 
 		// Obtiene el resultado por entidad
-		for (let entidad of entidades) lecturas.push(this.lecturaBD({entidad, ...campos, capturas}));
-		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
+		for (let entidad of entidades) resultados.push(this.lecturaBD({entidad, ...campos}));
 
-		if (resultados.length) {
-			resultados = resultados.map((n) => {
-				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-				const fechaRefTexto = this.diaMes(fechaRef);
-				return {...n, fechaRef, fechaRefTexto};
-			});
-
-			// Ordena los resultados
-			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-		}
+		// Consolida y completa la información
+		resultados = await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) =>
+				n.map((m) => {
+					const fechaRef = campoFecha ? m[campoFecha] : m.statusSugeridoEn;
+					const fechaRefTexto = this.diaMes(fechaRef);
+					return {...m, fechaRef, fechaRefTexto};
+				})
+			)
+			.then((n) => n.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)));
 
 		// Fin
 		return resultados;
@@ -1371,15 +1377,10 @@ let FN = {
 		// Resultado
 		const resultados = await baseDeDatos
 			.obtieneTodosPorCondicion(entidad, condicion, include)
-			.then((n) => n.map((m) => ({...m, entidad})))
-			.then(async (n) => this.capturas(n, capturas));
+			.then((n) => n.map((m) => ({...m, entidad})));
 
 		// Fin
 		return resultados;
-	},
-	capturas: (registros, capturas) => {
-		// Variables
-		// Aplica filtros
 	},
 	nombresPosibles: (registro) => {
 		return registro.nombreCastellano
