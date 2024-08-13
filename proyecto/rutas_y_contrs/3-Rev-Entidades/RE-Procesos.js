@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const anchoMaxTablero = 32;
 
 module.exports = {
 	// Tableros
@@ -833,21 +834,18 @@ module.exports = {
 	},
 	procesaCampos: {
 		prodsRclvs: (registros) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in registros)
 				registros[rubro] = registros[rubro].map((n) => {
 					// Variables
-					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
-					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const {entidad, nombre} = n;
+					const fechaRef = n.statusSugeridoEn;
+					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Fin
 					return {
-						...{entidad: n.entidad, id: n.entidad_id},
-						...{nombre: n.nombre, abrev: n.entidad.slice(0, 3).toUpperCase()},
-						...{fechaRef, fechaRefTexto},
+						...{entidad, fechaRef, fechaRefTexto, nombre},
+						...{id: n.entidad_id, abrev: n.entidad.slice(0, 3).toUpperCase()},
 					};
 				});
 
@@ -855,25 +853,22 @@ module.exports = {
 			return registros;
 		},
 		prods: (productos) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in productos)
 				productos[rubro] = productos[rubro].map((n) => {
 					// Variables
-					let nombre =
-						(n.nombreCastellano.length > anchoMax
-							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+					const {entidad, id} = n;
+					const nombre =
+						(n.nombreCastellano.length > anchoMaxTableroTablero
+							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
 
 					// Comienza el armado de los datos
 					let datos = {
-						...{entidad: n.entidad, id: n.id},
-						...{nombre, abrev: n.entidad.slice(0, 3).toUpperCase()},
-						...{fechaRef, fechaRefTexto},
+						...{entidad, id, nombre, fechaRef, fechaRefTexto},
+						...{abrev: n.entidad.slice(0, 3).toUpperCase()},
 						links: n.linksGral || n.linksTrailer,
 					};
 
@@ -889,22 +884,19 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Variables
-			const anchoMax = 35; // ancho máximo a mostrar de cada producto
-
 			// Reconvierte los elementos
 			for (let rubro in rclvs)
 				rclvs[rubro] = rclvs[rubro].map((n) => {
 					// Variables
-					const nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+					const {entidad, id} = n;
+					const nombre = n.nombre.length > anchoMaxTablero ? n.nombre.slice(0, anchoMaxTablero - 1) + "…" : n.nombre;
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
 
 					// Comienza el armado de los datos
 					let datos = {
-						...{entidad: n.entidad, id: n.id},
-						...{nombre, abrev: n.entidad.slice(0, 3).toUpperCase()},
-						...{fechaRef, fechaRefTexto},
+						...{entidad, id, nombre, fechaRef, fechaRefTexto},
+						abrev: n.entidad.slice(0, 3).toUpperCase(),
 					};
 
 					// Completa los datos
