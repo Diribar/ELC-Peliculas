@@ -134,32 +134,36 @@ module.exports = {
 		let regsPERL = [];
 		for (let entidad of entsProdsRclvs) {
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const registros = await baseDeDatos
-				.obtieneTodosPorCondicion(entidad, condicion, include)
-				.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
-				.then((regs) => regs.map((reg) => ({...reg, entidad, familia})));
-			regsPERL.push(...registros);
+			regsPERL.push(
+				baseDeDatos
+					.obtieneTodosPorCondicion(entidad, condicion, include)
+					.then((regs) => regs.filter((reg) => !rolesRevPERL_ids.includes(reg.statusSugeridoPor.rolUsuario_id)))
+					.then((regs) => regs.map((reg) => ({...reg, entidad, familia})))
+			);
 		}
+		regsPERL = await Promise.all(regsPERL).then((n) => n.flat());
 
 		// edicsPERL
 		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
 		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
 		let edicsPERL = [];
 		for (let entPERL of entsProdsRclvs) {
-			const registros = await baseDeDatos
-				.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
-				.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
-				.then((edics) =>
-					edics.map((edic) => {
-						const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
-						const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
-						const familia = comp.obtieneDesdeEntidad.familia(entidad);
-						return {...edic[asociacion], entidad, familia};
-					})
-				)
-				.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)));
-			edicsPERL.push(...registros);
+			edicsPERL.push(
+				baseDeDatos
+					.obtieneTodos(entPERL, ["editadoPor", ...include[entPERL]])
+					.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
+					.then((edics) =>
+						edics.map((edic) => {
+							const asociacion = comp.obtieneDesdeCampo_id.asociacion(edic);
+							const entidad = comp.obtieneDesdeCampo_id.entidad(edic, entPERL);
+							const familia = comp.obtieneDesdeEntidad.familia(entidad);
+							return {...edic[asociacion], entidad, familia};
+						})
+					)
+					.then((prods) => prods.filter((prod) => !statusProvisorios.includes(prod.statusRegistro_id)))
+			);
 		}
+		edicsPERL = await Promise.all(edicsPERL).then((n) => n.flat());
 
 		// regsLinks
 		condicion = {...condicion, prodAprob: true};
@@ -198,23 +202,21 @@ module.exports = {
 	eliminaImagenesSinRegistro: async ({carpeta, familias, entidadEdic, status_id, campoAvatar}) => {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
-		let avatarsEdic = [];
-		let avatarsOrig = [];
-		let consolidado = [];
+		let avatars = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatarsEdic = nombresDeAvatarEnBD({entidad: entidadEdic});
+		if (entidadEdic) avatars.push(nombresDeAvatarEnBD({entidad: entidadEdic}));
 
 		// Revisa los avatars que están en los originales
 		if (status_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatarsOrig.push(nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
+				avatars.push(nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
 
-		// Espera y consolida los resultados
-		await Promise.all([avatarsEdic, ...avatarsOrig]).then((n) => n.map((m) => consolidado.push(...m)));
+		// Consolida los resultados
+		avatars = await Promise.all(avatars).then((n) => n.flat());
 
 		// Elimina los avatars
-		eliminaLasImagenes(consolidado, carpeta);
+		eliminaLasImagenes(avatars, carpeta);
 
 		// Fin
 		return;
@@ -775,7 +777,6 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 	// Variables
 	const include = variables.entidades.prods;
 	let rclvs = [];
-	let resultados = [];
 
 	// Obtiene los RCLV
 	for (let entidad of variables.entidades.rclvs) {
@@ -790,10 +791,10 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) => n.map((m) => ({...m, entidad})));
 		rclvs.push(registros);
 	}
-	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
+	rclvs = await Promise.all(rclvs).then((n) => n.flat());
 
 	// Fin
-	return resultados;
+	return rclvs;
 };
 let reduceRCLVs = (rclvs) => {
 	// Variables
