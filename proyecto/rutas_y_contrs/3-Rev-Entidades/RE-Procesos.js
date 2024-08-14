@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const anchoMaxTablero = 32;
 
 module.exports = {
 	// Tableros
@@ -37,9 +38,9 @@ module.exports = {
 				productos.push({
 					...n[asociacion],
 					entidad,
+					fechaRef: n.editadoEn,
 					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					edicID: n.id,
-					fechaRef: n.editadoEn,
 				});
 			});
 
@@ -111,8 +112,8 @@ module.exports = {
 				baseDeDatos.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
 			])
 				.then((n) => [
-					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
-					...n[1].map((m) => ({entidad: "capitulos", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
+					...n[0].map((m) => ({entidad: "peliculas", ...m})),
+					...n[1].map((m) => ({entidad: "capitulos", ...m})),
 				])
 				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id)); // excluye los que no tengan alguno de esos códigos
 
@@ -833,46 +834,38 @@ module.exports = {
 	},
 	procesaCampos: {
 		prodsRclvs: (registros) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in registros)
-				registros[rubro] = registros[rubro].map((n) => ({
-					id: n.entidad_id,
-					entidad: n.entidad,
-					nombre: n.nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					fechaRef: n.fechaRef,
-					fechaRefTexto: comp.fechaHora.diaMes(n.fechaRef),
-				}));
+				registros[rubro] = registros[rubro].map((n) => {
+					// Variables
+					const {entidad, entidad_id: id, nombre, fechaRef} = n;
+					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+
+					// Fin
+					return {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
+				});
 
 			// Fin
 			return registros;
 		},
 		prods: (productos) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in productos)
 				productos[rubro] = productos[rubro].map((n) => {
 					// Variables
-					let nombre =
-						(n.nombreCastellano.length > anchoMax
-							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+					const {entidad, id} = n;
+					const nombre =
+						(n.nombreCastellano.length > anchoMaxTablero
+							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
+					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
+					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+					const links = n.linksGral || n.linksTrailer;
 
 					// Comienza el armado de los datos
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRef: n.fechaRef,
-						fechaRefTexto: n.fechaRefTexto,
-						links: n.linksGral || n.linksTrailer,
-					};
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev, links};
 
 					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
@@ -886,21 +879,23 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Variables
-			const anchoMax = 35; // ancho máximo a mostrar de cada producto
-
 			// Reconvierte los elementos
 			for (let rubro in rclvs)
 				rclvs[rubro] = rclvs[rubro].map((n) => {
-					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
+					// Variables
+					const {entidad, id} = n;
+					const nombre = n.nombre.length > anchoMaxTablero ? n.nombre.slice(0, anchoMaxTablero - 1) + "…" : n.nombre;
+					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
+					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+
+					// Comienza el armado de los datos
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
+
+					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
+
+					// Fin
 					return datos;
 				});
 
@@ -1087,6 +1082,9 @@ let FN_tablManten = {
 			.then((n) => n.flat())
 			.then((n) => n.sort((a, b) => b.statusSugeridoEn - a.statusSugeridoEn));
 
+		// Quita los comprometidos por capturas
+		resultados = await comp.sinProblemasDeCaptura(resultados, campos.userId);
+
 		// Fin
 		return resultados;
 	},
@@ -1133,10 +1131,10 @@ let FN_tablManten = {
 		// Obtiene los prods
 		for (let link of links) {
 			// Variables
-			let entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-			let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-			let fechaRef = link.statusSugeridoEn;
-			let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
+			const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+			const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+			const fechaRef = link.statusSugeridoEn;
+			const fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
 
 			// Agrega los registros
 			LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
