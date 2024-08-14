@@ -572,7 +572,7 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		if (campo != "feedbackParaUsers" || nodeEnv != "development")
-			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(5, " ") + " -", campo);
+			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(6, " ") + " -", campo);
 
 		// Fin
 		return;
