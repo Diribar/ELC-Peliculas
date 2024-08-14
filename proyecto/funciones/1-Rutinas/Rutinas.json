@@ -40,7 +40,7 @@
 		"eliminaRegsSinEntidad_id": "SI",
 		"eliminaLoginsAcumsRepetidos": "SI",
 		"eliminaRegsDelHistStatus": "SI",
-		"iDdeTablas": "SI"
+		"idDeTablas": "SI"
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
