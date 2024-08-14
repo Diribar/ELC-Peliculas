@@ -1,0 +1,41 @@
+ALTER TABLE c19353_elc.aux_capturas CHANGE capturaActiva activa tinyint(1) DEFAULT NULL NULL;
+ALTER TABLE c19353_elc.aux_capturas MODIFY COLUMN activa tinyint(1) DEFAULT 1 NOT NULL;
+
+ALTER TABLE c19353_elc.prod_1peliculas DROP FOREIGN KEY prod_1peliculas_ibfk_14;
+ALTER TABLE c19353_elc.prod_1peliculas DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.prod_1peliculas DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.prod_1peliculas DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.prod_2colecciones DROP FOREIGN KEY prod_2colecciones_ibfk_13;
+ALTER TABLE c19353_elc.prod_2colecciones DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.prod_2colecciones DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.prod_2colecciones DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.prod_3capitulos DROP FOREIGN KEY prod_3capitulos_ibfk_15;
+ALTER TABLE c19353_elc.prod_3capitulos DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.prod_3capitulos DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.prod_3capitulos DROP COLUMN capturadoPor_id;
+
+ALTER TABLE c19353_elc.rclv_1personajes DROP FOREIGN KEY rclv_1personajes_ibfk_07;
+ALTER TABLE c19353_elc.rclv_1personajes DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.rclv_1personajes DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.rclv_1personajes DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.rclv_2hechos DROP FOREIGN KEY rclv_2hechos_ibfk_08;
+ALTER TABLE c19353_elc.rclv_2hechos DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.rclv_2hechos DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.rclv_2hechos DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.rclv_3temas DROP FOREIGN KEY rclv_3temas_ibfk_8;
+ALTER TABLE c19353_elc.rclv_3temas DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.rclv_3temas DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.rclv_3temas DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.rclv_4eventos DROP FOREIGN KEY rclv_4eventos_ibfk_8;
+ALTER TABLE c19353_elc.rclv_4eventos DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.rclv_4eventos DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.rclv_4eventos DROP COLUMN capturadoPor_id;
+ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP FOREIGN KEY rclv_5epocas_del_ano_ibfk_7;
+ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.rclv_5epocas_del_ano DROP COLUMN capturadoPor_id;
+
+ALTER TABLE c19353_elc.usuarios DROP FOREIGN KEY usuarios_ibfk_6;
+ALTER TABLE c19353_elc.usuarios DROP COLUMN capturaActiva;
+ALTER TABLE c19353_elc.usuarios DROP COLUMN capturadoEn;
+ALTER TABLE c19353_elc.usuarios DROP COLUMN capturadoPor_id;
