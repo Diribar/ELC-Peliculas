@@ -15,7 +15,7 @@ module.exports = {
 		const {capturadoEn, capturadoPor_id} = captura;
 
 		// Datos del registro
-		const registro = await baseDeDatos.obtienePorId(entidad, id);
+		const registro = !capturadoEn ? await baseDeDatos.obtienePorId(entidad, id) : {};
 		const {creadoEn, creadoPor_id} = registro;
 
 		// Genera los datos
