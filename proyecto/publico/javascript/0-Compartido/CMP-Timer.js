@@ -27,14 +27,11 @@ window.addEventListener("load", async () => {
 	if (!v.entidad && location.pathname.includes("/revision/usuarios")) v.entidad = "usuarios";
 
 	// Horario Inicial
-	let datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entId).then((n) => n.json());
-	let horarioInicial = false
-		? false
-		: !datos.capturadoEn
-		? datos.creadoEn
-		: datos.capturadoPor_id == datos.userId
-		? datos.capturadoEn
-		: new Date();
+	const datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entId).then((n) => n.json());
+	const {capturadoEn, creadoEn, capturadoPor_id, userId} = datos;
+	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == userId ? capturadoEn : new Date();
+	horarioInicial = new Date(horarioInicial)
+	horarioInicial.setSeconds(0);
 
 	// Configura el horario final
 	let horarioFinal = new Date(horarioInicial);
@@ -54,7 +51,7 @@ window.addEventListener("load", async () => {
 			tiempoRestante <= -60
 			? tiempoMax
 			: 0;
-	v.segundosDispon = Math.round((v.minutosDispon % 1) * 60);
+	v.segundosDispon = Math.floor((v.minutosDispon % 1) * 60);
 
 	// Funciones
 	let FN = {

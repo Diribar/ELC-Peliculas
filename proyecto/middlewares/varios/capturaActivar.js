@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 	const userId = req.session.usuario.id;
 	const registro = await baseDeDatos.obtienePorId(entidad, entId);
 	const {baseUrl} = comp.reqBasePathUrl(req);
-	const ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
+	const ahora = comp.fechaHora.ahora();
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1, ahora);
 
 	// Si está recién creado y se lo quiere usar en una vista distinta a 'revisión', no se captura
@@ -27,8 +27,7 @@ module.exports = async (req, res, next) => {
 		// Variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const capturadoPor_id = userId;
-		const capturadoEn = ahora;
-		const datos = {...condicStd, familia, capturadoPor_id, capturadoEn, activa};
+		const datos = {...condicStd, familia, capturadoPor_id};
 
 		// Captura
 		await baseDeDatos.agregaRegistro("capturas", datos);
