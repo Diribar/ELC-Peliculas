@@ -1,6 +1,6 @@
 <section id="encabezadoDatos" class="flexCol">
 	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-	<%- include("FM-1-Encabezado") %>
+	<%- include("FM-1Encabezado") %>
 	<!-- Datos -->
 	<div id="info">
 		<div id="primeraColumna" class="columna">
@@ -35,6 +35,11 @@
 				<% } %>
 			</div>
 
+			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
+				<!--Época respecto a Cristo -->
+				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
+			<% } %>
+
 			<!--Sinopsis-->
 			<%- include("PR2-Edic-Sinopsis") %>
 
@@ -56,10 +61,6 @@
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "evento_id"}) %>
 			<!--Época del año-->
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epocaDelAno_id"}) %>
-			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
-				<!--Época respecto a Cristo -->
-				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
-			<% } %>
 		</div>
 	</div>
 </section>
