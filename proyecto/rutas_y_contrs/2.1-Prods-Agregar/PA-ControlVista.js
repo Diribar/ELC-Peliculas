@@ -194,12 +194,12 @@ module.exports = {
 			const tema = "prodAgregar";
 			const codigo = "datosAdics";
 			const titulo = "Agregar - Datos Adicionales";
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 
 			// Prepara variables para la vista
 			// Obtiene el Data Entry de session y cookies
 			const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
-			const camposDA = await variables.camposDA_conValores(userID);
+			const camposDA = await variables.camposDA_conValores(userId);
 			const camposDE = Object.keys(datosAdics);
 
 			// Grupos RCLV
@@ -295,7 +295,7 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 
 			// Obtiene el Data Entry de session y cookies
 			const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
@@ -309,7 +309,7 @@ module.exports = {
 			}
 
 			// Guarda el registro original
-			const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
+			const original = {...req.cookies.datosOriginales, creadoPor_id: userId, statusSugeridoPor_id: userId};
 			const registro = await baseDeDatos.agregaRegistro(entidad, original);
 
 			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
@@ -330,7 +330,7 @@ module.exports = {
 			else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
-			await procsFM.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, userID});
+			await procsFM.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, userId});
 
 			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
@@ -357,7 +357,7 @@ module.exports = {
 		const tema = "prodAgregar";
 		const codigo = "terminaste";
 		const titulo = "Agregar - Terminaste";
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 
 		// Si se perdió la info, redirige a 'palabras clave'
 		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
@@ -367,7 +367,7 @@ module.exports = {
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID, excluirInclude: true});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId, excluirInclude: true});
 		const origEdic = {...original, ...edicion, id: original.id};
 
 		// Prepara las imágenes
@@ -455,9 +455,9 @@ module.exports = {
 			// Acciones si es un capítulo
 			if (IM.entidad == "capitulos") {
 				// Genera información a guardar
-				const userID = req.session.usuario.id;
-				IM.creadoPor_id = userID;
-				IM.statusSugeridoPor_id = userID;
+				const userId = req.session.usuario.id;
+				IM.creadoPor_id = userId;
+				IM.statusSugeridoPor_id = userId;
 
 				// Acciones si es un 'IM'
 				if (IM.fuente == "IM") return accionesParaCapitulosIMFA(IM, req, res);

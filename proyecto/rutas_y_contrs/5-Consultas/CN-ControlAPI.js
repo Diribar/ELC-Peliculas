@@ -13,7 +13,7 @@ module.exports = {
 				: req.session.usuario
 				? req.session.usuario.configCons_id
 				: null;
-			const userID = req.session.usuario ? req.session.usuario.id : null;
+			const userId = req.session.usuario ? req.session.usuario.id : null;
 			let cabecera;
 
 			// Obtiene la cabecera
@@ -21,8 +21,8 @@ module.exports = {
 				cabecera = await baseDeDatos.obtienePorId("consRegsCabecera", id);
 				if (
 					!cabecera || // no se encontró una cabecera
-					(!userID && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
-					(userID && ![userID, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
+					(!userId && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
+					(userId && ![userId, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
 				)
 					cabecera = {};
 			} else cabecera = {};
@@ -62,10 +62,10 @@ module.exports = {
 
 			// Datos del usuario
 			if (req.session.usuario && req.session.usuario.id) {
-				datos.userID = req.session.usuario.id;
+				datos.userId = req.session.usuario.id;
 				datos.videoConsVisto = req.session.usuario.videoConsVisto;
 				datos.usuarioTienePPP = await baseDeDatos
-					.obtieneTodosPorCondicion("pppRegistros", {usuario_id: datos.userID})
+					.obtieneTodosPorCondicion("pppRegistros", {usuario_id: datos.userId})
 					.then((n) => n.length);
 			}
 
@@ -74,10 +74,10 @@ module.exports = {
 		},
 		cabecerasPosibles: async (req, res) => {
 			// Variables
-			const userID = req.session.usuario ? req.session.usuario.id : null;
+			const userId = req.session.usuario ? req.session.usuario.id : null;
 
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const cabeceras = await procesos.varios.cabeceras(userID);
+			const cabeceras = await procesos.varios.cabeceras(userId);
 
 			// Fin
 			return res.json(cabeceras);
@@ -87,11 +87,11 @@ module.exports = {
 		actualizaEnUsuarioConfigCons_id: (req, res) => {
 			// Variables
 			const {configCons_id} = req.query;
-			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
+			const userId = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Si está logueado, actualiza el usuario en la BD
-			if (userID) {
-				baseDeDatos.actualizaPorId("usuarios", userID, {configCons_id});
+			if (userId) {
+				baseDeDatos.actualizaPorId("usuarios", userId, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 

@@ -12,17 +12,17 @@ module.exports = {
 		const {entidad, id, hoyLocal} = req.query;
 		const origen = req.query.origen ? req.query.origen : "RDT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
-		const userID = usuario ? usuario.id : null;
+		const userId = usuario ? usuario.id : null;
 		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let imgDerPers, ayudasTitulo;
 
 		// Obtiene RCLV y sus productos
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId});
 		let rclv = {...original, ...edicion, id};
-		rclv = await procesos.actualizaProdsRCLV_conEdicionPropia(rclv, userID);
-		const prodsDelRCLV = await procsFM.prodsDelRCLV(rclv, userID);
+		rclv = await procesos.actualizaProdsRCLV_conEdicionPropia(rclv, userId);
+		const prodsDelRCLV = await procsFM.prodsDelRCLV(rclv, userId);
 
 		// Ayuda para el titulo
 		if (prodsDelRCLV.length == 1) ayudasTitulo = ["Es la única película que tenemos en nuestra base de datos."];
@@ -84,7 +84,7 @@ module.exports = {
 					? "RRA"
 					: "TE"
 				: "";
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const personajes = entidad == "personajes";
@@ -106,7 +106,7 @@ module.exports = {
 			// Pasos exclusivos para edición y revisión
 			if (codigo != "agregar") {
 				// Obtiene el original y edicion
-				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
+				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId});
 				edicID = edicion.id;
 
 				// Actualiza el data entry de session
@@ -171,7 +171,7 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "RDT";
 			const codigo = req.baseUrl + req.path;
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 			let errores;
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
@@ -191,7 +191,7 @@ module.exports = {
 			// Acciones si el usuario elimina la edición
 			if (eliminarEdic) {
 				// Variables
-				const condicion = {[campo_id]: id, editadoPor_id: userID};
+				const condicion = {[campo_id]: id, editadoPor_id: userId};
 
 				// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
 				const edicion = await baseDeDatos.obtienePorCondicion("rclvsEdicion", condicion);
@@ -242,7 +242,7 @@ module.exports = {
 					let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 						entidad: prodEntidad,
 						entId: prodId,
-						userID,
+						userId,
 						excluirInclude: true,
 					});
 
@@ -250,7 +250,7 @@ module.exports = {
 					prodEdic = {...prodEdic, [campo_id]: original.id};
 
 					// Crea o actualiza la edición
-					await procsFM.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userID});
+					await procsFM.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, userId});
 				}
 			}
 
@@ -262,7 +262,7 @@ module.exports = {
 				// Elimina el eventual anterior
 				if (codigo == "/rclv/edicion/") {
 					// Si es un registro propio y en status creado, borra el eventual avatar original
-					if (original.creadoPor_id == userID && original.statusRegistro_id == creado_id) {
+					if (original.creadoPor_id == userId && original.statusRegistro_id == creado_id) {
 						if (original.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", original.avatar);
 					}
 					// Si no está en status 'creado', borra el eventual avatar_edicion anterior

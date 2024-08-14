@@ -48,7 +48,7 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID, autTablEnts, origen}) => {
+	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userId, autTablEnts, origen}) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
@@ -65,7 +65,7 @@ module.exports = {
 						{statusRegistro_id: aprobados_ids},
 						autTablEnts
 							? {statusRegistro_id: creado_id}
-							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+							: {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userId}]},
 					],
 			  };
 		const links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: id, ...condicion}, include);

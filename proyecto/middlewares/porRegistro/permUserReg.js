@@ -56,56 +56,45 @@ module.exports = async (req, res, next) => {
 				? "/revision/tablero-de-entidades"
 				: "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
 
-	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y no transcurrió una hora
+	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userId;
 	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
-	if (
-		v.registro.statusRegistro_id == creado_id && // en status creado
-		!creadoPorElUsuario && // otro usuario quiere acceder
-		v.creadoEn > v.haceUnaHora && // no transcurrió una hora
-		entidad != "usuarios"
-	) {
-		informacionm = {
-			mensajes: [
-				"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
-				"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
-			],
-			iconos: [v.vistaEntendido],
-		};
-		return res.render("CMP-0Estructura", {informacion});
-	}
-
-	// CRITERIO: registro en status 'creado', otro usuario quiere acceder y la ruta no es de revisión
-	if (
-		v.registro.statusRegistro_id == creado_id && // en status creado
-		!creadoPorElUsuario && // otro usuario quiere acceder
-		v.baseUrl != "/revision" // la ruta no es de revisión
-	) {
-		informacion = {
-			mensajes: [
-				"Este registro todavía no está revisado.",
-				"En caso de ser aprobado cuando se lo revise, estará disponible.",
-			],
-			iconos: [v.vistaEntendido],
-		};
-		return res.render("CMP-0Estructura", {informacion});
-	}
+	if (v.registro.statusRegistro_id == creado_id && !creadoPorElUsuario)
+		// No transcurrió una hora
+		if (v.creadoEn > v.haceUnaHora) {
+			informacionm = {
+				mensajes: [
+					"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
+					"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
+				],
+				iconos: [v.vistaEntendido],
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
+		// Transcurrió una hora y la ruta no es de revisión
+		else if (v.baseUrl != "/revision") {
+			informacion = {
+				mensajes: [
+					"Este registro todavía no está revisado.",
+					"En caso de ser aprobado cuando se lo revise, estará disponible.",
+				],
+				iconos: [v.vistaEntendido],
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
 
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
+	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == entidad_id);
+	const captsEsteUsuario = capturas.filter(
+		(n) => n.familia == familia && n.capturadoPor_id == v.userId && n.capturadoEn > v.haceUnaHora && n.activa == true
+	);
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
-	captura = capturas.find(
-		(n) =>
-			n.entidad == entidad &&
-			n.entidad_id == entidad_id &&
-			n.capturadoEn > v.haceUnaHora &&
-			n.capturadoPor_id != v.userId &&
-			n.capturaActiva
-	);
+	captura = captsEsteProdRclv.find((n) => n.capturadoEn > v.haceUnaHora && n.capturadoPor_id != v.userId && n.activa);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
 		informacion = {
@@ -119,13 +108,8 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: el usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
-	captura = capturas.find(
-		(n) =>
-			n.entidad == entidad &&
-			n.entidad_id == entidad_id &&
-			n.capturadoEn < v.haceUnaHora &&
-			n.capturadoEn > v.haceDosHoras &&
-			n.capturadoPor_id == v.userId
+	captura = captsEsteProdRclv.find(
+		(n) => n.capturadoEn < v.haceUnaHora && n.capturadoEn > v.haceDosHoras && n.capturadoPor_id == v.userId
 	);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
@@ -141,14 +125,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: averigua si el usuario tiene otro registro capturado en forma activa
-	captura = capturas.find(
-		(n) =>
-			(n.entidad != entidad || n.entidad_id != entidad_id) &&
-			n.familia == familia &&
-			n.capturadoPor_id == v.userId &&
-			n.capturadoEn > v.haceUnaHora &&
-			n.activa == true
-	);
+	captura = captsEsteUsuario.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
 	if (captura) {
 		// Prepara el mensaje
 		const registroCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
