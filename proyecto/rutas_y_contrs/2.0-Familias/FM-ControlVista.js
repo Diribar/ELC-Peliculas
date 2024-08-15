@@ -49,11 +49,11 @@ module.exports = {
 	inacRecup_guardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario} = datos;
+		const {entidad, id, familia, motivo_id, codigo, userId, ahora, campo_id, original, statusFinal_id, comentario} = datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
-			statusSugeridoPor_id: userID,
+			statusSugeridoPor_id: userId,
 			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
 		};
@@ -62,7 +62,7 @@ module.exports = {
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
 		let datosHist = {
 			...{entidad, entidad_id: id}, // entidad
-			...{statusOriginalPor_id: original.statusSugeridoPor_id, statusFinalPor_id: userID}, // personas
+			...{statusOriginalPor_id: original.statusSugeridoPor_id, statusFinalPor_id: userId}, // personas
 			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id}, // status
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			comentario,
@@ -116,10 +116,8 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const original =
-			entidad == "colecciones"
-				? await baseDeDatos.obtienePorId("colecciones", id, "capitulos")
-				: await baseDeDatos.obtienePorId(entidad, id);
+		const include = entidad == "colecciones" ? "capitulos" : "";
+		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
 

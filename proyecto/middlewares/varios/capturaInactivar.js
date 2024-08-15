@@ -1,30 +1,17 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
+	if (!req.session.usuario) next();
+
 	// Variables - Generales
-	const entidad = req.query.entidad
-		? req.query.entidad
-		: req.originalUrl.startsWith("/revision/usuarios")
-		? "usuarios"
-		: "";
+	const capturadoPor_id = req.session.usuario.id;
+	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const id = req.query.id;
-	if (req.session.usuario) {
 
-		// Obtiene el registro de la entidad
-		let registro = await baseDeDatos.obtienePorId(entidad, id);
+	// Inactiva el registro
+	const condicion = {entidad, entidad_id: id, capturadoPor_id};
+	await baseDeDatos.actualizaTodosPorCondicion("capturas", condicion, {activa: false});
 
-		// Verificar que tenga una captura activa del usuario
-		if (
-			registro &&
-			registro.capturadoEn &&
-			registro.capturadoPor_id &&
-			registro.capturadoPor_id == req.session.usuario.id &&
-			registro.capturaActiva
-		) {
-			// En caso afirmativo, inactivar la captura
-			await baseDeDatos.actualizaPorId(entidad, id, {capturaActiva: false});
-		}
-	}
 	// Fin
 	next();
 };

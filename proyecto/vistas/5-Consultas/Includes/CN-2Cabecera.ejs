@@ -12,7 +12,7 @@
 			<% } %>
 		</optgroup>
 		<!-- Configuraciones predeterminadas -->
-		<% if (userID != 1) { %>
+		<% if (userId != 1) { %>
 			<optgroup label="Provistas por Nuestro Sitio">
 				<% for (let configDeCabecera of configsCons.cabeceras.predeterms) { %>
 					<option value="<%= configDeCabecera.id %>"><%= configDeCabecera.nombre %></option>

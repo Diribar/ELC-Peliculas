@@ -73,7 +73,6 @@ module.exports = (sequelize, dt) => {
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
-		capturaActiva: {type: dt.BOOLEAN},
 
 		statusColeccion_id: {type: dt.INTEGER},
 		statusRegistro_id: {type: dt.INTEGER},

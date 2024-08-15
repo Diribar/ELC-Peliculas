@@ -16,7 +16,7 @@ module.exports = {
 			// Fin
 			return respuesta;
 		},
-		obtieneProds1: async (revID) => {
+		obtieneProds1: async (revId) => {
 			// Variables
 			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
 			let productos = [];
@@ -52,7 +52,7 @@ module.exports = {
 				productos = productos.filter(
 					(n) =>
 						n.statusRegistro_id != creado_id || // status distinto a 'creado'
-						n.creadoPor_id == revID || // creado por el revisor
+						n.creadoPor_id == revId || // creado por el revisor
 						n.creadoEn < comp.fechaHora.nuevoHorario(-1) // hace más de una hora
 				);
 
@@ -60,7 +60,7 @@ module.exports = {
 				productos = comp.eliminaRepetidos(productos);
 
 				// Elimina los productos con problemas de captura
-				productos = comp.sinProblemasDeCaptura(productos, revID);
+				productos = await comp.sinProblemasDeCaptura(productos, revId);
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => b.fechaRef - a.fechaRef);
@@ -77,27 +77,21 @@ module.exports = {
 			// Fin
 			return {AL_conEdicion, ED};
 		},
-		obtieneProds2: async (revID) => {
+		obtieneProds2: async (revId) => {
 			// Variables
-			const entidades = [...variables.entidades.prods];
+			const entidades = variables.entidades.prods;
+			const camposFijos = {entidades, revId, include: "ediciones"};
 			let campos;
 
 			// AL: En staus 'creado'
-			campos = {
-				entidades,
-				status_id: creado_id,
-				campoFecha: "creadoEn",
-				campoRevID: "creadoPor_id",
-				revID,
-				include: "ediciones",
-			};
+			campos = {...camposFijos, status_id: creado_id};
 			let AL_sinEdicion = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || aprobados_ids.includes(m.statusColeccion_id))) // Deja solamente las películas y colecciones, y capítulos con su colección aprobada
 				.then((n) => n.filter((m) => !m.ediciones.length)); // Deja solamente los sin edición
 
 			// SE: Sin Edición (en status creadoAprob)
-			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
+			campos = {...camposFijos, status_id: creadoAprob_id};
 			let SE = comp
 				.obtieneRegs(campos)
 				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id)) // Deja solamente las películas, colecciones, y los capítulos con colección aprobada
@@ -145,30 +139,30 @@ module.exports = {
 			// Fin
 			return {RP: repetidos};
 		},
-		obtieneSigProd_Links: async (revID) => FN_links.obtieneSigProd({revID}),
-		obtieneRCLVs1: async (revID) => {
+		obtieneSigProd_Links: async (revId) => FN_links.obtieneSigProd({revId}),
+		obtieneRCLVs1: async (revId) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
-			const include = [...variables.entidades.prods, "prodsEdiciones"];
+			const camposFijos = {entidades, revId};
 			let campos;
 
 			// AL: Altas
-			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
+			campos = {...camposFijos, status_id: creado_id, include: [...variables.entidades.prods, "prodsEdiciones"]};
 			let AL = comp.obtieneRegs(campos);
 
 			// SL: Con solapamiento
-			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			campos = {...camposFijos, status_id: aprobado_id, include: "ediciones"};
 			let SL = comp.obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// FM: Con fecha móvil
-			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			campos = {...camposFijos, status_id: aprobado_id, include: "ediciones"};
 			let FM = comp
 				.obtieneRegs(campos)
 				.then((originales) => originales.filter((original) => original.fechaMovil)) // con fecha móvil
 				.then((originales) =>
 					originales.map((original) => {
 						// Obtiene la edición del usuario
-						let edicion = original.ediciones.find((n) => n.editadoPor_id == revID);
+						let edicion = original.ediciones.find((n) => n.editadoPor_id == revId);
 						delete original.ediciones;
 
 						// Actualiza el original con la edición
@@ -210,15 +204,15 @@ module.exports = {
 			// Fin
 			return {AL, SL, FM};
 		},
-		obtieneRCLVs2: async function (revID) {
-			// 1. Variables
+		obtieneRCLVs2: async (revId) => {
+			// Variables
 			let include = variables.entidades.asocRclvs;
 			let rclvs = [];
 
-			// 2. Obtiene todas las ediciones ajenas
+			// Obtiene todas las ediciones ajenas
 			let ediciones = await baseDeDatos.obtieneTodos("rclvsEdicion", include);
 
-			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
+			// Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
@@ -237,41 +231,42 @@ module.exports = {
 				rclvs = rclvs.filter((n) => n.statusRegistro_id == aprobado_id);
 			}
 
-			// 4. Elimina los repetidos
+			// Elimina los repetidos
 			if (rclvs.length) {
 				rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 				rclvs = comp.eliminaRepetidos(rclvs);
 			}
 
-			// 5. Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = comp.sinProblemasDeCaptura(rclvs, revID);
+			// Deja solamente los sin problemas de captura
+			if (rclvs.length) rclvs = await comp.sinProblemasDeCaptura(rclvs, revId);
 
 			// Fin
 			return {ED: rclvs};
 		},
 	},
 	tablManten: {
-		obtieneProds: async (userID) => {
+		obtieneProds: async (userId) => {
 			// Variables
 			const petitFamilias = "prods";
-			let condicion = {petitFamilias, userID};
+			const condicionFija = {petitFamilias, userId};
+			let condicion;
 
 			// Productos Inactivos
-			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let inactivos = tablManten.obtienePorEntidad(condicion);
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			let inactivos = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Aprobados
-			condicion = {...condicion, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let prodsAprob = tablManten.obtienePorEntidad(condicion);
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			let prodsAprob = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Productos Sin Edición (en status creadoAprob)
-			let SE_pel = tablManten.obtieneSinEdicion("peliculas");
-			let SE_col = tablManten.obtieneSinEdicion("colecciones");
-			let SE_cap = tablManten.obtieneSinEdicion("capitulos");
+			let SE_pel = FN_tablManten.obtieneSinEdicion("peliculas");
+			let SE_col = FN_tablManten.obtieneSinEdicion("colecciones");
+			let SE_cap = FN_tablManten.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
-			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userID});
-			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID, ppp_id: pppOpcsObj.yaLaVi.id});
+			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userId});
+			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userId, ppp_id: pppOpcsObj.yaLaVi.id});
 
 			// Espera las lecturas
 			[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -312,19 +307,19 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRCLVs: async (userID) => {
+		obtieneRCLVs: async (userId) => {
 			// Variables
-			const objetoFijo = {petitFamilias: "rclvs", userID};
+			const condicionFija = {petitFamilias: "rclvs", userId};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
 			let condicion;
 
 			// Inactivos
-			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let IN = tablManten.obtienePorEntidad(condicion);
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
+			let IN = FN_tablManten.obtienePorEntidad(condicion);
 
 			// Aprobados
-			condicion = {...objetoFijo, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let rclvsAprob = tablManten.obtienePorEntidad({...condicion, include});
+			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
+			let rclvsAprob = FN_tablManten.obtienePorEntidad({...condicion, include});
 
 			// Await
 			[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
@@ -343,7 +338,7 @@ module.exports = {
 			// Fin
 			return {IN, SA, SF, SP};
 		},
-		obtieneLinksInactivos: async (userID) => {
+		obtieneLinksInactivos: async (userId) => {
 			// Variables
 			let include = variables.entidades.asocProds;
 			let condicion = {statusRegistro_id: inactivo_id};
@@ -352,7 +347,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? tablManten.obtieneProdsDeLinks(linksInactivos, userID) : {LI: []};
+			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, userId) : {LI: []};
 
 			// Fin
 			return productos;
@@ -362,9 +357,9 @@ module.exports = {
 	// Alta
 	rclv: {
 		// Alta Guardar
-		edicAprobRech: async function (entidad, original, revID) {
+		edicAprobRech: async function (entidad, original, revId) {
 			// Variables
-			const userID = original.creadoPor_id;
+			const userId = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 			const ahora = comp.fechaHora.ahora();
@@ -377,7 +372,7 @@ module.exports = {
 				entidad_id: original.id,
 				sugeridoPor_id: original.creadoPor_id,
 				sugeridoEn: original.creadoEn,
-				revisadoPor_id: revID,
+				revisadoPor_id: revId,
 				revisadoEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
 			};
@@ -427,7 +422,7 @@ module.exports = {
 					: ediciones.edicsAprob < ediciones.edicsRech
 					? "edicsRech"
 					: "";
-			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
+			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, campoEdic, 1);
 
 			// Fin
 			return;
@@ -480,19 +475,19 @@ module.exports = {
 				(prodEntidad ? "&prodEntidad=" + prodEntidad : "") +
 				(prodId ? "&prodId=" + prodId : "") +
 				(origen ? "&origen=" + origen : "");
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const {baseUrl} = comp.reqBasePathUrl(req);
-			const userID = original.statusSugeridoPor_id;
+			const userId = original.statusSugeridoPor_id;
 			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revID, ahora, revisorPERL, petitFamilias, baseUrl, userID, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userId, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
@@ -647,7 +642,7 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revID, campo, aprob, motivo_id}) {
+		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revId, campo, aprob, motivo_id}) {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -663,7 +658,7 @@ module.exports = {
 			let datos = {
 				editadoPor_id: edicion.editadoPor_id,
 				editadoEn: edicion.editadoEn,
-				edicRevisadaPor_id: revID,
+				edicRevisadaPor_id: revId,
 				edicRevisadaEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
@@ -692,7 +687,7 @@ module.exports = {
 					...datosEdic,
 					sugeridoPor_id: edicion.editadoPor_id,
 					sugeridoEn: edicion.editadoEn,
-					revisadoPor_id: revID,
+					revisadoPor_id: revId,
 					revisadoEn: ahora,
 				};
 				// Agrega el motivo del rechazo
@@ -788,7 +783,7 @@ module.exports = {
 		variables: ({link, req}) => {
 			const {IN, aprob, motivo_id} = req.query;
 			const id = link.id;
-			const revID = req.session.usuario.id;
+			const revId = req.session.usuario.id;
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
@@ -804,18 +799,18 @@ module.exports = {
 
 			// Arma los datos
 			let datosLink = {
-				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revID, statusSugeridoEn: ahora, statusRegistro_id},
+				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revId, statusSugeridoEn: ahora, statusRegistro_id},
 				motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : link.motivo_id) : null,
 			};
 			if (statusCreado) {
-				datosLink.altaRevisadaPor_id = revID;
+				datosLink.altaRevisadaPor_id = revId;
 				datosLink.altaRevisadaEn = ahora;
 				datosLink.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
 			}
 
 			// Fin
 			let respuesta = {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision};
-			respuesta = {...respuesta, motivo_id, revID, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
+			respuesta = {...respuesta, motivo_id, revId, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
 			return respuesta;
 		},
 	},
@@ -925,7 +920,7 @@ let FN_links = {
 		// Ediciones
 		if (edicsPend) {
 			const ediciones = await this.obtieneLinks.ediciones();
-			respuesta = this.obtieneProdLink({links: ediciones, datos});
+			respuesta = await this.obtieneProdLink({links: ediciones, datos});
 			if (respuesta) return respuesta;
 		}
 
@@ -935,22 +930,22 @@ let FN_links = {
 
 		// Altas
 		const creados = links.filter((n) => n.statusRegistro_id == creado_id);
-		respuesta = this.obtieneProdLink({links: creados, datos});
+		respuesta = await this.obtieneProdLink({links: creados, datos});
 		if (respuesta) return respuesta;
 
 		// Estándar - Capítulos
 		const capitulos = links.filter((n) => n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
-		respuesta = this.obtieneProdLink({links: capitulos, datos});
+		respuesta = await this.obtieneProdLink({links: capitulos, datos});
 		if (respuesta) return respuesta;
 
 		// Estándar - Películas y Colecciones
 		const pelisColes = links.filter((n) => !n.capitulo_id && comp.linksVencPorSem.condicEstandar(n));
-		respuesta = this.obtieneProdLink({links: pelisColes, datos});
+		respuesta = await this.obtieneProdLink({links: pelisColes, datos});
 		if (respuesta) return respuesta;
 
 		// Estreno reciente
 		const estrRec = links.filter((n) => comp.linksVencPorSem.condicEstrRec(n));
-		respuesta = this.obtieneProdLink({links: estrRec, datos});
+		respuesta = await this.obtieneProdLink({links: estrRec, datos});
 		if (respuesta) return respuesta;
 
 		// Fin
@@ -982,16 +977,16 @@ let FN_links = {
 			return originales;
 		},
 	},
-	obtieneProdLink: function ({links, datos}) {
+	obtieneProdLink: async function ({links, datos}) {
 		if (!links.length) return;
 
 		// Variables
-		const {entidad, id, revID} = datos;
+		const {entidad, id, revId} = datos;
 		let productos;
 
 		// Obtiene los productos
 		productos = this.obtieneProds(links);
-		productos = this.puleLosResultados({productos, revID});
+		productos = await this.puleLosResultados({productos, revId});
 
 		// Devuelve un producto o link
 		if (productos.length) {
@@ -1023,9 +1018,9 @@ let FN_links = {
 		// Fin
 		return productos;
 	},
-	puleLosResultados: ({productos, revID}) => {
+	puleLosResultados: async ({productos, revId}) => {
 		// Deja solamente los registros sin problemas de captura
-		if (productos.length) productos = comp.sinProblemasDeCaptura(productos, revID);
+		if (productos.length) productos = await comp.sinProblemasDeCaptura(productos, revId);
 
 		// Acciones si hay más de un producto
 		if (productos.length > 1) {
@@ -1076,8 +1071,8 @@ let FN_links = {
 		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
-let tablManten = {
-	obtieneProdsDeLinks: (links, userID) => {
+let FN_tablManten = {
+	obtieneProdsDeLinks: async (links, userId) => {
 		// Variables
 		let LI = [];
 
@@ -1105,32 +1100,27 @@ let tablManten = {
 		if (LI.length) LI = LI.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 		// Deja solamente los prods sin problemas de captura
-		if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
+		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, userId);
 
 		// Fin
 		return {LI};
 	},
-	obtienePorEntidad: async function ({...condicion}) {
+	obtienePorEntidad: async function (condicion) {
 		// Variables
 		const {petitFamilias} = condicion;
 		const entidades = variables.entidades[petitFamilias];
 		condicion.include ? condicion.include.push("ediciones") : (condicion.include = ["ediciones"]);
-		let resultados1 = [];
-		let resultados2 = [];
+		let resultados = [];
 
-		// Rutina
-		for (let entidad of entidades) resultados1.push(this.obtieneRegs({entidad, ...condicion}));
+		// Obtiene todos los resultados
+		for (let entidad of entidades) resultados.push(this.obtieneRegsMT({entidad, ...condicion}));
 
-		// Espera hasta tener todos los resultados
-		await Promise.all(resultados1).then((n) => n.map((m) => resultados2.push(...m)));
-
-		// Ordena
-		resultados2.sort((a, b) => b.fechaRef - a.fechaRef);
-
-		// Fin
-		return resultados2;
+		// Consolida los resultados y los ordena
+		return await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) => n.sort((a, b) => b.fechaRef - a.fechaRef));
 	},
-	obtieneRegs: async ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
+	obtieneRegsMT: async ({petitFamilias, userId, campoFecha, status_id, include, entidad}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
@@ -1149,11 +1139,11 @@ let tablManten = {
 				// Que esté capturado hace más de dos horas
 				{capturadoEn: {[Op.lt]: haceDosHoras}},
 				// Que la captura haya sido por otro usuario y hace más de una hora
-				{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
+				{capturadoPor_id: {[Op.ne]: userId}, capturadoEn: {[Op.lt]: haceUnaHora}},
 				// Que la captura haya sido por otro usuario y esté inactiva
-				{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
+				{capturadoPor_id: {[Op.ne]: userId}, capturaActiva: {[Op.ne]: 1}},
 				// Que esté capturado por este usuario hace menos de una hora
-				{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
+				{capturadoPor_id: userId, capturadoEn: {[Op.gt]: haceUnaHora}},
 			],
 			// Si es un rclv, que su id > 10
 			id: {[Op.gt]: idMin},
@@ -1169,7 +1159,7 @@ let tablManten = {
 					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
 
 					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userID);
+					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
 					delete m.ediciones;
 
 					// Actualiza el original con la edición

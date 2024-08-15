@@ -1,4 +1,4 @@
-<% let edicPropia=edicion.editadoPor_id==userID %> 
+<% let edicPropia=edicion.editadoPor_id==userId %>
 <tr class="edicion revisar inactivo_false fila<%= fila %> oscuro_<%= edicPropia %>">
 	<!-- Url -->
 	<td class="ancho_url url campo"></td>
@@ -7,7 +7,7 @@
 		<td class="<%= campo %>">
 			<% if (edicion[campo]!==null) { %>
 				<div class="inputError ancho_<%= campo %>">
-					<% let valor = campo == "tipo_id" ? (edicion[campo] == 1 ? "Trailer" : "Película") : ["castellano", "subtitulos", "gratuito", "completo"].includes(campo) ? (edicion[campo] ? "SI" : "NO") : edicion[campo] %> 
+					<% let valor = campo == "tipo_id" ? (edicion[campo] == 1 ? "Trailer" : "Película") : ["castellano", "subtitulos", "gratuito", "completo"].includes(campo) ? (edicion[campo] ? "SI" : "NO") : edicion[campo] %>
 					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
 					<div class="errores">
@@ -21,4 +21,4 @@
 			<% } %>
 		</td>
 	<% } %>
-</tr>	
+</tr>

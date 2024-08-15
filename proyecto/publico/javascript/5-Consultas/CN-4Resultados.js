@@ -16,14 +16,14 @@ let resultados = {
 		v.resultados = null;
 
 		// Acciones si el usuario no está logueado y es requerido
-		if (!v.userID && v.layoutBD.grupo == "loginNeces") {
+		if (!v.userId && v.layoutBD.grupo == "loginNeces") {
 			DOM.loginNecesario.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
 		}
 
 		// Si la opción es 'misPrefs' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
-		if (v.userID && v.layoutBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
+		if (v.userId && v.layoutBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
 			DOM.cartelOrdenPPP.classList.remove("ocultar");
 			DOM.esperandoResultados.classList.add("ocultar");
 			return;
@@ -104,16 +104,16 @@ let resultados = {
 
 			// Carteles periódicos, con una frecuencia dada
 			v.contadorDeMostrarResults++;
-			if (v.userID && !v.videoConsVisto && v.contadorDeMostrarResults == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
+			if (v.userId && !v.videoConsVisto && v.contadorDeMostrarResults == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
 			if (!(v.contadorDeMostrarResults % 5)) {
-				if (v.userID) {
+				if (v.userId) {
 					// Si el usuario no vio el video, muestra un cartel
 					if (!v.videoConsVisto) DOM.cartelVerVideo.classList.remove("ocultar");
 					// Si el usuario no tiene 'PPPs', muestra un cartel
 					else if (!v.usuarioTienePPP) DOM.cartelUsSinPPP.classList.remove("ocultar");
 				}
 				// Si el usuario no está logueado, muestra un cartel
-				else if (!v.userID) DOM.cartelLoginPend.classList.remove("ocultar");
+				else if (!v.userId) DOM.cartelLoginPend.classList.remove("ocultar");
 			}
 
 			// Fin
@@ -533,7 +533,7 @@ let auxiliares = {
 		}
 
 		// Crea la celda del ppp y se la agrega a la fila
-		if (v.userID) {
+		if (v.userId) {
 			celda = creaUnaCelda.ppp(producto);
 			fila.appendChild(celda);
 		}
@@ -656,7 +656,7 @@ let creaUnaCelda = {
 		const celda = document.createElement("td");
 
 		// Acciones si el usuario está logueado
-		if (v.userID) {
+		if (v.userId) {
 			// Crea el ppp
 			const ppp = document.createElement("i");
 			ppp.id = "ppp";

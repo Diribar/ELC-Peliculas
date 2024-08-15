@@ -187,7 +187,7 @@ module.exports = {
 			return datos;
 		},
 	},
-	prodsIMFA: async ({palabrasClave, userID}) => {
+	prodsIMFA: async ({palabrasClave, userId}) => {
 		// Variables
 		const entidades = ["peliculas", "colecciones"];
 		const campos = ["nombreCastellano", "nombreOriginal"];
@@ -199,15 +199,15 @@ module.exports = {
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			let condicion = procsFM.quickSearch.condicion(palabrasClave, campos, userID);
+			let condicion = procsFM.quickSearch.condicion(palabrasClave, campos, userId);
 
 			// Agrega la condición de que no provenga de 'TMDB'
 			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
 			// Obtiene los registros que cumplen las condiciones
-			const resultadoPorEntidad = await procsFM.quickSearch.registros(condicion, datos);
-			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
+			resultados.push(procsFM.quickSearch.registros(condicion, datos));
 		}
+		resultados = await Promise.all(resultados).then((n) => n.flat());
 
 		// Rutina por producto
 		if (resultados.length)

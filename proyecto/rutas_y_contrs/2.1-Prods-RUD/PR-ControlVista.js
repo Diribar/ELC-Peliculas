@@ -14,13 +14,13 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "PDT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
-		const userID = usuario ? usuario.id : "";
+		const userId = usuario ? usuario.id : "";
 		const autTablEnts = usuario ? usuario.rolUsuario.autTablEnts : false;
 		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene el producto 'Original' y 'Editado'
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId});
 		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
 
 		// Configura el título de la vista
@@ -52,10 +52,10 @@ module.exports = {
 
 		// Lecturas de BD
 		if (entidad == "capitulos") prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		let links = procesos.obtieneLinksDelProducto({entidad, id, userID, autTablEnts, origen});
-		let interesDelUsuario = userID ? procesos.obtieneInteresDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
-		let yaCalificada = userID
-			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: userID, entidad, entidad_id: id}).then((n) => !!n)
+		let links = procesos.obtieneLinksDelProducto({entidad, id, userId, autTablEnts, origen});
+		let interesDelUsuario = userId ? procesos.obtieneInteresDelUsuario({usuario_id: userId, entidad, entidad_id: id}) : "";
+		let yaCalificada = userId
+			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: userId, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
 		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
@@ -91,7 +91,7 @@ module.exports = {
 			const tema = "prodRud";
 			const codigo = "edicion";
 			const {entidad, id} = req.query;
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 
 			// Procesa la session y cookie
 			const session = req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id;
@@ -99,7 +99,7 @@ module.exports = {
 			const edicSession = session ? req.session.edicProd : cookie ? req.cookies.edicProd : "";
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId});
 			const prodComb = {...original, ...edicion, ...edicSession, id};
 			if (entidad == "capitulos")
 				prodComb.capitulos = await procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada); //
@@ -111,7 +111,7 @@ module.exports = {
 			const imgDerPers = procsFM.obtieneAvatar(original, {...edicion, ...edicSession});
 
 			// Datos Adicionales
-			const camposDA = await variables.camposDA_conValores(userID);
+			const camposDA = await variables.camposDA_conValores(userId);
 			const gruposPers = procsFM.grupos.pers(camposDA);
 			const gruposHechos = procsFM.grupos.hechos(camposDA);
 
@@ -144,7 +144,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen} = req.query;
 			const usuario = req.session.usuario;
-			const userID = usuario.id;
+			const userId = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
 			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
@@ -165,7 +165,7 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID, excluirInclude: true});
+			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId, excluirInclude: true});
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -206,7 +206,7 @@ module.exports = {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
 					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
-					edicion = await procsFM.guardaActEdic({entidad, original, edicion, userID});
+					edicion = await procsFM.guardaActEdic({entidad, original, edicion, userId});
 				}
 
 				// Acciones sobre el archivo avatar, si recibimos uno
@@ -252,11 +252,11 @@ module.exports = {
 			const codigo = "calificar";
 			const {entidad, id} = req.query;
 			const origen = req.query.origen ? req.query.origen : "";
-			const userID = req.session.usuario ? req.session.usuario.id : "";
+			const userId = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 			// Obtiene la versión más completa posible del producto
-			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userID});
+			const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, userId});
 			let prodComb = {...original, ...edicion, id};
 
 			// Info para el bloque Derecho
@@ -264,7 +264,7 @@ module.exports = {
 			const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 			// Más variables
-			const condicion = {usuario_id: userID, entidad, entidad_id: id};
+			const condicion = {usuario_id: userId, entidad, entidad_id: id};
 			const interesDelUsuario = await procesos.obtieneInteresDelUsuario(condicion);
 
 			// Ayuda para el título
@@ -301,7 +301,7 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
-			const userID = req.session.usuario.id;
+			const userId = req.session.usuario.id;
 			let condicion;
 
 			// Verifica errores
@@ -309,7 +309,7 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Obtiene el resultado
-			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
+			const valores = {usuario_id: userId, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
 			let resultado = 0;
 			for (let criterio of calCriterios) {
 				const campo_id = criterio.atributo_id;
@@ -323,7 +323,7 @@ module.exports = {
 			valores.resultado = Math.round(resultado);
 
 			// Averigua si existe la calificacion
-			condicion = {usuario_id: userID, entidad, entidad_id};
+			condicion = {usuario_id: userId, entidad, entidad_id};
 			const existe = await baseDeDatos.obtienePorCondicion("calRegistros", condicion);
 			existe
 				? await baseDeDatos.actualizaPorId("calRegistros", existe.id, valores)
@@ -333,9 +333,9 @@ module.exports = {
 			await procesos.actualizaCalifProd({entidad, entidad_id});
 
 			// Actualiza la ppp
-			condicion = {usuario_id: userID, entidad, entidad_id};
+			condicion = {usuario_id: userId, entidad, entidad_id};
 			const interesDelUsuario = await baseDeDatos.obtienePorCondicion("pppRegistros", condicion);
-			const novedades = {usuario_id: userID, entidad, entidad_id, ppp_id: pppOpcsObj.yaLaVi.id};
+			const novedades = {usuario_id: userId, entidad, entidad_id, ppp_id: pppOpcsObj.yaLaVi.id};
 			interesDelUsuario
 				? await baseDeDatos.actualizaPorId("pppRegistros", interesDelUsuario.id, novedades)
 				: await baseDeDatos.agregaRegistro("pppRegistros", novedades);

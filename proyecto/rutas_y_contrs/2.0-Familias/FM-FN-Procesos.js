@@ -4,7 +4,7 @@ const validacsFM = require("./FM-FN-Validar");
 module.exports = {
 	// Header
 	quickSearch: {
-		condicion: (palabras, campos, userID, original) => {
+		condicion: (palabras, campos, userId, original) => {
 			// Variables
 			let todasLasPalabrasEnAlgunCampo = [];
 
@@ -41,12 +41,12 @@ module.exports = {
 			const condicStatus = {
 				[Op.or]: [
 					{statusRegistro_id: aprobados_ids},
-					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userId}]},
 				],
 			};
 
 			// Se fija que una edición sea del usuario
-			const condicEdicion = {editadoPor_id: userID};
+			const condicEdicion = {editadoPor_id: userId};
 
 			// Fin
 			return {[Op.and]: [condicPalabras, original ? condicStatus : condicEdicion]};
@@ -103,7 +103,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
-		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
+		const userId = req.session && req.session.usuario ? req.session.usuario.id : null;
 		let comentario;
 
 		// Obtiene el tema y código
@@ -122,7 +122,7 @@ module.exports = {
 		// Cantidad de productos asociados al RCLV
 		let cantProds, canonNombre, RCLVnombre, prodsDelRCLV;
 		if (familia == "rclv") {
-			prodsDelRCLV = await this.prodsDelRCLV(original, userID);
+			prodsDelRCLV = await this.prodsDelRCLV(original, userId);
 			cantProds = prodsDelRCLV.length;
 			canonNombre = comp.canonNombre(original);
 			RCLVnombre = original.nombre;
@@ -187,7 +187,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const {ruta} = comp.reqBasePathUrl(req);
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
-		const userID = req.session.usuario.id;
+		const userId = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
@@ -196,7 +196,7 @@ module.exports = {
 		comentario = await this.comentario({entidad, id, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, userID, ahora, campo_id, original, statusFinal_id, comentario};
+		return {entidad, id, familia, motivo_id, codigo, userId, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	comentario: async function (datos) {
 		// Stopper
@@ -231,11 +231,11 @@ module.exports = {
 		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 		return comentario;
 	},
-	obtieneOriginalEdicion: async ({entidad, entId, userID, excluirInclude, omitirPulirEdic}) => {
+	obtieneOriginalEdicion: async ({entidad, entId, userId, excluirInclude, omitirPulirEdic}) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const condEdic = {[campo_id]: entId, editadoPor_id: userID};
+		const condEdic = {[campo_id]: entId, editadoPor_id: userId};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const includesEdic = !excluirInclude ? comp.obtieneTodosLosCamposInclude(entidad) : null;
 
@@ -250,7 +250,7 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = baseDeDatos.obtienePorId(entidad, entId, includesOrig);
-		let edicion = userID ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
+		let edicion = userId ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
@@ -268,9 +268,9 @@ module.exports = {
 			original.capitulos = original.capitulos.filter((n) => activos_ids.includes(n.statusRegistro_id));
 
 		// Acciones si es un capítulo
-		if (entidad == "capitulos" && userID) {
+		if (entidad == "capitulos" && userId) {
 			// Variables
-			const condColec = {coleccion_id: original.coleccion_id, editadoPor_id: userID};
+			const condColec = {coleccion_id: original.coleccion_id, editadoPor_id: userId};
 			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condColec);
 			if (!edicColec) return [original, edicion];
 
@@ -295,7 +295,7 @@ module.exports = {
 		// Fin
 		return [original, edicion];
 	},
-	guardaActEdic: async ({entidad, original, edicion, userID}) => {
+	guardaActEdic: async ({entidad, original, edicion, userId}) => {
 		// Variables
 		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 
@@ -311,7 +311,7 @@ module.exports = {
 				// campo_id, editadoPor_id
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				edicion[campo_id] = original.id;
-				edicion.editadoPor_id = userID;
+				edicion.editadoPor_id = userId;
 
 				// producto_id
 				if (entidad == "links") {
@@ -530,15 +530,20 @@ module.exports = {
 		// Fin
 		return {statusAlineado, prodRclv, ultHist};
 	},
-	prodsDelRCLV: async function (RCLV, userID) {
+	prodsDelRCLV: async function (RCLV, userId) {
 		// Variables
-		const pppRegs = userID ? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userID}, "detalle") : [];
+		let prodsDelRCLV = [];
+		const pppRegs = userId
+			? await baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userId}, "detalle") // si existe usuario
+			: [];
+
+		// Crea un array para cada asociación de producto del RCLV
 		for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 		// Convierte en productos, a las ediciones propias de productos, con 'campo_id' vinculado al RCLV,
-		if (userID && RCLV.prodsEdiciones) {
+		if (userId && RCLV.prodsEdiciones) {
 			// Obtiene las ediciones propias
-			const edicionesPropias = RCLV.prodsEdiciones.filter((n) => n.editadoPor_id == userID);
+			const edicionesPropias = RCLV.prodsEdiciones.filter((n) => n.editadoPor_id == userId);
 
 			// Obtiene los productos de las ediciones propias
 			if (edicionesPropias.length)
@@ -549,7 +554,7 @@ module.exports = {
 					let entId = edicion[campo_id];
 
 					// Obtiene los registros del producto original y su edición por el usuario
-					let [prodOrig, prodEdic] = await this.obtieneOriginalEdicion({entidad: entProd, entId, userID});
+					let [prodOrig, prodEdic] = await this.obtieneOriginalEdicion({entidad: entProd, entId, userId});
 
 					// Actualiza la variable del registro original
 					let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
@@ -560,31 +565,27 @@ module.exports = {
 		}
 
 		// Completa la información de cada tipo de producto y une los productos en una sola array
-		let prodsDelRCLV = [];
 		for (let entidad of variables.entidades.prods) {
-			// Completa la información de cada producto dentro del tipo de producto
-			const prodsPorEnt = RCLV[entidad].map((registro) => {
+			// Completa la información de cada producto
+			for (let producto of RCLV[entidad]) {
 				// Causas para descartar el registro
-				if (inactivos_ids.includes(registro.statusRegistro_id)) return null; // status inactivar o inactivo
-				if (registro.statusRegistro_id == creado_id && registro.creadoPor_id != userID) return null; // status creado
-				if (registro.statusRegistro_id == recuperar_id && registro.statusSugeridoPor_id != userID) return null; // status recuperar
+				if (
+					inactivos_ids.includes(producto.statusRegistro_id) || // status inactivar o inactivo
+					(producto.statusRegistro_id == creado_id && producto.creadoPor_id != userId) || // status creado
+					(producto.statusRegistro_id == recuperar_id && producto.statusSugeridoPor_id != userId) // status recuperar
+				)
+					continue;
 
 				// Variables
-				const avatar = this.obtieneAvatar(registro).edic;
+				const avatar = this.obtieneAvatar(producto).edic;
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-				const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == registro.id);
+				const pppReg = pppRegs.find((n) => n.entidad == entidad && n.entidad_id == producto.id);
 				const ppp = pppReg ? pppReg.detalle : pppOpcsObj.sinPref;
 
 				// Agrega la entidad, el avatar, y el nombre de la entidad
-				return {...registro, entidad, avatar, entidadNombre, ppp};
-			});
-
-			// Consolida la información
-			prodsDelRCLV.push(...prodsPorEnt);
+				prodsDelRCLV.push({...producto, entidad, avatar, entidadNombre, ppp});
+			}
 		}
-
-		// Descarta los productos eliminados
-		prodsDelRCLV = prodsDelRCLV.filter((n) => !!n);
 
 		// Separa entre capitulos y resto
 		let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
@@ -900,19 +901,17 @@ module.exports = {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
-			let prodsPorEnts = [];
 			let prods = [];
 			let espera = [];
 
 			// Obtiene los productos vinculados al RCLV, en cada entidad
 			for (let entidad of entidades)
-				prodsPorEnts.push(
+				prods.push(
 					baseDeDatos
 						.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID})
 						.then((n) => n.map((m) => ({...m, [campo_id]: 1})))
 				);
-			prodsPorEnts = await Promise.all(prodsPorEnts);
-			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
+			prods = await Promise.all(prods).then((n) => n.flat());
 
 			// Averigua si existían productos vinculados al RCLV
 			if (prods.length) {
@@ -1005,11 +1004,11 @@ module.exports = {
 			// Fin
 			return bloque;
 		},
-		usuario: async (userID, entidad) => {
+		usuario: async (userId, entidad) => {
 			// Variables
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const ahora = comp.fechaHora.ahora();
-			const usuario = await baseDeDatos.obtienePorId("usuarios", userID);
+			const usuario = await baseDeDatos.obtienePorId("usuarios", userId);
 			let bloque = [];
 
 			// Nombre

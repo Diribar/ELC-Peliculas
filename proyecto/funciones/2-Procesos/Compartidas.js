@@ -452,28 +452,60 @@ module.exports = {
 	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	sinProblemasDeCaptura: function (familia, revID) {
+	obtieneRegs: async function (campos) {
 		// Variables
-		const ahora = this.fechaHora.ahora();
-		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
-		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
+		let registros;
+
+		// Obtiene los registros
+		registros = await FN.obtieneRegs(campos);
+
+		// Quita los comprometidos por capturas
+		registros = await this.sinProblemasDeCaptura(registros, campos.revId);
 
 		// Fin
-		return familia.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturadoEn ||
-				// Que esté capturado hace más de dos horas
-				n.capturadoEn < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturadoPor_id != revID && n.capturadoEn < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturadoPor_id != revID && !n.capturaActiva) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
-		);
+		return registros;
 	},
-	obtieneRegs: async (campos) => FN.obtieneRegs(campos),
+	sinProblemasDeCaptura: async (registros, revId) => {
+		// Variables
+		const ahora = FN.ahora();
+		const haceUnaHora = FN.nuevoHorario(-1, ahora);
+		const haceDosHoras = FN.nuevoHorario(-2, ahora);
+
+		// Obtiene las capturas ordenadas por fecha decreciente
+		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
+
+		// Fin
+		return registros.filter((prodRclv) => {
+			// Sin captura vigente
+			const capturaProdRclv = capturas.filter((m) => m.entidad == prodRclv.entidad && m.entidad_id == prodRclv.id);
+			if (
+				!capturaProdRclv.length || // no está capturado
+				capturaProdRclv[0].capturadoEn < haceDosHoras // la captura más reciente fue hace más de dos horas
+			)
+				return true;
+
+			// Con captura activa
+			const activa = capturaProdRclv.find((m) => m.activa);
+			if (
+				activa && // existe una captura activa
+				((activa.capturadoPor_id == revId && activa.capturadoEn > haceUnaHora) || // fue hecha por este usuario, hace menos de una hora
+					(activa.capturadoPor_id != revId && activa.capturadoEn < haceUnaHora)) // fue hecha por otro usuario, hace más de una hora
+			)
+				return true;
+
+			// Sin captura activa
+			const esteUsuario = capturaProdRclv.find((m) => m.capturadoPor_id == revId);
+			if (
+				!activa && // sin captura activa
+				(!esteUsuario || // sin captura por este usuario
+					esteUsuario.capturadoEn > haceUnaHora) // con captura de este usuario hace menos de una hora
+			)
+				return true;
+
+			// Fin
+			return false;
+		});
+	},
 	revisaStatus: {
 		consolidado: async function () {
 			// Variables
@@ -910,13 +942,13 @@ module.exports = {
 	},
 
 	// Usuarios
-	penalizacAcum: (userID, motivo, petitFamilias) => {
+	penalizacAcum: (userId, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", penalizac);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (penalizac > 1 && petitFamilias) {
@@ -927,7 +959,7 @@ module.exports = {
 		if (motivo.codigo == "bloqueoInput") objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
-		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userID, objeto);
+		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userId, objeto);
 
 		// Fin
 		return;
@@ -1033,12 +1065,8 @@ module.exports = {
 		},
 	},
 	fechaHora: {
-		ahora: () => {
-			return FN.ahora();
-		},
-		nuevoHorario: (delay, horario) => {
-			return FN.nuevoHorario(delay, horario);
-		},
+		ahora: () => FN.ahora(),
+		nuevoHorario: (delay, horario) => FN.nuevoHorario(delay, horario),
 		diaMes: (fecha) => FN.diaMes(fecha),
 		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
@@ -1310,41 +1338,48 @@ let FN = {
 		// Fin
 		return resultado.SI ? conLinks : resultado.linksTalVez ? linksTalVez : sinLinks;
 	},
-	lecturaBD: async function ({entidad, status_id, campoFecha, campoRevID, include, revID}) {
+	obtieneRegs: async function (campos) {
 		// Variables
-		const haceUnaHora = this.nuevoHorario(-1);
-		const haceDosHoras = this.nuevoHorario(-2);
-		if (!revID) revID = 0;
+		const {entidades, campoFecha} = campos;
+		delete campos.entidades;
+		let resultados = [];
 
-		// Condiciones de captura
-		const condicsCaptura = [
-			{capturadoEn: null}, // Que no esté capturado
-			{capturadoEn: {[Op.lt]: haceDosHoras}}, // Que esté capturado hace más de dos horas
-			{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}}, // Que la captura haya sido por otro usuario y hace más de una hora
-			{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}}, // Que la captura haya sido por otro usuario y esté inactiva
-			{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}}, // Que esté capturado por este usuario hace menos de una hora
-		];
+		// Obtiene el resultado por entidad
+		for (let entidad of entidades) resultados.push(this.lecturaBD({entidad, ...campos}));
+
+		// Consolida y completa la información
+		resultados = await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) =>
+				n.map((m) => {
+					const fechaRef = campoFecha ? m[campoFecha] : m.statusSugeridoEn;
+					const fechaRefTexto = this.diaMes(fechaRef);
+					return {...m, fechaRef, fechaRefTexto};
+				})
+			)
+			.then((n) => n.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef)));
+
+		// Fin
+		return resultados;
+	},
+	lecturaBD: async function (campos) {
+		// Variables
+		const {entidad, status_id, campoFecha, campoRevId, include} = campos;
+		const haceUnaHora = this.nuevoHorario(-1);
+		const revId = campos.revId ? campos.revId : 0; // Para el tablero de revisores, siempre existe 'revId', no existe para 'revisaStatus'
 
 		// Condiciones
-		let condicion = {
-			statusRegistro_id: status_id, // Con status según parámetro
-			[Op.and]: [{[Op.or]: condicsCaptura}], // Es necesario el [Op.and], porque luego se le agregan condiciones
-		};
-		if (campoFecha) {
-			if (campoRevID) {
-				// Que esté propuesto por el usuario
-				const condicsUsuario = [{[campoRevID]: [revID, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}];
-				condicion[Op.and].push({[Op.or]: condicsUsuario});
-			}
-			// Que esté propuesto hace más de una hora
-			else condicion[campoFecha] = {[Op.lt]: haceUnaHora};
-		}
+		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
+		if (campoFecha)
+			campoRevId
+				? (condicion[Op.or] = [{[campoRevId]: [revId, usAutom_id]}, {[campoFecha]: {[Op.lt]: haceUnaHora}}]) // Que esté propuesto por el usuario o hace más de una hora
+				: (condicion[campoFecha] = {[Op.lt]: haceUnaHora}); // Que esté propuesto hace más de una hora
 
 		// Excluye los registros RCLV cuyo ID es <= 10
 		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: 10};
 
 		// Resultado
-		const resultados = baseDeDatos
+		const resultados = await baseDeDatos
 			.obtieneTodosPorCondicion(entidad, condicion, include)
 			.then((n) => n.map((m) => ({...m, entidad})));
 
@@ -1359,31 +1394,6 @@ let FN = {
 			: registro.nombre
 			? registro.nombre
 			: "";
-	},
-	obtieneRegs: async function (campos) {
-		// Variables
-		const {entidades} = campos;
-		let lecturas = [];
-		let resultados = [];
-
-		// Obtiene el resultado por entidad
-		delete campos.entidades;
-		for (let entidad of entidades) lecturas.push(this.lecturaBD({entidad, ...campos}));
-		await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
-
-		if (resultados.length) {
-			resultados = resultados.map((n) => {
-				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
-				const fechaRefTexto = this.diaMes(fechaRef);
-				return {...n, fechaRef, fechaRefTexto};
-			});
-
-			// Ordena los resultados
-			resultados.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-		}
-
-		// Fin
-		return resultados;
 	},
 };
 let FN_links = {

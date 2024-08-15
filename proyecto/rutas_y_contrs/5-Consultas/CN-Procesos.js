@@ -3,9 +3,9 @@
 
 module.exports = {
 	varios: {
-		cabeceras: async (userID) => {
+		cabeceras: async (userId) => {
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const usuario_id = userID ? [1, userID] : 1;
+			const usuario_id = userId ? [1, userId] : 1;
 			const regsCabecera = await baseDeDatos.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
@@ -48,7 +48,7 @@ module.exports = {
 			// Fin
 			return {cabecera_id, ...prefs};
 		},
-		ayudas: (userID) => {
+		ayudas: (userId) => {
 			// Variables
 			let resultado = [];
 
@@ -56,7 +56,7 @@ module.exports = {
 			cnLayouts
 				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
 				.filter((n) => n.comentario)
-				.filter((n) => (!userID ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
+				.filter((n) => (!userId ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
 				.map((n) => {
 					if (!resultado.find((m) => m.nombre == n.nombre)) resultado.push(n);
 				});
@@ -67,7 +67,7 @@ module.exports = {
 		configCons_url: (req, res) => {
 			// Variables
 			const configCons = req.query;
-			const userID = req.session.usuario ? req.session.usuario.id : null;
+			const userId = req.session.usuario ? req.session.usuario.id : null;
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
@@ -75,8 +75,8 @@ module.exports = {
 
 			// Guarda la 'configCons_id' en el usuario
 			const configCons_id = configCons.id;
-			if (configCons_id && userID) {
-				baseDeDatos.actualizaPorId("usuarios", userID, {configCons_id});
+			if (configCons_id && userId) {
+				baseDeDatos.actualizaPorId("usuarios", userId, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 
@@ -123,13 +123,13 @@ module.exports = {
 							.obtieneTodosPorCondicion(entProd, condiciones, include)
 							.then((n) => n.map((m) => ({...m, entidad: entProd})))
 					);
-				await Promise.all(productos).then((n) => n.map((m) => resultados.push(...m)));
+				productos = await Promise.all(productos).then((n) => n.flat());
 
 				// Aplica otros filtros
-				if (resultados.length) resultados = this.otrosFiltros({resultados, prefs, campo_id});
+				if (productos.length) productos = this.otrosFiltros({productos, prefs, campo_id});
 
 				// Fin
-				return resultados;
+				return productos;
 			},
 			filtros: (prefs) => {
 				// Variables
@@ -240,20 +240,19 @@ module.exports = {
 						layout.codigo == "anoOcurrencia"
 							? ["personajes", "hechos"] // son las únicas entidades que tienen el año histórico en que ocurrió
 							: [...variables.entidades.rclvs];
-					let aux = [];
 
 					// Rutina por RCLV
 					for (let rclvEnt of entidadesRCLV) {
 						// Obtiene los registros
 						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
-						aux.push(
+						rclvs.push(
 							baseDeDatos
 								.obtieneTodosPorCondicion(rclvEnt, condiciones, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
 					}
-					await Promise.all(aux).then((n) => n.map((m) => rclvs.push(...m)));
+					rclvs = await Promise.all(rclvs).then((n) => n.flat());
 				}
 
 				// Rutina para un sólo RCLV
@@ -325,7 +324,6 @@ module.exports = {
 				const inclStd = ["fechaDelAno"];
 				const inclHec = [...inclStd, "epocaOcurrencia"];
 				const inclPers = [...inclHec, "rolIglesia", "canon"];
-				let registros = [];
 				let rclvs = [];
 
 				// Rutina para obtener los RCLVs
@@ -334,14 +332,14 @@ module.exports = {
 					const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
 					const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
 
-					// Obtiene los registros y les agrega la entidadRCLV
-					registros.push(
+					// Obtiene los rclvs y les agrega la entidadRCLV
+					rclvs.push(
 						baseDeDatos
 							.obtieneTodosPorCondicion(entidadRCLV, condicion, includes)
 							.then((n) => n.map((m) => ({...m, entidad: entidadRCLV})))
 					);
 				}
-				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
+				rclvs = await Promise.all(rclvs).then((n) => n.flat());
 
 				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
 				const epocaDelAno_id = diaHoy.epocaDelAno_id;
@@ -451,33 +449,23 @@ module.exports = {
 				return prods;
 			},
 			prodsConRCLVs: ({prods, rclvs}) => {
-				// Si no se pidió cruzar contra RCLVs, devuelve la variable intacta
-				if (!rclvs) return prods;
-
-				// Si no hay RCLVs, reduce a cero los productos
-				if (!prods.length || !rclvs.length) return [];
-
-				// Crea la variable consolidadora
-				let prodsCruzadosConRCLVs = [];
+				// Interrumpe la función
+				if (!rclvs) return prods; // Si no se pidió cruzar contra RCLVs, devuelve la variable intacta
+				if (!prods.length || !rclvs.length) return []; // Si no hay RCLVs, reduce a cero los productos
 
 				// Para cada RCLV, busca los productos
+				let prodsCruzadosConRCLVs = [];
 				for (let rclv of rclvs) {
 					// Variables
 					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
-					const asociacion = comp.obtieneDesdeEntidad.asociacion(rclv.entidad);
+					const hallazgos = prods.filter((n) => n[campo_id] == rclv.id);
+					const asoc = comp.obtieneDesdeEntidad.asociacion(rclv.entidad);
+					const fechaDelAno = rclv.fechaDelAno.nombre;
 
-					// Detecta los hallazgos
-					const hallazgos = prods
-						.filter((n) => n[campo_id] == rclv.id)
-						.map((n) => ({...n, [asociacion]: {...n[asociacion], fechaDelAno: rclv.fechaDelAno.nombre}}));
-
-					// Acciones si hay hallazgos
+					// Acciones si se encontraron hallazgos
 					if (hallazgos.length) {
-						// Los agrega al consolidador
-						prodsCruzadosConRCLVs.push(...hallazgos);
-
-						// Los elimina de prods
-						prods = prods.filter((n) => n[campo_id] != rclv.id);
+						prodsCruzadosConRCLVs.push(...hallazgos.map((n) => ({...n, [asoc]: {...n[asoc], fechaDelAno}}))); // los agrega
+						prods = prods.filter((n) => n[campo_id] != rclv.id); // los elimina de prods para que no se dupliquen
 					}
 				}
 
@@ -775,7 +763,7 @@ module.exports = {
 			rclvs: (rclvs) => {
 				// Rutina por rclv
 				rclvs.forEach((rclv, i) => {
-					const colecciones = rclv.productos.filter((n) => n.entidad == "colecciones");
+					const colecciones = rclv.productos ? rclv.productos.filter((n) => n.entidad == "colecciones") : [];
 					for (let coleccion of colecciones)
 						rclvs[i].productos = rclv.productos.filter((n) => n.coleccion_id != coleccion.id);
 				});
