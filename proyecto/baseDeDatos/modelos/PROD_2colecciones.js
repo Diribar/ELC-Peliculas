@@ -1,18 +1,17 @@
 module.exports = (sequelize, dt) => {
 	const alias = "colecciones";
 	const columns = {
+		fuente: {type: dt.STRING(5)},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		TMDB_entidad: {type: dt.STRING(10)},
-		fuente: {type: dt.STRING(5)},
 
 		nombreCastellano: {type: dt.STRING(70)},
 		nombreOriginal: {type: dt.STRING(70)},
 		paises_id: {type: dt.STRING(14)},
-		idiomaOriginal_id: {type: dt.STRING(2)},
 		anoEstreno: {type: dt.INTEGER},
 		anoFin: {type: dt.INTEGER},
-		cantTemps: {type: dt.INTEGER},
+		idiomaOriginal_id: {type: dt.STRING(2)},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
@@ -20,6 +19,7 @@ module.exports = (sequelize, dt) => {
 		produccion: {type: dt.STRING(50)},
 		sinopsis: {type: dt.STRING(1004)},
 		avatar: {type: dt.STRING(100)},
+		cantTemps: {type: dt.INTEGER},
 
 		cfc: {type: dt.BOOLEAN},
 		bhr: {type: dt.BOOLEAN},
