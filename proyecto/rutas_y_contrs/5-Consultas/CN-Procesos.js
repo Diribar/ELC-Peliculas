@@ -116,12 +116,14 @@ module.exports = {
 				if (campo_id) condicion[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 				// Obtiene los productos
-				for (let entProd of entsProd)
+				for (let entProd of entsProd) {
+					if (entProd == "capitulos") condicion.capEnCons = true;
 					productos.push(
 						baseDeDatos
 							.obtieneTodosPorCondicion(entProd, condicion, include)
 							.then((n) => n.map((m) => ({...m, entidad: entProd})))
 					);
+				}
 				productos = await Promise.all(productos).then((n) => n.flat());
 
 				// Aplica otros filtros
