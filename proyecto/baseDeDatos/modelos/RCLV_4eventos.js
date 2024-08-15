@@ -31,9 +31,6 @@ module.exports = (sequelize, dt) => {
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		capturadoPor_id: {type: dt.INTEGER},
-		capturadoEn: {type: dt.DATE},
-
 		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
@@ -53,7 +50,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "edicRevisadaPor", foreignKey: "edicRevisadaPor_id"});
 
 		entidad.belongsTo(n.statusRegistros, {as: "statusRegistro", foreignKey: "statusRegistro_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturadoPor", foreignKey: "capturadoPor_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "evento_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "evento_id"});

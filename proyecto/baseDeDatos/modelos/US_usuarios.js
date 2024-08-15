@@ -49,9 +49,6 @@ module.exports = (sequelize, dt) => {
 		completadoEn: {type: dt.DATE},
 		editadoEn: {type: dt.DATE},
 
-		capturadoPor_id: {type: dt.INTEGER},
-		capturadoEn: {type: dt.DATE},
-
 		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
@@ -73,8 +70,6 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.calRegistros, {as: "calificaciones", foreignKey: "usuario_id"});
 		entidad.hasMany(n.pppRegistros, {as: "prefPorProd", foreignKey: "usuario_id"});
 		entidad.hasMany(n.misConsultas, {as: "misConsultas", foreignKey: "usuario_id"});
-
-		entidad.belongsTo(n.usuarios, {as: "capturadoPor", foreignKey: "capturadoPor_id"});
 	};
 	return entidad;
 };

@@ -96,7 +96,6 @@ module.exports = {
 				const {entidad, layout} = prefs;
 				const entsProd = variables.entidades.prods;
 				let productos = [];
-				let resultados = [];
 				let include = [];
 
 				// Include - simple
@@ -162,58 +161,58 @@ module.exports = {
 				// Fin
 				return filtros;
 			},
-			otrosFiltros: ({resultados, prefs, campo_id}) => {
+			otrosFiltros: ({productos, prefs, campo_id}) => {
 				// Variables
 				const {apMar, rolesIgl, canons, entidad, cfc} = prefs;
 
 				// Filtros generales
 				if (rolesIgl || canons) {
 					// Quita los personajes menores que 11
-					resultados = resultados.filter((n) => n.personaje_id > 10);
+					productos = productos.filter((n) => n.personaje_id > 10);
 
 					// Filtra por rolesIgl
 					if (rolesIgl)
-						resultados =
+						productos =
 							rolesIgl == "RS"
-								? resultados.filter((n) => ["RE", "SC"].some((m) => n.personaje.rolIglesia_id.startsWith(m)))
-								: resultados.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
+								? productos.filter((n) => ["RE", "SC"].some((m) => n.personaje.rolIglesia_id.startsWith(m)))
+								: productos.filter((n) => n.personaje.rolIglesia_id.startsWith(rolesIgl));
 
 					// Filtra por canons
 					if (canons)
-						resultados =
+						productos =
 							canons == "SB"
-								? resultados.filter((n) => ["ST", "BT"].some((m) => n.personaje.canon_id.startsWith(m))) // Santos y Beatos
+								? productos.filter((n) => ["ST", "BT"].some((m) => n.personaje.canon_id.startsWith(m))) // Santos y Beatos
 								: canons == "VS"
-								? resultados.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
+								? productos.filter((n) => ["VN", "SD"].some((m) => n.personaje.canon_id.startsWith(m))) // Venerables y Siervos de Dios
 								: canons == "TD"
-								? resultados.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
-								: resultados.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
+								? productos.filter((n) => n.personaje.canon_id != "NN") // Todos (Santos a Siervos)
+								: productos.filter((n) => n.personaje.canon_id == "NN"); // Sin proceso de canonización
 				}
 
 				// Filtra por apMar
 				if (apMar) {
 					// Quita los personajes y hechos menores que 11
-					resultados = resultados.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+					productos = productos.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
 
 					// Ajustes más finos
-					resultados =
+					productos =
 						apMar == "SI"
-							? resultados.filter(
+							? productos.filter(
 									(n) => (n.personaje && n.personaje.apMar_id != 10) || (n.hecho && n.hecho.ama == 1)
 							  )
-							: resultados.filter(
+							: productos.filter(
 									(n) => (n.personaje && n.personaje.apMar_id == 10) || (n.hecho && n.hecho.ama == 0)
 							  );
 				}
 
 				// cfc / vpc
-				if (cfc) resultados = resultados.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
+				if (cfc) productos = productos.filter((n) => (cfc == "1" ? n.cfc : !n.cfc)); // incluye los null
 
 				// Filtra por entidad
-				if (campo_id) resultados = resultados.filter((n) => n.entidad == entidad);
+				if (campo_id) productos = productos.filter((n) => n.entidad == entidad);
 
 				// Fin
-				return resultados;
+				return productos;
 			},
 		},
 		obtieneRclvs: {
