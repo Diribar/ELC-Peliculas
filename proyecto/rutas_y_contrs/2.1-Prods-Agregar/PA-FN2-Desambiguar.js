@@ -19,6 +19,7 @@ module.exports = {
 				entidad: "colecciones",
 				fuente: "TMDB",
 				TMDB_entidad: "collection",
+				capsEnCons: true,
 				cantTemps: 1,
 			};
 			const datosColec = await APIsTMDB.details("collection", datos.TMDB_id);
@@ -121,7 +122,14 @@ module.exports = {
 	tv: {
 		obtieneInfo: async function (datos) {
 			// Datos obtenidos sin la API
-			datos = {...datos, entidadNombre: "Colección", entidad: "colecciones", fuente: "TMDB", TMDB_entidad: "tv"};
+			datos = {
+				...datos,
+				entidadNombre: "Colección",
+				entidad: "colecciones",
+				fuente: "TMDB",
+				TMDB_entidad: "tv",
+				capsEnCons: false,
+			};
 
 			// Obtiene las API
 			const resultados = [APIsTMDB.details("tv", datos.TMDB_id), APIsTMDB.credits("tv", datos.TMDB_id)];

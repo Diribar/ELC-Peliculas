@@ -112,7 +112,7 @@ module.exports = {
 
 			// Genera la información a guardar - los datos adicionales se completan en la revisión
 			const datosCap = {
-				...{coleccion_id, temporada: 1, capitulo: indice},
+				...{coleccion_id, temporada: 1, capitulo: indice, capEnCons: true},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
 				...{creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id, statusColeccion_id},
@@ -145,8 +145,8 @@ module.exports = {
 
 			// Guarda los CAPITULOS
 			for (let datosCap of datosTemp.episodes) {
-				const capitulo = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
-				await baseDeDatos.agregaRegistro("capitulos", capitulo); // Guarda el capítulo
+				const datos = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
+				await baseDeDatos.agregaRegistro("capitulos", datos); // Guarda el capítulo
 			}
 
 			// Fin
@@ -160,7 +160,7 @@ module.exports = {
 			// Genera la información a guardar
 			let datos = {
 				...{coleccion_id: datosCol.id, temporada: datosTemp.season_number, capitulo: datosCap.episode_number},
-				...{fuente: "TMDB", creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id},
+				...{fuente: "TMDB", creadoPor_id: usAutom_id, statusSugeridoPor_id: usAutom_id, capEnCons: false},
 				...{TMDB_id: datosCap.id, nombreCastellano: datosCap.name},
 				...{paises_id, idiomaOriginal_id, produccion},
 				...{duracion: datosCap.runtime, sinopsis: datosCap.overview},
