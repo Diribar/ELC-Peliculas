@@ -107,7 +107,7 @@ module.exports = async (req, res, next) => {
 		return res.render("CMP-0Estructura", {informacion});
 	}
 
-	// CRITERIO: el usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
+	// CRITERIO: el usuario quiere acceder al registro que capturó hace más de una hora y menos de dos horas
 	captura = captsEsteProdRclv.find(
 		(n) => n.capturadoEn < v.haceUnaHora && n.capturadoEn > v.haceDosHoras && n.capturadoPor_id == v.userId
 	);
@@ -124,7 +124,7 @@ module.exports = async (req, res, next) => {
 		return res.render("CMP-0Estructura", {informacion});
 	}
 
-	// CRITERIO: averigua si el usuario tiene otro registro capturado en forma activa
+	// CRITERIO: el usuario tiene otro registro de la misma familia, capturado en forma activa
 	captura = captsEsteUsuario.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
 	if (captura) {
 		// Prepara el mensaje

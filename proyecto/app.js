@@ -30,11 +30,11 @@ global.lunesDeEstaSemana = null;
 global.fechaDelAnoHoy_id = null;
 global.anoHoy = null;
 global.tamMaxImagen = 1024000; // 1Mb
-global.layoutDefault_id = 2; // El 'default' es "Al azar"
 global.imgInstitucional = "/publico/imagenes/Varios/Institucional-Imagen.jpg";
 global.setTimeOutStd = 1000;
 global.largoComentario = 150;
 global.statusErrores = [];
+global.idMinRclv = 10;
 
 // Require 'path'
 global.path = require("path");

@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const anchoMaxTablero = 32;
 
 module.exports = {
 	// Tableros
@@ -37,9 +38,9 @@ module.exports = {
 				productos.push({
 					...n[asociacion],
 					entidad,
+					fechaRef: n.editadoEn,
 					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					edicID: n.id,
-					fechaRef: n.editadoEn,
 				});
 			});
 
@@ -111,8 +112,8 @@ module.exports = {
 				baseDeDatos.obtieneTodosPorCondicion("capitulos", {statusRegistro_id}),
 			])
 				.then((n) => [
-					...n[0].map((m) => ({entidad: "peliculas", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
-					...n[1].map((m) => ({entidad: "capitulos", ...m, fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn)})),
+					...n[0].map((m) => ({entidad: "peliculas", ...m})),
+					...n[1].map((m) => ({entidad: "capitulos", ...m})),
 				])
 				.then((n) => n.filter((m) => m.TMDB_id || m.IMDB_id || m.FA_id)); // excluye los que no tengan alguno de esos códigos
 
@@ -247,17 +248,17 @@ module.exports = {
 	tablManten: {
 		obtieneProds: async (userId) => {
 			// Variables
-			const petitFamilias = "prods";
-			const condicionFija = {petitFamilias, userId};
-			let condicion;
+			const entidades = variables.entidades.prods;
+			const camposFijos = {entidades, userId};
+			let campos;
 
 			// Productos Inactivos
-			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let inactivos = FN_tablManten.obtienePorEntidad(condicion);
+			campos = {...camposFijos, status_id: inactivo_id};
+			let inactivos = FN_tablManten.obtieneRegs(campos);
 
 			// Productos Aprobados
-			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let prodsAprob = FN_tablManten.obtienePorEntidad(condicion);
+			campos = {...camposFijos, status_id: aprobado_id};
+			let prodsAprob = FN_tablManten.obtieneRegs(campos);
 
 			// Productos Sin Edición (en status creadoAprob)
 			let SE_pel = FN_tablManten.obtieneSinEdicion("peliculas");
@@ -309,17 +310,18 @@ module.exports = {
 		},
 		obtieneRCLVs: async (userId) => {
 			// Variables
-			const condicionFija = {petitFamilias: "rclvs", userId};
+			const entidades = variables.entidades.rclvs;
+			const camposFijos = {entidades, userId};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
-			let condicion;
+			let campos;
 
 			// Inactivos
-			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: inactivo_id};
-			let IN = FN_tablManten.obtienePorEntidad(condicion);
+			campos = {...camposFijos, status_id: inactivo_id};
+			let IN = FN_tablManten.obtieneRegs(campos);
 
 			// Aprobados
-			condicion = {...condicionFija, campoFecha: "statusSugeridoEn", status_id: aprobado_id};
-			let rclvsAprob = FN_tablManten.obtienePorEntidad({...condicion, include});
+			campos = {...camposFijos, status_id: aprobado_id};
+			let rclvsAprob = FN_tablManten.obtieneRegs({...campos, include});
 
 			// Await
 			[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
@@ -832,46 +834,38 @@ module.exports = {
 	},
 	procesaCampos: {
 		prodsRclvs: (registros) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in registros)
-				registros[rubro] = registros[rubro].map((n) => ({
-					id: n.entidad_id,
-					entidad: n.entidad,
-					nombre: n.nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					fechaRef: n.fechaRef,
-					fechaRefTexto: comp.fechaHora.diaMes(n.fechaRef),
-				}));
+				registros[rubro] = registros[rubro].map((n) => {
+					// Variables
+					const {entidad, entidad_id: id, nombre, fechaRef} = n;
+					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+
+					// Fin
+					return {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
+				});
 
 			// Fin
 			return registros;
 		},
 		prods: (productos) => {
-			// Variables
-			const anchoMax = 32;
-
 			// Reconvierte los elementos
 			for (let rubro in productos)
 				productos[rubro] = productos[rubro].map((n) => {
 					// Variables
-					let nombre =
-						(n.nombreCastellano.length > anchoMax
-							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+					const {entidad, id} = n;
+					const nombre =
+						(n.nombreCastellano.length > anchoMaxTablero
+							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
+					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
+					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+					const links = n.linksGral || n.linksTrailer;
 
 					// Comienza el armado de los datos
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRef: n.fechaRef,
-						fechaRefTexto: n.fechaRefTexto,
-						links: n.linksGral || n.linksTrailer,
-					};
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev, links};
 
 					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
@@ -885,21 +879,23 @@ module.exports = {
 			return productos;
 		},
 		rclvs: (rclvs) => {
-			// Variables
-			const anchoMax = 35; // ancho máximo a mostrar de cada producto
-
 			// Reconvierte los elementos
 			for (let rubro in rclvs)
 				rclvs[rubro] = rclvs[rubro].map((n) => {
-					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-					let datos = {
-						id: n.id,
-						entidad: n.entidad,
-						nombre,
-						abrev: n.entidad.slice(0, 3).toUpperCase(),
-						fechaRefTexto: n.fechaRefTexto,
-					};
+					// Variables
+					const {entidad, id} = n;
+					const nombre = n.nombre.length > anchoMaxTablero ? n.nombre.slice(0, anchoMaxTablero - 1) + "…" : n.nombre;
+					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
+					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
+					const abrev = entidad.slice(0, 3).toUpperCase();
+
+					// Comienza el armado de los datos
+					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
+
+					// Completa los datos
 					if (rubro == "ED") datos.edicID = n.edicID;
+
+					// Fin
 					return datos;
 				});
 
@@ -1072,6 +1068,62 @@ let FN_links = {
 	},
 };
 let FN_tablManten = {
+	obtieneRegs: async function (campos) {
+		// Variables
+		const {entidades} = campos;
+		campos.include ? campos.include.push("ediciones") : (campos.include = ["ediciones"]);
+		let resultados = [];
+
+		// Obtiene los resultados
+		for (let entidad of entidades) resultados.push(this.lecturaBD({entidad, ...campos}));
+
+		// Consolida los resultados y los ordena
+		resultados = await Promise.all(resultados)
+			.then((n) => n.flat())
+			.then((n) => n.sort((a, b) => b.statusSugeridoEn - a.statusSugeridoEn));
+
+		// Quita los comprometidos por capturas
+		resultados = await comp.sinProblemasDeCaptura(resultados, campos.userId);
+
+		// Fin
+		return resultados;
+	},
+	lecturaBD: async ({status_id, include, entidad}) => {
+		// Variables
+		let includeBD = [...include];
+		if (entidad == "colecciones") includeBD.push("csl");
+
+		// Condiciones
+		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv}; // Excluye los registros RCLV cuyo ID es <= idMinRclv
+
+		// Resultado
+		const resultados = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion, includeBD).then((n) =>
+			n.map((m) => {
+				let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
+				delete m.ediciones;
+				if (edicion) {
+					edicion = purgaEdicion(edicion, entidad);
+					m = {...m, ...edicion}; // Actualiza el original con la edición
+				}
+				return {...m, entidad};
+			})
+		);
+
+		// Fin
+		return resultados;
+	},
+	obtieneSinEdicion: (entidad) => {
+		// Variables
+		const condicion = {statusRegistro_id: creadoAprob_id};
+		if (entidad == "capitulos") condicion.statusColeccion_id = aprobado_id;
+
+		// Obtiene la información
+		return baseDeDatos
+			.obtieneTodosPorCondicion(entidad, condicion, "ediciones")
+			.then((n) => n.filter((m) => !m.ediciones.length))
+			.then((n) => n.map((m) => ({...m, entidad})));
+	},
 	obtieneProdsDeLinks: async (links, userId) => {
 		// Variables
 		let LI = [];
@@ -1079,10 +1131,10 @@ let FN_tablManten = {
 		// Obtiene los prods
 		for (let link of links) {
 			// Variables
-			let entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-			let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-			let fechaRef = link.statusSugeridoEn;
-			let fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
+			const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+			const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+			const fechaRef = link.statusSugeridoEn;
+			const fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);
 
 			// Agrega los registros
 			LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
@@ -1104,101 +1156,6 @@ let FN_tablManten = {
 
 		// Fin
 		return {LI};
-	},
-	obtienePorEntidad: async function (condicion) {
-		// Variables
-		const {petitFamilias} = condicion;
-		const entidades = variables.entidades[petitFamilias];
-		condicion.include ? condicion.include.push("ediciones") : (condicion.include = ["ediciones"]);
-		let resultados = [];
-
-		// Obtiene todos los resultados
-		for (let entidad of entidades) resultados.push(this.obtieneRegsMT({entidad, ...condicion}));
-
-		// Consolida los resultados y los ordena
-		return await Promise.all(resultados)
-			.then((n) => n.flat())
-			.then((n) => n.sort((a, b) => b.fechaRef - a.fechaRef));
-	},
-	obtieneRegsMT: async ({petitFamilias, userId, campoFecha, status_id, include, entidad}) => {
-		// Variables
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
-		const idMin = petitFamilias == "rclvs" ? 10 : 0;
-		let includeBD = [...include];
-		if (entidad == "colecciones") includeBD.push("csl");
-
-		// Condiciones
-		const condicion = {
-			// Con status según parámetro
-			statusRegistro_id: status_id,
-			// Que cumpla alguno de los siguientes sobre la 'captura':
-			[Op.or]: [
-				// Que no esté capturado
-				{capturadoEn: null},
-				// Que esté capturado hace más de dos horas
-				{capturadoEn: {[Op.lt]: haceDosHoras}},
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				{capturadoPor_id: {[Op.ne]: userId}, capturadoEn: {[Op.lt]: haceUnaHora}},
-				// Que la captura haya sido por otro usuario y esté inactiva
-				{capturadoPor_id: {[Op.ne]: userId}, capturaActiva: {[Op.ne]: 1}},
-				// Que esté capturado por este usuario hace menos de una hora
-				{capturadoPor_id: userId, capturadoEn: {[Op.gt]: haceUnaHora}},
-			],
-			// Si es un rclv, que su id > 10
-			id: {[Op.gt]: idMin},
-		};
-
-		const registros = await baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, includeBD)
-			// Agrega la fechaRef y actualiza el original con la edición
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const fechaRef = m[campoFecha];
-					const fechaRefTexto = comp.fechaHora.diaMes(fechaRef);
-
-					// Obtiene la edición del usuario
-					let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
-					delete m.ediciones;
-
-					// Actualiza el original con la edición
-					if (edicion) {
-						edicion = purgaEdicion(edicion, entidad);
-						m = {...m, ...edicion};
-					}
-
-					// Fin
-					return {...m, entidad, fechaRef, fechaRefTexto};
-				})
-			);
-
-		// Fin
-		return registros;
-	},
-	obtieneSinEdicion: (entidad) => {
-		// Variables
-		const condicion = {statusRegistro_id: creadoAprob_id};
-		if (entidad == "capitulos") condicion.statusColeccion_id = aprobado_id;
-
-		// Obtiene la información
-		return baseDeDatos
-			.obtieneTodosPorCondicion(entidad, condicion, "ediciones")
-			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const datos = {
-						...m,
-						entidad,
-						fechaRef: m.statusSugeridoEn,
-						fechaRefTexto: comp.fechaHora.diaMes(m.statusSugeridoEn),
-					};
-
-					// Fin
-					return datos;
-				})
-			);
 	},
 };
 let FN_edicion = {
