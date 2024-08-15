@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		TMDB_entidad: {type: dt.STRING(10)},
+		capsEnCons: {type: dt.BOOLEAN},
 
 		nombreCastellano: {type: dt.STRING(70)},
 		nombreOriginal: {type: dt.STRING(70)},
