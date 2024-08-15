@@ -8,9 +8,9 @@ module.exports = (sequelize, dt) => {
 
 		nombreCastellano: {type: dt.STRING(70)},
 		nombreOriginal: {type: dt.STRING(70)},
-		paises_id: {type: dt.STRING(14)},
 		anoEstreno: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
+		paises_id: {type: dt.STRING(14)},
 		idiomaOriginal_id: {type: dt.STRING(2)},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
