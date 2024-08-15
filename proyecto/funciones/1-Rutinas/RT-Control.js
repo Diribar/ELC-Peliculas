@@ -736,7 +736,9 @@ module.exports = {
 				}
 
 				// Actualiza el próximo valor de ID
-				await procesos.actualizaElProximoValorDeID(tabla);
+				const texto = process.env.DB_NAME + "." + db[tabla].tableName;
+				const textoCompleto = "ALTER TABLE " + texto + " AUTO_INCREMENT = 1;";
+				// await sequelize.query(textoCompleto);
 			}
 
 			// Fin
