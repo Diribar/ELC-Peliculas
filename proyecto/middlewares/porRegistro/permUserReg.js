@@ -61,8 +61,8 @@ module.exports = async (req, res, next) => {
 	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	if (v.registro.statusRegistro_id == creado_id && !creadoPorElUsuario)
-		// No transcurrió una hora
 		if (v.creadoEn > v.haceUnaHora) {
+			// No transcurrió una hora
 			informacionm = {
 				mensajes: [
 					"Por ahora," + v.elLa + v.entidadNombreMinuscula + " sólo está accesible para su creador.",
@@ -85,7 +85,12 @@ module.exports = async (req, res, next) => {
 		}
 
 	// CRITERIOS BASADOS EN LAS CAPTURAS
-	const condicion = {[Op.or]: [{entidad, entidad_id}, {capturadoPor_id: v.userId}]};
+	const condicion = {
+		[Op.or]: [
+			{entidad, entidad_id},
+			{familia, capturadoPor_id: v.userId},
+		],
+	};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
 	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == entidad_id);
 	const captsEsteUsuario = capturas.filter(

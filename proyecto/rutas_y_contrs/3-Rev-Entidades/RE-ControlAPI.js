@@ -91,7 +91,7 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("links", id, datosLink);
 
 			// CONSECUENCIAS - Acciones si no es un 'creadoAprob' convertido en 'aprobado'
-			if (statusOriginal_id != creadoAprob_id || statusFinal_id != creado_id) {
+			if (statusOriginal_id != creadoAprob_id || statusFinal_id != aprobado_id) {
 				// Agrega un registro en el statusHistorial
 				let datosHist = {
 					entidad_id: id,

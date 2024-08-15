@@ -12,32 +12,28 @@ module.exports = {
 		comp.variablesSemanales();
 		await comp.linksVencPorSem.actualizaCantLinksPorSem();
 		await comp.revisaStatus.consolidado();
-
-		// Rutinas programadas
-		const info = {...rutinasJSON};
-		if (!Object.keys(info).length) return;
-
-		// Rutinas diarias (a las 0:00hs)
-		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
-
-		// Rutinas horarias (a las 0:01hs)
-		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
-		cron.schedule("1 * * * *", () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // minuto 1
-
-		// Start-up
 		await this.FechaHoraUTC();
 
+		// Stoppers
+		const info = {...rutinasJSON};
+		if (!Object.keys(info).length) return;
+		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
+		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
+
 		// Comunica el fin de las rutinas
-		console.log();
 		// await this.rutinasHorarias.productosAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
-		// await this.rutinasSemanales.eliminaRegsHistStatusIncorrectos();
+		// await this.rutinasSemanales.idDeTablas();
 		// await obsoletas.actualizaCategoriaLink()
-		const tiempoTranscurrido = (Date.now() - rutinasDeInicio).toLocaleString("pt"); // 'es' no coloca el separador de miles
-		console.log("Rutinas de inicio terminadas en " + tiempoTranscurrido + " mseg., el " + new Date().toLocaleString());
+
+		// Rutinas programadas
+		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});// Rutinas diarias (a las 0:00hs)
+		cron.schedule("1 * * * *", () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // Rutinas horarias (a las 0:01hs)
 
 		// Fin
+		const tiempoTranscurrido = (Date.now() - rutinasDeInicio).toLocaleString("pt"); // 'es' no coloca el separador de miles
+		console.log();
+		console.log("Rutinas de inicio terminadas en " + tiempoTranscurrido + " mseg., el " + new Date().toLocaleString());
 		return;
 	},
 
@@ -697,7 +693,7 @@ module.exports = {
 			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 			return;
 		},
-		iDdeTablas: async () => {
+		idDeTablas: async () => {
 			// Variables
 			const tablas = [
 				...["histEdics", "statusHistorial"],

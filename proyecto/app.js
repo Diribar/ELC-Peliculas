@@ -284,6 +284,7 @@ app.set("views", [
 	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
 	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
+	app.use("/", require("./rutas_y_contrs/0-Compartido/CMP-Rutas"));
 	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
