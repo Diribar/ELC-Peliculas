@@ -24,7 +24,7 @@ module.exports = {
 		// await this.rutinasHorarias.actualizaProdsAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.idDeTablas();
-		// await obsoletas.actualizaCategoriaLink()
+		// await obsoletas.actualizaCapEnCons()
 
 		// Rutinas programadas
 		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"}); // Rutinas diarias (a las 0:00hs)
@@ -772,7 +772,19 @@ const stoppersFeedbackParaUsers = (usuario) => {
 	return false;
 };
 let obsoletas = {
-	actualizaCapEnCons:async()=>{
+	actualizaCapEnCons: async () => {
+		// Colecciones
+		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capsEnCons: true});
+		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "tv"}, {capsEnCons: false});
 
+		// Capítulos
+		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
+		for (let coleccion of colecciones) {
+			const capEnCons = coleccion.TMDB_entidad == "collection" ? true : coleccion.TMDB_entidad == "tv" ? false : null;
+			baseDeDatos.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, {capEnCons});
+		}
+
+		// Fin
+		return;
 	},
 };
