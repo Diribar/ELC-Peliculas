@@ -21,13 +21,13 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinasHorarias.productosAlAzar();
+		// await this.rutinasHorarias.actualizaProdsAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.idDeTablas();
 		// await obsoletas.actualizaCategoriaLink()
 
 		// Rutinas programadas
-		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});// Rutinas diarias (a las 0:00hs)
+		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"}); // Rutinas diarias (a las 0:00hs)
 		cron.schedule("1 * * * *", () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"}); // Rutinas horarias (a las 0:01hs)
 
 		// Fin
@@ -217,11 +217,10 @@ module.exports = {
 			// Fin
 			return;
 		},
-		productosAlAzar: async () => {
+		actualizaProdsAlAzar: async () => {
 			// Variables
 			const condicion = {statusRegistro_id: aprobados_ids};
 			const entidades = variables.entidades.prods;
-			const prodsComplem = await baseDeDatos.obtieneTodos("prodsComplem");
 
 			// Rastrilla los productos
 			for (let entidad of entidades) {
@@ -231,17 +230,8 @@ module.exports = {
 
 				// Rastrilla los productos
 				for (let producto of productos) {
-					// Crea los datos
-					const azar = comp.azar();
-					const datos = {[campo_id]: producto.id, azar};
-					if (entidad != "peliculas")
-						datos.grupoCol_id = entidad == "colecciones" ? producto.id : producto.coleccion_id;
-
-					// Actualiza o agrega un registro
-					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
-					prodComplem
-						? baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar}) // actualiza el campo 'azar' en el registro
-						: baseDeDatos.agregaRegistro("prodsComplem", datos); // agrega un registro
+					const azar = comp.azar(); // Crea los datos
+					baseDeDatos.actualizaTodosPorCondicion("prodsComplem", {[campo_id]: producto.id}, {azar}); // actualiza el campo 'azar' en el registro
 				}
 			}
 
@@ -603,6 +593,35 @@ module.exports = {
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
 				await baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
+			}
+
+			// Fin
+			return;
+		},
+		revisaCorrigeProdsComplem: async () => {
+			// Variables
+			const condicion = {statusRegistro_id: aprobados_ids};
+			const entidades = variables.entidades.prods;
+			const prodsComplem = await baseDeDatos.obtieneTodos("prodsComplem");
+
+			// Rastrilla los productos
+			for (let entidad of entidades) {
+				// Variables
+				const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+
+				// Rastrilla los productos
+				for (let producto of productos) {
+					// Crea los datos
+					const azar = comp.azar();
+					const datos = {[campo_id]: producto.id, azar};
+					if (entidad != "peliculas")
+						datos.grupoCol_id = entidad == "colecciones" ? producto.id : producto.coleccion_id;
+
+					// Agrega los registros que faltan
+					const prodComplem = prodsComplem.find((n) => n[campo_id] == producto.id);
+					if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", datos);
+				}
 			}
 
 			// Fin

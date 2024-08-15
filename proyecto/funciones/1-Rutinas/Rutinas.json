@@ -35,6 +35,7 @@
 		"revisaCorrigeAprobadoConAvatarLink": "SI",
 		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
 		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
+		"revisaCorrigeProdsComplem": "SI",
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaRegsSinEntidad_id": "SI",
