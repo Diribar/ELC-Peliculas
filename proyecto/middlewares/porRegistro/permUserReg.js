@@ -88,7 +88,7 @@ module.exports = async (req, res, next) => {
 	const condicion = {
 		[Op.or]: [
 			{entidad, entidad_id},
-			{familia, capturadoPor_id: v.userId,capturadoEn: {[Op.gte]:v.haceUnaHora}, activa: true},
+			{familia, capturadoPor_id: v.userId, capturadoEn: {[Op.gte]: v.haceUnaHora}, activa: true},
 		],
 	};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
@@ -128,7 +128,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: el usuario tiene otro registro de la misma familia, capturado en forma activa
-	captura = captsOtroProdRclv
+	captura = captsOtroProdRclv;
 	if (captura) {
 		// Prepara el mensaje
 		const prodRclvCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
