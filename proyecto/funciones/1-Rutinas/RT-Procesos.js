@@ -590,11 +590,8 @@ module.exports = {
 		return;
 	},
 	actualizaElProximoValorDeID: async (entidad) => {
-		// Actualiza el autoincrement
 		const texto = process.env.DB_NAME + "." + db[entidad].tableName;
 		await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = 1;");
-
-		// Fin
 		return;
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
