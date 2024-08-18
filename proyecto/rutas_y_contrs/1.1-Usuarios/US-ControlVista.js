@@ -50,7 +50,7 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			let usuario = req.session.usuario;
+			const usuario = req.session.usuario;
 
 			// Acciones si hay errores de validación
 			let datos = {...req.body};
@@ -79,10 +79,10 @@ module.exports = {
 
 			// Actualiza el usuario
 			req.body.completadoEn = comp.fechaHora.ahora();
-			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
+			await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 
 			// Actualización de session
-			req.session.usuario = usuario;
+			req.session.usuario = await comp.obtieneUsuarioPorMail(usuario.email);
 			delete req.session.editables;
 
 			// Redirecciona
@@ -90,8 +90,8 @@ module.exports = {
 		},
 		bienvenido: (req, res) => {
 			// Variables
-			let usuario = req.session.usuario;
-			let informacion = {
+			const usuario = req.session.usuario;
+			const informacion = {
 				mensajes: [
 					"Estimad" + usuario.genero.letraFinal + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
 					"Bienvenid" + usuario.genero.letraFinal + " a nuestro sitio como usuario.",
@@ -210,7 +210,9 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const datos = req.body;
-			const {errores, usuario} = await valida.login(datos);
+			const aux = await valida.login(datos);
+			const {errores} = aux;
+			let {usuario} = aux;
 			let intentosLogin;
 
 			// Acciones si hay errores de credenciales
