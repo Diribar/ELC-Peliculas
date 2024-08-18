@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 15/ago",
-	"HoraUTC": "4:30",
+	"FechaUTC": "Dom. 18/ago",
+	"HoraUTC": "22:58",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 12/ago",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-ago-24": {},
-		"14-ago-24": {"leyenda": "Hoy recordamos al padre Maximiliano Kolbe, santo", "entidad": "personajes", "id": 112},
-		"15-ago-24": {"leyenda": "Hoy recordamos la Asunción de María", "entidad": "hechos", "id": 68},
 		"16-ago-24": {"leyenda": "Hoy recordamos a san Roque", "entidad": "personajes", "id": 193},
-		"17-ago-24": {}
+		"17-ago-24": {},
+		"18-ago-24": {"leyenda": "Hoy recordamos a san Alberto Hurtado", "entidad": "personajes", "id": 69},
+		"19-ago-24": {},
+		"20-ago-24": {"leyenda": "Hoy recordamos a san Bernardo de Claraval", "entidad": "personajes", "id": 195}
 	}
 }
