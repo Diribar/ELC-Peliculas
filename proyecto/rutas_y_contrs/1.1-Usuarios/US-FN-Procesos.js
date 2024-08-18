@@ -13,10 +13,9 @@ module.exports = {
 
 		// Actualiza la info
 		await baseDeDatos.actualizaPorId("usuarios", usuario.id, novedades);
-		usuario = {...usuario, ...novedades};
 
 		// Fin
-		return usuario;
+		return;
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
