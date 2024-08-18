@@ -248,8 +248,10 @@ module.exports = {
 			delete req.session.login;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro_id == mailPendValidar_id)
-				usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
+			if (usuario.statusRegistro_id == mailPendValidar_id) {
+				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
+				req.session.usuario = await comp.obtieneUsuarioPorMail(usuario.email);
+			}
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
