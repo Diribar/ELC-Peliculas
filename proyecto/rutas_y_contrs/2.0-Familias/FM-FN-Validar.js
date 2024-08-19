@@ -229,7 +229,7 @@ module.exports = {
 		// prodsEnRCLV
 		if (familias == "productos") {
 			// Variables
-			const prodAprob = aprobados_ids.includes(registro.statusRegistro_id);
+			const prodAprob = activos_ids.includes(registro.statusRegistro_id); // antes era 'aprobados_ids'
 
 			// Actualiza prodAprob en sus links
 			if (registro.links && registro.links.length) {

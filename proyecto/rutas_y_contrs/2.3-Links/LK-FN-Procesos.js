@@ -31,7 +31,7 @@ module.exports = {
 	datosLink: async (datos) => {
 		// Datos del producto
 		const regProd = await baseDeDatos.obtienePorId(datos.prodEntidad, datos.prodId);
-		datos.prodAprob = aprobados_ids.includes(regProd.statusRegistro_id);
+		datos.prodAprob = activos_ids.includes(regProd.statusRegistro_id); // antes era 'aprobados_ids'
 
 		// campo_id
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);

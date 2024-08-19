@@ -532,7 +532,7 @@ module.exports = {
 		},
 		actualizaProdAprobEnLink: async (coleccion_id, statusCol) => {
 			// Variables
-			const prodAprob = aprobados_ids.includes(statusCol);
+			const prodAprob = activos_ids.includes(statusCol); // antes era 'aprobados_ids'
 			const capsID = await baseDeDatos
 				.obtieneTodosPorCondicion("capitulos", {coleccion_id})
 				.then((n) => n.map((m) => m.id));
