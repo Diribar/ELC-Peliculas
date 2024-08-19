@@ -858,7 +858,7 @@ module.exports = {
 			if (!statusProd) continue;
 
 			// Actualiza el campo prodAprob a 'true' o 'false'
-			const prodAprob = aprobados_ids.includes(statusProd);
+			const prodAprob = activos_ids.includes(statusProd); // antes era 'aprobados_ids'
 			baseDeDatos.actualizaPorId("links", link.id, {prodAprob});
 		}
 
@@ -917,10 +917,7 @@ module.exports = {
 		},
 		actualizaCantLinksPorSem: async () => {
 			// Obtiene todos los links en status distinto a 'inactivo' y con producto 'aprobado'
-			const condicion = {
-				statusRegistro_id: {[Op.ne]: inactivo_id},
-				//prodAprob: true
-			};
+			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
 			let links = baseDeDatos.obtieneTodosPorCondicion("links", condicion);
 			let edics = baseDeDatos.obtieneTodos("linksEdicion");
 			[links, edics] = await Promise.all([links, edics]);

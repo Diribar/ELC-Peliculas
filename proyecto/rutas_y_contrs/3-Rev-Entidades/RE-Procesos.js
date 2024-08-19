@@ -958,10 +958,7 @@ let FN_links = {
 			const include = variables.entidades.asocProds;
 
 			// Obtiene los links en status 'a revisar'
-			const condicion = {
-				// prodAprob: true,
-				statusRegistro_id: [...creados_ids, ...inacRecup_ids],
-			};
+			const condicion = {statusRegistro_id: [...creados_ids, ...inacRecup_ids], prodAprob: true};
 			const originales = await baseDeDatos
 				.obtieneTodosPorCondicion("links", condicion, include)
 				.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos

@@ -164,10 +164,7 @@ module.exports = {
 		edicsPERL = await Promise.all(edicsPERL).then((n) => n.flat());
 
 		// regsLinks
-		condicion = {
-			...condicion,
-			// prodAprob: true
-		};
+		condicion = {...condicion, prodAprob: true};
 		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
 		const regsLinks = await baseDeDatos
 			.obtieneTodosPorCondicion("links", condicion, include)
