@@ -774,8 +774,8 @@ const stoppersFeedbackParaUsers = (usuario) => {
 let obsoletas = {
 	actualizaCapEnCons: async () => {
 		// Colecciones
-		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capsEnCons: true});
-		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "tv"}, {capsEnCons: false});
+		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capEnCons: true});
+		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "tv"}, {capEnCons: false});
 
 		// Capítulos
 		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
