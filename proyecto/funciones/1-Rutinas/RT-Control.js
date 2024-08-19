@@ -23,7 +23,7 @@ module.exports = {
 		// Comunica el fin de las rutinas
 		// await this.rutinasHorarias.actualizaProdsAlAzar();
 		// await this.rutinasDiarias.linksPorProv();
-		// await this.rutinasSemanales.idDeTablas();
+		// await this.rutinasSemanales.revisaCorrigeProdAprobEnLink();
 		// await obsoletas.actualizaCapEnCons()
 
 		// Rutinas programadas
