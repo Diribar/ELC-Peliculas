@@ -88,14 +88,12 @@ module.exports = async (req, res, next) => {
 	const condicion = {
 		[Op.or]: [
 			{entidad, entidad_id},
-			{familia, capturadoPor_id: v.userId},
+			{familia, capturadoPor_id: v.userId, capturadoEn: {[Op.gte]: v.haceUnaHora}, activa: true},
 		],
 	};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
 	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == entidad_id);
-	const captsEsteUsuario = capturas.filter(
-		(n) => n.familia == familia && n.capturadoPor_id == v.userId && n.capturadoEn > v.haceUnaHora && n.activa == true
-	);
+	const captsOtroProdRclv = capturas.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
@@ -130,16 +128,22 @@ module.exports = async (req, res, next) => {
 	}
 
 	// CRITERIO: el usuario tiene otro registro de la misma familia, capturado en forma activa
-	captura = captsEsteUsuario.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
+	captura = captsOtroProdRclv;
 	if (captura) {
 		// Prepara el mensaje
-		const registroCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
+		const prodRclvCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
+		// Acciones si no existe ese registro
+		if (!prodRclvCapturado) {
+			const {entidad, entidad_id} = captura;
+			await baseDeDatos.eliminaTodosPorCondicion("capturas", {entidad, entidad_id});
+			return res.redirect(req.originalUrl);
+		}
 		const mensajes = [
 			"Tenés que liberar" +
 				comp.obtieneDesdeEntidad.elLa(captura.entidad) +
 				comp.obtieneDesdeEntidad.entidadNombre(captura.entidad).toLowerCase() +
 				" '" +
-				comp.nombresPosibles(registroCapturado) +
+				comp.nombresPosibles(prodRclvCapturado) +
 				"', que está reservad" +
 				comp.obtieneDesdeEntidad.oa(captura.entidad) +
 				" desde el " +

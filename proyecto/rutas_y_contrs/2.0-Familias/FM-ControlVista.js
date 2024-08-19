@@ -121,7 +121,7 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let espera = [];
 
-		// Elimina sus archivos avatar y ediciones, y si es un producto, también sus links y capítulos
+		// Elimina sus registros dependientes
 		espera.push(procesos.elimina.dependientes(entidad, id, original));
 
 		// Acciones si es un RCLV

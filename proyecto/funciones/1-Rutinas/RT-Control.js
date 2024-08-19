@@ -772,46 +772,7 @@ const stoppersFeedbackParaUsers = (usuario) => {
 	return false;
 };
 let obsoletas = {
-	actualizaLaEpocaDeEstreno: async () => {
-		const condicion = {anoEstreno: {[Op.ne]: null}};
+	actualizaCapEnCons:async()=>{
 
-		// Rutina
-		for (let entidad of variables.entidades.prods) {
-			// Obtiene los productos
-			const productos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion);
-
-			// Actualiza cada producto
-			for (let producto of productos) {
-				const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= producto.anoEstreno).id;
-				baseDeDatos.actualizaPorId(entidad, producto.id, {epocaEstreno_id});
-			}
-		}
-
-		// Fin
-		return;
-	},
-	corrigeStatusColeccionEnCapitulo: async () => {
-		// Variables
-		const registros = await baseDeDatos.obtieneTodos("capitulos", "coleccion");
-
-		// Rutina por registro
-		for (let registro of registros) {
-			const {statusRegistro_id: statusColeccion_id} = registro.coleccion;
-			if (registro.statusColeccion_id != statusColeccion_id)
-				baseDeDatos.actualizaPorId("capitulos", registro.id, {statusColeccion_id});
-		}
-
-		// Fin
-		return;
-	},
-	creaCapSinLink: async () => {
-		// Obtiene las colecciones
-		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
-
-		// Rutina para agregar un registro
-		for (let coleccion of colecciones) baseDeDatos.agregaRegistro("capsSinLink", {coleccion_id: coleccion.id});
-
-		// Fin
-		return;
 	},
 };
