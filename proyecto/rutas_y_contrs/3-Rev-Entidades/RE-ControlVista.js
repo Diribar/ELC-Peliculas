@@ -268,6 +268,9 @@ module.exports = {
 			else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
 		}
 
+		// CONSECUENCIAS - Actualiza 'inactivar' y 'recuperar'
+		if (inacRecup_ids.includes(statusOriginal_id)) await comp.revisaStatus.consolidado();
+
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
 			// 1. Actualiza el status de los capítulos
@@ -302,9 +305,6 @@ module.exports = {
 		// CONSECUENCIAS - statusHistorial: si el registro 'inactivar_id' no tiene comentarios, lo elimina
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
 		baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
-
-		// CONSECUENCIAS - Actualiza 'inactivar' y 'recuperar'
-		if (inacRecup_ids.includes(statusOriginal_id)) await comp.revisaStatus.consolidado();
 
 		// CONSECUENCIAS - statusHistorial: Agrega un registro
 		let datosHist = {
