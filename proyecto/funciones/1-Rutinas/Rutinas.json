@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 18/ago",
-	"HoraUTC": "22:58",
+	"FechaUTC": "Lun. 19/ago",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 12/ago",
-	"HoraSemUTC": "4:11",
-	"semanaUTC": 33,
+	"FechaSemUTC": "Lun. 19/ago",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 34,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-ago-24": {"leyenda": "Hoy recordamos a san Roque", "entidad": "personajes", "id": 193},
 		"17-ago-24": {},
 		"18-ago-24": {"leyenda": "Hoy recordamos a san Alberto Hurtado", "entidad": "personajes", "id": 69},
 		"19-ago-24": {},
-		"20-ago-24": {"leyenda": "Hoy recordamos a san Bernardo de Claraval", "entidad": "personajes", "id": 195}
+		"20-ago-24": {"leyenda": "Hoy recordamos a san Bernardo de Claraval", "entidad": "personajes", "id": 195},
+		"21-ago-24": {"leyenda": "Hoy recordamos al papa Pío X, santo", "entidad": "personajes", "id": 176}
 	}
 }
