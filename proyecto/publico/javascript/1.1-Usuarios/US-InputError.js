@@ -122,7 +122,7 @@ window.addEventListener("load", () => {
 
 		// Primera letra en mayúscula
 		if (tarea != "login" && input.localName == "input" && input.type == "text") {
-			input.value = valor.slice(0, 1).toUpperCase() + aux.slice(1);
+			input.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			input.selectionEnd = posicCursor;
 		} else if (tarea == "login" && campo == "email") {
 			// e-mail en minúscula

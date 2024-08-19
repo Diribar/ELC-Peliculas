@@ -110,18 +110,20 @@ module.exports = {
 
 				// Condiciones
 				const filtros = this.filtros(prefs);
-				let condiciones = {statusRegistro_id: aprobados_ids, ...filtros};
-				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condiciones.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				let condicion = {statusRegistro_id: aprobados_ids, ...filtros};
+				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
-				if (campo_id) condiciones[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
+				if (campo_id) condicion[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
 				// Obtiene los productos
-				for (let entProd of entsProd)
+				for (let entProd of entsProd) {
+					if (entProd == "capitulos") condicion.capEnCons = true;
 					productos.push(
 						baseDeDatos
-							.obtieneTodosPorCondicion(entProd, condiciones, include)
+							.obtieneTodosPorCondicion(entProd, condicion, include)
 							.then((n) => n.map((m) => ({...m, entidad: entProd})))
 					);
+				}
 				productos = await Promise.all(productos).then((n) => n.flat());
 
 				// Aplica otros filtros
@@ -243,10 +245,10 @@ module.exports = {
 					// Rutina por RCLV
 					for (let rclvEnt of entidadesRCLV) {
 						// Obtiene los registros
-						const {condiciones, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
+						const {condicion, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
 						rclvs.push(
 							baseDeDatos
-								.obtieneTodosPorCondicion(rclvEnt, condiciones, include)
+								.obtieneTodosPorCondicion(rclvEnt, condicion, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
 						);
@@ -256,9 +258,9 @@ module.exports = {
 
 				// Rutina para un sólo RCLV
 				else {
-					const {condiciones, include} = this.obtieneIncludeCondics(entidad, prefs);
+					const {condicion, include} = this.obtieneIncludeCondics(entidad, prefs);
 					rclvs = await baseDeDatos
-						.obtieneTodosPorCondicion(entidad, condiciones, include)
+						.obtieneTodosPorCondicion(entidad, condicion, include)
 						.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
 						.then((n) => n.map((m) => ({...m, entidad})));
 				}
@@ -281,10 +283,10 @@ module.exports = {
 
 				// Obtiene las condiciones
 				const filtros = ["personajes", "hechos"].includes(entidad) ? this.filtros(entidad, prefs) : null;
-				const condiciones = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
+				const condicion = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
 
 				// Fin
-				return {include, condiciones};
+				return {include, condicion};
 			},
 			filtros: (entidad, prefs) => {
 				// Variables - la entidad tiene que ser aparte para diferenciarla de 'rclvs'
