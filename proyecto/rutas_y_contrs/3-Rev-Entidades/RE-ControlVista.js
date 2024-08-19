@@ -419,7 +419,7 @@ module.exports = {
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
 				registro: await procsFM.bloques.registro({...original, entidad}),
-				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, entidad),
+				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, "ediciones"),
 			};
 			const imgDerPers = procsFM.obtieneAvatar(original).orig;
 			const motivos = motivosEdics.filter((m) => m.prods);
