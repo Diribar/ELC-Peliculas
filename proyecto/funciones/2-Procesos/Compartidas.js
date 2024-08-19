@@ -858,7 +858,7 @@ module.exports = {
 			if (!statusProd) continue;
 
 			// Actualiza el campo prodAprob a 'true' o 'false'
-			const prodAprob = aprobados_ids.includes(statusProd);
+			const prodAprob = activos_ids.includes(statusProd); // antes era 'aprobados_ids'
 			baseDeDatos.actualizaPorId("links", link.id, {prodAprob});
 		}
 

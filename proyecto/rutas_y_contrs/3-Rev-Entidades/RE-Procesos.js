@@ -857,7 +857,7 @@ module.exports = {
 					const {entidad, id} = n;
 					const nombre =
 						(n.nombreCastellano.length > anchoMaxTablero
-							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
+							? n.nombreCastellano.slice(0, anchoMaxTablero - 1).trim() + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
@@ -958,10 +958,7 @@ let FN_links = {
 			const include = variables.entidades.asocProds;
 
 			// Obtiene los links en status 'a revisar'
-			const condicion = {
-				prodAprob: true,
-				statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
-			};
+			const condicion = {statusRegistro_id: [...creados_ids, ...inacRecup_ids], prodAprob: true};
 			const originales = await baseDeDatos
 				.obtieneTodosPorCondicion("links", condicion, include)
 				.then((n) => n.sort((a, b) => (a.capitulo_id && !b.capitulo_id ? -1 : !a.capitulo_id && b.capitulo_id ? 1 : 0))) // agrupados por capítulos y no capítulos

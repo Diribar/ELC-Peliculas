@@ -9,7 +9,10 @@ main {
 		}
 		#datosLargos {
 			display: flex; flex-direction: column; align-items: center;
-			#encabezado {border-radius: 20px; width: 900px;}
+			#encabezado {
+				border-radius: 20px; width: 900px;
+				&.creado {background-color: var(--verde-claro); color: var(--verde-oscuro); border: 3px solid var(--verde-oscuro);}
+			}
 			#filtros {
 				display: flex; flex-direction: row; justify-content: space-evenly;
 				margin: 15px 0; width: 100%;

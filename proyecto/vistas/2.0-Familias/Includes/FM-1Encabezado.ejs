@@ -1,4 +1,4 @@
-<div id="encabezado" class="<%= codigo %>">
+<div id="encabezado" class="<%= codigo %> <%= registro.statusRegistro.codigo %>">
 	<!-- Izquierda -->
 	<div id="nombres">
 		<% if (codigo != "detalle") { %><a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= id %><%= locals.origen && !origen.endsWith("DT") ? '&origen=' + origen : '' %>"><% } %>

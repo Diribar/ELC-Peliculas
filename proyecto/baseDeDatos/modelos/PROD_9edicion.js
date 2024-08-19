@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		coleccion_id: {type: dt.INTEGER},
 		grupoCol_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
+		capEnCons: {type: dt.BOOLEAN},
 
 		nombreOriginal: {type: dt.STRING(70)},
 		nombreCastellano: {type: dt.STRING(70)},
