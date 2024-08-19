@@ -38,9 +38,9 @@
 					&:first-child {margin-right: 3px;}
 				}
 			}
-			:is(#temporada, #capitulo) {border-radius: 5px;}
+			select:is(#temporada, #capitulo) {border-radius: 5px; color: fieldtext;}
 			#temporada {margin-right: 8px;}
-			select#capitulo {width: 20px; color: fieldtext;}
+			select#capitulo {width: 20px;}
 		}
 	}
 }

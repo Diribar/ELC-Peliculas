@@ -64,3 +64,21 @@
     - No se elimina el movimiento de inactivar
 
 8. Revisión de Inactivar, post: si no tiene comentario, lo toma del movimiento anterior
+
+
+> Cuando se cambia la configuración:
+- El layout y los filtros se actualizan con BD de la config elegida
+- Se borran session/cookies
+- Se guarda config_id en el usuario
+
+> Cuando se cambia una preferencia, se actualiza session/cookie (config_id, layout y filtros)
+
+> Cuando se comparte una configuración, se comparten:
+- preferencias
+- config_id, sólo si es predeterminada
+
+> Controller API, obtiene config:
+- Si existe session/cookie, toma la config sólo de ahí.
+- Else, obtiene el config_id del usuario, y de BD sus prefs
+- Si no existe config_id, deja el select de nombre, vacío. Place-holder: "Sin opción elegida". Botonera: "nuevo" solamente
+- Layout default: al azar

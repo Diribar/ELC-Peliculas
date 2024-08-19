@@ -572,7 +572,7 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		if (campo != "feedbackParaUsers" || nodeEnv != "development")
-			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(5, " ") + " -", campo);
+			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(6, " ") + " -", campo);
 
 		// Fin
 		return;
@@ -590,15 +590,12 @@ module.exports = {
 		return;
 	},
 	actualizaElProximoValorDeID: async (entidad) => {
-		// Variables
-		const nuevoValor = await baseDeDatos.maxValor(entidad, "id").then((n) => n + 1);
-
 		// Actualiza el autoincrement
 		// const config = require(__dirname + "/../../baseDeDatos/config/config.js")[nodeEnv];
 		// const Sequelize = require("sequelize");
 		// const sequelize = new Sequelize(config.database, config.username, config.password, config);
 		const texto = process.env.DB_NAME + "." + db[entidad].tableName;
-		// await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = " + nuevoValor + ";");
+		await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = 1;");
 
 		// Fin
 		return;

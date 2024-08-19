@@ -259,10 +259,13 @@ module.exports = {
 			// Variables
 			const azar = comp.azar();
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
+			const datos = {[campo_id]: id, azar};
+			if (entidad != "peliculas")
+				datos.grupoCol_id = entidad == "colecciones" ? id : original.coleccion_id;
 
 			// Actualiza o agrega un registro
-			if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", {[campo_id]: id, azar});
+			const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
+			if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", datos);
 			else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
 		}
 
