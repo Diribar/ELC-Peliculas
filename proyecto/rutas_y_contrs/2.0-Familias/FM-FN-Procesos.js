@@ -1076,7 +1076,7 @@ let FN = {
 		// Prepara el resultado
 		const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
 		const resultados = [
-			{titulo: "Calidad de " + sufijo, valor: calidad},
+			{titulo: "Eficacia de " + sufijo, valor: calidad},
 			{titulo: "Cant. de " + sufijo, valor: cantidad},
 		];
 

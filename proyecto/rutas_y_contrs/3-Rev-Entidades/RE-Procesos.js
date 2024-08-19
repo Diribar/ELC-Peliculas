@@ -857,7 +857,7 @@ module.exports = {
 					const {entidad, id} = n;
 					const nombre =
 						(n.nombreCastellano.length > anchoMaxTablero
-							? n.nombreCastellano.slice(0, anchoMaxTablero - 1) + "…"
+							? n.nombreCastellano.slice(0, anchoMaxTablero - 1).trim() + "…"
 							: n.nombreCastellano) + (n.anoEstreno ? " (" + n.anoEstreno + ")" : "");
 					const fechaRef = n.fechaRef ? n.fechaRef : n.statusSugeridoEn;
 					const fechaRefTexto = n.fechaRefTexto ? n.fechaRefTexto : comp.fechaHora.diaMes(fechaRef);
