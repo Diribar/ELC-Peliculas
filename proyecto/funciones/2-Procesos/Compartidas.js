@@ -64,6 +64,8 @@ module.exports = {
 				? "rclvs"
 				: variables.entidades.prods.includes(entidad)
 				? "prods"
+				: entidad == "ediciones"
+				? "edics"
 				: "";
 		},
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
