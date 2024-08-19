@@ -62,7 +62,7 @@ module.exports = {
 				});
 
 			// Guarda el mail en 'session'
-			req.session.login = {email};
+			req.session.login = {datos: {email}};
 
 			// Devuelve la info
 			return res.json(mailEnviado);
