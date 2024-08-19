@@ -80,7 +80,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 			: ruta.includes("/recuperar/")
 			? [recuperar_id]
 			: ruta.includes("/links/")
-			? aprobados_ids
+			? activos_ids // aprobados_ids
 			: ruta.includes("/solapamiento/")
 			? activos_ids
 			: []
