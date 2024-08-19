@@ -475,8 +475,8 @@ module.exports = {
 		prodsRclvs = prodsRclvs.filter((prodRclv) => {
 			// Restricciones si está recién creado
 			if (
-				 prodRclv.statusRegistro_id == creado_id && // está en status 'creado'
-				![revId,usAutom_id].includes(prodRclv.statusRegistro_id) && // no fue creado por el usuario ni en forma automática
+				prodRclv.statusRegistro_id == creado_id && // está en status 'creado'
+				![revId, usAutom_id].includes(prodRclv.statusRegistro_id) && // no fue creado por el usuario ni en forma automática
 				prodRclv.statusSugeridoEn > haceUnaHora // fue creado hace menos de una hora
 			)
 				return false;
@@ -1216,7 +1216,7 @@ module.exports = {
 			return imagenAlAzar;
 		},
 	},
-	enviaMail: async function ({email, asunto, comentario}) {
+	enviaMail: async ({email, asunto, comentario}) => {
 		// create reusable transporter object using the default SMTP transport
 		const {host, puerto, user, pass} = process.env;
 		const transporter = nodemailer.createTransport({host, port: Number(puerto), secure: true, auth: {user, pass}});
