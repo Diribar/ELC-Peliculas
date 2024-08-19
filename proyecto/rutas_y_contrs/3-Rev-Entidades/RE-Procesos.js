@@ -959,8 +959,8 @@ let FN_links = {
 
 			// Obtiene los links en status 'a revisar'
 			const condicion = {
-				prodAprob: true,
-				statusRegistro_id: {[Op.and]: [{[Op.ne]: aprobado_id}, {[Op.ne]: inactivo_id}]},
+				// prodAprob: true,
+				statusRegistro_id: [...creados_ids, ...inacRecup_ids],
 			};
 			const originales = await baseDeDatos
 				.obtieneTodosPorCondicion("links", condicion, include)

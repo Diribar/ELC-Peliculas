@@ -917,7 +917,10 @@ module.exports = {
 		},
 		actualizaCantLinksPorSem: async () => {
 			// Obtiene todos los links en status distinto a 'inactivo' y con producto 'aprobado'
-			const condicion = {statusRegistro_id: {[Op.ne]: inactivo_id}, prodAprob: true};
+			const condicion = {
+				statusRegistro_id: {[Op.ne]: inactivo_id},
+				//prodAprob: true
+			};
 			let links = baseDeDatos.obtieneTodosPorCondicion("links", condicion);
 			let edics = baseDeDatos.obtieneTodos("linksEdicion");
 			[links, edics] = await Promise.all([links, edics]);
