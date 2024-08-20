@@ -4,7 +4,9 @@
 	label[for] {padding-left: 3px;}
 }
 #checkBoxes {
-	justify-content: space-between; align-items: center;
-	label {padding-left: 5px; line-height: normal; font-weight: bold;}
+	display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;
+	padding-block: 5px; margin-block: 5px;
+	border-top: solid 1px var(--gris-oscuro); border-bottom: solid 1px var(--gris-oscuro);
+	label {padding-left: 5px; line-height: normal; font-weight: bold; text-wrap: nowrap;}
 }
 #tipoActuacion {width: 100%; justify-content: space-between;}
