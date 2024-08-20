@@ -265,7 +265,7 @@ app.set("views", [
 		if (variables.filtrosCons[prop].default) filtrosConDefault[prop] = variables.filtrosCons[prop].default;
 
 	// Procesos que dependen de la variable 'global'
-	const rutinas = require("./funciones/Rutinas/RT-Control.js");
+	const rutinas = require("./funciones/Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
