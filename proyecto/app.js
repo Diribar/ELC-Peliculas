@@ -254,7 +254,7 @@ app.set("views", [
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/Variables");
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
-	const procesos = require("./funciones/Rutinas/RT-Procesos.js");
+	const procesos = require("./funciones/Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
