@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 	// Valida que el link tenga un status distinto a 'estable'
 	if (!respuesta && estables_ids.includes(link.statusRegistro_id)) respuesta = "En este status no se puede procesar";
 
-	// Si corresponde, muestra el mensaje
+	// Si corresponde, devuelve el mensaje
 	if (respuesta) return res.json(respuesta);
 
 	// Fin
