@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 19/ago",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 20/ago",
+	"HoraUTC": "12:43",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 19/ago",
@@ -45,10 +45,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-ago-24": {},
 		"18-ago-24": {"leyenda": "Hoy recordamos a san Alberto Hurtado", "entidad": "personajes", "id": 69},
 		"19-ago-24": {},
 		"20-ago-24": {"leyenda": "Hoy recordamos a san Bernardo de Claraval", "entidad": "personajes", "id": 195},
-		"21-ago-24": {"leyenda": "Hoy recordamos al papa Pío X, santo", "entidad": "personajes", "id": 176}
+		"21-ago-24": {"leyenda": "Hoy recordamos al papa Pío X, santo", "entidad": "personajes", "id": 176},
+		"22-ago-24": {"leyenda": "Hoy recordamos a san Felipe Benicio", "entidad": "personajes", "id": 164}
 	}
 }
