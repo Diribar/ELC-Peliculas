@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const procesos = require("./FM-FN-Procesos");
-const procsRT = require("../../funciones/1-Rutinas/RT-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {

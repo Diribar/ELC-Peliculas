@@ -254,7 +254,7 @@ app.set("views", [
 	// Variables que requieren 'require'
 	global.variables = require("./funciones/Variables");
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
-	const procesos = require("./funciones/1-Rutinas/RT-Procesos");
+	const procesos = require("./funciones/Rutinas/RT-Procesos.js");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
 	global.vistasInstitucs = variables.vistasInstitucs;
@@ -265,7 +265,7 @@ app.set("views", [
 		if (variables.filtrosCons[prop].default) filtrosConDefault[prop] = variables.filtrosCons[prop].default;
 
 	// Procesos que dependen de la variable 'global'
-	const rutinas = require("./funciones/1-Rutinas/RT-Control");
+	const rutinas = require("./funciones/Rutinas/RT-Control.js");
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
