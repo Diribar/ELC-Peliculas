@@ -18,5 +18,5 @@ module.exports = async (req, res, next) => {
 	if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
 
 	// Fin
-	next();
+	return next();
 };
