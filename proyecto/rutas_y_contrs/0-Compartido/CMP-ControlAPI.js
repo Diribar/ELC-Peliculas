@@ -12,7 +12,7 @@ module.exports = {
 		// Datos de captura
 		const condicion = {entidad, entidad_id: id, activa: true};
 		const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion);
-		const {capturadoEn, capturadoPor_id} = captura;
+		const {capturadoEn, capturadoPor_id} = captura ? captura : {};
 
 		// Datos del registro
 		const registro = !capturadoEn ? await baseDeDatos.obtienePorId(entidad, id) : {};
