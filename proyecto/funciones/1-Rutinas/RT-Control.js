@@ -668,7 +668,6 @@ module.exports = {
 		},
 		eliminaRegsSinEntidad_id: async () => {
 			// Variables
-			const tablas = ["histEdics", "statusHistorial", "misConsultas", "calRegistros"];
 			const entidades = [...variables.entidades.todos, "usuarios"];
 			let idsPorEntidad = {};
 			let aux = [];
@@ -679,7 +678,7 @@ module.exports = {
 			entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
 
 			// Elimina historial
-			for (let tabla of tablas) {
+			for (let tabla of variables.tablasSinEntidadId) {
 				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
 				const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
 

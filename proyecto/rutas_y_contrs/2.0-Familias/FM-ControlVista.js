@@ -142,8 +142,7 @@ module.exports = {
 		await baseDeDatos.eliminaPorId(entidad, id);
 
 		// Elimina registros vinculados
-		const tablas = ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"];
-		for (let tabla of tablas) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
+		for (let tabla of variables.tablasSinEntidadId) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 		// Actualiza solapamiento y la variable 'fechasDelAno'
 		if (entidad == "epocasDelAno") comp.actualizaSolapam();
