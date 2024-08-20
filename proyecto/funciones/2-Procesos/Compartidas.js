@@ -565,6 +565,7 @@ module.exports = {
 
 				// Obtiene los datos del prodRclv
 				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
+				if (!prodRclv) continue;
 				const nombre = FN.nombresPosibles(prodRclv);
 				const {statusRegistro_id} = prodRclv;
 
