@@ -20,6 +20,11 @@
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
+
+			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
+				<!--Época respecto a Cristo -->
+				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
+			<% } %>
 		</div>
 		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
@@ -29,16 +34,11 @@
 			<% } %>
 
 			<!-- Campos checkBox -->
-			<div id="checkBoxes" class="flexRow altoFila">
+			<div id="checkBoxes">
 				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
 					<%- include("P-CheckBox", campo) %>
 				<% } %>
 			</div>
-
-			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
-				<!--Época respecto a Cristo -->
-				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
-			<% } %>
 
 			<!--Sinopsis-->
 			<%- include("PR2-Edic-Sinopsis") %>
