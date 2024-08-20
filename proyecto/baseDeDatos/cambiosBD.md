@@ -1,1 +1,0 @@
-UPDATE c19353_elc.prod_1peliculas SET violencia=0 WHERE not statusRegistro_id=1;
