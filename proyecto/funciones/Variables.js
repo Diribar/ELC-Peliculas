@@ -200,6 +200,7 @@ module.exports = {
 				{id: "BN", nombre: "Es en blanco y negro", condic: {color: 0}},
 				{id: "MS", nombre: "Es un musical", condic: {musical: 1}},
 				{id: "DP", nombre: "Tiene deporte", condic: {deporte: 1}},
+				{id: "VS", nombre: "Sin violencia sensible", condic: {violencia: 0}},
 			],
 		},
 	},
