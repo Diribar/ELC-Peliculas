@@ -13,5 +13,5 @@ module.exports = async (req, res, next) => {
 	await baseDeDatos.actualizaTodosPorCondicion("capturas", condicion, {activa: false});
 
 	// Fin
-	next();
+	return next();
 };

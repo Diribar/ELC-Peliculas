@@ -13,7 +13,9 @@ module.exports = async (req, res, next) => {
 		(ruta == "/perennes-bienvenido" && usuario.statusRegistro_id == perennes_id) ||
 		ruta == "/logout";
 
-	// Fin
+	// Si corresponde, redirecciona
 	if (!statusEsperado) return res.redirect("/usuarios/garantiza-login-y-completo");
-	else next();
+
+	// Fin
+	return next();
 };

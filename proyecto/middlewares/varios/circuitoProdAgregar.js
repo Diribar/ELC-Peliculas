@@ -53,5 +53,6 @@ module.exports = (req, res, next) => {
 		}
 	}
 
-	next();
+	// Fin
+	return next();
 };
