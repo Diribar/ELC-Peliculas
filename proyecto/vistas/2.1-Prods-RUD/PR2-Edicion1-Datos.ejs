@@ -34,11 +34,13 @@
 			<% } %>
 
 			<!-- Campos checkBox -->
+			 <hr>
 			<div id="checkBoxes">
-				<% for (let campo of camposDA.filter(n => n.chkBox && n.excluye != entidad && (!n.exclusivo || n.exclusivo == entidad))) { %>
+				<% for (let campo of camposDA.filter(n => n.chkBox && (!n.exclusivo || n.exclusivo.includes(entidad)))) { %>
 					<%- include("P-CheckBox", campo) %>
 				<% } %>
 			</div>
+			<hr>
 
 			<!--Sinopsis-->
 			<%- include("PR2-Edic-Sinopsis") %>
