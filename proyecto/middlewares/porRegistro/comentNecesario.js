@@ -12,7 +12,9 @@ module.exports = async (req, res, next) => {
 			iconos: [variables.vistaEntendido(req.session.urlAnterior)],
 		};
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };

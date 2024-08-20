@@ -23,7 +23,10 @@ module.exports = (req, res, next) => {
 		)
 			informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
 	}
-	// Conclusiones
+
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };

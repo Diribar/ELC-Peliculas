@@ -15,7 +15,9 @@ module.exports = async (req, res, next) => {
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaEntendido]};
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };

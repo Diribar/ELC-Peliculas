@@ -13,7 +13,9 @@ module.exports = async (req, res, next) => {
 	const registro = await baseDeDatos.obtienePorId("links", link_id);
 	if (!registro) informacion = {mensajes: ["No tenemos ese link"], iconos: [urlSinParametros]};
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };

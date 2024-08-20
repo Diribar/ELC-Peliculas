@@ -14,7 +14,9 @@ module.exports = async (req, res, next) => {
 		};
 	}
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };
