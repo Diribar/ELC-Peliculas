@@ -155,9 +155,11 @@ module.exports = async (req, res, next) => {
 		}
 	}
 
-	// Fin
+	// Si corresponde, muestra el mensaje
 	if (informacion) res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };
 
 let regsConStatusARevisar = async (userId, entidades) => {

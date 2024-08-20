@@ -7,5 +7,5 @@ module.exports = (req, res, next) => {
 	if (!usuario || !usuario.completadoEn) return res.redirect("/usuarios/garantiza-login-y-completo");
 
 	// Fin
-	next();
+	return next();
 };

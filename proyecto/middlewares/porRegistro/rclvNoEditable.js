@@ -23,7 +23,9 @@ module.exports = (req, res, next) => {
 			iconos: [vistaAnterior],
 		};
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else next();
+
+	// Fin
+	return next();
 };

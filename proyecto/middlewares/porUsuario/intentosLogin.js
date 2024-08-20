@@ -10,5 +10,5 @@ module.exports = (req, res, next) => {
 	if (usuario && usuario.intentosLogin >= intentosBD) return res.redirect("/usuarios/login/suspendido");
 
 	// Fin
-	next();
+	return next();
 };

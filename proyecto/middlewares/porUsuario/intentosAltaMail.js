@@ -7,5 +7,5 @@ module.exports = async (req, res, next) => {
 	if (req.cookies && req.cookies.intentosAM >= intentosCookies) return res.redirect("/usuarios/alta-mail/suspendido");
 
 	// Fin
-	next();
+	return next();
 };

@@ -28,5 +28,5 @@ module.exports = async (req, res, next) => {
 	req.session.olvidoContr = {datos, errores, validarDatosPerennes};
 
 	// Fin
-	next();
+	return next();
 };

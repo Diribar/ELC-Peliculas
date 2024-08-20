@@ -20,6 +20,7 @@ module.exports = (req, res, next) => {
 
 	// Si corresponde, muestra el mensaje de error
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
+
 	// Fin
-	else next();
+	return next();
 };
