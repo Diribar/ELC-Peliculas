@@ -128,7 +128,7 @@ app.set("views", [
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
-	global.baseDeDatos = require("./funciones/2-Procesos/BaseDatos");
+	global.baseDeDatos = require("./funciones/BaseDatos");
 	let datos = {
 		// Variables de usuario
 		statusRegistrosUs: baseDeDatos.obtieneTodosConOrden("statusRegistrosUs", "orden"),
@@ -252,8 +252,8 @@ app.set("views", [
 	global.motivoDupl_id = statusMotivos.find((n) => n.codigo == "duplicado").id;
 
 	// Variables que requieren 'require'
-	global.variables = require("./funciones/2-Procesos/Variables");
-	global.comp = require("./funciones/2-Procesos/Compartidas"); // tiene que ir antes que las BD
+	global.variables = require("./funciones/Variables");
+	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
 	const procesos = require("./funciones/1-Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;

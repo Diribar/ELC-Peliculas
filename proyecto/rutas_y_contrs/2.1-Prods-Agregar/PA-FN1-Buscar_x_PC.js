@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const APIsTMDB = require("../../funciones/APIsTMDB");
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procesos = require("./PA-FN4-Procesos");
 

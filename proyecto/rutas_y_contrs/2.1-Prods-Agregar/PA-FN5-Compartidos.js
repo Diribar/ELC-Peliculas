@@ -1,5 +1,5 @@
 "use strict";
-const APIsTMDB = require("../../funciones/2-Procesos/APIsTMDB");
+const APIsTMDB = require("../../funciones/APIsTMDB");
 
 module.exports = {
 	obtieneInfoDeMovie: async function (datos) {
