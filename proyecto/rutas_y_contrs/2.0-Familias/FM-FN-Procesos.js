@@ -866,12 +866,16 @@ module.exports = {
 			// Productos
 			if (familias == "productos") {
 				// Variables
-				let entsDepen = ["prodsComplem", "linksEdicion", "links"];
-				if (entidad == "colecciones") entsDepen.push("capitulos", "capsSinLink");
 				let espera = [];
 
-				// Elimina los links
-				for (let entDepen of entsDepen) espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, condicion));
+				// Elimina los registros de las entidades dependientes, comunes a todos los productos
+				for (let entDepen of ["prodsComplem", "linksEdicion", "links"])
+					espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, condicion));
+
+				// Elimina los registros de las entidades dependientes, específicos de las colecciones
+				if (entidad == "colecciones")
+					for (let entDepen of ["capitulos", "capsSinLink"])
+						espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, {coleccion_id: id}));
 
 				// Fin
 				espera = await Promise.all(espera);
