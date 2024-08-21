@@ -129,22 +129,6 @@ window.addEventListener("load", async () => {
 		let indiceMotivo = indice - v.sinMotivo;
 		let campo = v.campoNombres[indice];
 
-		// Sólo para los reemplazos
-		if (indiceMotivo >= 0) {
-			// Muestra cartel de motivos
-			DOM.muestraMotivos[indiceMotivo].addEventListener("click", () => {
-				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
-				return;
-			});
-
-			// Activa la opción para rechazar
-			DOM.motivoRechazos[indiceMotivo].addEventListener("change", () => {
-				if (DOM.motivoRechazos[indiceMotivo].value) DOM.rechazar[indice].classList.remove("inactivo");
-				else DOM.rechazar[indice].classList.add("inactivo");
-				return;
-			});
-		}
-
 		// Aprueba el nuevo valor
 		DOM.aprobar[indice].addEventListener("click", async () => {
 			// Ocultar la fila
@@ -178,6 +162,23 @@ window.addEventListener("load", async () => {
 			FN.averiguaInconsistencias();
 			return;
 		});
+
+		// Sólo para los reemplazos
+		if (indiceMotivo >= 0) {
+			// Muestra cartel de motivos
+			DOM.muestraMotivos[indiceMotivo].addEventListener("click", () => {
+				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
+				return;
+			});
+
+			// Activa la opción para rechazar
+			DOM.motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (DOM.motivoRechazos[indiceMotivo].value) DOM.rechazar[indice].classList.remove("inactivo");
+				else DOM.rechazar[indice].classList.add("inactivo");
+				return;
+			});
+		}
+
 	}
 });
 
