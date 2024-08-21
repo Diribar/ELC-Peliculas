@@ -156,7 +156,7 @@ window.addEventListener("load", async () => {
 			FN.ocultaBloques();
 
 			// Descarta el valor editado y obtiene el resultado
-			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
+			const ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			resultado = await fetch(ruta).then((n) => n.json());
 
 			// Fin
