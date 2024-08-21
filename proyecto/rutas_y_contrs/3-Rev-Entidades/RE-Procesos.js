@@ -675,7 +675,7 @@ module.exports = {
 				await baseDeDatos.actualizaPorId(entidad, original.id, datos);
 
 				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
-				if (entidad == "colecciones") await procsFM.transfiereDatos(original, edicion, campo);
+				if (entidad == "colecciones") await procsFM.transfDatosDeColParaCaps(original, edicion, campo);
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
