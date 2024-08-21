@@ -42,16 +42,17 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let FN = {
-		ocultaBloques: function () {
-			// Funciones
-			let averiguaSiHayQueOcultarElBloque = (bloque, filas) =>
+		averiguaSiHayQueOcultarElBloque: (bloque, filas) => {
+			return (
 				bloque &&
 				!bloque.className.includes("ocultar") &&
 				filas.length &&
 				Array.from(filas)
 					.map((n) => n.className)
-					.every((n) => n.includes("ocultar"));
-
+					.every((n) => n.includes("ocultar"))
+			);
+		},
+		ocultaBloques: function () {
 			// Si corresponde, oculta un bloque
 			if (averiguaSiHayQueOcultarElBloque(DOM.bloqueIngrs, DOM.filasIngrs)) DOM.bloqueIngrs.classList.add("ocultar");
 			if (averiguaSiHayQueOcultarElBloque(DOM.bloqueReemps, DOM.filasReemps)) DOM.bloqueReemps.classList.add("ocultar");
@@ -62,15 +63,15 @@ window.addEventListener("load", async () => {
 			todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
 
 			// Acciones si está todo procesado
-			if (todoProcesado) {
-				DOM.datos.classList.add("ocultar");
-				this.cartelTodoProcesado();
-			}
+			if (todoProcesado) this.todoProcesado();
 
 			// Fin
 			return;
 		},
-		cartelTodoProcesado: () => {
+		todoProcesado: () => {
+			// Oculta el cartel de datos
+			DOM.datos.classList.add("ocultar");
+
 			// Se asegura de tener vacío el 'contenedorMensajes'
 			DOM.contenedorMensajes.innerHTML = "";
 
@@ -178,7 +179,6 @@ window.addEventListener("load", async () => {
 				return;
 			});
 		}
-
 	}
 });
 
