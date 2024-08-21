@@ -369,8 +369,7 @@ window.addEventListener("load", async () => {
 				await fetch(rutas.eliminaEdicG);
 
 				// Recarga la vista para quitar el ID de la edición en el url
-				const origen = origen ? "&origen=" + origen : "";
-				location.href = location.pathname + "?entidad=" + entidad + "&id=" + prodId + origen;
+				location.href = rutas.recargaLaVistaSinEdicion;
 			}
 
 			// Fin
@@ -378,8 +377,14 @@ window.addEventListener("load", async () => {
 		});
 	});
 
+	// Obtiene las versiones y si le edición_id no coincide, recarga la vista sin la edición
+	version = await obtieneLasVersiones();
+	if (version.edicG.id != edicID) {
+		location.href = rutas.recargaLaVistaSinEdicion;
+		return;
+	}
+
 	// Startup
-	version = await obtieneLasVersiones(); // obtiene las versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
 	const statusRegistro_id = version.orig.statusRegistro_id;
 	obtieneLosValoresEdicN();
 	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
@@ -389,7 +394,9 @@ window.addEventListener("load", async () => {
 // Variables del url
 const entidad = new URL(location.href).searchParams.get("entidad");
 const prodId = new URL(location.href).searchParams.get("id");
-const origen = new URL(location.href).searchParams.get("origen");
+const edicID = new URL(location.href).searchParams.get("edicID");
+let origen = new URL(location.href).searchParams.get("origen");
+origen = origen ? "&origen=" + origen : "";
 
 // Rutas
 const rutas = {
@@ -397,6 +404,7 @@ const rutas = {
 	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + prodId,
 	variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + entidad + "&id=" + prodId,
 	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + prodId,
+	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + prodId + origen,
 };
 
 // Versiones de datos
@@ -439,7 +447,8 @@ let obtieneLasVersiones = async () => {
 
 	// Procesa la versión de edición guardada
 	let edicG_existe = !!edicG.id;
-	edicG = {...orig, ...edicG};
+	edicG = {...orig, ...edicG}; // completa la edicG
+	if (!edicG_existe) delete edicG.id; // si la edicG no existía, le quita el id
 
 	// Averigua si el original está pendiente de ser aprobado
 	let origPendAprobar = v.creados_ids.includes(orig.statusRegistro_id);
