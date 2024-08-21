@@ -783,8 +783,8 @@ module.exports = {
 		// Fin
 		return {orig, edic};
 	},
-	transfiereDatos: async (original, edicion, campo) => {
-		// 1. Si el campo no recibe datos, termina
+	transfDatosDeColParaCaps: async (original, edicion, campo) => {
+		// Si el campo no recibe datos, termina
 		const camposQueNoRecibenDatos = [
 			"nombreOriginal",
 			"nombreCastellano",
@@ -796,21 +796,28 @@ module.exports = {
 		];
 		if (camposQueNoRecibenDatos.includes(campo)) return;
 
-		// Condiciones
-		const condicColec = {coleccion_id: original.id}; // que pertenezca a la colección
-		const condicCampoVacio = {...condicColec, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
-		if (original[campo]) condicCampoVacio[campo][Op.or].push(original[campo]); // o que coincida con el valor original
-
-		// 2. Actualización condicional por campo
-		const cond1 = campo == "tipoActuacion_id";
-		const cond21 = variables.entidades.rclvs_id.includes(campo);
-		const cond22 = cond21 && edicion[campo] != 2; // particularidad para rclv_id
-		const cond31 = campo == "epocaOcurrencia_id";
-		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // Particularidad para epocaOcurrencia_id
+		// Variables
 		const novedad = {[campo]: edicion[campo]};
+
+		// Condiciones
+		const cond1 = campo == "tipoActuacion_id"; // 'tipo de actuación'
+		const cond21 = variables.entidades.rclvs_id.includes(campo);
+		const cond22 = cond21 && edicion[campo] != 2; // 'rclv_id', salvo que sea 'varios'
+		const cond31 = campo == "epocaOcurrencia_id";
+		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // 'epocaOcurrencia_id', salvo que sea 'varios'
+
+		// Campos para los que se pisa el valor de la colección siempre
+		const condicColec = {coleccion_id: original.id}; // que pertenezca a la colección
 		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicColec, novedad);
 
-		// 3. Actualización condicional por valores
+		// Campos para los que se pisa el valor de la colección sólo si: el campo está vacío, o coincidía con el original, o tenía un valor significativo
+		const condicCampoVacio = {
+			coleccion_id: original.id,
+			[Op.or]: [{[campo]: null}, {[campo]: ""}],
+			//[campo]: {[Op.or]: [{[Op.eq]: null}, ""]}
+			//[campo]: [{[Op.eq]: null}, ""], // que el campo esté vacío
+		};
+		//if (original[campo]) condicCampoVacio[Op.or].push({[campo]: original[campo]}); // o que coincida con el valor original
 		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicCampoVacio, novedad);
 
 		// Fin
