@@ -34,7 +34,9 @@ module.exports = async (req, res, next) => {
 	}
 	if (!mensajes && !motivo.comentNeces) delete req.body.comentario;
 
-	// Conclusiones
+	// Si corresponde, muestra el mensaje
 	if (mensajes) return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: [variables.vistaEntendido(link)]}});
-	else next();
+
+	// Fin
+	return next();
 };

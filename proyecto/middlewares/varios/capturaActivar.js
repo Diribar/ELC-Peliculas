@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1, ahora);
 
 	// Si está recién creado y se lo quiere usar en una vista distinta a 'revisión', no se captura
-	if (registro.statusRegistro_id == creado_id && registro.creadoEn >= haceUnaHora && baseUrl != "/revision") next(); // en status "creado" está reservado para el creador durante 1 hora, sin captura
+	if (registro.statusRegistro_id == creado_id && registro.creadoEn >= haceUnaHora && baseUrl != "/revision") return next(); // en status "creado" está reservado para el creador durante 1 hora, sin captura
 
 	// Averigua si el usuario ya lo tiene capturado
 	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
@@ -34,5 +34,5 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Fin
-	next();
+	return next();
 };

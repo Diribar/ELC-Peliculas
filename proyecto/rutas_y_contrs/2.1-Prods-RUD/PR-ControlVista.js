@@ -205,6 +205,7 @@ module.exports = {
 				else {
 					// Combina la información
 					edicion = {...edicion, ...req.body};
+
 					// Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 					edicion = await procsFM.guardaActEdic({entidad, original, edicion, userId});
 				}

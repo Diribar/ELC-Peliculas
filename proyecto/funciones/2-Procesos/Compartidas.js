@@ -277,8 +277,12 @@ module.exports = {
 
 		// Obtiene los campos a revisar
 		for (let campo of variables.camposRevisar[familias]) {
+			// Saltea los campos que corresponda
+			if (campo.exclusivo && !campo.exclusivo.includes(entidad)) continue;
+
 			// Agrega el campo simple
 			camposRevisar.push(campo.nombre);
+
 			// Agrega el campo include
 			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
 		}
@@ -561,6 +565,7 @@ module.exports = {
 
 				// Obtiene los datos del prodRclv
 				const prodRclv = await baseDeDatos.obtienePorId(entidad, entidad_id);
+				if (!prodRclv) continue;
 				const nombre = FN.nombresPosibles(prodRclv);
 				const {statusRegistro_id} = prodRclv;
 

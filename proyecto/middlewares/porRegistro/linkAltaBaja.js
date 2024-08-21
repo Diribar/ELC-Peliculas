@@ -15,17 +15,9 @@ module.exports = async (req, res, next) => {
 	// Valida que el link tenga un status distinto a 'estable'
 	if (!respuesta && estables_ids.includes(link.statusRegistro_id)) respuesta = "En este status no se puede procesar";
 
-	// Valida que quede lugar en alguna semana
-	// if (
-	// 	!respuesta &&
-	// 	IN == "SI" &&
-	// 	comp.linksVencPorSem.condicEstandar(link) &&
-	// 	((link.capitulo_id && !cantLinksVencPorSem.paraRevisar.capitulos) || // es un capítulo y no queda lugar
-	// 		(!link.capitulo_id && !cantLinksVencPorSem.paraRevisar.pelisColes)) // no es un capítulo y no queda lugar
-	// )
-	// 	respuesta = "En esta semana ya no se puede revisar este link";
+	// Si corresponde, devuelve el mensaje
+	if (respuesta) return res.json(respuesta);
 
 	// Fin
-	if (respuesta) return res.json(respuesta);
-	else next();
+	return next();
 };

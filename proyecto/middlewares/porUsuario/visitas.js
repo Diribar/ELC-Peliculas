@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 		delete req.session.usuario;
 		res.clearCookie("email");
 	}
-	
+
 	// Fin
-	next();
+	return next();
 };

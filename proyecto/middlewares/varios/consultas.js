@@ -16,6 +16,6 @@ module.exports = async (req, res, next) => {
 	// Si 'session' está inactiva y existe 'cookie', activa 'session' con 'cookie'
 	if (!req.session.configCons && req.cookies.configCons) req.session.configCons = req.cookies.configCons;
 
-	// Continuar
-	next();
+	// Fin
+	return next();
 };

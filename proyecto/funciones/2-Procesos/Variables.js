@@ -458,6 +458,7 @@ module.exports = {
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		{codigo: "CN", url: "/consultas"},
 	],
+	tablasSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 };
 
 let regsRCLV = async (userId) => {
