@@ -623,29 +623,34 @@ module.exports = {
 			}
 
 			// Paises
-			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
+			const indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
 			if (indicePais >= 0) {
-				let mostrarOrig, mostrarEdic, paises_id;
+				let paises_id;
+
 				// Países original
 				paises_id = resultado[indicePais].mostrarOrig;
-				mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
+				const mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
+
 				// Países edición
 				paises_id = resultado[indicePais].mostrarEdic;
-				mostrarEdic = await comp.paises_idToNombre(paises_id);
+				const mostrarEdic = await comp.paises_idToNombre(paises_id);
+
 				// Fin
 				resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
 			}
 
 			// Separa los resultados entre ingresos y reemplazos
-			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-			let reemplazos = resultado.filter((n) => n.mostrarOrig);
+			const ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+			const reemplazos = resultado.filter((n) => n.mostrarOrig);
 
 			// Fin
 			return [ingresos, reemplazos];
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		edicAprobRech: async function ({entidad, original, edicion, originalGuardado, revId, campo, aprob, motivo_id}) {
+		edicAprobRech: async function (objeto) {
 			// Variables
+			const {entidad, original, originalGuardado, revId, campo, aprob, motivo_id} = objeto;
+			let {edicion} = objeto;
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const decision = "edics" + (aprob ? "Aprob" : "Rech");
@@ -694,7 +699,8 @@ module.exports = {
 				};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
-					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+					const aux = motivo_id ? n.id == motivo_id : n.info_erronea;
+					motivo = motivosEdics.find((n) => aux);
 					datosEdic.penalizac = motivo.penalizac;
 					datosEdic.motivo_id = motivo.id;
 				}
