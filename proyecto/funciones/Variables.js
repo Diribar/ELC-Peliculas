@@ -34,6 +34,7 @@ const camposDA = [
 ];
 const prods = ["peliculas", "colecciones", "capitulos"];
 const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
+const rclvs_id = ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"];
 const prodsNombre = ["Película", "Colección", "Capítulo"];
 const rclvsNombre = ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"];
 const asocProds = ["pelicula", "coleccion", "capitulo"];
@@ -64,8 +65,7 @@ module.exports = {
 	entidades: {
 		// Productos y RCLVs
 		...{prods, prodsNombre, asocProds},
-		...{rclvs, rclvsNombre, asocRclvs},
-		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
+		...{rclvs, rclvsNombre, asocRclvs, rclvs_id},
 
 		// Otros
 		prodsRclvs: [...prods, ...rclvs],
@@ -251,6 +251,12 @@ module.exports = {
 		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
 		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
 	],
+	camposTransfCaps: [
+		...["paises_id", "idiomaOriginal_id", "direccion", "guion", "musica", "actores", "produccion"],
+		...["cfc", "bhr", "tipoActuacion_id", "publico_id", "epocaOcurrencia_id"],
+		...["color", "musical", "deporte", "violencia", "capEnCons"],
+		...rclvs_id,
+	],
 
 	// RCLV
 	prioridadesRCLV: [
@@ -259,20 +265,11 @@ module.exports = {
 		{id: 3, nombre: "Mayor"},
 	],
 	prefijos: [
-		"Beata",
-		"Beato",
-		"Cardenal",
-		"Don",
-		"Hna",
-		"Obispo",
-		"Padre",
-		"Papa",
-		"San",
-		"Santo",
-		"Santa",
-		"Sor",
-		"Ven",
-		"Venerable",
+		...["Ven", "Venerable"],
+		...["Beata", "Beato"],
+		...["San", "Santo", "Santa"],
+		...["Padre", "Obispo", "Cardenal", "Papa", "Don"],
+		...["Madre", "Hna", "Sor"],
 	],
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
