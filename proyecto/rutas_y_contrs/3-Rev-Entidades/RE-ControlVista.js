@@ -367,7 +367,7 @@ module.exports = {
 			if (familia == "rclv") includeOrig.push(...variables.entidades.prods);
 
 			// Obtiene los registros
-			let original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
+			const original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
 			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID, includeEdic);
 
 			// Si el avatar está presente en la edición, muestra esa vista
