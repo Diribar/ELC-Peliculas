@@ -38,8 +38,6 @@ window.addEventListener("load", async () => {
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
-		rutaEdicion: rutaEdicion + entidad + "&id=" + entId + "&edicID=" + edicID,
-		cola: "?entidad=" + entidad + "&id=" + entId + "&origen=" + (origen ? origen : "TE"),
 	};
 
 	// Funciones
@@ -95,7 +93,7 @@ window.addEventListener("load", async () => {
 
 			// Acciones si quedan campos
 			if (resultado.quedanCampos) this.cartelHayInconsistencias();
-			else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + v.cola;
+			else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + cola;
 
 			// Fin
 			return;
@@ -106,7 +104,7 @@ window.addEventListener("load", async () => {
 				"Se encontró una inconsistencia en el registro de edición.",
 				"Figura que está todo procesado, y a la vez quedan campos por procesar",
 			];
-			const link = "/" + familia + "/edicion/" + v.cola;
+			const link = "/" + familia + "/edicion/" + cola;
 			const vistaEntendido = variables.vistaEntendido(link);
 			contenidoDelCartelGenerico({DOM, mensajes, ...vistaEntendido});
 
@@ -131,22 +129,6 @@ window.addEventListener("load", async () => {
 		let indiceMotivo = indice - v.sinMotivo;
 		let campo = v.campoNombres[indice];
 
-		// Sólo para los reemplazos
-		if (indiceMotivo >= 0) {
-			// Muestra cartel de motivos
-			DOM.muestraMotivos[indiceMotivo].addEventListener("click", () => {
-				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
-				return;
-			});
-
-			// Activa la opción para rechazar
-			DOM.motivoRechazos[indiceMotivo].addEventListener("change", () => {
-				if (DOM.motivoRechazos[indiceMotivo].value) DOM.rechazar[indice].classList.remove("inactivo");
-				else DOM.rechazar[indice].classList.add("inactivo");
-				return;
-			});
-		}
-
 		// Aprueba el nuevo valor
 		DOM.aprobar[indice].addEventListener("click", async () => {
 			// Ocultar la fila
@@ -154,7 +136,7 @@ window.addEventListener("load", async () => {
 			FN.ocultaBloques();
 
 			// Actualiza el valor original y obtiene el resultado
-			const ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
+			const ruta = rutaEdicion + "&aprob=true&campo=" + campo;
 			resultado = await fetch(ruta).then((n) => n.json());
 
 			// Fin
@@ -173,24 +155,44 @@ window.addEventListener("load", async () => {
 			FN.ocultaBloques();
 
 			// Descarta el valor editado y obtiene el resultado
-			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
+			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			resultado = await fetch(ruta).then((n) => n.json());
 
 			// Fin
 			FN.averiguaInconsistencias();
 			return;
 		});
+
+		// Sólo para los reemplazos
+		if (indiceMotivo >= 0) {
+			// Muestra cartel de motivos
+			DOM.muestraMotivos[indiceMotivo].addEventListener("click", () => {
+				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
+				return;
+			});
+
+			// Activa la opción para rechazar
+			DOM.motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (DOM.motivoRechazos[indiceMotivo].value) DOM.rechazar[indice].classList.remove("inactivo");
+				else DOM.rechazar[indice].classList.add("inactivo");
+				return;
+			});
+		}
+
 	}
 });
 
 // Datos del registro
 const entidad = new URL(location.href).searchParams.get("entidad");
 const entId = new URL(location.href).searchParams.get("id");
-const origen = new URL(location.href).searchParams.get("origen");
 const edicID = new URL(location.href).searchParams.get("edicID");
+const origen = new URL(location.href).searchParams.get("origen");
+
+// Rutas
+const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + entId + "&edicID=" + edicID;
+const cola = "?entidad=" + entidad + "&id=" + entId + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables
 const url = location.pathname.replace("/revision/", "");
 const familia = url.slice(0, url.indexOf("/"));
-const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=";
 let resultado, todoProcesado;
