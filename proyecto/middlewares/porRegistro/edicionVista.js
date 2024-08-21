@@ -7,28 +7,8 @@ module.exports = async (req, res, next) => {
 	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
 
-	// 1. Acciones en caso de que exista el 'edicID' en el url
-	if (edicID) {
-		// Averigua si existe la edicID en la base de datos
-		const edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
-
-		// En caso que no, mensaje de error
-		if (!edicion) {
-			// Acciones si no tiene origen
-			if (!origen) {
-				const {baseUrl} = comp.reqBasePathUrl(req);
-				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
-			}
-
-			// Información
-			const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
-			const vistaAnterior = variables.vistaAnterior(link);
-			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
-		}
-	}
-
-	// 2. Acciones en caso de que no exista el 'edicID' en el url
-	else {
+	// Acciones en caso de que no exista el 'edicID' en el url
+	if (!edicID) {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const {baseUrl} = comp.reqBasePathUrl(req);
@@ -68,6 +48,26 @@ module.exports = async (req, res, next) => {
 
 		// En caso que exista una edición, redirige incluyendo esa edicID en el url
 		if (edicion) return res.redirect(req.originalUrl + "&edicID=" + edicion.id);
+	}
+
+	// Acciones en caso de que exista el 'edicID' en el url
+	if (edicID) {
+		// Averigua si existe la edicID en la base de datos
+		const edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
+
+		// En caso que no, mensaje de error
+		if (!edicion) {
+			// Acciones si no tiene origen
+			if (!origen) {
+				const {baseUrl} = comp.reqBasePathUrl(req);
+				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
+			}
+
+			// Información
+			const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			const vistaAnterior = variables.vistaAnterior(link);
+			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
+		}
 	}
 
 	// Si corresponde, muestra el mensaje
