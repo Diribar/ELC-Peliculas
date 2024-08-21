@@ -428,8 +428,8 @@ module.exports = {
 			return;
 		},
 		actualizaLinksPorProv: async () => {
-			// Obtiene todos los links
-			const linksTotales = await baseDeDatos.obtieneTodos("links");
+			// Obtiene todos los links activos
+			const linksTotales = await baseDeDatos.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobados_ids});
 
 			// Links por proveedor
 			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {

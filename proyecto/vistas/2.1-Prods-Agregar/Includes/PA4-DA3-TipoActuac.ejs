@@ -1,8 +1,8 @@
 <% const campo = camposDA.find(n => n.nombre == nombre) %>
 <% const {titulo, valores} = campo %>
-<section class="labelSelect flexRowAlign">
+<section class="labelSelect altoFila">
 	<label><%= titulo %></label>
-	<div class="inputError altoFila">
+	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= nombre %>" class="input" autofocus>
 			<% for (let valor of valores) { %>

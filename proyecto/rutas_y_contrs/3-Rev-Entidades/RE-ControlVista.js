@@ -260,14 +260,16 @@ module.exports = {
 			const azar = comp.azar();
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const datos = {[campo_id]: id, azar};
-			if (entidad != "peliculas")
-				datos.grupoCol_id = entidad == "colecciones" ? id : original.coleccion_id;
+			if (entidad != "peliculas") datos.grupoCol_id = entidad == "colecciones" ? id : original.coleccion_id;
 
 			// Actualiza o agrega un registro
 			const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
 			if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", datos);
 			else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
 		}
+
+		// CONSECUENCIAS - Actualiza 'inactivar' y 'recuperar'
+		if (inacRecup_ids.includes(statusOriginal_id)) await comp.revisaStatus.consolidado();
 
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
@@ -300,11 +302,11 @@ module.exports = {
 		// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
-		// CONSECUENCIAS - Si el registro 'inactivar_id' del historial no tiene comentarios, lo elimina
+		// CONSECUENCIAS - statusHistorial: si el registro 'inactivar_id' no tiene comentarios, lo elimina
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
 		baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
 
-		// CONSECUENCIAS - Agrega un registro en el statusHistorial
+		// CONSECUENCIAS - statusHistorial: Agrega un registro
 		let datosHist = {
 			...{entidad, entidad_id: id, aprobado}, // entidad
 			...{statusOriginalPor_id: userId, statusFinalPor_id: revId}, // personas
@@ -419,7 +421,7 @@ module.exports = {
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
 				registro: await procsFM.bloques.registro({...original, entidad}),
-				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, entidad),
+				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, "ediciones"),
 			};
 			const imgDerPers = procsFM.obtieneAvatar(original).orig;
 			const motivos = motivosEdics.filter((m) => m.prods);

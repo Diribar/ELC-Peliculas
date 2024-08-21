@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
-	if (!req.session.usuario) next();
+	if (!req.session.usuario) return next();
 
 	// Variables - Generales
 	const capturadoPor_id = req.session.usuario.id;

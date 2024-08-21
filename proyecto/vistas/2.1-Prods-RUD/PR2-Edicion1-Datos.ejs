@@ -4,7 +4,7 @@
 	<!-- Datos -->
 	<div id="info">
 		<div id="primeraColumna" class="columna">
-			<h3>Datos Generales</h3>
+			<h3>Datos Duros</h3>
 			<!-- Primeros campos -->
 			<% for (let campo of camposInput1) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 
@@ -20,6 +20,11 @@
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
+
+			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
+				<!--Época respecto a Cristo -->
+				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
+			<% } %>
 		</div>
 		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
@@ -29,16 +34,13 @@
 			<% } %>
 
 			<!-- Campos checkBox -->
-			<div id="checkBoxes" class="flexRow altoFila">
-				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
+			 <hr>
+			<div id="checkBoxes">
+				<% for (let campo of camposDA.filter(n => n.chkBox && (!n.exclusivo || n.exclusivo.includes(entidad)))) { %>
 					<%- include("P-CheckBox", campo) %>
 				<% } %>
 			</div>
-
-			<% if (usuario.rolUsuario.autTablEnts || registro.statusRegistro_id == aprobado_id) { %>
-				<!--Época respecto a Cristo -->
-				<%- include("PR2-Edic-Select", {nombre: "epocaOcurrencia_id"}) %>
-			<% } %>
+			<hr>
 
 			<!--Sinopsis-->
 			<%- include("PR2-Edic-Sinopsis") %>

@@ -21,6 +21,8 @@ const camposDA = [
 	{titulo: "Es a color", nombre: "color", chkBox: true},
 	{titulo: "Es un musical", nombre: "musical", chkBox: true},
 	{titulo: "Tiene deporte", nombre: "deporte", chkBox: true},
+	{titulo: "Violencia sensible", nombre: "violencia", chkBox: true, exclusivo: ["peliculas", "colecciones"]},
+	{titulo: "Mostrar capítulos en consultas", nombre: "capEnCons", chkBox: true, exclusivo: ["colecciones"]},
 	{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", relacInclude: "tipoActuacion", tabla: "tiposActuacion"},
 	{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos"},
 	{titulo: "Personaje histórico", nombre: "personaje_id", relacInclude: "personaje", tabla: "personajes", rclv: true},
@@ -200,23 +202,14 @@ module.exports = {
 				{id: "DP", nombre: "Tiene deporte", condic: {deporte: 1}},
 			],
 		},
-
-		// entidad: {
-		// 	titulo: "Películas / Colecciones",
-		// 	opciones: [
-		// 		{id: "peliculas", nombre: "Sólo películas"},
-		// 		{id: "colecciones", nombre: "Sólo colecciones"},
-		// 	],
-		// },
 	},
 
 	// Productos
 	camposDD: [...camposDD],
 	camposDA: [...camposDA],
-	camposDA_conValores: async function (userId) {
+	camposDA_conValores: async (userId) => {
 		// Variables
-		const entidadesRCLV = this.entidades.rclvs;
-		const registrosRCLV = await regsRCLV(entidadesRCLV, userId);
+		const registrosRCLV = await regsRCLV(userId);
 		const mensajes = {
 			publico: [
 				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
@@ -467,21 +460,21 @@ module.exports = {
 	],
 };
 
-let regsRCLV = async (entidades, userId) => {
-	const condics = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userId}}};
+let regsRCLV = async (userId) => {
+	const condicion = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userId}}};
 	let valores = [];
 	let registrosRCLV = {};
 
 	// Obtiene los registrosRCLV
-	for (let entidad of entidades) valores.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condics, "statusRegistro"));
+	for (let entRclv of rclvs) valores.push(baseDeDatos.obtieneTodosPorCondicion(entRclv, condicion, "statusRegistro"));
 	valores = await Promise.all(valores);
 
 	// Pule la información
-	entidades.forEach((entidad, i) => {
+	rclvs.forEach((entRclv, i) => {
 		// Ordena los registros por nombre
 		valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
 		// Fin
-		registrosRCLV[entidad] = valores[i];
+		registrosRCLV[entRclv] = valores[i];
 	});
 
 	// Fin
