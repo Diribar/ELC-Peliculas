@@ -193,7 +193,7 @@ module.exports = {
 					// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
 					if (entidad == "colecciones")
 						for (let prop in req.body)
-							if (original[prop] != req.body[prop]) await procsFM.transfiereDatos(original, req.body, prop);
+							if (original[prop] != req.body[prop]) await procsFM.transfDatosDeColParaCaps(original, req.body, prop);
 
 					// Varias
 					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
