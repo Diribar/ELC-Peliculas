@@ -682,6 +682,7 @@ module.exports = {
 				for (let regHistorial of regsHistorial)
 					if (
 						!regHistorial.entidad || // no existe la entidad
+						!entidades.includes(regHistorial.entidad) || // entidad desconocida
 						!regHistorial.entidad_id || // no existe la entidad_id
 						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
 					)
