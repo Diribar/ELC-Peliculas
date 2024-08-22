@@ -79,6 +79,13 @@ module.exports = {
 		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: prodComb});
 		const familia = "producto";
 		const anchorEncab = true;
+		const parrafo = "<em>Color de los bordes (simil semáforo):</em>";
+		const mensajes = [
+			"<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>",
+			"<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
+			"<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
+			"<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma",
+		];
 
 		// Va a la vista
 		// return res.send(links);
@@ -87,7 +94,7 @@ module.exports = {
 			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre, parrafo, mensajes},
 			...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 		});
 	},
