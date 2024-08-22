@@ -132,11 +132,11 @@ module.exports = {
 			// Actores y Tipo de Actuación
 			if (datos.tipoActuacion_id && !errores.actores) {
 				errores.actores =
-					datos.tipoActuacion_id == anime_id && datos.actores != "Dibujos Animados"
+					datos.tipoActuacion_id == anime_id && datos.actores != dibujosAnimados
 						? 'Debe decir "Dibujos Animados"'
-						: datos.tipoActuacion_id == documental_id && datos.actores != "Documental"
+						: datos.tipoActuacion_id == documental_id && datos.actores != documental
 						? 'Debe decir "Documental"'
-						: datos.tipoActuacion_id == actuada_id && ["Dibujos Animados", "Documental"].includes(datos.actores)
+						: datos.tipoActuacion_id == actuada_id && [dibujosAnimados, documental].includes(datos.actores)
 						? "Deben figurar los nombres de los actores y actrices"
 						: "";
 			}

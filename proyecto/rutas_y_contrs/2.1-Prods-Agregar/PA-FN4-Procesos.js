@@ -46,9 +46,9 @@ module.exports = {
 		valorParaActores: (datos) => {
 			// Acciones si no hay un valor para actores
 			return datos.tipoActuacion_id == anime_id
-				? "Dibujos Animados"
+				? dibujosAnimados
 				: datos.tipoActuacion_id == documental_id
-				? "Documental"
+				? documental
 				: datos.actores;
 		},
 		ayudas: {
