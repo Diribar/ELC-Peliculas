@@ -11,7 +11,7 @@
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
-	"RutinasHorarias": ["feedbackParaUsers", "actualizaProdsAlAzar", "eliminaCapturasVencidas", "ABM_noRevisores"],
+	"RutinasHorarias": ["feedbackParaUsers", "actualizaProdsAlAzar", "eliminaCapturasVencidas"],
 	"Subtitulo4": "-------------- RUTINAS DIARIAS ----------------",
 	"MotivoDiarias1": "Actualizaciones que se necesita que sean diarias",
 	"MotivoDiarias2": "Limpieza de información que se necesita que sea diaria",
@@ -20,7 +20,8 @@
 		"imagenDerecha": "SI",
 		"loginsPorDia": "SI",
 		"rutinasDiariasEnUsuario": "SI",
-		"eliminaLinksInactivos": "SI"
+		"eliminaLinksInactivos": "SI",
+		"ABM_noRevisores": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
