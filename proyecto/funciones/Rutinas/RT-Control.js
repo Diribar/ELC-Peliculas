@@ -736,8 +736,7 @@ module.exports = {
 
 				// Actualiza el próximo valor de ID
 				const texto = process.env.DB_NAME + "." + db[tabla].tableName;
-				const textoCompleto = "ALTER TABLE " + texto + " AUTO_INCREMENT = 1;";
-				await sequelize.query(textoCompleto);
+				await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = 1;");
 			}
 
 			// Fin
