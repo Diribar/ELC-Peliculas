@@ -150,12 +150,11 @@ module.exports = {
 	RutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinasSemanales = info.RutinasSemanales;
 
 		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in rutinasSemanales) {
+		for (let rutinaSemanal in info.RutinasSemanales) {
 			const comienzo = Date.now();
-			await this.rutinasSemanales[rutinaSemanal]();
+			await this.rutinas[rutinaSemanal]();
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
 		}
@@ -251,7 +250,41 @@ module.exports = {
 			return;
 		},
 	},
-	rutinasDiarias: {
+	rutinasDiarias: {},
+	rutinas: {
+		// Gestiones horarias
+		ABM_noRevisores: async () => {
+			// Si no hay casos, termina
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
+
+			// Arma el cuerpo del mensaje
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
+
+			// Obtiene los usuarios revisorPERL y revisorLinks
+			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+			[perl, links] = await Promise.all([perl, links]);
+			const revisores = {perl, links};
+
+			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
+			for (let tipo of ["perl", "links"])
+				if (regs[tipo].length || edics[tipo].length)
+					for (let revisor of revisores[tipo])
+						mailsEnviados.push(
+							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
+						); // Envía el mail y actualiza la BD
+
+			// Avisa que está procesando el envío de los mails
+			await Promise.all(mailsEnviados);
+
+			// Fin
+			return;
+		},
+
+		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
@@ -298,36 +331,6 @@ module.exports = {
 
 			// Borra los archivos de imagen que no se corresponden con los títulos
 			procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
-
-			// Fin
-			return;
-		},
-		ABM_noRevisores: async () => {
-			// Si no hay casos, termina
-			const {regs, edics} = await procesos.ABM_noRevs();
-			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
-
-			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
-
-			// Obtiene los usuarios revisorPERL y revisorLinks
-			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
-			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
-			[perl, links] = await Promise.all([perl, links]);
-			const revisores = {perl, links};
-
-			// Rutina por usuario
-			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
-			let mailsEnviados = [];
-			for (let tipo of ["perl", "links"])
-				if (regs[tipo].length || edics[tipo].length)
-					for (let revisor of revisores[tipo])
-						mailsEnviados.push(
-							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
-						); // Envía el mail y actualiza la BD
-
-			// Avisa que está procesando el envío de los mails
-			await Promise.all(mailsEnviados);
 
 			// Fin
 			return;
@@ -388,8 +391,13 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	rutinasSemanales: {
+		eliminaLinksInactivos: async () => {
+			const fechaDeCorte = new Date(new Date().getTime() - unDia * 2);
+			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+			return;
+		},
+
 		// Gestiones semanales
 		estableceLosNuevosLinksVencidos: async () => {
 			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
@@ -439,11 +447,6 @@ module.exports = {
 			}
 
 			// Fin
-			return;
-		},
-		eliminaLinksInactivos: async () => {
-			const condicion = {statusRegistro_id: inactivo_id};
-			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 			return;
 		},
 		eliminaImagenesSinRegistro: async () => {
@@ -687,7 +690,7 @@ module.exports = {
 				for (let regHistorial of regsHistorial)
 					if (
 						!regHistorial.entidad || // no existe la entidad
-						regHistorial.entidad_id || // no existe la entidad_id
+						!regHistorial.entidad_id || // no existe la entidad_id
 						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
 					)
 						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
