@@ -637,7 +637,7 @@ module.exports = {
 						}
 
 					// Busca las 'palsClave' dentro de sus productos
-					if (!rclvs[i].palsClave)
+					if (!rclvs[i].palsClave && rclv.productos)
 						for (let j = rclv.productos.length - 1; j >= 0; j--) {
 							// Variables
 							const producto = rclv.productos[j];
