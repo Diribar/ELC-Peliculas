@@ -563,14 +563,15 @@ module.exports = {
 				// Fin
 				return prods;
 			},
+
 			// RCLVs
-			rclvsConProds: ({rclvs, prods, cantResults}) => {
+			rclvsConProds: ({rclvs, prods}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
 				// Tareas por RCLV
 				let i = 0;
-				while (i < rclvs.length && (cantResults ? i < cantResults : true)) {
+				while (i < rclvs.length) {
 					// Variables
 					let rclv = rclvs[i];
 
