@@ -21,9 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinasHorarias.actualizaProdsAlAzar();
-		// await this.rutinasDiarias.linksPorProv();
-		// await this.rutinasSemanales.idDeTablas();
+		// await this.rutinas.actualizaProdsAlAzar();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -46,7 +44,6 @@ module.exports = {
 
 		// Filtros
 		if (!Object.keys(info).length || !info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		const rutinasDiarias = info.RutinasDiarias;
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
@@ -63,7 +60,7 @@ module.exports = {
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
-		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
+		for (let rutinaDiaria in info.RutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias"); // actualiza el valor "NO" en los campos de "RutinasDiarias"
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
 
@@ -112,14 +109,13 @@ module.exports = {
 	RutinasHorarias: async function () {
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinas = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
 		console.log();
 		console.log("Rutinas horarias:");
-		for (let rutina of rutinas) {
+		for (let rutina of info.RutinasHorarias) {
 			const comienzo = Date.now();
-			await this.rutinasHorarias[rutina]();
+			await this.rutinas[rutina]();
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasHorarias(rutina, duracion);
 		}
@@ -133,12 +129,11 @@ module.exports = {
 
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in rutinasDiarias) {
+		for (let rutinaDiaria in info.RutinasDiarias) {
 			const comienzo = Date.now();
-			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
+			await this.rutinas[rutinaDiaria](); // ejecuta la rutina
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
 		}
@@ -165,7 +160,8 @@ module.exports = {
 	},
 
 	// Rutinas
-	rutinasHorarias: {
+	rutinas: {
+		// Gestiones horarias
 		feedbackParaUsers: async () => {
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -249,10 +245,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	rutinasDiarias: {},
-	rutinas: {
-		// Gestiones horarias
 		ABM_noRevisores: async () => {
 			// Si no hay casos, termina
 			const {regs, edics} = await procesos.ABM_noRevs();
@@ -392,7 +384,7 @@ module.exports = {
 			return;
 		},
 		eliminaLinksInactivos: async () => {
-			const fechaDeCorte = new Date(new Date().getTime() - unDia * 2);
+			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
 			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
 			return;
@@ -445,33 +437,6 @@ module.exports = {
 				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
 				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
 			}
-
-			// Fin
-			return;
-		},
-		eliminaImagenesSinRegistro: async () => {
-			// Variables
-			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-			const statusCualquiera_id = {[Op.ne]: null};
-
-			const objetos = [
-				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
-
-				// Carpetas FINAL
-				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},
-				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
-
-				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
-			];
-
-			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
-
-			// Elimina las imágenes de "Provisorio"
-			procesos.eliminaImagenesProvisorio();
 
 			// Fin
 			return;
@@ -633,6 +598,33 @@ module.exports = {
 		},
 
 		// Eliminaciones de mantenimiento
+		eliminaImagenesSinRegistro: async () => {
+			// Variables
+			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+			const statusCualquiera_id = {[Op.ne]: null};
+
+			const objetos = [
+				// Carpetas REVISAR
+				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+
+				// Carpetas FINAL
+				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},
+				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
+
+				// Carpetas USUARIOS
+				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
+			];
+
+			// Elimina las imágenes de las carpetas "Revisar" y "Final"
+			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+			// Elimina las imágenes de "Provisorio"
+			procesos.eliminaImagenesProvisorio();
+
+			// Fin
+			return;
+		},
 		eliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
 			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
