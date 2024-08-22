@@ -35,6 +35,8 @@ global.setTimeOutStd = 1000;
 global.largoComentario = 150;
 global.statusErrores = [];
 global.idMinRclv = 10;
+global.dibujosAnimados = "Dibujos Animados";
+global.documental = "Documental";
 
 // Require 'path'
 global.path = require("path");

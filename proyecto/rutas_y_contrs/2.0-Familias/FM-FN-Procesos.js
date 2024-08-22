@@ -784,33 +784,39 @@ module.exports = {
 		return {orig, edic};
 	},
 	transfDatosDeColParaCaps: async (original, edicion, campo) => {
-		// Si el campo no recibe datos, termina
-		if (!camposTransfCaps.includes(campo)) return;
-
 		// Variables
 		const novedad = {[campo]: edicion[campo]};
+		const {camposTransfCaps} = variables;
 
-		// Condiciones
-		const cond1 = campo == "tipoActuacion_id"; // 'tipo de actuación'
-		const cond21 = variables.entidades.rclvs_id.includes(campo);
-		const cond22 = cond21 && edicion[campo] != 2; // 'rclv_id', salvo que sea 'varios'
-		const cond31 = campo == "epocaOcurrencia_id";
-		const cond32 = cond31 && edicion.epocaOcurrencia_id != epocasVarias.id; // 'epocaOcurrencia_id', salvo que sea 'varios'
+		// Si el campo no recibe datos, termina
+		const camposAceptados = Object.values(camposTransfCaps).flat();
+		if (!camposAceptados.includes(campo)) return;
 
-		// Campos para los que se pisa el valor de la colección siempre
-		const condicColec = {coleccion_id: original.id}; // que pertenezca a la colección
-		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicColec, novedad);
+		// Campos que se reemplazan siempre
+		const esActoresSiempre = campo == "actores" && [dibujosAnimados, documental].includes(edicion.actores);
+		if (camposTransfCaps.sinDifs.includes(campo) || esActoresSiempre) {
+			const condicion = {coleccion_id: original.id};
+			await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		}
 
-		// Campos para los que preserva el valor si es significativo distinto del original
-		const condicCampoVacio = {
-			coleccion_id: original.id,
-			[campo]: [null],
-			//[Op.or]: [{[campo]: null}, {[campo]: ""}],
-			//[campo]: {[Op.or]: [{[Op.eq]: null}, ""]}
-			//[campo]: [{[Op.eq]: null}, ""], // que el campo esté vacío
-		};
-		if (original[campo] !== null) condicCampoVacio[campo].push(original[campo]); // coincide con el valor original
-		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicCampoVacio, novedad);
+		// Campos para los que se puede preservar el valor según el caso
+		const esActoresDepende = campo == "actores" && ![dibujosAnimados, documental].includes(edicion.actores);
+		if (camposTransfCaps.conDifs.includes(campo) || esActoresDepende) {
+			// Condición
+			const condicion = {coleccion_id: original.id, [campo]: [original[campo]]}; // si el valor del capítulo coincide coincide con el del original
+			if (original[campo] !== null) condicion[campo].push(null); // se asegura de que reemplace los que tengan valor 'null'
+
+			// Campos particulares
+			const esRclv_id = variables.entidades.rclvs_id.includes(campo);
+			const noEsVarios = esRclv_id && edicion[campo] != 2; // 'rclv_id', salvo que sea 'varios'
+			const esEpocaOcurrencia = campo == "epocaOcurrencia_id";
+			const noEsVarias = esEpocaOcurrencia && edicion.epocaOcurrencia_id != epocasVarias.id; // 'epocaOcurrencia_id', salvo que sea 'varios'
+			const esOtroCampo = !esRclv_id && !esEpocaOcurrencia;
+
+			// Reemplaza los valores
+			if (esOtroCampo || (esRclv_id && !noEsVarios) || (esEpocaOcurrencia && !noEsVarias))
+				await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		}
 
 		// Fin
 		return true;

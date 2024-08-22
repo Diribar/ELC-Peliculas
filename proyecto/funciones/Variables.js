@@ -251,12 +251,18 @@ module.exports = {
 		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
 		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
 	],
-	camposTransfCaps: [
-		...["paises_id", "idiomaOriginal_id", "direccion", "guion", "musica", "actores", "produccion"],
-		...["cfc", "bhr", "tipoActuacion_id", "publico_id", "epocaOcurrencia_id"],
-		...["color", "musical", "deporte", "violencia", "capEnCons"],
-		...rclvs_id,
-	],
+	camposTransfCaps: {
+		sinDifs: [
+			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
+			...["color", "musical", "deporte", "violencia", "capEnCons"],
+		],
+		condDifs: [
+			...["paises_id", "direccion", "guion", "musica",  "produccion"],
+			...["epocaOcurrencia_id"],
+			...rclvs_id,
+		],
+		actores:"actores",
+	},
 
 	// RCLV
 	prioridadesRCLV: [
