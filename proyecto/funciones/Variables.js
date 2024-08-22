@@ -256,7 +256,7 @@ module.exports = {
 			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
 			...["color", "musical", "deporte", "violencia", "capEnCons"],
 		],
-		condDifs: [
+		conDifs: [
 			...["paises_id", "direccion", "guion", "musica",  "produccion"],
 			...["epocaOcurrencia_id"],
 			...rclvs_id,
