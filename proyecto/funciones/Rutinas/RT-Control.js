@@ -25,6 +25,7 @@ module.exports = {
 		// await this.rutinasDiarias.linksPorProv();
 		// await this.rutinasSemanales.idDeTablas();
 		// await obsoletas.actualizaCapEnCons()
+		// await this.RutinasSemanales();
 
 		// Rutinas programadas
 		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"}); // Rutinas diarias (a las 0:00hs)
@@ -684,7 +685,11 @@ module.exports = {
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id))
+					if (
+						!regHistorial.entidad || // no existe la entidad
+						regHistorial.entidad_id || // no existe la entidad_id
+						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
+					)
 						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
 			}
 
