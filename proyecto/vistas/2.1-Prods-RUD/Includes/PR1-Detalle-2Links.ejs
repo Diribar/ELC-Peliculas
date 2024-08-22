@@ -7,8 +7,7 @@
 			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
 	<% } else if (links.existen) { %>
-		<!-- Ayuda -->
-		<%- include("PR1-Detalle-1AyudaLinks") %>
+		<%- include("MN-Ayuda", {ayudaClass: "links", parrafo, mensajes}) %>
 		<!-- Películas -->
 		<nav>
 			<% let autofocus %>
@@ -35,5 +34,8 @@
 		</nav>
 	<% } else { %>
 		<p id="sinLinks"><em>No tenemos links para verla, estás invitado a aportarnos alguno</em></p>
+	<% } %>
+	<% if (true) { %>
+		<div id="violencia">Violencia sensible</div>
 	<% } %>
 </div>
