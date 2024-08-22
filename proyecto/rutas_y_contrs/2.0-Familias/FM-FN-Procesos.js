@@ -785,16 +785,7 @@ module.exports = {
 	},
 	transfDatosDeColParaCaps: async (original, edicion, campo) => {
 		// Si el campo no recibe datos, termina
-		const camposQueNoRecibenDatos = [
-			"nombreOriginal",
-			"nombreCastellano",
-			"anoEstreno",
-			"sinopsis",
-			"avatar",
-			"avatar_url",
-			...variables.entidades.rclvs_id,
-		];
-		if (camposQueNoRecibenDatos.includes(campo)) return;
+		if (!camposTransfCaps.includes(campo)) return;
 
 		// Variables
 		const novedad = {[campo]: edicion[campo]};
@@ -810,14 +801,15 @@ module.exports = {
 		const condicColec = {coleccion_id: original.id}; // que pertenezca a la colección
 		if (cond1 || cond22 || cond32) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicColec, novedad);
 
-		// Campos para los que se pisa el valor de la colección sólo si: el campo está vacío, o coincidía con el original, o tenía un valor significativo
+		// Campos para los que preserva el valor si es significativo distinto del original
 		const condicCampoVacio = {
 			coleccion_id: original.id,
-			[Op.or]: [{[campo]: null}, {[campo]: ""}],
+			[campo]: [null],
+			//[Op.or]: [{[campo]: null}, {[campo]: ""}],
 			//[campo]: {[Op.or]: [{[Op.eq]: null}, ""]}
 			//[campo]: [{[Op.eq]: null}, ""], // que el campo esté vacío
 		};
-		//if (original[campo]) condicCampoVacio[Op.or].push({[campo]: original[campo]}); // o que coincida con el valor original
+		if (original[campo] !== null) condicCampoVacio[campo].push(original[campo]); // coincide con el valor original
 		if (!cond1 && !cond21 && !cond31) await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicCampoVacio, novedad);
 
 		// Fin
