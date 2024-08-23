@@ -4,7 +4,6 @@
 /* Links */
 #links {
 	display: flex; align-items: center;
-	:is(.ayudaIconoForm, :is(button, nav select)) {font-size: 1.3rem;}
 	nav {
 		display: flex;
 		select {
@@ -20,8 +19,7 @@
 		}
 	}
 	:is(button, nav select) {
-		font-weight: bold; height: 24px;
-		border: 4px solid; border-radius: 13px; box-sizing: content-box;
+		font-weight: bold; border: 4px solid; border-radius: 13px; box-sizing: content-box;
 		&.enCast {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 		&.subtCast {background: var(--amarillo-intermedio); color: var(--gris-oscuro); border-color: gold;}
 		&.otroIdioma {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
