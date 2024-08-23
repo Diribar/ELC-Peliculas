@@ -1,6 +1,6 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 22/ago",
+	"FechaUTC": "Vie. 23/ago",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-ago-24": {"leyenda": "Hoy recordamos a san Bernardo de Claraval", "entidad": "personajes", "id": 195},
 		"21-ago-24": {"leyenda": "Hoy recordamos al papa Pío X, santo", "entidad": "personajes", "id": 176},
 		"22-ago-24": {"leyenda": "Hoy recordamos a san Felipe Benicio", "entidad": "personajes", "id": 164},
 		"23-ago-24": {},
-		"24-ago-24": {}
+		"24-ago-24": {},
+		"25-ago-24": {"leyenda": "Hoy recordamos a san Luis, rey de Francia", "entidad": "personajes", "id": 239}
 	}
 }
