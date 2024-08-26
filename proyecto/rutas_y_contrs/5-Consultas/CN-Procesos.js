@@ -793,7 +793,7 @@ module.exports = {
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
 					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, ppp, avatar, cfc, epocaEstreno, coleccion_id} = prod;
+					const {entidad, id, nombreCastellano, ppp, avatar, cfc, epocaEstreno, coleccion_id, crueldad} = prod;
 					let {direccion, anoEstreno} = prod;
 					if (!direccion) direccion = "desconocido";
 					if (!anoEstreno) anoEstreno = "0 (desconocido)";
@@ -802,6 +802,7 @@ module.exports = {
 					if (Object.keys(prod).includes("calificacion")) datosProd.calificacion = prod.calificacion;
 					if (epocaEstreno) datosProd.epocaEstreno = epocaEstreno.nombre;
 					if (coleccion_id) datosProd.coleccion_id = coleccion_id;
+					if (crueldad) datosProd.crueldad = true;
 
 					// Achica el campo dirección
 					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
