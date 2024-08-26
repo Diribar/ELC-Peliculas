@@ -11,15 +11,18 @@
 						<% if (prod.direccion) { %>
 							<p class="interlineadoChico">Dirección: <%= prod.direccion %></p>
 						<% } %>
-						<div class="flexRowAlign">
+						<div class="flexRowAlign interlineadoChico">
 							<% if (usuario) { %>
-								<div id="ppp" class="interlineadoChico flexRowAlign relative">
+								<div id="ppp" class="flexRowAlign relative">
 									<i class="scale <%= prod.ppp.icono %>" tabindex="-1" title="<%= prod.ppp.nombre %>"></i>
 									<p id="texto" class="absolute ocultar"><%= prod.ppp.nombre %></p>
 								</div>
 							<% } %>
 							<% if (prod.linksGral) { %>
-								<i id="prodConLink" class="fa-solid fa-link"></i>
+								<i id="prodConLink" class="fa-solid fa-link" title="Con link"></i>
+							<% } %>
+							<% if (prod.crueldad) { %>
+								<i id="crueldad" class="fa-solid fa-circle-exclamation" title="Crueldad sensible"></i>
 							<% } %>
 						</div>
 					</div>
