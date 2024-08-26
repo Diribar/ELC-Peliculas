@@ -27,7 +27,7 @@ module.exports = (sequelize, dt) => {
 		color: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		deporte: {type: dt.BOOLEAN},
-		violencia: {type: dt.BOOLEAN},
+		crueldad: {type: dt.BOOLEAN},
 		tipoActuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
 

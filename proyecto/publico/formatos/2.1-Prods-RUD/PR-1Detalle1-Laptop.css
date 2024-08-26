@@ -21,7 +21,7 @@
 						font-weight: bold; color: snow; border: none;
 					}
 				}
-				#violencia {
+				#crueldad {
 					flex-grow: 1; text-align: center;
 					color: var(--rojo-oscuro);
 					:is(i .ayudaMensForm, button) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}

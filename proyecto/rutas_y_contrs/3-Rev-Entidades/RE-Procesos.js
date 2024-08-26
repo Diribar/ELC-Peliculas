@@ -1165,7 +1165,7 @@ let FN_edicion = {
 		// Variables
 		const campo = campoRevisar.nombre;
 		const casosEspeciales = [
-			...["cfc", "bhr", "musical", "color", "deporte", "violencia", "capEnCons"], // productos
+			...["cfc", "bhr", "musical", "color", "deporte", "crueldad", "capEnCons"], // productos
 			...["fechaMovil", "soloCfc", "ama"], // rclvs
 			...["castellano", "subtitulos", "gratuito"], // links
 		];

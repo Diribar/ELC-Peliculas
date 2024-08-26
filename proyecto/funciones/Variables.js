@@ -21,7 +21,7 @@ const camposDA = [
 	{titulo: "Es a color", nombre: "color", chkBox: true},
 	{titulo: "Es un musical", nombre: "musical", chkBox: true},
 	{titulo: "Tiene deporte", nombre: "deporte", chkBox: true},
-	{titulo: "Crueldad sensible", nombre: "violencia", chkBox: true, exclusivo: ["peliculas", "colecciones"]},
+	{titulo: "Crueldad sensible", nombre: "crueldad", chkBox: true, exclusivo: ["peliculas", "colecciones"]},
 	{titulo: "Mostrar capítulos en consultas", nombre: "capEnCons", chkBox: true, exclusivo: ["colecciones"]},
 	{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", relacInclude: "tipoActuacion", tabla: "tiposActuacion"},
 	{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos"},
@@ -200,7 +200,7 @@ module.exports = {
 				{id: "BN", nombre: "Es en blanco y negro", condic: {color: 0}},
 				{id: "MS", nombre: "Es un musical", condic: {musical: 1}},
 				{id: "DP", nombre: "Tiene deporte", condic: {deporte: 1}},
-				{id: "VS", nombre: "Sin violencia sensible", condic: {violencia: 0}},
+				{id: "VS", nombre: "Sin crueldad sensible", condic: {crueldad: 0}},
 			],
 		},
 	},
@@ -213,7 +213,7 @@ module.exports = {
 		const registrosRCLV = await regsRCLV(userId);
 		const mensajes = {
 			publico: [
-				"Mayores solamente: violencia que puede dañar la sensibilidad de un menor de hasta 12-14 años.",
+				"Mayores solamente: escenas que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 				"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
 				"Familia: ideal para compartir en familia y que todos la disfruten.",
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
@@ -254,7 +254,7 @@ module.exports = {
 	camposTransfCaps: {
 		sinDifs: [
 			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
-			...["color", "musical", "deporte", "violencia", "capEnCons"],
+			...["color", "musical", "deporte", "crueldad", "capEnCons"],
 		],
 		conDifs: [
 			...["paises_id", "direccion", "guion", "musica",  "produccion"],
