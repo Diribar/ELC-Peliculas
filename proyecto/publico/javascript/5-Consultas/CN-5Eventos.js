@@ -240,8 +240,8 @@ window.addEventListener("load", async () => {
 		// Mostrar resultados - Actualizar resultados
 		else if (nombre == "actualizar") {
 			if (v.layout_id) {
-				await resultados.obtiene();
-				if (!v.mostrarCartelQuieroVer) resultados.muestra.generico();
+				await FN_resultados.obtiene();
+				if (!v.mostrarCartelQuieroVer) FN_resultados.muestra.generico();
 			}
 			return;
 		}
@@ -274,7 +274,7 @@ window.addEventListener("load", async () => {
 
 		// Mostrar resultados - Botón 'quieroVer'
 		else if (padre.id == "carteles" && nombre == "quieroVer" && v.layout_id) {
-			resultados.muestra.generico();
+			FN_resultados.muestra.generico();
 			return;
 		}
 
