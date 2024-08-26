@@ -36,6 +36,7 @@ let FN_resultados = {
 			: prefs;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
+		console.log(v.resultados);
 
 		// Acciones en consecuencia
 		if (prefs.entidad == "productos") v.productos = v.resultados;
@@ -272,17 +273,21 @@ let FN_auxiliares = {
 		// Particularidades
 		aux.nombreCastellano.innerHTML = producto.nombreCastellano;
 		aux.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
-		if (producto.ppp) {
-			aux.ppp.className += " scale " + producto.ppp.icono;
-			aux.ppp.tabIndex = "-1";
-			aux.ppp.title = producto.ppp.nombre;
-		}
 
 		// Particularidades de Dirección
 		const em = document.createElement("em");
 		em.innerHTML = producto.direccion;
 		aux.direccion.innerHTML = "Dirección: ";
 		aux.direccion.appendChild(em);
+
+		// Preferencias por producto
+		if (producto.ppp) {
+			aux.ppp.className += " scale " + producto.ppp.icono;
+			aux.ppp.tabIndex = "-1";
+			aux.ppp.title = producto.ppp.nombre;
+		}
+
+		//
 
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
