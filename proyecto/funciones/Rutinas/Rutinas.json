@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 23/ago",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Lun. 26/ago",
+	"HoraUTC": "18:52",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 19/ago",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 34,
+	"FechaSemUTC": "Lun. 26/ago",
+	"HoraSemUTC": "18:52",
+	"semanaUTC": 35,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-ago-24": {"leyenda": "Hoy recordamos al papa Pío X, santo", "entidad": "personajes", "id": 176},
-		"22-ago-24": {"leyenda": "Hoy recordamos a san Felipe Benicio", "entidad": "personajes", "id": 164},
-		"23-ago-24": {},
 		"24-ago-24": {},
-		"25-ago-24": {"leyenda": "Hoy recordamos a san Luis, rey de Francia", "entidad": "personajes", "id": 239}
+		"25-ago-24": {"leyenda": "Hoy recordamos a san Luis, rey de Francia", "entidad": "personajes", "id": 239},
+		"26-ago-24": {"leyenda": "Hoy recordamos al papa Juan Pablo I, beato", "entidad": "personajes", "id": 76},
+		"27-ago-24": {"leyenda": "Hoy recordamos a santa Mónica de Hipona", "entidad": "personajes", "id": 153},
+		"28-ago-24": {"leyenda": "Hoy recordamos a san Agustín de Hipona", "entidad": "personajes", "id": 82}
 	}
 }
