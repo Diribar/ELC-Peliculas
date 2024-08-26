@@ -260,11 +260,11 @@ let FN_auxiliares = {
 		infoSup.className = "infoFormato";
 		informacion.appendChild(infoSup);
 
-		// Crea nombreCastellano, anoEstreno, direccion, ppp
-		const elementos = ["nombreCastellano", "anoEstreno", "direccion", "ppp"];
+		// Crea nombreCastellano, anoEstreno, direccion, iconos
+		const elementos = ["nombreCastellano", "anoEstreno", "direccion", "iconos"];
 		let aux = {};
 		for (let elemento of elementos) {
-			aux[elemento] = document.createElement(elemento != "ppp" ? "p" : "i");
+			aux[elemento] = document.createElement("p");
 			aux[elemento].id = elemento;
 			aux[elemento].className = "interlineadoChico";
 			infoSup.appendChild(aux[elemento]);
@@ -282,12 +282,24 @@ let FN_auxiliares = {
 
 		// Preferencias por producto
 		if (producto.ppp) {
-			aux.ppp.className += " scale " + producto.ppp.icono;
-			aux.ppp.tabIndex = "-1";
-			aux.ppp.title = producto.ppp.nombre;
+			const icono = document.createElement("i");
+			icono.id = "ppp";
+			icono.className = "scale " + producto.ppp.icono;
+			icono.title = producto.ppp.nombre;
+			icono.tabIndex = "-1";
+			aux.iconos.appendChild(icono);
 		}
 
-		//
+		// Crueldad
+		if (producto.crueldad){
+			const icono = document.createElement("i");
+			icono.id = "crueldad";
+			icono.className = "fa-solid fa-circle-exclamation"
+			icono.title = "Crueldad sensible";
+			icono.tabIndex = "-1";
+			aux.iconos.appendChild(icono);
+
+		}
 
 		// Crea la infoInf
 		const infoInf = document.createElement("div");
