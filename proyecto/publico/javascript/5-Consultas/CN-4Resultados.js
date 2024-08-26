@@ -36,7 +36,6 @@ let FN_resultados = {
 			: prefs;
 		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
 		DOM.esperandoResultados.classList.add("ocultar");
-		console.log(v.resultados);
 
 		// Acciones en consecuencia
 		if (prefs.entidad == "productos") v.productos = v.resultados;
