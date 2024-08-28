@@ -16,19 +16,17 @@
 					#infoPeli {
 						display: flex; flex-direction: column; justify-content: space-between; height: 100%;
 						#inferior{
-							i {font-size: 1.25rem;}
-							#ppp {
-								margin-right: 15px;
-								#texto {
-									right: -7px; translate: 100% 0; text-wrap: nowrap; border-radius: 10px;
-									background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
-									padding: 0px 5px; line-height: 1.06;
-								}
+							i {font-size: 1.25rem; margin-right: 15px;}
+							#ppp #texto {
+								right: -7px; translate: 100% 0; text-wrap: nowrap; border-radius: 10px;
+								background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
+								padding: 0px 5px; line-height: 1.06;
 							}
-							#prodConLink {margin-top: 5px;}
+							#crueldad {color: var(--rojo-oscuro); border-radius: 50%;}
 						}
 					}
-					&:hover #infoPeli #ppp i {color: inherit;}
+					/* &:hover #infoPeli #ppp i {color: inherit;} */
+					&:hover #infoPeli #crueldad {background-color: var(--amarillo-claro); border: 1px solid var(--amarillo-claro);}
 				}
 			}
 		}

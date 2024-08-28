@@ -28,6 +28,7 @@
 				.imagenChica {max-height: 100%; max-width: 140px; align-self: center}
 				#informacion {
 					justify-content: space-between; height: 100%; padding: 6px 0;
+					#infoSup #iconos #crueldad {margin-left: 10px; color: var(--rojo-oscuro);}
 					.infoFormato {
 						padding: 0 15px;
 						.interlineadoChico:not(:first-child) {margin-top: 5px;}
