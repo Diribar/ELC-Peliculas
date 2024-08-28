@@ -6,7 +6,7 @@
 			/* Links */
 			#informacion #links {
 				flex-direction: row; justify-content: flex-start; padding: 10px 20px; margin-bottom: 20px;
-				:is(.ayudaIconoForm, button, select) {font-size: 1.1rem;}
+				:is(.ayudaIconoForm, button, select) {font-size: 1.1rem !important;}
 				.ayuda.links {
 					margin-right: 10px;
 					.ayudaMensForm {max-width: min(275px, 75vw); translate: 100% 0; top: -25px; bottom: auto;}
@@ -24,13 +24,15 @@
 				#crueldad {
 					flex-grow: 1; text-align: center;
 					color: var(--rojo-oscuro);
-					:is(i .ayudaMensForm, button) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
+					:is(i .ayudaMensForm, button) {background: var(--rojo-claro);}
 					i {
 						color: inherit; margin-right: 7px;
-						.ayudaMensForm::before {border-right-color: var(--rojo-oscuro);}
-						.ayudaMensForm p {color: var(--rojo-oscuro);}
+						.ayudaMensForm {
+							border-color: var(--rojo-oscuro);
+							&::before {border-right-color: var(--rojo-oscuro);}
+							p {color: var(--rojo-oscuro);}
+						}
 					}
-
 				}
 			}
 		}
