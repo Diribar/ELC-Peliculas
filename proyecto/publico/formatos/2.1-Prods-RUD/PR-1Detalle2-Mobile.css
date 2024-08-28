@@ -22,7 +22,7 @@
 			}
 			#crueldad {
 				display: flex; flex-direction: column-reverse; align-items: center;
-				color: var(--rojo-oscuro);
+				color: var(--rojo-oscuro); font-size: 1.1rem;
 				button {background: var(--rojo-claro); height: 20px;}
 			}
 		}
@@ -61,7 +61,6 @@
 					p {color: var(--rojo-oscuro);}
 				}
 			}
-			button {height: 24px;}
 		}
 	}
 	body {
