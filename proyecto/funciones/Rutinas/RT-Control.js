@@ -21,10 +21,9 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinasHorarias.actualizaProdsAlAzar();
-		// await this.rutinasDiarias.linksPorProv();
-		// await this.rutinasSemanales.idDeTablas();
+		// await this.rutinas.actualizaProdsAlAzar();
 		// await obsoletas.actualizaCapEnCons()
+		// await this.RutinasSemanales();
 
 		// Rutinas programadas
 		cron.schedule("0 0 * * *", () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"}); // Rutinas diarias (a las 0:00hs)
@@ -45,7 +44,6 @@ module.exports = {
 
 		// Filtros
 		if (!Object.keys(info).length || !info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		const rutinasDiarias = info.RutinasDiarias;
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
@@ -62,7 +60,7 @@ module.exports = {
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
-		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
+		for (let rutinaDiaria in info.RutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // cuando se ejecute cada rutina, se va a actualizar a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias"); // actualiza el valor "NO" en los campos de "RutinasDiarias"
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
 
@@ -111,14 +109,13 @@ module.exports = {
 	RutinasHorarias: async function () {
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinas = info.RutinasHorarias;
 
 		// Actualiza todas las rutinas horarias
 		console.log();
 		console.log("Rutinas horarias:");
-		for (let rutina of rutinas) {
+		for (let rutina of info.RutinasHorarias) {
 			const comienzo = Date.now();
-			await this.rutinasHorarias[rutina]();
+			await this.rutinas[rutina]();
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasHorarias(rutina, duracion);
 		}
@@ -132,12 +129,11 @@ module.exports = {
 
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in rutinasDiarias) {
+		for (let rutinaDiaria in info.RutinasDiarias) {
 			const comienzo = Date.now();
-			await this.rutinasDiarias[rutinaDiaria](); // ejecuta la rutina
+			await this.rutinas[rutinaDiaria](); // ejecuta la rutina
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
 		}
@@ -149,12 +145,11 @@ module.exports = {
 	RutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
-		const rutinasSemanales = info.RutinasSemanales;
 
 		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in rutinasSemanales) {
+		for (let rutinaSemanal in info.RutinasSemanales) {
 			const comienzo = Date.now();
-			await this.rutinasSemanales[rutinaSemanal]();
+			await this.rutinas[rutinaSemanal]();
 			const duracion = Date.now() - comienzo;
 			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
 		}
@@ -165,7 +160,8 @@ module.exports = {
 	},
 
 	// Rutinas
-	rutinasHorarias: {
+	rutinas: {
+		// Gestiones horarias
 		feedbackParaUsers: async () => {
 			// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar
 			const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
@@ -249,8 +245,38 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	rutinasDiarias: {
+		ABM_noRevisores: async () => {
+			// Si no hay casos, termina
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
+
+			// Arma el cuerpo del mensaje
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
+
+			// Obtiene los usuarios revisorPERL y revisorLinks
+			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+			[perl, links] = await Promise.all([perl, links]);
+			const revisores = {perl, links};
+
+			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
+			for (let tipo of ["perl", "links"])
+				if (regs[tipo].length || edics[tipo].length)
+					for (let revisor of revisores[tipo])
+						mailsEnviados.push(
+							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
+						); // Envía el mail y actualiza la BD
+
+			// Avisa que está procesando el envío de los mails
+			await Promise.all(mailsEnviados);
+
+			// Fin
+			return;
+		},
+
+		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
 			let info = {...rutinasJSON};
@@ -297,36 +323,6 @@ module.exports = {
 
 			// Borra los archivos de imagen que no se corresponden con los títulos
 			procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
-
-			// Fin
-			return;
-		},
-		ABM_noRevisores: async () => {
-			// Si no hay casos, termina
-			const {regs, edics} = await procesos.ABM_noRevs();
-			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
-
-			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
-
-			// Obtiene los usuarios revisorPERL y revisorLinks
-			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
-			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
-			[perl, links] = await Promise.all([perl, links]);
-			const revisores = {perl, links};
-
-			// Rutina por usuario
-			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
-			let mailsEnviados = [];
-			for (let tipo of ["perl", "links"])
-				if (regs[tipo].length || edics[tipo].length)
-					for (let revisor of revisores[tipo])
-						mailsEnviados.push(
-							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
-						); // Envía el mail y actualiza la BD
-
-			// Avisa que está procesando el envío de los mails
-			await Promise.all(mailsEnviados);
 
 			// Fin
 			return;
@@ -387,8 +383,13 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	rutinasSemanales: {
+		eliminaLinksInactivos: async () => {
+			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
+			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+			return;
+		},
+
 		// Gestiones semanales
 		estableceLosNuevosLinksVencidos: async () => {
 			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
@@ -436,38 +437,6 @@ module.exports = {
 				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
 				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
 			}
-
-			// Fin
-			return;
-		},
-		eliminaLinksInactivos: async () => {
-			const condicion = {statusRegistro_id: inactivo_id};
-			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
-			return;
-		},
-		eliminaImagenesSinRegistro: async () => {
-			// Variables
-			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-			const statusCualquiera_id = {[Op.ne]: null};
-
-			const objetos = [
-				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
-
-				// Carpetas FINAL
-				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},
-				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
-
-				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
-			];
-
-			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
-
-			// Elimina las imágenes de "Provisorio"
-			procesos.eliminaImagenesProvisorio();
 
 			// Fin
 			return;
@@ -629,6 +598,33 @@ module.exports = {
 		},
 
 		// Eliminaciones de mantenimiento
+		eliminaImagenesSinRegistro: async () => {
+			// Variables
+			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
+			const statusCualquiera_id = {[Op.ne]: null};
+
+			const objetos = [
+				// Carpetas REVISAR
+				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+
+				// Carpetas FINAL
+				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},
+				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
+
+				// Carpetas USUARIOS
+				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
+			];
+
+			// Elimina las imágenes de las carpetas "Revisar" y "Final"
+			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+
+			// Elimina las imágenes de "Provisorio"
+			procesos.eliminaImagenesProvisorio();
+
+			// Fin
+			return;
+		},
 		eliminaMisConsultasExcedente: async () => {
 			// Elimina misConsultas > límite
 			let misConsultas = await baseDeDatos.obtieneTodosConOrden("misConsultas", "id", "DESC");
@@ -684,7 +680,12 @@ module.exports = {
 
 				// Si no encuentra la "entidad + id", elimina el registro
 				for (let regHistorial of regsHistorial)
-					if (!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id))
+					if (
+						!regHistorial.entidad || // no existe la entidad
+						!entidades.includes(regHistorial.entidad) || // entidad desconocida
+						!regHistorial.entidad_id || // no existe la entidad_id
+						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
+					)
 						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
 			}
 
@@ -736,8 +737,7 @@ module.exports = {
 
 				// Actualiza el próximo valor de ID
 				const texto = process.env.DB_NAME + "." + db[tabla].tableName;
-				const textoCompleto = "ALTER TABLE " + texto + " AUTO_INCREMENT = 1;";
-				await sequelize.query(textoCompleto);
+				await sequelize.query("ALTER TABLE " + texto + " AUTO_INCREMENT = 1;");
 			}
 
 			// Fin

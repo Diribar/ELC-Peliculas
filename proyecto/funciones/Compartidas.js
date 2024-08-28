@@ -470,9 +470,8 @@ module.exports = {
 	},
 	sinProblemasDeCaptura: async (prodsRclvs, revId) => {
 		// Variables
-		const ahora = FN.ahora();
-		const haceUnaHora = FN.nuevoHorario(-1, ahora);
-		const haceDosHoras = FN.nuevoHorario(-2, ahora);
+		const haceUnaHora = FN.nuevoHorario(-1);
+		const haceDosHoras = FN.nuevoHorario(-2);
 
 		// Obtiene las capturas ordenadas por fecha decreciente
 		const capturas = await baseDeDatos.obtieneTodosConOrden("capturas", "capturadoEn", true);
