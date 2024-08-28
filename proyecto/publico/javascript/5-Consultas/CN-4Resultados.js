@@ -1,6 +1,6 @@
 "use strict";
 
-let resultados = {
+let FN_resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.layout_id) return;
@@ -122,7 +122,7 @@ let resultados = {
 		botones: () => {
 			// Agrega el resultado al botón
 			for (let resultado of v.resultados) {
-				const boton = auxiliares.boton(resultado);
+				const boton = FN_auxiliares.boton(resultado);
 				DOM.botones.append(boton);
 			}
 
@@ -151,24 +151,24 @@ let resultados = {
 					: v.productos.push(...registro.productos); // rclvs
 
 				// Averigua si hay un cambio de agrupamiento
-				const titulo = auxiliares.titulo(registro, indice);
+				const titulo = FN_auxiliares.titulo(registro, indice);
 				v.registroAnt = registro;
 
 				// Si corresponde, crea una nueva tabla
 				if (titulo) {
-					DOM.tabla = auxiliares.creaUnaTabla({titulo, indice}); // Obtiene la tabla con los datos
+					DOM.tabla = FN_auxiliares.creaUnaTabla({titulo, indice}); // Obtiene la tabla con los datos
 					DOM.listados.appendChild(DOM.tabla); // La agrega a la vista
 					DOM.tbody = DOM.tabla.querySelector("tbody"); // Selecciona el body para luego agregarle filas
 				}
 
 				// Agrega fila/s al 'tbody' de productos
 				if (v.entidad == "productos") {
-					const fila = auxiliares.creaUnaFilaDeProd({producto: registro, indice});
+					const fila = FN_auxiliares.creaUnaFilaDeProd({producto: registro, indice});
 					DOM.tbody.appendChild(fila);
 				}
 				// Agrega fila/s al 'tbody' de rclv
 				else {
-					const filas = auxiliares.creaLasFilasDeUnRCLV({rclv: registro, indice});
+					const filas = FN_auxiliares.creaLasFilasDeUnRCLV({rclv: registro, indice});
 					for (let fila of filas) DOM.tbody.appendChild(fila);
 				}
 			});
@@ -203,7 +203,7 @@ let resultados = {
 	},
 };
 
-let auxiliares = {
+let FN_auxiliares = {
 	boton: function (registro) {
 		// Variables
 		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
@@ -522,19 +522,19 @@ let auxiliares = {
 		// Crea la celda del producto y se la agrega a la fila
 		if (v.layoutBD.codigo == "misCalificadas" && !producto.calificacion) vistaSinCalificar = true;
 
-		celda = creaUnaCelda.prod(producto, vistaSinCalificar);
+		celda = FN_creaUnaCelda.prod(producto, vistaSinCalificar);
 		celda.className = "primeraCol";
 		fila.appendChild(celda);
 
 		// Si se eligió una opción de 'calificadas', crea la celda correspondiente
 		if (["calificacion", "misCalificadas"].includes(v.layoutBD.codigo) && producto.calificacion) {
-			celda = creaUnaCelda.calificacion(producto);
+			celda = FN_creaUnaCelda.calificacion(producto);
 			fila.appendChild(celda);
 		}
 
 		// Crea la celda del ppp y se la agrega a la fila
 		if (v.userId) {
-			celda = creaUnaCelda.ppp(producto);
+			celda = FN_creaUnaCelda.ppp(producto);
 			fila.appendChild(celda);
 		}
 
@@ -547,7 +547,7 @@ let auxiliares = {
 		let celda;
 
 		// Crea la celdaRCLV
-		const celdaRCLV = creaUnaCelda.rclv(rclv);
+		const celdaRCLV = FN_creaUnaCelda.rclv(rclv);
 		celdaRCLV.className = "primeraCol";
 
 		// Crea las filas de los productos
@@ -562,11 +562,11 @@ let auxiliares = {
 			if (!i) fila.appendChild(celdaRCLV);
 
 			// Crea la celda del producto y se la agrega a la fila
-			celda = creaUnaCelda.prod(producto);
+			celda = FN_creaUnaCelda.prod(producto);
 			fila.appendChild(celda);
 
 			// Crea la celda del ppp y se la agrega a la fila
-			celda = creaUnaCelda.ppp(producto);
+			celda = FN_creaUnaCelda.ppp(producto);
 			fila.appendChild(celda);
 
 			// Envía la fila al acumulador
@@ -578,7 +578,7 @@ let auxiliares = {
 	},
 };
 
-let creaUnaCelda = {
+let FN_creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
 		const cantProds = rclv.productos.length;
@@ -628,7 +628,7 @@ let creaUnaCelda = {
 		// Obtiene el rclv
 		const agregarRCLV = v.entidad == "productos";
 		if (agregarRCLV) {
-			let rclv = agregarRCLV ? auxiliares.obtieneElRCLV(producto) : "";
+			let rclv = agregarRCLV ? FN_auxiliares.obtieneElRCLV(producto) : "";
 			if (rclv) {
 				rclv = " (" + rclv.innerHTML + ")";
 				span = document.createElement("span");

@@ -28,19 +28,21 @@
 			<i class="fa-solid fa-plus iconoHeader adentro"></i>
 		</div>
 	</a>
+
+	<!-- Tablero de Entidades -->
+	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
+		<a href="/revision/tablero-de-entidades" tabindex="-1" class="grupos ocultoMobile">
+			<i class="fa-solid scale iconoHeader revision fa-user-graduate" title="Tablero de Revisión"></i>
+		</a>
+	<% } %>
+
 	<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
-	<% if (locals.usuario && usuario.rolUsuario_id == rolPermInputs_id) { %>
+	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
 		<a href="/revision/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
 			<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 		</a>
 	<% } %>
-	<!-- Tableros de Revisión -->
-	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
-		<div class="grupos ocultoMobile">
-			<i class="fa-solid fa-user-graduate scale ayudaClick iconoHeader revision" title="Tableros para Revisores"></i>
-			<%- include("HR2-MenuRevisores") %>
-		</div>
-	<% } %>
+
 	<!-- Gráficos -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 		<div class="grupos ocultoMobile">

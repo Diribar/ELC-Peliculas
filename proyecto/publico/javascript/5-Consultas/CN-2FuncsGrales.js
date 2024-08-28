@@ -377,8 +377,8 @@ let accionesPorCambioDePrefs = async () => {
 	actualizaConfigCons.consolidado(); // obtiene las preferencias
 	actualiza.botoneraActivaInactiva(); // actualiza la botonera
 	if (v.layout_id) {
-		await resultados.obtiene(); // obtiene los resultados
-		if (!v.mostrarCartelQuieroVer) resultados.muestra.generico(); // muestra los resultados
+		await FN_resultados.obtiene(); // obtiene los resultados
+		if (!v.mostrarCartelQuieroVer) FN_resultados.muestra.generico(); // muestra los resultados
 	}
 
 	// Fin
