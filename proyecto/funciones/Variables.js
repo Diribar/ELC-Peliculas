@@ -21,7 +21,7 @@ const camposDA = [
 	{titulo: "Es a color", nombre: "color", chkBox: true},
 	{titulo: "Es un musical", nombre: "musical", chkBox: true},
 	{titulo: "Tiene deporte", nombre: "deporte", chkBox: true},
-	{titulo: "Violencia sensible", nombre: "violencia", chkBox: true, exclusivo: ["peliculas", "colecciones"]},
+	{titulo: "Crueldad sensible", nombre: "violencia", chkBox: true, exclusivo: ["peliculas", "colecciones"]},
 	{titulo: "Mostrar capítulos en consultas", nombre: "capEnCons", chkBox: true, exclusivo: ["colecciones"]},
 	{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", relacInclude: "tipoActuacion", tabla: "tiposActuacion"},
 	{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos"},

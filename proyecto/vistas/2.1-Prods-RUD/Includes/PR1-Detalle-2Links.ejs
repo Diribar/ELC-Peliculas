@@ -34,10 +34,14 @@
 	<% } else { %>
 		<p id="sinLinks"><em>No tenemos links para verla, estás invitado a aportarnos alguno</em></p>
 	<% } %>
-	<% if (true) { %>
+	<% if (registro.violencia) { %>
 		<div id="violencia">
-			<i class="fa-solid fa-circle-exclamation"></i>
-			Violencia sensible
+			<i class="fa-solid fa-circle-exclamation pointer ayudaIconoForm ayudaClick">
+				<div class="ayudaMensForm ayudaMensMostrar ocultar">
+					<p>Esta película tiene escenas de crueldad que pueden afectar la sensibilidad del espectador</p>
+				</div>
+			</i>
+			<button type="button">Crueldad sensible</button>
 		</div>
 	<% } %>
 </div>
