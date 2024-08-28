@@ -8,17 +8,22 @@
 		:is(#links, #sectorIconos).toggle {display: none;}
 		#links {
 			position: absolute; left: 50%; top: 50%; translate: -50% -50%;
-			flex-direction: column;
-			:is(.ayudaIconoForm, nav :is(button, select)) {font-size: 1.3rem; height: 24px;}
+			flex-direction: column; align-items: center;
+			:is(.ayudaIconoForm, nav :is(button, select)) {font-size: 1.3rem;}
 			nav {
-				align-items: center; flex-direction: column;
-				:is(a, select) {margin-top: 10px;}
+				button, select {height: 24px;}
+				a, select {margin-top: 10px;}
 				& > *:first-child {margin-top: 0;}
 			}
 			&:has(#sinLinks) {
 				width: max-content;
 				padding-block: 5px; text-wrap: balance; text-align: center;
 				background: var(--amarillo-claro); border: 2px solid gray; border-radius: 10px;
+			}
+			#crueldad {
+				display: flex; flex-direction: column-reverse; align-items: center;
+				color: var(--rojo-oscuro); font-size: 1.1rem;
+				button {background: var(--rojo-claro); height: 20px;}
 			}
 		}
 	}
@@ -36,11 +41,25 @@
 		/* Ayuda */
 		.ayuda.links {
 			margin-bottom: 10px;
-			.ayudaMensForm {
+			.ayudaIconoForm .ayudaMensForm {
 				translate: -50% -100%; top: -7px; left: 8px; right: auto;
 				max-width: min(275px, 75vw);
 				&::before {translate: -50% 100%; left: 50%; bottom: 0; right: auto; top: auto;}
 				&::before {border-color: var(--backAyuda) transparent transparent transparent;}
+			}
+		}
+		#crueldad {
+			margin-top: 20px;
+			.ayudaIconoForm {
+				margin-top: 10px; color: inherit; border: 1px solid var(--colorAyuda);
+				.ayudaMensForm {
+					translate: -50% 100%; bottom: -7px; left: 8px; right: auto; top: auto;
+					max-width: min(275px, 75vw);
+					border-color: var(--rojo-oscuro); background: var(--rojo-claro);
+					&::before {translate: -50% -100%; left: 50%; top: 0; right: auto; bottom: auto;}
+					&::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
+					p {color: var(--rojo-oscuro);}
+				}
 			}
 		}
 	}
@@ -56,7 +75,8 @@
 	#datosLargos #recuadroDL {max-width: calc(100vw - var(--anchoImgDer) - 2vw) !important;}
 	#datos #marcoInfo {margin: 0;}
 	#imgDerecha #links:has(p) {max-width: 70%;}
+	#crueldad {margin-top: 10px;}
 
 	/* Sectores a ocultar */
-	#cuerpoFooter #datosLargos #links, #imgDerecha #links .ayuda.links {display: none !important;}
+	#cuerpoFooter #datosLargos #links, #imgDerecha #links .ayuda.links, #crueldad i {display: none !important;}
 }
