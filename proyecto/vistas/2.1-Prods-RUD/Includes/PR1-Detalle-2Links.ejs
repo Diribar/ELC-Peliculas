@@ -1,15 +1,13 @@
 <div id="links" class="marco toggle">
 	<% if (entidad == "colecciones") { %>
-		<!-- Sólo colección -->
 		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origenUrl=" + rutaCRUD; %>
 		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino); %>
 		<a href="/inactivar-captura/?entidad=colecciones&id=<%= id %><%= cola  %>">
 			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
 	<% } else if (links.existen) { %>
-		<!-- Ayuda -->
-		<%- include("PR1-Detalle-1AyudaLinks") %>
-		<!-- Películas -->
+		<%- include("MN-Ayuda", {ayudaClass: "links", parrafo, mensajes}) %>
+		<!-- Links -->
 		<nav>
 			<% let autofocus %>
 			<% for (let grupo in links) { %>
@@ -35,5 +33,11 @@
 		</nav>
 	<% } else { %>
 		<p id="sinLinks"><em>No tenemos links para verla, estás invitado a aportarnos alguno</em></p>
+	<% } %>
+	<% if (true) { %>
+		<div id="violencia">
+			<i class="fa-solid fa-circle-exclamation"></i>
+			Violencia sensible
+		</div>
 	<% } %>
 </div>

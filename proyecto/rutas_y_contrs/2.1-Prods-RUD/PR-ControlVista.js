@@ -42,8 +42,14 @@ module.exports = {
 		const rclvs_id = variables.entidades.rclvs_id;
 		const asocs = variables.entidades.asocRclvs;
 		for (let i = 0; i < asocs.length; i++)
-			if (prodComb[rclvs_id[i]] != 1)
-				bloqueIzq[asocs[i]] = procsFM.bloques.rclv({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
+			if (prodComb[rclvs_id[i]] != 1) {
+				const entidadRclv = entidadesRCLV[i];
+				const include = entidadRclv == "personajes" ? "canon" : "";
+				const rclv = include
+					? await baseDeDatos.obtienePorId(entidadRclv, prodComb[rclvs_id[i]], include)
+					: prodComb[asocs[i]];
+				bloqueIzq[asocs[i]] = procsFM.bloques.rclv({...rclv, entidad: entidadRclv});
+			}
 		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
@@ -73,6 +79,13 @@ module.exports = {
 		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: prodComb});
 		const familia = "producto";
 		const anchorEncab = true;
+		const parrafo = "<em>Color de los bordes (simil semáforo):</em>";
+		const mensajes = [
+			"<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>",
+			"<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
+			"<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
+			"<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma",
+		];
 
 		// Va a la vista
 		// return res.send(links);
@@ -81,7 +94,7 @@ module.exports = {
 			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre, parrafo, mensajes},
 			...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 		});
 	},
@@ -193,7 +206,8 @@ module.exports = {
 					// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
 					if (entidad == "colecciones")
 						for (let prop in req.body)
-							if (original[prop] != req.body[prop]) await procsFM.transfDatosDeColParaCaps(original, req.body, prop);
+							if (original[prop] != req.body[prop])
+								await procsFM.transfDatosDeColParaCaps(original, req.body, prop);
 
 					// Varias
 					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
