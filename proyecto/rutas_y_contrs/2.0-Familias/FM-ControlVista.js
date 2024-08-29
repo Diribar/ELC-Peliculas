@@ -73,6 +73,9 @@ module.exports = {
 		}
 		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
 
+		// CONSECUENCIAS - Actualiza la variable 'statusErrores'
+		await comp.actualizaStatusErrores.consolidado();
+
 		// CONSECUENCIAS - Acciones si es un producto
 		if (familia == "producto") {
 			// 1. Actualiza en los links el campo 'prodAprob'
@@ -266,8 +269,8 @@ module.exports = {
 				destino = "detalle";
 			}
 
-			// En ambos casos, se actualiza 'statusErrores'
-			await comp.revisaStatus.consolidado();
+			// Actualiza la variable 'statusErrores'
+			await comp.actualizaStatusErrores.consolidado();
 
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
