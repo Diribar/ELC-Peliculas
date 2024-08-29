@@ -390,7 +390,7 @@ module.exports = {
 			return;
 		},
 
-		// Gestiones semanales
+		// Rutinas semanales - Gestiones
 		estableceLosNuevosLinksVencidos: async () => {
 			await comp.linksVencPorSem.actualizaFechaVencimNull(); // actualiza la fecha de los links sin fecha
 			await comp.linksVencPorSem.actualizaStatus(); // pasa a 'creadoAprob' los links con fechaVencim < semActual
@@ -442,7 +442,7 @@ module.exports = {
 			return;
 		},
 
-		// Correcciones desvíos del estándar
+		// Rutinas semanales - Desvíos del estándar
 		revisaCorrigeSolapam: async () => await comp.actualizaSolapam(),
 		revisaCorrigeLinksEnProd: async () => {
 			// Variables
@@ -597,7 +597,7 @@ module.exports = {
 			return;
 		},
 
-		// Eliminaciones de mantenimiento
+		// Rutinas semanales - Eliminaciones de mantenimiento
 		eliminaImagenesSinRegistro: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
