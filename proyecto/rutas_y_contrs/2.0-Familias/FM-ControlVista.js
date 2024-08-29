@@ -71,7 +71,7 @@ module.exports = {
 			const ultHist = await procesos.historialDeStatus.ultimoRegistro(entidad, id);
 			if (ultHist) datosHist.motivo_id = ultHist.motivo_id;
 		}
-		baseDeDatos.agregaRegistro("statusHistorial", datosHist);
+		await baseDeDatos.agregaRegistro("statusHistorial", datosHist); // es crítico el uso del await, para actualizar la variable 'statusErrores'
 
 		// CONSECUENCIAS - Actualiza la variable 'statusErrores'
 		await comp.actualizaStatusErrores.consolidado();
