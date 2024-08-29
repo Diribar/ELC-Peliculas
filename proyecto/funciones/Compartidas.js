@@ -519,17 +519,17 @@ module.exports = {
 		// Fin
 		return prodsRclvs;
 	},
-	revisaStatus: {
+	actualizaStatusErrores: {
 		consolidado: async function () {
 			// Variables
 			const ultsHist = await this.ultsRegsHistStatus();
 
 			// Comparaciones
-			const histRegEnt = this.historialVsProdRclv(ultsHist); // Historial vs registro de la entidad
-			const regEntHist = this.prodRclvVsHistorial(ultsHist, histRegEnt); // Registro de la entidad vs historial
+			const histRegEnt = await this.historialVsProdRclv(ultsHist); // Historial vs registro de la entidad
+			const regEntHist = await this.prodRclvVsHistorial(ultsHist, histRegEnt); // Registro de la entidad vs historial
 
 			// Consolida
-			statusErrores = await Promise.all([histRegEnt, regEntHist]).then(([a, b]) => [...a, ...b]);
+			statusErrores = [histRegEnt, regEntHist].flat()
 
 			// Fin
 			return;
