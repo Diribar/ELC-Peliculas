@@ -268,9 +268,6 @@ module.exports = {
 			else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
 		}
 
-		// CONSECUENCIAS - Actualiza 'inactivar' y 'recuperar'
-		if (inacRecup_ids.includes(statusOriginal_id)) await comp.revisaStatus.consolidado();
-
 		// CONSECUENCIAS - Acciones si es una colección
 		if (entidad == "colecciones") {
 			// 1. Actualiza el status de los capítulos
@@ -316,7 +313,10 @@ module.exports = {
 		};
 		const motivo = motivo_id ? statusMotivos.find((n) => n.id == motivo_id) : {};
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
-		baseDeDatos.agregaRegistro("statusHistorial", datosHist); // Guarda los datos históricos
+		await baseDeDatos.agregaRegistro("statusHistorial", datosHist); // es crítico el uso del await, para actualizar la variable 'statusErrores'
+
+		// CONSECUENCIAS - Actualiza la variable 'statusErrores'
+		if (inacRecup_ids.includes(statusOriginal_id)) await comp.actualizaStatusErrores.consolidado();
 
 		// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'
 		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, campoDecision, 1);

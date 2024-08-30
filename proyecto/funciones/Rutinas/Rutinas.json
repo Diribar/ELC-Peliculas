@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 28/ago",
-	"HoraUTC": "17:15",
+	"FechaUTC": "Jue. 29/ago",
+	"HoraUTC": "10:58",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 26/ago",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-ago-24": {"leyenda": "Hoy recordamos al papa Juan Pablo I, beato", "entidad": "personajes", "id": 76},
 		"27-ago-24": {"leyenda": "Hoy recordamos a santa Mónica de Hipona", "entidad": "personajes", "id": 153},
 		"28-ago-24": {"leyenda": "Hoy recordamos a san Agustín de Hipona", "entidad": "personajes", "id": 82},
 		"29-ago-24": {"leyenda": "Hoy recordamos el Martirio de san Juan Bautista", "entidad": "hechos", "id": 76},
-		"30-ago-24": {"leyenda": "Hoy recordamos a santa Rosa de Lima", "entidad": "personajes", "id": 98}
+		"30-ago-24": {"leyenda": "Hoy recordamos a santa Rosa de Lima", "entidad": "personajes", "id": 98},
+		"31-ago-24": {}
 	}
 }

@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		visitadaEn: {type: dt.DATE},
 		};
 	const config = {
-		tableName: "aux_mis_consultas",
+		tableName: "cn_mis_consultas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
