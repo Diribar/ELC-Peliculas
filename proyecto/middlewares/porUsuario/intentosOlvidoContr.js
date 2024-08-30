@@ -8,8 +8,10 @@ module.exports = async (req, res, next) => {
 	req.session.login = {datos: {email}};
 
 	// Redirecciona por cookies
-	if (req.cookies && req.cookies.intentosLogin >= intentosCookies) return res.redirect("/usuarios/login/suspendido");
-	if (req.cookies && req.cookies.intentosDP >= intentosCookies) return res.redirect("/usuarios/olvido-contrasena/suspendido");
+	if (req.cookies && req.cookies.intentosLogin && req.cookies.intentosLogin >= maxIntentosCookies)
+		return res.redirect("/usuarios/login/suspendido");
+	if (req.cookies && req.cookies.intentosDP && req.cookies.intentosDP >= maxIntentosCookies)
+		return res.redirect("/usuarios/olvido-contrasena/suspendido");
 
 	// Redirecciona por errores con el mail
 	const {errores, usuario} = await valida.olvidoContr.email(email);
@@ -17,8 +19,9 @@ module.exports = async (req, res, next) => {
 	if (errores.hay) return res.redirect("/usuarios/login");
 
 	// Redirecciona por BD
-	if (usuario && usuario.intentosLogin >= intentosBD) return res.redirect("/usuarios/login/suspendido");
-	if (usuario.intentosDP >= intentosBD) return res.redirect("/usuarios/olvido-contrasena/suspendido");
+	if (usuario && usuario.intentosLogin && usuario.intentosLogin >= maxIntentosBD)
+		return res.redirect("/usuarios/login/suspendido");
+	if (usuario.intentosDP && usuario.intentosDP >= maxIntentosBD) return res.redirect("/usuarios/olvido-contrasena/suspendido");
 
 	// Genera información
 	const validarDatosPerennes = usuario.statusRegistro_id == perennes_id; // si el usuario tiene status 'perenne_id', se muestran todos los campos
