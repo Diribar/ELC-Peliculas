@@ -2,22 +2,25 @@
 <!-- Datos -->
 <section id="datos">
 	<% for (let campo of campos) { %>
+		<% const nombre = campo.name %>
 		<div class="labelInput flexRow">
 			<label><%= campo.titulo %></label>
 			<div class="inputError">
 				<!-- Input -->
 				<input class="input"
-					value="<%= dataEntry[campo.name] %>"
+					value="<%= dataEntry[nombre] %>"
 					type="<%= campo.type %>"
-					name="<%= campo.name %>"
+					name="<%= nombre %>"
 					placeholder="<%= campo.placeholder %>"
-					<% if (dataEntry[campo.name]) { %>autocomplete='new-password'<% } %>
+					<% if (dataEntry[nombre]) { %>autocomplete='new-password'<% } %>
+					<% if (nombre == "contrasena" && dataEntry.email) { %>autofocus<% } %>
 				>
-				<!-- El autocomplete = 'new-password' es para prevenir el 'autocomplete' -->
-				<!-- Ojito contraseña -->
-				<% if (campo.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
+				<% if (nombre == "contrasena") { %>
+					<!-- Ojito contraseña -->
+					<i id="eye" class="fa-solid fa-eye-slash"></i>
+				<% } %>
 				<!-- Error/OK -->
-				<%- include("MN-Errores", {nombre: campo.name, ocultarOK: true}) %>
+				<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
 			</div>
 		</div>
 	<% } %>
