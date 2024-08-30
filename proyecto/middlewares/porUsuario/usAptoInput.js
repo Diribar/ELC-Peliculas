@@ -156,7 +156,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Si corresponde, muestra el mensaje
-	if (informacion) res.render("CMP-0Estructura", {informacion});
+	if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 	// Fin
 	return next();
