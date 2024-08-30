@@ -197,9 +197,9 @@ module.exports = {
 			const userId = req.session.usuario.id;
 
 			// Prepara variables para la vista
-			// Obtiene el Data Entry de session y cookies
 			const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 			const camposDA = await variables.camposDA_conValores(userId);
+			const camposChkBox = camposDA.filter((n) => n.chkBox && (!n.exclusivo || n.exclusivo.includes(datosAdics.entidad)));
 			const camposDE = Object.keys(datosAdics);
 
 			// Grupos RCLV
@@ -213,7 +213,7 @@ module.exports = {
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo},
-				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE},
+				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE,camposChkBox},
 				...{gruposPers, gruposHechos, ayudas},
 			});
 		},
