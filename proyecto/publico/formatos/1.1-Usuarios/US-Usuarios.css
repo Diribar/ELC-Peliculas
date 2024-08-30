@@ -1,40 +1,51 @@
-/* General */
-#cuerpo {flex-direction: column; justify-content: center; align-items: center;}
-#cuerpo {margin: 0; width: 100%; max-height: calc(100% - var(--altoFooter));}
+#cuerpo {
+	/* General */
+	flex-direction: column; justify-content: center; align-items: center;
+	margin: 0; width: 100%; max-height: calc(100% - var(--altoFooter));
 
-/* General del formulario */
-#cuerpo #dataEntry {overflow: auto; max-height: 95%; border-radius: 10px;}
-#cuerpo form {display: flex; flex-direction: column;}
-#cuerpo form {background: var(--gris-oscuro); padding: 20px;}
+	/* General del formulario */
+	#dataEntry {
+		overflow: auto; max-height: 95%; border-radius: 10px;
+		display: flex; flex-direction: column;
+		background: var(--gris-oscuro); padding: 20px;
 
-/* Título principal */
-form #tituloPrincipal {align-self: center !important; margin-bottom: 10px;}
-#tituloPrincipal h1 {margin: 0;}
-form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
-form h1 {font-size: 1.5em; text-align: center;}
+		/* Título principal */
+		#tituloPrincipal {
+			align-self: center !important; margin-bottom: 10px;
+			h1 {
+				margin: 0; text-align: center;
+				font-size: 1.5em; color: var(--amarillo-claro);
+			}
+		}
 
-/* Ayudas */
-.ayudaMensForm {top: auto; bottom: -5px; translate: 0 100%;}
-.ayudaMensForm::before {border-color: transparent transparent var(--gris-mas-oscuro) transparent;}
-.ayudaMensForm::before {top: 0; translate: 0 -100%; left: auto;}
+		/* Íconos y Mensajes de Error */
+		.inputError {
+			.input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
+			.mensajeError {
+				right: -5px; top: -5px; translate: 0 -100%;
+				&::before {
+					left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;
+					border-color: var(--colorMensajeError) transparent transparent transparent;
+				}
+			}
+		}
+		/* Input del formulario */
+		.labelInput {
+			justify-content: space-between; margin: 20px 10px 0px; align-items: center;
+			label {color: white; margin-right: 30px; text-align: left;}
+		}
 
-/* Input del formulario */
-#datos .labelInput, form .labelInput {justify-content: space-between; margin: 20px 10px 0px; align-items: center}
-.labelInput label {color: white; margin-right: 30px; text-align: left;}
-.inputError .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
+		/* Credenciales inválidas*/
+		#credenciales.errores .mensajeError {
+			display: block; position: static; translate: none;
+			margin: 10px auto 20px; text-align: center; width: 200px;
+			&::before {content: none;}
+		}
 
-/* Íconos y Mensajes de Error */
-#cuerpo .inputError .mensajeError {right: -5px; top: -5px; translate: 0 -100%;}
-#cuerpo .inputError .mensajeError::before {left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;}
-#cuerpo .inputError .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent transparent;}
-
-/* Iconos */
-form .iconos {margin: 15px auto 5px;}
-
-/* Credenciales inválidas*/
-#credenciales.errores .mensajeError {display: block; position: static; translate: none;}
-#credenciales.errores .mensajeError {margin: 10px auto 20px; text-align: center; width: 200px;}
-#credenciales.errores .mensajeError::before {content: none;}
+		/* Iconos */
+		#sectorIconos {margin-block: 15px 5px;}
+	}
+}
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {

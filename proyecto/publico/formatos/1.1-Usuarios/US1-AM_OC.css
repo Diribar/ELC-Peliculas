@@ -1,38 +1,37 @@
 /* General */
 #cuerpo #dataEntry {
 	min-width: min(90%, 360px);
-	form {
-		align-items: stretch; width: 100%; padding-left: 30px; padding-right: 30px;
-		&:has(#informacion) {background: var(--usuarios);}
+	align-items: stretch; padding-left: 30px; padding-right: 30px;
+	&:has(#informacion) {background: var(--usuarios);}
+	#tituloPrincipal {z-index: unset;}
 
-		/* Input del mail */
-		.labelInput:has([name="email"]) {
-			margin: 15px 0; width: min(100%, 260px); justify-content: center; align-self: center;
-			:is(.inputError, .inputError .input) {width: 100%; text-align: center;}
-		}
-		p#email {
-			margin: 15px auto; width: min-content;
-			background: var(--gris-intermedio); border-radius: 15px; padding: 5px 10px;
-			font-weight: bold;
-		}
+	/* Input del mail */
+	.labelInput:has([name="email"]) {
+		margin: 15px 0; width: min(100%, 260px); justify-content: center; align-self: center;
+		:is(.inputError, .inputError .input) {width: 100%; text-align: center;}
+	}
+	p#email {
+		margin: 15px auto; width: min-content;
+		background: var(--gris-intermedio); border-radius: 15px; padding: 5px 10px;
+		font-weight: bold;
+	}
 
-		/* Alta Mail - Comentarios sobre la política del uso del mail */
-		ul#politicaInfo {
-			margin: 10px 0; margin-left: 15px;
-			li {color: var(--amarillo-claro); line-height: 1.5;}
-		}
+	/* Alta Mail - Comentarios sobre la política del uso del mail */
+	ul#politicaInfo {
+		margin: 10px 0; margin-left: 15px;
+		li {color: var(--amarillo-claro); line-height: 1.5;}
+	}
 
-		/* Olvido Contraseña - Mensaje sobre los datos a completar */
-		#datosPerennesTitulo {
-			position: relative; width: fit-content; margin: 0 auto;
-			h2 {
-				background: var(--azul-frances); color: var(--amarillo-claro);
-				padding: 10px; border-radius: 10px; font-weight: normal; font-style: italic;
-			}
-			.ayudaMensForm {
-				right: -61px;
-				&::before {right: 63px;}
-			}
+	/* Olvido Contraseña - Mensaje sobre los datos a completar */
+	#datosPerennesTitulo {
+		position: relative; width: fit-content; margin: 0 auto;
+		h2 {
+			background: var(--azul-frances); color: var(--amarillo-claro);
+			padding: 10px; border-radius: 10px; font-weight: normal; font-style: italic;
+		}
+		.ayudaMensForm {
+			right: -61px;
+			&::before {right: 63px;}
 		}
 	}
 }
