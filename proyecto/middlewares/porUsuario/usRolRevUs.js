@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 	if (!informacion && !usuario.rolUsuario.revisorUs) informacion = usuarioSinRolDeRevisor;
 
 	// Si corresponde, muestra el mensaje de error
-	if (informacion) res.render("CMP-0Estructura", {informacion});
+	if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 	// Fin
 	return next();
