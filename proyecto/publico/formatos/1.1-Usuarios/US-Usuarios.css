@@ -10,12 +10,9 @@
 		background: var(--gris-oscuro); padding: 20px;
 
 		/* Título principal */
-		#tituloPrincipal {
-			align-self: center !important; margin-bottom: 10px;
-			h1 {
-				margin: 0; text-align: center;
-				font-size: 1.5em; color: var(--amarillo-claro);
-			}
+		h1 {
+			margin: 0; margin-bottom: 10px; align-self: center !important;
+			font-size: 1.5em; color: var(--amarillo-claro);
 		}
 
 		/* Íconos y Mensajes de Error */
