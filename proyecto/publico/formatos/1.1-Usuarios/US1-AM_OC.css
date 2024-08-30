@@ -3,7 +3,6 @@
 	min-width: min(90%, 360px);
 	align-items: stretch; padding-left: 30px; padding-right: 30px;
 	&:has(#informacion) {background: var(--usuarios);}
-	#tituloPrincipal {z-index: unset;}
 
 	/* Input del mail */
 	.labelInput:has([name="email"]) {
