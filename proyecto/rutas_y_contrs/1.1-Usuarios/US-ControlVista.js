@@ -235,7 +235,7 @@ module.exports = {
 		form: async (req, res) => {
 			const tema = "usuario";
 			const codigo = "edicion";
-			res.render("CMP-0Estructura", {
+			return res.render("CMP-0Estructura", {
 				tema,
 				codigo,
 				titulo: "Edición de Usuario",
@@ -243,7 +243,7 @@ module.exports = {
 			});
 		},
 		guardar: (req, res) => {
-			res.send("/edicion/guardar");
+			return res.send("/edicion/guardar");
 		},
 	},
 	miscelaneas: {
