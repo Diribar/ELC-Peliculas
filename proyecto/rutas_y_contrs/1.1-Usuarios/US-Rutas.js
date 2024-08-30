@@ -12,6 +12,7 @@ const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones"
 const multer = require("../../middlewares/varios/multer");
 const intentosAltaMail = require("../../middlewares/porUsuario/intentosAltaMail");
 const intentosLogin = require("../../middlewares/porUsuario/intentosLogin");
+const validaLogin = require("../../middlewares/porUsuario/validaLogin");
 const intentosOlvidoContr = require("../../middlewares/porUsuario/intentosOlvidoContr");
 
 // Middlewares - Consolidados
@@ -50,7 +51,7 @@ router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guarda
 
 // Vistas - Login
 router.get("/login", intentosLogin, vista.login.form);
-router.post("/login", intentosLogin, visitas, vista.login.guardar);
+router.post("/login", intentosLogin, validaLogin, visitas, vista.login.guardar);
 router.get("/logout", statusCorrecto, vista.login.logout);
 
 // Vista - Miscelaneas
