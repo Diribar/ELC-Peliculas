@@ -149,7 +149,7 @@ module.exports = {
 			// Variables
 			const usuario = req.session.usuario;
 			const letra = comp.letras.oa(usuario);
-			const vistaEntendido = variables.vistaEntendido(req.session.urlSinLogin);
+			const vistaEntendido = variables.vistaEntendido(req.session.urlFueraDeUsuarios);
 
 			// Información
 			const informacion = {
