@@ -256,12 +256,8 @@ module.exports = {
 			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
 			...["color", "musical", "deporte", "crueldad", "capEnCons"],
 		],
-		conDifs: [
-			...["paises_id", "direccion", "guion", "musica",  "produccion"],
-			...["epocaOcurrencia_id"],
-			...rclvs_id,
-		],
-		actores:"actores",
+		conDifs: ["paises_id", "direccion", "guion", "musica", "produccion", "epocaOcurrencia_id", ...rclvs_id],
+		actores: "actores",
 	},
 
 	// RCLV
@@ -406,6 +402,15 @@ module.exports = {
 	radioVacio: "Necesitamos que elijas una opción",
 	urlDesconocida: "No tenemos esa dirección en nuestro sistema",
 	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
+	ayudaLinks: {
+		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
+		mensajes: [
+			"<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>",
+			"<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
+			"<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
+			"<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma",
+		],
+	},
 
 	// Links a vistas
 	vistaInicio: {clase: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
