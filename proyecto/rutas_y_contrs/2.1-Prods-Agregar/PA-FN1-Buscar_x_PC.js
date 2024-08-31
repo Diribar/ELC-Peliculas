@@ -534,7 +534,7 @@ let FN = {
 					};
 
 					// Guarda el registro
-					await baseDeDatos.agregaRegistro(datosCap.entidad, datosCap);
+					await baseDeDatos.agregaRegistro("capitulos", datosCap);
 				}
 		}
 
