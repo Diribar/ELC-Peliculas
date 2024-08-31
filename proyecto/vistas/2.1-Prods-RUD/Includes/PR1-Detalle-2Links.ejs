@@ -6,6 +6,7 @@
 			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
 	<% } else if (links.existen) { %>
+		<% const {parrafo, mensajes} = variables.ayudaLinks %>
 		<%- include("MN-Ayuda", {ayudaClass: "links", parrafo, mensajes}) %>
 		<!-- Links -->
 		<nav>
