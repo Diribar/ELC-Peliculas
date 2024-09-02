@@ -82,10 +82,12 @@ window.addEventListener("load", () => {
 	return;
 });
 
-// Variables
+// Variables repetidas con 'FM-Links-Inactivar'
 // const prodEntidad = new URL(location.href).searchParams.get("entidad");
 // const prodId = new URL(location.href).searchParams.get("id");
 // const condicion = "?prodEntidad=" + prodEntidad + "&prodId=" + prodId;
+
+// Variables
 const rutaAltaBaja = "/revision/api/link/alta-baja/";
 const rutaSigProd = "/revision/api/link/siguiente-producto/";
 let sigProd;
