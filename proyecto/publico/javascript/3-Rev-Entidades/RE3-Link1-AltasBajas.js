@@ -3,6 +3,7 @@ window.addEventListener("load", () => {
 	// Variables
 	let DOM = {
 		filas: document.querySelectorAll(".yaExistentes"),
+		filasActivas: document.querySelectorAll(".yaExistentes.inactivo_false"),
 
 		// Íconos addEventListeners
 		iconosRevision: document.querySelectorAll(".yaExistentes .revision"),
@@ -56,17 +57,24 @@ window.addEventListener("load", () => {
 				DOM.ancho_status[fila].innerHTML = "Aprobado";
 			}
 
-			// Averigua si ya no hay más nada para revisar sobre este producto
+			// Muestra el iframe que corresponda
+			DOM.contIframesActivos = document.querySelectorAll("#cuerpo #contIframe.activo");
+			for (let i = 0; i < DOM.filasActivas.length; i++)
+				if (
+					DOM.filasActivas[i].className.includes("oscuro_false") && // no está oscurecida
+					!DOM.filasActivas[i].className.includes("ocultar") // no está oculta
+				) {
+					DOM.contIframesActivos[i].classList.remove("ocultar"); // muestra el iframe
+					return; // termina la función
+				}
+
+			// Redirecciona al sigProd
 			url = "?entidad=" + prodEntidad + "&id=" + prodId;
 			sigProd = await fetch(rutaSigProd + url).then((n) => n.json());
-
-			// Si la API devuelve un sigProd, redirecciona
-			if (sigProd)
-				location.href =
-					"/inactivar-captura/" + url + "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
-
-			// Fin
-			return;
+			return sigProd
+				? (location.href =
+						"/inactivar-captura/" + url + "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL")
+				: location.reload();
 		});
 	});
 
