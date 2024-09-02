@@ -1,9 +1,25 @@
-<!-- Alta -->
-<%- (codigo == "altaMail" || codigo == "olvidoContr") ? include("US1-AM_OC") : "" %>
-<%- codigo == "editables" ? include("US2-Editables") : "" %>
-<%- codigo == "perennes" ? include("US3-Perennes") : "" %>
-<!-- Login -->
-<%- codigo == "login" ? include("US8-Login") : "" %>
+<div id="tapaElFondo"></div>
+<form  id="dataEntry" class="encimaDelFondo" method="POST" <% if (codigo == "editables") { %>enctype="multipart/form-data"<% } %>>
+	<%- (codigo == "altaMail" || codigo == "olvidoContr") ? include("US1-AM_OC") : null %>
+	<%- codigo == "editables" ? include("US2-Editables") : null %>
+	<%- codigo == "perennes" ? include("US3-Perennes") : null %>
+	<%- codigo == "edicion" ? include("US5-Edicion") : null %>
 
-<!-- Pendiente -->
-<%- codigo == "edicion" ? include("US5-Edicion") : "" %>
+	<% if (codigo != "login") { %>
+		<!--Iconos-->
+		<section id="sectorIconos">
+			<div class="iconos">
+				<!-- Salir -->
+				<a href="<%= urlSalir %>" tabindex="-1">
+					<i class="fa-solid fa-circle-left" title="Salir"></i>
+				</a>
+				<!-- Submit -->
+				<button type="submit" class="<%- (!locals.errores || errores.hay) ? 'inactivo' : '' %>">
+					<i class="fa-solid fa-circle-check" title="Confirmar"></i>
+				</button>
+			</div>
+		</section>
+	<% } %>
+
+	<%- codigo == "login" ? include("US8-Login") : null %>
+</form>

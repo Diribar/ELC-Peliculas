@@ -1,24 +1,11 @@
-<div id="tapaElFondo"></div>
-<div id="dataEntry" class="encimaDelFondo">
-	<form method="POST">
-		<!-- Título y Ayuda -->
-		<div id="tituloPrincipal">
-			<h1><%= titulo %></h1>
-			<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como figuran en tu documento.", "Cuando sea necesario, te pediremos estos datos para validar que seas vos.", "Una vez enviado el formulario, los datos no podrán ser editados."]}) %>
-		</div>
-
-		<!-- Datos Perennes-->
-		<%- include("US13-DatosPerennes") %>
-
-		<!-- Credenciales -->
-		<%- include("US138-CredencsInvs") %>
-
-		<!--Iconos-->
-		<section class="iconos">
-			<!-- Salir -->
-			<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
-			<!-- Submit -->
-			<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check" title="Aceptar"></i></button>
-		</section>
-	</form>
+<!-- Título y Ayuda -->
+<div id="tituloPrincipal">
+	<h1><%= titulo %></h1>
+	<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como figuran en tu documento.", "Cuando sea necesario, te pediremos estos datos para validar que seas vos.", "Una vez enviado el formulario, los datos no podrán ser editados."]}) %>
 </div>
+
+<!-- Datos Perennes-->
+<%- include("US-DatosPerennes") %>
+
+<!-- Credenciales -->
+<%- include("US-CredencsInvs") %>

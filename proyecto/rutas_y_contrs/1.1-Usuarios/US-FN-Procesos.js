@@ -53,8 +53,8 @@ module.exports = {
 		comentario += "¡Hola!";
 		if (altaMail) {
 			comentario += "<br>" + "Ya tenés tu usuario para usar en nuestro sitio.";
-			comentario += "<br>" + "Necesitamos que la uses antes de que transcurran 24hs.";
-			comentario += "<br>" + "Si no se usa dentro de ese plazo, se dará de baja el usuario.";
+			comentario += "<br>" + "Necesitamos que completes el alta antes de que transcurran 24hs.";
+			comentario += "<br>" + "Si no se completa en ese plazo, se dará de baja.";
 		}
 		comentario += "<br>" + "La contraseña de tu usuario es: <bold><u>" + contrasena + "</u></bold>";
 
@@ -94,7 +94,7 @@ module.exports = {
 				"Podés gestionar el permiso con la flecha hacia la derecha.",
 			],
 			iconos: [
-				vistaAnterior(linkVolver),
+				variables.vistaAnterior(linkVolver),
 				{
 					clase: "fa-circle-right",
 					link: "/usuarios/perennes",

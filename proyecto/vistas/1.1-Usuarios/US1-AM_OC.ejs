@@ -1,38 +1,21 @@
-<div id="tapaElFondo"></div>
-<div id="dataEntry" class="encimaDelFondo">
-	<form method="POST">
-		<!-- Cartel de progreso -->
-		<%- include('MN-CartelProgreso', {tarea: "Enviando el mail"}) %>
+<!-- Cartel de progreso -->
+<%- include('MN-CartelProgreso', {tarea: "Enviando el mail"}) %>
 
-		<!-- Título y Ayuda -->
-		<div id="tituloPrincipal">
-			<h1><%= titulo %></h1>
-		</div>
+<!-- Título y Ayuda -->
+<h1><%= titulo %></h1>
 
-		<!--E-Mail-->
-		<%- include("US1-Mail") %>
+<!--E-Mail-->
+<%- include("US-Mail") %>
 
-		<% if (validarDatosPerennes) { %>
-			<!--Datos perennes-->
-			<div id="datosPerennesTitulo">
-				<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
-				<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.", "Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña."]}) %>
-			</div>
+<% if (validarDatosPerennes) { %>
+	<!--Datos perennes-->
+	<div id="datosPerennesTitulo">
+		<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
+		<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.", "Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña."]}) %>
+	</div>
 
-			<%- include("US13-DatosPerennes") %>
-		<% } %>
+	<%- include("US-DatosPerennes") %>
+<% } %>
 
-		<!-- Credenciales -->
-		<%- include("US138-CredencsInvs") %>
-
-		<!--Iconos-->
-		<section id="sectorIconos">
-			<div class="iconos">
-				<!-- Salir -->
-				<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
-				<!-- Submit -->
-				<button type="submit" class="<%- errores.hay ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Confirmar"></i></button>
-			</div>
-		</section>
-	</form>
-</div>
+<!-- Credenciales -->
+<%- include("US-CredencsInvs") %>
