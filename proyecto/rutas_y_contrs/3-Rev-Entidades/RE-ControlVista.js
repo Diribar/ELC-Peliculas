@@ -315,7 +315,7 @@ module.exports = {
 		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac); // Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		await baseDeDatos.agregaRegistro("statusHistorial", datosHist); // es crítico el uso del await, para actualizar la variable 'statusErrores'
 
-		// CONSECUENCIAS - Actualiza la variable 'statusErrores'
+		// CONSECUENCIAS - Actualiza la variable 'statusErrores' - Debe estar posterior a 'statusHistorial'
 		if (inacRecup_ids.includes(statusOriginal_id)) await comp.actualizaStatusErrores.consolidado();
 
 		// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'

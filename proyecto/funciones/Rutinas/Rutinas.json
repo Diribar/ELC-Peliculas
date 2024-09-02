@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 31/ago",
-	"HoraUTC": "12:35",
+	"FechaUTC": "Lun. 2/sep",
+	"HoraUTC": "12:07",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 26/ago",
-	"HoraSemUTC": "18:52",
-	"semanaUTC": 35,
+	"FechaSemUTC": "Lun. 2/sep",
+	"HoraSemUTC": "12:07",
+	"semanaUTC": 36,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-ago-24": {"leyenda": "Hoy recordamos el Martirio de san Juan Bautista", "entidad": "hechos", "id": 76},
-		"30-ago-24": {"leyenda": "Hoy recordamos a santa Rosa de Lima", "entidad": "personajes", "id": 98},
 		"31-ago-24": {},
 		"01-sep-24": {"leyenda": "Hoy recordamos el comienzo de la Segunda Guerra Mundial", "entidad": "hechos", "id": 22},
-		"02-sep-24": {}
+		"02-sep-24": {},
+		"03-sep-24": {},
+		"04-sep-24": {"leyenda": "Hoy recordamos a Moisés, santo", "entidad": "personajes", "id": 61}
 	}
 }

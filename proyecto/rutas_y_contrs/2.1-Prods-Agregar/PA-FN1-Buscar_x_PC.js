@@ -27,9 +27,8 @@ module.exports = {
 					pagina == 1 || // es la primera rutina
 					pagina <= paginasPorEntidadTMDB; // es menor o igual al máximo
 				if (condicion) {
-					const prodsPorEnt = APIsTMDB.search(palabrasClave, entidadTMDB, pagina).then((n) =>
-						FN.procesaInfoDeAPI(n, entidadTMDB, palabrasClave)
-					);
+					const prodsPorEnt = APIsTMDB.search(palabrasClave, entidadTMDB, pagina) // busca en la API
+						.then((n) => FN.procesaInfoDeAPI(n, entidadTMDB, palabrasClave)); // procesa la info recibida
 					prodsPorEnts.push(prodsPorEnt);
 				}
 			}
@@ -335,8 +334,8 @@ module.exports = {
 // Funciones
 let FN = {
 	procesaInfoDeAPI: (prodsPorEnt, TMDB_entidad, palabrasClave) => {
-		// Funciones
-		let descartaRegistrosIncompletos = () => {
+		// Descarta registros con información incompleta
+		(() => {
 			// Variables
 			let productos = [];
 			for (let producto of prodsPorEnt.results) {
@@ -356,8 +355,10 @@ let FN = {
 
 			// Fin
 			return;
-		};
-		let estandarizaNombres = () => {
+		})();
+
+		// Estandariza nombres
+		(() => {
 			// Variables
 			let productos = [];
 
@@ -414,10 +415,12 @@ let FN = {
 			// Fin
 			prodsPorEnt.productos = productos;
 			return;
-		};
-		let descartaProdsSinPalabraClave = () => {
+		})();
+
+		// Descarta los productos que no tienen ninguna palabra clave
+		(() => {
 			// Variables
-			let palabras = palabrasClave.split(" ");
+			const palabras = palabrasClave.split(" ");
 			let productos = [];
 
 			// Conserva los productos con al menos una palabra clave
@@ -444,16 +447,7 @@ let FN = {
 			// Fin
 			prodsPorEnt.productos = productos;
 			return;
-		};
-
-		// Descarta registros con información incompleta
-		descartaRegistrosIncompletos();
-
-		// Estandariza nombres
-		estandarizaNombres();
-
-		// Descarta los productos que no tienen ninguna palabra clave
-		descartaProdsSinPalabraClave();
+		})();
 
 		// Fin
 		return prodsPorEnt;
