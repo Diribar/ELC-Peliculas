@@ -15,7 +15,7 @@ module.exports = {
 	},
 	cantProductos: async (req, res) => {
 		// Variables
-		const palabrasClave = req.query.palabrasClave;
+		const {palabrasClave} = req.query;
 		let cantProdsNuevos;
 
 		// Obtiene los productos
