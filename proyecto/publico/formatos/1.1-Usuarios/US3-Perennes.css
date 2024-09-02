@@ -1,9 +1,11 @@
-/* General */
-#cuerpo form {background: var(--usuarios);}
-
 /* Ayuda del Título */
-#tituloPrincipal .ayudaMensForm {right: -8px;}
-#tituloPrincipal .ayudaMensForm::before {right: 10px;}
+#tituloPrincipal .ayudaMensForm {
+	right: -12px; translate: 0 100%; bottom: -7px; top: auto;
+	&::before {
+		right: 13px; top: 0px; translate: 0 -100%; left: auto;
+		border-color: transparent transparent var(--backAyuda) transparent;
+	}
+}
 
 /* Media Query - Ancho */
 @media (width > calc(520px + 0.67 * (100vh - 60px))) {#imgDerecha img {max-width: calc(0.7 * var(--altoMain));}} /* 470px es el ancho del form, 0.67 es el aspectRatio de la imagen, 60px es el alto del header */

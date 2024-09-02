@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 30/ago",
-	"HoraUTC": "6:37",
+	"FechaUTC": "Sáb. 31/ago",
+	"HoraUTC": "12:35",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 26/ago",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-ago-24": {"leyenda": "Hoy recordamos a san Agustín de Hipona", "entidad": "personajes", "id": 82},
 		"29-ago-24": {"leyenda": "Hoy recordamos el Martirio de san Juan Bautista", "entidad": "hechos", "id": 76},
 		"30-ago-24": {"leyenda": "Hoy recordamos a santa Rosa de Lima", "entidad": "personajes", "id": 98},
 		"31-ago-24": {},
-		"01-sep-24": {"leyenda": "Hoy recordamos el comienzo de la Segunda Guerra Mundial", "entidad": "hechos", "id": 22}
+		"01-sep-24": {"leyenda": "Hoy recordamos el comienzo de la Segunda Guerra Mundial", "entidad": "hechos", "id": 22},
+		"02-sep-24": {}
 	}
 }

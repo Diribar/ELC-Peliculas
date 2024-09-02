@@ -7,13 +7,11 @@
 	#dataEntry {
 		overflow: auto; max-height: 95%; border-radius: 10px;
 		display: flex; flex-direction: column;
-		background: var(--gris-oscuro); padding: 20px;
+		background: var(--usuarios); padding: 20px;
 
 		/* Título principal */
-		h1 {
-			margin: 0; margin-bottom: 10px; align-self: center !important;
-			font-size: 1.5em; color: var(--amarillo-claro);
-		}
+		#tituloPrincipal, h1 {align-self: center !important;}
+		h1 {margin: 0; margin-bottom: 10px; font-size: 1.5em; color: var(--amarillo-claro);}
 
 		/* Íconos y Mensajes de Error */
 		.inputError {
