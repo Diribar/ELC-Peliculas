@@ -27,9 +27,8 @@ module.exports = {
 					pagina == 1 || // es la primera rutina
 					pagina <= paginasPorEntidadTMDB; // es menor o igual al máximo
 				if (condicion) {
-					const prodsPorEnt = APIsTMDB.search(palabrasClave, entidadTMDB, pagina).then((n) =>
-						FN.procesaInfoDeAPI(n, entidadTMDB, palabrasClave)
-					);
+					const prodsPorEnt = APIsTMDB.search(palabrasClave, entidadTMDB, pagina) // busca en la API
+						.then((n) => FN.procesaInfoDeAPI(n, entidadTMDB, palabrasClave)); // procesa la info recibida
 					prodsPorEnts.push(prodsPorEnt);
 				}
 			}
