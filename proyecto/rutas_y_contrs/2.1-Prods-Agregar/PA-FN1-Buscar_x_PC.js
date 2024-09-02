@@ -335,8 +335,8 @@ module.exports = {
 // Funciones
 let FN = {
 	procesaInfoDeAPI: (prodsPorEnt, TMDB_entidad, palabrasClave) => {
-		// Funciones
-		let descartaRegistrosIncompletos = () => {
+		// Descarta registros con información incompleta
+		(() => {
 			// Variables
 			let productos = [];
 			for (let producto of prodsPorEnt.results) {
@@ -356,8 +356,10 @@ let FN = {
 
 			// Fin
 			return;
-		};
-		let estandarizaNombres = () => {
+		})();
+
+		// Estandariza nombres
+		(() => {
 			// Variables
 			let productos = [];
 
@@ -414,8 +416,10 @@ let FN = {
 			// Fin
 			prodsPorEnt.productos = productos;
 			return;
-		};
-		let descartaProdsSinPalabraClave = () => {
+		})();
+
+		// Descarta los productos que no tienen ninguna palabra clave
+		(() => {
 			// Variables
 			let palabras = palabrasClave.split(" ");
 			let productos = [];
@@ -444,16 +448,7 @@ let FN = {
 			// Fin
 			prodsPorEnt.productos = productos;
 			return;
-		};
-
-		// Descarta registros con información incompleta
-		descartaRegistrosIncompletos();
-
-		// Estandariza nombres
-		estandarizaNombres();
-
-		// Descarta los productos que no tienen ninguna palabra clave
-		descartaProdsSinPalabraClave();
+		})();
 
 		// Fin
 		return prodsPorEnt;
