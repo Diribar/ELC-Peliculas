@@ -12,6 +12,7 @@
 			<input type="text" class="input" name="palabrasClave" placeholder="Escribilo acá"
 				value="<%= dataEntry.palabrasClave %>"
 				autofocus autocomplete="off" tabindex="1"
+				onfocus="this.select();"
 			>
 			<%- include("MN-Ayuda", {mensajes: mensajesAyuda}) %>
 			<%- include("MN-Errores", {nombre:"palabrasClave"}) %>
