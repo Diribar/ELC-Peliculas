@@ -4,9 +4,9 @@ const API_key = process.env.API_key;
 module.exports = {
 	search: async (palabrasClave, TMDB_entidad, page) => {
 		// PARTES DEL URL
-		// "https://api.themoviedb.org/3/search/movie      ?api_key=&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
-		// "https://api.themoviedb.org/3/search/collection ?api_key=&language=es&query=karol%20uomo%20papa&page=1
-		// "https://api.themoviedb.org/3/search/tv         ?api_key=&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+		// "https://api.themoviedb.org/3/search/collection?api_key=&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+		// "https://api.themoviedb.org/3/search/tv
+		// "https://api.themoviedb.org/3/search/movie
 		// let version = TMDB_entidad != "collection" ? 4 : 3;
 		const version = 3;
 		const url =
