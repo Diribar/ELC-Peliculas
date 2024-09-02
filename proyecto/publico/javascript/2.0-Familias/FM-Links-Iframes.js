@@ -6,6 +6,7 @@ window.addEventListener("load", async () => {
 		logosLink: document.querySelectorAll(".yaExistentes .url a img"),
 
 		// Activos
+		filasActivas: document.querySelectorAll(".yaExistentes.inactivo_false"),
 		logosActivos: document.querySelectorAll(".yaExistentes.inactivo_false .url a:not([href]) img"),
 		linksActivos: document.querySelectorAll(".yaExistentes.inactivo_false .url:not(:has(a[href])) > input[name='url']"),
 
@@ -13,12 +14,11 @@ window.addEventListener("load", async () => {
 		logosInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url a:not([href]) img"),
 		linksInactivos: document.querySelectorAll(".yaExistentes.inactivo_true .url:not(:has(a[href])) > input[name='url']"),
 	};
-	const rutaEmbeded = "/revision/api/link/obtiene-embeded-link/?linkUrl=";
 
 	// Funciones
-	let creaLosIframes = async (links, activoInactivo) => {
+	let creaLosIframes = async (domLinks, activoInactivo) => {
 		// Rutina para crear todos los iframes
-		for (let link of links) {
+		for (let domLink of domLinks) {
 			// Agrega el entorno del iframe
 			const div = document.createElement("div");
 			div.id = "contIframe";
@@ -27,47 +27,46 @@ window.addEventListener("load", async () => {
 
 			// Agrega el iframe
 			const iframe = document.createElement("iframe");
-			if (link.value) iframe.src = await fetch(rutaEmbeded + encodeURIComponent(link.value)).then((n) => n.json());
+			if (domLink.value) iframe.src = await fetch(rutaEmbeded + encodeURIComponent(domLink.value)).then((n) => n.json());
 			iframe.setAttribute("allowFullScreen", "");
 			div.appendChild(iframe);
 		}
 		// Fin
 		return;
 	};
-
-	// Crea los iframes activos
 	if (DOM.linksActivos) await creaLosIframes(DOM.linksActivos, "activo");
-	const contIframesActivos = DOM.cuerpo.querySelectorAll("#contIframe.activo");
-	const iframesActivos = DOM.cuerpo.querySelectorAll("#contIframe.activo iframe");
-
-	// Crea los iframes inactivos
+	DOM.contIframesActivos = DOM.cuerpo.querySelectorAll("#contIframe.activo");
 	if (DOM.linksInactivos) await creaLosIframes(DOM.linksInactivos, "inactivo");
-	const contIframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo");
-	const iframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo iframe");
+	DOM.contIframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo");
 
 	// Muestra el iframe si se hace click sobre él, y en caso contrario lo oculta
-	window.addEventListener("click", (e) => {
-		DOM.logosActivos.forEach((logoLink, i) => {
-			if (logoLink == e.target) contIframesActivos[i].classList.remove("ocultar");
-			else if (!contIframesActivos[i].className.includes("ocultar")) contIframesActivos[i].classList.add("ocultar");
-			iframesActivos[i].src = iframesActivos[i].src;
+	DOM.logosActivos.forEach((logoLink, i) => {
+		logoLink.addEventListener("click", () => {
+			for (let contIframesActivo of DOM.contIframesActivos) contIframesActivo.classList.add("ocultar");
+			DOM.contIframesActivos[i].classList.remove("ocultar");
 		});
-		DOM.logosInactivos.forEach((logoLink, i) => {
-			if (logoLink == e.target) contIframesInactivos[i].classList.remove("ocultar");
-			else if (!contIframesInactivos[i].className.includes("ocultar")) contIframesInactivos[i].classList.add("ocultar");
-			iframesInactivos[i].src = iframesInactivos[i].src;
+	});
+	DOM.logosInactivos.forEach((logoLink, i) => {
+		logoLink.addEventListener("click", () => {
+			for (let contIframesInactivo of DOM.contIframesInactivos) contIframesInactivo.classList.add("ocultar");
+			DOM.contIframesInactivos[i].classList.remove("ocultar");
 		});
 	});
 
 	// Start-up
-	const soloLinksEmbededActivos = DOM.logosLink.length == DOM.logosActivos.length;
 	if (
 		location.pathname.startsWith("/revision") && // es una vista de revisión
-		contIframesActivos.length &&
-		soloLinksEmbededActivos // sólo existen links embeded
+		DOM.contIframesActivos.length // hay links activos
 	)
-		contIframesActivos[0].classList.remove("ocultar");
+		for (let i = 0; i < DOM.contIframesActivos.length; i++)
+			if (DOM.filasActivas[i].className.includes("oscuro_false")) {
+				DOM.contIframesActivos[i].classList.remove("ocultar");
+				break;
+			}
 
 	// Fin
 	return;
 });
+
+// Variables
+const rutaEmbeded = "/revision/api/link/obtiene-embeded-link/?linkUrl=";
