@@ -32,8 +32,8 @@ module.exports = {
 			if (errores.credenciales) {
 				// intentosAM - cookie
 				const intentosAM = req.cookies && req.cookies.intentosAM ? Number(req.cookies.intentosAM) + 1 : 1;
-				if (intentosAM <= intentosCookies) res.cookie("intentosAM", intentosAM, {maxAge: unDia});
-				const intentosPendsCookie = Math.max(0, intentosCookies - intentosAM);
+				if (intentosAM <= maxIntentosCookies) res.cookie("intentosAM", intentosAM, {maxAge: unDia});
+				const intentosPendsCookie = Math.max(0, maxIntentosCookies - intentosAM);
 
 				// Convierte el resultado en texto
 				errores.credenciales =
@@ -80,13 +80,13 @@ module.exports = {
 			if (errores.credenciales) {
 				// intentosDP - cookie
 				intentosDP = req.cookies && req.cookies.intentosDP ? Number(req.cookies.intentosDP) + 1 : 1;
-				if (intentosDP <= intentosCookies) res.cookie("intentosDP", intentosDP, {maxAge: unDia});
-				const intentosPendsCookie = Math.max(0, intentosCookies - intentosDP);
+				if (intentosDP <= maxIntentosCookies) res.cookie("intentosDP", intentosDP, {maxAge: unDia});
+				const intentosPendsCookie = Math.max(0, maxIntentosCookies - intentosDP);
 
 				// intentosDP - usuario
 				intentosDP = datos.usuario.intentosDP + 1;
-				if (intentosDP <= intentosBD) baseDeDatos.actualizaPorId("usuarios", datos.usuario.id, {intentosDP});
-				const intentosPendsBD = Math.max(0, intentosBD - intentosDP);
+				if (intentosDP <= maxIntentosBD) baseDeDatos.actualizaPorId("usuarios", datos.usuario.id, {intentosDP});
+				const intentosPendsBD = Math.max(0, maxIntentosBD - intentosDP);
 
 				// Convierte el resultado en texto
 				const intentosPendsCons = Math.min(intentosPendsCookie, intentosPendsBD);

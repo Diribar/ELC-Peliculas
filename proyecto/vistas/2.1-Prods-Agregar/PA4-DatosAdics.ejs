@@ -21,9 +21,7 @@
 
 			<!-- Campos checkBox -->
 			<div id="checkBoxes">
-				<% for (let campo of camposDA.filter(n => n.chkBox)) { %>
-					<%- include("P-CheckBox", campo) %>
-				<% } %>
+				<% for (let campo of camposChkBox) { %><%- include("P-CheckBox", campo) %><% } %>
 			</div>
 			<hr>
 

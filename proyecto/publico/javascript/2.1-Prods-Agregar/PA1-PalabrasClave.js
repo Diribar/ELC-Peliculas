@@ -138,6 +138,7 @@ window.addEventListener("load", async () => {
 			if (DOM.botonSubmit.className.includes("verdeClaro")) {
 				// Obtiene los resultados
 				DOM.botonSubmit.classList.add("inactivo");
+				DOM.botonSubmit.innerHTML = "Buscando";
 				const palabrasClave = FN.palabrasClave(DOM.inputs[0].value);
 				v.resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
 

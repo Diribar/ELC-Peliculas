@@ -67,21 +67,23 @@ module.exports = {
 			return errores;
 		},
 	},
-	login: async function (datos) {
+	login: async (datos) => {
 		// Variables
 		const {email, contrasena} = datos;
 		let usuario;
 
 		// Verifica errores
-		let errores = this.formatoMail(email);
-		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr(contrasena) ? largoContr(contrasena) : "";
+		let errores = formatoMail(email);
+		errores.contrasena = !contrasena ? contrasenaVacia : largoContr(contrasena) ? largoContr(contrasena) : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 
 		// Sólo si no hay algún error previo, revisa las credenciales
 		if (!errores.hay) {
-			// Obtiene el usuario y termina si se superó la cantidad de intentos fallidos tolerados
+			// Obtiene el usuario
 			usuario = await comp.obtieneUsuarioPorMail(email);
-			if (usuario.intentosLogin == intentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
+
+			// Termina si se superó la cantidad de intentos fallidos tolerados
+			if (usuario && usuario.intentosLogin >= maxIntentosBD) return {errores: {hay: true}, usuario}; // hace falta el usuario para que le llegue al middleware
 
 			// Valida el mail y la contraseña
 			errores.email_BD = !usuario;
@@ -126,16 +128,16 @@ module.exports = {
 };
 
 // Variables y Funciones
-const cartelMailVacio = "Necesitamos que escribas un correo electrónico";
-const cartelMailFormato = "Debes escribir un formato de correo válido";
-const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
+const mailVacio = "Necesitamos que escribas un correo electrónico";
+const mailFormato = "Debes escribir un formato de correo válido";
+const contrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 
 // Funciones
 let formatoMail = (email) => {
 	// Variables
 	const formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	const errorMail = !email ? cartelMailVacio : !formato.test(email) ? cartelMailFormato : "";
+	const errorMail = !email ? mailVacio : !formato.test(email) ? mailFormato : "";
 
 	// Variable error
 	let errores = {email: errorMail};

@@ -209,49 +209,19 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const datos = req.body;
-			const aux = await valida.login(datos);
-			const {errores} = aux;
-			let {usuario} = aux;
-			let intentosLogin;
-
-			// Acciones si hay errores de credenciales
-			if (errores.hay) {
-				// intentosLogin - cookie
-				intentosLogin = req.cookies && req.cookies.iintentosLogin ? req.cookies.intentosLogin + 1 : 1;
-				if (intentosLogin <= intentosCookies) res.cookie("intentosLogin", intentosLogin, {maxAge: unDia});
-				const intentosPendsCookie = Math.max(0, intentosCookies - intentosLogin);
-
-				// intentosLogin - usuario
-				let intentosPendsBD = intentosBD;
-				if (usuario && errores.contr_BD) {
-					intentosLogin = usuario.intentosLogin + 1;
-					if (intentosLogin <= intentosBD) baseDeDatos.actualizaPorId("usuarios", usuario.id, {intentosLogin});
-					intentosPendsBD = Math.max(0, intentosBD - intentosLogin);
-				}
-
-				// Convierte el resultado en texto
-				const intentosPendsCons = Math.min(intentosPendsCookie, intentosPendsBD);
-				errores.credenciales =
-					procesos.comentarios.credsInvalidas.login + "<br>Intentos disponibles: " + intentosPendsCons;
-
-				// session - guarda la info
-				req.session.login = {datos, errores, usuario};
-
-				// Redirecciona
-				return res.redirect("/usuarios/login");
-			}
-
-			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
-			res.cookie("email", req.body.email, {maxAge: unDia});
-			res.clearCookie("intentosLogin");
-			delete req.session.login;
+			const {email} = req.body;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			if (usuario.statusRegistro_id == mailPendValidar_id) {
+			const usuario = await comp.obtieneUsuarioPorMail(email);
+			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
-				req.session.usuario = await comp.obtieneUsuarioPorMail(usuario.email);
-			}
+
+			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
+			res.cookie("email", email, {maxAge: unDia});
+
+			// Limpia la información provisoria
+			res.clearCookie("intentosLogin");
+			delete req.session.login;
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
