@@ -40,16 +40,14 @@ window.addEventListener("load", async () => {
 	DOM.contIframesInactivos = DOM.cuerpo.querySelectorAll("#contIframe.inactivo");
 
 	// Muestra el iframe si se hace click sobre él, y en caso contrario lo oculta
-	DOM.logosActivos.forEach((logoLink, i) => {
-		logoLink.addEventListener("click", () => {
-			for (let contIframesActivo of DOM.contIframesActivos) contIframesActivo.classList.add("ocultar");
-			DOM.contIframesActivos[i].classList.remove("ocultar");
+	window.addEventListener("click", (e) => {
+		DOM.logosActivos.forEach((logoLink, i) => {
+			if (logoLink == e.target) DOM.contIframesActivos[i].classList.remove("ocultar");
+			else if (!DOM.contIframesActivos[i].className.includes("ocultar")) DOM.contIframesActivos[i].classList.add("ocultar");
 		});
-	});
-	DOM.logosInactivos.forEach((logoLink, i) => {
-		logoLink.addEventListener("click", () => {
-			for (let contIframesInactivo of DOM.contIframesInactivos) contIframesInactivo.classList.add("ocultar");
-			DOM.contIframesInactivos[i].classList.remove("ocultar");
+		DOM.logosInactivos.forEach((logoLink, i) => {
+			if (logoLink == e.target) DOM.contIframesInactivos[i].classList.remove("ocultar");
+			else if (!DOM.contIframesInactivos[i].className.includes("ocultar")) DOM.contIframesInactivos[i].classList.add("ocultar");
 		});
 	});
 
