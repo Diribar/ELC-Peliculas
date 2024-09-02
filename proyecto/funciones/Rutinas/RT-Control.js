@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.eliminaImagenesSinRegistro();
+		// await this.rutinas.actualizaProdsAlAzar();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -217,6 +217,8 @@ module.exports = {
 			// Variables
 			const condicion = {statusRegistro_id: aprobados_ids};
 			const entidades = variables.entidades.prods;
+			const camposNulos = {pelicula_id: null, coleccion_id: null, grupoCol_id: null, capitulo_id: null};
+			let id = 0;
 
 			// Rastrilla los productos
 			for (let entidad of entidades) {
@@ -226,10 +228,18 @@ module.exports = {
 
 				// Rastrilla los productos
 				for (let producto of productos) {
-					const azar = comp.azar(); // Crea los datos
-					baseDeDatos.actualizaTodosPorCondicion("prodsComplem", {[campo_id]: producto.id}, {azar}); // actualiza el campo 'azar' en el registro
+					// Crea los datos
+					id++;
+					const azar = comp.azar();
+					const datos = {id, ...camposNulos, [campo_id]: producto.id, azar};
+
+					// Guarda los cambios
+					baseDeDatos.actualizaTodosPorCondicion("prodsComplem", {id}, datos); // actualiza el campo 'azar' en el registro
 				}
 			}
+
+			// Elimina los sobrantes
+			baseDeDatos.eliminaTodosPorCondicion("prodsComplem", {id: {[Op.gt]: id}});
 
 			// Fin
 			return;
