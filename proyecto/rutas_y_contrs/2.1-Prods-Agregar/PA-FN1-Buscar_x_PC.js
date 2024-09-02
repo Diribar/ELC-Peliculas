@@ -421,7 +421,7 @@ let FN = {
 		// Descarta los productos que no tienen ninguna palabra clave
 		(() => {
 			// Variables
-			let palabras = palabrasClave.split(" ");
+			const palabras = palabrasClave.split(" ");
 			let productos = [];
 
 			// Conserva los productos con al menos una palabra clave
