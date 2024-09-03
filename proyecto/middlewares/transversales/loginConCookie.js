@@ -16,6 +16,8 @@ module.exports = async (req, res, next) => {
 		res.clearCookie("email"); // borra el mail de cookie
 		return next(); // interrumpe la rutina
 	}
+	// Actualiza session
+	else req.session.usuario = usuario;
 
 	// Acciones si la fecha del último login != hoy
 	const hoy = new Date().toISOString().slice(0, 10);
