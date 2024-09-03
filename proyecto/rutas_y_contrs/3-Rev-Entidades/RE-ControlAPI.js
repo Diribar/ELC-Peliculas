@@ -156,11 +156,10 @@ module.exports = {
 			const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 
 			// Acciones si es embeded
-			let url = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
-			//if (url.includes("youtube.com")) url += "?autoplay=1&mute=1";
+			const urlEmbedded = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
 
 			// Fin
-			return res.json(url);
+			return res.json(urlEmbedded);
 		},
 	},
 };

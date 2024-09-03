@@ -1,9 +1,6 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	const prodEntidad = new URL(location.href).searchParams.get("entidad");
-	const prodId = new URL(location.href).searchParams.get("id");
-	const revision = location.pathname.includes("/revision/");
 	let DOM = {
 		yaExistentes: document.querySelectorAll(".yaExistentes"),
 		botonesEditar: document.querySelectorAll(".edicion"), // No lleva 'yaExistentes'
@@ -14,12 +11,7 @@ window.addEventListener("load", () => {
 		botonesOut: document.querySelectorAll(".yaExistentes .out"),
 		// pasivos: document.querySelector("#tabla #tags #inactivo"),
 	};
-	let v = {
-		condicion: "?prodEntidad=" + prodEntidad + "&prodId=" + prodId,
-		columnas: DOM.taparMotivo.length / DOM.yaExistentes.length,
-		rutaEliminar: revision ? "/revision/api/link/alta-baja" : "/links/api/inactiva-o-elimina/",
-		rutaSigProd: "/revision/api/link/siguiente-producto/",
-	};
+	let columnas = DOM.taparMotivo.length / DOM.yaExistentes.length;
 	let respuesta;
 
 	// Listener de 'inactivar'
@@ -32,14 +24,14 @@ window.addEventListener("load", () => {
 			if (botonOut.className.includes("fa-trash-can")) {
 				// Variables
 				let motivo_id = DOM.motivosSelect[fila].value;
-				let url = v.condicion;
+				let url = condicion;
 				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
 				url += "&IN=NO";
 				url += "&aprob=NO";
 
 				// Envía la decisión
-				respuesta = await fetch(v.rutaEliminar + url).then((n) => n.json());
+				respuesta = await fetch(rutaEliminar + url).then((n) => n.json());
 
 				// Consecuencias a partir de la respuesta
 				if (respuesta) location.reload();
@@ -55,8 +47,8 @@ window.addEventListener("load", () => {
 				// botonOut.classList.add("inactivo"); quitamos lo de inactivo, porque pusimos un motivo 'default'
 
 				// Oculta los 6 campos
-				for (let columna = 0; columna < v.columnas; columna++)
-					DOM.taparMotivo[fila * v.columnas + columna].classList.add("ocultar");
+				for (let columna = 0; columna < columnas; columna++)
+					DOM.taparMotivo[fila * columnas + columna].classList.add("ocultar");
 
 				// Muestra el select
 				DOM.motivosFila[fila].classList.remove("ocultar");
@@ -73,3 +65,10 @@ window.addEventListener("load", () => {
 		});
 	});
 });
+
+// Variables
+const prodEntidad = new URL(location.href).searchParams.get("entidad");
+const prodId = new URL(location.href).searchParams.get("id");
+const condicion = "?prodEntidad=" + prodEntidad + "&prodId=" + prodId;
+const revision = location.pathname.includes("/revision/");
+const rutaEliminar = revision ? "/revision/api/link/alta-baja" : "/links/api/inactiva-o-elimina/";

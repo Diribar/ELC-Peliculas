@@ -1,11 +1,11 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let peliculaTrailer = document.querySelector("select#peliculaTrailer");
-	let filasExistentes = document.querySelectorAll("tr.yaExistentes");
-	let filasEdicionesCRUD = document.querySelectorAll("tr.edicion.crud");
-	let filasEdicionesRevisar = document.querySelectorAll("tr.edicion.revisar");
-	let tipoAltas = document.querySelector("tr.alta .tipo select[name='tipo_id']");
+	const peliculaTrailer = document.querySelector("select#peliculaTrailer");
+	const filasExistentes = document.querySelectorAll("tr.yaExistentes");
+	const filasEdicionesCRUD = document.querySelectorAll("tr.edicion.crud");
+	const filasEdicionesRevisar = document.querySelectorAll("tr.edicion.revisar");
+	const tipoAltas = document.querySelector("tr.alta .tipo select[name='tipo_id']");
 
 	// Add Event Listener
 	peliculaTrailer.addEventListener("change", () => {
