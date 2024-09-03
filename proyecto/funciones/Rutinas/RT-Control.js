@@ -326,7 +326,6 @@ module.exports = {
 				)
 				.then((n) => n.filter((m) => !!m));
 			if (!loginsDiarios.length) return;
-			console.log(loginsDiarios);
 
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
