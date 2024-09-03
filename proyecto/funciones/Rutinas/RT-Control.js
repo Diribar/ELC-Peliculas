@@ -315,16 +315,7 @@ module.exports = {
 			// Logins diarios, quitando los duplicados
 			const loginsDiarios = await baseDeDatos
 				.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}})
-				.then((n) => n.sort((a, b) => a.usuario_id - b.usuario_id))
-				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)))
-				.then((n) =>
-					n.map((m) => {
-						const resultado = m.fecha != aux.fecha || m.usuario_id != aux.usuario_id ? m : null;
-						aux = m;
-						return resultado;
-					})
-				)
-				.then((n) => n.filter((m) => !!m));
+				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
 			if (!loginsDiarios.length) return;
 
 			// Si hay una inconsistencia, termina
