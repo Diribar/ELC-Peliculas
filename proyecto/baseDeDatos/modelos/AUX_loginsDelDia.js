@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "loginsDelDia";
 	const columns = {
-		fecha: {type: dt.DATE},
+		fecha: {type: dt.STRING(10)},
 		usuario_id: {type: dt.INTEGER},
 	};
 	const config = {

@@ -22,7 +22,6 @@ module.exports = async (req, res, next) => {
 	if (usuario.fechaUltimoLogin != hoy) {
 		usuario = await procesos.actualizaElContadorDeLogins(usuario, hoy); // actualiza el contador de logins
 		res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
-		req.session.usuario = usuario;
 	}
 
 	// Acciones si cambió la versión
@@ -52,10 +51,10 @@ module.exports = async (req, res, next) => {
 		// Actualiza la versión en el usuario y la variable usuario
 		baseDeDatos.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
 		usuario.versionElcUltimoLogin = versionELC;
-		req.session.usuario = usuario;
 	}
 
-	// Actualiza locals
+	// Actualiza session y locals
+	req.session.usuario = usuario;
 	res.locals.usuario = usuario;
 
 	// Fin
