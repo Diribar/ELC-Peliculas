@@ -1,32 +1,29 @@
 "use strict";
 // Requires
-
 const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {
-	// Variables
-	let usuario = req.session.usuario;
-	res.locals.usuario = usuario;
+	// Si corresponde, interrumpe la función
+	if (req.originalUrl.includes("/api/")) return next();
 
-	// Si ya tiene session, actualiza el contador y saltea la rutina
-	if (usuario) {
-		if (usuario.fechaUltimoLogin != new Date().toISOString().slice(0, 10))
-			req.session.usuario = procesos.actualizaElContadorDeLogins(usuario); // Actualiza el contador de logins
-		return next();
+	// Si no hay cookies, interrumpe la rutina
+	let usuario = req.session.usuario;
+	if (!usuario && (!req.cookies || !req.cookies.email)) return next();
+
+	// Si no existe el mail, borra el cookie e interrumpe la rutina
+	if (!usuario) usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
+	if (!usuario) {
+		res.clearCookie("email"); // borra el mail de cookie
+		return next(); // interrumpe la rutina
 	}
 
-	// Si no hay cookies, saltea la rutina
-	if (!req.cookies || !req.cookies.email) return next();
-
-	// Obtiene los datos del usuario
-	usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
-	if (!usuario) return next(); // si no existe el usuario, saltea la rutina
-
-	// Notifica al contador de logins y actualiza session, cookie y locals
-	usuario = procesos.actualizaElContadorDeLogins(usuario);
-	req.session.usuario = usuario;
-	res.cookie("email", usuario.email, {maxAge: unDia * 30});
-	res.locals.usuario = usuario;
+	// Acciones si la fecha del último login != hoy
+	const hoy = new Date().toISOString().slice(0, 10);
+	if (usuario.fechaUltimoLogin != hoy) {
+		usuario = await procesos.actualizaElContadorDeLogins(usuario, hoy); // actualiza el contador de logins
+		res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
+		req.session.usuario = usuario;
+	}
 
 	// Acciones si cambió la versión
 	let informacion;
@@ -52,9 +49,14 @@ module.exports = async (req, res, next) => {
 				//ol: novedades.length > 2, // si son más de 2 novedades, las enumera
 			};
 
-		// Actualiza la versión en el usuario
+		// Actualiza la versión en el usuario y la variable usuario
 		baseDeDatos.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
+		usuario.versionElcUltimoLogin = versionELC;
+		req.session.usuario = usuario;
 	}
+
+	// Actualiza locals
+	res.locals.usuario = usuario;
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
