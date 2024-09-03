@@ -759,7 +759,6 @@ let nombres = async (reg, familia) => {
 };
 let obtieneLosRCLV = async (fechaDelAno) => {
 	// Variables
-	const include = variables.entidades.prods;
 	let rclvs = [];
 
 	// Obtiene los RCLV
