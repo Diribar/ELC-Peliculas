@@ -18,21 +18,19 @@ module.exports = {
 		return;
 	},
 	// ControlVista: loginGuardar
-	actualizaElContadorDeLogins: (usuario) => {
-		// Variables
-		const hoy = new Date().toISOString().slice(0, 10);
-		let fechaUltimoLogin = usuario.fechaUltimoLogin;
+	actualizaElContadorDeLogins: async (usuario, hoy) => {
+		// Actualiza el usuario
+		const fechaUltimoLogin = hoy;
+		baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
 
-		// Acciones si el último login fue anterior a hoy
-		if (hoy != fechaUltimoLogin) {
-			fechaUltimoLogin = hoy;
+		// Valida que no exista ya un registro del usuario en esta fecha
+		const condicion = {fecha: hoy, usuario_id: usuario.id};
+		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
 
-			// Actualiza el usuario
-			baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
+		// Acciones si no existe
+		if (!existe) {
 			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
-
-			// Agrega un registro de login del día
-			baseDeDatos.agregaRegistro("loginsDelDia", {usuario_id: usuario.id});
+			baseDeDatos.agregaRegistro("loginsDelDia", condicion); // agrega un registro de login del día
 		}
 
 		// Fin

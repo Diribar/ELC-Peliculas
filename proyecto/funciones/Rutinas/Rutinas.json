@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 2/sep",
-	"HoraUTC": "12:07",
+	"FechaUTC": "Mar. 3/sep",
+	"HoraUTC": "7:48",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 2/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"31-ago-24": {},
 		"01-sep-24": {"leyenda": "Hoy recordamos el comienzo de la Segunda Guerra Mundial", "entidad": "hechos", "id": 22},
 		"02-sep-24": {},
 		"03-sep-24": {},
-		"04-sep-24": {"leyenda": "Hoy recordamos a Moisés, santo", "entidad": "personajes", "id": 61}
+		"04-sep-24": {"leyenda": "Hoy recordamos a Moisés, santo", "entidad": "personajes", "id": 61},
+		"05-sep-24": {"leyenda": "Hoy recordamos a Madre Teresa, santa", "entidad": "personajes", "id": 21}
 	}
 }

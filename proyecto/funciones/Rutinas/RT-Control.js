@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.actualizaProdsAlAzar();
+		// await this.rutinas.loginsPorDia();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -174,7 +174,7 @@ module.exports = {
 			}
 
 			// Variables
-			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))];
+			const usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id || n.statusOriginalPor_id))]; // obtiene el id de los usuarios a los que hay que notificarles
 			const usuarios = await baseDeDatos.obtieneTodosPorCondicion("usuarios", {id: usuarios_id}, "pais");
 			const asunto = "Revisión de las sugerencias realizadas";
 			let mailsEnviados = [];
@@ -310,26 +310,37 @@ module.exports = {
 		loginsPorDia: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
+			let aux = {};
 
-			// Logins diarios
-			const loginsDiarios = await baseDeDatos.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
-			const fechaLoginsDiarios = loginsDiarios.length
-				? new Date(new Date(loginsDiarios[0].fecha).getTime()).toISOString().slice(0, 10)
-				: null;
-
-			// Logins acums
-			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
-			let agregarFecha = loginsAcums.length // condición si hay logins acums
-				? procesos.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
-				: loginsDiarios.length // condición si no hay logins acums y sí 'loginsDiarios'
-				? fechaLoginsDiarios // la fecha del primer registro
-				: hoy; // la fecha de hoy
+			// Logins diarios, quitando los duplicados
+			const loginsDiarios = await baseDeDatos
+				.obtieneTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}})
+				.then((n) => n.sort((a, b) => a.usuario_id - b.usuario_id))
+				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)))
+				.then((n) =>
+					n.map((m) => {
+						const resultado = m.fecha != aux.fecha || m.usuario_id != aux.usuario_id ? m : null;
+						aux = m;
+						return resultado;
+					})
+				)
+				.then((n) => n.filter((m) => !!m));
+			if (!loginsDiarios.length) return;
 
 			// Si hay una inconsistencia, termina
-			if (loginsAcums.length && loginsDiarios.length && fechaLoginsDiarios < agregarFecha) {
-				console.log(410, "Inconsistencia:", "Fecha Diaria", fechaLoginsDiarios, "/ Agrega Fecha", agregarFecha);
+			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
+			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
+			const ultFechaLoginsAcums = loginsAcums.length ? loginsAcums[loginsAcums.length - 1].fecha : null;
+			if (ultFechaLoginsAcums && primFechaLoginsDiarios <= ultFechaLoginsAcums) {
+				const mensaje = primFechaLoginsDiarios == ultFechaLoginsAcums ? "IGUAL" : "MENOR";
+				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
 				return;
 			}
+
+			// Obtiene la fecha inicial para acumulados
+			let agregarFecha = loginsAcums.length // condición si hay logins acums
+				? procesos.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+				: primFechaLoginsDiarios; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
 			while (agregarFecha < hoy) {
