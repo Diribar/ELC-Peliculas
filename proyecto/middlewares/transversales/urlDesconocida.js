@@ -1,6 +1,9 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
+	// Si corresponde, interrumpe la función
+	if (req.originalUrl.includes("/api/")) return next();
+
 	// Acciones si no se reconoce la url
 	let informacion = {
 		mensajes: [variables.urlDesconocida],
