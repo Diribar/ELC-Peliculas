@@ -52,7 +52,13 @@
 			<!-- Links - Específico -->
 			<script src="/publico/javascript/3-Rev-Entidades/RE3-Link1-AltasBajas.js"></script>
 			<script src="/publico/javascript/3-Rev-Entidades/RE3-Link2-Ediciones.js"></script>
-			<% } %>
+
+		<% } else if (codigo.endsWith("/edicion")) { %>
+			<!-- Ediciones - Particular -->
+			<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-Edicion.css">
+			<script src="/publico/javascript/3-Rev-Entidades/RE-PR-Edicion.js"></script>
+		<% } %>
+
 	<% } else if (codigo == "rclv/alta" || codigo == "rclv/solapamiento") { %>
 		<!-- RCLV-Altas / Solapamiento -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
@@ -64,11 +70,6 @@
 		<% } else if (codigo == "rclv/solapamiento") { %>
 			<script src="/publico/javascript/3-Rev-Entidades/RE2-RCLV-Solapam.js"></script>
 		<% } %>
-
-	<% } else if (codigo.endsWith("/edicion")) { %>
-		<!-- Ediciones - Particular -->
-		<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-Edicion.css">
-		<script src="/publico/javascript/3-Rev-Entidades/RE-PR-Edicion.js"></script>
 
 	<% } else if (codigo.endsWith("/edicion/avatar")) { %>
 		<!-- Prod-Avatar -->
