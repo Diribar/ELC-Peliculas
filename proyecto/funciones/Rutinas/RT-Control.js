@@ -310,7 +310,6 @@ module.exports = {
 		loginsPorDia: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
-			let aux = {};
 
 			// Logins diarios, quitando los duplicados
 			const loginsDiarios = await baseDeDatos
@@ -320,34 +319,34 @@ module.exports = {
 
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
-			const loginsAcums = await baseDeDatos.obtieneTodos("loginsAcums");
-			const ultFechaLoginsAcums = loginsAcums.length ? loginsAcums[loginsAcums.length - 1].fecha : null;
-			if (ultFechaLoginsAcums && primFechaLoginsDiarios <= ultFechaLoginsAcums) {
-				const mensaje = primFechaLoginsDiarios == ultFechaLoginsAcums ? "IGUAL" : "MENOR";
+			const ultLoginAcum = await baseDeDatos.obtienePorCondicionElUltimo("loginsAcums");
+			const fechaUltLoginAcum = ultLoginAcum ? ultLoginAcum.fecha : null;
+			if (fechaUltLoginAcum && primFechaLoginsDiarios <= fechaUltLoginAcum) {
+				const mensaje = primFechaLoginsDiarios == fechaUltLoginAcum ? "IGUAL" : "MENOR";
 				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
 				return;
 			}
 
 			// Obtiene la fecha inicial para acumulados
-			let agregarFecha = loginsAcums.length // condición si hay logins acums
-				? procesos.sumaUnDia(loginsAcums[loginsAcums.length - 1].fecha) // le suma un día al último registro
+			let proximaFecha = fechaUltLoginAcum // condición si hay logins acums
+				? procesos.sumaUnDia(fechaUltLoginAcum) // le suma un día al último registro
 				: primFechaLoginsDiarios; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
-			while (agregarFecha < hoy) {
+			while (proximaFecha < hoy) {
 				// Variables
-				const diaSem = diasSemana[new Date(agregarFecha).getUTCDay()];
-				const anoMes = agregarFecha.slice(0, 7);
-				const cantLogins = loginsDiarios.filter((n) => n.fecha == agregarFecha).length;
+				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
+				const anoMes = proximaFecha.slice(0, 7);
+				const cantLogins = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
 
 				// Agrega la cantidad de logins
-				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: agregarFecha, diaSem, anoMes, cantLogins});
+				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantLogins});
 
 				// Obtiene la fecha siguiente
-				agregarFecha = procesos.sumaUnDia(agregarFecha);
+				proximaFecha = procesos.sumaUnDia(proximaFecha);
 			}
 
-			// Elimina los logins anteriores
+			// Elimina los 'loginsDelDia' anteriores
 			baseDeDatos.eliminaTodosPorCondicion("loginsDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
