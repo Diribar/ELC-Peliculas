@@ -18,8 +18,9 @@
 					<a href="<%= link0.url %>">
 						<button type="button"
 							class="<%= link0.idioma %>"
-							<% if (!autofocus) { %>autofocus<% autofocus = true %><% } %>
+							<% if (!autofocus) { %>autofocus<% } %>
 						><%= link0.titulo %></button>
+						<% autofocus = true %>
 					</a>
 				<% } else { %>
 					<% const color = links[grupo].every(n=> n.idioma == link0.idioma) ? link0.idioma : "varios" %>
