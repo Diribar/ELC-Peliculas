@@ -1,10 +1,10 @@
 Visitas diarias
 - Códigos de visita_id
-	- Con usuario: u0...0 (u + 10 dígitos, donde va el id) 
-	- Sin usuario: v0...0 (v + 10 dígitos, donde va un n° al azar) 
+	- Con usuario: U0...0 (U + 10 dígitos, donde va el id)
+	- Sin usuario: V0...0 (V + 10 dígitos, donde va un n° al azar)
 
 - Al navegar el sitio, se obtiene la visita para actualizarla con el cambio de fecha
-	- del cookie 
+	- del cookie
 	- si no existe el cookie, crea una
 
 - En loginsDelDia,
