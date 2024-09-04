@@ -24,16 +24,17 @@ module.exports = {
 		if (usuario) baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
 
 		// Valida que no exista ya un registro del usuario en esta fecha
-		const condicion = {
-			fecha: hoy,
-			[usuario ? "usuario_id" : "visita_id"]: usuario ? usuario.id : visita.id,
-		};
+		const condicion = {fecha: hoy, visita_id: visita.id};
 		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
 
-		// Acciones si no existe
-		if (!existe) {
-			if (usuario) baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
-			baseDeDatos.agregaRegistro("loginsDelDia", condicion); // agrega un registro de login del día
+		// Si es usuario y existe sin usuario
+		if (usuario && existe && !existe.usuario_id) baseDeDatos.eliminaPorId("loginsDelDia", existe.id);
+
+		// Si no existe o es usuario y no existe con usuario
+		if (!existe || (usuario && !existe.usuario_id)) {
+			if (usuario) condicion.usuario_id = usuario.id;
+			baseDeDatos.agregaRegistro("loginsDelDia", condicion);
+			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
 		}
 
 		// Fin
