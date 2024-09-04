@@ -7,8 +7,8 @@ module.exports = async (req, res, next) => {
 	if (req.originalUrl.includes("/api/")) return next();
 
 	// Variables
-	let {usuario, visita} = req.session;
 	const hoy = new Date().toISOString().slice(0, 10);
+	let {usuario, visita} = req.session;
 
 	// Acciones si no está logueado como usuario y hay cookie de mail
 	if (!usuario && req.cookies && req.cookies.email) {
