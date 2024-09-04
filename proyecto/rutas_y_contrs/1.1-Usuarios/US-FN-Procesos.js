@@ -18,23 +18,28 @@ module.exports = {
 		return;
 	},
 	// ControlVista: loginGuardar
-	actualizaElContadorDeLogins: async (usuario, hoy) => {
+	contadorDePersonas: async (usuario_id, visita_id, hoy) => {
 		// Actualiza el usuario
 		const fechaUltimoLogin = hoy;
-		baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
+		if (usuario_id) baseDeDatos.actualizaPorId("usuarios", usuario_id, {fechaUltimoLogin});
 
-		// Valida que no exista ya un registro del usuario en esta fecha
-		const condicion = {fecha: hoy, usuario_id: usuario.id};
+		// Valida que no exista ya un registro de la 'visita_id' en esta fecha
+		const condicion = {fecha: hoy, visita_id};
 		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
+		if (usuario_id) condicion.usuario_id = usuario_id;
 
-		// Acciones si no existe
-		if (!existe) {
-			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
-			baseDeDatos.agregaRegistro("loginsDelDia", condicion); // agrega un registro de login del día
-		}
+		// Si no existe, lo agrega
+		if (!existe) baseDeDatos.agregaRegistro("loginsDelDia", condicion);
+
+		// Si es 'usuario_id' y existe sin ese campo, lo actualiza
+		if (existe && usuario_id && !existe.usuario_id) baseDeDatos.actualizaPorId("loginsDelDia", existe.id, {usuario_id});
+
+		// Si no existe o existe sin 'usuario_id', aumenta el valor del campo 'diasLogin' en el usuario
+		if (!existe || (usuario_id && !existe.usuario_id))
+			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "diasLogin");
 
 		// Fin
-		return {...usuario, fechaUltimoLogin};
+		return;
 	},
 	// ControlVista: altaMail y olvidoContr
 	envioDeMailConContrasena: async ({email, altaMail}) => {

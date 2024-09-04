@@ -53,13 +53,15 @@ module.exports = {
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
-			if (mailEnviado)
-				await baseDeDatos.agregaRegistro("usuarios", {
-					email,
-					contrasena,
+			if (mailEnviado) {
+				const usuario = await baseDeDatos.agregaRegistro("usuarios", {
+					...{email, contrasena},
 					statusRegistro_id: mailPendValidar_id,
 					versionElcUltimoLogin: versionELC,
 				});
+				const visita_id = "U" + String(usuario.id).padStart(10, "0");
+				baseDeDatos.actualizaPorId("usuarios", usuario.id, {visita_id});
+			}
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};

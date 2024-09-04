@@ -569,22 +569,28 @@ module.exports = {
 		return hora;
 	},
 	finRutinasHorarias: function (campo, duracion) {
-		// Feedback del proceso
+		// Variables
+		duracion = duracion.toLocaleString("pt"); // 'es' no coloca el separador de miles
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+
+		// Feedback del proceso
 		if (campo != "feedbackParaUsers" || nodeEnv != "development")
-			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(6, " ") + " -", campo);
+			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo);
 
 		// Fin
 		return;
 	},
-	finRutinasDiariasSemanales: function (campo, menu, duracion) {
-		// Actualiza el archivo JSON
+	finRutinasDiariasSemanales: function (campo, duracion, menu) {
+		// Variables
+		duracion = duracion.toLocaleString("pt"); // 'es' no coloca el separador de miles
+		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+
+		// Averigua si hubieron novedades
 		const sonIguales = menu ? this.guardaArchivoDeRutinas({[campo]: "SI"}, menu) : null;
+		const novedades = sonIguales ? ", sin novedades" : "";
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		const novedades = sonIguales ? ", sin novedades" : "";
-		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(5, " ") + " -", campo + novedades);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " ") , "-", campo + novedades);
 
 		// Fin
 		return;
