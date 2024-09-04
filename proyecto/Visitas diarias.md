@@ -7,11 +7,17 @@ Visitas diarias
 
 - Se obtiene,
 	- de session/cookie
-	- si no existe, crea una
+	- si no existe, crea una, con el campo 'recienCreado'
 
-- En el middleware, si la visita.id difiere del visita_id,
-	- Elimina 'loginDelDia' con visita.id y fecha: hoy
-	- Actualiza visita.id con visita_id
+- En el middleware,
+	- Se procesa cuando alguna de estas:
+		- la fecha de alguno es anterior a hoy
+		- la visita tiene el campo 'recienCreado'
+	- Si la visita.id difiere de visita_id,
+		- En 'loginDelDia'  con fecha: hoy, actualiza 'visita_id' con 'visita.id' (await)
+		- En visita, actualiza visita.id con visita_id
+
+- En procesos, se busca por fecha y visita_id
 
 - En 'loginsDelDia', las personas se cuentan una sola vez por día,
 	- Lo más completa posible: con usuario_id
