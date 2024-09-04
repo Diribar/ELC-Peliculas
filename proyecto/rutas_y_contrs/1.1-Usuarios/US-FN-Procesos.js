@@ -24,9 +24,10 @@ module.exports = {
 		if (usuario) baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
 
 		// Valida que no exista ya un registro del usuario en esta fecha
-		const condicion = {fecha: hoy};
-		if (usuario) condicion.usuario_id = usuario.id;
-		if (visita) condicion.visita_id = visita.id;
+		const condicion = {
+			fecha: hoy,
+			[usuario ? "usuario_id" : "visita_id"]: usuario ? usuario.id : visita.id,
+		};
 		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
 
 		// Acciones si no existe
