@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 	// Acciones si la fecha del último login != hoy
 	const hoy = new Date().toISOString().slice(0, 10);
 	if (usuario.fechaUltimoLogin != hoy) {
-		usuario = await procesos.actualizaElContadorDeLogins(usuario, hoy); // actualiza el contador de logins
+		usuario = await procesos.contadorDePersonas(usuario, hoy); // actualiza el contador de logins
 		res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
 	}
 
