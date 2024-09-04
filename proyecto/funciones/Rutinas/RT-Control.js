@@ -56,7 +56,7 @@ module.exports = {
 		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("FechaHoraUTC", null, duracion); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC", duracion, null); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
@@ -95,7 +95,7 @@ module.exports = {
 		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback);
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("SemanaUTC", null, duracion);
+		procesos.finRutinasDiariasSemanales("SemanaUTC", duracion, null);
 
 		// Actualiza los campos de Rutinas Semanales
 		const feedback_RS = {};
@@ -135,7 +135,7 @@ module.exports = {
 			const comienzo = Date.now();
 			await this.rutinas[rutinaDiaria](); // ejecuta la rutina
 			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaDiaria, "RutinasDiarias", duracion); // actualiza el archivo JSON
+			procesos.finRutinasDiariasSemanales(rutinaDiaria, duracion, "RutinasDiarias"); // actualiza el archivo JSON
 		}
 		console.log("Fin de rutinas diarias");
 
@@ -151,7 +151,7 @@ module.exports = {
 			const comienzo = Date.now();
 			await this.rutinas[rutinaSemanal]();
 			const duracion = Date.now() - comienzo;
-			procesos.finRutinasDiariasSemanales(rutinaSemanal, "RutinasSemanales", duracion);
+			procesos.finRutinasDiariasSemanales(rutinaSemanal, duracion, "RutinasSemanales");
 		}
 		console.log("Fin de rutinas semanales");
 
@@ -337,10 +337,10 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const cantLogins = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
+				const cantUsuarios = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
 
 				// Agrega la cantidad de logins
-				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantLogins});
+				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantUsuarios});
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
