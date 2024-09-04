@@ -12,21 +12,21 @@ module.exports = async (req, res, next) => {
 
 	// Acciones si no está logueado como usuario y hay cookie de mail
 	if (!usuario && req.cookies && req.cookies.email) {
-		// Obtiene el usuario
-		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
+		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
+		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
+	}
+	// Acciones si no se encuentra el usuario a partir del mail
+	if (!usuario && !visita) {
+		// Obtiene la visita
+		visita = req.cookies.visita;
 
-		// Acciones si no se encuentra el usuario a partir del mail
-		if (!usuario) {
-			res.clearCookie("email"); // borra el mail de cookie
-			if (!visita) visita = req.cookies.visita;
-			if (!visita) {
-				visita = {
-					id: "v" + parseInt(Math.random() * Math.pow(10, 10)).padStart(10, "0"),
-					fecha: hoy,
-					recienCreado: true,
-				};
-			}
-		}
+		// Si no la obtiene, la genera
+		if (!visita)
+			visita = {
+				id: "v" + parseInt(Math.random() * Math.pow(10, 10)).padStart(10, "0"),
+				fecha: hoy,
+				recienCreado: true,
+			};
 	}
 
 	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
