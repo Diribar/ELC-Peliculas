@@ -17,7 +17,7 @@ Visitas diarias
 	- Se procesa cuando alguna de estas:
 		- la fecha de alguno es anterior a hoy
 		- la visita tiene el campo 'recienCreado'
-	- Actualizaciones:
+	- Actualizaciones cuando se procesa:
 		- fecha
 		- cookies
 		- el contador de logins
