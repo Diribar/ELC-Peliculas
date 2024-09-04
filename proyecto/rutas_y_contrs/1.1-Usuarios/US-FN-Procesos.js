@@ -18,23 +18,25 @@ module.exports = {
 		return;
 	},
 	// ControlVista: loginGuardar
-	actualizaElContadorDeLogins: async (usuario, hoy) => {
+	contadorDePersonas: async ({usuario, visita, hoy}) => {
 		// Actualiza el usuario
 		const fechaUltimoLogin = hoy;
-		baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
+		if (usuario) baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
 
 		// Valida que no exista ya un registro del usuario en esta fecha
-		const condicion = {fecha: hoy, usuario_id: usuario.id};
+		const condicion = {fecha: hoy};
+		if (usuario) condicion.usuario_id = usuario.id;
+		if (visita) condicion.visita_id = visita.id;
 		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
 
 		// Acciones si no existe
 		if (!existe) {
-			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
+			if (usuario) baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
 			baseDeDatos.agregaRegistro("loginsDelDia", condicion); // agrega un registro de login del día
 		}
 
 		// Fin
-		return {...usuario, fechaUltimoLogin};
+		return;
 	},
 	// ControlVista: altaMail y olvidoContr
 	envioDeMailConContrasena: async ({email, altaMail}) => {
