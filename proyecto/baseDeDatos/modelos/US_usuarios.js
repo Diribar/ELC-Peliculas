@@ -1,6 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "usuarios";
 	const columns = {
+		visita_id: {type: dt.STRING(11)},
 		email: {type: dt.STRING(100)},
 		contrasena: {type: dt.STRING(50)},
 
