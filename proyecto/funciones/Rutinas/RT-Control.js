@@ -337,10 +337,10 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const cantLogins = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
+				const cantUsuarios = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
 
 				// Agrega la cantidad de logins
-				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantLogins});
+				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantUsuarios});
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
