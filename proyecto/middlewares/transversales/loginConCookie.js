@@ -31,10 +31,11 @@ module.exports = async (req, res, next) => {
 		// Variables
 		const condicion = {fecha: hoy, visita_id: visita.id};
 		const {visita_id} = usuario;
+		const usuario_id = usuario.id;
 
 		// Actualizaciones
 		visita.id = visita_id; // variable 'visita'
-		await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {visita_id}); // tabla 'loginDelDia'
+		await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {usuario_id, visita_id}); // tabla 'loginDelDia'
 		if (!actualizarContPers) res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
 	}
 
@@ -52,7 +53,8 @@ module.exports = async (req, res, next) => {
 		}
 
 		// Actualiza el contador de logins
-		await procesos.contadorDePersonas(usuario.id, visita.id, hoy);
+		const usuario_id = usuario ? usuario.id : null;
+		await procesos.contadorDePersonas(usuario_id, visita.id, hoy);
 	}
 
 	// Acciones si el usuario tiene una versión distinta de la actual
